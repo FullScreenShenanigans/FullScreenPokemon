@@ -2,6 +2,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         "pkg": grunt.file.readJSON("package.json"),
         "meta": {
+            "GameStartrPath": "GameStartr",
             "deployPath": "dist"
         },
         "copy": {
@@ -27,12 +28,12 @@ module.exports = function (grunt) {
         "concat": {
             "dist": {
                 "src": [
-                    "src/*.js",
-                    "src/*/*.js",
-                    "FullScreenPokemon.js",
+                    "<%= meta.GameStartrPath %>/*.js",
+                    "<%= meta.GameStartrPath %>/*/*.js",
+                    "<%= pkg.name %>.js",
                     "settings/*.js"
                 ],
-                "dest": "<%= meta.deployPath %>/FullScreenPokemon.js"
+                "dest": "<%= meta.deployPath %>/<%= pkg.name %>.js"
             }
         },
         "uglify": {
@@ -41,7 +42,7 @@ module.exports = function (grunt) {
             },
             "dist": {
                 "files": {
-                    "<%= meta.deployPath %>/FullScreenPokemon.min.js": ["<%= meta.deployPath %>/FullScreenPokemon.js"],
+                    "<%= meta.deployPath %>/<%= pkg.name %>.min.js": ["<%= meta.deployPath %>/<%= pkg.name %>.js"],
                     "<%= meta.deployPath %>/index.min.js": ["index.js"]
                 }
             }
@@ -73,14 +74,14 @@ module.exports = function (grunt) {
             }
         },
         "clean": {
-            "js": ["<%= meta.deployPath %>/FullScreenPokemon.js"]
+            "js": ["<%= meta.deployPath %>/<%= pkg.name %>.js"]
         },
         "zip": {
             "using-cwd": {
-            "cwd": "<%= meta.deployPath %>",
-            "src": ["**"],
-            "dest": "FullScreenPokemon-v<%= pkg.version %>.zip"
-          }
+                "cwd": "<%= meta.deployPath %>/",
+                "src": ["**"],
+                "dest": "<%= pkg.name %>-v<%= pkg.version %>.zip"
+            }
         }
     });
     
