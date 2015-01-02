@@ -1,4 +1,4 @@
 FullScreenPokemon.prototype.settings.renderer = {
-    "groupNames": ["Character", "Solid", "Scenery", "Terrain"],
+    "groupNames": ["Character", "Scenery", "Solid", "Terrain"],
     "spriteCacheCutoff": 2048
 };

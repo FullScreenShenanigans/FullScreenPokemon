@@ -10,21 +10,26 @@
             "Location": {},
             "Thing": {
                 "Character": {
-                    "Player": {},
-                    "Lady": {},
-                    "Fatty": {}
+                    "Mother": {},
+                    "Player": {}
                 },
                 "Solid": {
                     "BedSingle": {},
+                    "Bookshelf": {},
                     "ComputerDesk": {},
                     "ConsoleAndController": {},
                     "InvisibleWall": {},
                     "PottedPalmTree": {},
                     "StairsDown": {},
-                    "Table": {},
+                    "StairsUp": {},
+                    "Table3x2": {},
+                    "Table3x3": {},
                     "TelevisionMonitor": {}
                 },
                 "Scenery": {
+                    "Doormat": {},
+                    "FlowerVase": {},
+                    "Stool": {},
                     "WindowBlinds": {}
                 },
                 "Terrain": {
@@ -73,19 +78,24 @@
                 "player": true
             },
             "Solid": {
-                "groupType": "Solid"
+                "groupType": "Solid",
+                "repeat": true
             },
             "BedSingle": [8, 16],
+            "Bookshelf": [8, 16],
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
             "InvisibleWall": {
                 "hidden": true
             },
             "PottedPalmTree": [8, 16],
-            "Table": [16, 16],
+            "Table3x2": [16, 16],
+            "Table3x3": [16, 16],
             "Scenery": {
-                "groupType": "Scenery"
+                "groupType": "Scenery",
+                "repeat": true
             },
+            "FlowerVase": [6, 6],
             "Terrain": {
                 "groupType": "Terrain",
                 "repeat": true

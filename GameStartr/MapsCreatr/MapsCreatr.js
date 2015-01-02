@@ -586,6 +586,9 @@ function MapsCreatr(settings) {
             if (typeof map.locations[thing[keyEntrance]].xloc === "undefined") {
                 map.locations[thing[keyEntrance]].xloc = prething.left;
             }
+            if (typeof map.locations[thing[keyEntrance]].yloc === "undefined") {
+                map.locations[thing[keyEntrance]].yloc = prething.top;
+            }
             map.locations[thing[keyEntrance]].entrance = prething.thing;
         }
 

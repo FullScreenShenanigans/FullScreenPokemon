@@ -136,8 +136,8 @@ var FullScreenPokemon = (function (GameStartr) {
         
         self.PixelDrawer.setThingArrays([
             self.GroupHolder.getTerrainGroup(),
-            self.GroupHolder.getSceneryGroup(),
             self.GroupHolder.getSolidGroup(),
+            self.GroupHolder.getSceneryGroup(),
             self.GroupHolder.getCharacterGroup()
         ]);
     }
