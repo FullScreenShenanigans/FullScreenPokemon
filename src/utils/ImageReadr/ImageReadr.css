@@ -53,6 +53,9 @@ body {
     border: 1px solid gray;
     cursor: pointer;
     opacity: .49;
+	background-size: contain;
+	background-position: right;
+	background-repeat: no-repeat;
 }
 
 .palette:hover,
@@ -71,6 +74,7 @@ body {
 .palette-box {
     display: inline-block;
     margin-right: 7px;
+	box-shadow: 0 0 3px 3px white;
     background-image: url("data:image/gif;base64,R0lGODlhHAAcAJEAAAAAAP///5mZmf///yH5BAEAAAMALAAAAAAcABwAAAJFlH+hy+ifmIQ0ylXrbRlu3D2fEopj6YwBiqjal6nwK090DVK4re+55yPddrHgaogrbpAclsDlfJ6iUGeVdUVlS9tQ11AAADs=");
 }
 
@@ -107,7 +111,7 @@ body {
     border-color: #aaa;
 }
 
-#input input[type=file] {
+input[type=file] {
     position: absolute;
     left: -100%;
 }
@@ -136,22 +140,25 @@ body {
     background: #e5d6ff;
     text-align: center;
     overflow-x: hidden;
+	background-size: contain;
+	background-position: right;
+	background-repeat: no-repeat;
 }
 
 .output.output-failed {
-    background: #ffcccc;
+    background-color: #ffcccc;
 }
 
 .output.output-uploading {
-    background: #f0e5ff;
+    background-color: #f0e5ff;
 }
 
 .output.output-working {
-    background: #d3f7ff;
+    background-color: #d3f7ff;
 }
 
 .output.output-complete {
-    background: #daffdf;
+    background-color: #daffdf;
 }
 
 .output input[type=text] {

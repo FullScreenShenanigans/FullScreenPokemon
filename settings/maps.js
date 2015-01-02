@@ -1,11 +1,14 @@
 FullScreenPokemon.prototype.settings.maps = {
-    "mapDefault": "Lavender Town",
-    "locationDefault": "Land",
-    "screenAttributes": [
-    ],
+    "mapDefault": "Pallet Town",
+    "locationDefault": "StartGame",
+    "requireEntrance": true,
+    "screenAttributes": [],
     "screenVariables": {},
     "onSpawn": FullScreenPokemon.prototype.addPreThing,
     "macros": {},
+    "entrances": {
+        "Normal": FullScreenPokemon.prototype.mapEntranceNormal
+    },
     "library": (function (maps) {
         var library = {},
             i;
@@ -17,7 +20,7 @@ FullScreenPokemon.prototype.settings.maps = {
         return library;
     })([
         {
-            "name": "Lavender Town",
+            "name": "Pallet Town",
             "locations": {
                 "StartGame": {},
             },
@@ -25,7 +28,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 {
                     "setting": "Land",
                     "creation": [
-
+                        { "location": "StartGame" }
                     ]
                 }
             ]

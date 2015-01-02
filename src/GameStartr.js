@@ -291,9 +291,6 @@ var GameStartr = (function (EightBittr) {
         EightBitter.ThingHitter = new ThingHittr(proliferate({
             "scope": EightBitter
         }, EightBitter.settings.collisions));
-
-        EightBitter.ThingHitter.cacheHitCheckGroup("Solid");
-        EightBitter.ThingHitter.cacheHitCheckGroup("Character");
     }
 
     /**
@@ -710,14 +707,6 @@ var GameStartr = (function (EightBittr) {
         if (thing.flipVert) {
             thing.EightBitter.flipVert(thing);
         }
-
-        // ThingHittr becomes very non-performant if functions aren't generated
-        // for each Thing constructor (optimization does not respect prototypal 
-        // inheritance, sadly).
-        thing.EightBitter.ThingHitter.cacheHitCheckType(
-            thing.title,
-            thing.groupType
-        );
 
         // Mods!
         thing.EightBitter.ModAttacher.fireEvent(
@@ -1184,7 +1173,7 @@ var GameStartr = (function (EightBittr) {
      */
     function generateObjectKey(thing) {
         return thing.EightBitter.MapsHandler.getArea().setting
-                + ' ' + thing.libType + ' '
+                + ' ' + thing.groupType + ' '
                 + thing.title + ' ' + thing.className;
     }
 

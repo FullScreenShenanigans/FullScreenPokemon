@@ -124,22 +124,23 @@ function AudioPlayr(settings) {
      * @param {Object} statistics   The arguments to be passed to the internal
      *                              StatsHoldr. This must contain values for 
      *                              "volume" and "muted".
-     * @param {Mixed} [getVolumeLocal]   A Function or Number to get the "local"
-     *                                   volume for playLocal calls. Functions
-     *                                   are called for a return value, and 
-     *                                   Numbers are constant (defaults to 1).
      * @param {Mixed} [getThemeDefault]   A Function or String to get the 
      *                                    default theme for playTheme calls.
      *                                    Functions are called for a return
      *                                    value, and Strings are constant
      *                                    (defaults to "Theme").
+     * @param {Mixed} [getVolumeLocal]   A Function or Number to get the "local"
+     *                                   volume for playLocal calls. Functions
+     *                                   are called for a return value, and 
+     *                                   Numbers are constant (defaults to 1).
      */
     self.reset = function (settings) {
         library = settings.library;
         directory = settings.directory;
         fileTypes = settings.fileTypes;
-        getVolumeLocal = settings.getVolumeLocal || 1;
         getThemeDefault = settings.getThemeDefault || "Theme";
+        getVolumeLocal = typeof settings.getVolumeLocal === "undefined" 
+            ? 1 : settings.getVolumeLocal;
 
         // Sounds should always start blank
         sounds = {};
@@ -273,6 +274,42 @@ function AudioPlayr(settings) {
         }
         
         StatsHolder.set("muted", 0);
+    };
+    
+    
+    /* Other modifiers
+    */
+    
+    /**
+     * @return {Mixed} The Function or Number used as the volume setter for
+     *                 "local" sounds.    
+     */
+    self.getGetVolumeLocal = function () {
+        return getVolumeLocal;
+    };
+    
+    /**
+     * @param {Mixed} getVolumeLocal   A new Function or Number to use as the
+     *                                 volume setter for "local" sounds.
+     */
+    self.setGetVolumeLocal = function (getVolumeLocalNew) {
+        getVolumeLocal = getVolumeLocalNew;
+    };
+    
+    /**
+     * @return {Mixed} The Function or String used to get the default theme for
+     *                 playTheme calls.
+     */
+    self.getGetThemeDefault = function () {
+        return getThemeDefault;
+    };
+    
+    /**
+     * @param {Mixed} A new Function or String to use as the source for theme
+     *                names in default playTheme calls.
+     */
+    self.setGetThemeDefault = function (getThemeDefaultNew) {
+        getThemeDefault = getThemeDefaultNew;
     };
     
     

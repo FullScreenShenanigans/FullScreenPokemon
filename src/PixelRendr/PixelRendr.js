@@ -1250,12 +1250,10 @@ function PixelRendr(settings) {
      * 
      * @param {Number} number   The original Number being padded.
      * @param {Number} size   How many digits the output must contain.
-     * @param {String} [prefix]   A prefix to repeat for padding (by default,
-     *                            '0').
      * @return {String}
      */
-    function makeSizedDigit(size, num, prefix) {
-        return makeDigit(num, size, prefix);
+    function makeSizedDigit(size, num) {
+        return makeDigit(num, size, '0');
     }
 
     /**
@@ -1263,7 +1261,7 @@ function PixelRendr(settings) {
      * 
      * @param {Array}
      * @param {Mixed} removed   The element to remove.
-     * @param {Mixed} insert   The element to insert.
+     * @param {Mixed} inserted   The element to insert.
      */
     function arrayReplace(array, removed, inserted) {
         for (var i = array.length - 1; i >= 0; i -= 1) {
@@ -1376,6 +1374,102 @@ function PixelRendr(settings) {
             destination[lwriteloc++] = source[lreadloc++];
         }
     }
+
+    /**
+     * Miscellaneous utility to generate a complete palette from raw image pixel
+     * data. Unique [r,g,b,a] values are found using tree-based caching, and
+     * separated into grayscale (r,g,b equal) and general (r,g,b unequal). If a
+     * pixel has a=0, it's completely transparent and goes before anything else
+     * in the palette. Grayscale colors come next in order of light to dark, and
+     * general colors come next sorted by decreasing r, g, and b in order.
+     * 
+     * @param {Uint8ClampedArray} data   The equivalent data from a context's
+     *                                   getImageData(...).data.
+     * @param {Boolean} [giveArrays]   Whether the resulting palettes should be
+     *                                 converted to Arrays (by default, false).
+     * @param {Boolean} [forceZeroColor]   Whether the palette should have a
+     *                                     [0,0,0,0] color as the first element
+     *                                     even if data does not contain it (by
+     *                                     default, false).
+     * @return {Uint8ClampedArray[]} A working palette that may be used in 
+     *                               sprite settings (Array[] if giveArrays is
+     *                               true).
+     */
+    self.generatePaletteFromRawData = function (data, forceZeroColor, giveArrays) {
+        var tree = {},
+            colorsGeneral = [],
+            colorsGrayscale = [],
+            output, i;
+
+        for (i = 0; i < data.length; i += 4) {
+            if (data[i + 3] === 0) {
+                forceZeroColor = true;
+                continue;
+            }
+
+            if (
+                tree[data[i]]
+                && tree[data[i]][data[i + 1]]
+                && tree[data[i]][data[i + 1]][data[i + 2]]
+                && tree[data[i]][data[i + 1]][data[i + 2]][data[i + 3]]
+            ) {
+                continue;
+            }
+
+            if (!tree[data[i]]) {
+                tree[data[i]] = {};
+            }
+
+            if (!tree[data[i]][data[i + 1]]) {
+                tree[data[i]][data[i + 1]] = {};
+            }
+
+            if (!tree[data[i]][data[i + 1]][data[i + 2]]) {
+                tree[data[i]][data[i + 1]][data[i + 2]] = {};
+            }
+
+            if (!tree[data[i]][data[i + 1]][data[i + 2]][data[i + 3]]) {
+                tree[data[i]][data[i + 1]][data[i + 2]][data[i + 3]] = true;
+
+                if (data[i] === data[i + 1] && data[i + 1] === data[i + 2]) {
+                    colorsGrayscale.push(data.subarray(i, i + 4));
+                } else {
+                    colorsGeneral.push(data.subarray(i, i + 4));
+                }
+            }
+        }
+
+        colorsGrayscale.sort(function (a, b) {
+            return a[0] - b[0];
+        });
+        console.log(colorsGrayscale.map(function (x) {
+            return Array.prototype.slice.call(x).join(", ");
+        }).join("\n"));
+
+        colorsGeneral.sort(function (a, b) {
+            for (i = 0; i < 4; i += 1) {
+                if (a[i] !== b[i]) {
+                    return b[i] - a[i];
+                }
+            }
+        });
+
+        if (forceZeroColor) {
+            output = [[0, 0, 0, 0]].concat(colorsGrayscale).concat(colorsGeneral);
+        } else {
+            output = colorsGrayscale.concat(colorsGeneral);
+        }
+
+        if (!giveArrays) {
+            return output;
+        }
+
+        for (i = 0; i < output.length; i += 1) {
+            output[i] = Array.prototype.slice.call(output[i]);
+        }
+
+        return output;
+    };
     
 
     self.reset(settings || {});

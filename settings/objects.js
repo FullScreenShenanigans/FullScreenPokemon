@@ -9,10 +9,13 @@
             "Area": {},
             "Location": {},
             "Thing": {
-                "character": {},
-                "solid": {},
-                "scenery": {},
-                "Text": {}
+                "Character": {
+                    "Player": {},
+                    "Lady": {},
+                    "Fatty": {}
+                },
+                "Solid": {},
+                "Scenery": {}
             }
         },
         "properties": {
@@ -20,10 +23,40 @@
                 "tolx": 0,
                 "toly": 0
             },
-            "Map": {},
+            "Map": {
+                "initialized": false
+            },
             "Area": {},
-            "Location": {},
-            "Thing": {}
+            "Location": {
+                "entry": "Normal"
+            },
+            "Thing": {
+                // Sizing
+                "width": 8,
+                "height": 8,
+                // Placement
+                "alive": true,
+                "placed": false,
+                "maxquads": 4,
+                // Sprites
+                "sprite": "",
+                "spriteType": "neither",
+                "opacity": 1,
+                // Triggered Functions
+                "onMake": FullScreenPokemon.prototype.thingProcess,
+            },
+            "Character": {
+                "groupType": "Character"
+            },
+            "Player": {
+                "player": true
+            },
+            "Solid": {
+                "groupType": "Solid"
+            },
+            "Scenery": {
+                "groupType": "Scenery"
+            }
         }
     };
 })();

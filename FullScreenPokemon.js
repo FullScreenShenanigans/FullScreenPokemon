@@ -95,7 +95,10 @@ var FullScreenPokemon = (function (GameStartr) {
                     "statistics": "settings/statistics.js",
                     "ui": "settings/ui.js",
                 }
-            }
+            },
+            "constants": [
+                "unitsize"
+            ]
         });
         
         if (customs.resetTimed) {
@@ -146,7 +149,14 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function gameStart(EightBitter) {
-        console.log("Starting!");
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.setMap(
+            EightBitter.settings.maps.mapDefault,
+            EightBitter.settings.maps.locationDefault
+        );
+
+        EightBitter.ModAttacher.fireEvent("onGameStart");
     }
 
     /**
@@ -161,6 +171,27 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function onGamePause(EightBitter) {
         console.log("Paused.");
+    }
+
+    /**
+     * 
+     */
+    function addPlayer(left, top) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            player;
+
+        left = left || 0;
+        top = top || 0;
+
+        player = EightBitter.player = EightBitter.ObjectMaker.make("Player");
+
+        EightBitter.InputWriter.setEventInformation(player);
+
+        EightBitter.addThing(player, left, top);
+
+        EightBitter.ModAttacher.fireEvent("onAddPlayer", player);
+
+        return player;
     }
 
 
@@ -182,14 +213,76 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function setMap(name, location) {
-        console.log("Setting map", name, location);
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            map;
+
+        if (typeof name === "undefined" || name instanceof EightBittr) {
+            name = EightBitter.MapsHandler.getMapName();
+        }
+
+        map = EightBitter.MapsHandler.setMap(name);
+
+        EightBitter.ModAttacher.fireEvent("onPreSetMap", map);
+
+        EightBitter.NumberMaker.resetFromSeed(map.seed);
+        EightBitter.InputWriter.restartHistory();
+
+        EightBitter.ModAttacher.fireEvent("onSetMap", map);
+
+        EightBitter.setLocation(
+            location
+            || map.locationDefault
+            || EightBitter.settings.maps.locationDefault
+        );
     }
 
     /**
      * 
      */
     function setLocation(name) {
-        console.log("Setting location", name);
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            location;
+
+        EightBitter.MapScreener.clearScreen();
+        EightBitter.GroupHolder.clearArrays();
+        EightBitter.TimeHandler.cancelAllEvents();
+
+        EightBitter.MapsHandler.setLocation(name || 0);
+        EightBitter.MapScreener.setVariables();
+        location = EightBitter.MapsHandler.getLocation(name || 0);
+
+        EightBitter.ModAttacher.fireEvent("onPreSetLocation", location)
+
+        EightBitter.PixelDrawer.setBackground(
+            EightBitter.MapsHandler.getArea().background
+        );
+
+        EightBitter.AudioPlayer.clearAll();
+
+        EightBitter.QuadsKeeper.resetQuadrants();
+
+        location.entry(EightBitter, location);
+        
+        EightBitter.ModAttacher.fireEvent("onSetLocation", location);
+
+        EightBitter.GamesRunner.play();
+    }
+
+
+    /* Map entrances
+    */
+
+    function mapEntranceNormal(EightBitter, location) {
+        if (location) {
+            if (location.xloc) {
+                EightBitter.scrollWindow(location.xloc & EightBitter.unitsize);
+            }
+            if (location.yloc) {
+                EightBitter.scrollWindow(location.yloc & EightBitter.unitsize);
+            }
+        }
+
+        EightBitter.addPlayer(0, 0);
     }
 
     
@@ -200,11 +293,14 @@ var FullScreenPokemon = (function (GameStartr) {
         "gameStart": gameStart,
         "onGamePlay": onGamePlay,
         "onGamePause": onGamePause,
+        "addPlayer": addPlayer,
         // Inputs
         "canInputsTrigger": canInputsTrigger,
         // Map sets
         "setMap": setMap,
-        "setLocation": setLocation
+        "setLocation": setLocation,
+        // Map entrances
+        "mapEntranceNormal": mapEntranceNormal
     });
     
     return FullScreenPokemon;

@@ -1,9 +1,10 @@
 document.onreadystatechange = (function (settings) {
     "use strict";
     
-    var PixelRender;
+    var PixelRender,
     
-    var currentPalette;
+        currentPalette;
+    
     
     /* Palettes
     */
@@ -14,23 +15,25 @@ document.onreadystatechange = (function (settings) {
     var initializePalettes = function (palettes, backgroundImage, defaultPalette) {
         var section = document.getElementById("palettes"),
             name, element, chosen;
-        
+
+        section.appendChild(initializePaletteUploader());
+
         for (name in palettes) {
-            element = initializePalette(name, palettes[name], backgroundImage);
+            element = initializePalette(name, palettes[name]);
             section.appendChild(element);
-            
+
             if (name === defaultPalette) {
                 chosen = element;
             }
         }
-        
+
         chosen.onclick();
-    }
+    };
     
     /**
      * 
      */
-    var initializePalette = function (name, palette, backgroundImage) {
+    var initializePalette = function (name, palette) {
         var surround = document.createElement("div"),
             label = document.createElement("h4"),
             container = document.createElement("div"),
@@ -62,7 +65,29 @@ document.onreadystatechange = (function (settings) {
         surround.appendChild(container);
         
         return surround;
-    }
+    };
+
+    /**
+     * 
+     */
+    var initializePaletteUploader = function () {
+        var surround = document.createElement("div"),
+            label = document.createElement("h4");
+        
+        surround.className = "palette palette-uploader";
+        label.className = "palette-label";
+
+        label.textContent = "Drag or upload an image here to generate a palette.";
+
+        initializeClickInput(surround);
+        initializeDragInput(surround);
+
+        surround.children[0].workerCallback = workerPaletteUploaderStart;
+
+        surround.appendChild(label);
+
+        return surround;
+    };
     
     /**
      * 
@@ -181,7 +206,7 @@ document.onreadystatechange = (function (settings) {
                 continue;
             }
             
-            elements.push(createWorkerElement(files[i]));
+            elements.push(createWorkerElement(files[i], event.target));
         }
         
         for (i = 0; i < elements.length; i += 1) {
@@ -196,10 +221,11 @@ document.onreadystatechange = (function (settings) {
     /**
      * 
      */
-    var createWorkerElement = function (file) {
+    var createWorkerElement = function (file, target) {
         var element = document.createElement("div"),
             reader = new FileReader();
-        
+
+        element.workerCallback = target.workerCallback;
         element.className = "output output-uploading";
         element.setAttribute("palette", currentPalette);
         element.innerText = "Uploading '" + file.name + "'...";
@@ -234,12 +260,21 @@ document.onreadystatechange = (function (settings) {
      * 
      * 
      * 
-     * @remarks It would be nice to use a web worker for this, but each worker
-     *          would have to instantiate a PixelRendr separately...
      */
     var workerTryStartWorking = function (file, element, event) {
         var result = event.currentTarget.result;
         
+        if (element.workerCallback) {
+            element.workerCallback(result, file, element, event);
+        } else {
+            workerTryStartWorkingDefault(result, file, element, event);
+        }
+    };
+
+    /**
+     * 
+     */
+    var workerTryStartWorkingDefault = function (result, file, element, event) {
         if (result.length > 100000) {
             workerCannotStartWorking(result, file, element, event);
         } else {
@@ -260,20 +295,20 @@ document.onreadystatechange = (function (settings) {
      */
     var workerStartWorking = function (result, file, element, event) {
         var displayBase64 = document.createElement("input");
-        
+
         element.className = "output output-working";
         element.innerText = "Working on " + file.name + "...";
-    
+
         displayBase64.spellcheck = false;
         displayBase64.className = "selectable";
         displayBase64.type = "text";
         displayBase64.setAttribute("value", result);
-        
+
         element.appendChild(document.createElement("br"));
         element.appendChild(displayBase64);
-        
+
         parseBase64Image(file, result, workerFinishRender.bind(undefined, file, element));
-    }
+    };
     
     /**
      * 
@@ -287,7 +322,7 @@ document.onreadystatechange = (function (settings) {
     /**
      * 
      */
-    var workerFinishRender = function (file, element, result) {
+    var workerFinishRender = function (file, element, result, image) {
         var displayResult = document.createElement("input");
         
         displayResult.spellcheck = false;
@@ -297,8 +332,72 @@ document.onreadystatechange = (function (settings) {
         
         element.firstChild.textContent = "Finished '" + file.name + "' ('" + element.getAttribute("palette") + "' palette).";
         element.className = "output output-complete";
+        element.style.backgroundImage = "url('" + image.src + "')";
         
         element.appendChild(displayResult);
+    };
+
+    /**
+     * 
+     */
+    var workerPaletteUploaderStart = function (result, file, element, event) {
+        var image = document.createElement("img");
+        image.onload = workerPaletteCollect.bind(
+            undefined, image, file, element, result
+        );
+        image.src = result;
+
+        element.className = "output output-working";
+        element.innerText = "Working on " + file.name + "...";
+    };
+
+    /**
+     * 
+     */
+    var workerPaletteCollect = function (image, file, element, src, event) {
+        var canvas = document.createElement("canvas"),
+            context = canvas.getContext("2d"),
+            data;
+
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        context.drawImage(image, 0, 0);
+
+        data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        workerPaletteFinish(
+            PixelRender.generatePaletteFromRawData(data, true, true), file, element, src
+        );
+    };
+
+    /**
+     * 
+     */
+    var workerPaletteFinish = function (colors, file, element, src) {
+        if (colors.length > 999) {
+            element.className = "output output-failed";
+            element.innerText = "Too many colors (>999) in " + file.name + " palette.";
+        }
+
+        element.className = "output output-complete";
+        element.innerText = "Created " + file.name + " palette (" + colors.length + " colors).";
+
+        var chooser = initializePalette(file.name, colors),
+            displayResult = document.createElement("input");
+
+        chooser.style.backgroundImage = "url('" + src + "')";
+
+        displayResult.spellcheck = false;
+        displayResult.className = "selectable";
+        displayResult.type = "text";
+        displayResult.setAttribute("value", "[ [" + colors.join("], [") + "] ]");
+
+        document.querySelector("#palettes").appendChild(chooser);
+
+        element.appendChild(displayResult);
+
+        chooser.click();
     };
     
 
