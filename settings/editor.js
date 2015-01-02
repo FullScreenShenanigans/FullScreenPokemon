@@ -32,7 +32,8 @@
 })({
     "Characters": {},
     "Solids": {},
-    "Scenery": {}
+    "Scenery": {},
+    "Terrain": {}
 }, {
     
 });

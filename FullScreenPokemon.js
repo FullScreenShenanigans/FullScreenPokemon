@@ -303,15 +303,93 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.GamesRunner.play();
     }
 
+    /**
+     * 
+     */
+    function getAreaBoundariesReal(EightBitter) {
+        var area = EightBitter.MapsHandler.getArea();
+
+        if (!area) {
+            return {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0,
+                "width": 0,
+                "height": 0
+            }
+        };
+
+        return {
+            "top": area.boundaries.top * EightBitter.unitsize,
+            "right": area.boundaries.right * EightBitter.unitsize,
+            "bottom": area.boundaries.bottom * EightBitter.unitsize,
+            "left": area.boundaries.left * EightBitter.unitsize,
+            "width": (area.boundaries.right - area.boundaries.left) * EightBitter.unitsize,
+            "height": (area.boundaries.bottom - area.boundaries.top) * EightBitter.unitsize
+        }
+    }
+
+    /**
+     * 
+     */
+    function getScreenScrollability(EightBitter) {
+        var area = EightBitter.MapsHandler.getArea(),
+            boundaries, width, height;
+
+        if (!area) {
+            return "none";
+        }
+
+        boundaries = area.boundaries;
+        width = (boundaries.right - boundaries.left) * EightBitter.unitsize;
+        height = (boundaries.bottom - boundaries.top) * EightBitter.unitsize;
+
+        if (width > EightBitter.MapScreener.width) {
+            if (height > EightBitter.MapScreener.height) {
+                return "both";
+            } else {
+                return "horizontal";
+            }
+        } else if (height > EightBitter.MapScreener.height) {
+            return "vertical";
+        } else {
+            return "none";
+        }
+    }
+
 
     /* Map entrances
     */
 
+    /**
+     * 
+     */
     function mapEntranceNormal(EightBitter, location) {
         EightBitter.addPlayer(
             location.xloc ? location.xloc * EightBitter.unitsize : 0,
             location.yloc ? location.yloc * EightBitter.unitsize : 0
         );
+
+        EightBitter.centerMapScreen(EightBitter);
+    }
+
+    /**
+     * 
+     */
+    function centerMapScreen(EightBitter) {
+        var boundaries = EightBitter.MapScreener.boundaries,
+            difference;
+
+        difference = EightBitter.MapScreener.width - boundaries.width;
+        if (difference > 0) {
+            EightBitter.scrollWindow(difference / -2);
+        }
+
+        difference = EightBitter.MapScreener.height - boundaries.height;
+        if (difference > 0) {
+            EightBitter.scrollWindow(0, difference / -2);
+        }
     }
 
     
@@ -329,6 +407,9 @@ var FullScreenPokemon = (function (GameStartr) {
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
+        "getAreaBoundariesReal": getAreaBoundariesReal,
+        "getScreenScrollability": getScreenScrollability,
+        "centerMapScreen": centerMapScreen,
         // Map entrances
         "mapEntranceNormal": mapEntranceNormal
     });

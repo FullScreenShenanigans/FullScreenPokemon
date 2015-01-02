@@ -18,6 +18,7 @@
                     "BedSingle": {},
                     "ComputerDesk": {},
                     "ConsoleAndController": {},
+                    "InvisibleWall": {},
                     "PottedPalmTree": {},
                     "StairsDown": {},
                     "Table": {},
@@ -26,7 +27,14 @@
                 "Scenery": {
                     "WindowBlinds": {}
                 },
-                "Terrain": {}
+                "Terrain": {
+                    "FloorTiledDiagonal": {},
+                    "TerrainSmall": {
+                        "TerrainSmallRepeating": {
+                            "WallIndoorHorizontalBands": {}
+                        }
+                    }
+                }
             }
         },
         "properties": {
@@ -70,13 +78,24 @@
             "BedSingle": [8, 16],
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
+            "InvisibleWall": {
+                "hidden": true
+            },
             "PottedPalmTree": [8, 16],
             "Table": [16, 16],
             "Scenery": {
                 "groupType": "Scenery"
             },
             "Terrain": {
-                "groupType": "Terrain"
+                "groupType": "Terrain",
+                "repeat": true
+            },
+            "TerrainSmall": [2, 2],
+            "TerrainSmallRepeating": {
+                "width": 8,
+                "height": 8,
+                "spritewidth": 2,
+                "spriteheight": 2
             }
         }
     };

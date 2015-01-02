@@ -32,6 +32,7 @@ FullScreenPokemon.prototype.settings.sprites = {
         },
         "Terrain": {
             "FloorTiledDiagonal": "p[1,3]1x07,1x08,1x07,1x08,1x07,1x08,1x07,1x06,101x05,10100001000100010001001x05,101x05,1x08,1x07,11x07,1x08,1x07,1x08,1x07,1x08,1x07,1x06,101x05,10100001000100010001001x05,101x05,1x08,1x07,1",
+            "WallIndoorHorizontalBands": "p[3,4]0000x112,"
         }
     }
 };
