@@ -235,13 +235,13 @@ function PixelDrawr(settings) {
         // PixelRender does most of the work in fetching the rendered sprite
         thing.sprite = PixelRender.decode(generateObjectKey(thing), thing);
         
-        // To do: remove dependency on .num_sprites and spriteType
+        // To do: remove dependency on .numSprites and spriteType
         if (thing.sprite.multiple) {
             thing.spriteType = thing.sprite.type;
             refillThingCanvasMultiple(thing, thing.sprite);
         }
         else {
-            thing.num_sprites = 1;
+            thing.numSprites = 1;
             thing.spriteType = "normal";
             refillThingCanvasSingle(thing, thing.sprite);
         }
@@ -287,7 +287,7 @@ function PixelDrawr(settings) {
             },
             canvas, context, imageData, i;
 
-        thing.num_sprites = 1;
+        thing.numSprites = 1;
 
         for (i in spritesRaw.sprites) {
             // Make a new sprite for this individual component
@@ -304,7 +304,7 @@ function PixelDrawr(settings) {
                 "canvas": canvas,
                 "context": context
             }
-            thing.num_sprites += 1;
+            thing.numSprites += 1;
         }
         
         if (thing.width * thing.height < spriteCacheCutoff) {
@@ -464,7 +464,7 @@ function PixelDrawr(settings) {
         }
         
         // If Thing hasn't had a sprite yet (previously hidden), do that first
-        if (typeof thing.num_sprites === "undefined") {
+        if (typeof thing.numSprites === "undefined") {
             self.setThingSprite(thing);
         }
         
@@ -497,7 +497,7 @@ function PixelDrawr(settings) {
         }
         
         // If there's just one sprite, it's pretty simple
-        if (thing.num_sprites === 1) {
+        if (thing.numSprites === 1) {
             return drawThingOnContextSingle(quadrant.context, thing.canvas, thing, thing.left - quadrant.left, thing.top - quadrant.top);
         }
         // For multiple sprites, some calculations will be needed

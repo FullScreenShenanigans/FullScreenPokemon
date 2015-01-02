@@ -1,19 +1,19 @@
 FullScreenPokemon.prototype.settings.collisions = {
     "groupNames": ["Solid", "Character"],
     "globalCheckGenerators": {
-        "Character": FullScreenPokemon.prototype.generateCanThingCollide,
-        "Solid": FullScreenPokemon.prototype.generateCanThingCollide
+        //"Character": FullScreenPokemon.prototype.generateCanThingCollide,
+        //"Solid": FullScreenPokemon.prototype.generateCanThingCollide
     },
     "hitCheckGenerators": {
-        "Character": {
-            "Character": FullScreenPokemon.prototype.generateIsCharacterTouchingCharacter,
-            "Solid": FullScreenPokemon.prototype.generateIsCharacterTouchingSolid
-        }
+        //"Character": {
+        //    "Character": FullScreenPokemon.prototype.generateIsCharacterTouchingCharacter,
+        //    "Solid": FullScreenPokemon.prototype.generateIsCharacterTouchingSolid
+        //}
     },
     "hitFunctionGenerators": {
-        "Character": {
-            "Solid": FullScreenPokemon.prototype.generateHitCharacterSolid,
-            "Character": FullScreenPokemon.prototype.generateHitCharacterCharacter
-        }
+        //"Character": {
+        //    "Solid": FullScreenPokemon.prototype.generateHitCharacterSolid,
+        //    "Character": FullScreenPokemon.prototype.generateHitCharacterCharacter
+        //}
     }
 };

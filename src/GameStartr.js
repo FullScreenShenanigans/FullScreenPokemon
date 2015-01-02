@@ -353,7 +353,8 @@ var GameStartr = (function (EightBittr) {
         EightBitter.MapsHandler = new MapsHandlr({
             "MapsCreator": EightBitter.MapsCreator,
             "MapScreener": EightBitter.MapScreener,
-            "screenAttributes": EightBitter.settings.maps.screenAttributes
+            "screenAttributes": EightBitter.settings.maps.screenAttributes,
+            "onSpawn": EightBitter.settings.maps.onSpawn
         });
     }
 

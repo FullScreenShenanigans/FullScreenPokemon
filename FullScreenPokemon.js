@@ -135,6 +135,7 @@ var FullScreenPokemon = (function (GameStartr) {
         self.container.style.fontFamily = "Press Start";
         
         self.PixelDrawer.setThingArrays([
+            self.GroupHolder.getTerrainGroup(),
             self.GroupHolder.getSceneryGroup(),
             self.GroupHolder.getSolidGroup(),
             self.GroupHolder.getCharacterGroup()
@@ -171,6 +172,40 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function onGamePause(EightBitter) {
         console.log("Paused.");
+    }
+
+    /**
+     * Adds a Thing via addPreThing based on the specifications in a PreThing.
+     * This is done relative to MapScreener.left and MapScreener.top.
+     * 
+     * @param {PreThing} prething
+     */
+    function addPreThing(prething) {
+        var thing = prething.thing,
+            position = prething.position || thing.position;
+
+        thing.EightBitter.addThing(
+            thing,
+            prething.left * thing.EightBitter.unitsize - thing.EightBitter.MapScreener.left,
+            prething.top * thing.EightBitter.unitsize - thing.EightBitter.MapScreener.top
+        );
+
+        // Either the prething or thing, in that order, may request to be in the
+        // front or back of the container
+        if (position) {
+            thing.EightBitter.TimeHandler.addEvent(function () {
+                switch (position) {
+                    case "beginning":
+                        thing.EightBitter.arrayToBeginning(thing, thing.EightBitter.GroupHolder.getGroup(thing.groupType));
+                        break;
+                    case "end":
+                        thing.EightBitter.arrayToEnd(thing, thing.EightBitter.GroupHolder.getGroup(thing.groupType));
+                        break;
+                }
+            });
+        }
+
+        thing.EightBitter.ModAttacher.fireEvent("onAddPreThing", prething);
     }
 
     /**
@@ -273,16 +308,10 @@ var FullScreenPokemon = (function (GameStartr) {
     */
 
     function mapEntranceNormal(EightBitter, location) {
-        if (location) {
-            if (location.xloc) {
-                EightBitter.scrollWindow(location.xloc & EightBitter.unitsize);
-            }
-            if (location.yloc) {
-                EightBitter.scrollWindow(location.yloc & EightBitter.unitsize);
-            }
-        }
-
-        EightBitter.addPlayer(0, 0);
+        EightBitter.addPlayer(
+            location.xloc ? location.xloc * EightBitter.unitsize : 0,
+            location.yloc ? location.yloc * EightBitter.unitsize : 0
+        );
     }
 
     
@@ -293,6 +322,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "gameStart": gameStart,
         "onGamePlay": onGamePlay,
         "onGamePause": onGamePause,
+        "addPreThing": addPreThing,
         "addPlayer": addPlayer,
         // Inputs
         "canInputsTrigger": canInputsTrigger,

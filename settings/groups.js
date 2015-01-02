@@ -1,4 +1,4 @@
 FullScreenPokemon.prototype.settings.groups = {
-    "groupNames": ["Solid", "Character", "Scenery"],
+    "groupNames": ["Solid", "Character", "Scenery", "Terrain"],
     "groupTypes": "Array",
 };

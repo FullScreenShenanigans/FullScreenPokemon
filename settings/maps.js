@@ -22,13 +22,25 @@ FullScreenPokemon.prototype.settings.maps = {
         {
             "name": "Pallet Town",
             "locations": {
-                "StartGame": {},
+                "StartGame": {
+                    "xloc": 24,
+                    "yloc": 48
+                },
             },
             "areas": [
                 {
                     "setting": "Land",
                     "creation": [
-                        { "location": "StartGame" }
+                        { "location": "StartGame" },
+                        { "thing": "ComputerDesk" },
+                        { "thing": "Table", "x": 8 },
+                        { "thing": "StairsDown", "x": 56, "y": 16 },
+                        { "thing": "WindowBlinds", "x": 40, "y": 8 },
+                        { "thing": "WindowBlinds", "x": 56, "y": 8 },
+                        { "thing": "TelevisionMonitor", "x": 24, "y": 32 },
+                        { "thing": "ConsoleAndController", "x": 24, "y": 40 },
+                        { "thing": "BedSingle", "y": 64 },
+                        { "thing": "PottedPalmTree", "x": 48, "y": 64 }
                     ]
                 }
             ]

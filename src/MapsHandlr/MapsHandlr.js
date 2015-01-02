@@ -117,7 +117,6 @@ function MapsHandlr(settings) {
         onUnspawn = settings.onUnspawn;
         
         screenAttributes = settings.screenAttributes || [];
-        
         stretchAdd = settings.stretchAdd;
         afterAdd = settings.afterAdd;
     };
@@ -379,7 +378,7 @@ function MapsHandlr(settings) {
             if (group.length === 0) {
                 continue;
             }
-            
+
             // Find the start and end points within the PreThings Array
             // Ex. if direction="xInc", go from .left >= left to .left <= right
             mid = (group.length / 2) | 0;

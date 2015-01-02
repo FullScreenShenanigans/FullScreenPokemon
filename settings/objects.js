@@ -14,8 +14,19 @@
                     "Lady": {},
                     "Fatty": {}
                 },
-                "Solid": {},
-                "Scenery": {}
+                "Solid": {
+                    "BedSingle": {},
+                    "ComputerDesk": {},
+                    "ConsoleAndController": {},
+                    "PottedPalmTree": {},
+                    "StairsDown": {},
+                    "Table": {},
+                    "TelevisionMonitor": {}
+                },
+                "Scenery": {
+                    "WindowBlinds": {}
+                },
+                "Terrain": {}
             }
         },
         "properties": {
@@ -26,7 +37,9 @@
             "Map": {
                 "initialized": false
             },
-            "Area": {},
+            "Area": {
+                "background": "black"
+            },
             "Location": {
                 "entry": "Normal"
             },
@@ -54,8 +67,16 @@
             "Solid": {
                 "groupType": "Solid"
             },
+            "BedSingle": [8, 16],
+            "ComputerDesk": [8, 16],
+            "ConsoleController": [8, 5],
+            "PottedPalmTree": [8, 16],
+            "Table": [16, 16],
             "Scenery": {
                 "groupType": "Scenery"
+            },
+            "Terrain": {
+                "groupType": "Terrain"
             }
         }
     };
