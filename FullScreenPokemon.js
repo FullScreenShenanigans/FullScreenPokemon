@@ -1,6 +1,9 @@
 /**
  * FullScreenPokemon.js
  * 
+ * A free HTML5 remake of Pokemon generations I & II,
+ * expanded for modern browsing.
+ * 
  * @example 
  * // Creating a 15 x 14.5 blocks sized FullScreenPokemon object.
  * var FSP = new FullScreenPokemon({

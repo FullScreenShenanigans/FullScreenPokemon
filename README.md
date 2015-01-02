@@ -1,6 +1,6 @@
 ## FullScreenMario
 
-#### A free HTML5 remake of Nintendo's original Super Mario Bros. It includes the original 32 levels, a random map generator, a level editor, and over a dozen custom mods.
+#### FullScreenPokemon - A free HTML5 remake of Pokemon generations I & II, expanded for modern browsing. It includes the original 32 maps, a random map generator, a level editor, and over a dozen custom mods.
 
 
 ## How to Play
