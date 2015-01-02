@@ -45,7 +45,6 @@
  *                 ],
  *                 "areas": [{
  *                     "creation": [
- *                         { "location": 0 },
  *                         { "thing": "SomeThing", "x": 3, "y": 4 }
  *                     ]
  *                 }]
@@ -116,7 +115,6 @@
  *                 ],
  *                 "areas": [{
  *                     "creation": [
- *                         { "location": 0 },
  *                         { "macro": "Fill", "thing": "SomeThing", "times": 7, "x": 3, "y": 4 }
  *                     ]
  *                 }]
@@ -146,39 +144,39 @@ function MapsCreatr(settings) {
         return new MapsCreatr(settings);
     }
     var self = this,
-        
+
         // ObjectMakr factory used to create Maps, Areas, Locations, and Things.
         ObjectMaker,
-        
+
         // Associative array storing Map objects created by self.createMap.
         maps,
-        
+
         // An Array of Strings that represents all the possible group types.
         // processed PreThings may be placed in
         groupTypes,
-        
+
         // Associative array storing macro functions, keyed by string alias.
         macros,
-        
+
         // What key to check for group type under a Thing.
         keyGroupType,
-        
+
         // What key to check for if a PreThing's Thing is a Location's entrance.
         keyEntrance,
-        
+
         // Associative array storing entrance functions, keyed by string alias.
         entrances,
-        
+
         // Whether an entrance is required on all Locations.
         requireEntrance,
-        
+
         // An optional scope to pass to macros as an argument after maps.
         scope,
-        
+
         // Scratch xloc and yloc to be used for location offsets with PreThings.
         xloc,
         yloc;
-    
+
     /**
      * Resets the MapsCreatr.
      * 
@@ -211,50 +209,50 @@ function MapsCreatr(settings) {
             throw new Error("No ObjectMaker provided to MapsCreatr.");
         }
         ObjectMaker = settings.ObjectMaker;
-        
+
         if (typeof ObjectMaker.getFullProperties() === "undefined") {
             throw new Error("MapsCreatr's ObjectMaker must store full properties.");
         }
-        
+
         // At least one group type name should be defined for PreThing output
         if (!settings.groupTypes) {
             throw new Error("No groupTypes provided to MapsCreatr.");
         }
         groupTypes = settings.groupTypes;
-        
+
         keyGroupType = settings.keyGroupType || "groupType";
         keyEntrance = settings.keyEntrance || "entrance";
-        
+
         macros = settings.macros || {};
         scope = settings.scope || self;
-        
+
         entrances = settings.entrances;
         requireEntrance = settings.requireEntrance;
-        
+
         maps = {};
         if (settings.maps) {
             self.storeMaps(settings.maps);
         }
     };
-    
-    
+
+
     /* Simple gets
     */
-    
+
     /**
      * @return {ObjectMakr}   The internal ObjectMakr.
      */
     self.getObjectMaker = function () {
         return ObjectMaker;
     };
-    
+
     /**
      * @return {Object}   The Object storing maps, keyed by name.
      */
     self.getMaps = function () {
         return maps;
     };
-    
+
     /**
      * Simple getter for a map under the maps container. If the map has not been
      * initialized (had its areas and locations set), that is done here as lazy
@@ -269,20 +267,20 @@ function MapsCreatr(settings) {
         if (!map) {
             throw new Error("No map found under: " + name);
         }
-        
+
         if (!map.initialized) {
             // Set the one-to-many Map->Area relationships within the Map
             setMapAreas(map);
-            
+
             // Set the one-to-many Area->Location relationships within the Map
-            setMapLocations(map);    
-            
+            setMapLocations(map);
+
             map.initialized = true;
         }
-        
+
         return map;
     };
-    
+
     /**
      * Creates and stores a set of new maps based on the key/value pairs in a 
      * given Object. These will be stored as maps by their string keys via 
@@ -299,7 +297,7 @@ function MapsCreatr(settings) {
             }
         }
     };
-    
+
     /**
      * Creates and stores a new map. The internal ObjectMaker factory is used to
      * auto-generate it based on a given settings object. The actual loading of
@@ -313,23 +311,23 @@ function MapsCreatr(settings) {
      */
     self.storeMap = function (name, settings) {
         var map = ObjectMaker.make("Map", settings);
-        
+
         if (!name) {
             throw new Error("Maps cannot be created with no name.");
         }
-        
+
         if (!map.areas) {
             throw new Error("Maps cannot be used with no areas: " + name);
         }
-        
+
         if (!map.locations) {
             throw new Error("Maps cannot be used with no locations: " + name);
         }
-        
+
         maps[name] = map;
         return map;
     }
-    
+
     /**
      * Converts the raw area settings in a Map into Area objects.
      * 
@@ -347,7 +345,7 @@ function MapsCreatr(settings) {
             areasParsed = new areasRaw.constructor(),
             locationsParsed = new locationsRaw.constructor(),
             obj, i;
-        
+
         // Parse all the Area objects (works for both Arrays and Objects)
         for (i in areasRaw) {
             if (areasRaw.hasOwnProperty(i)) {
@@ -362,28 +360,28 @@ function MapsCreatr(settings) {
                 "left": 0
             };
         }
-        
+
         // Parse all the Location objects (works for both Arrays and Objects)
         for (i in locationsRaw) {
             if (locationsRaw.hasOwnProperty(i)) {
                 obj = locationsParsed[i] = ObjectMaker.make("Location", locationsRaw[i]);
-                
+
                 obj.entryRaw = obj.entry;
                 obj.name = i;
                 obj.area = locationsRaw[i].area || 0;
-                
+
                 if (requireEntrance) {
                     if (!entrances.hasOwnProperty(obj.entry)) {
                         throw new Error("Location " + i + " has unknown entry string: " + obj.entry);
                     }
                 }
-                
+
                 if (entrances && obj.entry) {
                     obj.entry = entrances[obj.entry];
                 }
             }
         }
-        
+
         // Store the output object in the Map, and keep the raw settings for the
         // sake of debugging / user interest
         map.areas = areasParsed;
@@ -391,7 +389,7 @@ function MapsCreatr(settings) {
         map.locations = locationsParsed;
         map.locationsRaw = locationsRaw;
     }
-    
+
     /**
      * Converts the raw location settings in a Map into Location objects.
      * 
@@ -405,12 +403,12 @@ function MapsCreatr(settings) {
             // The parsed container should be the same type as the original
             locsParsed = new locsRaw.constructor(),
             location, i;
-            
+
         // Parse all the keys in locasRaw (works for both Arrays and Objects)
         for (i in locsRaw) {
             if (locsRaw.hasOwnProperty(i)) {
                 locsParsed[i] = ObjectMaker.make("Location", locsRaw[i]);
-                
+
                 // The area should be an object reference, under the Map's areas
                 locsParsed[i].area = map.areas[locsParsed[i].area || 0];
                 if (!locsParsed[i].area) {
@@ -422,17 +420,17 @@ function MapsCreatr(settings) {
                 }
             }
         }
-        
+
         // Store the output object in the Map, and keep the old settings for the
         // sake of debugging / user interest
         map.locations = locsParsed;
         map.locationsRaw = locsRaw;
     }
-    
-    
+
+
     /* Area setup (PreThing analysis)
     */
-    
+
     /**
      * Given a Area, this processes and returns the PreThings that are to 
      * inhabit the Area per its creation instructions.
@@ -459,19 +457,19 @@ function MapsCreatr(settings) {
             creation = area.creation,
             prethings = fromKeys(groupTypes),
             i, len;
-        
+
         xloc = 0;
         yloc = 0;
-        
+
         area.collections = {};
-        
+
         for (i = 0, len = creation.length; i < len; i += 1) {
             self.analyzePreSwitch(creation[i], prethings, area, map);
         }
-        
+
         return processPreThingsArrays(prethings);
     };
-    
+
     /**
      * PreThing switcher: Given a JSON representation of a PreThing, this 
      * determines what to do with it. It may be a location setter (to switch the
@@ -487,43 +485,16 @@ function MapsCreatr(settings) {
      * @param {Map} map   The Map object containing the Area object.
      */
     self.analyzePreSwitch = function (reference, prethings, area, map) {
-        // Case: location setter
-        if (reference.hasOwnProperty("location")) {
-            analyzePreLocation(reference, prethings, area, map);
-        }
         // Case: macro (unless it's undefined)
-        else if (reference.macro) {
+        if (reference.macro) {
             self.analyzePreMacro(reference, prethings, area, map);
         }
-        // Case: default (a regular PreThing)
+            // Case: default (a regular PreThing)
         else {
             self.analyzePreThing(reference, prethings, area, map);
         }
     }
-    
-    /**
-     * PreThing case: Location instruction. This modifies the currently used
-     * xloc and yloc variables to match that location's.
-     * 
-     * @param {Object} reference   A JSON mapping of some number of PreThings. 
-     * @param {Object} PreThings   An associative array of PreThing Arrays, 
-     *                             keyed by the allowed group types.
-     * @param {Area} area   The Area object to be populated by these PreThings.
-     * @param {Map} map   The Map object containing the Area object.
-     */
-    function analyzePreLocation(reference, prethings, area, map) {
-        var location = reference.location;
-        
-        if (!map.locations.hasOwnProperty(location)) {
-            console.warn("A non-existent location is referenced. It will be "
-                    + "ignored: " + location, reference, prethings, area, map);
-            return;
-        }
-        
-        xloc = map.locations[location].x;
-        yloc = map.locations[location].y;
-    }
-    
+
     /**
      * PreThing case: Macro instruction. This calls the macro on the same input,
      * captures the output, and recursively repeats the analyzePreSwitch driver
@@ -538,7 +509,7 @@ function MapsCreatr(settings) {
     self.analyzePreMacro = function (reference, prethings, area, map) {
         var macro = macros[reference.macro],
             outputs, len, i;
-        
+
         if (!macro) {
             console.warn(
                 "A non-existent macro is referenced. It will be ignored:",
@@ -546,11 +517,11 @@ function MapsCreatr(settings) {
             );
             return;
         }
-        
+
         // Avoid modifying the original macro by creating a new object in its
         // place, while submissively proliferating any default macro settings
         outputs = macro(reference, prethings, area, map, scope);
-        
+
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {
             if (outputs instanceof Array) {
@@ -561,10 +532,10 @@ function MapsCreatr(settings) {
                 self.analyzePreSwitch(outputs, prethings, area, map);
             }
         }
-        
+
         return outputs;
     }
-    
+
     /**
      * Macro case: PreThing instruction. This creates a PreThing from the
      * given reference and adds it to its respective group in PreThings (based
@@ -579,35 +550,35 @@ function MapsCreatr(settings) {
     self.analyzePreThing = function (reference, prethings, area, map, scope) {
         var thing = reference.thing,
             prething;
-        
+
         if (!ObjectMaker.hasFunction(thing)) {
             console.warn("A non-existent Thing type is referenced. It will be "
                     + "ignored: " + thing, reference, prethings, area, map);
-            return; 
+            return;
         }
-        
+
         prething = new PreThing(ObjectMaker.make(thing, reference), reference);
         thing = prething.thing;
-        
+
         if (!prething.thing[keyGroupType]) {
             console.warn("A Thing does not contain a " + keyGroupType + ". "
                     + "It will be ignored: ",
                     prething, "\n", arguments);
             return;
         }
-        
+
         if (groupTypes.indexOf(prething.thing[keyGroupType]) === -1) {
             console.warn("A Thing contains an unknown " + keyGroupType
                     + ". It will be ignored: " + thing[keyGroupType],
                     prething, reference, prethings, area, map);
             return;
         }
-        
+
         prethings[prething.thing[keyGroupType]].push(prething);
         if (!thing.noBoundaryStretch && area.boundaries) {
             stretchAreaBoundaries(prething, area);
         }
-        
+
         // If a Thing is an entrance, then the location it is an entrance to 
         // must know it and its position. Note that this will have to be changed
         // for Pokemon/Zelda style games.
@@ -617,19 +588,19 @@ function MapsCreatr(settings) {
             }
             map.locations[thing[keyEntrance]].entrance = prething.thing;
         }
-        
+
         if (reference.collectionName && area.collections) {
             ensureThingCollection(
                 prething,
-                reference.collectionName, 
-                reference.collectionKey, 
+                reference.collectionName,
+                reference.collectionKey,
                 area
             );
         }
-        
+
         return prething;
     }
-    
+
     /**
      * "Stretches" an Area's boundaries based on a PreThing. For each direction,
      * if the PreThing has a more extreme version of it (higher top, etc.), the
@@ -640,13 +611,13 @@ function MapsCreatr(settings) {
      */
     function stretchAreaBoundaries(prething, area) {
         var boundaries = area.boundaries;
-        
+
         boundaries.top = Math.min(prething.top, boundaries.top);
         boundaries.right = Math.max(prething.right, boundaries.right);
         boundaries.bottom = Math.max(prething.bottom, boundaries.bottom);
         boundaries.left = Math.min(prething.left, boundaries.left);
     }
-    
+
     /**
      * Basic storage container for a single Thing to be stored in an Area's
      * PreThings member. A PreThing stores an actual Thing along with basic
@@ -674,10 +645,10 @@ function MapsCreatr(settings) {
         this.title = thing.title;
         this.reference = reference;
         this.spawned = false;
-        
+
         this.left = (reference.x || reference.left) || 0;
         this.top = (reference.y || reference.top) || 0;
-        
+
         this.right = this.left + (
             reference.width
             || ObjectMaker.getFullPropertiesOf(this.title).width
@@ -686,12 +657,12 @@ function MapsCreatr(settings) {
             reference.height
             || ObjectMaker.getFullPropertiesOf(this.title).height
         );
-        
+
         if (reference.position) {
             this.position = reference.position;
         }
     }
-    
+
     /**
      * Adds a Thing to the specified collection in the Map's Area.
      * 
@@ -701,15 +672,15 @@ function MapsCreatr(settings) {
     function ensureThingCollection(prething, collectionName, collectionKey, area) {
         var thing = prething.thing,
             collection = area.collections[collectionName];
-        
+
         if (!collection) {
             collection = area.collections[collectionName] = {};
         }
-        
+
         thing.collection = collection;
         collection[collectionKey] = thing;
-    }   
-    
+    }
+
     /**
      * Creates an Object wrapper around a PreThings Object with versions of
      * each child PreThing[]sorted by xloc and yloc, in increasing and 
@@ -722,7 +693,7 @@ function MapsCreatr(settings) {
     function processPreThingsArrays(prethings) {
         var output = {},
             children, i;
-        
+
         for (i in prethings) {
             if (prethings.hasOwnProperty(i)) {
                 children = prethings[i];
@@ -732,7 +703,7 @@ function MapsCreatr(settings) {
                     "yInc": getArraySorted(children, sortPreThingsYInc),
                     "yDec": getArraySorted(children, sortPreThingsYDec)
                 };
-                
+
                 // Adding in a "push" lambda allows MapsCreatr to interact with
                 // this using the same .push syntax as Arrays.
                 output[i].push = (function (prethings, prething) {
@@ -743,14 +714,14 @@ function MapsCreatr(settings) {
                 }).bind(undefined, output[i]);
             }
         }
-        
+
         return output;
     }
-    
-    
+
+
     /* Utilities
     */
-    
+
     /**
      * Creates an Object pre-populated with one key for each of the Strings in
      * the input Array, each pointing to a new Array. 
@@ -768,7 +739,7 @@ function MapsCreatr(settings) {
         }
         return output;
     }
-    
+
     /**
      * Returns a shallow copy of an Array, in sorted order based on a given
      * sorter Function.
@@ -782,7 +753,7 @@ function MapsCreatr(settings) {
         array.sort(sorter);
         return array;
     }
-    
+
     /**
      * Adds an element into an Array using a sorter Function. 
      * 
@@ -793,29 +764,29 @@ function MapsCreatr(settings) {
      *                            given (a,b) would return a - b).     
      */
     function addArraySorted(array, element, sorter) {
-        var lower = 0, 
+        var lower = 0,
             upper = array.length,
             index;
-        
+
         while (lower !== upper) {
             index = ((lower + upper) / 2) | 0;
-            
+
             // Case: element is less than the index
             if (sorter(element, array[index]) < 0) {
                 upper = index;
-            } 
-            // Case: element is higher than the index
+            }
+                // Case: element is higher than the index
             else {
                 lower = index + 1;
             }
         }
-        
+
         if (lower === upper) {
             array.splice(lower, 0, element);
             return;
         }
     }
-    
+
     /**
      * Sorter for PreThings that results in increasing horizontal order.
      * 
@@ -825,7 +796,7 @@ function MapsCreatr(settings) {
     function sortPreThingsXInc(a, b) {
         return a.left === b.left ? a.top - b.top : a.left - b.left;
     }
-    
+
     /**
      * Sorter for PreThings that results in decreasing horizontal order.
      * 
@@ -835,7 +806,7 @@ function MapsCreatr(settings) {
     function sortPreThingsXDec(a, b) {
         return b.right === a.right ? b.bottom - a.bottom : b.right - a.right;
     }
-    
+
     /**
      * Sorter for PreThings that results in increasing vertical order.
      * 
@@ -845,7 +816,7 @@ function MapsCreatr(settings) {
     function sortPreThingsYInc(a, b) {
         return a.top === b.top ? a.left - b.left : a.top - b.top;
     }
-    
+
     /**
      * Sorter for PreThings that results in decreasing vertical order.
      * 
@@ -855,6 +826,7 @@ function MapsCreatr(settings) {
     function sortPreThingsYDec(a, b) {
         return b.bottom === a.bottom ? b.right - a.right : b.bottom - a.bottom;
     }
-    
+
+
     self.reset(settings || {});
 }

@@ -31,7 +31,6 @@ FullScreenPokemon.prototype.settings.maps = {
                 {
                     "setting": "Land",
                     "creation": [
-                        { "location": "StartGame" },
                         { "thing": "ComputerDesk" },
                         { "thing": "Table", "x": 8 },
                         { "thing": "StairsDown", "x": 56, "y": 16 },
