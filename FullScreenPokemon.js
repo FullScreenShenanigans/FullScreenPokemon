@@ -97,7 +97,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 }
             },
             "constants": [
-                "unitsize"
+                "unitsize",
+                "scale"
             ]
         });
         
@@ -238,6 +239,101 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function canInputsTrigger(EightBitter) {
         return true;
+    }
+
+    
+    /* Upkeep maintenance
+    */
+
+    /**
+     * 
+     */
+    function maintainCharacters(EightBitter, characters) {
+        var character, i;
+
+        for (i = 0; i < characters.length; i += 1) {
+            character = characters[i];
+
+            if (character.isMoving) {
+                EightBitter.shiftBoth(character, character.xvel, character.yvel);
+            } else if (character.shouldMove) {
+                character.startMovement(character);
+            }
+        }
+    }
+
+
+    /* Character movement
+    */
+
+    /**
+     * 
+     */
+    function characterStartWalking(thing, direction) {
+        var dx = 0,
+            dy = 0,
+            repeats = 8 * thing.EightBitter.unitsize / thing.speed;
+
+        if (typeof direction !== "undefined") {
+            thing.EightBitter.characterSetDirection(thing, direction);
+        }
+
+        switch (direction) {
+            case 0:
+                dy = -thing.speed;
+                break;
+            case 1:
+                dx = thing.speed;
+                break;
+            case 2:
+                dy = thing.speed;
+                break;
+            case 3:
+                dx = -thing.speed;
+                break;
+        }
+
+        thing.EightBitter.TimeHandler.addEventInterval(
+            thing.EightBitter.shiftBoth, 1, repeats, thing, dx, dy
+        );
+
+        thing.EightBitter.addClass(thing, "walking");
+        thing.EightBitter.TimeHandler.addClassCycle(
+            thing,
+            ["standing", "walking", "standing", "standing", "walking", "walking", false],
+            "walking",
+            Math.floor(repeats / 6)
+        );
+    }
+
+    /**
+     * 
+     */
+    function characterSetDirection(thing, direction) {
+        thing.direction = direction;
+
+        if (direction !== 1) {
+            thing.EightBitter.unflipHoriz(thing);
+        } else {
+            thing.EightBitter.flipHoriz(thing);
+        }
+
+        thing.EightBitter.removeClasses(thing, "up left down");
+
+        switch (direction) {
+            case 0:
+                thing.EightBitter.addClass(thing, "up");
+                break;
+            case 1:
+                thing.EightBitter.addClass(thing, "left");
+                break;
+            case 2:
+                thing.EightBitter.addClass(thing, "down");
+                break;
+            case 3:
+                thing.EightBitter.addClass(thing, "left");
+                break;
+        }
     }
 
 
@@ -404,6 +500,11 @@ var FullScreenPokemon = (function (GameStartr) {
         "addPlayer": addPlayer,
         // Inputs
         "canInputsTrigger": canInputsTrigger,
+        // Upkeep maintenance
+        "maintainCharacters": maintainCharacters,
+        // Character movement
+        "characterStartWalking": characterStartWalking,
+        "characterSetDirection": characterSetDirection,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,

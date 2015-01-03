@@ -6,6 +6,12 @@ FullScreenPokemon.prototype.settings.runner = {
     "games": [
         function () {
             this.PixelDrawer.refillGlobalCanvas(this.MapsHandler.getArea().background);
+        },
+        function () {
+            this.maintainCharacters(this, this.GroupHolder.getCharacterGroup());
+        },
+        function () {
+            this.TimeHandler.handleEvents();
         }
     ]
 }

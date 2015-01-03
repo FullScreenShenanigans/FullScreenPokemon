@@ -68,11 +68,16 @@
                 "sprite": "",
                 "spriteType": "neither",
                 "opacity": 1,
+                // Movements
+                "direction": 2, // top,right,bottom,left is 0,1,2,3
+                "isMoving": false,
+                "movement": undefined,
                 // Triggered Functions
                 "onMake": FullScreenPokemon.prototype.thingProcess,
             },
             "Character": {
-                "groupType": "Character"
+                "groupType": "Character",
+                "speed": FullScreenPokemon.unitsize / 4
             },
             "Player": {
                 "player": true
