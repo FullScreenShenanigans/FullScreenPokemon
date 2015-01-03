@@ -12,8 +12,8 @@ FullScreenPokemon.prototype.settings.collisions = {
     },
     "hitFunctionGenerators": {
         "Character": {
-            "Solid": FullScreenPokemon.prototype.generateHitCharacterSolid,
-            "Character": FullScreenPokemon.prototype.generateHitCharacterCharacter
+            "Solid": FullScreenPokemon.prototype.generateHitCharacterThing,
+            "Character": FullScreenPokemon.prototype.generateHitCharacterThing
         }
     }
 };

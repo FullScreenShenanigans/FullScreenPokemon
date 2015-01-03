@@ -195,6 +195,8 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.title,
             thing.groupType
         );
+
+        thing.bordering = new Array(4);
     }
 
     /**
@@ -468,6 +470,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         for (i = 0; i < characters.length; i += 1) {
             character = characters[i];
+            character.EightBitter.shiftCharacter(character);
 
             if (character.isMoving) {
                 EightBitter.shiftBoth(character, character.xvel, character.yvel);
@@ -480,10 +483,6 @@ var FullScreenPokemon = (function (GameStartr) {
 
             EightBitter.QuadsKeeper.determineThingQuadrants(character);
             EightBitter.ThingHitter.checkHitsOf[character.title](character);
-
-            character.EightBitter.shiftBoth(
-                character, character.xvel, character.yvel
-            );
         }
     }
 
@@ -549,7 +548,6 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         thing.isWalking = true;
-
     }
 
     /**
@@ -598,7 +596,9 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.xvel = 0;
         thing.yvel = 0;
 
+        thing.EightBitter.removeClass(thing, "walking");
         thing.EightBitter.TimeHandler.cancelClassCycle(thing, "walking");
+
         if (thing.walkingFlipping) {
             thing.EightBitter.TimeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
@@ -678,10 +678,10 @@ var FullScreenPokemon = (function (GameStartr) {
             //}
             return (
                 !thing.nocollide && !other.nocollide
-                && thing.right > other.left
-                && thing.left < other.right
-                && thing.bottom > other.top
-                && thing.top < other.bottom
+                && thing.right >= other.left
+                && thing.left <= other.right
+                && thing.bottom >= other.top
+                && thing.top <= other.bottom
             );
         }
     }
@@ -693,10 +693,10 @@ var FullScreenPokemon = (function (GameStartr) {
         return function isCharacterTouchingSolid(thing, other) {
             return (
                 !thing.nocollide && !other.nocollide
-                && thing.right > other.left
-                && thing.left < other.right
-                && thing.bottom > other.top
-                && thing.top < other.bottom
+                && thing.right >= other.left
+                && thing.left <= other.right
+                && thing.bottom >= other.top
+                && thing.top <= other.bottom
             );
         }
     }
@@ -704,54 +704,45 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function generateHitCharacterSolid() {
+    function generateHitCharacterThing() {
         return function hitCharacterSolid(thing, other) {
-            // The Solid's collide may return true to cancel overlapping checks
-            if (other.collide && other.collide(thing, other)) {
-                return;
-            }
-
-            switch (thing.EightBitter.getDirectionBordering(thing, other)) {
-                case 0:
-                    thing.EightBitter.setTop(thing, other.bottom);
-                    break;
-                case 1:
-                    thing.EightBitter.setRight(thing, other.left);
-                    break;
-                case 2:
-                    thing.EightBitter.setBottom(thing, other.top);
-                    break;
-                case 3:
-                    thing.EightBitter.setLeft(thing, other.right);
-                    break;
-            }
-        }
-    }
-    
-    /**
-     * 
-     */
-    function generateHitCharacterCharacter() {
-        return function hitCharacterCharacter(thing, other) {
-            // The player should always be thing, if either
+            // If either Thing is the player, it should be the first
             if (other.player && !thing.player) {
                 var temp = other;
                 other = thing;
                 thing = temp;
             }
 
+            // The other's collide may return true to cancel overlapping checks
+            if (other.collide && other.collide(thing, other)) {
+                return;
+            }
+
             switch (thing.EightBitter.getDirectionBordering(thing, other)) {
                 case 0:
-                    thing.EightBitter.setTop(thing, other.bottom);
+                    thing.bordering[0] = other;
+                    if (thing.left !== other.right && other.left !== thing.right) {
+                        thing.EightBitter.setTop(thing, other.bottom);
+                    }
                     break;
                 case 1:
-                    thing.EightBitter.setRight(thing, other.left);
+                    thing.bordering[1] = other;
+
+                    if (thing.top !== other.bottom && thing.bottom !== other.top) {
+                        thing.EightBitter.setRight(thing, other.left);
+                    }
                     break;
                 case 2:
-                    thing.EightBitter.setBottom(thing, other.top);
+                    thing.bordering[2] = other;
+                    if (thing.left !== other.right && other.left !== thing.right) {
+                        thing.EightBitter.setBottom(thing, other.top);
+                    }
                     break;
                 case 3:
-                    thing.EightBitter.setLeft(thing, other.right);
+                    thing.bordering[3] = other;
+                    if (thing.top !== other.bottom && thing.bottom !== other.top) {
+                        thing.EightBitter.setLeft(thing, other.right);
+                    }
                     break;
             }
         }
@@ -864,6 +855,21 @@ var FullScreenPokemon = (function (GameStartr) {
         ) {
             return true;
         }
+    }
+
+    /**
+     * 
+     */
+    function shiftCharacter(thing) {
+        if (thing.xvel !== 0) {
+            thing.bordering[1] = thing.bordering[3] = undefined;
+        } else if (thing.yvel !== 0) {
+            thing.bordering[0] = thing.bordering[2] = undefined;
+        } else {
+            return;
+        }
+
+        thing.EightBitter.shiftBoth(thing, thing.xvel, thing.yvel);
     }
 
 
@@ -1098,8 +1104,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "generateCanThingCollide": generateCanThingCollide,
         "generateIsCharacterTouchingCharacter": generateIsCharacterTouchingCharacter,
         "generateIsCharacterTouchingSolid": generateIsCharacterTouchingSolid,
-        "generateHitCharacterSolid": generateHitCharacterSolid,
-        "generateHitCharacterCharacter": generateHitCharacterCharacter,
+        "generateHitCharacterThing": generateHitCharacterThing,
         "collideTransporter": collideTransporter,
         // Activations
         "activateTransporter": activateTransporter,
@@ -1107,6 +1112,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Physics
         "getDirectionBordering": getDirectionBordering,
         "isThingOverlappingOther": isThingOverlappingOther,
+        "shiftCharacter": shiftCharacter,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
