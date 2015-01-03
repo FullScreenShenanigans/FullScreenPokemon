@@ -481,7 +481,7 @@ var EightBittr = (function () {
             thing.EightBitter.shiftHoriz(thing, Math.max(-maxSpeed, (x - midx)));
         }
     }
-    
+
     /**
      * Shifts a Thing toward a target y, but limits the total distance allowed.
      * Distance is computed as from the Thing's vertical midpoint.

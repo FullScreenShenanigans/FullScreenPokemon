@@ -162,6 +162,24 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
     /**
+     * Slight addition to the GameStartr thingProcess Function. The Thing's hit
+     * check type is cached immediately.
+     * 
+     * @see GameStartr::thingProcess
+     */
+    function thingProcess(thing, type, settings, defaults) {
+        GameStartr.prototype.thingProcess(thing, type, settings, defaults);
+
+        // ThingHittr becomes very non-performant if functions aren't generated
+        // for each Thing constructor (optimization does not respect prototypal 
+        // inheritance, sadly).
+        thing.EightBitter.ThingHitter.cacheHitCheckType(
+            thing.title,
+            thing.groupType
+        );
+    }
+
+    /**
      * 
      */
     function onGamePlay(EightBitter) {
@@ -442,6 +460,9 @@ var FullScreenPokemon = (function (GameStartr) {
                 character.shouldWalk = false;
             }
 
+            EightBitter.QuadsKeeper.determineThingQuadrants(character);
+            EightBitter.ThingHitter.checkHitsOf[character.title](character);
+
             character.EightBitter.shiftBoth(
                 character, character.xvel, character.yvel
             );
@@ -455,30 +476,43 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateCharacterStartWalking(thing, direction) {
-        var repeats = (8 * thing.EightBitter.unitsize / thing.speed) | 0;
+    function animateCharacterSetDistanceVelocity(thing, distance) {
+        thing.distance = distance;
 
-        direction = direction || 0;
-        thing.EightBitter.animateCharacterSetDirection(thing, direction);
-        
-        switch (direction) {
+        switch (thing.direction) {
             case 0:
                 thing.xvel = 0;
                 thing.yvel = -thing.speed;
+                thing.destination = thing.top - distance;
                 break;
             case 1:
                 thing.xvel = thing.speed;
                 thing.yvel = 0;
+                thing.destination = thing.right + distance;
                 break;
             case 2:
                 thing.xvel = 0;
                 thing.yvel = thing.speed;
+                thing.destination = thing.bottom + distance;
                 break;
             case 3:
                 thing.xvel = -thing.speed;
                 thing.yvel = 0;
+                thing.destination = thing.left - distance;
                 break;
         }
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterStartWalking(thing, direction) {
+        var repeats = (8 * thing.EightBitter.unitsize / thing.speed) | 0,
+            distance = repeats * thing.speed;
+
+        direction = direction || 0;
+        thing.EightBitter.animateCharacterSetDirection(thing, direction);
+        thing.EightBitter.animateCharacterSetDistanceVelocity(thing, distance);
 
         if (!thing.cycles || !thing.cycles.walking) {
             thing.EightBitter.TimeHandler.addClassCycle(
@@ -497,6 +531,7 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         thing.isWalking = true;
+
     }
 
     /**
@@ -559,6 +594,9 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function animatePlayerStopWalking(thing) {
         if (thing.keys[thing.direction]) {
+            thing.EightBitter.animateCharacterSetDistanceVelocity(
+                thing, thing.distance
+            );
             return false;
         }
 
@@ -596,6 +634,110 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.EightBitter.unflipHoriz(thing);
         } else {
             thing.EightBitter.flipHoriz(thing);
+        }
+    }
+
+
+    /* Collision detection
+    */
+    
+    /**
+     * 
+     */
+    function generateCanThingCollide() {
+        return function (thing) {
+            return thing.alive;
+        }
+    }
+    
+    /**
+     * 
+     */
+    function generateIsCharacterTouchingCharacter() {
+        return function isCharacterTouchingCharacter(thing, other) {
+            //if (other.xvel || other.yvel) {
+            //    // check destination...
+            //}
+            return (
+                !thing.nocollide && !other.nocollide
+                && thing.right > other.left
+                && thing.left < other.right
+                && thing.bottom > other.top
+                && thing.top < other.bottom
+            );
+        }
+    }
+    
+    /**
+     * 
+     */
+    function generateIsCharacterTouchingSolid() {
+        return function isCharacterTouchingSolid(thing, other) {
+            return (
+                !thing.nocollide && !other.nocollide
+                && thing.right > other.left
+                && thing.left < other.right
+                && thing.bottom > other.top
+                && thing.top < other.bottom
+            );
+        }
+    }
+    
+    /**
+     * 
+     */
+    function generateHitCharacterSolid() {
+        return function hitCharacterSolid(thing, other) {
+            switch (thing.EightBitter.getDirectionBordering(thing, other)) {
+                case 0:
+                    thing.EightBitter.setTop(thing, other.bottom);
+                    break;
+                case 1:
+                    thing.EightBitter.setRight(thing, other.left);
+                    break;
+                case 2:
+                    thing.EightBitter.setBottom(thing, other.top);
+                    break;
+                case 3:
+                    thing.EightBitter.setLeft(thing, other.right);
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * 
+     */
+    function generateHitCharacterCharacter() {
+        return function hitCharacterCharacter(thing, other) {
+            console.log("HA!", thing, other);
+        }
+    }
+
+
+    /* Physics
+    */
+
+    /**
+     * 
+     * 
+     * I would like this to be more elegant. 
+     */
+    function getDirectionBordering(thing, other) {
+        if (Math.abs(thing.top - other.bottom) < thing.EightBitter.unitsize) {
+            return 0;
+        }
+
+        if (Math.abs(thing.right - other.left) < thing.EightBitter.unitsize) {
+            return 1;
+        }
+
+        if (Math.abs(thing.bottom - other.top) < thing.EightBitter.unitsize) {
+            return 2;
+        }
+
+        if (Math.abs(thing.left - other.right) < thing.EightBitter.unitsize) {
+            return 3;
         }
     }
 
@@ -757,6 +899,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "resetContainer": resetContainer,
         // Global manipulations
         "gameStart": gameStart,
+        "thingProcess": thingProcess,
         "onGamePlay": onGamePlay,
         "onGamePause": onGamePause,
         "addPreThing": addPreThing,
@@ -778,6 +921,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Upkeep maintenance
         "maintainCharacters": maintainCharacters,
         // Character movement
+        "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
         "animateCharacterStartWalking": animateCharacterStartWalking,
         "animatePlayerStartWalking": animatePlayerStartWalking,
         "animateCharacterSetDirection": animateCharacterSetDirection,
@@ -786,6 +930,14 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateFlipOnDirection": animateFlipOnDirection,
         "animateUnflipOnDirection": animateUnflipOnDirection,
         "animateSwitchFlipOnDirection": animateSwitchFlipOnDirection,
+        // Collisions
+        "generateCanThingCollide": generateCanThingCollide,
+        "generateIsCharacterTouchingCharacter": generateIsCharacterTouchingCharacter,
+        "generateIsCharacterTouchingSolid": generateIsCharacterTouchingSolid,
+        "generateHitCharacterSolid": generateHitCharacterSolid,
+        "generateHitCharacterCharacter": generateHitCharacterCharacter,
+        // Physics
+        "getDirectionBordering": getDirectionBordering,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
