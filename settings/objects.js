@@ -70,17 +70,27 @@
                 "opacity": 1,
                 // Movements
                 "direction": 2, // top,right,bottom,left is 0,1,2,3
-                "isMoving": false,
+                "direction": 2,
                 "movement": undefined,
                 // Triggered Functions
                 "onMake": FullScreenPokemon.prototype.thingProcess,
             },
             "Character": {
                 "groupType": "Character",
-                "speed": FullScreenPokemon.unitsize / 4
+                "speed": FullScreenPokemon.unitsize / 2,
+                "isWalking": false,
+                "shouldWalk": false,
+                "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
+                "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking
             },
             "Player": {
-                "player": true
+                "player": true,
+                "canKeyWalking": true,
+                "onWalkingStart": FullScreenPokemon.prototype.animatePlayerStartWalking,
+                "onWalkingStop": FullScreenPokemon.prototype.animatePlayerStopWalking,
+                "getKeys": function () {
+                    return [false, false, false, false];
+                }
             },
             "Solid": {
                 "groupType": "Solid",

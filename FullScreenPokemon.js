@@ -220,6 +220,7 @@ var FullScreenPokemon = (function (GameStartr) {
         top = top || 0;
 
         player = EightBitter.player = EightBitter.ObjectMaker.make("Player");
+        player.keys = player.getKeys();
 
         EightBitter.InputWriter.setEventInformation(player);
 
@@ -242,8 +243,6 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
     /**
-     * Reacts to the left key being pressed. keys.run and leftDown are marked 
-     * and the mod event is fired.
      * 
      * @param {Player} player
      */
@@ -252,12 +251,16 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
+        if (player.canKeyWalking) {
+            player.direction = 3;
+            player.shouldWalk = true;
+            player.keys[3] = true;
+        }
+
         player.EightBitter.ModAttacher.fireEvent("onKeyDownLeft");
     }
 
     /**
-     * Reacts to the right key being pressed. keys.run and keys.rightDown are
-     * marked and the mod event is fired.
      * 
      * @param {Player} player
      */
@@ -266,12 +269,16 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
+        if (player.canKeyWalking) {
+            player.direction = 1;
+            player.shouldWalk = true;
+            player.keys[1] = true;
+        }
+
         event.preventDefault();
     }
 
     /**
-     * Reacts to the up key being pressed. If the player can jump, it does, and
-     * underwater paddling is checked. The mod event is fired.
      * 
      * @param {Player} player
      */
@@ -280,14 +287,18 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
+        if (player.canKeyWalking) {
+            player.direction = 0;
+            player.shouldWalk = true;
+            player.keys[0] = true;
+        }
+
         player.EightBitter.ModAttacher.fireEvent("onKeyDownUp");
 
         event.preventDefault();
     }
 
     /**
-     * Reacts to the down key being pressed. keys.crouch is marked and the mod
-     * event is fired.
      * 
      * @param {Player} player
      */
@@ -296,14 +307,18 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
+        if (player.canKeyWalking) {
+            player.direction = 2;
+            player.shouldWalk = true;
+            player.keys[2] = true;
+        }
+
         player.EightBitter.ModAttacher.fireEvent("onKeyDownDown");
 
         event.preventDefault();
     }
 
     /**
-     * Reacts to the pause key being pressed. Pausing happens almost immediately
-     * (the delay helps prevent accidental pauses) and the mod event fires.
      * 
      * @param {Player} player
      */
@@ -319,8 +334,6 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
     /**
-     * Reacts to the mute key being lifted. Muting is toggled and the mod event
-     * is fired.
      * 
      * @param {Player} player
      */
@@ -336,52 +349,54 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
     /**
-     * Reacts to the left key being lifted. The mod event is fired.
      * 
      * @param {Player} player
      */
     function keyUpLeft(player, event) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpLeft");
 
+        player.keys[3] = false;
+
         event.preventDefault();
     }
 
     /**
-     * Reacts to the right key being lifted. The mod event is fired.
      * 
      * @param {Player} player
      */
     function keyUpRight(player, event) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpRight");
 
+        player.keys[1] = false;
+
         event.preventDefault();
     }
 
     /**
-     * Reacts to the up key being lifted. The mod event is fired.
      * 
      * @param {Player} player
      */
     function keyUpUp(player, event) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpUp");
 
+        player.keys[0] = false;
+
         event.preventDefault();
     }
 
     /**
-     * Reacts to the down key being lifted. The mod event is fired.
      * 
      * @param {Player} player
      */
     function keyUpDown(player, event) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpDown");
 
+        player.keys[2] = false;
+
         event.preventDefault();
     }
 
     /**
-     * Reacts to the pause key being lifted. The game is unpaused if necessary
-     * and the mod event is fired.
      * 
      * @param {Player} player
      */
@@ -395,8 +410,6 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
     /**
-     * Reacts to a right click being pressed. Pausing is toggled and the mod
-     * event is fired.
      * 
      * @param {Player} player
      */
@@ -422,9 +435,16 @@ var FullScreenPokemon = (function (GameStartr) {
 
             if (character.isMoving) {
                 EightBitter.shiftBoth(character, character.xvel, character.yvel);
-            } else if (character.shouldMove) {
-                character.startMovement(character);
+            } else if (character.shouldWalk) {
+                EightBitter.TimeHandler.addEvent(
+                    character.onWalkingStart, 3, character, character.direction
+                );
+                character.shouldWalk = false;
             }
+
+            character.EightBitter.shiftBoth(
+                character, character.xvel, character.yvel
+            );
         }
     }
 
@@ -435,47 +455,62 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function characterStartWalking(thing, direction) {
-        var dx = 0,
-            dy = 0,
-            repeats = 8 * thing.EightBitter.unitsize / thing.speed;
+    function animateCharacterStartWalking(thing, direction) {
+        var repeats = (8 * thing.EightBitter.unitsize / thing.speed) | 0;
 
-        if (typeof direction !== "undefined") {
-            thing.EightBitter.characterSetDirection(thing, direction);
-        }
-
+        direction = direction || 0;
+        thing.EightBitter.animateCharacterSetDirection(thing, direction);
+        
         switch (direction) {
             case 0:
-                dy = -thing.speed;
+                thing.xvel = 0;
+                thing.yvel = -thing.speed;
                 break;
             case 1:
-                dx = thing.speed;
+                thing.xvel = thing.speed;
+                thing.yvel = 0;
                 break;
             case 2:
-                dy = thing.speed;
+                thing.xvel = 0;
+                thing.yvel = thing.speed;
                 break;
             case 3:
-                dx = -thing.speed;
+                thing.xvel = -thing.speed;
+                thing.yvel = 0;
                 break;
+        }
+
+        if (!thing.cycles || !thing.cycles.walking) {
+            thing.EightBitter.TimeHandler.addClassCycle(
+                thing, ["walking", "standing"], "walking", 10
+            );
+        }
+        
+        if (!thing.walkingFlipping) {
+            thing.walkingFlipping = thing.EightBitter.TimeHandler.addEventInterval(
+                thing.EightBitter.animateSwitchFlipOnDirection, 20, Infinity, thing
+            );
         }
 
         thing.EightBitter.TimeHandler.addEventInterval(
-            thing.EightBitter.shiftBoth, 1, repeats, thing, dx, dy
+            thing.onWalkingStop, repeats, Infinity, thing
         );
 
-        thing.EightBitter.addClass(thing, "walking");
-        thing.EightBitter.TimeHandler.addClassCycle(
-            thing,
-            ["standing", "walking", "standing", "standing", "walking", "walking", false], // characterStopWalking
-            "walking",
-            Math.floor(repeats / 6)
-        );
+        thing.isWalking = true;
     }
 
     /**
      * 
      */
-    function characterSetDirection(thing, direction) {
+    function animatePlayerStartWalking(thing) {
+        thing.canKeyWalking = false;
+        thing.EightBitter.animateCharacterStartWalking(thing, thing.direction);
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterSetDirection(thing, direction) {
         thing.direction = direction;
 
         if (direction !== 1) {
@@ -499,6 +534,68 @@ var FullScreenPokemon = (function (GameStartr) {
             case 3:
                 thing.EightBitter.addClass(thing, "left");
                 break;
+        }
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterStopWalking(thing) {
+        thing.isWalking = false;
+        thing.xvel = 0;
+        thing.yvel = 0;
+
+        thing.EightBitter.TimeHandler.cancelClassCycle(thing, "walking");
+        if (thing.walkingFlipping) {
+            thing.EightBitter.TimeHandler.cancelEvent(thing.walkingFlipping);
+            thing.walkingFlipping = undefined;
+        }
+
+        return true;
+    }
+
+    /**
+     * 
+     */
+    function animatePlayerStopWalking(thing) {
+        if (thing.keys[thing.direction]) {
+            return false;
+        }
+
+        thing.canKeyWalking = true;
+        return thing.EightBitter.animateCharacterStopWalking(thing);
+    }
+
+    /**
+     * 
+     */
+    function animateFlipOnDirection(thing) {
+        if (thing.direction % 2 === 0) {
+            thing.EightBitter.flipHoriz(thing);
+        }
+    }
+
+    /**
+     * 
+     */
+    function animateUnflipOnDirection(thing) {
+        if (thing.direction % 2 === 0) {
+            thing.EightBitter.unflipHoriz(thing);
+        }
+    }
+
+    /**
+     * 
+     */
+    function animateSwitchFlipOnDirection(thing) {
+        if (thing.direction % 2 !== 0) {
+            return;
+        }
+
+        if (thing.flipHoriz) {
+            thing.EightBitter.unflipHoriz(thing);
+        } else {
+            thing.EightBitter.flipHoriz(thing);
         }
     }
 
@@ -681,8 +778,14 @@ var FullScreenPokemon = (function (GameStartr) {
         // Upkeep maintenance
         "maintainCharacters": maintainCharacters,
         // Character movement
-        "characterStartWalking": characterStartWalking,
-        "characterSetDirection": characterSetDirection,
+        "animateCharacterStartWalking": animateCharacterStartWalking,
+        "animatePlayerStartWalking": animatePlayerStartWalking,
+        "animateCharacterSetDirection": animateCharacterSetDirection,
+        "animateCharacterStopWalking": animateCharacterStopWalking,
+        "animatePlayerStopWalking": animatePlayerStopWalking,
+        "animateFlipOnDirection": animateFlipOnDirection,
+        "animateUnflipOnDirection": animateUnflipOnDirection,
+        "animateSwitchFlipOnDirection": animateSwitchFlipOnDirection,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
