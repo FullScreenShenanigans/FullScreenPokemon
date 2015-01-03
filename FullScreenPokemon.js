@@ -706,6 +706,11 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function generateHitCharacterSolid() {
         return function hitCharacterSolid(thing, other) {
+            // The Solid's collide may return true to cancel overlapping checks
+            if (other.collide && other.collide(thing, other)) {
+                return;
+            }
+
             switch (thing.EightBitter.getDirectionBordering(thing, other)) {
                 case 0:
                     thing.EightBitter.setTop(thing, other.bottom);
@@ -728,8 +733,91 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function generateHitCharacterCharacter() {
         return function hitCharacterCharacter(thing, other) {
-            console.log("HA!", thing, other);
+            // The player should always be thing, if either
+            if (other.player && !thing.player) {
+                var temp = other;
+                other = thing;
+                thing = temp;
+            }
+
+            switch (thing.EightBitter.getDirectionBordering(thing, other)) {
+                case 0:
+                    thing.EightBitter.setTop(thing, other.bottom);
+                    break;
+                case 1:
+                    thing.EightBitter.setRight(thing, other.left);
+                    break;
+                case 2:
+                    thing.EightBitter.setBottom(thing, other.top);
+                    break;
+                case 3:
+                    thing.EightBitter.setLeft(thing, other.right);
+                    break;
+            }
         }
+    }
+
+    /**
+     * 
+     */
+    function collideTransporter(thing, other) {
+        if (other.activated) {
+            if (thing.EightBitter.isThingOverlappingOther(thing, other)) {
+                thing.EightBitter.activateTransporter(thing, other)
+            }
+            return true;
+        }
+
+        // Find direction of movement using xvel, yvel
+        // if towards other, transport
+        var directionMovement = thing.direction,
+            directionActual = thing.EightBitter.getDirectionBordering(thing, other);
+
+        if (directionMovement === directionActual) {
+            other.activated = true;
+            return true;
+        }
+    }
+
+
+    /* Activations
+    */
+
+    /**
+     * Activation callback for level transports (any Thing with a .transport 
+     * attribute). Depending on the transport, either the map or location are 
+     * shifted to it.
+     * 
+     * @param {Player} thing
+     * @param {Thing} other
+     */
+    function activateTransporter(thing, other) {
+        var transport = other.transport;
+
+        if (!thing.player) {
+            return;
+        }
+
+        if (typeof transport === "undefined") {
+            throw new Error("No transport given to activateTransporter");
+        }
+
+        if (transport.constructor === String) {
+            thing.EightBitter.setLocation(transport);
+        } else if (typeof transport.map !== "undefined") {
+            thing.EightBitter.setMap(transport.map);
+        } else if (typeof transport.location !== "undefined") {
+            thing.EightBitter.setLocation(transport.location);
+        } else {
+            throw new Error("Unknown transport type:" + transport);
+        }
+    }
+
+    /**
+     * 
+     */
+    function activateTransporterAnimated(thing, other) {
+        thing.EightBitter.activateTransporter(thing, other);
     }
 
 
@@ -756,6 +844,25 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (Math.abs(thing.left - other.right) < thing.EightBitter.unitsize) {
             return 3;
+        }
+    }
+
+    /**
+     * 
+     */
+    function isThingOverlappingOther(thing, other) {
+        if (
+            Math.abs(thing.top - other.top) < thing.EightBitter.unitsize
+            && Math.abs(thing.bottom - other.bottom) < thing.EightBitter.unitsize
+        ) {
+            return true;
+        }
+    
+        if (
+            Math.abs(thing.left - other.left) < thing.EightBitter.unitsize
+            && Math.abs(thing.right - other.right) < thing.EightBitter.unitsize
+        ) {
+            return true;
         }
     }
 
@@ -993,8 +1100,13 @@ var FullScreenPokemon = (function (GameStartr) {
         "generateIsCharacterTouchingSolid": generateIsCharacterTouchingSolid,
         "generateHitCharacterSolid": generateHitCharacterSolid,
         "generateHitCharacterCharacter": generateHitCharacterCharacter,
+        "collideTransporter": collideTransporter,
+        // Activations
+        "activateTransporter": activateTransporter,
+        "activateTransporterAnimated": activateTransporterAnimated,
         // Physics
         "getDirectionBordering": getDirectionBordering,
+        "isThingOverlappingOther": isThingOverlappingOther,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,

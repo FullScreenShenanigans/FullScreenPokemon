@@ -20,11 +20,13 @@
                     "ConsoleAndController": {},
                     "InvisibleWall": {},
                     "PottedPalmTree": {},
-                    "StairsDown": {},
-                    "StairsUp": {},
                     "Table3x2": {},
                     "Table3x3": {},
-                    "TelevisionMonitor": {}
+                    "TelevisionMonitor": {},
+                    "Transporter": {
+                        "StairsDown": {},
+                        "StairsUp": {}
+                    }
                 },
                 "Scenery": {
                     "Doormat": {},
@@ -112,6 +114,11 @@
             "PottedPalmTree": [8, 16],
             "Table3x2": [16, 16],
             "Table3x3": [16, 16],
+            "Transporter": {
+                "collide": FullScreenPokemon.prototype.collideTransporter,
+                "activate": FullScreenPokemon.prototype.activateTransporter,
+                "activated": false
+            },
             "Scenery": {
                 "groupType": "Scenery",
                 "repeat": true

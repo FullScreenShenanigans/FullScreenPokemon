@@ -26,7 +26,7 @@ FullScreenPokemon.prototype.settings.maps = {
         {
             "name": "Player's House",
             "locations": {
-                "StartGame": {
+                "Start Game": {
                     "area": "Bedroom",
                     "xloc": 24,
                     "yloc": 40
@@ -38,6 +38,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "area": "Ground Floor"
                 }
             },
+            "locationDefault": "Start Game",
             "areas": {
                 "Bedroom": {
                     "creation": [
@@ -46,7 +47,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
                         { "thing": "ComputerDesk" },
                         { "thing": "Table3x2", "x": 8 },
-                        { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs" },
+                        { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs", "transport": "Ground Floor Stairs" },
                         { "thing": "WindowBlinds", "x": 40 },
                         { "thing": "WindowBlinds", "x": 56 },
                         { "thing": "ConsoleAndController", "x": 24, "y": 32 },
@@ -65,7 +66,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WindowBlinds", "x": 56 },
                         { "thing": "Bookshelf", "width": 16 },
                         { "thing": "TelevisionMonitor", "x": 24, "y": 8 },
-                        { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Ground Floor Stairs" },
+                        { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Ground Floor Stairs", "transport": "Bedroom Stairs" },
                         { "thing": "Stool", "x": 16, "y": 32 },
                         { "thing": "Stool", "x": 16, "y": 40 },
                         { "thing": "Stool", "x": 40, "y": 32 },
