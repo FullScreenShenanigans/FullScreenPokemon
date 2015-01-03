@@ -280,31 +280,25 @@ function MapsHandlr(settings) {
     };
     
     /**
-     * Applies the stretchAdd Function to each given "stretch" command and 
-     * stores the result in stretches. If none are provided, [] is given.
+     * Applies the stretchAdd Function to each given "stretch" command and  
+     * stores the commands in stretches.
      * 
-     * @param {Object[]} [stretchesRaw]
+     * @param {Object[]} stretchesRaw
      */
     function setStretches(stretchesRaw) {
-        if (stretchesRaw) {
-            stretches = stretchesRaw.map(stretchAdd);
-        } else {
-            stretches = [];
-        }
+        stretches = stretchesRaw;
+        stretches.forEach(stretchAdd);
     }
     
     /**
      * Applies the afterAdd Function to each given "after" command and stores
-     * the result in afters. If none are provided, [] is given.
+     * the commands in afters.
      * 
-     * @param {Object[]} [aftersRaw]
+     * @param {Object[]} aftersRaw
      */
     function setAfters(aftersRaw) {
-        if (aftersRaw) {
-            afters = aftersRaw.map(afterAdd);
-        } else {
-            afters = [];
-        }
+        afters = aftersRaw;
+        afters.forEach(afterAdd);
     }
     
     /**

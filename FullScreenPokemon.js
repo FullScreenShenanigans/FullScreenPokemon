@@ -143,6 +143,24 @@ var FullScreenPokemon = (function (GameStartr) {
         ]);
     }
 
+    /**
+     * Sets self.MapsHandler.
+     * 
+     * @param {EightBittr} EightBitter
+     * @param {Object} [customs]
+     * @remarks Requirement(s): MapsHandlr (src/MapsHandlr/MapsHandlr.js)
+     *                          maps.js (settings/maps.js)
+     */
+    function resetMapsHandler(EightBitter, customs) {
+        EightBitter.MapsHandler = new MapsHandlr({
+            "MapsCreator": EightBitter.MapsCreator,
+            "MapScreener": EightBitter.MapScreener,
+            "screenAttributes": EightBitter.settings.maps.screenAttributes,
+            "onSpawn": EightBitter.settings.maps.onSpawn,
+            "afterAdd": EightBitter.mapAddAfter.bind(EightBitter)
+        });
+    }
+
 
     /* Global manipulations
     */
@@ -859,6 +877,44 @@ var FullScreenPokemon = (function (GameStartr) {
         }
     }
 
+    /**
+     * 
+     * 
+     * @remarks Direction is taken in by the .forEach call as the index. Clever.
+     */
+    function mapAddAfter(prething, direction) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            MapsCreator = EightBitter.MapsCreator,
+            MapsHandler = EightBitter.MapsHandler,
+            prethings = MapsHandler.getPreThings(),
+            area = MapsHandler.getArea(),
+            map = MapsHandler.getMap(),
+            boundaries = EightBitter.MapsHandler.getArea().boundaries;
+
+        switch (direction) {
+            case 0:
+                // Return because the top is glitchy. Lets assume it's ok...
+                return;
+            case 1:
+                prething.x = boundaries.right;
+                prething.y = boundaries.top;
+                prething.height = boundaries.bottom - boundaries.top;
+                break;
+            case 2:
+                prething.x = boundaries.left;
+                prething.y = boundaries.bottom;
+                prething.width = boundaries.right - boundaries.left;
+                break;
+            case 3:
+                prething.x = boundaries.left - 8;
+                prething.y = boundaries.top;
+                prething.height = boundaries.bottom - boundaries.top;
+                break;
+        }
+
+        MapsCreator.analyzePreSwitch(prething, prethings, area, map);
+    }
+
 
     /* Map entrances
     */
@@ -897,6 +953,7 @@ var FullScreenPokemon = (function (GameStartr) {
     proliferateHard(FullScreenPokemon.prototype, {
         // Resets
         "resetContainer": resetContainer,
+        "resetMapsHandler": resetMapsHandler,
         // Global manipulations
         "gameStart": gameStart,
         "thingProcess": thingProcess,
@@ -943,8 +1000,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "setLocation": setLocation,
         "getAreaBoundariesReal": getAreaBoundariesReal,
         "getScreenScrollability": getScreenScrollability,
-        "centerMapScreen": centerMapScreen,
+        "mapAddAfter": mapAddAfter,
         // Map entrances
+        "centerMapScreen": centerMapScreen,
         "mapEntranceNormal": mapEntranceNormal
     });
     

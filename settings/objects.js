@@ -51,7 +51,13 @@
                 "initialized": false
             },
             "Area": {
-                "background": "black"
+                "background": "black",
+                "afters": [
+                    { "thing": "InvisibleWall" },
+                    { "thing": "InvisibleWall" },
+                    { "thing": "InvisibleWall" },
+                    { "thing": "InvisibleWall" }
+                ]
             },
             "Location": {
                 "entry": "Normal"
