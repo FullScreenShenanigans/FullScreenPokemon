@@ -241,6 +241,172 @@ var FullScreenPokemon = (function (GameStartr) {
         return true;
     }
 
+    /**
+     * Reacts to the left key being pressed. keys.run and leftDown are marked 
+     * and the mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyDownLeft(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownLeft");
+    }
+
+    /**
+     * Reacts to the right key being pressed. keys.run and keys.rightDown are
+     * marked and the mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyDownRight(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the up key being pressed. If the player can jump, it does, and
+     * underwater paddling is checked. The mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyDownUp(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownUp");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the down key being pressed. keys.crouch is marked and the mod
+     * event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyDownDown(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownDown");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the pause key being pressed. Pausing happens almost immediately
+     * (the delay helps prevent accidental pauses) and the mod event fires.
+     * 
+     * @param {Player} player
+     */
+    function keyDownPause(player, event) {
+        if (!player.EightBitter.GamesRunner.getPaused()) {
+            player.EightBitter.TimeHandler.addEvent(
+                player.EightBitter.GamesRunner.pause, 7, true
+            );
+        }
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownPause");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the mute key being lifted. Muting is toggled and the mod event
+     * is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyDownMute(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+        player.EightBitter.AudioPlayer.toggleMuted();
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownMute");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the left key being lifted. The mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyUpLeft(player, event) {
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpLeft");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the right key being lifted. The mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyUpRight(player, event) {
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpRight");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the up key being lifted. The mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyUpUp(player, event) {
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpUp");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the down key being lifted. The mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyUpDown(player, event) {
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpDown");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to the pause key being lifted. The game is unpaused if necessary
+     * and the mod event is fired.
+     * 
+     * @param {Player} player
+     */
+    function keyUpPause(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            player.EightBitter.GamesRunner.play();
+        }
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpPause");
+
+        event.preventDefault();
+    }
+
+    /**
+     * Reacts to a right click being pressed. Pausing is toggled and the mod
+     * event is fired.
+     * 
+     * @param {Player} player
+     */
+    function mouseDownRight(player, event) {
+        player.EightBitter.GamesRunner.togglePause();
+        player.EightBitter.ModAttacher.fireEvent("onMouseDownRight");
+
+        event.preventDefault();
+    }
+
     
     /* Upkeep maintenance
     */
@@ -300,7 +466,7 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.EightBitter.addClass(thing, "walking");
         thing.EightBitter.TimeHandler.addClassCycle(
             thing,
-            ["standing", "walking", "standing", "standing", "walking", "walking", false],
+            ["standing", "walking", "standing", "standing", "walking", "walking", false], // characterStopWalking
             "walking",
             Math.floor(repeats / 6)
         );
@@ -500,6 +666,18 @@ var FullScreenPokemon = (function (GameStartr) {
         "addPlayer": addPlayer,
         // Inputs
         "canInputsTrigger": canInputsTrigger,
+        "keyDownLeft": keyDownLeft,
+        "keyDownRight": keyDownRight,
+        "keyDownUp": keyDownUp,
+        "keyDownDown": keyDownDown,
+        "keyDownPause": keyDownPause,
+        "keyDownMute": keyDownMute,
+        "keyUpLeft": keyUpLeft,
+        "keyUpRight": keyUpRight,
+        "keyUpUp": keyUpUp,
+        "keyUpDown": keyUpDown,
+        "keyUpPause": keyUpPause,
+        "mouseDownRight": mouseDownRight,
         // Upkeep maintenance
         "maintainCharacters": maintainCharacters,
         // Character movement

@@ -13,24 +13,22 @@ FullScreenPokemon.prototype.settings.input = {
         },
         "triggers": {
             "onkeydown": {
-                //"left": FullScreenPokemon.prototype.keyDownLeft,
-                //"right": FullScreenPokemon.prototype.keyDownRight,
-                //"up": FullScreenPokemon.prototype.keyDownUp,
-                //"down": FullScreenPokemon.prototype.keyDownDown,
-                //"sprint": FullScreenPokemon.prototype.keyDownSprint,
-                //"pause": FullScreenPokemon.prototype.keyDownPause,
-                //"mute": FullScreenPokemon.prototype.keyDownMute,
+                "left": FullScreenPokemon.prototype.keyDownLeft,
+                "right": FullScreenPokemon.prototype.keyDownRight,
+                "up": FullScreenPokemon.prototype.keyDownUp,
+                "down": FullScreenPokemon.prototype.keyDownDown,
+                "pause": FullScreenPokemon.prototype.keyDownPause,
+                "mute": FullScreenPokemon.prototype.keyDownMute,
             },
             "onkeyup": {
-                //"left": FullScreenPokemon.prototype.keyUpLeft,
-                //"right": FullScreenPokemon.prototype.keyUpRight,
-                //"up": FullScreenPokemon.prototype.keyUpUp,
-                //"down": FullScreenPokemon.prototype.keyUpDown,
-                //"sprint": FullScreenPokemon.prototype.keyUpSprint,
-                //"pause": FullScreenPokemon.prototype.keyUpPause
+                "left": FullScreenPokemon.prototype.keyUpLeft,
+                "right": FullScreenPokemon.prototype.keyUpRight,
+                "up": FullScreenPokemon.prototype.keyUpUp,
+                "down": FullScreenPokemon.prototype.keyUpDown,
+                "pause": FullScreenPokemon.prototype.keyUpPause
             },
             "onmousedown": {
-                //"rightclick": FullScreenPokemon.prototype.mouseDownRight
+                "rightclick": FullScreenPokemon.prototype.mouseDownRight
             },
             "oncontextmenu": {},
             "ondevicemotion": {
