@@ -5,10 +5,13 @@ FullScreenPokemon.prototype.settings.runner = {
     "adjustFramerate": true,
     "games": [
         function () {
-            this.PixelDrawer.refillQuadrantGroups(
-                this.QuadsKeeper.getQuadrantRows(),
+            this.PixelDrawer.refillGlobalCanvas(
                 this.MapsHandler.getArea().background
             );
+            //this.PixelDrawer.refillQuadrantGroups(
+            //    this.QuadsKeeper.getQuadrantRows(),
+            //    this.MapsHandler.getArea().background
+            //);
         },
         function () {
             this.QuadsKeeper.determineAllQuadrants("Terrain", this.GroupHolder.getTerrainGroup());

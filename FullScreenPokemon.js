@@ -290,9 +290,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (player.canKeyWalking) {
-            player.direction = 3;
-            player.shouldWalk = true;
-            player.keys[3] = true;
+            player.EightBitter.setPlayerDirection(player, 3);
         }
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownLeft");
@@ -308,9 +306,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (player.canKeyWalking) {
-            player.direction = 1;
-            player.shouldWalk = true;
-            player.keys[1] = true;
+            player.EightBitter.setPlayerDirection(player, 1);
         }
 
         event.preventDefault();
@@ -326,9 +322,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (player.canKeyWalking) {
-            player.direction = 0;
-            player.shouldWalk = true;
-            player.keys[0] = true;
+            player.EightBitter.setPlayerDirection(player, 0);
         }
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownUp");
@@ -346,9 +340,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (player.canKeyWalking) {
-            player.direction = 2;
-            player.shouldWalk = true;
-            player.keys[2] = true;
+            player.EightBitter.setPlayerDirection(player, 2);
         }
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownDown");
@@ -808,6 +800,12 @@ var FullScreenPokemon = (function (GameStartr) {
     function collideTransporter(thing, other) {
         if (other.activated) {
             if (thing.EightBitter.isThingOverlappingOther(thing, other)) {
+                if (
+                    typeof other.requireDirection !== "undefined"
+                    && !thing.keys[other.requireDirection]
+                ) {
+                    return;
+                }
                 thing.EightBitter.activateTransporter(thing, other)
             }
             return true;
@@ -850,7 +848,7 @@ var FullScreenPokemon = (function (GameStartr) {
         if (transport.constructor === String) {
             thing.EightBitter.setLocation(transport);
         } else if (typeof transport.map !== "undefined") {
-            thing.EightBitter.setMap(transport.map);
+            thing.EightBitter.setMap(transport.map, transport.location);
         } else if (typeof transport.location !== "undefined") {
             thing.EightBitter.setLocation(transport.location);
         } else {
@@ -924,6 +922,16 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         thing.EightBitter.shiftBoth(thing, thing.xvel, thing.yvel);
+    }
+
+    /**
+     * 
+     */
+    function setPlayerDirection(thing, direction) {
+        thing.direction = direction;
+        thing.EightBitter.MapScreener.playerDirection = direction;
+        thing.shouldWalk = true;
+        thing.keys[direction] = true;
     }
 
 
@@ -1114,6 +1122,10 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.centerMapScreen(EightBitter);
+        EightBitter.animateCharacterSetDirection(
+            EightBitter.player,
+            EightBitter.MapScreener.playerDirection
+        );
     }
 
 
@@ -1155,6 +1167,116 @@ var FullScreenPokemon = (function (GameStartr) {
 
         return output;
     }
+
+    /**
+     * 
+     */
+    function macroHouse(reference) {
+        var x = reference.x || 0,
+            y = reference.y || 0,
+            width = reference.width || 32,
+            stories = reference.stories || 1,
+            output = [{
+                "thing": "HouseTop",
+                "x": x,
+                "y": y,
+                "width": width
+            }],
+            door, i;
+        
+        y += 16;
+        for (i = 1; i < stories; i += 1) {
+            output.push({
+                "thing": "HouseCenter",
+                "x": x,
+                "y": y,
+                "width": width
+            })
+            y += 8;
+        }
+
+        if (!reference.noDoor) {
+            door = {
+                "thing": "Door",
+                "x": x + 8,
+                "y": y - 8,
+                "requireDirection": 0
+            }
+            if (reference.entrance) {
+                door.entrance = reference.entrance;
+            }
+            if (reference.transport) {
+                door.transport = reference.transport;
+            }
+            output.push(door);
+        }
+
+        return output;
+    }
+
+    /**
+     * 
+    */
+    function macroHouseLarge(reference) {
+        var x = reference.x || 0,
+            y = reference.y || 0,
+            width = reference.width || 48,
+            stories = reference.stories || 1,
+            output = [{
+                "thing": "HouseLargeTopLeft",
+                "x": x,
+                "y": y
+            }, {
+                "thing": "HouseLargeTopMiddle",
+                "x": x + 8,
+                "y": y,
+                "width": width - 16
+            }, {
+                "thing": "HouseLargeTopRight",
+                "x": x + width - 8,
+                "y": y,
+            }],
+            door, i;
+
+            y += 20;
+            for (i = 1; i < stories; i += 1) {
+                output.push({
+                    "thing": "HouseLargeCenter",
+                    "x": x,
+                    "y": y,
+                    "width": width
+                })
+
+                if (reference.white) {
+                    output.push({
+                        "thing": "HouseWallWhitewash",
+                        "x": reference.white.start,
+                        "y": y,
+                        "width": reference.white.end - reference.white.start
+                    });
+                }
+
+                y += 16;
+            }
+
+            if (!reference.noDoor) {
+                door = {
+                    "thing": "Door",
+                    "x": x + 16,
+                    "y": y - 12,
+                    "requireDirection": 0
+                }
+                if (reference.entrance) {
+                    door.entrance = reference.entrance;
+                }
+                if (reference.transport) {
+                    door.transport = reference.transport;
+                }
+                output.push(door);
+            }
+
+            return output;
+    };
 
     
     proliferateHard(FullScreenPokemon.prototype, {
@@ -1211,6 +1333,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "getDirectionBordering": getDirectionBordering,
         "isThingOverlappingOther": isThingOverlappingOther,
         "shiftCharacter": shiftCharacter,
+        "setPlayerDirection": setPlayerDirection,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
@@ -1221,7 +1344,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "centerMapScreen": centerMapScreen,
         "mapEntranceNormal": mapEntranceNormal,
         // Map macros
-        "macroCheckered": macroCheckered
+        "macroCheckered": macroCheckered,
+        "macroHouse": macroHouse,
+        "macroHouseLarge": macroHouseLarge
     });
     
     return FullScreenPokemon;

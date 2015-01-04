@@ -503,7 +503,6 @@ function PixelRendr(settings) {
             switch (objref.constructor) {
                 // If it's a string, parse it
                 case String:
-                    // setnew[i] = spriteGetArray(spriteExpand(spriteUnravel(objref)));
                     setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
                     break;
                 // If it's an array, it should have a command such as 'same' to be post-processed

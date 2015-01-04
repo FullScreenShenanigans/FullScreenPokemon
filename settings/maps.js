@@ -10,7 +10,9 @@ FullScreenPokemon.prototype.settings.maps = {
     },
     "onSpawn": FullScreenPokemon.prototype.addPreThing,
     "macros": {
-        "Checkered": FullScreenPokemon.prototype.macroCheckered
+        "Checkered": FullScreenPokemon.prototype.macroCheckered,
+        "House": FullScreenPokemon.prototype.macroHouse,
+        "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge
     },
     "entrances": {
         "Normal": FullScreenPokemon.prototype.mapEntranceNormal
@@ -48,28 +50,28 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "y": 8, "height": 128 },
                         { "thing": "DirtMedium", "width": 160 },
                         { "thing": "DirtMedium", "y": 8, "width": 16, "height": 128 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 16, "y": 8, "xnum": 16, "ynum": 2, "offset": 1 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 8, "xnum": 16, "ynum": 2, "offset": 1 },
                         { "thing": "DirtMedium", "x": 144, "y": 8, "height": 128, "width": 16 },
                         { "thing": "FenceWide", "x": 152, "y": 8, "height": 128 },
-                        { "thing": "House", "x": 32, "y": 16 },
-                        { "thing": "House", "x": 96, "y": 16 },
+                        { "macro": "House", "x": 32, "y": 16, "stories": 2, "entrance": "Player's House Door", "transport": { "map": "Player's House", "location": "Ground Floor Door" } },
+                        { "macro": "House", "x": 96, "y": 16, "stories": 2, "entrance": "Rival's House Door"/*, "transport": { "map": "Rival's House", "location": "Ground Floor Door" }*/ },
                         { "thing": "DirtLight", "x": 16, "y": 24, "width": 16, "height": 16 },
                         { "thing": "DirtLight", "x": 80, "y": 24, "width": 16, "height": 16 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 32, "y": 24, "xnum": 6, "ynum": 2, "offset": 1 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 96, "y": 24, "xnum": 6, "ynum": 2, "offset": 1 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 24, "xnum": 6, "ynum": 2 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 96, "y": 24, "xnum": 6, "ynum": 2 },
                         { "thing": "Sign", "x": 24, "y": 32, "text": "%%%%%%%PLAYER%%%%%%%'s house" },
                         { "thing": "Sign", "x": 88, "y": 32, "text": "%%%%%%%RIVAL%%%%%%%'s house" },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 16, "y": 40, "xnum": 16, "ynum": 2, "offset": 1 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 16, "y": 56, "xnum": 2, "ynum": 6 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 40, "xnum": 16, "ynum": 2 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 56, "xnum": 2, "ynum": 6 },
                         { "thing": "DirtLight", "x": 32, "y": 56, "width": 32, "height": 16 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 64, "y": 56, "xnum": 2, "ynum": 6, "offset": 1 },
-                        { "thing": "Lab", "x": 80, "y": 56 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 128, "y": 56, "xnum": 2, "ynum": 4, "offset": 1 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 56, "xnum": 2, "ynum": 6 },
+                        { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "stories": 2, "white": { "start": 84, "end": 96 } },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 56, "xnum": 8, "ynum": 4 },
                         { "thing": "FenceVertical", "x": 32, "y": 64, "width": 24 },
                         { "thing": "Sign", "x": 56, "y": 64, "text": ["Palette Town", "Shades of your journey await!"] },
                         { "thing": "DirtMedium", "x": 32, "y": 72, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 32, "y": 76, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                        { "macro": "Checkered", "things": ["DirtWhite", "DirtClean"], "x": 32, "y": 88, "xnum": 4, "ynum": 2 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 88, "xnum": 4, "ynum": 2 },
                         { "thing": "DirtLight", "x": 80, "y": 88, "width": 64, "height": 16 },
                         { "thing": "FenceVertical", "x": 80, "y": 96, "width": 24 },
                         { "thing": "Sign", "x": 104, "y": 96 },
@@ -89,6 +91,12 @@ FullScreenPokemon.prototype.settings.maps = {
         }, {
             "name": "Player's House",
             "locations": {
+                "Ground Floor Stairs": {
+                    "area": "Ground Floor"
+                },
+                "Ground Floor Door": {
+                    "area": "Ground Floor"
+                },
                 "Start Game": {
                     "area": "Bedroom",
                     "xloc": 24,
@@ -96,29 +104,10 @@ FullScreenPokemon.prototype.settings.maps = {
                 },
                 "Bedroom Stairs": {
                     "area": "Bedroom"
-                },
-                "Ground Floor Stairs": {
-                    "area": "Ground Floor"
                 }
             },
             "locationDefault": "Start Game",
             "areas": {
-                "Bedroom": {
-                    "creation": [
-                        { "thing": "WallIndoorHorizontalBands", "width": 64 },
-                        { "thing": "InvisibleWall", "width": 64 },
-                        { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
-                        { "thing": "ComputerDesk" },
-                        { "thing": "Table3x2", "x": 8 },
-                        { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs", "transport": "Ground Floor Stairs" },
-                        { "thing": "WindowBlinds", "x": 40 },
-                        { "thing": "WindowBlinds", "x": 56 },
-                        { "thing": "ConsoleAndController", "x": 24, "y": 32 },
-                        { "thing": "TelevisionMonitor", "x": 24, "y": 24 },
-                        { "thing": "BedSingle", "y": 48 },
-                        { "thing": "PottedPalmTree", "x": 48, "y": 48 }
-                    ]
-                },
                 "Ground Floor": {
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -137,7 +126,24 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Table3x3", "x": 24, "y": 32 },
                         { "thing": "FlowerVase", "x": 29, "y": 34 },
                         { "thing": "Mother", "x": 40, "y": 32 },
-                        { "thing": "Doormat", "x": 16, "y": 56, "width": 16 }
+                        { "thing": "Doormat", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Player's House Door" }, "requireDirection": 2 }
+                    ]
+                },
+                "Bedroom": {
+                    "creation": [
+                        { "thing": "WallIndoorHorizontalBands", "width": 64 },
+                        { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
+                        { "thing": "ComputerDesk" },
+                        { "thing": "Table3x2", "x": 8 },
+                        { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs", "transport": "Ground Floor Stairs" },
+                        { "thing": "WindowBlinds", "x": 40 },
+                        { "thing": "WindowBlinds", "x": 56 },
+                        { "thing": "ConsoleAndController", "x": 24, "y": 32 },
+                        { "thing": "TelevisionMonitor", "x": 24, "y": 24 },
+                        { "thing": "BedSingle", "y": 48 },
+                        { "thing": "PottedPalmTree", "x": 48, "y": 48 }
                     ]
                 }
             }

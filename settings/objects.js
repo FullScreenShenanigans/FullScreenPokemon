@@ -21,15 +21,26 @@
                     "FenceWide": {},
                     "FenceVertical": {},
                     "Grass": {},
-                    "House": {},
+                    "HouseBase": {
+                        "HouseTop": {},
+                        "HouseCenter": {}
+                    },
+                    "HouseLargeBase": {
+                        "HouseLargeTopLeft": {},
+                        "HouseLargeTopMiddle": {},
+                        "HouseLargeTopRight": {},
+                        "HouseLargeCenter": {}
+                    },
+                    "HouseWallWhitewash": {},
                     "InvisibleWall": {},
-                    "Lab": {},
                     "PottedPalmTree": {},
                     "Sign": {},
                     "Table3x2": {},
                     "Table3x3": {},
                     "TelevisionMonitor": {},
                     "Transporter": {
+                        "Door": {},
+                        "HiddenTransporter": {},
                         "StairsDown": {},
                         "StairsUp": {}
                     }
@@ -127,11 +138,43 @@
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
             "FenceVertical": [4, 8],
-            "House": [32, 24],
+            "HouseBase": {
+                "width": 32,
+                "height": 8,
+                "spritewidth": 16,
+                "spriteheight": 16
+            },
+            "HouseTop": {
+                "width": 32,
+                "height": 16,
+                "spritewidth": 16
+            },
+            "HouseCenter": {
+                "spritewidth": 8
+            },
+            "HouseLargeBase": {
+                "width": 48,
+                "height": 20,
+                "spritewidth": 20
+            },
+            "HouseLargeTopLeft": {
+                "width": 8,
+                "spritewidth": 8
+            },
+            "HouseLargeTopMiddle": {
+                "width": 48,
+            },
+            "HouseLargeTopRight": {
+                "width": 8,
+                "spritewidth": 8
+            },
+            "HouseLargeCenter": {
+                "spritewidth": 4
+            },
+            "HouseWallWhitewash": [4, 4],
             "InvisibleWall": {
                 "hidden": true
             },
-            "Lab": [48, 32],
             "PottedPalmTree": [8, 16],
             "Table3x2": [16, 16],
             "Table3x3": [16, 16],
@@ -139,6 +182,14 @@
                 "collide": FullScreenPokemon.prototype.collideTransporter,
                 "activate": FullScreenPokemon.prototype.activateTransporter,
                 "activated": false
+            },
+            "Door": {
+                "width": 8,
+                "height": 8
+            },
+            "HiddenTransporter": {
+                "hidden": true,
+                "noStretchBoundaries": true
             },
             "Scenery": {
                 "groupType": "Scenery",
