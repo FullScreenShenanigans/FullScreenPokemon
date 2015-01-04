@@ -43,6 +43,12 @@
                         "HiddenTransporter": {},
                         "StairsDown": {},
                         "StairsUp": {}
+                    },
+                    "WaterEdge": {
+                        "WaterEdgeTop": {},
+                        "WaterEdgeRight": {},
+                        "WaterEdgeBottom": {},
+                        "WaterEdgeLeft": {}
                     }
                 },
                 "Scenery": {
@@ -62,7 +68,8 @@
                         "TerrainSmallRepeating": {
                             "WallIndoorHorizontalBands": {}
                         }
-                    }
+                    },
+                    "Water": {}
                 }
             }
         },
@@ -191,6 +198,7 @@
                 "hidden": true,
                 "noStretchBoundaries": true
             },
+            "WaterEdge": [4, 4],
             "Scenery": {
                 "groupType": "Scenery",
                 "repeat": true
@@ -213,7 +221,12 @@
                 "height": 8,
                 "spritewidth": 2,
                 "spriteheight": 2
-            }
+            },
+            "Water": {
+                "spriteCycle": [
+                    ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 14
+                ]
+            },
         }
     };
 })();

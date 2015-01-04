@@ -41,17 +41,17 @@
  */
 var FullScreenPokemon = (function (GameStartr) {
     "use strict";
-    
+
     // Use an GameStartr as the class parent, with GameStartr's constructor
     var GameStartrProto = new GameStartr(),
-        
+
         // Used for combining arrays from the prototype to this
         proliferate = GameStartrProto.proliferate,
         proliferateHard = GameStartrProto.proliferateHard;
-        
+
     // Subsequent settings will be stored in FullScreenPokemon.prototype.settings
     GameStartrProto.settings = {};
-    
+
     /**
      * Constructor for a new FullScreenPokemon game object.
      * Static game settings are stored in the appropriate settings/*.js object
@@ -101,7 +101,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "scale"
             ]
         });
-        
+
         if (customs.resetTimed) {
             this.resetTimes = this.resetTimed(this, customs);
         } else {
@@ -109,17 +109,17 @@ var FullScreenPokemon = (function (GameStartr) {
         }
     }
     FullScreenPokemon.prototype = GameStartrProto;
-    
+
     // For the sake of reset functions, store constants as members of the actual
     // FullScreenPokemon Function itself - this allows prototype setters to use 
     // them regardless of whether the prototype has been instantiated yet.
     FullScreenPokemon.unitsize = 4;
     FullScreenPokemon.scale = FullScreenPokemon.unitsize / 2;
-    
-    
+
+
     /* Resets
     */
-    
+
     /**
      * Sets self.container via the parent GameStartr resetContaienr.
      * 
@@ -132,9 +132,9 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function resetContainer(self, customs) {
         GameStartr.prototype.resetContainer(self, customs);
-        
+
         self.container.style.fontFamily = "Press Start";
-        
+
         self.PixelDrawer.setThingArrays([
             self.GroupHolder.getTerrainGroup(),
             self.GroupHolder.getSolidGroup(),
@@ -504,7 +504,7 @@ var FullScreenPokemon = (function (GameStartr) {
         event.preventDefault();
     }
 
-    
+
     /* Upkeep maintenance
     */
 
@@ -582,7 +582,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 thing, ["walking", "standing"], "walking", 10
             );
         }
-        
+
         if (!thing.walkingFlipping) {
             thing.walkingFlipping = thing.EightBitter.TimeHandler.addEventInterval(
                 thing.EightBitter.animateSwitchFlipOnDirection, 20, Infinity, thing
@@ -704,7 +704,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /* Collision detection
     */
-    
+
     /**
      * 
      */
@@ -713,7 +713,7 @@ var FullScreenPokemon = (function (GameStartr) {
             return thing.alive;
         }
     }
-    
+
     /**
      * 
      */
@@ -731,7 +731,7 @@ var FullScreenPokemon = (function (GameStartr) {
             );
         }
     }
-    
+
     /**
      * 
      */
@@ -746,7 +746,7 @@ var FullScreenPokemon = (function (GameStartr) {
             );
         }
     }
-    
+
     /**
      * 
      */
@@ -900,7 +900,7 @@ var FullScreenPokemon = (function (GameStartr) {
         ) {
             return true;
         }
-    
+
         if (
             Math.abs(thing.left - other.left) < thing.EightBitter.unitsize
             && Math.abs(thing.right - other.right) < thing.EightBitter.unitsize
@@ -991,7 +991,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.QuadsKeeper.resetQuadrants();
 
         location.entry(EightBitter, location);
-        
+
         EightBitter.ModAttacher.fireEvent("onSetLocation", location);
 
         EightBitter.GamesRunner.play();
@@ -1170,6 +1170,66 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+    */
+    function macroWater(reference) {
+        var x = reference.x || 0,
+            y = reference.y || 0,
+            width = reference.width || 8,
+            height = reference.height || 8,
+            open = reference.open,
+            output = [{
+                "thing": "Water",
+                "x": x,
+                "y": y,
+                "width": width,
+                "height": height,
+            }];
+
+        if (!open) {
+            return output;
+        }
+
+        if (!open[0]) {
+            output.push({
+                "thing": "WaterEdgeTop",
+                "x": x,
+                "y": y,
+                "width": width
+            });
+        }
+
+        if (!open[1]) {
+            output.push({
+                "thing": "WaterEdgeRight",
+                "x": x + width - 4,
+                "y": open[0] ? y : y + 4,
+                "height": open[0] ? height : height - 4
+            });
+        }
+
+        if (!open[2]) {
+            output.push({
+                "thing": "WaterEdgeBottom",
+                "x": x,
+                "y": y + height - 4,
+                "width": width
+            });
+        }
+
+        if (!open[3]) {
+            output.push({
+                "thing": "WaterEdgeLeft",
+                "x": x,
+                "y": y,
+                "height": height
+            });
+        }
+
+        return output;
+    };
+
+    /**
+     * 
      */
     function macroHouse(reference) {
         var x = reference.x || 0,
@@ -1183,7 +1243,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "width": width
             }],
             door, i;
-        
+
         y += 16;
         for (i = 1; i < stories; i += 1) {
             output.push({
@@ -1238,47 +1298,47 @@ var FullScreenPokemon = (function (GameStartr) {
             }],
             door, i;
 
-            y += 20;
-            for (i = 1; i < stories; i += 1) {
+        y += 20;
+        for (i = 1; i < stories; i += 1) {
+            output.push({
+                "thing": "HouseLargeCenter",
+                "x": x,
+                "y": y,
+                "width": width
+            })
+
+            if (reference.white) {
                 output.push({
-                    "thing": "HouseLargeCenter",
-                    "x": x,
+                    "thing": "HouseWallWhitewash",
+                    "x": reference.white.start,
                     "y": y,
-                    "width": width
-                })
-
-                if (reference.white) {
-                    output.push({
-                        "thing": "HouseWallWhitewash",
-                        "x": reference.white.start,
-                        "y": y,
-                        "width": reference.white.end - reference.white.start
-                    });
-                }
-
-                y += 16;
+                    "width": reference.white.end - reference.white.start
+                });
             }
 
-            if (!reference.noDoor) {
-                door = {
-                    "thing": "Door",
-                    "x": x + 16,
-                    "y": y - 12,
-                    "requireDirection": 0
-                }
-                if (reference.entrance) {
-                    door.entrance = reference.entrance;
-                }
-                if (reference.transport) {
-                    door.transport = reference.transport;
-                }
-                output.push(door);
-            }
+            y += 16;
+        }
 
-            return output;
+        if (!reference.noDoor) {
+            door = {
+                "thing": "Door",
+                "x": x + 16,
+                "y": y - 12,
+                "requireDirection": 0
+            }
+            if (reference.entrance) {
+                door.entrance = reference.entrance;
+            }
+            if (reference.transport) {
+                door.transport = reference.transport;
+            }
+            output.push(door);
+        }
+
+        return output;
     };
 
-    
+
     proliferateHard(FullScreenPokemon.prototype, {
         // Resets
         "resetContainer": resetContainer,
@@ -1345,9 +1405,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "mapEntranceNormal": mapEntranceNormal,
         // Map macros
         "macroCheckered": macroCheckered,
+        "macroWater": macroWater,
         "macroHouse": macroHouse,
         "macroHouseLarge": macroHouseLarge
     });
-    
+
     return FullScreenPokemon;
 })(GameStartr);

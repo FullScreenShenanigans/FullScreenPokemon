@@ -11,6 +11,7 @@ FullScreenPokemon.prototype.settings.maps = {
     "onSpawn": FullScreenPokemon.prototype.addPreThing,
     "macros": {
         "Checkered": FullScreenPokemon.prototype.macroCheckered,
+        "Water": FullScreenPokemon.prototype.macroWater,
         "House": FullScreenPokemon.prototype.macroHouse,
         "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge
     },
@@ -77,6 +78,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Sign", "x": 104, "y": 96 },
                         { "thing": "FenceVertical", "x": 112, "y": 96, "width": 16 },
                         { "thing": "DirtMedium", "x": 16, "y": 104, "width": 16, "height": 32 },
+                        { "macro": "Water", "x": 32, "y": 104, "width": 32, "height": 32, "open": [false, false, true, false] },
                         { "thing": "DirtLight", "x": 64, "y": 104, "width": 16, "height": 32 },
                         { "thing": "DirtMedium", "x": 80, "y": 104, "width": 48, "height": 16 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 108, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
