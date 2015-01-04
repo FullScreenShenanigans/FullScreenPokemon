@@ -1089,18 +1089,6 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function mapEntranceNormal(EightBitter, location) {
-        EightBitter.addPlayer(
-            location.xloc ? location.xloc * EightBitter.unitsize : 0,
-            location.yloc ? location.yloc * EightBitter.unitsize : 0
-        );
-
-        EightBitter.centerMapScreen(EightBitter);
-    }
-
-    /**
-     * 
-     */
     function centerMapScreen(EightBitter) {
         var boundaries = EightBitter.MapScreener.boundaries,
             difference;
@@ -1114,6 +1102,58 @@ var FullScreenPokemon = (function (GameStartr) {
         if (difference > 0) {
             EightBitter.scrollWindow(0, difference / -2);
         }
+    }
+
+    /**
+     * 
+     */
+    function mapEntranceNormal(EightBitter, location) {
+        EightBitter.addPlayer(
+            location.xloc ? location.xloc * EightBitter.unitsize : 0,
+            location.yloc ? location.yloc * EightBitter.unitsize : 0
+        );
+
+        EightBitter.centerMapScreen(EightBitter);
+    }
+
+
+    /* Map macros
+    */
+
+    /**
+     * 
+     */
+    function macroCheckered(reference) {
+        var xStart = reference.x || 0,
+            yStart = reference.y || 0,
+            xnum = reference.xnum || 1,
+            ynum = reference.ynum || 1,
+            xwidth = reference.xwidth || 8,
+            yheight = reference.yheight || 8,
+            offset = reference.offset || 0,
+            things = reference.things,
+            mod = things.length,
+            output = [],
+            thing, x, y, i, j;
+
+        y = yStart;
+        for (i = 0; i < ynum; i += 1) {
+            x = xStart;
+            for (j = 0; j < xnum; j += 1) {
+                thing = reference.things[(i + j + offset) % mod];
+                if (thing !== "") {
+                    output.push({
+                        "x": x,
+                        "y": y,
+                        "thing": thing
+                    })
+                }
+                x += xwidth;
+            }
+            y += yheight;
+        }
+
+        return output;
     }
 
     
@@ -1179,7 +1219,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "mapAddAfter": mapAddAfter,
         // Map entrances
         "centerMapScreen": centerMapScreen,
-        "mapEntranceNormal": mapEntranceNormal
+        "mapEntranceNormal": mapEntranceNormal,
+        // Map macros
+        "macroCheckered": macroCheckered
     });
     
     return FullScreenPokemon;

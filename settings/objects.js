@@ -18,8 +18,14 @@
                     "Bookshelf": {},
                     "ComputerDesk": {},
                     "ConsoleAndController": {},
+                    "FenceWide": {},
+                    "FenceVertical": {},
+                    "Grass": {},
+                    "House": {},
                     "InvisibleWall": {},
+                    "Lab": {},
                     "PottedPalmTree": {},
+                    "Sign": {},
                     "Table3x2": {},
                     "Table3x3": {},
                     "TelevisionMonitor": {},
@@ -30,11 +36,16 @@
                 },
                 "Scenery": {
                     "Doormat": {},
+                    "Flower": {},
                     "FlowerVase": {},
                     "Stool": {},
                     "WindowBlinds": {}
                 },
                 "Terrain": {
+                    "DirtClean": {},
+                    "DirtLight": {},
+                    "DirtMedium": {},
+                    "DirtWhite": {},
                     "FloorTiledDiagonal": {},
                     "TerrainSmall": {
                         "TerrainSmallRepeating": {
@@ -115,9 +126,12 @@
             "Bookshelf": [8, 16],
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
+            "FenceVertical": [4, 8],
+            "House": [32, 24],
             "InvisibleWall": {
                 "hidden": true
             },
+            "Lab": [48, 32],
             "PottedPalmTree": [8, 16],
             "Table3x2": [16, 16],
             "Table3x3": [16, 16],
@@ -129,6 +143,13 @@
             "Scenery": {
                 "groupType": "Scenery",
                 "repeat": true
+            },
+            "Flower": {
+                "width": 4,
+                "height": 4,
+                "spriteCycle": [
+                    ["one", "one", "two", "three"], "waving", 14
+                ]
             },
             "FlowerVase": [6, 6],
             "Terrain": {

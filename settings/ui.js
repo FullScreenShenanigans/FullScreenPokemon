@@ -110,7 +110,7 @@ FullScreenPokemon.prototype.settings.ui = {
             }]
         }
     },
-    "sizeDefault": "Wide",
+    "sizeDefault": "Large",
     "sizes": {
         "NES": {
             "width": 512,
