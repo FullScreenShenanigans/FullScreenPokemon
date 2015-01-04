@@ -259,7 +259,7 @@ function MapsHandlr(settings) {
             attribute = screenAttributes[i];
             MapScreener[attribute] = areaCurrent[attribute];
         }
-        
+
         // Reset the prethings object, enabling it to be used as a fresh start
         // for the new Area/Location placements
         prethings = MapsCreator.getPreThings(location.area);

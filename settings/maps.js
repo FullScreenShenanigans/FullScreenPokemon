@@ -73,7 +73,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 40 },
                         { "thing": "Table3x3", "x": 24, "y": 32 },
                         { "thing": "FlowerVase", "x": 29, "y": 34 },
-                        { "thing": "Mother", "x": 40, "y": 28 },
+                        { "thing": "Mother", "x": 40, "y": 32 },
                         { "thing": "Doormat", "x": 16, "y": 56, "width": 16 }
                     ]
                 }

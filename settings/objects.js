@@ -55,10 +55,10 @@
             "Area": {
                 "background": "black",
                 "afters": [
-                    { "thing": "InvisibleWall" },
-                    { "thing": "InvisibleWall" },
-                    { "thing": "InvisibleWall" },
-                    { "thing": "InvisibleWall" }
+                    { "thing": "InvisibleWall", "noBoundaryStretch": true },
+                    { "thing": "InvisibleWall", "noBoundaryStretch": true },
+                    { "thing": "InvisibleWall", "noBoundaryStretch": true },
+                    { "thing": "InvisibleWall", "noBoundaryStretch": true }
                 ]
             },
             "Location": {
@@ -97,7 +97,14 @@
                 "onWalkingStart": FullScreenPokemon.prototype.animatePlayerStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animatePlayerStopWalking,
                 "getKeys": function () {
-                    return [false, false, false, false];
+                    return {
+                        "0": false,
+                        "1": false,
+                        "2": false,
+                        "3": false,
+                        "a": false,
+                        "b": false
+                    };
                 }
             },
             "Solid": {

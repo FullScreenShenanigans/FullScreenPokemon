@@ -7,7 +7,9 @@ FullScreenPokemon.prototype.settings.input = {
             "up":     [87, 38, 32], // w,     up,    space
             "down":   [83, 40],     // s,     down
             "sprint": [16, 17],     // shift, ctrl
-            "pause":  [80],         // p (pause)
+            "pause":  [80],         // p
+            "a":      [90],         // z
+            "b":      [88],         // x
             // Mouse aliases
             "rightclick": [3],
         },
@@ -17,6 +19,8 @@ FullScreenPokemon.prototype.settings.input = {
                 "right": FullScreenPokemon.prototype.keyDownRight,
                 "up": FullScreenPokemon.prototype.keyDownUp,
                 "down": FullScreenPokemon.prototype.keyDownDown,
+                "a": FullScreenPokemon.prototype.keyDownA,
+                "b": FullScreenPokemon.prototype.keyDownB,
                 "pause": FullScreenPokemon.prototype.keyDownPause,
                 "mute": FullScreenPokemon.prototype.keyDownMute,
             },
@@ -25,6 +29,8 @@ FullScreenPokemon.prototype.settings.input = {
                 "right": FullScreenPokemon.prototype.keyUpRight,
                 "up": FullScreenPokemon.prototype.keyUpUp,
                 "down": FullScreenPokemon.prototype.keyUpDown,
+                "a": FullScreenPokemon.prototype.keyUpA,
+                "b": FullScreenPokemon.prototype.keyUpB,
                 "pause": FullScreenPokemon.prototype.keyUpPause
             },
             "onmousedown": {

@@ -358,6 +358,38 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     */
+    function keyDownA(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+        if (player.bordering[player.direction]) {
+            console.log("Bordering", player.bordering[player.direction]);
+        }
+
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownA");
+
+        event.preventDefault();
+    }
+
+    /**
+     * 
+     */
+    function keyDownB(player, event) {
+        if (player.EightBitter.GamesRunner.getPaused()) {
+            return;
+        }
+
+
+
+        player.EightBitter.ModAttacher.fireEvent("onKeyDownB");
+
+        event.preventDefault();
+    }
+
+    /**
+     * 
      * @param {Player} player
      */
     function keyDownPause(player, event) {
@@ -430,6 +462,28 @@ var FullScreenPokemon = (function (GameStartr) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpDown");
 
         player.keys[2] = false;
+
+        event.preventDefault();
+    }
+
+    /*
+     * 
+     */
+    function keyUpA(player, event) {
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpA");
+
+        player.keys.a = false;
+
+        event.preventDefault();
+    }
+
+    /**
+     * 
+     */
+    function keyUpB(player, event) {
+        player.EightBitter.ModAttacher.fireEvent("onKeyUpB");
+
+        player.keys.b = false;
 
         event.preventDefault();
     }
@@ -1080,12 +1134,16 @@ var FullScreenPokemon = (function (GameStartr) {
         "keyDownRight": keyDownRight,
         "keyDownUp": keyDownUp,
         "keyDownDown": keyDownDown,
+        "keyDownA": keyDownA,
+        "keyDownB": keyDownB,
         "keyDownPause": keyDownPause,
         "keyDownMute": keyDownMute,
         "keyUpLeft": keyUpLeft,
         "keyUpRight": keyUpRight,
         "keyUpUp": keyUpUp,
         "keyUpDown": keyUpDown,
+        "keyUpA": keyUpA,
+        "keyUpB": keyUpB,
         "keyUpPause": keyUpPause,
         "mouseDownRight": mouseDownRight,
         // Upkeep maintenance
