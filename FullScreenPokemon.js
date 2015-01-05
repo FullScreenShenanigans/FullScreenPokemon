@@ -579,7 +579,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (!thing.cycles || !thing.cycles.walking) {
             thing.EightBitter.TimeHandler.addClassCycle(
-                thing, ["walking", "standing"], "walking", 10
+                thing, ["walking", "standing"], "walking", 7
             );
         }
 
