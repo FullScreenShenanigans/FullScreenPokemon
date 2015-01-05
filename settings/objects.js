@@ -11,11 +11,13 @@
             "Thing": {
                 "Character": {
                     "Mother": {},
-                    "Player": {}
+                    "Player": {},
+                    "RivalMother": {}
                 },
                 "Solid": {
                     "BedSingle": {},
                     "Bookshelf": {},
+                    "Cabinet": {},
                     "ComputerDesk": {},
                     "ConsoleAndController": {},
                     "FenceWide": {},
@@ -55,7 +57,9 @@
                     "Doormat": {},
                     "Flower": {},
                     "FlowerVase": {},
+                    "Painting": {},
                     "Stool": {},
+                    "Window": {},
                     "WindowBlinds": {}
                 },
                 "Terrain": {
@@ -142,6 +146,7 @@
             },
             "BedSingle": [8, 16],
             "Bookshelf": [8, 16],
+            "Cabinet": [8, 16],
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
             "FenceVertical": [4, 8],
