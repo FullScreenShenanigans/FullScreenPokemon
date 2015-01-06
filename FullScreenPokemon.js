@@ -531,6 +531,51 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.ThingHitter.checkHitsOf[character.title](character);
         }
     }
+    
+    /**
+     * 
+     */
+    function maintainPlayer(EightBitter, player) {
+        if (!player || !player.alive) {
+            return;
+        }
+        
+        var scrollability = EightBitter.MapScreener.scrollability;
+        
+        if (scrollability === "none") {
+            return;
+        }
+        
+        EightBitter.scrollWindow(
+            EightBitter.getHorizontalScrollAmount(EightBitter),
+            EightBitter.getVerticalScrollAmount(EightBitter)
+        );
+        
+    }
+    
+    function getHorizontalScrollAmount(EightBitter) {
+        if (!EightBitter.player.xvel) {
+            return 0;
+        }
+        
+        if (EightBitter.player.xvel > 0) {
+            return EightBitter.player.bordering[1] ? 0 : EightBitter.player.xvel;
+        } else {
+            return EightBitter.player.bordering[3] ? 0 : EightBitter.player.xvel;
+        }
+    }
+    
+    function getVerticalScrollAmount(EightBitter) {
+        if (!EightBitter.player.yvel) {
+            return 0;
+        }
+        
+        if (EightBitter.player.yvel > 0) {
+            return EightBitter.player.bordering[2] ? 0 : EightBitter.player.yvel;
+        } else {
+            return EightBitter.player.bordering[0] ? 0 : EightBitter.player.yvel;
+        }
+    }
 
 
     /* Character movement
@@ -1392,6 +1437,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "mouseDownRight": mouseDownRight,
         // Upkeep maintenance
         "maintainCharacters": maintainCharacters,
+        "maintainPlayer": maintainPlayer,
+        "getHorizontalScrollAmount": getHorizontalScrollAmount,
+        "getVerticalScrollAmount": getVerticalScrollAmount,
         // Character movement
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
         "animateCharacterStartWalking": animateCharacterStartWalking,

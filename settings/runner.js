@@ -22,6 +22,9 @@ FullScreenPokemon.prototype.settings.runner = {
             this.maintainCharacters(this, this.GroupHolder.getCharacterGroup());
         },
         function () {
+            this.maintainPlayer(this, this.player)
+        },
+        function () {
             this.TimeHandler.handleEvents();
         }
     ]
