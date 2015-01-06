@@ -1,7 +1,6 @@
 FullScreenPokemon.prototype.settings.maps = {
-    //"mapDefault": "Pallet Town",
-    //"locationDefault": "Player's House Door",
-    "mapDefault": "Oak's Lab",
+    "mapDefault": "Pallet Town",
+    "locationDefault": "Player's House Door",
     "groupTypes": ["Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],

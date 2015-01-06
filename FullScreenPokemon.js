@@ -895,14 +895,16 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function isThingOverlappingOther(thing, other) {
         if (
-            Math.abs(thing.top - other.top) < thing.EightBitter.unitsize
+            thing.direction % 2 === 0
+            && Math.abs(thing.top - other.top) < thing.EightBitter.unitsize
             && Math.abs(thing.bottom - other.bottom) < thing.EightBitter.unitsize
         ) {
             return true;
         }
 
         if (
-            Math.abs(thing.left - other.left) < thing.EightBitter.unitsize
+            thing.direction % 2 === 1
+            && Math.abs(thing.left - other.left) < thing.EightBitter.unitsize
             && Math.abs(thing.right - other.right) < thing.EightBitter.unitsize
         ) {
             return true;
@@ -1245,15 +1247,35 @@ var FullScreenPokemon = (function (GameStartr) {
             door, i;
 
         y += 16;
-        for (i = 1; i < stories; i += 1) {
+        for (i = 2; i < stories; i += 1) {
             output.push({
-                "thing": "HouseCenter",
+                "thing": "HouseCenterLeft",
                 "x": x,
                 "y": y,
-                "width": width
-            })
+                // "width": width
+            });
+            output.push({
+                "thing": "HouseCenterRight",
+                "x": x + 16,
+                "y": y,
+                "width": width - 16
+            });
             y += 8;
         }
+        
+        output.push({
+            "thing": "HouseCenterLeft",
+            "x": x,
+            "y": y,
+            // "width": width
+        });
+        output.push({
+            "thing": "HouseCenterRight",
+            "x": x + 16,
+            "y": y,
+            "width": width - 16
+        });
+        y += 8;
 
         if (!reference.noDoor) {
             door = {

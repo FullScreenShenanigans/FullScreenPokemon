@@ -26,8 +26,10 @@
                     "Grass": {},
                     "HouseBase": {
                         "HouseTop": {},
-                        "HouseCenter": {}
                     },
+                    "HouseCenterLeft": {},
+                    "HouseCenterMiddle": {},
+                    "HouseCenterRight": {},
                     "HouseLargeBase": {
                         "HouseLargeTopLeft": {},
                         "HouseLargeTopMiddle": {},
@@ -171,9 +173,9 @@
                 "height": 16,
                 "spritewidth": 16
             },
-            "HouseCenter": {
-                "spritewidth": 8
-            },
+            // "HouseCenter": {
+                // "spritewidth": 8
+            // },
             "HouseLargeBase": {
                 "width": 48,
                 "height": 20,
