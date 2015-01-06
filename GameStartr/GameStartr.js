@@ -614,6 +614,7 @@ var GameStartr = (function (EightBittr) {
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
     function thingProcess(thing, type, settings, defaults) {
+
         // If the Thing doesn't specify its own title, use the type by default
         thing.title = thing.title || type;
 

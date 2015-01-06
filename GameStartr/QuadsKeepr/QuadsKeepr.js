@@ -41,7 +41,7 @@
  *     };
  * 
  * QuadsKeeper.resetQuadrants();
- * QuadsKeeper.determineThingQuadrants(thing);
+ * QuadsKeeper.determinekeyQuadrants(thing);
  * 
  * // 4
  * console.log(thing.numquads);
@@ -141,17 +141,19 @@ function QuadsKeepr(settings) {
         // How tall Quadrants should be.
         quadrantHeight,
 
-        // Names under which external Things should store Quadrant information
-        thingTop,
-        thingRight,
-        thingBottom,
-        thingLeft,
-        thingNumQuads,
-        thingQuadrants,
-        thingChanged,
-        thingToleranceX,
-        thingToleranceY,
-        thingGroupName,
+        // Names under which external Things should store information
+        keyTop,
+        keyRight,
+        keyBottom,
+        keyLeft,
+        keyNumQuads,
+        keyQuadrants,
+        keyChanged,
+        keyToleranceX,
+        keyToleranceY,
+        keyGroupName,
+        keyOffsetX,
+        keyOffsetY,
         
         // An Array of string names a Thing may be placed into 
         groupNames,
@@ -179,29 +181,34 @@ function QuadsKeepr(settings) {
      *                               edge (rounded; by default, 0).
      * @param {Number} [startTop]   A Number to use as the initial vertical
      *                               edge (rounded; by default, 0).
-     * @param {String} [thingTop]   The key under which Things store their top
+     * @param {String} [keyTop]   The key under which Things store their top
      *                               (by default, "top").
-     * @param {String} [thingRight]   The key under which Things store their 
+     * @param {String} [keyRight]   The key under which Things store their 
      *                                right (by default, "right").
-     * @param {String} [thingBottom]   The key under which Things store their
+     * @param {String} [keyBottom]   The key under which Things store their
      *                                 bottom (by default, "bottom").
-     * @param {String} [thingLeft]   The key under which Things store their left
+     * @param {String} [keyLeft]   The key under which Things store their left
      *                               (by default, "left").
-     * @param {String} [thingNumQuads]   The key under which Things store their
+     * @param {String} [keyNumQuads]   The key under which Things store their
      *                                   number of quadrants (by default, 
      *                                   "numquads").
-     * @param {String} [thingChanged]   The key under which Things store whether
+     * @param {String} [keyChanged]   The key under which Things store whether
      *                                  they've changed visually (by default,
      *                                  "changed").
-     * @param {String} [thingToleranceX]   The key under which Things store 
+     * @param {String} [keyToleranceX]   The key under which Things store 
      *                                     horizontal tolerance (by default,
      *                                     "tolx").
-     * @param {String} [thingToleranceY]   The key under which Things store 
+     * @param {String} [keyToleranceY]   The key under which Things store 
      *                                     vertical tolerance (by default,
      *                                     "toly").
-     * @param {String} [thingGroupName]   The key under which Things store which
+     * @param {String} [keyGroupName]   The key under which Things store which
      *                                    group they fall under (by default,
      *                                    "group").
+     * @param {String} [keyOffsetX]   An attribute name for a Thing's 
+     *                                horizontal offset (if not given, 
+     *                                ignored).
+     * @param {String} [keyOffsetY]   The attribute name for a Thing's vertical
+     *                                offset (if not given, ignored).
      */
     self.reset = function (settings) {
         ObjectMaker = settings.ObjectMaker;
@@ -245,16 +252,18 @@ function QuadsKeepr(settings) {
         startLeft = settings.startLeft | 0;
         startTop = settings.startTop | 0;
         
-        thingTop = settings.thingTop || "top";
-        thingLeft = settings.thingLeft || "left";
-        thingBottom = settings.thingBottom || "bottom";
-        thingRight = settings.thingRight || "right";
-        thingNumQuads = settings.thingNumQuads || "numquads";
-        thingQuadrants = settings.thingQuadrants || "quadrants";
-        thingChanged = settings.thingChanged || "changed";
-        thingToleranceX = settings.thingToleranceX || "tolx";
-        thingToleranceY = settings.thingToleranceY || "toly";
-        thingGroupName = settings.thingGroupName || "group";
+        keyTop = settings.keyTop || "top";
+        keyLeft = settings.keyLeft || "left";
+        keyBottom = settings.keyBottom || "bottom";
+        keyRight = settings.keyRight || "right";
+        keyNumQuads = settings.keyNumQuads || "numquads";
+        keyQuadrants = settings.keyQuadrants || "quadrants";
+        keyChanged = settings.keyChanged || "changed";
+        keyToleranceX = settings.keyToleranceX || "tolx";
+        keyToleranceY = settings.keyToleranceY || "toly";
+        keyGroupName = settings.keyGroupName || "group";
+        keyOffsetX = settings.offsetX;
+        keyOffsetY = settings.offsetY;
     };
     
     
@@ -820,7 +829,7 @@ function QuadsKeepr(settings) {
      * @param {Thing} thing
      */
     self.determineThingQuadrants = function (thing) {
-        var group = thing[thingGroupName],
+        var group = thing[keyGroupName],
             rowStart = findQuadrantRowStart(thing),
             colStart = findQuadrantColStart(thing),
             rowEnd = findQuadrantRowEnd(thing),
@@ -829,12 +838,12 @@ function QuadsKeepr(settings) {
         
         // Mark each of the Thing's Quadrants as changed
         // This is done first because the old Quadrants are changed
-        if (thing[thingChanged]) {
+        if (thing[keyChanged]) {
             markThingQuadrantsChanged(thing);
         }
         
         // The Thing no longer has any Quadrants: rebuild them!
-        thing[thingNumQuads] = 0;
+        thing[keyNumQuads] = 0;
         
         for (row = rowStart; row <= rowEnd; row += 1) {
             for (col = colStart; col <= colEnd; col += 1) {
@@ -845,7 +854,7 @@ function QuadsKeepr(settings) {
         }
         
         // The thing is no longer considered changed, since quadrants know it
-        thing[thingChanged] = false;
+        thing[keyChanged] = false;
     };
     
     /**
@@ -859,16 +868,74 @@ function QuadsKeepr(settings) {
      */
     self.setThingInQuadrant = function (thing, quadrant, group) {
         // Mark the Quadrant in the Thing
-        thing[thingQuadrants][thing[thingNumQuads]] = quadrant;
-        thing[thingNumQuads] += 1;
+        thing[keyQuadrants][thing[keyNumQuads]] = quadrant;
+        thing[keyNumQuads] += 1;
         
         // Mark the Thing in the Quadrant
         quadrant.things[group][quadrant.numthings[group]] = thing;
         quadrant.numthings[group] += 1;
         
         // If necessary, mark the Quadrant as changed
-        if (thing[thingChanged]) {
+        if (thing[keyChanged]) {
             quadrant.changed = true;
+        }
+    }
+
+
+
+
+    /* Position utilities (which will almost always become very optimized)
+    */
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's top position, accounting for vertical
+     *                  offset if needed.
+     */
+    function getTop(thing) {
+        if (keyOffsetY) {
+            return thing[keyTop] - Math.abs(thing[keyOffsetY]);
+        } else {
+            return thing[keyTop];
+        }
+    }
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's right position, accounting for horizontal 
+     *                  offset if needed.
+     */
+    function getRight(thing) {
+        if (keyOffsetX) {
+            return thing[keyRight] + Math.abs(thing[keyOffsetX]);
+        } else {
+            return thing[keyRight];
+        }
+    }
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's bottom position, accounting for vertical
+     *                  offset if needed.
+     */
+    function getBottom(thing) {
+        if (keyOffsetX) {
+            return thing[keyBottom] + Math.abs(thing[keyOffsetY]);
+        } else {
+            return thing[keyBottom];
+        }
+    }
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's left position, accounting for horizontal 
+     *                  offset if needed.
+     */
+    function getLeft(thing) {
+        if (keyOffsetX) {
+            return thing[keyLeft] - Math.abs(thing[keyOffsetX]);
+        } else {
+            return thing[keyLeft];
         }
     }
     
@@ -876,8 +943,8 @@ function QuadsKeepr(settings) {
      * Marks all Quadrants a Thing is contained within as changed.
      */
     function markThingQuadrantsChanged(thing) {
-        for (var i = 0; i < thing[thingNumQuads]; i += 1) {
-            thing[thingQuadrants][i].changed = true;
+        for (var i = 0; i < thing[keyNumQuads]; i += 1) {
+            thing[keyQuadrants][i].changed = true;
         }
     }
     
@@ -886,7 +953,10 @@ function QuadsKeepr(settings) {
      * @param {Number} The index of the first row the Thing is inside.
      */
     function findQuadrantRowStart(thing) {
-        return Math.max(Math.floor((thing.top - self.top) / quadrantHeight), 0);
+        return Math.max(
+            Math.floor((getTop(thing) - self.top) / quadrantHeight),
+            0
+        );
     }
     
     /**
@@ -895,7 +965,8 @@ function QuadsKeepr(settings) {
      */
     function findQuadrantRowEnd(thing) {
         return Math.min(
-            Math.floor((thing.bottom - self.top) / quadrantHeight), numRows - 1
+            Math.floor((getBottom(thing) - self.top) / quadrantHeight),
+            numRows - 1
         );
     }
     
@@ -905,7 +976,8 @@ function QuadsKeepr(settings) {
      */
     function findQuadrantColStart(thing) {
         return Math.max(
-            Math.floor((thing.left - self.left) / quadrantWidth), 0
+            Math.floor((getLeft(thing) - self.left) / quadrantWidth),
+            0
         );
     }
     
@@ -915,7 +987,8 @@ function QuadsKeepr(settings) {
      */
     function findQuadrantColEnd(thing) {
         return Math.min(
-            Math.floor((thing.right - self.left) / quadrantWidth), numCols - 1
+            Math.floor((getRight(thing) - self.left) / quadrantWidth),
+            numCols - 1
         );
     }
     

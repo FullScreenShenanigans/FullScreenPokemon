@@ -18,52 +18,62 @@ function PixelDrawr(settings) {
         return new PixelDrawr(settings);
     }
     var self = this,
-        
+
         // A PixelRender used to obtain raw sprite data and canvases.
         PixelRender,
-        
+
         // A MapScreenr variable to be used for checking.
         MapScreener,
-        
+
         // The canvas element each Thing is to be drawn on.
         canvas,
-        
+
         // The 2D canvas context associated with the canvas.
         context,
-        
+
         // A separate canvas that keeps the background of the scene.
         backgroundCanvas,
-        
+
         // The 2D canvas context associated with the background canvas.
         backgroundContext,
-        
+
         // Arrays of Thing[]s that are to be drawn in each refill.
         thingArrays,
-        
+
         // Utility Function to create a canvas.
         createCanvas,
-        
+
         // How much to scale canvases on creation.
         unitsize,
-        
+
         // A utility function to generate a class key to get an object sprite
         generateObjectKey,
-        
+
         // The maximum size of a SpriteMultiple to pre-render.
         spriteCacheCutoff,
-        
+
         // Whether refills should skip redrawing the background each time.
         noRefill,
-        
+
         // For refillQuadrant, an Array of string names to refill (bottom-to-top)
         groupNames,
-        
+
         // How often the screen redraws. 1 is always, 2 is every other call, etc.
         framerateSkip,
-        
+
         // How many frames have been drawn so far
-        framesDrawn;
-    
+        framesDrawn,
+
+        // Names under which external Things should store information
+        keyHeight,
+        keyWidth,
+        keyTop,
+        keyRight,
+        keyBottom,
+        keyLeft,
+        keyOffsetX,
+        keyOffsetY;
+
     /**
      * Resets the PixelDrawr.
      * 
@@ -87,6 +97,23 @@ function PixelDrawr(settings) {
      * @param {Function} [generateObjectKey]   How to generate keys to retrieve
      *                                         sprites from PixelRender (by 
      *                                         default, Object.toString).
+     * @param {String} [keyWidth]   The attribute name for a Thing's width (by
+     *                              default, "width").
+     * @param {String} [keyHeight]   The attribute name for a Thing's height
+     *                               (by default, "height").
+     * @param {String} [keyTop]   The attribute name for a Thing's top (by 
+     *                            default, "top").
+     * @param {String} [keyRight]   The attribute name for a Thing's right (by
+     *                              default, "right").
+     * @param {String} [keyBottom]   The attribute name for a Thing's bottom
+     *                               (by default, "bottom").
+     * @param {String} [keyLeft]   The attribute name for a Thing's left (by
+     *                             default, "left").
+     * @param {String} [keyOffsetX]   An attribute name for a Thing's 
+     *                                horizontal offset (if not given, 
+     *                                ignored).
+     * @param {String} [keyOffsetY]   The attribute name for a Thing's vertical
+     *                                offset (if not given, ignored).
      */
     self.reset = function (settings) {
         PixelRender = settings.PixelRender;
@@ -99,6 +126,15 @@ function PixelDrawr(settings) {
         framerateSkip = settings.framerateSkip || 1;
         framesDrawn = 0;
 
+        keyWidth = settings.keyWidth || "width";
+        keyHeight = settings.keyHeight || "height";
+        keyTop = settings.keyTop || "top";
+        keyRight = settings.keyRight || "right";
+        keyBottom = settings.keyBottom || "bottom";
+        keyLeft = settings.keyLeft || "left";
+        keyOffsetX = settings.keyOffsetX;
+        keyOffsetY = settings.keyOffsetY;
+
         generateObjectKey = settings.generateObjectKey || function (object) {
             return object.toString();
         };
@@ -106,7 +142,7 @@ function PixelDrawr(settings) {
         self.resetBackground();
     };
 
-    
+
     /* Simple gets
     */
 
@@ -145,26 +181,26 @@ function PixelDrawr(settings) {
     self.getNoRefill = function () {
         return noRefill;
     };
-    
-    
+
+
 
     /* Simple sets
     */
-    
+
     /**
      * @param {Number} skip   How often refill calls should be skipped.
      */
     self.setFramerateSkip = function (skip) {
         framerateSkip = skip;
     };
-    
+
     /**
      * @param {Array[]} arrays   The Arrays to be redrawn during refill calls.
      */
     self.setThingArrays = function (arrays) {
         thingArrays = arrays;
     };
-    
+
     /**
      * Sets the currently drawn canvas and context, and recreates 
      * drawThingOnContextBound.
@@ -176,7 +212,7 @@ function PixelDrawr(settings) {
         context = canvas.getContext("2d");
         self.drawThingOnContextBound = self.drawThingOnContext.bind(self, context);
     };
-    
+
     /**
      * @param {Boolean} enabled   Whether refills should now skip redrawing the 
      *                            background each time. 
@@ -184,20 +220,20 @@ function PixelDrawr(settings) {
     self.setNoRefill = function (enabled) {
         noRefill = enabled;
     };
-    
-    
+
+
     /* Background manipulations
     */
-    
+
     /**
      * Creates a new canvas the size of MapScreener and sets the background
      * canvas to it, then recreates backgroundContext.
      */
     self.resetBackground = function () {
-        backgroundCanvas = createCanvas(MapScreener.width, MapScreener.height);
+        backgroundCanvas = createCanvas(MapScreener[keyWidth], MapScreener[keyHeight]);
         backgroundContext = backgroundCanvas.getContext("2d");
     };
-    
+
     /**
      * Refills the background canvas with a new fillStyle.
      * 
@@ -205,20 +241,20 @@ function PixelDrawr(settings) {
      */
     self.setBackground = function (fillStyle) {
         backgroundContext.fillStyle = fillStyle;
-        backgroundContext.fillRect(0, 0, MapScreener.width, MapScreener.height);
+        backgroundContext.fillRect(0, 0, MapScreener[keyWidth], MapScreener[keyHeight]);
     };
-    
+
     /**
      * Draws the background canvas onto the main canvas' context.
      */
     function drawBackground() {
         context.drawImage(backgroundCanvas, 0, 0);
     }
-    
-    
+
+
     /* Core rendering
     */
-    
+
     /**
      * Goes through all the motions of finding and parsing a Thing's sprite.
      * This should be called whenever the sprite's appearance changes.
@@ -231,10 +267,10 @@ function PixelDrawr(settings) {
         if (thing.hidden) {
             return;
         }
-        
+
         // PixelRender does most of the work in fetching the rendered sprite
         thing.sprite = PixelRender.decode(generateObjectKey(thing), thing);
-        
+
         // To do: remove dependency on .numSprites and spriteType
         if (thing.sprite.multiple) {
             thing.spriteType = thing.sprite.type;
@@ -245,10 +281,10 @@ function PixelDrawr(settings) {
             thing.spriteType = "normal";
             refillThingCanvasSingle(thing, thing.sprite);
         }
-        
+
         return self;
     }
-    
+
     /**
      * Simply draws a thing's sprite to its canvas by getting and setting
      * a canvas::imageData object via context.getImageData(...).
@@ -256,18 +292,18 @@ function PixelDrawr(settings) {
      * @param {Thing} thing   A Thing whose canvas must be updated.
      */
     function refillThingCanvasSingle(thing) {
-        if (thing.width < 1 || thing.height < 1) {
+        if (thing[keyWidth] < 1 || thing[keyHeight] < 1) {
             return;
         }
-        
+
         var canvas = thing.canvas,
             context = thing.context,
-            imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        
+            imageData = context.getImageData(0, 0, canvas[keyWidth], canvas[keyHeight]);
+
         PixelRender.memcpyU8(thing.sprite, imageData.data);
         context.putImageData(imageData, 0, 0);
     }
-    
+
     /**
      * For SpriteMultiples, this copies the sprite information for each 
      * sub-sprite into its own canvas, sets thing.sprites, then draws the newly
@@ -276,14 +312,14 @@ function PixelDrawr(settings) {
      * @param {Thing} thing   A Thing whose canvas and sprites must be updated.
      */
     function refillThingCanvasMultiple(thing) {
-        if (thing.width < 1 || thing.height < 1) {
+        if (thing[keyWidth] < 1 || thing[keyHeight] < 1) {
             return;
         }
-        
+
         var spritesRaw = thing.sprite,
             canvases = thing.canvases = {
                 "direction": spritesRaw.direction,
-                "multiple": true 
+                "multiple": true
             },
             canvas, context, imageData, i;
 
@@ -295,7 +331,7 @@ function PixelDrawr(settings) {
             context = canvas.getContext("2d");
 
             // Copy over this sprite's information the same way as refillThingCanvas
-            imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            imageData = context.getImageData(0, 0, canvas[keyWidth], canvas[keyHeight]);
             PixelRender.memcpyU8(spritesRaw.sprites[i], imageData.data);
             context.putImageData(imageData, 0, 0);
 
@@ -306,20 +342,20 @@ function PixelDrawr(settings) {
             }
             thing.numSprites += 1;
         }
-        
-        if (thing.width * thing.height < spriteCacheCutoff) {
-            thing.canvas.width = thing.width * unitsize;
-            thing.canvas.height = thing.height * unitsize;
+
+        if (thing[keyWidth] * thing[keyHeight] < spriteCacheCutoff) {
+            thing.canvas[keyWidth] = thing[keyWidth] * unitsize;
+            thing.canvas[keyHeight] = thing[keyHeight] * unitsize;
             drawThingOnContextMultiple(thing.context, thing.canvases, thing, 0, 0);
         } else {
-            thing.canvas.width = thing.canvas.height = 0;
+            thing.canvas[keyWidth] = thing.canvas[keyHeight] = 0;
         }
     }
-    
-    
+
+
     /* Core drawing
     */
-    
+
     /**
      * Called every upkeep to refill the entire main canvas. All Thing arrays
      * are made to call self.refillThingArray in order.
@@ -329,14 +365,14 @@ function PixelDrawr(settings) {
         if (framesDrawn % framerateSkip !== 0) {
             return;
         }
-        
+
         if (!noRefill) {
             drawBackground();
         }
-        
+
         thingArrays.forEach(self.refillThingArray);
     };
-    
+
     /**
      * Calls drawThingOnContext on each Thing in the Array.
      * 
@@ -345,7 +381,7 @@ function PixelDrawr(settings) {
     self.refillThingArray = function (array) {
         array.forEach(self.drawThingOnContextBound);
     };
-    
+
     /**
      * Refills the main canvas by calling refillQuadrants on each Quadrant in
      * the groups.
@@ -355,17 +391,17 @@ function PixelDrawr(settings) {
      */
     self.refillQuadrantGroups = function (groups) {
         var i;
-        
+
         framesDrawn += 1;
         if (framesDrawn % framerateSkip !== 0) {
             return;
         }
-        
+
         for (i = 0; i < groups.length; i += 1) {
             self.refillQuadrants(groups[i].quadrants);
         }
     };
-    
+
     /**
      * Refills (part of) the main canvas by drawing each Quadrant's canvas onto 
      * it.
@@ -374,35 +410,35 @@ function PixelDrawr(settings) {
      */
     self.refillQuadrants = function (quadrants) {
         var quadrant, i;
-        
+
         for (i = 0; i < quadrants.length; i += 1) {
             quadrant = quadrants[i];
             if (
                 quadrant.changed
-                && quadrant.top < MapScreener.height
-                && quadrant.right > 0
-                && quadrant.bottom > 0
-                && quadrant.left < MapScreener.width
+                && quadrant[keyTop] < MapScreener[keyHeight]
+                && quadrant[keyRight] > 0
+                && quadrant[keyBottom] > 0
+                && quadrant[keyLeft] < MapScreener[keyWidth]
             ) {
                 self.refillQuadrant(quadrant);
                 context.drawImage(
                     quadrant.canvas,
-                    quadrant.left,
-                    quadrant.top
+                    quadrant[keyLeft],
+                    quadrant[keyTop]
                 );
             }
         }
     };
-    
+
     // var letters = '0123456789ABCDEF'.split('');
     // function getRandomColor() {
-        // var color = '#';
-        // for (var i = 0; i < 6; i++ ) {
-            // color += letters[Math.floor(Math.random() * 16)];
-        // }
-        // return color;
+    // var color = '#';
+    // for (var i = 0; i < 6; i++ ) {
+    // color += letters[Math.floor(Math.random() * 16)];
     // }
-    
+    // return color;
+    // }
+
     /**
      * Refills a Quadrants's canvas by resetting its background and drawing all
      * its Things onto it.
@@ -412,36 +448,36 @@ function PixelDrawr(settings) {
      */
     self.refillQuadrant = function (quadrant) {
         var group, i, j;
-        
+
         // quadrant.context.fillStyle = getRandomColor();
-        // quadrant.context.fillRect(0, 0, quadrant.canvas.width, quadrant.canvas.height);
-        
+        // quadrant.context.fillRect(0, 0, quadrant.canvas[keyWidth], quadrant.canvas[keyHeight]);
+
         // This may be what's causing such bad performance.
         if (!noRefill) {
             quadrant.context.drawImage(
                 backgroundCanvas,
-                quadrant.left,
-                quadrant.top,
-                quadrant.canvas.width,
-                quadrant.canvas.height,
+                quadrant[keyLeft],
+                quadrant[keyTop],
+                quadrant.canvas[keyWidth],
+                quadrant.canvas[keyHeight],
                 0,
                 0,
-                quadrant.canvas.width,
-                quadrant.canvas.height
+                quadrant.canvas[keyWidth],
+                quadrant.canvas[keyHeight]
             );
         }
-        
+
         for (i = groupNames.length - 1; i >= 0; i -= 1) {
             group = quadrant.things[groupNames[i]];
-            
+
             for (j = 0; j < group.length; j += 1) {
                 self.drawThingOnQuadrant(group[j], quadrant);
             }
         }
-        
+
         quadrant.changed = false;
     };
-    
+
     /**
      * General Function to draw a Thing onto a context. This will call
      * drawThingOnContext[Single/Multiple] with more arguments
@@ -453,31 +489,31 @@ function PixelDrawr(settings) {
     self.drawThingOnContext = function (context, thing) {
         if (
             thing.hidden
-            || thing.height < 1
-            || thing.width < 1
-            // || thing.top > MapScreener.height
-            // || thing.right < 0
-            // || thing.bottom < 0
-            // || thing.left > MapScreener.width
+            || thing[keyHeight] < 1
+            || thing[keyWidth] < 1
+            || getTop(thing) > MapScreener[keyHeight]
+            || getRight(thing) < 0
+            || getBottom(thing) < 0
+            || getLeft(thing) > MapScreener[keyWidth]
         ) {
             return;
         }
-        
+
         // If Thing hasn't had a sprite yet (previously hidden), do that first
         if (typeof thing.numSprites === "undefined") {
             self.setThingSprite(thing);
         }
-        
+
         // Whether or not the thing has a regular sprite or a SpriteMultiple, 
         // that sprite has already been drawn to the thing's canvas, unless it's
         // above the cutoff, in which case that logic happens now.
-        if (thing.canvas.width > 0) {
-            drawThingOnContextSingle(context, thing.canvas, thing, thing.left, thing.top);
+        if (thing.canvas[keyWidth] > 0) {
+            drawThingOnContextSingle(context, thing.canvas, thing, getLeft(thing), getTop(thing));
         } else {
-            drawThingOnContextMultiple(context, thing.canvases, thing, thing.left, thing.top);
+            drawThingOnContextMultiple(context, thing.canvases, thing, getLeft(thing), getTop(thing));
         }
     }
-    
+
     /**
      * Draws a Thing onto a quadrant's canvas. This is a simple wrapper around
      * drawThingOnContextSingle/Multiple that also bounds checks.
@@ -488,24 +524,24 @@ function PixelDrawr(settings) {
     self.drawThingOnQuadrant = function (thing, quadrant) {
         if (
             thing.hidden
-            || thing.top > quadrant.bottom
-            || thing.right < quadrant.left
-            || thing.bottom < quadrant.top
-            || thing.left > quadrant.right
+            || getTop(thing) > quadrant[keyBottom]
+            || getRight(thing) < quadrant[keyLeft]
+            || getBottom(thing) < quadrant[keyTop]
+            || getLeft(thing) > quadrant[keyRight]
         ) {
             return;
         }
-        
+
         // If there's just one sprite, it's pretty simple
         if (thing.numSprites === 1) {
-            return drawThingOnContextSingle(quadrant.context, thing.canvas, thing, thing.left - quadrant.left, thing.top - quadrant.top);
+            return drawThingOnContextSingle(quadrant.context, thing.canvas, thing, getLeft(thing) - quadrant[keyLeft], getTop(thing) - quadrant[keyTop]);
         }
-        // For multiple sprites, some calculations will be needed
+            // For multiple sprites, some calculations will be needed
         else {
-            return drawThingOnContextMultiple(quadrant.context, thing.canvases, thing, thing.left - quadrant.left, thing.top - quadrant.top);
+            return drawThingOnContextMultiple(quadrant.context, thing.canvases, thing, getLeft(thing) - quadrant[keyLeft], getTop(thing) - quadrant[keyTop]);
         }
     };
-    
+
     /**
      * Draws a Thing's single canvas onto a context, commonly called by
      * self.drawThingOnContext.
@@ -521,7 +557,7 @@ function PixelDrawr(settings) {
         if (thing.repeat) {
             drawPatternOnCanvas(context, canvas, left, top, thing.unitwidth, thing.unitheight, thing.opacity || 1);
         }
-        // Opacities not equal to one must reset the context afterwards
+            // Opacities not equal to one must reset the context afterwards
         else if (thing.opacity !== 1) {
             context.globalAlpha = thing.opacity;
             context.drawImage(canvas, left, top);
@@ -530,7 +566,7 @@ function PixelDrawr(settings) {
             context.drawImage(canvas, left, top);
         }
     }
-    
+
     /**
      * Draws a Thing's multiple canvases onto a context, typicall called by
      * drawThingOnContext. A variety of cases for canvases is allowed:
@@ -556,73 +592,73 @@ function PixelDrawr(settings) {
             heightdrawn = Math.min(heightreal, spriteheightpixels),
             opacity = thing.opacity,
             diffhoriz, diffvert, canvasref;
-        
+
         switch (canvases.direction) {
             // Vertical sprites may have 'top', 'bottom', 'middle'
             case "vertical":
                 // If there's a bottom, draw that and push up bottomreal
-                if ((canvasref = canvases.bottom)) {
+                if ((canvasref = canvases[keyBottom])) {
                     diffvert = sprite.bottomheight ? sprite.bottomheight * unitsize : spriteheightpixels;
                     drawPatternOnCanvas(context, canvasref.canvas, leftreal, bottomreal - diffvert, widthreal, heightdrawn, opacity);
                     bottomreal -= diffvert;
                     heightreal -= diffvert;
                 }
                 // If there's a top, draw that and push down topreal
-                if ((canvasref = canvases.top)) {
+                if ((canvasref = canvases[keyTop])) {
                     diffvert = sprite.topheight ? sprite.topheight * unitsize : spriteheightpixels;
                     drawPatternOnCanvas(context, canvasref.canvas, leftreal, topreal, widthreal, heightdrawn, opacity);
                     topreal += diffvert;
                     heightreal -= diffvert;
                 }
-            break;
-            // Horizontal sprites may have 'left', 'right', 'middle'
+                break;
+                // Horizontal sprites may have 'left', 'right', 'middle'
             case "horizontal":
                 // If there's a left, draw that and push forward leftreal
-                if ((canvasref = canvases.left)) {
+                if ((canvasref = canvases[keyLeft])) {
                     diffhoriz = sprite.leftwidth ? sprite.leftwidth * unitsize : spritewidthpixels;
                     drawPatternOnCanvas(context, canvasref.canvas, leftreal, topreal, widthdrawn, heightreal, opacity);
                     leftreal += diffhoriz;
                     widthreal -= diffhoriz;
                 }
                 // If there's a right, draw that and push back rightreal
-                if ((canvasref = canvases.right)) {
+                if ((canvasref = canvases[keyRight])) {
                     diffhoriz = sprite.rightwidth ? sprite.rightwidth * unitsize : spritewidthpixels;
                     drawPatternOnCanvas(context, canvasref.canvas, rightreal - diffhoriz, topreal, widthdrawn, heightreal, opacity);
                     rightreal -= diffhoriz;
                     widthreal -= diffhoriz;
                 }
-            break;
-            // Corner (vertical + horizontal + corner) sprites must have corners
-            // in 'topRight', 'bottomRight', 'bottomLeft', and 'topLeft'.
+                break;
+                // Corner (vertical + horizontal + corner) sprites must have corners
+                // in 'topRight', 'bottomRight', 'bottomLeft', and 'topLeft'.
             case "corners":
                 // topLeft, left, bottomLeft
                 diffvert = sprite.topheight ? sprite.topheight * unitsize : spriteheightpixels;
                 diffhoriz = sprite.leftwidth ? sprite.leftwidth * unitsize : spritewidthpixels;
-                drawPatternOnCanvas(context, canvases.topLeft.canvas, leftreal, topreal, widthdrawn, heightdrawn, opacity);
-                drawPatternOnCanvas(context, canvases.left.canvas, leftreal, topreal + diffvert, widthdrawn, heightreal - diffvert * 2, opacity);
-                drawPatternOnCanvas(context, canvases.bottomLeft.canvas, leftreal, bottomreal - diffvert, widthdrawn, heightdrawn, opacity);
+                drawPatternOnCanvas(context, canvases.topleft.canvas, leftreal, topreal, widthdrawn, heightdrawn, opacity);
+                drawPatternOnCanvas(context, canvases[keyLeft].canvas, leftreal, topreal + diffvert, widthdrawn, heightreal - diffvert * 2, opacity);
+                drawPatternOnCanvas(context, canvases.bottomleft.canvas, leftreal, bottomreal - diffvert, widthdrawn, heightdrawn, opacity);
                 leftreal += diffhoriz;
                 widthreal -= diffhoriz;
-                
+
                 // top, topRight
                 diffhoriz = sprite.rightwidth ? sprite.rightwidth * unitsize : spritewidthpixels;
-                drawPatternOnCanvas(context, canvases.top.canvas, leftreal, topreal, widthreal - diffhoriz, heightdrawn, opacity);
-                drawPatternOnCanvas(context, canvases.topRight.canvas, rightreal - diffhoriz, topreal, widthdrawn, heightdrawn, opacity);
+                drawPatternOnCanvas(context, canvases[keyTop].canvas, leftreal, topreal, widthreal - diffhoriz, heightdrawn, opacity);
+                drawPatternOnCanvas(context, canvases.topright.canvas, rightreal - diffhoriz, topreal, widthdrawn, heightdrawn, opacity);
                 topreal += diffvert;
                 heightreal -= diffvert;
-                
+
                 // right, bottomLeft, bottom
                 diffvert = sprite.bottomheight ? sprite.bottomheight * unitsize : spriteheightpixels;
-                drawPatternOnCanvas(context, canvases.right.canvas, rightreal - diffhoriz, topreal, widthdrawn, heightreal - diffvert, opacity);
-                drawPatternOnCanvas(context, canvases.bottomRight.canvas, rightreal - diffhoriz, bottomreal - diffvert, widthdrawn, heightdrawn, opacity);
-                drawPatternOnCanvas(context, canvases.bottom.canvas, leftreal, bottomreal - diffvert, widthreal - diffhoriz, heightdrawn, opacity);
+                drawPatternOnCanvas(context, canvases[keyRight].canvas, rightreal - diffhoriz, topreal, widthdrawn, heightreal - diffvert, opacity);
+                drawPatternOnCanvas(context, canvases.bottomright.canvas, rightreal - diffhoriz, bottomreal - diffvert, widthdrawn, heightdrawn, opacity);
+                drawPatternOnCanvas(context, canvases[keyBottom].canvas, leftreal, bottomreal - diffvert, widthreal - diffhoriz, heightdrawn, opacity);
                 rightreal -= diffhoriz;
                 widthreal -= diffhoriz;
                 bottomreal -= diffvert;
                 heightreal -= diffvert;
-            break;
+                break;
         }
-        
+
         // If there's still room, draw the actual canvas
         if ((canvasref = canvases.middle) && topreal < bottomreal && leftreal < rightreal) {
             if (sprite.middleStretch) {
@@ -634,11 +670,67 @@ function PixelDrawr(settings) {
             }
         }
     }
-    
-    
+
+
+    /* Position utilities (which will almost always become very optimized)
+    */
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's top position, accounting for vertical
+     *                  offset if needed.
+     */
+    function getTop(thing) {
+        if (keyOffsetY) {
+            return thing[keyTop] + thing[keyOffsetY];
+        } else {
+            return thing[keyTop];
+        }
+    }
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's right position, accounting for horizontal 
+     *                  offset if needed.
+     */
+    function getRight(thing) {
+        if (keyOffsetX) {
+            return thing[keyRight] + thing[keyOffsetX];
+        } else {
+            return thing[keyRight];
+        }
+    }
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's bottom position, accounting for vertical
+     *                  offset if needed.
+     */
+    function getBottom(thing) {
+        if (keyOffsetX) {
+            return thing[keyBottom] + thing[keyOffsetY];
+        } else {
+            return thing[keyBottom];
+        }
+    }
+
+    /**
+     * @param {Thing} thing
+     * @return {Number} The Thing's left position, accounting for horizontal 
+     *                  offset if needed.
+     */
+    function getLeft(thing) {
+        if (keyOffsetX) {
+            return thing[keyLeft] + thing[keyOffsetX];
+        } else {
+            return thing[keyLeft];
+        }
+    }
+
+
     /* Utilities
     */
-    
+
     /**
      * Draws a source pattern onto a context. The pattern is clipped to the size
      * of MapScreener.
@@ -659,14 +751,14 @@ function PixelDrawr(settings) {
         context.translate(left, top);
         context.fillStyle = context.createPattern(source, "repeat");
         context.fillRect(
-            0, 0, 
-            Math.min(width, MapScreener.right - left), 
-            Math.min(height, MapScreener.bottom - top)
+            0, 0,
+            Math.min(width, MapScreener[keyRight] - left),
+            Math.min(height, MapScreener[keyBottom] - top)
         );
         context.translate(-left, -top);
         context.globalAlpha = 1;
     }
-    
-    
+
+
     self.reset(settings || {});
 }

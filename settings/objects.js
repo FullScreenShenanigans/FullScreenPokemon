@@ -54,7 +54,9 @@
                     }
                 },
                 "Scenery": {
+                    "Book": {},
                     "Doormat": {},
+                    "DoormatDotted": {},
                     "Flower": {},
                     "FlowerVase": {},
                     "Painting": {},
@@ -67,6 +69,7 @@
                     "DirtLight": {},
                     "DirtMedium": {},
                     "DirtWhite": {},
+                    "FloorLinedHorizontal": {},
                     "FloorTiledDiagonal": {},
                     "TerrainSmall": {
                         "TerrainSmallRepeating": {
@@ -87,6 +90,9 @@
             },
             "Area": {
                 "background": "black",
+                //"stretches": [
+                   ////{ "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
+                //],
                 "afters": [
                     { "thing": "InvisibleWall", "noBoundaryStretch": true },
                     { "thing": "InvisibleWall", "noBoundaryStretch": true },
@@ -109,18 +115,20 @@
                 "sprite": "",
                 "spriteType": "neither",
                 "opacity": 1,
+                "offsetX": 0,
+                "offsetY": 0,
                 // Movements
                 "direction": 2, // top,right,bottom,left is 0,1,2,3
-                "direction": 2,
                 "movement": undefined,
                 // Triggered Functions
-                "onMake": FullScreenPokemon.prototype.thingProcess,
+                "onMake": FullScreenPokemon.prototype.thingProcess
             },
             "Character": {
                 "groupType": "Character",
                 "speed": FullScreenPokemon.unitsize / 2,
                 "isWalking": false,
                 "shouldWalk": false,
+                "offsetY": FullScreenPokemon.unitsize * -2,
                 "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking
             },
@@ -204,9 +212,21 @@
                 "noStretchBoundaries": true
             },
             "WaterEdge": [4, 4],
+            "FloorLinedHorizontal": {
+                "spritewidth": .5,
+                "spriteheight": 2
+            },
             "Scenery": {
                 "groupType": "Scenery",
                 "repeat": true
+            },
+            "Doormat": {
+                "spritewidth": .5,
+                "spriteheight": 8
+            },
+            "DoormatDotted": {
+                "spritewidth": 3.5,
+                "spriteheight": 7.5
             },
             "Flower": {
                 "width": 4,

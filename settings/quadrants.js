@@ -3,5 +3,5 @@ FullScreenPokemon.prototype.settings.quadrants = {
     "numCols": 6,
     "tolerance": FullScreenPokemon.unitsize / 2,
     "groupNames": ["Solid", "Character", "Scenery", "Terrain"],
-    "thingGroupName": "groupType"
+    "keyGroupName": "groupType"
 }

@@ -60,32 +60,38 @@ called on the formerly contained area.
 * **[startTop]** *`Number`* - A Number to use as the initial vertical edge
 (rounded; by default, 0).
 
-* **[thingTop]** *`String`* - The key under which Things store their top
+* **[keyTop]** *`String`* - The key under which Things store their top
 (by default, "top").
 
-* **[thingRight]** *`String`* - The key under which Things store their 
+* **[keyRight]** *`String`* - The key under which Things store their 
 right (by default, "right").
 
-* **[thingBottom]** *`String`* - The key under which Things store their
+* **[keyBottom]** *`String`* - The key under which Things store their
 bottom (by default, "bottom").
 
-* **[thingLeft]** *`String`* - The key under which Things store their left
+* **[keyLeft]** *`String`* - The key under which Things store their left
 (by default, "left").
 
-* **[thingNumQuads]** *`String`* - The key under which Things store their
+* **[keyNumQuads]** *`String`* - The key under which Things store their
 number of quadrants (by default, "numquads").
 
-* **[thingChanged]** *`String`* -  The key under which Things store whether
+* **[keyChanged]** *`String`* -  The key under which Things store whether
 they've changed visually (by default, "changed").
 
-* **[thingToleranceX]** *`String`* - The key under which Things store 
+* **[keyToleranceX]** *`String`* - The key under which Things store 
 horizontal tolerance (by default, "tolx").
 
-* **[thingToleranceY]** *`String`* - The key under which Things store 
+* **[keyToleranceY]** *`String`* - The key under which Things store 
 vertical tolerance (by default, "toly").
 
-* **[thingGroupName]** *`String`* - The key under which Things store which
+* **[keyGroupName]** *`String`* - The key under which Things store which
 group they fall under (by default, "group").
+
+* **[keyOffsetX]** *`Number`* - The attribute name for a Thing's horizontal
+offset (by default, "width").
+
+* **[keyOffsetY]** *`Number`* - The attribute name for a Thing's vertical
+(by default, "width").
 
 
 ## Sample Usage

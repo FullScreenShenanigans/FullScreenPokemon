@@ -70,3 +70,27 @@ every time).
 
 * **[generateObjectKey]** *`Function`* - How to generate keys to retrieve
 sprites from PixelRender (by default, Object.toString).
+
+* **[keyWidth]** *`Number`* - The attribute name for a Thing's width (by 
+default, "width").
+
+* **[keyHeight]** *`Number`* - The attribute name for a Thing's height (by 
+default, "width").
+
+* **[keyTop]** *`Number`* - The attribute name for a Thing's top (by 
+default, "width").
+
+* **[keyRight]** *`Number`* - The attribute name for a Thing's right (by
+default, "width").
+
+* **[keyBottom]** *`Number`* - The attribute name for a Thing's bottom (by
+default, "width").
+
+* **[keyLeft]** *`Number`* - The attribute name for a Thing's left (by default,
+"width").
+
+* **[keyOffsetX]** *`Number`* - The attribute name for a Thing's horizontal
+offset (by default, "width").
+
+* **[keyOffsetY]** *`Number`* - The attribute name for a Thing's vertical
+(by default, "width").
