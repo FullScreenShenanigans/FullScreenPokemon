@@ -531,7 +531,7 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.ThingHitter.checkHitsOf[character.title](character);
         }
     }
-    
+
     /**
      * 
      */
@@ -539,37 +539,37 @@ var FullScreenPokemon = (function (GameStartr) {
         if (!player || !player.alive) {
             return;
         }
-        
+
         var scrollability = EightBitter.MapScreener.scrollability;
-        
+
         if (scrollability === "none") {
             return;
         }
-        
+
         EightBitter.scrollWindow(
             EightBitter.getHorizontalScrollAmount(EightBitter),
             EightBitter.getVerticalScrollAmount(EightBitter)
         );
-        
+
     }
-    
+
     function getHorizontalScrollAmount(EightBitter) {
         if (!EightBitter.player.xvel) {
             return 0;
         }
-        
+
         if (EightBitter.player.xvel > 0) {
             return EightBitter.player.bordering[1] ? 0 : EightBitter.player.xvel;
         } else {
             return EightBitter.player.bordering[3] ? 0 : EightBitter.player.xvel;
         }
     }
-    
+
     function getVerticalScrollAmount(EightBitter) {
         if (!EightBitter.player.yvel) {
             return 0;
         }
-        
+
         if (EightBitter.player.yvel > 0) {
             return EightBitter.player.bordering[2] ? 0 : EightBitter.player.yvel;
         } else {
@@ -1145,19 +1145,72 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function centerMapScreen(EightBitter) {
-        var boundaries = EightBitter.MapScreener.boundaries,
-            difference;
+        switch (EightBitter.MapScreener.scrollability) {
+            case "none":
+                EightBitter.centerMapScreenHorizontally(EightBitter);
+                EightBitter.centerMapScreenVertically(EightBitter);
+                return;
+            case "vertical":
+                EightBitter.centerMapScreenHorizontally(EightBitter);
+                EightBitter.centerMapScreenVerticallyOnPlayer(EightBitter);
+                return;
+            case "horizontal":
+                EightBitter.centerMapScreenHorizontallyOnPlayer(EightBitter);
+                EightBitter.centerMapScreenVertically(EightBitter);
+                return;
+            case "both":
+                EightBitter.centerMapScreenHorizontallyOnPlayer(EightBitter);
+                EightBitter.centerMapScreenVerticallyOnPlayer(EightBitter);
+                return;
+        }
+    }
 
-        difference = EightBitter.MapScreener.width - boundaries.width;
+    /**
+     * 
+     */
+    function centerMapScreenHorizontally(EightBitter) {
+        var boundaries = EightBitter.MapScreener.boundaries,
+            difference = EightBitter.MapScreener.width - boundaries.width;
+
         if (difference > 0) {
             EightBitter.scrollWindow(difference / -2);
         }
+    }
 
-        difference = EightBitter.MapScreener.height - boundaries.height;
-        if (difference > 0) {
-            EightBitter.scrollWindow(0, difference / -2);
+    /**
+     * 
+     */
+    function centerMapScreenVertically(EightBitter) {
+        var boundaries = EightBitter.MapScreener.boundaries,
+            difference = EightBitter.MapScreener.height - boundaries.height;
+
+        EightBitter.scrollWindow(0, difference / -2);
+    }
+
+    /**
+     * 
+     */
+    function centerMapScreenHorizontallyOnPlayer(EightBitter) {
+        var boundaries = EightBitter.MapScreener.boundaries,
+            difference = EightBitter.getMidX(EightBitter.player) - EightBitter.MapScreener.middleX;
+
+        if (Math.abs(difference) > 0) {
+            EightBitter.scrollWindow(difference);
         }
     }
+
+    /**
+     * 
+     */
+    function centerMapScreenVerticallyOnPlayer(EightBitter) {
+        var boundaries = EightBitter.MapScreener.boundaries,
+            difference = EightBitter.getMidY(EightBitter.player) - EightBitter.MapScreener.middleY;
+
+        if (Math.abs(difference) > 0) {
+            EightBitter.scrollWindow(0, difference);
+        }
+    }
+
 
     /**
      * 
@@ -1168,11 +1221,11 @@ var FullScreenPokemon = (function (GameStartr) {
             location.yloc ? location.yloc * EightBitter.unitsize : 0
         );
 
-        EightBitter.centerMapScreen(EightBitter);
         EightBitter.animateCharacterSetDirection(
             EightBitter.player,
             EightBitter.MapScreener.playerDirection
         );
+        EightBitter.centerMapScreen(EightBitter);
     }
 
 
@@ -1307,7 +1360,7 @@ var FullScreenPokemon = (function (GameStartr) {
             });
             y += 8;
         }
-        
+
         output.push({
             "thing": "HouseCenterLeft",
             "x": x,
@@ -1472,6 +1525,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "mapAddAfter": mapAddAfter,
         // Map entrances
         "centerMapScreen": centerMapScreen,
+        "centerMapScreenHorizontally": centerMapScreenHorizontally,
+        "centerMapScreenVertically": centerMapScreenVertically,
+        "centerMapScreenHorizontallyOnPlayer": centerMapScreenHorizontallyOnPlayer,
+        "centerMapScreenVerticallyOnPlayer": centerMapScreenVerticallyOnPlayer,
         "mapEntranceNormal": mapEntranceNormal,
         // Map macros
         "macroCheckered": macroCheckered,

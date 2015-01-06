@@ -117,7 +117,6 @@ function MapScreenr(settings) {
      * Computes middleY as the midpoint between top and bottom.
      */
     function setMiddleY() {
-        console.log("oh", self.top, self.bottom);
         self.middleY = (self.top + self.bottom) / 2;
     }
     
