@@ -12,7 +12,8 @@
                 "Character": {
                     "Mother": {},
                     "Player": {},
-                    "RivalMother": {}
+                    "RivalMother": {},
+                    "Pokeball": {}
                 },
                 "Solid": {
                     "BedSingle": {},
@@ -37,8 +38,9 @@
                     "InvisibleWall": {},
                     "PottedPalmTree": {},
                     "Sign": {},
-                    "Table3x2": {},
-                    "Table3x3": {},
+                    "Table2x2": {},
+                    "Table2x3": {},
+                    "Table3x1": {},
                     "TelevisionMonitor": {},
                     "Transporter": {
                         "Door": {},
@@ -195,9 +197,11 @@
             "InvisibleWall": {
                 "hidden": true
             },
+            "LabComputer": [16, 8],
             "PottedPalmTree": [8, 16],
-            "Table3x2": [16, 16],
-            "Table3x3": [16, 16],
+            "Table2x2": [16, 16],
+            "Table2x3": [16, 16],
+            "Table3x1": [24, 12],
             "Transporter": {
                 "collide": FullScreenPokemon.prototype.collideTransporter,
                 "activate": FullScreenPokemon.prototype.activateTransporter,

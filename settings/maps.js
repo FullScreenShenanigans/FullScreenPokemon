@@ -1,6 +1,7 @@
 FullScreenPokemon.prototype.settings.maps = {
-    "mapDefault": "Pallet Town",
-    "locationDefault": "Player's House Door",
+    //"mapDefault": "Pallet Town",
+    //"locationDefault": "Player's House Door",
+    "mapDefault": "Oak's Lab",
     "groupTypes": ["Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
@@ -21,11 +22,11 @@ FullScreenPokemon.prototype.settings.maps = {
     "library": (function (maps) {
         var library = {},
             i;
-        
+
         for (i = 0; i < maps.length; i += 1) {
             library[maps[i].name] = maps[i];
         }
-        
+
         return library;
     })([
         {
@@ -66,7 +67,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 56, "xnum": 2, "ynum": 6 },
                         { "thing": "DirtLight", "x": 32, "y": 56, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 56, "xnum": 2, "ynum": 6 },
-                        { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "stories": 2, "white": { "start": 84, "end": 96 } },
+                        { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "stories": 2, "white": { "start": 84, "end": 96 }, "entrance": "Oak's Lab Door", "transport": { "map": "Oak's Lab", "location": "Ground Floor Door" } },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 56, "xnum": 8, "ynum": 4 },
                         { "thing": "FenceVertical", "x": 32, "y": 64, "width": 24 },
                         { "thing": "Sign", "x": 56, "y": 64, "text": ["Palette Town", "Shades of your journey await!"] },
@@ -121,14 +122,14 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Bookshelf", "width": 16 },
                         { "thing": "TelevisionMonitor", "x": 24, "y": 8 },
                         { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Ground Floor Stairs", "transport": "Bedroom Stairs" },
-                        { "thing": "Table3x3", "x": 24, "y": 32 },
-                        { "thing": "Stool", "x": 16, "y": 24 },
+                        { "thing": "Table2x3", "x": 24, "y": 32 },
                         { "thing": "Stool", "x": 16, "y": 32 },
-                        { "thing": "Stool", "x": 40, "y": 24 },
+                        { "thing": "Stool", "x": 16, "y": 40 },
                         { "thing": "Stool", "x": 40, "y": 32 },
+                        { "thing": "Stool", "x": 40, "y": 40 },
                         { "thing": "FlowerVase", "x": 29, "y": 34 },
                         { "thing": "Mother", "x": 40, "y": 32 },
-                        { "thing": "Doormat", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
+                        { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Player's House Door" }, "requireDirection": 2 }
                     ]
                 },
@@ -138,7 +139,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
                         { "thing": "ComputerDesk" },
-                        { "thing": "Table3x2", "x": 8 },
+                        { "thing": "Table2x2", "x": 8 },
                         { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs", "transport": "Ground Floor Stairs" },
                         { "thing": "WindowBlinds", "x": 40 },
                         { "thing": "WindowBlinds", "x": 56 },
@@ -167,7 +168,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Painting", "x": 24 },
                         { "thing": "Window", "x": 40 },
                         { "thing": "Bookshelf", "x": 56 },
-                        { "thing": "Table3x3", "x": 24, "y": 24 },
+                        { "thing": "Table2x3", "x": 24, "y": 24 },
                         { "thing": "Book", "x": 24, "y": 24 },
                         { "thing": "RivalMother", "x": 16, "y": 24 },
                         { "thing": "Stool", "x": 16, "y": 24 },
@@ -176,8 +177,38 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 32 },
                         { "thing": "PottedPalmTree", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 56, "y": 48 },
-                        { "thing": "Doormat", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
+                        { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Rival's House Door" }, "requireDirection": 2 }
+                    ]
+                }
+            }
+        }, {
+            "name": "Oak's Lab",
+            "locations": {
+                "Ground Floor Door": {
+                    "area": "Ground Floor"
+                }
+            },
+            "locationDefault": "Ground Floor Door",
+            "areas": {
+                "Ground Floor": {
+                    "creation": [
+                        { "thing": "WallIndoorLightWithDarkBottom", "width": 64 },
+                        { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "Table2x2", "y": 4, "width": 32 },
+                        { "thing": "LabComputer", "y": 8 },
+                        { "thing": "Book", "x": 16, "y": 8 },
+                        { "thing": "FloorLinedHorizontal", "y": 8, "width": 80, "height": 88 },
+                        { "thing": "AsianScroll", "x": 32 },
+                        { "thing": "Table3x1", "x": 48, "y": 24 },
+                        { "thing": "Pokeball", "x": 48, "y": 24 },
+                        { "thing": "Pokeball", "x": 56, "y": 24 },
+                        { "thing": "Pokeball", "x": 64, "y": 24 },
+                        { "thing": "Bookshelf", "x": 48, "width": 32 },
+                        { "thing": "Bookshelf", "y": 48, "width": 32 },
+                        { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
+                        { "thing": "Doormat", "x": 32, "y": 88, "width": 16, "entrance": "Ground Floor Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 }
                     ]
                 }
             }
