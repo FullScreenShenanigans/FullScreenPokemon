@@ -42,6 +42,10 @@
                     },
                     "HouseWallWhitewash": {},
                     "InvisibleWall": {},
+                    "LabComputer": {},
+                    "Ledge": {},
+                    "LedgeOpening": {},
+                    "PlantSmall": {},
                     "PottedPalmTree": {},
                     "Sign": {},
                     "Spawner": {},
@@ -183,6 +187,9 @@
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
             "FenceVertical": [4, 8],
+            "Grass": {
+                "nocollide": true
+            },
             "HouseBase": {
                 "width": 32,
                 "height": 8,
@@ -219,6 +226,16 @@
                 "hidden": true
             },
             "LabComputer": [16, 8],
+            "Ledge": {
+                "width": 4,
+                "height": 4,
+                "collide": FullScreenPokemon.prototype.collideLedge
+            },
+            "LedgeOpening": {
+                "width": 4,
+                "height": 4,
+                "nocollide": true
+            },
             "PottedPalmTree": [8, 16],
             "Spawner": {
                 "hidden": true,

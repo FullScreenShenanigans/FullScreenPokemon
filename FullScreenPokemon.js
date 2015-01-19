@@ -520,6 +520,23 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function maintainSolids(EightBitter, solids) {
+        var solid, i;
+
+        for (i = 0; i < solids.length; i += 1) {
+            solid = solids[i];
+
+            if (!solid.alive) {
+                EightBitter.arrayDeleteThing(solid, solids, i);
+                i -= 1;
+                continue;
+            }
+        }
+    }
+
+    /**
+     * 
+     */
     function maintainCharacters(EightBitter, characters) {
         var character, i;
 
@@ -534,6 +551,12 @@ var FullScreenPokemon = (function (GameStartr) {
                     character.onWalkingStart, 3, character, character.direction
                 );
                 character.shouldWalk = false;
+            }
+
+            if (!character.alive) {
+                EightBitter.arrayDeleteThing(character, characters, i);
+                i -= 1;
+                continue;
             }
 
             EightBitter.QuadsKeeper.determineThingQuadrants(character);
@@ -889,6 +912,34 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
 
+    /* Death
+    */
+    
+    /**
+     * Standard Function to kill a Thing, which means marking it as dead and
+     * clearing its numquads, resting, movement, and cycles. It will later be
+     * marked as gone by its maintain* Function (Solids or Characters).
+     * 
+     * @param {Thing} thing
+     */
+    function killNormal(thing) {
+        if (!thing) {
+            return;
+        }
+
+        thing.hidden = thing.dead = true;
+        thing.alive = false;
+        thing.numquads = 0;
+        thing.movement = undefined;
+
+        if (thing.EightBitter) {
+            thing.EightBitter.TimeHandler.cancelAllCycles(thing);
+        }
+
+        thing.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
+    }
+
+
     /* Activations
     */
 
@@ -1037,6 +1088,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         thing.activate(thing);
+        thing.EightBitter.killNormal(thing);
         return true;
     }
 
@@ -1046,15 +1098,72 @@ var FullScreenPokemon = (function (GameStartr) {
     function activateAreaSpawner(thing) {
         var area = thing.EightBitter.MapsHandler.getArea(),
             direction = thing.direction,
-            border = area.borders[thing.EightBitter.directionNames[direction]];
+            border = area.borders[thing.EightBitter.directionNames[direction]],
+            area, x, y;
 
         if (!border) {
             return;
         }
 
-        console.log("Should spawn", border);
+        area = thing.EightBitter.MapsHandler.getMap(border.map).areas[border.area];
+        x = thing.x;
+        y = thing.y;
 
-        thing.EightBitter.MapScreener.setVariables();
+        switch (direction) {
+            case 0:
+                y -= area.height * thing.EightBitter.unitsize - 8;
+                break;
+            case 3:
+                x -= area.width * thing.EightBitter.unitsize;
+                break;
+        }
+        
+        thing.EightBitter.spawnArea(thing.EightBitter, area, x, y);
+    }
+
+    /**
+     * 
+     */
+    function spawnArea(EightBitter, area, left, top) {
+        var creation = area.creation,
+            MapsCreator = EightBitter.MapsCreator,
+            MapScreener = EightBitter.MapScreener,
+            MapsHandler = EightBitter.MapsHandler,
+            area = MapsHandler.getArea(),
+            map = MapsHandler.getMap(),
+            prethings = MapsHandler.getPreThings(),
+            x = left / EightBitter.unitsize,
+            y = top / EightBitter.unitsize,
+            command, i;
+
+        for (i = 0; i < creation.length; i += 1) {
+            // A copy of the command must be used to not modify the original 
+            command = EightBitter.proliferate({}, creation[i]);
+
+            // The command's x and y must be shifted by the thing's placement
+            if (!command.x) {
+                command.x = x;
+            } else {
+                command.x += x;
+            }
+            if (!command.y) {
+                command.y = y;
+            } else {
+                command.y += y;
+            }
+
+            MapsCreator.analyzePreSwitch(command, prethings, area, map);
+        }
+
+        MapsHandler.spawnMap(
+            "xInc",
+            MapScreener.top / EightBitter.unitsize,
+            (MapScreener.left + EightBitter.QuadsKeeper.right) / EightBitter.unitsize,
+            MapScreener.bottom / EightBitter.unitsize,
+            left
+        );
+
+        MapScreener.setVariables();
     }
 
 
@@ -1596,6 +1705,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "keyUpPause": keyUpPause,
         "mouseDownRight": mouseDownRight,
         // Upkeep maintenance
+        "maintainSolids": maintainSolids,
         "maintainCharacters": maintainCharacters,
         "maintainPlayer": maintainPlayer,
         "getHorizontalScrollAmount": getHorizontalScrollAmount,
@@ -1616,6 +1726,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "generateIsCharacterTouchingSolid": generateIsCharacterTouchingSolid,
         "generateHitCharacterThing": generateHitCharacterThing,
         "collideTransporter": collideTransporter,
+        // Death
+        "killNormal": killNormal,
         // Activations
         "activateTransporter": activateTransporter,
         "activateTransporterAnimated": activateTransporterAnimated,
@@ -1629,6 +1741,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "spawnWindowDetector": spawnWindowDetector,
         "checkWindowDetector": checkWindowDetector,
         "activateAreaSpawner": activateAreaSpawner,
+        "spawnArea": spawnArea,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
