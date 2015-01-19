@@ -44,9 +44,7 @@
                     "InvisibleWall": {},
                     "PottedPalmTree": {},
                     "Sign": {},
-                    "Spawner": {
-                        "AreaSpawner": {}
-                    },
+                    "Spawner": {},
                     "Table2x2": {},
                     "Table2x3": {},
                     "Table3x1": {},
@@ -62,6 +60,9 @@
                         "WaterEdgeRight": {},
                         "WaterEdgeBottom": {},
                         "WaterEdgeLeft": {}
+                    },
+                    "WindowDetector": {
+                        "AreaSpawner": {}
                     }
                 },
                 "Scenery": {
@@ -102,8 +103,9 @@
             "Area": {
                 "background": "black",
                 //"stretches": [
-                   ////{ "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
+                ////{ "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
                 //],
+                "onMake": FullScreenPokemon.prototype.areaProcess,
                 "attributes": {
                     "invisibleWallBorders": {
                         "afters": [
@@ -112,11 +114,19 @@
                             { "thing": "InvisibleWall", "noBoundaryStretch": true },
                             { "thing": "InvisibleWall", "noBoundaryStretch": true }
                         ]
+                    },
+                    "borders": {
+                        "afters": [
+                            { "thing": "AreaSpawner", "noBoundaryStretch": true },
+                            { "thing": "AreaSpawner", "noBoundaryStretch": true },
+                            { "thing": "AreaSpawner", "noBoundaryStretch": true },
+                            { "thing": "AreaSpawner", "noBoundaryStretch": true }
+                        ]
                     }
                 }
             },
             "Location": {
-                "entry": "Normal"
+                "entry": "Normal",
             },
             "Thing": {
                 // Sizing
@@ -133,7 +143,6 @@
                 "offsetX": 0,
                 "offsetY": 0,
                 // Movements
-                "direction": 2, // top,right,bottom,left is 0,1,2,3
                 "movement": undefined,
                 // Triggered Functions
                 "onMake": FullScreenPokemon.prototype.thingProcess
@@ -143,6 +152,7 @@
                 "speed": FullScreenPokemon.unitsize / 2,
                 "isWalking": false,
                 "shouldWalk": false,
+                "direction": 2, // top,right,bottom,left is 0,1,2,3
                 "offsetY": FullScreenPokemon.unitsize * -2,
                 "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking
@@ -212,7 +222,7 @@
             "PottedPalmTree": [8, 16],
             "Spawner": {
                 "hidden": true,
-                "onThingAdd": FullScreenPokemon.prototype.spawnSpawner
+                "onThingAdd": FullScreenPokemon.prototype.activateSpawner
             },
             "AreaSpawner": {
                 "activate": FullScreenPokemon.prototype.activateAreaSpawner
@@ -234,6 +244,10 @@
                 "noStretchBoundaries": true
             },
             "WaterEdge": [4, 4],
+            "WindowDetector": {
+                "hidden": true,
+                "onThingAdd": FullScreenPokemon.prototype.spawnWindowDetector
+            },
             "FloorLinedHorizontal": {
                 "spritewidth": .5,
                 "spriteheight": 2

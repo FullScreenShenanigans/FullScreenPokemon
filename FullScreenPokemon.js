@@ -98,7 +98,9 @@ var FullScreenPokemon = (function (GameStartr) {
             },
             "constants": [
                 "unitsize",
-                "scale"
+                "scale",
+                "directionNames",
+                "directionNumbers"
             ]
         });
 
@@ -115,6 +117,13 @@ var FullScreenPokemon = (function (GameStartr) {
     // them regardless of whether the prototype has been instantiated yet.
     FullScreenPokemon.unitsize = 4;
     FullScreenPokemon.scale = FullScreenPokemon.unitsize / 2;
+    FullScreenPokemon.directionNames = ["top", "right", "bottom", "left"];
+    FullScreenPokemon.directionNumbers = {
+        "top": 0,
+        "right": 1,
+        "bottom": 2,
+        "left": 3
+    };
 
 
     /* Resets
@@ -542,15 +551,27 @@ var FullScreenPokemon = (function (GameStartr) {
 
         var scrollability = EightBitter.MapScreener.scrollability;
 
-        if (scrollability === "none") {
-            return;
+        switch (scrollability) {
+            case "none":
+                return;
+            case "horizontal":
+                EightBitter.scrollWindow(
+                    EightBitter.getHorizontalScrollAmount(EightBitter)
+                );
+                return;
+            case "vertical":
+                EightBitter.scrollWindow(
+                    0,
+                    EightBitter.getVerticalScrollAmount(EightBitter)
+                );
+                return;
+            case "both":
+                EightBitter.scrollWindow(
+                    EightBitter.getHorizontalScrollAmount(EightBitter),
+                    EightBitter.getVerticalScrollAmount(EightBitter)
+                );
+                return;
         }
-
-        EightBitter.scrollWindow(
-            EightBitter.getHorizontalScrollAmount(EightBitter),
-            EightBitter.getVerticalScrollAmount(EightBitter)
-        );
-
     }
 
     function getHorizontalScrollAmount(EightBitter) {
@@ -989,14 +1010,51 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateSpawner(thing) {
+        console.log("hi");
         thing.activate(thing);
     }
 
     /**
      * 
      */
+    function spawnWindowDetector(thing) {
+        thing.EightBitter.TimeHandler.addEventInterval(
+            thing.EightBitter.checkWindowDetector, 7, Infinity, thing
+        );
+    }
+
+    /**
+     * 
+     */
+    function checkWindowDetector(thing) {
+        if (
+            thing.bottom < 0
+            || thing.left > thing.EightBitter.MapScreener.width
+            || thing.top > thing.EightBitter.MapScreener.height
+            || thing.right < 0
+        ) {
+            return;
+        }
+
+        thing.activate(thing);
+        return true;
+    }
+
+    /**
+     * 
+     */
     function activateAreaSpawner(thing) {
-        debugger;
+        var area = thing.EightBitter.MapsHandler.getArea(),
+            direction = thing.direction,
+            border = area.borders[thing.EightBitter.directionNames[direction]];
+
+        if (!border) {
+            return;
+        }
+
+        console.log("Should spawn", border);
+
+        thing.EightBitter.MapScreener.setVariables();
     }
 
 
@@ -1131,10 +1189,13 @@ var FullScreenPokemon = (function (GameStartr) {
             map = MapsHandler.getMap(),
             boundaries = EightBitter.MapsHandler.getArea().boundaries;
 
+        prething.direction = direction;
         switch (direction) {
             case 0:
-                // Return because the top is glitchy. Lets assume it's ok...
-                return;
+                prething.x = boundaries.left;
+                prething.y = boundaries.top - 8;
+                prething.width = boundaries.right - boundaries.left;
+                break;
             case 1:
                 prething.x = boundaries.right;
                 prething.y = boundaries.top;
@@ -1565,6 +1626,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "setPlayerDirection": setPlayerDirection,
         // Spawning & Activations
         "activateSpawner": activateSpawner,
+        "spawnWindowDetector": spawnWindowDetector,
+        "checkWindowDetector": checkWindowDetector,
         "activateAreaSpawner": activateAreaSpawner,
         // Map sets
         "setMap": setMap,

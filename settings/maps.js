@@ -46,9 +46,9 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "",
             "areas": {
                 "Land": {
-                    "borders": [
-                        { "map": "Route 1", "location": "Land", "border": "top", "x": 0 }
-                    ],
+                    "borders": {
+                        "top": { "map": "Route 1", "location": "Land", "x": 0 }
+                    },
                     "creation": [
                         { "thing": "FenceWide", "width": 80 },
                         { "thing": "Grass", "x": 80, "width": 16 },
