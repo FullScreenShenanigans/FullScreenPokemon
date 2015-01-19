@@ -557,7 +557,7 @@ function PixelDrawr(settings) {
         if (thing.repeat) {
             drawPatternOnCanvas(context, canvas, left, top, thing.unitwidth, thing.unitheight, thing.opacity || 1);
         }
-            // Opacities not equal to one must reset the context afterwards
+        // Opacities not equal to one must reset the context afterwards
         else if (thing.opacity !== 1) {
             context.globalAlpha = thing.opacity;
             context.drawImage(canvas, left, top);
@@ -752,8 +752,9 @@ function PixelDrawr(settings) {
         context.fillStyle = context.createPattern(source, "repeat");
         context.fillRect(
             0, 0,
-            Math.min(width, MapScreener[keyRight] - left),
-            Math.min(height, MapScreener[keyBottom] - top)
+            //Math.max(width, left - MapScreener[keyRight]),
+            //Math.max(height, top - MapScreener[keyBottom])
+            width, height
         );
         context.translate(-left, -top);
         context.globalAlpha = 1;

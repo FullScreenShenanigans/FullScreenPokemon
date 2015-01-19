@@ -982,6 +982,24 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
 
+    /* Spawning & Activations
+    */
+
+    /**
+     * 
+     */
+    function activateSpawner(thing) {
+        thing.activate(thing);
+    }
+
+    /**
+     * 
+     */
+    function activateAreaSpawner(thing) {
+        debugger;
+    }
+
+
     /* Map sets
     */
 
@@ -1349,8 +1367,7 @@ var FullScreenPokemon = (function (GameStartr) {
             output.push({
                 "thing": "HouseCenterLeft",
                 "x": x,
-                "y": y,
-                // "width": width
+                "y": y
             });
             output.push({
                 "thing": "HouseCenterRight",
@@ -1364,8 +1381,7 @@ var FullScreenPokemon = (function (GameStartr) {
         output.push({
             "thing": "HouseCenterLeft",
             "x": x,
-            "y": y,
-            // "width": width
+            "y": y
         });
         output.push({
             "thing": "HouseCenterRight",
@@ -1419,7 +1435,7 @@ var FullScreenPokemon = (function (GameStartr) {
             door, i;
 
         y += 20;
-        for (i = 1; i < stories; i += 1) {
+        for (i = 2; i < stories; i += 1) {
             output.push({
                 "thing": "HouseLargeCenter",
                 "x": x,
@@ -1440,6 +1456,36 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (!reference.noDoor) {
+            output.push({
+                "thing": "HouseLargeCenterLeft",
+                "x": x,
+                "y": y,
+                "width": 16
+            });
+            output.push({
+                "thing": "HouseLargeCenterMiddle",
+                "x": x + 16,
+                "y": y,
+                "width": 8,
+                "height": 4
+            });
+            output.push({
+                "thing": "HouseLargeCenterRight",
+                "x": x + 24,
+                "y": y,
+                "width": width - 24
+            });
+            if (reference.white) {
+                output.push({
+                    "thing": "HouseWallWhitewash",
+                    "x": reference.white.start,
+                    "y": y,
+                    "width": reference.white.end - reference.white.start
+                });
+            }
+
+            y += 16;
+
             door = {
                 "thing": "Door",
                 "x": x + 16,
@@ -1517,6 +1563,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "isThingOverlappingOther": isThingOverlappingOther,
         "shiftCharacter": shiftCharacter,
         "setPlayerDirection": setPlayerDirection,
+        // Spawning & Activations
+        "activateSpawner": activateSpawner,
+        "activateAreaSpawner": activateAreaSpawner,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,

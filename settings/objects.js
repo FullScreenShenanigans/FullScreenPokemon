@@ -34,12 +34,19 @@
                         "HouseLargeTopLeft": {},
                         "HouseLargeTopMiddle": {},
                         "HouseLargeTopRight": {},
-                        "HouseLargeCenter": {}
+                        "HouseLargeCenter": {
+                            "HouseLargeCenterLeft": {},
+                            "HouseLargeCenterMiddle": {},
+                            "HouseLargeCenterRight": {}
+                        }
                     },
                     "HouseWallWhitewash": {},
                     "InvisibleWall": {},
                     "PottedPalmTree": {},
                     "Sign": {},
+                    "Spawner": {
+                        "AreaSpawner": {}
+                    },
                     "Table2x2": {},
                     "Table2x3": {},
                     "Table3x1": {},
@@ -97,12 +104,16 @@
                 //"stretches": [
                    ////{ "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
                 //],
-                "afters": [
-                    { "thing": "InvisibleWall", "noBoundaryStretch": true },
-                    { "thing": "InvisibleWall", "noBoundaryStretch": true },
-                    { "thing": "InvisibleWall", "noBoundaryStretch": true },
-                    { "thing": "InvisibleWall", "noBoundaryStretch": true }
-                ]
+                "attributes": {
+                    "invisibleWallBorders": {
+                        "afters": [
+                            { "thing": "InvisibleWall", "noBoundaryStretch": true },
+                            { "thing": "InvisibleWall", "noBoundaryStretch": true },
+                            { "thing": "InvisibleWall", "noBoundaryStretch": true },
+                            { "thing": "InvisibleWall", "noBoundaryStretch": true }
+                        ]
+                    }
+                }
             },
             "Location": {
                 "entry": "Normal"
@@ -173,9 +184,6 @@
                 "height": 16,
                 "spritewidth": 16
             },
-            // "HouseCenter": {
-                // "spritewidth": 8
-            // },
             "HouseLargeBase": {
                 "width": 48,
                 "height": 20,
@@ -193,7 +201,8 @@
                 "spritewidth": 8
             },
             "HouseLargeCenter": {
-                "spritewidth": 4
+                "spritewidth": 4,
+                "height": 12
             },
             "HouseWallWhitewash": [4, 4],
             "InvisibleWall": {
@@ -201,6 +210,13 @@
             },
             "LabComputer": [16, 8],
             "PottedPalmTree": [8, 16],
+            "Spawner": {
+                "hidden": true,
+                "onThingAdd": FullScreenPokemon.prototype.spawnSpawner
+            },
+            "AreaSpawner": {
+                "activate": FullScreenPokemon.prototype.activateAreaSpawner
+            },
             "Table2x2": [16, 16],
             "Table2x3": [16, 16],
             "Table3x1": [24, 12],

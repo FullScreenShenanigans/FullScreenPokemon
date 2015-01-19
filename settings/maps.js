@@ -1,6 +1,8 @@
 FullScreenPokemon.prototype.settings.maps = {
     "mapDefault": "Pallet Town",
     "locationDefault": "Player's House Door",
+    //"mapDefault": "Route 1",
+    //"locationDefault": "Top Path",
     "groupTypes": ["Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
@@ -44,6 +46,9 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "",
             "areas": {
                 "Land": {
+                    "borders": [
+                        { "map": "Route 1", "location": "Land", "border": "top", "x": 0 }
+                    ],
                     "creation": [
                         { "thing": "FenceWide", "width": 80 },
                         { "thing": "Grass", "x": 80, "width": 16 },
@@ -111,6 +116,7 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "Ground Floor Door",
             "areas": {
                 "Ground Floor": {
+                    "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
@@ -133,6 +139,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     ]
                 },
                 "Bedroom": {
+                    "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
@@ -159,6 +166,7 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "Ground Floor Door",
             "areas": {
                 "Ground Floor": {
+                    "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
@@ -191,6 +199,7 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "Ground Floor Door",
             "areas": {
                 "Ground Floor": {
+                    "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorLightWithDarkBottom", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
@@ -208,6 +217,25 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
                         { "thing": "Doormat", "x": 32, "y": 88, "width": 16, "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 }
+                    ]
+                }
+            }
+        }, {
+            "name": "Route 1",
+            "locations": {
+                "Bottom Path": {
+                    "area": "Land"
+                },
+                "Top Path": {
+                    "area": "Land"
+                }
+            },
+            "areas": {
+                "Land": {
+                    "creation": [
+                        { "thing": "Grass", "width": 48, "height": 288 },
+                        { "thing": "FloorLinedHorizontal", "width": 48, "width": 224, "height": 288 },
+                        { "thing": "Grass", "x": 272, "width": 48, "height": 288 }
                     ]
                 }
             }
