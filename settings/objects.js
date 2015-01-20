@@ -229,7 +229,14 @@
             "Ledge": {
                 "width": 4,
                 "height": 4,
-                "collide": FullScreenPokemon.prototype.collideLedge
+                "collide": FullScreenPokemon.prototype.collideLedge,
+                "attributes": {
+                    "jagged": {
+                        "spritewidth": 16
+                    },
+                    "crumbleLeft": {},
+                    "crumbleRight": {}
+                }
             },
             "LedgeOpening": {
                 "width": 4,

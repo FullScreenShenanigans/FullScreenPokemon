@@ -549,7 +549,7 @@ function MapsCreatr(settings) {
      */
     self.analyzePreThing = function (reference, prethings, area, map, scope) {
         var thing = reference.thing,
-            prething;
+            prething, extra;
 
         if (!ObjectMaker.hasFunction(thing)) {
             console.warn("A non-existent Thing type is referenced. It will be "
@@ -583,13 +583,15 @@ function MapsCreatr(settings) {
         // must know it and its position. Note that this will have to be changed
         // for Pokemon/Zelda style games.
         if (thing[keyEntrance] !== undefined && typeof thing[keyEntrance] !== "object") {
-            if (typeof map.locations[thing[keyEntrance]].xloc === "undefined") {
-                map.locations[thing[keyEntrance]].xloc = prething.left;
+            if (typeof map.locations[thing[keyEntrance]] !== "undefined") {
+                if (typeof map.locations[thing[keyEntrance]].xloc === "undefined") {
+                    map.locations[thing[keyEntrance]].xloc = prething.left;
+                }
+                if (typeof map.locations[thing[keyEntrance]].yloc === "undefined") {
+                    map.locations[thing[keyEntrance]].yloc = prething.top;
+                }
+                map.locations[thing[keyEntrance]].entrance = prething.thing;
             }
-            if (typeof map.locations[thing[keyEntrance]].yloc === "undefined") {
-                map.locations[thing[keyEntrance]].yloc = prething.top;
-            }
-            map.locations[thing[keyEntrance]].entrance = prething.thing;
         }
 
         if (reference.collectionName && area.collections) {
