@@ -3,7 +3,7 @@ FullScreenPokemon.prototype.settings.maps = {
     //"locationDefault": "Player's House Door",
     "mapDefault": "Route 1",
     "locationDefault": "Top Path",
-    "groupTypes": ["Character", "Solid", "Scenery", "Terrain"],
+    "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
     "screenVariables": {

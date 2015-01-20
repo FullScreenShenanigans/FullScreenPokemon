@@ -148,7 +148,8 @@ var FullScreenPokemon = (function (GameStartr) {
             self.GroupHolder.getTerrainGroup(),
             self.GroupHolder.getSolidGroup(),
             self.GroupHolder.getSceneryGroup(),
-            self.GroupHolder.getCharacterGroup()
+            self.GroupHolder.getCharacterGroup(),
+            self.GroupHolder.getTextGroup()
         ]);
     }
 
@@ -1132,7 +1133,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 break;
         }
 
-        console.log("Spawning", border.map, x, y);
         thing.EightBitter.spawnArea(thing.EightBitter, area, x, y);
     }
 

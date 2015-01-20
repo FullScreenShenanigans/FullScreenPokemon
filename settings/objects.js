@@ -93,6 +93,10 @@
                         }
                     },
                     "Water": {}
+                },
+                "Text": {
+                    "Character": {},
+                    "Menu": {}
                 }
             }
         },
@@ -312,6 +316,13 @@
                     ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 14
                 ]
             },
+            "Text": {
+                "groupType": "Text"
+            },
+            "Menu": {
+                "width": 4,
+                "height": 4
+            }
         }
     };
 })();
