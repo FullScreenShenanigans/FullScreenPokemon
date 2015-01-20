@@ -143,37 +143,37 @@ FullScreenPokemon.prototype.settings.ui = {
                     "type": "Number",
                     "minimum": 0,
                     "maximum": 100,
-                    "source": function (GameStarter) {
-                        return Math.round(GameStarter.AudioPlayer.getVolume() * 100);
+                    "source": function (EightBitter) {
+                        return Math.round(EightBitter.AudioPlayer.getVolume() * 100);
                     },
-                    "update": function (GameStarter, value) {
-                        GameStarter.AudioPlayer.setVolume(value / 100);
+                    "update": function (EightBitter, value) {
+                        EightBitter.AudioPlayer.setVolume(value / 100);
                     }
                 },
                 {
                     "title": "Mute",
                     "type": "Boolean",
-                    "source": function (GameStarter) {
-                        return GameStarter.AudioPlayer.getMuted();
+                    "source": function (EightBitter) {
+                        return EightBitter.AudioPlayer.getMuted();
                     },
-                    "enable": function (GameStarter) {
-                        GameStarter.AudioPlayer.setMutedOn();
+                    "enable": function (EightBitter) {
+                        EightBitter.AudioPlayer.setMutedOn();
                     },
-                    "disable": function (GameStarter) {
-                        GameStarter.AudioPlayer.setMutedOff();
+                    "disable": function (EightBitter) {
+                        EightBitter.AudioPlayer.setMutedOff();
                     }
                 },
                 {
                     "title": "Speed",
                     "type": "Select",
-                    "options": function (GameStarter) {
+                    "options": function (EightBitter) {
                         return [".25x", ".5x", "1x", "2x", "5x"];
                     },
-                    "source": function (GameStarter) {
+                    "source": function (EightBitter) {
                         return "1x";
                     },
-                    "update": function (GameStarter, value) {
-                        GameStarter.GamesRunner.setSpeed(
+                    "update": function (EightBitter, value) {
+                        EightBitter.GamesRunner.setSpeed(
                             Number(value.replace('x', ''))
                         );
                     },
@@ -186,15 +186,15 @@ FullScreenPokemon.prototype.settings.ui = {
                 {
                     "title": "Framerate",
                     "type": "Select",
-                    "options": function (GameStarter) {
+                    "options": function (EightBitter) {
                         return ["60fps", "30fps"];
                     },
-                    "source": function (GameStarter) {
-                        return (1 / GameStarter.PixelDrawer.getFramerateSkip() * 60) + "fps";
+                    "source": function (EightBitter) {
+                        return (1 / EightBitter.PixelDrawer.getFramerateSkip() * 60) + "fps";
                     },
-                    "update": function (GameStarter, value) {
+                    "update": function (EightBitter, value) {
                         var numeric = Number(value.replace("fps", ""));
-                        GameStarter.PixelDrawer.setFramerateSkip(1 / numeric * 60);
+                        EightBitter.PixelDrawer.setFramerateSkip(1 / numeric * 60);
                     },
                     "storeLocally": true
                 },
@@ -202,13 +202,13 @@ FullScreenPokemon.prototype.settings.ui = {
                     "title": "Tilt Controls",
                     "type": "Boolean",
                     "storeLocally": true,
-                    "source": function (GameStarter) {
+                    "source": function (EightBitter) {
                         return false;
                     },
-                    "enable": function (GameStarter) {
-                        window.ondevicemotion = GameStarter.InputWriter.makePipe("ondevicemotion", "type");
+                    "enable": function (EightBitter) {
+                        window.ondevicemotion = EightBitter.InputWriter.makePipe("ondevicemotion", "type");
                     },
-                    "disable": function (GameStarter) {
+                    "disable": function (EightBitter) {
                         window.ondevicemotion = undefined;
                     }
                 }
@@ -216,8 +216,8 @@ FullScreenPokemon.prototype.settings.ui = {
             "actions": [
                 {
                     "title": "Screenshot",
-                    "action": function (GameStarter) {
-                        GameStarter.takeScreenshot();
+                    "action": function (EightBitter) {
+                        EightBitter.takeScreenshot();
                     }
                 }
             ]
@@ -230,18 +230,18 @@ FullScreenPokemon.prototype.settings.ui = {
                         "title": title[0].toUpperCase() + title.substr(1),
                         "type": "Keys",
                         "storeLocally": true,
-                        "source": function (GameStarter) {
-                            return GameStarter.InputWriter
+                        "source": function (EightBitter) {
+                            return EightBitter.InputWriter
                                 .getAliasAsKeyStrings(title)
                                 .map(function (string) {
                                     return string.toLowerCase();
                                 });
                         },
-                        "callback": function (GameStarter, valueOld, valueNew) {
-                            GameStarter.InputWriter.switchAliasValues(
+                        "callback": function (EightBitter, valueOld, valueNew) {
+                            EightBitter.InputWriter.switchAliasValues(
                                 title,
-                                [GameStarter.InputWriter.convertKeyStringToAlias(valueOld)],
-                                [GameStarter.InputWriter.convertKeyStringToAlias(valueNew)]
+                                [EightBitter.InputWriter.convertKeyStringToAlias(valueOld)],
+                                [EightBitter.InputWriter.convertKeyStringToAlias(valueNew)]
                             );
                         }
                     };
@@ -252,11 +252,11 @@ FullScreenPokemon.prototype.settings.ui = {
             "generator": "OptionsButtons",
             "keyActive": "enabled",
             "assumeInactive": true,
-            "options": function (GameStarter) {
-                return GameStarter.ModAttacher.getMods();
+            "options": function (EightBitter) {
+                return EightBitter.ModAttacher.getMods();
             },
-            "callback": function (GameStarter, schema, button) {
-                GameStarter.ModAttacher.toggleMod(button.getAttribute("value") || button.textContent);
+            "callback": function (EightBitter, schema, button) {
+                EightBitter.ModAttacher.toggleMod(button.getAttribute("value") || button.textContent);
             }
         }, {
             "title": "Editor",
@@ -283,7 +283,7 @@ FullScreenPokemon.prototype.settings.ui = {
                     
                     return {
                         "title": "Map Generator!",
-                        "callback": function (GameStarter, schema, button, event) {
+                        "callback": function (EightBitter, schema, button, event) {
                             var parent = event.target.parentNode,
                                 randomizer = parent.querySelector(".randomInput");
                                 
@@ -292,9 +292,9 @@ FullScreenPokemon.prototype.settings.ui = {
                                 randomizer.value = getNewSeed();
                             }
                             
-                            GameStarter.LevelEditor.disable();
-                            GameStarter.NumberMaker.resetFromSeed(randomizer.value);
-                            GameStarter.setMap("Random");
+                            EightBitter.LevelEditor.disable();
+                            EightBitter.NumberMaker.resetFromSeed(randomizer.value);
+                            EightBitter.setMap("Random");
                             
                             if (!randomizer.getAttribute("custom")) {
                                 randomizer.value = getNewSeed();
@@ -315,9 +315,9 @@ FullScreenPokemon.prototype.settings.ui = {
                     };
                 })()
             },
-            "callback": function (GameStarter, schema, button, event) {
-                GameStarter.LevelEditor.disable();
-                GameStarter.setMap(button.getAttribute("value") || button.textContent);
+            "callback": function (EightBitter, schema, button, event) {
+                EightBitter.LevelEditor.disable();
+                EightBitter.setMap(button.getAttribute("value") || button.textContent);
             }
         }
     ]
