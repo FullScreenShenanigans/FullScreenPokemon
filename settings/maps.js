@@ -235,7 +235,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 48,
                     "height": 296,
                     "borders": {
-                        "top": { "map": "Pallet Town", "area": "Land", "x": 0 }
+                        "bottom": { "map": "Pallet Town", "area": "Land", "x": 0 }
                     },
                     "creation": [
                         { "thing": "DirtMedium", "width": 32, "height": 296 },

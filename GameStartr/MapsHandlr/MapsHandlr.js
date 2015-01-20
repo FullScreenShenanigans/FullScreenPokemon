@@ -253,6 +253,12 @@ function MapsHandlr(settings) {
         // Since the location is valid, mark it as current (with its area)
         locationCurrent = location;
         areaCurrent = location.area;
+        areaCurrent.boundaries = {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+        }
         
         // Copy all the settings from that area into the MapScreenr container
         for (i = 0, len = screenAttributes.length; i < len; i += 1) {

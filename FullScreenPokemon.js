@@ -1061,7 +1061,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateSpawner(thing) {
-        console.log("hi");
         thing.activate(thing);
     }
 
@@ -1069,22 +1068,27 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function spawnWindowDetector(thing) {
-        thing.EightBitter.TimeHandler.addEventInterval(
-            thing.EightBitter.checkWindowDetector, 7, Infinity, thing
-        );
+        if (!thing.EightBitter.checkWindowDetector(thing)) {
+            thing.EightBitter.TimeHandler.addEventInterval(
+                thing.EightBitter.checkWindowDetector, 7, Infinity, thing
+            );
+        }
     }
 
     /**
      * 
      */
     function checkWindowDetector(thing) {
-        if (
+        if ( 
             thing.bottom < 0
             || thing.left > thing.EightBitter.MapScreener.width
             || thing.top > thing.EightBitter.MapScreener.height
             || thing.right < 0
         ) {
-            return;
+            if (!thing.direction) {
+                console.log("a");
+            }
+            return false;
         }
 
         thing.activate(thing);
@@ -1106,6 +1110,15 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         area = thing.EightBitter.MapsHandler.getMap(border.map).areas[border.area];
+
+        if (
+            area.spawnedBy
+            && area.spawnedBy === thing.EightBitter.MapsHandler.getArea().spawnedBy
+        ) {
+            return;
+        }
+        area.spawnedBy = thing.EightBitter.MapsHandler.getArea().spawnedBy;
+
         x = thing.x;
         y = thing.y;
 
@@ -1117,7 +1130,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 x -= area.width * thing.EightBitter.unitsize;
                 break;
         }
-        
+
         thing.EightBitter.spawnArea(thing.EightBitter, area, x, y);
     }
 
@@ -1138,7 +1151,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         for (i = 0; i < creation.length; i += 1) {
             // A copy of the command must be used to not modify the original 
-            command = EightBitter.proliferate({}, creation[i]);
+            command = EightBitter.proliferate({
+                "noBoundaryStretch": true
+            }, creation[i]);
 
             // The command's x and y must be shifted by the thing's placement
             if (!command.x) {
@@ -1162,6 +1177,8 @@ var FullScreenPokemon = (function (GameStartr) {
             MapScreener.bottom / EightBitter.unitsize,
             left
         );
+
+        area.spawned = true;
 
         MapScreener.setVariables();
     }
@@ -1204,13 +1221,15 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             location;
 
+        name = name || 0;
+
         EightBitter.MapScreener.clearScreen();
         EightBitter.GroupHolder.clearArrays();
         EightBitter.TimeHandler.cancelAllEvents();
 
-        EightBitter.MapsHandler.setLocation(name || 0);
+        EightBitter.MapsHandler.setLocation(name);
         EightBitter.MapScreener.setVariables();
-        location = EightBitter.MapsHandler.getLocation(name || 0);
+        location = EightBitter.MapsHandler.getLocation(name);
 
         EightBitter.ModAttacher.fireEvent("onPreSetLocation", location)
 
@@ -1219,10 +1238,13 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.AudioPlayer.clearAll();
-
         EightBitter.QuadsKeeper.resetQuadrants();
 
         location.entry(EightBitter, location);
+        location.area.spawnedBy = {
+            "name": name,
+            "timestamp": new Date().getTime()
+        };
 
         EightBitter.ModAttacher.fireEvent("onSetLocation", location);
 
