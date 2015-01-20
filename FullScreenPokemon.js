@@ -674,7 +674,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (!thing.walkingFlipping) {
             thing.walkingFlipping = thing.EightBitter.TimeHandler.addEventInterval(
-                thing.EightBitter.animateSwitchFlipOnDirection, 20, Infinity, thing
+                thing.EightBitter.animateSwitchFlipOnDirection, 14, Infinity, thing
             );
         }
 
