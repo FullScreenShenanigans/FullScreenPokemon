@@ -1117,20 +1117,22 @@ var FullScreenPokemon = (function (GameStartr) {
         ) {
             return;
         }
+
         area.spawnedBy = thing.EightBitter.MapsHandler.getArea().spawnedBy;
 
-        x = thing.x;
-        y = thing.y;
+        x = thing.left + thing.EightBitter.MapScreener.left;
+        y = thing.top + thing.EightBitter.MapScreener.top;
 
         switch (direction) {
             case 0:
-                y -= area.height * thing.EightBitter.unitsize - 8;
+                y -= (area.height - thing.height) * thing.EightBitter.unitsize;
                 break;
             case 3:
-                x -= area.width * thing.EightBitter.unitsize;
+                x -= (area.width - thing.width) * thing.EightBitter.unitsize;
                 break;
         }
 
+        console.log("Spawning", border.map, x, y);
         thing.EightBitter.spawnArea(thing.EightBitter, area, x, y);
     }
 
@@ -1165,6 +1167,11 @@ var FullScreenPokemon = (function (GameStartr) {
                 command.y = y;
             } else {
                 command.y += y;
+            }
+
+            // Having an entrance might conflict with previously set Locations
+            if (command.hasOwnProperty("entrance")) {
+                delete command.entrance;
             }
 
             MapsCreator.analyzePreSwitch(command, prethings, area, map);
