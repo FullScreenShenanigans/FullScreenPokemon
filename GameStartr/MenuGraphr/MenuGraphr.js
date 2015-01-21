@@ -16,6 +16,8 @@ function MenuGraphr(settings) {
 
         menus,
 
+        activeMenu,
+
         schemas,
 
         aliases,
@@ -49,7 +51,8 @@ function MenuGraphr(settings) {
         self.deleteMenu(name);
 
         menus[name] = menu;
-        positionMenu(menu, schema.size, schema.position);
+        menu.name = name;
+        self.positionMenu(menu, schema.size, schema.position);
 
         menu.textWidth = Math.min(
             menu.textWidth,
@@ -66,6 +69,10 @@ function MenuGraphr(settings) {
             return;
         }
 
+        if (activeMenu === menu) {
+            activeMenu = undefined;
+        }
+
         EightBitter.killNormal(menu);
         if (menu.characters) {
             menu.characters.forEach(EightBitter.killNormal);
@@ -77,7 +84,7 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    function positionMenu(menu, size, position) {
+    self.positionMenu = function (menu, size, position) {
         var width, height,
             top, right, bottom, left;
 
@@ -133,15 +140,18 @@ function MenuGraphr(settings) {
 
         menu.characters = [];
 
-        self.addMenuWord(name, text, text, 0, x, y, onCompletion);
+        self.addMenuWord(name, text, 0, x, y, onCompletion);
     };
 
     /**
      * 
+     * 
+     * @todo The calculation of whether a word can fit assumes equal width for
+     *       all characters, although apostrophes are tiny.
      */
-    self.addMenuWord = function (name, text, words, i, x, y, onCompletion) {
+    self.addMenuWord = function (name, words, i, x, y, onCompletion) {
         var menu = menus[name],
-            word = words[i],
+            word = filterWord(words[i]),
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
@@ -161,15 +171,15 @@ function MenuGraphr(settings) {
                     y
                 );
 
-                x += textWidth;
+                x += character.width * EightBitter.unitsize;
             }
         }
 
         if (i === words.length - 1) {
-            delete menu.progress;
-            if (onCompletion) {
-                onCompletion(menu);
-            }
+            menu.progress = {
+                "complete": true,
+                "onCompletion": onCompletion
+            };
             return;
         }
 
@@ -185,7 +195,6 @@ function MenuGraphr(settings) {
 
         if (y >= menu.bottom - menu.textYOffset * EightBitter.unitsize) {
             menu.progress = {
-                "text": text,
                 "words": words,
                 "i": i + 1,
                 "x": x,
@@ -199,7 +208,6 @@ function MenuGraphr(settings) {
             self.addMenuWord,
             (j + 1) * textSpeed,
             name,
-            text,
             words,
             i + 1,
             x,
@@ -217,9 +225,19 @@ function MenuGraphr(settings) {
             progress = menu.progress,
             character, i;
 
-        if (!progress) {
+        if (!progress || progress.working) {
             return;
         }
+
+        if (progress.complete) {
+            self.deleteMenu(name);
+            if (progress.onCompletion) {
+                progress.onCompletion(EightBitter, menu);
+            }
+            return;
+        }
+
+        progress.working = true;
 
         for (i = 0; i < characters.length; i += 1) {
             character = characters[i];
@@ -238,7 +256,6 @@ function MenuGraphr(settings) {
             self.addMenuWord,
             character.paddingY + character.height + 1,
             name,
-            progress.text,
             progress.words,
             progress.i,
             progress.x,
@@ -246,6 +263,94 @@ function MenuGraphr(settings) {
             progress.onCompletion
         );
     }
+
+
+    /* Interactivity
+    */
+
+    /**
+     * 
+     */
+    self.setActiveMenu = function (name) {
+        activeMenu = menus[name];
+    };
+
+    /**
+     * 
+     */
+    self.getActiveMenu = function () {
+        return activeMenu;
+    };
+
+    /**
+     * 
+     */
+    self.registerLeft = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+
+    };
+
+    /**
+     * 
+     */
+    self.registerRight = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+
+    };
+
+    /**
+     * 
+     */
+    self.registerUp = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+
+    };
+
+    /**
+     * 
+     */
+    self.registerDown = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+
+    };
+
+    /**
+     * 
+     */
+    self.registerA = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+        self.continueMenu(activeMenu.name);
+    };
+
+    /**
+     * 
+     */
+    self.registerB = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+
+    };
+
+
+    /* Utilities
+    */
 
     /**
      * 
@@ -266,6 +371,13 @@ function MenuGraphr(settings) {
             return aliases[character];
         }
         return character;
+    }
+
+    /**
+     * 
+     */
+    function filterWord(word) {
+        return word.replace(/%/g, "");
     }
 
 

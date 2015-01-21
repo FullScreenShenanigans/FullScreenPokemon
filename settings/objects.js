@@ -183,7 +183,8 @@
                         "CharSlash": {},
                         "CharPeriod": {},
                         "CharComma": {},
-                        "CharED": {}
+                        "CharED": {},
+                        "CharApostrophe": {}
                     }
                 },
                 "Menu": {}
@@ -414,8 +415,9 @@
                 "noshifty": true,
             },
             "CharacterDropped": {
-                "offsetY": FullScreenPokemon.unitsize * .75,
+                "offsetY": FullScreenPokemon.unitsize * .75
             },
+            "CharApostrophe": [1, 2],
             "Menu": {
                 "groupType": "Text",
                 "spritewidth": 4,

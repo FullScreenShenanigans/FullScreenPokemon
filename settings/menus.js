@@ -12,7 +12,8 @@ FullScreenPokemon.prototype.settings.menus = {
         "!": "ExclamationMark",
         "/": "Slash",
         ".": "Period",
-        ",": "Comma"
+        ",": "Comma",
+        "'": "Apostrophe"
     },
     "schemas": {
         "GeneralText": {
