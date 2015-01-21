@@ -95,9 +95,9 @@
                     "Water": {}
                 },
                 "Text": {
-                    "Character": {},
-                    "Menu": {}
-                }
+                    "Character": {}
+                },
+                "Menu": {}
             }
         },
         "properties": {
@@ -320,8 +320,13 @@
                 "groupType": "Text"
             },
             "Menu": {
-                "width": 4,
-                "height": 4
+                "groupType": "Text",
+                "spritewidth": 4,
+                "spriteheight": 4,
+                "width": 8,
+                "height": 8,
+                "noshiftx": true,
+                "noshifty": true
             }
         }
     };

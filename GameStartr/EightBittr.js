@@ -100,7 +100,7 @@ var EightBittr = (function () {
         for (i = 0; i < resets.length; i += 1) {
             EightBitter[resets[i]](EightBitter, customs)
         }
-        
+
         EightBitter.customs = customs;
     }
     

@@ -63,6 +63,10 @@ var GameStartr = (function (EightBittr) {
                 }
             }
         });
+
+        if (customs.extraResets) {
+            this.resets.push.apply(this.resets, customs.extraResets);
+        }
     }
 
     GameStartr.prototype = EightBitterProto;
@@ -102,7 +106,7 @@ var GameStartr = (function (EightBittr) {
      * @param {EightBittr} EightBitter
      * @param {Object} [customs]
      */
-    function reset(EightBitter, customs) {
+    function reset(EightBitter, customs, extraResets) {
         EightBittr.prototype.reset(EightBitter, EightBitter.resets, customs);
     };
 
@@ -115,7 +119,7 @@ var GameStartr = (function (EightBittr) {
      * @return {Array} How long each reset Function took followed by the entire
      * operation, in milliseconds.
      */
-    function resetTimed(EightBitter, customs) {
+    function resetTimed(EightBitter, customs, extraResets) {
         return EightBittr.prototype.resetTimed(
             EightBitter, EightBitter.resets, customs
         );

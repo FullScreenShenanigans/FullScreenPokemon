@@ -101,7 +101,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "scale",
                 "directionNames",
                 "directionNumbers"
-            ]
+            ],
+            "extraResets": ["resetMenuGrapher"]
         });
 
         if (customs.resetTimed) {
@@ -169,6 +170,20 @@ var FullScreenPokemon = (function (GameStartr) {
             "onSpawn": EightBitter.settings.maps.onSpawn,
             "afterAdd": EightBitter.mapAddAfter.bind(EightBitter)
         });
+    }
+
+    /**
+     * Sets self.MenuGraphr.
+     * 
+     * @param {EightBittr} EightBitter
+     * @param {Object} [customs]
+     * @remarks Requirement(s): MenuGraphr (src/MenuGraphr/MenuGraphr.js)
+     *                          menus.js (settings/menus.js)
+     */
+    function resetMenuGrapher(EightBitter, customs) {
+        EightBitter.MenuGrapher = new MenuGraphr(EightBitter.proliferate({
+            "EightBitter": EightBitter
+        }, EightBitter.settings.menus));
     }
 
 
@@ -1708,6 +1723,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Resets
         "resetContainer": resetContainer,
         "resetMapsHandler": resetMapsHandler,
+        "resetMenuGrapher": resetMenuGrapher,
         // Global manipulations
         "gameStart": gameStart,
         "thingProcess": thingProcess,
