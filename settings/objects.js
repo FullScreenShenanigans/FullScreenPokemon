@@ -130,17 +130,13 @@
                         "Chard": {},
                         "Chare": {},
                         "Charf": {},
-                        "Charg": {},
                         "Charh": {},
                         "Chari": {},
-                        "Charj": {},
                         "Chark": {},
                         "Charl": {},
                         "Charm": {},
                         "Charn": {},
                         "Charo": {},
-                        "Charp": {},
-                        "Charq": {},
                         "Charr": {},
                         "Chars": {},
                         "Chart": {},
@@ -148,8 +144,14 @@
                         "Charv": {},
                         "Charw": {},
                         "Charx": {},
-                        "Chary": {},
                         "Charz": {},
+                        "CharacterDropped": {
+                            "Charg": {},
+                            "Charj": {},
+                            "Charp": {},
+                            "Charq": {},
+                            "Chary": {}
+                        }
                     },
                     "Number": {
                         "Char0": {},
@@ -406,7 +408,13 @@
             "Text": {
                 "groupType": "Text",
                 "width": 4,
-                "height": 4
+                "height": 4,
+                "paddingY": 2,
+                "noshiftx": true,
+                "noshifty": true,
+            },
+            "CharacterDropped": {
+                "offsetY": FullScreenPokemon.unitsize * .75,
             },
             "Menu": {
                 "groupType": "Text",
@@ -415,7 +423,10 @@
                 "width": 8,
                 "height": 8,
                 "noshiftx": true,
-                "noshifty": true
+                "noshifty": true,
+                "textXOffset": 4,
+                "textYOffset": 5,
+                "textWidth": 400
             }
         }
     };

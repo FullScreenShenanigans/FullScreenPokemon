@@ -16,7 +16,11 @@ function MenuGraphr(settings) {
 
         menus,
 
-        schemas;
+        schemas,
+
+        aliases,
+            
+        textSpeed;
 
 
     /**
@@ -25,6 +29,8 @@ function MenuGraphr(settings) {
     self.reset = function (settings) {
         EightBitter = settings.EightBitter;
         schemas = settings.schemas || {};
+        aliases = settings.aliases || {};
+        textSpeed = settings.textSpeed || 7;
 
         menus = {};
     };
@@ -40,8 +46,15 @@ function MenuGraphr(settings) {
         var schema = schemas[name],
             menu = EightBitter.ObjectMaker.make("Menu", schema);
 
+        self.deleteMenu(name);
+
         menus[name] = menu;
         positionMenu(menu, schema.size, schema.position);
+
+        menu.textWidth = Math.min(
+            menu.textWidth,
+            EightBitter.MapScreener.width - menu.textXOffset * 2 * EightBitter.unitsize
+        );
     };
 
     /**
@@ -92,6 +105,89 @@ function MenuGraphr(settings) {
 
         EightBitter.addThing(menu, left, top);
     };
+
+    
+    /* Menu text
+    */
+
+    /**
+     * 
+     */
+    self.addMenuText = function (name, text, onCompletion) {
+        var menu = menus[name],
+            x = EightBitter.getMidX(menu) - menu.textWidth / 2,
+            y = menu.top + menu.textYOffset * EightBitter.unitsize;
+
+        if (text.constructor === String) {
+            text = text.split(/\s+/);
+        }
+
+        addMenuWord(menu, text, text, 0, x, y, onCompletion);
+    };
+
+    /**
+     * 
+     */
+    function addMenuWord(menu, text, words, i, x, y, onCompletion) {
+        var word = words[i],
+            textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
+            textWidth = textProperties.width * EightBitter.unitsize,
+            textHeight = textProperties.height * EightBitter.unitsize,
+            title, character, j;
+
+        for (j = 0; j < word.length; j += 1) {
+            if (word[j] !== " ") {
+                title = "Char" + getCharacterEquivalent(word[j]);
+                character = EightBitter.ObjectMaker.make(title);
+
+                EightBitter.TimeHandler.addEvent(
+                    EightBitter.addThing.bind(EightBitter),
+                    j * textSpeed,
+                    character,
+                    x,
+                    y
+                );
+
+                x += textWidth;
+            }
+        }
+
+        if (i === words.length - 1) {
+            return;
+        }
+
+        if (
+            x + (words[i + 1].length + 1) * textWidth
+            > EightBitter.getMidX(menu) + menu.textWidth / 2
+        ) {
+            x = EightBitter.getMidX(menu) - menu.textWidth / 2;
+            y += textHeight + textProperties.paddingY * EightBitter.unitsize;
+        } else {
+            x += textWidth;
+        }
+
+        EightBitter.TimeHandler.addEvent(
+            addMenuWord,
+            (j + 1) * textSpeed,
+            menu,
+            text,
+            words,
+            i + 1,
+            x,
+            y,
+            onCompletion
+        );
+    }
+
+    /**
+     * 
+     */
+    function getCharacterEquivalent(character) {
+        if (aliases.hasOwnProperty(character)) {
+            return aliases[character];
+        }
+        return character;
+    }
 
 
     self.reset(settings || {});
