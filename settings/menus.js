@@ -1,4 +1,5 @@
 FullScreenPokemon.prototype.settings.menus = {
+    "textSpeed": 1,
     "aliases": {
         "(": "LeftParenthesis",
         ")": "RightParenthesis",

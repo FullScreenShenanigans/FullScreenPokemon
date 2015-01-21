@@ -61,7 +61,16 @@ function MenuGraphr(settings) {
      * 
      */
     self.deleteMenu = function (name) {
-        EightBitter.killNormal(menus[name]);
+        var menu = menus[name];
+        if (!menu) {
+            return;
+        }
+
+        EightBitter.killNormal(menu);
+        if (menu.characters) {
+            menu.characters.forEach(EightBitter.killNormal);
+        }
+
         delete menus[name];
     };
 
@@ -122,14 +131,17 @@ function MenuGraphr(settings) {
             text = text.split(/\s+/);
         }
 
-        addMenuWord(menu, text, text, 0, x, y, onCompletion);
+        menu.characters = [];
+
+        self.addMenuWord(name, text, text, 0, x, y, onCompletion);
     };
 
     /**
      * 
      */
-    function addMenuWord(menu, text, words, i, x, y, onCompletion) {
-        var word = words[i],
+    self.addMenuWord = function (name, text, words, i, x, y, onCompletion) {
+        var menu = menus[name],
+            word = words[i],
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
@@ -139,6 +151,7 @@ function MenuGraphr(settings) {
             if (word[j] !== " ") {
                 title = "Char" + getCharacterEquivalent(word[j]);
                 character = EightBitter.ObjectMaker.make(title);
+                menu.characters.push(character);
 
                 EightBitter.TimeHandler.addEvent(
                     EightBitter.addThing.bind(EightBitter),
@@ -153,6 +166,10 @@ function MenuGraphr(settings) {
         }
 
         if (i === words.length - 1) {
+            delete menu.progress;
+            if (onCompletion) {
+                onCompletion(menu);
+            }
             return;
         }
 
@@ -166,10 +183,22 @@ function MenuGraphr(settings) {
             x += textWidth;
         }
 
+        if (y >= menu.bottom - menu.textYOffset * EightBitter.unitsize) {
+            menu.progress = {
+                "text": text,
+                "words": words,
+                "i": i + 1,
+                "x": x,
+                "y": y - (textHeight + textProperties.paddingY * EightBitter.unitsize),
+                "onCompletion": onCompletion
+            };
+            return;
+        }
+
         EightBitter.TimeHandler.addEvent(
-            addMenuWord,
+            self.addMenuWord,
             (j + 1) * textSpeed,
-            menu,
+            name,
             text,
             words,
             i + 1,
@@ -177,6 +206,56 @@ function MenuGraphr(settings) {
             y,
             onCompletion
         );
+    }
+
+    /**
+     * 
+     */
+    self.continueMenu = function (name) {
+        var menu = menus[name],
+            characters = menu.characters,
+            progress = menu.progress,
+            character, i;
+
+        if (!progress) {
+            return;
+        }
+
+        for (i = 0; i < characters.length; i += 1) {
+            character = characters[i];
+
+            EightBitter.TimeHandler.addEventInterval(
+                scrollCharacterUp,
+                1,
+                character.paddingY + character.height,
+                character,
+                menu,
+                -1
+            );
+        }
+
+        EightBitter.TimeHandler.addEvent(
+            self.addMenuWord,
+            character.paddingY + character.height + 1,
+            name,
+            progress.text,
+            progress.words,
+            progress.i,
+            progress.x,
+            progress.y,
+            progress.onCompletion
+        );
+    }
+
+    /**
+     * 
+     */
+    function scrollCharacterUp(character, menu) {
+        EightBitter.shiftVert(character, -EightBitter.unitsize);
+        if (character.top < menu.top + menu.textYOffset * EightBitter.unitsize) {
+            EightBitter.killNormal(character);
+            return true;
+        }
     }
 
     /**
