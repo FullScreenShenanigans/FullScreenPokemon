@@ -897,27 +897,26 @@ var FullScreenPokemon = (function (GameStartr) {
 
             switch (thing.EightBitter.getDirectionBordering(thing, other)) {
                 case 0:
-                    thing.bordering[0] = other;
                     if (thing.left !== other.right && other.left !== thing.right) {
+                        thing.bordering[0] = other;
                         thing.EightBitter.setTop(thing, other.bottom);
                     }
                     break;
                 case 1:
-                    thing.bordering[1] = other;
-
                     if (thing.top !== other.bottom && thing.bottom !== other.top) {
+                        thing.bordering[1] = other;
                         thing.EightBitter.setRight(thing, other.left);
                     }
                     break;
                 case 2:
-                    thing.bordering[2] = other;
                     if (thing.left !== other.right && other.left !== thing.right) {
+                        thing.bordering[2] = other;
                         thing.EightBitter.setBottom(thing, other.top);
                     }
                     break;
                 case 3:
-                    thing.bordering[3] = other;
                     if (thing.top !== other.bottom && thing.bottom !== other.top) {
+                        thing.bordering[3] = other;
                         thing.EightBitter.setLeft(thing, other.right);
                     }
                     break;

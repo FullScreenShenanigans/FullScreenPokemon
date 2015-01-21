@@ -80,7 +80,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 88, "xnum": 4, "ynum": 2 },
                         { "thing": "DirtLight", "x": 80, "y": 88, "width": 64, "height": 16 },
                         { "thing": "FenceVertical", "x": 80, "y": 96, "width": 24 },
-                        { "thing": "Sign", "x": 104, "y": 96 },
+                        { "thing": "Sign", "x": 104, "y": 96, "dialog": "Oak POKEMON Research Lab" },
                         { "thing": "FenceVertical", "x": 112, "y": 96, "width": 16 },
                         { "thing": "DirtMedium", "x": 16, "y": 104, "width": 16, "height": 32 },
                         { "macro": "Water", "x": 32, "y": 104, "width": 32, "height": 32, "open": [false, false, true, false] },
