@@ -184,7 +184,8 @@
                         "CharPeriod": {},
                         "CharComma": {},
                         "CharED": {},
-                        "CharApostrophe": {}
+                        "CharApostrophe": {},
+                        "ChareFancy": {}
                     }
                 },
                 "Menu": {}

@@ -13,7 +13,13 @@ FullScreenPokemon.prototype.settings.menus = {
         "/": "Slash",
         ".": "Period",
         ",": "Comma",
-        "'": "Apostrophe"
+        "'": "Apostrophe",
+        "È": "eFancy"
+    },
+    "replacements": {
+        "PLAYER": "Your name",
+        "RIVAL": "Rival's name",
+        "POKEMON": "POKÈMON"
     },
     "schemas": {
         "GeneralText": {

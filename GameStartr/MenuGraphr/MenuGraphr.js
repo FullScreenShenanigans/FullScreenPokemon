@@ -21,6 +21,10 @@ function MenuGraphr(settings) {
         schemas,
 
         aliases,
+
+        replacements,
+
+        replacerKey,
             
         textSpeed;
 
@@ -32,6 +36,8 @@ function MenuGraphr(settings) {
         EightBitter = settings.EightBitter;
         schemas = settings.schemas || {};
         aliases = settings.aliases || {};
+        replacements = settings.replacements || {};
+        replacerKey = settings.replacerKey || "%%%%%%%";
         textSpeed = settings.textSpeed || 7;
 
         menus = {};
@@ -172,6 +178,8 @@ function MenuGraphr(settings) {
                 );
 
                 x += character.width * EightBitter.unitsize;
+            } else {
+                x += textWidth;
             }
         }
 
@@ -184,7 +192,7 @@ function MenuGraphr(settings) {
         }
 
         if (
-            x + (words[i + 1].length + 1) * textWidth
+            x + (filterWord(words[i + 1]).length + 1) * textWidth
             > EightBitter.getMidX(menu) + menu.textWidth / 2
         ) {
             x = EightBitter.getMidX(menu) - menu.textWidth / 2;
@@ -377,7 +385,26 @@ function MenuGraphr(settings) {
      * 
      */
     function filterWord(word) {
-        return word.replace(/%/g, "");
+        var start = 0,
+            end, inside;
+
+        while (true) {
+            start = word.indexOf("%%%%%%%", start);
+            end = word.indexOf("%%%%%%%", start + 1);
+            if (start === -1 || end === -1) {
+                return word;
+            }
+
+            inside = word.substring(start + "%%%%%%%".length, end);
+            word =
+                word.substring(0, start)
+                + (replacements.hasOwnProperty(inside) ? replacements[inside] : inside)
+                + word.substring(end + "%%%%%%%".length);
+
+            start = end;
+        }
+
+        return word;
     }
 
 

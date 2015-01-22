@@ -239,7 +239,8 @@ FullScreenPokemon.prototype.settings.sprites = {
             "CharPeriod": "p[0,2]x042,11x06,11x012,",
             "CharComma": "p[0,2]x033,11x06,11x07,1x06,1x06,",
             "CharED": "p[0,2]1111000011x06,1111000011001110x16,01000011010000110100001110",
-            "CharApostrophe": "p[0,2]00110110"
+            "CharApostrophe": "p[0,2]00110110",
+            "ChareFancy": "p[0,2]x010,11000011x08,111100010000100x16,001x08,x15,0"
         }
     }
 };
