@@ -80,11 +80,19 @@ function MenuGraphr(settings) {
         }
 
         EightBitter.killNormal(menu);
-        if (menu.characters) {
-            menu.characters.forEach(EightBitter.killNormal);
-        }
+        self.deleteMenuCharacters(name);
 
         delete menus[name];
+    };
+
+    /**
+     * 
+     */
+    self.deleteMenuCharacters = function (name) {
+        var menu = menus[name];
+        if (menu && menu.characters) {
+            menu.characters.forEach(EightBitter.killNormal);
+        }
     };
 
     /**
@@ -135,18 +143,38 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    self.addMenuText = function (name, text, onCompletion) {
+    self.addMenuDialog = function (name, dialog, onCompletion) {
+        if (dialog.constructor === String) {
+            dialog = [dialog];
+        }
+
+        self.addMenuText(name, dialog[0], function () {
+            if (dialog.length === 1) {
+                onCompletion();
+                return true;
+            } else {
+                self.deleteMenuCharacters(name);
+                self.addMenuDialog(name, dialog.slice(1), onCompletion);
+                return false;
+            }
+        });
+    };
+
+    /**
+     * 
+     */
+    self.addMenuText = function (name, words, onCompletion) {
         var menu = menus[name],
             x = EightBitter.getMidX(menu) - menu.textWidth / 2,
             y = menu.top + menu.textYOffset * EightBitter.unitsize;
 
-        if (text.constructor === String) {
-            text = text.split(/\s+/);
+        if (words.constructor === String) {
+            words = words.split(/\s+/);
         }
 
         menu.characters = [];
 
-        self.addMenuWord(name, text, 0, x, y, onCompletion);
+        self.addMenuWord(name, words, 0, x, y, onCompletion);
     };
 
     /**
@@ -238,9 +266,12 @@ function MenuGraphr(settings) {
         }
 
         if (progress.complete) {
-            self.deleteMenu(name);
             if (progress.onCompletion) {
-                progress.onCompletion(EightBitter, menu);
+                if (progress.onCompletion(EightBitter, menu)) {
+                    self.deleteMenu(name);
+                }
+            } else {
+                self.deleteMenu(name);
             }
             return;
         }

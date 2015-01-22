@@ -74,7 +74,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "stories": 2, "white": { "start": 84, "end": 96 }, "entrance": "Oak's Lab Door", "transport": { "map": "Oak's Lab", "location": "Ground Floor Door" } },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 56, "xnum": 8, "ynum": 4 },
                         { "thing": "FenceVertical", "x": 32, "y": 64, "width": 24 },
-                        { "thing": "Sign", "x": 56, "y": 64, "Dialog": ["Palette Town", "Shades of your journey await!"] },
+                        { "thing": "Sign", "x": 56, "y": 64, "dialog": ["Palette Town", "Shades of your journey await!"] },
                         { "thing": "DirtMedium", "x": 32, "y": 72, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 32, "y": 76, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 88, "xnum": 4, "ynum": 2 },

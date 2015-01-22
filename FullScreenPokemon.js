@@ -967,7 +967,7 @@ var FullScreenPokemon = (function (GameStartr) {
         if (!thing.EightBitter.MenuGrapher.getActiveMenu()) {
             thing.EightBitter.MenuGrapher.createMenu("GeneralText");
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-            thing.EightBitter.MenuGrapher.addMenuText(
+            thing.EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
                 function () {
