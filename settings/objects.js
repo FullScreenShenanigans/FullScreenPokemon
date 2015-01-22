@@ -16,6 +16,7 @@
                     "Pokeball": {}
                 },
                 "Solid": {
+                    "AsianScroll": {},
                     "BedSingle": {},
                     "Bookshelf": {},
                     "Cabinet": {},
@@ -89,7 +90,8 @@
                     "FloorTiledDiagonal": {},
                     "TerrainSmall": {
                         "TerrainSmallRepeating": {
-                            "WallIndoorHorizontalBands": {}
+                            "WallIndoorHorizontalBands": {},
+                            "WallIndoorLightWithDarkBottom": {}
                         }
                     },
                     "Water": {}
@@ -251,10 +253,14 @@
                 "speed": FullScreenPokemon.unitsize / 2,
                 "isWalking": false,
                 "shouldWalk": false,
+                "switchDirectionOnDialog": true,
                 "direction": 2, // top,right,bottom,left is 0,1,2,3
                 "offsetY": FullScreenPokemon.unitsize * -2,
                 "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking
+            },
+            "Mother": {
+                "directionPreferred": 3
             },
             "Player": {
                 "player": true,
@@ -277,7 +283,11 @@
                 "repeat": true
             },
             "BedSingle": [8, 16],
-            "Bookshelf": [8, 16],
+            "Bookshelf": {
+                "width": 8,
+                "height": 16,
+                "dialog": "Crammed full of %%%%%%%POKEMON%%%%%%% books!"
+            },
             "Cabinet": [8, 16],
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
@@ -401,6 +411,10 @@
                 "height": 8,
                 "spritewidth": 2,
                 "spriteheight": 2
+            },
+            "WallIndoorLightWithDarkBottom": {
+                "spritewidth": .5,
+                "spriteheight": 8
             },
             "Water": {
                 "spriteCycle": [

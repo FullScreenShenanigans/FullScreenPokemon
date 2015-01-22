@@ -1,8 +1,6 @@
 FullScreenPokemon.prototype.settings.maps = {
-    "mapDefault": "Pallet Town",
-    "locationDefault": "Player's House Door",
-    //"mapDefault": "Route 1",
-    //"locationDefault": "Top Path",
+    "mapDefault": "Player's House",
+    "locationDefault": "Bedroom Stairs",
     "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
@@ -125,7 +123,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WindowBlinds", "x": 40 },
                         { "thing": "WindowBlinds", "x": 56 },
                         { "thing": "Bookshelf", "width": 16 },
-                        { "thing": "TelevisionMonitor", "x": 24, "y": 8 },
+                        { "thing": "TelevisionMonitor", "x": 24, "y": 8, "dialogDirections": true, "dialog": ["Oops, wrong side.", "Oops, wrong side.", ["There's a movie on TV. Four boys are walking on railroad tracks.", "I better go too."], "Oops, wrong side."] },
                         { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Ground Floor Stairs", "transport": "Bedroom Stairs" },
                         { "thing": "Table2x3", "x": 24, "y": 32 },
                         { "thing": "Stool", "x": 16, "y": 32 },
@@ -149,7 +147,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs", "transport": "Ground Floor Stairs" },
                         { "thing": "WindowBlinds", "x": 40 },
                         { "thing": "WindowBlinds", "x": 56 },
-                        { "thing": "ConsoleAndController", "x": 24, "y": 32 },
+                        { "thing": "ConsoleAndController", "x": 24, "y": 32, "dialog": "%%%%%%%PLAYER%%%%%%% is playing the SNES! ...Okay! It's time to go!" },
                         { "thing": "TelevisionMonitor", "x": 24, "y": 24 },
                         { "thing": "BedSingle", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 48, "y": 48 }
@@ -172,12 +170,12 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
                         { "thing": "Cabinet", "width": 16 },
-                        { "thing": "Painting", "x": 24 },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP (do town map action)" },
                         { "thing": "Window", "x": 40 },
                         { "thing": "Bookshelf", "x": 56 },
                         { "thing": "Table2x3", "x": 24, "y": 24 },
-                        { "thing": "Book", "x": 24, "y": 24 },
-                        { "thing": "RivalMother", "x": 16, "y": 24 },
+                        { "thing": "Book", "x": 24, "y": 24, "dialog": "It's a big map! This is useful!" },
+                        { "thing": "RivalMother", "x": 16, "y": 24, "dialog": "This is dynamic!" },
                         { "thing": "Stool", "x": 16, "y": 24 },
                         { "thing": "Stool", "x": 16, "y": 32 },
                         { "thing": "Stool", "x": 40, "y": 24 },
@@ -205,9 +203,10 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "Table2x2", "y": 4, "width": 32 },
                         { "thing": "LabComputer", "y": 8 },
-                        { "thing": "Book", "x": 16, "y": 8 },
+                        { "thing": "Book", "x": 16, "y": 8, "width": 16 },
                         { "thing": "FloorLinedHorizontal", "y": 8, "width": 80, "height": 88 },
-                        { "thing": "AsianScroll", "x": 32 },
+                        { "thing": "AsianScroll", "x": 32, "dialog": "Push START to open the MENU!" },
+                        { "thing": "AsianScroll", "x": 40, "dialog": "The SAVE option is on the MENU screen." },
                         { "thing": "Table3x1", "x": 48, "y": 24 },
                         { "thing": "Pokeball", "x": 48, "y": 24 },
                         { "thing": "Pokeball", "x": 56, "y": 24 },
@@ -216,7 +215,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Bookshelf", "y": 48, "width": 32 },
                         { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
                         { "thing": "Doormat", "x": 32, "y": 88, "width": 16, "entrance": "Ground Floor Door" },
-                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 }
+                        { "thing": "HiddenTransporter", "x": 32, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 }
                     ]
                 }
             }

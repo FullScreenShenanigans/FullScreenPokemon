@@ -841,6 +841,11 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function animateCharacterDialogFinish(thing, other) {
         thing.canKeyWalking = true;
+        if (other.directionPreferred) {
+            thing.EightBitter.animateCharacterSetDirection(
+                other, other.directionPreferred
+            );
+        }
     }
 
 
@@ -967,10 +972,20 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function collidePlayerBordering(thing, other) {
-        var dialog = other.dialog;
+        var dialog = other.dialog,
+            direction;
 
         if (!dialog) {
             return;
+        }
+
+        direction = thing.EightBitter.getDirectionBordering(other, thing);
+
+        if (other.dialogDirections) {
+            dialog = dialog[direction];
+            if (!dialog) {
+                return;
+            }
         }
 
         thing.canKeyWalking = false;
@@ -983,6 +998,10 @@ var FullScreenPokemon = (function (GameStartr) {
                 dialog,
                 animateCharacterDialogFinish.bind(undefined, thing, other)
             );
+        }
+
+        if (other.switchDirectionOnDialog) {
+            thing.EightBitter.animateCharacterSetDirection(other, direction);
         }
     }
 
