@@ -133,7 +133,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 32 },
                         { "thing": "Stool", "x": 40, "y": 40 },
                         { "thing": "FlowerVase", "x": 29, "y": 34 },
-                        { "thing": "Mother", "x": 40, "y": 32 },
+                        { "thing": "Mother", "x": 40, "y": 32, "direction": 3, "dialog": ["MOM: %%%%%%%PLAYER%%%%%%%! You and your %%%%%%%POKEMON%%%%%%% should take a quick rest."] },
                         { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Player's House Door" }, "requireDirection": 2 }
                     ]

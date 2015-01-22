@@ -266,11 +266,7 @@ function MenuGraphr(settings) {
         }
 
         if (progress.complete) {
-            if (progress.onCompletion) {
-                if (progress.onCompletion(EightBitter, menu)) {
-                    self.deleteMenu(name);
-                }
-            } else {
+            if (!progress.onCompletion || progress.onCompletion(EightBitter, menu)) {
                 self.deleteMenu(name);
             }
             return;

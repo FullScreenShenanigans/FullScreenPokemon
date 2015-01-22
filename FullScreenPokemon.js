@@ -221,6 +221,10 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.groupType
         );
 
+        if (typeof thing.direction !== "undefined") {
+            thing.EightBitter.animateCharacterSetDirection(thing, thing.direction);
+        }
+
         thing.bordering = new Array(4);
     }
 
@@ -832,6 +836,13 @@ var FullScreenPokemon = (function (GameStartr) {
         }
     }
 
+    /**
+     * 
+     */
+    function animateCharacterDialogFinish(thing, other) {
+        thing.canKeyWalking = true;
+    }
+
 
     /* Collision detection
     */
@@ -970,9 +981,7 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                function () {
-                    thing.canKeyWalking = true;
-                }
+                animateCharacterDialogFinish.bind(undefined, thing, other)
             );
         }
     }
@@ -980,7 +989,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /* Death
     */
-    
+
     /**
      * Standard Function to kill a Thing, which means marking it as dead and
      * clearing its numquads, resting, movement, and cycles. It will later be
@@ -1145,7 +1154,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function checkWindowDetector(thing) {
-        if ( 
+        if (
             thing.bottom < 0
             || thing.left > thing.EightBitter.MapScreener.width
             || thing.top > thing.EightBitter.MapScreener.height
@@ -1815,6 +1824,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateFlipOnDirection": animateFlipOnDirection,
         "animateUnflipOnDirection": animateUnflipOnDirection,
         "animateSwitchFlipOnDirection": animateSwitchFlipOnDirection,
+        "animateCharacterDialogFinish": animateCharacterDialogFinish,
         // Collisions
         "generateCanThingCollide": generateCanThingCollide,
         "generateIsCharacterTouchingCharacter": generateIsCharacterTouchingCharacter,
@@ -1832,7 +1842,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "isThingOverlappingOther": isThingOverlappingOther,
         "shiftCharacter": shiftCharacter,
         "setPlayerDirection": setPlayerDirection,
-        // Spawning & Activations
+        // Spawning
         "activateSpawner": activateSpawner,
         "spawnWindowDetector": spawnWindowDetector,
         "checkWindowDetector": checkWindowDetector,
