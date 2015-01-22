@@ -714,13 +714,13 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (!thing.cycles || !thing.cycles.walking) {
             thing.EightBitter.TimeHandler.addClassCycle(
-                thing, ["walking", "standing"], "walking", 7
+                thing, ["walking", "standing"], "walking", repeats / 2
             );
         }
 
         if (!thing.walkingFlipping) {
             thing.walkingFlipping = thing.EightBitter.TimeHandler.addEventInterval(
-                thing.EightBitter.animateSwitchFlipOnDirection, 14, Infinity, thing
+                thing.EightBitter.animateSwitchFlipOnDirection, repeats, Infinity, thing
             );
         }
 
@@ -729,6 +729,30 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         thing.isWalking = true;
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterStartWalkingRandom(thing) {
+        var totalAllowed = 0,
+            direction, i;
+
+        for (i = 0; i < 4; i += 1) {
+            if (!thing.bordering[i]) {
+                totalAllowed += 1;
+            }
+        }
+
+        direction = thing.EightBitter.NumberMaker.randomInt(totalAllowed);
+
+        for (i = 0; i < direction; i += 1) {
+            if (thing.bordering[i]) {
+                direction += 1;
+            }
+        }
+
+        thing.EightBitter.animateCharacterStartWalking(thing, direction);
     }
 
     /**
@@ -767,6 +791,15 @@ var FullScreenPokemon = (function (GameStartr) {
                 thing.EightBitter.addClass(thing, "left");
                 break;
         }
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterSetDirectionRandom(thing) {
+        thing.EightBitter.animateCharacterSetDirection(
+            thing, thing.EightBitter.NumberMaker.randomIntWithin(0, 3)
+        )
     }
 
     /**
@@ -840,6 +873,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateCharacterDialogFinish(thing, other) {
+        thing.talking = false;
+        other.talking = false;
         thing.canKeyWalking = true;
         if (other.directionPreferred) {
             thing.EightBitter.animateCharacterSetDirection(
@@ -944,6 +979,10 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function collideTransporter(thing, other) {
+        if (!thing.player) {
+            return;
+        }
+
         if (other.activated) {
             if (thing.EightBitter.isThingOverlappingOther(thing, other)) {
                 if (
@@ -988,6 +1027,8 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
+        thing.talking = true;
+        other.talking = true;
         thing.canKeyWalking = false;
 
         if (!thing.EightBitter.MenuGrapher.getActiveMenu()) {
@@ -1148,8 +1189,28 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
 
-    /* Spawning & Activations
+    /* Spawning
     */
+
+    /**
+     * 
+     */
+    function spawnCharacterRoaming(thing) {
+        thing.EightBitter.TimeHandler.addEventInterval(
+            thing.EightBitter.activateCharacterRoaming, 140, Infinity, thing
+        );
+    }
+
+    /**
+     * 
+     */
+    function activateCharacterRoaming(thing) {
+        if (!thing.alive || thing.talking) {
+            return true;
+        }
+
+        thing.EightBitter.animateCharacterStartWalkingRandom(thing);
+    }
 
     /**
      * 
@@ -1836,6 +1897,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Character movement
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
         "animateCharacterStartWalking": animateCharacterStartWalking,
+        "animateCharacterStartWalkingRandom": animateCharacterStartWalkingRandom,
         "animatePlayerStartWalking": animatePlayerStartWalking,
         "animateCharacterSetDirection": animateCharacterSetDirection,
         "animateCharacterStopWalking": animateCharacterStopWalking,
@@ -1862,6 +1924,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "shiftCharacter": shiftCharacter,
         "setPlayerDirection": setPlayerDirection,
         // Spawning
+        "spawnCharacterRoaming": spawnCharacterRoaming,
+        "activateCharacterRoaming": activateCharacterRoaming,
         "activateSpawner": activateSpawner,
         "spawnWindowDetector": spawnWindowDetector,
         "checkWindowDetector": checkWindowDetector,

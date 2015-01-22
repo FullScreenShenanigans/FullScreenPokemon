@@ -10,10 +10,12 @@
             "Location": {},
             "Thing": {
                 "Character": {
+                    "Fatty": {},
+                    "Lady": {},
                     "Mother": {},
                     "Player": {},
-                    "RivalMother": {},
-                    "Pokeball": {}
+                    "Pokeball": {},
+                    "RivalMother": {}
                 },
                 "Solid": {
                     "AsianScroll": {},
@@ -250,14 +252,19 @@
             },
             "Character": {
                 "groupType": "Character",
-                "speed": FullScreenPokemon.unitsize / 2,
+                "speed": FullScreenPokemon.unitsize / 4,
                 "isWalking": false,
                 "shouldWalk": false,
                 "switchDirectionOnDialog": true,
                 "direction": 2, // top,right,bottom,left is 0,1,2,3
                 "offsetY": FullScreenPokemon.unitsize * -2,
                 "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
-                "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking
+                "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking,
+                "attributes": {
+                    "roaming": {
+                        "onThingAdd": FullScreenPokemon.prototype.spawnCharacterRoaming
+                    }
+                }
             },
             "Mother": {
                 "directionPreferred": 3
@@ -265,6 +272,7 @@
             "Player": {
                 "player": true,
                 "canKeyWalking": true,
+                "speed": FullScreenPokemon.unitsize / 2,
                 "onWalkingStart": FullScreenPokemon.prototype.animatePlayerStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animatePlayerStopWalking,
                 "getKeys": function () {
@@ -286,7 +294,8 @@
             "Bookshelf": {
                 "width": 8,
                 "height": 16,
-                "dialog": "Crammed full of %%%%%%%POKEMON%%%%%%% books!"
+                "dialogDirections": true,
+                "dialog": ["", "", "Crammed full of %%%%%%%POKEMON%%%%%%% books!", ""]
             },
             "Cabinet": [8, 16],
             "ComputerDesk": [8, 16],
