@@ -27,6 +27,7 @@
                     "FenceWide": {},
                     "FenceVertical": {},
                     "Grass": {},
+                    "GymLabel": {},
                     "HouseBase": {
                         "HouseTop": {},
                     },
@@ -317,6 +318,7 @@
             "Grass": {
                 "nocollide": true
             },
+            "GymLabel": [16, 4],
             "HouseBase": {
                 "width": 32,
                 "height": 8,

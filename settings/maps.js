@@ -14,6 +14,7 @@ FullScreenPokemon.prototype.settings.maps = {
         "Water": FullScreenPokemon.prototype.macroWater,
         "House": FullScreenPokemon.prototype.macroHouse,
         "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge,
+        "Gym": FullScreenPokemon.prototype.macroGym,
         "Mountain": FullScreenPokemon.prototype.macroMountain
     },
     "entrances": {
@@ -337,17 +338,21 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 56, "width": 80, "height": 32 },
                         { "thing": "DirtWhite", "x": 136, "width": 16, "height": 32 },
                         { "thing": "FenceVertical", "x": 136, "width": 8, "height": 32 },
-                        { "thing": "DirtMedium", "x": 152, "width": 16, "height": 16 },
-                        { "thing": "DirtMedium", "x": 168, "width": 128, "height": 32 },
+                        { "thing": "DirtLight", "x": 152, "width": 16, "height": 16 },
+                        { "thing": "DirtMedium", "x": 168, "width": 128, "height": 16 },
                         { "thing": "PlantSmall", "x": 168, "width": 32, "height": 32 },
                         { "thing": "PlantSmall", "x": 200, "width": 96, "height": 16 },
                         { "thing": "DirtMedium", "x": 296, "width": 32, "height": 256 },
                         { "thing": "PlantSmall", "x": 296, "width": 32, "height": 256 },
                         { "thing": "Sign", "x": 160, "y": 8 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 152, "y": 16, "xnum": 2, "ynum": 2, "offset": 1 },
+                        { "thing": "DirtMedium", "x": 168, "y": 16, "width": 128, "height": 16 },
                         { "thing": "Tree", "x": 120, "y": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 136, "y": 32, "xnum": 6, "ynum": 2, "offset": 1 },
-                        { "thing": "DirtMedium", "x": 184, "y": 32, "width": 48, "height": 48 },
+                        { "thing": "DirtLight", "x": 184, "y": 32, "width": 48, "height": 48 },
+                        { "thing": "DirtMedium", "x": 232, "y": 32, "width": 48, "height": 48 },
+                        { "macro": "Gym", "x": 232, "y": 32 },
+                        { "thing": "DirtMedium", "x": 280, "y": 32, "width": 16, "height": 64 }
                     ]
                 }
             }

@@ -1771,6 +1771,7 @@ var FullScreenPokemon = (function (GameStartr) {
             y = reference.y || 0,
             width = reference.width || 48,
             stories = reference.stories || 1,
+            doorOffset = reference.doorOffset || 16,
             output = [{
                 "thing": "HouseLargeTopLeft",
                 "x": x,
@@ -1801,14 +1802,15 @@ var FullScreenPokemon = (function (GameStartr) {
                     "thing": "HouseWallWhitewash",
                     "x": reference.white.start,
                     "y": y,
-                    "width": reference.white.end - reference.white.start
+                    "width": reference.white.end - reference.white.start,
+                    "position": "end"
                 });
             }
 
             y += 16;
         }
 
-        if (!reference.noDoor) {
+        if (reference.noDoor) {
             output.push({
                 "thing": "HouseLargeCenterLeft",
                 "x": x,
@@ -1819,8 +1821,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "thing": "HouseLargeCenterMiddle",
                 "x": x + 16,
                 "y": y,
-                "width": 8,
-                "height": 4
+                "width": 8
             });
             output.push({
                 "thing": "HouseLargeCenterRight",
@@ -1828,12 +1829,33 @@ var FullScreenPokemon = (function (GameStartr) {
                 "y": y,
                 "width": width - 24
             });
+        } else {
+            output.push({
+                "thing": "HouseLargeCenterLeft",
+                "x": x,
+                "y": y,
+                "width": doorOffset
+            });
+            output.push({
+                "thing": "HouseLargeCenterMiddle",
+                "x": x + doorOffset,
+                "y": y,
+                "width": 8,
+                "height": 4
+            });
+            output.push({
+                "thing": "HouseLargeCenterRight",
+                "x": x + doorOffset + 8,
+                "y": y,
+                "width": width - doorOffset - 8
+            });
             if (reference.white) {
                 output.push({
                     "thing": "HouseWallWhitewash",
                     "x": reference.white.start,
                     "y": y,
-                    "width": reference.white.end - reference.white.start
+                    "width": reference.white.end - reference.white.start,
+                    "position": "end"
                 });
             }
 
@@ -1841,10 +1863,10 @@ var FullScreenPokemon = (function (GameStartr) {
 
             door = {
                 "thing": "Door",
-                "x": x + 16,
+                "x": x + doorOffset,
                 "y": y - 12,
                 "requireDirection": 0
-            }
+            };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
             }
@@ -1856,6 +1878,35 @@ var FullScreenPokemon = (function (GameStartr) {
 
         return output;
     };
+
+    /**
+     * 
+     */
+    function macroGym(reference) {
+        var x = reference.x || 0,
+            y = reference.y || 0,
+            width = reference.width || 48,
+            stories = reference.stories || 2,
+            output = [{
+                "macro": "HouseLarge",
+                "x": x,
+                "y": y,
+                "width": width,
+                "stories": stories,
+                "white": {
+                    "start": x + 4,
+                    "end": x + width - 4
+                },
+                "doorOffset": width - 16
+            }, {
+                "thing": "GymLabel",
+                "x": x + 16,
+                "y": y + 16,
+                "width": width - 32
+            }];
+
+        return output;
+    }
 
     /**
      * 
@@ -2131,6 +2182,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroWater": macroWater,
         "macroHouse": macroHouse,
         "macroHouseLarge": macroHouseLarge,
+        "macroGym": macroGym,
         "macroMountain": macroMountain
     });
 
