@@ -21,6 +21,20 @@
                     "AsianScroll": {},
                     "BedSingle": {},
                     "Bookshelf": {},
+                    "BuildingBase": {
+                        "BuildingTopBase": {
+                            "BuildingTopLeft": {},
+                            "BuildingTopMiddle": {},
+                            "BuildingTopRight": {}
+                        },
+                        "BuildingMiddleBase": {
+                            "BuildingMiddleLeft": {},
+                            "BuildingMiddleMiddle": {},
+                            "BuildingMiddleRight": {},
+                            "BuildingMiddleWindow": {}
+                        },
+                        "BuildingBottom": {},
+                    },
                     "Cabinet": {},
                     "ComputerDesk": {},
                     "ConsoleAndController": {},
@@ -49,6 +63,7 @@
                     "LabComputer": {},
                     "Ledge": {},
                     "LedgeOpening": {},
+                    "MartLabel": {},
                     "MountainSolidBase": {
                         "MountainRight": {},
                         "MountainTop": {},
@@ -61,6 +76,7 @@
                         "MountainBottomRight": {},
                     },
                     "PlantSmall": {},
+                    "PokeLabel": {},
                     "PottedPalmTree": {},
                     "Sign": {},
                     "Spawner": {},
@@ -310,6 +326,18 @@
                 "height": 16,
                 "dialogDirections": true,
                 "dialog": ["", "", "Crammed full of %%%%%%%POKEMON%%%%%%% books!", ""]
+            },
+            "BuildingBase": [4, 4],
+            "BuildingTopBase": {
+                "height": 16,
+                "spriteheight": 4
+            },
+            "BuildingMiddleBase": {
+                "height": 8,
+                "spriteheight": 4
+            },
+            "BuildingBottom": {
+                "height": 4
             },
             "Cabinet": [8, 16],
             "ComputerDesk": [8, 16],

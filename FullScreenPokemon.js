@@ -1716,7 +1716,7 @@ var FullScreenPokemon = (function (GameStartr) {
             door, i;
 
         y += 16;
-        for (i = 2; i < stories; i += 1) {
+        for (i = 1; i < stories; i += 1) {
             output.push({
                 "thing": "HouseCenterLeft",
                 "x": x,
@@ -1731,20 +1731,7 @@ var FullScreenPokemon = (function (GameStartr) {
             y += 8;
         }
 
-        output.push({
-            "thing": "HouseCenterLeft",
-            "x": x,
-            "y": y
-        });
-        output.push({
-            "thing": "HouseCenterRight",
-            "x": x + 16,
-            "y": y,
-            "width": width - 16
-        });
-        y += 8;
-
-        if (!reference.noDoor) {
+        if (reference.door) {
             door = {
                 "thing": "Door",
                 "x": x + 8,
@@ -1810,7 +1797,7 @@ var FullScreenPokemon = (function (GameStartr) {
             y += 16;
         }
 
-        if (reference.noDoor) {
+        if (!reference.door) {
             output.push({
                 "thing": "HouseLargeCenterLeft",
                 "x": x,
@@ -1904,6 +1891,128 @@ var FullScreenPokemon = (function (GameStartr) {
                 "y": y + 16,
                 "width": width - 32
             }];
+
+        return output;
+    }
+
+    /**
+     * 
+     */
+    function macroBuilding(reference) {
+        var x = reference.x || 0,
+            y = reference.y || 0,
+            width = reference.width || 32,
+            stories = reference.stories || 1,
+            doorOffset = reference.doorOffset || 8,
+            output = [{
+                "thing": "BuildingTopLeft",
+                "x": x,
+                "y": y,
+            }, {
+                "thing": "BuildingTopMiddle",
+                "x": x + 4,
+                "y": y,
+                "width": width - 8
+            }, {
+                "thing": "BuildingTopRight",
+                "x": x + width - 4,
+                "y": y,
+            }],
+            i;
+
+        y += 16;
+
+        for (i = 0; i < stories; i += 1) {
+            output.push({
+                "thing": "BuildingMiddleLeft",
+                "x": x,
+                "y": y
+            });
+            output.push({
+                "thing": "BuildingMiddleWindow",
+                "x": x + 4,
+                "y": y,
+                "width": width - 8,
+                "height": 4
+            });
+            output.push({
+                "thing": "BuildingMiddleMiddle",
+                "x": x + 4,
+                "y": y + 4,
+                "width": width - 8,
+                "height": 4
+            });
+            output.push({
+                "thing": "BuildingMiddleRight",
+                "x": x + width - 4,
+                "y": y
+            });
+            output.push({
+
+            });
+
+            y += 8;
+        }
+
+        output.push({
+            "thing": "BuildingMiddleLeft",
+            "x": x,
+            "y": y,
+            "height": 4
+        });
+        output.push({
+            "thing": "BuildingMiddleRight",
+            "x": x + width - 4,
+            "y": y,
+            "height": 4
+        });
+
+        if (reference.door) {
+            output.push({
+                "thing": "BuildingMiddleMiddle",
+                "x": x + 4,
+                "y": y,
+                "height": 4,
+                "width": doorOffset - 4,
+            });
+            output.push({
+                "thing": "Door",
+                "x": x + doorOffset,
+                "y": y
+            });
+            output.push({
+                "thing": "BuildingMiddleMiddle",
+                "x": x + doorOffset + 8,
+                "y": y,
+                "height": 4,
+                "width": width - doorOffset - 8,
+            });
+        } else {
+            output.push({
+                "thing": "BuildingMiddleMiddle",
+                "x": x + 4,
+                "y": y,
+                "width": width - 8,
+                "height": 4
+            });
+        }
+
+        if (reference.label) {
+            output.push({
+                "thing": reference.label + "Label",
+                "x": x + 16,
+                "y": y
+            });
+        }
+
+        y += 4;
+
+        output.push({
+            "thing": "BuildingBottom",
+            "x": x,
+            "y": y,
+            "width": width
+        });
 
         return output;
     }
@@ -2182,6 +2291,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroWater": macroWater,
         "macroHouse": macroHouse,
         "macroHouseLarge": macroHouseLarge,
+        "macroBuilding": macroBuilding,
         "macroGym": macroGym,
         "macroMountain": macroMountain
     });

@@ -14,6 +14,7 @@ FullScreenPokemon.prototype.settings.maps = {
         "Water": FullScreenPokemon.prototype.macroWater,
         "House": FullScreenPokemon.prototype.macroHouse,
         "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge,
+        "Building": FullScreenPokemon.prototype.macroBuilding,
         "Gym": FullScreenPokemon.prototype.macroGym,
         "Mountain": FullScreenPokemon.prototype.macroMountain
     },
@@ -322,7 +323,9 @@ FullScreenPokemon.prototype.settings.maps = {
             "name": "Viridian City",
             "locations": {
                 "Temp": {
-                    "area": "Land"
+                    "area": "Land",
+                    "xloc": 200,
+                    "yloc": 140
                 }
             },
             "areas": {
@@ -333,7 +336,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         //"bottom": { "map": "Route 1", "area": "Land", "x": 0 }
                     },
                     "creation": [
-                        { "macro": "Mountain", "width": 56, "height": 136, "bottom": true, "right": true },
+                        { "macro": "Mountain", "width": 56, "height": 112, "bottom": true, "right": true },
                         { "thing": "DirtMedium", "x": 56, "width": 80, "height": 144 },
                         { "thing": "PlantSmall", "x": 56, "width": 80, "height": 32 },
                         { "thing": "DirtWhite", "x": 136, "width": 16, "height": 32 },
@@ -345,14 +348,43 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 296, "width": 32, "height": 256 },
                         { "thing": "PlantSmall", "x": 296, "width": 32, "height": 256 },
                         { "thing": "Sign", "x": 160, "y": 8 },
-                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 152, "y": 16, "xnum": 2, "ynum": 2, "offset": 1 },
-                        { "thing": "DirtMedium", "x": 168, "y": 16, "width": 128, "height": 16 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 152, "y": 16, "xnum": 2, "ynum": 2 },
+                        { "thing": "DirtMedium", "x": 168, "y": 16, "width": 32, "height": 16 },
+                        { "thing": "DirtLight", "x": 200, "y": 16, "width": 96, "height": 16 },
                         { "thing": "Tree", "x": 120, "y": 32 },
-                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 136, "y": 32, "xnum": 6, "ynum": 2, "offset": 1 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 136, "y": 32, "xnum": 6, "ynum": 2 },
                         { "thing": "DirtLight", "x": 184, "y": 32, "width": 48, "height": 48 },
-                        { "thing": "DirtMedium", "x": 232, "y": 32, "width": 48, "height": 48 },
+                        { "thing": "DirtLight", "x": 232, "y": 32, "width": 48, "height": 32 },
                         { "macro": "Gym", "x": 232, "y": 32 },
-                        { "thing": "DirtMedium", "x": 280, "y": 32, "width": 16, "height": 64 }
+                        { "thing": "DirtLight", "x": 280, "y": 32, "width": 16, "height": 64 },
+                        { "thing": "FenceWide", "x": 72, "y": 40, "width": 48 },
+                        { "thing": "PlantSmall", "x": 120, "y": 40, "width": 16 },
+                        { "thing": "FenceWide", "x": 64, "y": 48, "height": 80 },
+                        { "thing": "PlantSmall", "x": 72, "y": 48, "width": 64, "height": 88 },
+                        { "thing": "DirtWhite", "x": 136, "y": 48, "width": 16, "height": 80 },
+                        { "thing": "FenceVertical", "x": 136, "y": 48, "width": 8, "height": 80 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 152, "y": 48, "xnum": 2, "ynum": 12 },
+                        { "thing": "DirtWhite", "x": 168, "y": 48, "width": 16, "height": 32 },
+                        { "thing": "FenceVertical", "x": 168, "y": 48, "width": 8, "height": 16 },
+                        { "thing": "Sign", "x": 224, "y": 56, "dialog": "NOPE" },
+                        { "macro": "House", "x": 168, "y": 64 },
+                        { "thing": "DirtMedium", "x": 232, "y": 64, "width": 48, "height": 16 },
+                        { "thing": "Ledge", "x": 200, "y": 76, "width": 32, "jagged": true },
+                        { "thing": "Ledge", "x": 232, "y": 76, "width": 48 },
+                        { "thing": "Ledge", "x": 280, "y": 76, "width": 16, "jagged": true },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 168, "y": 80, "xnum": 14, "ynum": 2 },
+                        { "thing": "DirtLight", "x": 168, "y": 96, "width": 128, "height": 16 },
+                        { "thing": "FenceVertical", "x": 168, "y": 104, "width": 128, "height": 8 },
+                        { "thing": "DirtMedium", "y": 112, "width": 56, "height": 16 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 168, "y": 112, "xnum": 16, "ynum": 2 },
+                        { "macro": "House", "x": 168, "y": 112 },
+                        { "thing": "DirtLight", "y": 128, "width": 16, "height": 16 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 128, "xnum": 5, "ynum": 2 },
+                        { "thing": "DirtLight", "x": 136, "y": 128, "width": 16, "height": 16 },
+                        { "thing": "DirtLight", "x": 168, "y": 128, "width": 32, "height": 16 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 200, "y": 128, "xnum": 2, "ynum": 2 },
+                        { "thing": "DirtMedium", "x": 216, "y": 128, "width": 64, "height": 32 },
+                        { "macro": "Building", "x": 232, "y": 128, "door": true, "label": "Mart" },
                     ]
                 }
             }
