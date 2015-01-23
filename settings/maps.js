@@ -1,6 +1,6 @@
 FullScreenPokemon.prototype.settings.maps = {
-    "mapDefault": "Pallet Town",
-    //"locationDefault": "Bedroom Stairs",
+    "mapDefault": "Viridian City",
+    "locationDefault": "Temp",
     "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
@@ -13,7 +13,8 @@ FullScreenPokemon.prototype.settings.maps = {
         "Checkered": FullScreenPokemon.prototype.macroCheckered,
         "Water": FullScreenPokemon.prototype.macroWater,
         "House": FullScreenPokemon.prototype.macroHouse,
-        "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge
+        "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge,
+        "Mountain": FullScreenPokemon.prototype.macroMountain
     },
     "entrances": {
         "Normal": FullScreenPokemon.prototype.mapEntranceNormal
@@ -313,6 +314,40 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 96, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 24, "y": 288 },
                         { "thing": "FenceWide", "x": 144, "y": 288 }
+                    ]
+                }
+            }
+        }, {
+            "name": "Viridian City",
+            "locations": {
+                "Temp": {
+                    "area": "Land"
+                }
+            },
+            "areas": {
+                "Land": {
+                    "width": 8,
+                    "height": 8,
+                    "borders": {
+                        //"bottom": { "map": "Route 1", "area": "Land", "x": 0 }
+                    },
+                    "creation": [
+                        { "macro": "Mountain", "width": 56, "height": 136, "bottom": true, "right": true },
+                        { "thing": "DirtMedium", "x": 56, "width": 80, "height": 144 },
+                        { "thing": "PlantSmall", "x": 56, "width": 80, "height": 32 },
+                        { "thing": "DirtWhite", "x": 136, "width": 16, "height": 32 },
+                        { "thing": "FenceVertical", "x": 136, "width": 8, "height": 32 },
+                        { "thing": "DirtMedium", "x": 152, "width": 16, "height": 16 },
+                        { "thing": "DirtMedium", "x": 168, "width": 128, "height": 32 },
+                        { "thing": "PlantSmall", "x": 168, "width": 32, "height": 32 },
+                        { "thing": "PlantSmall", "x": 200, "width": 96, "height": 16 },
+                        { "thing": "DirtMedium", "x": 296, "width": 32, "height": 256 },
+                        { "thing": "PlantSmall", "x": 296, "width": 32, "height": 256 },
+                        { "thing": "Sign", "x": 160, "y": 8 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 152, "y": 16, "xnum": 2, "ynum": 2, "offset": 1 },
+                        { "thing": "Tree", "x": 120, "y": 32 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 136, "y": 32, "xnum": 6, "ynum": 2, "offset": 1 },
+                        { "thing": "DirtMedium", "x": 184, "y": 32, "width": 48, "height": 48 },
                     ]
                 }
             }

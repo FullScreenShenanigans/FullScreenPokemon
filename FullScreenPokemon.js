@@ -1857,6 +1857,188 @@ var FullScreenPokemon = (function (GameStartr) {
         return output;
     };
 
+    /**
+     * 
+     */
+    function macroMountain(reference) {
+        var x = reference.x || 0,
+            y = reference.y || 0,
+            width = reference.width || 8,
+            height = reference.height || 8,
+            output = [];
+
+        if (reference.right) {
+            if (reference.top) {
+                output.push({
+                    "thing": "MountainTopRight",
+                    "x": x + width - 8,
+                    "y": y
+                });
+                output.push({
+                    "thing": "MountainRight",
+                    "x": x + width - 8,
+                    "y": y + 4
+                });
+                output.push({
+                    "thing": "MountainTopRight",
+                    "x": x + width - 4,
+                    "y": y + 4
+                });
+            } else {
+                output.push({
+                    "thing": "MountainRight",
+                    "x": x + width - 8,
+                    "y": y,
+                    "width": 8,
+                    "height": 8
+                });
+            }
+
+            if (reference.bottom) {
+                output.push({
+                    "thing": "MountainBottomRight",
+                    "x": x + width - 8,
+                    "y": y + height - 8
+                });
+                output.push({
+                    "thing": "MountainRight",
+                    "x": x + width - 4,
+                    "y": y + height - 8
+                });
+                output.push({
+                    "thing": "MountainBottom",
+                    "x": x + width - 8,
+                    "y": y + height - 4
+                });
+                output.push({
+                    "thing": "MountainBottomRight",
+                    "x": x + width - 4,
+                    "y": y + height - 4
+                });
+            } else {
+                output.push({
+                    "thing": "MountainRight",
+                    "x": x + width - 8,
+                    "y": y + height - 8,
+                    "width": 8,
+                    "height": 8
+                });
+            }
+
+            output.push({
+                "thing": "MountainRight",
+                "x": x + width - 8,
+                "y": y + 8,
+                "width": 8,
+                "height": height - 16
+            });
+
+            width -= 8;
+        }
+
+        if (reference.left) {
+            if (reference.top) {
+                output.push({
+                    "thing": "MountainTopLeft",
+                    "x": x + 4,
+                    "y": y
+                });
+                output.push({
+                    "thing": "MountainTopLeft",
+                    "x": x,
+                    "y": y + 4
+                });
+                output.push({
+                    "thing": "MountainLeft",
+                    "x": x + 4,
+                    "y": y + 4
+                });
+            } else {
+                output.push({
+                    "thing": "MountainLeft",
+                    "x": x,
+                    "y": y,
+                    "width": 8,
+                    "height": 8
+                });
+            }
+
+            if (reference.bottom) {
+                output.push({
+                    "thing": "MountainLeft",
+                    "x": x,
+                    "y": y + height - 8
+                });
+                output.push({
+                    "thing": "MountainBottomLeft",
+                    "x": x + 4,
+                    "y": y + height - 8
+                });
+                output.push({
+                    "thing": "MountainBottomLeft",
+                    "x": x,
+                    "y": y + height - 4
+                });
+                output.push({
+                    "thing": "MountainBottom",
+                    "x": x + 4,
+                    "y": y + height - 4
+                });
+            } else {
+                output.push({
+                    "thing": "MountainLeft",
+                    "x": x,
+                    "y": y + height - 8,
+                    "width": 8,
+                    "height": 8
+                });
+            }
+
+            output.push({
+                "thing": "MountainLeft",
+                "x": x,
+                "y": y + 8,
+                "width": 8,
+                "height": height - 16
+            });
+
+            width -= 8;
+            x += 8;
+        }
+
+        if (reference.top) {
+            output.push({
+                "thing": "MountainTop",
+                "x": x,
+                "y": y,
+                "width": width,
+            });
+            y += 5;
+            height -= 5;
+        }
+
+        if (reference.bottom) {
+            output.push({
+                "thing": "MountainBottom",
+                "x": x,
+                "y": y + height - 8,
+                "width": width,
+                "height": 8
+            });
+            height -= 8;
+        }
+
+        output.push({
+            "thing": "Mountain",
+            "x": x,
+            "y": y,
+            "width": width,
+            "height": height
+        });
+
+        return output;
+    }
+
 
     proliferateHard(FullScreenPokemon.prototype, {
         // Resets
@@ -1948,7 +2130,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroCheckered": macroCheckered,
         "macroWater": macroWater,
         "macroHouse": macroHouse,
-        "macroHouseLarge": macroHouseLarge
+        "macroHouseLarge": macroHouseLarge,
+        "macroMountain": macroMountain
     });
 
     return FullScreenPokemon;

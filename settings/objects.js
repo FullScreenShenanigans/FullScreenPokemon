@@ -48,6 +48,17 @@
                     "LabComputer": {},
                     "Ledge": {},
                     "LedgeOpening": {},
+                    "MountainSolidBase": {
+                        "MountainRight": {},
+                        "MountainTop": {},
+                        "MountainTopRight": {},
+                        "MountainTopLeft": {},
+                        "MountainRight": {},
+                        "MountainLeft": {},
+                        "MountainBottom": {},
+                        "MountainBottomLeft": {},
+                        "MountainBottomRight": {},
+                    },
                     "PlantSmall": {},
                     "PottedPalmTree": {},
                     "Sign": {},
@@ -62,6 +73,7 @@
                         "StairsDown": {},
                         "StairsUp": {}
                     },
+                    "Tree": {},
                     "WaterEdge": {
                         "WaterEdgeTop": {},
                         "WaterEdgeRight": {},
@@ -84,18 +96,19 @@
                     "WindowBlinds": {}
                 },
                 "Terrain": {
-                    "DirtClean": {},
-                    "DirtLight": {},
-                    "DirtMedium": {},
-                    "DirtWhite": {},
-                    "FloorLinedHorizontal": {},
-                    "FloorTiledDiagonal": {},
                     "TerrainSmall": {
                         "TerrainSmallRepeating": {
                             "WallIndoorHorizontalBands": {},
                             "WallIndoorLightWithDarkBottom": {}
                         }
                     },
+                    "DirtClean": {},
+                    "DirtLight": {},
+                    "DirtMedium": {},
+                    "DirtWhite": {},
+                    "FloorLinedHorizontal": {},
+                    "FloorTiledDiagonal": {},
+                    "Mountain": {},
                     "Water": {}
                 },
                 "Text": {
@@ -357,6 +370,8 @@
                 "height": 4,
                 "nocollide": true
             },
+            "MountainSolidBase": [4, 4],
+            "MountainTop": [4, 5],
             "PottedPalmTree": [8, 16],
             "Spawner": {
                 "hidden": true,
@@ -372,6 +387,9 @@
                 "collide": FullScreenPokemon.prototype.collideTransporter,
                 "activate": FullScreenPokemon.prototype.activateTransporter,
                 "activated": false
+            },
+            "Tree": {
+                "dialog": "IT WOULD BE NICE TO CUT THE TREE DOWN LEL"
             },
             "Door": {
                 "width": 8,
@@ -421,6 +439,7 @@
                 "spritewidth": 2,
                 "spriteheight": 2
             },
+            "Mountain": [4, 4],
             "WallIndoorLightWithDarkBottom": {
                 "spritewidth": .5,
                 "spriteheight": 8
