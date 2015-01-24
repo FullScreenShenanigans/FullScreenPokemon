@@ -90,6 +90,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Water", "x": 32, "y": 104, "width": 32, "height": 32, "open": [false, false, true, false] },
                         { "thing": "DirtLight", "x": 64, "y": 104, "width": 16, "height": 32 },
                         { "thing": "DirtMedium", "x": 80, "y": 104, "width": 48, "height": 16 },
+                        { "thing": "Fatty", "x": 88, "y": 104, "roaming": true, "dialog": ["Technology is incredible!", "You can now store and recall items and %%%%%%%POKEMON%%%%%%% as data via PC!"] },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 108, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "DirtLight", "x": 128, "y": 104, "width": 16, "height": 32 },
                         { "thing": "DirtLight", "x": 80, "y": 120, "width": 48, "height": 16 },

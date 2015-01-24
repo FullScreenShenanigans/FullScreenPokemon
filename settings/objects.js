@@ -285,7 +285,7 @@
             },
             "Character": {
                 "groupType": "Character",
-                "speed": FullScreenPokemon.unitsize / 4,
+                "speed": FullScreenPokemon.unitsize / 3,
                 "isWalking": false,
                 "shouldWalk": false,
                 "switchDirectionOnDialog": true,
