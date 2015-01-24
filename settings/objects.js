@@ -41,7 +41,6 @@
                     "FenceWide": {},
                     "FenceVertical": {},
                     "Grass": {},
-                    "GymLabel": {},
                     "HouseBase": {
                         "HouseTop": {},
                     },
@@ -61,9 +60,13 @@
                     "HouseWallWhitewash": {},
                     "InvisibleWall": {},
                     "LabComputer": {},
+                    "Label": {
+                        "GymLabel": {},
+                        "MartLabel": {},
+                        "PokeLabel": {}
+                    },
                     "Ledge": {},
                     "LedgeOpening": {},
-                    "MartLabel": {},
                     "MountainSolidBase": {
                         "MountainRight": {},
                         "MountainTop": {},
@@ -346,7 +349,6 @@
             "Grass": {
                 "nocollide": true
             },
-            "GymLabel": [16, 4],
             "HouseBase": {
                 "width": 32,
                 "height": 8,
@@ -383,6 +385,10 @@
                 "hidden": true
             },
             "LabComputer": [16, 8],
+            "Label": {
+                "position": "end"
+            },
+            "GymLabel": [16, 4],
             "Ledge": {
                 "width": 4,
                 "height": 4,
