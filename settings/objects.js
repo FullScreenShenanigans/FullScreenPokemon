@@ -250,14 +250,6 @@
                             { "thing": "InvisibleWall", "noBoundaryStretch": true },
                             { "thing": "InvisibleWall", "noBoundaryStretch": true }
                         ]
-                    },
-                    "borders": {
-                        "afters": [
-                            { "thing": "AreaSpawner", "noBoundaryStretch": true },
-                            { "thing": "AreaSpawner", "noBoundaryStretch": true },
-                            { "thing": "AreaSpawner", "noBoundaryStretch": true },
-                            { "thing": "AreaSpawner", "noBoundaryStretch": true }
-                        ]
                     }
                 }
             },
@@ -390,8 +382,9 @@
             },
             "GymLabel": [16, 4],
             "Ledge": {
-                "width": 4,
+                "width": 8,
                 "height": 4,
+                "spritewidth": 4,
                 "collide": FullScreenPokemon.prototype.collideLedge,
                 "attributes": {
                     "jagged": {
@@ -402,8 +395,9 @@
                 }
             },
             "LedgeOpening": {
-                "width": 4,
+                "width": 8,
                 "height": 4,
+                "spritewidth": 4,
                 "nocollide": true
             },
             "MountainSolidBase": [4, 4],
@@ -414,7 +408,7 @@
                 "onThingAdd": FullScreenPokemon.prototype.activateSpawner
             },
             "AreaSpawner": {
-                "activate": FullScreenPokemon.prototype.activateAreaSpawner
+                "activate": FullScreenPokemon.prototype.spawnAreaSpawner
             },
             "Table2x2": [16, 16],
             "Table2x3": [16, 16],

@@ -252,6 +252,11 @@ var FullScreenPokemon = (function (GameStartr) {
         var thing = prething.thing,
             position = prething.position || thing.position;
 
+        if (thing.spawned) {
+            return;
+        }
+        thing.spawned = true;
+
         thing.EightBitter.addThing(
             thing,
             prething.left * thing.EightBitter.unitsize - thing.EightBitter.MapScreener.left,
@@ -1240,9 +1245,6 @@ var FullScreenPokemon = (function (GameStartr) {
             || thing.top > thing.EightBitter.MapScreener.height
             || thing.right < 0
         ) {
-            if (!thing.direction) {
-                console.log("a");
-            }
             return false;
         }
 
@@ -1254,17 +1256,13 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function activateAreaSpawner(thing) {
-        var area = thing.EightBitter.MapsHandler.getArea(),
-            direction = thing.direction,
-            border = area.borders[thing.EightBitter.directionNames[direction]],
-            area, x, y;
+    function spawnAreaSpawner(thing) {
+        var map = thing.EightBitter.MapsHandler.getMap(thing.map),
+            area = map.areas[thing.area];
 
-        if (!border) {
+        if (area === thing.EightBitter.MapsHandler.getArea()) {
             return;
         }
-
-        area = thing.EightBitter.MapsHandler.getMap(border.map).areas[border.area];
 
         if (
             area.spawnedBy
@@ -1275,35 +1273,43 @@ var FullScreenPokemon = (function (GameStartr) {
 
         area.spawnedBy = thing.EightBitter.MapsHandler.getArea().spawnedBy;
 
-        x = thing.left + thing.EightBitter.MapScreener.left;
-        y = thing.top + thing.EightBitter.MapScreener.top;
-
-        switch (direction) {
-            case 0:
-                y -= (area.height - thing.height) * thing.EightBitter.unitsize;
-                break;
-            case 3:
-                x -= (area.width - thing.width) * thing.EightBitter.unitsize;
-                break;
-        }
-
-        thing.EightBitter.spawnArea(thing.EightBitter, area, x, y);
+        thing.EightBitter.activateAreaSpawner(thing, area);
     }
 
     /**
      * 
      */
-    function spawnArea(EightBitter, area, left, top) {
+    function activateAreaSpawner(thing, area) {
         var creation = area.creation,
+            EightBitter = thing.EightBitter,
             MapsCreator = EightBitter.MapsCreator,
             MapScreener = EightBitter.MapScreener,
             MapsHandler = EightBitter.MapsHandler,
-            area = MapsHandler.getArea(),
-            map = MapsHandler.getMap(),
-            prethings = MapsHandler.getPreThings(),
-            x = left / EightBitter.unitsize,
-            y = top / EightBitter.unitsize,
-            command, i;
+            QuadsKeeper = EightBitter.QuadsKeeper,
+            areaCurrent = MapsHandler.getArea(),
+            mapCurrent = MapsHandler.getMap(),
+            prethingsCurrent = MapsHandler.getPreThings(),
+            left = thing.left + thing.EightBitter.MapScreener.left,
+            top = thing.top + thing.EightBitter.MapScreener.top,
+            x, y, command, i;
+
+        switch (thing.direction) {
+            case 0:
+                top -= area.height * thing.EightBitter.unitsize;
+                break;
+            case 1:
+                left += thing.width * thing.EightBitter.unitsize;
+                break;
+            case 2:
+                top += thing.height * thing.EightBitter.unitsize;
+                break;
+            case 3:
+                left -= area.width * thing.EightBitter.unitsize;
+                break;
+        }
+
+        x = left / EightBitter.unitsize + (thing.offsetX || 0);
+        y = top / EightBitter.unitsize + (thing.offsetY || 0);
 
         for (i = 0; i < creation.length; i += 1) {
             // A copy of the command must be used to not modify the original 
@@ -1328,15 +1334,15 @@ var FullScreenPokemon = (function (GameStartr) {
                 delete command.entrance;
             }
 
-            MapsCreator.analyzePreSwitch(command, prethings, area, map);
+            MapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
         }
 
         MapsHandler.spawnMap(
             "xInc",
-            MapScreener.top / EightBitter.unitsize,
-            (MapScreener.left + EightBitter.QuadsKeeper.right) / EightBitter.unitsize,
-            MapScreener.bottom / EightBitter.unitsize,
-            left
+            QuadsKeeper.top / EightBitter.unitsize,
+            QuadsKeeper.right / EightBitter.unitsize,
+            QuadsKeeper.bottom / EightBitter.unitsize,
+            QuadsKeeper.left / EightBitter.unitsize
         );
 
         area.spawned = true;
@@ -1947,9 +1953,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 "x": x + width - 4,
                 "y": y
             });
-            output.push({
-
-            });
 
             y += 8;
         }
@@ -2271,8 +2274,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "activateSpawner": activateSpawner,
         "spawnWindowDetector": spawnWindowDetector,
         "checkWindowDetector": checkWindowDetector,
+        "spawnAreaSpawner": spawnAreaSpawner,
         "activateAreaSpawner": activateAreaSpawner,
-        "spawnArea": spawnArea,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
