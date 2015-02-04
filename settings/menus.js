@@ -24,16 +24,26 @@ FullScreenPokemon.prototype.settings.menus = {
     "schemas": {
         "GeneralText": {
             "size": {
-                "height": 20
+                "height": 24,
+                "width": 100
             },
             "position": {
-                "right": 0,
-                "bottom": 0,
-                "left": 0
+                "horizontal": "center",
+                "vertical": "bottom",
+            }
+        },
+        "PauseMenu": {
+            "size": {
+                "width": 40,
+                "height": 100
             },
-            //"alignment": {
-            //    "horizontal": "center"
-            //}
+            "position": {
+                "horizontal": "center",
+                "vertical": "bottom",
+                "offset": {
+                    "horizontal": 60 // 50 + (40 / 2)
+                }
+            }
         }
     }
 };

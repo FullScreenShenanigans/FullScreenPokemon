@@ -52,18 +52,30 @@ function MenuGraphr(settings) {
      */
     self.createMenu = function (name) {
         var schema = schemas[name],
-            menu = EightBitter.ObjectMaker.make("Menu", schema);
+            menu = EightBitter.ObjectMaker.make("Menu", schema),
+            container = schema.container
+                ? menus[schema.container]
+                : {
+                    "top": 0,
+                    "left": 0,
+                    "right": EightBitter.MapScreener.width,
+                    "bottom": EightBitter.MapScreener.height,
+                    "width": Math.floor(
+                        EightBitter.MapScreener.width / EightBitter.unitsize
+                    ),
+                    "height": Math.floor(
+                        EightBitter.MapScreener.height / EightBitter.unitsize
+                    ),
+                    "EightBitter": EightBitter
+                };
 
         self.deleteMenu(name);
 
         menus[name] = menu;
         menu.name = name;
-        self.positionMenu(menu, schema.size, schema.position);
+        self.positionMenu(menu, schema.size, schema.position, container);
 
-        menu.textWidth = Math.min(
-            menu.textWidth,
-            EightBitter.MapScreener.width - menu.textXOffset * 2 * EightBitter.unitsize
-        );
+        menu.textWidth = (menu.width - menu.textXOffset * 2) * EightBitter.unitsize;
     };
 
     /**
@@ -98,42 +110,59 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    self.positionMenu = function (menu, size, position) {
-        var width, height,
-            top, right, bottom, left;
-
-        if (size) {
-            width = size.width * EightBitter.unitsize;
-            height = size.height * EightBitter.unitsize;
+    self.positionMenu = function (menu, size, position, container) {
+        if (!size) {
+            size = {};
         }
 
-        if (position) {
-            top = position.top;
-            right = EightBitter.MapScreener.width - position.right;
-            bottom = EightBitter.MapScreener.height - position.bottom;
-            left = position.left;
+        if (size.width) {
+            EightBitter.setWidth(menu, size.width);
+        } else if (position.horizontal === "stretch") {
+            EightBitter.setLeft(menu, 0);
+            EightBitter.setWidth(menu, container.width);
         }
 
-        if (typeof top !== "undefined" && typeof bottom !== "undefined") {
-            height = bottom - top;
+        if (size.height) {
+            EightBitter.setHeight(menu, size.height);
+        } else if (position.vertical === "stretch") {
+            EightBitter.setTop(menu, 0);
+            EightBitter.setHeight(menu, container.height);
         }
 
-        if (typeof left !== "undefined" && typeof right !== "undefined") {
-            width = right - left;
+        switch (position.horizontal) {
+            case "left":
+                EightBitter.setLeft(menu, container.left);
+                break;
+            case "center":
+                EightBitter.setMidXObj(menu, container);
+                break;
+            case "right":
+                EightBitter.setRight(menu, container.right);
+                break;
         }
 
-        EightBitter.setWidth(menu, width / EightBitter.unitsize);
-        EightBitter.setHeight(menu, height / EightBitter.unitsize);
-
-        if (typeof left === "undefined") {
-            left = right - width;
+        switch (position.vertical) {
+            case "top":
+                EightBitter.setTop(menu, container.top);
+                break;
+            case "center":
+                EightBitter.setMidXObj(menu, container);
+                break;
+            case "bottom":
+                EightBitter.setBottom(menu, container.bottom);
+                break;
         }
 
-        if (typeof top === "undefined") {
-            top = bottom - height;
+        if (position.offset) {
+            if (position.offset.horizontal) {
+                EightBitter.shiftHoriz(menu, position.offset.horizontal * EightBitter.unitsize);
+            }
+            if (position.offset.vertical) {
+                EightBitter.shiftVert(menu, position.offset.vertical * EightBitter.unitsize);
+            }
         }
 
-        EightBitter.addThing(menu, left, top);
+        EightBitter.addThing(menu, menu.left, menu.top);
     };
 
     
@@ -169,7 +198,7 @@ function MenuGraphr(settings) {
             y = menu.top + menu.textYOffset * EightBitter.unitsize;
 
         if (words.constructor === String) {
-            words = words.split(/\s+/);
+            words = words.split(/ /);
         }
 
         menu.characters = [];
@@ -191,23 +220,25 @@ function MenuGraphr(settings) {
             textHeight = textProperties.height * EightBitter.unitsize,
             title, character, j;
 
-        for (j = 0; j < word.length; j += 1) {
-            if (word[j] !== " ") {
-                title = "Char" + getCharacterEquivalent(word[j]);
-                character = EightBitter.ObjectMaker.make(title);
-                menu.characters.push(character);
+        if (word !== "\n") {
+            for (j = 0; j < word.length; j += 1) {
+                if (word[j] !== " ") {
+                    title = "Char" + getCharacterEquivalent(word[j]);
+                    character = EightBitter.ObjectMaker.make(title);
+                    menu.characters.push(character);
 
-                EightBitter.TimeHandler.addEvent(
-                    EightBitter.addThing.bind(EightBitter),
-                    j * textSpeed,
-                    character,
-                    x,
-                    y
-                );
+                    EightBitter.TimeHandler.addEvent(
+                        EightBitter.addThing.bind(EightBitter),
+                        j * textSpeed,
+                        character,
+                        x,
+                        y
+                    );
 
-                x += character.width * EightBitter.unitsize;
-            } else {
-                x += textWidth;
+                    x += character.width * EightBitter.unitsize;
+                } else {
+                    x += textWidth;
+                }
             }
         }
 
@@ -220,8 +251,11 @@ function MenuGraphr(settings) {
         }
 
         if (
-            x + (filterWord(words[i + 1]).length + 1) * textWidth
-            > EightBitter.getMidX(menu) + menu.textWidth / 2
+            word === "\n"
+            || (
+                x + (filterWord(words[i + 1]).length + 1) * textWidth
+                > EightBitter.getMidX(menu) + menu.textWidth / 2
+            )
         ) {
             x = EightBitter.getMidX(menu) - menu.textWidth / 2;
             y += textHeight + textProperties.paddingY * EightBitter.unitsize;

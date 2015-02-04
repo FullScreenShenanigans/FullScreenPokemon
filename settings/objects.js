@@ -499,9 +499,8 @@
                 "height": 8,
                 "noshiftx": true,
                 "noshifty": true,
-                "textXOffset": 4,
-                "textYOffset": 5,
-                "textWidth": 400
+                "textXOffset": 6,
+                "textYOffset": 7.5,
             }
         }
     };
