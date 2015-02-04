@@ -52,12 +52,15 @@ function GamesRunnr(settings) {
     }
     var self = this,
     
-        // Array of functions to be run on each upkeep
+        // Array of Functions to be run on each upkeep
         games,
         
-        // Optional trigger functions triggered on...
+        // Optional trigger Functions triggered on...
         onPause,   // self.pause()
         onPlay, // self.play()
+
+        // Arguments for the optional trigger Functions
+        callbackArguments,
         
         // Reference to the next upkeep, such as setTimeout's returned int
         upkeepNext,
@@ -104,6 +107,8 @@ function GamesRunnr(settings) {
      *                                     provided, a new one will be made.
      * @param {Function} [onPause]   A callback to run when upkeep is paused.
      * @param {Function} [onPlay]   A callback to run when upkeep is played.
+     * @param {Array} [callbackArguments]   Arguments to be passed to onPause
+     *                                      and onPlay (by default, [self]).
      * @param {Function} [upkeepScheduler]   A Function to replace setTimeout.
      * @param {Function} [upkeepCanceller]   A Function to replace 
      *                                       clearTimeout.
@@ -118,6 +123,7 @@ function GamesRunnr(settings) {
         speed = settings.speed || 1;
         onPause = settings.onPause;
         onPlay = settings.onPlay;
+        callbackArguments = settings.callbackArguments || [self];
         upkeepScheduler = settings.upkeepScheduler || window.setTimeout;
         upkeepCanceller = settings.upkeepCanceller || window.clearTimeout;
         FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr();

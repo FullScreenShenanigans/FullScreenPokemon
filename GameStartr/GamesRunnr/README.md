@@ -53,6 +53,9 @@ paused.
 
 * **[onPlay]** *`Function`* - An optional callback to run when upkeep is played.
 
+* **[callbackArguments]** *`Array`* - Arguments to be passed to onPause and
+onPlay (by default, an Array containing the GameStartr).
+
 * **[scope]** *`Mixed`* - A scope for games to be run on (defaults to the 
 window).
 

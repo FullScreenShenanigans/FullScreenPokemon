@@ -415,12 +415,15 @@ function MenuGraphr(settings) {
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize;
 
         if (difference > 0) {
-            if (difference + menu.selectedIndex + menu.options.length) {
-                difference = menu.options.length - menu.selectedIndex - 1;
+            if (difference + menu.selectedIndex > menu.options.length - 1) {
+                difference = Math.min(
+                    menu.options.length - menu.selectedIndex,
+                    0
+                );
             }
         } else {
             if (difference + menu.selectedIndex < 0) {
-                difference = menu.selectedIndex;
+                difference = Math.max(menu.selectedIndex, 0);
             }
         }
 
@@ -428,9 +431,8 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (difference) {
-            EightBitter.shiftVert(menu.arrow, difference * textPaddingY);
-        }
+        menu.selectedIndex += difference;
+        EightBitter.shiftVert(menu.arrow, difference * textPaddingY);
     };
 
 
@@ -481,7 +483,9 @@ function MenuGraphr(settings) {
             return;
         }
 
-
+        if (typeof activeMenu.selectedIndex !== "undefined") {
+            self.shiftMenuArrow(activeMenu.name, -1);
+        }
     };
 
     /**
@@ -492,7 +496,9 @@ function MenuGraphr(settings) {
             return;
         }
 
-
+        if (typeof activeMenu.selectedIndex !== "undefined") {
+            self.shiftMenuArrow(activeMenu.name, 1);
+        }
     };
 
     /**

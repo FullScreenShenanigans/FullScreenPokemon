@@ -7,6 +7,7 @@ FullScreenPokemon.prototype.settings.input = {
             "up":     [87, 38, 32], // w,     up,    space
             "down":   [83, 40],     // s,     down
             "sprint": [16, 17],     // shift, ctrl
+            "select": [13],         // enter
             "pause":  [80],         // p
             "a":      [90],         // z
             "b":      [88],         // x
@@ -21,7 +22,8 @@ FullScreenPokemon.prototype.settings.input = {
                 "down": FullScreenPokemon.prototype.keyDownDown,
                 "a": FullScreenPokemon.prototype.keyDownA,
                 "b": FullScreenPokemon.prototype.keyDownB,
-                "pause": FullScreenPokemon.prototype.keyDownPause,
+                "pause": FullScreenPokemon.prototype.togglePauseMenu,
+                "select": FullScreenPokemon.prototype.togglePauseMenu,
                 "mute": FullScreenPokemon.prototype.keyDownMute,
             },
             "onkeyup": {
