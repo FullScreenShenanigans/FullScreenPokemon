@@ -25,7 +25,7 @@ function MenuGraphr(settings) {
         replacements,
 
         replacerKey,
-            
+
         textSpeed;
 
 
@@ -111,8 +111,16 @@ function MenuGraphr(settings) {
      * 
      */
     self.positionMenu = function (menu, size, position, container) {
+        var i;
+
         if (!size) {
             size = {};
+        }
+
+        if (size.offsets) {
+            for (i in size.offsets) {
+                menu[i] = size.offsets[i];
+            }
         }
 
         if (size.width) {
@@ -165,7 +173,7 @@ function MenuGraphr(settings) {
         EightBitter.addThing(menu, menu.left, menu.top);
     };
 
-    
+
     /* Menu text
     */
 
@@ -218,6 +226,7 @@ function MenuGraphr(settings) {
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
+            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
             title, character, j;
 
         if (word !== "\n") {
@@ -225,6 +234,7 @@ function MenuGraphr(settings) {
                 if (word[j] !== " ") {
                     title = "Char" + getCharacterEquivalent(word[j]);
                     character = EightBitter.ObjectMaker.make(title);
+                    character.paddingY = textPaddingY;
                     menu.characters.push(character);
 
                     EightBitter.TimeHandler.addEvent(
@@ -258,7 +268,7 @@ function MenuGraphr(settings) {
             )
         ) {
             x = EightBitter.getMidX(menu) - menu.textWidth / 2;
-            y += textHeight + textProperties.paddingY * EightBitter.unitsize;
+            y += textPaddingY;
         } else {
             x += textWidth;
         }
@@ -268,7 +278,7 @@ function MenuGraphr(settings) {
                 "words": words,
                 "i": i + 1,
                 "x": x,
-                "y": y - (textHeight + textProperties.paddingY * EightBitter.unitsize),
+                "y": y - (textPaddingY),
                 "onCompletion": onCompletion
             };
             return;
@@ -314,7 +324,7 @@ function MenuGraphr(settings) {
             EightBitter.TimeHandler.addEventInterval(
                 scrollCharacterUp,
                 1,
-                character.paddingY + character.height,
+                character.paddingY / EightBitter.unitsize,
                 character,
                 menu,
                 -1
@@ -323,7 +333,7 @@ function MenuGraphr(settings) {
 
         EightBitter.TimeHandler.addEvent(
             self.addMenuWord,
-            character.paddingY + character.height + 1,
+            character.paddingY / EightBitter.unitsize + 1,
             name,
             progress.words,
             progress.i,
@@ -332,6 +342,51 @@ function MenuGraphr(settings) {
             progress.onCompletion
         );
     }
+
+
+    /* Lists
+    */
+
+    /**
+     * 
+     */
+    self.addMenuList = function (name, options) {
+        var menu = menus[name],
+            left = menu.left + menu.textXOffset * EightBitter.unitsize,
+            y = menu.top + menu.textYOffset * EightBitter.unitsize,
+            textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
+            textWidth = textProperties.width * EightBitter.unitsize,
+            textHeight = textProperties.height * EightBitter.unitsize,
+            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
+            option, word, title, character,
+            x, i, j;
+
+        menu.characters = [];
+
+        for (i = 0; i < options.length; i += 1) {
+            option = options[i];
+            word = filterWord(option.text);
+            x = left;
+
+            if (word !== "\n") {
+                for (j = 0; j < word.length; j += 1) {
+                    if (word[j] !== " ") {
+                        title = "Char" + getCharacterEquivalent(word[j]);
+                        character = EightBitter.ObjectMaker.make(title);
+                        menu.characters.push(character);
+
+                        EightBitter.addThing(character, x, y);
+
+                        x += character.width * EightBitter.unitsize;
+                    } else {
+                        x += textWidth;
+                    }
+                }
+            }
+
+            y += textPaddingY;
+        }
+    };
 
 
     /* Interactivity
@@ -426,7 +481,7 @@ function MenuGraphr(settings) {
      */
     function scrollCharacterUp(character, menu) {
         EightBitter.shiftVert(character, -EightBitter.unitsize);
-        if (character.top < menu.top + menu.textYOffset * EightBitter.unitsize) {
+        if (character.top < menu.top + (menu.textYOffset - 1) * EightBitter.unitsize) {
             EightBitter.killNormal(character);
             return true;
         }

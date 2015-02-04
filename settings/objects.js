@@ -483,7 +483,7 @@
                 "groupType": "Text",
                 "width": 4,
                 "height": 4,
-                "paddingY": 2,
+                "paddingY": 8,
                 "noshiftx": true,
                 "noshifty": true,
             },
