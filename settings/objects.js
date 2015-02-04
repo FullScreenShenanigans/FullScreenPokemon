@@ -223,6 +223,12 @@
                         "CharED": {},
                         "CharApostrophe": {},
                         "ChareFancy": {}
+                    },
+                    "Arrow": {
+                        "CharArrowUp": {},
+                        "CharArrowRight": {},
+                        "CharArrowDown": {},
+                        "CharArrowLeft": {}
                     }
                 },
                 "Menu": {}
@@ -491,6 +497,10 @@
                 "offsetY": FullScreenPokemon.unitsize * .75
             },
             "CharApostrophe": [1, 2],
+            "CharArrowUp": [3.5, 2.5],
+            "CharArrowRight": [2.5, 3.5],
+            "CharArrowDown": [3.5, 2.5],
+            "CharArrowLeft": [2.5, 3.5],
             "Menu": {
                 "groupType": "Text",
                 "spritewidth": 4,

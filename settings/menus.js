@@ -48,6 +48,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     "horizontal": 60 // 50 + (40 / 2)
                 }
             },
+            "arrowOffset": 1,
             "textYOffset": 8,
             "textPaddingY": 7.75
         }

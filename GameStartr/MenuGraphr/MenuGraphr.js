@@ -350,18 +350,23 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    self.addMenuList = function (name, options) {
+    self.addMenuList = function (name, settings) {
         var menu = menus[name],
+            options = settings.options,
+            index = settings.index || 0,
             left = menu.left + menu.textXOffset * EightBitter.unitsize,
-            y = menu.top + menu.textYOffset * EightBitter.unitsize,
+            top = menu.top + menu.textYOffset * EightBitter.unitsize,
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
+            arrowOffset = (menu.arrowOffset || 0) * EightBitter.unitsize,
             option, word, title, character,
-            x, i, j;
+            x, y, i, j;
 
+        menu.options = options;
         menu.characters = [];
+        y = top;
 
         for (i = 0; i < options.length; i += 1) {
             option = options[i];
@@ -385,6 +390,46 @@ function MenuGraphr(settings) {
             }
 
             y += textPaddingY;
+        }
+
+        menu.selectedIndex = index;
+        character = EightBitter.ObjectMaker.make("CharArrowRight");
+        menu.characters.push(character);
+        menu.arrow = character;
+
+        EightBitter.addThing(
+            character,
+            menu.left + 4 * EightBitter.unitsize,
+            top + arrowOffset + index * textPaddingY
+        );
+    };
+
+    /**
+     * 
+     */
+    self.shiftMenuArrow = function (name, difference) {
+        var menu = menus[name],
+            textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
+            textWidth = textProperties.width * EightBitter.unitsize,
+            textHeight = textProperties.height * EightBitter.unitsize,
+            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize;
+
+        if (difference > 0) {
+            if (difference + menu.selectedIndex + menu.options.length) {
+                difference = menu.options.length - menu.selectedIndex - 1;
+            }
+        } else {
+            if (difference + menu.selectedIndex < 0) {
+                difference = menu.selectedIndex;
+            }
+        }
+
+        if (!difference) {
+            return;
+        }
+
+        if (difference) {
+            EightBitter.shiftVert(menu.arrow, difference * textPaddingY);
         }
     };
 
