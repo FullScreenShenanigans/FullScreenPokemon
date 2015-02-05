@@ -40,6 +40,17 @@ function MenuGraphr(settings) {
     };
 
 
+    /* Simple gets
+    */
+
+    /**
+     * 
+     */
+    self.getMenus = function () {
+        return menus;
+    };
+
+
     /* Menu positioning
     */
 
@@ -76,6 +87,10 @@ function MenuGraphr(settings) {
 
         if (menu.childrenSchemas) {
             menu.childrenSchemas.forEach(self.createChild.bind(undefined, name));
+        }
+
+        if (container.children) {
+            container.children.push(menu);
         }
     };
 
@@ -124,7 +139,6 @@ function MenuGraphr(settings) {
         );
 
         menu.children.push(thing);
-        console.log(menu.children);
     };
 
     /**
@@ -132,25 +146,37 @@ function MenuGraphr(settings) {
      */
     self.deleteMenu = function (name) {
         var menu = menus[name];
-        if (!menu) {
-            return;
-        }
 
-        if (activeMenu === menu) {
-            if (menu.backMenu) {
-                self.setActiveMenu(menu.backMenu);
+        if (menu) {
+            self.deleteMenuChild(menu);
+        }
+    };
+
+    /**
+     * 
+     */
+    self.deleteMenuChild = function (child) {
+        if (activeMenu === child) {
+            if (child.backMenu) {
+                self.setActiveMenu(child.backMenu);
             } else {
                 activeMenu = undefined;
             }
         }
 
-        EightBitter.killNormal(menu);
+        if (child.name) {
+            delete menus[child.name];
+        }
+
+        EightBitter.killNormal(child);
         self.deleteMenuChildren(name);
 
-        delete menus[name];
+        if (child.onDelete) {
+            child.onDelete.call(EightBitter);
+        }
 
-        if (menu.onDelete) {
-            menu.onDelete.call(EightBitter);
+        if (child.children) {
+            child.children.forEach(self.deleteMenuChild)
         }
     };
 
@@ -160,7 +186,7 @@ function MenuGraphr(settings) {
     self.deleteMenuChildren = function (name) {
         var menu = menus[name];
         if (menu && menu.children) {
-            menu.children.forEach(EightBitter.killNormal);
+            menu.children.forEach(self.deleteMenuChild);
         }
     };
 
@@ -428,7 +454,8 @@ function MenuGraphr(settings) {
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
-            arrowOffset = (menu.arrowOffset || 0) * EightBitter.unitsize,
+            arrowXOffset = (menu.arrowXOffset || 0) * EightBitter.unitsize,
+            arrowYOffset = (menu.arrowYOffset || 0) * EightBitter.unitsize,
             option, word, title, character,
             y = top,
             x, i, j;
@@ -463,14 +490,31 @@ function MenuGraphr(settings) {
         character = EightBitter.ObjectMaker.make("CharArrowRight");
         menu.children.push(character);
         menu.arrow = character;
+        character.hidden = (activeMenu !== menu);
 
         menu.callback = self.selectMenuListOption;
+        menu.onActive = self.activateMenuList;
+        menu.onInactive = self.deactivateMenuList;
 
         EightBitter.addThing(
             character,
-            menu.left + 4 * EightBitter.unitsize,
-            top + arrowOffset + index * textPaddingY
+            menu.left + arrowXOffset,
+            top + arrowYOffset + index * textPaddingY
         );
+    };
+
+    /**
+     * 
+     */
+    self.activateMenuList = function (name) {
+        menus[name].arrow.hidden = false;
+    };
+
+    /**
+     * 
+     */
+    self.deactivateMenuList = function (name) {
+        menus[name].arrow.hidden = true;
     };
 
     /**
@@ -524,7 +568,15 @@ function MenuGraphr(settings) {
      * 
      */
     self.setActiveMenu = function (name) {
+        if (activeMenu && activeMenu.onInactive) {
+            activeMenu.onInactive(activeMenu.name);
+        }
+
         activeMenu = menus[name];
+
+        if (activeMenu.onActive) {
+            activeMenu.onActive(name);
+        }
     };
 
     /**
@@ -603,7 +655,26 @@ function MenuGraphr(settings) {
             return;
         }
 
-        self.deleteMenu(activeMenu.name);
+        if (activeMenu.keepOnBack) {
+            self.setActiveMenu(activeMenu.backMenu);
+        } else {
+            self.deleteMenu(activeMenu.name);
+        }
+    };
+
+    /**
+     * 
+     */
+    self.registerStart = function () {
+        if (!activeMenu) {
+            return;
+        }
+
+        if (activeMenu.startMenu) {
+            self.setActiveMenu(activeMenu.startMenu);
+        } else if (activeMenu.callback) {
+            activeMenu.callback(activeMenu.name);
+        }
     };
 
 

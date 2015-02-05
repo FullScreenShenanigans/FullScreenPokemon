@@ -50,14 +50,13 @@ FullScreenPokemon.prototype.settings.menus = {
         },
         "Items": {
             "size": {
-                "width": 64,
-                "height": 44,
+                "width": 88,
             },
             "position": {
                 "horizontal": "center",
+                "vertical": "stretch",
                 "offset": {
-                    "left": 48,
-                    "top": 8
+                    "left": -4
                 }
             },
             "backMenu": "Pause",
@@ -89,7 +88,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "type": "thing",
                 "thing": "LineSeparatorHorizontal",
                 "size": {
-                    "width": 21,
+                    "width": 21.5,
                 },
                 "position": {
                     "horizontal": "right",
@@ -131,8 +130,31 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "backMenu": "Pause",
+            "startMenu": "PokedexOptions",
             "textSpeed": 0,
+            "textXOffset": 7,
             "textYOffset": 11
+        },
+        "PokedexOptions": {
+            "size": {
+                "width": 21.5,
+                "height": 37
+            },
+            "position": {
+                "horizontal": "right",
+                "offset": {
+                    "left": -3,
+                    "top": 38
+                }
+            },
+            "container": "Pokedex",
+            "backMenu": "Pokedex",
+            "keepOnBack": true,
+            "plain": true,
+            "arrowXOffset": 1,
+            "textSpeed": 0,
+            "textXOffset": 4,
+            "textYOffset": 5
         }
     }
 };

@@ -516,12 +516,17 @@
                 "spriteheight": 4,
                 "width": 8,
                 "height": 8,
+                "repeat": true,
                 "noshiftx": true,
                 "noshifty": true,
-                "arrowOffset": 1,
+                "arrowXOffset": 4,
+                "arrowYOffset": 1,
                 "textXOffset": 6,
                 "textYOffset": 7.5,
-                "textSpeed": 1
+                "textSpeed": 1,
+                "attributes": {
+                    "plain": {}
+                }
             },
         }
     };

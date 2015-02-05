@@ -1394,7 +1394,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.togglePauseMenu = function (player) {
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
-            player.EightBitter.MenuGrapher.registerA();
+            player.EightBitter.MenuGrapher.registerStart();
         } else if (player.EightBitter.MapScreener.inPauseMenu) {
             player.EightBitter.closePauseMenu();
         } else {
@@ -1414,9 +1414,23 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuList("Pokedex", {
             "options": listings.map(function (listing, i) {
                 return {
-                    "text": EightBitter.makeDigit(i, 3, 0)
+                    "text": EightBitter.makeDigit(i + 1, 3, 0)
                 };
             })
+        });
+
+        EightBitter.MenuGrapher.createMenu("PokedexOptions");
+        EightBitter.MenuGrapher.addMenuList("PokedexOptions", {
+            "options": [{
+                "text": "DATA"
+            }, {
+                "text": "CRY"
+            }, {
+                "text": "AREA"
+            }, {
+                "text": "QUIT",
+                "callback": EightBitter.MenuGrapher.registerB
+            }]
         });
     };
 
