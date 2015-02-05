@@ -222,7 +222,8 @@
                         "CharComma": {},
                         "CharED": {},
                         "CharApostrophe": {},
-                        "ChareFancy": {}
+                        "ChareFancy": {},
+                        "CharBall": {}
                     },
                     "Arrow": {
                         "CharArrowUp": {},
@@ -501,6 +502,7 @@
                 "offsetY": FullScreenPokemon.unitsize * .75
             },
             "CharApostrophe": [1, 2],
+            "CharBall": [3.5, 3.5],
             "CharArrowUp": [3.5, 2.5],
             "CharArrowRight": [2.5, 3.5],
             "CharArrowDown": [3.5, 2.5],

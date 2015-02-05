@@ -307,6 +307,7 @@ FullScreenPokemon.prototype.settings.sprites = {
             "CharED": "p[0,2]1111000011x06,1111000011001110x16,01000011010000110100001110",
             "CharApostrophe": "p[0,2]00110110",
             "ChareFancy": "p[0,2]x010,11000011x08,111100010000100x16,001x08,x15,0",
+            "CharBall": "p[0,2,3,4]0011100013331013233311x35,11x25,101222100011100",
             "CharArrowUp": "p[0,2]0001x05,111000x15,0x114,",
             "CharArrowRight": "p[0,2]110001110011110x19,01110011000",
             "CharArrowBottom": "p[0,2]x114,0x15,000111x05,1000",

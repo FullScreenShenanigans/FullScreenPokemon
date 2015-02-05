@@ -1413,8 +1413,39 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("Pokedex");
         EightBitter.MenuGrapher.addMenuList("Pokedex", {
             "options": listings.map(function (listing, i) {
+                var characters = EightBitter.makeDigit(i + 1, 3, 0).split("");
+
+                characters.push({
+                    "command": true,
+                    "y": 4
+                });
+
+                if (listing.caught) {
+                    characters.push({
+                        "command": true,
+                        "x": -4,
+                        "y": 1
+                    });
+                    characters.push("Ball");
+                    characters.push({
+                        "command": true,
+                        "y": -1
+                    });
+                }
+
+                if (listing.seen) {
+                    characters.push.apply(characters, listing.title.split(""));
+                } else {
+                    characters.push.apply(characters, "----------".split(""));
+                }
+
+                characters.push({
+                    "command": true,
+                    "y": -4
+                });
+
                 return {
-                    "text": EightBitter.makeDigit(i + 1, 3, 0)
+                    "text": characters
                 };
             })
         });
@@ -1459,12 +1490,23 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         return [{
-            "title": "Bulbasaur",
+            "title": "BULBASAUR",
             "seen": true
         }, {
-            "title": "Ivysaur",
-            "seen": false
-        }];
+            "title": "IVYSAUR"
+        }, {
+            "title": "VENUSAUR"
+        }, {
+            "title": "CHARMANDER"
+        }, {
+            "title": "CHARMELEON"
+        }, {
+            "title": "CHARIZARD",
+        }, {
+            "title": "SQUIRTLE",
+            "seen": true,
+            "caught": true
+        }, ];
     };
 
     /**

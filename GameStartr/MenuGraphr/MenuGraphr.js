@@ -469,7 +469,16 @@ function MenuGraphr(settings) {
 
             if (word !== "\n") {
                 for (j = 0; j < word.length; j += 1) {
-                    if (word[j] !== " ") {
+                    if (word[j].command) {
+                        if (word[j].x) {
+                            x += word[j].x * EightBitter.unitsize;
+                        }
+                        if (word[j].y) {
+                            console.log("Was", y);
+                            y += word[j].y * EightBitter.unitsize;
+                            console.log("Now", y);
+                        }
+                    } else if (word[j] !== " ") {
                         title = "Char" + getCharacterEquivalent(word[j]);
                         character = EightBitter.ObjectMaker.make(title);
                         menu.children.push(character);
@@ -554,7 +563,7 @@ function MenuGraphr(settings) {
     self.selectMenuListOption = function (name, index) {
         var menu = menus[name],
             selected = menu.options[index || menu.selectedIndex];
-        
+
         if (selected.callback) {
             selected.callback(name);
         }
