@@ -113,7 +113,10 @@
                     "Painting": {},
                     "Stool": {},
                     "Window": {},
-                    "WindowBlinds": {}
+                    "WindowBlinds": {},
+                    "Sprite": {
+                        "PlayerSprite": {}
+                    }
                 },
                 "Terrain": {
                     "TerrainSmall": {
@@ -490,6 +493,7 @@
                     ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 14
                 ]
             },
+            "PlayerSprite": [13, 23],
             "Text": {
                 "groupType": "Text",
                 "width": 4,
@@ -500,6 +504,9 @@
             },
             "CharacterDropped": {
                 "offsetY": FullScreenPokemon.unitsize * .75
+            },
+            "CharSlash": {
+                "offsetY": FullScreenPokemon.unitsize * .5
             },
             "CharApostrophe": [1, 2],
             "CharBall": [3.5, 3.5],
@@ -527,7 +534,12 @@
                 "textYOffset": 7.5,
                 "textSpeed": 1,
                 "attributes": {
-                    "plain": {}
+                    "plain": {},
+                    "light": {
+                        "spritewidth": 1,
+                        "spriteheight": 1
+                    },
+                    "dirty": {}
                 }
             },
         }

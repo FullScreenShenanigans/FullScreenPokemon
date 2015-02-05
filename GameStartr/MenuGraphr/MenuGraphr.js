@@ -100,7 +100,7 @@ function MenuGraphr(settings) {
     self.createChild = function (name, schema) {
         switch (schema.type) {
             case "menu":
-                self.createMenu(name);
+                self.createMenu(schema.name);
                 break;
             case "text":
                 self.createMenuWord(name, schema);
@@ -120,6 +120,7 @@ function MenuGraphr(settings) {
 
         self.positionItem(container, schema.size, schema.position, menu, true);
 
+        menu.textX = container.left;
         self.addMenuWord(name, schema.words, 0, container.left, container.top)
     };
 
@@ -194,8 +195,14 @@ function MenuGraphr(settings) {
      * 
      */
     self.positionItem = function (item, size, position, container, skipAdd) {
-        var offset = position.offset || {},
-            i;
+        var offset, i;
+
+        if (!position) {
+            position = {};
+            offset = {};
+        } else {
+            offset = position.offset || {};
+        }
 
         if (!size) {
             size = {};
@@ -235,7 +242,7 @@ function MenuGraphr(settings) {
 
         switch (position.vertical) {
             case "center":
-                EightBitter.setMidXObj(item, container);
+                EightBitter.setMidYObj(item, container);
                 break;
             case "bottom":
                 EightBitter.setBottom(item, container.bottom);
@@ -301,6 +308,7 @@ function MenuGraphr(settings) {
         }
 
         menu.callback = self.continueMenu;
+        menu.textX = x;
 
         self.addMenuWord(name, words, 0, x, y, onCompletion);
     };
@@ -359,13 +367,13 @@ function MenuGraphr(settings) {
                 > EightBitter.getMidX(menu) + menu.textWidth / 2
             )
         ) {
-            x = EightBitter.getMidX(menu) - menu.textWidth / 2;
+            x = menu.textX;
             y += textPaddingY;
         } else {
             x += textWidth;
         }
 
-        if (y >= menu.bottom - menu.textYOffset * EightBitter.unitsize) {
+        if (y >= menu.bottom - (menu.textYOffset - 1) * EightBitter.unitsize) {
             menu.progress = {
                 "words": words,
                 "i": i + 1,
@@ -474,9 +482,7 @@ function MenuGraphr(settings) {
                             x += word[j].x * EightBitter.unitsize;
                         }
                         if (word[j].y) {
-                            console.log("Was", y);
                             y += word[j].y * EightBitter.unitsize;
-                            console.log("Now", y);
                         }
                     } else if (word[j] !== " ") {
                         title = "Char" + getCharacterEquivalent(word[j]);

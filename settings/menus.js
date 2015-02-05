@@ -16,7 +16,7 @@ FullScreenPokemon.prototype.settings.menus = {
         "È": "eFancy"
     },
     "replacements": {
-        "PLAYER": "Your name",
+        "PLAYER": "(name)",
         "RIVAL": "Rival's name",
         "POKEMON": "POKÈMON",
         "POKEDEX": "POKÈDEX"
@@ -47,20 +47,6 @@ FullScreenPokemon.prototype.settings.menus = {
             "textXOffset": 8,
             "textYOffset": 8,
             "textPaddingY": 7.75
-        },
-        "Items": {
-            "size": {
-                "width": 88,
-            },
-            "position": {
-                "horizontal": "center",
-                "vertical": "stretch",
-                "offset": {
-                    "left": -4
-                }
-            },
-            "backMenu": "Pause",
-            "textXOffset": 8,
         },
         "Pokedex": {
             "size": {
@@ -155,6 +141,78 @@ FullScreenPokemon.prototype.settings.menus = {
             "textSpeed": 0,
             "textXOffset": 4,
             "textYOffset": 5
+        },
+        "Items": {
+            "size": {
+                "width": 64,
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "stretch",
+                "offset": {
+                    "left": 8
+                }
+            },
+            "backMenu": "Pause",
+            "textXOffset": 8,
+        },
+        "Player": {
+            "size": {
+                "width": 80,
+                "height": 72
+            },
+            "position": {
+                "horizontal": "center",
+            },
+            "childrenSchemas": [{
+                "type": "menu",
+                "name": "PlayerTop",
+            }],
+            "dirty": true,
+            "backMenu": "Pause",
+            "textSpeed": 0
+        },
+        "PlayerTop": {
+            "size": {
+                "width": 77,
+                "height": 29,
+            },
+            "position": {
+                "horizontal": "center",
+                "offset": {
+                    "top": 1.5
+                }
+            },
+            "childrenSchemas": [{
+                "type": "text",
+                "words": [
+                    "NAME/%%%%%%%PLAYER%%%%%%%",
+                    "\n",
+                    "MONEY/",
+                    "\n",
+                    "TIME/",
+                ],
+                "position": {
+                    "offset": {
+                        "left": 6.5,
+                        "top": 6
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "PlayerSprite",
+                "position": {
+                    "horizontal": "right",
+                    "vertical": "top",
+                    "offset": {
+                        "left": -4.5,
+                        "top": 3.5
+                    }
+                }
+            }],
+            "light": true,
+            "container": "Player",
+            "textSpeed": 0
         }
     }
 };

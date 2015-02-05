@@ -1367,7 +1367,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "text": "ITEM",
                 "callback": EightBitter.openItemsMenu.bind(EightBitter)
             }, {
-                "text": "%%%%%%%PLAYER%%%%%%%"
+                "text": "%%%%%%%PLAYER%%%%%%%",
+                "callback": EightBitter.openPlayerMenu.bind(EightBitter)
             }, {
                 "text": "SAVE"
             }, {
@@ -1482,6 +1483,16 @@ var FullScreenPokemon = (function (GameStartr) {
             })
         });
     }
+
+    /**
+     * 
+     */
+    self.openPlayerMenu = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+        
+        EightBitter.MenuGrapher.createMenu("Player");
+        EightBitter.MenuGrapher.setActiveMenu("Player");
+    };
 
     /**
      * 
@@ -2490,6 +2501,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "togglePauseMenu": togglePauseMenu,
         "openPokedexMenu": openPokedexMenu,
         "openItemsMenu": openItemsMenu,
+        "openPlayerMenu": openPlayerMenu,
         "retrieveItemsList": retrieveItemsList,
         "retrievePokedexList": retrievePokedexList,
         // Map sets
