@@ -56,10 +56,10 @@ function MenuGraphr(settings) {
                     "left": 0,
                     "right": EightBitter.MapScreener.width,
                     "bottom": EightBitter.MapScreener.height,
-                    "width": Math.floor(
+                    "width": Math.ceil(
                         EightBitter.MapScreener.width / EightBitter.unitsize
                     ),
-                    "height": Math.floor(
+                    "height": Math.ceil(
                         EightBitter.MapScreener.height / EightBitter.unitsize
                     ),
                     "EightBitter": EightBitter
