@@ -76,6 +76,10 @@ function MenuGraphr(settings) {
         self.positionMenu(menu, schema.size, schema.position, container);
 
         menu.textWidth = (menu.width - menu.textXOffset * 2) * EightBitter.unitsize;
+
+        if (menu.children) {
+            menu.children.forEach(self.createMenu);
+        }
     };
 
     /**
@@ -88,13 +92,21 @@ function MenuGraphr(settings) {
         }
 
         if (activeMenu === menu) {
-            activeMenu = undefined;
+            if (menu.backMenu) {
+                self.setActiveMenu(menu.backMenu);
+            } else {
+                activeMenu = undefined;
+            }
         }
 
         EightBitter.killNormal(menu);
         self.deleteMenuCharacters(name);
 
         delete menus[name];
+
+        if (menu.onDelete) {
+            menu.onDelete.call(EightBitter);
+        }
     };
 
     /**
@@ -115,12 +127,6 @@ function MenuGraphr(settings) {
 
         if (!size) {
             size = {};
-        }
-
-        if (size.offsets) {
-            for (i in size.offsets) {
-                menu[i] = size.offsets[i];
-            }
         }
 
         if (size.width) {
@@ -210,6 +216,8 @@ function MenuGraphr(settings) {
         }
 
         menu.characters = [];
+
+        menu.callback = self.continueMenu;
 
         self.addMenuWord(name, words, 0, x, y, onCompletion);
     };
@@ -352,7 +360,9 @@ function MenuGraphr(settings) {
      */
     self.addMenuList = function (name, settings) {
         var menu = menus[name],
-            options = settings.options,
+            options = settings.options instanceof Function
+                ? settings.options()
+                : settings.options,
             index = settings.index || 0,
             left = menu.left + menu.textXOffset * EightBitter.unitsize,
             top = menu.top + menu.textYOffset * EightBitter.unitsize,
@@ -397,6 +407,8 @@ function MenuGraphr(settings) {
         menu.characters.push(character);
         menu.arrow = character;
 
+        menu.callback = self.selectMenuListOption;
+
         EightBitter.addThing(
             character,
             menu.left + 4 * EightBitter.unitsize,
@@ -433,6 +445,18 @@ function MenuGraphr(settings) {
 
         menu.selectedIndex += difference;
         EightBitter.shiftVert(menu.arrow, difference * textPaddingY);
+    };
+
+    /**
+     * 
+     */
+    self.selectMenuListOption = function (name, index) {
+        var menu = menus[name],
+            selected = menu.options[index || menu.selectedIndex];
+        
+        if (selected.callback) {
+            selected.callback(name);
+        }
     };
 
 
@@ -509,7 +533,7 @@ function MenuGraphr(settings) {
             return;
         }
 
-        self.continueMenu(activeMenu.name);
+        activeMenu.callback(activeMenu.name);
     };
 
     /**
@@ -520,7 +544,7 @@ function MenuGraphr(settings) {
             return;
         }
 
-
+        self.deleteMenu(activeMenu.name);
     };
 
 

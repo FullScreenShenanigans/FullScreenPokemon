@@ -33,24 +33,39 @@ FullScreenPokemon.prototype.settings.menus = {
                 "vertical": "bottom",
             }
         },
-        "PauseMenu": {
+        "Pause": {
             "size": {
                 "width": 40,
                 "height": 64,
-                "offsets": {
-                    "textXOffset": 8
-                }
             },
             "position": {
                 "horizontal": "center",
                 "vertical": "top",
                 "offset": {
-                    "horizontal": 60 // 50 + (40 / 2)
+                    "horizontal": 60
                 }
             },
-            "arrowOffset": 1,
+            "onDelete": FullScreenPokemon.prototype.closePauseMenu,
+            "textXOffset": 8,
             "textYOffset": 8,
             "textPaddingY": 7.75
+        },
+        "Items": {
+            "size": {
+                "width": 64,
+                "height": 44,
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "top",
+                "offset": {
+                    "horizontal": 48,
+                    "vertical": 8
+                }
+            },
+            "onDelete": FullScreenPokemon.prototype.closeItemsMenu,
+            "backMenu": "Pause",
+            "textXOffset": 8,
         }
     }
 };

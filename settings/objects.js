@@ -509,6 +509,7 @@
                 "height": 8,
                 "noshiftx": true,
                 "noshifty": true,
+                "arrowOffset": 1,
                 "textXOffset": 6,
                 "textYOffset": 7.5,
             }

@@ -1355,15 +1355,16 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MapScreener.inPauseMenu = true;
-        EightBitter.MenuGrapher.createMenu("PauseMenu");
-        EightBitter.MenuGrapher.setActiveMenu("PauseMenu");
-        EightBitter.MenuGrapher.addMenuList("PauseMenu", {
+        EightBitter.MenuGrapher.createMenu("Pause");
+        EightBitter.MenuGrapher.setActiveMenu("Pause");
+        EightBitter.MenuGrapher.addMenuList("Pause", {
             "options": [{
                 "text": "%%%%%%%POKEDEX%%%%%%%"
             }, {
                 "text": "%%%%%%%POKEDEX%%%%%%%"
             }, {
-                "text": "ITEM"
+                "text": "ITEM",
+                "callback": EightBitter.openItemsMenu.bind(EightBitter)
             }, {
                 "text": "%%%%%%%PLAYER%%%%%%%"
             }, {
@@ -1371,7 +1372,8 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "text": "OPTION"
             }, {
-                "text": "Exit"
+                "text": "Exit",
+                "callback": EightBitter.closePauseMenu.bind(EightBitter)
             }]
         });
     };
@@ -1383,10 +1385,10 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MapScreener.inPauseMenu = false;
-        EightBitter.MenuGrapher.deleteMenu("PauseMenu");
+        EightBitter.MenuGrapher.deleteMenu("Pause");
     };
 
-    /*
+    /**
      * 
      */
     self.togglePauseMenu = function (player) {
@@ -1396,6 +1398,41 @@ var FullScreenPokemon = (function (GameStartr) {
             player.EightBitter.openPauseMenu();
         }
     }
+
+    /**
+     * 
+     */
+    self.openItemsMenu = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            items = EightBitter.retrieveItemsList();
+        
+        EightBitter.MenuGrapher.createMenu("Items");
+        EightBitter.MenuGrapher.setActiveMenu("Items");
+        EightBitter.MenuGrapher.addMenuList("Items", {
+            "options": items.map(function (item) {
+                return {
+                    "text": item.title
+                };
+            })
+        });
+
+        console.log("ooh");
+    }
+
+    /**
+     * 
+     */
+    self.retrieveItemsList = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        return [{
+            "title": "Potion",
+            "amount": 2
+        }, {
+            "title": "Pokemanz",
+            "amount": 9001
+        }];
+    };
 
 
     /* Map sets
@@ -2327,6 +2364,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPauseMenu": openPauseMenu,
         "closePauseMenu": closePauseMenu,
         "togglePauseMenu": togglePauseMenu,
+        "openItemsMenu": openItemsMenu,
+        "retrieveItemsList": retrieveItemsList,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
