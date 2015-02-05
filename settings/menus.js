@@ -1,5 +1,4 @@
 FullScreenPokemon.prototype.settings.menus = {
-    "textSpeed": 1,
     "aliases": {
         "(": "LeftParenthesis",
         ")": "RightParenthesis",
@@ -40,9 +39,8 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "horizontal": "center",
-                "vertical": "top",
                 "offset": {
-                    "horizontal": 60
+                    "left": 60
                 }
             },
             "onDelete": FullScreenPokemon.prototype.closePauseMenu,
@@ -57,10 +55,9 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "horizontal": "center",
-                "vertical": "top",
                 "offset": {
-                    "horizontal": 48,
-                    "vertical": 8
+                    "left": 48,
+                    "top": 8
                 }
             },
             "backMenu": "Pause",
@@ -74,20 +71,68 @@ FullScreenPokemon.prototype.settings.menus = {
                 "horizontal": "center",
                 "vertical": "stretch",
                 "offset": {
-                    "horizontal": -4
+                    "left": -4
                 }
             },
             "childrenSchemas": [{
                 "type": "thing",
-                "thing": "PokedexLineDecorator",
-                "left": 60,
-                "top": 3,
-                "bottom": 3,
-                "stretch": {
-                    "vertical": true
+                "thing": "LineDecorator",
+                "position": {
+                    "vertical": "stretch",
+                    "offset": {
+                        "left": 60,
+                        "top": 3,
+                        "bottom": 3
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "LineSeparatorHorizontal",
+                "size": {
+                    "width": 21,
+                },
+                "position": {
+                    "horizontal": "right",
+                    "offset": {
+                        "left": -3,
+                        "top": 35,
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": ["CONTENTS"],
+                "position": {
+                    "offset": {
+                        "left": 7,
+                        "top": 7
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": ["SEEN"],
+                "position": {
+                    "horizontal": "right",
+                    "vertical": "top",
+                    "offset": {
+                        "left": -13,
+                        "top": 11
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": ["OWN"],
+                "position": {
+                    "horizontal": "right",
+                    "vertical": "top",
+                    "offset": {
+                        "left": -13,
+                        "top": 23
+                    }
                 }
             }],
             "backMenu": "Pause",
+            "textSpeed": 0,
+            "textYOffset": 11
         }
     }
 };

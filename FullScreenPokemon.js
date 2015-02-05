@@ -1406,17 +1406,18 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     self.openPokedexMenu = function () {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            listings = EightBitter.retrievePokedexList();
 
         EightBitter.MenuGrapher.createMenu("Pokedex");
         EightBitter.MenuGrapher.setActiveMenu("Pokedex");
-        //EightBitter.MenuGrapher.addMenuList("Pokedex", {
-        //    "options": items.map(function (item) {
-        //        return {
-        //            "text": item.title
-        //        };
-        //    })
-        //});
+        EightBitter.MenuGrapher.addMenuList("Pokedex", {
+            "options": listings.map(function (listing, i) {
+                return {
+                    "text": EightBitter.makeDigit(i, 3, 0)
+                };
+            })
+        });
     };
 
     /**
@@ -1436,6 +1437,21 @@ var FullScreenPokemon = (function (GameStartr) {
             })
         });
     }
+
+    /**
+     * 
+     */
+    self.retrievePokedexList = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        return [{
+            "title": "Bulbasaur",
+            "seen": true
+        }, {
+            "title": "Ivysaur",
+            "seen": false
+        }];
+    };
 
     /**
      * 
@@ -2304,6 +2320,40 @@ var FullScreenPokemon = (function (GameStartr) {
         return output;
     }
 
+    /* Miscellaneous utilities
+    */
+
+    /**
+     * Creates a new String equivalent to an old String repeated any number of
+     * times. If times is 0, a blank String is returned.
+     * 
+     * @param {String} string   The characters to repeat.
+     * @param {Number} [times]   How many times to repeat (by default, 1).
+     */
+    function stringOf(string, times) {
+        return (times === 0) ? '' : new Array(1 + (times || 1)).join(string);
+    }
+
+    /**
+     * Turns a Number into a String with a prefix added to pad it to a certain
+     * number of digits.
+     * 
+     * @param {Number} number   The original Number being padded.
+     * @param {Number} size   How many digits the output must contain.
+     * @param {String} [prefix]   A prefix to repeat for padding (by default,
+     *                            '0').
+     * @return {String}
+     * @example 
+     * makeDigit(7, 3); // '007'
+     * makeDigit(7, 3, 1); // '117'
+     */
+    function makeDigit(number, size, prefix) {
+        return stringOf(
+            prefix || '0',
+            Math.max(0, size - String(number).length)
+        ) + number;
+    }
+
 
     proliferateHard(FullScreenPokemon.prototype, {
         // Resets
@@ -2385,6 +2435,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPokedexMenu": openPokedexMenu,
         "openItemsMenu": openItemsMenu,
         "retrieveItemsList": retrieveItemsList,
+        "retrievePokedexList": retrievePokedexList,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
@@ -2405,7 +2456,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroHouseLarge": macroHouseLarge,
         "macroBuilding": macroBuilding,
         "macroGym": macroGym,
-        "macroMountain": macroMountain
+        "macroMountain": macroMountain,
+        // Miscellaneous utilities
+        "stringOf": stringOf,
+        "makeDigit": makeDigit
     });
 
     return FullScreenPokemon;

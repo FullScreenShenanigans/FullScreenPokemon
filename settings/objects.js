@@ -230,9 +230,12 @@
                         "CharArrowDown": {},
                         "CharArrowLeft": {}
                     },
-                    "PokedexLineDecorator": {},
+                    "Line": {
+                        "LineDecorator": {},
+                        "LineSeparatorHorizontal": {},
+                    }
                 },
-                "Menu": {},
+                "Menu": {}
             }
         },
         "properties": {
@@ -502,7 +505,11 @@
             "CharArrowRight": [2.5, 3.5],
             "CharArrowDown": [3.5, 2.5],
             "CharArrowLeft": [2.5, 3.5],
-            "PokedexLineDecorator": [3, 8],
+            "Line": {
+                "repeat": true
+            },
+            "LineDecorator": [3, 8],
+            "LineSeparatorHorizontal": [4, 4],
             "Menu": {
                 "groupType": "Text",
                 "spritewidth": 4,
@@ -514,7 +521,8 @@
                 "arrowOffset": 1,
                 "textXOffset": 6,
                 "textYOffset": 7.5,
-            }
+                "textSpeed": 1
+            },
         }
     };
 })();

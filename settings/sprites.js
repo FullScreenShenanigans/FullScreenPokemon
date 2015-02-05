@@ -308,10 +308,11 @@ FullScreenPokemon.prototype.settings.sprites = {
             "CharArrowRight": "p[0,2]110001110011110x19,01110011000",
             "CharArrowBottom": "p[0,2]x114,0x15,000111x05,1000",
             "CharArrowLeft": "p[0,2]00011001110x19,011110011100011",
-            "PokedexLineDecorator": ["multiple", "vertical", {
+            "LineDecorator": ["multiple", "vertical", {
                 "top": "p[1,2]001100001100001100001100001100001100001100001100001100001100001100001100001100001100001100001100",
                 "middle": "p[1,2,3]001100x17,2002112002112002112002x17,001100001100001100001100001100001100001100001100001100"
-            }]
+            }],
+            "LineSeparatorHorizontal": "p[1,2]x016,x18,x08,x116,x016,",
         }
     }
 };
