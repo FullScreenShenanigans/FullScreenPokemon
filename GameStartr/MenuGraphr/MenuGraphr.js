@@ -71,9 +71,9 @@ function MenuGraphr(settings) {
         menu.name = name;
         self.positionItem(menu, schema.size, schema.position, container);
 
+        menu.children = [];
         menu.textWidth = (menu.width - menu.textXOffset * 2) * EightBitter.unitsize;
 
-        menu.children = [];
         if (menu.childrenSchemas) {
             menu.childrenSchemas.forEach(self.createChild.bind(undefined, name));
         }
@@ -105,7 +105,7 @@ function MenuGraphr(settings) {
 
         self.positionItem(container, schema.size, schema.position, menu, true);
 
-        self.addMenuWord(name, schema.words, 0, container.left, container.top);
+        self.addMenuWord(name, schema.words, 0, container.left, container.top)
     };
 
     /**
@@ -124,6 +124,7 @@ function MenuGraphr(settings) {
         );
 
         menu.children.push(thing);
+        console.log(menu.children);
     };
 
     /**
@@ -272,8 +273,6 @@ function MenuGraphr(settings) {
         if (words.constructor === String) {
             words = words.split(/ /);
         }
-
-        menu.children = [];
 
         menu.callback = self.continueMenu;
 
@@ -431,11 +430,10 @@ function MenuGraphr(settings) {
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
             arrowOffset = (menu.arrowOffset || 0) * EightBitter.unitsize,
             option, word, title, character,
-            x, y, i, j;
+            y = top,
+            x, i, j;
 
         menu.options = options;
-        menu.children = [];
-        y = top;
 
         for (i = 0; i < options.length; i += 1) {
             option = options[i];
