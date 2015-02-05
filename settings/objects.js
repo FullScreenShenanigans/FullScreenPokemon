@@ -229,9 +229,10 @@
                         "CharArrowRight": {},
                         "CharArrowDown": {},
                         "CharArrowLeft": {}
-                    }
+                    },
+                    "PokedexLineDecorator": {},
                 },
-                "Menu": {}
+                "Menu": {},
             }
         },
         "properties": {
@@ -501,6 +502,7 @@
             "CharArrowRight": [2.5, 3.5],
             "CharArrowDown": [3.5, 2.5],
             "CharArrowLeft": [2.5, 3.5],
+            "PokedexLineDecorator": [3, 8],
             "Menu": {
                 "groupType": "Text",
                 "spritewidth": 4,

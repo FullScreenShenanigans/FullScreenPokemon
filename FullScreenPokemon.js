@@ -1359,9 +1359,10 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("Pause");
         EightBitter.MenuGrapher.addMenuList("Pause", {
             "options": [{
-                "text": "%%%%%%%POKEDEX%%%%%%%"
+                "text": "%%%%%%%POKEDEX%%%%%%%",
+                "callback": EightBitter.openPokedexMenu.bind(EightBitter)
             }, {
-                "text": "%%%%%%%POKEDEX%%%%%%%"
+                "text": "%%%%%%%POKEMON%%%%%%%"
             }, {
                 "text": "ITEM",
                 "callback": EightBitter.openItemsMenu.bind(EightBitter)
@@ -1392,7 +1393,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     self.togglePauseMenu = function (player) {
-        if (player.EightBitter.MapScreener.inPauseMenu) {
+        if (player.EightBitter.MenuGrapher.getActiveMenu()) {
+            player.EightBitter.MenuGrapher.registerA();
+        } else if (player.EightBitter.MapScreener.inPauseMenu) {
             player.EightBitter.closePauseMenu();
         } else {
             player.EightBitter.openPauseMenu();
@@ -1402,10 +1405,27 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    self.openPokedexMenu = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.createMenu("Pokedex");
+        EightBitter.MenuGrapher.setActiveMenu("Pokedex");
+        //EightBitter.MenuGrapher.addMenuList("Pokedex", {
+        //    "options": items.map(function (item) {
+        //        return {
+        //            "text": item.title
+        //        };
+        //    })
+        //});
+    };
+
+    /**
+     * 
+     */
     self.openItemsMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             items = EightBitter.retrieveItemsList();
-        
+
         EightBitter.MenuGrapher.createMenu("Items");
         EightBitter.MenuGrapher.setActiveMenu("Items");
         EightBitter.MenuGrapher.addMenuList("Items", {
@@ -1415,8 +1435,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 };
             })
         });
-
-        console.log("ooh");
     }
 
     /**
@@ -2364,6 +2382,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPauseMenu": openPauseMenu,
         "closePauseMenu": closePauseMenu,
         "togglePauseMenu": togglePauseMenu,
+        "openPokedexMenu": openPokedexMenu,
         "openItemsMenu": openItemsMenu,
         "retrieveItemsList": retrieveItemsList,
         // Map sets

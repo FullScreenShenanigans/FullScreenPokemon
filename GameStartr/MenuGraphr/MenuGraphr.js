@@ -77,9 +77,65 @@ function MenuGraphr(settings) {
 
         menu.textWidth = (menu.width - menu.textXOffset * 2) * EightBitter.unitsize;
 
-        if (menu.children) {
-            menu.children.forEach(self.createMenu);
+        menu.children = [];
+        if (menu.childrenSchemas) {
+            menu.childrenSchemas.forEach(self.createChild.bind(undefined, name));
         }
+    };
+
+    /**
+     * 
+     */
+    self.createChild = function (name, schema) {
+        switch (schema.type) {
+            case "menu":
+                self.createMenu(name);
+                break;
+            case "word":
+                self.createMenuWord(name, schema);
+                break;
+            case "thing":
+                self.createMenuThing(name, schema);
+                break;
+        }
+    };
+
+    /**
+     * 
+     */
+    self.createMenuWord = function (name, schema) {
+        
+    };
+
+    /**
+     * 
+     */
+    self.createMenuThing = function (name, schema) {
+        var menu = menus[name],
+            thing = EightBitter.ObjectMaker.make(schema.thing, schema.args);
+
+        if (schema.stretch) {
+            if (schema.stretch.vertical) {
+                EightBitter.setHeight(
+                    thing,
+                    menu.height - schema.top - schema.bottom
+                );
+            }
+        }
+
+        EightBitter.addThing(
+            thing,
+            menu.left + (schema.left || 0) * EightBitter.unitsize,
+            menu.top + (schema.top || 0) * EightBitter.unitsize
+        );
+
+        EightBitter.GroupHolder.switchObjectGroup(
+            thing,
+            thing.groupType,
+            "Text"
+        );
+
+        menu.children.push(thing);
     };
 
     /**
@@ -100,7 +156,7 @@ function MenuGraphr(settings) {
         }
 
         EightBitter.killNormal(menu);
-        self.deleteMenuCharacters(name);
+        self.deleteMenuChildren(name);
 
         delete menus[name];
 
@@ -112,10 +168,10 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    self.deleteMenuCharacters = function (name) {
+    self.deleteMenuChildren = function (name) {
         var menu = menus[name];
-        if (menu && menu.characters) {
-            menu.characters.forEach(EightBitter.killNormal);
+        if (menu && menu.children) {
+            menu.children.forEach(EightBitter.killNormal);
         }
     };
 
@@ -196,7 +252,7 @@ function MenuGraphr(settings) {
                 onCompletion();
                 return true;
             } else {
-                self.deleteMenuCharacters(name);
+                self.deleteMenuChildren(name);
                 self.addMenuDialog(name, dialog.slice(1), onCompletion);
                 return false;
             }
@@ -215,7 +271,7 @@ function MenuGraphr(settings) {
             words = words.split(/ /);
         }
 
-        menu.characters = [];
+        menu.children = [];
 
         menu.callback = self.continueMenu;
 
@@ -226,7 +282,7 @@ function MenuGraphr(settings) {
      * 
      * 
      * @todo The calculation of whether a word can fit assumes equal width for
-     *       all characters, although apostrophes are tiny.
+     *       all children, although apostrophes are tiny.
      */
     self.addMenuWord = function (name, words, i, x, y, onCompletion) {
         var menu = menus[name],
@@ -243,7 +299,7 @@ function MenuGraphr(settings) {
                     title = "Char" + getCharacterEquivalent(word[j]);
                     character = EightBitter.ObjectMaker.make(title);
                     character.paddingY = textPaddingY;
-                    menu.characters.push(character);
+                    menu.children.push(character);
 
                     EightBitter.TimeHandler.addEvent(
                         EightBitter.addThing.bind(EightBitter),
@@ -309,7 +365,7 @@ function MenuGraphr(settings) {
      */
     self.continueMenu = function (name) {
         var menu = menus[name],
-            characters = menu.characters,
+            children = menu.children,
             progress = menu.progress,
             character, i;
 
@@ -326,8 +382,8 @@ function MenuGraphr(settings) {
 
         progress.working = true;
 
-        for (i = 0; i < characters.length; i += 1) {
-            character = characters[i];
+        for (i = 0; i < children.length; i += 1) {
+            character = children[i];
 
             EightBitter.TimeHandler.addEventInterval(
                 scrollCharacterUp,
@@ -375,7 +431,7 @@ function MenuGraphr(settings) {
             x, y, i, j;
 
         menu.options = options;
-        menu.characters = [];
+        menu.children = [];
         y = top;
 
         for (i = 0; i < options.length; i += 1) {
@@ -388,7 +444,7 @@ function MenuGraphr(settings) {
                     if (word[j] !== " ") {
                         title = "Char" + getCharacterEquivalent(word[j]);
                         character = EightBitter.ObjectMaker.make(title);
-                        menu.characters.push(character);
+                        menu.children.push(character);
 
                         EightBitter.addThing(character, x, y);
 
@@ -404,7 +460,7 @@ function MenuGraphr(settings) {
 
         menu.selectedIndex = index;
         character = EightBitter.ObjectMaker.make("CharArrowRight");
-        menu.characters.push(character);
+        menu.children.push(character);
         menu.arrow = character;
 
         menu.callback = self.selectMenuListOption;
@@ -533,7 +589,9 @@ function MenuGraphr(settings) {
             return;
         }
 
-        activeMenu.callback(activeMenu.name);
+        if (activeMenu.callback) {
+            activeMenu.callback(activeMenu.name);
+        }
     };
 
     /**

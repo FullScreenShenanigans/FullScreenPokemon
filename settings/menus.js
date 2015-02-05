@@ -63,9 +63,31 @@ FullScreenPokemon.prototype.settings.menus = {
                     "vertical": 8
                 }
             },
-            "onDelete": FullScreenPokemon.prototype.closeItemsMenu,
             "backMenu": "Pause",
             "textXOffset": 8,
+        },
+        "Pokedex": {
+            "size": {
+                "width": 88,
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "stretch",
+                "offset": {
+                    "horizontal": -4
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "PokedexLineDecorator",
+                "left": 60,
+                "top": 3,
+                "bottom": 3,
+                "stretch": {
+                    "vertical": true
+                }
+            }],
+            "backMenu": "Pause",
         }
     }
 };
