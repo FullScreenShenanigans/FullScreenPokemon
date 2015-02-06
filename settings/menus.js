@@ -142,6 +142,52 @@ FullScreenPokemon.prototype.settings.menus = {
             "textXOffset": 4,
             "textYOffset": 5
         },
+        "Pokemon": {
+            "size": {
+                "width": 88,
+                "height": 80
+            },
+            "position": {
+                "horizontal": "center",
+                "offset": {
+                    "left": -4
+                }
+            },
+            "childrenSchemas": [{
+                "type": "menu",
+                "name": "PokemonDialog"
+            }],
+            "onActivate": console.log.bind("HA"),
+            "backMenu": "Pause",
+            "arrowXOffset": 4,
+            "arrowYOffset": 5,
+            "textSpeed": 0,
+            "textXOffset": 15.75,
+            "textYOffset": 3
+        },
+        "PokemonDialog": {
+            "size": {
+                "height": 24
+            },
+            "position": {
+                "horizontal": "stretch",
+                "vertical": "bottom"
+            },
+            "childrenSchemas": [{
+                "type": "text",
+                "words": [
+                    "Choose a %%%%%%%POKEMON%%%%%%%"
+                ],
+                "position": {
+                    "offset": {
+                        "left": 4,
+                        "top": 6
+                    }
+                }
+            }],
+            "container": "Pokemon",
+            "textSpeed": 0
+        },
         "Items": {
             "size": {
                 "width": 64,
@@ -237,7 +283,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "PlayerSprite",
+                "thing": "PlayerPortrait",
                 "position": {
                     "horizontal": "right",
                     "vertical": "top",
@@ -276,7 +322,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "BrockSprite",
+                "thing": "BrockPortrait",
                 "position": {
                     "offset": {
                         "left": 6.5,
@@ -285,7 +331,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "MistySprite",
+                "thing": "MistyPortrait",
                 "position": {
                     "offset": {
                         "left": 22.5,
@@ -294,7 +340,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "LtSurgeSprite",
+                "thing": "LtSurgePortrait",
                 "position": {
                     "offset": {
                         "left": 38.5,
@@ -303,7 +349,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "ErikaSprite",
+                "thing": "ErikaPortrait",
                 "position": {
                     "offset": {
                         "left": 54.5,
@@ -312,7 +358,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "KogaSprite",
+                "thing": "KogaPortrait",
                 "position": {
                     "offset": {
                         "left": 6.5,
@@ -321,7 +367,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "SabrinaSprite",
+                "thing": "SabrinaPortrait",
                 "position": {
                     "offset": {
                         "left": 22.5,
@@ -330,7 +376,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "BlaineSprite",
+                "thing": "BlainePortrait",
                 "position": {
                     "offset": {
                         "left": 38.5,
@@ -339,7 +385,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }, {
                 "type": "thing",
-                "thing": "GiovanniSprite",
+                "thing": "GiovanniPortrait",
                 "position": {
                     "offset": {
                         "left": 54.5,

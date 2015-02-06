@@ -140,6 +140,8 @@ function MenuGraphr(settings) {
         );
 
         menu.children.push(thing);
+
+        return thing;
     };
 
     /**
@@ -473,28 +475,51 @@ function MenuGraphr(settings) {
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
             arrowXOffset = (menu.arrowXOffset || 0) * EightBitter.unitsize,
             arrowYOffset = (menu.arrowYOffset || 0) * EightBitter.unitsize,
-            option, word, title, character,
+            option, schema, title, character,
             y = top,
             x, i, j;
 
         menu.options = options;
 
         for (i = 0; i < options.length; i += 1) {
-            option = options[i];
-            word = filterWord(option.text);
             x = left;
+            option = options[i];
 
-            if (word !== "\n") {
-                for (j = 0; j < word.length; j += 1) {
-                    if (word[j].command) {
-                        if (word[j].x) {
-                            x += word[j].x * EightBitter.unitsize;
+            if (option.things) {
+                console.log("y", y);
+                for (j = 0; j < option.things.length; j += 1) {
+                    schema = option.things[j];
+                    character = self.createMenuThing(name, schema);
+
+                    if (!schema.position || !schema.position.relative) {
+                        //EightBitter.shiftBoth(
+                        //    character,
+                        //    x - menu.left,
+                        //    y - menu.top
+                        //);
+
+                        console.log("Shifting", y - menu.top);
+                        EightBitter.shiftVert(character, y - menu.top);
+                    }
+
+                    menu.children.push(character);
+                    //console.log(character.title, "at", character.left, character.top);
+                }
+            }
+            
+            schema = filterWord(option.text);
+
+            if (schema !== "\n") {
+                for (j = 0; j < schema.length; j += 1) {
+                    if (schema[j].command) {
+                        if (schema[j].x) {
+                            x += schema[j].x * EightBitter.unitsize;
                         }
-                        if (word[j].y) {
-                            y += word[j].y * EightBitter.unitsize;
+                        if (schema[j].y) {
+                            y += schema[j].y * EightBitter.unitsize;
                         }
-                    } else if (word[j] !== " ") {
-                        title = "Char" + getCharacterEquivalent(word[j]);
+                    } else if (schema[j] !== " ") {
+                        title = "Char" + getCharacterEquivalent(schema[j]);
                         character = EightBitter.ObjectMaker.make(title);
                         menu.children.push(character);
 

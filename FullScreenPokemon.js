@@ -1362,7 +1362,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "text": "%%%%%%%POKEDEX%%%%%%%",
                 "callback": EightBitter.openPokedexMenu.bind(EightBitter)
             }, {
-                "text": "%%%%%%%POKEMON%%%%%%%"
+                "text": "%%%%%%%POKEMON%%%%%%%",
+                "callback": EightBitter.openPokemonMenu.bind(EightBitter)
             }, {
                 "text": "ITEM",
                 "callback": EightBitter.openItemsMenu.bind(EightBitter)
@@ -1469,6 +1470,75 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    self.openPokemonMenu = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            listings = EightBitter.retrievePokemonList();
+
+        EightBitter.MenuGrapher.createMenu("Pokemon");
+        EightBitter.MenuGrapher.setActiveMenu("Pokemon");
+        EightBitter.MenuGrapher.addMenuList("Pokemon", {
+            "options": listings.map(function (listing, i) {
+                var text = listing.title.split(""),
+                    hpFill = 31.5 * listing.hp / listing.hpMax;
+
+                return {
+                    "text": text,
+                    "things": [{
+                        "thing": listing.sprite,
+                        "position": {
+                            "offset": {
+                                "left": 8
+                            }
+                        }
+                    }, {
+                        "thing": "CharLevel",
+                        "position": {
+                            "offset": {
+                                "left": 56,
+                                "top": 1.5
+                            }
+                        }
+                    }, {
+                        "thing": "CharHP",
+                        "position": {
+                            "offset": {
+                                "left": 20,
+                                "top": 5.5
+                            }
+                        }
+                    }, {
+                        "thing": "HPBar",
+                        "args": {
+                            "width": 32
+                        },
+                        "position": {
+                            "offset": {
+                                "left": 27,
+                                "top": 5.5
+                            }
+                        }
+                    }, {
+                        "thing": "HPBarFill",
+                        "args": {
+                            "width": Math.max(hpFill, 1),
+                            "height": 1,
+                            "hidden": hpFill === 0
+                        },
+                        "position": {
+                            "offset": {
+                                "left": 27.25,
+                                "top": 6
+                            }
+                        }
+                    }]
+                };
+            })
+        });
+    };
+
+    /**
+     * 
+     */
     self.openItemsMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             items = EightBitter.retrieveItemsList();
@@ -1518,6 +1588,25 @@ var FullScreenPokemon = (function (GameStartr) {
             "seen": true,
             "caught": true
         }, ];
+    };
+
+    /**
+     * 
+     */
+    self.retrievePokemonList = function () {
+        return [{
+            "title": "AHH BRAKET",
+            "level": 10,
+            "hp": 30,
+            "hpMax": 33,
+            "sprite": "WaterPokemon"
+        }, {
+            "title": "NIDORANx",
+            "level": 3,
+            "hp": 7,
+            "hpMax": 16,
+            "sprite": "LandPokemon"
+        }];
     };
 
     /**
@@ -2500,10 +2589,12 @@ var FullScreenPokemon = (function (GameStartr) {
         "closePauseMenu": closePauseMenu,
         "togglePauseMenu": togglePauseMenu,
         "openPokedexMenu": openPokedexMenu,
+        "openPokemonMenu": openPokemonMenu,
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
-        "retrieveItemsList": retrieveItemsList,
         "retrievePokedexList": retrievePokedexList,
+        "retrievePokemonList": retrievePokemonList,
+        "retrieveItemsList": retrieveItemsList,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,

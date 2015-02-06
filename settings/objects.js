@@ -110,20 +110,26 @@
                     "DoormatDotted": {},
                     "Flower": {},
                     "FlowerVase": {},
+                    "HPBar": {},
+                    "HPBarFill": {},
                     "Painting": {},
                     "Stool": {},
                     "Window": {},
                     "WindowBlinds": {},
-                    "Sprite": {
-                        "PlayerSprite": {},
-                        "BlaineSprite": {},
-                        "BrockSprite": {},
-                        "ErikaSprite": {},
-                        "GiovanniSprite": {},
-                        "KogaSprite": {},
-                        "LtSurgeSprite": {},
-                        "MistySprite": {},
-                        "SabrinaSprite": {},
+                    "Portrait": {
+                        "PlayerPortrait": {},
+                        "BlainePortrait": {},
+                        "BrockPortrait": {},
+                        "ErikaPortrait": {},
+                        "GiovanniPortrait": {},
+                        "KogaPortrait": {},
+                        "LtSurgePortrait": {},
+                        "MistyPortrait": {},
+                        "SabrinaPortrait": {},
+                        "PokemonPortrait": {
+                            "LandPokemon": {},
+                            "WaterPokemon": {}
+                        }
                     }
                 },
                 "Terrain": {
@@ -247,7 +253,9 @@
                         "CharApostrophe": {},
                         "ChareFancy": {},
                         "CharBall": {},
-                        "CharCircle": {}
+                        "CharCircle": {},
+                        "CharHP": {},
+                        "CharLevel": {}
                     },
                     "Arrow": {
                         "CharArrowUp": {},
@@ -493,6 +501,8 @@
                 ]
             },
             "FlowerVase": [6, 6],
+            "HPBar": [.5, 2],
+            "HPBarFill": [.5, .5],
             "Terrain": {
                 "groupType": "Terrain",
                 "repeat": true
@@ -534,6 +544,8 @@
             "CharApostrophe": [1, 2],
             "CharBall": [3.5, 3.5],
             "CharCircle": [2.5, 2.5],
+            "CharHP": [5.5, 2],
+            "CharLevel": [3, 2.5],
             "CharArrowUp": [3.5, 2.5],
             "CharArrowRight": [2.5, 3.5],
             "CharArrowDown": [3.5, 2.5],
