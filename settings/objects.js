@@ -115,7 +115,15 @@
                     "Window": {},
                     "WindowBlinds": {},
                     "Sprite": {
-                        "PlayerSprite": {}
+                        "PlayerSprite": {},
+                        "BlaineSprite": {},
+                        "BrockSprite": {},
+                        "ErikaSprite": {},
+                        "GiovanniSprite": {},
+                        "KogaSprite": {},
+                        "LtSurgeSprite": {},
+                        "MistySprite": {},
+                        "SabrinaSprite": {},
                     }
                 },
                 "Terrain": {
@@ -193,6 +201,18 @@
                             "Chary": {}
                         }
                     },
+                    "CharacterShadow": {
+                        "Char0Shadow": {},
+                        "Char1Shadow": {},
+                        "Char2Shadow": {},
+                        "Char3Shadow": {},
+                        "Char4Shadow": {},
+                        "Char5Shadow": {},
+                        "Char6Shadow": {},
+                        "Char7Shadow": {},
+                        "Char8Shadow": {},
+                        "Char9Shadow": {},
+                    },
                     "Number": {
                         "Char0": {},
                         "Char1": {},
@@ -226,7 +246,8 @@
                         "CharED": {},
                         "CharApostrophe": {},
                         "ChareFancy": {},
-                        "CharBall": {}
+                        "CharBall": {},
+                        "CharCircle": {}
                     },
                     "Arrow": {
                         "CharArrowUp": {},
@@ -498,6 +519,7 @@
                 "groupType": "Text",
                 "width": 4,
                 "height": 4,
+                "paddingX": 0,
                 "paddingY": 8,
                 "noshiftx": true,
                 "noshifty": true,
@@ -505,11 +527,13 @@
             "CharacterDropped": {
                 "offsetY": FullScreenPokemon.unitsize * .75
             },
+            "CharacterShadow": [3.5, 3.5],
             "CharSlash": {
                 "offsetY": FullScreenPokemon.unitsize * .5
             },
             "CharApostrophe": [1, 2],
             "CharBall": [3.5, 3.5],
+            "CharCircle": [2.5, 2.5],
             "CharArrowUp": [3.5, 2.5],
             "CharArrowRight": [2.5, 3.5],
             "CharArrowDown": [3.5, 2.5],

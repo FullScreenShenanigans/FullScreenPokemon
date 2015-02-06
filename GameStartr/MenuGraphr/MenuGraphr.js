@@ -325,6 +325,7 @@ function MenuGraphr(settings) {
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
+            textPaddingX = (menu.textPaddingX || textProperties.paddingX) * EightBitter.unitsize,
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
             textSpeed = menu.textSpeed || 0,
             title, character, j;
@@ -337,15 +338,19 @@ function MenuGraphr(settings) {
                     character.paddingY = textPaddingY;
                     menu.children.push(character);
 
-                    EightBitter.TimeHandler.addEvent(
-                        EightBitter.addThing.bind(EightBitter),
-                        j * textSpeed,
-                        character,
-                        x,
-                        y
-                    );
+                    if (textSpeed) {
+                        EightBitter.TimeHandler.addEvent(
+                            EightBitter.addThing.bind(EightBitter),
+                            j * textSpeed,
+                            character,
+                            x,
+                            y
+                        );
+                    } else {
+                        EightBitter.addThing(character, x, y);
+                    }
 
-                    x += character.width * EightBitter.unitsize;
+                    x += character.width * EightBitter.unitsize + textPaddingX;
                 } else {
                     x += textWidth;
                 }
@@ -384,16 +389,20 @@ function MenuGraphr(settings) {
             return;
         }
 
-        EightBitter.TimeHandler.addEvent(
-            self.addMenuWord,
-            (j + 1) * textSpeed,
-            name,
-            words,
-            i + 1,
-            x,
-            y,
-            onCompletion
-        );
+        if (textSpeed) {
+            EightBitter.TimeHandler.addEvent(
+                self.addMenuWord,
+                (j + 1) * textSpeed,
+                name,
+                words,
+                i + 1,
+                x,
+                y,
+                onCompletion
+            );
+        } else {
+            self.addMenuWord(name, words, i + 1, x, y, onCompletion);
+        }
     }
 
     /**
