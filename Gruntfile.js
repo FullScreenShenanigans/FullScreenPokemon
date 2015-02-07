@@ -3,6 +3,7 @@ module.exports = function (grunt) {
         "pkg": grunt.file.readJSON("package.json"),
         "meta": {
             "GameStartrPath": "GameStartr",
+            "modulesPath": "modules",
             "deployPath": "dist"
         },
         "copy": {
@@ -30,6 +31,8 @@ module.exports = function (grunt) {
                 "src": [
                     "<%= meta.GameStartrPath %>/*.js",
                     "<%= meta.GameStartrPath %>/*/*.js",
+                    "<%= meta.modulesPath %>/*.js",
+                    "<%= meta.modulesPath %>/*/*.js",
                     "<%= pkg.name %>.js",
                     "settings/*.js"
                 ],
