@@ -102,7 +102,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "directionNames",
                 "directionNumbers"
             ],
-            "extraResets": ["resetMenuGrapher"]
+            "extraResets": ["resetMenuGrapher", "resetStateHolder"]
         });
 
         if (customs.resetTimed) {
@@ -184,6 +184,20 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher = new MenuGraphr(EightBitter.proliferate({
             "EightBitter": EightBitter
         }, EightBitter.settings.menus));
+    }
+
+    /**
+     * Sets self.StateHoldr.
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+    function resetStateHolder(EightBitter, customs) {
+        EightBitter.StateHolder = new StateHoldr(EightBitter.proliferate({
+            // Not sure if extras will be needed...
+        }/*, EightBitter.settings.???*/));
     }
 
 
@@ -1435,7 +1449,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openPokedexMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.StatsHolder.get("Pokedex");
+            listings = EightBitter.StatsHolder.getItem("Pokedex");
 
         EightBitter.MenuGrapher.createMenu("Pokedex");
         EightBitter.MenuGrapher.setActiveMenu("Pokedex");
@@ -1498,7 +1512,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openPokemonMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.StatsHolder.get("PokemonInParty");
+            listings = EightBitter.StatsHolder.getItem("PokemonInParty");
 
         EightBitter.MenuGrapher.createMenu("Pokemon");
         EightBitter.MenuGrapher.setActiveMenu("Pokemon");
@@ -1567,7 +1581,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openItemsMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            items = EightBitter.StatsHolder.get("items");
+            items = EightBitter.StatsHolder.getItem("items");
 
         EightBitter.MenuGrapher.createMenu("Items");
         EightBitter.MenuGrapher.setActiveMenu("Items");
@@ -2505,6 +2519,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "resetContainer": resetContainer,
         "resetMapsHandler": resetMapsHandler,
         "resetMenuGrapher": resetMenuGrapher,
+        "resetStateHolder": resetStateHolder,
         // Global manipulations
         "gameStart": gameStart,
         "thingProcess": thingProcess,
