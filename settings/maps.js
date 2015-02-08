@@ -10,7 +10,8 @@ FullScreenPokemon.prototype.settings.maps = {
     "screenAttributes": [],
     "screenVariables": {
         "boundaries": FullScreenPokemon.prototype.getAreaBoundariesReal,
-        "scrollability": FullScreenPokemon.prototype.getScreenScrollability
+        "scrollability": FullScreenPokemon.prototype.getScreenScrollability,
+        "thingsById": FullScreenPokemon.prototype.generateThingsByIdContainer
     },
     "onSpawn": FullScreenPokemon.prototype.addPreThing,
     "macros": {

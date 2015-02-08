@@ -241,6 +241,25 @@ var FullScreenPokemon = (function (GameStartr) {
     function onGamePause(EightBitter) {
         console.log("Paused.");
     }
+    
+    /**
+     * Overriden Function to adds a new Thing to the game at a given position,
+     * relative to the top left corner of the screen. The Thing is also 
+     * added to the MapScreener.thingsById container.
+     * 
+     * @param {Mixed} thing   What type of Thing to add. This may be a String of
+     *                        the class title, an Array containing the String
+     *                        and an Object of settings, or an actual Thing.
+     * @param {Number} [left]   Defaults to 0.
+     * @param {Number} [top]   Defaults to 0.
+     */
+    function addThing(thing, left, top) {
+        GameStartr.prototype.addThing.call(this, thing, left, top);
+
+        if (typeof thing.id !== "undefined") {
+            thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
+        }
+    }
 
     /**
      * Adds a Thing via addPreThing based on the specifications in a PreThing.
@@ -301,6 +320,13 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.ModAttacher.fireEvent("onAddPlayer", player);
 
         return player;
+    }
+
+    /**
+     * 
+     */
+    function getThingById(id) {
+        return EightBittr.ensureCorrectCaller(this).MapScreener.thingsById[id];
     }
 
 
@@ -1665,6 +1691,7 @@ var FullScreenPokemon = (function (GameStartr) {
         name = name || 0;
 
         EightBitter.MapScreener.clearScreen();
+        EightBitter.MapScreener.thingsById = {};
         EightBitter.GroupHolder.clearArrays();
         EightBitter.TimeHandler.cancelAllEvents();
 
@@ -1745,6 +1772,13 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             return "none";
         }
+    }
+
+    /**
+     * 
+     */
+    function generateThingsByIdContainer() {
+        return {};
     }
 
     /**
@@ -2521,8 +2555,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "thingProcess": thingProcess,
         "onGamePlay": onGamePlay,
         "onGamePause": onGamePause,
+        "addThing": addThing,
         "addPreThing": addPreThing,
         "addPlayer": addPlayer,
+        "getThingById": getThingById,
         // Inputs
         "canInputsTrigger": canInputsTrigger,
         "keyDownLeft": keyDownLeft,
@@ -2600,6 +2636,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "setLocation": setLocation,
         "getAreaBoundariesReal": getAreaBoundariesReal,
         "getScreenScrollability": getScreenScrollability,
+        "generateThingsByIdContainer": generateThingsByIdContainer,
         "mapAddAfter": mapAddAfter,
         // Map entrances
         "centerMapScreen": centerMapScreen,
