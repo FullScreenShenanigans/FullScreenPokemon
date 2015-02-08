@@ -1435,7 +1435,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openPokedexMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.retrievePokedexList();
+            listings = EightBitter.StatsHolder.get("Pokedex");
 
         EightBitter.MenuGrapher.createMenu("Pokedex");
         EightBitter.MenuGrapher.setActiveMenu("Pokedex");
@@ -1498,7 +1498,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openPokemonMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.retrievePokemonList();
+            listings = EightBitter.StatsHolder.get("PokemonInParty");
 
         EightBitter.MenuGrapher.createMenu("Pokemon");
         EightBitter.MenuGrapher.setActiveMenu("Pokemon");
@@ -1567,7 +1567,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openItemsMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            items = EightBitter.retrieveItemsList();
+            items = EightBitter.StatsHolder.get("items");
 
         EightBitter.MenuGrapher.createMenu("Items");
         EightBitter.MenuGrapher.setActiveMenu("Items");
@@ -1588,51 +1588,6 @@ var FullScreenPokemon = (function (GameStartr) {
         
         EightBitter.MenuGrapher.createMenu("Player");
         EightBitter.MenuGrapher.setActiveMenu("Player");
-    };
-
-    /**
-     * 
-     */
-    self.retrievePokedexList = function () {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        return [{
-            "title": "BULBASAUR",
-            "seen": true
-        }, {
-            "title": "IVYSAUR"
-        }, {
-            "title": "VENUSAUR"
-        }, {
-            "title": "CHARMANDER"
-        }, {
-            "title": "CHARMELEON"
-        }, {
-            "title": "CHARIZARD",
-        }, {
-            "title": "SQUIRTLE",
-            "seen": true,
-            "caught": true
-        }, ];
-    };
-
-    /**
-     * 
-     */
-    self.retrievePokemonList = function () {
-        return [{
-            "title": "AHH BRAKET",
-            "level": 10,
-            "hp": 30,
-            "hpMax": 33,
-            "sprite": "WaterPokemon"
-        }, {
-            "title": "NIDORANx",
-            "level": 3,
-            "hp": 7,
-            "hpMax": 16,
-            "sprite": "LandPokemon"
-        }];
     };
 
     /**
@@ -2628,9 +2583,6 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPokemonMenu": openPokemonMenu,
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
-        "retrievePokedexList": retrievePokedexList,
-        "retrievePokemonList": retrievePokemonList,
-        "retrieveItemsList": retrieveItemsList,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
