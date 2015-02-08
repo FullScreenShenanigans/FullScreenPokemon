@@ -374,7 +374,8 @@ function StatsHoldr(settings) {
      * Retrieves a Value's value from localStorage, making sure not to try to
      * JSON.parse an undefined or null value.
      * 
-     * 
+     * @this {Value}
+     * @return {Mixed}
      */
     Value.prototype.retrieveLocalStorage = function () {
         var value = localStorage.getItem(prefix + this.key);
@@ -449,8 +450,6 @@ function StatsHoldr(settings) {
      * Toggles whether a value is 1 or 0.
      * 
      * @param {String} key   The key of the Value.
-     * @remarks Toggling requires the type to be a Boolean, since true becomes 
-     *          "true" becomes NaN.
      */
     self.toggle = function (key) {
         checkExistence(key);
