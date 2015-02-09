@@ -213,7 +213,7 @@ function QuadsKeepr(settings) {
     self.reset = function (settings) {
         ObjectMaker = settings.ObjectMaker;
         if (!ObjectMaker) {
-            throw new Error("No ObjectMakr given to QuadsKeepr.");
+            throw new Error("No ObjectMaker given to QuadsKeepr.");
         }
         
         createCanvas = settings.createCanvas;

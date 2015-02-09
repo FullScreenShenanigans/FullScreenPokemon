@@ -184,7 +184,7 @@ function StatsHoldr(settings) {
         checkExistence(key);
 
         return values[key].value;
-    }
+    };
 
     /**
      * @param {String} key   The key for a known value.
@@ -192,7 +192,15 @@ function StatsHoldr(settings) {
      */
     self.getObject = function (key) {
         return values[key];
-    }
+    };
+
+    /**
+     * @param {String} key   The key for a potentially known value.
+     * @return {Boolean} Whether there is a value under that key.
+     */
+    self.hasKey = function (key) {
+        return values.hasOwnProperty(key);
+    };
 
 
     /* Values

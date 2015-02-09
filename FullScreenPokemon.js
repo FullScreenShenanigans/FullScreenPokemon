@@ -196,8 +196,8 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function resetStateHolder(EightBitter, customs) {
         EightBitter.StateHolder = new StateHoldr(EightBitter.proliferate({
-            // Not sure if extras will be needed...
-        }/*, EightBitter.settings.???*/));
+            "StatsHolder": EightBitter.StatsHolder
+        }, EightBitter.settings.states));
     }
 
 
