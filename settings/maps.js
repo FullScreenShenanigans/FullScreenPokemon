@@ -247,7 +247,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 160,
                     "height": 296,
                     "creation": [
-                        { "thing": "AreaSpawner", "width": 160, "map": "Viridian City", "area": "Land", "direction": 0, "xloc": 80 },
+                        { "thing": "AreaSpawner", "width": 160, "map": "Viridian City", "area": "Land", "direction": 0, "offsetX": -80 },
                         { "thing": "DirtMedium", "width": 32, "height": 296 },
                         { "thing": "FenceWide", "x": 24, "height": 48 },
                         { "thing": "DirtMedium", "x": 24, "width": 56, "height": 80 },
