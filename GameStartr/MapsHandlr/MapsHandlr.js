@@ -177,12 +177,19 @@ function MapsHandlr(settings) {
     self.getMaps = function () {
         return MapsCreator.getMaps();
     };
-    
+
     /**
      * @return {Area} The current Area.
      */
     self.getArea = function () {
         return areaCurrent;
+    };
+
+    /**
+     * @return {String} The name of the current Area.
+     */
+    self.getAreaName = function () {
+        return areaCurrent.name;
     };
     
     /**

@@ -1644,6 +1644,24 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             link = document.createElement("a");
 
+        EightBitter.StatsHolder.set(
+            "map", EightBitter.MapsHandler.getMapName()
+        );
+        EightBitter.StatsHolder.set(
+            "area", EightBitter.MapsHandler.getAreaName()
+        );
+        EightBitter.StatsHolder.set(
+            "xloc",
+            (EightBitter.player.left - EightBitter.MapScreener.left) / EightBitter.unitsize
+        );
+        EightBitter.StatsHolder.set(
+            "yloc",
+            (EightBitter.player.top - EightBitter.MapScreener.left) / EightBitter.unitsize
+        );
+        EightBitter.StatsHolder.set("direction", EightBitter.player.direction);
+
+        EightBitter.StateHolder.saveCollection();
+
         link.setAttribute(
             "download",
             EightBitter.StatsHolder.get("filename") + " " + Date.now() + ".json"

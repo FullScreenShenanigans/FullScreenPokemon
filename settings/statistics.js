@@ -7,6 +7,21 @@ FullScreenPokemon.prototype.settings.statistics = {
         "filename": {
             "valueDefault": "FullScreenPokemon Save",
         },
+        "map": {
+            "valueDefault": ""
+        },
+        "area": {
+            "valueDefault": ""
+        },
+        "xloc": {
+            "valueDefault": 0
+        },
+        "yloc": {
+            "valueDefault": 0
+        },
+        "direction": {
+            "valueDefault": 2
+        },
         "badges": {
             "valueDefault": {
                 "Brock": false,

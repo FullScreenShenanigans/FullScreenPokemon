@@ -340,6 +340,7 @@
             "Player": {
                 "player": true,
                 "canKeyWalking": true,
+                "direction": 2,
                 "speed": FullScreenPokemon.unitsize / 2,
                 "onWalkingStart": FullScreenPokemon.prototype.animatePlayerStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animatePlayerStopWalking,
