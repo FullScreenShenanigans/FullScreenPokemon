@@ -19,13 +19,15 @@ FullScreenPokemon.prototype.settings.menus = {
         "PLAYER": "(name)",
         "RIVAL": "Rival's name",
         "POKEMON": "POKÈMON",
-        "POKEDEX": "POKÈDEX"
+        "POKEDEX": "POKÈDEX",
+        "BADGES.LENGTH": "?",
+        "POKEDEX.LENGTH": "?"
     },
     "schemas": {
         "GeneralText": {
             "size": {
                 "height": 24,
-                "width": 100
+                "width": 96
             },
             "position": {
                 "horizontal": "center",
@@ -398,6 +400,83 @@ FullScreenPokemon.prototype.settings.menus = {
             "textSpeed": 0,
             "textPaddingX": 8.5,
             "textPaddingY": 12
+        },
+        "Save": {
+            "size": {
+                "width": 64,
+                "height": 40
+            },
+            "position": {
+                "horizontal": "center",
+                "offset": {
+                    "left": 8
+                }
+            },
+            "childrenSchemas": [{
+                "type": "text",
+                "words": [
+                    "PLAYER",
+                    "\n",
+                    "BADGES",
+                    "\n",
+                    "%%%%%%%POKEDEX%%%%%%%",
+                    "\n",
+                    "TIME"
+                ],
+                "position": {
+                    "offset": {
+                        "left": 4,
+                        "top": 7
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": [{
+                    "command": "padLeft",
+                    "length": 15,
+                    "word": "%%%%%%%PLAYER%%%%%%%",
+                    "skipSpacing": true
+                }, {
+                    "command": "padLeft",
+                    "length": 15,
+                    "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
+                    "skipSpacing": true
+                }, {
+                    "command": "padLeft",
+                    "length": 15,
+                    "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
+                    "skipSpacing": true
+                }, {
+                    "command": "padLeft",
+                    "length": 15,
+                    "word": "%%%%%%%TIME%%%%%%%",
+                    "skipSpacing": true
+                }],
+                "position": {
+                    "offset": {
+                        "top": 7
+                    }
+                }
+            }],
+            "textSpeed": 0,
+            "durp": true
+        },
+        "Yes/No": {
+            "size": {
+                "width": 24,
+                "height": 20
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "bottom",
+                "offset": {
+                    "left": -36,
+                    "top": -24
+                }
+            },
+            "arrowXOffset": 4.5,
+            "textXOffset": 8,
+            "textYOffset": 3.5
         }
     }
 };

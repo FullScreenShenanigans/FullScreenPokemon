@@ -1412,7 +1412,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "text": "%%%%%%%PLAYER%%%%%%%",
                 "callback": EightBitter.openPlayerMenu.bind(EightBitter)
             }, {
-                "text": "SAVE"
+                "text": "SAVE",
+                "callback": EightBitter.openSaveMenu.bind(EightBitter)
             }, {
                 "text": "OPTION"
             }, {
@@ -1450,7 +1451,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openPokedexMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.StatsHolder.getItem("Pokedex");
+            listings = EightBitter.StatsHolder.get("Pokedex");
 
         EightBitter.MenuGrapher.createMenu("Pokedex");
         EightBitter.MenuGrapher.setActiveMenu("Pokedex");
@@ -1513,7 +1514,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openPokemonMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.StatsHolder.getItem("PokemonInParty");
+            listings = EightBitter.StatsHolder.get("PokemonInParty");
 
         EightBitter.MenuGrapher.createMenu("Pokemon");
         EightBitter.MenuGrapher.setActiveMenu("Pokemon");
@@ -1582,7 +1583,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     self.openItemsMenu = function () {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            items = EightBitter.StatsHolder.getItem("items");
+            items = EightBitter.StatsHolder.get("items");
 
         EightBitter.MenuGrapher.createMenu("Items");
         EightBitter.MenuGrapher.setActiveMenu("Items");
@@ -1603,6 +1604,35 @@ var FullScreenPokemon = (function (GameStartr) {
         
         EightBitter.MenuGrapher.createMenu("Player");
         EightBitter.MenuGrapher.setActiveMenu("Player");
+    };
+
+    /**
+     * 
+     */
+    self.openSaveMenu = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.createMenu("Save");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText", [
+                "Would you like to SAVE the game?"
+            ]
+        );
+
+        EightBitter.MenuGrapher.createMenu("Yes/No", {
+            "backMenu": "Pause",
+            "killOnB": ["GeneralText", "Save"]
+        });
+        EightBitter.MenuGrapher.addMenuList("Yes/No", {
+            "options": [{
+                "text": "YES"
+            }, {
+                "text": "NO"
+            }]
+        });
+        EightBitter.MenuGrapher.setActiveMenu("Yes/No");
     };
 
     /**
@@ -2603,6 +2633,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPokemonMenu": openPokemonMenu,
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
+        "openSaveMenu": openSaveMenu,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,

@@ -566,7 +566,7 @@
                 "noshifty": true,
                 "arrowXOffset": 4,
                 "arrowYOffset": 1,
-                "textXOffset": 6,
+                "textXOffset": 4,
                 "textYOffset": 7.5,
                 "textSpeed": 1,
                 "attributes": {
