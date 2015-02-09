@@ -1653,6 +1653,10 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MapsHandler.setLocation(name);
         EightBitter.MapScreener.setVariables();
         location = EightBitter.MapsHandler.getLocation(name);
+        location.area.spawnedBy = {
+            "name": name,
+            "timestamp": new Date().getTime()
+        };
 
         EightBitter.ModAttacher.fireEvent("onPreSetLocation", location)
 
@@ -1664,10 +1668,6 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.QuadsKeeper.resetQuadrants();
 
         location.entry(EightBitter, location);
-        location.area.spawnedBy = {
-            "name": name,
-            "timestamp": new Date().getTime()
-        };
 
         EightBitter.ModAttacher.fireEvent("onSetLocation", location);
 

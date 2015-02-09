@@ -1,8 +1,8 @@
 FullScreenPokemon.prototype.settings.maps = {
-    //"mapDefault": "Pallet Town",
-    //"locationDefault": "Player's House Door",
-    "mapDefault": "Route 1",
-    "locationDefault": "Bottom Path",
+    "mapDefault": "Pallet Town",
+    "locationDefault": "Player's House Door",
+    //"mapDefault": "Route 1",
+    //"locationDefault": "Bottom Path",
     //"mapDefault": "Viridian City",
     //"locationDefault": "Temp",
     "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
