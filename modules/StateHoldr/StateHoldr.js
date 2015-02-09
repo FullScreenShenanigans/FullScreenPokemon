@@ -48,29 +48,8 @@ function StateHoldr(settings) {
     /**
      * 
      */
-    self.getCollection = function () {
-        return collection;
-    };
-
-    /**
-     * 
-     */
-    self.getKeys = function () {
-        return Object.keys(collections);
-    };
-
-    /**
-     * 
-     */
     self.getPrefix = function () {
         return prefix;
-    };
-
-    /**
-     * 
-     */
-    self.getItem = function (itemKey) {
-        return collection[itemKey];
     };
 
     /**
@@ -85,6 +64,20 @@ function StateHoldr(settings) {
      */
     self.getCollectionKey = function () {
         return collectionKey;
+    };
+
+    /**
+     * 
+     */
+    self.getCollection = function () {
+        return collection;
+    };
+
+    /**
+     * 
+     */
+    self.getChange = function (itemKey) {
+        return collection[itemKey];
     };
     
 
@@ -118,8 +111,12 @@ function StateHoldr(settings) {
     /**
      * 
      */
-    self.setItem = function (itemKey, valueKey) {
-        collection[itemKey] = valueKey;
+    self.addChange = function (itemKey, valueKey, value) {
+        if (typeof collection[itemKey] === "undefined") {
+            collection[itemKey] = {};
+        }
+
+        collection[itemKey][valueKey] = value;
     };
 
     /**
@@ -129,6 +126,22 @@ function StateHoldr(settings) {
         var otherCollection = StatsHolder.get(prefix + collectionKeyOther);
         otherCollection[itemKey] = value;
         StatsHolder.set(item, value);
+    };
+
+    /**
+     * 
+     */
+    self.applyChanges = function (id, output) {
+        var changes = collection[id],
+            key;
+        
+        if (!changes) {
+            return;
+        }
+
+        for (key in changes) {
+            output[key] = changes[key];
+        }
     };
     
     

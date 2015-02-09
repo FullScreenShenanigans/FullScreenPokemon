@@ -272,6 +272,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (typeof thing.id !== "undefined") {
             thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
+            thing.EightBitter.StateHolder.applyChanges(thing.id, thing);
         }
     }
 
@@ -1672,10 +1673,14 @@ var FullScreenPokemon = (function (GameStartr) {
             "timestamp": new Date().getTime()
         };
 
-        EightBitter.ModAttacher.fireEvent("onPreSetLocation", location)
+        EightBitter.ModAttacher.fireEvent("onPreSetLocation", location);
 
         EightBitter.PixelDrawer.setBackground(
             EightBitter.MapsHandler.getArea().background
+        );
+
+        EightBitter.StateHolder.setCollection(
+            location.area.map.name + "::" + location.area.name
         );
 
         EightBitter.AudioPlayer.clearAll();
