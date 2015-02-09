@@ -357,6 +357,7 @@ function MenuGraphr(settings) {
             }
         }
 
+        textSpeed = menu.textSpeed;
         textWidth = (menu.textWidth || textProperties.width) * EightBitter.unitsize,
         textHeight = (menu.textHeight || textProperties.height) * EightBitter.unitsize,
         textPaddingX = (menu.textPaddingX || textProperties.paddingX) * EightBitter.unitsize;

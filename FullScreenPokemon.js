@@ -1627,9 +1627,11 @@ var FullScreenPokemon = (function (GameStartr) {
         });
         EightBitter.MenuGrapher.addMenuList("Yes/No", {
             "options": [{
-                "text": "YES"
+                "text": "YES",
+                "callback": EightBitter.saveGame.bind(EightBitter)
             }, {
-                "text": "NO"
+                "text": "NO",
+                "callback": EightBitter.MenuGrapher.registerB
             }]
         });
         EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -1638,16 +1640,37 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.retrieveItemsList = function () {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
+    self.saveGame = function () {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            link = document.createElement("a");
 
-        return [{
-            "title": "Potion",
-            "amount": 2
-        }, {
-            "title": "Pokemanz",
-            "amount": 9001
-        }];
+        link.setAttribute(
+            "download",
+            EightBitter.StatsHolder.get("filename") + " " + Date.now() + ".json"
+        );
+        link.setAttribute(
+            "href",
+            "data:text/json;charset=utf-8," + encodeURIComponent(
+                EightBitter.LevelEditor.beautify(
+                    JSON.stringify(EightBitter.StatsHolder.export())
+                )
+            )
+        );
+
+        EightBitter.container.appendChild(link);
+        link.click();
+        EightBitter.container.removeChild(link);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText", [
+                "Now saving..."
+            ]
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.registerB, 49
+        );
     };
 
 
@@ -2634,6 +2657,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
+        "saveGame": saveGame,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,

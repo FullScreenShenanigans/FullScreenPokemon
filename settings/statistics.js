@@ -4,6 +4,9 @@ FullScreenPokemon.prototype.settings.statistics = {
         "storeLocally": true
     },
     "values": {
+        "filename": {
+            "valueDefault": "FullScreenPokemon Save",
+        },
         "badges": {
             "valueDefault": {
                 "Brock": false,

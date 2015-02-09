@@ -124,6 +124,13 @@ function UserWrappr(settings) {
         return StatsHolder;
     };
 
+    /**
+     * 
+     */
+    self.getGlobalName = function () {
+        return globalName;
+    };
+
 
     /* Page visibility
     */

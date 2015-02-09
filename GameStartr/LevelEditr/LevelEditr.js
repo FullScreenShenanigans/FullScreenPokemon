@@ -1678,6 +1678,13 @@ var LevelEditr = (function (pageStyles) {
         
         /* Utility functions
         */
+
+        /**
+         * 
+         */
+        self.beautify = function (string) {
+            return beautifier(string);
+        };
         
         /**
          * 

@@ -21,7 +21,8 @@ FullScreenPokemon.prototype.settings.menus = {
         "POKEMON": "POKÈMON",
         "POKEDEX": "POKÈDEX",
         "BADGES.LENGTH": "?",
-        "POKEDEX.LENGTH": "?"
+        "POKEDEX.LENGTH": "?",
+        "TIME": "??:??"
     },
     "schemas": {
         "GeneralText": {
@@ -458,8 +459,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     }
                 }
             }],
-            "textSpeed": 0,
-            "durp": true
+            "textSpeed": 0
         },
         "Yes/No": {
             "size": {

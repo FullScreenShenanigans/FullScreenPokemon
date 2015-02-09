@@ -202,6 +202,28 @@ function StatsHoldr(settings) {
         return values.hasOwnProperty(key);
     };
 
+    /**
+     * @return {Object} The objects being stored.
+     */
+    self.getValues = function () {
+        return values;
+    };
+
+    /**
+     * @return {Object} A mapping of key names to the actual values of all 
+     *                  objects being stored.
+     */
+    self.export = function () {
+        var output = {},
+            i;
+
+        for (i in values) {
+            output[i] = values[i].value
+        }
+
+        return output;
+    };
+
 
     /* Values
     */
