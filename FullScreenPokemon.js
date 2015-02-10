@@ -237,10 +237,6 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.groupType
         );
 
-        if (typeof thing.direction !== "undefined") {
-            thing.EightBitter.animateCharacterSetDirection(thing, thing.direction);
-        }
-
         thing.bordering = new Array(4);
 
         if (typeof thing.id === "undefined") {
@@ -278,13 +274,29 @@ var FullScreenPokemon = (function (GameStartr) {
      *                        and an Object of settings, or an actual Thing.
      * @param {Number} [left]   Defaults to 0.
      * @param {Number} [top]   Defaults to 0.
+     * @param {Boolean} [useSavedInfo]   Whether an Area's saved info in 
+     *                                   StateHolder should be applied to the
+     *                                   Thing (by default, false).
      */
-    function addThing(thing, left, top) {
+    function addThing(thing, left, top, useSavedInfo) {
+        var savedInfo = thing.EightBitter.StateHolder.getChanges(thing.id);
+        
+        if (savedInfo && useSavedInfo) {
+            if (savedInfo.xloc) {
+                left = thing.EightBitter.MapScreener.left + savedInfo.xloc * thing.EightBitter.unitsize;
+            }
+            if (savedInfo.yloc) {
+                top = thing.EightBitter.MapScreener.top + savedInfo.yloc * thing.EightBitter.unitsize;
+            }
+        }
+
         GameStartr.prototype.addThing.call(this, thing, left, top);
 
-        if (typeof thing.id !== "undefined") {
-            thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
-            thing.EightBitter.StateHolder.applyChanges(thing.id, thing);
+        thing.EightBitter.StateHolder.applyChanges(thing.id, thing);
+        thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
+
+        if (typeof thing.direction !== "undefined") {
+            thing.EightBitter.animateCharacterSetDirection(thing, thing.direction);
         }
     }
 
@@ -306,7 +318,8 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.EightBitter.addThing(
             thing,
             prething.left * thing.EightBitter.unitsize - thing.EightBitter.MapScreener.left,
-            prething.top * thing.EightBitter.unitsize - thing.EightBitter.MapScreener.top
+            prething.top * thing.EightBitter.unitsize - thing.EightBitter.MapScreener.top,
+            true
         );
 
         // Either the prething or thing, in that order, may request to be in the
@@ -330,7 +343,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function addPlayer(left, top) {
+    function addPlayer(left, top, useSavedInfo) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             player;
 
@@ -342,7 +355,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.InputWriter.setEventInformation(player);
 
-        EightBitter.addThing(player, left, top);
+        EightBitter.addThing(player, left, top, useSavedInfo);
 
         EightBitter.ModAttacher.fireEvent("onAddPlayer", player);
 
@@ -1664,9 +1677,7 @@ var FullScreenPokemon = (function (GameStartr) {
             character = characters[i];
             id = character.id;
 
-            if (character.id) {
-                EightBitter.saveCharacterPosition(EightBitter, character, id);
-            }
+            EightBitter.saveCharacterPosition(EightBitter, character, id);
         }
     };
 
@@ -1674,15 +1685,16 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function saveCharacterPosition(EightBitter, character, id) {
+        console.log("Saving", id, (character.left + EightBitter.MapScreener.left) / EightBitter.unitsize);
         EightBitter.StateHolder.addChange(
             id,
             "xloc",
-            (character.left - EightBitter.MapScreener.left) / EightBitter.unitsize
+            (character.left + EightBitter.MapScreener.left) / EightBitter.unitsize
         );
         EightBitter.StateHolder.addChange(
             id,
             "yloc",
-            (character.top - EightBitter.MapScreener.top) / EightBitter.unitsize
+            (character.top + EightBitter.MapScreener.top) / EightBitter.unitsize
         );
         EightBitter.StateHolder.addChange(
             id,
@@ -2021,15 +2033,16 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function mapEntranceResume(EightBitter) {
-        var info = EightBitter.StateHolder.getChanges("player");
+        var savedInfo = EightBitter.StateHolder.getChanges("player") || {};
 
         EightBitter.addPlayer(
-            (info.xloc || 0),// * EightBitter.unitsize, 
-            (info.yloc || 0)// * EightBitter.unitsize
+            (savedInfo.xloc || 0), 
+            (savedInfo.yloc || 0),
+            true
         );
 
         EightBitter.animateCharacterSetDirection(
-            EightBitter.player, info.direction
+            EightBitter.player, savedInfo.direction
         );
 
         EightBitter.centerMapScreen(EightBitter);
