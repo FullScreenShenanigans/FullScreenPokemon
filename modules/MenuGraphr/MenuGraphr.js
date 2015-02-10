@@ -24,7 +24,11 @@ function MenuGraphr(settings) {
 
         replacements,
 
-        replacerKey;
+        replacerKey,
+            
+        replaceFromStatsHolder,
+            
+        replacementStatistics;
 
     /**
      * 
@@ -35,6 +39,8 @@ function MenuGraphr(settings) {
         aliases = settings.aliases || {};
         replacements = settings.replacements || {};
         replacerKey = settings.replacerKey || "%%%%%%%";
+        replaceFromStatsHolder = settings.replaceFromStatsHolder;
+        replacementStatistics = settings.replacementStatistics;
 
         menus = {};
     };
@@ -815,13 +821,36 @@ function MenuGraphr(settings) {
             inside = word.substring(start + "%%%%%%%".length, end);
             word =
                 word.substring(0, start)
-                + (replacements.hasOwnProperty(inside) ? replacements[inside] : inside)
+                + getReplacement(inside)
                 + word.substring(end + "%%%%%%%".length);
 
             start = end;
         }
 
         return word;
+    }
+
+    /**
+     * 
+     */
+    function getReplacement(key) {
+        var value = replacements[key];
+
+        if (typeof value === "undefined") {
+            return value;
+        }
+
+        if (replacementStatistics && replacementStatistics[value]) {
+            return replacements[value](EightBitter);
+        }
+
+        if (replaceFromStatsHolder) {
+            if (EightBitter.StatsHolder.hasKey(value)) {
+                return EightBitter.StatsHolder.get(value);
+            }
+        }
+
+        return value;
     }
 
 

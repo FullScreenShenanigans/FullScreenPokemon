@@ -182,7 +182,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function resetMenuGrapher(EightBitter, customs) {
         EightBitter.MenuGrapher = new MenuGraphr(EightBitter.proliferate({
-            "EightBitter": EightBitter
+            "EightBitter": EightBitter,
         }, EightBitter.settings.menus));
     }
 

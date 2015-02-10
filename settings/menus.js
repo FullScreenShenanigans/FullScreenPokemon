@@ -16,14 +16,22 @@ FullScreenPokemon.prototype.settings.menus = {
         "È": "eFancy"
     },
     "replacements": {
-        "PLAYER": "(name)",
-        "RIVAL": "Rival's name",
+        "PLAYER": "name",
+        "RIVAL": "nameRival",
         "POKEMON": "POKÈMON",
         "POKEDEX": "POKÈDEX",
         "BADGES.LENGTH": "?",
         "POKEDEX.LENGTH": "?",
-        "TIME": "??:??"
+        "TIME": "time",
+        "MONEY": "money"
     },
+    "replacementStatistics": {
+        "PLAYER": true,
+        "RIVAL": true,
+        "TIME": true,
+        "MONEY": true
+    },
+    "replaceFromStatsHolder": true,
     "schemas": {
         "GeneralText": {
             "size": {
@@ -274,9 +282,9 @@ FullScreenPokemon.prototype.settings.menus = {
                 "words": [
                     "NAME/%%%%%%%PLAYER%%%%%%%",
                     "\n",
-                    "MONEY/",
+                    "MONEY/%%%%%%%MONEY%%%%%%%",
                     "\n",
-                    "TIME/",
+                    "TIME/%%%%%%%TIME%%%%%%%",
                 ],
                 "position": {
                     "offset": {

@@ -41,7 +41,11 @@ FullScreenPokemon.prototype.settings.statistics = {
             "valueDefault": 0,
             "minimum": 0
         },
+        "time": {
+            "valueDefault": "00:00"
+        },
         "name": {},
+        "nameRival": {},
         "Pokedex": {
             "valueDefault": []
         },
