@@ -1,3 +1,3 @@
 FullScreenPokemon.prototype.settings.states = {
-    "prefix": "::StateHolder::"
+    "prefix": "StateHolder::"
 };

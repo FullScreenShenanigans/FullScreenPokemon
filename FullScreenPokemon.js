@@ -211,9 +211,11 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.setMap(
-            EightBitter.settings.maps.mapDefault,
-            EightBitter.settings.maps.locationDefault
+            EightBitter.StatsHolder.get("map") || EightBitter.settings.maps.mapDefault,
+            EightBitter.StatsHolder.get("location") || EightBitter.settings.maps.locationDefault,
+            true
         );
+        EightBitter.mapEntranceResume(EightBitter);
 
         EightBitter.ModAttacher.fireEvent("onGameStart");
     }
@@ -240,6 +242,16 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         thing.bordering = new Array(4);
+
+        if (typeof thing.id === "undefined") {
+            thing.id = (
+                thing.EightBitter.MapsHandler.getMapName()
+                + "::"
+                + thing.EightBitter.MapsHandler.getAreaName()
+                + "::"
+                + thing.title
+            );
+        }
     }
 
     /**
@@ -1392,7 +1404,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.openPauseMenu = function () {
+    function openPauseMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MapScreener.inPauseMenu = true;
@@ -1426,7 +1438,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.closePauseMenu = function () {
+    function closePauseMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MapScreener.inPauseMenu = false;
@@ -1436,7 +1448,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.togglePauseMenu = function (player) {
+    function togglePauseMenu(player) {
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerStart();
         } else if (player.EightBitter.MapScreener.inPauseMenu) {
@@ -1449,7 +1461,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.openPokedexMenu = function () {
+    function openPokedexMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             listings = EightBitter.StatsHolder.get("Pokedex");
 
@@ -1512,7 +1524,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.openPokemonMenu = function () {
+    function openPokemonMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             listings = EightBitter.StatsHolder.get("PokemonInParty");
 
@@ -1581,7 +1593,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.openItemsMenu = function () {
+    function openItemsMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             items = EightBitter.StatsHolder.get("items");
 
@@ -1599,7 +1611,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.openPlayerMenu = function () {
+    function openPlayerMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
         
         EightBitter.MenuGrapher.createMenu("Player");
@@ -1609,7 +1621,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    self.openSaveMenu = function () {
+    function openSaveMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("Save");
@@ -1637,10 +1649,52 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("Yes/No");
     };
 
+
+    /* Saving
+    */
+
     /**
      * 
      */
-    self.saveGame = function () {
+    function saveCharacterPositions(EightBitter) {
+        var characters = EightBitter.GroupHolder.getCharacterGroup(),
+            character, id, i;
+
+        for (i = 0; i < characters.length; i += 1) {
+            character = characters[i];
+            id = character.id;
+
+            if (character.id) {
+                EightBitter.saveCharacterPosition(EightBitter, character, id);
+            }
+        }
+    };
+
+    /**
+     * 
+     */
+    function saveCharacterPosition(EightBitter, character, id) {
+        EightBitter.StateHolder.addChange(
+            id,
+            "xloc",
+            (character.left - EightBitter.MapScreener.left) / EightBitter.unitsize
+        );
+        EightBitter.StateHolder.addChange(
+            id,
+            "yloc",
+            (character.top - EightBitter.MapScreener.top) / EightBitter.unitsize
+        );
+        EightBitter.StateHolder.addChange(
+            id,
+            "direction",
+            character.direction
+        );
+    }
+
+    /**
+     * 
+     */
+    function saveGame() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.StatsHolder.set(
@@ -1649,16 +1703,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.StatsHolder.set(
             "area", EightBitter.MapsHandler.getAreaName()
         );
-        EightBitter.StatsHolder.set(
-            "xloc",
-            (EightBitter.player.left - EightBitter.MapScreener.left) / EightBitter.unitsize
-        );
-        EightBitter.StatsHolder.set(
-            "yloc",
-            (EightBitter.player.top - EightBitter.MapScreener.left) / EightBitter.unitsize
-        );
-        EightBitter.StatsHolder.set("direction", EightBitter.player.direction);
 
+        EightBitter.saveCharacterPositions(EightBitter);
         EightBitter.StateHolder.saveCollection();
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -1707,7 +1753,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function setMap(name, location) {
+    function setMap(name, location, noEntrance) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             map;
 
@@ -1727,7 +1773,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.setLocation(
             location
             || map.locationDefault
-            || EightBitter.settings.maps.locationDefault
+            || EightBitter.settings.maps.locationDefault,
+            noEntrance
         );
     }
 
@@ -1758,7 +1805,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.PixelDrawer.setBackground(
             EightBitter.MapsHandler.getArea().background
         );
-
+        
         EightBitter.StateHolder.setCollection(
             location.area.map.name + "::" + location.area.name
         );
@@ -1966,6 +2013,25 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.player,
             EightBitter.MapScreener.playerDirection
         );
+
+        EightBitter.centerMapScreen(EightBitter);
+    }
+
+    /**
+     * 
+     */
+    function mapEntranceResume(EightBitter) {
+        var info = EightBitter.StateHolder.getChanges("player");
+
+        EightBitter.addPlayer(
+            (info.xloc || 0),// * EightBitter.unitsize, 
+            (info.yloc || 0)// * EightBitter.unitsize
+        );
+
+        EightBitter.animateCharacterSetDirection(
+            EightBitter.player, info.direction
+        );
+
         EightBitter.centerMapScreen(EightBitter);
     }
 
@@ -2686,7 +2752,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
+        // Saving
         "saveGame": saveGame,
+        "saveCharacterPositions": saveCharacterPositions,
+        "saveCharacterPosition": saveCharacterPosition,
         "downloadSaveGame": downloadSaveGame,
         // Map sets
         "setMap": setMap,
@@ -2702,6 +2771,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "centerMapScreenHorizontallyOnPlayer": centerMapScreenHorizontallyOnPlayer,
         "centerMapScreenVerticallyOnPlayer": centerMapScreenVerticallyOnPlayer,
         "mapEntranceNormal": mapEntranceNormal,
+        "mapEntranceResume": mapEntranceResume,
         // Map macros
         "macroCheckered": macroCheckered,
         "macroWater": macroWater,

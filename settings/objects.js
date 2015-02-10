@@ -338,6 +338,7 @@
                 "directionPreferred": 3
             },
             "Player": {
+                "id": "player",
                 "player": true,
                 "canKeyWalking": true,
                 "direction": 2,

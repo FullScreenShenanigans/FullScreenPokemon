@@ -1,5 +1,5 @@
 FullScreenPokemon.prototype.settings.statistics = {
-    "prefix": "FullScreenPokemon",
+    "prefix": "FullScreenPokemon::",
     "defaults": {
         "storeLocally": true
     },
@@ -13,14 +13,8 @@ FullScreenPokemon.prototype.settings.statistics = {
         "area": {
             "valueDefault": ""
         },
-        "xloc": {
-            "valueDefault": 0
-        },
-        "yloc": {
-            "valueDefault": 0
-        },
-        "direction": {
-            "valueDefault": 2
+        "location": {
+            "valueDefault": ""
         },
         "badges": {
             "valueDefault": {

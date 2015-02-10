@@ -76,8 +76,15 @@ function StateHoldr(settings) {
     /**
      * 
      */
-    self.getChange = function (itemKey) {
+    self.getChanges = function (itemKey) {
         return collection[itemKey];
+    };
+
+    /**
+     * 
+     */
+    self.getChange = function (itemKey, valueKey) {
+        return collection[itemKey][valueKey];
     };
     
 
