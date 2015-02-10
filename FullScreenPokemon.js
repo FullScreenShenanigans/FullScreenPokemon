@@ -1628,7 +1628,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuList("Yes/No", {
             "options": [{
                 "text": "YES",
-                "callback": EightBitter.saveGame.bind(EightBitter)
+                "callback": EightBitter.downloadSaveGame.bind(EightBitter)
             }, {
                 "text": "NO",
                 "callback": EightBitter.MenuGrapher.registerB
@@ -1641,8 +1641,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     self.saveGame = function () {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            link = document.createElement("a");
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.StatsHolder.set(
             "map", EightBitter.MapsHandler.getMapName()
@@ -1662,6 +1661,27 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.StateHolder.saveCollection();
 
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText", [
+                "Now saving..."
+            ]
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.registerB, 49
+        );
+    };
+
+    /**
+     * 
+     */
+    function downloadSaveGame() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            link = document.createElement("a");
+
+        EightBitter.saveGame();
+
         link.setAttribute(
             "download",
             EightBitter.StatsHolder.get("filename") + " " + Date.now() + ".json"
@@ -1678,17 +1698,6 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.container.appendChild(link);
         link.click();
         EightBitter.container.removeChild(link);
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText", [
-                "Now saving..."
-            ]
-        );
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.MenuGrapher.registerB, 49
-        );
     };
 
 
@@ -1725,7 +1734,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function setLocation(name) {
+    function setLocation(name, noEntrance) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             location;
 
@@ -1757,7 +1766,9 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.AudioPlayer.clearAll();
         EightBitter.QuadsKeeper.resetQuadrants();
 
-        location.entry(EightBitter, location);
+        if (!noEntrance) {
+            location.entry(EightBitter, location);
+        }
 
         EightBitter.ModAttacher.fireEvent("onSetLocation", location);
 
@@ -2676,6 +2687,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
         "saveGame": saveGame,
+        "downloadSaveGame": downloadSaveGame,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
