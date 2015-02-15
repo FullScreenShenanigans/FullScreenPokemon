@@ -387,18 +387,25 @@ var FullScreenPokemon = (function (GameStartr) {
      *                                   Thing (by default, false).
      */
     function addThing(thing, left, top, useSavedInfo) {
+        thing = GameStartr.prototype.addThing.call(this, thing, left, top);
+
         var savedInfo = thing.EightBitter.StateHolder.getChanges(thing.id);
 
         if (savedInfo && useSavedInfo) {
             if (savedInfo.xloc) {
-                left = thing.EightBitter.MapScreener.left + savedInfo.xloc * thing.EightBitter.unitsize;
+                thing.EightBitter.setLeft(
+                    thing,
+                    thing.EightBitter.MapScreener.left + savedInfo.xloc * thing.EightBitter.unitsize
+                );
             }
             if (savedInfo.yloc) {
-                top = thing.EightBitter.MapScreener.top + savedInfo.yloc * thing.EightBitter.unitsize;
+                thing.EightBitter.setTop(
+                    thing,
+                    thing.EightBitter.MapScreener.top + savedInfo.yloc * thing.EightBitter.unitsize
+                );
             }
         }
 
-        GameStartr.prototype.addThing.call(this, thing, left, top);
 
         thing.EightBitter.StateHolder.applyChanges(thing.id, thing);
         thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
@@ -2135,7 +2142,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function mapEntranceBlank(EightBitter, location) {
-        // Does nothing!
+        EightBitter.addPlayer(0, 0);
+        EightBitter.player.hidden = true;
     }
 
 
