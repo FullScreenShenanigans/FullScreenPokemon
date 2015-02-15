@@ -252,7 +252,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function gameStartPlay(EightBitter) {
         EightBitter.setMap(
             EightBitter.StatsHolder.get("map") || EightBitter.settings.maps.mapDefault,
-            EightBitter.StatsHolder.get("location") || EightBitter.settings.maps.locationDefault,
+            undefined,
             true
         );
         EightBitter.mapEntranceResume(EightBitter);
@@ -273,9 +273,58 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function gameLoadFile(EightBitter) {
-        console.log("Loading!");
+        var dummy = EightBitter.createElement("input", {
+            "type": "file",
+            "onchange": function (event) {
+                var file = (dummy.files || event.dataTransfer.files)[0],
+                    reader;
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (!file) {
+                    return;
+                }
+
+                reader = new FileReader();
+                reader.onloadend = function (event) {
+                    var result = event.currentTarget.result;
+
+                    EightBitter.gameLoadData(EightBitter, result);
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        dummy.click();
 
         EightBitter.ModAttacher.fireEvent("onGameStartIntro");
+    }
+
+    /**
+     * 
+     */
+    function gameLoadData(EightBitter, dataRaw) {
+        var data = JSON.parse(dataRaw),
+            key, split;
+
+        for (key in data) {
+            if (key.slice(0, 13) === "StateHolder::") {
+                split = key.split("::");
+
+                EightBitter.StateHolder.setCollection(
+                    split[1] + "::" + split[2],
+                    data[key]
+                );
+
+                continue;
+            }
+
+            EightBitter.StatsHolder.set(key, data[key]);
+        }
+
+        EightBitter.MenuGrapher.deleteActiveMenu()
+        EightBitter.gameStartPlay(EightBitter);
     }
 
     /**
@@ -2758,6 +2807,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "gameStartPlay": gameStartPlay,
         "gameStartIntro": gameStartIntro,
         "gameLoadFile": gameLoadFile,
+        "gameLoadData": gameLoadData,
         "thingProcess": thingProcess,
         "onGamePlay": onGamePlay,
         "onGamePause": onGamePause,

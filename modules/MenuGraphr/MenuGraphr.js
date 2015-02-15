@@ -166,6 +166,13 @@ function MenuGraphr(settings) {
     /**
      * 
      */
+    self.deleteActiveMenu = function () {
+        self.deleteMenu(activeMenu.name);
+    };
+
+    /**
+     * 
+     */
     self.deleteMenuChild = function (child) {
         if (activeMenu === child) {
             if (child.backMenu) {
@@ -682,6 +689,13 @@ function MenuGraphr(settings) {
      */
     self.getActiveMenu = function () {
         return activeMenu;
+    };
+
+    /**
+     * 
+     */
+    self.getActiveMenuName = function () {
+        return activeMenu.name;
     };
 
     /**

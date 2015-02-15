@@ -94,7 +94,7 @@ function StateHoldr(settings) {
     /**
      * 
      */
-    self.setCollection = function (collectionKeyNew) {
+    self.setCollection = function (collectionKeyNew, value) {
         collectionKeyRaw = collectionKeyNew;
         collectionKey = prefix + collectionKeyRaw;
 
@@ -103,6 +103,10 @@ function StateHoldr(settings) {
                 "valueDefault": {},
                 "storeLocally": true
             });
+        }
+
+        if (value) {
+            StatsHolder.set(collectionKey, value);
         }
 
         collection = StatsHolder.get(collectionKey);
