@@ -238,7 +238,7 @@ var FullScreenPokemon = (function (GameStartr) {
             });
         }
 
-        EightBitter.setMap("StartOptions");
+        EightBitter.setMap("Blank");
         EightBitter.MenuGrapher.createMenu("StartOptions");
         EightBitter.MenuGrapher.addMenuList("StartOptions", {
             "options": options
@@ -1771,6 +1771,18 @@ var FullScreenPokemon = (function (GameStartr) {
     };
 
 
+    /* Battles
+     */
+
+    /**
+     * 
+     */
+    function createBattleScene(EightBitter, settings) {
+        EightBitter.setMap("Blank", "White");
+        EightBitter.MenuGrapher.createMenu("Battle");
+    }
+
+
     /* Saving
     */
 
@@ -2885,6 +2897,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
+        // Battles
+        "createBattleScene": createBattleScene,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

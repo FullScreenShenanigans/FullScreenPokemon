@@ -1,6 +1,6 @@
 FullScreenPokemon.prototype.settings.maps = {
-    "mapDefault": "StartOptions",
-    "locationDefault": "Start",
+    "mapDefault": "Blank",
+    "locationDefault": "Black",
     "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
@@ -20,7 +20,7 @@ FullScreenPokemon.prototype.settings.maps = {
         "Mountain": FullScreenPokemon.prototype.macroMountain
     },
     "entrances": {
-        "Blank": FullScreenPokemon.prototype.mapEntranceNormal,
+        "Blank": FullScreenPokemon.prototype.mapEntranceBlank,
         "Normal": FullScreenPokemon.prototype.mapEntranceNormal
     },
     "library": (function (maps) {
@@ -34,19 +34,25 @@ FullScreenPokemon.prototype.settings.maps = {
         return library;
     })([
         {
-            "name": "StartOptions",
+            "name": "Blank",
             "locations": {
-                "Start": {
-                    "area": "Blank",
+                "Black": {
+                    "area": "Black",
+                    "entry": "Blank"
+                },
+                "White": {
+                    "area": "White",
                     "entry": "Blank"
                 }
             },
-            "locationDefault": "Start",
+            "locationDefault": "Black",
             "areas": {
-                "Blank": {
-                    "creation": [
-                        {}
-                    ]
+                "Black": {
+                    "creation": []
+                },
+                "White": {
+                    "background": "white",
+                    "creation": []
                 }
             }
         }, {

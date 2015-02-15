@@ -496,6 +496,24 @@ FullScreenPokemon.prototype.settings.menus = {
             "arrowXOffset": 4.5,
             "textXOffset": 8,
             "textYOffset": 3.5
+        },
+        "Battle": {
+            "size": {
+                "width": 96,
+                "height": 48
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "bottom",
+                "offset": {
+                    "top": -24
+                }
+            },
+            "childrenSchemas": [{
+                "type": "menu",
+                "name": "GeneralText"
+            }],
+            //"plain": true
         }
     }
 };
