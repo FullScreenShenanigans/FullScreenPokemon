@@ -1,10 +1,6 @@
 FullScreenPokemon.prototype.settings.maps = {
-    "mapDefault": "Pallet Town",
-    "locationDefault": "Player's House Door",
-    //"mapDefault": "Route 1",
-    //"locationDefault": "Bottom Path",
-    //"mapDefault": "Viridian City",
-    //"locationDefault": "Temp",
+    "mapDefault": "StartOptions",
+    "locationDefault": "Start",
     "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
@@ -24,6 +20,7 @@ FullScreenPokemon.prototype.settings.maps = {
         "Mountain": FullScreenPokemon.prototype.macroMountain
     },
     "entrances": {
+        "Blank": FullScreenPokemon.prototype.mapEntranceNormal,
         "Normal": FullScreenPokemon.prototype.mapEntranceNormal
     },
     "library": (function (maps) {
@@ -37,6 +34,22 @@ FullScreenPokemon.prototype.settings.maps = {
         return library;
     })([
         {
+            "name": "StartOptions",
+            "locations": {
+                "Start": {
+                    "area": "Blank",
+                    "entry": "Blank"
+                }
+            },
+            "locationDefault": "Start",
+            "areas": {
+                "Blank": {
+                    "creation": [
+                        {}
+                    ]
+                }
+            }
+        }, {
             "name": "Pallet Town",
             "locations": {
                 "Player's House Door": {

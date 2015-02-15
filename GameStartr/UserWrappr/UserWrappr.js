@@ -320,7 +320,7 @@ function UserWrappr(settings) {
             "oncontextmenu": GameStarter.InputWriter.makePipe("oncontextmenu", null, true)
         });
 
-        GameStarter.gameStart();
+        GameStarter.gameStart(GameStarter);
     };
 
     /**

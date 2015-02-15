@@ -4,6 +4,9 @@ FullScreenPokemon.prototype.settings.statistics = {
         "storeLocally": true
     },
     "values": {
+        "gameStarted": {
+            "valueDefault": false
+        },
         "filename": {
             "valueDefault": "FullScreenPokemon Save",
         },

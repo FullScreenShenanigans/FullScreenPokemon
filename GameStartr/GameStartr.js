@@ -740,9 +740,9 @@ var GameStartr = (function (EightBittr) {
                 proliferate(thing, attributes[attribute]);
                 // Also add a marking to the name, which will go into the className
                 if (thing.name) {
-                    thing.name += ' ' + attribute;
+                    thing.name += " " + attribute;
                 } else {
-                    thing.name = thing.title + ' ' + attribute;
+                    thing.name = thing.title + " " + attribute;
                 }
             }
         }
@@ -1192,8 +1192,8 @@ var GameStartr = (function (EightBittr) {
      */
     function generateObjectKey(thing) {
         return thing.EightBitter.MapsHandler.getArea().setting
-                + ' ' + thing.groupType + ' '
-                + thing.title + ' ' + thing.className;
+                + " " + thing.groupType + " "
+                + thing.title + " " + thing.className;
     }
 
     /**
@@ -1222,7 +1222,7 @@ var GameStartr = (function (EightBittr) {
     }
 
     /**
-     * Adds a string to a Thing's class after a ' ', updates the Thing's 
+     * Adds a string to a Thing's class after a " ", updates the Thing's 
      * sprite, and marks it as having changed appearance.
      * 
      * @param {Thing} thing
@@ -1235,9 +1235,9 @@ var GameStartr = (function (EightBittr) {
     }
 
     /**
-     * Adds multiple strings to a Thing's class after a ' ', updates the Thing's 
+     * Adds multiple strings to a Thing's class after a " ", updates the Thing's 
      * sprite, and marks it as having changed appearance. Strings may be given 
-     * as Arrays or Strings; Strings will be split on ' '. Any number of 
+     * as Arrays or Strings; Strings will be split on " ". Any number of 
      * additional arguments may be given.
      * 
      * @param {Thing} thing
@@ -1249,7 +1249,7 @@ var GameStartr = (function (EightBittr) {
             arr = arguments[i];
 
             if (!(arr instanceof Array)) {
-                arr = arr.split(' ');
+                arr = arr.split(" ");
             }
 
             for (j = arr.length - 1; j >= 0; j -= 1) {
@@ -1279,7 +1279,7 @@ var GameStartr = (function (EightBittr) {
     /**
      * Removes multiple strings from a Thing's class, updates the Thing's 
      * sprite, and marks it as having changed appearance. Strings may be given 
-     * as Arrays or Strings; Strings will be split on ' '. Any number of 
+     * as Arrays or Strings; Strings will be split on " ". Any number of 
      * additional arguments may be given.
      * 
      * @param {Thing} thing

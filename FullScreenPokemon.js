@@ -208,8 +208,48 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function gameStart(EightBitter) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
+        if (EightBitter.StatsHolder.get("gameStarted")) {
+            EightBitter.gameStartPlay(EightBitter);
+        } else {
+            EightBitter.gameStartOptions(EightBitter);
+        }
 
+        EightBitter.ModAttacher.fireEvent("onGameStart");
+    }
+
+    /**
+     * 
+     */
+    function gameStartOptions(EightBitter) {
+        var options = [{
+            "text": "NEW GAME",
+            "callback": EightBitter.gameStartIntro.bind(EightBitter, EightBitter)
+        }, {
+            "text": "SAVE FILE",
+            "callback": EightBitter.gameLoadFile.bind(EightBitter, EightBitter)
+        }, {
+            "text": "OPTION"
+        }];
+
+        if (EightBitter.StatsHolder.get("gameStarted")) {
+            options.unshift({
+                "text": "CONTINUE",
+                "callback": EightBitter.gameStartPlay.bind(EightBitter, EightBitter)
+            });
+        }
+
+        EightBitter.setMap("StartOptions");
+        EightBitter.MenuGrapher.createMenu("StartOptions");
+        EightBitter.MenuGrapher.addMenuList("StartOptions", {
+            "options": options
+        });
+        EightBitter.MenuGrapher.setActiveMenu("StartOptions");
+    }
+
+    /**
+     * 
+     */
+    function gameStartPlay(EightBitter) {
         EightBitter.setMap(
             EightBitter.StatsHolder.get("map") || EightBitter.settings.maps.mapDefault,
             EightBitter.StatsHolder.get("location") || EightBitter.settings.maps.locationDefault,
@@ -217,12 +257,31 @@ var FullScreenPokemon = (function (GameStartr) {
         );
         EightBitter.mapEntranceResume(EightBitter);
 
-        EightBitter.ModAttacher.fireEvent("onGameStart");
+        EightBitter.ModAttacher.fireEvent("onGameStartPlay");
+    }
+
+    /**
+     * 
+     */
+    function gameStartIntro(EightBitter) {
+
+
+        EightBitter.ModAttacher.fireEvent("onGameStartIntro");
+    }
+
+    /**
+     * 
+     */
+    function gameLoadFile(EightBitter) {
+        console.log("Loading!");
+
+        EightBitter.ModAttacher.fireEvent("onGameStartIntro");
     }
 
     /**
      * Slight addition to the GameStartr thingProcess Function. The Thing's hit
-     * check type is cached immediately.
+     * check type is cached immediately, and a default id is assigned if an id
+     * isn't already present.
      * 
      * @see GameStartr::thingProcess
      */
@@ -263,7 +322,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function onGamePause(EightBitter) {
         console.log("Paused.");
     }
-    
+
     /**
      * Overriden Function to adds a new Thing to the game at a given position,
      * relative to the top left corner of the screen. The Thing is also 
@@ -280,7 +339,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function addThing(thing, left, top, useSavedInfo) {
         var savedInfo = thing.EightBitter.StateHolder.getChanges(thing.id);
-        
+
         if (savedInfo && useSavedInfo) {
             if (savedInfo.xloc) {
                 left = thing.EightBitter.MapScreener.left + savedInfo.xloc * thing.EightBitter.unitsize;
@@ -1626,7 +1685,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function openPlayerMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
-        
+
         EightBitter.MenuGrapher.createMenu("Player");
         EightBitter.MenuGrapher.setActiveMenu("Player");
     };
@@ -1817,7 +1876,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.PixelDrawer.setBackground(
             EightBitter.MapsHandler.getArea().background
         );
-        
+
         EightBitter.StateHolder.setCollection(
             location.area.map.name + "::" + location.area.name
         );
@@ -2011,6 +2070,13 @@ var FullScreenPokemon = (function (GameStartr) {
         }
     }
 
+    /**
+     * 
+     */
+    function mapEntranceBlank(EightBitter, location) {
+        // Does nothing!
+    }
+
 
     /**
      * 
@@ -2036,7 +2102,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var savedInfo = EightBitter.StateHolder.getChanges("player") || {};
 
         EightBitter.addPlayer(
-            (savedInfo.xloc || 0), 
+            (savedInfo.xloc || 0),
             (savedInfo.yloc || 0),
             true
         );
@@ -2688,6 +2754,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "resetStateHolder": resetStateHolder,
         // Global manipulations
         "gameStart": gameStart,
+        "gameStartOptions": gameStartOptions,
+        "gameStartPlay": gameStartPlay,
+        "gameStartIntro": gameStartIntro,
+        "gameLoadFile": gameLoadFile,
         "thingProcess": thingProcess,
         "onGamePlay": onGamePlay,
         "onGamePause": onGamePause,
@@ -2783,6 +2853,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "centerMapScreenVertically": centerMapScreenVertically,
         "centerMapScreenHorizontallyOnPlayer": centerMapScreenHorizontallyOnPlayer,
         "centerMapScreenVerticallyOnPlayer": centerMapScreenVerticallyOnPlayer,
+        "mapEntranceBlank": mapEntranceBlank,
         "mapEntranceNormal": mapEntranceNormal,
         "mapEntranceResume": mapEntranceResume,
         // Map macros
