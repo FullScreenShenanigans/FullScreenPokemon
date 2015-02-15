@@ -1930,8 +1930,11 @@ var FullScreenPokemon = (function (GameStartr) {
             location.area.map.name + "::" + location.area.name
         );
 
-        EightBitter.AudioPlayer.clearAll();
         EightBitter.QuadsKeeper.resetQuadrants();
+        EightBitter.AudioPlayer.clearAll();
+        if (location.area.theme) {
+            EightBitter.AudioPlayer.playTheme(location.area.theme);
+        }
 
         if (!noEntrance) {
             location.entry(EightBitter, location);

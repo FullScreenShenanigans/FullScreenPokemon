@@ -67,6 +67,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Land": {
                     "width": 152,
                     "height": 136,
+                    "theme": "Pallet Town",
                     "creation": [
                         { "thing": "AreaSpawner", "width": 152, "height": 136, "map": "Route 1", "area": "Land", "direction": 0 },
                         { "thing": "FenceWide", "width": 80 },
