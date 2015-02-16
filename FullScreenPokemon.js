@@ -325,6 +325,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.deleteActiveMenu()
         EightBitter.gameStartPlay(EightBitter);
+        EightBitter.StatsHolder.set("gameStarted", true);
     }
 
     /**
