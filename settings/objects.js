@@ -626,6 +626,7 @@
                 "sprite": "",
                 "spriteType": "neither",
                 "opacity": 1,
+                "scale": 1,
                 "offsetX": 0,
                 "offsetY": 0,
                 // Movements
@@ -824,7 +825,12 @@
             "BattleSpriteFrontSmall": [20, 20],
             "BattleSpriteFrontMedium": [24, 24],
             "BattleSpriteFrontLarge": [28, 28],
-            "BattleSpriteBack": [16, 16],
+            "BattleSpriteBack": {
+                "width": 16,
+                "height": 16,
+                "scale": 2,
+                "repeat": false
+            },
             "Terrain": {
                 "groupType": "Terrain",
                 "repeat": true
