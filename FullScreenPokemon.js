@@ -1798,10 +1798,24 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     * 
+     * @todo animate entrances for things
      */
     function createBattleScene(EightBitter, settings) {
         EightBitter.setMap("Blank", "White");
         EightBitter.MenuGrapher.createMenu("Battle");
+        EightBitter.MenuGrapher.addMenuList("BattleOptions", {
+            "options": [{
+                "text": "FIGHT",
+            }, {
+                "text": "ITEM",
+            }, {
+                "text": ["Poke", "Mon"]
+            }, {
+                "text": "RUN",
+            }, ]
+        });
+        EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
     }
 
 

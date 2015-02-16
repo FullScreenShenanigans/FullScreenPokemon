@@ -1,5 +1,15 @@
 FullScreenPokemon.prototype.settings.battles = {
-    "actorLabel": "Pokemon",
+    "battleMenuName": "Battle",
+    "positions": {
+        "left": {
+            "left": 4,
+            "top": 20
+        },
+        "right": {
+            "left": 52,
+            "top": 8
+        }
+    },
     /**
      * Run on http://www.smogon.com/dex/rb/pokemon/
      * 

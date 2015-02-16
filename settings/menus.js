@@ -499,7 +499,7 @@ FullScreenPokemon.prototype.settings.menus = {
         },
         "Battle": {
             "size": {
-                "width": 96,
+                "width": 80,
                 "height": 48
             },
             "position": {
@@ -512,8 +512,26 @@ FullScreenPokemon.prototype.settings.menus = {
             "childrenSchemas": [{
                 "type": "menu",
                 "name": "GeneralText"
+            }, {
+                "type": "menu",
+                "name": "BattleOptions"
             }],
-            //"plain": true
+            "plain": true
+        },
+        "BattleOptions": {
+            "size": {
+                "width": 48,
+                "height": 24
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "bottom",
+                "offset": {
+                    "left": 24
+                }
+            },
+            "textXOffset": 8,
+            "textColumnWidth": 24
         }
     }
 };

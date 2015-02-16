@@ -827,7 +827,7 @@
             "BattleSpriteFrontLarge": [28, 28],
             "BattleSpriteBack": {
                 "width": 16,
-                "height": 16,
+                "height": 14, // 16 (lowest 2 cropped)
                 "scale": 2,
                 "repeat": false
             },
@@ -865,6 +865,12 @@
                 "offsetY": FullScreenPokemon.unitsize * .75
             },
             "CharacterShadow": [3.5, 3.5],
+            "CharPoke": {
+                "offsetY": FullScreenPokemon.unitsize * .5
+            },
+            "CharMon": {
+                "offsetY": FullScreenPokemon.unitsize * .5
+            },
             "CharSlash": {
                 "offsetY": FullScreenPokemon.unitsize * .5
             },
@@ -891,7 +897,7 @@
                 "repeat": true,
                 "noshiftx": true,
                 "noshifty": true,
-                "arrowXOffset": 4,
+                "arrowXOffset": 1.25,
                 "arrowYOffset": 1,
                 "textXOffset": 4,
                 "textYOffset": 7.5,

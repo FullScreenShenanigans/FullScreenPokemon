@@ -56,6 +56,13 @@ function MenuGraphr(settings) {
         return menus;
     };
 
+    /**
+     * 
+     */
+    self.getMenu = function (name) {
+        return menus[name];
+    };
+
 
     /* Menu positioning
     */
@@ -550,6 +557,8 @@ function MenuGraphr(settings) {
         for (i = 0; i < options.length; i += 1) {
             x = left;
             option = options[i];
+            option.x = x;
+            option.y = y;
 
             if (option.things) {
                 for (j = 0; j < option.things.length; j += 1) {
@@ -589,23 +598,25 @@ function MenuGraphr(settings) {
             }
 
             y += textPaddingY;
+
+            if (y > menu.bottom - textHeight + 1) {
+                y = top;
+                left += menu.textColumnWidth * EightBitter.unitsize;
+            }
         }
 
         menu.selectedIndex = index;
-        character = EightBitter.ObjectMaker.make("CharArrowRight");
+        menu.arrow = character = EightBitter.ObjectMaker.make("CharArrowRight");
         menu.children.push(character);
-        menu.arrow = character;
         character.hidden = (activeMenu !== menu);
+        
+        EightBitter.addThing(character);
+        EightBitter.setRight(character, options[0].x - menu.arrowXOffset * EightBitter.unitsize);
+        EightBitter.setTop(character, options[0].y + menu.arrowYOffset * EightBitter.unitsize);
 
         menu.callback = self.selectMenuListOption;
         menu.onActive = self.activateMenuList;
         menu.onInactive = self.deactivateMenuList;
-
-        EightBitter.addThing(
-            character,
-            menu.left + arrowXOffset,
-            top + arrowYOffset + index * textPaddingY
-        );
     };
 
     /**
@@ -630,7 +641,8 @@ function MenuGraphr(settings) {
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
-            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize;
+            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
+            option;
 
         if (difference > 0) {
             if (difference + menu.selectedIndex > menu.options.length - 1) {
@@ -650,7 +662,10 @@ function MenuGraphr(settings) {
         }
 
         menu.selectedIndex += difference;
-        EightBitter.shiftVert(menu.arrow, difference * textPaddingY);
+        option = menu.options[menu.selectedIndex];
+
+        EightBitter.setRight(menu.arrow, option.x - menu.arrowXOffset * EightBitter.unitsize);
+        EightBitter.setTop(menu.arrow, option.y + menu.arrowYOffset * EightBitter.unitsize);
     };
 
     /**

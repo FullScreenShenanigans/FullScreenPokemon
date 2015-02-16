@@ -14,7 +14,11 @@ function BattleMovr(settings) {
 
         EightBitter,
 
-        actors;
+        actors,
+
+        battleMenuName,
+
+        positions;
 
     /**
      * 
@@ -25,6 +29,14 @@ function BattleMovr(settings) {
             throw new Error("No EightBitter given to BattleMovr.");
         }
 
+        battleMenuName = settings.battleMenuName;
+        if (typeof battleMenuName === undefined) {
+            throw new Error("No battleMenuName given to BattleMovr.");
+        }
+
+        positions = settings.positions;
+
+        actors = {};
     };
 
 
@@ -60,11 +72,27 @@ function BattleMovr(settings) {
      * 
      */
     self.setActor = function (name, type, settings) {
-        if (actors[name]) {
-            EightBitter.killNormal(actors[name]);
+        var position = positions[name] || {},
+            battleMenu = EightBitter.MenuGrapher.getMenu(battleMenuName),
+            thing = actors[name];
+
+        if (thing) {
+            EightBitter.killNormal(thing);
         }
 
-        actors[name] = EightBitter.ObjectMaker.make(type, settings);
+        thing = actors[name] = EightBitter.ObjectMaker.make(type, settings);
+
+        EightBitter.addThing(
+            thing,
+            battleMenu.left + (position.left || 0) * EightBitter.unitsize,
+            battleMenu.top + (position.top || 0) * EightBitter.unitsize
+        );
+
+        EightBitter.GroupHolder.switchObjectGroup(
+            thing,
+            thing.groupType,
+            "Text"
+        );
     };
 
 
