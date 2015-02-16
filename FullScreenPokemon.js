@@ -102,7 +102,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "directionNames",
                 "directionNumbers"
             ],
-            "extraResets": ["resetMenuGrapher", "resetBattleMover", "resetStateHolder"]
+            "extraResets": ["resetMenuGrapher", "resetBattleMover", "resetStateHolder", "resetMathDecider"]
         });
 
         if (customs.resetTimed) {
@@ -212,6 +212,15 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.StateHolder = new StateHoldr(EightBitter.proliferate({
             "StatsHolder": EightBitter.StatsHolder
         }, EightBitter.settings.states));
+    }
+
+    /**
+     * 
+     */
+    function resetMathDecider(EightBitter, customs) {
+        EightBitter.MathDecider = new MathDecidr(EightBitter.proliferate({
+            "NumberMaker": EightBitter.NumberMaker
+        }, EightBitter.settings.math));
     }
 
 
@@ -2851,6 +2860,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "resetMenuGrapher": resetMenuGrapher,
         "resetBattleMover": resetBattleMover,
         "resetStateHolder": resetStateHolder,
+        "resetMathDecider": resetMathDecider,
         // Global manipulations
         "gameStart": gameStart,
         "gameStartOptions": gameStartOptions,
