@@ -8,7 +8,7 @@
 function MenuGraphr(settings) {
     "use strict";
     if (this === window) {
-        return new PixelDrawr(settings);
+        return new MenuGraphr(settings);
     }
     var self = this,
 

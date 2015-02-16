@@ -1,4 +1,5 @@
 FullScreenPokemon.prototype.settings.battles = {
+    "actorLabel": "Pokemon",
     /**
      * Run on http://www.smogon.com/dex/rb/pokemon/
      * 
