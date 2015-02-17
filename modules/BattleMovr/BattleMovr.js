@@ -18,6 +18,10 @@ function BattleMovr(settings) {
 
         battleMenuName,
 
+        battleMenuOptions,
+
+        defaults,
+
         positions;
 
     /**
@@ -30,9 +34,16 @@ function BattleMovr(settings) {
         }
 
         battleMenuName = settings.battleMenuName;
-        if (typeof battleMenuName === undefined) {
+        if (typeof battleMenuName === "undefined") {
             throw new Error("No battleMenuName given to BattleMovr.");
         }
+
+        battleMenuOptions = settings.battleMenuOptions;
+        if (typeof battleMenuOptions === "undefined") {
+            throw new Error("No battleMenuOptions given to BattleMovr.");
+        }
+
+        defaults = settings.defaults || {};
 
         positions = settings.positions;
 
@@ -67,6 +78,42 @@ function BattleMovr(settings) {
 
     /* Actor manipulations
     */
+
+    /**
+     * 
+     */
+    self.startBattle = function (settings) {
+        var textStart = settings.textStart || defaults.textStart || ["", ""];
+
+        EightBitter.setMap("Blank", "White");
+
+        EightBitter.MenuGrapher.createMenu("Battle");
+        EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
+
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            textStart[0] + settings.opponent.title + textStart[1],
+            self.startBattleMenu
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        self.setActor("opponent", settings.opponent.title + "Front");
+    };
+
+    /**
+     * 
+     */
+    self.startBattleMenu = function () {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.createMenu("BattleOptions");
+        EightBitter.MenuGrapher.addMenuList("BattleOptions", {
+            "options": battleMenuOptions
+        });
+        EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
+
+        // for MenuGrapher.addMenuDialog
+        return false;
+    };
 
     /**
      * 

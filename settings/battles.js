@@ -1,5 +1,19 @@
 FullScreenPokemon.prototype.settings.battles = {
     "battleMenuName": "Battle",
+    "battleMenuOptions": [
+        {
+            "text": "FIGHT",
+        }, {
+            "text": "ITEM",
+        }, {
+            "text": ["Poke", "Mon"]
+        }, {
+            "text": "RUN",
+        }
+    ],
+    "defaults": {
+        "textStart": ["A wild ", " appeared!"],
+    },
     "positions": {
         "player": {
             "left": 4,

@@ -293,6 +293,7 @@
                             }
                         },
                         "BattleSpriteBack": {
+                            "PlayerBack": {},
                             "BulbasaurBack": {},
                             "IvysaurBack": {},
                             "VenusaurBack": {},
@@ -835,6 +836,7 @@
                 "scale": 2,
                 "repeat": false
             },
+            "PlayerBack": [14, 14],
             "Terrain": {
                 "groupType": "Terrain",
                 "repeat": true

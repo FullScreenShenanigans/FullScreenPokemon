@@ -312,14 +312,13 @@ function MenuGraphr(settings) {
         self.addMenuText(name, dialog[0], function () {
             if (dialog.length === 1) {
                 if (onCompletion) {
-                    onCompletion();
+                    return onCompletion();
                 }
                 return true;
-            } else {
-                self.deleteMenuChildren(name);
-                self.addMenuDialog(name, dialog.slice(1), onCompletion);
-                return false;
             }
+            self.deleteMenuChildren(name);
+            self.addMenuDialog(name, dialog.slice(1), onCompletion);
+            return false;
         });
     };
 

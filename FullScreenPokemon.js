@@ -1803,29 +1803,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
 
     /* Battles
-     */
-
-    /**
-     * 
-     * 
-     * @todo animate entrances for things
-     */
-    function createBattleScene(EightBitter, settings) {
-        EightBitter.setMap("Blank", "White");
-        EightBitter.MenuGrapher.createMenu("Battle");
-        EightBitter.MenuGrapher.addMenuList("BattleOptions", {
-            "options": [{
-                "text": "FIGHT",
-            }, {
-                "text": "ITEM",
-            }, {
-                "text": ["Poke", "Mon"]
-            }, {
-                "text": "RUN",
-            }, ]
-        });
-        EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
-    }
+    */
 
 
     /* Saving
@@ -2946,7 +2924,6 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
         // Battles
-        "createBattleScene": createBattleScene,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
