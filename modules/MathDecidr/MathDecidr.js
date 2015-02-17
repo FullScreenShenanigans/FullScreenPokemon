@@ -16,7 +16,9 @@ function MathDecidr(settings) {
 
         constants,
         
-        equations;
+        equations,
+            
+        rawEquations;
 
     /**
      * 
@@ -28,10 +30,11 @@ function MathDecidr(settings) {
 
         constants = settings.constants || {};
         equations = {};
+        rawEquations = settings.equations;
 
-        if (settings.equations) {
-            for (i in settings.equations) {
-                self.setEquation(i, settings.equations[i]);
+        if (rawEquations) {
+            for (i in rawEquations) {
+                self.setEquation(i, rawEquations[i]);
             }
         }
     };
@@ -57,8 +60,15 @@ function MathDecidr(settings) {
     /**
      * 
      */
+    self.getRawEquations = function () {
+        return rawEquations;
+    };
+
+    /**
+     * 
+     */
     self.getEquations = function () {
-        return constants;
+        return equations;
     };
 
     /**
