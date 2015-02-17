@@ -572,11 +572,15 @@
                         "CharHP": {},
                         "CharLevel": {}
                     },
-                    "Arrow": {
+                    "CharArrow": {
                         "CharArrowUp": {},
                         "CharArrowRight": {},
                         "CharArrowDown": {},
                         "CharArrowLeft": {}
+                    },
+                    "HalfArrow": {
+                        "HalfArrowLeft": {},
+                        "HalfArrowRight": {}
                     },
                     "Line": {
                         "LineDecorator": {},
@@ -883,7 +887,10 @@
             "CharArrowRight": [2.5, 3.5],
             "CharArrowDown": [3.5, 2.5],
             "CharArrowLeft": [2.5, 3.5],
+            "HalfArrow": [4, 2],
             "Line": {
+                "width": 1,
+                "height": 1,
                 "repeat": true
             },
             "LineDecorator": [3, 8],

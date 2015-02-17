@@ -515,6 +515,12 @@ FullScreenPokemon.prototype.settings.menus = {
             }, {
                 "type": "menu",
                 "name": "BattleOptions"
+            }, {
+                "type": "menu",
+                "name": "BattleDisplayPlayer"
+            }, {
+                "type": "menu",
+                "name": "BattleDisplayOpponent"
             }],
             "plain": true
         },
@@ -532,6 +538,106 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "textXOffset": 8,
             "textColumnWidth": 24
+        },
+        "BattleDisplayPlayer": {
+            "size": {
+                "width": 45,
+                "height": 21
+            },
+            "position": {
+                "horizontal": "right",
+                "vertical": "bottom",
+                "offset": {
+                    "left": .5
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "CharLevel",
+                "position": {
+                    "offset": {
+                        "left": 21,
+                        "top": 6
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "HPBar",
+                "args": {
+                    "width": 25
+                },
+                "position": {
+                    "offset": {
+                        "left": 12,
+                        "top": 10
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "CharHP",
+                "position": {
+                    "offset": {
+                        "left": 5,
+                        "top": 10
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "CharSlash",
+                "position": {
+                    "offset": {
+                        "left": 20.5,
+                        "top": 12.5
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "HalfArrowLeft",
+                "position": {
+                    "offset": {
+                        "left": .5,
+                        "top": 17.5
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "Line",
+                "args": {
+                    "width": 34
+                },
+                "position": {
+                    "offset": {
+                        "left": 4.5,
+                        "top": 18.5
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "Line",
+                "args": {
+                    "height": 10
+                },
+                "position": {
+                    "offset": {
+                        "left": 38,
+                        "top": 9
+                    }
+                }
+            }],
+            "container": "Battle",
+            "plain": true
+        },
+        "BattleDisplayOpponent": {
+            "size": {
+                "width": 41,
+                "height": 15
+            },
+            "position": {
+                "offset": {
+                    "left": 3
+                }
+            },
+            "container": "Battle"
         }
     }
 };

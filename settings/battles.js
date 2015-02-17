@@ -1,11 +1,11 @@
 FullScreenPokemon.prototype.settings.battles = {
     "battleMenuName": "Battle",
     "positions": {
-        "left": {
+        "player": {
             "left": 4,
             "top": 20
         },
-        "right": {
+        "opponent": {
             "left": 52,
             "top": 8
         }
