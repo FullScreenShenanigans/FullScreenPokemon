@@ -544,6 +544,7 @@ FullScreenPokemon.prototype.settings.sprites = {
                     "middle": "p[1]x064,"
                 }],
                 "plain": "p[1]x064,",
+                "transparent": "p[0]x064,",
                 "light": ["multiple", "corners", {
                     "top": "p[1,4]0011",
                     "topright": "p[1]0000",

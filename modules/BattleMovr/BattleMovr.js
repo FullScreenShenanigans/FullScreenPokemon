@@ -36,6 +36,10 @@ function BattleMovr(settings) {
 
         actors,
 
+        backgroundType,
+
+        backgroundThing,
+
         battleMenuName,
 
         battleOptionNames,
@@ -76,6 +80,7 @@ function BattleMovr(settings) {
 
         defaults = settings.defaults || {};
 
+        backgroundType = settings.backgroundType;
         positions = settings.positions;
 
         actors = {};
@@ -118,7 +123,9 @@ function BattleMovr(settings) {
 
         battleInfo = settings;
 
-        EightBitter.setMap("Blank", "White");
+        //EightBitter.setMap("Blank", "White");
+
+        self.createBackground();
 
         EightBitter.MenuGrapher.createMenu("Battle");
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
@@ -135,6 +142,22 @@ function BattleMovr(settings) {
         self.setActor("opponent", battleInfo.opponent.title + "Front", {
             "displayTitle": battleInfo.opponent.title.toUpperCase()
         });
+    };
+
+    /**
+     * 
+     */
+    self.closeBattle = function () {
+        var i;
+
+        for (i in actors) {
+            EightBitter.killNormal(actors[i]);
+        }
+
+        self.deleteBackground();
+        EightBitter.MenuGrapher.deleteMenu("Battle");
+        EightBitter.MenuGrapher.deleteMenu("GeneralText");
+        EightBitter.MenuGrapher.deleteMenu("BattleOptions");
     };
 
     /**
@@ -191,7 +214,8 @@ function BattleMovr(settings) {
             }, {
                 "text": battleOptionNames["actors"]
             }, {
-                "text": battleOptionNames["exit"]
+                "text": battleOptionNames["exit"],
+                "callback": self.startBattleExit
             }]
         });
         EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
@@ -254,6 +278,55 @@ function BattleMovr(settings) {
         EightBitter.MenuGrapher.setActiveMenu("BattleFightList");
     };
 
+
+    /* Battle exits
+    */
+
+    /**
+     * 
+     */
+    self.startBattleExit = function () {
+        EightBitter.MenuGrapher.deleteMenu("BattleOptions");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            battleInfo.exitDialog || defaults.exitDialog || "",
+            self.closeBattle
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    };
+
+
+    /* Utilities
+    */
+
+    /**
+     * 
+     */
+    self.createBackground = function () {
+        if (!backgroundType) {
+            return;
+        }
+
+        backgroundThing = EightBitter.addThing(backgroundType);
+
+        EightBitter.setWidth(backgroundThing, EightBitter.MapScreener.width / 4);
+        EightBitter.setHeight(backgroundThing, EightBitter.MapScreener.height / 4);
+
+        EightBitter.GroupHolder.switchObjectGroup(
+            backgroundThing,
+            backgroundThing.groupType,
+            "Text"
+        );
+    }
+
+    /**
+     * 
+     */
+    self.deleteBackground = function () {
+        if (backgroundThing) {
+            EightBitter.killNormal(backgroundThing);
+        }
+    }
 
     self.reset(settings || {});
 }

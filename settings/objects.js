@@ -913,6 +913,7 @@
                 "textSpeed": 1,
                 "attributes": {
                     "plain": {},
+                    "transparent": {},
                     "light": {
                         "spritewidth": 1,
                         "spriteheight": 1

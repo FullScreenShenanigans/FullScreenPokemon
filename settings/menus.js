@@ -512,15 +512,6 @@ FullScreenPokemon.prototype.settings.menus = {
             "childrenSchemas": [{
                 "type": "menu",
                 "name": "GeneralText"
-            //}, {
-            //    "type": "menu",
-            //    "name": "BattleOptions"
-            //}, {
-            //    "type": "menu",
-            //    "name": "BattleDisplayPlayer"
-            //}, {
-            //    "type": "menu",
-            //    "name": "BattleDisplayOpponent"
             }],
             "plain": true
         },
@@ -636,7 +627,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "container": "Battle",
-            "plain": true
+            "transparent": true
         },
         "BattleDisplayOpponent": {
             "size": {

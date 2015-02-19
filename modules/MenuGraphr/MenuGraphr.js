@@ -798,8 +798,8 @@ function MenuGraphr(settings) {
 
         if (activeMenu.startMenu) {
             self.setActiveMenu(activeMenu.startMenu);
-        } else if (activeMenu.callback) {
-            activeMenu.callback(activeMenu.name);
+        //} else if (activeMenu.callback) {
+        //    activeMenu.callback(activeMenu.name);
         }
     };
 

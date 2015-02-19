@@ -6,9 +6,11 @@ FullScreenPokemon.prototype.settings.battles = {
         "actors": ["Poke", "Mon"],
         "exit": "RUN"
     },
+    "backgroundType": "DirtWhite",
     "defaults": {
+        "exitDialog": "Got away safely!",
         "textStart": ["A wild ", " appeared!"],
-        "textEntry": ["Go! ", "!"]
+        "textEntry": ["Go! ", "!"],
     },
     "positions": {
         "player": {

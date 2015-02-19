@@ -437,6 +437,8 @@ var FullScreenPokemon = (function (GameStartr) {
         if (typeof thing.direction !== "undefined") {
             thing.EightBitter.animateCharacterSetDirection(thing, thing.direction);
         }
+
+        return thing;
     }
 
     /**
