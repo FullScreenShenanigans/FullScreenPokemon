@@ -532,16 +532,6 @@ FullScreenPokemon.prototype.settings.menus = {
                 "horizontal": "center",
                 "vertical": "stretch"
             },
-            "childrenSchemas": [{
-                "type": "thing",
-                "thing": "PlayerBack",
-                "position": {
-                    "vertical": "bottom",
-                    "offset": {
-                        "top": -14
-                    }
-                }
-            }],
             "container": "Battle",
             "plain": true
         },
@@ -658,7 +648,14 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": 3
                 }
             },
-            "container": "Battle"
+            "childrenSchemas": [{
+
+            }],
+            "container": "Battle",
+            "plain": true,
+            "textSpeed": 0,
+            "textXOffset": 1,
+            "textYOffset": -.5
         }
     }
 };

@@ -872,6 +872,45 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
 
+    /* General animations
+    */
+
+    /**
+     * 
+     */
+    function animatePlayerLeaveLeft(thing, callback) {
+        var width = thing.width,
+            dt = 3,
+            dx = -thing.EightBitter.unitsize * 4;
+
+        thing.EightBitter.TimeHandler.addEventInterval(
+            thing.EightBitter.shiftHoriz, dt, width, thing, dx
+        );
+        
+        console.log("Should implement collapseLeft...");
+        //thing.EightBitter.TimeHandler.addEventInterval(
+        //    thing.EightBitter.collapseLeft, speed, width, thing, dx
+        //);
+
+        if (callback) {
+            thing.EightBitter.TimeHandler.addEvent(
+                callback, (width * (dt + 2)), thing
+            );
+        }
+    }
+
+    /**
+     * 
+     */
+    function animatePokeballOpening(EightBitter, x, y, callback) {
+        console.log("Should implement smoke animation...");
+
+        if (callback) {
+            EightBitter.TimeHandler.addEvent(callback, 3);
+        }
+    }
+
+
     /* Character movement
     */
 
@@ -2877,6 +2916,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "maintainPlayer": maintainPlayer,
         "getHorizontalScrollAmount": getHorizontalScrollAmount,
         "getVerticalScrollAmount": getVerticalScrollAmount,
+        // General animations
+        "animatePlayerLeaveLeft": animatePlayerLeaveLeft,
+        "animatePokeballOpening": animatePokeballOpening,
         // Character movement
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
         "animateCharacterStartWalking": animateCharacterStartWalking,

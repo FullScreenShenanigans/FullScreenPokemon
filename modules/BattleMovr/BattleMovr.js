@@ -1,3 +1,16 @@
+/*
+FSP.BattleMover.startBattle({
+    "opponent": {
+        "title": "Rattata"
+    },
+    "playerActors": [
+        {
+            "title": "Mew"
+        }
+    ]
+});
+*/
+
 /**
  * BattleMovr.js
  * 
@@ -20,6 +33,10 @@ function BattleMovr(settings) {
 
         battleMenuOptions,
 
+        battleInfo,
+
+        animations,
+
         defaults,
 
         positions;
@@ -28,6 +45,8 @@ function BattleMovr(settings) {
      * 
      */
     self.reset = function (settings) {
+        var i;
+
         EightBitter = settings.EightBitter;
         if (typeof EightBitter === "undefined") {
             throw new Error("No EightBitter given to BattleMovr.");
@@ -41,6 +60,11 @@ function BattleMovr(settings) {
         battleMenuOptions = settings.battleMenuOptions;
         if (typeof battleMenuOptions === "undefined") {
             throw new Error("No battleMenuOptions given to BattleMovr.");
+        }
+
+        animations = settings.animations;
+        if (typeof animations === "undefined") {
+            throw new Error("No animations given to BattleMovr.");
         }
 
         defaults = settings.defaults || {};
@@ -85,6 +109,8 @@ function BattleMovr(settings) {
     self.startBattle = function (settings) {
         var textStart = settings.textStart || defaults.textStart || ["", ""];
 
+        battleInfo = settings;
+
         EightBitter.setMap("Blank", "White");
 
         EightBitter.MenuGrapher.createMenu("Battle");
@@ -92,28 +118,90 @@ function BattleMovr(settings) {
 
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
-            textStart[0] + settings.opponent.title + textStart[1],
-            self.startBattleMenu
+            textStart[0] + battleInfo.opponent.title + textStart[1],
+            startBattleIntro
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-        self.setActor("opponent", settings.opponent.title + "Front");
+        self.setActor("player", "PlayerBack");
+
+        self.setActor("opponent", battleInfo.opponent.title + "Front", {
+            "displayTitle": battleInfo.opponent.title.toUpperCase()
+        });
     };
 
     /**
      * 
      */
-    self.startBattleMenu = function () {
+    function startBattleIntro() {
+        var textEntry = battleInfo.textEntry || defaults.textEntry || ["", ""];
+
+        EightBitter.MenuGrapher.createMenu("BattleDisplayOpponent");
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText", 
+            textEntry[0] + "(pokemanz)" + textEntry[1]
+        );
+        
+        EightBitter.TimeHandler.addEvent(
+            animations.playerLeaveLeft, 14, actors.player, showPlayerStats
+        );
+    };
+
+    /**
+     * 
+     */
+    function showPlayerStats() {
+        EightBitter.MenuGrapher.createMenu("BattleDisplayPlayer");
+        animations.actorEntrance(
+            EightBitter, -1, -1, enterPlayerActor
+        );
+    }
+
+    /**
+     * 
+     */
+    function enterPlayerActor() {
+        self.setActor("player", battleInfo.playerActors[0].title + "Back");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+
+        EightBitter.TimeHandler.addEvent(showPlayerMenu, 21);
+    }
+
+    /**
+     * 
+     */
+    function showPlayerMenu() {
         EightBitter.MenuGrapher.createMenu("BattleOptions");
         EightBitter.MenuGrapher.addMenuList("BattleOptions", {
             "options": battleMenuOptions
         });
         EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
+    }
 
-        // for MenuGrapher.addMenuDialog
-        return false;
-    };
+    ///**
+    // * 
+    // */
+    //self.showBattleMenu = function () {
+    //    EightBitter.MenuGrapher.createMenu("GeneralText");
+
+    //    EightBitter.MenuGrapher.createMenu("BattleDisplayOpponent");
+    //    EightBitter.MenuGrapher.addMenuDialog(
+    //        "BattleDisplayOpponent",
+    //        actors.opponent.displayTitle
+    //    );
+
+    //    EightBitter.MenuGrapher.createMenu("BattleOptions");
+    //    EightBitter.MenuGrapher.addMenuList("BattleOptions", {
+    //        "options": battleMenuOptions
+    //    });
+    //    EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
+
+    //    // Used by MenuGrapher.addMenuDialog
+    //    return false;
+    //};
 
     /**
      * 

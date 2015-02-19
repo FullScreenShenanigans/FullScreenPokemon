@@ -13,6 +13,7 @@ FullScreenPokemon.prototype.settings.battles = {
     ],
     "defaults": {
         "textStart": ["A wild ", " appeared!"],
+        "textEntry": ["Go! ", "!"]
     },
     "positions": {
         "player": {
@@ -23,6 +24,10 @@ FullScreenPokemon.prototype.settings.battles = {
             "left": 52,
             "top": 8
         }
+    },
+    "animations": {
+        "playerLeaveLeft": FullScreenPokemon.prototype.animatePlayerLeaveLeft,
+        "actorEntrance": FullScreenPokemon.prototype.animatePokeballOpening
     },
     /**
      * Run on http://www.smogon.com/dex/rb/pokemon/
