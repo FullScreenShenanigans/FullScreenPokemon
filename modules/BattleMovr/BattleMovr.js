@@ -5,7 +5,14 @@ FSP.BattleMover.startBattle({
     },
     "playerActors": [
         {
-            "title": "Mew"
+            "title": "Squirtle",
+            "moves": [{
+                "title": "TACKLE"
+            }, {
+                "title": "TAIL WHIP"
+            }, {
+                "title": "BUBBLE"
+            }]
         }
     ]
 });
@@ -31,7 +38,7 @@ function BattleMovr(settings) {
 
         battleMenuName,
 
-        battleMenuOptions,
+        battleOptionNames,
 
         battleInfo,
 
@@ -57,9 +64,9 @@ function BattleMovr(settings) {
             throw new Error("No battleMenuName given to BattleMovr.");
         }
 
-        battleMenuOptions = settings.battleMenuOptions;
-        if (typeof battleMenuOptions === "undefined") {
-            throw new Error("No battleMenuOptions given to BattleMovr.");
+        battleOptionNames = settings.battleOptionNames;
+        if (typeof battleOptionNames === "undefined") {
+            throw new Error("No battleOptionNames given to BattleMovr.");
         }
 
         animations = settings.animations;
@@ -176,32 +183,19 @@ function BattleMovr(settings) {
     function showPlayerMenu() {
         EightBitter.MenuGrapher.createMenu("BattleOptions");
         EightBitter.MenuGrapher.addMenuList("BattleOptions", {
-            "options": battleMenuOptions
+            "options": [{
+                "text": battleOptionNames["moves"],
+                "callback": self.openMovesMenu
+            }, {
+                "text": battleOptionNames["items"]
+            }, {
+                "text": battleOptionNames["actors"]
+            }, {
+                "text": battleOptionNames["exit"]
+            }]
         });
         EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
     }
-
-    ///**
-    // * 
-    // */
-    //self.showBattleMenu = function () {
-    //    EightBitter.MenuGrapher.createMenu("GeneralText");
-
-    //    EightBitter.MenuGrapher.createMenu("BattleDisplayOpponent");
-    //    EightBitter.MenuGrapher.addMenuDialog(
-    //        "BattleDisplayOpponent",
-    //        actors.opponent.displayTitle
-    //    );
-
-    //    EightBitter.MenuGrapher.createMenu("BattleOptions");
-    //    EightBitter.MenuGrapher.addMenuList("BattleOptions", {
-    //        "options": battleMenuOptions
-    //    });
-    //    EightBitter.MenuGrapher.setActiveMenu("BattleOptions");
-
-    //    // Used by MenuGrapher.addMenuDialog
-    //    return false;
-    //};
 
     /**
      * 
@@ -228,6 +222,36 @@ function BattleMovr(settings) {
             thing.groupType,
             "Text"
         );
+    };
+
+    /**
+     * 
+     */
+    self.openMovesMenu = function () {
+        var actorMoves = battleInfo.playerActors[0].moves,
+            moveOptions = [],
+            move, i;
+
+        for (i = 0; i < actorMoves.length; i += 1) {
+            move = actorMoves[i];
+            moveOptions[i] = {
+                "text": move.title,
+                "remaining": move.remaining,
+                "callback": console.log.bind(console, "Hi!")
+            };
+        }
+
+        for (i = actorMoves.length; i < 4; i += 1) {
+            moveOptions[i] = {
+                "text": "-"
+            };
+        }
+
+        EightBitter.MenuGrapher.createMenu("BattleFightList");
+        EightBitter.MenuGrapher.addMenuList("BattleFightList", {
+            "options": moveOptions
+        });
+        EightBitter.MenuGrapher.setActiveMenu("BattleFightList");
     };
 
 

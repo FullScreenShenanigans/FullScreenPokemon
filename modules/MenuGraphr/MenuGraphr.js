@@ -543,7 +543,7 @@ function MenuGraphr(settings) {
             top = menu.top + menu.textYOffset * EightBitter.unitsize,
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = (menu.textWidth || textProperties.width) * EightBitter.unitsize,
-            textHeight = (menu.textWidth || textProperties.height) * EightBitter.unitsize,
+            textHeight = (menu.textHeight || textProperties.height) * EightBitter.unitsize,
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
             arrowXOffset = (menu.arrowXOffset || 0) * EightBitter.unitsize,
             arrowYOffset = (menu.arrowYOffset || 0) * EightBitter.unitsize,

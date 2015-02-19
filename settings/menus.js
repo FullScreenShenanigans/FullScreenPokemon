@@ -656,6 +656,21 @@ FullScreenPokemon.prototype.settings.menus = {
             "textSpeed": 0,
             "textXOffset": 1,
             "textYOffset": -.5
-        }
+        },
+        "BattleFightList": {
+            "size": {
+                "width": 64,
+            },
+            "position": {
+                "horizontal": "right",
+                "vertical": "stretch"
+            },
+            "container": "GeneralText",
+            "backMenu": "BattleOptions",
+            "textXOffset": 8,
+            "textYOffset": 3.5,
+            "textPaddingY": 4,
+            "arrowXOffset": 1
+        },
     }
 };

@@ -1,16 +1,11 @@
 FullScreenPokemon.prototype.settings.battles = {
     "battleMenuName": "Battle",
-    "battleMenuOptions": [
-        {
-            "text": "FIGHT",
-        }, {
-            "text": "ITEM",
-        }, {
-            "text": ["Poke", "Mon"]
-        }, {
-            "text": "RUN",
-        }
-    ],
+    "battleOptionNames": {
+        "moves": "FIGHT",
+        "items": "ITEM",
+        "actors": ["Poke", "Mon"],
+        "exit": "RUN"
+    },
     "defaults": {
         "textStart": ["A wild ", " appeared!"],
         "textEntry": ["Go! ", "!"]
