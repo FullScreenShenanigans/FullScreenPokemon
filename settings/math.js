@@ -83,6 +83,19 @@ FullScreenPokemon.prototype.settings.math = {
             // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
             return f > m;
         },
+        // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
+        "canEscapePokemon": function (NumberMaker, constants, equations, pokemon, enemy, battleInfo) {
+            var a = pokemon.speed,
+                b = (enemy.speed / 4) % 256,
+                c = battleInfo.currentEscapeAttempts,
+                f = NumberMaker.randomBooleanProbability((a * 32) / b + 30 * c);
+
+            if (f > 255 || b === 0) {
+                return true;
+            }
+
+            return NumberMaker.randomInt(256) < f;
+        },
         // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
         "numBallShakes": function (NumberMaker, constants, equations, pokemon, ball) {
             // 1. Calculate d.
