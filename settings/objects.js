@@ -560,6 +560,8 @@
                         "CharPoke": {},
                         "CharMon": {},
                         "CharHyphen": {},
+                        "CharMDash": {},
+                        "CharUnderscore": {},
                         "CharQuestionMark": {},
                         "CharExclamationMark": {},
                         "CharMaleSymbol": {},

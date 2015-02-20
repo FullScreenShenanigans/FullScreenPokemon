@@ -393,7 +393,10 @@ function MenuGraphr(settings) {
             }
         }
 
-        if (word.constructor === String && word !== "\n") {
+        if (
+            (word.constructor === String && word !== "\n")
+            || word.constructor === Array
+        ) {
             for (j = 0; j < word.length; j += 1) {
                 if (word[j] !== " ") {
                     title = "Char" + getCharacterEquivalent(word[j]);

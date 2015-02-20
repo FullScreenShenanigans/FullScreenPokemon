@@ -1952,7 +1952,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function openKeyboardMenu(text, onComplete) {
+    function openKeyboardMenu(settings) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             letters = [
                 "A", "J", "S", "Times", "-",
@@ -1963,10 +1963,11 @@ var FullScreenPokemon = (function (GameStartr) {
                 "F", "O", "X", "[", "/",
                 "G", "P", "Y", "]", ".",
                 "H", "Q", "Z", "Poke", ",",
-                "I", "R", " ", "Mon", "End"
+                "I", "R", " ", "Mon", "ED"
             ];
 
         EightBitter.MenuGrapher.createMenu("Keyboard");
+
         EightBitter.MenuGrapher.addMenuList("KeyboardKeys", {
             "options": letters.map(function (letter) {
                 return {
@@ -1976,6 +1977,12 @@ var FullScreenPokemon = (function (GameStartr) {
             })
         });
         EightBitter.MenuGrapher.setActiveMenu("KeyboardKeys");
+
+        EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[settings.title]]);
+
+        EightBitter.MenuGrapher.addMenuDialog("KeyboardResult", [
+            [["MDash"], "_", "_", "_", "_", "_", "_"]
+        ]);
     }
 
 
@@ -2217,7 +2224,10 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.createMenu("NameOptions");
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
             "options": [{
-                "text": "NEW NAME"
+                "text": "NEW NAME",
+                "callback": EightBitter.openKeyboardMenu.bind(EightBitter, {
+                    "title": "YOUR NAME?"
+                })
             }, {
                 "text": "BLUE"
             }, {

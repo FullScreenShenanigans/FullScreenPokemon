@@ -7,6 +7,8 @@ FullScreenPokemon.prototype.settings.menus = {
         "[": "LeftSquareBracket",
         "]": "RightSquareBracket",
         "-": "Hyphen",
+        "MDash": "MDash",
+        "_": "Underscore",
         "?": "QuestionMark",
         "!": "ExclamationMark",
         "/": "Slash",
@@ -691,6 +693,12 @@ FullScreenPokemon.prototype.settings.menus = {
             "childrenSchemas": [{
                 "type": "menu",
                 "name": "KeyboardKeys"
+            }, {
+                "type": "menu",
+                "name": "KeyboardTitle"
+            }, {
+                "type": "menu",
+                "name": "KeyboardResult"
             }],
             "plain": true
         },
@@ -707,7 +715,40 @@ FullScreenPokemon.prototype.settings.menus = {
             "container": "Keyboard",
             "textColumnWidth": 8,
             "textXOffset": 8,
-            "textYOffset": 4
+            "textYOffset": 3.5
+        },
+        "KeyboardResult": {
+            "size": {
+                "height": 8,
+                "width": 32
+            },
+            "position": {
+                "offset": {
+                    "left": 39,
+                    "top": 10.5
+                }
+            },
+            "container": "Keyboard",
+            "transparent": true,
+            "textSpeed": 0,
+            "textXOffset": .5,
+            "textYOffset": 0,
+            "textPaddingX": -4
+        },
+        "KeyboardTitle": {
+            "size": {
+                "height": 8
+            },
+            "position": {
+                "horizontal": "stretch",
+                "offset": {
+                    "top": -4,
+                    "left": -4
+                }
+            },
+            "container": "Keyboard",
+            "transparent": true,
+            "textSpeed": 0
         }
     }
 };
