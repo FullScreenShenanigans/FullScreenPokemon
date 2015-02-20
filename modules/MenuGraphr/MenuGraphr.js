@@ -71,7 +71,8 @@ function MenuGraphr(settings) {
      * 
      */
     self.createMenu = function (name, attributes) {
-        var schema = schemas[name],
+        var schemaRaw = EightBitter.proliferate({}, schemas[name]),
+            schema = EightBitter.proliferate(schemaRaw, attributes),
             menu = EightBitter.ObjectMaker.make("Menu", schema),
             container = schema.container
                 ? menus[schema.container]
@@ -553,6 +554,14 @@ function MenuGraphr(settings) {
 
         menu.options = options;
 
+        menu.callback = self.selectMenuListOption;
+        menu.onActive = self.activateMenuList;
+        menu.onInactive = self.deactivateMenuList;
+
+        if (!options.length) {
+            return;
+        }
+
         for (i = 0; i < options.length; i += 1) {
             x = left;
             option = options[i];
@@ -612,10 +621,6 @@ function MenuGraphr(settings) {
         EightBitter.addThing(character);
         EightBitter.setRight(character, options[0].x - menu.arrowXOffset * EightBitter.unitsize);
         EightBitter.setTop(character, options[0].y + menu.arrowYOffset * EightBitter.unitsize);
-
-        menu.callback = self.selectMenuListOption;
-        menu.onActive = self.activateMenuList;
-        menu.onInactive = self.deactivateMenuList;
     };
 
     /**
@@ -629,7 +634,9 @@ function MenuGraphr(settings) {
      * 
      */
     self.deactivateMenuList = function (name) {
-        menus[name].arrow.hidden = true;
+        if (menus[name].arrow) {
+            menus[name].arrow.hidden = true;
+        }
     };
 
     /**

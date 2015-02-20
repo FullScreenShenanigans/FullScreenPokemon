@@ -44,6 +44,8 @@ function BattleMovr(settings) {
 
         battleOptionNames,
 
+        menuNames,
+
         battleInfo,
 
         animations,
@@ -71,6 +73,11 @@ function BattleMovr(settings) {
         battleOptionNames = settings.battleOptionNames;
         if (typeof battleOptionNames === "undefined") {
             throw new Error("No battleOptionNames given to BattleMovr.");
+        }
+
+        menuNames = settings.menuNames;
+        if (typeof menuNames === "undefined") {
+            throw new Error("No menuNames given to BattleMovr.");
         }
 
         animations = settings.animations;
@@ -211,9 +218,11 @@ function BattleMovr(settings) {
                 "text": battleOptionNames["moves"],
                 "callback": self.openMovesMenu
             }, {
-                "text": battleOptionNames["items"]
+                "text": battleOptionNames["items"],
+                "callback": self.openItemsMenu
             }, {
-                "text": battleOptionNames["actors"]
+                "text": battleOptionNames["actors"],
+                "callback": self.openActorsMenu
             }, {
                 "text": battleOptionNames["exit"],
                 "callback": self.startBattleExit
@@ -249,6 +258,10 @@ function BattleMovr(settings) {
         );
     };
 
+
+    /* In-battle menus
+    */
+
     /**
      * 
      */
@@ -272,11 +285,49 @@ function BattleMovr(settings) {
             };
         }
 
-        EightBitter.MenuGrapher.createMenu("BattleFightList");
-        EightBitter.MenuGrapher.addMenuList("BattleFightList", {
+        EightBitter.MenuGrapher.createMenu(menuNames.moves);
+        EightBitter.MenuGrapher.addMenuList(menuNames.moves, {
             "options": moveOptions
         });
-        EightBitter.MenuGrapher.setActiveMenu("BattleFightList");
+        EightBitter.MenuGrapher.setActiveMenu(menuNames.moves);
+    };
+
+    /**
+     * 
+     */
+    self.openItemsMenu = function () {
+        var items = EightBitter.StatsHolder.get("items");
+
+        EightBitter.MenuGrapher.createMenu(menuNames.items, {
+            "container": "Battle",
+            "backMenu": "BattleOptions",
+            "size": {
+                "height": 44
+            },
+            "position": {
+                "horizontal": "right",
+                "vertical": "bottom",
+                "offset": {
+                    "top": 4
+                }
+            }
+        });
+
+        EightBitter.MenuGrapher.setActiveMenu(menuNames.items);
+        EightBitter.MenuGrapher.addMenuList(menuNames.items, {
+            "options": items.map(function (item) {
+                return {
+                    "text": item.title
+                };
+            })
+        });
+    };
+
+    /**
+     * 
+     */
+    self.openActorsMenu = function () {
+        EightBitter.openPokemonMenu("BattleOptions");
     };
 
 

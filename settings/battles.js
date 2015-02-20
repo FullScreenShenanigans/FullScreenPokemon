@@ -6,6 +6,11 @@ FullScreenPokemon.prototype.settings.battles = {
         "actors": ["Poke", "Mon"],
         "exit": "RUN"
     },
+    "menuNames": {
+        "moves": "BattleFightList",
+        "items": "Items",
+        "actors": "Pokemon"
+    },
     "backgroundType": "DirtWhite",
     "defaults": {
         "exitDialog": "Got away safely!",

@@ -1800,11 +1800,13 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function openPokemonMenu() {
+    function openPokemonMenu(backMenu) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             listings = EightBitter.StatsHolder.get("PokemonInParty");
 
-        EightBitter.MenuGrapher.createMenu("Pokemon");
+        EightBitter.MenuGrapher.createMenu("Pokemon", {
+            "backMenu": backMenu
+        });
         EightBitter.MenuGrapher.setActiveMenu("Pokemon");
         EightBitter.MenuGrapher.addMenuList("Pokemon", {
             "options": listings.map(function (listing, i) {
