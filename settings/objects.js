@@ -466,6 +466,7 @@
                     "Water": {}
                 },
                 "Text": {
+                    "WhiteSquare": "",
                     "CharacterUpperCase": {
                         "CharA": {},
                         "CharB": {},
@@ -870,6 +871,11 @@
                 "noshiftx": true,
                 "noshifty": true,
             },
+            "WhiteSquare": {
+                "width": 1,
+                "height": 1,
+                "repeat": true
+            },
             "CharacterDropped": {
                 "offsetY": FullScreenPokemon.unitsize * .75
             },
@@ -916,7 +922,9 @@
                 "textSpeed": 1,
                 "attributes": {
                     "plain": {},
-                    "transparent": {},
+                    "transparent": {
+                        "hidden": true
+                    },
                     "light": {
                         "spritewidth": 1,
                         "spriteheight": 1

@@ -33,6 +33,22 @@ FullScreenPokemon.prototype.settings.menus = {
     },
     "replaceFromStatsHolder": true,
     "schemas": {
+        "NameOptions": {
+            "size": {
+                "width": 44,
+                "height": 48
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "bottom",
+                "offset": {
+                    "left": -18,
+                    "top": -24
+                }
+            },
+            "ignoreB": true,
+            "textXOffset": 8
+        },
         "StartOptions": {
             "size": {
                 "width": 60,
@@ -47,7 +63,7 @@ FullScreenPokemon.prototype.settings.menus = {
         "GeneralText": {
             "size": {
                 "height": 24,
-                "width": 96
+                "width": 80
             },
             "position": {
                 "horizontal": "center",

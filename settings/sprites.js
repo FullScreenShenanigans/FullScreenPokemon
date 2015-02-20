@@ -532,6 +532,7 @@ FullScreenPokemon.prototype.settings.sprites = {
             "WallIndoorLightWithDarkBottom": "p[1,2,3,4]3x07,20202221"
         },
         "Text": {
+            "WhiteSquare": "x14,",
             "Menu": {
                 "normal": ["multiple", "corners", {
                     "top": "p[1,2]x016,x18,x08,x116,x016,",
@@ -545,7 +546,6 @@ FullScreenPokemon.prototype.settings.sprites = {
                     "middle": "p[1]x064,"
                 }],
                 "plain": "p[1]x064,",
-                "transparent": "p[0]x064,",
                 "light": ["multiple", "corners", {
                     "top": "p[1,4]0011",
                     "topright": "p[1]0000",

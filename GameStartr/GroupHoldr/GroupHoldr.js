@@ -42,28 +42,28 @@ function GroupHoldr(settings) {
         return new GroupHoldr(settings);
     }
     var self = this,
-        
+
         // Associative array of strings to groups, where groups are each some
         // sort of array (either typical or associative).
         groups,
-        
+
         // Associative array containing "add", "del", "get", and "set" keys to
         // those appropriate functions (e.x. functions.add.MyGroup is the same
         // as self.addMyGroup).
         functions,
-        
+
         // Array of string names, each of which is tied to a group.
         groupNames,
-        
+
         // Associative array keying each group to the function it uses: Array
         // for regular arrays, and Object for associative arrays.
         groupTypes,
-        
+
         // Associative array keying each group to the string name of the
         // function it uses: "Array" for regular arrays, and "Object" for
         // associative arrays.
         groupTypeNames;
-    
+
     /**
      * Resets the GroupHoldr.
      * 
@@ -85,7 +85,7 @@ function GroupHoldr(settings) {
         if (typeof settings.groupTypes === "undefined") {
             throw new Error("No groupTypes provided to GroupHoldr.");
         }
-        
+
         // These functions containers are filled in setGroupNames 
         functions = {
             "setGroup": {},
@@ -97,11 +97,11 @@ function GroupHoldr(settings) {
         };
         setGroupNames(settings.groupNames, settings.groupTypes);
     };
-    
-    
+
+
     /* Simple gets
     */
-    
+
     /**
      * @return {Object} The Object with Object<Function>s for each action
      *                  available on groups.
@@ -109,14 +109,14 @@ function GroupHoldr(settings) {
     self.getFunctions = function () {
         return functions;
     };
-    
+
     /**
      * @return {Object} The Object storing each of the internal groups.
      */
     self.getGroups = function () {
         return groups;
     };
-    
+
     /**
      * @param {String} name
      * @return {Object} The group of the given name.
@@ -124,18 +124,18 @@ function GroupHoldr(settings) {
     self.getGroup = function (name) {
         return groups[name];
     };
-    
+
     /**
      * @return {String[]} An Array containing each of the group names.
      */
     self.getGroupNames = function () {
         return groupNames;
     };
-    
-    
+
+
     /* Core logic
     */
-    
+
     /** 
      * Meaty function to reset, given an array of names an object of types
      * Any pre-existing functions are cleared, and new ones are added as
@@ -150,28 +150,28 @@ function GroupHoldr(settings) {
         if (!(names instanceof Array)) {
             throw new Error("groupNames is not an Array");
         }
-        
+
         // If there already were group names, clear them
         if (groupNames) {
             clearFunctions();
         }
-        
+
         // Reset the group types and type names, to be filled next
         groupTypes = {}
         groupTypeNames = {};
-        
+
         // Set the new groupNames, as ucFirst
         groupNames = names.map(ucFirst);
         groupNames.sort();
-        
+
         // If groupTypes is an object, set custom group types for everything
-        if (typeof(types) == "object") {
+        if (typeof (types) == "object") {
             groupNames.forEach(function (name) {
                 groupTypes[name] = getTypeFunction(types[name]);
                 groupTypeNames[name] = getTypeName(types[name]);
             });
         }
-        // Otherwise assume everything uses the same one, such as from a String
+            // Otherwise assume everything uses the same one, such as from a String
         else {
             var typeFunc = getTypeFunction(types),
                 typeName = getTypeName(types);
@@ -180,12 +180,12 @@ function GroupHoldr(settings) {
                 groupTypeNames[name] = typeName;
             });
         }
-        
+
         // Create the containers, and set the modifying functions
         setGroups();
         setFunctions();
     }
-    
+
     /**
      * Removes any pre-existing "set", "get", etc. functions.
      */
@@ -198,7 +198,7 @@ function GroupHoldr(settings) {
             delete self["get" + name];
             delete self["add" + name];
             delete self["del" + name];
-            
+
             // Delete functions under .functions by making each type a new {}
             functions.setGroup = {};
             functions.getGroup = {};
@@ -208,7 +208,7 @@ function GroupHoldr(settings) {
             functions.del = {};
         });
     }
-    
+
     /**
      * Resets groups to an empty object, and fills it with a new groupType for
      * each name in groupNames
@@ -219,7 +219,7 @@ function GroupHoldr(settings) {
             groups[name] = new groupTypes[name]();
         });
     }
-    
+
     /**
      * Calls the function setters for each name in groupNames
      * @remarks Those are: createFunction<XYZ>: "Set", "Get", "Add", "Del"
@@ -234,11 +234,11 @@ function GroupHoldr(settings) {
             createFunctionDel(name);
         });
     }
-    
-    
+
+
     /* Function generators
     */
-    
+
     /**
      * Creates a getGroup function under self and functions.getGroup.
      * 
@@ -253,7 +253,7 @@ function GroupHoldr(settings) {
             return groups[name];
         };
     }
-    
+
     /**
      * Creates a setGroup function under self and functions.setGroup.
      * 
@@ -266,13 +266,13 @@ function GroupHoldr(settings) {
          * @param {Mixed} value   The new value for the group, which should be 
          *                        the same type as the group (Array or Object).
          */
-        
+
         functions.setGroup[name] = self["set" + name + "Group"] = function (value) {
             ensureCorrectgroupType(value, name);
             groups[name] = value;
         };
     }
-    
+
     /**
      * Creates a get function under self and functions.get.
      * 
@@ -289,7 +289,7 @@ function GroupHoldr(settings) {
             return groups[name][key];
         };
     }
-    
+
     /**
      * Creates a set function under self and functions.set.
      * 
@@ -308,7 +308,7 @@ function GroupHoldr(settings) {
             groups[name][key] = value;
         };
     }
-    
+
     /**
      * Creates a get<type> function under self and functions.get
      * 
@@ -327,7 +327,7 @@ function GroupHoldr(settings) {
             return groups[name][key];
         };
     }
-    
+
     /**
      * Creates an add function under self and functions.add.
      * 
@@ -361,7 +361,7 @@ function GroupHoldr(settings) {
             };
         }
     }
-    
+
     /**
      * Creates a del (delete) function under self and functions.del.
      * 
@@ -392,11 +392,11 @@ function GroupHoldr(settings) {
             };
         }
     }
-    
-    
+
+
     /* Group/ordering manipulators
     */
-    
+
     /**
      * Deletes a given object from a group by calling Array.splice on
      * the result of Array.indexOf
@@ -408,7 +408,7 @@ function GroupHoldr(settings) {
     self.deleteObject = function (groupName, object) {
         groups[groupName].splice(groups[groupName].indexOf(object), 1);
     };
-    
+
     /**
      * Deletes a given index from a group by calling Array.splice. 
      * 
@@ -421,7 +421,7 @@ function GroupHoldr(settings) {
     self.deleteIndex = function (groupName, index, max) {
         groups[groupName].splice(index, max || 1);
     };
-    
+
     /**
      * Switches an object from groupOld to groupNew by removing it from the
      * old group and adding it to the new. If the new group uses an associative
@@ -438,7 +438,7 @@ function GroupHoldr(settings) {
         self.deleteObject(groupOld, object);
         functions.add[groupNew](object, keyNew);
     };
-    
+
     /**
      * Calls a function for each group, with that group as the first argument.
      * Extra arguments may be passed in an array after scope and func, as in
@@ -452,23 +452,23 @@ function GroupHoldr(settings) {
      */
     self.applyAll = function (scope, func, args) {
         var i;
-        
+
         if (!args) {
-            args = [ undefined ];
+            args = [undefined];
         } else {
             args.unshift(undefined);
         }
-       
+
         if (!scope) {
             scope = self;
         }
-        
+
         for (i = groupNames.length - 1; i >= 0; i -= 1) {
             args[0] = groups[groupNames[i]];
             func.apply(scope, args);
         }
     };
-    
+
     /**
      * Calls a function for each member of each group. Extra arguments may be 
      * passed in an array after scope and func, as in Function.apply's standard.
@@ -481,26 +481,34 @@ function GroupHoldr(settings) {
      */
     self.applyOnAll = function (scope, func, args) {
         var group, i, j;
-        
+
         if (!args) {
-            args = [ undefined ];
+            args = [undefined];
         } else {
             args.unshift(undefined);
         }
-       
+
         if (!scope) {
             scope = self;
         }
-        
+
         for (i = groupNames.length - 1; i >= 0; i -= 1) {
             group = groups[groupNames[i]];
-            for (j in group) {
-                args[0] = group[j];
-                func.apply(scope, args);
+
+            if (group instanceof Array) {
+                for (j = 0; j < group.length; j += 1) {
+                    args[0] = group[j];
+                    func.apply(scope, args);
+                }
+            } else {
+                for (j in group) {
+                    args[0] = group[j];
+                    func.apply(scope, args);
+                }
             }
         }
     };
-    
+
     /**
      * Calls a function for each group, with that group as the first argument.
      * Extra arguments may be passed after scope and func natively, as in 
@@ -513,17 +521,17 @@ function GroupHoldr(settings) {
     self.callAll = function (scope, func) {
         var args = Array.prototype.slice.call(arguments, 1),
             i;
-        
+
         if (!scope) {
             scope = self;
         }
-        
+
         for (i = groupNames.length - 1; i >= 0; i -= 1) {
             args[0] = groups[groupNames[i]];
             func.apply(scope, args);
         }
     };
-    
+
     /**
      * Calls a function for each member of each group. Extra arguments may be
      * passed after scope and func natively, as in Function.call's standard.
@@ -535,39 +543,48 @@ function GroupHoldr(settings) {
     self.callOnAll = function (scope, func) {
         var args = Array.prototype.slice.call(arguments, 1),
             group, i, j;
-        
+
         if (!scope) {
             scope = self;
         }
-        
+
         for (i = groupNames.length - 1; i >= 0; i -= 1) {
             group = groups[groupNames[i]];
-            for (j in group) {
-                args[0] = group[j];
-                func.apply(scope, args);
+
+            if (group instanceof Array) {
+                for (j = 0; j < group.length; j += 1) {
+                    args[0] = group[j];
+                    func.apply(scope, args);
+                }
+            } else {
+                for (j in group) {
+                    args[0] = group[j];
+                    func.apply(scope, args);
+
+                }
             }
         }
     };
-    
+
     /**
      * Clears each Array by setting its length to 0.
      */
     self.clearArrays = function () {
         var group, name, i;
-        
+
         for (i = groupNames.length - 1; i >= 0; i -= 1) {
             group = groups[groupNames[i]];
-            
+
             if (group instanceof Array) {
                 group.length = 0;
             }
         }
     }
-    
-    
+
+
     /* Utilities
     */
-    
+
     /**
      * Returns the name of a type specified by a string ("Array" or "Object").
      * 
@@ -582,7 +599,7 @@ function GroupHoldr(settings) {
         }
         return "Array";
     }
-    
+
     /**
      * Returns function specified by a string (Array or Object).
      * 
@@ -597,7 +614,7 @@ function GroupHoldr(settings) {
         }
         return Array;
     }
-    
+
     /**
      * 
      */
@@ -605,10 +622,10 @@ function GroupHoldr(settings) {
         if (groupTypes.constructor === String) {
             return value === groupTypes;
         }
-        
+
         return groupTypes[name] === value.constructor;
     }
-    
+
     /**
      * Uppercases the first character in a string.
      * 
@@ -618,6 +635,6 @@ function GroupHoldr(settings) {
     function ucFirst(str) {
         return str[0].toUpperCase() + str.slice(1);
     }
-    
+
     self.reset(settings || {});
 }
