@@ -118,6 +118,7 @@
                     "WindowBlinds": {},
                     "Portrait": {
                         "PlayerPortrait": {},
+                        "OakPortrait": {},
                         "BlainePortrait": {},
                         "BrockPortrait": {},
                         "ErikaPortrait": {},
@@ -828,6 +829,7 @@
             "HPBar": [.5, 2],
             "HPBarFill": [.5, .5],
             "PlayerPortrait": [13, 23],
+            "OakPortrait": [14.5, 28],
             "BattleSpriteFrontSmall": [20, 20],
             "BattleSpriteFrontMedium": [24, 24],
             "BattleSpriteFrontLarge": [28, 28],

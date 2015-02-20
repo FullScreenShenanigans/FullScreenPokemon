@@ -311,7 +311,7 @@ var EightBittr = (function () {
     function setMidX(thing, x) {
         thing.EightBitter.setLeft(
             thing, 
-            x + thing.width * thing.EightBitter.unitsize / 2
+            x - thing.width * thing.EightBitter.unitsize / 2
         );
     }
     
@@ -324,7 +324,7 @@ var EightBittr = (function () {
     function setMidY(thing, y) {
         thing.EightBitter.setTop(
             thing,
-            y + thing.height * thing.EightBitter.unitsize / 2
+            y - thing.height * thing.EightBitter.unitsize / 2
         );
     }
     
