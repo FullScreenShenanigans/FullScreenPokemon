@@ -429,7 +429,29 @@ function ThingHittr(settings) {
         
         return output;
     };
-    
+
+    /**
+     * Manually checks whether two Things are touching.
+     * 
+     * 
+     */
+    self.checkHit = function (thing, other, thingType, otherGroup) {
+        var checks = hitChecks[thingType],
+            check;
+
+        if (!checks) {
+            throw new Error("No hit checks defined for " + thingType + ".");
+        }
+
+        check = checks[otherGroup];
+
+        if (!check) {
+            throw new Error("No hit check defined for " + thingType + " and " + otherGroup + ".");
+        }
+
+        return check(thing, other);
+    };
+
     
     self.reset(settings || {});
 }

@@ -538,6 +538,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": 24
                 }
             },
+            "ignoreB": true,
             "textXOffset": 8,
             "textColumnWidth": 24
         },

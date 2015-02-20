@@ -103,7 +103,7 @@ function MathDecidr(settings) {
      * 
      */
     self.compute = function (name) {
-        return equations[name].apply(self, Array.prototype.slice.call(arguments[0], 1));
+        return equations[name].apply(self, Array.prototype.slice.call(arguments, 1));
     };
 
     /**

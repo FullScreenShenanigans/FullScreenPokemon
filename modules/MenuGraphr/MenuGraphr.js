@@ -777,7 +777,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.registerB = function () {
-        if (!activeMenu) {
+        if (!activeMenu || activeMenu.ignoreB) {
             return;
         }
 

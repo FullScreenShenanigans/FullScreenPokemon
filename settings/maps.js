@@ -73,6 +73,17 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Land": {
                     "width": 152,
                     "height": 136,
+                    "wildPokemon": {
+                        "grass": [{
+                            "title": "Pidgey",
+                            "levels": [2, 3, 4, 5],
+                            "rate": .55
+                        }, {
+                            "title": "Rattata",
+                            "levels": [2, 3, 4],
+                            "rate": .45
+                        }]
+                    },
                     "creation": [
                         { "thing": "AreaSpawner", "width": 152, "height": 136, "map": "Route 1", "area": "Land", "direction": 0 },
                         { "thing": "FenceWide", "width": 80 },
@@ -265,6 +276,17 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Land": {
                     "width": 160,
                     "height": 296,
+                    "wildPokemon": {
+                        "grass": [{
+                            "title": "Pidgey",
+                            "levels": [2, 3, 4, 5],
+                            "rate": .55
+                        }, {
+                            "title": "Rattata",
+                            "levels": [2, 3, 4],
+                            "rate": .45
+                        }]
+                    },
                     "creation": [
                         { "thing": "AreaSpawner", "width": 160, "map": "Viridian City", "area": "Land", "direction": 0, "offsetX": -80 },
                         { "thing": "DirtMedium", "width": 32, "height": 296 },

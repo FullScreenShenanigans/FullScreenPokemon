@@ -123,10 +123,9 @@ function BattleMovr(settings) {
 
         battleInfo = settings;
 
-        //EightBitter.setMap("Blank", "White");
-
         self.createBackground();
 
+        EightBitter.MapScreener.inMenu = true;
         EightBitter.MenuGrapher.createMenu("Battle");
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
 
@@ -155,6 +154,8 @@ function BattleMovr(settings) {
         }
 
         self.deleteBackground();
+
+        EightBitter.MapScreener.inMenu = false;
         EightBitter.MenuGrapher.deleteMenu("Battle");
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
         EightBitter.MenuGrapher.deleteMenu("BattleOptions");

@@ -455,6 +455,8 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
         thing.spawned = true;
+        thing.areaName = thing.EightBitter.MapsHandler.getAreaName();
+        thing.mapName = thing.EightBitter.MapsHandler.getMapName();
 
         thing.EightBitter.addThing(
             thing,
@@ -532,7 +534,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerLeft();
-        } else if (player.canKeyWalking) {
+        } else if (player.canKeyWalking && !player.EightBitter.MapScreener.inMenu) {
             player.EightBitter.setPlayerDirection(player, 3);
         }
 
@@ -551,12 +553,14 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerRight();
-        } else if (player.canKeyWalking) {
+        } else if (player.canKeyWalking && !player.EightBitter.MapScreener.inMenu) {
             player.EightBitter.setPlayerDirection(player, 1);
         }
 
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -570,13 +574,15 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerUp();
-        } else if (player.canKeyWalking) {
+        } else if (player.canKeyWalking && !player.EightBitter.MapScreener.inMenu) {
             player.EightBitter.setPlayerDirection(player, 0);
         }
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownUp");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -590,13 +596,15 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerDown();
-        } else if (player.canKeyWalking) {
+        } else if (player.canKeyWalking && !player.EightBitter.MapScreener.inMenu) {
             player.EightBitter.setPlayerDirection(player, 2);
         }
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownDown");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -619,7 +627,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownA");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -636,7 +646,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownB");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -652,7 +664,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.EightBitter.ModAttacher.fireEvent("onKeyDownPause");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -667,7 +681,9 @@ var FullScreenPokemon = (function (GameStartr) {
         player.EightBitter.AudioPlayer.toggleMuted();
         player.EightBitter.ModAttacher.fireEvent("onKeyDownMute");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -679,7 +695,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.keys[3] = false;
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -691,7 +709,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.keys[1] = false;
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -703,7 +723,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.keys[0] = false;
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -715,7 +737,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.keys[2] = false;
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /*
@@ -726,7 +750,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.keys.a = false;
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -737,7 +763,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.keys.b = false;
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -750,7 +778,9 @@ var FullScreenPokemon = (function (GameStartr) {
         }
         player.EightBitter.ModAttacher.fireEvent("onKeyUpPause");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -762,7 +792,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         player.EightBitter.ModAttacher.fireEvent("onMouseDownRight");
 
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
     }
 
 
@@ -876,6 +908,37 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /* General animations
     */
+
+    /**
+     * 
+     */
+    function animateGrassBattleStart(thing, grass) {
+        var grassMap = FSP.MapsHandler.getMap(grass.mapName),
+            grassArea = grassMap.areas[grass.areaName],
+            options = grassArea.wildPokemon.grass,
+            chosen = thing.EightBitter.chooseRandomWildPokemon(
+                thing.EightBitter, options
+            );
+
+        thing.EightBitter.MapScreener.inMenu = true;
+        thing.EightBitter.BattleMover.startBattle({
+            "opponent": {
+                "title": chosen.title
+            },
+            "playerActors": [
+                {
+                    "title": "Squirtle",
+                    "moves": [{
+                        "title": "TACKLE"
+                    }, {
+                        "title": "TAIL WHIP"
+                    }, {
+                        "title": "BUBBLE"
+                    }]
+                }
+            ]
+        });
+    }
 
     /**
      * 
@@ -1070,6 +1133,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animatePlayerStopWalking(thing) {
+        if (thing.EightBitter.checkPlayerGrassBattle(thing)) {
+            return;
+        }
+
+
         if (thing.keys[thing.direction]) {
             thing.EightBitter.animateCharacterSetDistanceVelocity(
                 thing, thing.distance
@@ -1289,6 +1357,20 @@ var FullScreenPokemon = (function (GameStartr) {
         if (other.switchDirectionOnDialog) {
             thing.EightBitter.animateCharacterSetDirection(other, direction);
         }
+    }
+
+    /**
+     * 
+     */
+    function collidePlayerGrass(thing, other) {
+        if (!thing.player) {
+            return;
+        }
+
+        thing.grass = other;
+        thing.EightBitter.addClass(thing, "grass");
+
+        return true;
     }
 
 
@@ -1554,10 +1636,11 @@ var FullScreenPokemon = (function (GameStartr) {
         for (i = 0; i < creation.length; i += 1) {
             // A copy of the command must be used to not modify the original 
             command = EightBitter.proliferate({
-                "noBoundaryStretch": true
+                "noBoundaryStretch": true,
+                "areaName": area.name,
+                "mapName": area.map.name
             }, creation[i]);
 
-            // The command's x and y must be shifted by the thing's placement
             if (!command.x) {
                 command.x = x;
             } else {
@@ -1600,7 +1683,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function openPauseMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
-        EightBitter.MapScreener.inPauseMenu = true;
+        EightBitter.MapScreener.inMenu = true;
         EightBitter.MenuGrapher.createMenu("Pause");
         EightBitter.MenuGrapher.setActiveMenu("Pause");
         EightBitter.MenuGrapher.addMenuList("Pause", {
@@ -1634,7 +1717,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function closePauseMenu() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
-        EightBitter.MapScreener.inPauseMenu = false;
+        EightBitter.MapScreener.inMenu = false;
         EightBitter.MenuGrapher.deleteMenu("Pause");
     };
 
@@ -1644,7 +1727,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function togglePauseMenu(player) {
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerStart();
-        } else if (player.EightBitter.MapScreener.inPauseMenu) {
+        } else if (player.EightBitter.MapScreener.inMenu) {
             player.EightBitter.closePauseMenu();
         } else {
             player.EightBitter.openPauseMenu();
@@ -1846,6 +1929,47 @@ var FullScreenPokemon = (function (GameStartr) {
     /* Battles
     */
 
+    /**
+     * 
+     */
+    function checkPlayerGrassBattle(thing) {
+        if (!thing.grass || thing.EightBitter.MapScreener.inMenu) {
+            return;
+        }
+
+        if (!thing.EightBitter.ThingHitter.checkHit(
+            thing, thing.grass, thing.title, thing.grass.groupType
+        )) {
+            delete thing.grass;
+            return;
+        }
+        
+        if (!thing.EightBitter.MathDecider.compute(
+            "doesGrassEncounterHappen", thing.grass
+        )) {
+            return;
+        }
+
+        thing.keys = thing.getKeys();
+        thing.EightBitter.animateGrassBattleStart(thing, thing.grass);
+    }
+
+    /**
+     * 
+     */
+    function chooseRandomWildPokemon(EightBitter, options) {
+        var choice = EightBitter.NumberMaker.randomInt(options.length),
+            sum = 0,
+            i;
+        
+        for (i = 0; i < options.length; i += 1) {
+            sum += options[i].rate;
+            if (sum >= choice) {
+                return options[i];
+            }
+        }
+    }
+
 
     /* Saving
     */
@@ -1869,7 +1993,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function saveCharacterPosition(EightBitter, character, id) {
-        console.log("Saving", id, (character.left + EightBitter.MapScreener.left) / EightBitter.unitsize);
         EightBitter.StateHolder.addChange(
             id,
             "xloc",
@@ -2919,6 +3042,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "getHorizontalScrollAmount": getHorizontalScrollAmount,
         "getVerticalScrollAmount": getVerticalScrollAmount,
         // General animations
+        "animateGrassBattleStart": animateGrassBattleStart,
         "animatePlayerLeaveLeft": animatePlayerLeaveLeft,
         "animatePokeballOpening": animatePokeballOpening,
         // Character movement
@@ -2940,6 +3064,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "generateHitCharacterThing": generateHitCharacterThing,
         "collideTransporter": collideTransporter,
         "collidePlayerBordering": collidePlayerBordering,
+        "collidePlayerGrass": collidePlayerGrass,
         // Death
         "killNormal": killNormal,
         // Activations
@@ -2968,6 +3093,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
         // Battles
+        "checkPlayerGrassBattle": checkPlayerGrassBattle,
+        "chooseRandomWildPokemon": chooseRandomWildPokemon,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
@@ -2999,7 +3126,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroMountain": macroMountain,
         // Miscellaneous utilities
         "stringOf": stringOf,
-        "makeDigit": makeDigit
+        "makeDigit": makeDigit,
     });
 
     return FullScreenPokemon;

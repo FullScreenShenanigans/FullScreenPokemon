@@ -705,7 +705,8 @@
             "ConsoleController": [8, 5],
             "FenceVertical": [4, 8],
             "Grass": {
-                "nocollide": true
+                "rarity": 10,
+                "collide": FullScreenPokemon.prototype.collidePlayerGrass
             },
             "HouseBase": {
                 "width": 32,
