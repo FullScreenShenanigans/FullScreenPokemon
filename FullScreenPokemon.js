@@ -1949,6 +1949,35 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("Yes/No");
     };
 
+    /**
+     * 
+     */
+    function openKeyboardMenu(text, onComplete) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            letters = [
+                "A", "J", "S", "Times", "-",
+                "B", "K", "T", "(", "?",
+                "C", "L", "U", ")", "!",
+                "D", "M", "V", ":", "MaleSymbol",
+                "E", "N", "W", ";", "FemaleSymbol",
+                "F", "O", "X", "[", "/",
+                "G", "P", "Y", "]", ".",
+                "H", "Q", "Z", "Poke", ",",
+                "I", "R", " ", "Mon", "End"
+            ];
+
+        EightBitter.MenuGrapher.createMenu("Keyboard");
+        EightBitter.MenuGrapher.addMenuList("KeyboardKeys", {
+            "options": letters.map(function (letter) {
+                return {
+                    "text": [letter],
+                    "callback": console.log.bind(console, "hi")
+                };
+            })
+        });
+        EightBitter.MenuGrapher.setActiveMenu("KeyboardKeys");
+    }
+
 
     /* Battles
     */
@@ -3406,6 +3435,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
+        "openKeyboardMenu": openKeyboardMenu,
         // Battles
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,

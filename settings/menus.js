@@ -33,22 +33,6 @@ FullScreenPokemon.prototype.settings.menus = {
     },
     "replaceFromStatsHolder": true,
     "schemas": {
-        "NameOptions": {
-            "size": {
-                "width": 44,
-                "height": 48
-            },
-            "position": {
-                "horizontal": "center",
-                "vertical": "bottom",
-                "offset": {
-                    "left": -18,
-                    "top": -24
-                }
-            },
-            "ignoreB": true,
-            "textXOffset": 8
-        },
         "StartOptions": {
             "size": {
                 "width": 60,
@@ -679,5 +663,51 @@ FullScreenPokemon.prototype.settings.menus = {
             "textPaddingY": 4,
             "arrowXOffset": 1
         },
+        "NameOptions": {
+            "size": {
+                "width": 44,
+                "height": 48
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "bottom",
+                "offset": {
+                    "left": -18,
+                    "top": -24
+                }
+            },
+            "ignoreB": true,
+            "textXOffset": 8
+        },
+        "Keyboard": {
+            "size": {
+                "width": 80,
+                "height": 72
+            },
+            "position": {
+                "vertical": "bottom",
+                "horizontal": "center"
+            },
+            "childrenSchemas": [{
+                "type": "menu",
+                "name": "KeyboardKeys"
+            }],
+            "plain": true
+        },
+        "KeyboardKeys": {
+            "size": {
+                "width": 80,
+                "height": 44
+            },
+            "position": {
+                "offset": {
+                    "top": 16
+                }
+            },
+            "container": "Keyboard",
+            "textColumnWidth": 8,
+            "textXOffset": 8,
+            "textYOffset": 4
+        }
     }
 };
