@@ -2268,7 +2268,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function introPlayerNameOptions(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             fromMenu = EightBitter.introPlayerNameFromMenu.bind(EightBitter, player),
-            fromKeyboard = EightBitter.introPlayerNameFromKeyboard.bind(EightBitter);
+            fromKeyboard = EightBitter.introPlayerNameFromKeyboard.bind(EightBitter, player);
 
         EightBitter.MenuGrapher.createMenu("NameOptions");
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
@@ -2313,14 +2313,20 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introPlayerNameFromKeyboard() {
+    function introPlayerNameFromKeyboard(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            name = MenuGrapher.getMenu("KeyboardResult").completeValue;
+            name = EightBitter.MenuGrapher.getMenu("KeyboardResult").completeValue;
 
         EightBitter.MenuGrapher.deleteMenu("Keyboard");
         EightBitter.MenuGrapher.deleteMenu("NameOptions");
 
-        EightBitter.introPlayerNameConfirm(name);
+        EightBitter.fadeHorizontal(
+            player,
+            -EightBitter.unitsize,
+            EightBitter.MapScreener.middleX,
+            1,
+            EightBitter.introPlayerNameConfirm.bind(EightBitter, name)
+        );
     }
 
     /**
@@ -2335,6 +2341,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
             "Right! So your name is " + name + "!"
         ], EightBitter.introPlayerNameComplete.bind(EightBitter));
+
         EightBitter.StatsHolder.set("name", name);
     };
 
@@ -2358,9 +2365,155 @@ var FullScreenPokemon = (function (GameStartr) {
             "opacity",
             .2,
             1,
-            7/*,
-            EightBitter.introRivalAppear.bind(EightBitter)*/
+            7,
+            EightBitter.introRivalAppear.bind(EightBitter)
         );
+    }
+
+    /**
+     * 
+     */
+    function introRivalAppear() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            rival = EightBitter.ObjectMaker.make("RivalPortrait", {
+                "flipHoriz": true,
+                "opacity": .01
+            });
+
+        EightBitter.GroupHolder.applyOnAll(EightBitter, EightBitter.killNormal);
+
+        EightBitter.addThing(rival, 0, 0);
+        EightBitter.setMidX(rival, EightBitter.MapScreener.middleX);
+        EightBitter.setBottom(
+            rival,
+            EightBitter.MapScreener.height - 32 * EightBitter.unitsize
+        );
+
+        EightBitter.fadeAttribute(
+            rival,
+            "opacity",
+            .1,
+            1,
+            1,
+            EightBitter.introRivalName.bind(EightBitter, rival)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introRivalName(rival) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "This is my grand-son. He's been your rival since you were a baby.",
+                "...Erm, what is his name again?"
+            ],
+            EightBitter.introRivalNameOptions.bind(EightBitter, rival)
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function introRivalNameOptions(rival) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            fromMenu = EightBitter.introRivalNameFromMenu.bind(EightBitter, rival),
+            fromKeyboard = EightBitter.introRivalNameFromKeyboard.bind(EightBitter, rival);
+
+        EightBitter.MenuGrapher.createMenu("NameOptions");
+        EightBitter.MenuGrapher.addMenuList("NameOptions", {
+            "options": [{
+                "text": "NEW NAME",
+                "callback": EightBitter.openKeyboardMenu.bind(EightBitter, {
+                    "title": "RIVAL's NAME?",
+                    "callback": fromKeyboard
+                })
+            }, {
+                "text": "RED",
+                "callback": fromMenu
+            }, {
+                "text": "ASH",
+                "callback": fromMenu
+            }, {
+                "text": "JACK",
+                "callback": fromMenu
+            }]
+        });
+        EightBitter.MenuGrapher.setActiveMenu("NameOptions");
+    }
+
+    /**
+     * 
+     */
+    function introRivalNameFromMenu(rival) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            name = EightBitter.MenuGrapher.getMenuSelectedOption("NameOptions").text;
+
+        EightBitter.MenuGrapher.deleteMenu("NameOptions");
+
+        EightBitter.fadeHorizontal(
+            rival,
+            -EightBitter.unitsize,
+            EightBitter.MapScreener.middleX,
+            1,
+            EightBitter.introRivalNameConfirm.bind(EightBitter, name)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introRivalNameFromKeyboard(rival) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            name = EightBitter.MenuGrapher.getMenu("KeyboardResult").completeValue;
+
+        EightBitter.MenuGrapher.deleteMenu("Keyboard");
+        EightBitter.MenuGrapher.deleteMenu("NameOptions");
+
+        EightBitter.fadeHorizontal(
+            rival,
+            -EightBitter.unitsize,
+            EightBitter.MapScreener.middleX,
+            1,
+            EightBitter.introRivalNameConfirm.bind(EightBitter, name)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introRivalNameConfirm(name) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
+            "That's right! I remember now! His name is " + name + "!"
+        ], EightBitter.introLastDialog.bind(EightBitter));
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        EightBitter.StatsHolder.set("nameRival", name);
+    }
+
+    /**
+     * 
+     */
+    function introLastDialog() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
+            "%%%%%%%PLAYER%%%%%%%!",
+            "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
+            "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!"
+        ]);
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
 
@@ -3587,6 +3740,13 @@ var FullScreenPokemon = (function (GameStartr) {
         "introPlayerNameFromKeyboard": introPlayerNameFromKeyboard,
         "introPlayerNameConfirm": introPlayerNameConfirm,
         "introPlayerNameComplete": introPlayerNameComplete,
+        "introRivalAppear": introRivalAppear,
+        "introRivalName": introRivalName,
+        "introRivalNameOptions": introRivalNameOptions,
+        "introRivalNameFromMenu": introRivalNameFromMenu,
+        "introRivalNameFromKeyboard": introRivalNameFromKeyboard,
+        "introRivalNameConfirm": introRivalNameConfirm,
+        "introLastDialog": introLastDialog,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
