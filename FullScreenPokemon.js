@@ -310,7 +310,7 @@ var FullScreenPokemon = (function (GameStartr) {
             .07,
             1,
             7,
-            EightBitter.introFirstDialog
+            EightBitter.cutsceneIntroFirstDialog
         );
     }
 
@@ -2086,7 +2086,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introFirstDialog(thing) {
+    function cutsceneIntroFirstDialog(thing) {
         var EightBitter = thing.EightBitter;
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2098,7 +2098,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "Hello there! \n Welcome to the world of %%%%%%%POKEMON%%%%%%%!",
                 "My name is OAK! People call me the %%%%%%%POKEMON%%%%%%% PROF!"
             ],
-            EightBitter.introFirstDialogFade.bind(EightBitter)
+            EightBitter.cutsceneIntroFirstDialogFade.bind(EightBitter)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2106,7 +2106,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introFirstDialogFade() {
+    function cutsceneIntroFirstDialogFade() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             blank = EightBitter.ObjectMaker.make("WhiteSquare", {
                 "width": EightBitter.MapScreener.width,
@@ -2124,14 +2124,14 @@ var FullScreenPokemon = (function (GameStartr) {
             .2,
             1,
             7,
-            EightBitter.introPokemonExpo.bind(EightBitter)
+            EightBitter.cutsceneIntroPokemonExpo.bind(EightBitter)
         );
     }
 
     /**
      * 
      */
-    function introPokemonExpo() {
+    function cutsceneIntroPokemonExpo() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             pokemon = EightBitter.ObjectMaker.make("NidorinoFront", {
                 "flipHoriz": true,
@@ -2164,14 +2164,14 @@ var FullScreenPokemon = (function (GameStartr) {
             -EightBitter.unitsize * 2,
             EightBitter.MapScreener.middleX,
             1,
-            EightBitter.introPokemonExplanation.bind(EightBitter)
+            EightBitter.cutsceneIntroPokemonExplanation.bind(EightBitter)
         );
     }
 
     /**
      * 
      */
-    function introPokemonExplanation() {
+    function cutsceneIntroPokemonExplanation() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2185,7 +2185,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "Myself...",
                 "I study %%%%%%%POKEMON%%%%%%% as a profession."
             ],
-            EightBitter.introPlayerAppear.bind(EightBitter)
+            EightBitter.cutsceneIntroPlayerAppear.bind(EightBitter)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2193,7 +2193,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introPlayerAppear() {
+    function cutsceneIntroPlayerAppear() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             player = EightBitter.ObjectMaker.make("PlayerPortrait", {
                 "flipHoriz": true,
@@ -2227,14 +2227,14 @@ var FullScreenPokemon = (function (GameStartr) {
             -EightBitter.unitsize * 2,
             middleX - player.width * EightBitter.unitsize / 2,
             1,
-            EightBitter.introPlayerName.bind(EightBitter, player)
+            EightBitter.cutsceneIntroPlayerName.bind(EightBitter, player)
         );
     }
 
     /**
      * 
      */
-    function introPlayerName(player) {
+    function cutsceneIntroPlayerName(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2245,7 +2245,7 @@ var FullScreenPokemon = (function (GameStartr) {
             [
                 "First, what is your name?"
             ],
-            EightBitter.introPlayerSlide.bind(EightBitter, player)
+            EightBitter.cutsceneIntroPlayerSlide.bind(EightBitter, player)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2253,7 +2253,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introPlayerSlide(player) {
+    function cutsceneIntroPlayerSlide(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.fadeHorizontal(
@@ -2261,17 +2261,17 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.unitsize,
             EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize,
             1,
-            EightBitter.introPlayerNameOptions.bind(EightBitter, player)
+            EightBitter.cutsceneIntroPlayerNameOptions.bind(EightBitter, player)
         );
     }
 
     /**
      * 
      */
-    function introPlayerNameOptions(player) {
+    function cutsceneIntroPlayerNameOptions(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            fromMenu = EightBitter.introPlayerNameFromMenu.bind(EightBitter, player),
-            fromKeyboard = EightBitter.introPlayerNameFromKeyboard.bind(EightBitter, player);
+            fromMenu = EightBitter.cutsceneIntroPlayerNameFromMenu.bind(EightBitter, player),
+            fromKeyboard = EightBitter.cutsceneIntroPlayerNameFromKeyboard.bind(EightBitter, player);
 
         EightBitter.MenuGrapher.createMenu("NameOptions");
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
@@ -2298,7 +2298,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introPlayerNameFromMenu(player) {
+    function cutsceneIntroPlayerNameFromMenu(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             name = EightBitter.MenuGrapher.getMenuSelectedOption("NameOptions").text;
 
@@ -2309,14 +2309,14 @@ var FullScreenPokemon = (function (GameStartr) {
             -EightBitter.unitsize,
             EightBitter.MapScreener.middleX,
             1,
-            EightBitter.introPlayerNameConfirm.bind(EightBitter, name)
+            EightBitter.cutsceneIntroPlayerNameConfirm.bind(EightBitter, name)
         );
     }
 
     /**
      * 
      */
-    function introPlayerNameFromKeyboard(player) {
+    function cutsceneIntroPlayerNameFromKeyboard(player) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             name = EightBitter.MenuGrapher.getMenu("KeyboardResult").completeValue;
 
@@ -2328,14 +2328,14 @@ var FullScreenPokemon = (function (GameStartr) {
             -EightBitter.unitsize,
             EightBitter.MapScreener.middleX,
             1,
-            EightBitter.introPlayerNameConfirm.bind(EightBitter, name)
+            EightBitter.cutsceneIntroPlayerNameConfirm.bind(EightBitter, name)
         );
     }
 
     /**
      * 
      */
-    function introPlayerNameConfirm(name) {
+    function cutsceneIntroPlayerNameConfirm(name) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
             
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2343,7 +2343,7 @@ var FullScreenPokemon = (function (GameStartr) {
         });
         EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
             "Right! So your name is " + name + "!"
-        ], EightBitter.introPlayerNameComplete.bind(EightBitter));
+        ], EightBitter.cutsceneIntroPlayerNameComplete.bind(EightBitter));
 
         EightBitter.StatsHolder.set("name", name);
     };
@@ -2351,7 +2351,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introPlayerNameComplete() {
+    function cutsceneIntroPlayerNameComplete() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             blank = EightBitter.ObjectMaker.make("WhiteSquare", {
                 "width": EightBitter.MapScreener.width,
@@ -2369,14 +2369,14 @@ var FullScreenPokemon = (function (GameStartr) {
             .2,
             1,
             7,
-            EightBitter.introRivalAppear.bind(EightBitter)
+            EightBitter.cutsceneIntroRivalAppear.bind(EightBitter)
         );
     }
 
     /**
      * 
      */
-    function introRivalAppear() {
+    function cutsceneIntroRivalAppear() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             rival = EightBitter.ObjectMaker.make("RivalPortrait", {
                 "opacity": .01
@@ -2397,14 +2397,14 @@ var FullScreenPokemon = (function (GameStartr) {
             .1,
             1,
             1,
-            EightBitter.introRivalName.bind(EightBitter, rival)
+            EightBitter.cutsceneIntroRivalName.bind(EightBitter, rival)
         );
     }
 
     /**
      * 
      */
-    function introRivalName(rival) {
+    function cutsceneIntroRivalName(rival) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2416,7 +2416,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "This is my grand-son. He's been your rival since you were a baby.",
                 "...Erm, what is his name again?"
             ],
-            EightBitter.introRivalNameOptions.bind(EightBitter, rival)
+            EightBitter.cutsceneIntroRivalNameOptions.bind(EightBitter, rival)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2424,10 +2424,10 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introRivalNameOptions(rival) {
+    function cutsceneIntroRivalNameOptions(rival) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            fromMenu = EightBitter.introRivalNameFromMenu.bind(EightBitter, rival),
-            fromKeyboard = EightBitter.introRivalNameFromKeyboard.bind(EightBitter, rival);
+            fromMenu = EightBitter.cutsceneIntroRivalNameFromMenu.bind(EightBitter, rival),
+            fromKeyboard = EightBitter.cutsceneIntroRivalNameFromKeyboard.bind(EightBitter, rival);
 
         EightBitter.MenuGrapher.createMenu("NameOptions");
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
@@ -2454,7 +2454,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introRivalNameFromMenu(rival) {
+    function cutsceneIntroRivalNameFromMenu(rival) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             name = EightBitter.MenuGrapher.getMenuSelectedOption("NameOptions").text;
 
@@ -2466,14 +2466,14 @@ var FullScreenPokemon = (function (GameStartr) {
             -EightBitter.unitsize,
             EightBitter.MapScreener.middleX,
             1,
-            EightBitter.introRivalNameConfirm.bind(EightBitter, name)
+            EightBitter.cutsceneIntroRivalNameConfirm.bind(EightBitter, name)
         );
     }
 
     /**
      * 
      */
-    function introRivalNameFromKeyboard(rival) {
+    function cutsceneIntroRivalNameFromKeyboard(rival) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             name = EightBitter.MenuGrapher.getMenu("KeyboardResult").completeValue;
 
@@ -2486,20 +2486,20 @@ var FullScreenPokemon = (function (GameStartr) {
             -EightBitter.unitsize,
             EightBitter.MapScreener.middleX,
             1,
-            EightBitter.introRivalNameConfirm.bind(EightBitter, name)
+            EightBitter.cutsceneIntroRivalNameConfirm.bind(EightBitter, name)
         );
     }
 
     /**
      * 
      */
-    function introRivalNameConfirm(name) {
+    function cutsceneIntroRivalNameConfirm(name) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
             "That's right! I remember now! His name is " + name + "!"
-        ], EightBitter.introRivalNameComplete.bind(EightBitter));
+        ], EightBitter.cutsceneIntroRivalNameComplete.bind(EightBitter));
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
         EightBitter.StatsHolder.set("nameRival", name);
@@ -2508,7 +2508,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introRivalNameComplete() {
+    function cutsceneIntroRivalNameComplete() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             blank = EightBitter.ObjectMaker.make("WhiteSquare", {
                 "width": EightBitter.MapScreener.width,
@@ -2526,14 +2526,14 @@ var FullScreenPokemon = (function (GameStartr) {
             .2,
             1,
             7,
-            EightBitter.introLastDialogAppear.bind(EightBitter)
+            EightBitter.cutsceneIntroLastDialogAppear.bind(EightBitter)
         );
     }
 
     /**
      * 
      */
-    function introLastDialogAppear() {
+    function cutsceneIntroLastDialogAppear() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             portrait = EightBitter.ObjectMaker.make("PlayerPortrait", {
                 "flipHoriz": true,
@@ -2555,14 +2555,14 @@ var FullScreenPokemon = (function (GameStartr) {
             .1,
             1,
             1,
-            EightBitter.introLastDialog.bind(EightBitter, portrait)
+            EightBitter.cutsceneIntroLastDialog.bind(EightBitter, portrait)
         );
     }
 
     /**
      * 
      */
-    function introLastDialog(portrait) {
+    function cutsceneIntroLastDialog(portrait) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -2573,7 +2573,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
                 "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!"
             ],
-            EightBitter.introShrinkPlayer.bind(EightBitter, portrait)
+            EightBitter.cutsceneIntroShrinkPlayer.bind(EightBitter, portrait)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2581,7 +2581,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introShrinkPlayer(portrait) {
+    function cutsceneIntroShrinkPlayer(portrait) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             silhouetteLarge = EightBitter.ObjectMaker.make("PlayerSilhouetteLarge"),
             silhouetteSmall = EightBitter.ObjectMaker.make("PlayerSilhouetteSmall"),
@@ -2619,14 +2619,14 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.TimeHandler.addEvent(
-            EightBitter.introFadeOut.bind(EightBitter), timeDelay * 4
+            EightBitter.cutsceneIntroFadeOut.bind(EightBitter), timeDelay * 4
         );
     }
 
     /**
      * 
      */
-    function introFadeOut() {
+    function cutsceneIntroFadeOut() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             blank = EightBitter.ObjectMaker.make("WhiteSquare", {
                 "width": EightBitter.MapScreener.width,
@@ -2644,14 +2644,14 @@ var FullScreenPokemon = (function (GameStartr) {
             .2,
             1,
             7,
-            EightBitter.introFinish.bind(EightBitter)
+            EightBitter.cutsceneIntroFinish.bind(EightBitter)
         );
     }
 
     /**
      * 
      */
-    function introFinish() {
+    function cutsceneIntroFinish() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.deleteActiveMenu();
@@ -2663,7 +2663,10 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntro(thing, other) {
+        other.activated = false;
         thing.EightBitter.MapScreener.inMenu = true;
+
+        thing.EightBitter.animateCharacterSetDirection(thing, 2);
 
         thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true,
@@ -2674,11 +2677,18 @@ var FullScreenPokemon = (function (GameStartr) {
             "GeneralText",
             [
                 "OAK: Hey! Wait! Don't go out!"
-            ]
-            //, EightBitter.oakIntroCatchup.bind(EightBitter)
+            ],
+            thing.EightBitter.cutsceneOakCatchup.bind(thing.EightBitter)
         );
+    }
 
-        other.activated = false;
+    /**
+     * 
+     */
+    function cutsceneOakCatchup() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+
     }
 
 
@@ -3914,31 +3924,32 @@ var FullScreenPokemon = (function (GameStartr) {
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,
         // Cutscenes
-        "introFirstDialog": introFirstDialog,
-        "introFirstDialogFade": introFirstDialogFade,
-        "introPokemonExpo": introPokemonExpo,
-        "introPokemonExplanation": introPokemonExplanation,
-        "introPlayerAppear": introPlayerAppear,
-        "introPlayerName": introPlayerName,
-        "introPlayerSlide": introPlayerSlide,
-        "introPlayerNameOptions": introPlayerNameOptions,
-        "introPlayerNameFromMenu": introPlayerNameFromMenu,
-        "introPlayerNameFromKeyboard": introPlayerNameFromKeyboard,
-        "introPlayerNameConfirm": introPlayerNameConfirm,
-        "introPlayerNameComplete": introPlayerNameComplete,
-        "introRivalAppear": introRivalAppear,
-        "introRivalName": introRivalName,
-        "introRivalNameOptions": introRivalNameOptions,
-        "introRivalNameFromMenu": introRivalNameFromMenu,
-        "introRivalNameFromKeyboard": introRivalNameFromKeyboard,
-        "introRivalNameConfirm": introRivalNameConfirm,
-        "introRivalNameComplete": introRivalNameComplete,
-        "introLastDialogAppear": introLastDialogAppear,
-        "introLastDialog": introLastDialog,
-        "introShrinkPlayer": introShrinkPlayer,
-        "introFadeOut": introFadeOut,
-        "introFinish": introFinish,
+        "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
+        "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
+        "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
+        "cutsceneIntroPokemonExplanation": cutsceneIntroPokemonExplanation,
+        "cutsceneIntroPlayerAppear": cutsceneIntroPlayerAppear,
+        "cutsceneIntroPlayerName": cutsceneIntroPlayerName,
+        "cutsceneIntroPlayerSlide": cutsceneIntroPlayerSlide,
+        "cutsceneIntroPlayerNameOptions": cutsceneIntroPlayerNameOptions,
+        "cutsceneIntroPlayerNameFromMenu": cutsceneIntroPlayerNameFromMenu,
+        "cutsceneIntroPlayerNameFromKeyboard": cutsceneIntroPlayerNameFromKeyboard,
+        "cutsceneIntroPlayerNameConfirm": cutsceneIntroPlayerNameConfirm,
+        "cutsceneIntroPlayerNameComplete": cutsceneIntroPlayerNameComplete,
+        "cutsceneIntroRivalAppear": cutsceneIntroRivalAppear,
+        "cutsceneIntroRivalName": cutsceneIntroRivalName,
+        "cutsceneIntroRivalNameOptions": cutsceneIntroRivalNameOptions,
+        "cutsceneIntroRivalNameFromMenu": cutsceneIntroRivalNameFromMenu,
+        "cutsceneIntroRivalNameFromKeyboard": cutsceneIntroRivalNameFromKeyboard,
+        "cutsceneIntroRivalNameConfirm": cutsceneIntroRivalNameConfirm,
+        "cutsceneIntroRivalNameComplete": cutsceneIntroRivalNameComplete,
+        "cutsceneIntroLastDialogAppear": cutsceneIntroLastDialogAppear,
+        "cutsceneIntroLastDialog": cutsceneIntroLastDialog,
+        "cutsceneIntroShrinkPlayer": cutsceneIntroShrinkPlayer,
+        "cutsceneIntroFadeOut": cutsceneIntroFadeOut,
+        "cutsceneIntroFinish": cutsceneIntroFinish,
         "cutsceneOakIntro": cutsceneOakIntro,
+        "cutsceneOakCatchup": cutsceneOakCatchup,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
