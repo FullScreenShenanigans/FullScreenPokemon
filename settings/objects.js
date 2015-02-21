@@ -36,6 +36,14 @@
                         "BuildingBottom": {},
                     },
                     "Cabinet": {},
+                    "CollisionDetector": {
+                        "Transporter": {
+                            "Door": {},
+                            "HiddenTransporter": {},
+                            "StairsDown": {},
+                            "StairsUp": {}
+                        },
+                    },
                     "ComputerDesk": {},
                     "ConsoleAndController": {},
                     "FenceWide": {},
@@ -87,12 +95,6 @@
                     "Table2x3": {},
                     "Table3x1": {},
                     "TelevisionMonitor": {},
-                    "Transporter": {
-                        "Door": {},
-                        "HiddenTransporter": {},
-                        "StairsDown": {},
-                        "StairsUp": {}
-                    },
                     "Tree": {},
                     "WaterEdge": {
                         "WaterEdgeTop": {},
@@ -708,6 +710,20 @@
                 "height": 4
             },
             "Cabinet": [8, 16],
+            "CollisionDetector": {
+                "collide": FullScreenPokemon.prototype.collideCollisionDetector,
+                "activated": false,
+                "hidden": true
+            },
+            "Transporter": {
+                "activate": FullScreenPokemon.prototype.activateTransporter,
+                "requireOverlap": true,
+                "hidden": false
+            },
+            "HiddenTransporter": {
+                "hidden": true,
+                "noStretchBoundaries": true
+            },
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
             "FenceVertical": [4, 8],
@@ -787,21 +803,12 @@
             "Table2x2": [16, 16],
             "Table2x3": [16, 16],
             "Table3x1": [24, 12],
-            "Transporter": {
-                "collide": FullScreenPokemon.prototype.collideTransporter,
-                "activate": FullScreenPokemon.prototype.activateTransporter,
-                "activated": false
-            },
             "Tree": {
                 "dialog": "IT WOULD BE NICE TO CUT THE TREE DOWN LEL"
             },
             "Door": {
                 "width": 8,
                 "height": 8
-            },
-            "HiddenTransporter": {
-                "hidden": true,
-                "noStretchBoundaries": true
             },
             "WaterEdge": [4, 4],
             "WindowDetector": {

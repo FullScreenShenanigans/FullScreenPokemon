@@ -1313,20 +1313,20 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function collideTransporter(thing, other) {
+    function collideCollisionDetector(thing, other) {
         if (!thing.player) {
             return;
         }
 
         if (other.activated) {
-            if (thing.EightBitter.isThingOverlappingOther(thing, other)) {
+            if (!other.requireOverlap || thing.EightBitter.isThingOverlappingOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !thing.keys[other.requireDirection]
                 ) {
                     return;
                 }
-                thing.EightBitter.activateTransporter(thing, other)
+                other.activate(thing, other)
             }
             return true;
         }
@@ -1385,8 +1385,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function collidePlayerGrass(thing, other) {
-        if (!thing.player) {
-            return;
+        if (
+            !thing.player 
+            || !thing.EightBitter.StatsHolder.get("PokemonInParty").length
+        ) {
+            return true;
         }
 
         thing.grass = other;
@@ -2583,7 +2586,7 @@ var FullScreenPokemon = (function (GameStartr) {
             silhouetteLarge = EightBitter.ObjectMaker.make("PlayerSilhouetteLarge"),
             silhouetteSmall = EightBitter.ObjectMaker.make("PlayerSilhouetteSmall"),
             player = EightBitter.ObjectMaker.make("Player"),
-            timeDelay = 70;
+            timeDelay = 49;
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.addThing, timeDelay, silhouetteLarge
@@ -2652,7 +2655,30 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.deleteActiveMenu();
+        EightBitter.StatsHolder.set("gameStarted", true);
         EightBitter.setMap("Player's House", "Start Game");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntro(thing, other) {
+        thing.EightBitter.MapScreener.inMenu = true;
+
+        thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true,
+            "finishAutomatically": true,
+            "finishAutomaticSpeed": 35
+        });
+        thing.EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "OAK: Hey! Wait! Don't go out!"
+            ]
+            //, EightBitter.oakIntroCatchup.bind(EightBitter)
+        );
+
+        other.activated = false;
     }
 
 
@@ -3648,6 +3674,24 @@ var FullScreenPokemon = (function (GameStartr) {
         return output;
     }
 
+    /**
+     * 
+     * 
+     * @todo Make a cutscene manager, instead of "cutscene" + ...
+     */
+    function macroCutsceneTriggerer(reference, prethings, area, map, scope) {
+        return {
+            "x": reference.x || 0,
+            "y": reference.y || 0,
+            "thing": "CollisionDetector",
+            "width": reference.width || 8,
+            "height": reference.height || 8,
+            "requireOverlap": true,
+            "activate": scope.cutsceneOakIntro
+            //"activate": scope["cutcene" + reference.cutscene]
+        }
+    }
+
     /* Miscellaneous utilities
     */
 
@@ -3834,7 +3878,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "generateIsCharacterTouchingCharacter": generateIsCharacterTouchingCharacter,
         "generateIsCharacterTouchingSolid": generateIsCharacterTouchingSolid,
         "generateHitCharacterThing": generateHitCharacterThing,
-        "collideTransporter": collideTransporter,
+        "collideCollisionDetector": collideCollisionDetector,
         "collidePlayerBordering": collidePlayerBordering,
         "collidePlayerGrass": collidePlayerGrass,
         // Death
@@ -3894,6 +3938,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "introShrinkPlayer": introShrinkPlayer,
         "introFadeOut": introFadeOut,
         "introFinish": introFinish,
+        "cutsceneOakIntro": cutsceneOakIntro,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
@@ -3923,6 +3968,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroBuilding": macroBuilding,
         "macroGym": macroGym,
         "macroMountain": macroMountain,
+        "macroCutsceneTriggerer": macroCutsceneTriggerer,
         // Miscellaneous utilities
         "stringOf": stringOf,
         "makeDigit": makeDigit,

@@ -133,7 +133,9 @@ function BattleMovr(settings) {
         self.createBackground();
 
         EightBitter.MapScreener.inMenu = true;
-        EightBitter.MenuGrapher.createMenu("Battle");
+        EightBitter.MenuGrapher.createMenu("Battle", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
 
         EightBitter.MenuGrapher.addMenuDialog(

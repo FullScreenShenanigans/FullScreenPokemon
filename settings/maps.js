@@ -17,7 +17,8 @@ FullScreenPokemon.prototype.settings.maps = {
         "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge,
         "Building": FullScreenPokemon.prototype.macroBuilding,
         "Gym": FullScreenPokemon.prototype.macroGym,
-        "Mountain": FullScreenPokemon.prototype.macroMountain
+        "Mountain": FullScreenPokemon.prototype.macroMountain,
+        "CutsceneTriggerer": FullScreenPokemon.prototype.macroCutsceneTriggerer
     },
     "entrances": {
         "Blank": FullScreenPokemon.prototype.mapEntranceBlank,
@@ -88,6 +89,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "AreaSpawner", "width": 152, "height": 136, "map": "Route 1", "area": "Land", "direction": 0 },
                         { "thing": "FenceWide", "width": 80 },
                         { "thing": "Grass", "x": 80, "width": 16 },
+                        { "macro": "CutsceneTriggerer", "x": 80, "width": 16, "cutscene": "OakIntro" },
                         { "thing": "FenceWide", "x": 96, "width": 64 },
                         { "thing": "FenceWide", "y": 8, "height": 128 },
                         { "thing": "DirtMedium", "width": 160 },
