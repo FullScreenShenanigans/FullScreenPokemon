@@ -435,6 +435,12 @@ function MenuGraphr(settings) {
                 "complete": true,
                 "onCompletion": onCompletion
             };
+            if (menu.advanceAuto) {
+                EightBitter.TimeHandler.addEvent(
+                    onCompletion,
+                    (word.length + (menu.advanceAutoSpeed || 1)) * textSpeed
+                );
+            }
             return;
         }
 
@@ -595,7 +601,7 @@ function MenuGraphr(settings) {
                 }
             }
             
-            schema = filterWord(option.text);
+            option.schema = schema = filterWord(option.text);
 
             if (schema !== "\n") {
                 for (j = 0; j < schema.length; j += 1) {
@@ -607,7 +613,7 @@ function MenuGraphr(settings) {
                             y += schema[j].y * EightBitter.unitsize;
                         }
                     } else if (schema[j] !== " ") {
-                        title = "Char" + getCharacterEquivalent(schema[j]);
+                        option.title = title = "Char" + getCharacterEquivalent(schema[j]);
                         character = EightBitter.ObjectMaker.make(title);
                         menu.children.push(character);
 

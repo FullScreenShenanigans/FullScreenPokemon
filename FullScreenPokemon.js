@@ -1954,6 +1954,8 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function openKeyboardMenu(settings) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
+            menuKeyboard = EightBitter.MenuGrapher.createMenu("Keyboard"),
+            menuResults = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
             letters = [
                 "A", "J", "S", "Times", "-",
                 "B", "K", "T", "(", "?",
@@ -1964,25 +1966,70 @@ var FullScreenPokemon = (function (GameStartr) {
                 "G", "P", "Y", "]", ".",
                 "H", "Q", "Z", "Poke", ",",
                 "I", "R", " ", "Mon", "ED"
-            ];
+            ],
+            value = [
+                settings.value || ["_", "_", "_", "_", "_", "_", "_"]
+            ],
+            onKeyPress = EightBitter.addKeyboardMenuValue.bind(EightBitter),
+            onComplete = (settings.callback || onKeyPress).bind(EightBitter);
 
-        EightBitter.MenuGrapher.createMenu("Keyboard");
+        EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[
+            settings.title
+        ]]);
+        
+        EightBitter.MenuGrapher.addMenuDialog("KeyboardResult", value);
+
+        menuResults.completeValue = settings.completeValue || "";
+        menuResults.selectedChild = settings.selectedChild || 0;
+        menuResults.blinker = EightBitter.addThing(
+            "CharMDash",
+            menuResults.children[menuResults.selectedChild].left,
+            menuResults.children[menuResults.selectedChild].top
+        );
+        menuResults.children[menuResults.selectedChild].hidden = true;
 
         EightBitter.MenuGrapher.addMenuList("KeyboardKeys", {
             "options": letters.map(function (letter) {
                 return {
                     "text": [letter],
-                    "callback": console.log.bind(console, "hi")
+                    "callback": letter !== "ED"
+                        ? onKeyPress
+                        : onComplete
                 };
             })
         });
         EightBitter.MenuGrapher.setActiveMenu("KeyboardKeys");
+    }
 
-        EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[settings.title]]);
+    /**
+     * 
+     */
+    function addKeyboardMenuValue() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            menuKeys = EightBitter.MenuGrapher.getMenu("KeyboardKeys"),
+            menuResult = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
+            child = menuResult.children[menuResult.selectedChild],
+            selected = EightBitter.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
 
-        EightBitter.MenuGrapher.addMenuDialog("KeyboardResult", [
-            [["MDash"], "_", "_", "_", "_", "_", "_"]
-        ]);
+        EightBitter.killNormal(child);
+        menuResult.children[menuResult.selectedChild] = EightBitter.addThing(
+            selected.title,
+            child.left,
+            child.top
+        );
+
+        menuResult.completeValue += selected.text[0];
+        menuResult.selectedChild += 1;
+
+        if (menuResult.selectedChild < menuResult.children.length) {
+            child = menuResult.children[menuResult.selectedChild];
+            child.hidden = true;
+        } else if (menuResult.selectedIndexOnFull) {
+            console.log("something with menuKeys");
+        }
+
+        EightBitter.setLeft(menuResult.blinker, child.left, child.top);
+
     }
 
 
@@ -2219,24 +2266,101 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function introPlayerNameOptions(player) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            fromMenu = EightBitter.introPlayerNameFromMenu.bind(EightBitter, player),
+            fromKeyboard = EightBitter.introPlayerNameFromKeyboard.bind(EightBitter);
 
         EightBitter.MenuGrapher.createMenu("NameOptions");
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
             "options": [{
                 "text": "NEW NAME",
                 "callback": EightBitter.openKeyboardMenu.bind(EightBitter, {
-                    "title": "YOUR NAME?"
+                    "title": "YOUR NAME?",
+                    "callback": fromKeyboard
                 })
             }, {
-                "text": "BLUE"
+                "text": "BLUE",
+                "callback": fromMenu
             }, {
-                "text": "GARY"
+                "text": "GARY",
+                "callback": fromMenu
             }, {
-                "text": "JOHN"
+                "text": "JOHN",
+                "callback": fromMenu
             }]
         });
         EightBitter.MenuGrapher.setActiveMenu("NameOptions");
+    }
+
+    /**
+     * 
+     */
+    function introPlayerNameFromMenu(player) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            name = EightBitter.MenuGrapher.getMenuSelectedOption("NameOptions").text;
+
+        EightBitter.MenuGrapher.deleteMenu("NameOptions");
+
+        EightBitter.fadeHorizontal(
+            player,
+            -EightBitter.unitsize,
+            EightBitter.MapScreener.middleX,
+            1,
+            EightBitter.introPlayerNameConfirm.bind(EightBitter, name)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introPlayerNameFromKeyboard() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            name = MenuGrapher.getMenu("KeyboardResult").completeValue;
+
+        EightBitter.MenuGrapher.deleteMenu("Keyboard");
+        EightBitter.MenuGrapher.deleteMenu("NameOptions");
+
+        EightBitter.introPlayerNameConfirm(name);
+    }
+
+    /**
+     * 
+     */
+    function introPlayerNameConfirm(name) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+            
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "advanceAuto": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
+            "Right! So your name is " + name + "!"
+        ], EightBitter.introPlayerNameComplete.bind(EightBitter));
+        EightBitter.StatsHolder.set("name", name);
+    };
+
+    /**
+     * 
+     */
+    function introPlayerNameComplete() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            blank = EightBitter.ObjectMaker.make("WhiteSquare", {
+                "width": EightBitter.MapScreener.width,
+                "height": EightBitter.MapScreener.height,
+                "opacity": .01 // Why doesn't 0 work?
+            });
+
+        EightBitter.addThing(blank, 0, 0);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.fadeAttribute,
+            35,
+            blank,
+            "opacity",
+            .2,
+            1,
+            7/*,
+            EightBitter.introRivalAppear.bind(EightBitter)*/
+        );
     }
 
 
@@ -3446,6 +3570,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openPlayerMenu": openPlayerMenu,
         "openSaveMenu": openSaveMenu,
         "openKeyboardMenu": openKeyboardMenu,
+        "addKeyboardMenuValue": addKeyboardMenuValue,
         // Battles
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,
@@ -3458,6 +3583,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "introPlayerName": introPlayerName,
         "introPlayerSlide": introPlayerSlide,
         "introPlayerNameOptions": introPlayerNameOptions,
+        "introPlayerNameFromMenu": introPlayerNameFromMenu,
+        "introPlayerNameFromKeyboard": introPlayerNameFromKeyboard,
+        "introPlayerNameConfirm": introPlayerNameConfirm,
+        "introPlayerNameComplete": introPlayerNameComplete,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

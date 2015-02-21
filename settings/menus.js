@@ -629,7 +629,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "container": "Battle",
-            "transparent": true
+            "hidden": true
         },
         "BattleDisplayOpponent": {
             "size": {
@@ -729,7 +729,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             },
             "container": "Keyboard",
-            "transparent": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": .5,
             "textYOffset": 0,
@@ -747,7 +747,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             },
             "container": "Keyboard",
-            "transparent": true,
+            "hidden": true,
             "textSpeed": 0
         }
     }

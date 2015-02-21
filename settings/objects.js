@@ -882,6 +882,13 @@
                 "offsetY": FullScreenPokemon.unitsize * .75
             },
             "CharacterShadow": [3.5, 3.5],
+            "CharMDash": {
+                "attributes": {
+                    "blinking": {
+                        "onThingAdd": console.log.bind(console, "HA")
+                    }
+                }
+            },
             "CharPoke": {
                 "offsetY": FullScreenPokemon.unitsize * .5
             },
@@ -924,9 +931,6 @@
                 "textSpeed": 1,
                 "attributes": {
                     "plain": {},
-                    "transparent": {
-                        "hidden": true
-                    },
                     "light": {
                         "spritewidth": 1,
                         "spriteheight": 1
