@@ -435,10 +435,10 @@ function MenuGraphr(settings) {
                 "complete": true,
                 "onCompletion": onCompletion
             };
-            if (menu.advanceAuto) {
+            if (menu.finishAutomatically) {
                 EightBitter.TimeHandler.addEvent(
                     onCompletion,
-                    (word.length + (menu.advanceAutoSpeed || 1)) * textSpeed
+                    (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed
                 );
             }
             return;

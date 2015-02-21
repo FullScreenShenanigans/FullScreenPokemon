@@ -118,6 +118,8 @@
                     "WindowBlinds": {},
                     "Portrait": {
                         "PlayerPortrait": {},
+                        "PlayerSilhouetteSmall": {},
+                        "PlayerSilhouetteLarge": {},
                         "OakPortrait": {},
                         "RivalPortrait": {},
                         "BlainePortrait": {},
@@ -710,7 +712,7 @@
             "ConsoleController": [8, 5],
             "FenceVertical": [4, 8],
             "Grass": {
-                "rarity": 100, //10,
+                "rarity": 10,
                 "collide": FullScreenPokemon.prototype.collidePlayerGrass
             },
             "HouseBase": {
@@ -833,6 +835,8 @@
             "HPBar": [.5, 2],
             "HPBarFill": [.5, .5],
             "PlayerPortrait": [13, 23],
+            "PlayerSilhouetteSmall": [7, 11.5],
+            "PlayerSilhouetteLarge": [11, 20],
             "OakPortrait": [14.5, 28],
             "RivalPortrait": [14.5, 28],
             "BattleSpriteFrontSmall": [20, 20],

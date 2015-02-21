@@ -2336,7 +2336,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
             
         EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "advanceAuto": true
+            "finishAutomatically": true
         });
         EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
             "Right! So your name is " + name + "!"
@@ -2376,7 +2376,6 @@ var FullScreenPokemon = (function (GameStartr) {
     function introRivalAppear() {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             rival = EightBitter.ObjectMaker.make("RivalPortrait", {
-                "flipHoriz": true,
                 "opacity": .01
             });
 
@@ -2456,6 +2455,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             name = EightBitter.MenuGrapher.getMenuSelectedOption("NameOptions").text;
 
+        console.log("from menu,", name);
         EightBitter.MenuGrapher.deleteMenu("NameOptions");
 
         EightBitter.fadeHorizontal(
@@ -2474,6 +2474,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             name = EightBitter.MenuGrapher.getMenu("KeyboardResult").completeValue;
 
+        console.log("from keyboard,", name);
         EightBitter.MenuGrapher.deleteMenu("Keyboard");
         EightBitter.MenuGrapher.deleteMenu("NameOptions");
 
@@ -2495,7 +2496,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
             "That's right! I remember now! His name is " + name + "!"
-        ], EightBitter.introLastDialog.bind(EightBitter));
+        ], EightBitter.introRivalNameComplete.bind(EightBitter));
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
         EightBitter.StatsHolder.set("nameRival", name);
@@ -2504,16 +2505,154 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function introLastDialog() {
+    function introRivalNameComplete() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            blank = EightBitter.ObjectMaker.make("WhiteSquare", {
+                "width": EightBitter.MapScreener.width,
+                "height": EightBitter.MapScreener.height,
+                "opacity": .01 // Why doesn't 0 work?
+            });
+
+        EightBitter.addThing(blank, 0, 0);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.fadeAttribute,
+            35,
+            blank,
+            "opacity",
+            .2,
+            1,
+            7,
+            EightBitter.introLastDialogAppear.bind(EightBitter)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introLastDialogAppear() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            portrait = EightBitter.ObjectMaker.make("PlayerPortrait", {
+                "flipHoriz": true,
+                "opacity": .01
+            });
+
+        EightBitter.GroupHolder.applyOnAll(EightBitter, EightBitter.killNormal);
+
+        EightBitter.addThing(portrait, 0, 0);
+        EightBitter.setMidX(portrait, EightBitter.MapScreener.middleX);
+        EightBitter.setBottom(
+            portrait,
+            EightBitter.MapScreener.height - 32 * EightBitter.unitsize
+        );
+
+        EightBitter.fadeAttribute(
+            portrait,
+            "opacity",
+            .1,
+            1,
+            1,
+            EightBitter.introLastDialog.bind(EightBitter, portrait)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introLastDialog(portrait) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog("GeneralText", [
-            "%%%%%%%PLAYER%%%%%%%!",
-            "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
-            "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!"
-        ]);
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%%!",
+                "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
+                "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!"
+            ],
+            EightBitter.introShrinkPlayer.bind(EightBitter, portrait)
+        );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function introShrinkPlayer(portrait) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            silhouetteLarge = EightBitter.ObjectMaker.make("PlayerSilhouetteLarge"),
+            silhouetteSmall = EightBitter.ObjectMaker.make("PlayerSilhouetteSmall"),
+            player = EightBitter.ObjectMaker.make("Player"),
+            timeDelay = 70;
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.addThing, timeDelay, silhouetteLarge
+        );
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.setMidObj, timeDelay, silhouetteLarge, portrait
+        );
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.killNormal, timeDelay, portrait
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.addThing, timeDelay * 2, silhouetteSmall
+        );
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.setMidObj, timeDelay * 2, silhouetteSmall, silhouetteLarge
+        );
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.killNormal, timeDelay * 2, silhouetteLarge
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.addThing, timeDelay * 3, player
+        );
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.setMidObj, timeDelay * 3, player, silhouetteSmall
+        );
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.killNormal, timeDelay * 3, silhouetteSmall
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.introFadeOut.bind(EightBitter), timeDelay * 4
+        );
+    }
+
+    /**
+     * 
+     */
+    function introFadeOut() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            blank = EightBitter.ObjectMaker.make("WhiteSquare", {
+                "width": EightBitter.MapScreener.width,
+                "height": EightBitter.MapScreener.height,
+                "opacity": .01 // Why doesn't 0 work?
+            });
+
+        EightBitter.addThing(blank, 0, 0);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.fadeAttribute,
+            35,
+            blank,
+            "opacity",
+            .2,
+            1,
+            7,
+            EightBitter.introFinish.bind(EightBitter)
+        );
+    }
+
+    /**
+     * 
+     */
+    function introFinish() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.deleteActiveMenu();
+        EightBitter.setMap("Player's House", "Start Game");
     }
 
 
@@ -2882,9 +3021,12 @@ var FullScreenPokemon = (function (GameStartr) {
             location.yloc ? location.yloc * EightBitter.unitsize : 0
         );
 
+        console.log("Ah", location.direction, location);
         EightBitter.animateCharacterSetDirection(
             EightBitter.player,
-            EightBitter.MapScreener.playerDirection
+            typeof location.direction === "undefined"
+                ? EightBitter.MapScreener.playerDirection
+                : location.direction
         );
 
         EightBitter.centerMapScreen(EightBitter);
@@ -3746,7 +3888,12 @@ var FullScreenPokemon = (function (GameStartr) {
         "introRivalNameFromMenu": introRivalNameFromMenu,
         "introRivalNameFromKeyboard": introRivalNameFromKeyboard,
         "introRivalNameConfirm": introRivalNameConfirm,
+        "introRivalNameComplete": introRivalNameComplete,
+        "introLastDialogAppear": introLastDialogAppear,
         "introLastDialog": introLastDialog,
+        "introShrinkPlayer": introShrinkPlayer,
+        "introFadeOut": introFadeOut,
+        "introFinish": introFinish,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

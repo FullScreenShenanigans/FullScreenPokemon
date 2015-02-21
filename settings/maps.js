@@ -145,7 +145,8 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Start Game": {
                     "area": "Bedroom",
                     "xloc": 24,
-                    "yloc": 40
+                    "yloc": 40,
+                    "direction": 0
                 },
                 "Bedroom Stairs": {
                     "area": "Bedroom"
