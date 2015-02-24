@@ -1289,6 +1289,75 @@ var FullScreenPokemon = (function (GameStartr) {
         }
     }
 
+    /**
+     * 
+     */
+    function animateCharacterFollow(thing, other) {
+        thing.nocollide = true;
+        thing.allowDirectionAsKeys = true;
+
+        thing.following = other;
+        other.follower = thing;
+
+        thing.EightBitter.animateCharacterStartWalking(thing, other.direction, Infinity);
+
+        thing.EightBitter.TimeHandler.addEventInterval(
+            thing.EightBitter.animateCharacterFollowWalk,
+            1,
+            Infinity,
+            thing,
+            other
+        )
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterFollowWalk(thing) {
+        var other = thing.following;
+        if (!other) {
+            return true;
+        }
+
+        thing.yvel = other.yvel;
+        thing.EightBitter.animateCharacterSetDirection(thing, other.direction);
+
+        switch (other.direction) {
+            case 0:
+                thing.EightBitter.setTop(thing, other.bottom);
+                thing.EightBitter.setMidXObj(thing, other);
+                break;
+            case 1:
+                thing.EightBitter.setRight(thing, other.left);
+                thing.EightBitter.setMidYObj(thing, other);
+                break;
+            case 2:
+                thing.EightBitter.setBottom(thing, other.top);
+                thing.EightBitter.setMidXObj(thing, other);
+                break;
+            case 3:
+                thing.EightBitter.setLeft(thing, other.right);
+                thing.EightBitter.setMidYObj(thing, other);
+                break;
+        }
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterFollowStop(thing, other) {
+        var other = thing.following;
+        if (!other) {
+            return true;
+        }
+
+        thing.nocollide = false;
+        delete thing.following;
+        delete other.follower;
+
+        thing.EightBitter.animateCharacterStopWalking(thing);
+    }
+
 
     /* Collision detection
     */
@@ -1389,16 +1458,24 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
+        console.log("hi", thing.title, other.title, other.activated);
+
         if (other.activated) {
             if (!other.requireOverlap || thing.EightBitter.isThingOverlappingOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !thing.keys[other.requireDirection]
+                    && !thing.allowDirectionAsKeys
+                    && thing.direction !== other.requireDirection
                 ) {
+                    console.log("darn");
                     return;
                 }
+                console.log("yay!");
                 other.activate(thing, other)
             }
+            window.durp = other;
+            console.log("darn?");
             return true;
         }
 
@@ -2785,24 +2862,30 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateCharacterStartTurning(
             oak,
             2,
-            [1, "left", 3, "top", 10, "right", 1, "top", 0, EightBitter.cutsceneOakIntroGrassWarning.bind(EightBitter)]
+            [
+                1, "left", 3, "top", 10, "right", 1, "top", 0,
+                EightBitter.cutsceneOakIntroGrassWarning.bind(EightBitter, oak)
+            ]
         );
     }
 
     /**
      * 
      */
-    function cutsceneOakIntroGrassWarning() {
+    function cutsceneOakIntroGrassWarning(oak) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
-        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "It's unsafe! Wild %%%%%%%POKEMON%%%%%%% live in tall grass!",
-                "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know! Here, come with me."
+                "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know!",
+                "Here, come with me."
             ],
-            EightBitter.cutsceneOakIntroFollowToLab.bind(EightBitter)
+            EightBitter.cutsceneOakIntroFollowToLab.bind(EightBitter, oak)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2810,10 +2893,29 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroFollowToLab() {
+    function cutsceneOakIntroFollowToLab(oak) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
+        EightBitter.MenuGrapher.deleteMenu("GeneralText");
+        EightBitter.animateCharacterFollow(EightBitter.player, oak);
+        EightBitter.animateCharacterStartTurning(
+            oak,
+            2,
+            [
+                5, "left", 1, "bottom", 5, "right", 3, "top", 1,
+                EightBitter.cutsceneOakIntroEnterLab.bind(EightBitter, oak)
+            ]
+        );
+    }
 
+    /**
+     * 
+     */
+    function cutsceneOakIntroEnterLab(oak) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.animateCharacterFollowStop(EightBitter.player, oak);
+        EightBitter.animateCharacterStartWalking(EightBitter.player, 0);
     }
 
 
@@ -4010,6 +4112,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateUnflipOnDirection": animateUnflipOnDirection,
         "animateSwitchFlipOnDirection": animateSwitchFlipOnDirection,
         "animateCharacterDialogFinish": animateCharacterDialogFinish,
+        "animateCharacterFollow": animateCharacterFollow,
+        "animateCharacterFollowWalk": animateCharacterFollowWalk,
+        "animateCharacterFollowStop": animateCharacterFollowStop,
         // Collisions
         "generateCanThingCollide": generateCanThingCollide,
         "generateIsCharacterTouchingCharacter": generateIsCharacterTouchingCharacter,
@@ -4080,6 +4185,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroCatchup": cutsceneOakIntroCatchup,
         "cutsceneOakIntroGrassWarning": cutsceneOakIntroGrassWarning,
         "cutsceneOakIntroFollowToLab": cutsceneOakIntroFollowToLab,
+        "cutsceneOakIntroEnterLab": cutsceneOakIntroEnterLab,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
