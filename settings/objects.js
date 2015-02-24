@@ -13,6 +13,7 @@
                     "Fatty": {},
                     "Lady": {},
                     "Mother": {},
+                    "Oak": {},
                     "Player": {},
                     "Pokeball": {},
                     "RivalMother": {}
@@ -471,6 +472,7 @@
                     "Water": {}
                 },
                 "Text": {
+                    "Exclamation": "",
                     "WhiteSquare": "",
                     "CharacterUpperCase": {
                         "CharA": {},
@@ -666,6 +668,9 @@
             },
             "Mother": {
                 "directionPreferred": 3
+            },
+            "Oak": {
+                "nocollide": true  // remove...
             },
             "Player": {
                 "id": "player",
@@ -885,6 +890,11 @@
                 "paddingY": 8,
                 "noshiftx": true,
                 "noshifty": true,
+            },
+            "Exclamation": {
+                "width": 7,
+                "height": 7,
+                "offsetY": FullScreenPokemon.unitsize * -2
             },
             "WhiteSquare": {
                 "width": 1,

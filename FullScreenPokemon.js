@@ -433,6 +433,8 @@ var FullScreenPokemon = (function (GameStartr) {
      *                                   Thing (by default, false).
      */
     function addThing(thing, left, top, useSavedInfo) {
+        left = left || 0;
+        top = top || 0;
         thing = GameStartr.prototype.addThing.call(this, thing, left, top);
 
         var savedInfo = thing.EightBitter.StateHolder.getChanges(thing.id);
@@ -452,9 +454,10 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
-
-        thing.EightBitter.StateHolder.applyChanges(thing.id, thing);
-        thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
+        if (thing.id) {
+            thing.EightBitter.StateHolder.applyChanges(thing.id, thing);
+            thing.EightBitter.MapScreener.thingsById[thing.id] = thing;
+        }
 
         if (typeof thing.direction !== "undefined") {
             thing.EightBitter.animateCharacterSetDirection(thing, thing.direction);
@@ -859,7 +862,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 character.shouldWalk = false;
             }
 
-            if (!character.alive) {
+            if (!character.alive && !character.outerOk) {
                 EightBitter.arrayDeleteThing(character, characters, i);
                 i -= 1;
                 continue;
@@ -998,7 +1001,29 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
 
-    /* Character movement
+    /*
+    */
+
+    /**
+     * 
+     */
+    function animateExclamation(thing, timeout) {
+        var exclamation = thing.EightBitter.addThing("Exclamation");
+
+        thing.EightBitter.setMidXObj(exclamation, thing);
+        thing.EightBitter.setBottom(exclamation, thing.top);
+
+        thing.EightBitter.TimeHandler.addEvent(
+            thing.EightBitter.killNormal,
+            timeout || 140,
+            exclamation
+        );
+
+        return exclamation;
+    }
+
+
+    /* Character movement animations
     */
 
     /**
@@ -1034,7 +1059,30 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateCharacterStartWalking(thing, direction) {
+    function animateCharacterStartTurning(thing, direction, onStop) {
+        if (onStop.length === 0) {
+            return;
+        }
+
+        if (onStop[0] === 0) {
+            if (onStop.length > 1) {
+                if (onStop[1] instanceof Function) {
+                    onStop[1](thing);
+                    return;
+                }
+                thing.EightBitter.animateCharacterSetDirection(thing, FSP.directionNumbers[onStop[1]]);
+                thing.EightBitter.animateCharacterStartTurning(thing, FSP.directionNumbers[onStop[1]], onStop.slice(2));
+            }
+            return;
+        }
+
+        thing.EightBitter.animateCharacterStartWalking(thing, direction, onStop);
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterStartWalking(thing, direction, onStop) {
         var repeats = (8 * thing.EightBitter.unitsize / thing.speed) | 0,
             distance = repeats * thing.speed;
 
@@ -1055,7 +1103,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         thing.EightBitter.TimeHandler.addEventInterval(
-            thing.onWalkingStop, repeats, Infinity, thing
+            thing.onWalkingStop, repeats, Infinity, thing, onStop
         );
 
         thing.isWalking = true;
@@ -1135,7 +1183,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateCharacterStopWalking(thing) {
+    function animateCharacterStopWalking(thing, onStop) {
         thing.isWalking = false;
         thing.xvel = 0;
         thing.yvel = 0;
@@ -1148,13 +1196,36 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.walkingFlipping = undefined;
         }
 
-        return true;
+        if (!onStop) {
+            return true;
+        }
+
+        switch (onStop.constructor) {
+            case Number:
+                thing.EightBitter.animatePlayerStartWalking(thing, thing.direction, onStop - 1);
+                return true;
+            case Array:
+                if (onStop[0] > 0) {
+                    onStop[0] -= 1;
+                    thing.EightBitter.animateCharacterStartTurning(thing, thing.direction, onStop);
+                } else if (onStop.length === 0) {
+                    return true;
+                } else {
+                    if (onStop[1] instanceof Function) {
+                        return onStop(thing);
+                    }
+                    thing.EightBitter.animateCharacterStartTurning(thing, FSP.directionNumbers[onStop[1]], onStop.slice(2));
+                }
+                return true;
+            case Function:
+                return onStop(thing);
+        }
     }
 
     /**
      * 
      */
-    function animatePlayerStopWalking(thing) {
+    function animatePlayerStopWalking(thing, onStop) {
         if (thing.EightBitter.checkPlayerGrassBattle(thing)) {
             return;
         }
@@ -1168,7 +1239,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         thing.canKeyWalking = true;
-        return thing.EightBitter.animateCharacterStopWalking(thing);
+        return thing.EightBitter.animateCharacterStopWalking(thing, onStop);
     }
 
     /**
@@ -1386,7 +1457,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function collidePlayerGrass(thing, other) {
         if (
-            !thing.player 
+            !thing.player
             || !thing.EightBitter.StatsHolder.get("PokemonInParty").length
         ) {
             return true;
@@ -1695,7 +1766,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         area.spawned = true;
 
-        MapScreener.setVariables();
+        //MapScreener.setVariables();
     }
 
 
@@ -1979,7 +2050,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[
             settings.title
         ]]);
-        
+
         EightBitter.MenuGrapher.addMenuDialog("KeyboardResult", value);
 
         menuResults.completeValue = settings.completeValue || "";
@@ -2337,7 +2408,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneIntroPlayerNameConfirm(name) {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
-            
+
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "finishAutomatically": true
         });
@@ -2671,21 +2742,75 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true,
             "finishAutomatically": true,
-            "finishAutomaticSpeed": 35
+            "finishAutomaticSpeed": 21
         });
         thing.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: Hey! Wait! Don't go out!"
             ],
-            thing.EightBitter.cutsceneOakCatchup.bind(thing.EightBitter)
+            thing.EightBitter.cutsceneOakIntroExclamation.bind(thing.EightBitter)
         );
     }
 
     /**
      * 
      */
-    function cutsceneOakCatchup() {
+    function cutsceneOakIntroExclamation() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            timeout = 49;
+
+        EightBitter.animateExclamation(EightBitter.player, timeout);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.deleteMenu, timeout, "GeneralText"
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.cutsceneOakIntroCatchup.bind(EightBitter), timeout
+        )
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroCatchup() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            door = EightBitter.getThingById("Oak's Lab Door"),
+            oak = EightBitter.ObjectMaker.make("Oak", {
+                "outerok": true
+            });
+
+        EightBitter.addThing(oak, door.left, door.top);
+        EightBitter.animateCharacterStartTurning(
+            oak,
+            2,
+            [1, "left", 3, "top", 10, "right", 1, "top", 0, EightBitter.cutsceneOakIntroGrassWarning.bind(EightBitter)]
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroGrassWarning() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "It's unsafe! Wild %%%%%%%POKEMON%%%%%%% live in tall grass!",
+                "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know! Here, come with me."
+            ],
+            EightBitter.cutsceneOakIntroFollowToLab.bind(EightBitter)
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroFollowToLab() {
         var EightBitter = EightBittr.ensureCorrectCaller(this);
 
 
@@ -3057,7 +3182,6 @@ var FullScreenPokemon = (function (GameStartr) {
             location.yloc ? location.yloc * EightBitter.unitsize : 0
         );
 
-        console.log("Ah", location.direction, location);
         EightBitter.animateCharacterSetDirection(
             EightBitter.player,
             typeof location.direction === "undefined"
@@ -3340,7 +3464,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "thing": "Door",
                 "x": x + doorOffset,
                 "y": y - 12,
-                "requireDirection": 0
+                "requireDirection": 0,
+                "id": reference.id
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -3871,8 +3996,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateGrassBattleStart": animateGrassBattleStart,
         "animatePlayerLeaveLeft": animatePlayerLeaveLeft,
         "animatePokeballOpening": animatePokeballOpening,
-        // Character movement
+        "animateExclamation": animateExclamation,
+        // Character movement animations
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
+        "animateCharacterStartTurning": animateCharacterStartTurning,
         "animateCharacterStartWalking": animateCharacterStartWalking,
         "animateCharacterStartWalkingRandom": animateCharacterStartWalkingRandom,
         "animatePlayerStartWalking": animatePlayerStartWalking,
@@ -3949,7 +4076,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneIntroFadeOut": cutsceneIntroFadeOut,
         "cutsceneIntroFinish": cutsceneIntroFinish,
         "cutsceneOakIntro": cutsceneOakIntro,
-        "cutsceneOakCatchup": cutsceneOakCatchup,
+        "cutsceneOakIntroExclamation": cutsceneOakIntroExclamation,
+        "cutsceneOakIntroCatchup": cutsceneOakIntroCatchup,
+        "cutsceneOakIntroGrassWarning": cutsceneOakIntroGrassWarning,
+        "cutsceneOakIntroFollowToLab": cutsceneOakIntroFollowToLab,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
