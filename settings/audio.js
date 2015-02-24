@@ -18,4 +18,4 @@ FullScreenPokemon.prototype.settings.audio = {
         "Sounds": [],
         "Themes": []
     }
-}
+};

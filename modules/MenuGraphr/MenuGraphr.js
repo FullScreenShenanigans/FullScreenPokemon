@@ -175,7 +175,9 @@ function MenuGraphr(settings) {
      * 
      */
     self.deleteActiveMenu = function () {
-        self.deleteMenu(activeMenu.name);
+        if (activeMenu) {
+            self.deleteMenu(activeMenu.name);
+        }
     };
 
     /**

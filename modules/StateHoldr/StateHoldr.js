@@ -1,5 +1,5 @@
 /**
- * AreaDenotr.js
+ * StateHoldr.js
  * 
  * 
  * 
@@ -76,6 +76,17 @@ function StateHoldr(settings) {
     /**
      * 
      */
+    self.getOtherCollection = function (otherCollectionKey) {
+        otherCollectionKey = prefix + otherCollectionKey;
+
+        ensureCollectionKeyExists(otherCollectionKey);
+
+        return StatsHolder.get(otherCollectionKey);
+    };
+
+    /**
+     * 
+     */
     self.getChanges = function (itemKey) {
         return collection[itemKey];
     };
@@ -98,12 +109,7 @@ function StateHoldr(settings) {
         collectionKeyRaw = collectionKeyNew;
         collectionKey = prefix + collectionKeyRaw;
 
-        if (!StatsHolder.hasKey(collectionKey)) {
-            StatsHolder.addStatistic(collectionKey, {
-                "valueDefault": {},
-                "storeLocally": true
-            });
-        }
+        ensureCollectionKeyExists(collectionKey);
 
         if (value) {
             StatsHolder.set(collectionKey, value);
@@ -154,6 +160,22 @@ function StateHoldr(settings) {
             output[key] = changes[key];
         }
     };
+
+
+    /* Utilities
+    */
+
+    /**
+     * 
+     */
+    function ensureCollectionKeyExists(collectionKey) {
+        if (!StatsHolder.hasKey(collectionKey)) {
+            StatsHolder.addStatistic(collectionKey, {
+                "valueDefault": {},
+                "storeLocally": true
+            });
+        }
+    }
     
     
     self.reset(settings);
