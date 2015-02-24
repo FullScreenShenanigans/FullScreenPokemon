@@ -1476,7 +1476,7 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
-        if (other.activated) {
+        if (other.active) {
             if (!other.requireOverlap || thing.EightBitter.isThingOverlappingOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
@@ -1485,6 +1485,9 @@ var FullScreenPokemon = (function (GameStartr) {
                     && thing.direction !== other.requireDirection
                 ) {
                     return;
+                }
+                if (other.singleUse) {
+                    other.active = false;
                 }
                 other.activate(thing, other)
             }
@@ -1497,7 +1500,7 @@ var FullScreenPokemon = (function (GameStartr) {
             directionActual = thing.EightBitter.getDirectionBordering(thing, other);
 
         if (directionMovement === directionActual) {
-            other.activated = true;
+            other.active = true;
             return true;
         }
     }
@@ -1589,6 +1592,22 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /* Activations
     */
+
+    /**
+     * 
+     */
+    function activateCutsceneTriggerer(thing, other) {
+        if (!other.keepAlive) {
+            other.alive = false;
+            thing.EightBitter.killNormal(other);
+        }
+
+        console.log("Starting", other.cutscene);
+        thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
+            "player": thing,
+            "triggerer": other
+        });
+    }
 
     /**
      * Activation callback for level transports (any Thing with a .transport 
@@ -2797,58 +2816,54 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroFirstDialog(thing, other) {
-        other.activated = false;
-        other.alive = false;
-        thing.EightBitter.StateHolder.addChange(other.id, "alive", false);
-        thing.EightBitter.MapScreener.cutscene = "OakIntro";
-        console.log("In the future, a cutscene module should know cutscene.");
+    function cutsceneOakIntroFirstDialog(EightBitter, settings) {
+        EightBitter.StateHolder.addChange(settings.triggerer.id, "alive", false);
 
-        thing.EightBitter.MapScreener.inMenu = true;
+        EightBitter.MapScreener.inMenu = true;
 
-        thing.EightBitter.animateCharacterSetDirection(thing, 2);
+        EightBitter.animateCharacterSetDirection(settings.player, 2);
 
-        thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true,
             "finishAutomatically": true,
             "finishAutomaticSpeed": 28
         });
-        thing.EightBitter.MenuGrapher.addMenuDialog(
+        EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: Hey! Wait! Don't go out!"
             ],
-            thing.EightBitter.cutsceneOakIntroExclamation.bind(thing.EightBitter)
+            EightBitter.ScenePlayer.bindRoutine("Exclamation")
         );
     }
 
     /**
      * 
      */
-    function cutsceneOakIntroExclamation() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            timeout = 49;
+    function cutsceneOakIntroExclamation(EightBitter, settings) {
+        var timeout = 49;
 
-        EightBitter.animateExclamation(EightBitter.player, timeout);
+        EightBitter.animateExclamation(settings.player, timeout);
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.MenuGrapher.deleteMenu, timeout, "GeneralText"
         );
 
         EightBitter.TimeHandler.addEvent(
-            EightBitter.cutsceneOakIntroCatchup.bind(EightBitter), timeout
+            EightBitter.ScenePlayer.bindRoutine("Catchup"), timeout
         )
     }
 
     /**
      * 
      */
-    function cutsceneOakIntroCatchup() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            door = EightBitter.getThingById("Oak's Lab Door"),
+    function cutsceneOakIntroCatchup(EightBitter, settings) {
+        var door = EightBitter.getThingById("Oak's Lab Door"),
             oak = EightBitter.ObjectMaker.make("Oak", {
                 "outerok": true
             });
+
+        settings.oak = oak;
 
         EightBitter.addThing(oak, door.left, door.top);
         EightBitter.animateCharacterStartTurning(
@@ -2856,7 +2871,7 @@ var FullScreenPokemon = (function (GameStartr) {
             2,
             [
                 1, "left", 3, "top", 10, "right", 1, "top", 0,
-                EightBitter.cutsceneOakIntroGrassWarning.bind(EightBitter, oak)
+                EightBitter.ScenePlayer.bindRoutine("GrassWarning")
             ]
         );
     }
@@ -2864,9 +2879,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroGrassWarning(oak) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
+    function cutsceneOakIntroGrassWarning(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true
         });
@@ -2877,7 +2890,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know!",
                 "Here, come with me."
             ],
-            EightBitter.cutsceneOakIntroFollowToLab.bind(EightBitter, oak)
+            EightBitter.ScenePlayer.bindRoutine("FollowToLab")
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2885,17 +2898,15 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroFollowToLab(oak) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
+    function cutsceneOakIntroFollowToLab(EightBitter, settings) {
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
-        EightBitter.animateCharacterFollow(EightBitter.player, oak);
+        EightBitter.animateCharacterFollow(settings.player, settings.oak);
         EightBitter.animateCharacterStartTurning(
-            oak,
+            settings.oak,
             2,
             [
                 5, "left", 1, "bottom", 5, "right", 3, "top", 1,
-                EightBitter.cutsceneOakIntroEnterLab.bind(EightBitter, oak)
+                EightBitter.ScenePlayer.bindRoutine("EnterLab")
             ]
         );
     }
@@ -2903,10 +2914,8 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroEnterLab(oak) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.animateCharacterFollowStop(EightBitter.player, oak);
+    function cutsceneOakIntroEnterLab(EightBitter, settings) {
+        EightBitter.animateCharacterFollowStop(EightBitter.player, settings.oak);
         EightBitter.animateCharacterStartWalking(EightBitter.player, 0);
 
         EightBitter.MapScreener.inMenu = false;
@@ -2915,23 +2924,21 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroWalkToTable(thing) {
-        //if (thing.EightBitter.MapScreener.cutscene !== "OakIntro") {
-        //    return;
-        //}
+    function cutsceneOakIntroWalkToTable(EightBitter, settings) {
+        var oak = EightBitter.addThing("Oak");
+        EightBitter.setMidXObj(oak, settings.player);
+        EightBitter.setBottom(oak, settings.player.top);
 
-        var oak = thing.EightBitter.addThing("Oak");
-        thing.EightBitter.setMidXObj(oak, thing);
-        thing.EightBitter.setBottom(oak, thing.top);
+        settings.oak = oak;
 
-        thing.EightBitter.animateCharacterStartWalking(oak, 0, [
+        EightBitter.animateCharacterStartWalking(oak, 0, [
             8, "bottom", 0
         ]);
 
-        thing.EightBitter.TimeHandler.addEvent(
-            thing.EightBitter.animateCharacterStartWalking,
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateCharacterStartWalking,
             84,
-            thing,
+            settings.player,
             0,
             [8, console.log.bind(console, "ha")]
         );
@@ -3313,7 +3320,13 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.centerMapScreen(EightBitter);
 
         if (location.cutscene) {
-            EightBitter["cutscene" + location.cutscene].call(EightBitter, EightBitter.player);
+            EightBitter.ScenePlayer.startCutscene(location.cutscene, {
+                "player": player
+            });
+        }
+
+        if (location.routine && EightBitter.ScenePlayer.getCutsceneName()) {
+            EightBitter.ScenePlayer.playRoutine(location.routine);
         }
     }
 
@@ -3934,23 +3947,6 @@ var FullScreenPokemon = (function (GameStartr) {
         return output;
     }
 
-    /**
-     * 
-     * 
-     * @todo Make a cutscene manager, instead of "cutscene" + ...
-     */
-    function macroCutsceneTriggerer(reference, prethings, area, map, scope) {
-        return {
-            "x": reference.x || 0,
-            "y": reference.y || 0,
-            "thing": "CollisionDetector",
-            "width": reference.width || 8,
-            "height": reference.height || 8,
-            "requireOverlap": true,
-            "activate": scope["cutscene" + reference.cutscene]
-        }
-    }
-
     /* Miscellaneous utilities
     */
 
@@ -4149,6 +4145,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Death
         "killNormal": killNormal,
         // Activations
+        "activateCutsceneTriggerer": activateCutsceneTriggerer,
         "activateTransporter": activateTransporter,
         "activateTransporterAnimated": activateTransporterAnimated,
         // Physics
@@ -4239,7 +4236,6 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroBuilding": macroBuilding,
         "macroGym": macroGym,
         "macroMountain": macroMountain,
-        "macroCutsceneTriggerer": macroCutsceneTriggerer,
         // Miscellaneous utilities
         "stringOf": stringOf,
         "makeDigit": makeDigit,

@@ -30,6 +30,7 @@ FullScreenPokemon.prototype.settings.scenes = {
             }
         },
         "OakIntro": {
+            "firstRoutine": "FirstDialog",
             "routines": {
                 "FirstDialog": FullScreenPokemon.prototype.cutsceneOakIntroFirstDialog,
                 "Exclamation": FullScreenPokemon.prototype.cutsceneOakIntroExclamation,

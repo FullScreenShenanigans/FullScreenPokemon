@@ -39,6 +39,7 @@
                     },
                     "Cabinet": {},
                     "CollisionDetector": {
+                        "CutsceneTriggerer": {},
                         "Transporter": {
                             "Door": {},
                             "HiddenTransporter": {},
@@ -718,8 +719,11 @@
             "Cabinet": [8, 16],
             "CollisionDetector": {
                 "collide": FullScreenPokemon.prototype.collideCollisionDetector,
-                "activated": false,
+                "active": false,
                 "hidden": true
+            },
+            "CutsceneTriggerer": {
+                "activate": FullScreenPokemon.prototype.activateCutsceneTriggerer
             },
             "Transporter": {
                 "activate": FullScreenPokemon.prototype.activateTransporter,
