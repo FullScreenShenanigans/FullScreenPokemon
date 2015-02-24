@@ -234,7 +234,8 @@ FullScreenPokemon.prototype.settings.maps = {
             "name": "Oak's Lab",
             "locations": {
                 "Ground Floor Door": {
-                    "area": "Ground Floor"
+                    "area": "Ground Floor",
+                    "cutscene": "OakIntroWalkToTable"
                 }
             },
             "locationDefault": "Ground Floor Door",
@@ -250,6 +251,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FloorLinedHorizontal", "y": 8, "width": 80, "height": 88 },
                         { "thing": "AsianScroll", "x": 32, "dialog": "Push START to open the MENU!" },
                         { "thing": "AsianScroll", "x": 40, "dialog": "The SAVE option is on the MENU screen." },
+                        { "thing": "Rival", "x": 32, "y": 24 },
                         { "thing": "Table3x1", "x": 48, "y": 24 },
                         { "thing": "Pokeball", "x": 48, "y": 24 },
                         { "thing": "Pokeball", "x": 56, "y": 24 },
@@ -257,8 +259,9 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Bookshelf", "x": 48, "width": 32 },
                         { "thing": "Bookshelf", "y": 48, "width": 32 },
                         { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
-                        { "thing": "Doormat", "x": 32, "y": 88, "width": 16, "entrance": "Ground Floor Door" },
-                        { "thing": "HiddenTransporter", "x": 32, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 }
+                        { "thing": "Doormat", "x": 32, "y": 88 },
+                        { "thing": "Doormat", "x": 40, "y": 88, "entrance": "Ground Floor Door" },
+                        { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
                     ]
                 }
             }

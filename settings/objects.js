@@ -16,6 +16,7 @@
                     "Oak": {},
                     "Player": {},
                     "Pokeball": {},
+                    "Rival": {},
                     "RivalMother": {}
                 },
                 "Solid": {
