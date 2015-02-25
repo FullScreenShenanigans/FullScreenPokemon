@@ -38,7 +38,11 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "GrassWarning": FullScreenPokemon.prototype.cutsceneOakIntroGrassWarning,
                 "FollowToLab": FullScreenPokemon.prototype.cutsceneOakIntroFollowToLab,
                 "EnterLab": FullScreenPokemon.prototype.cutsceneOakIntroEnterLab,
-                "WalkToTable": FullScreenPokemon.prototype.cutsceneOakIntroWalkToTable
+                "WalkToTable": FullScreenPokemon.prototype.cutsceneOakIntroWalkToTable,
+                "RivalComplain": FullScreenPokemon.prototype.cutsceneOakIntroRivalComplain,
+                "OakThinksToRival": FullScreenPokemon.prototype.cutsceneOakIntroOakThinksToRival,
+                "RivalProtests": FullScreenPokemon.prototype.cutsceneOakIntroRivalProtests,
+                "OakRespondsToProtest": FullScreenPokemon.prototype.cutsceneOakIntroOakRespondsToProtest,
             }
         }
     }

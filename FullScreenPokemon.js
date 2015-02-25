@@ -2940,7 +2940,105 @@ var FullScreenPokemon = (function (GameStartr) {
             84,
             settings.player,
             0,
-            [8, console.log.bind(console, "ha")]
+            [8, EightBitter.ScenePlayer.bindRoutine("RivalComplain")]
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalComplain(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Gramps! I'm fed up with waiting!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("OakThinksToRival")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroOakThinksToRival(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "OAK: %%%%%%%RIVAL%%%%%%%? Let me think...",
+                "Oh, that's right, I told you to come! Just wait!",
+                "Here, %%%%%%%PLAYER%%%%%%%!",
+                "There are 3 %%%%%%%POKEMON%%%%%%% here!",
+                "Haha!",
+                "They are inside the %%%%%%%POKE%%%%%%% BALLs.",
+                "When I was young, I was a serious %%%%%%%POKEMON%%%%%%% trainer!",
+                "In my old age, I have only 3 left, but you can have one! Choose!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("RivalProtests")
+        )
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalProtests(EightBitter, settings) {
+        var timeout = 21;
+
+        EightBitter.MenuGrapher.deleteMenu("GeneralText");
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.createMenu,
+            timeout,
+            "GeneralText"
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.addMenuDialog,
+            timeout,
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Hey! Gramps! What about me?"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("OakRespondsToProtest")
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.setActiveMenu,
+            timeout,
+            "GeneralText"
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroOakRespondsToProtest(EightBitter, settings) {
+        var timeout = 21;
+
+        EightBitter.MenuGrapher.deleteMenu("GeneralText");
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.createMenu,
+            timeout,
+            "GeneralText"
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.addMenuDialog,
+            timeout,
+            "GeneralText",
+            [
+                "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!"
+            ]
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.MenuGrapher.setActiveMenu,
+            timeout,
+            "GeneralText"
         );
     }
 
@@ -4207,6 +4305,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroFollowToLab": cutsceneOakIntroFollowToLab,
         "cutsceneOakIntroEnterLab": cutsceneOakIntroEnterLab,
         "cutsceneOakIntroWalkToTable": cutsceneOakIntroWalkToTable,
+        "cutsceneOakIntroRivalComplain": cutsceneOakIntroRivalComplain,
+        "cutsceneOakIntroOakThinksToRival": cutsceneOakIntroOakThinksToRival,
+        "cutsceneOakIntroRivalProtests": cutsceneOakIntroRivalProtests,
+        "cutsceneOakIntroOakRespondsToProtest": cutsceneOakIntroOakRespondsToProtest,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
