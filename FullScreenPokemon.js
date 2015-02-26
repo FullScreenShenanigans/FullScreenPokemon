@@ -658,11 +658,10 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
-
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerA();
         } else if (player.bordering[player.direction]) {
-            player.EightBitter.collidePlayerBordering(
+            player.bordering[player.direction].activate(
                 player,
                 player.bordering[player.direction]
             );
@@ -1508,7 +1507,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function collidePlayerBordering(thing, other) {
+    function collideCharacterDialog(thing, other) {
         var dialog = other.dialog,
             direction;
 
@@ -1542,6 +1541,51 @@ var FullScreenPokemon = (function (GameStartr) {
         if (other.switchDirectionOnDialog) {
             thing.EightBitter.animateCharacterSetDirection(other, direction);
         }
+    }
+
+    /**
+     * 
+     */
+    function collidePokeball(thing, other) {
+        var actions = other.actions,
+            action = actions[other.actionIndex || 0],
+            callback = thing.EightBitter.collidePokeball.bind(
+                thing.EightBitter, thing, other
+            );
+
+        switch (action) {
+            case "Pokedex":
+                thing.EightBitter.openPokedexListing(other.pokemon, callback);
+                break;
+            case "Dialog":
+                thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
+                    "ignoreB": true
+                });
+                thing.EightBitter.MenuGrapher.addMenuDialog(
+                    "GeneralText", other.dialog, callback
+                );
+                thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                break;
+            case "Yes/No":
+                thing.EightBitter.MenuGrapher.createMenu("Yes/No", {
+                    "killOnB": ["GeneralText"],
+                });
+                thing.EightBitter.MenuGrapher.addMenuList("Yes/No", {
+                    "options": [{
+                        "text": "YES",
+                        "callback": thing.EightBitter.ScenePlayer.bindRoutine(
+                            "PlayerChoosesNickname"
+                        )
+                    }, {
+                        "text": "NO",
+                        "callback": thing.EightBitter.MenuGrapher.registerB
+                    }]
+                });
+                thing.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+                break;
+        }
+
+        other.actionIndex = ((other.actionIndex || 0) + 1) % actions.length;
     }
 
     /**
@@ -1597,16 +1641,65 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateCutsceneTriggerer(thing, other) {
+        if (!other.alive || thing.collidedTrigger == other) {
+            return;
+        }
+
+        // To do: make a general function for this
+        thing.collidedTrigger = other;
+        thing.keys = thing.getKeys();
+        thing.shouldWalk = false;
+
         if (!other.keepAlive) {
             other.alive = false;
             thing.EightBitter.killNormal(other);
         }
 
-        console.log("Starting", other.cutscene);
         thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
             "player": thing,
             "triggerer": other
         });
+    }
+
+    /**
+     * 
+     */
+    function activateMenuTriggerer(thing, other) {
+        if (!other.alive || thing.collidedTrigger == other) {
+            return;
+        }
+
+        var name = other.menu || "GeneralText",
+            menu = thing.EightBitter.MenuGrapher.createMenu(name),
+            dialog = other.dialog;
+
+        // To do: make a general function for this
+        thing.collidedTrigger = other;
+        thing.keys = thing.getKeys();
+        thing.shouldWalk = false;
+
+        if (!other.keepAlive) {
+            other.alive = false;
+            thing.EightBitter.killNormal(other);
+        }
+
+        if (dialog) {
+            thing.EightBitter.MenuGrapher.addMenuDialog(
+                name,
+                dialog,
+                function () {
+                    delete thing.collidedTrigger;
+                    thing.EightBitter.MenuGrapher.deleteMenu("GeneralText");
+                    if (typeof other.pushDirection !== "undefined") {
+                        thing.EightBitter.animateCharacterStartTurning(
+                            thing, other.pushDirection, other.pushSteps.slice(0)
+                        )
+                    }
+                }
+            );
+        }
+
+        thing.EightBitter.MenuGrapher.setActiveMenu(name);
     }
 
     /**
@@ -2000,6 +2093,13 @@ var FullScreenPokemon = (function (GameStartr) {
             }]
         });
     };
+
+    /**
+     * 
+     */
+    function openPokedexListing(title, backMenu) {
+
+    }
 
     /**
      * 
@@ -2929,6 +3029,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.setMidXObj(oak, settings.player);
         EightBitter.setBottom(oak, settings.player.top);
 
+        EightBitter.player.nocollide = true;
         settings.oak = oak;
 
         EightBitter.animateCharacterStartWalking(oak, 0, [
@@ -3016,7 +3117,14 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroOakRespondsToProtest(EightBitter, settings) {
-        var timeout = 21;
+        var blocker = EightBitter.getThingById("OakBlocker"),
+            timeout = 21;
+
+        settings.player.nocollide = false;
+        settings.oak.nocollide = false;
+
+        blocker.nocollide = false;
+        EightBitter.StateHolder.addChange(blocker.id, "nocollide", false);
 
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
 
@@ -3040,6 +3148,75 @@ var FullScreenPokemon = (function (GameStartr) {
             timeout,
             "GeneralText"
         );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroPlayerTakesPokemon(EightBitter, settings) {
+        console.log("The Pokeball Yes/No should put the chosen title in settings. Hardcoding to SQUIRTLE.");
+        settings.chosen = "SQUIRTLE";
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "This %%%%%%%POKEMON%%%%%%% is really energetic!",
+                "Do you want to give a nickname to " + settings.chosen + "?"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("PlayerChoosesNickname")
+        );
+
+        EightBitter.StatsHolder.set("starter", settings.chosen);
+        //EightBitter.StatsHolder.set("PokemonInParty", [
+
+        //]);
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroPlayerChoosesNickname(EightBitter, settings) {
+        console.log("Too lazy to fill out right now!");
+        EightBitter.MenuGrapher.deleteActiveMenu();
+        EightBitter.ScenePlayer.playRoutine("RivalTakesPokemon");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalTakesPokemon(EightBitter, settings) {
+        var other;
+
+        switch (settings.chosen) {
+            case "Squirtle":
+                other = "Bulbasaur";
+                break;
+            case "Charmander":
+                other = "Squirtle";
+                break;
+            case "Bulbasaur":
+                other = "Charmander";
+                break;
+        }
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
+                "%%%%%%%RIVAL%%%%%%% received a " + other + "!"
+            ]
+        );
+
+        EightBitter.StatsHolder.set("starterRival", other);
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalBattle(EightBitter, settings) {
+
     }
 
 
@@ -4238,12 +4415,14 @@ var FullScreenPokemon = (function (GameStartr) {
         "generateIsCharacterTouchingSolid": generateIsCharacterTouchingSolid,
         "generateHitCharacterThing": generateHitCharacterThing,
         "collideCollisionDetector": collideCollisionDetector,
-        "collidePlayerBordering": collidePlayerBordering,
+        "collideCharacterDialog": collideCharacterDialog,
+        "collidePokeball": collidePokeball,
         "collidePlayerGrass": collidePlayerGrass,
         // Death
         "killNormal": killNormal,
         // Activations
         "activateCutsceneTriggerer": activateCutsceneTriggerer,
+        "activateMenuTriggerer": activateMenuTriggerer,
         "activateTransporter": activateTransporter,
         "activateTransporterAnimated": activateTransporterAnimated,
         // Physics
@@ -4264,6 +4443,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "closePauseMenu": closePauseMenu,
         "togglePauseMenu": togglePauseMenu,
         "openPokedexMenu": openPokedexMenu,
+        "openPokedexListing": openPokedexListing,
         "openPokemonMenu": openPokemonMenu,
         "openItemsMenu": openItemsMenu,
         "openPlayerMenu": openPlayerMenu,
@@ -4309,6 +4489,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroOakThinksToRival": cutsceneOakIntroOakThinksToRival,
         "cutsceneOakIntroRivalProtests": cutsceneOakIntroRivalProtests,
         "cutsceneOakIntroOakRespondsToProtest": cutsceneOakIntroOakRespondsToProtest,
+        "cutsceneOakIntroPlayerTakesPokemon": cutsceneOakIntroPlayerTakesPokemon,
+        "cutsceneOakIntroPlayerChoosesNickname": cutsceneOakIntroPlayerChoosesNickname,
+        "cutsceneOakIntroRivalTakesPokemon": cutsceneOakIntroRivalTakesPokemon,
+        "cutsceneOakIntroRivalBattle": cutsceneOakIntroRivalBattle,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

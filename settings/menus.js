@@ -20,6 +20,7 @@ FullScreenPokemon.prototype.settings.menus = {
     "replacements": {
         "PLAYER": "name",
         "RIVAL": "nameRival",
+        "POKE": "POKÈ",
         "POKEMON": "POKÈMON",
         "POKEDEX": "POKÈDEX",
         "BADGES.LENGTH": "?",

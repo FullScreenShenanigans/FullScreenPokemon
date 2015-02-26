@@ -40,6 +40,7 @@
                     "Cabinet": {},
                     "CollisionDetector": {
                         "CutsceneTriggerer": {},
+                        "MenuTriggerer": {},
                         "Transporter": {
                             "Door": {},
                             "HiddenTransporter": {},
@@ -662,6 +663,7 @@
                 "offsetY": FullScreenPokemon.unitsize * -2,
                 "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
                 "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking,
+                "activate": FullScreenPokemon.prototype.collideCharacterDialog,
                 "attributes": {
                     "roaming": {
                         "onThingAdd": FullScreenPokemon.prototype.spawnCharacterRoaming
@@ -692,6 +694,9 @@
                         "b": false
                     };
                 }
+            },
+            "Pokeball": {
+                "activate": FullScreenPokemon.prototype.collidePokeball
             },
             "Solid": {
                 "groupType": "Solid",
@@ -724,6 +729,9 @@
             },
             "CutsceneTriggerer": {
                 "activate": FullScreenPokemon.prototype.activateCutsceneTriggerer
+            },
+            "MenuTriggerer": {
+                "activate": FullScreenPokemon.prototype.activateMenuTriggerer
             },
             "Transporter": {
                 "activate": FullScreenPokemon.prototype.activateTransporter,
@@ -812,7 +820,12 @@
             },
             "Table2x2": [16, 16],
             "Table2x3": [16, 16],
-            "Table3x1": [24, 12],
+            "Table3x1": {
+                "width": 24,
+                "height": 8
+                //"height": 12,
+                // "tolBottom": 4
+            },
             "Tree": {
                 "dialog": "IT WOULD BE NICE TO CUT THE TREE DOWN LEL"
             },

@@ -43,6 +43,8 @@ FullScreenPokemon.prototype.settings.statistics = {
         },
         "name": {},
         "nameRival": {},
+        "starter": {},
+        "starterRival": {},
         "Pokedex": {
             "valueDefault": []
         },

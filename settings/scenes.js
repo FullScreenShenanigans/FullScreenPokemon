@@ -43,6 +43,10 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "OakThinksToRival": FullScreenPokemon.prototype.cutsceneOakIntroOakThinksToRival,
                 "RivalProtests": FullScreenPokemon.prototype.cutsceneOakIntroRivalProtests,
                 "OakRespondsToProtest": FullScreenPokemon.prototype.cutsceneOakIntroOakRespondsToProtest,
+                "PlayerTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPlayerTakesPokemon,
+                "PlayerChoosesNickname": FullScreenPokemon.prototype.cutsceneOakIntroPlayerChoosesNickname,
+                "RivalTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroRivalTakesPokemon,
+                "RivalBattle": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattle
             }
         }
     }
