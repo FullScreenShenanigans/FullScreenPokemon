@@ -259,6 +259,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Bookshelf", "y": 48, "width": 32 },
                         { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
                         { "thing": "MenuTriggerer", "x": 32, "y": 56, "width": 32, "id": "OakBlocker", "dialog": ["OAK: Hey! Don't go away yet!"], "pushDirection": 0, "pushSteps": [1], "keepAlive": true, "nocollide": true },
+                        { "thing": "CutsceneTriggerer", "x": 32, "y": 56, "width": 32, "id": "RivalBlocker", "routine": "RivalBattle", "nocollide": true },
                         { "thing": "Doormat", "x": 32, "y": 88 },
                         { "thing": "Doormat", "x": 40, "y": 88, "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },

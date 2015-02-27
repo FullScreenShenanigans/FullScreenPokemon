@@ -100,7 +100,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "unitsize",
                 "scale",
                 "directionNames",
-                "directionNumbers"
+                "directionNumbers",
+                "statisticNames",
             ],
             "extraResets": ["resetMenuGrapher", "resetBattleMover", "resetScenePlayer", "resetStateHolder", "resetMathDecider"]
         });
@@ -125,6 +126,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "bottom": 2,
         "left": 3
     };
+    FullScreenPokemon.statisticNames = [
+        "HP", "Attack", "Defense", "Special", "Speed"
+    ];
 
 
     /* Resets
@@ -233,7 +237,10 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function resetMathDecider(EightBitter, customs) {
         EightBitter.MathDecider = new MathDecidr(EightBitter.proliferate({
-            "NumberMaker": EightBitter.NumberMaker
+            "NumberMaker": EightBitter.NumberMaker,
+            "constants": {
+                "statisticNames": EightBitter.statisticNames
+            }
         }, EightBitter.settings.math));
     }
 
@@ -245,11 +252,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function gameStart(EightBitter) {
-        if (EightBitter.StatsHolder.get("gameStarted")) {
-            EightBitter.gameStartPlay(EightBitter);
-        } else {
+        //if (EightBitter.StatsHolder.get("gameStarted")) {
+        //    EightBitter.gameStartPlay(EightBitter);
+        //} else {
             EightBitter.gameStartOptions(EightBitter);
-        }
+        //}
 
         EightBitter.ModAttacher.fireEvent("onGameStart");
     }
@@ -287,6 +294,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function gameStartPlay(EightBitter) {
+        EightBitter.MenuGrapher.deleteActiveMenu();
         EightBitter.setMap(
             EightBitter.StatsHolder.get("map") || EightBitter.settings.maps.mapDefault,
             undefined,
@@ -3168,9 +3176,9 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.StatsHolder.set("starter", settings.chosen);
-        //EightBitter.StatsHolder.set("PokemonInParty", [
-
-        //]);
+        EightBitter.StatsHolder.set("PokemonInParty", [
+            EightBitter.MathDecider.compute("newPokemon", settings.chosen, 5)
+        ]);
     }
 
     /**
@@ -3215,8 +3223,39 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroRivalBattle(EightBitter, settings) {
+    function cutsceneOakIntroRivalBattleChallenge(EightBitter, settings) {
+        var blocker = EightBitter.getThingById("OakBlocker");
 
+        blocker.nocollide = false;
+        EightBitter.StateHolder.addChange(blocker.id, "nocollide", false);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Wait %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
+                "Come on, I'll take you on!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("RivalBattleApproach")
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalBattleApproach(EightBitter, settings) {
+        EightBitter.animateCharacterStartTurning(settings.rival, 2, [
+            4, "bottom", 2, 
+            EightBitter.BattleMover.startBattle.bind(
+                EightBitter.BattleMover,
+                {
+                    "opponent": {
+                        "title": EightBitter.StatsHolder.get("nameRival")
+                    },
+                    "playerActors": EightBitter.StatsHolder.get("PokemonInParty")
+                }
+            )
+        ]);
     }
 
 
@@ -4492,7 +4531,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroPlayerTakesPokemon": cutsceneOakIntroPlayerTakesPokemon,
         "cutsceneOakIntroPlayerChoosesNickname": cutsceneOakIntroPlayerChoosesNickname,
         "cutsceneOakIntroRivalTakesPokemon": cutsceneOakIntroRivalTakesPokemon,
-        "cutsceneOakIntroRivalBattle": cutsceneOakIntroRivalBattle,
+        "cutsceneOakIntroRivalBattleChallenge": cutsceneOakIntroRivalBattleChallenge,
+        "cutsceneOakIntroRivalBattleApproach": cutsceneOakIntroRivalBattleApproach,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
