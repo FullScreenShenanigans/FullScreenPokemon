@@ -121,6 +121,10 @@ function ScenePlayr(settings) {
      * 
      */
     self.playRoutine = function (name) {
+        if (!cutscene) {
+            throw new Error("No cutscene is currently playing!");
+        }
+
         if (!cutscene.routines[name]) {
             throw new Error("The " + cutsceneName + " cutscene does not contain a " + name + " routine.");
         }
