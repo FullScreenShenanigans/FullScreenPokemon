@@ -16,6 +16,8 @@ FullScreenPokemon.prototype.settings.battles = {
         "exitDialog": "Got away safely!",
         "textStart": ["A wild ", " appeared!"],
         "textEntry": ["Go! ", "!"],
+        "textOpponentSendOut": ["", " sent out ", "!"],
+        "textPlayerSendOut": ["Go! ", "!"]
     },
     "positions": {
         "player": {
@@ -26,9 +28,5 @@ FullScreenPokemon.prototype.settings.battles = {
             "left": 52,
             "top": 8
         }
-    },
-    "animations": {
-        "playerLeaveLeft": FullScreenPokemon.prototype.animatePlayerLeaveLeft,
-        "actorEntrance": FullScreenPokemon.prototype.animatePokeballOpening
-    },
+    }
 };

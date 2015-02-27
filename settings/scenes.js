@@ -1,5 +1,15 @@
 FullScreenPokemon.prototype.settings.scenes = {
     "cutscenes": {
+        "Battle": {
+            "firstRoutine": "Entrance",
+            "routines": {
+                "Entrance": FullScreenPokemon.prototype.cutsceneBattleEntrance,
+                "OpeningText": FullScreenPokemon.prototype.cutsceneBattleOpeningText,
+                "EnemyIntro": FullScreenPokemon.prototype.cutsceneBattleEnemyIntro,
+                "PlayerIntro": FullScreenPokemon.prototype.cutsceneBattlePlayerIntro,
+                "ShowPlayerMenu": FullScreenPokemon.prototype.cutsceneBattleShowPlayerMenu
+            }
+        },
         "Intro": {
             "firstRoutine": "FirstDialog",
             "routines": {

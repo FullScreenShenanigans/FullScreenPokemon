@@ -1,10 +1,11 @@
 FullScreenPokemon.prototype.settings.math = {
     "equations": {
-        "newPokemon": function (NumberMaker, constants, equations, name, level, iv, ev) {
+        "newPokemon": function (NumberMaker, constants, equations, title, level, moves, iv, ev) {
             var statisticNames = constants.statisticNames,
                 pokemon = {
-                    "name": name,
+                    "title": title,
                     "level": level,
+                    "moves": moves || this.compute("newPokemonMoves", title, level),
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs")
                 },
@@ -17,6 +18,28 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             return pokemon;
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
+        "newPokemonMoves": function (NumberMaker, constants, equations, title, level) {
+            var possibilities = constants.pokemon[title].moves.natural,
+                output = [],
+                move, end, i;
+
+            for (end = 0; end < possibilities.length; end += 1) {
+                if (possibilities[end].level > level) {
+                    break;
+                }
+            }
+
+            for (i = Math.max(end - 4, 0); i < end; i += 1) {
+                move = possibilities[i];
+                output.push({
+                    "title": move.move,
+                    "PP": move.PP
+                })
+            }
+
+            return output;
         },
         // http://bulbapedia.bulbagarden.net/wiki/Individual_values
         "newPokemonIVs": function (NumberMaker, constants, equations) {
@@ -53,7 +76,7 @@ FullScreenPokemon.prototype.settings.math = {
         "pokemonStatistic": function (NumberMaker, constants, equations, pokemon, statistic) {
             var topExtra = 0,
                 added = 5,
-                base = constants.pokemon[pokemon.name][statistic],
+                base = constants.pokemon[pokemon.title][statistic],
                 iv = pokemon.IV[statistic] || 0,
                 ev = pokemon.EV[statistic] || 0,
                 level = pokemon.level,
@@ -1262,7 +1285,36 @@ FullScreenPokemon.prototype.settings.math = {
                 "Attack": 48,
                 "Defense": 65,
                 "Special": 50,
-                "Speed": 43
+                "Speed": 43,
+                "moves": {
+                    "natural": [
+                        {
+                            "level": 0,
+                            "move": "Tackle"
+                        }, {
+                            "level": 0,
+                            "move": "Tail Whip"
+                        }, {
+                            "level": 8,
+                            "move": "Bubble"
+                        }, {
+                            "level": 15,
+                            "move": "Water Gun"
+                        }, {
+                            "level": 22,
+                            "move": "Bite"
+                        }, {
+                            "level": 28,
+                            "move": "Withdraw"
+                        }, {
+                            "level": 35,
+                            "move": "Skull Bash"
+                        }, {
+                            "level": 42,
+                            "move": "Hydro Pump"
+                        }
+                    ]
+                }
             },
             "Starmie": {
                 "types": ["Psychic", "Water"],
@@ -2455,6 +2507,326 @@ FullScreenPokemon.prototype.settings.math = {
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "Lowers the target's accuracy by one stage."
+            },
+            "Soft-Boiled": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 10,
+                "Description": "Heals 50% of the user's max HP."
+            },
+            "Solar Beam": {
+                "Type": "Grass",
+                "Damage": "Special",
+                "Power": 120,
+                "Accuracy": "100%",
+                "PP": 10,
+                "Description": "Charges turn 1; attacks turn 2."
+            },
+            "Sonic Boom": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": "—",
+                "Accuracy": "90%",
+                "PP": 20,
+                "Description": "Does 20 damage. Ghosts take regular damage."
+            },
+            "Spike Cannon": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 20,
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "Hits two to five times."
+            },
+            "Splash": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 40,
+                "Description": "No effect whatsoever."
+            },
+            "Spore": {
+                "Type": "Grass",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "Puts the target to sleep."
+            },
+            "Stomp": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 65,
+                "Accuracy": "100%",
+                "PP": 20,
+                "Description": "30% chance of causing the target to flinch."
+            },
+            "Strength": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 80,
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "No additional effect."
+            },
+            "String Shot": {
+                "Type": "Bug",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "95%",
+                "PP": 40,
+                "Description": "Lowers the target's Speed by one stage."
+            },
+            "Struggle": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 50,
+                "Accuracy": "—",
+                "PP": 10,
+                "Description": "Has 1/2 recoil. Ghost-types take damage."
+            },
+            "Stun Spore": {
+                "Type": "Grass",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "75%",
+                "PP": 30,
+                "Description": "Paralyzes the target."
+            },
+            "Submission": {
+                "Type": "Fighting",
+                "Damage": "Physical",
+                "Power": 80,
+                "Accuracy": "80%",
+                "PP": 25,
+                "Description": "Has 1/4 recoil."
+            },
+            "Substitute": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 10,
+                "Description": "Takes 1/4 the user's max HP to create a Substitute that takes damage for the user."
+            },
+            "Super Fang": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": "—",
+                "Accuracy": "90%",
+                "PP": 10,
+                "Description": "Deals damage equal to half the target's current HP."
+            },
+            "Supersonic": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "55%",
+                "PP": 20,
+                "Description": "Confuses the target."
+            },
+            "Surf": {
+                "Type": "Water",
+                "Damage": "Special",
+                "Power": 95,
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "No additional effect."
+            },
+            "Swift": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 60,
+                "Accuracy": "—",
+                "PP": 20,
+                "Description": "Always hits."
+            },
+            "Swords Dance": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 30,
+                "Description": "Boosts the user's Attack by two stages."
+            },
+            "Tackle": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 35,
+                "Accuracy": "95%",
+                "PP": 35,
+                "Description": "No additional effect."
+            },
+            "Tail Whip": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "100%",
+                "PP": 30,
+                "Description": "Lowers the Defense of all opposing adjacent Pokemon by one stage."
+            },
+            "Take Down": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 90,
+                "Accuracy": "85%",
+                "PP": 20,
+                "Description": "Has 1/4 recoil."
+            },
+            "Teleport": {
+                "Type": "Psychic",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 20,
+                "Description": "No competitive effect."
+            },
+            "Thrash": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 90,
+                "Accuracy": "100%",
+                "PP": 20,
+                "Description": "Repeats for three to four turns. Confuses the user at the end."
+            },
+            "Thunder": {
+                "Type": "Electric",
+                "Damage": "Special",
+                "Power": 120,
+                "Accuracy": "70%",
+                "PP": 10,
+                "Description": "10% chance to paralyze the target."
+            },
+            "Thunder Punch": {
+                "Type": "Electric",
+                "Damage": "Special",
+                "Power": 75,
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "10% chance to paralyze the target."
+            },
+            "Thunder Shock": {
+                "Type": "Electric",
+                "Damage": "Special",
+                "Power": 40,
+                "Accuracy": "100%",
+                "PP": 30,
+                "Description": "10% chance to paralyze the target."
+            },
+            "Thunder Wave": {
+                "Type": "Electric",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "100%",
+                "PP": 20,
+                "Description": "Paralyzes the target."
+            },
+            "Thunderbolt": {
+                "Type": "Electric",
+                "Damage": "Special",
+                "Power": 95,
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "10% chance to paralyze the target."
+            },
+            "Toxic": {
+                "Type": "Poison",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "85%",
+                "PP": 10,
+                "Description": "Badly poisons the target."
+            },
+            "Transform": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 10,
+                "Description": "Transforms the user into the target, copying its type, stats, stat changes, moves, and ability."
+            },
+            "Tri Attack": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 80,
+                "Accuracy": "100%",
+                "PP": 10,
+                "Description": "No additional effect."
+            },
+            "Twineedle": {
+                "Type": "Bug",
+                "Damage": "Physical",
+                "Power": 25,
+                "Accuracy": "100%",
+                "PP": 20,
+                "Description": "Hits twice. Each hit has a 20% chance to poison the target."
+            },
+            "Vice Grip": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 55,
+                "Accuracy": "100%",
+                "PP": 30,
+                "Description": "No additional effect."
+            },
+            "Vine Whip": {
+                "Type": "Grass",
+                "Damage": "Special",
+                "Power": 35,
+                "Accuracy": "100%",
+                "PP": 10,
+                "Description": "No additional effect."
+            },
+            "Water Gun": {
+                "Type": "Water",
+                "Damage": "Special",
+                "Power": 40,
+                "Accuracy": "100%",
+                "PP": 25,
+                "Description": "No additional effect."
+            },
+            "Waterfall": {
+                "Type": "Water",
+                "Damage": "Special",
+                "Power": 80,
+                "Accuracy": "100%",
+                "PP": 15,
+                "Description": "No additional effect."
+            },
+            "Whirlwind": {
+                "Type": "Normal",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "100%",
+                "PP": 20,
+                "Description": "Has no effect."
+            },
+            "Wing Attack": {
+                "Type": "Flying",
+                "Damage": "Physical",
+                "Power": 35,
+                "Accuracy": "100%",
+                "PP": 35,
+                "Description": "No additional effect."
+            },
+            "Withdraw": {
+                "Type": "Water",
+                "Damage": "Non-Damaging",
+                "Power": "—",
+                "Accuracy": "—",
+                "PP": 40,
+                "Description": "Boosts the user's Defense by one stage."
+            },
+            "Wrap": {
+                "Type": "Normal",
+                "Damage": "Physical",
+                "Power": 15,
+                "Accuracy": "85%",
+                "PP": 20,
+                "Description": "Prevents the opponent from attacking and deals damage to it at the end of every turn for two to five turns."
             }
         }
     }

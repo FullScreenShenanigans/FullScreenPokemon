@@ -48,8 +48,6 @@ function BattleMovr(settings) {
 
         battleInfo,
 
-        animations,
-
         defaults,
 
         positions;
@@ -78,11 +76,6 @@ function BattleMovr(settings) {
         menuNames = settings.menuNames;
         if (typeof menuNames === "undefined") {
             throw new Error("No menuNames given to BattleMovr.");
-        }
-
-        animations = settings.animations;
-        if (typeof animations === "undefined") {
-            throw new Error("No animations given to BattleMovr.");
         }
 
         defaults = settings.defaults || {};
@@ -126,11 +119,13 @@ function BattleMovr(settings) {
      * 
      */
     self.startBattle = function (settings) {
-        var textStart = settings.textStart || defaults.textStart || ["", ""];
-
-        battleInfo = settings;
+        var opponentType = settings.opponent.type || (setting.opponent.title + "Front"),
+            displayTitle = settings.opponent.displayTitle;
 
         self.createBackground();
+
+        battleInfo = EightBitter.proliferate({}, defaults);
+        battleInfo = EightBitter.proliferate(battleInfo, settings);
 
         EightBitter.MapScreener.inMenu = true;
         EightBitter.MenuGrapher.createMenu("Battle", {
@@ -138,17 +133,19 @@ function BattleMovr(settings) {
         });
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
 
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            textStart[0] + battleInfo.opponent.title + textStart[1],
-            startBattleIntro
-        );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-
         self.setActor("player", "PlayerBack");
 
-        self.setActor("opponent", battleInfo.opponent.title + "Front", {
-            "displayTitle": battleInfo.opponent.title.toUpperCase()
+        self.setActor(
+            "opponent",
+            opponentType,
+            {
+                "displayTitle": displayTitle || battleInfo.opponent.title.toUpperCase()
+            }
+        );
+
+        EightBitter.ScenePlayer.startCutscene("Battle", {
+            "actors": actors,
+            "battleInfo": battleInfo    
         });
     };
 
@@ -173,48 +170,10 @@ function BattleMovr(settings) {
     /**
      * 
      */
-    function startBattleIntro() {
-        var textEntry = battleInfo.textEntry || defaults.textEntry || ["", ""];
-
-        EightBitter.MenuGrapher.createMenu("BattleDisplayOpponent");
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText", 
-            textEntry[0] + "(pokemanz)" + textEntry[1]
-        );
-        
-        EightBitter.TimeHandler.addEvent(
-            animations.playerLeaveLeft, 14, actors.player, showPlayerStats
-        );
-    };
-
-    /**
-     * 
-     */
-    function showPlayerStats() {
-        EightBitter.MenuGrapher.createMenu("BattleDisplayPlayer");
-        animations.actorEntrance(
-            EightBitter, -1, -1, enterPlayerActor
-        );
-    }
-
-    /**
-     * 
-     */
-    function enterPlayerActor() {
-        self.setActor("player", battleInfo.playerActors[0].title + "Back");
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-
-        EightBitter.TimeHandler.addEvent(showPlayerMenu, 21);
-    }
-
-    /**
-     * 
-     */
-    function showPlayerMenu() {
-        EightBitter.MenuGrapher.createMenu("BattleOptions");
+    self.showPlayerMenu = function () {
+        EightBitter.MenuGrapher.createMenu("BattleOptions", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.addMenuList("BattleOptions", {
             "options": [{
                 "text": battleOptionNames["moves"],
@@ -259,7 +218,6 @@ function BattleMovr(settings) {
             "Text"
         );
     };
-
 
     /* In-battle menus
     */

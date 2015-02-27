@@ -2373,6 +2373,145 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneBattleEntrance(EightBitter, settings) {
+        var actors = settings.actors,
+            player = actors.player,
+            opponent = actors.opponent,
+            menu = EightBitter.MenuGrapher.getMenu("GeneralText"),
+            playerX, opponentX, playerGoal, opponentGoal,
+            timeout = 70;
+
+        player.opacity = .01;
+        opponent.opacity = .01;
+
+        EightBitter.setLeft(player, menu.right + player.width * EightBitter.unitsize);
+        EightBitter.setRight(opponent, menu.left);
+
+        EightBitter.fadeAttribute(player, "opacity", 1 / timeout, 1, 1);
+        EightBitter.fadeAttribute(opponent, "opacity", 1 / timeout, 1, 1);
+
+        playerX = EightBitter.getMidX(player);
+        opponentX = EightBitter.getMidX(opponent);
+        playerGoal = menu.left + player.width * EightBitter.unitsize / 2;
+        opponentGoal = menu.right - opponent.width * EightBitter.unitsize / 2;
+
+        EightBitter.fadeHorizontal(
+            player, (playerGoal - playerX) / timeout, playerGoal, 1
+        );
+
+        EightBitter.fadeHorizontal(
+            opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.ScenePlayer.bindRoutine("OpeningText"),
+            timeout
+        );
+
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleOpeningText(EightBitter, settings) {
+        var battleInfo = settings.battleInfo,
+            textStart = battleInfo.textStart,
+            callback;
+
+        if (settings.battleInfo.opponent.hasActors) {
+            callback = "EnemyIntro";
+        } else {
+            callback = "PlayerIntro";
+        }
+
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            textStart[0] + battleInfo.opponent.title + textStart[1],
+            EightBitter.ScenePlayer.bindRoutine("EnemyIntro")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleEnemyIntro(EightBitter, settings) {
+        var actors = settings.actors,
+            opponent = actors.opponent,
+            menu = EightBitter.MenuGrapher.getMenu("GeneralText"),
+            opponentX = EightBitter.getMidX(opponent),
+            opponentGoal = menu.right + opponent.width * EightBitter.unitsize / 2,
+            battleInfo = settings.battleInfo,
+            timeout = 49;
+
+        EightBitter.fadeAttribute(opponent, "opacity", -1 / timeout, .01, 1);
+
+        EightBitter.fadeHorizontal(
+            opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1
+        );
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                battleInfo.textOpponentSendOut[0]
+                + battleInfo.opponent.title
+                + battleInfo.textOpponentSendOut[1]
+                + battleInfo.opponentActors[0].title
+                + battleInfo.textOpponentSendOut[2]
+            ],
+            EightBitter.ScenePlayer.bindRoutine("PlayerIntro")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattlePlayerIntro(EightBitter, settings) {
+        var actors = settings.actors,
+            player = actors.player,
+            menu = EightBitter.MenuGrapher.getMenu("GeneralText"),
+            playerX = EightBitter.getMidX(player),
+            playerGoal = menu.left - player.width * EightBitter.unitsize / 2,
+            battleInfo = settings.battleInfo,
+            timeout = 49;
+
+        EightBitter.fadeAttribute(player, "opacity", -1 / timeout, .01, 1);
+
+        EightBitter.fadeHorizontal(
+            player, (playerGoal - playerX) / timeout, playerGoal, 1
+        );
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                battleInfo.textPlayerSendOut[0]
+                + battleInfo.playerActors[0].title
+                + battleInfo.textPlayerSendOut[1]
+            ],
+            EightBitter.ScenePlayer.bindRoutine("ShowPlayerMenu")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleShowPlayerMenu(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.BattleMover.showPlayerMenu();
+    }
+
+    /**
+     * 
+     */
     function cutsceneIntroFirstDialog(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true
@@ -4493,6 +4632,11 @@ var FullScreenPokemon = (function (GameStartr) {
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,
         // Cutscenes
+        "cutsceneBattleEntrance": cutsceneBattleEntrance,
+        "cutsceneBattleOpeningText": cutsceneBattleOpeningText,
+        "cutsceneBattleEnemyIntro": cutsceneBattleEnemyIntro,
+        "cutsceneBattlePlayerIntro": cutsceneBattlePlayerIntro,
+        "cutsceneBattleShowPlayerMenu": cutsceneBattleShowPlayerMenu,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
