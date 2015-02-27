@@ -119,7 +119,7 @@ function BattleMovr(settings) {
      * 
      */
     self.startBattle = function (settings) {
-        var opponentType = settings.opponent.type || (setting.opponent.title + "Front"),
+        var opponentType = settings.opponent.type || (settings.opponent.title + "Front"),
             displayTitle = settings.opponent.displayTitle;
 
         self.createBackground();

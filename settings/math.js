@@ -325,7 +325,39 @@ FullScreenPokemon.prototype.settings.math = {
                 "Attack": 49,
                 "Defense": 49,
                 "Special": 65,
-                "Speed": 45
+                "Speed": 45,
+                "moves": {
+                    "natural": [
+                        {
+                            "level": 0,
+                            "move": "Tackle"
+                        }, {
+                            "level": 0,
+                            "move": "Growl"
+                        }, {
+                            "level": 7,
+                            "move": "Leech Seed"
+                        }, {
+                            "level": 13,
+                            "move": "Vine Whip"
+                        }, {
+                            "level": 20,
+                            "move": "PoisonPowder"
+                        }, {
+                            "level": 27,
+                            "move": "Razor Leaf"
+                        }, {
+                            "level": 34,
+                            "move": "Grown"
+                        }, {
+                            "level": 41,
+                            "move": "Sleep Powder"
+                        }, {
+                            "level": 48,
+                            "move": "SolarBeam"
+                        }
+                    ]
+                }
             },
             "Butterfree": {
                 "types": ["Bug", "Flying"],

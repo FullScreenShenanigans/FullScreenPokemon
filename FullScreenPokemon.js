@@ -3172,9 +3172,16 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroWalkToTable(EightBitter, settings) {
-        var oak = EightBitter.addThing("Oak");
+        var dialog = "OAK: Now, %%%%%%%PLAYER%%%%%%%, which %%%%%%%POKEMON%%%%%%% do you want?",
+            oak = EightBitter.addThing("Oak", {
+                "dialog": dialog
+            });
+
         EightBitter.setMidXObj(oak, settings.player);
         EightBitter.setBottom(oak, settings.player.top);
+
+        EightBitter.StateHolder.addChange(oak.id, "hidden", false);
+        EightBitter.StateHolder.addChange(oak.id, "dialog", dialog);
 
         EightBitter.player.nocollide = true;
         settings.oak = oak;
@@ -3196,6 +3203,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroRivalComplain(EightBitter, settings) {
+        settings.oak.nocollide = false;
+        EightBitter.StateHolder.addChange(oak.id, "nocollide", false);
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -3347,6 +3357,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 break;
         }
 
+        settings.rivalPokemon = other;
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -3388,10 +3400,21 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.BattleMover.startBattle.bind(
                 EightBitter.BattleMover,
                 {
-                    "opponent": {
-                        "title": EightBitter.StatsHolder.get("nameRival")
+                    "player": {
+                        "title": EightBitter.StatsHolder.get("name")
                     },
-                    "playerActors": EightBitter.StatsHolder.get("PokemonInParty")
+                    "playerActors": EightBitter.StatsHolder.get("PokemonInParty"),
+                    "opponent": {
+                        "displayTitle": EightBitter.StatsHolder.get("nameRival"),
+                        "type": "RivalPortrait",
+                        "title": "RivalPortrait"
+                    },
+                    "opponentActors": [
+                        EightBitter.MathDecider.compute(
+                            "newPokemon", settings.rivalPokemon, 5
+                        )
+                    ],
+                    "textStart": ["", " wants to fight!"]
                 }
             )
         ]);
