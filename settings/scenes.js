@@ -53,11 +53,22 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "OakThinksToRival": FullScreenPokemon.prototype.cutsceneOakIntroOakThinksToRival,
                 "RivalProtests": FullScreenPokemon.prototype.cutsceneOakIntroRivalProtests,
                 "OakRespondsToProtest": FullScreenPokemon.prototype.cutsceneOakIntroOakRespondsToProtest,
-                "PlayerTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPlayerTakesPokemon,
-                "PlayerChoosesNickname": FullScreenPokemon.prototype.cutsceneOakIntroPlayerChoosesNickname,
-                "RivalTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroRivalTakesPokemon,
-                "RivalBattleChallenge": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleChallenge,
-                "RivalBattleApproach": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleApproach
+            }
+        },
+        "OakIntroPokemonChoice": {
+            "firstRoutine": "PlayerChecksPokeball",
+            "routines": {
+                "PlayerChecksPokeball": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerChecksPokeball,
+                "PlayerTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
+                "PlayerChoosesNickname": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
+                "RivalTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalTakesPokemon
+            }
+        },
+        "OakIntroRivalBattle": {
+            "firstRoutine": "Challenge",
+            "routines": {
+                "Challenge": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleChallenge,
+                "Approach": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleApproach
             }
         }
     }

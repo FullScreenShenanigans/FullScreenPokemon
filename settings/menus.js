@@ -167,6 +167,9 @@ FullScreenPokemon.prototype.settings.menus = {
             "textXOffset": 4,
             "textYOffset": 5
         },
+        "PokedexListing": {
+
+        },
         "Pokemon": {
             "size": {
                 "width": 88,
