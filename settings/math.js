@@ -1312,6 +1312,14 @@ FullScreenPokemon.prototype.settings.math = {
                 "Speed": 70
             },
             "Squirtle": {
+                "label": "TINYTURTLE",
+                "info": [
+                    "After birth, its back swells and hardens into a",
+                    "shell. Powerfully sprays foam out of its mouth."
+                ],
+                "number": 7,
+                "height": ["1", "08"],
+                "weight": "20.0",
                 "types": ["Water"],
                 "HP": 44,
                 "Attack": 48,

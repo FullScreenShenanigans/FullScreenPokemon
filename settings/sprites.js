@@ -679,6 +679,7 @@ FullScreenPokemon.prototype.settings.sprites = {
             "CharRightSquareBracket": "p[0,2]x08,111x07,1x07,1x07,1x07,1x07,1x05,111x05,",
             "CharPoke": "p[0,2]111x05,101x05,111x05,100010101000101x05,11x06,101x05,1010",
             "CharMon": "p[0,2]1101100010101000100010001000100010010010000110100001011000010010",
+            "CharNo": "p[0,1,2]x08,2002000022020x27,02122122021221120222",
             "CharHyphen": "p[0,2]x033,x16,x025,",
             "CharMDash": "p[0,2]x025,x17,0x17,x024,",
             "CharUnderscore": "p[0,2]x049,x17,0x17,",
@@ -691,6 +692,8 @@ FullScreenPokemon.prototype.settings.sprites = {
             "CharComma": "p[0,2]x033,11x06,11x07,1x06,1x06,",
             "CharED": "p[0,2]1111000011x06,1111000011001110x16,01000011010000110100001110",
             "CharApostrophe": "p[0,2]00110110",
+            "CharFeet": "p[0,2]001101101000",
+            "CharInches": "p[0,1,2]0022000022112221112200012000",
             "ChareFancy": "p[0,2]x010,11000011x08,111100010000100x16,001x08,x15,0",
             "CharBall": "p[0,2,3,4]0011100013331013233311x35,11x25,101222100011100",
             "CharCircle": "p[1,3]01110x115,01110",
@@ -703,9 +706,13 @@ FullScreenPokemon.prototype.settings.sprites = {
             "HalfArrowLeft": "p[0,2]x06,110000111100x114,",
             "HalfArrowRight": "p[0,2]11x06,11110000x16,00x18,",
             "Line": "p[2]0000",
-            "LineDecoratorHorizontal": ["multiple", "horizontal", {
+            "LineDecoratorHorizontalLeft": ["multiple", "horizontal", {
+                "middle": "p[0,1,2,3]x05,x26,x010,233332x05,x26,1111x212,1111x26,x05,233332x010,x26,x05,",
+                "right": "p[1,2]x032,x132,x032,",
+            }],
+            "LineDecoratorHorizontalRight": ["multiple", "horizontal", {
                 "left": "p[1,2]x032,x132,x032,",
-                "middle": "p[1,2,3]0x16,x010,122221x09,110000x112,0000x110,0122221x010,x16,x09,"
+                "middle": "p[0,1,2,3]x05,x26,x010,233332x05,x26,1111x212,1111x26,x05,233332x010,x26,x05,"
             }],
             "LineDecoratorVertical": ["multiple", "vertical", {
                 "top": "p[1,2]001100001100001100001100001100001100001100001100001100001100001100001100001100001100001100001100",

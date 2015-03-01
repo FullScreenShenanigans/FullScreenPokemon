@@ -255,7 +255,7 @@ var FullScreenPokemon = (function (GameStartr) {
         //if (EightBitter.StatsHolder.get("gameStarted")) {
         //    EightBitter.gameStartPlay(EightBitter);
         //} else {
-            EightBitter.gameStartOptions(EightBitter);
+        EightBitter.gameStartOptions(EightBitter);
         //}
 
         EightBitter.ModAttacher.fireEvent("onGameStart");
@@ -1568,7 +1568,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
                 break;
             case "pokedex":
-                thing.EightBitter.openPokedexListing(other.pokemon, callback);
+                console.log("Opening pokedex", callback);
+                thing.EightBitter.openPokedexListing(other.pokemon);
                 break;
             case "dialog":
                 thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2114,8 +2115,59 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function openPokedexListing(title, backMenu) {
+    function openPokedexListing(title, callback) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            pokemon = EightBitter.MathDecider.getConstant("pokemon")[title],
+            height = pokemon.height,
+            feet = [].slice.call(height[0]).reverse().join(""),
+            inches = [].slice.call(height[1]).reverse().join("");
 
+        EightBitter.MenuGrapher.createMenu("PokedexListing");
+        EightBitter.MenuGrapher.createMenuThing("PokedexListingSprite", {
+            "thing": title + "Front",
+            "args": {
+                "flipHoriz": true
+            }
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingName", title.toUpperCase()
+        );
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingLabel", pokemon.label
+        );
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingHeightFeet", feet
+        );
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingHeightInches", inches
+        );
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingWeight", pokemon.weight
+        );
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingNumber",
+            EightBitter.makeDigit(pokemon.number, 3, '0')
+        );
+        EightBitter.MenuGrapher.addMenuDialog(
+            "PokedexListingInfo",
+            pokemon.info[0],
+            function () {
+                EightBitter.MenuGrapher.createMenu("PokedexListingInfo");
+                EightBitter.MenuGrapher.addMenuDialog(
+                    "PokedexListingInfo",
+                    pokemon.info[1],
+                    function () {
+                        EightBitter.MenuGrapher.deleteMenu("PokedexListing");
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                );
+                EightBitter.MenuGrapher.setActiveMenu("PokedexListingInfo");
+            }
+        );
+
+        EightBitter.MenuGrapher.setActiveMenu("PokedexListingInfo");
     }
 
     /**
@@ -2565,9 +2617,9 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneIntroPokemonExpo(EightBitter, settings) {
         var pokemon = EightBitter.ObjectMaker.make("NidorinoFront", {
-                "flipHoriz": true,
-                "opacity": .01
-            });
+            "flipHoriz": true,
+            "opacity": .01
+        });
 
         EightBitter.GroupHolder.applyOnAll(EightBitter, EightBitter.killNormal);
 
@@ -2624,9 +2676,9 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneIntroPlayerAppear(EightBitter, settings) {
         var player = EightBitter.ObjectMaker.make("PlayerPortrait", {
-                "flipHoriz": true,
-                "opacity": .01
-            }),
+            "flipHoriz": true,
+            "opacity": .01
+        }),
             middleX = EightBitter.MapScreener.middleX;
 
         settings.player = player;
@@ -2774,10 +2826,10 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneIntroPlayerNameComplete(EightBitter, settings) {
         var blank = EightBitter.ObjectMaker.make("WhiteSquare", {
-                "width": EightBitter.MapScreener.width,
-                "height": EightBitter.MapScreener.height,
-                "opacity": .01 // Why doesn't 0 work?
-            });
+            "width": EightBitter.MapScreener.width,
+            "height": EightBitter.MapScreener.height,
+            "opacity": .01 // Why doesn't 0 work?
+        });
 
         EightBitter.addThing(blank, 0, 0);
 
@@ -3197,7 +3249,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.StateHolder.addChange(oak.id, "hidden", false);
         EightBitter.StateHolder.addChange(oak.id, "dialog", oak.dialog);
-        
+
         EightBitter.animateCharacterStartWalking(oak, 0, [
             8, "bottom", 0
         ]);
@@ -3324,8 +3376,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroPokemonChoicePlayerChecksPokeball(EightBitter, settings) {
-        console.log("Doing it");
-        EightBitter.MenuGrapher.createMenu("PokedexListing");
+        var pokeball = settings.triggerer;
+
+        EightBitter.openPokedexListing(pokeball.pokemon);
     }
 
     /**
@@ -3431,7 +3484,7 @@ var FullScreenPokemon = (function (GameStartr) {
         settings.rival = rival;
 
         EightBitter.animateCharacterStartTurning(rival, 2, [
-            4, "bottom", 2, 
+            4, "bottom", 2,
             EightBitter.BattleMover.startBattle.bind(
                 EightBitter.BattleMover,
                 {

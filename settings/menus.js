@@ -169,8 +169,8 @@ FullScreenPokemon.prototype.settings.menus = {
         },
         "PokedexListing": {
             "size": {
-                "width": 88,
-                "height": 80
+                "width": 80,
+                "height": 72
             },
             "position": {
                 "horizontal": "center",
@@ -178,7 +178,182 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": -4
                 }
             },
+            "childrenSchemas": [{
+                "type": "menu",
+                "name": "PokedexListingSprite"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingName"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingLabel"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingHeight"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingWeight"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingNumber"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingInfo"
+            }, {
+                "type": "thing",
+                "thing": "LineDecoratorHorizontalLeft",
+                "position": {
+                    "offset": {
+                        "top": 36.5,
+                        "left": 2
+                    }
+                },
+                "size": {
+                    "width": 38
+                },
+            }, {
+                "type": "thing",
+                "thing": "LineDecoratorHorizontalRight",
+                "position": {
+                    "offset": {
+                        "top": 36.5,
+                        "left": 38
+                    }
+                },
+                "size": {
+                    "width": 40
+                }
+            }],
             "lined": true
+        },
+        "PokedexListingSprite": {
+            "position": {
+                "offset": {
+                    "left": 8,
+                    "top": 12
+                }
+            },
+            "size": {
+                "width": 20,
+                "height": 20
+            },
+            "container": "PokedexListing"
+        },
+        "PokedexListingName": {
+            "position": {
+                "offset": {
+                    "left": 32,
+                    "top": 7.5
+                }
+            },
+            "container": "PokedexListing",
+            "plain": true,
+            "textSpeed": 0,
+            "textYOffset": 0
+        },
+        "PokedexListingLabel": {
+            "position": {
+                "offset": {
+                    "left": 32,
+                    "top": 15.5
+                }
+            },
+            "container": "PokedexListing",
+            "plain": true,
+            "textSpeed": 0,
+            "textYOffset": 0
+        },
+        "PokedexListingHeight": {
+            "position": {
+                "offset": {
+                    "left": 36,
+                    "top": 23.5
+                }
+            },
+            "size": {
+                "height": 10,
+                "width": 40
+            },
+            "childrenSchemas": [{
+                "type": "text",
+                "words": ["HT"]
+            }, {
+                "type": "menu",
+                "name": "PokedexListingHeightFeet"
+            }, {
+                "type": "menu",
+                "name": "PokedexListingHeightInches"
+            }, {
+                "type": "thing",
+                "thing": "CharFeet",
+                "position": {
+                    "offset": {
+                        "left": 20,
+                        "top": .5
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "CharInches",
+                "position": {
+                    "offset": {
+                        "left": 32,
+                        "top": .5
+                    }
+                }
+            }],
+            "container": "PokedexListing",
+            "plain": true,
+            "textSpeed": 0,
+            "textXOffset": 8,
+            "textYOffset": 0
+        },
+        "PokedexListingHeightFeet": {
+            "size": {
+                "height": 10,
+                "width": 20
+            },
+            "container": "PokedexListingHeight",
+            "hidden": true,
+            "textXOffset": 16.5,
+            "textYOffset": 0,
+            "textPaddingX": -8
+        },
+        "PokedexListingHeightInches": {
+            "size": {
+                "height": 10,
+                "width": 20
+            },
+            "container": "PokedexListingHeight",
+            "hidden": true,
+            "textXOffset": 28,
+            "textYOffset": 0,
+            "textPaddingX": -8
+        },
+        "PokedexListingWeight": {
+            "position": {
+                "offset": {
+                    "left": 36,
+                    "top": 31.5
+                }
+            },
+            "childrenSchemas": [{
+                "type": "text",
+                "words": ["WT"]
+            }, {
+                "type": "text",
+                "words": ["lb"],
+                "position": {
+                    "offset": {
+                        "left": 32
+                    }
+                }
+            }],
+            "container": "PokedexListing",
+            "plain": true,
+            "textSpeed": 0,
+            "textXOffset": 16,
+            "textYOffset": 0
         },
         "PokedexListingNumber": {
             "size": {
@@ -187,15 +362,36 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "offset": {
-                    "top": 32.5
+                    "left": 8,
+                    "top": 32
                 }
-            }
+            },
+            "childrenSchemas": [{
+                "type": "text",
+                "words": [[["No"], "."]],
+            }],
+            "container": "PokedexListing",
+            "plain": true,
+            "textSpeed": 0,
+            "textXOffset": 8,
+            "textYOffset": -.5
         },
-        "PokedexListingHeight": {
-
-        },
-        "PokedexListingWeight": {
-
+        "PokedexListingInfo": {
+            "position": {
+                "vertical": "bottom",
+                "horizontal": "center",
+                "offset": {
+                    "top": -4
+                }
+            },
+            "size": {
+                "width": 76,
+                "height": 32
+            },
+            "container": "PokedexListing",
+            "hidden": true,
+            "textSpeed": 0,
+            "textXOffset": 2
         },
         "Pokemon": {
             "size": {
