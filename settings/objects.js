@@ -598,7 +598,8 @@
                         "HalfArrowRight": {}
                     },
                     "Line": {
-                        "LineDecorator": {},
+                        "LineDecoratorHorizontal": {},
+                        "LineDecoratorVertical": {},
                         "LineSeparatorHorizontal": {},
                     }
                 },
@@ -954,7 +955,8 @@
                 "height": 1,
                 "repeat": true
             },
-            "LineDecorator": [3, 8],
+            "LineDecoratorHorizontal": [8, 3],
+            "LineDecoratorVertical": [3, 8],
             "LineSeparatorHorizontal": [4, 4],
             "Menu": {
                 "groupType": "Text",
@@ -975,6 +977,10 @@
                     "light": {
                         "spritewidth": 1,
                         "spriteheight": 1
+                    },
+                    "lined": {
+                        "spritewidth": 2,
+                        "spriteheight": 2
                     },
                     "dirty": {}
                 }

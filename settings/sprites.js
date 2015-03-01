@@ -585,6 +585,17 @@ FullScreenPokemon.prototype.settings.sprites = {
                     "topleft": "p[1]0000",
                     "middle": "p[1]0000",
                 }],
+                "lined": ["multiple", "corners", {
+                    "top": "p[2,4]x112,0000",
+                    "topright": "p[2,4]x112,0111",
+                    "right": "p[2,4]0111011101110111",
+                    "bottomright": "p[2,4]0x115,",
+                    "bottom": "p[2,4]0000x112,",
+                    "bottomleft": "p[2,4]1110x112,",
+                    "left": "p[2,4]1110111011101110",
+                    "topleft": "p[2,4]x115,0",
+                    "middle": "p[1]x016,"
+                }],
                 "dirty": "p[1,3,4]20222120221x25,122202122220x28,020221202221x25,12202122202"
             },
             "CharA": "p[0,2]x011,1x06,101x05,101000010001000x15,001x05,101x05,10",
@@ -692,7 +703,11 @@ FullScreenPokemon.prototype.settings.sprites = {
             "HalfArrowLeft": "p[0,2]x06,110000111100x114,",
             "HalfArrowRight": "p[0,2]11x06,11110000x16,00x18,",
             "Line": "p[2]0000",
-            "LineDecorator": ["multiple", "vertical", {
+            "LineDecoratorHorizontal": ["multiple", "horizontal", {
+                "left": "p[1,2]x032,x132,x032,",
+                "middle": "p[1,2,3]0x16,x010,122221x09,110000x112,0000x110,0122221x010,x16,x09,"
+            }],
+            "LineDecoratorVertical": ["multiple", "vertical", {
                 "top": "p[1,2]001100001100001100001100001100001100001100001100001100001100001100001100001100001100001100001100",
                 "middle": "p[1,2,3]001100x17,2002112002112002112002x17,001100001100001100001100001100001100001100001100001100"
             }],

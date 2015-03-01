@@ -86,7 +86,7 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "childrenSchemas": [{
                 "type": "thing",
-                "thing": "LineDecorator",
+                "thing": "LineDecoratorVertical",
                 "position": {
                     "vertical": "stretch",
                     "offset": {
@@ -168,6 +168,33 @@ FullScreenPokemon.prototype.settings.menus = {
             "textYOffset": 5
         },
         "PokedexListing": {
+            "size": {
+                "width": 88,
+                "height": 80
+            },
+            "position": {
+                "horizontal": "center",
+                "offset": {
+                    "left": -4
+                }
+            },
+            "lined": true
+        },
+        "PokedexListingNumber": {
+            "size": {
+                "width": 20,
+                "height": 4
+            },
+            "position": {
+                "offset": {
+                    "top": 32.5
+                }
+            }
+        },
+        "PokedexListingHeight": {
+
+        },
+        "PokedexListingWeight": {
 
         },
         "Pokemon": {
