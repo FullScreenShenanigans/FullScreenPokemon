@@ -3377,17 +3377,51 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneOakIntroPokemonChoicePlayerChecksPokeball(EightBitter, settings) {
         var pokeball = settings.triggerer;
+        
+        settings.chosen = pokeball.pokemon;
 
-        EightBitter.openPokedexListing(pokeball.pokemon);
+        EightBitter.openPokedexListing(
+            pokeball.pokemon,
+            EightBitter.ScenePlayer.bindRoutine("PlayerDecidesPokemon")
+        );
+    }
+
+    /**
+     * // this pokemon is really energetic!
+     */
+    function cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, " + settings.chosen.toUpperCase() + "?"
+            ],
+            function () {
+                EightBitter.MenuGrapher.createMenu("Yes/No", {
+                    "killOnB": ["GeneralText"]
+                });
+                EightBitter.MenuGrapher.addMenuList("Yes/No", {
+                    "options": [{
+                        "text": "YES",
+                        "callback": EightBitter.ScenePlayer.bindRoutine("PlayerTakesPokemon")
+                    }, {
+                        "text": "NO",
+                        "callback": EightBitter.MenuGrapher.deleteMenu.bind(
+                            EightBitter.MenuGrapher,
+                            "GeneralText"
+                        )
+                    }]
+                });
+                EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * 
      */
     function cutsceneOakIntroPokemonChoicePlayerTakesPokemon(EightBitter, settings) {
-        console.log("The Pokeball Yes/No should put the chosen title in settings. Hardcoding to SQUIRTLE.");
-        settings.chosen = "Squirtle";
-
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true
@@ -3395,6 +3429,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
+                "%%%%%%%PLAYER%%%%%%% received a " + settings.chosen.toUpperCase() + "!",
                 "This %%%%%%%POKEMON%%%%%%% is really energetic!",
                 "Do you want to give a nickname to " + settings.chosen.toUpperCase() + "?"
             ],
@@ -4786,6 +4821,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroRivalProtests": cutsceneOakIntroRivalProtests,
         "cutsceneOakIntroOakRespondsToProtest": cutsceneOakIntroOakRespondsToProtest,
         "cutsceneOakIntroPokemonChoicePlayerChecksPokeball": cutsceneOakIntroPokemonChoicePlayerChecksPokeball,
+        "cutsceneOakIntroPokemonChoicePlayerDecidesPokemon": cutsceneOakIntroPokemonChoicePlayerDecidesPokemon,
         "cutsceneOakIntroPokemonChoicePlayerTakesPokemon": cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
         "cutsceneOakIntroPokemonChoicePlayerChoosesNickname": cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
         "cutsceneOakIntroPokemonChoiceRivalTakesPokemon": cutsceneOakIntroPokemonChoiceRivalTakesPokemon,

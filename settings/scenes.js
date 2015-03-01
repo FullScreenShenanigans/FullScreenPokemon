@@ -59,6 +59,7 @@ FullScreenPokemon.prototype.settings.scenes = {
             "firstRoutine": "PlayerChecksPokeball",
             "routines": {
                 "PlayerChecksPokeball": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerChecksPokeball,
+                "PlayerDecidesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerDecidesPokemon,
                 "PlayerTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
                 "PlayerChoosesNickname": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
                 "RivalTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalTakesPokemon
