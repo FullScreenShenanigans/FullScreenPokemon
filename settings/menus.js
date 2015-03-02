@@ -721,7 +721,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     "top": -24
                 }
             },
-            "arrowXOffset": 4.5,
+            "arrowXOffset": 1,
             "textXOffset": 8,
             "textYOffset": 3.5
         },
