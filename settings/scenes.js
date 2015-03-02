@@ -62,6 +62,7 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "PlayerDecidesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerDecidesPokemon,
                 "PlayerTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
                 "PlayerChoosesNickname": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
+                "PlayerCreatedNickname": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerCreatedNickname,
                 "RivalTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalTakesPokemon
             }
         },
