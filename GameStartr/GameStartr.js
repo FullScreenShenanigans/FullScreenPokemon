@@ -709,7 +709,6 @@ var GameStartr = (function (EightBittr) {
 
         // flipHoriz and flipVert initially 
         if (thing.flipHoriz) {
-            console.log("Doing", thing.title);
             thing.EightBitter.flipHoriz(thing);
         }
         if (thing.flipVert) {

@@ -504,6 +504,8 @@ function MenuGraphr(settings) {
             return;
         }
 
+        progress.working = true;
+
         if (progress.complete) {
             if (!progress.onCompletion || progress.onCompletion(EightBitter, menu)) {
                 self.deleteMenu(name);
@@ -511,7 +513,6 @@ function MenuGraphr(settings) {
             return;
         }
 
-        progress.working = true;
 
         for (i = 0; i < children.length; i += 1) {
             character = children[i];
