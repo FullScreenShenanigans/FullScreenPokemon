@@ -3630,6 +3630,7 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.saveCharacterPositions(EightBitter);
+        EightBitter.StatsHolder.saveAll();
         EightBitter.StateHolder.saveCollection();
 
         EightBitter.MenuGrapher.createMenu("GeneralText");

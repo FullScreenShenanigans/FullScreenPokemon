@@ -87,6 +87,9 @@ function StatsHoldr(settings) {
         // A reference to localStorage or a replacement object.
         localStorage,
 
+        // Whether this should save changes to localStorage automatically
+        autoSave,
+
         // A prefix to store things under in localStorage.
         prefix,
 
@@ -131,6 +134,9 @@ function StatsHoldr(settings) {
      *                                  used as a shim (defaults to window's 
      *                                  localStorage, or a new Object if that
      *                                  does not exist).
+     * @param {Boolean} [autoSave]   Whether this should save changes to 
+     *                               localStorage automatically (by default,
+     *                               false).
      * @param {Boolean} [doMakeContainer]   Whether an HTML container with 
      *                                      children for each value should be
      *                                      made (defaults to false).
@@ -142,6 +148,7 @@ function StatsHoldr(settings) {
         prefix = settings.prefix;
         proliferate = settings.proliferate;
         createElement = settings.createElement;
+        autoSave = settings.autoSave;
         callbackArgs = settings.callbackArgs || [];
         localStorage = settings.localStorage || window.localStorage || {};
 
@@ -304,7 +311,7 @@ function StatsHoldr(settings) {
             if (localStorage.hasOwnProperty([prefix + key])) {
                 this.value = this.retrieveLocalStorage();
             }
-                // Otherwise save the new version to memory
+            // Otherwise save the new version to memory
             else {
                 this.updateLocalStorage();
             }
@@ -425,14 +432,19 @@ function StatsHoldr(settings) {
      * Stores a Value's value in localStorage under the prefix plus its key.
      * 
      * @this {Value}
+     * @param {Boolean} [overrideAutoSave]   Whether the policy on saving should
+     *                                       be ignored (so saving happens
+     *                                       regardless). By default, false.
      */
-    Value.prototype.updateLocalStorage = function () {
-        localStorage[prefix + this.key] = JSON.stringify(this.value);
+    Value.prototype.updateLocalStorage = function (overrideAutoSave) {
+        if (autoSave || overrideAutoSave) {
+            localStorage[prefix + this.key] = JSON.stringify(this.value);
+        }
     };
 
 
     /* Updating values
-     */
+    */
 
     /**
      * Sets the value for the Value under the given key, then updates the Value
@@ -497,6 +509,15 @@ function StatsHoldr(settings) {
             throw new Error("Unknown key given to StatsHoldr: '" + key + "'.");
         }
     }
+
+    /**
+     * Manually saves all values to localStorage, ignoring the autoSave flag. 
+     */
+    self.saveAll = function () {
+        for (var key in values) {
+            values[key].updateLocalStorage(true);
+        }
+    };
 
 
     /* HTML helpers
