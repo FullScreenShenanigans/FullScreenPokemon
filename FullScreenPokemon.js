@@ -1017,11 +1017,116 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animatePokeballOpening(EightBitter, x, y, callback) {
-        console.log("Should implement smoke animation...");
+    function animateThingCorners(EightBitter, x, y, type, settings) {
+        var things = [],
+            i;
+
+        for (i = 0; i < 4; i += 1) {
+            things.push(EightBitter.addThing([type, settings]));
+        }
+
+        EightBitter.setLeft(things[0], x);
+        EightBitter.setLeft(things[1], x);
+
+        EightBitter.setRight(things[2], x);
+        EightBitter.setRight(things[3], x);
+
+        EightBitter.setBottom(things[0], y);
+        EightBitter.setBottom(things[3], y);
+
+        EightBitter.setTop(things[1], y);
+        EightBitter.setTop(things[2], y);
+
+        EightBitter.flipHoriz(things[0]);
+        EightBitter.flipHoriz(things[1]);
+
+        EightBitter.flipVert(things[1]);
+        EightBitter.flipVert(things[2]);
+
+        return things;
+    }
+
+    /**
+     * 
+     */
+    function animateExpandCorners(things, amount) {
+        var EightBitter = things[0].EightBitter;
+
+        EightBitter.shiftHoriz(things[0], amount);
+        EightBitter.shiftHoriz(things[1], amount);
+        EightBitter.shiftHoriz(things[2], -amount);
+        EightBitter.shiftHoriz(things[3], -amount);
+
+        EightBitter.shiftVert(things[0], -amount);
+        EightBitter.shiftVert(things[1], amount);
+        EightBitter.shiftVert(things[2], amount);
+        EightBitter.shiftVert(things[3], -amount);
+    }
+
+    /**
+     * 
+     */
+    function animateSmokeSmall(EightBitter, x, y, dt, callback) {
+        var things = EightBitter.animateThingCorners(
+                EightBitter, x, y, "SmokeSmall"
+            );
+
+        EightBitter.TimeHandler.addEvent(
+            things.forEach.bind(things), dt, EightBitter.killNormal
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateSmokeMedium, dt, EightBitter, x, y, dt, callback
+        );
+    }
+
+    /**
+     * 
+     */
+    function animateSmokeMedium(EightBitter, x, y, dt, callback) {
+        var things = EightBitter.animateThingCorners(
+                EightBitter, x, y, "SmokeMedium"
+            );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateExpandCorners, 
+            dt,
+            things,
+            EightBitter.unitsize
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            things.forEach.bind(things), dt * 2, EightBitter.killNormal
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateSmokeLarge, dt * 2, EightBitter, x, y, dt, callback
+        );
+    }
+
+    /**
+     * 
+     */
+    function animateSmokeLarge(EightBitter, x, y, dt, callback) {
+        var things = EightBitter.animateThingCorners(
+                EightBitter, x, y, "SmokeLarge"
+            );
+
+        EightBitter.animateExpandCorners(things, EightBitter.unitsize * 2.5);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateExpandCorners,
+            dt,
+            things,
+            EightBitter.unitsize * 2
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            things.forEach.bind(things), dt * 3, EightBitter.killNormal
+        );
 
         if (callback) {
-            EightBitter.TimeHandler.addEvent(callback, 3);
+            EightBitter.TimeHandler.addEvent(callback, dt * 3);
         }
     }
 
@@ -4793,7 +4898,11 @@ var FullScreenPokemon = (function (GameStartr) {
         // General animations
         "animateGrassBattleStart": animateGrassBattleStart,
         "animatePlayerLeaveLeft": animatePlayerLeaveLeft,
-        "animatePokeballOpening": animatePokeballOpening,
+        "animateThingCorners": animateThingCorners,
+        "animateExpandCorners": animateExpandCorners,
+        "animateSmokeSmall": animateSmokeSmall,
+        "animateSmokeMedium": animateSmokeMedium,
+        "animateSmokeLarge": animateSmokeLarge,
         "animateExclamation": animateExclamation,
         // Character movement animations
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
