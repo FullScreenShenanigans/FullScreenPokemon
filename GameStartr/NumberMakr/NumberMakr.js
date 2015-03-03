@@ -413,6 +413,22 @@ function NumberMakr(settings) {
     self.randomBooleanFraction = function (numerator, denominator) {
         return self.random() <= (numerator / denominator);
     };
+
+    /**
+     * @param {Array} array
+     * @return {Number} A random index, from 0 to the given Array's length
+     */
+    self.randomArrayIndex = function (array) {
+        return self.randomIntWithin(array.length);
+    }
+
+    /**
+     * @param {Array} array
+     * @return {Mixed} A random element from within the given Array.
+     */
+    self.randomArrayMember = function (array) {
+        return array[self.randomArrayIndex(array)];
+    }
     
     
     self.reset(settings || {});

@@ -1101,7 +1101,33 @@ FullScreenPokemon.prototype.settings.math = {
                 "Attack": 45,
                 "Defense": 40,
                 "Special": 35,
-                "Speed": 56
+                "Speed": 56,
+                "moves": {
+                    "natural": [
+                        {
+                            "level": 0,
+                            "move": "Gust"
+                        }, {
+                            "level": 5,
+                            "move": "Sand Attack"
+                        }, {
+                            "level": 12,
+                            "move": "Quick Attack"
+                        }, {
+                            "level": 19,
+                            "move": "Whirlwind"
+                        }, {
+                            "level": 28,
+                            "move": "Wing Attack"
+                        }, {
+                            "level": 36,
+                            "move": "Agility"
+                        }, {
+                            "level": 44,
+                            "move": "Mirror Move"
+                        }
+                    ]
+                }
             },
             "Pikachu": {
                 "types": ["Electric"],
@@ -1205,7 +1231,30 @@ FullScreenPokemon.prototype.settings.math = {
                 "Attack": 56,
                 "Defense": 35,
                 "Special": 25,
-                "Speed": 72
+                "Speed": 72,
+                "moves": {
+                    "natural": [
+                        {
+                            "level": 0,
+                            "move": "Tackle"
+                        }, {
+                            "level": 0,
+                            "move": "Tail Whip"
+                        }, {
+                            "level": 7,
+                            "move": "Quick Attack"
+                        }, {
+                            "level": 14,
+                            "move": "Hyper Fang"
+                        }, {
+                            "level": 23,
+                            "move": "Focus Energy"
+                        }, {
+                            "level": 34,
+                            "move": "Super Fang"
+                        },
+                    ]
+                }
             },
             "Rhydon": {
                 "types": ["Ground", "Rock"],

@@ -1,39 +1,39 @@
 /*
 FSP.BattleMover.startBattle({
     "textStart": ["", " would like to battle!"],
+    "player": {
+        "sprite": "PlayerBack",
+        "name": "%%%%%%%PLAYER%%%%%%%",
+        "actors": [
+            {
+                "title": "Squirtle",
+                "moves": [
+                    {
+                        "title": "Tackle"
+                    }, {
+                        "title": "Tail Whip"
+                    }, {
+                        "title": "Bubble"
+                    }
+                ]
+            }
+        ]
+    },
     "opponent": {
         "sprite": "RivalPortrait",
         "name": "%%%%%%%RIVAL%%%%%%%",
-        "hasActors": true
-    },
-    "opponentActors": [
-        {
-            "title": "Bulbasaur",
-            "moves": [
-                {
-                    "title": "Tackle"
-                }
-            ]
-        }
-    ],
-    "player": {
-        "sprite": "PlayerBack",
-        "name": "%%%%%%%PLAYER%%%%%%%"
-    },
-    "playerActors": [
-        {
-            "title": "Squirtle",
-            "moves": [
-                {
-                    "title": "Tackle"
-                }, {
-                    "title": "Tail Whip"
-                }, {
-                    "title": "Bubble"
-                }
-            ]
-        }
-    ]
+        "hasActors": true,
+        "actors": [
+            {
+                "title": "Bulbasaur",
+                "moves": [
+                    {
+                        "title": "Tackle"
+                    }
+                ]
+            }
+        ]
+    }
 });
 */
 
@@ -141,6 +141,9 @@ function BattleMovr(settings) {
         battleInfo = EightBitter.proliferate({}, defaults);
         battleInfo = EightBitter.proliferate(battleInfo, settings);
 
+        battleInfo.player.selectedActor = battleInfo.player.actors[0];
+        battleInfo.opponent.selectedActor = battleInfo.opponent.actors[0];
+
         self.createBackground();
 
         EightBitter.MapScreener.inMenu = true;
@@ -227,6 +230,8 @@ function BattleMovr(settings) {
             thing.groupType,
             "Text"
         );
+
+        return thing;
     };
 
     /* In-battle menus
@@ -236,7 +241,7 @@ function BattleMovr(settings) {
      * 
      */
     self.openMovesMenu = function () {
-        var actorMoves = battleInfo.playerActors[0].moves,
+        var actorMoves = battleInfo.player.selectedActor.moves,
             moveOptions = [],
             move, i;
 

@@ -968,25 +968,43 @@ var FullScreenPokemon = (function (GameStartr) {
             options = grassArea.wildPokemon.grass,
             chosen = thing.EightBitter.chooseRandomWildPokemon(
                 thing.EightBitter, options
+            ),
+            pokemon = thing.EightBitter.MathDecider.compute(
+                "newPokemon", 
+                chosen.title,
+                thing.EightBitter.NumberMaker.randomArrayIndex(chosen.levels)
             );
+
+        console.log("choosing", chosen);
 
         thing.EightBitter.MapScreener.inMenu = true;
         thing.EightBitter.BattleMover.startBattle({
             "opponent": {
-                "title": chosen.title
+                "title": chosen.title.toUpperCase(),
+                "sprite": chosen.title + "Front",
+                "actors": [
+                    {
+                        "sprite": chosen.title + "Front",
+                        "name": chosen.title.toUpperCase()
+                    }
+                ]
             },
-            "playerActors": [
-                {
-                    "title": "Squirtle",
-                    "moves": [{
-                        "title": "TACKLE"
-                    }, {
-                        "title": "TAIL WHIP"
-                    }, {
-                        "title": "BUBBLE"
-                    }]
-                }
-            ]
+            "player": {
+                "sprite": "PlayerBack",
+                "name": "%%%%%%%PLAYER%%%%%%%",
+                "actors": [
+                    {
+                        "title": "Squirtle",
+                        "moves": [{
+                            "title": "TACKLE"
+                        }, {
+                            "title": "TAIL WHIP"
+                        }, {
+                            "title": "BUBBLE"
+                        }]
+                    }
+                ]
+            }
         });
     }
 
@@ -1026,7 +1044,6 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (groupType) {
-            console.log("Switching to", groupType);
             for (i = 0; i < things.length; i += 1) {
                 things[0].EightBitter.GroupHolder.switchObjectGroup(
                     things[i],
@@ -2558,6 +2575,9 @@ var FullScreenPokemon = (function (GameStartr) {
             playerX, opponentX, playerGoal, opponentGoal,
             timeout = 70;
 
+        settings.battleInfo.player.selectedIndex = 0;
+        settings.battleInfo.opponent.selectedIndex = 0;
+
         player.opacity = .01;
         opponent.opacity = .01;
 
@@ -2596,7 +2616,6 @@ var FullScreenPokemon = (function (GameStartr) {
             textStart = battleInfo.textStart,
             callback;
 
-        console.log("eh", settings.battleInfo.opponent)
         if (settings.battleInfo.opponent.hasActors) {
             callback = "EnemyIntro";
         } else {
@@ -2642,10 +2661,12 @@ var FullScreenPokemon = (function (GameStartr) {
                 battleInfo.textOpponentSendOut[0]
                 + battleInfo.opponent.name
                 + battleInfo.textOpponentSendOut[1]
-                + battleInfo.opponentActors[0].title
+                + battleInfo.opponent.actors[0].title
                 + battleInfo.textOpponentSendOut[2]
             ],
-            EightBitter.ScenePlayer.bindRoutine(callback)
+            EightBitter.ScenePlayer.bindRoutine(callback, {
+                "nextRoutine": "PlayerIntro",
+            })
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2669,16 +2690,22 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
+            "ignoreB": true,
+            "finishAutomatically": true
         });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
                 battleInfo.textPlayerSendOut[0]
-                + battleInfo.playerActors[0].title
+                + battleInfo.player.actors[0].title
                 + battleInfo.textPlayerSendOut[1]
             ],
-            EightBitter.ScenePlayer.bindRoutine("ShowPlayerMenu")
+            EightBitter.ScenePlayer.bindRoutine(
+                "PlayerSendOut",
+                {
+                    "nextRoutine": "ShowPlayerMenu"
+                }
+            )
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2708,7 +2735,10 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter, 
             left, 
             top,
-            EightBitter.ScenePlayer.bindRoutine("OpponentSendOutAppear")
+            EightBitter.ScenePlayer.bindRoutine(
+                "OpponentSendOutAppear",
+                settings.routineArguments
+            )
         );
     }
 
@@ -2716,21 +2746,70 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleOpponentSendOutAppear(EightBitter, settings) {
-        console.log("Adding!");
+        var opponentInfo = settings.battleInfo.opponent,
+            pokemonInfo = opponentInfo.actors[opponentInfo.selectedIndex],
+            pokemon = EightBitter.BattleMover.setActor(
+                "opponent", pokemonInfo.title + "Front"
+            );
+
+        console.log("Should make the zoom-in animation for appearing Pokemon...");
+
+        EightBitter.GroupHolder.switchObjectGroup(
+            pokemon,
+            pokemon.groupType,
+            "Text"
+        );
+
+        EightBitter.ScenePlayer.playRoutine(
+            settings.routineArguments.nextRoutine
+        );
     }
 
     /**
      * 
      */
     function cutsceneBattlePlayerSendOut(EightBitter, settings) {
+        var menu = settings.actors.menu,
+            left = menu.left + EightBitter.unitsize * 8,
+            top = menu.bottom - EightBitter.unitsize * 8;
 
+        settings.playerLeft = left;
+        settings.playerTop = top;
+
+        EightBitter.MenuGrapher.setActiveMenu(undefined);
+
+        console.log("Going to", settings.routineArguments);
+        EightBitter.animateSmokeSmall(
+            EightBitter,
+            left,
+            top,
+            EightBitter.ScenePlayer.bindRoutine(
+                "PlayerSendOutAppear",
+                settings.routineArguments
+            )
+        );
     }
 
     /**
      * 
      */
     function cutsceneBattlePlayerSendOutAppear(EightBitter, settings) {
+        var playerInfo = settings.battleInfo.player,
+            pokemonInfo = playerInfo.actors[playerInfo.selectedIndex],
+            pokemon = EightBitter.BattleMover.setActor(
+                "player", pokemonInfo.title + "Back"
+            );
 
+        console.log("Appearing", pokemonInfo, settings.routineInformation);
+        console.log("Should make the zoom-in animation for appearing Pokemon...");
+
+        EightBitter.GroupHolder.switchObjectGroup(
+            pokemon,
+            pokemon.groupType,
+            "Text"
+        );
+
+        EightBitter.ScenePlayer.playRoutine(settings.routineArguments.nextRoutine);
     }
 
     /**
@@ -2758,7 +2837,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var blank = EightBitter.ObjectMaker.make("WhiteSquare", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
-            "opacity": .01 // Why doesn't 0 work?
+            "opacity": 0
         });
 
         EightBitter.addThing(blank, 0, 0);
@@ -2839,9 +2918,9 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneIntroPlayerAppear(EightBitter, settings) {
         var player = EightBitter.ObjectMaker.make("PlayerPortrait", {
-            "flipHoriz": true,
-            "opacity": .01
-        }),
+                "flipHoriz": true,
+                "opacity": .01
+            }),
             middleX = EightBitter.MapScreener.middleX;
 
         settings.player = player;
@@ -2991,7 +3070,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var blank = EightBitter.ObjectMaker.make("WhiteSquare", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
-            "opacity": .01 // Why doesn't 0 work?
+            "opacity": 0
         });
 
         EightBitter.addThing(blank, 0, 0);
@@ -3013,7 +3092,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneIntroRivalAppear(EightBitter, settings) {
         var rival = EightBitter.ObjectMaker.make("RivalPortrait", {
-            "opacity": .01
+            "opacity": 0
         });
 
         settings.rival = rival;
@@ -3139,7 +3218,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var blank = EightBitter.ObjectMaker.make("WhiteSquare", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
-            "opacity": .01 // Why doesn't 0 work?
+            "opacity": 0
         });
 
         EightBitter.addThing(blank, 0, 0);
@@ -3162,7 +3241,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneIntroLastDialogAppear(EightBitter, settings) {
         var portrait = EightBitter.ObjectMaker.make("PlayerPortrait", {
             "flipHoriz": true,
-            "opacity": .01
+            "opacity": 0
         });
 
         settings.portrait = portrait;
@@ -3254,7 +3333,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var blank = EightBitter.ObjectMaker.make("WhiteSquare", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
-            "opacity": .01 // Why doesn't 0 work?
+            "opacity": 0
         });
 
         EightBitter.addThing(blank, 0, 0);
@@ -3762,21 +3841,22 @@ var FullScreenPokemon = (function (GameStartr) {
                 EightBitter.BattleMover,
                 {
                     "player": {
-                        "title": EightBitter.StatsHolder.get("name")
+                        "sprite": "PlayerBack",
+                        "name": EightBitter.StatsHolder.get("name"),
+                        "actors": EightBitter.StatsHolder.get("PokemonInParty")
                     },
-                    "playerActors": EightBitter.StatsHolder.get("PokemonInParty"),
                     "opponent": {
-                        "displayTitle": EightBitter.StatsHolder.get("nameRival"),
-                        "type": "RivalPortrait",
-                        "title": "RivalPortrait"
+                        "sprite": "RivalPortrait",
+                        "name": EightBitter.StatsHolder.get("nameRival"),
+                        "hasActors": true,
+                        "actors": [
+                            EightBitter.MathDecider.compute(
+                                "newPokemon",
+                                EightBitter.StatsHolder.get("starterRival"),
+                                5
+                            )
+                        ]
                     },
-                    "opponentActors": [
-                        EightBitter.MathDecider.compute(
-                            "newPokemon",
-                            EightBitter.StatsHolder.get("starterRival"),
-                            5
-                        )
-                    ],
                     "textStart": ["", " wants to fight!"]
                 }
             )
