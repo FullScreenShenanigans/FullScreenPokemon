@@ -1017,12 +1017,23 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateThingCorners(EightBitter, x, y, type, settings) {
+    function animateThingCorners(EightBitter, x, y, type, settings, groupType) {
         var things = [],
             i;
 
         for (i = 0; i < 4; i += 1) {
             things.push(EightBitter.addThing([type, settings]));
+        }
+
+        if (groupType) {
+            console.log("Switching to", groupType);
+            for (i = 0; i < things.length; i += 1) {
+                things[0].EightBitter.GroupHolder.switchObjectGroup(
+                    things[i],
+                    things[i].groupType,
+                    groupType
+                );
+            }
         }
 
         EightBitter.setLeft(things[0], x);
@@ -1049,9 +1060,9 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateExpandCorners(things, amount) {
-        var EightBitter = things[0].EightBitter;
-
+    function animateExpandCorners(things, amount, groupType) {
+        var EightBitter = things[0].EightBitter,
+            i;
         EightBitter.shiftHoriz(things[0], amount);
         EightBitter.shiftHoriz(things[1], amount);
         EightBitter.shiftHoriz(things[2], -amount);
@@ -1066,67 +1077,67 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateSmokeSmall(EightBitter, x, y, dt, callback) {
+    function animateSmokeSmall(EightBitter, x, y, callback) {
         var things = EightBitter.animateThingCorners(
-                EightBitter, x, y, "SmokeSmall"
+                EightBitter, x, y, "SmokeSmall", undefined, "Text"
             );
 
         EightBitter.TimeHandler.addEvent(
-            things.forEach.bind(things), dt, EightBitter.killNormal
+            things.forEach.bind(things), 7, EightBitter.killNormal
         );
 
         EightBitter.TimeHandler.addEvent(
-            EightBitter.animateSmokeMedium, dt, EightBitter, x, y, dt, callback
+            EightBitter.animateSmokeMedium, 7, EightBitter, x, y, callback
         );
     }
 
     /**
      * 
      */
-    function animateSmokeMedium(EightBitter, x, y, dt, callback) {
+    function animateSmokeMedium(EightBitter, x, y, callback) {
         var things = EightBitter.animateThingCorners(
-                EightBitter, x, y, "SmokeMedium"
+                EightBitter, x, y, "SmokeMedium", undefined, "Text"
             );
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.animateExpandCorners, 
-            dt,
+            7,
             things,
             EightBitter.unitsize
         );
 
         EightBitter.TimeHandler.addEvent(
-            things.forEach.bind(things), dt * 2, EightBitter.killNormal
+            things.forEach.bind(things), 14, EightBitter.killNormal
         );
 
         EightBitter.TimeHandler.addEvent(
-            EightBitter.animateSmokeLarge, dt * 2, EightBitter, x, y, dt, callback
+            EightBitter.animateSmokeLarge, 14, EightBitter, x, y, callback
         );
     }
 
     /**
      * 
      */
-    function animateSmokeLarge(EightBitter, x, y, dt, callback) {
+    function animateSmokeLarge(EightBitter, x, y, callback) {
         var things = EightBitter.animateThingCorners(
-                EightBitter, x, y, "SmokeLarge"
+                EightBitter, x, y, "SmokeLarge", undefined, "Text"
             );
 
         EightBitter.animateExpandCorners(things, EightBitter.unitsize * 2.5);
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.animateExpandCorners,
-            dt,
+            7,
             things,
             EightBitter.unitsize * 2
         );
 
         EightBitter.TimeHandler.addEvent(
-            things.forEach.bind(things), dt * 3, EightBitter.killNormal
+            things.forEach.bind(things), 21, EightBitter.killNormal
         );
 
         if (callback) {
-            EightBitter.TimeHandler.addEvent(callback, dt * 3);
+            EightBitter.TimeHandler.addEvent(callback, 21);
         }
     }
 
@@ -2585,6 +2596,7 @@ var FullScreenPokemon = (function (GameStartr) {
             textStart = battleInfo.textStart,
             callback;
 
+        console.log("eh", settings.battleInfo.opponent)
         if (settings.battleInfo.opponent.hasActors) {
             callback = "EnemyIntro";
         } else {
@@ -2593,8 +2605,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
-            textStart[0] + battleInfo.opponent.title + textStart[1],
-            EightBitter.ScenePlayer.bindRoutine("EnemyIntro")
+            textStart[0] + battleInfo.opponent.name + textStart[1],
+            EightBitter.ScenePlayer.bindRoutine(callback)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2609,27 +2621,31 @@ var FullScreenPokemon = (function (GameStartr) {
             opponentX = EightBitter.getMidX(opponent),
             opponentGoal = menu.right + opponent.width * EightBitter.unitsize / 2,
             battleInfo = settings.battleInfo,
+            callback = battleInfo.opponent.hasActors 
+                ? "OpponentSendOut"
+                : "PlayerIntro",
             timeout = 49;
 
-        EightBitter.fadeAttribute(opponent, "opacity", -1 / timeout, .01, 1);
+        EightBitter.fadeAttribute(opponent, "opacity", -1 / timeout, 0, 1);
 
         EightBitter.fadeHorizontal(
             opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1
         );
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
+            "ignoreB": true,
+            "finishAutomatically": true
         });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
                 battleInfo.textOpponentSendOut[0]
-                + battleInfo.opponent.title
+                + battleInfo.opponent.name
                 + battleInfo.textOpponentSendOut[1]
                 + battleInfo.opponentActors[0].title
                 + battleInfo.textOpponentSendOut[2]
             ],
-            EightBitter.ScenePlayer.bindRoutine("PlayerIntro")
+            EightBitter.ScenePlayer.bindRoutine(callback)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -2646,7 +2662,7 @@ var FullScreenPokemon = (function (GameStartr) {
             battleInfo = settings.battleInfo,
             timeout = 49;
 
-        EightBitter.fadeAttribute(player, "opacity", -1 / timeout, .01, 1);
+        EightBitter.fadeAttribute(player, "opacity", -1 / timeout, 0, 1);
 
         EightBitter.fadeHorizontal(
             player, (playerGoal - playerX) / timeout, playerGoal, 1
@@ -2673,6 +2689,48 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneBattleShowPlayerMenu(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.BattleMover.showPlayerMenu();
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleOpponentSendOut(EightBitter, settings) {
+        var menu = settings.actors.menu,
+            left = menu.right - EightBitter.unitsize * 8,
+            top = menu.top + EightBitter.unitsize * 32;
+
+        settings.opponentLeft = left;
+        settings.opponentTop = top;
+
+        EightBitter.MenuGrapher.setActiveMenu(undefined);
+
+        EightBitter.animateSmokeSmall(
+            EightBitter, 
+            left, 
+            top,
+            EightBitter.ScenePlayer.bindRoutine("OpponentSendOutAppear")
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleOpponentSendOutAppear(EightBitter, settings) {
+        console.log("Adding!");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattlePlayerSendOut(EightBitter, settings) {
+
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattlePlayerSendOutAppear(EightBitter, settings) {
+
     }
 
     /**
@@ -4970,6 +5028,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleEnemyIntro": cutsceneBattleEnemyIntro,
         "cutsceneBattlePlayerIntro": cutsceneBattlePlayerIntro,
         "cutsceneBattleShowPlayerMenu": cutsceneBattleShowPlayerMenu,
+        "cutsceneBattleOpponentSendOut": cutsceneBattleOpponentSendOut,
+        "cutsceneBattlePlayerSendOut": cutsceneBattlePlayerSendOut,
+        "cutsceneBattleOpponentSendOutAppear": cutsceneBattleOpponentSendOutAppear,
+        "cutsceneBattlePlayerSendOutAppear": cutsceneBattlePlayerSendOutAppear,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,

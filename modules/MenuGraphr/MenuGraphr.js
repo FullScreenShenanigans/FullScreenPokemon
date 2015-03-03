@@ -513,7 +513,6 @@ function MenuGraphr(settings) {
             return;
         }
 
-
         for (i = 0; i < children.length; i += 1) {
             character = children[i];
 
@@ -742,7 +741,7 @@ function MenuGraphr(settings) {
 
         activeMenu = menus[name];
 
-        if (activeMenu.onActive) {
+        if (activeMenu && activeMenu.onActive) {
             activeMenu.onActive(name);
         }
     };

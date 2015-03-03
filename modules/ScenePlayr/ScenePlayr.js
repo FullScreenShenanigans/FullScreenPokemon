@@ -120,7 +120,7 @@ function ScenePlayr(settings) {
     /**
      * 
      */
-    self.playRoutine = function (name) {
+    self.playRoutine = function (name, args) {
         if (!cutscene) {
             throw new Error("No cutscene is currently playing!");
         }
@@ -133,6 +133,7 @@ function ScenePlayr(settings) {
 
         cutsceneSettings.routine = routine;
         cutsceneSettings.routineName = name;
+        cutsceneSettings.routineArguments = args;
 
         routine.apply(self, cutsceneArguments);
     };
@@ -140,8 +141,8 @@ function ScenePlayr(settings) {
     /**
      * 
      */
-    self.bindRoutine = function (name) {
-        return self.playRoutine.bind(self, name);
+    self.bindRoutine = function (name, args) {
+        return self.playRoutine.bind(self, name, args);
     };
 
 

@@ -1,18 +1,37 @@
 /*
 FSP.BattleMover.startBattle({
+    "textStart": ["", " would like to battle!"],
     "opponent": {
-        "title": "Rattata"
+        "sprite": "RivalPortrait",
+        "name": "%%%%%%%RIVAL%%%%%%%",
+        "hasActors": true
+    },
+    "opponentActors": [
+        {
+            "title": "Bulbasaur",
+            "moves": [
+                {
+                    "title": "Tackle"
+                }
+            ]
+        }
+    ],
+    "player": {
+        "sprite": "PlayerBack",
+        "name": "%%%%%%%PLAYER%%%%%%%"
     },
     "playerActors": [
         {
             "title": "Squirtle",
-            "moves": [{
-                "title": "TACKLE"
-            }, {
-                "title": "TAIL WHIP"
-            }, {
-                "title": "BUBBLE"
-            }]
+            "moves": [
+                {
+                    "title": "Tackle"
+                }, {
+                    "title": "Tail Whip"
+                }, {
+                    "title": "Bubble"
+                }
+            ]
         }
     ]
 });
@@ -119,13 +138,10 @@ function BattleMovr(settings) {
      * 
      */
     self.startBattle = function (settings) {
-        var opponentType = settings.opponent.type || (settings.opponent.title + "Front"),
-            displayTitle = settings.opponent.displayTitle;
-
-        self.createBackground();
-
         battleInfo = EightBitter.proliferate({}, defaults);
         battleInfo = EightBitter.proliferate(battleInfo, settings);
+
+        self.createBackground();
 
         EightBitter.MapScreener.inMenu = true;
         EightBitter.MenuGrapher.createMenu("Battle", {
@@ -133,15 +149,9 @@ function BattleMovr(settings) {
         });
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
 
-        self.setActor("player", "PlayerBack");
-
-        self.setActor(
-            "opponent",
-            opponentType,
-            {
-                "displayTitle": displayTitle || battleInfo.opponent.title.toUpperCase()
-            }
-        );
+        actors.menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial");
+        self.setActor("player", battleInfo.player.sprite);
+        self.setActor("opponent", battleInfo.opponent.sprite);
 
         EightBitter.ScenePlayer.startCutscene("Battle", {
             "actors": actors,
