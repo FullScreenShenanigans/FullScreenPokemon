@@ -417,11 +417,14 @@ function StatsHoldr(settings) {
     Value.prototype.retrieveLocalStorage = function () {
         var value = localStorage.getItem(prefix + this.key);
 
-        if (
-            value === "undefined"
-            || value === "null"
-            || value.constructor !== String
-        ) {
+        switch (value) {
+            case "undefined":
+                return undefined;
+            case "null":
+                return null;
+        }
+
+        if (value.constructor !== String) {
             return value;
         }
 

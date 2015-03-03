@@ -3391,7 +3391,7 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
     /**
-     * // this pokemon is really energetic!
+     * 
      */
     function cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -3455,6 +3455,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneOakIntroPokemonChoicePlayerChoosesNickname(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("Yes/No", {
+            "ignoreB": true,
             "killOnB": ["GeneralText"]
         });
         EightBitter.MenuGrapher.addMenuList("Yes/No", {
@@ -3462,11 +3463,11 @@ var FullScreenPokemon = (function (GameStartr) {
                 "text": "YES",
                 "callback": EightBitter.openKeyboardMenu.bind(EightBitter, {
                     "title": settings.chosen.toUpperCase(),
-                    "callback": EightBitter.ScenePlayer.bindRoutine("PlayerCreatedNickname")
+                    "callback": EightBitter.ScenePlayer.bindRoutine("RivalWalksToPokemon")
                 })
             }, {
                 "text": "NO",
-                "callback": EightBitter.ScenePlayer.bindRoutine("RivalTakesPokemon")
+                "callback": EightBitter.ScenePlayer.bindRoutine("RivalWalksToPokemon")
             }]
         });
         EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -3475,10 +3476,47 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOakIntroPokemonChoicePlayerCreatedNickname(EightBitter, settings) {
+    function cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(EightBitter, settings) {
+        var rival = EightBitter.getThingById("Rival"),
+            other, steps, pokeball;
+
+        console.log("Making rival nocollide true because of that glitch...");
+        rival.nocollide = true;
+
         EightBitter.MenuGrapher.deleteMenu("Keyboard");
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
+
+        switch (settings.chosen) {
+            case "Squirtle":
+                steps = 4;
+                other = "Bulbasaur";
+                break;
+            case "Charmander":
+                steps = 2;
+                other = "Squirtle";
+                break;
+            case "Bulbasaur":
+                steps = 5;
+                other = "Charmander";
+                break;
+        }
+
+        settings.rivalPokemon = other;
+        settings.rivalSteps = steps;
+        EightBitter.StatsHolder.set("starterRival", other);
+
+        pokeball = EightBitter.getThingById("Pokeball" + other);
+        settings.rivalPokeball = pokeball;
+
+        EightBitter.animateCharacterStartTurning(
+            rival,
+            2,
+            [
+                2, "right", steps, "up", 1,
+                EightBitter.ScenePlayer.bindRoutine("RivalTakesPokemon")
+            ]
+        );
     }
 
     /**
@@ -3486,31 +3524,15 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneOakIntroPokemonChoiceRivalTakesPokemon(EightBitter, settings) {
         var oakblocker = EightBitter.getThingById("OakBlocker"),
-            rivalblocker = EightBitter.getThingById("RivalBlocker"),
-            other;
+            rivalblocker = EightBitter.getThingById("RivalBlocker");
 
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
 
-        oakblocker.nocollide = false;
+        oakblocker.nocollide = true;
         EightBitter.StateHolder.addChange(oakblocker.id, "nocollide", true);
 
         rivalblocker.nocollide = false;
         EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", false);
-
-        switch (settings.chosen) {
-            case "Squirtle":
-                other = "Bulbasaur";
-                break;
-            case "Charmander":
-                other = "Squirtle";
-                break;
-            case "Bulbasaur":
-                other = "Charmander";
-                break;
-        }
-
-        settings.rivalPokemon = other;
-        EightBitter.StatsHolder.set("starterRival", other);
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true
@@ -3519,8 +3541,13 @@ var FullScreenPokemon = (function (GameStartr) {
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
-                "%%%%%%%RIVAL%%%%%%% received a " + other.toUpperCase() + "!"
-            ]
+                "%%%%%%%RIVAL%%%%%%% received a " + settings.rivalPokemon.toUpperCase() + "!"
+            ],
+            function () {
+                settings.rivalPokeball.hidden = true;
+                EightBitter.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
+                EightBitter.MenuGrapher.deleteActiveMenu();
+            }
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
@@ -3530,7 +3557,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroRivalBattleApproach(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3546,11 +3575,26 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroRivalBattleChallenge(EightBitter, settings) {
-        var rival = EightBitter.getThingById("Rival");
+        var rival = EightBitter.getThingById("Rival"),
+            steps;
+
         settings.rival = rival;
 
+        switch (EightBitter.StatsHolder.get("starterRival")) {
+            case "Squirtle":
+                steps = 3;
+                break;
+            case "Bulbasaur":
+                steps = 4;
+                break;
+            case "Charmander":
+                steps = 2;
+                break;
+        }
+
+        console.log("starterRival", steps);
         EightBitter.animateCharacterStartTurning(rival, 2, [
-            4, "bottom", 2,
+            1, "left", steps, "bottom", 0,
             EightBitter.BattleMover.startBattle.bind(
                 EightBitter.BattleMover,
                 {
@@ -4856,7 +4900,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroPokemonChoicePlayerDecidesPokemon": cutsceneOakIntroPokemonChoicePlayerDecidesPokemon,
         "cutsceneOakIntroPokemonChoicePlayerTakesPokemon": cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
         "cutsceneOakIntroPokemonChoicePlayerChoosesNickname": cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
-        "cutsceneOakIntroPokemonChoicePlayerCreatedNickname": cutsceneOakIntroPokemonChoicePlayerCreatedNickname,
+        "cutsceneOakIntroPokemonChoiceRivalWalksToPokemon": cutsceneOakIntroPokemonChoiceRivalWalksToPokemon,
         "cutsceneOakIntroPokemonChoiceRivalTakesPokemon": cutsceneOakIntroPokemonChoiceRivalTakesPokemon,
         "cutsceneOakIntroRivalBattleChallenge": cutsceneOakIntroRivalBattleChallenge,
         "cutsceneOakIntroRivalBattleApproach": cutsceneOakIntroRivalBattleApproach,

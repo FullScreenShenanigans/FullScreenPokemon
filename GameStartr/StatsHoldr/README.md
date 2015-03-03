@@ -54,6 +54,9 @@ Object.
 as a shim (defaults to window's localStorage, or a new Object if that does not 
 exist).
 
+* **[autoSave]** *`Boolean`* - Whether this should save changes to localStorage 
+automatically (by default, false).
+
 * **[doMakeContainer]** *`Boolean`* - Whether an HTML container with children
 for each value should be made (defaults to false).
 
