@@ -194,6 +194,89 @@ FullScreenPokemon.prototype.settings.math = {
             else {
                 return 3;
             }
+        },
+        // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
+        "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
+            var possibilities = opponent.selectedActor.moves.map(function (move) {
+                    return {
+                        "move": move,
+                        "priority": 10
+                    };
+                }),
+                move, lowest, total, i;
+
+            // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
+            if (player.selectedActor.status && !opponent.dumb) {
+                for (i = 0; i < possibilities.length; i += 1) {
+                    // TO DO: moveOnlyStatuses
+                    if (equations.moveOnlyStatuses(possibilities[i])) {
+                        possibilities[i].priority += 5;
+                    }
+                }
+            }
+
+            // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
+            if (
+                equations.opponentMatchesType(
+                    opponent, 
+                    constants.battleModifications["Turn 2"]
+                )
+            ) {
+                for (i = 0; i < possibilities.length; i += 1) {
+                    // TO DO: applyMoveEffectPriority
+                    equations.applyMoveEffectPrority(
+                        possibilities[i],
+                        constants.battleModifications["Turn 2"],
+                        1
+                    );
+                }
+            }
+
+            // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
+            if (
+                equations.opponentMatchesType(
+                    opponent,
+                    constants.battleModifications["Good AI"]
+                )
+            ) {
+                for (i = 0; i < possibilities.length; i += 1) {
+                    // TO DO: applyMoveEffectPriority
+                    equations.applyMoveEffectPrority(
+                        possibilities[i],
+                        constants.battleModifications["Good AI"],
+                        1
+                    );
+                }
+            }
+
+            // The AI uses rejection sampling on the four moves with ratio 63:64:63:66, with only the moves that are most favored after applying the modifications being acceptable.
+            lowest = possibilities[0].priority;
+            if (possibilities.length > 1) {
+                for (i = 1; i < possibilities.length; i += 1) {
+                    if (possibilities[i].priority < lowest) {
+                        lowest = possibilities[i].priority;
+                    }
+                }
+                possibilities = possibilities.filter(function (move) {
+                    return possibilities.priority === lowest;
+                });
+            }
+
+            if (possibilities.length === 1) {
+                return possibilities[0];
+            }
+
+            lowest = 63;
+            if 
+        },
+        "opponentMatchesTypes": function (NumberMaker, constants, equations, opponent, types) {
+            for (var i = 0; i < types.length; i += 1) {
+                if (opponent[types[i]]) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     },
     "constants": {
@@ -2917,6 +3000,168 @@ FullScreenPokemon.prototype.settings.math = {
                 "PP": 20,
                 "Description": "Prevents the opponent from attacking and deals damage to it at the end of every turn for two to five turns."
             }
+        }
+    },
+    "battleModifications": {
+        "Turn 2": {
+            "opponentType": [
+                "Pokemaniac",
+                "Super Nerd",
+                "Juggler",
+                "Psychic",
+                "Chief",
+                "Scientist",
+                "Gentleman",
+                "Lorelei"
+            ],
+            "preference": [
+                ["raise", "Attack", 1],
+                ["raise", "Defense", 1],
+                ["raise", "Special", 1],
+                ["raise", "Evasion", 1],
+                ["move", "Pay Day"],
+                ["move", "Swift"],
+                ["lower", "Attack", 1],
+                ["lower", "Defense", 1],
+                ["lower", "Accuracy", 1],
+                ["move", "Conversion"],
+                ["move", "Haze"],
+                ["raise", "Attack", 2],
+                ["raise", "Defense", 2],
+                ["raise", "Speed", 2],
+                ["raise", "Special", 2],
+                ["effect", "Heal"],
+                ["lower", "Defense", 2],
+                ["move", "Light Screen"],
+                ["move", "Reflect"]
+            ]
+        },
+        "Good AI": {
+            // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
+            "opponentType": [
+                "smart",
+                "Sailor",
+                "Pokemaniac",
+                "Burglar",
+                "Fisher",
+                "Swimmer",
+                "Beauty",
+                "Rocker",
+                "Professor Oak",
+                "Giovanni",
+                "CooltrainerM",
+                "CooltrainerF",
+                "Misty",
+                "Surge",
+                "Erika",
+                "Koga",
+                "Blaine",
+                "Sabrina",
+                "Rival2",
+                "Rival3",
+                "Lorelei",
+                "Lance"
+            ],
+            /*
+             * Run on http://www.smogon.com/dex/rb/pokemon/
+             * 
+             * $($("ul")[3]).find("li")
+             *    .toArray()
+             *    .map(function (element) {
+             *        return element.innerText.split(" ");
+             *    })
+             *    .map(function (texts) {
+             *        if (texts[1] === "<") {
+             *            return "[\"" + ["weak", texts[0], texts[2]].join("\", \"") + "\"]";
+             *        } else {
+             *            return "[\"" + ["super", texts[0], texts[2]].join(", ") + "\"]";
+             *        }
+             *    })
+             *    .join(",\r\n                ");
+             */
+            "preference": [
+                ["super, Water, Fire"],
+                ["super, Fire, Grass"],
+                ["super, Fire, Ice"],
+                ["super, Grass, Water"],
+                ["super, Electric, Water"],
+                ["super, Water, Rock"],
+                ["weak", "Ground", "Flying"],
+                ["weak", "Water", "Water"],
+                ["weak", "Fire", "Fire"],
+                ["weak", "Electric", "Electric"],
+                ["weak", "Ice", "Ice"],
+                ["weak", "Grass", "Grass"],
+                ["weak", "Psychic", "Psychic"],
+                ["weak", "Fire", "Water"],
+                ["weak", "Grass", "Fire"],
+                ["weak", "Water", "Grass"],
+                ["weak", "Normal", "Rock"],
+                ["weak", "Normal", "Ghost"],
+                ["super, Ghost, Ghost"],
+                ["super, Fire, Bug"],
+                ["weak", "Fire", "Rock"],
+                ["super, Water, Ground"],
+                ["weak", "Electric", "Ground"],
+                ["super, Electric, Flying"],
+                ["super, Grass, Ground"],
+                ["weak", "Grass", "Bug"],
+                ["weak", "Grass", "Poison"],
+                ["super, Grass, Rock"],
+                ["weak", "Grass", "Flying"],
+                ["weak", "Ice", "Water"],
+                ["super, Ice, Grass"],
+                ["super, Ice, Ground"],
+                ["super, Ice, Flying"],
+                ["super, Fighting, Normal"],
+                ["weak", "Fighting", "Poison"],
+                ["weak", "Fighting", "Flying"],
+                ["weak", "Fighting", "Psychic"],
+                ["weak", "Fighting", "Bug"],
+                ["super, Fighting, Rock"],
+                ["super, Fighting, Ice"],
+                ["weak", "Fighting", "Ghost"],
+                ["super, Poison, Grass"],
+                ["weak", "Poison", "Poison"],
+                ["weak", "Poison", "Ground"],
+                ["super, Poison, Bug"],
+                ["weak", "Poison", "Rock"],
+                ["weak", "Poison", "Ghost"],
+                ["super, Ground, Fire"],
+                ["super, Ground, Electric"],
+                ["weak", "Ground", "Grass"],
+                ["weak", "Ground", "Bug"],
+                ["super, Ground, Rock"],
+                ["super, Ground, Poison"],
+                ["weak", "Flying", "Electric"],
+                ["super, Flying, Fighting"],
+                ["super, Flying, Bug"],
+                ["super, Flying, Grass"],
+                ["weak", "Flying", "Rock"],
+                ["super, Psychic, Fighting"],
+                ["super, Psychic, Poison"],
+                ["weak", "Bug", "Fire"],
+                ["super, Bug, Grass"],
+                ["weak", "Bug", "Fighting"],
+                ["weak", "Bug", "Flying"],
+                ["super, Bug, Psychic"],
+                ["weak", "Bug", "Ghost"],
+                ["super, Bug, Poison"],
+                ["super, Rock, Fire"],
+                ["weak", "Rock", "Fighting"],
+                ["weak", "Rock", "Ground"],
+                ["super, Rock, Flying"],
+                ["super, Rock, Bug"],
+                ["super, Rock, Ice"],
+                ["weak", "Ghost", "Normal"],
+                ["weak", "Ghost", "Psychic"],
+                ["weak", "Fire", "Dragon"],
+                ["weak", "Water", "Dragon"],
+                ["weak", "Electric", "Dragon"],
+                ["weak", "Grass", "Dragon"],
+                ["super, Ice, Dragon"],
+                ["super, Dragon, Dragon"]
+            ]
         }
     }
 };
