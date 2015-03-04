@@ -199,7 +199,7 @@ FullScreenPokemon.prototype.settings.math = {
         "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
             var possibilities = opponent.selectedActor.moves.map(function (move) {
                     return {
-                        "move": move,
+                        "Move": move,
                         "priority": 10
                     };
                 }),
@@ -208,8 +208,7 @@ FullScreenPokemon.prototype.settings.math = {
             // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
             if (player.selectedActor.status && !opponent.dumb) {
                 for (i = 0; i < possibilities.length; i += 1) {
-                    // TO DO: moveOnlyStatuses
-                    if (equations.moveOnlyStatuses(possibilities[i])) {
+                    if (equations.moveOnlyStatuses(possibilities[i].move)) {
                         possibilities[i].priority += 5;
                     }
                 }
@@ -217,16 +216,16 @@ FullScreenPokemon.prototype.settings.math = {
 
             // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
             if (
-                equations.opponentMatchesType(
+                equations.opponentMatchesTypes(
                     opponent, 
                     constants.battleModifications["Turn 2"]
                 )
             ) {
                 for (i = 0; i < possibilities.length; i += 1) {
-                    // TO DO: applyMoveEffectPriority
                     equations.applyMoveEffectPrority(
                         possibilities[i],
                         constants.battleModifications["Turn 2"],
+                        player.selectedAcor,
                         1
                     );
                 }
@@ -234,16 +233,16 @@ FullScreenPokemon.prototype.settings.math = {
 
             // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
             if (
-                equations.opponentMatchesType(
+                equations.opponentMatchesTypes(
                     opponent,
                     constants.battleModifications["Good AI"]
                 )
             ) {
                 for (i = 0; i < possibilities.length; i += 1) {
-                    // TO DO: applyMoveEffectPriority
                     equations.applyMoveEffectPrority(
                         possibilities[i],
                         constants.battleModifications["Good AI"],
+                        player.selectedAcor,
                         1
                     );
                 }
@@ -267,7 +266,7 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             lowest = 63;
-            if 
+            //if 
         },
         "opponentMatchesTypes": function (NumberMaker, constants, equations, opponent, types) {
             for (var i = 0; i < types.length; i += 1) {
@@ -277,6 +276,76 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             return false;
+        },
+        "moveOnlyStatuses": function (NumberMaker, constants, equations, move) {
+            return move.Damage === "Non-Damaging" && move.Effect === "Status";
+        },
+        "applyMoveEffectPrority": function (NumberMaker, constants, equations, possibility, modifications, target, amount) {
+            var preferences = modifications.preferences,
+                move = constants.moves[possibility.move],
+                preference, i;
+
+            for (i = 0; i < preferences.length; i += 1) {
+                preference = preferences[i];
+
+                switch (preference[0]) {
+                    // ["Move", String]
+                    // Favorable match
+                    case "Move":
+                        if (possibility.move === preference[1]) {
+                            possibility.priority -= amount;
+                            return;
+                        }
+
+                    // ["Raise", String, Number]
+                    // Favorable match
+                    case "Raise":
+                        if (
+                            move.Effect === "Raise"
+                            && move.Raise === preference[1]
+                            && move.Amount === preference[2]
+                        ) {
+                            possibility.priority -= amount;
+                            return;
+                        }
+
+                    // ["Lower", String, Number]
+                    // Favorable match
+                    case "Lower":
+                        if (
+                            move.Effect === "Lower"
+                            && move.Lower === preference[1]
+                            && move.Amount === preference[2]
+                        ) {
+                            possibility.priority -= amount;
+                            return;
+                        }
+
+                    // ["Super", String, String]
+                    // Favorable match
+                    case "Super":
+                        if (
+                            move.Damage !== "Non-Damaging"
+                            && move.Type === preference[0]
+                            && target.types.indexOf(preference[1] !== -1)
+                        ) {
+                            possibility.priority -= amount;
+                            return;
+                        }
+
+                    // ["Weak", String, String]
+                    // Unfavorable match
+                    case "Weak":
+                        if (
+                            move.Damage !== "Non-Damaging"
+                            && move.Type === preference[0]
+                            && target.types.indexOf(preference[1] !== -1)
+                        ) {
+                            possibility.priority += amount;
+                            return;
+                        }
+                }
+            }
         }
     },
     "constants": {
@@ -413,31 +482,31 @@ FullScreenPokemon.prototype.settings.math = {
                     "natural": [
                         {
                             "level": 0,
-                            "move": "Tackle"
+                            "Move": "Tackle"
                         }, {
                             "level": 0,
-                            "move": "Growl"
+                            "Move": "Growl"
                         }, {
                             "level": 7,
-                            "move": "Leech Seed"
+                            "Move": "Leech Seed"
                         }, {
                             "level": 13,
-                            "move": "Vine Whip"
+                            "Move": "Vine Whip"
                         }, {
                             "level": 20,
-                            "move": "PoisonPowder"
+                            "Move": "PoisonPowder"
                         }, {
                             "level": 27,
-                            "move": "Razor Leaf"
+                            "Move": "Razor Leaf"
                         }, {
                             "level": 34,
-                            "move": "Grown"
+                            "Move": "Grown"
                         }, {
                             "level": 41,
-                            "move": "Sleep Powder"
+                            "Move": "Sleep Powder"
                         }, {
                             "level": 48,
-                            "move": "SolarBeam"
+                            "Move": "SolarBeam"
                         }
                     ]
                 }
@@ -1189,25 +1258,25 @@ FullScreenPokemon.prototype.settings.math = {
                     "natural": [
                         {
                             "level": 0,
-                            "move": "Gust"
+                            "Move": "Gust"
                         }, {
                             "level": 5,
-                            "move": "Sand Attack"
+                            "Move": "Sand Attack"
                         }, {
                             "level": 12,
-                            "move": "Quick Attack"
+                            "Move": "Quick Attack"
                         }, {
                             "level": 19,
-                            "move": "Whirlwind"
+                            "Move": "Whirlwind"
                         }, {
                             "level": 28,
-                            "move": "Wing Attack"
+                            "Move": "Wing Attack"
                         }, {
                             "level": 36,
-                            "move": "Agility"
+                            "Move": "Agility"
                         }, {
                             "level": 44,
-                            "move": "Mirror Move"
+                            "Move": "Mirror Move"
                         }
                     ]
                 }
@@ -1319,22 +1388,22 @@ FullScreenPokemon.prototype.settings.math = {
                     "natural": [
                         {
                             "level": 0,
-                            "move": "Tackle"
+                            "Move": "Tackle"
                         }, {
                             "level": 0,
-                            "move": "Tail Whip"
+                            "Move": "Tail Whip"
                         }, {
                             "level": 7,
-                            "move": "Quick Attack"
+                            "Move": "Quick Attack"
                         }, {
                             "level": 14,
-                            "move": "Hyper Fang"
+                            "Move": "Hyper Fang"
                         }, {
                             "level": 23,
-                            "move": "Focus Energy"
+                            "Move": "Focus Energy"
                         }, {
                             "level": 34,
-                            "move": "Super Fang"
+                            "Move": "Super Fang"
                         },
                     ]
                 }
@@ -1462,28 +1531,28 @@ FullScreenPokemon.prototype.settings.math = {
                     "natural": [
                         {
                             "level": 0,
-                            "move": "Tackle"
+                            "Move": "Tackle"
                         }, {
                             "level": 0,
-                            "move": "Tail Whip"
+                            "Move": "Tail Whip"
                         }, {
                             "level": 8,
-                            "move": "Bubble"
+                            "Move": "Bubble"
                         }, {
                             "level": 15,
-                            "move": "Water Gun"
+                            "Move": "Water Gun"
                         }, {
                             "level": 22,
-                            "move": "Bite"
+                            "Move": "Bite"
                         }, {
                             "level": 28,
-                            "move": "Withdraw"
+                            "Move": "Withdraw"
                         }, {
                             "level": 35,
-                            "move": "Skull Bash"
+                            "Move": "Skull Bash"
                         }, {
                             "level": 42,
-                            "move": "Hydro Pump"
+                            "Move": "Hydro Pump"
                         }
                     ]
                 }
@@ -1659,6 +1728,8 @@ FullScreenPokemon.prototype.settings.math = {
         },
         /**
          * Run on http://www.smogon.com/dex/rb/moves/
+         * NOTE: Effects added in manually
+         * * Swords Dance, Sleep Powder
          * 
          * var output = {};
          * 
@@ -2654,6 +2725,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "Power": "—",
                 "Accuracy": "75%",
                 "PP": 15,
+                "Status": "Sleep",
                 "Description": "Puts the target to sleep."
             },
             "Sludge": {
@@ -2822,7 +2894,10 @@ FullScreenPokemon.prototype.settings.math = {
                 "Power": "—",
                 "Accuracy": "—",
                 "PP": 30,
-                "Description": "Boosts the user's Attack by two stages."
+                "Description": "Boosts the user's Attack by two stages.",
+                "Effect": "Raise",
+                "Raise": "Attack",
+                "Amount": 1
             },
             "Tackle": {
                 "Type": "Normal",
@@ -3014,26 +3089,26 @@ FullScreenPokemon.prototype.settings.math = {
                 "Gentleman",
                 "Lorelei"
             ],
-            "preference": [
-                ["raise", "Attack", 1],
-                ["raise", "Defense", 1],
-                ["raise", "Special", 1],
-                ["raise", "Evasion", 1],
-                ["move", "Pay Day"],
-                ["move", "Swift"],
-                ["lower", "Attack", 1],
-                ["lower", "Defense", 1],
-                ["lower", "Accuracy", 1],
-                ["move", "Conversion"],
-                ["move", "Haze"],
-                ["raise", "Attack", 2],
-                ["raise", "Defense", 2],
-                ["raise", "Speed", 2],
-                ["raise", "Special", 2],
+            "preferences": [
+                ["Raise", "Attack", 1],
+                ["Raise", "Defense", 1],
+                ["Raise", "Special", 1],
+                ["Raise", "Evasion", 1],
+                ["Move", "Pay Day"],
+                ["Move", "Swift"],
+                ["Lower", "Attack", 1],
+                ["Lower", "Defense", 1],
+                ["Lower", "Accuracy", 1],
+                ["Move", "Conversion"],
+                ["Move", "Haze"],
+                ["Raise", "Attack", 2],
+                ["Raise", "Defense", 2],
+                ["Raise", "Speed", 2],
+                ["Raise", "Special", 2],
                 ["effect", "Heal"],
-                ["lower", "Defense", 2],
-                ["move", "Light Screen"],
-                ["move", "Reflect"]
+                ["Lower", "Defense", 2],
+                ["Move", "Light Screen"],
+                ["Move", "Reflect"]
             ]
         },
         "Good AI": {
@@ -3072,95 +3147,95 @@ FullScreenPokemon.prototype.settings.math = {
              *    })
              *    .map(function (texts) {
              *        if (texts[1] === "<") {
-             *            return "[\"" + ["weak", texts[0], texts[2]].join("\", \"") + "\"]";
+             *            return "[\"" + ["Weak", texts[0], texts[2]].join("\", \"") + "\"]";
              *        } else {
-             *            return "[\"" + ["super", texts[0], texts[2]].join(", ") + "\"]";
+             *            return "[\"" + ["Super", texts[0], texts[2]].join(", ") + "\"]";
              *        }
              *    })
              *    .join(",\r\n                ");
              */
-            "preference": [
-                ["super, Water, Fire"],
-                ["super, Fire, Grass"],
-                ["super, Fire, Ice"],
-                ["super, Grass, Water"],
-                ["super, Electric, Water"],
-                ["super, Water, Rock"],
-                ["weak", "Ground", "Flying"],
-                ["weak", "Water", "Water"],
-                ["weak", "Fire", "Fire"],
-                ["weak", "Electric", "Electric"],
-                ["weak", "Ice", "Ice"],
-                ["weak", "Grass", "Grass"],
-                ["weak", "Psychic", "Psychic"],
-                ["weak", "Fire", "Water"],
-                ["weak", "Grass", "Fire"],
-                ["weak", "Water", "Grass"],
-                ["weak", "Normal", "Rock"],
-                ["weak", "Normal", "Ghost"],
-                ["super, Ghost, Ghost"],
-                ["super, Fire, Bug"],
-                ["weak", "Fire", "Rock"],
-                ["super, Water, Ground"],
-                ["weak", "Electric", "Ground"],
-                ["super, Electric, Flying"],
-                ["super, Grass, Ground"],
-                ["weak", "Grass", "Bug"],
-                ["weak", "Grass", "Poison"],
-                ["super, Grass, Rock"],
-                ["weak", "Grass", "Flying"],
-                ["weak", "Ice", "Water"],
-                ["super, Ice, Grass"],
-                ["super, Ice, Ground"],
-                ["super, Ice, Flying"],
-                ["super, Fighting, Normal"],
-                ["weak", "Fighting", "Poison"],
-                ["weak", "Fighting", "Flying"],
-                ["weak", "Fighting", "Psychic"],
-                ["weak", "Fighting", "Bug"],
-                ["super, Fighting, Rock"],
-                ["super, Fighting, Ice"],
-                ["weak", "Fighting", "Ghost"],
-                ["super, Poison, Grass"],
-                ["weak", "Poison", "Poison"],
-                ["weak", "Poison", "Ground"],
-                ["super, Poison, Bug"],
-                ["weak", "Poison", "Rock"],
-                ["weak", "Poison", "Ghost"],
-                ["super, Ground, Fire"],
-                ["super, Ground, Electric"],
-                ["weak", "Ground", "Grass"],
-                ["weak", "Ground", "Bug"],
-                ["super, Ground, Rock"],
-                ["super, Ground, Poison"],
-                ["weak", "Flying", "Electric"],
-                ["super, Flying, Fighting"],
-                ["super, Flying, Bug"],
-                ["super, Flying, Grass"],
-                ["weak", "Flying", "Rock"],
-                ["super, Psychic, Fighting"],
-                ["super, Psychic, Poison"],
-                ["weak", "Bug", "Fire"],
-                ["super, Bug, Grass"],
-                ["weak", "Bug", "Fighting"],
-                ["weak", "Bug", "Flying"],
-                ["super, Bug, Psychic"],
-                ["weak", "Bug", "Ghost"],
-                ["super, Bug, Poison"],
-                ["super, Rock, Fire"],
-                ["weak", "Rock", "Fighting"],
-                ["weak", "Rock", "Ground"],
-                ["super, Rock, Flying"],
-                ["super, Rock, Bug"],
-                ["super, Rock, Ice"],
-                ["weak", "Ghost", "Normal"],
-                ["weak", "Ghost", "Psychic"],
-                ["weak", "Fire", "Dragon"],
-                ["weak", "Water", "Dragon"],
-                ["weak", "Electric", "Dragon"],
-                ["weak", "Grass", "Dragon"],
-                ["super, Ice, Dragon"],
-                ["super, Dragon, Dragon"]
+            "preferences": [
+                ["Super", "Water, Fire"],
+                ["Super", "Fire, Grass"],
+                ["Super", "Fire, Ice"],
+                ["Super", "Grass, Water"],
+                ["Super", "Electric, Water"],
+                ["Super", "Water, Rock"],
+                ["Weak", "Ground", "Flying"],
+                ["Weak", "Water", "Water"],
+                ["Weak", "Fire", "Fire"],
+                ["Weak", "Electric", "Electric"],
+                ["Weak", "Ice", "Ice"],
+                ["Weak", "Grass", "Grass"],
+                ["Weak", "Psychic", "Psychic"],
+                ["Weak", "Fire", "Water"],
+                ["Weak", "Grass", "Fire"],
+                ["Weak", "Water", "Grass"],
+                ["Weak", "Normal", "Rock"],
+                ["Weak", "Normal", "Ghost"],
+                ["Super", "Ghost, Ghost"],
+                ["Super", "Fire, Bug"],
+                ["Weak", "Fire", "Rock"],
+                ["Super", "Water, Ground"],
+                ["Weak", "Electric", "Ground"],
+                ["Super", "Electric, Flying"],
+                ["Super", "Grass, Ground"],
+                ["Weak", "Grass", "Bug"],
+                ["Weak", "Grass", "Poison"],
+                ["Super", "Grass, Rock"],
+                ["Weak", "Grass", "Flying"],
+                ["Weak", "Ice", "Water"],
+                ["Super", "Ice, Grass"],
+                ["Super", "Ice, Ground"],
+                ["Super", "Ice, Flying"],
+                ["Super", "Fighting, Normal"],
+                ["Weak", "Fighting", "Poison"],
+                ["Weak", "Fighting", "Flying"],
+                ["Weak", "Fighting", "Psychic"],
+                ["Weak", "Fighting", "Bug"],
+                ["Super", "Fighting, Rock"],
+                ["Super", "Fighting, Ice"],
+                ["Weak", "Fighting", "Ghost"],
+                ["Super", "Poison, Grass"],
+                ["Weak", "Poison", "Poison"],
+                ["Weak", "Poison", "Ground"],
+                ["Super", "Poison, Bug"],
+                ["Weak", "Poison", "Rock"],
+                ["Weak", "Poison", "Ghost"],
+                ["Super", "Ground, Fire"],
+                ["Super", "Ground, Electric"],
+                ["Weak", "Ground", "Grass"],
+                ["Weak", "Ground", "Bug"],
+                ["Super", "Ground, Rock"],
+                ["Super", "Ground, Poison"],
+                ["Weak", "Flying", "Electric"],
+                ["Super", "Flying, Fighting"],
+                ["Super", "Flying, Bug"],
+                ["Super", "Flying, Grass"],
+                ["Weak", "Flying", "Rock"],
+                ["Super", "Psychic, Fighting"],
+                ["Super", "Psychic, Poison"],
+                ["Weak", "Bug", "Fire"],
+                ["Super", "Bug, Grass"],
+                ["Weak", "Bug", "Fighting"],
+                ["Weak", "Bug", "Flying"],
+                ["Super", "Bug, Psychic"],
+                ["Weak", "Bug", "Ghost"],
+                ["Super", "Bug, Poison"],
+                ["Super", "Rock, Fire"],
+                ["Weak", "Rock", "Fighting"],
+                ["Weak", "Rock", "Ground"],
+                ["Super", "Rock, Flying"],
+                ["Super", "Rock, Bug"],
+                ["Super", "Rock, Ice"],
+                ["Weak", "Ghost", "Normal"],
+                ["Weak", "Ghost", "Psychic"],
+                ["Weak", "Fire", "Dragon"],
+                ["Weak", "Water", "Dragon"],
+                ["Weak", "Electric", "Dragon"],
+                ["Weak", "Grass", "Dragon"],
+                ["Super", "Ice, Dragon"],
+                ["Super", "Dragon, Dragon"]
             ]
         }
     }
