@@ -969,8 +969,8 @@ var FullScreenPokemon = (function (GameStartr) {
             chosen = thing.EightBitter.chooseRandomWildPokemon(
                 thing.EightBitter, options
             ),
-            pokemon = thing.EightBitter.MathDecider.compute(
-                "newPokemon", 
+            chosenPokemon = thing.EightBitter.MathDecider.compute(
+                "newPokemon",
                 chosen.title,
                 thing.EightBitter.NumberMaker.randomArrayMember(chosen.levels)
             );
@@ -981,34 +981,13 @@ var FullScreenPokemon = (function (GameStartr) {
                 "sprite": "PlayerBack",
                 "name": "%%%%%%%PLAYER%%%%%%%",
                 "category": "Trainer",
-                "actors": [
-                    {
-                        "title": "Squirtle",
-                        "moves": [{
-                            "title": "TACKLE"
-                        }, {
-                            "title": "TAIL WHIP"
-                        }, {
-                            "title": "BUBBLE"
-                        }]
-                    }
-                ]
+                "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
             },
             "opponent": {
                 "title": chosen.title,
                 "sprite": chosen.title + "Front",
                 "category": "Wild",
-                "actors": [
-                    thing.EightBitter.MathDecider.compute(
-                        "newPokemon", chosen.title, chosen.level
-                    )
-                ]
-                //"actors": [
-                //    {
-                //        "sprite": chosen.title + "Front",
-                //        "name": chosen.title
-                //    }
-                //]
+                "actors": [chosenPokemon]
             }
         });
     }

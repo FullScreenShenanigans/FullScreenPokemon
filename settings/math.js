@@ -40,10 +40,6 @@ FullScreenPokemon.prototype.settings.math = {
                     "remaining": moveInfo.PP
                 };
 
-                for (j in moveInfo) {
-                    newMove[j] = moveInfo[j];
-                }
-
                 output.push(newMove);
             }
 
@@ -209,7 +205,7 @@ FullScreenPokemon.prototype.settings.math = {
         "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
             var possibilities = opponent.selectedActor.moves.map(function (move) {
                     return {
-                        "Move": move,
+                        "move": move.title,
                         "priority": 10
                     };
                 }),
@@ -358,6 +354,18 @@ FullScreenPokemon.prototype.settings.math = {
                         }
                 }
             }
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/Priority
+        // TO DO: Account for items, switching, etc.
+        "playerMovesFirst": function (NumberMaker, constants, equations, player, choicePlayer, opponent, choiceOpponent) {
+            var movePlayer = constants.moves[choicePlayer],
+                moveOpponent = constants.moves[choiceOpponent];
+
+            if (movePlayer.priority === moveOpponent.priority) {
+                return player.selectedActor.Speed > opponent.selectedActor.Speed;
+            }
+
+            return movePlayer.priority > moveOpponent.priority;
         }
     },
     "constants": {

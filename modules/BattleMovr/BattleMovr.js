@@ -316,7 +316,7 @@ function BattleMovr(settings) {
                 "opponentMove", battleInfo.player, battleInfo.opponent
             ),
             playerMovesFirst = EightBitter.MathDecider.compute(
-                "playerMovesFirst", battleInfo.player, battleInfo.opponent
+                "playerMovesFirst", battleInfo.player, choicePlayer, battleInfo.opponent, choiceOpponent
             );
         
         if (playerMovesFirst) {
