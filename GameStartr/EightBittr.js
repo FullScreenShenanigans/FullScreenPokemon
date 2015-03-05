@@ -47,7 +47,7 @@ var EightBittr = (function () {
             }
         }
     }
-    
+
     /**
      * Given an associate array of requirement names to the files that should
      * include them, this makes sure each of those requirements is a property of
@@ -207,11 +207,17 @@ var EightBittr = (function () {
         canvas.style.height = (height * scaling) + "px";
         
         // For speed's sake, disable image smoothing in all browsers
-        context.imageSmoothingEnabled = false;
-        context.webkitImageSmoothingEnabled = false;
-        context.mozImageSmoothingEnabled = false;
-        context.msImageSmoothingEnabled = false;
-        context.oImageSmoothingEnabled = false;
+        if (typeof context.imageSmoothingEnabled !== "undefined") {
+            context.imageSmoothingEnabled = false;
+        } else if (typeof context.webkitImageSmoothingEnabled !== "undefined") {
+            context.webkitImageSmoothingEnabled = false;
+        } else if (typeof context.mozImageSmoothingEnabled !== "undefined") {
+            context.mozImageSmoothingEnabled = false;
+        } else if (typeof context.msImageSmoothingEnabled !== "undefined") {
+            context.msImageSmoothingEnabled = false;
+        } else if (typeof context.oImageSmoothingEnabled !== "undefined") {
+            context.oImageSmoothingEnabled = false;
+        }
         
         return canvas;
     }
