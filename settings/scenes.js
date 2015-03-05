@@ -11,7 +11,11 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "OpponentSendOut": FullScreenPokemon.prototype.cutsceneBattleOpponentSendOut,
                 "OpponentSendOutAppear": FullScreenPokemon.prototype.cutsceneBattleOpponentSendOutAppear,
                 "PlayerSendOut": FullScreenPokemon.prototype.cutsceneBattlePlayerSendOut,
-                "PlayerSendOutAppear": FullScreenPokemon.prototype.cutsceneBattlePlayerSendOutAppear
+                "PlayerSendOutAppear": FullScreenPokemon.prototype.cutsceneBattlePlayerSendOutAppear,
+                "MovePlayer": FullScreenPokemon.prototype.cutsceneBattleMovePlayer,
+                "MovePlayerAnimate": FullScreenPokemon.prototype.cutsceneBattleMovePlayerAnimate,
+                "MoveOpponent": FullScreenPokemon.prototype.cutsceneBattleMoveOpponent,
+                "MoveOpponentAnimate": FullScreenPokemon.prototype.cutsceneBattleMoveOpponentAnimate,
             }
         },
         "Intro": {

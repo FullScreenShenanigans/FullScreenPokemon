@@ -320,12 +320,16 @@ function BattleMovr(settings) {
             );
         
         if (playerMovesFirst) {
-            EightBitter.ScenePlayer.playRoutine("movePlayer", {
-                "nextRoutine": "moveOpponent"
+            EightBitter.ScenePlayer.playRoutine("MovePlayer", {
+                "nextRoutine": "MoveOpponent",
+                "choicePlayer": choicePlayer,
+                "choiceOpponent": choiceOpponent
             });
         } else {
-            EightBitter.ScenePlayer.playRoutine("moveOpponent", {
-                "nextRoutine": "movePlayer"
+            EightBitter.ScenePlayer.playRoutine("MoveOpponent", {
+                "nextRoutine": "MovePlayer",
+                "choicePlayer": choicePlayer,
+                "choiceOpponent": choiceOpponent
             });
         }
     };

@@ -272,8 +272,6 @@ FullScreenPokemon.prototype.settings.math = {
                 });
             }
 
-            console.log("Choosing among", possibilities);
-
             return NumberMaker.randomArrayMember(possibilities).move;
         },
         "opponentMatchesTypes": function (NumberMaker, constants, equations, opponent, types) {
@@ -361,11 +359,11 @@ FullScreenPokemon.prototype.settings.math = {
             var movePlayer = constants.moves[choicePlayer],
                 moveOpponent = constants.moves[choiceOpponent];
 
-            if (movePlayer.priority === moveOpponent.priority) {
+            if (movePlayer.Priority === moveOpponent.Priority) {
                 return player.selectedActor.Speed > opponent.selectedActor.Speed;
             }
 
-            return movePlayer.priority > moveOpponent.priority;
+            return movePlayer.Priority > moveOpponent.Priority;
         }
     },
     "constants": {
@@ -2569,7 +2567,8 @@ FullScreenPokemon.prototype.settings.math = {
                 "Power": 40,
                 "Accuracy": "100%",
                 "PP": 30,
-                "Description": "Priority +1."
+                "Description": "Priority +1.",
+                "Priority": 1,
             },
             "Rage": {
                 "Type": "Normal",

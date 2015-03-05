@@ -2799,6 +2799,82 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneBattleMovePlayer(EightBitter, settings) {
+        var player = settings.battleInfo.player,
+            choice = settings.routineArguments.choicePlayer;
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [player.selectedActor.title.toUpperCase() + " used " + choice + "!"],
+            EightBitter.ScenePlayer.bindRoutine(
+                "MovePlayerAnimate", settings.routineArguments
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleMovePlayerAnimate(EightBitter, settings) {
+        console.log("PlayerAnimate", settings.routineArguments);
+
+        settings.routineArguments.movePlayerDone = true;
+
+        if (!settings.routineArguments.moveOpponentDone) {
+            EightBitter.TimeHandler.addEvent(
+                EightBitter.ScenePlayer.bindRoutine(
+                    "MoveOpponent", settings.routineArguments
+                ),
+                70
+            );
+        } else {
+            console.log("Done after player!");
+        }
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleMoveOpponent(EightBitter, settings) {
+        var opponent = settings.battleInfo.opponent,
+            choice = settings.routineArguments.choiceOpponent;
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [opponent.selectedActor.title.toUpperCase() + " used " + choice + "!"],
+            EightBitter.ScenePlayer.bindRoutine(
+                "MoveOpponentAnimate", settings.routineArguments
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleMoveOpponentAnimate(EightBitter, settings) {
+        console.log("OpponentAnimate", settings.routineArguments);
+
+        settings.routineArguments.moveOpponentDone = true;
+
+        if (!settings.routineArguments.movePlayerDone) {
+            EightBitter.TimeHandler.addEvent(
+                EightBitter.ScenePlayer.bindRoutine(
+                    "MovePlayer", settings.routineArguments
+                ),
+                70
+            );
+        } else {
+            console.log("Done after opponent!");
+        }
+    }
+
+    /**
+     * 
+     */
     function cutsceneIntroFirstDialog(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "ignoreB": true
@@ -3351,7 +3427,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroFirstDialog(EightBitter, settings) {
-        console.log("BOOM", settings.triggerer.active);
         EightBitter.StateHolder.addChange(settings.triggerer.id, "alive", false);
 
         EightBitter.MapScreener.inMenu = true;
@@ -3818,7 +3893,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 break;
         }
 
-        console.log("starterRival", steps);
         EightBitter.animateCharacterStartTurning(rival, 2, [
             1, "left", steps, "bottom", 0,
             EightBitter.BattleMover.startBattle.bind(
@@ -5098,6 +5172,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattlePlayerSendOut": cutsceneBattlePlayerSendOut,
         "cutsceneBattleOpponentSendOutAppear": cutsceneBattleOpponentSendOutAppear,
         "cutsceneBattlePlayerSendOutAppear": cutsceneBattlePlayerSendOutAppear,
+        "cutsceneBattleMovePlayer": cutsceneBattleMovePlayer,
+        "cutsceneBattleMovePlayerAnimate": cutsceneBattleMovePlayerAnimate,
+        "cutsceneBattleMoveOpponent": cutsceneBattleMoveOpponent,
+        "cutsceneBattleMoveOpponentAnimate": cutsceneBattleMoveOpponentAnimate,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
