@@ -1,5 +1,6 @@
 FullScreenPokemon.prototype.settings.math = {
     "equations": {
+        "proliferate": EightBittr.prototype.proliferate,
         "newPokemon": function (NumberMaker, constants, equations, title, level, moves, iv, ev) {
             var statisticNames = constants.statisticNames,
                 pokemon = {
@@ -23,7 +24,7 @@ FullScreenPokemon.prototype.settings.math = {
         "newPokemonMoves": function (NumberMaker, constants, equations, title, level) {
             var possibilities = constants.pokemon[title].moves.natural,
                 output = [],
-                move, end, i;
+                move, moveInfo, newMove, end, i, j;
 
             for (end = 0; end < possibilities.length; end += 1) {
                 if (possibilities[end].level > level) {
@@ -33,10 +34,17 @@ FullScreenPokemon.prototype.settings.math = {
 
             for (i = Math.max(end - 4, 0); i < end; i += 1) {
                 move = possibilities[i];
-                output.push({
-                    "title": move.move,
-                    "PP": move.PP
-                })
+                moveInfo = constants.moves[move.Move];
+                newMove = {
+                    "title": move.Move,
+                    "remaining": moveInfo.PP
+                };
+
+                for (j in moveInfo) {
+                    newMove[j] = moveInfo[j];
+                }
+
+                output.push(newMove);
             }
 
             return output;
@@ -93,6 +101,7 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
         "doesGrassEncounterHappen": function (NumberMaker, constants, equations, grass) {
+            return true;
             return NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
         },
         // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
@@ -196,6 +205,7 @@ FullScreenPokemon.prototype.settings.math = {
             }
         },
         // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
+        // TO DO: Also filter for moves with > 0 remaining remaining...
         "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
             var possibilities = opponent.selectedActor.moves.map(function (move) {
                     return {
@@ -203,7 +213,12 @@ FullScreenPokemon.prototype.settings.math = {
                         "priority": 10
                     };
                 }),
-                move, lowest, total, i;
+                move, lowest, i;
+
+            // Wild Pokemon just choose randomly
+            if (opponent.category === "Wild") {
+                return NumberMaker.randomArrayMember(possibilities).move;
+            }
 
             // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
             if (player.selectedActor.status && !opponent.dumb) {
@@ -225,7 +240,7 @@ FullScreenPokemon.prototype.settings.math = {
                     equations.applyMoveEffectPrority(
                         possibilities[i],
                         constants.battleModifications["Turn 2"],
-                        player.selectedAcor,
+                        player.selectedActor,
                         1
                     );
                 }
@@ -242,7 +257,7 @@ FullScreenPokemon.prototype.settings.math = {
                     equations.applyMoveEffectPrority(
                         possibilities[i],
                         constants.battleModifications["Good AI"],
-                        player.selectedAcor,
+                        player.selectedActor,
                         1
                     );
                 }
@@ -256,17 +271,14 @@ FullScreenPokemon.prototype.settings.math = {
                         lowest = possibilities[i].priority;
                     }
                 }
-                possibilities = possibilities.filter(function (move) {
-                    return possibilities.priority === lowest;
+                possibilities = possibilities.filter(function (possibility) {
+                    return possibility.priority === lowest;
                 });
             }
 
-            if (possibilities.length === 1) {
-                return possibilities[0];
-            }
+            console.log("Choosing among", possibilities);
 
-            lowest = 63;
-            //if 
+            return NumberMaker.randomArrayMember(possibilities).move;
         },
         "opponentMatchesTypes": function (NumberMaker, constants, equations, opponent, types) {
             for (var i = 0; i < types.length; i += 1) {
@@ -3075,168 +3087,168 @@ FullScreenPokemon.prototype.settings.math = {
                 "PP": 20,
                 "Description": "Prevents the opponent from attacking and deals damage to it at the end of every turn for two to five turns."
             }
-        }
-    },
-    "battleModifications": {
-        "Turn 2": {
-            "opponentType": [
-                "Pokemaniac",
-                "Super Nerd",
-                "Juggler",
-                "Psychic",
-                "Chief",
-                "Scientist",
-                "Gentleman",
-                "Lorelei"
-            ],
-            "preferences": [
-                ["Raise", "Attack", 1],
-                ["Raise", "Defense", 1],
-                ["Raise", "Special", 1],
-                ["Raise", "Evasion", 1],
-                ["Move", "Pay Day"],
-                ["Move", "Swift"],
-                ["Lower", "Attack", 1],
-                ["Lower", "Defense", 1],
-                ["Lower", "Accuracy", 1],
-                ["Move", "Conversion"],
-                ["Move", "Haze"],
-                ["Raise", "Attack", 2],
-                ["Raise", "Defense", 2],
-                ["Raise", "Speed", 2],
-                ["Raise", "Special", 2],
-                ["effect", "Heal"],
-                ["Lower", "Defense", 2],
-                ["Move", "Light Screen"],
-                ["Move", "Reflect"]
-            ]
         },
-        "Good AI": {
-            // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
-            "opponentType": [
-                "smart",
-                "Sailor",
-                "Pokemaniac",
-                "Burglar",
-                "Fisher",
-                "Swimmer",
-                "Beauty",
-                "Rocker",
-                "Professor Oak",
-                "Giovanni",
-                "CooltrainerM",
-                "CooltrainerF",
-                "Misty",
-                "Surge",
-                "Erika",
-                "Koga",
-                "Blaine",
-                "Sabrina",
-                "Rival2",
-                "Rival3",
-                "Lorelei",
-                "Lance"
-            ],
-            /*
-             * Run on http://www.smogon.com/dex/rb/pokemon/
-             * 
-             * $($("ul")[3]).find("li")
-             *    .toArray()
-             *    .map(function (element) {
-             *        return element.innerText.split(" ");
-             *    })
-             *    .map(function (texts) {
-             *        if (texts[1] === "<") {
-             *            return "[\"" + ["Weak", texts[0], texts[2]].join("\", \"") + "\"]";
-             *        } else {
-             *            return "[\"" + ["Super", texts[0], texts[2]].join(", ") + "\"]";
-             *        }
-             *    })
-             *    .join(",\r\n                ");
-             */
-            "preferences": [
-                ["Super", "Water, Fire"],
-                ["Super", "Fire, Grass"],
-                ["Super", "Fire, Ice"],
-                ["Super", "Grass, Water"],
-                ["Super", "Electric, Water"],
-                ["Super", "Water, Rock"],
-                ["Weak", "Ground", "Flying"],
-                ["Weak", "Water", "Water"],
-                ["Weak", "Fire", "Fire"],
-                ["Weak", "Electric", "Electric"],
-                ["Weak", "Ice", "Ice"],
-                ["Weak", "Grass", "Grass"],
-                ["Weak", "Psychic", "Psychic"],
-                ["Weak", "Fire", "Water"],
-                ["Weak", "Grass", "Fire"],
-                ["Weak", "Water", "Grass"],
-                ["Weak", "Normal", "Rock"],
-                ["Weak", "Normal", "Ghost"],
-                ["Super", "Ghost, Ghost"],
-                ["Super", "Fire, Bug"],
-                ["Weak", "Fire", "Rock"],
-                ["Super", "Water, Ground"],
-                ["Weak", "Electric", "Ground"],
-                ["Super", "Electric, Flying"],
-                ["Super", "Grass, Ground"],
-                ["Weak", "Grass", "Bug"],
-                ["Weak", "Grass", "Poison"],
-                ["Super", "Grass, Rock"],
-                ["Weak", "Grass", "Flying"],
-                ["Weak", "Ice", "Water"],
-                ["Super", "Ice, Grass"],
-                ["Super", "Ice, Ground"],
-                ["Super", "Ice, Flying"],
-                ["Super", "Fighting, Normal"],
-                ["Weak", "Fighting", "Poison"],
-                ["Weak", "Fighting", "Flying"],
-                ["Weak", "Fighting", "Psychic"],
-                ["Weak", "Fighting", "Bug"],
-                ["Super", "Fighting, Rock"],
-                ["Super", "Fighting, Ice"],
-                ["Weak", "Fighting", "Ghost"],
-                ["Super", "Poison, Grass"],
-                ["Weak", "Poison", "Poison"],
-                ["Weak", "Poison", "Ground"],
-                ["Super", "Poison, Bug"],
-                ["Weak", "Poison", "Rock"],
-                ["Weak", "Poison", "Ghost"],
-                ["Super", "Ground, Fire"],
-                ["Super", "Ground, Electric"],
-                ["Weak", "Ground", "Grass"],
-                ["Weak", "Ground", "Bug"],
-                ["Super", "Ground, Rock"],
-                ["Super", "Ground, Poison"],
-                ["Weak", "Flying", "Electric"],
-                ["Super", "Flying, Fighting"],
-                ["Super", "Flying, Bug"],
-                ["Super", "Flying, Grass"],
-                ["Weak", "Flying", "Rock"],
-                ["Super", "Psychic, Fighting"],
-                ["Super", "Psychic, Poison"],
-                ["Weak", "Bug", "Fire"],
-                ["Super", "Bug, Grass"],
-                ["Weak", "Bug", "Fighting"],
-                ["Weak", "Bug", "Flying"],
-                ["Super", "Bug, Psychic"],
-                ["Weak", "Bug", "Ghost"],
-                ["Super", "Bug, Poison"],
-                ["Super", "Rock, Fire"],
-                ["Weak", "Rock", "Fighting"],
-                ["Weak", "Rock", "Ground"],
-                ["Super", "Rock, Flying"],
-                ["Super", "Rock, Bug"],
-                ["Super", "Rock, Ice"],
-                ["Weak", "Ghost", "Normal"],
-                ["Weak", "Ghost", "Psychic"],
-                ["Weak", "Fire", "Dragon"],
-                ["Weak", "Water", "Dragon"],
-                ["Weak", "Electric", "Dragon"],
-                ["Weak", "Grass", "Dragon"],
-                ["Super", "Ice, Dragon"],
-                ["Super", "Dragon, Dragon"]
-            ]
+        "battleModifications": {
+            "Turn 2": {
+                "opponentType": [
+                    "Pokemaniac",
+                    "Super Nerd",
+                    "Juggler",
+                    "Psychic",
+                    "Chief",
+                    "Scientist",
+                    "Gentleman",
+                    "Lorelei"
+                ],
+                "preferences": [
+                    ["Raise", "Attack", 1],
+                    ["Raise", "Defense", 1],
+                    ["Raise", "Special", 1],
+                    ["Raise", "Evasion", 1],
+                    ["Move", "Pay Day"],
+                    ["Move", "Swift"],
+                    ["Lower", "Attack", 1],
+                    ["Lower", "Defense", 1],
+                    ["Lower", "Accuracy", 1],
+                    ["Move", "Conversion"],
+                    ["Move", "Haze"],
+                    ["Raise", "Attack", 2],
+                    ["Raise", "Defense", 2],
+                    ["Raise", "Speed", 2],
+                    ["Raise", "Special", 2],
+                    ["effect", "Heal"],
+                    ["Lower", "Defense", 2],
+                    ["Move", "Light Screen"],
+                    ["Move", "Reflect"]
+                ]
+            },
+            "Good AI": {
+                // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
+                "opponentType": [
+                    "smart",
+                    "Sailor",
+                    "Pokemaniac",
+                    "Burglar",
+                    "Fisher",
+                    "Swimmer",
+                    "Beauty",
+                    "Rocker",
+                    "Professor Oak",
+                    "Giovanni",
+                    "CooltrainerM",
+                    "CooltrainerF",
+                    "Misty",
+                    "Surge",
+                    "Erika",
+                    "Koga",
+                    "Blaine",
+                    "Sabrina",
+                    "Rival2",
+                    "Rival3",
+                    "Lorelei",
+                    "Lance"
+                ],
+                /*
+                 * Run on http://www.smogon.com/dex/rb/pokemon/
+                 * 
+                 * $($("ul")[3]).find("li")
+                 *    .toArray()
+                 *    .map(function (element) {
+                 *        return element.innerText.split(" ");
+                 *    })
+                 *    .map(function (texts) {
+                 *        if (texts[1] === "<") {
+                 *            return "[\"" + ["Weak", texts[0], texts[2]].join("\", \"") + "\"]";
+                 *        } else {
+                 *            return "[\"" + ["Super", texts[0], texts[2]].join(", ") + "\"]";
+                 *        }
+                 *    })
+                 *    .join(",\r\n                ");
+                 */
+                "preferences": [
+                    ["Super", "Water, Fire"],
+                    ["Super", "Fire, Grass"],
+                    ["Super", "Fire, Ice"],
+                    ["Super", "Grass, Water"],
+                    ["Super", "Electric, Water"],
+                    ["Super", "Water, Rock"],
+                    ["Weak", "Ground", "Flying"],
+                    ["Weak", "Water", "Water"],
+                    ["Weak", "Fire", "Fire"],
+                    ["Weak", "Electric", "Electric"],
+                    ["Weak", "Ice", "Ice"],
+                    ["Weak", "Grass", "Grass"],
+                    ["Weak", "Psychic", "Psychic"],
+                    ["Weak", "Fire", "Water"],
+                    ["Weak", "Grass", "Fire"],
+                    ["Weak", "Water", "Grass"],
+                    ["Weak", "Normal", "Rock"],
+                    ["Weak", "Normal", "Ghost"],
+                    ["Super", "Ghost, Ghost"],
+                    ["Super", "Fire, Bug"],
+                    ["Weak", "Fire", "Rock"],
+                    ["Super", "Water, Ground"],
+                    ["Weak", "Electric", "Ground"],
+                    ["Super", "Electric, Flying"],
+                    ["Super", "Grass, Ground"],
+                    ["Weak", "Grass", "Bug"],
+                    ["Weak", "Grass", "Poison"],
+                    ["Super", "Grass, Rock"],
+                    ["Weak", "Grass", "Flying"],
+                    ["Weak", "Ice", "Water"],
+                    ["Super", "Ice, Grass"],
+                    ["Super", "Ice, Ground"],
+                    ["Super", "Ice, Flying"],
+                    ["Super", "Fighting, Normal"],
+                    ["Weak", "Fighting", "Poison"],
+                    ["Weak", "Fighting", "Flying"],
+                    ["Weak", "Fighting", "Psychic"],
+                    ["Weak", "Fighting", "Bug"],
+                    ["Super", "Fighting, Rock"],
+                    ["Super", "Fighting, Ice"],
+                    ["Weak", "Fighting", "Ghost"],
+                    ["Super", "Poison, Grass"],
+                    ["Weak", "Poison", "Poison"],
+                    ["Weak", "Poison", "Ground"],
+                    ["Super", "Poison, Bug"],
+                    ["Weak", "Poison", "Rock"],
+                    ["Weak", "Poison", "Ghost"],
+                    ["Super", "Ground, Fire"],
+                    ["Super", "Ground, Electric"],
+                    ["Weak", "Ground", "Grass"],
+                    ["Weak", "Ground", "Bug"],
+                    ["Super", "Ground, Rock"],
+                    ["Super", "Ground, Poison"],
+                    ["Weak", "Flying", "Electric"],
+                    ["Super", "Flying, Fighting"],
+                    ["Super", "Flying, Bug"],
+                    ["Super", "Flying, Grass"],
+                    ["Weak", "Flying", "Rock"],
+                    ["Super", "Psychic, Fighting"],
+                    ["Super", "Psychic, Poison"],
+                    ["Weak", "Bug", "Fire"],
+                    ["Super", "Bug, Grass"],
+                    ["Weak", "Bug", "Fighting"],
+                    ["Weak", "Bug", "Flying"],
+                    ["Super", "Bug, Psychic"],
+                    ["Weak", "Bug", "Ghost"],
+                    ["Super", "Bug, Poison"],
+                    ["Super", "Rock, Fire"],
+                    ["Weak", "Rock", "Fighting"],
+                    ["Weak", "Rock", "Ground"],
+                    ["Super", "Rock, Flying"],
+                    ["Super", "Rock, Bug"],
+                    ["Super", "Rock, Ice"],
+                    ["Weak", "Ghost", "Normal"],
+                    ["Weak", "Ghost", "Psychic"],
+                    ["Weak", "Fire", "Dragon"],
+                    ["Weak", "Water", "Dragon"],
+                    ["Weak", "Electric", "Dragon"],
+                    ["Weak", "Grass", "Dragon"],
+                    ["Super", "Ice, Dragon"],
+                    ["Super", "Dragon, Dragon"]
+                ]
+            }
         }
     }
 };

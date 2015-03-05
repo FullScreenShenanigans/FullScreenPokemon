@@ -248,9 +248,9 @@ function BattleMovr(settings) {
         for (i = 0; i < actorMoves.length; i += 1) {
             move = actorMoves[i];
             moveOptions[i] = {
-                "text": move.title,
+                "text": move.title.toUpperCase(),
                 "remaining": move.remaining,
-                "callback": console.log.bind(console, "Hi!")
+                "callback": self.playMove.bind(self, move.title)
             };
         }
 
@@ -303,6 +303,31 @@ function BattleMovr(settings) {
      */
     self.openActorsMenu = function () {
         EightBitter.openPokemonMenu("BattleOptions");
+    };
+
+    /* Battle shenanigans
+    */
+
+    /**
+     * 
+     */
+    self.playMove = function (choicePlayer) {
+        var choiceOpponent = EightBitter.MathDecider.compute(
+                "opponentMove", battleInfo.player, battleInfo.opponent
+            ),
+            playerMovesFirst = EightBitter.MathDecider.compute(
+                "playerMovesFirst", battleInfo.player, battleInfo.opponent
+            );
+        
+        if (playerMovesFirst) {
+            EightBitter.ScenePlayer.playRoutine("movePlayer", {
+                "nextRoutine": "moveOpponent"
+            });
+        } else {
+            EightBitter.ScenePlayer.playRoutine("moveOpponent", {
+                "nextRoutine": "movePlayer"
+            });
+        }
     };
 
 

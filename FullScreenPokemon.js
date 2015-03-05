@@ -972,26 +972,15 @@ var FullScreenPokemon = (function (GameStartr) {
             pokemon = thing.EightBitter.MathDecider.compute(
                 "newPokemon", 
                 chosen.title,
-                thing.EightBitter.NumberMaker.randomArrayIndex(chosen.levels)
+                thing.EightBitter.NumberMaker.randomArrayMember(chosen.levels)
             );
-
-        console.log("choosing", chosen);
 
         thing.EightBitter.MapScreener.inMenu = true;
         thing.EightBitter.BattleMover.startBattle({
-            "opponent": {
-                "title": chosen.title.toUpperCase(),
-                "sprite": chosen.title + "Front",
-                "actors": [
-                    {
-                        "sprite": chosen.title + "Front",
-                        "name": chosen.title.toUpperCase()
-                    }
-                ]
-            },
             "player": {
                 "sprite": "PlayerBack",
                 "name": "%%%%%%%PLAYER%%%%%%%",
+                "category": "Trainer",
                 "actors": [
                     {
                         "title": "Squirtle",
@@ -1004,6 +993,22 @@ var FullScreenPokemon = (function (GameStartr) {
                         }]
                     }
                 ]
+            },
+            "opponent": {
+                "title": chosen.title,
+                "sprite": chosen.title + "Front",
+                "category": "Wild",
+                "actors": [
+                    thing.EightBitter.MathDecider.compute(
+                        "newPokemon", chosen.title, chosen.level
+                    )
+                ]
+                //"actors": [
+                //    {
+                //        "sprite": chosen.title + "Front",
+                //        "name": chosen.title
+                //    }
+                //]
             }
         });
     }
@@ -2624,7 +2629,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
-            textStart[0] + battleInfo.opponent.name + textStart[1],
+            textStart[0] + battleInfo.opponent.title.toUpperCase() + textStart[1],
             EightBitter.ScenePlayer.bindRoutine(callback)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -3843,11 +3848,13 @@ var FullScreenPokemon = (function (GameStartr) {
                     "player": {
                         "sprite": "PlayerBack",
                         "name": EightBitter.StatsHolder.get("name"),
+                        "category": "Trainer",
                         "actors": EightBitter.StatsHolder.get("PokemonInParty")
                     },
                     "opponent": {
                         "sprite": "RivalPortrait",
                         "name": EightBitter.StatsHolder.get("nameRival"),
+                        "category": "Trainer",
                         "hasActors": true,
                         "actors": [
                             EightBitter.MathDecider.compute(
