@@ -153,8 +153,8 @@ function BattleMovr(settings) {
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
 
         actors.menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial");
-        self.setActor("player", battleInfo.player.sprite);
         self.setActor("opponent", battleInfo.opponent.sprite);
+        self.setActor("player", battleInfo.player.sprite);
 
         EightBitter.ScenePlayer.startCutscene("Battle", {
             "actors": actors,

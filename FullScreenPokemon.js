@@ -2568,8 +2568,9 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.setLeft(player, menu.right + player.width * EightBitter.unitsize);
         EightBitter.setRight(opponent, menu.left);
 
-        EightBitter.fadeAttribute(player, "opacity", 1 / timeout, 1, 1);
-        EightBitter.fadeAttribute(opponent, "opacity", 1 / timeout, 1, 1);
+        // They should be visible halfway through (2 * (1 / timeout))
+        EightBitter.fadeAttribute(player, "opacity", 2 / timeout, 1, 1);
+        EightBitter.fadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
 
         playerX = EightBitter.getMidX(player);
         opponentX = EightBitter.getMidX(opponent);
@@ -2629,10 +2630,18 @@ var FullScreenPokemon = (function (GameStartr) {
                 : "PlayerIntro",
             timeout = 49;
 
-        EightBitter.fadeAttribute(opponent, "opacity", -1 / timeout, 0, 1);
-
         EightBitter.fadeHorizontal(
             opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.fadeAttribute,
+            (timeout / 2) | 0,
+            opponent,
+            "opacity",
+            -1 / timeout,
+            0,
+            1
         );
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2647,12 +2656,16 @@ var FullScreenPokemon = (function (GameStartr) {
                 + battleInfo.textOpponentSendOut[1]
                 + battleInfo.opponent.actors[0].title
                 + battleInfo.textOpponentSendOut[2]
-            ],
-            EightBitter.ScenePlayer.bindRoutine(callback, {
-                "nextRoutine": "PlayerIntro",
-            })
+            ]
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.ScenePlayer.bindRoutine(callback, {
+                "nextRoutine": "PlayerIntro",
+            }),
+            timeout
+        );
     }
 
     /**
@@ -2665,12 +2678,19 @@ var FullScreenPokemon = (function (GameStartr) {
             playerX = EightBitter.getMidX(player),
             playerGoal = menu.left - player.width * EightBitter.unitsize / 2,
             battleInfo = settings.battleInfo,
-            timeout = 49;
-
-        EightBitter.fadeAttribute(player, "opacity", -1 / timeout, 0, 1);
+            timeout = 24;
 
         EightBitter.fadeHorizontal(
             player, (playerGoal - playerX) / timeout, playerGoal, 1
+        );
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.fadeAttribute,
+            (timeout / 2) | 0,
+            player,
+            "opacity", -2 / timeout,
+            0,
+            1
         );
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -2683,15 +2703,19 @@ var FullScreenPokemon = (function (GameStartr) {
                 battleInfo.textPlayerSendOut[0]
                 + battleInfo.player.actors[0].title
                 + battleInfo.textPlayerSendOut[1]
-            ],
+            ]
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        EightBitter.TimeHandler.addEvent(
             EightBitter.ScenePlayer.bindRoutine(
                 "PlayerSendOut",
                 {
                     "nextRoutine": "ShowPlayerMenu"
                 }
-            )
+            ),
+            timeout
         );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -4979,7 +5003,7 @@ var FullScreenPokemon = (function (GameStartr) {
         if (change > 0) {
             if (thing[attribute] >= goal) {
                 thing[attribute] = goal;
-                if (onCompletion) {
+                if (typeof onCompletion === "function") {
                     onCompletion(thing);
                 }
                 return;
@@ -4987,7 +5011,7 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             if (thing[attribute] <= goal) {
                 thing[attribute] = goal;
-                if (onCompletion) {
+                if (typeof onCompletion === "function") {
                     onCompletion(thing);
                 }
                 return;
