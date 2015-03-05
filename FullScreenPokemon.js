@@ -2608,7 +2608,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
-            textStart[0] + battleInfo.opponent.title.toUpperCase() + textStart[1],
+            textStart[0] + battleInfo.opponent.selectedActor.title.toUpperCase() + textStart[1],
             EightBitter.ScenePlayer.bindRoutine(callback)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -2762,7 +2762,6 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.setActiveMenu(undefined);
 
-        console.log("Going to", settings.routineArguments);
         EightBitter.animateSmokeSmall(
             EightBitter,
             left,
@@ -2801,9 +2800,17 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneBattleMovePlayer(EightBitter, settings) {
         var player = settings.battleInfo.player,
-            choice = settings.routineArguments.choicePlayer;
+            opponent = settings.battleInfo.opponent,
+            choice = settings.routineArguments.choicePlayer,
+            damage = EightBitter.MathDecider.compute(
+                "damage", choice, player.selectedActor, opponent.selectedActor
+            );
 
-        EightBitter.MenuGrapher.createMenu("GeneralText");
+        console.log("Doing damage", damage, "/", opponent.selectedActor.HP);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [player.selectedActor.title.toUpperCase() + " used " + choice + "!"],
@@ -2830,7 +2837,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 70
             );
         } else {
-            console.log("Done after player!");
+            EightBitter.MenuGrapher.createMenu("GeneralText");
+            EightBitter.BattleMover.showPlayerMenu();
         }
     }
 
@@ -2841,7 +2849,9 @@ var FullScreenPokemon = (function (GameStartr) {
         var opponent = settings.battleInfo.opponent,
             choice = settings.routineArguments.choiceOpponent;
 
-        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [opponent.selectedActor.title.toUpperCase() + " used " + choice + "!"],
@@ -2868,7 +2878,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 70
             );
         } else {
-            console.log("Done after opponent!");
+            EightBitter.MenuGrapher.createMenu("GeneralText");
+            EightBitter.BattleMover.showPlayerMenu();
         }
     }
 

@@ -361,7 +361,7 @@ function NumberMakr(settings) {
      * @return {Number} Random Number in [min,max).
      */
     self.randomWithin = function (min, max) {
-        return self.random(max - min) + min;
+        return self.randomUnder(max - min) + min;
     };
     
     

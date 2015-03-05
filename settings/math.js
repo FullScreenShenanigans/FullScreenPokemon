@@ -7,6 +7,7 @@ FullScreenPokemon.prototype.settings.math = {
                     "title": title,
                     "level": level,
                     "moves": moves || this.compute("newPokemonMoves", title, level),
+                    "types": constants.pokemon[title].types,
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs")
                 },
@@ -32,7 +33,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }
 
-            for (i = Math.max(end - 4, 0); i < end; i += 1) {
+            for (i = Math.max(end - 4, 0) ; i < end; i += 1) {
                 move = possibilities[i];
                 moveInfo = constants.moves[move.Move];
                 newMove = {
@@ -204,11 +205,11 @@ FullScreenPokemon.prototype.settings.math = {
         // TO DO: Also filter for moves with > 0 remaining remaining...
         "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
             var possibilities = opponent.selectedActor.moves.map(function (move) {
-                    return {
-                        "move": move.title,
-                        "priority": 10
-                    };
-                }),
+                return {
+                    "move": move.title,
+                    "priority": 10
+                };
+            }),
                 move, lowest, i;
 
             // Wild Pokemon just choose randomly
@@ -228,7 +229,7 @@ FullScreenPokemon.prototype.settings.math = {
             // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
             if (
                 equations.opponentMatchesTypes(
-                    opponent, 
+                    opponent,
                     constants.battleModifications["Turn 2"]
                 )
             ) {
@@ -303,8 +304,8 @@ FullScreenPokemon.prototype.settings.math = {
                             return;
                         }
 
-                    // ["Raise", String, Number]
-                    // Favorable match
+                        // ["Raise", String, Number]
+                        // Favorable match
                     case "Raise":
                         if (
                             move.Effect === "Raise"
@@ -315,8 +316,8 @@ FullScreenPokemon.prototype.settings.math = {
                             return;
                         }
 
-                    // ["Lower", String, Number]
-                    // Favorable match
+                        // ["Lower", String, Number]
+                        // Favorable match
                     case "Lower":
                         if (
                             move.Effect === "Lower"
@@ -327,8 +328,8 @@ FullScreenPokemon.prototype.settings.math = {
                             return;
                         }
 
-                    // ["Super", String, String]
-                    // Favorable match
+                        // ["Super", String, String]
+                        // Favorable match
                     case "Super":
                         if (
                             move.Damage !== "Non-Damaging"
@@ -339,8 +340,8 @@ FullScreenPokemon.prototype.settings.math = {
                             return;
                         }
 
-                    // ["Weak", String, String]
-                    // Unfavorable match
+                        // ["Weak", String, String]
+                        // Unfavorable match
                     case "Weak":
                         if (
                             move.Damage !== "Non-Damaging"
@@ -355,6 +356,7 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://bulbapedia.bulbagarden.net/wiki/Priority
         // TO DO: Account for items, switching, etc.
+        // TO DO: Factor in spec differences from paralyze, etc.
         "playerMovesFirst": function (NumberMaker, constants, equations, player, choicePlayer, opponent, choiceOpponent) {
             var movePlayer = constants.moves[choicePlayer],
                 moveOpponent = constants.moves[choiceOpponent];
@@ -364,6 +366,69 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             return movePlayer.Priority > moveOpponent.Priority;
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
+        // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
+        // TO DO: Factor in spec differences from burns, etc.
+        "damage": function (NumberMaker, constants, equations, move, attacker, defender) {
+            var critical = this.compute("criticalHit", move, attacker),
+                level = attacker.level * critical,
+                attack = attacker.Attack,
+                defense = defender.Defense,
+                base = constants.moves[move].Power,
+                modifier = this.compute("damageModifier", move, critical, attacker, defender);
+
+            return Math.max(
+                ((((2 * level * 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
+                1
+            );
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
+        // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
+        "damageModifier": function (NumberMaker, constants, equations, move, critical, attacker, defender) {
+            var stab = attacker.types.indexOf(move.Type) !== -1 ? 1.5 : 1,
+                type = this.compute("typeEffectiveness", move, defender);
+            
+            return stab * type * NumberMaker.randomWithin(.85, 1);
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
+        "criticalHit": function (NumberMaker, constants, equations, move, attacker) {
+            var moveInfo = constants.moves[move],
+                baseSpeed = constants.pokemon[attacker.title].Speed,
+                denominator = 512;
+
+            // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit, resulting in a probability of BaseSpeed / 64.
+            if (moveInfo.CriticalRaised) {
+                denominator /= 8;
+            }
+
+            // "Focus Energy and Dire Hit were intended to increase the critical hit rate, ..."
+            // In FullScreenPokemon, they work as intended! Fans who prefer the
+            // original behavior are free to fork the repo. As the original
+            // behavior is a glitch (and conflicts with creators' intentions),
+            // it is not duplicated here.
+            if (attacker.CriticalHitProbability) {
+                denominator /= 4;
+            }
+
+            // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%, it instead becomes 255/256 or about 99.6%.
+            return NumberMaker.randomBooleanProbability(
+                Math.max(baseSpeed / denominator, 255 / 256)
+            ) | 0;
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
+        "typeEffectiveness": function (NumberMaker, constants, equations, move, defender) {
+            var defenderTypes = constants.pokemon[defender.title].types,
+                moveType = constants.moves[move].Type,
+                moveIndex = constants.types.indices[constants.moves[move].Type],
+                total = 1,
+                i;
+
+            for (i = 0; i < defenderTypes.length; i += 1) {
+                total *= constants.types.table[moveIndex][constants.types.indices[defenderTypes[i]]];
+            }
+
+            return total;
         }
     },
     "constants": {
@@ -397,15 +462,99 @@ FullScreenPokemon.prototype.settings.math = {
             }
         },
         /**
+         * Run on http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
+         * 
+         * console.clear();
+         * 
+         * var table = $($("table")[2]),
+         *     names = table.find("tr:nth-of-type(2) a")
+         *         .toArray()
+         *         .map(function (a) {
+         *             return a.getAttribute("title"); 
+         *         }),
+         *     chart = table.find("tr:nth-of-type(2) ~ tr"),
+         *     table = [],
+         *     indices = {},
+         *     values = {
+         *         "0×": 0.0,
+         *         "½×": .5,
+         *         "1×": 1.0,
+         *         "2×": 2.0
+         *     },
+         *     output = { 
+         *         "names": names, 
+         *         "table": table
+         *     },
+         *     row, i, j;
+         * 
+         * for (i = 0; i < names.length; i += 1) {
+         *     indices[names[i]] = i;
+         * }
+         * 
+         * for (i = 0; i < chart.length - 1; i += 1) {
+         *     row = chart[i];
+         *     table.push([]);
+         *     for (j = 0; j < row.cells.length - 1; j += 1) {
+         *         table[i].push(values[row.cells[j + 1].innerText])
+         *     }
+         * }
+         * 
+         * table[0].shift();
+         * 
+         * JSON.stringify(output);
+         */
+        "types": {
+            "names": ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon"],
+            "indices": {
+                "Normal": 0,
+                "Fighting": 1,
+                "Flying": 2,
+                "Poison": 3,
+                "Ground": 4,
+                "Rock": 5,
+                "Bug": 6,
+                "Ghost": 7,
+                "Fire": 8,
+                "Water": 9,
+                "Grass": 10,
+                "Electric": 11,
+                "Psychic": 12,
+                "Ice": 13,
+                "Dragon": 14
+            },
+            "table": [
+                [1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [2.0, 1.0, 0.5, 0.5, 1.0, 2.0, 0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0],
+                [1.0, 2.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 0.5, 0.5, 0.5, 2.0, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 0.0, 2.0, 1.0, 2.0, 0.5, 1.0, 2.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0],
+                [1.0, 0.5, 2.0, 1.0, 0.5, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0],
+                [1.0, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 0.5, 0.5, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0],
+                [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 0.5, 0.5, 2.0, 1.0, 1.0, 2.0, 0.5],
+                [1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 1.0, 0.5],
+                [1.0, 1.0, 0.5, 0.5, 2.0, 2.0, 0.5, 1.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 0.5],
+                [1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 0.5],
+                [1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0],
+                [1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 0.5, 2.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+            ]
+        },
+        /**
          * Run on http://www.smogon.com/dex/rb/pokemon/
          * 
          * var output = {};
          * 
          * Array.prototype.slice.call(document.querySelectorAll("tr")).forEach(function (row) {
          *     output[row.children[0].innerText.trim()] = {
-         *         "types": row.children[1].innerText.split(/\s+/g)
-         *             .filter(function (str) { return str; })
-         *             .map(function (str) { return str.trim(); }),
+         *         "types": row.children[1].innerText
+         *             .split(/\s+/g)
+         *             .filter(function (str) { 
+         *                 return str; 
+         *             })
+         *             .map(function (str) { 
+         *                 return str.trim();
+         *             }),
          *         "HP": Number(row.children[5].innerText.split(/\s+/g)[1]),
          *         "Attack": Number(row.children[6].innerText.split(/\s+/g)[1]),
          *         "Defense": Number(row.children[7].innerText.split(/\s+/g)[1]),
@@ -1788,24 +1937,24 @@ FullScreenPokemon.prototype.settings.math = {
             "Acid Armor": {
                 "Type": "Poison",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 40,
                 "Description": "Boosts the user's Defense by two stages."
             },
             "Agility": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Boosts the user's Speed by two stages. Negates the Speed drop of paralysis."
             },
             "Amnesia": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "Boosts the user's Special by two stages."
             },
@@ -1828,16 +1977,16 @@ FullScreenPokemon.prototype.settings.math = {
             "Barrier": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Boosts the user's Defense by two stages."
             },
             "Bide": {
                 "Type": "Normal",
                 "Damage": "Physical",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Charges for two to three turns; returns double the damage received in those turns."
             },
@@ -1924,7 +2073,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Confuse Ray": {
                 "Type": "Ghost",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 10,
                 "Description": "Confuses the target."
@@ -1948,15 +2097,15 @@ FullScreenPokemon.prototype.settings.math = {
             "Conversion": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Changes the user into the opponent's type."
             },
             "Counter": {
                 "Type": "Fighting",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "If hit by a Normal- or Fighting-type attack, deals double the damage taken."
@@ -1980,8 +2129,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Defense Curl": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 40,
                 "Description": "Boosts the user's Defense by one stage."
             },
@@ -1996,7 +2145,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Disable": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "55%",
                 "PP": 20,
                 "Description": "Randomly disables a foe's move for 0-6 turns."
@@ -2028,8 +2177,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Double Team": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 15,
                 "Description": "Boosts the user's evasion by one stage."
             },
@@ -2044,7 +2193,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Dragon Rage": {
                 "Type": "Dragon",
                 "Damage": "Special",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 10,
                 "Description": "Always does 40 HP damage."
@@ -2124,7 +2273,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Fissure": {
                 "Type": "Ground",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "30%",
                 "PP": 5,
                 "Description": "OHKOes the target."
@@ -2140,7 +2289,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Flash": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "70%",
                 "PP": 20,
                 "Description": "Lowers the target's accuracy by one stage."
@@ -2156,8 +2305,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Focus Energy": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Reduces the user's critical hit rate."
             },
@@ -2180,7 +2329,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Glare": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "75%",
                 "PP": 30,
                 "Description": "Paralyzes the target."
@@ -2188,7 +2337,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Growl": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 40,
                 "Description": "Lowers the target's Attack by one stage."
@@ -2196,15 +2345,15 @@ FullScreenPokemon.prototype.settings.math = {
             "Growth": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 40,
                 "Description": "Boosts Special one stage."
             },
             "Guillotine": {
                 "Type": "Normal",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "30%",
                 "PP": 5,
                 "Description": "OHKOes the target."
@@ -2220,16 +2369,16 @@ FullScreenPokemon.prototype.settings.math = {
             "Harden": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Boosts the user's Defense by one stage."
             },
             "Haze": {
                 "Type": "Ice",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Eliminates all stat changes."
             },
@@ -2260,7 +2409,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Horn Drill": {
                 "Type": "Normal",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "30%",
                 "PP": 5,
                 "Description": "OHKOes the target."
@@ -2292,7 +2441,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Hypnosis": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "60%",
                 "PP": 20,
                 "Description": "Puts the foe to sleep."
@@ -2332,7 +2481,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Kinesis": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "80%",
                 "PP": 15,
                 "Description": "Lowers the target's accuracy by one stage."
@@ -2348,7 +2497,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Leech Seed": {
                 "Type": "Grass",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "90%",
                 "PP": 10,
                 "Description": "Leeches 1/16 of the target's HP each turn."
@@ -2356,7 +2505,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Leer": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 30,
                 "Description": "Lowers the target's Defense by one stage."
@@ -2372,15 +2521,15 @@ FullScreenPokemon.prototype.settings.math = {
             "Light Screen": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Halves Special damage done to user."
             },
             "Lovely Kiss": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "75%",
                 "PP": 10,
                 "Description": "Puts the target to sleep."
@@ -2396,8 +2545,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Meditate": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 40,
                 "Description": "Boosts the user's Attack by one stage."
             },
@@ -2428,47 +2577,47 @@ FullScreenPokemon.prototype.settings.math = {
             "Metronome": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Uses a random move."
             },
             "Mimic": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Copies a random move the foe knows."
             },
             "Minimize": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "Boosts the user's evasion by one stage."
             },
             "Mirror Move": {
                 "Type": "Flying",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "Use the move the foe just used."
             },
             "Mist": {
                 "Type": "Ice",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Prevents moves that only lower stats from working for 5 turns."
             },
             "Night Shade": {
                 "Type": "Ghost",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 15,
                 "Description": "Deals damage equal to the user's level."
@@ -2508,7 +2657,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Poison Gas": {
                 "Type": "Poison",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "55%",
                 "PP": 40,
                 "Description": "Poisons the target."
@@ -2516,7 +2665,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Poison Powder": {
                 "Type": "Poison",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "75%",
                 "PP": 35,
                 "Description": "Poisons the target."
@@ -2556,7 +2705,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Psywave": {
                 "Type": "Psychic",
                 "Damage": "Special",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "80%",
                 "PP": 15,
                 "Description": "Does random damage equal to .5x-1.5x the user's level."
@@ -2597,31 +2746,31 @@ FullScreenPokemon.prototype.settings.math = {
             "Recover": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "Heals 50% of the user's max HP."
             },
             "Reflect": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "Lowers the physical damage done to user."
             },
             "Rest": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "The user goes to sleep for two turns, restoring all HP."
             },
             "Roar": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "Has no effect."
@@ -2653,7 +2802,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Sand Attack": {
                 "Type": "Ground",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 15,
                 "Description": "Lowers the target's accuracy by one stage."
@@ -2669,7 +2818,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Screech": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "85%",
                 "PP": 40,
                 "Description": "Lowers the target's Defense by two stages."
@@ -2677,7 +2826,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Seismic Toss": {
                 "Type": "Fighting",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "Deals damage equal to the user's level."
@@ -2693,15 +2842,15 @@ FullScreenPokemon.prototype.settings.math = {
             "Sharpen": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Boosts the user's Attack by one stage."
             },
             "Sing": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "55%",
                 "PP": 15,
                 "Description": "Puts the target to sleep."
@@ -2741,7 +2890,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Sleep Powder": {
                 "Type": "Grass",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "75%",
                 "PP": 15,
                 "Status": "Sleep",
@@ -2766,7 +2915,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Smokescreen": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "Lowers the target's accuracy by one stage."
@@ -2774,8 +2923,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Soft-Boiled": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Heals 50% of the user's max HP."
             },
@@ -2790,7 +2939,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Sonic Boom": {
                 "Type": "Normal",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "90%",
                 "PP": 20,
                 "Description": "Does 20 damage. Ghosts take regular damage."
@@ -2806,15 +2955,15 @@ FullScreenPokemon.prototype.settings.math = {
             "Splash": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 40,
                 "Description": "No effect whatsoever."
             },
             "Spore": {
                 "Type": "Grass",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 15,
                 "Description": "Puts the target to sleep."
@@ -2838,7 +2987,7 @@ FullScreenPokemon.prototype.settings.math = {
             "String Shot": {
                 "Type": "Bug",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "95%",
                 "PP": 40,
                 "Description": "Lowers the target's Speed by one stage."
@@ -2847,14 +2996,14 @@ FullScreenPokemon.prototype.settings.math = {
                 "Type": "Normal",
                 "Damage": "Physical",
                 "Power": 50,
-                "Accuracy": "—",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Has 1/2 recoil. Ghost-types take damage."
             },
             "Stun Spore": {
                 "Type": "Grass",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "75%",
                 "PP": 30,
                 "Description": "Paralyzes the target."
@@ -2870,15 +3019,15 @@ FullScreenPokemon.prototype.settings.math = {
             "Substitute": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Takes 1/4 the user's max HP to create a Substitute that takes damage for the user."
             },
             "Super Fang": {
                 "Type": "Normal",
                 "Damage": "Physical",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "90%",
                 "PP": 10,
                 "Description": "Deals damage equal to half the target's current HP."
@@ -2886,7 +3035,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Supersonic": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "55%",
                 "PP": 20,
                 "Description": "Confuses the target."
@@ -2903,15 +3052,15 @@ FullScreenPokemon.prototype.settings.math = {
                 "Type": "Normal",
                 "Damage": "Physical",
                 "Power": 60,
-                "Accuracy": "—",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "Always hits."
             },
             "Swords Dance": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 30,
                 "Description": "Boosts the user's Attack by two stages.",
                 "Effect": "Raise",
@@ -2929,7 +3078,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Tail Whip": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 30,
                 "Description": "Lowers the Defense of all opposing adjacent Pokemon by one stage."
@@ -2945,8 +3094,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Teleport": {
                 "Type": "Psychic",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 20,
                 "Description": "No competitive effect."
             },
@@ -2985,7 +3134,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Thunder Wave": {
                 "Type": "Electric",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "Paralyzes the target."
@@ -3001,7 +3150,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Toxic": {
                 "Type": "Poison",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "85%",
                 "PP": 10,
                 "Description": "Badly poisons the target."
@@ -3009,8 +3158,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Transform": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 10,
                 "Description": "Transforms the user into the target, copying its type, stats, stat changes, moves, and ability."
             },
@@ -3065,7 +3214,7 @@ FullScreenPokemon.prototype.settings.math = {
             "Whirlwind": {
                 "Type": "Normal",
                 "Damage": "Non-Damaging",
-                "Power": "—",
+                "Power": "-",
                 "Accuracy": "100%",
                 "PP": 20,
                 "Description": "Has no effect."
@@ -3081,8 +3230,8 @@ FullScreenPokemon.prototype.settings.math = {
             "Withdraw": {
                 "Type": "Water",
                 "Damage": "Non-Damaging",
-                "Power": "—",
-                "Accuracy": "—",
+                "Power": "-",
+                "Accuracy": "-",
                 "PP": 40,
                 "Description": "Boosts the user's Defense by one stage."
             },
