@@ -771,6 +771,9 @@ var FullScreenPokemon = (function (GameStartr) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpLeft");
 
         player.keys[3] = false;
+        if (player.nextDirection === 3) {
+            delete player.nextDirection;
+        }
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -785,6 +788,9 @@ var FullScreenPokemon = (function (GameStartr) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpRight");
 
         player.keys[1] = false;
+        if (player.nextDirection === 1) {
+            delete player.nextDirection;
+        }
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -799,6 +805,9 @@ var FullScreenPokemon = (function (GameStartr) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpUp");
 
         player.keys[0] = false;
+        if (player.nextDirection === 0) {
+            delete player.nextDirection;
+        }
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -813,6 +822,9 @@ var FullScreenPokemon = (function (GameStartr) {
         player.EightBitter.ModAttacher.fireEvent("onKeyUpDown");
 
         player.keys[2] = false;
+        if (player.nextDirection === 2) {
+            delete player.nextDirection;
+        }
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -1404,7 +1416,12 @@ var FullScreenPokemon = (function (GameStartr) {
             return false;
         } else {
             if (typeof thing.nextDirection !== "undefined") {
-                thing.EightBitter.setPlayerDirection(thing, thing.nextDirection);
+                if (thing.nextDirection !== thing.direction) {
+                    thing.EightBitter.setPlayerDirection(
+                        thing,
+                        thing.nextDirection
+                    );
+                }
                 delete thing.nextDirection;
             }
         }
@@ -1935,10 +1952,10 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function isThingWithinOther(thing, other) {
         return (
-            thing.top >= other.top
-            && thing.right <= other.right
-            && thing.bottom <= other.bottom
-            && thing.left >= other.left
+            thing.top >= other.top - thing.EightBitter.unitsize
+            && thing.right <= other.right + thing.EightBitter.unitsize
+            && thing.bottom <= other.bottom + thing.EightBitter.unitsize
+            && thing.left >= other.left - thing.EightBitter.unitsize
         );
     }
 
