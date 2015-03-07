@@ -2483,7 +2483,6 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function openKeyboardMenu(settings) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            menuKeyboard = EightBitter.MenuGrapher.createMenu("Keyboard"),
             value = [
                 settings.value || ["_", "_", "_", "_", "_", "_", "_"]
             ],
@@ -2492,10 +2491,15 @@ var FullScreenPokemon = (function (GameStartr) {
                 : EightBitter.keysUppercase,
             onKeyPress = EightBitter.addKeyboardMenuValue.bind(EightBitter),
             onComplete = (settings.callback || onKeyPress).bind(EightBitter),
+            menuKeyboard = EightBitter.MenuGrapher.createMenu("Keyboard", {
+                "settings": settings,
+                "onKeyPress": onKeyPress,
+                "onComplete": onComplete,
+            }),
             menuResults = EightBitter.MenuGrapher.getMenu("KeyboardResult");
 
         EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[
-            settings.title
+            settings.title || ""
         ]]);
 
         EightBitter.MenuGrapher.addMenuDialog("KeyboardResult", value);
@@ -2511,6 +2515,8 @@ var FullScreenPokemon = (function (GameStartr) {
             })
         });
         EightBitter.MenuGrapher.setActiveMenu("KeyboardKeys");
+
+        menuResults.displayedValue = value.slice()[0];
 
         menuResults.completeValue = settings.completeValue || "";
         menuResults.selectedChild = settings.selectedChild || 0;
@@ -2539,6 +2545,7 @@ var FullScreenPokemon = (function (GameStartr) {
             child.top
         );
 
+        menuResult.displayedValue[menuResult.selectedChild] = selected.text[0];
         menuResult.completeValue += selected.text[0];
         menuResult.selectedChild += 1;
 
@@ -2550,7 +2557,22 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         EightBitter.setLeft(menuResult.blinker, child.left, child.top);
+    }
 
+    /**
+     * 
+     */
+    function setKeyboardCase(EightBitter, lowercase) {
+        var keyboard = EightBitter.MenuGrapher.getMenu("Keyboard"),
+            keyboardResult = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
+            settings = keyboard.settings,
+            i;
+
+        settings.lowercase = Boolean(lowercase);
+        settings.value = keyboardResult.displayedValue;
+        settings.selectedChild = keyboardResult.selectedChild;
+
+        EightBitter.openKeyboardMenu(settings);
     }
 
 
@@ -5250,6 +5272,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openSaveMenu": openSaveMenu,
         "openKeyboardMenu": openKeyboardMenu,
         "addKeyboardMenuValue": addKeyboardMenuValue,
+        "setKeyboardCase": setKeyboardCase,
         // Battles
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,
