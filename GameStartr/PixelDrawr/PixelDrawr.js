@@ -516,6 +516,7 @@ function PixelDrawr(settings) {
             || getRight(thing) < 0
             || getBottom(thing) < 0
             || getLeft(thing) > MapScreener[keyWidth]
+            || thing.opacity < epsilon
         ) {
             return;
         }
