@@ -1262,7 +1262,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateCharacterStartWalking(thing, direction, onStop) {
-        var repeats = (8 * thing.EightBitter.unitsize / thing.speed) | 0,
+        var repeats = Math.round(8 * thing.EightBitter.unitsize / thing.speed),
             distance = repeats * thing.speed;
 
         direction = direction || 0;
@@ -1285,7 +1285,7 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.onWalkingStop, repeats, Infinity, thing, onStop
         );
 
-        thing.isWalking = true;
+        thing.EightBitter.shiftBoth(thing, thing.xvel, thing.yvel);
     }
 
     /**
@@ -1363,7 +1363,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateCharacterStopWalking(thing, onStop) {
-        thing.isWalking = false;
         thing.xvel = 0;
         thing.yvel = 0;
 
