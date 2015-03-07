@@ -131,7 +131,6 @@ function PixelDrawr(settings) {
         framerateSkip = settings.framerateSkip || 1;
         framesDrawn = 0;
         epsilon = settings.epsilon || .007;
-        console.log("epsilon", epsilon);
 
         keyWidth = settings.keyWidth || "width";
         keyHeight = settings.keyHeight || "height";
