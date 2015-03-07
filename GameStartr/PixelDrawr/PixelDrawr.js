@@ -64,6 +64,9 @@ function PixelDrawr(settings) {
         // How many frames have been drawn so far
         framesDrawn,
 
+        // An arbitrarily small minimum for opacity
+        epsilon,
+
         // Names under which external Things should store information
         keyHeight,
         keyWidth,
@@ -97,6 +100,8 @@ function PixelDrawr(settings) {
      * @param {Function} [generateObjectKey]   How to generate keys to retrieve
      *                                         sprites from PixelRender (by 
      *                                         default, Object.toString).
+     * @param {Number} [epsilon]   An arbitrarily small minimum opacity to draw
+     *                             (by default, .007).
      * @param {String} [keyWidth]   The attribute name for a Thing's width (by
      *                              default, "width").
      * @param {String} [keyHeight]   The attribute name for a Thing's height
@@ -125,6 +130,8 @@ function PixelDrawr(settings) {
         groupNames = settings.groupNames;
         framerateSkip = settings.framerateSkip || 1;
         framesDrawn = 0;
+        epsilon = settings.epsilon || .007;
+        console.log("epsilon", epsilon);
 
         keyWidth = settings.keyWidth || "width";
         keyHeight = settings.keyHeight || "height";
@@ -168,20 +175,27 @@ function PixelDrawr(settings) {
     };
 
     /**
-     * The 2D canvas context associated with the canvas.
+     * @return {CanvasRenderingContext2D} The 2D canvas context associated with
+     *                                    the canvas.
      */
     self.getContext = function () {
         return context;
     };
 
-
     /**
-     * Whether refills should skip redrawing the background each time.
+     * @return {Boolean} Whether refills should skip redrawing the background 
+     *                   each time.
      */
     self.getNoRefill = function () {
         return noRefill;
     };
 
+    /**
+     * @return {Number} The minimum opacity that will be drawn.
+     */
+    self.getEpsilon = function () {
+        return epsilon;
+    };
 
 
     /* Simple sets
@@ -219,6 +233,13 @@ function PixelDrawr(settings) {
      */
     self.setNoRefill = function (enabled) {
         noRefill = enabled;
+    };
+
+    /**
+     * @param {Number} The minimum opacity that will be drawn.
+     */
+    self.getEpsilon = function (epsilonNew) {
+        epsilon = epsilonNew;
     };
 
 
@@ -528,6 +549,7 @@ function PixelDrawr(settings) {
             || getRight(thing) < quadrant[keyLeft]
             || getBottom(thing) < quadrant[keyTop]
             || getLeft(thing) > quadrant[keyRight]
+            || thing.opacity < epsilon
         ) {
             return;
         }

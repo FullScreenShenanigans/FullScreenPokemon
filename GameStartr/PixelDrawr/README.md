@@ -71,6 +71,9 @@ every time).
 * **[generateObjectKey]** *`Function`* - How to generate keys to retrieve
 sprites from PixelRender (by default, Object.toString).
 
+* **[epsilon]** *`Number`* - An arbitrarily small minimum opacity to draw (by 
+default, .00000007).
+
 * **[keyWidth]** *`Number`* - The attribute name for a Thing's width (by 
 default, "width").
 
