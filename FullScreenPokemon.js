@@ -1601,7 +1601,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (other.active) {
-            if (!other.requireOverlap || thing.EightBitter.isThingOverlappingOther(thing, other)) {
+            if (!other.requireOverlap || thing.EightBitter.isThingWithinOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !thing.keys[other.requireDirection]
@@ -1611,7 +1611,6 @@ var FullScreenPokemon = (function (GameStartr) {
                     return;
                 }
                 if (other.singleUse) {
-                    console.log("oof", other);
                     other.active = false;
                 }
                 other.activate(thing, other)
@@ -1721,6 +1720,7 @@ var FullScreenPokemon = (function (GameStartr) {
     function collidePlayerGrass(thing, other) {
         if (
             !thing.player
+            || !thing.EightBitter.isThingWithinOther(thing, other)
             || !thing.EightBitter.StatsHolder.get("PokemonInParty").length
         ) {
             return true;
@@ -1904,22 +1904,13 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function isThingOverlappingOther(thing, other) {
-        if (
-            thing.direction % 2 === 0
-            && Math.abs(thing.top - other.top) < thing.EightBitter.unitsize
-            && Math.abs(thing.bottom - other.bottom) < thing.EightBitter.unitsize
-        ) {
-            return true;
-        }
-
-        if (
-            thing.direction % 2 === 1
-            && Math.abs(thing.left - other.left) < thing.EightBitter.unitsize
-            && Math.abs(thing.right - other.right) < thing.EightBitter.unitsize
-        ) {
-            return true;
-        }
+    function isThingWithinOther(thing, other) {
+        return (
+            thing.top >= other.top
+            && thing.right <= other.right
+            && thing.bottom <= other.bottom
+            && thing.left >= other.left
+        );
     }
 
     /**
@@ -5000,6 +4991,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function fadeAttribute(thing, attribute, change, goal, speed, onCompletion) {
+        thing[attribute] += change;
+
         if (change > 0) {
             if (thing[attribute] >= goal) {
                 thing[attribute] = goal;
@@ -5018,7 +5011,6 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
-        thing[attribute] += change;
         thing.EightBitter.TimeHandler.addEvent(
             thing.EightBitter.fadeAttribute, speed, thing, attribute, change, goal, speed, onCompletion
         );
@@ -5028,6 +5020,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function fadeHorizontal(thing, change, goal, speed, onCompletion) {
+        thing.EightBitter.shiftHoriz(thing, change);
+
         if (change > 0) {
             if (thing.EightBitter.getMidX(thing) >= goal) {
                 thing.EightBitter.setMidX(thing, goal);
@@ -5046,7 +5040,6 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
-        thing.EightBitter.shiftHoriz(thing, change);
         thing.EightBitter.TimeHandler.addEvent(
             thing.EightBitter.fadeHorizontal, speed, thing, change, goal, speed, onCompletion
         );
@@ -5056,6 +5049,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function fadeVertical(thing, change, goal, speed, onCompletion) {
+        thing.EightBitter.shiftHoriz(thing, change);
+
         if (change > 0) {
             if (thing.EightBitter.getMidY(thing) >= goal) {
                 thing.EightBitter.setMidY(thing, goal);
@@ -5074,7 +5069,6 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
-        thing.EightBitter.shiftHoriz(thing, change);
         thing.EightBitter.TimeHandler.addEvent(
             thing.EightBitter.fadeVertical, speed, thing, attribute, change, goal, speed, onCompletion
         );
@@ -5171,7 +5165,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "activateTransporterAnimated": activateTransporterAnimated,
         // Physics
         "getDirectionBordering": getDirectionBordering,
-        "isThingOverlappingOther": isThingOverlappingOther,
+        "isThingWithinOther": isThingWithinOther,
         "shiftCharacter": shiftCharacter,
         "setPlayerDirection": setPlayerDirection,
         // Spawning
