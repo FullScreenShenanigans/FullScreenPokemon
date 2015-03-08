@@ -409,13 +409,28 @@ function PixelRendr(settings) {
      *                              and height Numbers are required.
      * @return {Uint8ClampedArray} 
      */
+
+    self._posts = {};
+
     self.decode = function (key, attributes) {
         // BaseFiler stores the cache of the base sprites. Note that it doesn't
         // actually require the extra attributes
         var sprite = BaseFiler.get(key);
+        
+
         if (!sprite) {
             throw new Error("No raw sprite found for " + key + ".");
         }
+
+
+        if (self._posts[key]) { console.log("loaded ", key); return self._posts[key]; }
+
+        if (!sprite.multiple) {
+            self._posts[key] = ProcessorBase.process(sprite.payload, sprite.path);
+            self._posts[key] = ProcessorDims.process(self._posts[key], key, attributes);
+            return self._posts[key];
+        }
+    
         
         // Multiple sprites have their sizings taken from attributes
         if (sprite.multiple) {
@@ -503,7 +518,11 @@ function PixelRendr(settings) {
             switch (objref.constructor) {
                 // If it's a string, parse it
                 case String:
-                    setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
+                    //setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
+                    setnew[i] = {
+                        "path": path + ' ' + i,
+                        "payload": objref
+                    };
                     break;
                 // If it's an array, it should have a command such as 'same' to be post-processed
                 case Array:
