@@ -809,6 +809,22 @@ function MenuGraphr(settings) {
     /**
      * 
      */
+    self.registerDirection = function (direction) {
+        switch (direction) {
+            case 0:
+                return self.registerUp();
+            case 1:
+                return self.registerRight();
+            case 2:
+                return self.registerDown();
+            case 3:
+                return self.registerLeft();
+        }
+    };
+
+    /**
+     * 
+     */
     self.registerLeft = function () {
         if (!activeMenu) {
             return;

@@ -705,7 +705,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
-            player.EightBitter.MenuGrapher.registerUp();
+            player.EightBitter.MenuGrapher.registerDirection(direction);
         } else if (!player.EightBitter.MapScreener.inMenu) {
             if (player.direction !== direction) {
                 player.turning = direction;
@@ -3592,7 +3592,12 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroFirstDialog(EightBitter, settings) {
+        settings.triggerer.alive = false;
         EightBitter.StateHolder.addChange(settings.triggerer.id, "alive", false);
+
+        if (EightBitter.StatsHolder.get("starter")) {
+            return;
+        }
 
         EightBitter.MapScreener.inMenu = true;
 
