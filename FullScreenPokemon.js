@@ -1360,9 +1360,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animatePlayerStartWalking(thing) {
-        console.log("in");
         if (typeof thing.turning !== "undefined") {
-            console.log("Turning", thing.turning, thing.keys[thing.turning]);
             if (!thing.keys[thing.turning]) {
                 thing.EightBitter.animateCharacterSetDirection(
                     thing, thing.turning

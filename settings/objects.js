@@ -708,8 +708,9 @@ FullScreenPokemon.prototype.settings.objects = {
             "activate": FullScreenPokemon.prototype.collidePokeball
         },
         "Solid": {
+            "repeat": true,
             "groupType": "Solid",
-            "repeat": true
+            "activate": FullScreenPokemon.prototype.collideCharacterDialog
         },
         "BedSingle": [8, 16],
         "Bookshelf": {
