@@ -173,10 +173,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "height": 72
             },
             "position": {
-                "horizontal": "center",
-                "offset": {
-                    "left": -4
-                }
+                "horizontal": "center"
             },
             "childrenSchemas": [{
                 "type": "menu",
@@ -942,7 +939,8 @@ FullScreenPokemon.prototype.settings.menus = {
             "container": "Keyboard",
             "textColumnWidth": 8,
             "textXOffset": 8,
-            "textYOffset": 3.5
+            "textYOffset": 3.5,
+            "ignoreB": true
         },
         "KeyboardResult": {
             "size": {

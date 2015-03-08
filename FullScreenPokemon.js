@@ -715,10 +715,12 @@ var FullScreenPokemon = (function (GameStartr) {
         if (player.EightBitter.MenuGrapher.getActiveMenu()) {
             player.EightBitter.MenuGrapher.registerA();
         } else if (player.bordering[player.direction]) {
-            player.bordering[player.direction].activate(
-                player,
-                player.bordering[player.direction]
-            );
+            if (player.bordering[player.direction].activate) {
+                player.bordering[player.direction].activate(
+                    player,
+                    player.bordering[player.direction]
+                );
+            }
 
             player.keys.a = true;
         }
@@ -1722,7 +1724,10 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.canKeyWalking = false;
 
         if (!thing.EightBitter.MenuGrapher.getActiveMenu()) {
-            thing.EightBitter.MenuGrapher.createMenu("GeneralText");
+            thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
+                "ignoreB": true,
+                "deleteOnFinish": true
+            });
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
             thing.EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -2489,6 +2494,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "settings": settings,
                 "onKeyPress": onKeyPress,
                 "onComplete": onComplete,
+                "ignoreB": true
             }),
             menuResults = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
             lowercase = settings.lowercase,

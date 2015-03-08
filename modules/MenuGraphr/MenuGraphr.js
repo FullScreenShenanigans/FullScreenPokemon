@@ -314,6 +314,9 @@ function MenuGraphr(settings) {
 
         self.addMenuText(name, dialog[0], function () {
             if (dialog.length === 1) {
+                if (menus[name].deleteOnFinish) {
+                    self.deleteMenu(name);
+                }
                 if (onCompletion) {
                     return onCompletion();
                 }
