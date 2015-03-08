@@ -659,7 +659,7 @@ function PixelRendr(settings) {
             i;
         
         for (i in sections) {
-            //if (self._posts[i]) { console.log("cache miss on ", i); }
+
             output.sprites[i] = ProcessorBase.process(
                 sections[i],
                 path + direction + i
@@ -672,8 +672,7 @@ function PixelRendr(settings) {
         output.leftwidth = sections.leftwidth | 0;
         
         output.middleStretch = sections.middleStretch || false;
-        
-        //console.log(output.sprites);
+      
         return output;
     }
 
@@ -709,24 +708,18 @@ function PixelRendr(settings) {
         for (var i in sprite.sprites) {
             if (sprite.sprites[i] instanceof Uint8ClampedArray) {
 
-                /*
-                if (self._posts[i]) {
-                    sprite.sprites[i] = self._posts[i];
-                    continue;
-                }
-                */
                 sprite.sprites[i] = ProcessorDims.process(
                     sprite.sprites[i], 
                     key + ' ' + i, 
                     attributes
                 );
 
-                //console.log(i);
                 self._posts[i] = sprite.sprites[i];
             }
         }
         
         sprite.processed = true;
+
     }
     
 
