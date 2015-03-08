@@ -558,6 +558,7 @@ function MenuGraphr(settings) {
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
             arrowXOffset = (menu.arrowXOffset || 0) * EightBitter.unitsize,
             arrowYOffset = (menu.arrowYOffset || 0) * EightBitter.unitsize,
+            selectedIndex = settings.selectedIndex || [0, 0],
             index = 0,
             y = top,
             option, schema, title, character, column,
@@ -580,9 +581,10 @@ function MenuGraphr(settings) {
         for (i = 0; i < options.length; i += 1) {
             x = left;
             option = options[i];
+
             option.x = x;
             option.y = y;
-
+            
             column.push(option);
             option.column = column;
             option.index = index;
@@ -643,14 +645,55 @@ function MenuGraphr(settings) {
         }
         menu.gridColumns = menu.grid.length;
 
-        menu.selectedIndex = settings.selectedIndex || [0, 0];
+        if (settings.bottom) {
+            option = settings.bottom;
+            option.schema = schema = filterWord(option.text);
+            
+            x = menu.left + (menu.textXOffset + option.position.left) * EightBitter.unitsize;
+            y = menu.top + (menu.textYOffset + option.position.top) * EightBitter.unitsize;
+
+            option.x = x;
+            option.y = y;
+
+            // Copy & pasted from the above options loop
+            // To do: make this into its own helper function?
+            for (j = 0; j < schema.length; j += 1) {
+                if (schema[j].command) {
+                    if (schema[j].x) {
+                        x += schema[j].x * EightBitter.unitsize;
+                    }
+                    if (schema[j].y) {
+                        y += schema[j].y * EightBitter.unitsize;
+                    }
+                } else if (schema[j] !== " ") {
+                    option.title = title = "Char" + getCharacterEquivalent(schema[j]);
+                    character = EightBitter.ObjectMaker.make(title);
+                    menu.children.push(character);
+
+                    EightBitter.addThing(character, x, y);
+
+                    x += character.width * EightBitter.unitsize;
+                } else {
+                    x += textWidth;
+                }
+            }
+
+            menu.gridRows += 1;
+            for (j = 0; j < menu.grid.length; j += 1) {
+                menu.grid[j].push(option);
+            }
+        }
+
+        menu.selectedIndex = selectedIndex;
         menu.arrow = character = EightBitter.ObjectMaker.make("CharArrowRight");
         menu.children.push(character);
         character.hidden = (activeMenu !== menu);
         
+        option = menu.grid[selectedIndex[0]][selectedIndex[1]];
+
         EightBitter.addThing(character);
-        EightBitter.setRight(character, options[0].x - menu.arrowXOffset * EightBitter.unitsize);
-        EightBitter.setTop(character, options[0].y + menu.arrowYOffset * EightBitter.unitsize);
+        EightBitter.setRight(character, option.x - menu.arrowXOffset * EightBitter.unitsize);
+        EightBitter.setTop(character, option.y + menu.arrowYOffset * EightBitter.unitsize);
     };
 
     /**
