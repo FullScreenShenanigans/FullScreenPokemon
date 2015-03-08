@@ -1,7 +1,7 @@
 # GamesRunnr
 
-A class to continuously series of "game" Functions. Each game is run in a set
-order and the group is run as a whole at a particular interval, with a
+A class to continuously run a series of "game" Functions. Each game is run in a
+set order and the group is run as a whole at a particular interval, with a
 configurable speed. Playback can be triggered manually, or driven by a timer
 with play and pause hooks. For automated playback, statistics are available 
 via an internal FPSAnalyzer.
@@ -64,40 +64,40 @@ window).
 
 1. Creating and using a GamesRunnr to print the screen size every second.
 
-    ```javascript
-    var GamesRunner = new GamesRunnr({
-        "interval": 1000,
-        "games": [
-            function () {
-                console.log("Screen size: " + innerWidth + "x" + innerHeight);
-            }
-        ]
-    });
-    GamesRunner.play();
-    ```
+ ```javascript
+ var GamesRunner = new GamesRunnr({
+     "interval": 1000,
+     "games": [
+         function () {
+             console.log("Screen size: " + innerWidth + "x" + innerHeight);
+         }
+     ]
+ });
+ GamesRunner.play();
+ ```
 
 2.  Creating and using a GamesRunnr to remove the first member of an Array and
 output the remaining members every second until only one is left.
 
-    ```javascript
-    var numbers = ['a', 'b', 'c', 'd'],
-        GamesRunner = new GamesRunnr({
-            "interval": 1000,
-            "games": [
-                numbers.pop.bind(numbers),
-                console.log.bind(console, numbers),
-                function () {
-                    if (numbers.length === 1) {
-                        GamesRunner.pause();
-                        console.log("All done!");
-                    }
-                }
-            ]
-            
-        });
-    GamesRunner.play();
-    // After 1 second:  ['a', 'b', 'c']
-    // After 2 seconds: ['a', 'b']
-    // After 3 seconds: ['a']
-    //                  "All done!"
-    ```
+ ```javascript
+ var numbers = ['a', 'b', 'c', 'd'],
+     GamesRunner = new GamesRunnr({
+         "interval": 1000,
+         "games": [
+             numbers.pop.bind(numbers),
+             console.log.bind(console, numbers),
+             function () {
+                 if (numbers.length === 1) {
+                     GamesRunner.pause();
+                     console.log("All done!");
+                 }
+             }
+         ]
+         
+     });
+ GamesRunner.play();
+ // After 1 second:  ['a', 'b', 'c']
+ // After 2 seconds: ['a', 'b']
+ // After 3 seconds: ['a']
+ //                  "All done!"
+ ```

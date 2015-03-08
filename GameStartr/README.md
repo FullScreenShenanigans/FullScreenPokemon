@@ -1,12 +1,12 @@
 # GameStartr
 
 GameStartr is a JavaScript game engine used as a base for creating sprite-based
-2D games, particularily retro remakes such as FullScreenMario. The GameStartr
-class inherits from EightBittr and requries the use of 18 modules, all of which
+2D games, particularly retro remakes such as FullScreenMario. The GameStartr
+class inherits from EightBittr and requires the use of 18 modules, all of which
 are sub-directories here and follow the same naming scheme. 
 
 GameStartr and EightBittr themselves contain game-independent functions for 
-child implementations to make use of, particularily involving physics
+child implementations to make use of, particularly involving physics
 manipulations, graphics rendering, and reset functions. EightBittr as a parent
 class does not contain functions that reference the modules; GameStartr does.
 

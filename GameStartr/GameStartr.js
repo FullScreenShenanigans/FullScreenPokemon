@@ -31,8 +31,12 @@ var GameStartr = (function (EightBittr) {
      * 
      */
     function GameStartr(customs) {
-        if (typeof (customs) === "undefined") {
+        if (typeof customs === "undefined") {
             customs = {};
+        }
+
+        if (typeof this.settings === "undefined") {
+            this.settings = {};
         }
 
         EightBittr.call(this, {

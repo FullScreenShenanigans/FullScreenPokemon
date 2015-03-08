@@ -15,7 +15,7 @@
  *      },
  *     "pipeline": ["square"]
  * });
- * console.log(ChangeLiner.process(7), "Test"); // 49
+ * console.log(ChangeLiner.process(7, "Test")); // 49
  * console.log(ChangeLiner.getCached("Test")); // 49
  * 
  * @example

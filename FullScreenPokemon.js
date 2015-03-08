@@ -49,9 +49,6 @@ var FullScreenPokemon = (function (GameStartr) {
         proliferate = GameStartrProto.proliferate,
         proliferateHard = GameStartrProto.proliferateHard;
 
-    // Subsequent settings will be stored in FullScreenPokemon.prototype.settings
-    GameStartrProto.settings = {};
-
     /**
      * Constructor for a new FullScreenPokemon game object.
      * Static game settings are stored in the appropriate settings/*.js object

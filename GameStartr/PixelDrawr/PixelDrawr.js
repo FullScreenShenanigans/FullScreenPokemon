@@ -509,13 +509,13 @@ function PixelDrawr(settings) {
     self.drawThingOnContext = function (context, thing) {
         if (
             thing.hidden
+            || thing.opacity < epsilon
             || thing[keyHeight] < 1
             || thing[keyWidth] < 1
             || getTop(thing) > MapScreener[keyHeight]
             || getRight(thing) < 0
             || getBottom(thing) < 0
             || getLeft(thing) > MapScreener[keyWidth]
-            || thing.opacity < epsilon
         ) {
             return;
         }

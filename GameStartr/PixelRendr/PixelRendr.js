@@ -296,6 +296,7 @@ function PixelRendr(settings) {
         );
 
         // The first ChangeLinr does the raw processing of Strings to sprites
+        // This is used to load & parse sprites into memory on startup
         ProcessorBase = new ChangeLinr({
             "transforms": {
                 "spriteUnravel": spriteUnravel,
@@ -312,6 +313,7 @@ function PixelRendr(settings) {
         });
 
         // The second ChangeLinr does row repeating and flipping
+        // This is done on demand when given a sprite's settings Object
         ProcessorDims = new ChangeLinr({
             "transforms": {
                 "spriteRepeatRows": spriteRepeatRows,
