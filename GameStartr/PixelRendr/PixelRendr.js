@@ -416,14 +416,17 @@ function PixelRendr(settings) {
         // BaseFiler stores the cache of the base sprites. Note that it doesn't
         // actually require the extra attributes
         var sprite = BaseFiler.get(key);
-        
 
+        
         if (!sprite) {
             throw new Error("No raw sprite found for " + key + ".");
         }
 
+        // If the sprite has been loaded already, it exists in self._posts
+        if (self._posts[key]) {
+            return self._posts[key];
+        }
 
-        if (self._posts[key]) { console.log("loaded ", key); return self._posts[key]; }
 
         if (!sprite.multiple) {
             self._posts[key] = ProcessorBase.process(sprite.payload, sprite.path);
@@ -431,19 +434,12 @@ function PixelRendr(settings) {
             return self._posts[key];
         }
     
-        
+       
         // Multiple sprites have their sizings taken from attributes
         if (sprite.multiple) {
             if (!sprite.processed) {
                 processSpriteMultiple(sprite, key, attributes);
             }
-        }
-        // Single (actual) sprites process for size (row) scaling, and flipping
-        else {
-            if (!(sprite instanceof Uint8ClampedArray)) {
-                throw new Error("No single raw sprite found for: '" + key + "'");
-            }
-            sprite = ProcessorDims.process(sprite, key, attributes);
         }
 
         return sprite;
@@ -702,13 +698,23 @@ function PixelRendr(settings) {
      * @param {Object} attributes
      */
     function processSpriteMultiple(sprite, key, attributes) {
+
         for (var i in sprite.sprites) {
             if (sprite.sprites[i] instanceof Uint8ClampedArray) {
+
+                if (self._posts[i]) {
+                    sprite.sprites[i] = self._posts[i];
+                    continue;
+                }
+
                 sprite.sprites[i] = ProcessorDims.process(
                     sprite.sprites[i], 
                     key + ' ' + i, 
                     attributes
                 );
+
+                //console.log(i);
+                self._posts[i] = sprite.sprites[i];
             }
         }
         
