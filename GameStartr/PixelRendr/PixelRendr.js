@@ -429,7 +429,6 @@ function PixelRendr(settings) {
 
 
         if (!sprite.multiple) {
-            if (!sprite.payload) { return sprite;} // TODO filters br0 (same, multiple, 
             self._posts[key] = ProcessorBase.process(sprite.payload, sprite.path);
             self._posts[key] = ProcessorDims.process(self._posts[key], key, attributes);
             return self._posts[key];
@@ -659,7 +658,6 @@ function PixelRendr(settings) {
             i;
         
         for (i in sections) {
-
             output.sprites[i] = ProcessorBase.process(
                 sections[i],
                 path + direction + i
