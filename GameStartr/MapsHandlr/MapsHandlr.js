@@ -193,11 +193,26 @@ function MapsHandlr(settings) {
     };
     
     /**
-     * @reutrn {Location} A Location within the current Map.
+     * @return {Location} A Location within the current Map.
      */
     self.getLocation = function (location) {
         return areaCurrent.map.locations[location];
-    }
+    };
+
+    /**
+     * @return {Location} The Location within the current Map used to spawn.
+     */
+    self.getLocationCurrent = function () {
+        return locationCurrent;
+    };
+
+    /**
+     * @return {String} The name of the Location within the current Map used to
+     *                  spawn.
+     */
+    self.getLocationCurrentName = function () {
+        return locationCurrent.name;
+    };
     
     /**
      * Simple getter function for the internal prethings object. This will be
@@ -207,7 +222,7 @@ function MapsHandlr(settings) {
      */
     self.getPreThings = function () {
         return prethings;
-    }
+    };
     
     
     /* Map / location setting

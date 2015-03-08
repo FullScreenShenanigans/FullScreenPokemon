@@ -320,7 +320,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.deleteActiveMenu();
         EightBitter.setMap(
             EightBitter.StatsHolder.get("map") || EightBitter.settings.maps.mapDefault,
-            undefined,
+            EightBitter.StatsHolder.get("location"),
             true
         );
         EightBitter.mapEntranceResume(EightBitter);
@@ -4104,6 +4104,9 @@ var FullScreenPokemon = (function (GameStartr) {
         );
         EightBitter.StatsHolder.set(
             "area", EightBitter.MapsHandler.getAreaName()
+        );
+        EightBitter.StatsHolder.set(
+            "location", EightBitter.MapsHandler.getLocationCurrentName()
         );
 
         EightBitter.saveCharacterPositions(EightBitter);

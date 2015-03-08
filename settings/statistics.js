@@ -19,6 +19,9 @@ FullScreenPokemon.prototype.settings.statistics = {
         "location": {
             "valueDefault": ""
         },
+        "location": {
+            "valueDefault": ""
+        },
         "badges": {
             "valueDefault": {
                 "Brock": false,
