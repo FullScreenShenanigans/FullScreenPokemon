@@ -1360,9 +1360,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animatePlayerStartWalking(thing) {
-        console.log("in");
         if (typeof thing.turning !== "undefined") {
-            console.log("Turning", thing.turning, thing.keys[thing.turning]);
             if (!thing.keys[thing.turning]) {
                 thing.EightBitter.animateCharacterSetDirection(
                     thing, thing.turning
@@ -1873,7 +1871,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateCutsceneTriggerer(thing, other) {
-        console.log("Colliding!", other.active);
         if (!other.alive || thing.collidedTrigger == other) {
             return;
         }
@@ -3847,6 +3844,25 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneOakIntroPokemonChoicePlayerChecksPokeball(EightBitter, settings) {
         var pokeball = settings.triggerer;
 
+        // If Oak is hidden, this cutscene shouldn't be starting (too early)
+        if (EightBitter.getThingById("Oak").hidden) {
+            EightBitter.ScenePlayer.stopCutscene();
+
+            EightBitter.MenuGrapher.createMenu("GeneralText", {
+                "ignoreB": true
+            });
+            EightBitter.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!"
+                ]
+            );
+            EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+            
+            return;
+        }
+
+        // If there's already a starter, ignore this sad last ball...
         if (EightBitter.StatsHolder.get("starter")) {
             return;
         }
@@ -3863,7 +3879,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreB": true
+        });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [

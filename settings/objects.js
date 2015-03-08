@@ -16,7 +16,8 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Player": {},
                 "Pokeball": {},
                 "Rival": {},
-                "RivalMother": {}
+                "RivalMother": {},
+                "Scientist": {}
             },
             "Solid": {
                 "AsianScroll": {},
@@ -708,8 +709,9 @@ FullScreenPokemon.prototype.settings.objects = {
             "activate": FullScreenPokemon.prototype.collidePokeball
         },
         "Solid": {
+            "repeat": true,
             "groupType": "Solid",
-            "repeat": true
+            "activate": FullScreenPokemon.prototype.collideCharacterDialog
         },
         "BedSingle": [8, 16],
         "Bookshelf": {
