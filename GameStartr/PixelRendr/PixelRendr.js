@@ -411,26 +411,37 @@ function PixelRendr(settings) {
      *                              and height Numbers are required.
      * @return {Uint8ClampedArray} 
      */
+
+    self._posts = {};
+
     self.decode = function (key, attributes) {
         // BaseFiler stores the cache of the base sprites. Note that it doesn't
         // actually require the extra attributes
         var sprite = BaseFiler.get(key);
+
+        
         if (!sprite) {
             throw new Error("No raw sprite found for " + key + ".");
         }
-        
+
+        // If the sprite has been loaded already, it exists in self._posts
+        if (self._posts[key]) {
+            return self._posts[key];
+        }
+
+
+        if (!sprite.multiple) {
+            self._posts[key] = ProcessorBase.process(sprite.payload, sprite.path);
+            self._posts[key] = ProcessorDims.process(self._posts[key], key, attributes);
+            return self._posts[key];
+        }
+    
+       
         // Multiple sprites have their sizings taken from attributes
         if (sprite.multiple) {
             if (!sprite.processed) {
                 processSpriteMultiple(sprite, key, attributes);
             }
-        }
-        // Single (actual) sprites process for size (row) scaling, and flipping
-        else {
-            if (!(sprite instanceof Uint8ClampedArray)) {
-                throw new Error("No single raw sprite found for: '" + key + "'");
-            }
-            sprite = ProcessorDims.process(sprite, key, attributes);
         }
 
         return sprite;
@@ -505,7 +516,11 @@ function PixelRendr(settings) {
             switch (objref.constructor) {
                 // If it's a string, parse it
                 case String:
-                    setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
+                    //setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
+                    setnew[i] = {
+                        "path": path + ' ' + i,
+                        "payload": objref
+                    };
                     break;
                 // If it's an array, it should have a command such as 'same' to be post-processed
                 case Array:
@@ -557,11 +572,15 @@ function PixelRendr(settings) {
                 var spriteRaw = followPath(library.raws, command[1], 0);
                 switch (spriteRaw.constructor) {
                     case String:
-                        return ProcessorBase.process(spriteRaw, path);
+                        //return ProcessorBase.process(spriteRaw, path);
+                        return {
+                            "path": path,
+                            "payload": spriteRaw
+                        };
                     case Array:
                         return evaluatePost(caller, spriteRaw, path);
                     default:
-                        return libraryParse(spriteRaw, path);
+                       return libraryParse(spriteRaw, path);
                 }
 
             // Filter: takes a reference to the target, and applies a filter to it
@@ -653,7 +672,7 @@ function PixelRendr(settings) {
         output.leftwidth = sections.leftwidth | 0;
         
         output.middleStretch = sections.middleStretch || false;
-        
+      
         return output;
     }
 
@@ -685,8 +704,10 @@ function PixelRendr(settings) {
      * @param {Object} attributes
      */
     function processSpriteMultiple(sprite, key, attributes) {
+
         for (var i in sprite.sprites) {
             if (sprite.sprites[i] instanceof Uint8ClampedArray) {
+
                 sprite.sprites[i] = ProcessorDims.process(
                     sprite.sprites[i], 
                     key + ' ' + i, 
@@ -696,6 +717,7 @@ function PixelRendr(settings) {
         }
         
         sprite.processed = true;
+
     }
     
 
@@ -717,6 +739,7 @@ function PixelRendr(settings) {
      *                  the numbers.
      */
     function spriteUnravel(colors) {
+
         var paletteref = getPaletteReferenceStarting(paletteDefault),
             digitsize = digitsizeDefault,
             clength = colors.length,
