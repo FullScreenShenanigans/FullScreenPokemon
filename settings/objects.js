@@ -16,7 +16,8 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Player": {},
                 "Pokeball": {},
                 "Rival": {},
-                "RivalMother": {}
+                "RivalMother": {},
+                "Scientist": {}
             },
             "Solid": {
                 "AsianScroll": {},
