@@ -711,8 +711,6 @@ function PixelRendr(settings) {
                     key + ' ' + i, 
                     attributes
                 );
-
-                self._posts[i] = sprite.sprites[i];
             }
         }
         
