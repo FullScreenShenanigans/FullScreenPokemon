@@ -571,11 +571,15 @@ function PixelRendr(settings) {
                 var spriteRaw = followPath(library.raws, command[1], 0);
                 switch (spriteRaw.constructor) {
                     case String:
-                        return ProcessorBase.process(spriteRaw, path);
+                        //return ProcessorBase.process(spriteRaw, path);
+                        return {
+                            "path": path,
+                            "payload": spriteRaw
+                        };
                     case Array:
                         return evaluatePost(caller, spriteRaw, path);
                     default:
-                        return libraryParse(spriteRaw, path);
+                       return libraryParse(spriteRaw, path);
                 }
 
             // Filter: takes a reference to the target, and applies a filter to it
@@ -655,6 +659,7 @@ function PixelRendr(settings) {
             i;
         
         for (i in sections) {
+            //if (self._posts[i]) { console.log("cache miss on ", i); }
             output.sprites[i] = ProcessorBase.process(
                 sections[i],
                 path + direction + i
@@ -668,6 +673,7 @@ function PixelRendr(settings) {
         
         output.middleStretch = sections.middleStretch || false;
         
+        //console.log(output.sprites);
         return output;
     }
 
@@ -703,11 +709,12 @@ function PixelRendr(settings) {
         for (var i in sprite.sprites) {
             if (sprite.sprites[i] instanceof Uint8ClampedArray) {
 
+                /*
                 if (self._posts[i]) {
                     sprite.sprites[i] = self._posts[i];
                     continue;
                 }
-
+                */
                 sprite.sprites[i] = ProcessorDims.process(
                     sprite.sprites[i], 
                     key + ' ' + i, 
