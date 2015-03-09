@@ -55,7 +55,8 @@ FullScreenPokemon.prototype.settings.menus = {
             "position": {
                 "horizontal": "center",
                 "vertical": "bottom",
-            }
+            },
+            "ignoreB": true
         },
         "Pause": {
             "size": {

@@ -1755,7 +1755,6 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (!thing.EightBitter.MenuGrapher.getActiveMenu()) {
             thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
-                "ignoreB": true,
                 "deleteOnFinish": true
             });
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -1791,9 +1790,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 thing.EightBitter.openPokedexListing(other.pokemon);
                 break;
             case "dialog":
-                thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
-                    "ignoreB": true
-                });
+                thing.EightBitter.MenuGrapher.createMenu("GeneralText");
                 thing.EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText", other.dialog
                 );
@@ -2568,6 +2565,7 @@ var FullScreenPokemon = (function (GameStartr) {
             menuResults.children[menuResults.selectedChild].left,
             menuResults.children[menuResults.selectedChild].top
         );
+        menuResults.children.push(menuResults.blinker);
         menuResults.children[menuResults.selectedChild].hidden = true;
     }
 
@@ -2624,8 +2622,6 @@ var FullScreenPokemon = (function (GameStartr) {
         settings.value = keyboardResult.displayedValue;
         settings.selectedChild = keyboardResult.selectedChild;
         settings.selectedIndex = keyboardKeys.selectedIndex;
-
-        console.log("selected index giving", settings.selectedIndex);
 
         EightBitter.openKeyboardMenu(settings);
     }
@@ -2775,7 +2771,6 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true,
             "finishAutomatically": true
         });
         EightBitter.MenuGrapher.addMenuDialog(
@@ -2824,7 +2819,6 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true,
             "finishAutomatically": true
         });
         EightBitter.MenuGrapher.addMenuDialog(
@@ -2962,9 +2956,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         console.log("Doing damage", damage, "/", opponent.selectedActor.HP);
 
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [player.selectedActor.title.toUpperCase() + " used " + choice + "!"],
@@ -3003,9 +2995,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var opponent = settings.battleInfo.opponent,
             choice = settings.routineArguments.choiceOpponent;
 
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [opponent.selectedActor.title.toUpperCase() + " used " + choice + "!"],
@@ -3041,9 +3031,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroFirstDialog(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3122,9 +3110,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroPokemonExplanation(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3184,9 +3170,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroPlayerName(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3345,9 +3329,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroRivalName(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3604,7 +3586,6 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateCharacterSetDirection(settings.player, 2);
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true,
             "finishAutomatically": true,
             "finishAutomaticSpeed": 28
         });
@@ -3660,9 +3641,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroGrassWarning(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3853,9 +3832,7 @@ var FullScreenPokemon = (function (GameStartr) {
         if (EightBitter.getThingById("Oak").hidden) {
             EightBitter.ScenePlayer.stopCutscene();
 
-            EightBitter.MenuGrapher.createMenu("GeneralText", {
-                "ignoreB": true
-            });
+            EightBitter.MenuGrapher.createMenu("GeneralText");
             EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
@@ -3884,9 +3861,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -3922,9 +3897,7 @@ var FullScreenPokemon = (function (GameStartr) {
         settings.triggerer.hidden = true;
 
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -4026,9 +3999,7 @@ var FullScreenPokemon = (function (GameStartr) {
         rivalblocker.nocollide = false;
         EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", false);
 
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -4049,9 +4020,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroRivalBattleApproach(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreB": true
-        });
+        EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
