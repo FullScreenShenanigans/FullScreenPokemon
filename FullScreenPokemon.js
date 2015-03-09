@@ -1253,9 +1253,12 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(blank);
 
-        EightBitter.fadeAttribute(blank, "opacity", .1, 1, 1, callback);
-
-        EightBitter.MapScreener.inMenu = true;
+        EightBitter.fadeAttribute(blank, "opacity", .2, 1, 2, function () {
+            EightBitter.killNormal(blank);
+            if (callback) {
+                callback.apply(this, arguments);
+            }
+        });
     }
 
     /**
@@ -1270,7 +1273,12 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(blank);
 
-        EightBitter.fadeAttribute(blank, "opacity", -.1, 0, 1, callback);
+        EightBitter.fadeAttribute(blank, "opacity", -.2, 0, 2, function () {
+            EightBitter.killNormal(blank);
+            if (callback) {
+                callback.apply(this, arguments);
+            }
+        });
     }
 
 
@@ -1973,25 +1981,36 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {Thing} other
      */
     function activateTransporter(thing, other) {
-        var transport = other.transport;
-
-        if (!thing.player) {
+        if (!thing.player || !other.active) {
             return;
         }
+
+        var transport = other.transport,
+            callback, args;
 
         if (typeof transport === "undefined") {
             throw new Error("No transport given to activateTransporter");
         }
 
         if (transport.constructor === String) {
-            thing.EightBitter.setLocation(transport);
+            callback = thing.EightBitter.setLocation;
+            args = [transport];
         } else if (typeof transport.map !== "undefined") {
-            thing.EightBitter.setMap(transport.map, transport.location);
+            callback = thing.EightBitter.setMap;
+            args = [transport.map, transport.location];
         } else if (typeof transport.location !== "undefined") {
-            thing.EightBitter.setLocation(transport.location);
+            callback = thing.EightBitter.setLocation;
+            args = [transport.location];
         } else {
             throw new Error("Unknown transport type:" + transport);
         }
+
+        other.active = false;
+
+        thing.EightBitter.animateFadeToBlack(
+            thing.EightBitter,
+            callback.apply.bind(callback, thing.EightBitter, args)
+        );
     }
 
     /**
@@ -4284,6 +4303,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.ModAttacher.fireEvent("onSetLocation", location);
 
         EightBitter.GamesRunner.play();
+
+        EightBitter.animateFadeFromBlack(EightBitter);
     }
 
     /**
