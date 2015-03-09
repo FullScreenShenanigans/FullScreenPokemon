@@ -1223,10 +1223,6 @@ var FullScreenPokemon = (function (GameStartr) {
         }
     }
 
-
-    /*
-    */
-
     /**
      * 
      */
@@ -1243,6 +1239,38 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         return exclamation;
+    }
+
+    /**
+     * 
+     */
+    function animateFadeToBlack(EightBitter, callback) {
+        var blank = EightBitter.ObjectMaker.make("BlackSquare", {
+            "width": EightBitter.MapScreener.width,
+            "height": EightBitter.MapScreener.height,
+            "opacity": 0
+        });
+
+        EightBitter.addThing(blank);
+
+        EightBitter.fadeAttribute(blank, "opacity", .1, 1, 1, callback);
+
+        EightBitter.MapScreener.inMenu = true;
+    }
+
+    /**
+     * 
+     */
+    function animateFadeFromBlack(EightBitter, callback) {
+        var blank = EightBitter.ObjectMaker.make("BlackSquare", {
+            "width": EightBitter.MapScreener.width,
+            "height": EightBitter.MapScreener.height,
+            "opacity": 1
+        });
+
+        EightBitter.addThing(blank);
+
+        EightBitter.fadeAttribute(blank, "opacity", -.1, 0, 1, callback);
     }
 
 
@@ -5269,6 +5297,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateSmokeMedium": animateSmokeMedium,
         "animateSmokeLarge": animateSmokeLarge,
         "animateExclamation": animateExclamation,
+        "animateFadeToBlack": animateFadeToBlack,
+        "animateFadeFromBlack": animateFadeFromBlack,
         // Character movement animations
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
         "animateCharacterStartTurning": animateCharacterStartTurning,

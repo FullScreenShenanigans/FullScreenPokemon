@@ -478,6 +478,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Water": {}
             },
             "Text": {
+                "BlackSquare": "",
                 "Exclamation": "",
                 "WhiteSquare": "",
                 "CharacterUpperCase": {
@@ -922,6 +923,11 @@ FullScreenPokemon.prototype.settings.objects = {
             "paddingY": 8,
             "noshiftx": true,
             "noshifty": true,
+        },
+        "BlackSquare": {
+            "width": 1,
+            "height": 1,
+            "repeat": true
         },
         "Exclamation": {
             "width": 7,

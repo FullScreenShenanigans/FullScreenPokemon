@@ -574,6 +574,7 @@ FullScreenPokemon.prototype.settings.sprites = {
             "WallIndoorLightWithDarkBottom": "p[1,2,3,4]3x07,20202221"
         },
         "Text": {
+            "BlackSquare": "x24,",
             "Exclamation": "p[0,1,2]00x210,0002x110,202x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x112,22x15,22x15,22x15,22x15,202x110,2000x210,x09,22x012,2x06,",
             "WhiteSquare": "x14,",
             "Menu": {
