@@ -231,6 +231,15 @@ function StatsHoldr(settings) {
         return output;
     };
 
+    /**
+     * 
+     */
+    self.clear = function () {
+        for (var i in values) {
+            values[i].clearLocalStorage();
+        }
+    };
+
 
     /* Values
     */
@@ -441,8 +450,17 @@ function StatsHoldr(settings) {
      */
     Value.prototype.updateLocalStorage = function (overrideAutoSave) {
         if (autoSave || overrideAutoSave) {
-            localStorage[prefix + this.key] = JSON.stringify(this.value);
+            localStorage.setItem(prefix + this.key, JSON.stringify(this.value));
         }
+    };
+
+    /**
+     * Clears a Value's value in localStorage under the prefix plus its key.
+     * 
+     * @this {Value}
+     */
+    Value.prototype.clearLocalStorage = function () {
+        localStorage.removeItem(prefix + this.key);
     };
 
 

@@ -48,6 +48,13 @@ function StateHoldr(settings) {
     /**
      * 
      */
+    self.getStatsHolder = function () {
+        return StatsHolder;
+    };
+
+    /**
+     * 
+     */
     self.getPrefix = function () {
         return prefix;
     };
