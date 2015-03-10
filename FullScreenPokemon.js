@@ -334,6 +334,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     * 
+     * @todo Put the Oak shenanigans in the Intro cutscene
      */
     function gameStartIntro(EightBitter) {
         var oak = EightBitter.ObjectMaker.make("OakPortrait", {
@@ -341,6 +343,8 @@ var FullScreenPokemon = (function (GameStartr) {
         });
 
         EightBitter.ModAttacher.fireEvent("onGameStartIntro", oak);
+
+        // GET THIS STUFF OUTTA HERE
 
         EightBitter.setMap("Blank", "White");
         EightBitter.MenuGrapher.deleteActiveMenu();
@@ -3383,9 +3387,22 @@ var FullScreenPokemon = (function (GameStartr) {
                 "This is my grand-son. He's been your rival since you were a baby.",
                 "...Erm, what is his name again?"
             ],
-            EightBitter.ScenePlayer.bindRoutine("RivalNameOptions")
+            EightBitter.ScenePlayer.bindRoutine("RivalSlide")
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneIntroRivalSlide(EightBitter, settings) {
+        EightBitter.fadeHorizontal(
+            settings.rival,
+            EightBitter.unitsize,
+            EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize,
+            1,
+            EightBitter.ScenePlayer.bindRoutine("RivalNameOptions")
+        );
     }
 
     /**
@@ -5409,6 +5426,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneIntroPlayerNameComplete": cutsceneIntroPlayerNameComplete,
         "cutsceneIntroRivalAppear": cutsceneIntroRivalAppear,
         "cutsceneIntroRivalName": cutsceneIntroRivalName,
+        "cutsceneIntroRivalSlide": cutsceneIntroRivalSlide,
         "cutsceneIntroRivalNameOptions": cutsceneIntroRivalNameOptions,
         "cutsceneIntroRivalNameFromMenu": cutsceneIntroRivalNameFromMenu,
         "cutsceneIntroRivalNameFromKeyboard": cutsceneIntroRivalNameFromKeyboard,
