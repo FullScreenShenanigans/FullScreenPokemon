@@ -190,10 +190,14 @@ function PixelRendr(settings) {
         return new PixelRendr(settings);
     }
     var self = this,
+        // Container to store the processed, ready-to-display sprites coming out of ProcessorDims
+        cache,
 
-        // The base container for storing sprite information.
+        // The base container for storing sprite information. With the addition of lazyloading, 
+        // library.sprites is initially populated with placeholder objects containing 
+        // spriteRaw (raw sprite data), path, and loaded (false)
         library,
-        
+
         // A StringFilr interface on top of the base library.
         BaseFiler,
 
@@ -204,7 +208,7 @@ function PixelRendr(settings) {
         // Takes partial sprites and repeats rows, then checks for dimension
         // flipping, used during on-demand retrievals.
         ProcessorDims,
-        
+
         // Reverse of ProcessorBase: takes real images and compresses their data
         // into sprites.
         ProcessorEncode,
@@ -217,7 +221,7 @@ function PixelRendr(settings) {
 
         // Utility RegExp to split Strings on every #digitsize characters.
         digitsplit,
-        
+
         // How much to "scale" each sprite by (repeat the pixels this much).
         scale,
 
@@ -232,10 +236,10 @@ function PixelRendr(settings) {
 
         // Filters for processing sprites.
         filters,
-        
+
         // Compatability shim to represent Uint8ClampedArray or a substitute.
         Uint8ClampedArray;
-    
+
     /**
      * Resets the PixelRendr.
      * 
@@ -244,6 +248,7 @@ function PixelRendr(settings) {
      *                                   sprites. This should be an Array of
      *                                   Number[4]s representing rgba values.
      * @param {Object} [library]   A library of sprites to process.
+     *
      * @param {Object} [filters]   Filters that may be used by sprites in the
      *                             library.    
      * @param {Number} [scale]   An amount to expand sprites by when processing
@@ -269,29 +274,31 @@ function PixelRendr(settings) {
             throw new Error("No paletteDefault given to PixelRendr.");
         }
         paletteDefault = settings.paletteDefault;
-        
+
         digitsizeDefault = getDigitSize(paletteDefault);
         digitsplit = new RegExp('.{1,' + digitsizeDefault + '}', 'g');
-        
+
+        cache = {};
+
         library = {
             "raws": settings.library || {},
             "posts": [],
         };
-        
+
         filters = settings.filters || {};
-        
+
         scale = settings.scale || 1;
-        
+
         flipVert = settings.flipVert || "flip-vert";
         flipHoriz = settings.flipHoriz || "flip-horiz";
-        
+
         spriteWidth = settings.spriteWidth || "spriteWidth";
         spriteHeight = settings.spriteHeight || "spriteHeight";
-        
+
         Uint8ClampedArray = (
-            settings.Uint8ClampedArray 
+            settings.Uint8ClampedArray
             || window.Uint8ClampedArray
-            || window.Uint8Array 
+            || window.Uint8Array
             || Array
         );
 
@@ -324,7 +331,7 @@ function PixelRendr(settings) {
                 "spriteFlipDimensions"
             ]
         });
-        
+
         // As a utility, a processor is included to encode image data to sprites
         ProcessorEncode = new ChangeLinr({
             "transforms": {
@@ -341,8 +348,9 @@ function PixelRendr(settings) {
             ],
             "doUseCache": false
         });
-        
-        library.sprites = libraryParse(library.raws, ''),
+
+        library.sprites = libraryParse(library.raws, '');
+
 
         // Post commands are evaluated after the first processing run
         libraryPosts();
@@ -353,25 +361,25 @@ function PixelRendr(settings) {
             "normal": "normal", // to do: put this somewhere more official?
         });
     };
-    
-    
+
+
     /* Simple gets
     */
-    
+
     /**
      * @return {Object} The base container for storing sprite information.
      */
     self.getBaseLibrary = function () {
         return BaseFiler.getLibrary();
     };
-    
+
     /**
      * @return {StringFilr} The StringFilr interface on top of the base library.
      */
     self.getBaseFiler = function () {
         return BaseFiler;
     };
-    
+
     /**
      * @return {ChangeLinr} The processor that turns raw strings into partial
      * sprites.
@@ -379,7 +387,7 @@ function PixelRendr(settings) {
     self.getProcessorBase = function () {
         return ProcessorBase;
     };
-    
+
     /**
      * @return {ChangeLinr} The processor that turns partial sprites and repeats
      *                      rows.
@@ -387,7 +395,7 @@ function PixelRendr(settings) {
     self.getProcessorDims = function () {
         return ProcessorDims;
     };
-    
+
     /**
      * @return {ChangeLinr} The processor that takes real images and compresses
      *                      their data into sprite Strings.
@@ -395,11 +403,11 @@ function PixelRendr(settings) {
     self.getProcessorEncode = function () {
         return ProcessorEncode;
     };
-    
+
 
     /* External APIs
     */
-    
+
     /**
      * Standard render function. Given a key, this finds the raw information via
      * BaseFiler and processes it using ProcessorDims. Attributes are needed so
@@ -415,22 +423,26 @@ function PixelRendr(settings) {
         // BaseFiler stores the cache of the base sprites. Note that it doesn't
         // actually require the extra attributes
         var sprite = BaseFiler.get(key);
+
         if (!sprite) {
             throw new Error("No raw sprite found for " + key + ".");
         }
-        
+
+        // If the sprite has already been loaded, it exists in the cache
+        if (cache.hasOwnProperty(key)) {
+            return cache[key];
+        }
+
         // Multiple sprites have their sizings taken from attributes
         if (sprite.multiple) {
             if (!sprite.processed) {
                 processSpriteMultiple(sprite, key, attributes);
             }
         }
-        // Single (actual) sprites process for size (row) scaling, and flipping
+            // Single (actual) sprites process for size (row) scaling, and flipping
         else {
-            if (!(sprite instanceof Uint8ClampedArray)) {
-                throw new Error("No single raw sprite found for: '" + key + "'");
-            }
-            sprite = ProcessorDims.process(sprite, key, attributes);
+            sprite = cache[key] = ProcessorBase.process(sprite.spriteRaw, sprite.path);
+            sprite = cache[key] = ProcessorDims.process(sprite, key, attributes);
         }
 
         return sprite;
@@ -448,14 +460,14 @@ function PixelRendr(settings) {
      */
     self.encode = function (image, callback, source) {
         var result = ProcessorEncode.process(image);
-        
+
         if (callback) {
             callback(result, image, source);
         }
-        
+
         return result;
     };
-    
+
     /**
      * Fetches an image from a source and encodes it into a sprite via 
      * ProcessEncode.process. An HtmlImageElement is created and given an onload
@@ -470,7 +482,7 @@ function PixelRendr(settings) {
         image.onload = self.encode.bind(self, image, callback);
         image.src = uri;
     };
-    
+
     /**
      * @param {String} key
      * @return {Mixed} Returns the base sprite for a key. This will either be a
@@ -498,17 +510,22 @@ function PixelRendr(settings) {
         var setnew = {},
             objref, objnew,
             i;
-        
+
         // For each child of the current layer:
         for (i in reference) {
             objref = reference[i];
             switch (objref.constructor) {
                 // If it's a string, parse it
                 case String:
-                    setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
+                    //setnew[i] = ProcessorBase.process(objref, path + ' ' + i);
+                    setnew[i] = {
+                        "spriteRaw": objref,
+                        "path": path + ' ' + i
+                    }
                     break;
-                // If it's an array, it should have a command such as 'same' to be post-processed
+                    // If it's an array, it should have a command such as 'same' to be post-processed
                 case Array:
+                    //console.log(i, reference[i], path);
                     library.posts.push({
                         caller: setnew,
                         name: i,
@@ -516,13 +533,13 @@ function PixelRendr(settings) {
                         path: path + ' ' + i
                     });
                     break;
-                // If it's an object, simply recurse
+                    // If it's an object, simply recurse
                 case Object:
                     setnew[i] = libraryParse(objref, path + ' ' + i);
                     break;
             }
         }
-        
+
         return setnew;
     }
 
@@ -557,15 +574,20 @@ function PixelRendr(settings) {
                 var spriteRaw = followPath(library.raws, command[1], 0);
                 switch (spriteRaw.constructor) {
                     case String:
-                        return ProcessorBase.process(spriteRaw, path);
+                        //return ProcessorBase.process(spriteRaw, path);
+                        return {
+                            "spriteRaw": spriteRaw,
+                            "path": path
+                        }
                     case Array:
                         return evaluatePost(caller, spriteRaw, path);
                     default:
                         return libraryParse(spriteRaw, path);
                 }
 
-            // Filter: takes a reference to the target, and applies a filter to it
-            // ["filter", ["container", "path", "to", "target"], filters.DoThisFilter]
+                // Filter: takes a reference to the target, and applies a filter to it
+                // ["filter", ["container", "path", "to", "target"], filters.DoThisFilter]
+                // TODO @todo lazy load these too, once some are added in
             case "filter":
                 // Find the sprite this should be filtering from
                 var spriteRaw = followPath(library.raws, command[1], 0),
@@ -577,16 +599,16 @@ function PixelRendr(settings) {
                 }
                 return evaluatePostFilter(spriteRaw, path, filter);
 
-            // Multiple: uses more than one image, either vertically or horizontally
-            // Not to be confused with having .repeat = true.
-            // ["multiple", "vertical", {
-            //    top: "...",       // (just once at the top)
-            //    middle: "..."     // (repeated after top)
-            //  }
+                // Multiple: uses more than one image, either vertically or horizontally
+                // Not to be confused with having .repeat = true.
+                // ["multiple", "vertical", {
+                //    top: "...",       // (just once at the top)
+                //    middle: "..."     // (repeated after top)
+                //  }
             case "multiple":
                 return evaluatePostMultiple(path, command);
         }
-        
+
         // Commands not evaluated by the switch are unknown and bad
         console.warn("Unknown post command: '" + command[0] + "'.", caller, command, path);
     }
@@ -639,21 +661,21 @@ function PixelRendr(settings) {
             sections = command[2],
             output = new self.SpriteMultiple(command[1], direction),
             i;
-        
+
         for (i in sections) {
             output.sprites[i] = ProcessorBase.process(
                 sections[i],
                 path + direction + i
             );
         }
-        
+
         output.topheight = sections.topheight | 0;
         output.rightwidth = sections.rightwidth | 0;
         output.bottomheight = sections.bottomheight | 0;
         output.leftwidth = sections.leftwidth | 0;
-        
+
         output.middleStretch = sections.middleStretch || false;
-        
+
         return output;
     }
 
@@ -688,16 +710,16 @@ function PixelRendr(settings) {
         for (var i in sprite.sprites) {
             if (sprite.sprites[i] instanceof Uint8ClampedArray) {
                 sprite.sprites[i] = ProcessorDims.process(
-                    sprite.sprites[i], 
-                    key + ' ' + i, 
+                    sprite.sprites[i],
+                    key + ' ' + i,
                     attributes
                 );
             }
         }
-        
+
         sprite.processed = true;
     }
-    
+
 
     /* Core pipeline functions
     */
@@ -723,45 +745,45 @@ function PixelRendr(settings) {
             current, rep, nixloc, newp, i, len,
             output = "",
             loc = 0;
-        
+
         while (loc < clength) {
             switch (colors[loc]) {
                 // A loop, ordered as 'x char times ,'
-            case 'x':
-                // Get the location of the ending comma
-                nixloc = colors.indexOf(",", ++loc);
-                // Get the color
-                current = makeDigit(paletteref[colors.slice(loc, loc += digitsize)], digitsizeDefault);
-                // Get the rep times
-                rep = Number(colors.slice(loc, nixloc));
-                // Add that int to output, rep many times
-                while (rep--) {
-                    output += current;
-                }
-                loc = nixloc + 1;
-                break;
-
-                // A palette changer, in the form 'p[X,Y,Z...]' (or 'p' for default)
-            case 'p':
-                // If the next character is a '[', customize.
-                if (colors[++loc] == '[') {
-                    nixloc = colors.indexOf(']');
-                    // Isolate and split the new palette's numbers
-                    paletteref = getPaletteReference(colors.slice(loc + 1, nixloc).split(","));
+                case 'x':
+                    // Get the location of the ending comma
+                    nixloc = colors.indexOf(",", ++loc);
+                    // Get the color
+                    current = makeDigit(paletteref[colors.slice(loc, loc += digitsize)], digitsizeDefault);
+                    // Get the rep times
+                    rep = Number(colors.slice(loc, nixloc));
+                    // Add that int to output, rep many times
+                    while (rep--) {
+                        output += current;
+                    }
                     loc = nixloc + 1;
-                    digitsize = 1;
-                }
-                // Otherwise go back to default
-                else {
-                    paletteref = getPaletteReference(paletteDefault);
-                    digitsize = digitsizeDefault;
-                }
-                break;
+                    break;
 
-                // A typical number
-            default:
-                output += makeDigit(paletteref[colors.slice(loc, loc += digitsize)], digitsizeDefault);
-                break;
+                    // A palette changer, in the form 'p[X,Y,Z...]' (or 'p' for default)
+                case 'p':
+                    // If the next character is a '[', customize.
+                    if (colors[++loc] == '[') {
+                        nixloc = colors.indexOf(']');
+                        // Isolate and split the new palette's numbers
+                        paletteref = getPaletteReference(colors.slice(loc + 1, nixloc).split(","));
+                        loc = nixloc + 1;
+                        digitsize = 1;
+                    }
+                        // Otherwise go back to default
+                    else {
+                        paletteref = getPaletteReference(paletteDefault);
+                        digitsize = digitsizeDefault;
+                    }
+                    break;
+
+                    // A typical number
+                default:
+                    output += makeDigit(paletteref[colors.slice(loc, loc += digitsize)], digitsizeDefault);
+                    break;
             }
         }
 
@@ -809,10 +831,10 @@ function PixelRendr(settings) {
         if (!attributes || !attributes.filter) {
             return colors;
         }
-        
+
         var filter = attributes.filter,
             filterName = filter[0];
-        
+
         if (!filterName) {
             return colors;
         }
@@ -830,7 +852,7 @@ function PixelRendr(settings) {
                 }
                 return split.join('');
         }
-        
+
         return colors;
     }
 
@@ -849,7 +871,7 @@ function PixelRendr(settings) {
             olength = numcolors * 4,
             output = new Uint8ClampedArray(olength),
             reference, i, j, k;
-        
+
         // For each color,
         for (i = 0, j = 0; i < numcolors; ++i) {
             // Grab its RGBA ints
@@ -884,7 +906,7 @@ function PixelRendr(settings) {
             readloc = 0,
             writeloc = 0,
             si, sj;
-        
+
         // For each row:
         for (si = 0; si < heightscale; ++si) {
             // Add it to parsed x scale
@@ -936,7 +958,7 @@ function PixelRendr(settings) {
             rowsize = width * 4,
             newloc, oldloc,
             i, j, k;
-        
+
         // For each row:
         for (i = 0; i < length; i += rowsize) {
             newloc = i;
@@ -951,10 +973,10 @@ function PixelRendr(settings) {
                 oldloc -= 4;
             }
         }
-        
+
         return newsprite;
     }
-    
+
     /**
      * Flips a sprite horizontally by reversing the order of the rows. Rows are
      * computing using the spriteWidth in attributes.
@@ -984,10 +1006,10 @@ function PixelRendr(settings) {
             newloc += rowsize;
             oldloc -= rowsize;
         }
-        
+
         return newsprite;
     }
-    
+
     /**
      * Flips a sprite horizontally and vertically by reversing the order of the
      * pixels. This doesn't actually need attributes.
@@ -995,13 +1017,13 @@ function PixelRendr(settings) {
      * @param {Uint8ClampedArray} sprite
      * @return {Uint8ClampedArray}
      */
-     function flipSpriteArrayBoth(sprite) {
+    function flipSpriteArrayBoth(sprite) {
         var length = sprite.length,
             newsprite = new Uint8ClampedArray(length),
             oldloc = sprite.length - 4,
             newloc = 0,
             i;
-        
+
         while (newloc < length) {
             for (i = 0; i < 4; ++i) {
                 newsprite[newloc + i] = sprite[oldloc + i];
@@ -1012,10 +1034,10 @@ function PixelRendr(settings) {
         return newsprite;
     }
 
-    
+
     /* Encoding pipeline functions
     */
-    
+
     /**
      * Retrives the raw pixel data from an image element. It is copied onto a 
      * canvas, which as its context return the .getImageDate().data results.
@@ -1026,14 +1048,14 @@ function PixelRendr(settings) {
     function imageGetData(image) {
         var canvas = document.createElement("canvas"),
             context = canvas.getContext("2d");
-        
+
         canvas.width = image.width;
         canvas.height = image.height;
-        
+
         context.drawImage(image, 0, 0);
         return context.getImageData(0, 0, image.width, image.height).data;
     }
-    
+
     /**
      * Determines which pixels occur in the data and at what frequency. This is
      * the second Function used in the encoding processor.
@@ -1049,21 +1071,21 @@ function PixelRendr(settings) {
             occurences = {},
             pixel,
             i, j;
-        
+
         for (i = 0, j = 0; i < data.length; i += 4, j += 1) {
             pixel = getClosestInPalette(paletteDefault, data.subarray(i, i + 4));
             pixels[j] = pixel;
-            
+
             if (occurences.hasOwnProperty(pixel)) {
                 occurences[pixel] += 1;
             } else {
                 occurences[pixel] = 1;
             }
         }
-        
+
         return [pixels, occurences];
     }
-    
+
     /**
      * Concretely defines the palette to be used for a new sprite. This is the
      * third Function used in the encoding processor, and creates a technically
@@ -1082,10 +1104,10 @@ function PixelRendr(settings) {
             digitsize = getDigitSize(palette),
             paletteIndices = getValueIndices(palette),
             numbers = pixels.map(getKeyValue.bind(undefined, paletteIndices));
-        
+
         return [palette, numbers, digitsize];
     }
-    
+
     /**
      * Compresses a nearly complete sprite from imageMapPalette into a 
      * compressed, storage-ready String. This is the last Function in the 
@@ -1105,20 +1127,20 @@ function PixelRendr(settings) {
             digit,
             i = 0,
             j;
-        
+
         output = "p["
             + palette.map(makeSizedDigit.bind(undefined, digitsize)).join(',')
             + "]";
-        
-        while(i < numbers.length) {
+
+        while (i < numbers.length) {
             j = i + 1;
             current = numbers[i];
             digit = makeDigit(current, digitsize);
-            
-            while(current == numbers[j]) {
+
+            while (current == numbers[j]) {
                 j += 1;
             }
-            
+
             if (j - i > threshold) {
                 output += "x" + digit + String(j - i) + ",";
                 i = j;
@@ -1127,13 +1149,13 @@ function PixelRendr(settings) {
                     output += digit;
                     i += 1;
                 }
-                while(i < j);
+                while (i < j);
             }
         }
-        
+
         return output;
     }
-    
+
 
     /* Misc. utility functions
     */
@@ -1160,11 +1182,11 @@ function PixelRendr(settings) {
         var output = {},
             digitsize = getDigitSize(palette),
             i;
-        
+
         for (i = 0; i < palette.length; i += 1) {
             output[makeDigit(i, digitsize)] = makeDigit(palette[i], digitsize);
         }
-        
+
         return output;
     }
 
@@ -1179,14 +1201,14 @@ function PixelRendr(settings) {
     function getPaletteReferenceStarting(palette) {
         var output = {},
             i;
-        
+
         for (i = 0; i < palette.length; i += 1) {
             output[makeDigit(i, digitsizeDefault)] = makeDigit(i, digitsizeDefault)
         }
-        
+
         return output;
     }
-    
+
     /**
      * Finds which rgba value in a palette is closest to a given value. This is
      * useful for determining which color in a pre-existing palette matches up
@@ -1202,7 +1224,7 @@ function PixelRendr(settings) {
             bestDifference = Infinity,
             bestIndex,
             i;
-        
+
         for (i = palette.length - 1; i >= 0; i -= 1) {
             difference = arrayDifference(palette[i], rgba);
             if (difference < bestDifference) {
@@ -1210,7 +1232,7 @@ function PixelRendr(settings) {
                 bestIndex = i;
             }
         }
-        
+
         return bestIndex;
     }
 
@@ -1224,7 +1246,7 @@ function PixelRendr(settings) {
     function stringOf(string, times) {
         return (times === 0) ? '' : new Array(1 + (times || 1)).join(string);
     }
-    
+
     /**
      * Turns a Number into a String with a prefix added to pad it to a certain
      * number of digits.
@@ -1240,11 +1262,11 @@ function PixelRendr(settings) {
      */
     function makeDigit(number, size, prefix) {
         return stringOf(
-            prefix || '0', 
+            prefix || '0',
             Math.max(0, size - String(number).length)
         ) + number;
     }
-    
+
     /**
      * Curry wrapper around makeDigit that reverses size and number argument 
      * order. Useful for binding makeDigit.
@@ -1272,7 +1294,7 @@ function PixelRendr(settings) {
         }
         return array;
     }
-    
+
     /**
      * Computes the sum of the differences of elements between two Arrays of
      * equal length.
@@ -1284,14 +1306,14 @@ function PixelRendr(settings) {
     function arrayDifference(a, b) {
         var sum = 0,
             i;
-        
+
         for (i = a.length - 1; i >= 0; i -= 1) {
             sum += Math.abs(a[i] - b[i]) | 0;
         }
-        
+
         return sum;
     }
-    
+
     /**
      * @param {Array}
      * @return {Object} An Object with an index equal to each element of the 
@@ -1300,14 +1322,14 @@ function PixelRendr(settings) {
     function getValueIndices(array) {
         var output = {},
             i;
-        
+
         for (i = 0; i < array.length; i += 1) {
             output[array[i]] = i;
         }
-        
+
         return output;
     }
-    
+
     /**
      * Curry Function to retrieve a member of an Object. Useful for binding.
      * 
@@ -1333,7 +1355,7 @@ function PixelRendr(settings) {
         }
         return obj;
     }
-    
+
     /**
      * Copies a stretch of members from one Uint8ClampedArray to another.
      * 
@@ -1355,7 +1377,7 @@ function PixelRendr(settings) {
             // console.log(arguments);
             return;
         }
-        
+
         if (readloc == null) {
             readloc = 0;
         }
@@ -1370,7 +1392,7 @@ function PixelRendr(settings) {
         var lwritelength = writelength + 0,
             lwriteloc = writeloc + 0,
             lreadloc = readloc + 0;
-        
+
         while (lwritelength--) {
             destination[lwriteloc++] = source[lreadloc++];
         }
@@ -1471,7 +1493,7 @@ function PixelRendr(settings) {
 
         return output;
     };
-    
+
 
     self.reset(settings || {});
 }
