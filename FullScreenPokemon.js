@@ -943,16 +943,15 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function maintainSolids(EightBitter, solids) {
-        var solid, i;
+    function maintainGeneric(EightBitter, things) {
+        var thing, i;
 
-        for (i = 0; i < solids.length; i += 1) {
-            solid = solids[i];
+        for (i = 0; i < things.length; i += 1) {
+            thing = things[i];
 
-            if (!solid.alive) {
-                EightBitter.arrayDeleteThing(solid, solids, i);
+            if (!thing.alive) {
+                EightBitter.arrayDeleteThing(thing, things, i);
                 i -= 1;
-                continue;
             }
         }
     }
@@ -1274,13 +1273,14 @@ var FullScreenPokemon = (function (GameStartr) {
         var blank = EightBitter.ObjectMaker.make("BlackSquare", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
-            "opacity": 1
+            "opacity": 1,
         });
 
         EightBitter.addThing(blank);
 
         EightBitter.fadeAttribute(blank, "opacity", -.2, 0, 2, function () {
             EightBitter.killNormal(blank);
+            console.log("Killing", blank.title);
             if (callback) {
                 callback.apply(this, arguments);
             }
@@ -1897,9 +1897,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (thing.EightBitter) {
             thing.EightBitter.TimeHandler.cancelAllCycles(thing);
+            thing.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
         }
-
-        thing.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
     }
 
 
@@ -5323,7 +5322,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "keyUpPause": keyUpPause,
         "mouseDownRight": mouseDownRight,
         // Upkeep maintenance
-        "maintainSolids": maintainSolids,
+        "maintainGeneric": maintainGeneric,
         "maintainCharacters": maintainCharacters,
         "maintainPlayer": maintainPlayer,
         "getHorizontalScrollAmount": getHorizontalScrollAmount,
