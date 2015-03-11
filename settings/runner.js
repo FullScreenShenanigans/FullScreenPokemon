@@ -19,7 +19,16 @@ FullScreenPokemon.prototype.settings.runner = {
             this.QuadsKeeper.determineAllQuadrants("Solid", this.GroupHolder.getSolidGroup());
         },
         function () {
-            this.maintainSolids(this, this.GroupHolder.getSolidGroup());
+            this.maintainGeneric(this, this.GroupHolder.getTextGroup());
+        },
+        function () {
+            this.maintainGeneric(this, this.GroupHolder.getTerrainGroup());
+        },
+        function () {
+            this.maintainGeneric(this, this.GroupHolder.getSceneryGroup());
+        },
+        function () {
+            this.maintainGeneric(this, this.GroupHolder.getSolidGroup());
         },
         function () {
             this.maintainCharacters(this, this.GroupHolder.getCharacterGroup());

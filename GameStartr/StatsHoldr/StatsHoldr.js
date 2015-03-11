@@ -232,11 +232,34 @@ function StatsHoldr(settings) {
     };
 
     /**
-     * 
+     * Sets the value 
      */
     self.clear = function () {
         for (var i in values) {
+            values[i].value = values[i].valueDefault;
+            values[i].update();
+        }
+    };
+
+    /**
+     * Calls the clearLocalStorage member Function of every stored value,
+     * effectively wiping all stored data from localStorage.
+     */
+    self.clearLocalStorage = function () {
+        for (var i in values) {
             values[i].clearLocalStorage();
+        }
+    };
+
+    /**
+     * @param {String[]} keys
+     * 
+     * Manually calls localStorage.removeItem for each of the given unprefixed 
+     * value keys.
+     */
+    self.clearKeysManually = function (keys) {
+        for (var i in keys) {
+            localStorage.removeItem(prefix + keys[i]);
         }
     };
 

@@ -35,6 +35,7 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "PlayerNameComplete": FullScreenPokemon.prototype.cutsceneIntroPlayerNameComplete,
                 "RivalAppear": FullScreenPokemon.prototype.cutsceneIntroRivalAppear,
                 "RivalName": FullScreenPokemon.prototype.cutsceneIntroRivalName,
+                "RivalSlide": FullScreenPokemon.prototype.cutsceneIntroRivalSlide,
                 "RivalNameOptions": FullScreenPokemon.prototype.cutsceneIntroRivalNameOptions,
                 "RivalNameFromMenu": FullScreenPokemon.prototype.cutsceneIntroRivalNameFromMenu,
                 "RivalNameFromKeyboard": FullScreenPokemon.prototype.cutsceneIntroRivalNameFromKeyboard,

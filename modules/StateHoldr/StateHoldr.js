@@ -27,8 +27,6 @@ function StateHoldr(settings) {
         // The current Object with attributes saved within
         collection;
 
-
-
     /**
      * 
      */
@@ -167,7 +165,6 @@ function StateHoldr(settings) {
             output[key] = changes[key];
         }
     };
-
 
     /* Utilities
     */

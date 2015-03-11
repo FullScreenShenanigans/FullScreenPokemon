@@ -334,13 +334,19 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     * 
+     * @todo Put the Oak shenanigans in the Intro cutscene
      */
     function gameStartIntro(EightBitter) {
         var oak = EightBitter.ObjectMaker.make("OakPortrait", {
             "opacity": .01 // why won't 0 work?
         });
 
+        EightBitter.StatsHolder.clear();
+
         EightBitter.ModAttacher.fireEvent("onGameStartIntro", oak);
+
+        // GET THIS STUFF OUTTA HERE
 
         EightBitter.setMap("Blank", "White");
         EightBitter.MenuGrapher.deleteActiveMenu();
@@ -937,16 +943,15 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function maintainSolids(EightBitter, solids) {
-        var solid, i;
+    function maintainGeneric(EightBitter, things) {
+        var thing, i;
 
-        for (i = 0; i < solids.length; i += 1) {
-            solid = solids[i];
+        for (i = 0; i < things.length; i += 1) {
+            thing = things[i];
 
-            if (!solid.alive) {
-                EightBitter.arrayDeleteThing(solid, solids, i);
+            if (!thing.alive) {
+                EightBitter.arrayDeleteThing(thing, things, i);
                 i -= 1;
-                continue;
             }
         }
     }
@@ -1268,13 +1273,14 @@ var FullScreenPokemon = (function (GameStartr) {
         var blank = EightBitter.ObjectMaker.make("BlackSquare", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
-            "opacity": 1
+            "opacity": 1,
         });
 
         EightBitter.addThing(blank);
 
         EightBitter.fadeAttribute(blank, "opacity", -.2, 0, 2, function () {
             EightBitter.killNormal(blank);
+            console.log("Killing", blank.title);
             if (callback) {
                 callback.apply(this, arguments);
             }
@@ -1891,9 +1897,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (thing.EightBitter) {
             thing.EightBitter.TimeHandler.cancelAllCycles(thing);
+            thing.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
         }
-
-        thing.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
     }
 
 
@@ -3383,9 +3388,22 @@ var FullScreenPokemon = (function (GameStartr) {
                 "This is my grand-son. He's been your rival since you were a baby.",
                 "...Erm, what is his name again?"
             ],
-            EightBitter.ScenePlayer.bindRoutine("RivalNameOptions")
+            EightBitter.ScenePlayer.bindRoutine("RivalSlide")
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneIntroRivalSlide(EightBitter, settings) {
+        EightBitter.fadeHorizontal(
+            settings.rival,
+            EightBitter.unitsize,
+            EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize,
+            1,
+            EightBitter.ScenePlayer.bindRoutine("RivalNameOptions")
+        );
     }
 
     /**
@@ -5304,7 +5322,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "keyUpPause": keyUpPause,
         "mouseDownRight": mouseDownRight,
         // Upkeep maintenance
-        "maintainSolids": maintainSolids,
+        "maintainGeneric": maintainGeneric,
         "maintainCharacters": maintainCharacters,
         "maintainPlayer": maintainPlayer,
         "getHorizontalScrollAmount": getHorizontalScrollAmount,
@@ -5409,6 +5427,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneIntroPlayerNameComplete": cutsceneIntroPlayerNameComplete,
         "cutsceneIntroRivalAppear": cutsceneIntroRivalAppear,
         "cutsceneIntroRivalName": cutsceneIntroRivalName,
+        "cutsceneIntroRivalSlide": cutsceneIntroRivalSlide,
         "cutsceneIntroRivalNameOptions": cutsceneIntroRivalNameOptions,
         "cutsceneIntroRivalNameFromMenu": cutsceneIntroRivalNameFromMenu,
         "cutsceneIntroRivalNameFromKeyboard": cutsceneIntroRivalNameFromKeyboard,
