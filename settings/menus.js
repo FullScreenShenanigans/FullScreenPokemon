@@ -741,6 +741,101 @@ FullScreenPokemon.prototype.settings.menus = {
             }],
             "plain": true
         },
+        "BattlePlayerHealth": {
+            "size": {
+                "width": 38.5,
+                "height": 6.5
+            },
+            "position": {
+                "vertical": "bottom",
+                "horizontal": "right",
+                "offset": {
+                    "top": -1.5,
+                    "left": -5.5
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "BlackSquare",
+                "position": {
+                    "horizontal": "right"
+                },
+                "args": {
+                    "height": 5.75
+                },
+            }, {
+                "type": "thing",
+                "thing": "BlackSquare",
+                "args": {
+                    "width": 37.5
+                },
+                "position": {
+                    "vertical": "bottom",
+                    "offset": {
+                        "left": .5
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "HalfArrowHorizontal",
+                "position": {
+                    "vertical": "bottom",
+                },
+                "args": {
+                    "flipHoriz": true
+                }
+            }],
+            "container": "Battle",
+            "plain": true,
+            "textXOffset": 8.5,
+            "textYOffset": .5,
+            "textPaddingX": .5,
+            "textSpeed": 0
+        },
+        "BattleOpponentHealth": {
+            "size": {
+                "width": 38.5,
+                "height": 6.5
+            },
+            "position": {
+                "offset": {
+                    "top": 8,
+                    "left": 5.5
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "BlackSquare",
+                "args": {
+                    "height": 5.75
+                },
+            }, {
+                "type": "thing",
+                "thing": "BlackSquare",
+                "args": {
+                    "width": 34
+                },
+                "position": {
+                    "vertical": "bottom",
+                    "offset": {
+                        "left": .5
+                    }
+                }
+            }, {
+                "type": "thing",
+                "thing": "HalfArrowHorizontal",
+                "position": {
+                    "vertical": "bottom",
+                    "horizontal": "right"
+                }
+            }],
+            "container": "Battle",
+            "plain": true,
+            "textXOffset": 7,
+            "textYOffset": .5,
+            "textPaddingX": .5,
+            "textSpeed": 0
+        },
         "BattleDisplayInitial": {
             "size": {
                 "width": 72
@@ -777,7 +872,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "horizontal": "right",
                 "vertical": "bottom",
                 "offset": {
-                    "left": .5
+                    "left": 8.5
                 }
             },
             "childrenSchemas": [{

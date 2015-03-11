@@ -480,6 +480,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "Text": {
                 "BlackSquare": "",
                 "Exclamation": "",
+                "HalfArrowHorizontal": "",
                 "WhiteSquare": "",
                 "CharacterUpperCase": {
                     "CharA": {},
@@ -590,6 +591,7 @@ FullScreenPokemon.prototype.settings.objects = {
                     "CharInches": {},
                     "ChareFancy": {},
                     "CharBall": {},
+                    "CharBallEmpty": {},
                     "CharCircle": {},
                     "CharHP": {},
                     "CharLevel": {}
@@ -934,6 +936,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "height": 7,
             "offsetY": FullScreenPokemon.unitsize * -2
         },
+        "HalfArrowHorizontal": [4, 2],
         "WhiteSquare": {
             "width": 1,
             "height": 1,
@@ -974,6 +977,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "CharFeet": [2, 1.5],
         "CharInches": [3.5, 2],
         "CharBall": [3.5, 3.5],
+        "CharBallEmpty": [3.5, 3.5],
         "CharCircle": [2.5, 2.5],
         "CharHP": [5.5, 2],
         "CharLevel": [3, 2.5],

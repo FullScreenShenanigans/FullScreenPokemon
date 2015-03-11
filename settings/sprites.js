@@ -576,6 +576,7 @@ FullScreenPokemon.prototype.settings.sprites = {
         "Text": {
             "BlackSquare": "x24,",
             "Exclamation": "p[0,1,2]00x210,0002x110,202x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x112,22x15,22x15,22x15,22x15,202x110,2000x210,x09,22x012,2x06,",
+            "HalfArrowHorizontal": "p[0,2]11x06,11110000x16,00x18,",
             "WhiteSquare": "x14,",
             "Menu": {
                 "normal": ["multiple", "corners", {
@@ -712,6 +713,7 @@ FullScreenPokemon.prototype.settings.sprites = {
             "CharInches": "p[0,1,2]0022000022112221112200012000",
             "ChareFancy": "p[0,2]x010,11000011x08,111100010000100x16,001x08,x15,0",
             "CharBall": "p[0,2,3,4]0011100013331013233311x35,11x25,101222100011100",
+            "CharBallEmpty": "p[0,3]001110001000101x05,11x05,11x05,101000100011100",
             "CharCircle": "p[1,3]01110x115,01110",
             "CharHP": "p[0,2]110101111001101011010x15,011110011010110001",
             "CharLevel": "p[0,2]001100101100001100101100001111",

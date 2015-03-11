@@ -130,6 +130,13 @@ function BattleMovr(settings) {
         return actors[name];
     };
 
+    /**
+     * 
+     */
+    self.getBattleInfo = function () {
+        return battleInfo;
+    };
+
 
     /* Actor manipulations
     */
