@@ -190,12 +190,15 @@ function PixelRendr(settings) {
         return new PixelRendr(settings);
     }
     var self = this,
-        // Container to store the processed, ready-to-display sprites coming out of ProcessorDims
+
+        // Container to store the processed, ready-to-display sprites coming out
+        // of ProcessorDims
         cache,
 
-        // The base container for storing sprite information. With the addition of lazyloading, 
-        // library.sprites is initially populated with placeholder objects containing 
-        // spriteRaw (raw sprite data), path, and loaded (false)
+        // The base container for storing sprite information. With the addition
+        // of lazyloading, library.sprites is initially populated with 
+        // placeholder objects containing spriteRaw (raw sprite data), path, and
+        // loaded (false).
         library,
 
         // A StringFilr interface on top of the base library.
@@ -439,9 +442,9 @@ function PixelRendr(settings) {
                 processSpriteMultiple(sprite, key, attributes);
             }
         }
-            // Single (actual) sprites process for size (row) scaling, and flipping
+        // Single (actual) sprites process for size (row) scaling, and flipping
         else {
-            sprite = cache[key] = ProcessorBase.process(sprite.spriteRaw, sprite.path);
+            sprite = ProcessorBase.process(sprite.spriteRaw, sprite.path);
             sprite = cache[key] = ProcessorDims.process(sprite, key, attributes);
         }
 
@@ -523,7 +526,8 @@ function PixelRendr(settings) {
                         "path": path + ' ' + i
                     }
                     break;
-                    // If it's an array, it should have a command such as 'same' to be post-processed
+                // If it's an array, it should have a command such as 'same' to
+                // be post-processed
                 case Array:
                     //console.log(i, reference[i], path);
                     library.posts.push({
@@ -553,7 +557,9 @@ function PixelRendr(settings) {
             post, i;
         for (i = 0; i < posts.length; i += 1) {
             post = posts[i];
-            post.caller[post.name] = evaluatePost(post.caller, post.command, post.path);
+            post.caller[post.name] = evaluatePost(
+                post.caller, post.command, post.path
+            );
         }
     }
 
@@ -585,9 +591,9 @@ function PixelRendr(settings) {
                         return libraryParse(spriteRaw, path);
                 }
 
-                // Filter: takes a reference to the target, and applies a filter to it
-                // ["filter", ["container", "path", "to", "target"], filters.DoThisFilter]
-                // TODO @todo lazy load these too, once some are added in
+            // Filter: takes a reference to the target, and applies a filter to it
+            // ["filter", ["container", "path", "to", "target"], filters.DoThisFilter]
+            // TODO @todo lazy load these too, once some are added in
             case "filter":
                 // Find the sprite this should be filtering from
                 var spriteRaw = followPath(library.raws, command[1], 0),
@@ -599,7 +605,7 @@ function PixelRendr(settings) {
                 }
                 return evaluatePostFilter(spriteRaw, path, filter);
 
-                // Multiple: uses more than one image, either vertically or horizontally
+                // Multiple: uses more than one image, vertically or horizontally
                 // Not to be confused with having .repeat = true.
                 // ["multiple", "vertical", {
                 //    top: "...",       // (just once at the top)
@@ -629,7 +635,8 @@ function PixelRendr(settings) {
             });
         }
 
-        // If it's an Array, that's a post that hasn't yet been evaluated: evaluate it by the path
+        // If it's an Array, that's a post that hasn't yet been evaluated.
+        // Evaluate it by the path
         if (spriteRaw instanceof Array) {
             return evaluatePostFilter(followPath(library.raws, spriteRaw[1], 0), spriteRaw[1].join(' '), filter);
         }
@@ -724,9 +731,6 @@ function PixelRendr(settings) {
     /* Core pipeline functions
     */
 
-    // Given a compressed raw sprite data string, this 'unravels' it (uncompresses)
-    // This is the first function called on strings in libraryParse
-    // This could output the Uint8ClampedArray immediately if given the area - deliberately does not, for ease of storage
     /**
      * Given a compressed raw sprite data string, this 'unravels' it. This is 
      * the first Function called in the base processor. It could output the
@@ -753,7 +757,10 @@ function PixelRendr(settings) {
                     // Get the location of the ending comma
                     nixloc = colors.indexOf(",", ++loc);
                     // Get the color
-                    current = makeDigit(paletteref[colors.slice(loc, loc += digitsize)], digitsizeDefault);
+                    current = makeDigit(
+                        paletteref[colors.slice(loc, loc += digitsize)],
+                        digitsizeDefault
+                    );
                     // Get the rep times
                     rep = Number(colors.slice(loc, nixloc));
                     // Add that int to output, rep many times
@@ -763,7 +770,7 @@ function PixelRendr(settings) {
                     loc = nixloc + 1;
                     break;
 
-                    // A palette changer, in the form 'p[X,Y,Z...]' (or 'p' for default)
+                // A palette changer, in the form 'p[X,Y,Z,...]' (or 'p' for default)
                 case 'p':
                     // If the next character is a '[', customize.
                     if (colors[++loc] == '[') {
@@ -773,14 +780,14 @@ function PixelRendr(settings) {
                         loc = nixloc + 1;
                         digitsize = 1;
                     }
-                        // Otherwise go back to default
+                    // Otherwise go back to default
                     else {
                         paletteref = getPaletteReference(paletteDefault);
                         digitsize = digitsizeDefault;
                     }
                     break;
 
-                    // A typical number
+                // A typical number
                 default:
                     output += makeDigit(paletteref[colors.slice(loc, loc += digitsize)], digitsizeDefault);
                     break;
@@ -934,12 +941,14 @@ function PixelRendr(settings) {
         if (key.indexOf(flipHoriz) !== -1) {
             if (key.indexOf(flipVert) !== -1) {
                 return flipSpriteArrayBoth(sprite, attributes);
-            } else {
-                return flipSpriteArrayHoriz(sprite, attributes);
             }
-        } else if (key.indexOf(flipVert) !== -1) {
+            return flipSpriteArrayHoriz(sprite, attributes);
+        }
+
+        if (key.indexOf(flipVert) !== -1) {
             return flipSpriteArrayVert(sprite, attributes);
         }
+
         return sprite;
     }
 
@@ -1031,6 +1040,7 @@ function PixelRendr(settings) {
             newloc += 4;
             oldloc -= 4;
         }
+
         return newsprite;
     }
 
@@ -1053,6 +1063,7 @@ function PixelRendr(settings) {
         canvas.height = image.height;
 
         context.drawImage(image, 0, 0);
+
         return context.getImageData(0, 0, image.width, image.height).data;
     }
 

@@ -1280,7 +1280,6 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.fadeAttribute(blank, "opacity", -.2, 0, 2, function () {
             EightBitter.killNormal(blank);
-            console.log("Killing", blank.title);
             if (callback) {
                 callback.apply(this, arguments);
             }
