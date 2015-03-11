@@ -342,6 +342,8 @@ var FullScreenPokemon = (function (GameStartr) {
             "opacity": .01 // why won't 0 work?
         });
 
+        EightBitter.StatsHolder.clear();
+
         EightBitter.ModAttacher.fireEvent("onGameStartIntro", oak);
 
         // GET THIS STUFF OUTTA HERE

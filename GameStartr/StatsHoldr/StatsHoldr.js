@@ -232,10 +232,20 @@ function StatsHoldr(settings) {
     };
 
     /**
+     * Sets the value 
+     */
+    self.clear = function () {
+        for (var i in values) {
+            values[i].value = values[i].valueDefault;
+            values[i].update();
+        }
+    };
+
+    /**
      * Calls the clearLocalStorage member Function of every stored value,
      * effectively wiping all stored data from localStorage.
      */
-    self.clear = function () {
+    self.clearLocalStorage = function () {
         for (var i in values) {
             values[i].clearLocalStorage();
         }

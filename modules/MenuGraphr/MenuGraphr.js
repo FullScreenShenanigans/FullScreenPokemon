@@ -25,9 +25,9 @@ function MenuGraphr(settings) {
         replacements,
 
         replacerKey,
-            
+        
         replaceFromStatsHolder,
-            
+        
         replacementStatistics;
 
     /**

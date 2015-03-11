@@ -25,10 +25,7 @@ function StateHoldr(settings) {
         collectionKeyRaw,
 
         // The current Object with attributes saved within
-        collection,
-        
-        // A record of all names accessed, unprefixed
-        collectionsAccessed;
+        collection;
 
     /**
      * 
@@ -40,13 +37,6 @@ function StateHoldr(settings) {
         }
 
         prefix = settings.prefix || "StateHolder";
-
-        StatsHolder.addStatistic(prefix + "collectionsAccessed", {
-            "valueDefault": [],
-            "storeLocally": true
-        });
-
-        collectionsAccessed = StatsHolder.get(prefix + "collectionsAccessed");
     };
 
 
@@ -176,14 +166,6 @@ function StateHoldr(settings) {
         }
     };
 
-    /**
-     * 
-     */
-    self.clearChanges = function () {
-        StatsHolder.clearKeysManually(collectionsAccessed);
-    };
-
-
     /* Utilities
     */
 
@@ -196,9 +178,6 @@ function StateHoldr(settings) {
                 "valueDefault": {},
                 "storeLocally": true
             });
-
-            collectionsAccessed.push(collectionKey);
-            StatsHolder.set(prefix + "collectionsAccessed", collectionsAccessed);
         }
     }
     
