@@ -2430,26 +2430,31 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function openPokemonMenu(backMenu) {
+    function openPokemonMenu(backMenu, container) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.StatsHolder.get("PokemonInParty");
+            listings = EightBitter.StatsHolder.get("PokemonInParty"),
+            references = EightBitter.MathDecider.getConstant("pokemon");
 
+        console.log("Opening", arguments);
         EightBitter.MenuGrapher.createMenu("Pokemon", {
-            "backMenu": backMenu
+            "container": container,
+            "backMenu": backMenu,
         });
         EightBitter.MenuGrapher.setActiveMenu("Pokemon");
         EightBitter.MenuGrapher.addMenuList("Pokemon", {
             "options": listings.map(function (listing, i) {
-                var text = listing.title.split(""),
-                    hpFill = 31.5 * listing.hp / listing.hpMax;
+                var sprite = references[listing.title].sprite + "Pokemon",
+                    barWidth = 25,
+                    health = (barWidth - .5) * listing.HP / listing.HPMax;
 
                 return {
-                    "text": text,
+                    "text": listing.title.split(""),
                     "things": [{
-                        "thing": listing.sprite,
+                        "thing": sprite,
                         "position": {
                             "offset": {
-                                "left": 8
+                                "left": 7.5,
+                                "top": .5
                             }
                         }
                     }, {
@@ -2471,7 +2476,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     }, {
                         "thing": "HPBar",
                         "args": {
-                            "width": 32
+                            "width": barWidth
                         },
                         "position": {
                             "offset": {
@@ -2482,9 +2487,9 @@ var FullScreenPokemon = (function (GameStartr) {
                     }, {
                         "thing": "HPBarFill",
                         "args": {
-                            "width": Math.max(hpFill, 1),
+                            "width": Math.max(health, 1),
                             "height": 1,
-                            "hidden": hpFill === 0
+                            "hidden": health === 0
                         },
                         "position": {
                             "offset": {
@@ -2492,7 +2497,16 @@ var FullScreenPokemon = (function (GameStartr) {
                                 "top": 6
                             }
                         }
-                    }]
+                    }],
+                    "textsFloating": [{
+                        "text": String(listing.level),
+                        "x": 44.25,
+                        "y": 0
+                    }, {
+                        "text": listing.HP + "/ " + listing.HPMax,
+                        "x": 43.75,
+                        "y": 4
+                    }],
                 };
             })
         });
@@ -2786,7 +2800,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.createMenu("BattlePlayerHealth");
         EightBitter.addBattleDisplayPokeballs(
-            EightBitter, 
+            EightBitter,
             EightBitter.MenuGrapher.getMenu("BattlePlayerHealth"),
             battleInfo.player
         );
@@ -3943,7 +3957,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 ]
             );
             EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-            
+
             return;
         }
 

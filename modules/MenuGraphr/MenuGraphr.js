@@ -354,7 +354,7 @@ function MenuGraphr(settings) {
      */
     self.addMenuWord = function (name, words, i, x, y, onCompletion) {
         var menu = menus[name],
-            word = filterWord(words[i]),
+            word = self.filterWord(words[i]),
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth, textHeight, textPaddingX, textPaddingY, textSpeed,
             title, character, j;
@@ -392,8 +392,8 @@ function MenuGraphr(settings) {
             switch (word.command) {
                 case "padLeft":
                     word = EightBitter.stringOf(
-                        " ", word.length - filterWord(word.word).length
-                    ) + filterWord(word.word);
+                        " ", word.length - self.filterWord(word.word).length
+                    ) + self.filterWord(word.word);
                     break;
             }
         }
@@ -454,7 +454,7 @@ function MenuGraphr(settings) {
                 word === "\n"
                 || (
                     x + (
-                        (filterWord(words[i + 1]).length + 1) * textWidth
+                        (self.filterWord(words[i + 1]).length + 1) * textWidth
                         + menu.textXOffset * EightBitter.unitsize
                     )
                     > EightBitter.getMidX(menu) + menu.textAreaWidth / 2
@@ -607,8 +607,22 @@ function MenuGraphr(settings) {
                     }
                 }
             }
+
+            if (option.textsFloating) {
+                for (j = 0; j < option.textsFloating.length; j += 1) {
+                    schema = option.textsFloating[j];
+                    
+                    self.addMenuWord(
+                        name,
+                        [schema.text],
+                        0,
+                        x + schema.x * EightBitter.unitsize,
+                        y + schema.y * EightBitter.unitsize
+                    );
+                }
+            }
             
-            option.schema = schema = filterWord(option.text);
+            option.schema = schema = self.filterWord(option.text);
 
             if (schema !== "\n") {
                 for (j = 0; j < schema.length; j += 1) {
@@ -650,7 +664,7 @@ function MenuGraphr(settings) {
 
         if (settings.bottom) {
             option = settings.bottom;
-            option.schema = schema = filterWord(option.text);
+            option.schema = schema = self.filterWord(option.text);
             
             x = menu.left + (menu.textXOffset + option.position.left) * EightBitter.unitsize;
             y = menu.top + (menu.textYOffset + option.position.top) * EightBitter.unitsize;
@@ -945,7 +959,7 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    function filterWord(word) {
+    self.filterWord = function (word) {
         var start = 0,
             end, inside;
 
@@ -963,19 +977,19 @@ function MenuGraphr(settings) {
             inside = word.substring(start + "%%%%%%%".length, end);
             word =
                 word.substring(0, start)
-                + getReplacement(inside)
+                + self.getReplacement(inside)
                 + word.substring(end + "%%%%%%%".length);
 
             start = end;
         }
 
         return word;
-    }
+    };
 
     /**
      * 
      */
-    function getReplacement(key) {
+    self.getReplacement = function (key) {
         var value = replacements[key];
 
         if (typeof value === "undefined") {
@@ -993,7 +1007,18 @@ function MenuGraphr(settings) {
         }
 
         return value;
-    }
+    };
+
+    /**
+     * 
+     */
+    self.getAliasOf = function (key, forced) {
+        if (forced) {
+            return aliases[key];
+        } else {
+            return typeof aliases[key] === "undefined" ? key : aliases[key];
+        }
+    };
 
 
     self.reset(settings || {});

@@ -290,7 +290,7 @@ function BattleMovr(settings) {
                 "horizontal": "right",
                 "vertical": "bottom",
                 "offset": {
-                    "top": 4
+                    "left": 0
                 }
             }
         });
@@ -309,7 +309,7 @@ function BattleMovr(settings) {
      * 
      */
     self.openActorsMenu = function () {
-        EightBitter.openPokemonMenu("BattleOptions");
+        EightBitter.openPokemonMenu("BattleOptions", "Battle");
     };
 
     /* Battle shenanigans

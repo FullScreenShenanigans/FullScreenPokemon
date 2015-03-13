@@ -54,7 +54,10 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "horizontal": "center",
-                "vertical": "bottom",
+                "vertical": "center",
+                "offset": {
+                    "top": 36
+                }
             },
             "ignoreB": true
         },
@@ -394,7 +397,7 @@ FullScreenPokemon.prototype.settings.menus = {
         "Pokemon": {
             "size": {
                 "width": 88,
-                "height": 80
+                "height": 75
             },
             "position": {
                 "horizontal": "center",
@@ -407,11 +410,11 @@ FullScreenPokemon.prototype.settings.menus = {
                 "name": "PokemonDialog"
             }],
             "onActivate": console.log.bind("HA"),
-            "arrowXOffset": 4,
-            "arrowYOffset": 5,
+            "arrowXOffset": 8,
+            "arrowYOffset": 3,
             "textSpeed": 0,
             "textXOffset": 15.75,
-            "textYOffset": 3
+            "textYOffset": 4
         },
         "PokemonDialog": {
             "size": {
@@ -429,7 +432,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "position": {
                     "offset": {
                         "left": 4,
-                        "top": 6
+                        "top": 7.5
                     }
                 }
             }],
@@ -730,10 +733,7 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "horizontal": "center",
-                "vertical": "bottom",
-                "offset": {
-                    "top": -24
-                }
+                "vertical": "center",
             },
             "childrenSchemas": [{
                 "type": "menu",
@@ -853,12 +853,10 @@ FullScreenPokemon.prototype.settings.menus = {
                 "height": 24
             },
             "position": {
-                "horizontal": "center",
-                "vertical": "bottom",
-                "offset": {
-                    "left": 16
-                }
+                "horizontal": "right",
+                "vertical": "bottom"
             },
+            "container": "GeneralText",
             "ignoreB": true,
             "textXOffset": 8,
             "textColumnWidth": 24

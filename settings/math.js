@@ -19,6 +19,8 @@ FullScreenPokemon.prototype.settings.math = {
                 );
             }
 
+            pokemon.HPMax = pokemon.HP;
+
             return pokemon;
         },
         // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
@@ -1681,6 +1683,7 @@ FullScreenPokemon.prototype.settings.math = {
             },
             "Squirtle": {
                 "label": "TINYTURTLE",
+                "sprite": "Water",
                 "info": [
                     "After birth, its back swells and hardens into a",
                     "shell. Powerfully sprays foam out of its mouth."
