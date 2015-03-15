@@ -1187,17 +1187,15 @@ var GameStartr = (function (EightBittr) {
     */
 
     /**
-     * Generates a key for a Thing based off the current area and the Thing's
-     * basic attributes. This key should be used for PixelRender.get calls, to
-     * cache the Thing's sprite.
+     * Generates a key for a Thing based off the Thing's basic attributes. This
+     * key should be used for PixelRender.get calls, to cache the Thing's 
+     * sprite.
      * 
      * @param {Thing} thing
      * @return {String} A key that to identify the Thing's sprite.
      */
     function generateObjectKey(thing) {
-        return thing.EightBitter.MapsHandler.getArea().setting
-                + " " + thing.groupType + " "
-                + thing.title + " " + thing.className;
+        return thing.groupType + " " + thing.title + " " + thing.className;
     }
 
     /**
