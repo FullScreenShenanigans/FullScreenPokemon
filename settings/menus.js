@@ -45,7 +45,8 @@ FullScreenPokemon.prototype.settings.menus = {
                 "horizontal": "center",
                 "vertical": "center",
             },
-            "textXOffset": 8
+            "textXOffset": 8,
+            "ignoreB" : true
         },
         "GeneralText": {
             "size": {
