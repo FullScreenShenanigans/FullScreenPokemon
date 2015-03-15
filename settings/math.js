@@ -380,9 +380,11 @@ FullScreenPokemon.prototype.settings.math = {
                 base = constants.moves[move].Power,
                 modifier = this.compute("damageModifier", move, critical, attacker, defender);
 
-            return Math.max(
-                ((((2 * level * 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
-                1
+            return Math.round(
+                Math.max(
+                    ((((2 * level * 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
+                    1
+                )
             );
         },
         // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula

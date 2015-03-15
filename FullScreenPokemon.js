@@ -3052,18 +3052,29 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneBattleMovePlayer(EightBitter, settings) {
         var player = settings.battleInfo.player,
+            playerActor = player.selectedActor,
             opponent = settings.battleInfo.opponent,
+            opponentActor = opponent.selectedActor,
             choice = settings.routineArguments.choicePlayer,
             damage = EightBitter.MathDecider.compute(
-                "damage", choice, player.selectedActor, opponent.selectedActor
+                "damage", choice, playerActor, opponentActor
             );
 
         console.log("Doing damage", damage, "/", opponent.selectedActor.HP);
+        if (damage !== 0) {
+            EightBitter.animateBattleDisplayPokemonHealthBar(
+                EightBitter,
+                "Opponent",
+                opponentActor.HP,
+                opponentActor.HP - damage,
+                opponentActor.HPMax
+            );
+        }
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
-            [player.selectedActor.title.toUpperCase() + " used " + choice + "!"],
+            [playerActor.title.toUpperCase() + " used " + choice + "!"],
             EightBitter.ScenePlayer.bindRoutine(
                 "MovePlayerAnimate", settings.routineArguments
             )
@@ -3216,6 +3227,34 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.setWidth(bar, health);
         bar.hidden = health === 0;
+    }
+
+    /**
+     * 
+     */
+    function animateBattleDisplayPokemonHealthBar(EightBitter, actor, hpStart, hpEnd, hpMax) {
+        var direction = hpStart < hpEnd ? -1 : 1,
+            hpNew = Math.round(hpStart + direction);
+
+        console.log("hp args", hpStart, hpEnd, hpMax, hpNew);
+
+        EightBitter.setBattleDisplayPokemonHealthBar(
+            EightBitter, actor, hpNew, hpMax
+        );
+
+        if (hpNew === hpEnd) {
+            return;
+        }
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateBattleDisplayPokemonHealthBar,
+            1,
+            EightBitter,
+            actor,
+            hpNew,
+            hpEnd,
+            hpMax
+        );
     }
 
     /**
@@ -5553,6 +5592,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "addBattleDisplayPokeballs": addBattleDisplayPokeballs,
         "addBattleDisplayPokemonHealth": addBattleDisplayPokemonHealth,
         "setBattleDisplayPokemonHealthBar": setBattleDisplayPokemonHealthBar,
+        "animateBattleDisplayPokemonHealthBar": animateBattleDisplayPokemonHealthBar,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
