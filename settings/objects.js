@@ -116,8 +116,6 @@ FullScreenPokemon.prototype.settings.objects = {
                 "DoormatDotted": {},
                 "Flower": {},
                 "FlowerVase": {},
-                "HPBar": {},
-                "HPBarFill": {},
                 "Painting": {},
                 "SmokeSmall": {},
                 "SmokeMedium": {},
@@ -478,10 +476,15 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Water": {}
             },
             "Text": {
-                "BlackSquare": "",
-                "Exclamation": "",
-                "HalfArrowHorizontal": "",
-                "WhiteSquare": "",
+                "Exclamation": {},
+                "HalfArrowHorizontal": {},
+                "HPBar": {},
+                "Square": {
+                    "BlackSquare": {},
+                    "DarkGraySquare": {},
+                    "LightGraySquare": {},
+                    "WhiteSquare": "",
+                },
                 "CharacterUpperCase": {
                     "CharA": {},
                     "CharB": {},
@@ -876,8 +879,11 @@ FullScreenPokemon.prototype.settings.objects = {
             ]
         },
         "FlowerVase": [6, 6],
-        "HPBar": [.5, 2],
-        "HPBarFill": [.5, .5],
+        "HPBar": {
+            "width": .5,
+            "height": 2,
+            "repeat": true
+        },
         "SmokeSmall": [5.5, 5.5],
         "SmokeMedium": [7.5, 7.5],
         "SmokeLarge": [7.5, 7.5],
@@ -926,18 +932,13 @@ FullScreenPokemon.prototype.settings.objects = {
             "noshiftx": true,
             "noshifty": true,
         },
-        "BlackSquare": {
-            "width": 1,
-            "height": 1,
-            "repeat": true
-        },
         "Exclamation": {
             "width": 7,
             "height": 7,
             "offsetY": FullScreenPokemon.unitsize * -2
         },
         "HalfArrowHorizontal": [4, 2],
-        "WhiteSquare": {
+        "Square": {
             "width": 1,
             "height": 1,
             "repeat": true

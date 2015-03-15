@@ -431,7 +431,10 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             return total;
-        }
+        },
+        "widthHealthBar": function (NumberMaker, constants, equations, widthFullBar, hp, hpMax) {
+            return (widthFullBar - 1) * hp / hpMax;
+        },
     },
     "constants": {
         "statuses": {

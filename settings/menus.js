@@ -739,7 +739,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "type": "menu",
                 "name": "GeneralText"
             }],
-            "plain": true
+            "hidden": true
         },
         "BattlePlayerHealth": {
             "size": {
@@ -786,7 +786,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "container": "Battle",
-            "plain": true,
+            "hidden": true,
             "textXOffset": 8.5,
             "textYOffset": .5,
             "textPaddingX": .5,
@@ -800,7 +800,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             },
             "container": "BattlePlayerHealth",
-            "plain": true,
+            "hidden": true,
             "textXOffset": 0,
             "textYOffset": 0,
             "textSpeed": 0
@@ -823,7 +823,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "container": "BattlePlayerHealth",
-            "plain": true,
+            "hidden": true,
             "textXOffset": 4,
             "textYOffset": 0,
             "textSpeed": 0
@@ -852,9 +852,22 @@ FullScreenPokemon.prototype.settings.menus = {
                         "left": 7,
                     }
                 }
+            }, {
+                "type": "thing",
+                "thing": "LightGraySquare",
+                "args": {
+                    "width": 24,
+                    "id": "HPBarFillPlayer"
+                },
+                "position": {
+                    "offset": {
+                        "left": 7.5,
+                        "top": .5
+                    }
+                }
             }],
             "container": "BattlePlayerHealth",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0
         },
         "BattlePlayerHealthNumbers": {
@@ -864,12 +877,12 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "offset": {
-                    "top" -1,
+                    "top": -1,
                     "left": 4
                 },
             },
             "container": "BattlePlayerHealth",
-            "plain": true,
+            "hidden": true,
             "textStartingX": "right",
             "textWidthMultiplier": -1,
             "textXOffset": 0,
@@ -914,7 +927,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "container": "Battle",
-            "plain": true,
+            "hidden": true,
             "textXOffset": 7,
             "textYOffset": .5,
             "textPaddingX": .5,
@@ -928,7 +941,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             },
             "container": "BattleOpponentHealth",
-            "plain": true,
+            "hidden": true,
             "textXOffset": 0,
             "textYOffset": 0,
             "textSpeed": 0
@@ -951,7 +964,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 }
             }],
             "container": "BattleOpponentHealth",
-            "plain": true,
+            "hidden": true,
             "textXOffset": 4,
             "textYOffset": 0,
             "textSpeed": 0
@@ -977,9 +990,22 @@ FullScreenPokemon.prototype.settings.menus = {
                         "left": 7,
                     }
                 }
+            }, {
+                "type": "thing",
+                "thing": "LightGraySquare",
+                "args": {
+                    "width": 24,
+                    "id": "HPBarFillOpponent"
+                },
+                "position": {
+                    "offset": {
+                        "left": 7.5,
+                        "top": .5
+                    }
+                }
             }],
             "container": "BattleOpponentHealth",
-            "plain": true,
+            "hidden": true,
             "height": 4,
             "textSpeed": 0
         },
