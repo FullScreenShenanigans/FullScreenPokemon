@@ -353,10 +353,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(oak);
         EightBitter.setMidX(oak, EightBitter.MapScreener.middleX);
-        EightBitter.setBottom(
-            oak, EightBitter.MapScreener.height - 32 * EightBitter.unitsize
-        );
-
+        EightBitter.setMidY(oak, EightBitter.MapScreener.middleY);
+        
         EightBitter.TimeHandler.addEvent(
             EightBitter.fadeAttribute,
             70,
@@ -3277,10 +3275,7 @@ var FullScreenPokemon = (function (GameStartr) {
             0
         );
 
-        EightBitter.setBottom(
-            pokemon,
-            EightBitter.MapScreener.height - 32 * EightBitter.unitsize
-        );
+        EightBitter.setMidY(pokemon, EightBitter.MapScreener.middleY);
 
         EightBitter.fadeAttribute(
             pokemon,
@@ -3337,10 +3332,7 @@ var FullScreenPokemon = (function (GameStartr) {
             0
         );
 
-        EightBitter.setBottom(
-            player,
-            EightBitter.MapScreener.height - 32 * EightBitter.unitsize
-        );
+        EightBitter.setMidY(player, EightBitter.MapScreener.middleY);
 
         EightBitter.fadeAttribute(
             player,
@@ -3395,6 +3387,10 @@ var FullScreenPokemon = (function (GameStartr) {
             fromKeyboard = EightBitter.ScenePlayer.bindRoutine("PlayerNameFromKeyboard");
 
         EightBitter.MenuGrapher.createMenu("NameOptions");
+
+        var nameOptions = EightBitter.MenuGrapher.getMenu("NameOptions");
+        EightBitter.setMidY(nameOptions, EightBitter.MapScreener.middleY);
+
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
             "options": [{
                 "text": "NEW NAME",
@@ -3503,11 +3499,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(rival, 0, 0);
         EightBitter.setMidX(rival, EightBitter.MapScreener.middleX);
-        EightBitter.setBottom(
-            rival,
-            EightBitter.MapScreener.height - 32 * EightBitter.unitsize
-        );
-
+        EightBitter.setMidY(rival, EightBitter.MapScreener.middleY);
         EightBitter.fadeAttribute(
             rival,
             "opacity",
@@ -3554,7 +3546,12 @@ var FullScreenPokemon = (function (GameStartr) {
         var fromMenu = EightBitter.ScenePlayer.bindRoutine("RivalNameFromMenu"),
             fromKeyboard = EightBitter.ScenePlayer.bindRoutine("RivalNameFromKeyboard");
 
+
         EightBitter.MenuGrapher.createMenu("NameOptions");
+
+        var nameOptions = EightBitter.MenuGrapher.getMenu("NameOptions");
+        EightBitter.setMidY(nameOptions, EightBitter.MapScreener.middleY);
+
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
             "options": [{
                 "text": "NEW NAME",
@@ -3663,10 +3660,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(portrait, 0, 0);
         EightBitter.setMidX(portrait, EightBitter.MapScreener.middleX);
-        EightBitter.setBottom(
-            portrait,
-            EightBitter.MapScreener.height - 32 * EightBitter.unitsize
-        );
+        EightBitter.setMidY(portrait, EightBitter.MapScreener.middleY);
 
         EightBitter.fadeAttribute(
             portrait,
