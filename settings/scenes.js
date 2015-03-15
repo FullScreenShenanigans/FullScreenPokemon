@@ -16,6 +16,8 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "MovePlayerAnimate": FullScreenPokemon.prototype.cutsceneBattleMovePlayerAnimate,
                 "MoveOpponent": FullScreenPokemon.prototype.cutsceneBattleMoveOpponent,
                 "MoveOpponentAnimate": FullScreenPokemon.prototype.cutsceneBattleMoveOpponentAnimate,
+                "BattleExitFail": FullScreenPokemon.prototype.cutsceneBattleExitFail,
+                "BattleExitFailReturn": FullScreenPokemon.prototype.cutsceneBattleExitFailReturn
             }
         },
         "Intro": {

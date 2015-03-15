@@ -349,6 +349,11 @@ function BattleMovr(settings) {
      * 
      */
     self.startBattleExit = function () {
+        if (battleInfo.opponent.category === "Trainer") {
+            EightBitter.ScenePlayer.playRoutine("BattleExitFail");
+            return;
+        }
+
         EightBitter.MenuGrapher.deleteMenu("BattleOptions");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",

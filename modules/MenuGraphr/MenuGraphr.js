@@ -333,8 +333,18 @@ function MenuGraphr(settings) {
      */
     self.addMenuText = function (name, words, onCompletion) {
         var menu = menus[name],
-            x = EightBitter.getMidX(menu) - menu.textAreaWidth / 2,
+            x = EightBitter.getMidX(menu), // - menu.textAreaWidth / 2,
             y = menu.top + menu.textYOffset * EightBitter.unitsize;
+
+        switch (menu.textStartingX) {
+            case "right":
+                x += menu.textAreaWidth / 2;
+                break;
+            case "center":
+                break;
+            default:
+                x -= menu.textAreaWidth / 2;
+        }
 
         if (words.constructor === String) {
             words = words.split(/ /);
@@ -357,6 +367,7 @@ function MenuGraphr(settings) {
             word = self.filterWord(words[i]),
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth, textHeight, textPaddingX, textPaddingY, textSpeed,
+            textWidthMultiplier,
             title, character, j;
 
         if (word.constructor === Object && word.command) {
@@ -387,6 +398,7 @@ function MenuGraphr(settings) {
         textHeight = (menu.textHeight || textProperties.height) * EightBitter.unitsize,
         textPaddingX = (menu.textPaddingX || textProperties.paddingX) * EightBitter.unitsize;
         textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize;
+        textWidthMultiplier = menu.textWidthMultiplier || 1;
         
         if (word.constructor === Object && word.command) {
             switch (word.command) {
@@ -420,17 +432,12 @@ function MenuGraphr(settings) {
                     } else {
                         EightBitter.addThing(character, x, y);
                     }
-
                     
-                    if (menu.textWidthMultiplier) {
-                        x += menu.textWidthMultiplier * (
-                            character.width * EightBitter.unitsize + textPaddingX   
-                        );
-                    } else {
-                        x += character.width * EightBitter.unitsize + textPaddingX;
-                    }
+                    x += textWidthMultiplier * (
+                        character.width * EightBitter.unitsize + textPaddingX   
+                    );
                 } else {
-                    x += textWidth;
+                    x += textWidth * textWidthMultiplier;
                 }
             }
         }
@@ -454,7 +461,8 @@ function MenuGraphr(settings) {
                 word === "\n"
                 || (
                     x + (
-                        (self.filterWord(words[i + 1]).length + 1) * textWidth
+                        (self.filterWord(words[i + 1]).length + 1)
+                        * textWidthMultiplier * textWidth
                         + menu.textXOffset * EightBitter.unitsize
                     )
                     > EightBitter.getMidX(menu) + menu.textAreaWidth / 2
@@ -463,7 +471,7 @@ function MenuGraphr(settings) {
                 x = menu.textX;
                 y += textPaddingY;
             } else {
-                x += textWidth;
+                x += textWidth * textWidthMultiplier;
             }
         }
 
@@ -926,8 +934,8 @@ function MenuGraphr(settings) {
 
         if (activeMenu.startMenu) {
             self.setActiveMenu(activeMenu.startMenu);
-        //} else if (activeMenu.callback) {
-        //    activeMenu.callback(activeMenu.name);
+            //} else if (activeMenu.callback) {
+            //    activeMenu.callback(activeMenu.name);
         }
     };
 

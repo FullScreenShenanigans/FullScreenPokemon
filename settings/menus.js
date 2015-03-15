@@ -792,6 +792,90 @@ FullScreenPokemon.prototype.settings.menus = {
             "textPaddingX": .5,
             "textSpeed": 0
         },
+        "BattlePlayerHealthTitle": {
+            "position": {
+                "offset": {
+                    "top": -12.5,
+                    "left": 4
+                }
+            },
+            "container": "BattlePlayerHealth",
+            "plain": true,
+            "textXOffset": 0,
+            "textYOffset": 0,
+            "textSpeed": 0
+        },
+        "BattlePlayerHealthLevel": {
+            "position": {
+                "offset": {
+                    "top": -8.5,
+                    "left": 20
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "CharLevel",
+                "position": {
+                    "offset": {
+                        "top": 1.5,
+                        "left": .5
+                    }
+                }
+            }],
+            "container": "BattlePlayerHealth",
+            "plain": true,
+            "textXOffset": 4,
+            "textYOffset": 0,
+            "textSpeed": 0
+        },
+        "BattlePlayerHealthAmount": {
+            "size": {
+                "height": 4,
+            },
+            "position": {
+                "offset": {
+                    "left": 4.5,
+                    "top": -3
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "CharHP"
+            }, {
+                "type": "thing",
+                "thing": "HPBar",
+                "args": {
+                    "width": 25
+                },
+                "position": {
+                    "offset": {
+                        "left": 7,
+                    }
+                }
+            }],
+            "container": "BattlePlayerHealth",
+            "plain": true,
+            "textSpeed": 0
+        },
+        "BattlePlayerHealthNumbers": {
+            "size": {
+                "width": 28,
+                "height": 10
+            },
+            "position": {
+                "offset": {
+                    "top" -1,
+                    "left": 4
+                },
+            },
+            "container": "BattlePlayerHealth",
+            "plain": true,
+            "textStartingX": "right",
+            "textWidthMultiplier": -1,
+            "textXOffset": 0,
+            "textYOffset": 0,
+            "textSpeed": 0
+        },
         "BattleOpponentHealth": {
             "size": {
                 "width": 38.5,
@@ -834,6 +918,69 @@ FullScreenPokemon.prototype.settings.menus = {
             "textXOffset": 7,
             "textYOffset": .5,
             "textPaddingX": .5,
+            "textSpeed": 0
+        },
+        "BattleOpponentHealthTitle": {
+            "position": {
+                "offset": {
+                    "top": -8.5,
+                    "left": -1.5
+                }
+            },
+            "container": "BattleOpponentHealth",
+            "plain": true,
+            "textXOffset": 0,
+            "textYOffset": 0,
+            "textSpeed": 0
+        },
+        "BattleOpponentHealthLevel": {
+            "position": {
+                "offset": {
+                    "top": -4.5,
+                    "left": 10.5
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "CharLevel",
+                "position": {
+                    "offset": {
+                        "top": 1.5,
+                        "left": .5
+                    }
+                }
+            }],
+            "container": "BattleOpponentHealth",
+            "plain": true,
+            "textXOffset": 4,
+            "textYOffset": 0,
+            "textSpeed": 0
+        },
+        "BattleOpponentHealthAmount": {
+            "position": {
+                "offset": {
+                    "left": 3,
+                    "top": 1
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "CharHP"
+            }, {
+                "type": "thing",
+                "thing": "HPBar",
+                "args": {
+                    "width": 25
+                },
+                "position": {
+                    "offset": {
+                        "left": 7,
+                    }
+                }
+            }],
+            "container": "BattleOpponentHealth",
+            "plain": true,
+            "height": 4,
             "textSpeed": 0
         },
         "BattleDisplayInitial": {
