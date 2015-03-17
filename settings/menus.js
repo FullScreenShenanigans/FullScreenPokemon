@@ -1019,7 +1019,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "vertical": "stretch"
             },
             "container": "Battle",
-            "plain": true
+            "hidden": true
         },
         "BattleOptions": {
             "size": {

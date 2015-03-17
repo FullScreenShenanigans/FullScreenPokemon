@@ -736,7 +736,7 @@ var EightBittr = (function () {
         array.splice(array.indexOf(thing), 1);
         array.unshift(thing);
     }
-    
+
     /**
      * Sets a Thing's position within an Array to the front by splicing and then
      * pushing it.
@@ -747,6 +747,19 @@ var EightBittr = (function () {
     function arrayToEnd(thing, array) {
         array.splice(array.indexOf(thing), 1);
         array.push(thing);
+    }
+
+    /**
+     * Sets a Thing's position within an Array to a specified index by splicing 
+     * and then inserting it.
+     * 
+     * @param {Thing} thing
+     * @param {Array} array
+     * @param {Number} index
+     */
+    function arrayToIndex(thing, array, index) {
+        array.splice(array.indexOf(thing), 1);
+        array.splice(index, 0, thing);
     }
     
     
@@ -788,7 +801,8 @@ var EightBittr = (function () {
         "createElement": createElement,
         "arraySwitch": arraySwitch,
         "arrayToBeginning": arrayToBeginning,
-        "arrayToEnd": arrayToEnd
+        "arrayToEnd": arrayToEnd,
+        "arrayToIndex": arrayToIndex
     });
     
     EightBittr.ensureCorrectCaller = ensureCorrectCaller;

@@ -17,9 +17,8 @@ FullScreenPokemon.prototype.settings.math = {
                 pokemon[statisticNames[i]] = this.compute(
                     "pokemonStatistic", pokemon, statisticNames[i]
                 );
+                pokemon[statisticNames[i] + "Normal"] = pokemon[statisticNames[i]];
             }
-
-            pokemon.HPMax = pokemon.HP;
 
             return pokemon;
         },
@@ -142,7 +141,7 @@ FullScreenPokemon.prototype.settings.math = {
             // 6. Calculate f.
             f = Math.max(
                 Math.min(
-                    (pokemon.hpMax * 255 * 4) | 0 / (pokemon.hpCurrent * ball.rate) | 0,
+                    (pokemon.hpNormal * 255 * 4) | 0 / (pokemon.hpCurrent * ball.rate) | 0,
                     255
                 ),
                 1
@@ -178,7 +177,7 @@ FullScreenPokemon.prototype.settings.math = {
             // 3. If not, calculate x = d * f / 255 + s, where s is 10 if the Pokemon is asleep or frozen or 5 if it is paralyzed, poisoned, or burned.
             f = Math.max(
                 Math.min(
-                    (pokemon.hpMax * 255 * 4) | 0 / (pokemon.hpCurrent * ball.rate) | 0,
+                    (pokemon.hpNormal * 255 * 4) | 0 / (pokemon.hpCurrent * ball.rate) | 0,
                     255
                 ),
                 1
@@ -434,8 +433,8 @@ FullScreenPokemon.prototype.settings.math = {
 
             return total;
         },
-        "widthHealthBar": function (NumberMaker, constants, equations, widthFullBar, hp, hpMax) {
-            return (widthFullBar - 1) * hp / hpMax;
+        "widthHealthBar": function (NumberMaker, constants, equations, widthFullBar, hp, hpNormal) {
+            return (widthFullBar - 1) * hp / hpNormal;
         },
     },
     "constants": {

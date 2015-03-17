@@ -53,7 +53,7 @@ function BattleMovr(settings) {
 
         EightBitter,
 
-        actors,
+        things,
 
         backgroundType,
 
@@ -102,7 +102,7 @@ function BattleMovr(settings) {
         backgroundType = settings.backgroundType;
         positions = settings.positions;
 
-        actors = {};
+        things = {};
     };
 
 
@@ -119,15 +119,15 @@ function BattleMovr(settings) {
     /**
      * 
      */
-    self.getActors = function () {
-        return actors;
+    self.getThings = function () {
+        return things;
     };
 
     /**
      * 
      */
-    self.getActor = function (name) {
-        return actors[name];
+    self.getThing = function (name) {
+        return things[name];
     };
 
     /**
@@ -136,6 +136,21 @@ function BattleMovr(settings) {
     self.getBattleInfo = function () {
         return battleInfo;
     };
+
+    /**
+     * 
+     */
+    self.getBackgroundThing = function () {
+        return backgroundType;
+    };
+
+    /**
+     * 
+     */
+    self.getBackgroundThing = function () {
+        return backgroundThing;
+    };
+
 
 
     /* Actor manipulations
@@ -159,12 +174,12 @@ function BattleMovr(settings) {
         });
         EightBitter.MenuGrapher.createMenu("BattleDisplayInitial");
 
-        actors.menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial");
-        self.setActor("opponent", battleInfo.opponent.sprite);
-        self.setActor("player", battleInfo.player.sprite);
+        things.menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial");
+        self.setThing("opponent", battleInfo.opponent.sprite);
+        self.setThing("player", battleInfo.player.sprite);
 
         EightBitter.ScenePlayer.startCutscene("Battle", {
-            "actors": actors,
+            "things": things,
             "battleInfo": battleInfo    
         });
     };
@@ -175,8 +190,8 @@ function BattleMovr(settings) {
     self.closeBattle = function () {
         var i;
 
-        for (i in actors) {
-            EightBitter.killNormal(actors[i]);
+        for (i in things) {
+            EightBitter.killNormal(things[i]);
         }
 
         self.deleteBackground();
@@ -215,16 +230,16 @@ function BattleMovr(settings) {
     /**
      * 
      */
-    self.setActor = function (name, type, settings) {
+    self.setThing = function (name, type, settings) {
         var position = positions[name] || {},
             battleMenu = EightBitter.MenuGrapher.getMenu(battleMenuName),
-            thing = actors[name];
+            thing = things[name];
 
         if (thing) {
             EightBitter.killNormal(thing);
         }
 
-        thing = actors[name] = EightBitter.ObjectMaker.make(type, settings);
+        thing = things[name] = EightBitter.ObjectMaker.make(type, settings);
 
         EightBitter.addThing(
             thing,
