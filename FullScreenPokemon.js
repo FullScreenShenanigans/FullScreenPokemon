@@ -3258,14 +3258,13 @@ var FullScreenPokemon = (function (GameStartr) {
                     EightBitter.BattleMover.showPlayerMenu();
                 };
             } else {
-                callback = function () {
-                    EightBitter.TimeHandler.addEvent(
-                        EightBitter.ScenePlayer.bindRoutine(
-                            "MoveOpponent", settings.routineArguments
-                        ),
-                        70
-                    );
-                };
+                callback = EightBitter.TimeHandler.addEvent.bind(
+                    EightBitter.TimeHandler,
+                    EightBitter.ScenePlayer.bindRoutine(
+                        "MoveOpponent", settings.routineArguments
+                    ),
+                    70
+                );
             }
 
             EightBitter.ScenePlayer.playRoutine("Damage", {
@@ -3289,15 +3288,12 @@ var FullScreenPokemon = (function (GameStartr) {
             player = settings.battleInfo.player,
             playerActor = player.selectedActor,
             routineArguments = settings.routineArguments,
-            choice = routineArguments.choiceOpponent,
-            damage = EightBitter.MathDecider.compute(
-                "damage", choice, opponentActor, playerActor
-            );
+            choice = routineArguments.choiceOpponent;
 
-        EightBitter.ScenePlayer.playRoutine("Damage", {
-            "battlerName": "player",
-            "damage": damage
-        });
+
+        routineArguments.damage = EightBitter.MathDecider.compute(
+            "damage", choice, opponentActor, playerActor
+        );
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
@@ -3310,23 +3306,54 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
+
+    //EightBitter.ScenePlayer.playRoutine("Damage", {
+    //    "battlerName": "player",
+    //    "damage": damage
+    //});
+
     /**
      * 
      */
     function cutsceneBattleMoveOpponentAnimate(EightBitter, settings) {
-        settings.routineArguments.moveOpponentDone = true;
+        var routineArguments = settings.routineArguments,
+            choice = routineArguments.choiceOpponent,
+            move = EightBitter.MathDecider.getConstant("moves")[choice],
+            animation = move.animation;
 
-        if (!settings.routineArguments.movePlayerDone) {
-            EightBitter.TimeHandler.addEvent(
-                EightBitter.ScenePlayer.bindRoutine(
-                    "MovePlayer", settings.routineArguments
-                ),
-                70
-            );
-        } else {
-            EightBitter.MenuGrapher.createMenu("GeneralText");
-            EightBitter.BattleMover.showPlayerMenu();
-        }
+        routineArguments.attackerName = "opponent";
+        routineArguments.defenderName = "player";
+
+        routineArguments.callback = function () {
+            var callback;
+
+            routineArguments.moveOpponentDone = true;
+
+            if (routineArguments.movePlayerDone) {
+                callback = function () {
+                    EightBitter.MenuGrapher.createMenu("GeneralText");
+                    EightBitter.BattleMover.showPlayerMenu();
+                };
+            } else {
+                callback = EightBitter.TimeHandler.addEvent.bind(
+                    EightBitter.TimeHandler,
+                    EightBitter.ScenePlayer.bindRoutine(
+                        "MovePlayer", settings.routineArguments
+                    ),
+                    70
+                );
+            }
+
+            EightBitter.ScenePlayer.playRoutine("Damage", {
+                "battlerName": "player",
+                "damage": routineArguments.damage,
+                "callback": callback
+            });
+        };
+
+        EightBitter.ScenePlayer.playRoutine(
+            "Attack" + animation, routineArguments
+        );
     }
 
     /**
