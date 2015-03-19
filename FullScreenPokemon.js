@@ -1284,6 +1284,75 @@ var FullScreenPokemon = (function (GameStartr) {
         });
     }
 
+    /**
+     * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
+     * flag for a little while.
+     * 
+     * @param {Thing} thing
+     * @param {Number} [cleartime]   How long to wait to stop the effect (by 
+     *                               default, 49).
+     * @param {Number} [interval]   How many steps between hidden toggles (by
+     *                              default, 2).
+     * @param {Function} [callback]   A Function that may be called on the Thing
+     *                                when flickering is done.
+     */
+    function animateFlicker(thing, cleartime, interval, callback) {
+        cleartime = cleartime | 0 || 49;
+        interval = interval | 0 || 2;
+
+        thing.flickering = true;
+
+        thing.EightBitter.TimeHandler.addEventInterval(function () {
+            thing.hidden = !thing.hidden;
+            if (!thing.hidden) {
+                thing.EightBitter.PixelDrawer.setThingSprite(thing);
+            }
+        }, interval, cleartime);
+
+        thing.EightBitter.TimeHandler.addEvent(function () {
+            thing.flickering = thing.hidden = false;
+            thing.EightBitter.PixelDrawer.setThingSprite(thing);
+
+            if (callback) {
+                callback(thing);
+            }
+        }, cleartime * interval + 1);
+    }
+
+    /**
+     * 
+     */
+    function animateScreenShake(EightBitter, dx, dy, cleartime, interval, callback) {
+        dx = typeof dx === "undefined" ? 3 : dx | 0;
+        dy = typeof dy === "undefined" ? 3 : dy | 0;
+
+        cleartime = cleartime | 0 || 7;
+        interval = interval | 0 || 7;
+
+        EightBitter.TimeHandler.addEventInterval(function () {
+            EightBitter.GroupHolder.callOnAll(
+                EightBitter, EightBitter.shiftHoriz, dx
+            );
+            EightBitter.GroupHolder.callOnAll(
+                EightBitter, EightBitter.shiftVert, dy
+            );
+        }, 1, cleartime * interval);
+
+        EightBitter.TimeHandler.addEvent(function () {
+            dx *= -1;
+            dy *= -1;
+
+            EightBitter.TimeHandler.addEventInterval(function () {
+                dx *= -1;
+                dy *= -1;
+            }, interval, cleartime);
+
+            EightBitter.TimeHandler.addEvent(
+                callback, interval * cleartime, EightBitter
+            );
+        }, (interval / 2) | 0);
+    }
+
 
     /* Character movement animations
     */
@@ -3244,27 +3313,6 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneBattleExitFail(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            "No! There's no running from a trainer battle!",
-            EightBitter.ScenePlayer.bindRoutine("BattleExitFailReturn")
-        );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleExitFailReturn(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.BattleMover.showPlayerMenu();
-    }
-
-    /**
-     * 
-     */
     function cutsceneBattleDamage(EightBitter, settings) {
         var battlerName = settings.routineArguments.battlerName,
             damage = settings.routineArguments.damage,
@@ -3314,12 +3362,11 @@ var FullScreenPokemon = (function (GameStartr) {
             backgroundIndex = texts.indexOf(background);
 
         EightBitter.addThing(
-            blank, 
+            blank,
             thing.left,
             thing.top + thing.height * thing.scale * thing.EightBitter.unitsize
         );
 
-        debugger;
         EightBitter.arrayToIndex(blank, texts, backgroundIndex + 1);
         EightBitter.arrayToIndex(thing, texts, backgroundIndex + 1);
 
@@ -3335,11 +3382,109 @@ var FullScreenPokemon = (function (GameStartr) {
                     [
                         actor.title.toUpperCase() + " fainted!"
                     ],
-                    console.log.bind(console, "yup")
+                    EightBitter.ScenePlayer.bindRoutine(
+                        "AfterPokemonFaints", routineArguments
+                    )
                 );
             }
         );
     }
+
+    /**
+     * 
+     */
+    function cutsceneBattleAfterPokemonFaints(EightBitter, settings) {
+
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleExitFail(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            "No! There's no running from a trainer battle!",
+            EightBitter.ScenePlayer.bindRoutine("BattleExitFailReturn")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleExitFailReturn(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.BattleMover.showPlayerMenu();
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleVictory(EightBitter, settings) {
+
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleDefeat(EightBitter, settings) {
+
+    }
+
+    /* Battle attack animations
+    */
+
+    /**
+     * 
+     */
+    function cutsceneBattleAttackPhysicalHit(EightBitter, settings) {
+        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+            attackerName = settings.routineArguments.attackerName,
+            defenderName = settings.routineArguments.defenderName,
+            attacker = settings.things[attackerName],
+            defender = settings.things[defenderName],
+            direction = attackerName === "player" ? 1 : -1,
+            xvel = 7 * direction,
+            dt = 7,
+            movement = EightBitter.TimeHandler.addEventInterval(function () {
+                EightBitter.shiftHoriz(attacker, xvel);
+            }, 1, Infinity),
+            callback = console.log.bind(console, "hi")
+
+        EightBitter.TimeHandler.addEvent(function () {
+            xvel *= -1;
+        }, dt);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.TimeHandler.cancelEvent, dt * 2 - 1, movement
+        );
+
+        if (attackerName === "player") {
+            EightBitter.TimeHandler.addEvent(
+                EightBitter.animateFlicker,
+                dt * 2,
+                defender,
+                14,
+                5,
+                callback
+            )
+        } else {
+            EightBitter.TimeHandler.addEvent(
+                EightBitter.animateScreenShake,
+                dt * 2,
+                EightBitter,
+                0,
+                undefined,
+                undefined,
+                undefined,
+                callback
+            );
+        }
+    }
+
+    // boom 
+    // ba ba ba ba ba
 
     /**
      * 
@@ -5602,6 +5747,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateExclamation": animateExclamation,
         "animateFadeToBlack": animateFadeToBlack,
         "animateFadeFromBlack": animateFadeFromBlack,
+        "animateFlicker": animateFlicker,
+        "animateScreenShake": animateScreenShake,
         // Character movement animations
         "animateCharacterSetDistanceVelocity": animateCharacterSetDistanceVelocity,
         "animateCharacterStartTurning": animateCharacterStartTurning,
@@ -5681,10 +5828,14 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleMovePlayerAnimate": cutsceneBattleMovePlayerAnimate,
         "cutsceneBattleMoveOpponent": cutsceneBattleMoveOpponent,
         "cutsceneBattleMoveOpponentAnimate": cutsceneBattleMoveOpponentAnimate,
-        "cutsceneBattleExitFail": cutsceneBattleExitFail,
-        "cutsceneBattleExitFailReturn": cutsceneBattleExitFailReturn,
         "cutsceneBattleDamage": cutsceneBattleDamage,
         "cutsceneBattlePokemonFaints": cutsceneBattlePokemonFaints,
+        "cutsceneBattleAfterPokemonFaints": cutsceneBattleAfterPokemonFaints,
+        "cutsceneBattleExitFail": cutsceneBattleExitFail,
+        "cutsceneBattleExitFailReturn": cutsceneBattleExitFailReturn,
+        "cutsceneBattleVictory": cutsceneBattleVictory,
+        "cutsceneBattleDefeat": cutsceneBattleDefeat,
+        "cutsceneBattleAttackPhysicalHit": cutsceneBattleAttackPhysicalHit,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
