@@ -3431,9 +3431,10 @@ var FullScreenPokemon = (function (GameStartr) {
                         actor.title.toUpperCase() + " fainted!"
                     ],
                     EightBitter.ScenePlayer.bindRoutine(
-                        "AfterPokemonFaints", routineArguments
+                        "AfterPokemonFaints", settings.routineArguments
                     )
                 );
+                EightBitter.MenuGrapher.setActiveMenu("GeneralText");
             }
         );
     }
@@ -3442,7 +3443,22 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleAfterPokemonFaints(EightBitter, settings) {
+        var actors = EightBitter.BattleMover.getBattleInfo(),
+            actorAvailable = EightBitter.checkArrayMembersIndex(actors, "HP");
 
+        if (settings.routineArguments.battlerName === "player") {
+            if (actorAvailable) {
+                console.log("Switching pokemanz!");
+            } else {
+                EightBitter.ScenePlayer.playRoutine("Defeat");
+            }
+        } else {
+            if (actorAvailable) {
+                console.log("Opponent switching their Pokemon.");
+            } else {
+                EightBitter.ScenePlayer.playRoutine("Victory");
+            }
+        }
     }
 
     /**
@@ -3470,14 +3486,14 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleVictory(EightBitter, settings) {
-
+        console.log("YOU DID IT");
     }
 
     /**
      * 
      */
     function cutsceneBattleDefeat(EightBitter, settings) {
-
+        console.log("TRY HARDER");
     }
 
     /* Battle attack animations
@@ -5735,6 +5751,19 @@ var FullScreenPokemon = (function (GameStartr) {
         );
     }
 
+    /**
+     * 
+     */
+    function checkArrayMembersIndex(array, index) {
+        for (var i = 0; i < array.length; i += 1) {
+            if (array[i][index]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     proliferateHard(FullScreenPokemon.prototype, {
         // Resets
@@ -5963,6 +5992,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "fadeAttribute": fadeAttribute,
         "fadeHorizontal": fadeHorizontal,
         "fadeVertical": fadeVertical,
+        "checkArrayMembersIndex": checkArrayMembersIndex
     });
 
     return FullScreenPokemon;
