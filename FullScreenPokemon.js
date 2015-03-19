@@ -3493,7 +3493,16 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleDefeat(EightBitter, settings) {
-        console.log("TRY HARDER");
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!",
+                "%%%%%%%PLAYER%%%%%%% blacked out!"
+            ],
+            alert.bind(window, "This is where you go back to a center...")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /* Battle attack animations
