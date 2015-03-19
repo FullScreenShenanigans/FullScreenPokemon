@@ -3274,9 +3274,13 @@ var FullScreenPokemon = (function (GameStartr) {
             hpStart = actor.HP,
             hpEnd = Math.max(hpStart - damage, 0),
             callback = hpEnd === 0
-                ? EightBitter.ScenePlayer.bindRoutine("PokemonFaints", {
-                    "battlerName": battlerName
-                })
+                ? EightBitter.TimeHandler.addEvent.bind(
+                    EightBitter.TimeHandler,
+                    EightBitter.ScenePlayer.bindRoutine("PokemonFaints", {
+                        "battlerName": battlerName
+                    }),
+                    49
+                )
                 : undefined;
 
         if (damage !== 0) {
@@ -3298,6 +3302,8 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneBattlePokemonFaints(EightBitter, settings) {
         var battlerName = settings.routineArguments.battlerName,
+            battleInfo = EightBitter.BattleMover.getBattleInfo(),
+            actor = battleInfo[battlerName].selectedActor,
             thing = settings.things[battlerName],
             blank = EightBitter.ObjectMaker.make("WhiteSquare", {
                 "width": thing.width * thing.scale,
@@ -3313,6 +3319,7 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.top + thing.height * thing.scale * thing.EightBitter.unitsize
         );
 
+        debugger;
         EightBitter.arrayToIndex(blank, texts, backgroundIndex + 1);
         EightBitter.arrayToIndex(thing, texts, backgroundIndex + 1);
 
@@ -3321,7 +3328,16 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.unitsize * 2,
             EightBitter.getMidY(thing) + thing.height * thing.scale * EightBitter.unitsize,
             1,
-            console.log.bind(console, "hi!")
+            function () {
+                EightBitter.MenuGrapher.createMenu("GeneralText");
+                EightBitter.MenuGrapher.addMenuDialog(
+                    "GeneralText",
+                    [
+                        actor.title.toUpperCase() + " fainted!"
+                    ],
+                    console.log.bind(console, "yup")
+                );
+            }
         );
     }
 
