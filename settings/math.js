@@ -3080,7 +3080,8 @@ FullScreenPokemon.prototype.settings.math = {
                 "Power": 35,
                 "Accuracy": "95%",
                 "PP": 35,
-                "Description": "No additional effect."
+                "Description": "No additional effect.",
+                "animation": "PhysicalHit"
             },
             "Tail Whip": {
                 "Type": "Normal",
