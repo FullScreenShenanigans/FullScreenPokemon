@@ -19,8 +19,11 @@ FullScreenPokemon.prototype.settings.statistics = {
         "location": {
             "valueDefault": ""
         },
-        "location": {
-            "valueDefault": ""
+        "lastPokecenter": {
+            "valueDefault": {
+                "map": "Pallet Town",
+                "location": "Player's House Door"
+            }
         },
         "badges": {
             "valueDefault": {

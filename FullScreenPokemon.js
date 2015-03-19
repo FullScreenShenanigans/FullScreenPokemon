@@ -3493,6 +3493,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleDefeat(EightBitter, settings) {
+        var transport = EightBitter.StatsHolder.get("lastPokecenter");
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -3500,9 +3502,20 @@ var FullScreenPokemon = (function (GameStartr) {
                 "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!",
                 "%%%%%%%PLAYER%%%%%%% blacked out!"
             ],
-            alert.bind(window, "This is where you go back to a center...")
+            EightBitter.animateFadeToBlack.bind(
+                EightBitter,
+                EightBitter,
+                EightBitter.setMap.bind(
+                    EightBitter,
+                    transport.map,
+                    transport.location,
+                    false
+                )
+            )
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        EightBitter.ScenePlayer.stopCutscene();
     }
 
     /* Battle attack animations
@@ -4764,9 +4777,11 @@ var FullScreenPokemon = (function (GameStartr) {
 
         name = name || 0;
 
-        EightBitter.MapScreener.clearScreen();
-        EightBitter.MapScreener.thingsById = {};
         EightBitter.GroupHolder.clearArrays();
+        EightBitter.MapScreener.clearScreen();
+        EightBitter.MapScreener.inMenu = false;
+        EightBitter.MapScreener.thingsById = {};
+        EightBitter.MenuGrapher.setActiveMenu(undefined);
         EightBitter.TimeHandler.cancelAllEvents();
 
         EightBitter.MapsHandler.setLocation(name);
