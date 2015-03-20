@@ -9,7 +9,8 @@ FullScreenPokemon.prototype.settings.math = {
                     "moves": moves || this.compute("newPokemonMoves", title, level),
                     "types": constants.pokemon[title].types,
                     "IV": iv || this.compute("newPokemonIVs"),
-                    "EV": ev || this.compute("newPokemonEVs")
+                    "EV": ev || this.compute("newPokemonEVs"),
+                    "experience": this.compute("experienceStarting", title, level)
                 },
                 i;
 
@@ -391,7 +392,7 @@ FullScreenPokemon.prototype.settings.math = {
         "damageModifier": function (NumberMaker, constants, equations, move, critical, attacker, defender) {
             var stab = attacker.types.indexOf(move.Type) !== -1 ? 1.5 : 1,
                 type = this.compute("typeEffectiveness", move, defender);
-            
+
             return stab * type * NumberMaker.randomWithin(.85, 1);
         },
         // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
@@ -432,6 +433,54 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             return total;
+        },
+        // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
+        // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
+        "experienceStarting": function (NumberMaker, constants, equations, title, level) {
+            var reference = constants.pokemon[title];
+
+            // TODO: remove defaulting to mediumFast
+            switch (reference.experienceType || "mediumFast") {
+                case "fast":
+                    return (4 * Math.pow(level, 3)) / 5;
+                case "mediumFast":
+                    return Math.pow(level, 3);
+                case "mediumSlow":
+                    return (
+                        (6 / 5) * Math.pow(level, 3)
+                        - (15 * Math.pow(level, 2))
+                        + (100 * level)
+                        - 140
+                    );
+                case "slow":
+                    return (5 * Math.pow(level, 3)) / 4;
+            }
+        },
+        // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
+        "experienceGained": function (NumberMaker, constants, equations, player, opponent) {
+            var a, b, lf, s, t;
+
+            // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
+            a = opponent.category === "Trainer" ? 1.5 : 1;
+
+            // b is the base experience yield of the fainted Pokemon's species
+            b = 64; // (Bulbasaur) TO DO: add this in
+
+            // lf is the level of the fainted Pokemon
+            lf = opponent.selectedActor.level;
+
+            // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
+            // TO DO: Account for modifies like Exp. All
+            s = 1;
+
+            // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
+            if (player.selectedActor.traded) {
+                t = 1.5;
+            } else {
+                t = 1;
+            }
+
+            return ((a * t * b * lf) / (7 * s)) | 0;
         },
         "widthHealthBar": function (NumberMaker, constants, equations, widthFullBar, hp, hpNormal) {
             return (widthFullBar - 1) * hp / hpNormal;
