@@ -207,11 +207,11 @@ FullScreenPokemon.prototype.settings.math = {
         // TO DO: Also filter for moves with > 0 remaining remaining...
         "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
             var possibilities = opponent.selectedActor.moves.map(function (move) {
-                return {
-                    "move": move.title,
-                    "priority": 10
-                };
-            }),
+                    return {
+                        "move": move.title,
+                        "priority": 10
+                    };
+                }),
                 move, lowest, i;
 
             // Wild Pokemon just choose randomly
@@ -382,7 +382,7 @@ FullScreenPokemon.prototype.settings.math = {
 
             return Math.round(
                 Math.max(
-                    ((((2 * level * 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
+                    ((((2 * level + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
                     1
                 )
             );
@@ -480,7 +480,7 @@ FullScreenPokemon.prototype.settings.math = {
                 t = 1;
             }
 
-            return ((a * t * b * lf) / (7 * s)) | 0;
+            return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
         },
         "widthHealthBar": function (NumberMaker, constants, equations, widthFullBar, hp, hpNormal) {
             return (widthFullBar - 1) * hp / hpNormal;
@@ -3129,8 +3129,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "Power": 35,
                 "Accuracy": "95%",
                 "PP": 35,
-                "Description": "No additional effect.",
-                "animation": "PhysicalHit"
+                "Description": "No additional effect."
             },
             "Tail Whip": {
                 "Type": "Normal",
