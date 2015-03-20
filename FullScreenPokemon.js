@@ -2405,6 +2405,8 @@ var FullScreenPokemon = (function (GameStartr) {
         x = left / EightBitter.unitsize + (thing.offsetX || 0);
         y = top / EightBitter.unitsize + (thing.offsetY || 0);
 
+        EightBitter.expandMapBoundaries(EightBitter, area, x, y);
+
         for (i = 0; i < creation.length; i += 1) {
             // A copy of the command must be used to not modify the original 
             command = EightBitter.proliferate({
@@ -2443,6 +2445,16 @@ var FullScreenPokemon = (function (GameStartr) {
         area.spawned = true;
 
         //MapScreener.setVariables();
+    }
+
+    /**
+     * 
+     * 
+     * @todo It would be nice to intelligently do this based on boundaries, but
+     *       this works and that doesn't (easily / yet / without bugs).
+     */
+    function expandMapBoundaries(EightBitter, area, x, y) {
+        EightBitter.MapScreener.scrollability = "both";
     }
 
 
@@ -5973,6 +5985,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "checkWindowDetector": checkWindowDetector,
         "spawnAreaSpawner": spawnAreaSpawner,
         "activateAreaSpawner": activateAreaSpawner,
+        "expandMapBoundaries": expandMapBoundaries,
         // Menus
         "openPauseMenu": openPauseMenu,
         "closePauseMenu": closePauseMenu,

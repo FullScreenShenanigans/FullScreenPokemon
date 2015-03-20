@@ -126,8 +126,20 @@ function MapScreenr(settings) {
      */
     self.setVariables = function () {
         for (var i in variables) {
-            self[i] = variables[i].apply(self, variableArgs);
+            self.setVariable(i);
         }
+    }
+
+    /**
+     * Runs a specific variable Function with variableArgs to recalculate its 
+     * value.
+     */
+    self.setVariable = function (name) {
+        if (!variables[name]) {
+            throw new Error("Variable '" + name + "' does not exist in the MapScreenr.");
+        }
+
+        self[name] = variables[name].apply(self, variableArgs);
     }
     
     
