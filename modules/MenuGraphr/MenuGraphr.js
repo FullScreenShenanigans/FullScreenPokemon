@@ -163,6 +163,18 @@ function MenuGraphr(settings) {
     /**
      * 
      */
+    self.hideMenu = function (name) {
+        var menu = menus[name];
+
+        if (menu) {
+            menu.hidden = true;
+            self.deleteMenuChildren(name);
+        }
+    }
+
+    /**
+     * 
+     */
     self.deleteMenu = function (name) {
         var menu = menus[name];
 

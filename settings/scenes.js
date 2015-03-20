@@ -84,7 +84,6 @@ FullScreenPokemon.prototype.settings.scenes = {
             }
         },
         "OakIntroRivalBattle": {
-            "firstRoutine": "Challenge",
             "routines": {
                 "Challenge": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleChallenge,
                 "Approach": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleApproach
