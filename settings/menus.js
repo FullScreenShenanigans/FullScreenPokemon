@@ -717,10 +717,10 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "position": {
                 "horizontal": "center",
-                "vertical": "bottom",
+                "vertical": "center",
                 "offset": {
                     "left": -28,
-                    "top": -24
+                    "top": 14
                 }
             },
             "arrowXOffset": 1,
