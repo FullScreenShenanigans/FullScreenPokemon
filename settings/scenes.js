@@ -18,12 +18,14 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "MoveOpponentAnimate": FullScreenPokemon.prototype.cutsceneBattleMoveOpponentAnimate,
                 "Damage": FullScreenPokemon.prototype.cutsceneBattleDamage,
                 "PokemonFaints": FullScreenPokemon.prototype.cutsceneBattlePokemonFaints,
-                "AfterPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterPokemonFaints,
+                "AfterPlayerPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterPlayerPokemonFaints,
+                "AfterOpponentPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterOpponentPokemonFaints,
                 "BattleExitFail": FullScreenPokemon.prototype.cutsceneBattleExitFail,
                 "BattleExitFailReturn": FullScreenPokemon.prototype.cutsceneBattleExitFailReturn,
                 "Victory": FullScreenPokemon.prototype.cutsceneBattleVictory,
                 "Defeat": FullScreenPokemon.prototype.cutsceneBattleDefeat,
-                "AttackPhysicalHit": FullScreenPokemon.prototype.cutsceneBattleAttackPhysicalHit
+                // Attack animations
+                "AttackTackle": FullScreenPokemon.prototype.cutsceneBattleAttackTackle
             }
         },
         "Intro": {
