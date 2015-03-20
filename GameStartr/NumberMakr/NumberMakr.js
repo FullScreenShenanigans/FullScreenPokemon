@@ -419,7 +419,7 @@ function NumberMakr(settings) {
      * @return {Number} A random index, from 0 to the given Array's length
      */
     self.randomArrayIndex = function (array) {
-        return self.randomIntWithin(array.length);
+        return self.randomInt(array.length);
     }
 
     /**
