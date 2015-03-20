@@ -1403,7 +1403,7 @@ var GameStartr = (function (EightBittr) {
         array.splice(location, 1);
 
         if (typeof (thing.onDelete) === "function") {
-            thing.onDelete(thing);
+            thing.onDelete.call(thing.EightBitter, thing);
         }
     }
 
