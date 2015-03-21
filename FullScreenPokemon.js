@@ -446,7 +446,7 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.groupType
         );
 
-        thing.bordering = new Array(4);
+        thing.bordering = [undefined, undefined, undefined, undefined];
 
         if (typeof thing.id === "undefined") {
             thing.id = (
@@ -1581,9 +1581,13 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
+        if (totalAllowed === 0) {
+            return;
+        }
+
         direction = thing.EightBitter.NumberMaker.randomInt(totalAllowed);
 
-        for (i = 0; i < direction; i += 1) {
+        for (i = 0; i <= direction; i += 1) {
             if (thing.bordering[i]) {
                 direction += 1;
             }
@@ -1923,28 +1927,35 @@ var FullScreenPokemon = (function (GameStartr) {
                 return;
             }
 
+            // Both the thing and other should know they're bordering each other
+            // If other is a large solid, this will be irreleveant, so it's ok
+            // that multiple borderings will be replaced by the most recent
             switch (thing.EightBitter.getDirectionBordering(thing, other)) {
                 case 0:
                     if (thing.left !== other.right && other.left !== thing.right) {
                         thing.bordering[0] = other;
+                        other.bordering[2] = thing;
                         thing.EightBitter.setTop(thing, other.bottom);
                     }
                     break;
                 case 1:
                     if (thing.top !== other.bottom && thing.bottom !== other.top) {
                         thing.bordering[1] = other;
+                        other.bordering[3] = thing;
                         thing.EightBitter.setRight(thing, other.left);
                     }
                     break;
                 case 2:
                     if (thing.left !== other.right && other.left !== thing.right) {
                         thing.bordering[2] = other;
+                        other.bordering[0] = thing;
                         thing.EightBitter.setBottom(thing, other.top);
                     }
                     break;
                 case 3:
                     if (thing.top !== other.bottom && thing.bottom !== other.top) {
                         thing.bordering[3] = other;
+                        other.bordering[1] = thing;
                         thing.EightBitter.setLeft(thing, other.right);
                     }
                     break;
@@ -2310,8 +2321,10 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function spawnCharacterRoaming(thing) {
-        thing.EightBitter.TimeHandler.addEventInterval(
-            thing.EightBitter.activateCharacterRoaming, 140, Infinity, thing
+        thing.EightBitter.TimeHandler.addEvent(
+            thing.EightBitter.activateCharacterRoaming,
+            70 + thing.EightBitter.NumberMaker.randomInt(210),
+            thing
         );
     }
 
@@ -2319,8 +2332,18 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateCharacterRoaming(thing) {
-        if (!thing.alive || thing.talking || thing.EightBitter.MenuGrapher.getActiveMenu()) {
+        if (!thing.alive) {
             return true;
+        }
+
+        thing.EightBitter.TimeHandler.addEvent(
+            thing.EightBitter.activateCharacterRoaming,
+            70 + thing.EightBitter.NumberMaker.randomInt(210),
+            thing
+        );
+
+        if (thing.talking || thing.EightBitter.MenuGrapher.getActiveMenu()) {
+            return;
         }
 
         thing.EightBitter.animateCharacterStartWalkingRandom(thing);
