@@ -201,6 +201,8 @@ function BattleMovr(settings) {
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
         EightBitter.MenuGrapher.deleteMenu("BattleOptions");
 
+        EightBitter.ScenePlayer.stopCutscene();
+
         if (callback) {
             callback();
         }

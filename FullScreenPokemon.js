@@ -1058,7 +1058,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animatePlayerDialogFreeze(thing) {
-        thing.moving = thing.shouldWalk = false;
+        thing.isMoving = thing.shouldWalk = false;
         thing.xvel = thing.yvel = 0;
 
         thing.EightBitter.TimeHandler.cancelClassCycle(thing, "walking");
@@ -3436,10 +3436,6 @@ var FullScreenPokemon = (function (GameStartr) {
             routineArguments = settings.routineArguments,
             choice = routineArguments.choicePlayer;
 
-        if (!choice) {
-            debugger;
-        }
-
         routineArguments.damage = EightBitter.MathDecider.compute(
             "damage", choice, playerActor, opponentActor
         );
@@ -3867,7 +3863,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 EightBitter, transport.map, transport.location
             )
         } else {
-            callback = EightBitter.BattleMover.closeBattle
+            callback = EightBitter.BattleMover.closeBattle;
         }
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -3881,6 +3877,17 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
         EightBitter.ScenePlayer.stopCutscene();
+    }
+
+    /**
+     * 
+     */
+    function cutscenePlayerGroupReset(EightBitter, settings) {
+        EightBitter.GroupHolder.switchObjectGroup(
+            EightBitter.player,
+            "Text",
+            EightBitter.player.groupType
+        );
     }
 
     /**
@@ -6553,6 +6560,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleVictory": cutsceneBattleVictory,
         "cutsceneBattleVictorySpeech": cutsceneBattleVictorySpeech,
         "cutsceneBattleDefeat": cutsceneBattleDefeat,
+        "cutscenePlayerGroupReset": cutscenePlayerGroupReset,
         // Battle transitions
         "cutsceneBattleTransitionLineSpiral": cutsceneBattleTransitionLineSpiral,
         // Battle attack utilities
