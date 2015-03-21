@@ -3012,7 +3012,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.MenuGrapher.addMenuDialog(
             menu + "Title",
-            pokemon.title.toUpperCase()
+            pokemon.nickname
         );
 
         EightBitter.MenuGrapher.addMenuDialog(
@@ -3194,7 +3194,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 battleInfo.textOpponentSendOut[0]
                 + battleInfo.opponent.name
                 + battleInfo.textOpponentSendOut[1]
-                + battleInfo.opponent.actors[0].title
+                + battleInfo.opponent.actors[0].nickname
                 + battleInfo.textOpponentSendOut[2]
             ]
         );
@@ -3385,7 +3385,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
-                playerActor.title.toUpperCase() + " used " + choice + "!"
+                playerActor.nickname + " used " + choice + "!"
             ],
             EightBitter.ScenePlayer.bindRoutine(
                 "MovePlayerAnimate", routineArguments
@@ -3456,7 +3456,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
-            [opponent.selectedActor.title.toUpperCase() + " used " + choice + "!"],
+            [opponent.selectedActor.nickname + " used " + choice + "!"],
             EightBitter.ScenePlayer.bindRoutine(
                 "MoveOpponentAnimate", routineArguments
             )
@@ -3588,7 +3588,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
                     [
-                        actor.title.toUpperCase() + " fainted!"
+                        actor.nickname + " fainted!"
                     ],
                     EightBitter.ScenePlayer.bindRoutine(
                         nextRoutine, routineArguments
@@ -3640,7 +3640,7 @@ var FullScreenPokemon = (function (GameStartr) {
             "GeneralText",
             [
                 [
-                    battleInfo.player.selectedActor.title.toUpperCase(),
+                    battleInfo.player.selectedActor.nickname,
                     "gained",
                     experienceGained,
                     "EXP. points!"
@@ -3789,7 +3789,7 @@ var FullScreenPokemon = (function (GameStartr) {
             "GeneralText",
             [
                 [
-                    defenderLabel + defender.title.toUpperCase() + "'s",
+                    defenderLabel + defender.nickname + "'s",
                     statistic.toUpperCase(),
                     amountLabel + "!"
                 ].join(" ")
