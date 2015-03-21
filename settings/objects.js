@@ -95,9 +95,11 @@ FullScreenPokemon.prototype.settings.objects = {
                 "PottedPalmTree": {},
                 "Sign": {},
                 "Spawner": {},
-                "Table2x2": {},
-                "Table2x3": {},
-                "Table3x1": {},
+                "Table": {
+                    "Table2x2": {},
+                    "Table2x3": {},
+                    "Table3x1": {},
+                },
                 "TelevisionMonitor": {},
                 "Tree": {},
                 "WaterEdge": {
@@ -667,6 +669,11 @@ FullScreenPokemon.prototype.settings.objects = {
             "offsetY": 0,
             // Movements
             "movement": undefined,
+            // Collisions
+            "tolTop": 0,
+            "tolRight": 0,
+            "tolBottom": 0,
+            "tolLeft": 0,
             // Triggered Functions
             "onMake": FullScreenPokemon.prototype.thingProcess
         },
@@ -836,14 +843,12 @@ FullScreenPokemon.prototype.settings.objects = {
         "AreaSpawner": {
             "activate": FullScreenPokemon.prototype.spawnAreaSpawner
         },
+        "Table": {
+            "tolBottom": FullScreenPokemon.unitsize * 4
+        },
         "Table2x2": [16, 16],
         "Table2x3": [16, 16],
-        "Table3x1": {
-            "width": 24,
-            "height": 8
-            //"height": 12,
-            // "tolBottom": 4
-        },
+        "Table3x1": [24, 12],
         "Tree": {
             "dialog": "IT WOULD BE NICE TO CUT THE TREE DOWN LEL"
         },

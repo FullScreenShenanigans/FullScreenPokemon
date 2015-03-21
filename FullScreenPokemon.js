@@ -1457,7 +1457,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 EightBitter, EightBitter.shiftVert, dy
             );
         }, 1, cleartime * interval);
-        
+
         EightBitter.TimeHandler.addEvent(function () {
             dx *= -1;
             dy *= -1;
@@ -1887,10 +1887,10 @@ var FullScreenPokemon = (function (GameStartr) {
             //}
             return (
                 !thing.nocollide && !other.nocollide
-                && thing.right >= other.left
-                && thing.left <= other.right
-                && thing.bottom >= other.top
-                && thing.top <= other.bottom
+                && thing.right >= (other.left + other.tolLeft)
+                && thing.left <= (other.right - other.tolRight)
+                && thing.bottom >= (other.top + other.tolTop)
+                && thing.top <= (other.bottom - other.tolBottom)
             );
         }
     }
@@ -1902,10 +1902,10 @@ var FullScreenPokemon = (function (GameStartr) {
         return function isCharacterTouchingSolid(thing, other) {
             return (
                 !thing.nocollide && !other.nocollide
-                && thing.right >= other.left
-                && thing.left <= other.right
-                && thing.bottom >= other.top
-                && thing.top <= other.bottom
+                && thing.right >= (other.left + other.tolLeft)
+                && thing.left <= (other.right - other.tolRight)
+                && thing.bottom >= (other.top + other.tolTop)
+                && thing.top <= (other.bottom - other.tolBottom)
             );
         }
     }
@@ -1932,31 +1932,54 @@ var FullScreenPokemon = (function (GameStartr) {
             // that multiple borderings will be replaced by the most recent
             switch (thing.EightBitter.getDirectionBordering(thing, other)) {
                 case 0:
-                    if (thing.left !== other.right && other.left !== thing.right) {
+                    if (
+                        thing.left !== other.right - other.tolRight
+                        && thing.right !== other.left + other.tolLeft
+                    ) {
                         thing.bordering[0] = other;
                         other.bordering[2] = thing;
-                        thing.EightBitter.setTop(thing, other.bottom);
+                        thing.EightBitter.setTop(
+                            thing, other.bottom - other.tolBottom
+                        );
                     }
                     break;
+
                 case 1:
-                    if (thing.top !== other.bottom && thing.bottom !== other.top) {
+                    if (
+                        thing.top !== other.bottom - other.tolBottom
+                        && thing.bottom !== other.top + other.tolTop
+                    ) {
                         thing.bordering[1] = other;
                         other.bordering[3] = thing;
-                        thing.EightBitter.setRight(thing, other.left);
+                        thing.EightBitter.setRight(
+                            thing, other.left + other.tolLeft
+                        );
                     }
                     break;
+
                 case 2:
-                    if (thing.left !== other.right && other.left !== thing.right) {
+                    if (
+                        thing.left !== other.right - other.tolRight
+                        && thing.right !== other.left + other.tolLeft
+                    ) {
                         thing.bordering[2] = other;
                         other.bordering[0] = thing;
-                        thing.EightBitter.setBottom(thing, other.top);
+                        thing.EightBitter.setBottom(
+                            thing, other.top + other.tolTop
+                        );
                     }
                     break;
+
                 case 3:
-                    if (thing.top !== other.bottom && thing.bottom !== other.top) {
+                    if (
+                        thing.top !== other.bottom - other.tolBottom
+                        && thing.bottom !== other.top + other.tolTop
+                    ) {
                         thing.bordering[3] = other;
                         other.bordering[1] = thing;
-                        thing.EightBitter.setLeft(thing, other.right);
+                        thing.EightBitter.setLeft(
+                            thing, other.right - other.tolRight
+                        );
                     }
                     break;
             }
@@ -2257,22 +2280,34 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      * 
-     * I would like this to be more elegant. 
+     * @todo I would like this to be more elegant. 
      */
     function getDirectionBordering(thing, other) {
-        if (Math.abs(thing.top - other.bottom) < thing.EightBitter.unitsize) {
+        if (
+            Math.abs((thing.top) - (other.bottom - other.tolBottom))
+            < thing.EightBitter.unitsize
+        ) {
             return 0;
         }
 
-        if (Math.abs(thing.right - other.left) < thing.EightBitter.unitsize) {
+        if (
+            Math.abs(thing.right - other.left)
+            < thing.EightBitter.unitsize
+        ) {
             return 1;
         }
 
-        if (Math.abs(thing.bottom - other.top) < thing.EightBitter.unitsize) {
+        if (
+            Math.abs(thing.bottom - other.top)
+            < thing.EightBitter.unitsize
+        ) {
             return 2;
         }
 
-        if (Math.abs(thing.left - other.right) < thing.EightBitter.unitsize) {
+        if (
+            Math.abs(thing.left - other.right)
+            < thing.EightBitter.unitsize
+        ) {
             return 3;
         }
     }
@@ -3789,7 +3824,7 @@ var FullScreenPokemon = (function (GameStartr) {
             statistic = routineArguments.statistic,
             amount = routineArguments.amount,
             amountLabel;
-        
+
         defender[statistic] -= amount;
 
         switch (amount) {
