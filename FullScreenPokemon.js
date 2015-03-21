@@ -3235,7 +3235,7 @@ var FullScreenPokemon = (function (GameStartr) {
             (timeout / 2) | 0,
             opponent,
             "opacity",
-            -1 / timeout,
+            -2 / timeout,
             0,
             1
         );
@@ -3284,7 +3284,8 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.animateFadeAttribute,
             (timeout / 2) | 0,
             player,
-            "opacity", -2 / timeout,
+            "opacity",
+            -2 / timeout,
             0,
             1
         );
@@ -3433,6 +3434,10 @@ var FullScreenPokemon = (function (GameStartr) {
             routineArguments = settings.routineArguments,
             choice = routineArguments.choicePlayer;
 
+        if (!choice) {
+            debugger;
+        }
+
         routineArguments.damage = EightBitter.MathDecider.compute(
             "damage", choice, playerActor, opponentActor
         );
@@ -3468,6 +3473,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
             if (routineArguments.moveOpponentDone) {
                 callback = function () {
+                    routineArguments.movePlayerDone = false;
+                    routineArguments.moveOpponentDone = false;
                     EightBitter.MenuGrapher.createMenu("GeneralText");
                     EightBitter.BattleMover.showPlayerMenu();
                 };
@@ -3544,6 +3551,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
             if (routineArguments.movePlayerDone) {
                 callback = function () {
+                    routineArguments.movePlayerDone = false;
+                    routineArguments.moveOpponentDone = false;
                     EightBitter.MenuGrapher.createMenu("GeneralText");
                     EightBitter.BattleMover.showPlayerMenu();
                 };
@@ -3821,7 +3830,6 @@ var FullScreenPokemon = (function (GameStartr) {
             height = Math.ceil(screenHeight / divisor),
             numTimes = 0,
             direction = 2,
-            opacity = 1,
             keptThings = settings.keptThings,
             thing, difference, destination,
             i;
@@ -3847,7 +3855,6 @@ var FullScreenPokemon = (function (GameStartr) {
                     thing = EightBitter.ObjectMaker.make("BlackSquare", {
                         "width": width / unitsize,
                         "height": screenHeight / unitsize,
-                        "opacity": opacity
                     });
                     EightBitter.addThing(
                         thing,
@@ -3861,8 +3868,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 case 1:
                     thing = EightBitter.ObjectMaker.make("BlackSquare", {
                         "width": screenWidth / unitsize,
-                        "height": height / unitsize,
-                        "opacity": opacity
+                        "height": height / unitsize
                     });
                     EightBitter.addThing(
                         thing,
@@ -3876,8 +3882,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 case 2:
                     thing = EightBitter.ObjectMaker.make("BlackSquare", {
                         "width": width / unitsize,
-                        "height": screenHeight / unitsize,
-                        "opacity": opacity
+                        "height": screenHeight / unitsize
                     });
                     EightBitter.addThing(
                         thing,
@@ -3891,8 +3896,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 case 3:
                     thing = EightBitter.ObjectMaker.make("BlackSquare", {
                         "width": screenWidth / unitsize,
-                        "height": height / unitsize,
-                        "opacity": opacity
+                        "height": height / unitsize
                     });
                     EightBitter.addThing(
                         thing,
@@ -3994,7 +3998,27 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleAttackGrowl(EightBitter, settings) {
+        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+            routineArguments = settings.routineArguments,
+            attackerName = routineArguments.attackerName,
+            defenderName = routineArguments.defenderName,
+            attacker = EightBitter.BattleMover.getThing(attackerName),
+            defender = EightBitter.BattleMover.getThing(defenderName),
+            direction = attackerName === "player" ? 1 : -1,
+            notes = [
+                EightBitter.ObjectMaker.make("Note"),
+                EightBitter.ObjectMaker.make("Note")
+            ];
 
+        EightBitter.ScenePlayer.playRoutine(
+            "ChangeStatistic",
+            EightBitter.proliferate({
+                "callback": routineArguments.callback,
+                "defenderName": defenderName,
+                "statistic": "Attack",
+                "amount": -1
+            }, routineArguments)
+        );
     }
 
     /**
@@ -4040,7 +4064,13 @@ var FullScreenPokemon = (function (GameStartr) {
                 undefined,
                 undefined,
                 undefined,
-                routineArguments.callback
+                EightBitter.animateFlicker.bind(
+                    EightBitter,
+                    defender,
+                    14,
+                    5,
+                    routineArguments.callback
+                )
             );
         }
     }
@@ -5148,12 +5178,13 @@ var FullScreenPokemon = (function (GameStartr) {
 
         settings.rival = rival;
         EightBitter.animateCharacterSetDirection(rival, 2);
+        EightBitter.animateCharacterSetDirection(settings.player, 0);
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Wait %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
+                "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
                 "Come on, I'll take you on!"
             ],
             EightBitter.ScenePlayer.bindRoutine("Challenge", {
