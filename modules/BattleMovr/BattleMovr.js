@@ -187,7 +187,7 @@ function BattleMovr(settings) {
     /**
      * 
      */
-    self.closeBattle = function () {
+    self.closeBattle = function (callback) {
         var i;
 
         for (i in things) {
@@ -200,6 +200,10 @@ function BattleMovr(settings) {
         EightBitter.MenuGrapher.deleteMenu("Battle");
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
         EightBitter.MenuGrapher.deleteMenu("BattleOptions");
+
+        if (callback) {
+            callback();
+        }
     };
 
     /**

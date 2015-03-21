@@ -23,6 +23,7 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "BattleExitFail": FullScreenPokemon.prototype.cutsceneBattleExitFail,
                 "BattleExitFailReturn": FullScreenPokemon.prototype.cutsceneBattleExitFailReturn,
                 "Victory": FullScreenPokemon.prototype.cutsceneBattleVictory,
+                "VictorySpeech": FullScreenPokemon.prototype.cutsceneBattleVictorySpeech,
                 "Defeat": FullScreenPokemon.prototype.cutsceneBattleDefeat,
                 // Attack utilities
                 "ChangeStatistic": FullScreenPokemon.prototype.cutsceneBattleChangeStatistic,

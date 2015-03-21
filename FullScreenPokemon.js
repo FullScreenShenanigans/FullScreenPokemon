@@ -1361,8 +1361,8 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateFadeToBlack(EightBitter, callback) {
-        var blank = EightBitter.ObjectMaker.make("BlackSquare", {
+    function animateFadeToColor(EightBitter, color, callback) {
+        var blank = EightBitter.ObjectMaker.make(color + "Square", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
             "opacity": 0
@@ -1383,8 +1383,8 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateFadeFromBlack(EightBitter, callback) {
-        var blank = EightBitter.ObjectMaker.make("BlackSquare", {
+    function animateFadeFromColor(EightBitter, color, callback) {
+        var blank = EightBitter.ObjectMaker.make(color + "Square", {
             "width": EightBitter.MapScreener.width,
             "height": EightBitter.MapScreener.height,
             "opacity": 1,
@@ -2258,8 +2258,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         other.active = false;
 
-        thing.EightBitter.animateFadeToBlack(
+        thing.EightBitter.animateFadeToColor(
             thing.EightBitter,
+            "Black",
             callback.apply.bind(callback, thing.EightBitter, args)
         );
     }
@@ -3134,7 +3135,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var things = settings.things,
             player = things.player,
             opponent = things.opponent,
-            menu = EightBitter.MenuGrapher.getMenu("GeneralText"),
+            menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial"),
             playerX, opponentX, playerGoal, opponentGoal,
             timeout = 70;
 
@@ -3146,6 +3147,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.setLeft(player, menu.right + player.width * EightBitter.unitsize);
         EightBitter.setRight(opponent, menu.left);
+        EightBitter.setTop(opponent, menu.top);
 
         // They should be visible halfway through (2 * (1 / timeout))
         EightBitter.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
@@ -3649,6 +3651,8 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.getMidY(thing) + thing.height * thing.scale * EightBitter.unitsize,
             1,
             function () {
+                EightBitter.killNormal(thing);
+                EightBitter.killNormal(blank);
                 EightBitter.MenuGrapher.createMenu("GeneralText");
                 EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
@@ -3782,7 +3786,68 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleVictory(EightBitter, settings) {
-        console.log("YOU DID IT");
+        var battleInfo = EightBitter.BattleMover.getBattleInfo();
+
+        if (!battleInfo.opponent.hasActors) {
+            EightBitter.BattleMover.closeBattle();
+            return;
+        }
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%% defeated %%%%%%%RIVAL%%%%%%%!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("VictorySpeech")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleVictorySpeech(EightBitter, settings) {
+        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+            menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial"),
+            timeout = 35,
+            opponent = EightBitter.BattleMover.setThing(
+                "opponent", battleInfo.opponent.sprite
+            ),
+            opponentX, opponentGoal;
+        
+        opponent.opacity = 0;
+
+        EightBitter.setTop(opponent, menu.top)
+        EightBitter.setLeft(opponent, menu.right);
+        opponentX = EightBitter.getMidX(opponent);
+        opponentGoal = menu.right - opponent.width * EightBitter.unitsize / 2;
+
+        EightBitter.animateFadeAttribute(
+            opponent, "opacity", 4 / timeout, 1, 1
+        );
+        EightBitter.animateFadeHorizontal(
+            opponent,
+            (opponentGoal - opponentX) / timeout,
+            opponentGoal,
+            1,
+            function () {
+                EightBitter.MenuGrapher.createMenu("GeneralText");
+                EightBitter.MenuGrapher.addMenuDialog(
+                    "GeneralText",
+                    battleInfo.textVictory,
+                    EightBitter.BattleMover.closeBattle.bind(
+                        EightBitter.BattleMover, 
+                        EightBitter.animateFadeFromColor.bind(
+                            EightBitter,
+                            EightBitter,
+                            "White"
+                        )
+                    )
+                );
+                EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+            }
+        );
     }
 
     /**
@@ -3809,8 +3874,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             message,
-            EightBitter.animateFadeToBlack.bind(
-                EightBitter, EightBitter, callback
+            EightBitter.animateFadeToColor.bind(
+                EightBitter, EightBitter, "Black", callback
             )
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -3831,6 +3896,7 @@ var FullScreenPokemon = (function (GameStartr) {
             numTimes = 0,
             direction = 2,
             keptThings = settings.keptThings,
+            things = [],
             thing, difference, destination,
             i;
 
@@ -3846,6 +3912,7 @@ var FullScreenPokemon = (function (GameStartr) {
             if (numTimes >= (divisor / 2) | 0) {
                 if (settings.callback) {
                     settings.callback();
+                    things.forEach(EightBitter.killNormal);
                 }
                 return;
             }
@@ -3907,6 +3974,8 @@ var FullScreenPokemon = (function (GameStartr) {
                     destination = numTimes * width;
                     break;
             }
+
+            things.push(thing);
 
             if (keptThings) {
                 for (i = 0; i < keptThings.length; i += 1) {
@@ -5251,6 +5320,14 @@ var FullScreenPokemon = (function (GameStartr) {
                                     ]
                                 },
                                 "textStart": ["", " wants to fight!"],
+                                "textDefeat": ["SHOULD FILL THIS OUT YES"],
+                                "textVictory": [
+                                    [
+                                        "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                                        "Unbelievable!",
+                                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+                                    ].join(" ")
+                                ],
                                 "noBlackout": true
                             }
                         )
@@ -5435,7 +5512,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.GamesRunner.play();
 
-        EightBitter.animateFadeFromBlack(EightBitter);
+        EightBitter.animateFadeFromColor(EightBitter, "Black");
     }
 
     /**
@@ -6380,8 +6457,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateSmokeMedium": animateSmokeMedium,
         "animateSmokeLarge": animateSmokeLarge,
         "animateExclamation": animateExclamation,
-        "animateFadeToBlack": animateFadeToBlack,
-        "animateFadeFromBlack": animateFadeFromBlack,
+        "animateFadeToColor": animateFadeToColor,
+        "animateFadeFromColor": animateFadeFromColor,
         "animateFlicker": animateFlicker,
         "animateScreenShake": animateScreenShake,
         // Character movement animations
@@ -6474,6 +6551,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleExitFail": cutsceneBattleExitFail,
         "cutsceneBattleExitFailReturn": cutsceneBattleExitFailReturn,
         "cutsceneBattleVictory": cutsceneBattleVictory,
+        "cutsceneBattleVictorySpeech": cutsceneBattleVictorySpeech,
         "cutsceneBattleDefeat": cutsceneBattleDefeat,
         // Battle transitions
         "cutsceneBattleTransitionLineSpiral": cutsceneBattleTransitionLineSpiral,
