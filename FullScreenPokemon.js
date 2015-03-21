@@ -1230,9 +1230,7 @@ var FullScreenPokemon = (function (GameStartr) {
         if (groupType) {
             for (i = 0; i < things.length; i += 1) {
                 things[0].EightBitter.GroupHolder.switchObjectGroup(
-                    things[i],
-                    things[i].groupType,
-                    groupType
+                    things[i], things[i].groupType, groupType
                 );
             }
         }
@@ -3814,6 +3812,138 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneBattleTransitionLineSpiral(EightBitter, settings) {
+        var unitsize = EightBitter.unitsize,
+            divisor = settings.divisor || 10,
+            screenWidth = EightBitter.MapScreener.width,
+            screenHeight = EightBitter.MapScreener.height,
+            width = Math.ceil(screenWidth / divisor),
+            height = Math.ceil(screenHeight / divisor),
+            numTimes = 0,
+            direction = 2,
+            opacity = 1,
+            keptThings = settings.keptThings,
+            thing, difference, destination,
+            i;
+
+        if (keptThings) {
+            for (i = 0; i < keptThings.length; i += 1) {
+                EightBitter.GroupHolder.switchObjectGroup(
+                    keptThings[i], keptThings[i].groupType, "Text"
+                );
+            }
+        }
+
+        function addThing() {
+            if (numTimes >= (divisor / 2) | 0) {
+                if (settings.callback) {
+                    settings.callback();
+                }
+                return;
+            }
+
+            switch (direction) {
+                case 0:
+                    thing = EightBitter.ObjectMaker.make("BlackSquare", {
+                        "width": width / unitsize,
+                        "height": screenHeight / unitsize,
+                        "opacity": opacity
+                    });
+                    EightBitter.addThing(
+                        thing,
+                        screenWidth - ((numTimes + 1) * width),
+                        screenHeight - ((numTimes + 1) * divisor)
+                    );
+                    difference = -height;
+                    destination = numTimes * height;
+                    break;
+
+                case 1:
+                    thing = EightBitter.ObjectMaker.make("BlackSquare", {
+                        "width": screenWidth / unitsize,
+                        "height": height / unitsize,
+                        "opacity": opacity
+                    });
+                    EightBitter.addThing(
+                        thing,
+                        numTimes * divisor - screenWidth,
+                        screenHeight - (numTimes + 1) * height
+                    );
+                    difference = width;
+                    destination = screenWidth - numTimes * width;
+                    break;
+
+                case 2:
+                    thing = EightBitter.ObjectMaker.make("BlackSquare", {
+                        "width": width / unitsize,
+                        "height": screenHeight / unitsize,
+                        "opacity": opacity
+                    });
+                    EightBitter.addThing(
+                        thing,
+                        numTimes * width,
+                        numTimes * height - screenHeight
+                    );
+                    difference = height;
+                    destination = screenHeight - numTimes * height;
+                    break;
+
+                case 3:
+                    thing = EightBitter.ObjectMaker.make("BlackSquare", {
+                        "width": screenWidth / unitsize,
+                        "height": height / unitsize,
+                        "opacity": opacity
+                    });
+                    EightBitter.addThing(
+                        thing,
+                        screenWidth - numTimes * divisor,
+                        numTimes * height
+                    );
+                    difference = -width;
+                    destination = numTimes * width;
+                    break;
+            }
+
+            if (keptThings) {
+                for (i = 0; i < keptThings.length; i += 1) {
+                    EightBitter.arrayToEnd(
+                        keptThings[i], EightBitter.GroupHolder.getTextGroup()
+                    );
+                }
+            }
+
+            EightBitter.TimeHandler.addEventInterval(function () {
+                if (direction % 2 === 1) {
+                    EightBitter.shiftHoriz(thing, difference);
+                } else {
+                    EightBitter.shiftVert(thing, difference);
+                }
+
+                if (direction === 1 || direction === 2) {
+                    if (thing[EightBitter.directionNames[direction]] < destination) {
+                        return;
+                    }
+                } else {
+                    if (thing[EightBitter.directionNames[direction]] > destination) {
+                        return;
+                    }
+                }
+
+                direction = (direction + 3) % 4;
+                if (direction === 2) {
+                    numTimes += 1;
+                }
+                addThing();
+                return true;
+            }, 1, Infinity);
+        }
+
+        addThing();
+    }
+
+    /**
+     * 
+     */
     function cutsceneBattleChangeStatistic(EightBitter, settings) {
         var battleInfo = EightBitter.BattleMover.getBattleInfo(),
             routineArguments = settings.routineArguments,
@@ -5055,35 +5185,48 @@ var FullScreenPokemon = (function (GameStartr) {
             steps += 1;
         }
 
-        EightBitter.animateCharacterStartTurning(settings.rival, 3, [
-            steps, "bottom", 1,
-            EightBitter.BattleMover.startBattle.bind(
-                EightBitter.BattleMover,
-                {
-                    "player": {
-                        "sprite": "PlayerBack",
-                        "name": EightBitter.StatsHolder.get("name"),
-                        "category": "Trainer",
-                        "actors": EightBitter.StatsHolder.get("PokemonInParty")
-                    },
-                    "opponent": {
-                        "sprite": "RivalPortrait",
-                        "name": EightBitter.StatsHolder.get("nameRival"),
-                        "category": "Trainer",
-                        "hasActors": true,
-                        "actors": [
-                            EightBitter.MathDecider.compute(
-                                "newPokemon",
-                                EightBitter.StatsHolder.get("starterRival"),
-                                5
-                            )
-                        ]
-                    },
-                    "textStart": ["", " wants to fight!"],
-                    "ignoreBlackout": true
-                }
-            )
-        ]);
+        EightBitter.animateCharacterStartTurning(
+            settings.rival,
+            3,
+            [
+                steps,
+                "bottom",
+                1,
+                cutsceneBattleTransitionLineSpiral.bind(
+                    EightBitter,
+                    EightBitter,
+                    {
+                        "keptThings": [settings.player, settings.rival],
+                        "callback": EightBitter.BattleMover.startBattle.bind(
+                            EightBitter.BattleMover,
+                            {
+                                "player": {
+                                    "sprite": "PlayerBack",
+                                    "name": EightBitter.StatsHolder.get("name"),
+                                    "category": "Trainer",
+                                    "actors": EightBitter.StatsHolder.get("PokemonInParty")
+                                },
+                                "opponent": {
+                                    "sprite": "RivalPortrait",
+                                    "name": EightBitter.StatsHolder.get("nameRival"),
+                                    "category": "Trainer",
+                                    "hasActors": true,
+                                    "actors": [
+                                        EightBitter.MathDecider.compute(
+                                            "newPokemon",
+                                            EightBitter.StatsHolder.get("starterRival"),
+                                            5
+                                        )
+                                    ]
+                                },
+                                "textStart": ["", " wants to fight!"],
+                                "noBlackout": true
+                            }
+                        )
+                    }
+                )
+            ]
+        );
     }
 
 
@@ -6301,6 +6444,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleExitFailReturn": cutsceneBattleExitFailReturn,
         "cutsceneBattleVictory": cutsceneBattleVictory,
         "cutsceneBattleDefeat": cutsceneBattleDefeat,
+        // Battle transitions
+        "cutsceneBattleTransitionLineSpiral": cutsceneBattleTransitionLineSpiral,
         // Battle attack utilities
         "cutsceneBattleChangeStatistic": cutsceneBattleChangeStatistic,
         // Battle attack animations
