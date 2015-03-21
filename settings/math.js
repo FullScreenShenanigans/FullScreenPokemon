@@ -5,6 +5,7 @@ FullScreenPokemon.prototype.settings.math = {
             var statisticNames = constants.statisticNames,
                 pokemon = {
                     "title": title,
+                    "nickname": title,
                     "level": level,
                     "moves": moves || this.compute("newPokemonMoves", title, level),
                     "types": constants.pokemon[title].types,

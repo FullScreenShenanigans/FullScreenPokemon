@@ -577,6 +577,7 @@ FullScreenPokemon.prototype.settings.sprites = {
                 "middle": "p[0,2]1001",
                 "right": "p[0,2]0110"
             }],
+            "Note": "p[0,2]x09,111000100x17,00x19,01000x16,000100011000011110000x15,000010001x08,100011x06,1x05,1x06,100001x06,1110111x05,x18,x05,x18,x06,110011x010,",
             "LightGraySquare": "x34,",
             "WhiteSquare": "x14,",
             "Menu": {

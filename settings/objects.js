@@ -479,6 +479,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Exclamation": {},
                 "HalfArrowHorizontal": {},
                 "HPBar": {},
+                "Note": {},
                 "Square": {
                     "BlackSquare": {},
                     "DarkGraySquare": {},
@@ -884,6 +885,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "height": 2,
             "repeat": true
         },
+        "Note": [6.5, 7],
         "SmokeSmall": [5.5, 5.5],
         "SmokeMedium": [7.5, 7.5],
         "SmokeLarge": [7.5, 7.5],

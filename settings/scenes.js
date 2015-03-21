@@ -24,8 +24,12 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "BattleExitFailReturn": FullScreenPokemon.prototype.cutsceneBattleExitFailReturn,
                 "Victory": FullScreenPokemon.prototype.cutsceneBattleVictory,
                 "Defeat": FullScreenPokemon.prototype.cutsceneBattleDefeat,
+                // Attack utilities
+                "ChangeStatistic": FullScreenPokemon.prototype.cutsceneBattleChangeStatistic,
                 // Attack animations
-                "AttackTackle": FullScreenPokemon.prototype.cutsceneBattleAttackTackle
+                "AttackGrowl": FullScreenPokemon.prototype.cutsceneBattleAttackGrowl,
+                "AttackTackle": FullScreenPokemon.prototype.cutsceneBattleAttackTackle,
+                "AttackTailWhip": FullScreenPokemon.prototype.cutsceneBattleAttackTailWhip
             }
         },
         "Intro": {
@@ -81,6 +85,7 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "PlayerDecidesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerDecidesPokemon,
                 "PlayerTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
                 "PlayerChoosesNickname": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
+                "PlayerSetsNickname": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoicePlayerSetsNickname,
                 "RivalWalksToPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalWalksToPokemon,
                 "RivalTakesPokemon": FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalTakesPokemon
             }
