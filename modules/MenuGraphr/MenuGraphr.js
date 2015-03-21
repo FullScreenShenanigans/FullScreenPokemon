@@ -744,7 +744,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.deactivateMenuList = function (name) {
-        if (menus[name].arrow) {
+        if (menus[name] && menus[name].arrow) {
             menus[name].arrow.hidden = true;
         }
     };
