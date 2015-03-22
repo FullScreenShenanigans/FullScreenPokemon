@@ -3785,7 +3785,13 @@ var FullScreenPokemon = (function (GameStartr) {
         var battleInfo = EightBitter.BattleMover.getBattleInfo();
 
         if (!battleInfo.opponent.hasActors) {
-            EightBitter.BattleMover.closeBattle();
+            EightBitter.BattleMover.closeBattle(
+                EightBitter.animateFadeFromColor.bind(
+                    EightBitter,
+                    EightBitter,
+                    "White"
+                )
+            );
             return;
         }
 
@@ -3811,7 +3817,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "opponent", battleInfo.opponent.sprite
             ),
             opponentX, opponentGoal;
-        
+
         opponent.opacity = 0;
 
         EightBitter.setTop(opponent, menu.top)
@@ -3833,7 +3839,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     "GeneralText",
                     battleInfo.textVictory,
                     EightBitter.BattleMover.closeBattle.bind(
-                        EightBitter.BattleMover, 
+                        EightBitter.BattleMover,
                         EightBitter.animateFadeFromColor.bind(
                             EightBitter,
                             EightBitter,
@@ -3882,12 +3888,29 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutscenePlayerGroupReset(EightBitter, settings) {
-        EightBitter.GroupHolder.switchObjectGroup(
-            EightBitter.player,
-            "Text",
-            EightBitter.player.groupType
-        );
+    function cutsceneBattleComplete(EightBitter, settings) {
+        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+            keptThings = battleInfo.keptThings.slice(),
+            thing, i;
+
+        keptThings.push(EightBitter.player);
+
+        if (keptThings) {
+            for (i = 0; i < keptThings.length; i += 1) {
+                if (keptThings[i].constructor === String) {
+                    keptThings[i] = EightBitter.getThingById(keptThings[i]);
+                }
+                EightBitter.GroupHolder.switchObjectGroup(
+                    keptThings[i], "Text", keptThings[i].groupType
+                );
+            }
+        }
+
+        if (settings.nextCutscene) {
+            EightBitter.ScenePlayer.startCutscene(
+                settings.nextCutscene, settings.nextCutsceneSettings
+            );
+        }
     }
 
     /**
@@ -3902,13 +3925,16 @@ var FullScreenPokemon = (function (GameStartr) {
             height = Math.ceil(screenHeight / divisor),
             numTimes = 0,
             direction = 2,
-            keptThings = settings.keptThings,
+            keptThings = settings.keptThings.slice(),
             things = [],
             thing, difference, destination,
             i;
 
         if (keptThings) {
             for (i = 0; i < keptThings.length; i += 1) {
+                if (keptThings[i].constructor === String) {
+                    keptThings[i] = EightBitter.getThingById(keptThings[i]);
+                }
                 EightBitter.GroupHolder.switchObjectGroup(
                     keptThings[i], keptThings[i].groupType, "Text"
                 );
@@ -5108,6 +5134,9 @@ var FullScreenPokemon = (function (GameStartr) {
         settings.triggerer.hidden = true;
         EightBitter.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
 
+        settings.oak.dialog = dialog;
+        EightBitter.StateHolder.addChange(settings.oak.id, "dialog", dialog);
+
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
@@ -5273,8 +5302,73 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneOakIntroRivalLeavesAfterBattle(EightBitter, settings) {
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.ScenePlayer.bindRoutine("Complaint"), 49
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalLeavesComplaint(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!"
+            ],
+            function () {
+                EightBitter.MenuGrapher.deleteActiveMenu();
+                EightBitter.TimeHandler.addEvent(
+                    EightBitter.ScenePlayer.bindRoutine("Goodbye"), 21
+                );
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalLeavesGoodbye(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("Walking")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakIntroRivalLeavesWalking(EightBitter, settings) {
+        var oak = EightBitter.getThingById("Oak"),
+            rival = EightBitter.getThingById("Rival"),
+            isRight = Math.abs(oak.left - rival.left) < EightBitter.unitsize,
+            steps = [
+                1, "bottom", 6, EightBitter.killNormal.bind(EightBitter, rival)
+            ],
+            dialog = [
+                "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
+            ];
+
+        EightBitter.ScenePlayer.stopCutscene();
+        EightBitter.MenuGrapher.deleteMenu("GeneralText");
+
+        EightBitter.animateCharacterStartTurning(rival, isRight ? 3 : 1, steps);
+    }
+
+    /**
+     * 
+     */
     function cutsceneOakIntroRivalBattleChallenge(EightBitter, settings) {
-        var steps;
+        var keptThings = [settings.player, settings.rival],
+            steps;
 
         switch (EightBitter.StatsHolder.get("starterRival")) {
             case "Squirtle":
@@ -5303,7 +5397,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     EightBitter,
                     EightBitter,
                     {
-                        "keptThings": [settings.player, settings.rival],
+                        "keptThings": ["player", "Rival"],
                         "callback": EightBitter.BattleMover.startBattle.bind(
                             EightBitter.BattleMover,
                             {
@@ -5335,7 +5429,9 @@ var FullScreenPokemon = (function (GameStartr) {
                                         "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
                                     ].join(" ")
                                 ],
-                                "noBlackout": true
+                                "noBlackout": true,
+                                "keptThings": ["player", "Rival"],
+                                "nextCutscene": "OakIntroRivalLeaves",
                             }
                         )
                     }
@@ -6560,7 +6656,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleVictory": cutsceneBattleVictory,
         "cutsceneBattleVictorySpeech": cutsceneBattleVictorySpeech,
         "cutsceneBattleDefeat": cutsceneBattleDefeat,
-        "cutscenePlayerGroupReset": cutscenePlayerGroupReset,
+        "cutsceneBattleComplete": cutsceneBattleComplete,
         // Battle transitions
         "cutsceneBattleTransitionLineSpiral": cutsceneBattleTransitionLineSpiral,
         // Battle attack utilities
@@ -6614,6 +6710,10 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroPokemonChoiceRivalTakesPokemon": cutsceneOakIntroPokemonChoiceRivalTakesPokemon,
         "cutsceneOakIntroRivalBattleChallenge": cutsceneOakIntroRivalBattleChallenge,
         "cutsceneOakIntroRivalBattleApproach": cutsceneOakIntroRivalBattleApproach,
+        "cutsceneOakIntroRivalLeavesAfterBattle": cutsceneOakIntroRivalLeavesAfterBattle,
+        "cutsceneOakIntroRivalLeavesComplaint": cutsceneOakIntroRivalLeavesComplaint,
+        "cutsceneOakIntroRivalLeavesGoodbye": cutsceneOakIntroRivalLeavesGoodbye,
+        "cutsceneOakIntroRivalLeavesWalking": cutsceneOakIntroRivalLeavesWalking,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

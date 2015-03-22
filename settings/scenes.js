@@ -2,7 +2,6 @@ FullScreenPokemon.prototype.settings.scenes = {
     "cutscenes": {
         "Battle": {
             "firstRoutine": "Entrance",
-            "lastRoutine": "PlayerGroupReset",
             "routines": {
                 "Entrance": FullScreenPokemon.prototype.cutsceneBattleEntrance,
                 "OpeningText": FullScreenPokemon.prototype.cutsceneBattleOpeningText,
@@ -26,7 +25,7 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "Victory": FullScreenPokemon.prototype.cutsceneBattleVictory,
                 "VictorySpeech": FullScreenPokemon.prototype.cutsceneBattleVictorySpeech,
                 "Defeat": FullScreenPokemon.prototype.cutsceneBattleDefeat,
-                "PlayerGroupReset": FullScreenPokemon.prototype.cutscenePlayerGroupReset,
+                "Complete": FullScreenPokemon.prototype.cutsceneBattleComplete,
                 // Attack utilities
                 "ChangeStatistic": FullScreenPokemon.prototype.cutsceneBattleChangeStatistic,
                 // Attack animations
@@ -97,6 +96,15 @@ FullScreenPokemon.prototype.settings.scenes = {
             "routines": {
                 "Challenge": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleChallenge,
                 "Approach": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleApproach
+            }
+        },
+        "OakIntroRivalLeaves": {
+            "firstRoutine": "AfterBattle",
+            "routines": {
+                "AfterBattle": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesAfterBattle,
+                "Complaint": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesComplaint,
+                "Goodbye": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesGoodbye,
+                "Walking": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesWalking
             }
         }
     }

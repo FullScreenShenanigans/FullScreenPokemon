@@ -180,7 +180,9 @@ function BattleMovr(settings) {
 
         EightBitter.ScenePlayer.startCutscene("Battle", {
             "things": things,
-            "battleInfo": battleInfo    
+            "battleInfo": battleInfo,
+            "nextCutscene": settings.nextCutscene,
+            "nextCutsceneSettings": settings.nextCutsceneSettings
         });
     };
 
@@ -201,10 +203,22 @@ function BattleMovr(settings) {
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
         EightBitter.MenuGrapher.deleteMenu("BattleOptions");
 
-        EightBitter.ScenePlayer.stopCutscene();
-
         if (callback) {
             callback();
+        }
+
+        EightBitter.ScenePlayer.playRoutine("Complete");
+
+        if (battleInfo.nextCutscene) {
+            EightBitter.ScenePlayer.startCutscene(
+                battleInfo.nextCutscene, battleInfo.nextCutsceneSettings
+            );
+        } else if (battleInfo.nextRoutine) {
+            EightBitter.ScenePlayer.playRoutine(
+                battleInfo.nextRoutine, battleInfo.nextRoutineSettings
+            );
+        } else {
+            EightBitter.ScenePlayer.stopCutscene();
         }
     };
 
