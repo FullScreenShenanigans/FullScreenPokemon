@@ -1178,13 +1178,13 @@ var FullScreenPokemon = (function (GameStartr) {
 
         thing.EightBitter.BattleMover.startBattle({
             "player": {
-                "sprite": "PlayerBack",
                 "name": "%%%%%%%PLAYER%%%%%%%",
+                "sprite": "PlayerBack",
                 "category": "Trainer",
                 "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
             },
             "opponent": {
-                "title": chosen.title,
+                "name": chosen.title,
                 "sprite": chosen.title + "Front",
                 "category": "Wild",
                 "actors": [chosenPokemon]
@@ -3494,7 +3494,7 @@ var FullScreenPokemon = (function (GameStartr) {
         };
 
         EightBitter.ScenePlayer.playRoutine(
-            "Attack" + choice, routineArguments
+            "Attack" + choice.replace(" ", ""), routineArguments
         );
     }
 
