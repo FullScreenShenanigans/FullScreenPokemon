@@ -683,6 +683,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "isWalking": false,
             "shouldWalk": false,
             "switchDirectionOnDialog": true,
+            "heightGrass": 4,
             "direction": 2, // top,right,bottom,left is 0,1,2,3
             "offsetY": FullScreenPokemon.unitsize * -2,
             "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
