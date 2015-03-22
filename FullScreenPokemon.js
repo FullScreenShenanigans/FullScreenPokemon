@@ -1072,11 +1072,12 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateSnapToGrid(thing) {
-        var x = (thing.EightBitter.MapScreener.left + thing.left) / 8,
-            y = (thing.EightBitter.MapScreener.top + thing.top) / 8;
+        var grid = thing.EightBitter.unitsize * 8,
+            x = (thing.EightBitter.MapScreener.left + thing.left) / grid,
+            y = (thing.EightBitter.MapScreener.top + thing.top) / grid;
 
-        thing.EightBitter.setLeft(thing, Math.round(x) * 8 - thing.EightBitter.MapScreener.left);
-        thing.EightBitter.setTop(thing, Math.round(y) * 8 - thing.EightBitter.MapScreener.top);
+        thing.EightBitter.setLeft(thing, Math.round(x) * grid - thing.EightBitter.MapScreener.left);
+        thing.EightBitter.setTop(thing, Math.round(y) * grid - thing.EightBitter.MapScreener.top);
     }
 
     /**
@@ -3784,9 +3785,22 @@ var FullScreenPokemon = (function (GameStartr) {
                     "EXP. points!"
                 ].join(" ")
             ],
-            callback
+            EightBitter.ScenePlayer.bindRoutine("ExperienceGain", {
+                "experienceGained": experienceGained
+            })
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleExperienceGain(EightBitter, settings) {
+        var routineArguments = settings.routineArguments;
+
+        console.log("Should animate for experience gain & check for level up!");
+
+        routineArguments.callback();
     }
 
     /**
@@ -6724,6 +6738,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattlePokemonFaints": cutsceneBattlePokemonFaints,
         "cutsceneBattleAfterPlayerPokemonFaints": cutsceneBattleAfterPlayerPokemonFaints,
         "cutsceneBattleAfterOpponentPokemonFaints": cutsceneBattleAfterOpponentPokemonFaints,
+        "cutsceneBattleExperienceGain": cutsceneBattleExperienceGain,
         "cutsceneBattlePlayerChoosesPokemon": cutsceneBattlePlayerChoosesPokemon,
         "cutsceneBattleOpponentChoosesPokemon": cutsceneBattleOpponentChoosesPokemon,
         "cutsceneBattleExitFail": cutsceneBattleExitFail,
