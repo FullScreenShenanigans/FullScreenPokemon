@@ -773,7 +773,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "FenceVertical": [4, 8],
         "Grass": {
             "rarity": 10,
-            "collide": FullScreenPokemon.prototype.collidePlayerGrass
+            "collide": FullScreenPokemon.prototype.collideCharacterGrass
         },
         "HouseBase": {
             "width": 32,

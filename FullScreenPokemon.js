@@ -995,10 +995,17 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function maintainCharacterGrass(EightBitter, thing, other) {
         if (thing.EightBitter.isThingWithinGrass(thing, other)) {
-            // "shadow" manipulation here...
+            thing.EightBitter.setLeft(thing.grassShadow, thing.left);
+            thing.EightBitter.setTop(thing.grassShadow, thing.top);
+            if (thing.grassShadow.className !== thing.className) {
+                thing.EightBitter.setClass(thing.grassShadow, thing.className);
+            }
         } else {
+            thing.EightBitter.killNormal(thing.grassShadow);
+            thing.canvas.height = thing.height * thing.EightBitter.unitsize;
+            thing.EightBitter.PixelDrawer.setThingSprite(thing);
+            delete thing.grassShadow;
             delete thing.grass;
-            thing.EightBitter.setHeight(thing, thing.heightOld, true, true);
         }
     }
 
@@ -2126,7 +2133,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function collidePlayerGrass(thing, other) {
+    function collideCharacterGrass(thing, other) {
         if (
             thing.grass
             || !thing.EightBitter.isThingWithinGrass(thing, other)
@@ -2136,7 +2143,28 @@ var FullScreenPokemon = (function (GameStartr) {
 
         thing.grass = other;
         thing.heightOld = thing.height;
-        thing.EightBitter.setHeight(thing, thing.heightGrass, true, true);
+
+        thing.canvas.height = thing.heightGrass * thing.EightBitter.unitsize;
+        thing.EightBitter.PixelDrawer.setThingSprite(thing);
+
+        thing.grassShadow = thing.EightBitter.ObjectMaker.make(thing.title, {
+            "nocollide": true
+        });
+        
+        if (thing.grassShadow.className !== thing.className) {
+            thing.EightBitter.setClass(thing.grassShadow, thing.className);
+        }
+
+        delete thing.grassShadow.id;
+        thing.EightBitter.addThing(thing.grassShadow, thing.left, thing.top);
+        
+        thing.EightBitter.GroupHolder.switchObjectGroup(
+            thing.grassShadow, thing.grassShadow.groupType, "Terrain"
+        );
+
+        thing.EightBitter.arrayToEnd(
+            thing.grassShadow, thing.EightBitter.GroupHolder.getTerrainGroup()
+        );
 
         return true;
     }
@@ -2345,11 +2373,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function isThingWithinGrass(thing, other) {
-        if (thing.right < other.left) {
+        if (thing.right <= other.left) {
             return false;
         }
 
-        if (thing.left > other.right) {
+        if (thing.left >= other.right) {
             return false;
         }
 
@@ -6635,7 +6663,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "collideCollisionDetector": collideCollisionDetector,
         "collideCharacterDialog": collideCharacterDialog,
         "collidePokeball": collidePokeball,
-        "collidePlayerGrass": collidePlayerGrass,
+        "collideCharacterGrass": collideCharacterGrass,
         // Death
         "killNormal": killNormal,
         // Activations
