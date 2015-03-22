@@ -5,12 +5,12 @@
             various pokemon sounds and other misc sound effects.
  
             In audio.js the gbs data will be stored as a base64 encoded string. Later on, however, we'll
-            decode that and ascii-fy each character to play nicely with the player.
+            decode that and ascii-fy each character to play nicely with the player. 
  
             (TODO CORRECT JS SYNTAX LOL)
  
             something like:
-                    var payload = window.atob(settings.library["blue"]).split('').map(
+                    var payload = window.atob(settings.library["blueThemes"]["gbs"]).split('').map(
                         function(c) {return c.charCodeAt(0);}) ;
  
             then, audioPlayr can interpret 
@@ -70,8 +70,29 @@ function AudioPlayr(settings) {
         fileTypes = settings.fileTypes;
     
         StatsHolder = new StatsHoldr(settings.statistics);
-  
+
+        decodeAll();
     };
+
+
+    /* 
+    Decode all "gbs" entries in library
+    Replace each entry with an array of integers 0-255 representing the decoded ascii contents
+     */
+    
+    function decodeAll() {
+
+        for (var i in library){
+            library[i]["gbs"] = window.atob(library[i]["gbs"]).split('').map(
+                function(c) {
+                    return c.charCodeAt(0);
+                    }
+                );
+            //console.log(library[i]);
+        }
+
+    }
+    
     
     self.clearAll = function () {
 
