@@ -76,8 +76,10 @@ function AudioPlayr(settings) {
 
 
     /* 
-    Decode all "gbs" entries in library
-    Replace each entry with an array of integers 0-255 representing the decoded ascii contents
+    Decode all "gbs" entries in library.
+
+    Replace each entry with an array of integers 0-255 representing the 
+    decoded ascii contents.
      */
     
     function decodeAll() {
@@ -91,6 +93,10 @@ function AudioPlayr(settings) {
             //console.log(library[i]);
         }
 
+    }
+
+    self.play = function(trackName) {
+        
     }
     
     
