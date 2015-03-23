@@ -434,9 +434,20 @@ FullScreenPokemon.prototype.settings.math = {
 
             return total;
         },
-        // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
         // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
         "experienceStarting": function (NumberMaker, constants, equations, title, level) {
+            var currentLevel = this.compute("experienceAtLevel", title, level),
+                nextLevel = this.compute("experienceAtLevel", title, level + 1);
+
+            return {
+                "current": currentLevel,
+                "currentLevel": currentLevel,
+                "nextLevel": nextLevel,
+                "remaining": nextLevel - currentLevel
+            };
+        },
+        // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
+        "experienceAtLevel": function (NumberMaker, constants, equations, title, level) {
             var reference = constants.pokemon[title];
 
             // TODO: remove defaulting to mediumFast
