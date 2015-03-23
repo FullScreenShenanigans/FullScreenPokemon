@@ -3277,6 +3277,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 battleInfo.player,
                 true
             );
+        } else {
+            EightBitter.addBattleDisplayPokemonHealth(FSP, "opponent")
         }
 
         EightBitter.MenuGrapher.addMenuDialog(
