@@ -52,6 +52,9 @@ function AudioPlayr(settings) {
         // A listing of filenames to be turned into <audio> objects.
         library,
 
+        // Master lookup table, keyed by trackName
+        directory,
+
         // What file types to add as sources to sounds.
         fileTypes,
 
@@ -71,7 +74,10 @@ function AudioPlayr(settings) {
     
         StatsHolder = new StatsHoldr(settings.statistics);
 
+        directory = {};
+
         decodeAll();
+        populateDirectory();
     };
 
 
@@ -90,13 +96,37 @@ function AudioPlayr(settings) {
                     return c.charCodeAt(0);
                     }
                 );
-            //console.log(library[i]);
         }
 
     }
 
+    /*
+    Once all "gbs" entries have been decoded, scan through the library and store
+    relevant playback information in the directory, keyed by trackName 
+    */
+    function populateDirectory() {
+
+        for (var i in library) {
+            for (var track in library[i]["tracks"]) {
+                directory[track] = {
+                    "gbs_source" : i,
+                    "track_num"  : library[i]["tracks"][track]
+                }
+            }
+        }
+
+    }
+
+    self.getLibrary = function () {
+        return library;
+    }
+
+    self.getDirectory = function () {
+        return directory;
+    }
+    
     self.play = function(trackName) {
-        
+
     }
     
     
