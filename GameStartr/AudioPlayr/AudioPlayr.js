@@ -125,6 +125,10 @@ function AudioPlayr(settings) {
         return directory;
     }
 
+    /* 
+    Play a sound or theme, keyed by track name. 
+    FSP.AudioPlayer.play("openingTheme")
+    */
     self.play = function(track) {
 
         var payload = library[directory[track]["gbs_source"]]["gbs"];
@@ -132,6 +136,11 @@ function AudioPlayr(settings) {
         playMusicData(payload, subtune);
 
     }
+
+    /* For now, stop() will just stop all sound */
+    self.stop = function (){
+        node.disconnect();
+}   
     
     
     self.clearAll = function () {
