@@ -45,6 +45,7 @@
 function AudioPlayr(settings) {
     "use strict";
     if (!this || this === window) {
+        console.log("new playr");
         return new AudioPlayr(settings);
     }
     var self = this,
@@ -124,8 +125,12 @@ function AudioPlayr(settings) {
     self.getDirectory = function () {
         return directory;
     }
-    
-    self.play = function(trackName) {
+
+    self.play = function(track) {
+
+        var payload = library[directory[track]["gbs_source"]]["gbs"];
+        var subtune   = directory[track]["track_num"];
+        playMusicData(payload, subtune);
 
     }
     
