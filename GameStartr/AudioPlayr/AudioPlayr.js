@@ -71,10 +71,18 @@ function AudioPlayr(settings) {
     self.reset = function (settings) {
         library = settings.library;
         fileTypes = settings.fileTypes;
-    
         StatsHolder = new StatsHoldr(settings.statistics);
 
         directory = {};
+
+        /*
+        @Josh - I should be able to do this here, not in play(), right?
+
+        declare variables to help libgme.js play our file via webkit audio api
+        var ref;
+        var emu;
+        var node;
+        */
 
         decodeAll();
         populateDirectory();
@@ -125,26 +133,94 @@ function AudioPlayr(settings) {
         return directory;
     }
 
+
+    /* Initialize ref, emu, node, ctx */
+    function setupAudioContext() {
+
+
+
+
+    }
     /* 
     Play a sound or theme, keyed by track name. 
     FSP.AudioPlayer.play("openingTheme")
     */
     self.play = function(track) {
+        // Grab necessary information to play the track from "library" and "directory"
         var payload = library[directory[track]["gbs_source"]]["gbs"];
         var subtune   = directory[track]["track_num"];
-        playMusicData(payload, subtune);
+    
+        // required for libgme.js
+        var ref = Module.allocate(1, "i32", Module.ALLOC_STATIC);
+        // FSP doesn't run on Safari anyway, so assume the user is opening with Chrome
+        var ctx = new AudioContext(); // | window.HTMLAudioElement
+
+        // attempt to open the payload
+        if (Module.ccall("gme_open_data", "number", ["array", "number", "number", "number"], [payload, payload.length, ref, ctx.sampleRate]) != 0){
+            console.error("gme_open_data failed.");
+            return;
+        }
+
+        // determine the type of emulator to use to play this payload
+        var emu = Module.getValue(ref, "i32");
+
+        if (Module.ccall("gme_start_track", "number", ["number", "number"], [emu, subtune]) != 0)
+            console.log("could not load track");
+
+        // actually play the track
+        var node = play_song(ctx, emu);
+        window.savedReferences = [ctx, node];
 
     }
 
-    /* For now, stop() will just stop all sound */
+    /* Private function that ACTUALLY plays the song, in user's current context */
+    function play_song (ctx, emu) {
+        var node;
+        var bufferSize = 1024 * 16;
+        var inputs = 2;
+        var outputs = 2;
+        
+        if(!node && ctx.createJavaScriptNode)node = ctx.createJavaScriptNode(bufferSize, inputs, outputs);
+        if(!node && ctx.createScriptProcessor)node = ctx.createScriptProcessor(bufferSize, inputs, outputs);
+
+        var buffer = Module.allocate(bufferSize * 2, "i32", Module.ALLOC_STATIC);
+
+        var INT16_MAX = Math.pow(2, 32) - 1;
+
+        node.onaudioprocess = function(e) {
+            if (Module.ccall("gme_track_ended", "number", ["number"], [emu]) == 1) {
+                // Can put any 'end-of-song' event handlers here, once audioPlayr is more fleshed out
+                node.disconnect();
+                node = null;
+                console.log("end of song");
+                return;
+            }
+
+            var channels = [e.outputBuffer.getChannelData(0), e.outputBuffer.getChannelData(1)];
+
+            var err = Module.ccall("gme_play", "number", ["number", "number", "number"], [emu, bufferSize * 2, buffer]);
+
+            if (err) {
+                console.log("error with Module.gme_play");
+            }
+
+            for (var i = 0; i < bufferSize; i++)
+                for (var n = 0; n < e.outputBuffer.numberOfChannels; n++)
+                    channels[n][i] = Module.getValue(buffer + i * e.outputBuffer.numberOfChannels * 2 + n * 4, "i32") / INT16_MAX;
+        } 
+
+        node.connect(ctx.destination)
+        return node;
+    }
+
+    /* 
     self.stop = function (){
         if (node) {
             node.disconnect();
             node = null; 
         }
-
-}   
-    
+    }   
+    */
     
     self.clearAll = function () {
 
@@ -165,5 +241,6 @@ function AudioPlayr(settings) {
     self.setMutedOff = function() {
         
     }
+
     self.reset(settings || {});
 }
