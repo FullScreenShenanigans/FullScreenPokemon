@@ -45,12 +45,11 @@
 function AudioPlayr(settings) {
     "use strict";
     if (!this || this === window) {
-        console.log("new playr");
         return new AudioPlayr(settings);
     }
     var self = this,
 
-        // A listing of filenames to be turned into <audio> objects.
+        // A listing of GBS sources
         library,
 
         // Master lookup table, keyed by trackName

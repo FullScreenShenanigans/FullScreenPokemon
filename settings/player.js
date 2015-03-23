@@ -39,7 +39,7 @@ function playMusicData(payload, subtune){
 		try{
 			//ëºÇÃÇ∆Ç±ÇÎÇ≈çÏÇ¡ÇΩÇÃÇégÇ¢Ç‹ÇÌÇ∑
 		    //ctx = audioContext;//new AudioContext();
-		    ctx = new webkitAudioContext();
+		    ctx = new AudioContext();
 		}catch(e){
 			alert("audio api error.please reload..: "+e);
 			return;
