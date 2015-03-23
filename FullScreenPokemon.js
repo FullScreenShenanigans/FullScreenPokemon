@@ -3585,7 +3585,6 @@ var FullScreenPokemon = (function (GameStartr) {
             routineArguments = settings.routineArguments,
             choice = routineArguments.choiceOpponent;
 
-
         routineArguments.damage = EightBitter.MathDecider.compute(
             "damage", choice, opponentActor, playerActor
         );
@@ -3600,12 +3599,6 @@ var FullScreenPokemon = (function (GameStartr) {
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
-
-
-    //EightBitter.ScenePlayer.playRoutine("Damage", {
-    //    "battlerName": "player",
-    //    "damage": damage
-    //});
 
     /**
      * 
@@ -3647,9 +3640,15 @@ var FullScreenPokemon = (function (GameStartr) {
             });
         };
 
-        EightBitter.ScenePlayer.playRoutine(
-            "Attack" + choice, routineArguments
-        );
+        // @todo: When all moves have been implemented, this will be simplified.
+        if (!EightBitter.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+            console.warn(choice + " attack animation not implemented...");
+            routineArguments.callback();
+        } else {
+            EightBitter.ScenePlayer.playRoutine(
+                "Attack" + choice.replace(" ", ""), routineArguments
+            );
+        }
     }
 
     /**
@@ -3758,7 +3757,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleAfterOpponentPokemonFaints(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             opponent = battleInfo.opponent,
             actorAvailable = EightBitter.checkArrayMembersIndex(
                 opponent.actors, "HP"
@@ -3788,7 +3787,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 ].join(" ")
             ],
             EightBitter.ScenePlayer.bindRoutine("ExperienceGain", {
-                "experienceGained": experienceGained
+                "experienceGained": experienceGained,
+                "callback": callback
             })
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -3798,11 +3798,59 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleExperienceGain(EightBitter, settings) {
-        var routineArguments = settings.routineArguments;
+        var battleInfo = settings.battleInfo,
+            routineArguments = settings.routineArguments,
+            gains = routineArguments.experienceGained,
+            actor = battleInfo.player.selectedActor,
+            experience = actor.experience;
 
-        console.log("Should animate for experience gain & check for level up!");
+        console.warn("Experience gain is hardcoded to the current actor...");
 
-        routineArguments.callback();
+        gains = 9001;
+
+        if (experience.current + gains > experience.levelNext) {
+            gains -= experience.remaining;
+            EightBitter.ScenePlayer.playRoutine("LevelUp", {
+                "experienceGained": gains,
+                "callback": routineArguments.callback
+            });
+        } else {
+            routineArguments.callback();
+        }
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleLevelUp(EightBitter, settings) {
+        var battleInfo = settings.battleInfo,
+            routineArguments = settings.routineArguments,
+            gains = routineArguments.experienceGained,
+            actor = battleInfo.player.selectedActor;
+
+        actor.level += 1;
+
+        console.warn("Leveling up does not yet increase stats...");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                actor.nickname + " grew to level " + actor.level + "!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine(
+                "LevelUpStats", routineArguments
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleLevelUpStats(EightBitter, settings) {
+        console.log("yeah!");
+        settings.routineArguments.callback();
     }
 
     /**
@@ -3823,7 +3871,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleOpponentChoosesPokemon(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             opponent = battleInfo.opponent,
             actors = opponent.actors,
             actor, i;
@@ -3899,7 +3947,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleVictorySpeech(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial"),
             timeout = 35,
             opponent = EightBitter.BattleMover.setThing(
@@ -3945,7 +3993,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleDefeat(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             message = [
                 "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!"
             ],
@@ -3978,13 +4026,13 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleComplete(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
+            keptThings, thing, i;
+
+        if (battleInfo.keptThings) {
             keptThings = battleInfo.keptThings.slice(),
-            thing, i;
+            keptThings.push(EightBitter.player);
 
-        keptThings.push(EightBitter.player);
-
-        if (keptThings) {
             for (i = 0; i < keptThings.length; i += 1) {
                 if (keptThings[i].constructor === String) {
                     keptThings[i] = EightBitter.getThingById(keptThings[i]);
@@ -4014,12 +4062,13 @@ var FullScreenPokemon = (function (GameStartr) {
             height = Math.ceil(screenHeight / divisor),
             numTimes = 0,
             direction = 2,
-            keptThings = settings.keptThings.slice(),
             things = [],
-            thing, difference, destination,
+            keptThings, thing, difference, destination,
             i;
 
         if (keptThings) {
+            keptThings = settings.keptThings.slice();
+
             for (i = 0; i < keptThings.length; i += 1) {
                 if (keptThings[i].constructor === String) {
                     keptThings[i] = EightBitter.getThingById(keptThings[i]);
@@ -4140,7 +4189,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleChangeStatistic(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             routineArguments = settings.routineArguments,
             defenderName = routineArguments.defenderName,
             defender = battleInfo[defenderName].selectedActor,
@@ -4189,7 +4238,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleAttackGrowl(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             routineArguments = settings.routineArguments,
             attackerName = routineArguments.attackerName,
             defenderName = routineArguments.defenderName,
@@ -4216,7 +4265,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleAttackTackle(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             routineArguments = settings.routineArguments,
             attackerName = routineArguments.attackerName,
             defenderName = routineArguments.defenderName,
@@ -4270,7 +4319,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleAttackTailWhip(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+        var battleInfo = settings.battleInfo,
             routineArguments = settings.routineArguments,
             attackerName = routineArguments.attackerName,
             defenderName = routineArguments.defenderName,
@@ -6741,6 +6790,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleAfterPlayerPokemonFaints": cutsceneBattleAfterPlayerPokemonFaints,
         "cutsceneBattleAfterOpponentPokemonFaints": cutsceneBattleAfterOpponentPokemonFaints,
         "cutsceneBattleExperienceGain": cutsceneBattleExperienceGain,
+        "cutsceneBattleLevelUp": cutsceneBattleLevelUp,
+        "cutsceneBattleLevelUpStats": cutsceneBattleLevelUpStats,
         "cutsceneBattlePlayerChoosesPokemon": cutsceneBattlePlayerChoosesPokemon,
         "cutsceneBattleOpponentChoosesPokemon": cutsceneBattleOpponentChoosesPokemon,
         "cutsceneBattleExitFail": cutsceneBattleExitFail,

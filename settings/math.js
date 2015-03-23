@@ -11,7 +11,7 @@ FullScreenPokemon.prototype.settings.math = {
                     "types": constants.pokemon[title].types,
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
-                    "experience": this.compute("experienceStarting", title, level)
+                    "experience": this.compute("newPokemonExperience", title, level)
                 },
                 i;
 
@@ -98,6 +98,18 @@ FullScreenPokemon.prototype.settings.math = {
             numerator = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
 
             return (numerator / 50 + added) | 0;
+        },
+        // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
+        "newPokemonExperience": function (NumberMaker, constants, equations, title, level) {
+            var levelCurrent = this.compute("experienceAtLevel", title, level),
+                levelNext = this.compute("experienceAtLevel", title, level + 1);
+
+            return {
+                "current": levelCurrent,
+                "levelCurrent": levelCurrent,
+                "levelNext": levelNext,
+                "remaining": levelNext - levelCurrent
+            };
         },
         // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
         "doesGrassEncounterHappen": function (NumberMaker, constants, equations, grass) {
@@ -433,18 +445,6 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             return total;
-        },
-        // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
-        "experienceStarting": function (NumberMaker, constants, equations, title, level) {
-            var currentLevel = this.compute("experienceAtLevel", title, level),
-                nextLevel = this.compute("experienceAtLevel", title, level + 1);
-
-            return {
-                "current": currentLevel,
-                "currentLevel": currentLevel,
-                "nextLevel": nextLevel,
-                "remaining": nextLevel - currentLevel
-            };
         },
         // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
         "experienceAtLevel": function (NumberMaker, constants, equations, title, level) {

@@ -60,6 +60,13 @@ function ScenePlayr(settings) {
     /**
      * 
      */
+    self.getOtherRoutine = function (name) {
+        return cutscene.routines[name];
+    };
+
+    /**
+     * 
+     */
     self.getCutsceneName = function () {
         return cutsceneName;
     };

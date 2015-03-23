@@ -21,6 +21,8 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "AfterPlayerPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterPlayerPokemonFaints,
                 "AfterOpponentPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterOpponentPokemonFaints,
                 "ExperienceGain": FullScreenPokemon.prototype.cutsceneBattleExperienceGain,
+                "LevelUp": FullScreenPokemon.prototype.cutsceneBattleLevelUp,
+                "LevelUpStats": FullScreenPokemon.prototype.cutsceneBattleLevelUpStats,
                 "BattleExitFail": FullScreenPokemon.prototype.cutsceneBattleExitFail,
                 "BattleExitFailReturn": FullScreenPokemon.prototype.cutsceneBattleExitFailReturn,
                 "Victory": FullScreenPokemon.prototype.cutsceneBattleVictory,
