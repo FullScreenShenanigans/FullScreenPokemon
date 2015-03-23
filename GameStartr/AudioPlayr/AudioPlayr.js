@@ -55,9 +55,6 @@ function AudioPlayr(settings) {
         // Master lookup table, keyed by trackName
         directory,
 
-        // What file types to add as sources to sounds.
-        fileTypes,
-
         // The currently playing theme.
         theme,
 
@@ -70,7 +67,6 @@ function AudioPlayr(settings) {
      */
     self.reset = function (settings) {
         library = settings.library;
-        fileTypes = settings.fileTypes;
         StatsHolder = new StatsHoldr(settings.statistics);
 
         directory = {};

@@ -1,5 +1,4 @@
 FullScreenPokemon.prototype.settings.audio = {
-    "fileTypes": ["gbs"],
     "statistics": {
         "prefix": "FullScreenPokemon::AudioPlayer::",
         "values": {
