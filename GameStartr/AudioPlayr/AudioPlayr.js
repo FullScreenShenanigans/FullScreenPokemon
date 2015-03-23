@@ -130,7 +130,6 @@ function AudioPlayr(settings) {
     FSP.AudioPlayer.play("openingTheme")
     */
     self.play = function(track) {
-
         var payload = library[directory[track]["gbs_source"]]["gbs"];
         var subtune   = directory[track]["track_num"];
         playMusicData(payload, subtune);
@@ -139,7 +138,11 @@ function AudioPlayr(settings) {
 
     /* For now, stop() will just stop all sound */
     self.stop = function (){
-        node.disconnect();
+        if (node) {
+            node.disconnect();
+            node = null; 
+        }
+
 }   
     
     
