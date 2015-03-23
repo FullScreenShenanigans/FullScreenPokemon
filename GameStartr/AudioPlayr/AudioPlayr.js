@@ -74,6 +74,7 @@ function AudioPlayr(settings) {
         StatsHolder = new StatsHoldr(settings.statistics);
 
         directory = {};
+        theme = null;
 
         /*
         @Josh - I should be able to do this here, not in play(), right?
@@ -168,6 +169,7 @@ function AudioPlayr(settings) {
             console.log("could not load track");
 
         // actually play the track
+        theme = track;
         var node = play_song(ctx, emu);
         window.savedReferences = [ctx, node];
 
@@ -192,7 +194,9 @@ function AudioPlayr(settings) {
                 // Can put any 'end-of-song' event handlers here, once audioPlayr is more fleshed out
                 node.disconnect();
                 node = null;
+                
                 console.log("end of song");
+                theme = null;
                 return;
             }
 
@@ -240,6 +244,10 @@ function AudioPlayr(settings) {
     
     self.setMutedOff = function() {
         
+    }
+
+    self.getTheme = function () {
+        return theme;
     }
 
     self.reset(settings || {});
