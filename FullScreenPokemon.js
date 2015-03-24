@@ -1200,22 +1200,39 @@ var FullScreenPokemon = (function (GameStartr) {
                 "newPokemon",
                 chosen.title,
                 thing.EightBitter.NumberMaker.randomArrayMember(chosen.levels)
-            );
+            ),
+            callback = thing.EightBitter.BattleMover.startBattle.bind(
+                thing.EightBitter.BattleMover,
+                {
+                    "player": {
+                        "name": "%%%%%%%PLAYER%%%%%%%",
+                        "sprite": "PlayerBack",
+                        "category": "Trainer",
+                        "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
+                    },
+                    "opponent": {
+                        "name": chosen.title,
+                        "sprite": chosen.title + "Front",
+                        "category": "Wild",
+                        "actors": [chosenPokemon]
+                    }
+                }
+            ),
+            animation = thing.EightBitter.NumberMaker.randomArrayMember([
+                "LineSpiral"
+            ]);
 
-        thing.EightBitter.BattleMover.startBattle({
-            "player": {
-                "name": "%%%%%%%PLAYER%%%%%%%",
-                "sprite": "PlayerBack",
-                "category": "Trainer",
-                "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
-            },
-            "opponent": {
-                "name": chosen.title,
-                "sprite": chosen.title + "Front",
-                "category": "Wild",
-                "actors": [chosenPokemon]
+        thing.EightBitter.removeClass(thing, "walking");
+        if (thing.grassShadow) {
+            thing.EightBitter.removeClass(thing.grassShadow, "walking");
+        }
+
+        thing.EightBitter["cutsceneBattleTransition" + animation](
+            thing.EightBitter, {
+                "callback": callback,
+                "keptThings": [thing, thing.grassShadow]
             }
-        });
+        );
     }
 
     /**
@@ -3406,6 +3423,8 @@ var FullScreenPokemon = (function (GameStartr) {
             left = menu.right - EightBitter.unitsize * 8,
             top = menu.top + EightBitter.unitsize * 32;
 
+        console.warn("Should reset *Normal statistics for opponent Pokemon.");
+
         settings.opponentLeft = left;
         settings.opponentTop = top;
 
@@ -3451,6 +3470,8 @@ var FullScreenPokemon = (function (GameStartr) {
         var menu = settings.things.menu,
             left = menu.left + EightBitter.unitsize * 8,
             top = menu.bottom - EightBitter.unitsize * 8;
+
+        console.warn("Should reset *Normal statistics for player Pokemon.");
 
         settings.playerLeft = left;
         settings.playerTop = top;
@@ -3803,9 +3824,10 @@ var FullScreenPokemon = (function (GameStartr) {
 
         console.warn("Experience gain is hardcoded to the current actor...");
 
-        gains = 9001;
+        experience.current += gains;
+        experience.remaining -= gains;
 
-        if (experience.current + gains > experience.levelNext) {
+        if (experience.remaining < 0) {
             gains -= experience.remaining;
             EightBitter.ScenePlayer.playRoutine("LevelUp", {
                 "experienceGained": gains,
@@ -3826,6 +3848,9 @@ var FullScreenPokemon = (function (GameStartr) {
             actor = battleInfo.player.selectedActor;
 
         actor.level += 1;
+        actor.experience = EightBitter.MathDecider.compute(
+            "newPokemonExperience", actor.title, actor.level
+        );
 
         console.warn("Leveling up does not yet increase stats...");
 
@@ -3861,6 +3886,14 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         EightBitter.MenuGrapher.createMenu("LevelUpStats", {
+            "container": "BattleDisplayInitial",
+            "position": {
+                "horizontal": "right",
+                "vertical": "bottom",
+                "offset": {
+                    "left": 4
+                }
+            },
             "onMenuDelete": routineArguments.callback,
             "childrenSchemas": statistics.map(function (string, i) {
                 if (i < numStatistics) {
@@ -4079,6 +4112,8 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
+        EightBitter.StatsHolder.set("PokemonInParty", battleInfo.player.actors);
+
         if (settings.nextCutscene) {
             EightBitter.ScenePlayer.startCutscene(
                 settings.nextCutscene, settings.nextCutsceneSettings
@@ -4099,11 +4134,12 @@ var FullScreenPokemon = (function (GameStartr) {
             numTimes = 0,
             direction = 2,
             things = [],
-            keptThings, thing, difference, destination,
+            keptThings = settings.keptThings,
+            thing, difference, destination,
             i;
 
         if (keptThings) {
-            keptThings = settings.keptThings.slice();
+            keptThings = keptThings.slice();
 
             for (i = 0; i < keptThings.length; i += 1) {
                 if (keptThings[i].constructor === String) {
