@@ -74,7 +74,7 @@ function AudioPlayr(settings) {
         }
 
         if (typeof settings.statistics === "undefined") {
-            throw new Error("No library given to AudioPlayr.");
+            throw new Error("No statistics given to AudioPlayr.");
         }
 
         library     = settings.library;
