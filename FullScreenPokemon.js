@@ -1406,17 +1406,18 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function animateFadeToColor(EightBitter, color, callback) {
         var blank = EightBitter.ObjectMaker.make(color + "Square", {
-            "width": EightBitter.MapScreener.width,
-            "height": EightBitter.MapScreener.height,
-            "opacity": 0
-        });
+                "width": EightBitter.MapScreener.width,
+                "height": EightBitter.MapScreener.height,
+                "opacity": 0
+            }),
+            args = arguments;
 
         EightBitter.addThing(blank);
 
         EightBitter.animateFadeAttribute(blank, "opacity", .33, 1, 4, function () {
             EightBitter.killNormal(blank);
             if (callback) {
-                callback.apply(this, arguments);
+                callback.apply(this, args);
             }
         });
 
@@ -1428,17 +1429,18 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function animateFadeFromColor(EightBitter, color, callback) {
         var blank = EightBitter.ObjectMaker.make(color + "Square", {
-            "width": EightBitter.MapScreener.width,
-            "height": EightBitter.MapScreener.height,
-            "opacity": 1,
-        });
+                "width": EightBitter.MapScreener.width,
+                "height": EightBitter.MapScreener.height,
+                "opacity": 1,
+            }),
+            args = arguments;
 
         EightBitter.addThing(blank);
 
         EightBitter.animateFadeAttribute(blank, "opacity", -.33, 0, 4, function () {
             EightBitter.killNormal(blank);
             if (callback) {
-                callback.apply(this, arguments);
+                callback.apply(this, args);
             }
         });
 
@@ -4259,6 +4261,58 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     * 
+     * @remarks Three [black, white] flashes, then the spiral
+     */
+    function cutsceneBattleTransitionFlash(EightBitter, settings) {
+        var flashes = settings.flashes || 6,
+            flashColors = settings.flashColors || ["Black", "White"],
+            callback = settings.callback,
+            repeater = function () {
+                if (completed >= flashes) {
+                    if (callback) {
+                        callback();
+                    }
+                    return;
+                }
+
+                color = flashColors[completed % flashColors.length];
+                completed += 1;
+
+                EightBitter.animateFadeToColor(
+                    EightBitter,
+                    color,
+                    EightBitter.animateFadeFromColor.bind(
+                        EightBitter, EightBitter, color, repeater
+                    )
+                );
+            },
+            completed = 0,
+            color;
+
+        repeater();
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleTransitionTwist(EightBitter, settings) {
+
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleTransitionFlashTwist(EightBitter, settings) {
+        EightBitter.cutsceneBattleTransitionFlash(EightBitter, {
+            "callback": EightBitter.cutsceneBattleTransitionTwist.bind(
+                EightBitter, settings
+            )
+        });
+    }
+
+    /**
+     * 
      */
     function cutsceneBattleChangeStatistic(EightBitter, settings) {
         var battleInfo = settings.battleInfo,
@@ -6874,6 +6928,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleComplete": cutsceneBattleComplete,
         // Battle transitions
         "cutsceneBattleTransitionLineSpiral": cutsceneBattleTransitionLineSpiral,
+        "cutsceneBattleTransitionFlash": cutsceneBattleTransitionFlash,
+        "cutsceneBattleTransitionTwist": cutsceneBattleTransitionTwist,
+        "cutsceneBattleTransitionFlashTwist": cutsceneBattleTransitionFlashTwist,
         // Battle attack utilities
         "cutsceneBattleChangeStatistic": cutsceneBattleChangeStatistic,
         // Battle attack animations
