@@ -65,10 +65,10 @@ function AudioPlayr(settings) {
      @param {Object} library     - Tracklists and encoded contents of any 
                                     sound files, keyed by file.
      @param {Object} statistics - Should contain "muted" and "volume" 
-                                    values to be passed to the internal StatsHolder.
+                                    values to be passed to the internal 
+                                    StatsHolder.
      */
     self.reset = function (settings) {
-
         if (typeof settings.library === "undefined") {
             throw new Error("No library given to AudioPlayr.");
         }
@@ -77,7 +77,7 @@ function AudioPlayr(settings) {
             throw new Error("No library given to AudioPlayr.");
         }
 
-        library = settings.library;
+        library     = settings.library;
         StatsHolder = new StatsHoldr(settings.statistics);
 
         // Initially, the directory is empty, and nothing is playing.
@@ -111,7 +111,7 @@ function AudioPlayr(settings) {
 
     /*
     Once all "gbs" entries have been decoded, scan through the library and 
-    store relevant playback information in the directory, keyed by trackName .
+    store relevant playback information in the directory, keyed by trackName.
     */
     function populateDirectory() {
         for (var i in library) {
@@ -179,15 +179,16 @@ function AudioPlayr(settings) {
         if(!node && ctx.createScriptProcessor)
             node = ctx.createScriptProcessor(bufferSize, inputs, outputs);
 
-        var buffer = Module.allocate(bufferSize * 2, "i32", Module.ALLOC_STATIC);
+        var buffer = Module.allocate(bufferSize * 2, "i32", 
+            Module.ALLOC_STATIC);
 
         var INT16_MAX = Math.pow(2, 32) - 1;
 
         node.onaudioprocess = function(e) {
             if (Module.ccall("gme_track_ended", "number", ["number"],
                      [emu]) == 1) {
-                // Can put any 'end-of-song' event handlers here, once audioPlayr 
-                // is more fleshed out
+                // Can put any 'end-of-song' event handlers here, once 
+                // AudioPlayr is more fleshed out.
                 node.disconnect();
                 console.log("end of song");
                 theme = null;
@@ -207,7 +208,8 @@ function AudioPlayr(settings) {
 
             for (var i = 0; i < bufferSize; i++)
                 for (var n = 0; n < e.outputBuffer.numberOfChannels; n++) {
-                    var tmp        = buffer + i * e.outputBuffer.numberOfChannels * 2 + n * 4;
+                    var tmp = buffer + 
+                        (i * e.outputBuffer.numberOfChannels * 2) + (n * 4);
                     channels[n][i] = Module.getValue(tmp, "i32") / INT16_MAX;
                 }
         } 
