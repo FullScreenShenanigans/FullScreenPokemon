@@ -1838,9 +1838,16 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.talking = false;
         other.talking = false;
         thing.canKeyWalking = true;
+
         if (other.directionPreferred) {
             thing.EightBitter.animateCharacterSetDirection(
                 other, other.directionPreferred
+            );
+        }
+
+        if (typeof other.pushDirection !== "undefined") {
+            thing.EightBitter.animateCharacterStartTurning(
+                thing, other.pushDirection, other.pushSteps.slice()
             );
         }
     }
@@ -2298,7 +2305,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     thing.EightBitter.MenuGrapher.deleteMenu("GeneralText");
                     if (typeof other.pushDirection !== "undefined") {
                         thing.EightBitter.animateCharacterStartTurning(
-                            thing, other.pushDirection, other.pushSteps.slice(0)
+                            thing, other.pushDirection, other.pushSteps.slice()
                         )
                     }
                 }

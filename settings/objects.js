@@ -13,6 +13,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Lady": {},
                 "Mother": {},
                 "Oak": {},
+                "OldMan": {},
                 "Player": {},
                 "Pokeball": {},
                 "Rival": {},
@@ -700,6 +701,11 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "Oak": {
             "nocollide": true  // remove...
+        },
+        "OldMan": {
+            "attributes": {
+                "resting": {}
+            }
         },
         "Player": {
             "id": "player",
