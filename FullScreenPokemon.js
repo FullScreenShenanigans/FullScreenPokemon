@@ -4325,6 +4325,12 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     * 
+     * I think the way to do this would be to treat each quarter of the screen
+     * as one section. Divide each section into 10 parts. On each interval
+     * increase the maximum the parts can be, while each part is a fraction of
+     * the maximum, rounded to a large amount to appear pixellated (perhaps,
+     * unitsize * 32?).
      */
     function cutsceneBattleTransitionTwist(EightBitter, settings) {
 
