@@ -1219,7 +1219,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 }
             ),
             animation = thing.EightBitter.NumberMaker.randomArrayMember([
-                "LineSpiral"
+                /*"LineSpiral", */"Flash"
             ]);
 
         thing.EightBitter.removeClass(thing, "walking");
@@ -1404,8 +1404,12 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateFadeToColor(EightBitter, color, callback) {
-        var blank = EightBitter.ObjectMaker.make(color + "Square", {
+    function animateFadeToColor(EightBitter, settings) {
+        var color = settings.color,
+            callback = settings.callback,
+            change = settings.change || .33,
+            speed = settings.speed || 4,
+            blank = EightBitter.ObjectMaker.make(color + "Square", {
                 "width": EightBitter.MapScreener.width,
                 "height": EightBitter.MapScreener.height,
                 "opacity": 0
@@ -1414,12 +1418,19 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(blank);
 
-        EightBitter.animateFadeAttribute(blank, "opacity", .33, 1, 4, function () {
-            EightBitter.killNormal(blank);
-            if (callback) {
-                callback.apply(this, args);
+        EightBitter.animateFadeAttribute(
+            blank,
+            "opacity",
+            change,
+            1,
+            4,
+            function () {
+                EightBitter.killNormal(blank);
+                if (callback) {
+                    callback.apply(this, args);
+                }
             }
-        });
+        );
 
         return blank;
     }
@@ -1427,8 +1438,12 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function animateFadeFromColor(EightBitter, color, callback) {
-        var blank = EightBitter.ObjectMaker.make(color + "Square", {
+    function animateFadeFromColor(EightBitter, settings) {
+        var color = settings.color,
+            callback = settings.callback,
+            change = settings.change || .33,
+            speed = settings.speed || 4,
+            blank = EightBitter.ObjectMaker.make(color + "Square", {
                 "width": EightBitter.MapScreener.width,
                 "height": EightBitter.MapScreener.height,
                 "opacity": 1,
@@ -1437,12 +1452,19 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(blank);
 
-        EightBitter.animateFadeAttribute(blank, "opacity", -.33, 0, 4, function () {
-            EightBitter.killNormal(blank);
-            if (callback) {
-                callback.apply(this, args);
+        EightBitter.animateFadeAttribute(
+            blank,
+            "opacity",
+            -change,
+            0,
+            speed,
+            function () {
+                EightBitter.killNormal(blank);
+                if (callback) {
+                    callback.apply(this, args);
+                }
             }
-        });
+        );
 
         return blank;
     }
@@ -2321,11 +2343,10 @@ var FullScreenPokemon = (function (GameStartr) {
 
         other.active = false;
 
-        thing.EightBitter.animateFadeToColor(
-            thing.EightBitter,
-            "Black",
-            callback.apply.bind(callback, thing.EightBitter, args)
-        );
+        thing.EightBitter.animateFadeToColor(thing.EightBitter, {
+            "color": "Black",
+            "callback": callback.apply.bind(callback, thing.EightBitter, args)
+        });
     }
 
     /**
@@ -3995,9 +4016,9 @@ var FullScreenPokemon = (function (GameStartr) {
         if (!battleInfo.opponent.hasActors) {
             EightBitter.BattleMover.closeBattle(
                 EightBitter.animateFadeFromColor.bind(
-                    EightBitter,
-                    EightBitter,
-                    "White"
+                    EightBitter, EightBitter, {
+                        "color": "White"
+                    }
                 )
             );
             return;
@@ -4049,9 +4070,9 @@ var FullScreenPokemon = (function (GameStartr) {
                     EightBitter.BattleMover.closeBattle.bind(
                         EightBitter.BattleMover,
                         EightBitter.animateFadeFromColor.bind(
-                            EightBitter,
-                            EightBitter,
-                            "White"
+                            EightBitter, EightBitter, {
+                                "color": "White"
+                            }
                         )
                     )
                 );
@@ -4084,9 +4105,10 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             message,
-            EightBitter.animateFadeToColor.bind(
-                EightBitter, EightBitter, "Black", callback
-            )
+            EightBitter.animateFadeToColor.bind(EightBitter, EightBitter, {
+                "color": "Black",
+                "callback": callback
+            })
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
@@ -4268,6 +4290,8 @@ var FullScreenPokemon = (function (GameStartr) {
         var flashes = settings.flashes || 6,
             flashColors = settings.flashColors || ["Black", "White"],
             callback = settings.callback,
+            change = settings.change || .33,
+            speed = settings.speed || 1,
             repeater = function () {
                 if (completed >= flashes) {
                     if (callback) {
@@ -4279,13 +4303,19 @@ var FullScreenPokemon = (function (GameStartr) {
                 color = flashColors[completed % flashColors.length];
                 completed += 1;
 
-                EightBitter.animateFadeToColor(
-                    EightBitter,
-                    color,
-                    EightBitter.animateFadeFromColor.bind(
-                        EightBitter, EightBitter, color, repeater
+                EightBitter.animateFadeToColor(EightBitter, {
+                    "color": color,
+                    "change": change,
+                    "speed": speed,
+                    "callback": EightBitter.animateFadeFromColor.bind(
+                        EightBitter, EightBitter, {
+                            "color": color,
+                            "change": change,
+                            "speed": speed,
+                            "callback": repeater
+                        }
                     )
-                );
+                });
             },
             completed = 0,
             color;
@@ -5879,7 +5909,9 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.GamesRunner.play();
 
-        EightBitter.animateFadeFromColor(EightBitter, "Black");
+        EightBitter.animateFadeFromColor(EightBitter, {
+            "color": "Black"
+        });
     }
 
     /**
