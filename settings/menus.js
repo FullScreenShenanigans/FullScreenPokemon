@@ -73,7 +73,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": 60
                 }
             },
-            "onDelete": FullScreenPokemon.prototype.closePauseMenu,
+            "onMenuDelete": FullScreenPokemon.prototype.closePauseMenu,
             "textXOffset": 8,
             "textYOffset": 8,
             "textPaddingY": 7.75
@@ -1156,6 +1156,21 @@ FullScreenPokemon.prototype.settings.menus = {
             "textYOffset": 3.5,
             "textPaddingY": 4,
             "arrowXOffset": 1
+        },
+        "LevelUpStats": {
+            "size": {
+                "width": 44,
+                "height": 40
+            },
+            "position": {
+
+            },
+            "textSpeed": 0,
+            "textXOffset": 8,
+            "textYOffset": 4,
+            "textPaddingY": 4,
+            //"textStartingX": "right",
+            //"textWidthMultiplier": -1
         },
         "NameOptions": {
             "size": {

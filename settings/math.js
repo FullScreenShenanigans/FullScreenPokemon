@@ -113,6 +113,7 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
         "doesGrassEncounterHappen": function (NumberMaker, constants, equations, grass) {
+            return true;
             return NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
         },
         // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29

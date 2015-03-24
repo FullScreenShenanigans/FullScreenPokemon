@@ -127,7 +127,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "left": 3
     };
     FullScreenPokemon.statisticNames = [
-        "HP", "Attack", "Defense", "Special", "Speed"
+        "HP", "Attack", "Defense", "Speed", "Special"
     ];
 
     // Quickly tapping direction keys means to look in a direction, not walk
@@ -1682,9 +1682,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateCharacterStopWalking(thing, onStop) {
-        if (thing.player) {
-            //console.log("Still going", onStop);
-        }
         thing.xvel = 0;
         thing.yvel = 0;
 
@@ -2151,14 +2148,14 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.grassShadow = thing.EightBitter.ObjectMaker.make(thing.title, {
             "nocollide": true
         });
-        
+
         if (thing.grassShadow.className !== thing.className) {
             thing.EightBitter.setClass(thing.grassShadow, thing.className);
         }
 
         delete thing.grassShadow.id;
         thing.EightBitter.addThing(thing.grassShadow, thing.left, thing.top);
-        
+
         thing.EightBitter.GroupHolder.switchObjectGroup(
             thing.grassShadow, thing.grassShadow.groupType, "Terrain"
         );
@@ -3849,8 +3846,47 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleLevelUpStats(EightBitter, settings) {
-        console.log("yeah!");
-        settings.routineArguments.callback();
+        var routineArguments = settings.routineArguments,
+            statistics = EightBitter.MathDecider.getConstant("statisticNames")
+                .filter(function (statistic) {
+                    return statistic !== "HP";
+                }),
+            actor = settings.battleInfo.player.selectedActor,
+            numStatistics = statistics.length,
+            top, left, i;
+
+        for (i = 0; i < numStatistics; i += 1) {
+            statistics.push(EightBitter.makeDigit(actor[statistics[i]], 3, " "));
+            statistics[i] = statistics[i].toUpperCase();
+        }
+
+        EightBitter.MenuGrapher.createMenu("LevelUpStats", {
+            "onMenuDelete": routineArguments.callback,
+            "childrenSchemas": statistics.map(function (string, i) {
+                if (i < numStatistics) {
+                    top = i * 8 + 4;
+                    left = 8;
+                } else {
+                    top = (i - numStatistics + 1) * 8;
+                    left = 24;
+                }
+
+                return {
+                    "type": "text",
+                    "words": [string],
+                    "position": {
+                        "offset": {
+                            "top": top - .5,
+                            "left": left
+                        }
+                    }
+                };
+            })
+        });
+        EightBitter.MenuGrapher.addMenuDialog("LevelUpStats");
+        EightBitter.MenuGrapher.setActiveMenu("LevelUpStats");
+
+        console.warn("For stones, LevelUpStats should be taken out of battles.");
     }
 
     /**

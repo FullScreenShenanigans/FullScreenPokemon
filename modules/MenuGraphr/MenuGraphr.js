@@ -215,8 +215,8 @@ function MenuGraphr(settings) {
         EightBitter.killNormal(child);
         self.deleteMenuChildren(name);
 
-        if (child.onDelete) {
-            child.onDelete.call(EightBitter);
+        if (child.onMenuDelete) {
+            child.onMenuDelete.call(EightBitter);
         }
 
         if (child.children) {
@@ -320,7 +320,9 @@ function MenuGraphr(settings) {
      * 
      */
     self.addMenuDialog = function (name, dialog, onCompletion) {
-        if (dialog.constructor === String) {
+        if (!dialog) {
+            dialog = [""];
+        } else if (dialog.constructor === String) {
             dialog = [dialog];
         }
 
