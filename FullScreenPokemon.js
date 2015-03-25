@@ -997,7 +997,7 @@ var FullScreenPokemon = (function (GameStartr) {
         for (i = 0; i < characters.length; i += 1) {
             character = characters[i];
             character.EightBitter.shiftCharacter(character);
-            
+
             if (character.isMoving) {
                 EightBitter.shiftBoth(character, character.xvel, character.yvel);
             } else if (character.shouldWalk && !EightBitter.MenuGrapher.getActiveMenu()) {
@@ -6867,6 +6867,124 @@ var FullScreenPokemon = (function (GameStartr) {
         return output;
     }
 
+    /**
+     * 
+     */
+    function macroPokeCenter(reference) {
+        return [{
+            "thing": "FloorDiamonds",
+            "width": 112,
+            "height": 64
+        }, {
+            "thing": "SquareWallTop",
+            "height": 16
+        }, {
+            "thing": "HealingMachine",
+            "x": 8
+        }, {
+            "thing": "WallIndoorHorizontalBandsDark",
+            "x": 8,
+            "width": 32
+        }, {
+            "thing": "PokeCenterPoster",
+            "x": 28
+        }, {
+            "thing": "SquareWallTop",
+            "x": 40,
+            "height": 16
+        }, {
+            "thing": "WallIndoorHorizontalBandsDark",
+            "x": 48,
+            "width": 32
+        }, {
+            "thing": "StairsVertical",
+            "x": 80
+        }, {
+            "thing": "WallIndoorHorizontalBandsDark",
+            "x": 88
+        }, {
+            "thing": "StairsVertical",
+            "x": 96
+        }, {
+            "thing": "WallIndoorHorizontalBandsDark",
+            "x": 104
+        }, {
+            "thing": "Nurse",
+            "x": 24,
+            "y": 8
+        }, {
+            "thing": "SquareWallFront",
+            "y": 16
+        }, {
+            "thing": "PokeCenterDeskLeft",
+            "x": 8,
+            "y": 16
+        }, {
+            "thing": "PokeCenterDesk",
+            "x": 12,
+            "y": 16,
+            "width": 32
+        }, {
+            "thing": "SquareWallFront",
+            "x": 40,
+            "y": 16
+        }, {
+            "thing": "PokeCenterDesk",
+            "x": 48,
+            "y": 16,
+            "width": 32
+        }, {
+            "thing": "PokeCenterDeskBlocker",
+            "x": 80,
+            "y": 16
+        }, {
+            "thing": "DeskWoman",
+            "x": 88,
+            "y": 16
+        }, {
+            "thing": "PokeCenterDeskBlocker",
+            "x": 96,
+            "y": 16
+        }, {
+            "thing": "PokeCenterDesk",
+            "x": 104,
+            "y": 16
+        }, {
+            "thing": "Buzzer",
+            //"x": 30,
+            //"y": 14
+            "x": 28,
+            "y": 19
+        }, {
+            "thing": "Computer",
+            "x": 104,
+            "y": 24
+        }, {
+            "thing": "SofaLeft",
+            "y": 32
+        }, {
+            "thing": "PottedPalmTree",
+            "y": 48,
+            "width": 16
+        }, {
+            "thing": "PottedPalmTree",
+            "x": 48,
+            "y": 48,
+            "width": 16
+        }, {
+            "thing": "PottedPalmTree",
+            "x": 96,
+            "y": 48,
+            "width": 16
+        }, {
+            "thing": "Doormat",
+            "x": 24,
+            "y": 56,
+            "width": 16
+        }];
+    }
+
+
     /* Miscellaneous utilities
     */
 
@@ -7172,6 +7290,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "macroBuilding": macroBuilding,
         "macroGym": macroGym,
         "macroMountain": macroMountain,
+        "macroPokeCenter": macroPokeCenter,
         // Miscellaneous utilities
         "stringOf": stringOf,
         "makeDigit": makeDigit,
