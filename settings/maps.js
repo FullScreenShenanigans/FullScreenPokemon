@@ -17,7 +17,8 @@ FullScreenPokemon.prototype.settings.maps = {
         "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge,
         "Building": FullScreenPokemon.prototype.macroBuilding,
         "Gym": FullScreenPokemon.prototype.macroGym,
-        "Mountain": FullScreenPokemon.prototype.macroMountain
+        "Mountain": FullScreenPokemon.prototype.macroMountain,
+        "PokeCenter": FullScreenPokemon.prototype.macroPokeCenter
     },
     "entrances": {
         "Blank": FullScreenPokemon.prototype.mapEntranceBlank,
@@ -388,6 +389,9 @@ FullScreenPokemon.prototype.settings.maps = {
                     "area": "Land",
                     "xloc": 200,
                     "yloc": 140
+                },
+                "PokeCenter Door": {
+                    "area": "Land"
                 }
             },
             "areas": {
@@ -509,6 +513,24 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 176, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
                         { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "offsetX": 80 },
+                    ]
+                }
+            }
+        }, {
+            "name": "Viridian City PokeCenter",
+            "locationDefault": "PokeCenter",
+            "locations": {
+                "PokeCenter": {
+                    "area": "PokeCenter"
+                }
+            },
+            "areas": {
+                "PokeCenter": {
+                    "width": 112,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "macro": "PokeCenter" }
                     ]
                 }
             }
