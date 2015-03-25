@@ -120,6 +120,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Flower": {},
                 "FlowerVase": {},
                 "Painting": {},
+                "Shadow": {},
                 "SmokeSmall": {},
                 "SmokeMedium": {},
                 "SmokeLarge": {},
@@ -825,6 +826,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "width": 8,
             "height": 4,
             "spritewidth": 4,
+            "direction": 2,
             "collide": FullScreenPokemon.prototype.collideLedge,
             "attributes": {
                 "jagged": {
@@ -898,6 +900,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "repeat": true
         },
         "Note": [6.5, 7],
+        "Shadow": [7, 4],
         "SmokeSmall": [5.5, 5.5],
         "SmokeMedium": [7.5, 7.5],
         "SmokeLarge": [7.5, 7.5],

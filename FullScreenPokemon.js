@@ -609,6 +609,22 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     */
+    function keyDownGeneric(player, direction, event) {
+        switch (direction) {
+            case 0:
+                return player.EightBitter.keyDownUp(player, event);
+            case 1:
+                return player.EightBitter.keyDownRight(player, event);
+            case 2:
+                return player.EightBitter.keyDownDown(player, event);
+            case 3:
+                return player.EightBitter.keyDownLeft(player, event);
+        }
+    }
+
+    /**
+     * 
      * @param {Player} player
      */
     function keyDownLeft(player, event) {
@@ -815,6 +831,22 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     */
+    function keyUpGeneric(player, direction, event) {
+        switch (direction) {
+            case 0:
+                return player.EightBitter.keyUpUp(player, event);
+            case 1:
+                return player.EightBitter.keyUpRight(player, event);
+            case 2:
+                return player.EightBitter.keyUpDown(player, event);
+            case 3:
+                return player.EightBitter.keyUpLeft(player, event);
+        }
+    }
+
+    /**
+     * 
      * @param {Player} player
      */
     function keyUpLeft(player, event) {
@@ -965,7 +997,7 @@ var FullScreenPokemon = (function (GameStartr) {
         for (i = 0; i < characters.length; i += 1) {
             character = characters[i];
             character.EightBitter.shiftCharacter(character);
-
+            
             if (character.isMoving) {
                 EightBitter.shiftBoth(character, character.xvel, character.yvel);
             } else if (character.shouldWalk && !EightBitter.MenuGrapher.getActiveMenu()) {
@@ -995,16 +1027,16 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function maintainCharacterGrass(EightBitter, thing, other) {
         if (thing.EightBitter.isThingWithinGrass(thing, other)) {
-            thing.EightBitter.setLeft(thing.grassShadow, thing.left);
-            thing.EightBitter.setTop(thing.grassShadow, thing.top);
-            if (thing.grassShadow.className !== thing.className) {
-                thing.EightBitter.setClass(thing.grassShadow, thing.className);
+            thing.EightBitter.setLeft(thing.shadow, thing.left);
+            thing.EightBitter.setTop(thing.shadow, thing.top);
+            if (thing.shadow.className !== thing.className) {
+                thing.EightBitter.setClass(thing.shadow, thing.className);
             }
         } else {
-            thing.EightBitter.killNormal(thing.grassShadow);
+            thing.EightBitter.killNormal(thing.shadow);
             thing.canvas.height = thing.height * thing.EightBitter.unitsize;
             thing.EightBitter.PixelDrawer.setThingSprite(thing);
-            delete thing.grassShadow;
+            delete thing.shadow;
             delete thing.grass;
         }
     }
@@ -1223,14 +1255,14 @@ var FullScreenPokemon = (function (GameStartr) {
             ]);
 
         thing.EightBitter.removeClass(thing, "walking");
-        if (thing.grassShadow) {
-            thing.EightBitter.removeClass(thing.grassShadow, "walking");
+        if (thing.shadow) {
+            thing.EightBitter.removeClass(thing.shadow, "walking");
         }
 
         thing.EightBitter["cutsceneBattleTransition" + animation](
             thing.EightBitter, {
                 "callback": callback,
-                "keptThings": [thing, thing.grassShadow]
+                "keptThings": [thing, thing.shadow]
             }
         );
     }
@@ -1933,6 +1965,52 @@ var FullScreenPokemon = (function (GameStartr) {
         return Math.round(8 * thing.EightBitter.unitsize / thing.speed);
     }
 
+    /**
+     * 
+     */
+    function animateCharacterHopLedge(thing, other) {
+        var shadow = thing.shadow = thing.EightBitter.addThing("Shadow"),
+            dy = -thing.EightBitter.unitsize,
+            xvelOld = thing.xvel,
+            yvelOld = thing.yvel,
+            speed = 2,
+            steps = 14,
+            changed = 0,
+            hesitant = !thing.keys[thing.direction];
+
+        thing.ledge = other;
+
+        if (hesitant) {
+            thing.EightBitter.keyDownGeneric(thing, thing.direction);
+        }
+
+        thing.EightBitter.setMidXObj(shadow, thing);
+        thing.EightBitter.setBottom(shadow, thing.bottom);
+
+        thing.EightBitter.TimeHandler.addEventInterval(function () {
+            thing.EightBitter.setBottom(shadow, thing.bottom);
+
+            if (changed % speed === 0) {
+                thing.offsetY += dy;
+            }
+
+            changed += 1;
+        }, 1, steps * speed);
+
+        thing.EightBitter.TimeHandler.addEvent(function () {
+            dy *= -1;
+        }, speed * (steps / 2) | 0);
+
+        thing.EightBitter.TimeHandler.addEvent(function () {
+            delete thing.ledge;
+            thing.EightBitter.killNormal(shadow);
+
+            if (hesitant) {
+                thing.EightBitter.keyUpGeneric(thing, thing.direction);
+            }
+        }, steps * speed);
+    }
+
 
     /* Collision detection
     */
@@ -2193,24 +2271,54 @@ var FullScreenPokemon = (function (GameStartr) {
         thing.canvas.height = thing.heightGrass * thing.EightBitter.unitsize;
         thing.EightBitter.PixelDrawer.setThingSprite(thing);
 
-        thing.grassShadow = thing.EightBitter.ObjectMaker.make(thing.title, {
+        thing.shadow = thing.EightBitter.ObjectMaker.make(thing.title, {
             "nocollide": true
         });
 
-        if (thing.grassShadow.className !== thing.className) {
-            thing.EightBitter.setClass(thing.grassShadow, thing.className);
+        if (thing.shadow.className !== thing.className) {
+            thing.EightBitter.setClass(thing.shadow, thing.className);
         }
 
-        delete thing.grassShadow.id;
-        thing.EightBitter.addThing(thing.grassShadow, thing.left, thing.top);
+        delete thing.shadow.id;
+        thing.EightBitter.addThing(thing.shadow, thing.left, thing.top);
 
         thing.EightBitter.GroupHolder.switchObjectGroup(
-            thing.grassShadow, thing.grassShadow.groupType, "Terrain"
+            thing.shadow, thing.shadow.groupType, "Terrain"
         );
 
         thing.EightBitter.arrayToEnd(
-            thing.grassShadow, thing.EightBitter.GroupHolder.getTerrainGroup()
+            thing.shadow, thing.EightBitter.GroupHolder.getTerrainGroup()
         );
+
+        return true;
+    }
+
+    /**
+     * 
+     */
+    function collideLedge(thing, other) {
+        if (thing.ledge) {
+            return true;
+        }
+
+        if (thing.direction !== other.direction) {
+            return false;
+        }
+
+        switch (thing.direction % 2) {
+            case 0:
+                if (thing.left === other.right || thing.right === other.left) {
+                    return true;
+                }
+                break;
+            case 1:
+                if (thing.top === other.bottom || thing.bottom === other.top) {
+                    return true;
+                }
+                break;
+        }
+
+        thing.EightBitter.animateCharacterHopLedge(thing, other);
 
         return true;
     }
@@ -6832,6 +6940,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "getThingById": getThingById,
         // Inputs
         "canInputsTrigger": canInputsTrigger,
+        "keyDownGeneric": keyDownGeneric,
         "keyDownLeft": keyDownLeft,
         "keyDownRight": keyDownRight,
         "keyDownUp": keyDownUp,
@@ -6841,6 +6950,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "keyDownB": keyDownB,
         "keyDownPause": keyDownPause,
         "keyDownMute": keyDownMute,
+        "keyUpGeneric": keyUpGeneric,
         "keyUpLeft": keyUpLeft,
         "keyUpRight": keyUpRight,
         "keyUpUp": keyUpUp,
@@ -6891,6 +7001,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateCharacterFollowContinue": animateCharacterFollowContinue,
         "animateCharacterFollowStop": animateCharacterFollowStop,
         "getCharacterWalkingInterval": getCharacterWalkingInterval,
+        "animateCharacterHopLedge": animateCharacterHopLedge,
         // Collisions
         "generateCanThingCollide": generateCanThingCollide,
         "generateIsCharacterTouchingCharacter": generateIsCharacterTouchingCharacter,
@@ -6900,6 +7011,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "collideCharacterDialog": collideCharacterDialog,
         "collidePokeball": collidePokeball,
         "collideCharacterGrass": collideCharacterGrass,
+        "collideLedge": collideLedge,
         // Death
         "killNormal": killNormal,
         // Activations
