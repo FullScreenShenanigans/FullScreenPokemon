@@ -539,8 +539,9 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
         thing.spawned = true;
-        thing.areaName = thing.EightBitter.MapsHandler.getAreaName();
-        thing.mapName = thing.EightBitter.MapsHandler.getMapName();
+
+        thing.areaName = thing.areaName || thing.EightBitter.MapsHandler.getAreaName();
+        thing.mapName = thing.mapName || thing.EightBitter.MapsHandler.getMapName();
 
         thing.EightBitter.addThing(
             thing,
@@ -2409,12 +2410,18 @@ var FullScreenPokemon = (function (GameStartr) {
                 name,
                 dialog,
                 function () {
-                    delete thing.collidedTrigger;
+                    var onStop = other.pushSteps.slice();
                     thing.EightBitter.MenuGrapher.deleteMenu("GeneralText");
+
                     if (typeof other.pushDirection !== "undefined") {
+                        onStop.push(function () {
+                            delete thing.collidedTrigger;
+                        });
                         thing.EightBitter.animateCharacterStartTurning(
-                            thing, other.pushDirection, other.pushSteps.slice()
+                            thing, other.pushDirection, onStop
                         )
+                    } else {
+                        delete thing.collidedTrigger;
                     }
                 }
             );
@@ -7147,7 +7154,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "transport": reference.transport
             });
         }
-        
+
         return output;
     }
 
