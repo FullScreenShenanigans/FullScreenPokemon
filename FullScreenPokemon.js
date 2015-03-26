@@ -6639,7 +6639,8 @@ var FullScreenPokemon = (function (GameStartr) {
             door = {
                 "thing": "Door",
                 "x": x + doorOffset,
-                "y": y
+                "y": y,
+                "entrance": reference.entrance
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -6889,133 +6890,145 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function macroPokeCenter(reference) {
         var x = reference.x || 0,
-            y = reference.y || 0;
+            y = reference.y || 0,
+            output = [{
+                "thing": "FloorDiamonds",
+                "width": 112,
+                "height": 64,
+                "x": x,
+                "y": y
+            }, {
+                "thing": "SquareWallTop",
+                "x": x,
+                "y": y,
+                "height": 16
+            }, {
+                "thing": "HealingMachine",
+                "x": x + 8,
+                "y": y
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 8,
+                "y": y,
+                "width": 32
+            }, {
+                "thing": "PokeCenterPoster",
+                "x": x + 28,
+                "y": y
+            }, {
+                "thing": "SquareWallTop",
+                "x": x + 40,
+                "y": y,
+                "height": 16
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 48,
+                "y": y,
+                "width": 32
+            }, {
+                "thing": "StairsVertical",
+                "x": x + 80,
+                "y": y
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 88,
+                "y": y
+            }, {
+                "thing": "StairsVertical",
+                "x": x + 96,
+                "y": y
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 104,
+                "y": y
+            }, {
+                "thing": "Nurse",
+                "x": x + 24,
+                "y": y + 8
+            }, {
+                "thing": "SquareWallFront",
+                "x": x,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDeskLeft",
+                "x": x + 8,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 12,
+                "y": y + 16,
+                "width": 32
+            }, {
+                "thing": "SquareWallFront",
+                "x": x + 40,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 48,
+                "y": y + 16,
+                "width": 32
+            }, {
+                "thing": "PokeCenterDeskBlocker",
+                "x": x + 80,
+                "y": y + 16
+            }, {
+                "thing": "DeskWoman",
+                "x": x + 88,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDeskBlocker",
+                "x": x + 96,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 104,
+                "y": y + 16
+            }, {
+                "thing": "Buzzer",
+                "x": x + 28,
+                "y": y + 19
+            }, {
+                "thing": "Computer",
+                "x": x + 104,
+                "y": y + 24
+            }, {
+                "thing": "SofaLeft",
+                "x": x,
+                "y": y + 32
+            }, {
+                "thing": "PottedPalmTree",
+                "x": x,
+                "y": y + 48,
+                "width": 16
+            }, {
+                "thing": "PottedPalmTree",
+                "x": x + 48,
+                "y": y + 48,
+                "width": 16
+            }, {
+                "thing": "PottedPalmTree",
+                "x": x + 96,
+                "y": y + 48,
+                "width": 16
+            }, {
+                "thing": "Doormat",
+                "x": x + 24,
+                "y": y + 56,
+                "width": 16,
+                "entrance": reference.entrance
+            }];
 
-        return [{
-            "thing": "FloorDiamonds",
-            "width": 112,
-            "height": 64,
-            "x": x,
-            "y": y
-        }, {
-            "thing": "SquareWallTop",
-            "x": x,
-            "y": y,
-            "height": 16
-        }, {
-            "thing": "HealingMachine",
-            "x": x + 8,
-            "y": y
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x + 8,
-            "y": y,
-            "width": 32
-        }, {
-            "thing": "PokeCenterPoster",
-            "x": x + 28,
-            "y": y
-        }, {
-            "thing": "SquareWallTop",
-            "x": x + 40,
-            "y": y,
-            "height": 16
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x + 48,
-            "y": y,
-            "width": 32
-        }, {
-            "thing": "StairsVertical",
-            "x": x + 80,
-            "y": y
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x + 88,
-            "y": y
-        }, {
-            "thing": "StairsVertical",
-            "x": x + 96,
-            "y": y
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x + 104,
-            "y": y
-        }, {
-            "thing": "Nurse",
-            "x": x + 24,
-            "y": y + 8
-        }, {
-            "thing": "SquareWallFront",
-            "x": x,
-            "y": y + 16
-        }, {
-            "thing": "PokeCenterDeskLeft",
-            "x": x + 8,
-            "y": y + 16
-        }, {
-            "thing": "PokeCenterDesk",
-            "x": x + 12,
-            "y": y + 16,
-            "width": 32
-        }, {
-            "thing": "SquareWallFront",
-            "x": x + 40,
-            "y": y + 16
-        }, {
-            "thing": "PokeCenterDesk",
-            "x": x + 48,
-            "y": y + 16,
-            "width": 32
-        }, {
-            "thing": "PokeCenterDeskBlocker",
-            "x": x + 80,
-            "y": y + 16
-        }, {
-            "thing": "DeskWoman",
-            "x": x + 88,
-            "y": y + 16
-        }, {
-            "thing": "PokeCenterDeskBlocker",
-            "x": x + 96,
-            "y": y + 16
-        }, {
-            "thing": "PokeCenterDesk",
-            "x": x + 104,
-            "y": y + 16
-        }, {
-            "thing": "Buzzer",
-            "x": x + 28,
-            "y": y + 19
-        }, {
-            "thing": "Computer",
-            "x": x + 104,
-            "y": y + 24
-        }, {
-            "thing": "SofaLeft",
-            "x": x,
-            "y": y + 32
-        }, {
-            "thing": "PottedPalmTree",
-            "x": x,
-            "y": y + 48,
-            "width": 16
-        }, {
-            "thing": "PottedPalmTree",
-            "x": x + 48,
-            "y": y + 48,
-            "width": 16
-        }, {
-            "thing": "PottedPalmTree",
-            "x": x + 96,
-            "y": y + 48,
-            "width": 16
-        }, {
-            "thing": "Doormat",
-            "x": x + 24,
-            "y": y + 56,
-            "width": 16
-        }];
+        if (reference.transport) {
+            output.push({
+                "thing": "HiddenTransporter",
+                "x": x + 24,
+                "y": y + 56,
+                "width": 16,
+                "transport": reference.transport
+            });
+        }
+
+        return output;
     }
 
     /**
@@ -7023,107 +7036,119 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function macroPokeMart(reference) {
         var x = reference.x || 0,
-            y = reference.y || 0;
+            y = reference.y || 0,
+            output = [{
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x,
+                "y": y,
+                "width": 16,
+                "height": 4
+            }, {
+                "thing": "FloorDiamonds",
+                "x": x,
+                "y": y + 4,
+                "width": 64,
+                "height": 60
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x,
+                "y": y + 4,
+                "height": 20
+            }, {
+                "thing": "StoreFridge",
+                "x": x + 16,
+                "y": y,
+                "width": 32
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 48,
+                "y": y,
+                "width": 16,
+                "height": 4
+            }, {
+                "thing": "StoreSaleBin",
+                "x": x,
+                "y": y + 4,
+                "width": 16
+            }, {
+                "thing": "StoreSaleBin",
+                "x": x + 48,
+                "y": y + 4,
+                "width": 16
+            }, {
+                "thing": "StoreAisle",
+                "x": x,
+                "y": y + 24,
+                "height": 8
+            }, {
+                "thing": "StoreAisle",
+                "x": x + 32,
+                "y": y + 24,
+                "width": 32
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x,
+                "y": y + 32
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 8,
+                "y": y + 32,
+                "height": 4
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x + 16,
+                "y": y + 32,
+                "height": 24
+            }, {
+                "thing": "SquareWallTop",
+                "x": x + 8,
+                "y": y + 36,
+                "height": 16
+            }, {
+                "thing": "Cashier",
+                "x": x,
+                "y": y + 40,
+                "direction": 1
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x,
+                "y": y + 40
+            }, {
+                "thing": "Register",
+                "x": x + 8,
+                "y": y + 40
+            }, {
+                "thing": "PokeCenterDeskLeft",
+                "x": x,
+                "y": y + 48
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 4,
+                "y": y + 48,
+                "width": 12
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x,
+                "y": y + 56
+            }, {
+                "thing": "Doormat",
+                "x": x + 24,
+                "y": y + 56,
+                "width": 16,
+                "entrance": reference.entrance
+            }];
 
-        return [{
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x,
-            "y": y,
-            "width": 16,
-            "height": 4
-        }, {
-            "thing": "FloorDiamonds",
-            "x": x,
-            "y": y + 4,
-            "width": 64,
-            "height": 60
-        }, {
-            "thing": "FloorDiamondsDark",
-            "x": x,
-            "y": y + 4,
-            "height": 20
-        }, {
-            "thing": "StoreFridge",
-            "x": x + 16,
-            "y": y,
-            "width": 32
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x + 48,
-            "y": y,
-            "width": 16,
-            "height": 4
-        }, {
-            "thing": "StoreSaleBin",
-            "x": x,
-            "y": y + 4,
-            "width": 16
-        }, {
-            "thing": "StoreSaleBin",
-            "x": x + 48,
-            "y": y + 4,
-            "width": 16
-        }, {
-            "thing": "StoreAisle",
-            "x": x,
-            "y": y + 24,
-            "height": 8
-        }, {
-            "thing": "StoreAisle",
-            "x": x + 32,
-            "y": y + 24,
-            "width": 32
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x,
-            "y": y + 32
-        }, {
-            "thing": "WallIndoorHorizontalBandsDark",
-            "x": x + 8,
-            "y": y + 32,
-            "height": 4
-        }, {
-            "thing": "FloorDiamondsDark",
-            "x": x + 16,
-            "y": y + 32,
-            "height": 24
-        }, {
-            "thing": "SquareWallTop",
-            "x": x + 8,
-            "y": y + 36,
-            "height": 16
-        }, {
-            "thing": "Cashier",
-            "x": x,
-            "y": y + 40,
-            "direction": 1
-        }, {
-            "thing": "FloorDiamondsDark",
-            "x": x,
-            "y": y + 40
-        }, {
-            "thing": "Register",
-            "x": x + 8,
-            "y": y + 40
-        }, {
-            "thing": "PokeCenterDeskLeft",
-            "x": x,
-            "y": y + 48
-        }, {
-            "thing": "PokeCenterDesk",
-            "x": x + 4,
-            "y": y + 48,
-            "width": 12
-        }, {
-            "thing": "FloorDiamondsDark",
-            "x": x,
-            "y": y + 56
-        }, {
-            "thing": "Doormat",
-            "x": x + 24,
-            "y": y + 56,
-            "width": 16
-        }];
+        if (reference.transport) {
+            output.push({
+                "thing": "HiddenTransporter",
+                "x": x + 24,
+                "y": y + 56,
+                "width": 16,
+                "transport": reference.transport
+            });
+        }
+        
+        return output;
     }
 
 

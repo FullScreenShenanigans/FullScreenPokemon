@@ -477,7 +477,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 128, "y": 176, "xnum": 2, "ynum": 4 },
                         { "thing": "DirtMedium", "x": 144, "y": 176, "width": 16, "height": 64 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 176, "xnum": 8, "ynum": 4 },
-                        { "macro": "Building", "x": 176, "y": 176, "door": true, "label": "Poke", "transport": "PokeCenter Inside Door" },
+                        { "macro": "Building", "x": 176, "y": 176, "door": true, "label": "Poke", "entrance": "PokeCenter Outside Door", "transport": "PokeCenter Inside Door" },
                         { "thing": "DirtMedium", "x": 224, "y": 176, "width": 48, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 272, "y": 176, "xnum": 2, "ynum": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 180, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
@@ -530,7 +530,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "height": 64,
                     "invisibleWallBorders": true,
                     "creation": [
-                        { "macro": "PokeCenter" }
+                        { "macro": "PokeCenter", "entrance": "PokeCenter Inside Door", "transport": "PokeCenter Outside Door" }
                     ]
                 },
                 "PokeMart": {
@@ -538,7 +538,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "height": 64,
                     "invisibleWallBorders": true,
                     "creation": [
-                        { "macro": "PokeMart" }
+                        { "macro": "PokeMart", "entrance": "PokeMart Inside Door", "transport": "PokeCenter Outside Door" }
                     ]
                 }
             }
