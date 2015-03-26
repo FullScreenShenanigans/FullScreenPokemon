@@ -121,6 +121,14 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "Goodbye": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesGoodbye,
                 "Walking": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesWalking
             }
+        },
+        "OakParcelPickup": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutsceneOakParcelPickupGreeting,
+                "WalkToCounter": FullScreenPokemon.prototype.cutsceneOakParcelPickupWalkToCounter,
+                "CounterDialog": FullScreenPokemon.prototype.cutsceneOakParcelPickupCounterDialog
+            }
         }
     }
 };

@@ -814,7 +814,11 @@ FullScreenPokemon.prototype.settings.objects = {
             "hidden": true,
             "noStretchBoundaries": true
         },
-        "Computer": [8, 12],
+        "Computer": {
+            "width": 8,
+            "height": 12,
+            "tolBottom": FullScreenPokemon.unitsize * 4
+        },
         "ComputerDesk": [8, 16],
         "ConsoleController": [8, 5],
         "DialogResponder": {

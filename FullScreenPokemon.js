@@ -2393,10 +2393,15 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateCutsceneResponder(thing, other) {
-        if (!other.alive) {
+        if (!thing.player || !other.alive) {
             return;
         }
         
+        if (other.dialog) {
+            thing.EightBitter.activateMenuTriggerer(thing, other);
+            return;
+        }
+
         thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
             "player": thing,
             "triggerer": other
@@ -6074,6 +6079,62 @@ var FullScreenPokemon = (function (GameStartr) {
         );
     }
 
+    /**
+     * 
+     */
+    function cutsceneOakParcelPickupGreeting(EightBitter, settings) {
+        settings.triggerer.alive = false;
+        EightBitter.StateHolder.addChange(
+            settings.triggerer.id, "alive", false
+        );
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Hey! You came from PALLET TOWN?"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("WalkToCounter")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelPickupWalkToCounter(EightBitter, settings) {
+        EightBitter.animateCharacterStartTurning(
+            settings.player,
+            0,
+            [
+                2,
+                "left",
+                1,
+                EightBitter.ScenePlayer.bindRoutine("CounterDialog")
+            ]
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelPickupCounterDialog(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "You know PROF. Oak, right?",
+                "His order came in. Will you take it to him?",
+                "%%%%%%%PLAYER%%%%%%% got OAK's PARCEL!"
+            ],
+            function () {
+                EightBitter.MenuGrapher.deleteMenu("GeneralText");
+                EightBitter.ScenePlayer.stopCutscene();
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
 
     /* Saving
     */
@@ -7183,7 +7244,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "thing": "CutsceneResponder",
                 "x": x + 24,
                 "y": y + 16,
-                "cutscene": "PokeCenter"
+                "cutscene": "PokeCenter",
+                "keepAlive": true
             }, {
                 "thing": "SquareWallFront",
                 "x": x + 40,
@@ -7250,7 +7312,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "x": x + 24,
                 "y": y + 56,
                 "width": 16,
-                "transport": reference.transport
+                "transport": reference.transport,
+                "requireDirection": 2
             });
         }
 
@@ -7342,7 +7405,12 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "thing": "Register",
                 "x": x + 8,
-                "y": y + 40
+                "y": y + 40,
+                "id": reference.responderId,
+                "activate": FullScreenPokemon.prototype.activateCutsceneResponder,
+                "cutscene": "PokeMart",
+                "keepAlive": true,
+                "dialog": reference.responderDialog
             }, {
                 "thing": "PokeCenterDeskLeft",
                 "x": x,
@@ -7370,7 +7438,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 "x": x + 24,
                 "y": y + 56,
                 "width": 16,
-                "transport": reference.transport
+                "transport": reference.transport,
+                "requireDirection": 2
             });
         }
 
@@ -7662,6 +7731,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakIntroRivalLeavesComplaint": cutsceneOakIntroRivalLeavesComplaint,
         "cutsceneOakIntroRivalLeavesGoodbye": cutsceneOakIntroRivalLeavesGoodbye,
         "cutsceneOakIntroRivalLeavesWalking": cutsceneOakIntroRivalLeavesWalking,
+        "cutsceneOakParcelPickupGreeting": cutsceneOakParcelPickupGreeting,
+        "cutsceneOakParcelPickupWalkToCounter": cutsceneOakParcelPickupWalkToCounter,
+        "cutsceneOakParcelPickupCounterDialog": cutsceneOakParcelPickupCounterDialog,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
