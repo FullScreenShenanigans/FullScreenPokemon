@@ -2184,6 +2184,13 @@ var FullScreenPokemon = (function (GameStartr) {
         var dialog = other.dialog,
             direction;
 
+        if (other.cutscene) {
+            thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
+                "thing": thing,
+                "triggerer": other
+            });
+        }
+
         if (!dialog) {
             return;
         }
@@ -5942,6 +5949,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroRivalLeavesAfterBattle(EightBitter, settings) {
+        var rivalblocker = EightBitter.getThingById("RivalBlocker");
+
+        rivalblocker.nocollide = true;
+        EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
+
         EightBitter.TimeHandler.addEvent(
             EightBitter.ScenePlayer.bindRoutine("Complaint"), 49
         );
@@ -5990,7 +6002,13 @@ var FullScreenPokemon = (function (GameStartr) {
             rival = EightBitter.getThingById("Rival"),
             isRight = Math.abs(oak.left - rival.left) < EightBitter.unitsize,
             steps = [
-                1, "bottom", 6, EightBitter.killNormal.bind(EightBitter, rival)
+                1,
+                "bottom",
+                6,
+                function () {
+                    EightBitter.killNormal(rival);
+                    EightBitter.StateHolder.addChange(rival.id, "alive", false);
+                }
             ],
             dialog = [
                 "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
@@ -6131,6 +6149,31 @@ var FullScreenPokemon = (function (GameStartr) {
                 EightBitter.MenuGrapher.deleteMenu("GeneralText");
                 EightBitter.ScenePlayer.stopCutscene();
             }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        EightBitter.StateHolder.addCollectionChange(
+            "Oak's Lab::Ground Floor", "Oak", "cutscene", "OakParcelDelivery"
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryGreeting(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "OAK: Oh, %%%%%%%PLAYER%%%%%%%!",
+                "How is my old %%%%%%%POKEMON%%%%%%%?",
+                "Well, it seems to like you a lot.",
+                "You must be talented as a %%%%%%%POKEMON%%%%%%% trainer!",
+                "What? You have something for me?",
+                "%%%%%%%PLAYER%%%%%%% delivered OAK's PARCEL.",
+                "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("RivalInterrupts")
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -7734,6 +7777,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakParcelPickupGreeting": cutsceneOakParcelPickupGreeting,
         "cutsceneOakParcelPickupWalkToCounter": cutsceneOakParcelPickupWalkToCounter,
         "cutsceneOakParcelPickupCounterDialog": cutsceneOakParcelPickupCounterDialog,
+        "cutsceneOakParcelDeliveryGreeting": cutsceneOakParcelDeliveryGreeting,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

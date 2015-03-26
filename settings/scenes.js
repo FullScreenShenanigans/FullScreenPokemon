@@ -129,6 +129,12 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "WalkToCounter": FullScreenPokemon.prototype.cutsceneOakParcelPickupWalkToCounter,
                 "CounterDialog": FullScreenPokemon.prototype.cutsceneOakParcelPickupCounterDialog
             }
+        },
+        "OakParcelDelivery": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryGreeting,
+            }
         }
     }
 };
