@@ -42,7 +42,11 @@ FullScreenPokemon.prototype.settings.objects = {
                         "BuildingMiddleRight": {},
                         "BuildingMiddleWindow": {}
                     },
-                    "BuildingBottom": {},
+                    "BuildingBottom": {
+                        "BuildingBottomLeft": {},
+                        "BuildingBottomMiddle": {},
+                        "BuildingBottomRight": {}
+                    },
                 },
                 "Cabinet": {},
                 "CollisionDetector": {

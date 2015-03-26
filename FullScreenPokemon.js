@@ -6589,7 +6589,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "x": x + width - 4,
                 "y": y,
             }],
-            i;
+            door, i;
 
         y += 16;
 
@@ -6636,6 +6636,18 @@ var FullScreenPokemon = (function (GameStartr) {
         });
 
         if (reference.door) {
+            door = {
+                "thing": "Door",
+                "x": x + doorOffset,
+                "y": y
+            };
+            if (reference.entrance) {
+                door.entrance = reference.entrance;
+            }
+            if (reference.transport) {
+                door.transport = reference.transport;
+            }
+
             output.push({
                 "thing": "BuildingMiddleMiddle",
                 "x": x + 4,
@@ -6643,17 +6655,25 @@ var FullScreenPokemon = (function (GameStartr) {
                 "height": 4,
                 "width": doorOffset - 4,
             });
-            output.push({
-                "thing": "Door",
-                "x": x + doorOffset,
-                "y": y
-            });
+            output.push(door);
             output.push({
                 "thing": "BuildingMiddleMiddle",
                 "x": x + doorOffset + 8,
                 "y": y,
                 "height": 4,
                 "width": width - doorOffset - 8,
+            });
+            output.push({
+                "thing": "BuildingBottomLeft",
+                "x": x,
+                "y": y + 4,
+                "width": doorOffset
+            });
+            output.push({
+                "thing": "BuildingBottomRight",
+                "x": x + doorOffset + 8,
+                "y": y + 4,
+                "width": width - doorOffset - 8
             });
         } else {
             output.push({
@@ -6662,6 +6682,12 @@ var FullScreenPokemon = (function (GameStartr) {
                 "y": y,
                 "width": width - 8,
                 "height": 4
+            });
+            output.push({
+                "thing": "BuildingBottom",
+                "x": x,
+                "y": y + 4,
+                "width": width
             });
         }
 
@@ -6672,15 +6698,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 "y": y
             });
         }
-
-        y += 4;
-
-        output.push({
-            "thing": "BuildingBottom",
-            "x": x,
-            "y": y,
-            "width": width
-        });
 
         return output;
     }
