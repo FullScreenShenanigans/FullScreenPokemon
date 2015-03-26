@@ -727,6 +727,22 @@ FullScreenPokemon.prototype.settings.menus = {
             "textXOffset": 8,
             "textYOffset": 3.5
         },
+        "Heal/Cancel": {
+            "size": {
+                "width": 36,
+                "height": 24
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 22,
+                    "top": 14
+                }
+            },
+            "arrowXOffset": 1,
+            "textXOffset": 8,
+        },
         "Battle": {
             "size": {
                 "width": 80,

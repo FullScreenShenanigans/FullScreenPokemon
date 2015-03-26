@@ -63,11 +63,15 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Computer": {},
                 "ComputerDesk": {},
                 "ConsoleAndController": {},
+                "DialogResponder": {
+                    "CutsceneResponder": {}
+                },
                 "FenceWide": {},
                 "FenceVertical": {},
                 "FloorDiamondsDark": {},
                 "Grass": {},
                 "HealingMachine": {},
+                "HealingMachineBall": {},
                 "HouseBase": {
                     "HouseTop": {},
                 },
@@ -813,6 +817,12 @@ FullScreenPokemon.prototype.settings.objects = {
         "Computer": [8, 12],
         "ComputerDesk": [8, 16],
         "ConsoleController": [8, 5],
+        "DialogResponder": {
+            "hidden": true
+        },
+        "CutsceneResponder": {
+            "activate": FullScreenPokemon.prototype.activateCutsceneResponder
+        },
         "FenceVertical": [4, 8],
         "FloorDiamondsDark": {
             "width": 4,
@@ -826,6 +836,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "collide": FullScreenPokemon.prototype.collideCharacterGrass
         },
         "HealingMachine": [16, 16],
+        "HealingMachineBall": [3, 3],
         "HouseBase": {
             "width": 32,
             "height": 8,

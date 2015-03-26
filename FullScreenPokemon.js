@@ -1868,6 +1868,12 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateCharacterDialogFinish(thing, other) {
+        var onStop;
+
+        if (other.pushSteps) {
+            onStop = other.pushSteps;
+        }
+
         thing.talking = false;
         other.talking = false;
         thing.canKeyWalking = true;
@@ -1880,7 +1886,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (typeof other.pushDirection !== "undefined") {
             thing.EightBitter.animateCharacterStartTurning(
-                thing, other.pushDirection, other.pushSteps.slice()
+                thing, other.pushDirection, onStop
             );
         }
     }
@@ -2386,6 +2392,20 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function activateCutsceneResponder(thing, other) {
+        if (!other.alive) {
+            return;
+        }
+        
+        thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
+            "player": thing,
+            "triggerer": other
+        });
+    }
+
+    /**
+     * 
+     */
     function activateMenuTriggerer(thing, other) {
         if (!other.alive || thing.collidedTrigger == other) {
             return;
@@ -2410,7 +2430,12 @@ var FullScreenPokemon = (function (GameStartr) {
                 name,
                 dialog,
                 function () {
-                    var onStop = other.pushSteps.slice();
+                    var onStop;
+
+                    if (other.pushSteps) {
+                        onStop = other.pushSteps.slice();
+                    }
+
                     thing.EightBitter.MenuGrapher.deleteMenu("GeneralText");
 
                     if (typeof other.pushDirection !== "undefined") {
@@ -4651,6 +4676,193 @@ var FullScreenPokemon = (function (GameStartr) {
                 "amount": -1
             })
         );
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterWelcome(EightBitter, settings) {
+        settings.nurse = EightBitter.getThingById(
+            settings.nurseId || "Nurse"
+        );
+        settings.machine = EightBitter.getThingById(
+            settings.machineId || "HealingMachine"
+        );
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Welcome to our %%%%%%%POKEMON%%%%%%% CENTER!",
+                "We heal your %%%%%%%POKEMON%%%%%%% back to perfect health!",
+                "Shall we heal your %%%%%%%POKEMON%%%%%%%?"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("Choose")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterChoose(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("Heal/Cancel");
+        EightBitter.MenuGrapher.addMenuList(
+            "Heal/Cancel",
+             {
+                 "options": [
+                     {
+                         "text": "HEAL",
+                         "callback": EightBitter.ScenePlayer.bindRoutine(
+                             "ChooseHeal"
+                         )
+                     },
+                     {
+                         "text": "CANCEL",
+                         "callback": EightBitter.ScenePlayer.bindRoutine(
+                             "ChooseCancel"
+                         )
+                     }
+                 ]
+             }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("Heal/Cancel");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterChooseHeal(EightBitter, settings) {
+        EightBitter.MenuGrapher.deleteMenu("Heal/Cancel");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "ignoreA": true,
+            "finishAutomatically": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Ok. We'll need your Pokemon."
+            ],
+            EightBitter.ScenePlayer.bindRoutine("Healing")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText")
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterHealing(EightBitter, settings) {
+        var party = EightBitter.StatsHolder.get("PokemonInParty"),
+            balls = settings.balls = [],
+            dt = 35,
+            left = settings.machine.left + 5 * EightBitter.unitsize,
+            top = settings.machine.top + 7 * EightBitter.unitsize,
+            i = 0;
+
+        party.length = 6;
+
+        EightBitter.animateCharacterSetDirection(settings.nurse, 3);
+
+        EightBitter.TimeHandler.addEventInterval(function () {
+            balls.push(
+                EightBitter.addThing(
+                    "HealingMachineBall",
+                    left + (i % 2) * 3 * EightBitter.unitsize,
+                    top + Math.floor(i / 2) * 2.5 * EightBitter.unitsize
+                )
+            );
+            i += 1;
+        }, dt, party.length);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.ScenePlayer.playRoutine,
+            dt * (party.length + 1),
+            "HealingAction",
+            {
+                "balls": balls
+            }
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterHealingAction(EightBitter, settings) {
+        var routineArguments = settings.routineArguments,
+            balls = routineArguments.balls,
+            numFlashes = 8,
+            i = 0,
+            changer, j;
+
+        EightBitter.TimeHandler.addEventInterval(function () {
+            changer = i % 2 === 0
+                ? EightBitter.addClass
+                : EightBitter.removeClass;
+
+            for (j = 0; j < balls.length; j += 1) {
+                changer(balls[j], "lit");
+            }
+
+            changer(settings.machine, "lit");
+
+            i += 1;
+        }, 21, numFlashes);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.ScenePlayer.playRoutine,
+            (numFlashes + 2) * 21,
+            "HealingComplete",
+            {
+                "balls": balls
+            }
+        );
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterHealingComplete(EightBitter, settings) {
+        var routineArguments = settings.routineArguments,
+            balls = routineArguments.balls;
+
+        balls.forEach(EightBitter.killNormal);
+
+        EightBitter.animateCharacterSetDirection(settings.nurse, 2);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Thank you! \n Your %%%%%%%POKEMON%%%%%%% are fighting fit!",
+                "We hope to see you again!"
+            ],
+            function () {
+                EightBitter.MenuGrapher.deleteMenu("GeneralText");
+                EightBitter.ScenePlayer.stopCutscene();
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeCenterChooseCancel(EightBitter, settings) {
+        EightBitter.MenuGrapher.deleteMenu("Heal/Cancel");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "We hope to see you again!"
+            ],
+            function () {
+                EightBitter.MenuGrapher.deleteMenu("GeneralText");
+                EightBitter.ScenePlayer.stopCutscene();
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -6912,7 +7124,8 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "thing": "HealingMachine",
                 "x": x + 8,
-                "y": y
+                "y": y,
+                "id": "HealingMachine"
             }, {
                 "thing": "WallIndoorHorizontalBandsDark",
                 "x": x + 8,
@@ -6950,6 +7163,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "y": y
             }, {
                 "thing": "Nurse",
+                "id": "Nurse",
                 "x": x + 24,
                 "y": y + 8
             }, {
@@ -6965,6 +7179,11 @@ var FullScreenPokemon = (function (GameStartr) {
                 "x": x + 12,
                 "y": y + 16,
                 "width": 32
+            }, {
+                "thing": "CutsceneResponder",
+                "x": x + 24,
+                "y": y + 16,
+                "cutscene": "PokeCenter"
             }, {
                 "thing": "SquareWallFront",
                 "x": x + 40,
@@ -7308,6 +7527,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "killNormal": killNormal,
         // Activations
         "activateCutsceneTriggerer": activateCutsceneTriggerer,
+        "activateCutsceneResponder": activateCutsceneResponder,
         "activateMenuTriggerer": activateMenuTriggerer,
         "activateTransporter": activateTransporter,
         "activateTransporterAnimated": activateTransporterAnimated,
@@ -7386,6 +7606,13 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleAttackGrowl": cutsceneBattleAttackGrowl,
         "cutsceneBattleAttackTackle": cutsceneBattleAttackTackle,
         "cutsceneBattleAttackTailWhip": cutsceneBattleAttackTailWhip,
+        "cutscenePokeCenterWelcome": cutscenePokeCenterWelcome,
+        "cutscenePokeCenterChoose": cutscenePokeCenterChoose,
+        "cutscenePokeCenterChooseHeal": cutscenePokeCenterChooseHeal,
+        "cutscenePokeCenterHealing": cutscenePokeCenterHealing,
+        "cutscenePokeCenterHealingAction": cutscenePokeCenterHealingAction,
+        "cutscenePokeCenterHealingComplete": cutscenePokeCenterHealingComplete,
+        "cutscenePokeCenterChooseCancel": cutscenePokeCenterChooseCancel,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,

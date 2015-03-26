@@ -37,6 +37,18 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "AttackTailWhip": FullScreenPokemon.prototype.cutsceneBattleAttackTailWhip
             }
         },
+        "PokeCenter": {
+            "firstRoutine": "Welcome",
+            "routines": {
+                "Welcome": FullScreenPokemon.prototype.cutscenePokeCenterWelcome,
+                "Choose": FullScreenPokemon.prototype.cutscenePokeCenterChoose,
+                "ChooseHeal": FullScreenPokemon.prototype.cutscenePokeCenterChooseHeal,
+                "Healing": FullScreenPokemon.prototype.cutscenePokeCenterHealing,
+                "HealingAction": FullScreenPokemon.prototype.cutscenePokeCenterHealingAction,
+                "HealingComplete": FullScreenPokemon.prototype.cutscenePokeCenterHealingComplete,
+                "ChooseCancel": FullScreenPokemon.prototype.cutscenePokeCenterChooseCancel,
+            }
+        },
         "Intro": {
             "firstRoutine": "FirstDialog",
             "routines": {
