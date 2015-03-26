@@ -10,9 +10,11 @@ FullScreenPokemon.prototype.settings.objects = {
         "Thing": {
             "Character": {
                 "Buzzer": {},
+                "Cashier": {},
                 "DeskWoman": {},
                 "Fatty": {},
                 "Gentleman": {},
+                "GlassesOldGuy": {},
                 "Lady": {},
                 "Mother": {},
                 "Nurse": {},
@@ -59,6 +61,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "ConsoleAndController": {},
                 "FenceWide": {},
                 "FenceVertical": {},
+                "FloorDiamondsDark": {},
                 "Grass": {},
                 "HealingMachine": {},
                 "HouseBase": {
@@ -104,6 +107,7 @@ FullScreenPokemon.prototype.settings.objects = {
                     "PokeCenterDeskLeft": {}
                 },
                 "PottedPalmTree": {},
+                "Register": {},
                 "Sign": {},
                 "SofaLeft": {},
                 "Spawner": {},
@@ -111,6 +115,9 @@ FullScreenPokemon.prototype.settings.objects = {
                     "SquareWallTop": {},
                     "SquareWallFront": {}
                 },
+                "StoreAisle": {},
+                "StoreFridge": {},
+                "StoreSaleBin": {},
                 "Table": {
                     "Table2x2": {},
                     "Table2x3": {},
@@ -803,6 +810,13 @@ FullScreenPokemon.prototype.settings.objects = {
         "ComputerDesk": [8, 16],
         "ConsoleController": [8, 5],
         "FenceVertical": [4, 8],
+        "FloorDiamondsDark": {
+            "width": 4,
+            "height": 8,
+            "spritewidth": 8,
+            "spriteheight": 8,
+            "nocollide": true
+        },
         "Grass": {
             "rarity": 10,
             "collide": FullScreenPokemon.prototype.collideCharacterGrass
@@ -891,6 +905,9 @@ FullScreenPokemon.prototype.settings.objects = {
         "SquareWallFront": {
             "spriteheight": 1.5
         },
+        "StoreAisle": [16, 16],
+        "StoreFridge": [8, 16],
+        "StoreSaleBin": [8, 12],
         "Table": {
             "tolBottom": FullScreenPokemon.unitsize * 4
         },
