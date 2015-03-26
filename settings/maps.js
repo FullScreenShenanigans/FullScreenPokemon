@@ -18,7 +18,8 @@ FullScreenPokemon.prototype.settings.maps = {
         "Building": FullScreenPokemon.prototype.macroBuilding,
         "Gym": FullScreenPokemon.prototype.macroGym,
         "Mountain": FullScreenPokemon.prototype.macroMountain,
-        "PokeCenter": FullScreenPokemon.prototype.macroPokeCenter
+        "PokeCenter": FullScreenPokemon.prototype.macroPokeCenter,
+        "PokeMart": FullScreenPokemon.prototype.macroPokeMart
     },
     "entrances": {
         "Blank": FullScreenPokemon.prototype.mapEntranceBlank,
@@ -390,8 +391,17 @@ FullScreenPokemon.prototype.settings.maps = {
                     "xloc": 200,
                     "yloc": 140
                 },
-                "PokeCenter Door": {
+                "PokeCenter Outside Door": {
                     "area": "Land"
+                },
+                "PokeMart Outside Door": {
+                    "area": "Land"
+                },
+                "PokeCenter Inside Door": {
+                    "area": "PokeCenter"
+                },
+                "PokeMart Inside Door": {
+                    "area": "PokeMart"
                 }
             },
             "areas": {
@@ -514,23 +524,21 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
                         { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "offsetX": 80 },
                     ]
-                }
-            }
-        }, {
-            "name": "Viridian City PokeCenter",
-            "locationDefault": "PokeCenter",
-            "locations": {
-                "PokeCenter": {
-                    "area": "PokeCenter"
-                }
-            },
-            "areas": {
+                },
                 "PokeCenter": {
                     "width": 112,
                     "height": 64,
                     "invisibleWallBorders": true,
                     "creation": [
                         { "macro": "PokeCenter" }
+                    ]
+                },
+                "PokeMart": {
+                    "width": 64,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "macro": "PokeMart" }
                     ]
                 }
             }
