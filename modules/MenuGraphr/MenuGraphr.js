@@ -63,6 +63,20 @@ function MenuGraphr(settings) {
         return menus[name];
     };
 
+    /**
+     * 
+     */
+    self.getAliases = function () {
+        return aliases;
+    };
+
+    /**
+     * 
+     */
+    self.getReplacements = function () {
+        return replacements;
+    };
+
 
     /* Menu positioning
     */
@@ -415,11 +429,23 @@ function MenuGraphr(settings) {
         textWidthMultiplier = menu.textWidthMultiplier || 1;
         
         if (word.constructor === Object && word.command) {
+            title = self.filterWord(getCharacterEquivalent(word.word));
+
             switch (word.command) {
                 case "padLeft":
-                    word = EightBitter.stringOf(
-                        " ", word.length - self.filterWord(word.word).length
-                    ) + self.filterWord(word.word);
+                    if (word.length.constructor === String) {
+                        word = EightBitter.stringOf(
+                            " ",
+                            (
+                                self.filterWord(word.length).length 
+                                - title.length
+                            )
+                        ) + self.filterWord(title);
+                    } else {
+                        word = EightBitter.stringOf(
+                            " ", word.length - title.length
+                        ) + title;
+                    }
                     break;
             }
         }
