@@ -250,7 +250,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "Table2x2", "y": 4, "width": 32 },
                         { "thing": "LabComputer", "y": 8 },
-                        { "thing": "Book", "x": 16, "y": 8, "width": 16 },
+                        { "thing": "Book", "x": 16, "y": 8, "id": "BookLeft" },
+                        { "thing": "Book", "x": 24, "y": 8, "id": "BookRight" },
                         { "thing": "FloorLinedHorizontal", "y": 8, "width": 80, "height": 88 },
                         { "thing": "AsianScroll", "x": 32, "dialog": "Push START to open the MENU!" },
                         { "thing": "AsianScroll", "x": 40, "dialog": "The SAVE option is on the MENU screen." },
@@ -268,8 +269,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Lady", "x": 8, "y": 72, "dialog": ["PROF.OAK is the authority on %%%%%%%POKEMON%%%%%%%!", "Many %%%%%%%POKEMON%%%%%%% trainers hold him in high regard!"], "roaming": true },
                         { "thing": "Scientist", "x": 16, "y": 80, "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "name": "Scientist One" },
                         { "thing": "Scientist", "x": 64, "y": 80, "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "name": "Scientist Two" },
-                        { "thing": "Doormat", "x": 32, "y": 88 },
-                        { "thing": "Doormat", "x": 40, "y": 88, "entrance": "Ground Floor Door" },
+                        { "thing": "Doormat", "x": 32, "y": 88, "id": "DoormatLeft" },
+                        { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
                     ]
                 }

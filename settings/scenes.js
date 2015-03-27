@@ -134,6 +134,14 @@ FullScreenPokemon.prototype.settings.scenes = {
             "firstRoutine": "Greeting",
             "routines": {
                 "Greeting": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryGreeting,
+                "RivalInterrupts": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalInterrupts,
+                "RivalWalksUp": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalWalksUp,
+                "RivalInquires": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalInquires,
+                "OakRequests": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakRequests,
+                "OakDescribesPokedex": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakDescribesPokedex,
+                "OakGivesPokedex": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakGivesPokedex,
+                "OakDescribesGoal": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakDescribesGoal,
+                "RivalAccepts": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalAccepts
             }
         }
     }

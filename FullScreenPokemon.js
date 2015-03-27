@@ -6152,6 +6152,8 @@ var FullScreenPokemon = (function (GameStartr) {
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
+        // TODO
+        console.warn("This should be eventually changed to Pallet Town::Oak's Lab...")
         EightBitter.StateHolder.addCollectionChange(
             "Oak's Lab::Ground Floor", "Oak", "cutscene", "OakParcelDelivery"
         );
@@ -6161,6 +6163,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakParcelDeliveryGreeting(EightBitter, settings) {
+        settings.oak = settings.triggerer;
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -6173,7 +6177,204 @@ var FullScreenPokemon = (function (GameStartr) {
                 "%%%%%%%PLAYER%%%%%%% delivered OAK's PARCEL.",
                 "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!"
             ],
-            EightBitter.ScenePlayer.bindRoutine("RivalInterrupts")
+            EightBitter.TimeHandler.addEvent.bind(
+                EightBitter.TimeHandler,
+                EightBitter.ScenePlayer.bindRoutine("RivalInterrupts"),
+                14
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryRivalInterrupts(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Gramps!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("RivalWalksUp")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryRivalWalksUp(EightBitter, settings) {
+        var doormat = EightBitter.getThingById("DoormatLeft"),
+            rival = settings.rival = EightBitter.addThing(
+                "Rival", doormat.left, doormat.top
+            );
+
+        EightBitter.MenuGrapher.deleteMenu("GeneralText");
+
+        EightBitter.animateCharacterStartTurning(
+            rival,
+            0,
+            [
+                8,
+                EightBitter.ScenePlayer.bindRoutine("RivalInquires")
+            ]
+        )
+    }
+
+    /**
+     * pause, oh right i have a request
+     */
+    function cutsceneOakParcelDeliveryRivalInquires(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: What did you call me for?"
+            ],
+            EightBitter.TimeHandler.addEvent.bind(
+                EightBitter.TimeHandler,
+                EightBitter.ScenePlayer.bindRoutine("OakRequests"),
+                14
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryOakRequests(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Oak: Oh right! I have a request of you two."
+            ],
+            EightBitter.TimeHandler.addEvent.bind(
+                EightBitter.TimeHandler,
+                EightBitter.ScenePlayer.bindRoutine("OakDescribesPokedex"),
+                14
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryOakDescribesPokedex(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "On the desk there is my invention, %%%%%%%POKEDEX%%%%%%%!",
+                "It automatically records data on %%%%%%%POKEMON%%%%%%% you've seen or caught!",
+                "It's a hi-tech encyclopedia!"
+            ],
+            EightBitter.TimeHandler.addEvent.bind(
+                EightBitter.TimeHandler,
+                EightBitter.ScenePlayer.bindRoutine("OakGivesPokedex"),
+                14
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryOakGivesPokedex(EightBitter, settings) {
+        var bookLeft = EightBitter.getThingById("BookLeft"),
+            bookRight = EightBitter.getThingById("BookRight");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "OAK: %%%%%%%PLAYER%%%%%%% and %%%%%%%RIVAL%%%%%%%! Take these with you!",
+                "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!"
+            ],
+            function () {
+                EightBitter.TimeHandler.addEvent(
+                    EightBitter.ScenePlayer.playRoutine, 14, "OakDescribesGoal"
+                );
+
+                EightBitter.killNormal(bookLeft);
+                EightBitter.killNormal(bookRight);
+
+                EightBitter.StateHolder.addChange(bookLeft.id, "alive", false);
+                EightBitter.StateHolder.addChange(bookRight.id, "alive", false);
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryOakDescribesGoal(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "To make a complete guide on all the %%%%%%%POKEMON%%%%%%% in the world...",
+                "That was my dream!",
+                "But, I'm too old! I can't do it!",
+                "So, I want you two to fulfill my dream for me!",
+                "Get moving, you two!",
+                "This is a great undertaking in %%%%%%%POKEMON%%%%%%% history!"
+            ],
+            EightBitter.TimeHandler.addEvent.bind(
+                EightBitter.TimeHandler,
+                EightBitter.ScenePlayer.bindRoutine("RivalAccepts"),
+                14
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneOakParcelDeliveryRivalAccepts(EightBitter, settings) {
+        EightBitter.animateCharacterSetDirection(settings.rival, 1);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Alright Gramps! Leave it all to me!",
+                "%%%%%%%PLAYER%%%%%%%, I hate to say it, but I don't need you!",
+                "I know! I'll borrow a TOWN MAP from my sis!",
+                "I'll tell her not to lend you one, %%%%%%%PLAYER%%%%%%%! Hahaha!"
+            ],
+            function () {
+                EightBitter.ScenePlayer.stopCutscene();
+                EightBitter.MenuGrapher.deleteMenu("GeneralText");
+                EightBitter.animateCharacterStartTurning(
+                    settings.rival,
+                    2,
+                    [
+                        8,
+                        EightBitter.killNormal.bind(
+                            EightBitter, settings.rival
+                        )
+                    ]
+                );
+
+                delete settings.oak.cutscene;
+                settings.oak.dialog = [
+                    "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!"
+                ];
+
+                EightBitter.StateHolder.addChange(
+                    settings.oak.id, "dialog", settings.oak.dialog
+                );
+                EightBitter.StateHolder.addChange(
+                    settings.oak.id, "cutscene", undefined
+                );
+            }
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -7778,6 +7979,14 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakParcelPickupWalkToCounter": cutsceneOakParcelPickupWalkToCounter,
         "cutsceneOakParcelPickupCounterDialog": cutsceneOakParcelPickupCounterDialog,
         "cutsceneOakParcelDeliveryGreeting": cutsceneOakParcelDeliveryGreeting,
+        "cutsceneOakParcelDeliveryRivalInterrupts": cutsceneOakParcelDeliveryRivalInterrupts,
+        "cutsceneOakParcelDeliveryRivalWalksUp": cutsceneOakParcelDeliveryRivalWalksUp,
+        "cutsceneOakParcelDeliveryRivalInquires": cutsceneOakParcelDeliveryRivalInquires,
+        "cutsceneOakParcelDeliveryOakRequests": cutsceneOakParcelDeliveryOakRequests,
+        "cutsceneOakParcelDeliveryOakDescribesPokedex": cutsceneOakParcelDeliveryOakDescribesPokedex,
+        "cutsceneOakParcelDeliveryOakGivesPokedex": cutsceneOakParcelDeliveryOakGivesPokedex,
+        "cutsceneOakParcelDeliveryOakDescribesGoal": cutsceneOakParcelDeliveryOakDescribesGoal,
+        "cutsceneOakParcelDeliveryRivalAccepts": cutsceneOakParcelDeliveryRivalAccepts,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
