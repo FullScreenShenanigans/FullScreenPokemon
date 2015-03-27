@@ -55,6 +55,8 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "Greeting": FullScreenPokemon.prototype.cutscenePokeMartGreeting,
                 "Options": FullScreenPokemon.prototype.cutscenePokeMartOptions,
                 "BuyMenu": FullScreenPokemon.prototype.cutscenePokeMartBuyMenu,
+                "SelectAmount": FullScreenPokemon.prototype.cutscenePokeMartSelectAmount,
+                "TryPurchase": FullScreenPokemon.prototype.cutscenePokeMartTryPurchase,
                 "Exit": FullScreenPokemon.prototype.cutscenePokeMartExit
             }
         },

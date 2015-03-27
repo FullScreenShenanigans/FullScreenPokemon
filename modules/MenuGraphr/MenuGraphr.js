@@ -902,11 +902,11 @@ function MenuGraphr(settings) {
 
         menu.scrollingAmount += dy;
 
-        if (dy > 0 && scrollingOld < menu.scrollingItems - 2) {
-            return;
-        }
-
-        if (dy < 0 && menu.scrollingAmount < menu.scrollingItems - 2) {
+        if (dy > 0) {
+            if (scrollingOld < menu.scrollingItems - 2) {
+                return;
+            }
+        } else if (menu.scrollingAmount < menu.scrollingItems - 2) {
             return;
         }
 
@@ -1001,8 +1001,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, -1, 0);
+        }
+
+        if (activeMenu.onLeft) {
+            activeMenu.onLeft(EightBitter);
         }
     };
 
@@ -1014,8 +1018,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, 1, 0);
+        }
+        
+        if (activeMenu.onRight) {
+            activeMenu.onRight(EightBitter);
         }
     };
 
@@ -1027,8 +1035,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, 0, -1);
+        }
+        
+        if (activeMenu.onUp) {
+            activeMenu.onUp(EightBitter);
         }
     };
 
@@ -1040,8 +1052,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, 0, 1);
+        }
+        
+        if (activeMenu.onDown) {
+            activeMenu.onDown(EightBitter);
         }
     };
 

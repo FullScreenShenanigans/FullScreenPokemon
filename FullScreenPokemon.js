@@ -4938,16 +4938,25 @@ var FullScreenPokemon = (function (GameStartr) {
             return {
                 "text": text,
                 "textsFloating": [{
-                    "text": "$200",
+                    "text": "$" + cost,
                     "x": 42 - String(cost).length * 3.5,
                     "y": 4
                 }],
+                "callback": EightBitter.ScenePlayer.bindRoutine(
+                    "SelectAmount", 
+                    {
+                        "reference": reference,
+                        "amount": 1,
+                        "cost": cost
+                    }
+                ),
                 "reference": reference
             }
         });
 
         options.push({
-            "text": "CANCEL"
+            "text": "CANCEL",
+            "callback": EightBitter.MenuGrapher.registerB
         })
 
         EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -4969,6 +4978,60 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartSelectAmount(EightBitter, settings) {
+        var routineArguments = settings.routineArguments,
+            amount = routineArguments.amount,
+            cost = routineArguments.cost,
+            costTotal = cost * amount,
+            text = makeDigit(amount, 2) + makeDigit("$" + costTotal, 8, " ");
+
+        EightBitter.MenuGrapher.createMenu("ShopItemsAmount", {
+            "childrenSchemas": [{
+                "type": "text",
+                "words": [["Times"]],
+                "position": {
+                    "offset": {
+                        "left": 4,
+                        "top": 4.25
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": [text],
+                "position": {
+                    "offset": {
+                        "left": 8,
+                        "top": 3.75
+                    }
+                }
+            }],
+            "onUp": EightBitter.ScenePlayer.bindRoutine("SelectAmount", {
+                "amount": (amount === 99) ? 1 : amount + 1,
+                "cost": cost
+            }),
+            "onDown": EightBitter.ScenePlayer.bindRoutine("SelectAmount", {
+                "amount": (amount === 1) ? 99 : amount - 1,
+                "cost": cost
+            }),
+            "callback": EightBitter.ScenePlayer.bindRoutine("TryPurchase", {
+                "reference": routineArguments.reference,
+                "amount": amount,
+                "cost": cost
+            })
+        });
+        EightBitter.MenuGrapher.setActiveMenu("ShopItemsAmount");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartTryPurchase(EightBitter, setings) {
+        debugger;
     }
 
     /**
@@ -7880,7 +7943,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {Number} number   The original Number being padded.
      * @param {Number} size   How many digits the output must contain.
      * @param {String} [prefix]   A prefix to repeat for padding (by default,
-     *                            '0').
+     *                            "0").
      * @return {String}
      * @example 
      * makeDigit(7, 3); // '007'
@@ -7888,7 +7951,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function makeDigit(number, size, prefix) {
         return stringOf(
-            prefix || '0',
+            prefix || "0",
             Math.max(0, size - String(number).length)
         ) + number;
     }
@@ -8097,7 +8160,9 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutscenePokeMartGreeting": cutscenePokeMartGreeting,
         "cutscenePokeMartOptions": cutscenePokeMartOptions,
         "cutscenePokeMartBuyMenu": cutscenePokeMartBuyMenu,
+        "cutscenePokeMartSelectAmount": cutscenePokeMartSelectAmount,
         "cutscenePokeMartExit": cutscenePokeMartExit,
+        "cutscenePokeMartTryPurchase": cutscenePokeMartTryPurchase,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,

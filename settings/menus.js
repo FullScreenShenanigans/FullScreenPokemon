@@ -791,7 +791,8 @@ FullScreenPokemon.prototype.settings.menus = {
                 "words": ["MONEY"],
                 "position": {
                     "offset": {
-                        "left": 8
+                        "left": 8,
+                        "top": -.25
                     }
                 }
             }, {
@@ -836,6 +837,22 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "textXOffset": 8,
             "scrollingItems": 4
+        },
+        "ShopItemsAmount": {
+            "size": {
+                "width": 52,
+                "height": 12
+            },
+            "position": {
+                "horizontal": "right",
+                "vertical": "bottom",
+                "offset": {
+                    "top": -4
+                }
+            },
+            "container": "ShopItems",
+            "backMenu": "ShopItems",
+            "textSpeed": 0
         },
         "Battle": {
             "size": {

@@ -538,7 +538,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "height": 64,
                     "invisibleWallBorders": true,
                     "creation": [
-                        { "macro": "PokeMart", "entrance": "PokeMart Inside Door", "transport": "PokeMart Outside Door", "responderId": "CashierDetector", "responderDialog": "Okay! Say hi to PROF. Oak for me!", "items": [ { "item": "Pokeball", "cost": 200 }, { "item": "Antidote", "cost": 100 }, { "item": "Paralyz Heal", "cost": 200 }, { "item": "Burn Heal", "cost": 250 }] },
+                        { "macro": "PokeMart", "entrance": "PokeMart Inside Door", "transport": "PokeMart Outside Door", "responderId": "CashierDetector", "responderDialog": "Okay! Say hi to PROF. Oak for me!", "items": [ { "item": "Pokeball", "cost": 200 }, { "item": "Antidote", "cost": 100 }, { "item": "Parlyz Heal", "cost": 200 }, { "item": "Burn Heal", "cost": 250 }] },
                         { "thing": "CutsceneTriggerer", "x": 24, "y": 56, "width": 16, "id": "OakParcelPickup", "active": true, "cutscene": "OakParcelPickup" }
                     ]
                 }
