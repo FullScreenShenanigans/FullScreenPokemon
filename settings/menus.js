@@ -818,7 +818,22 @@ FullScreenPokemon.prototype.settings.menus = {
                         "top": 4
                     }
                 }
-            }]
+            }],
+            "textSpeed": 0
+        },
+        "ShopItems": {
+            "size": {
+                "width": 64,
+                "height": 44
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 8,
+                    "top": 6
+                }
+            }
         },
         "Battle": {
             "size": {

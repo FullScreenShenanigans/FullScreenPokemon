@@ -355,7 +355,9 @@ function ObjectMakr(settings) {
         // For each attribute of the donor
         for (i in donor) {
             // If noOverride is specified, don't override if it already exists
-            if (noOverride && recipient.hasOwnProperty(i)) continue;
+            if (noOverride && recipient.hasOwnProperty(i)) {
+                continue;
+            }
 
             // If it's an object, recurse on a new version of it
             setting = donor[i];

@@ -4906,20 +4906,63 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutscenePokeMartOptions(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("Money");
 
-        EightBitter.MenuGrapher.createMenu("Buy/Sell");
+        EightBitter.MenuGrapher.createMenu("Buy/Sell", {
+            "killOnB": ["Money", "GeneralText"],
+            "onMenuDelete": EightBitter.ScenePlayer.bindRoutine("Exit")
+        });
         EightBitter.MenuGrapher.addMenuList("Buy/Sell", {
             "options": [{
                 "text": "BUY",
-                "callback": undefined
+                "callback": EightBitter.ScenePlayer.bindRoutine("BuyMenu")
             }, {
                 "text": "SELL",
                 "callback": undefined
             }, {
                 "text": "QUIT",
-                "callback": undefined
+                "callback": EightBitter.MenuGrapher.registerB
             }]
         });
         EightBitter.MenuGrapher.setActiveMenu("Buy/Sell");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartBuyMenu(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "finishAutomatically": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Take your time."
+            ],
+            function () {
+                EightBitter.MenuGrapher.createMenu("ShopItems");
+                EightBitter.MenuGrapher.setActiveMenu("ShopItems");
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartExit(EightBitter, settings) {
+        EightBitter.ScenePlayer.stopCutscene();
+
+        EightBitter.MenuGrapher.deleteMenu("Buy/Sell");
+        EightBitter.MenuGrapher.deleteMenu("Money");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Thank you!"
+            ],
+            EightBitter.MenuGrapher.deleteActiveMenu
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -8022,6 +8065,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutscenePokeCenterChooseCancel": cutscenePokeCenterChooseCancel,
         "cutscenePokeMartGreeting": cutscenePokeMartGreeting,
         "cutscenePokeMartOptions": cutscenePokeMartOptions,
+        "cutscenePokeMartBuyMenu": cutscenePokeMartBuyMenu,
+        "cutscenePokeMartExit": cutscenePokeMartExit,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
