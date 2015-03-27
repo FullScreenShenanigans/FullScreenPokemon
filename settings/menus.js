@@ -743,6 +743,83 @@ FullScreenPokemon.prototype.settings.menus = {
             "arrowXOffset": 1,
             "textXOffset": 8,
         },
+        "Buy/Sell": {
+            "size": {
+                "width": 44,
+                "height": 28
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": -18,
+                    "top": -10
+                }
+            },
+            "textXOffset": 8,
+            "textYOffset": 4
+        },
+        "Money": {
+            "size": {
+                "width": 36,
+                "height": 12
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 22,
+                    "top": -18
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "WhiteSquare",
+                "size": {
+                    "width": 20,
+                    "height": 3.5
+                },
+                "position": {
+                    "vertical": "top",
+                    "horizontal": "right",
+                    "offset": {
+                        "left": -8
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": ["MONEY"],
+                "position": {
+                    "offset": {
+                        "left": 8
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": [{
+                    "command": "padLeft",
+                    "length": "%%%%%%%MONEY%%%%%%%",
+                    "word": "$"
+                }],
+                "position": {
+                    "offset": {
+                        "top": 4
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": [{
+                    "command": "padLeft",
+                    "length": 8,
+                    "word": "%%%%%%%MONEY%%%%%%%"
+                }],
+                "position": {
+                    "offset": {
+                        "top": 4
+                    }
+                }
+            }]
+        },
         "Battle": {
             "size": {
                 "width": 80,

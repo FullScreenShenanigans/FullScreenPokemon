@@ -49,6 +49,13 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "ChooseCancel": FullScreenPokemon.prototype.cutscenePokeCenterChooseCancel,
             }
         },
+        "PokeMart": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutscenePokeMartGreeting,
+                "Options": FullScreenPokemon.prototype.cutscenePokeMartOptions
+            }
+        },
         "Intro": {
             "firstRoutine": "FirstDialog",
             "routines": {

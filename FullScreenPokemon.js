@@ -4884,6 +4884,47 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutscenePokeMartGreeting(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "finishAutomatically": true,
+            "ignoreA": true,
+            "ignoreB": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Hi there! \n May I help you?"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("Options")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartOptions(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("Money");
+
+        EightBitter.MenuGrapher.createMenu("Buy/Sell");
+        EightBitter.MenuGrapher.addMenuList("Buy/Sell", {
+            "options": [{
+                "text": "BUY",
+                "callback": undefined
+            }, {
+                "text": "SELL",
+                "callback": undefined
+            }, {
+                "text": "QUIT",
+                "callback": undefined
+            }]
+        });
+        EightBitter.MenuGrapher.setActiveMenu("Buy/Sell");
+    }
+
+    /**
+     * 
+     */
     function cutsceneIntroFirstDialog(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
@@ -7979,6 +8020,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutscenePokeCenterHealingAction": cutscenePokeCenterHealingAction,
         "cutscenePokeCenterHealingComplete": cutscenePokeCenterHealingComplete,
         "cutscenePokeCenterChooseCancel": cutscenePokeCenterChooseCancel,
+        "cutscenePokeMartGreeting": cutscenePokeMartGreeting,
+        "cutscenePokeMartOptions": cutscenePokeMartOptions,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,

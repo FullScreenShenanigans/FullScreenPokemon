@@ -636,7 +636,8 @@ FullScreenPokemon.prototype.settings.objects = {
                     "CharBallEmpty": {},
                     "CharCircle": {},
                     "CharHP": {},
-                    "CharLevel": {}
+                    "CharLevel": {},
+                    "Char$": {}
                 },
                 "CharArrow": {
                     "CharArrowUp": {},
@@ -1080,6 +1081,12 @@ FullScreenPokemon.prototype.settings.objects = {
         "CharCircle": [2.5, 2.5],
         "CharHP": [5.5, 2],
         "CharLevel": [3, 2.5],
+        "Char$": {
+            "width": 2.5,
+            "height": 4,
+            "offsetX": FullScreenPokemon.unitsize / 2,
+            "offsetY": FullScreenPokemon.unitsize / 2,
+        },
         "CharArrowUp": [3.5, 2.5],
         "CharArrowRight": [2.5, 3.5],
         "CharArrowDown": [3.5, 2.5],
