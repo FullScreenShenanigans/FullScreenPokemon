@@ -2361,6 +2361,10 @@ var FullScreenPokemon = (function (GameStartr) {
         if (thing.EightBitter) {
             thing.EightBitter.TimeHandler.cancelAllCycles(thing);
             thing.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
+
+            if (thing.id) {
+                delete thing.EightBitter.MapScreener.thingsById[thing.id];
+            }
         }
     }
 
@@ -6379,6 +6383,55 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
+    /**
+     * 
+     */
+    function cutsceneDaisyTownMapGreeting(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Grandpa asked you to run an errand? Here, this will help you!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("ReceiveMap")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutsceneDaisyTownMapReceiveMap(EightBitter, settings) {
+        var book = EightBitter.getThingById("Book"),
+            daisy = settings.triggerer;
+
+        EightBitter.killNormal(book);
+        EightBitter.StateHolder.addChange(book.id, "alive", false);
+
+        delete daisy.cutscene;
+        EightBitter.StateHolder.addChange(daisy.id, "cutscene", undefined);
+
+        daisy.dialog = [
+            "Use the TOWN MAP to find out where you are."
+        ];
+        EightBitter.StateHolder.addChange(daisy.id, "dialog", daisy.dialog);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%% got a TOWN MAP!"
+            ],
+            function () {
+                EightBitter.ScenePlayer.stopCutscene();
+                EightBitter.MenuGrapher.deleteMenu("GeneralText");
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        console.warn("Player does not actually get a Town Map...");
+    }
+
 
     /* Saving
     */
@@ -7987,6 +8040,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakParcelDeliveryOakGivesPokedex": cutsceneOakParcelDeliveryOakGivesPokedex,
         "cutsceneOakParcelDeliveryOakDescribesGoal": cutsceneOakParcelDeliveryOakDescribesGoal,
         "cutsceneOakParcelDeliveryRivalAccepts": cutsceneOakParcelDeliveryRivalAccepts,
+        "cutsceneDaisyTownMapGreeting": cutsceneDaisyTownMapGreeting,
+        "cutsceneDaisyTownMapReceiveMap": cutsceneDaisyTownMapReceiveMap,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

@@ -11,6 +11,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "Character": {
                 "Buzzer": {},
                 "Cashier": {},
+                "Daisy": {},
                 "DeskWoman": {},
                 "Fatty": {},
                 "Gentleman": {},
@@ -23,7 +24,6 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Player": {},
                 "Pokeball": {},
                 "Rival": {},
-                "RivalMother": {},
                 "Scientist": {}
             },
             "Solid": {

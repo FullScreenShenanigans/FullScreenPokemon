@@ -143,6 +143,13 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "OakDescribesGoal": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakDescribesGoal,
                 "RivalAccepts": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalAccepts
             }
+        },
+        "DaisyTownMap": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutsceneDaisyTownMapGreeting,
+                "ReceiveMap": FullScreenPokemon.prototype.cutsceneDaisyTownMapReceiveMap
+            }
         }
     }
 };
