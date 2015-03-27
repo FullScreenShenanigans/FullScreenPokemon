@@ -624,7 +624,7 @@ FullScreenPokemon.prototype.settings.math = {
         "pokemon": {
             "Abra": {
                 "label": "Psi",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Using its ability to read minds, it will identify impending danger and TELEPORT to safety."
                 ],
@@ -721,7 +721,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Aerodactyl": {
                 "label": "Fossil",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A ferocious, prehistoric POKÃ©MON that goes for the enemy's throat with its serrated saw-like fangs."
                 ],
@@ -815,7 +815,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Alakazam": {
                 "label": "Psi",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its brain can outperform a supercomputer. Its intelligence quotient is said to be 5,000."
                 ],
@@ -942,7 +942,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Arbok": {
                 "label": "Cobra",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It is rumored that the ferocious warning markings on its belly differ from area to area."
                 ],
@@ -1042,7 +1042,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Arcanine": {
                 "label": "Legendary",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A POKÃ©MON that has been admired since the past for its beauty. It runs agilely as if on wings."
                 ],
@@ -1184,7 +1184,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Articuno": {
                 "label": "Freeze",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A legendary bird POKÃ©MON that is said to appear to doomed people who are lost in icy mountains."
                 ],
@@ -1281,7 +1281,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Beedrill": {
                 "label": "Poison Bee",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Flies at high speed and attacks using its large venomous stingers on its forelegs and tail."
                 ],
@@ -1330,7 +1330,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Bellsprout": {
                 "label": "Flower",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A carnivorous POKÃ©MON that traps and eats bugs. It uses its root feet to soak up needed moisture."
                 ],
@@ -1421,7 +1421,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Blastoise": {
                 "label": "Shellfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A brutal POKÃ©MON with pressurized water jets on its shell. They are used for high speed tackles."
                 ],
@@ -1554,7 +1554,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Bulbasaur": {
                 "label": "Seed",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKÃ©MON."
                 ],
@@ -1648,7 +1648,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Butterfree": {
                 "label": "Butterfly",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "In battle, it flaps its wings at high speed to release highly toxic dust into the air."
                 ],
@@ -1751,7 +1751,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Caterpie": {
                 "label": "Worm",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls."
                 ],
@@ -1779,7 +1779,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Chansey": {
                 "label": "Egg",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A rare and elusive POKÃ©MON that is said to bring happiness to those who manage to get it."
                 ],
@@ -1933,7 +1933,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Charizard": {
                 "label": "Flame",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally."
                 ],
@@ -2066,7 +2066,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Charmander": {
                 "label": "Lizard",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail."
                 ],
@@ -2184,7 +2184,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Charmeleon": {
                 "label": "Flame",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When it swings its burning tail, it elevates the temperature to unbearably high levels."
                 ],
@@ -2299,7 +2299,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Clefable": {
                 "label": "Fairy",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A timid fairy POKÃ©MON that is rarely seen. It will run and hide the moment it senses people."
                 ],
@@ -2345,7 +2345,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Clefairy": {
                 "label": "Fairy",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its magical and cute appeal has many admirers. It is rare and found only in certain areas."
                 ],
@@ -2490,7 +2490,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Cloyster": {
                 "label": "Bivalve",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When attacked, it launches its horns in quick volleys. Its innards have never been seen."
                 ],
@@ -2530,7 +2530,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Cubone": {
                 "label": "Lonely",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Because it never removes its skull helmet, no one has ever seen this POKÃ©MON's real face."
                 ],
@@ -2648,7 +2648,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Dewgong": {
                 "label": "Sea Lion",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters."
                 ],
@@ -2748,7 +2748,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Diglett": {
                 "label": "Mole",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground."
                 ],
@@ -2848,7 +2848,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Ditto": {
                 "label": "Transform",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy."
                 ],
@@ -2873,7 +2873,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Dodrio": {
                 "label": "Triple Bird",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Uses its three brains to execute complex plans. While two heads sleep, one head stays awake."
                 ],
@@ -2970,7 +2970,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Doduo": {
                 "label": "Twin Bird",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints."
                 ],
@@ -3061,7 +3061,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Dragonair": {
                 "label": "Dragon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A mystical POKÃ©MON that exudes a gentle aura. Has the ability to change climate conditions."
                 ],
@@ -3176,7 +3176,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Dragonite": {
                 "label": "Dragon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "An extremely rarely seen marine POKÃ©MON. Its intelligence is said to match that of humans."
                 ],
@@ -3306,7 +3306,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Dratini": {
                 "label": "Dragon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Long considered a mythical POKÃ©MON until recently when a small colony was found living underwater."
                 ],
@@ -3418,7 +3418,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Drowzee": {
                 "label": "Hypnosis",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams."
                 ],
@@ -3536,7 +3536,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Dugtrio": {
                 "label": "Mole",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A team of DIGLETT triplets. It triggers huge earthquakes by burrowing 60 miles underground."
                 ],
@@ -3606,7 +3606,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Eevee": {
                 "label": "Evolution",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs."
                 ],
@@ -3709,7 +3709,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Ekans": {
                 "label": "Snake",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole."
                 ],
@@ -3800,7 +3800,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Electabuzz": {
                 "label": "Electric",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Normally found near power plants, they can wander away and cause major blackouts in cities."
                 ],
@@ -3927,7 +3927,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Electrode": {
                 "label": "Ball",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It stores electric energy under very high pressure. It often explodes with little or no provocation."
                 ],
@@ -4027,7 +4027,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Exeggcute": {
                 "label": "Egg",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms."
                 ],
@@ -4097,7 +4097,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Exeggutor": {
                 "label": "Coconut",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Legend has it that on rare occasions, one of its heads will drop off and continue on as an EXEGGCUTE."
                 ],
@@ -4134,7 +4134,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Farfetchd": {
                 "label": "Wild Duck",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The sprig of green onions it holds is its weapon. It is used much like a metal sword."
                 ],
@@ -4225,7 +4225,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Fearow": {
                 "label": "Beak",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "With its huge and magnificent wings, it can keep aloft without ever having to land for rest."
                 ],
@@ -4316,7 +4316,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Flareon": {
                 "label": "Flame",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When storing thermal energy in its body, its temperature could soar to over 1600 degrees."
                 ],
@@ -4464,7 +4464,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Gastly": {
                 "label": "Gas",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Almost invisible, this gaseous POKÃ©MON cloaks the target and puts it to sleep without notice."
                 ],
@@ -4516,7 +4516,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Gengar": {
                 "label": "Shadow",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Under a full moon, this POKÃ©MON likes to mimic the shadows of people and laugh at their fright."
                 ],
@@ -4634,7 +4634,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Geodude": {
                 "label": "Rock",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them."
                 ],
@@ -4743,7 +4743,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Gloom": {
                 "label": "Weed",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey."
                 ],
@@ -4831,7 +4831,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Golbat": {
                 "label": "Bat",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly."
                 ],
@@ -4943,7 +4943,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Goldeen": {
                 "label": "Goldfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen."
                 ],
@@ -5040,7 +5040,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Golduck": {
                 "label": "Duck",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Often seen swimming elegantly by lake shores. It is often mistaken for the Japanese monster, Kappa."
                 ],
@@ -5158,7 +5158,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Golem": {
                 "label": "Megaton",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its boulder-like body is extremely hard. It can easily withstand dynamite blasts without damage."
                 ],
@@ -5279,7 +5279,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Graveler": {
                 "label": "Rock",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction."
                 ],
@@ -5391,7 +5391,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Grimer": {
                 "label": "Sludge",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories."
                 ],
@@ -5503,7 +5503,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Growlithe": {
                 "label": "Puppy",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Very protective of its territory. It will bark and bite to repel intruders from its space."
                 ],
@@ -5567,7 +5567,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Gyarados": {
                 "label": "Atrocious",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Rarely seen in the wild. Huge and vicious, it is capable of destroying entire cities in a rage."
                 ],
@@ -5628,7 +5628,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Haunter": {
                 "label": "Gas",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Because of its ability to slip through block walls, it is said to be from another dimension."
                 ],
@@ -5680,7 +5680,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Hitmonchan": {
                 "label": "Punching",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see."
                 ],
@@ -5780,7 +5780,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Hitmonlee": {
                 "label": "Kicking",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When in a hurry, its legs lengthen progressively. It runs smoothly with extra long, loping strides."
                 ],
@@ -5877,7 +5877,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Horsea": {
                 "label": "Dragon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Known to shoot down flying bugs with precision blasts of ink from the surface of the water."
                 ],
@@ -5965,7 +5965,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Hypno": {
                 "label": "Hypnosis",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When it locks eyes with an enemy, it will use a mix of PSI moves such as HYPNOSIS and CONFUSION."
                 ],
@@ -6092,7 +6092,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Ivysaur": {
                 "label": "Seed",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
                 ],
@@ -6189,7 +6189,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Jigglypuff": {
                 "label": "Balloon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep."
                 ],
@@ -6331,7 +6331,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Jolteon": {
                 "label": "Lightning",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It accumulates negative ions in the atmosphere to blast out 10000-volt lightning bolts."
                 ],
@@ -6392,7 +6392,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Jynx": {
                 "label": "Human Shape",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It seductively wiggles its hips as it walks. It can cause people to dance in unison with it."
                 ],
@@ -6540,7 +6540,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Kabuto": {
                 "label": "Shellfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A POKÃ©MON that was resurrected from a fossil found in what was once the ocean floor eons ago."
                 ],
@@ -6628,7 +6628,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Kabutops": {
                 "label": "Shellfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its sleek shape is perfect for swimming. It slashes prey with its claws and drains the body fluids."
                 ],
@@ -6737,7 +6737,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Kadabra": {
                 "label": "Psi",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It emits special alpha waves from its body that induce headaches just by being close by."
                 ],
@@ -6861,7 +6861,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Kakuna": {
                 "label": "Cocoon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Almost incapable of moving, this POKÃ©MON can only harden its shell to protect itself from predators."
                 ],
@@ -6889,7 +6889,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Kangaskhan": {
                 "label": "Parent",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The infant rarely ventures out of its mother's protective pouch until it is 3 years old."
                 ],
@@ -7013,7 +7013,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Kingler": {
                 "label": "Pincer",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The large pincer has 10000 hp of crushing power. However, its huge size makes it unwieldy to use."
                 ],
@@ -7116,7 +7116,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Koffing": {
                 "label": "Poison Gas",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning."
                 ],
@@ -7216,7 +7216,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Krabby": {
                 "label": "River Crab",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its pincers are not only powerful weapons, they are used for balance when walking sideways."
                 ],
@@ -7304,7 +7304,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Lapras": {
                 "label": "Transport",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A POKÃ©MON that has been overhunted almost to extinction. It can ferry people across the water."
                 ],
@@ -7428,7 +7428,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Lickitung": {
                 "label": "Licking",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its tongue can be extended like a chameleon's. It leaves a tingling sensation when it licks enemies."
                 ],
@@ -7552,7 +7552,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Machamp": {
                 "label": "Superpower",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Using its heavy muscles, it throws powerful punches that can send the victim clear over the horizon."
                 ],
@@ -7670,7 +7670,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Machoke": {
                 "label": "Superpower",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions."
                 ],
@@ -7782,7 +7782,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Machop": {
                 "label": "Superpower",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Loves to build its muscles. It trains in all styles of martial arts to become even stronger."
                 ],
@@ -7891,7 +7891,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Magikarp": {
                 "label": "Fish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today."
                 ],
@@ -7919,7 +7919,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Magmar": {
                 "label": "Spitfire",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its body always burns with an orange glow that enables it to hide perfectly among flames."
                 ],
@@ -8028,7 +8028,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Magnemite": {
                 "label": "Magnet",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves."
                 ],
@@ -8119,7 +8119,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Magneton": {
                 "label": "Magnet",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Formed by several MAGNEMITEs linked together. They frequently appear when sunspots flare up."
                 ],
@@ -8216,7 +8216,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Mankey": {
                 "label": "Pig Monkey",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Extremely quick to anger. It could be docile one moment then thrashing away the next instant."
                 ],
@@ -8331,7 +8331,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Marowak": {
                 "label": "Bone Keeper",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets."
                 ],
@@ -8458,7 +8458,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Meowth": {
                 "label": "Scratch Cat",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Adores circular objects. Wanders the streets on a nightly basis to look for dropped loose change."
                 ],
@@ -8522,7 +8522,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Metapod": {
                 "label": "Cocoon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "This POKÃ©MON is vulnerable to attack while its shell is soft, exposing its weak and tender body."
                 ],
@@ -8553,7 +8553,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Mew": {
                 "label": "New Species",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide."
                 ],
@@ -8755,7 +8755,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Mewtwo": {
                 "label": "Genetic",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments."
                 ],
@@ -8912,7 +8912,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Moltres": {
                 "label": "Flame",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Known as the legendary bird of fire. Every flap of its wings creates a dazzling flash of flames."
                 ],
@@ -8997,7 +8997,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Mr-mime": {
                 "label": "Barrier",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "If interrupted while it is miming, it will slap around the offender with its broad hands."
                 ],
@@ -9121,7 +9121,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Muk": {
                 "label": "Sludge",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Thickly covered with a filthy, vile sludge. It is so toxic, even its footprints contain poison."
                 ],
@@ -9197,7 +9197,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Nidoking": {
                 "label": "Drill",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It uses its powerful tail in battle to smash, constrict, then break the prey's bones."
                 ],
@@ -9252,7 +9252,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Nidoqueen": {
                 "label": "Drill",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves."
                 ],
@@ -9307,7 +9307,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Nidoran-f": {
                 "label": "Poison Pin",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Although small, its venomous barbs render this POKÃ©MON dangerous. The female has smaller horns."
                 ],
@@ -9464,7 +9464,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Nidoran-m": {
                 "label": "Poison Pin",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom."
                 ],
@@ -9630,7 +9630,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Nidorina": {
                 "label": "Poison Pin",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The female's horn develops slowly. Prefers physical attacks such as clawing and biting."
                 ],
@@ -9706,7 +9706,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Nidorino": {
                 "label": "Poison Pin",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "An aggressive POKÃ©MON that is quick to attack. The horn on its head secretes a powerful venom."
                 ],
@@ -9782,7 +9782,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Ninetales": {
                 "label": "Fox",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Very smart and very vengeful. Grabbing one of its many tails could result in a 1000-year curse."
                 ],
@@ -9912,7 +9912,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Oddish": {
                 "label": "Weed",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds."
                 ],
@@ -9994,7 +9994,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Omanyte": {
                 "label": "Spiral",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Although long extinct, in rare cases, it can be genetically resurrected from fossils."
                 ],
@@ -10079,7 +10079,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Omastar": {
                 "label": "Spiral",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A prehistoric POKÃ©MON that died out when its heavy shell made it impossible to catch prey."
                 ],
@@ -10185,7 +10185,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Onix": {
                 "label": "Rock Snake",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "As it grows, the stone portions of its body harden to become similar to a diamond, but colored black."
                 ],
@@ -10279,7 +10279,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Paras": {
                 "label": "Mushroom",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host."
                 ],
@@ -10370,7 +10370,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Parasect": {
                 "label": "Mushroom",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places."
                 ],
@@ -10467,7 +10467,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Persian": {
                 "label": "Classy Cat",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness."
                 ],
@@ -10597,7 +10597,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Pidgeot": {
                 "label": "Bird",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP."
                 ],
@@ -10691,7 +10691,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Pidgeotto": {
                 "label": "Bird",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Very protective of its sprawling territorial area, this POKÃ©MON will fiercely peck at any intruder."
                 ],
@@ -10782,7 +10782,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Pidgey": {
                 "label": "Tiny Bird",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand."
                 ],
@@ -10870,7 +10870,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Pikachu": {
                 "label": "Mouse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When several of these POKÃ©MON gather, their electricity could build and cause lightning storms."
                 ],
@@ -10976,7 +10976,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Pinsir": {
                 "label": "Stag Beetle",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "If it fails to crush the victim in its pincers, it will swing it around and toss it hard."
                 ],
@@ -11067,7 +11067,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Poliwag": {
                 "label": "Tadpole",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand."
                 ],
@@ -11161,7 +11161,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Poliwhirl": {
                 "label": "Tadpole",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Capable of living in or out of water. When out of water, it sweats to keep its body slimy."
                 ],
@@ -11291,7 +11291,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Poliwrath": {
                 "label": "Tadpole",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "An adept swimmer at both the front crawl and breast stroke. Easily overtakes the best human swimmers."
                 ],
@@ -11337,7 +11337,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Ponyta": {
                 "label": "Fire Horse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time."
                 ],
@@ -11446,7 +11446,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Porygon": {
                 "label": "Virtual",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A POKÃ©MON that consists entirely of programming code. Capable of moving freely in cyberspace."
                 ],
@@ -11555,7 +11555,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Primeape": {
                 "label": "Pig Monkey",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught."
                 ],
@@ -11679,7 +11679,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Psyduck": {
                 "label": "Duck",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "While lulling its enemies with its vacant look, this wily POKÃ©MON will use psychokinetic powers."
                 ],
@@ -11788,7 +11788,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Raichu": {
                 "label": "Mouse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its long tail serves as a ground to protect itself from its own high voltage power."
                 ],
@@ -11825,7 +11825,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Rapidash": {
                 "label": "Fire Horse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Very competitive, this POKÃ©MON will chase anything that moves fast in the hopes of racing it."
                 ],
@@ -11907,7 +11907,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Raticate": {
                 "label": "Mouse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It uses its whiskers to maintain its balance. It apparently slows down if they are cut off."
                 ],
@@ -12031,7 +12031,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Rattata": {
                 "label": "Mouse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Bites anything when it attacks. Small and very quick, it is a common sight in many places."
                 ],
@@ -12089,7 +12089,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Rhydon": {
                 "label": "Drill",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Protected by an armor-like hide, it is capable of living in molten lava of 3,600 degrees."
                 ],
@@ -12237,7 +12237,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Rhyhorn": {
                 "label": "Spikes",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying."
                 ],
@@ -12340,7 +12340,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Sandshrew": {
                 "label": "Mouse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Burrows deep underground in arid locations far from water. It only emerges to hunt for food."
                 ],
@@ -12443,7 +12443,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Sandslash": {
                 "label": "Mouse",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape."
                 ],
@@ -12552,7 +12552,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Scyther": {
                 "label": "Mantis",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "With ninja-like agility and speed, it can create the illusion that there is more than one."
                 ],
@@ -12634,7 +12634,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Seadra": {
                 "label": "Dragon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Capable of swimming backwards by rapidly flapping its wing-like pectoral fins and stout tail."
                 ],
@@ -12725,7 +12725,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Seaking": {
                 "label": "Goldfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks."
                 ],
@@ -12828,7 +12828,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Seel": {
                 "label": "Sea Lion",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The protruding horn on its head is very hard. It is used for bashing through thick ice."
                 ],
@@ -12919,7 +12919,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Shellder": {
                 "label": "Bivalve",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open."
                 ],
@@ -13022,7 +13022,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Slowbro": {
                 "label": "Hermit Crab",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The SHELLDER that is latched onto SLOWPOKE's tail is said to feed on the host's left over scraps."
                 ],
@@ -13173,7 +13173,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Slowpoke": {
                 "label": "Dopey",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack."
                 ],
@@ -13306,7 +13306,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Snorlax": {
                 "label": "Sleeping",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful."
                 ],
@@ -13457,7 +13457,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Spearow": {
                 "label": "Tiny Bird",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne."
                 ],
@@ -13539,7 +13539,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Squirtle": {
                 "label": "Tiny Turtle",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth."
                 ],
@@ -13651,7 +13651,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Starmie": {
                 "label": "Mysterious",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Its central core glows with the seven colors of the rainbow. Some people value the core as a gem."
                 ],
@@ -13694,7 +13694,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Staryu": {
                 "label": "Star Shape",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "An enigmatic POKÃ©MON that can effortlessly regenerate any appendage it loses in battle."
                 ],
@@ -13809,7 +13809,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Tangela": {
                 "label": "Vine",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The whole body is swathed with wide vines that are similar to seaweed. Its vines shake as it walks."
                 ],
@@ -13903,7 +13903,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Tauros": {
                 "label": "Wild Bull",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "When it targets an enemy, it charges furiously while whipping its body with its long tails."
                 ],
@@ -14003,7 +14003,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Tentacool": {
                 "label": "Jellyfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid."
                 ],
@@ -14109,7 +14109,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Tentacruel": {
                 "label": "Jellyfish",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey."
                 ],
@@ -14224,7 +14224,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Vaporeon": {
                 "label": "Bubble Jet",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's."
                 ],
@@ -14288,7 +14288,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Venomoth": {
                 "label": "Poison Moth",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The dust-like scales covering its wings are color coded to indicate the kinds of poison it has."
                 ],
@@ -14370,7 +14370,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Venonat": {
                 "label": "Insect",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night."
                 ],
@@ -14488,7 +14488,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Venusaur": {
                 "label": "Seed",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
                 ],
@@ -14588,7 +14588,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Victreebel": {
                 "label": "Flycatcher",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Said to live in huge colonies deep in jungles, although no one has ever returned from there."
                 ],
@@ -14637,7 +14637,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Vileplume": {
                 "label": "Flower",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The larger its petals, the more toxic pollen it contains. Its big head is heavy and hard to hold up."
                 ],
@@ -14683,7 +14683,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Voltorb": {
                 "label": "Ball",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Usually found in power plants. Easily mistaken for a POKÃ© BALL, they have zapped many people."
                 ],
@@ -14774,7 +14774,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Vulpix": {
                 "label": "Fox",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "At the time of birth, it has just one tail. The tail splits from its tip as it grows older."
                 ],
@@ -14883,7 +14883,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Wartortle": {
                 "label": "Turtle",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance."
                 ],
@@ -14998,7 +14998,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Weedle": {
                 "label": "Hairy Bug",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Often found in forests, eating leaves. It has a sharp venomous stinger on its head."
                 ],
@@ -15026,7 +15026,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Weepinbell": {
                 "label": "Flycatcher",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID."
                 ],
@@ -15117,7 +15117,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Weezing": {
                 "label": "Poison Gas",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Where two kinds of poison gases meet, 2 KOFFINGs can fuse into a WEEZING over many years."
                 ],
@@ -15226,7 +15226,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Wigglytuff": {
                 "label": "Balloon",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size."
                 ],
@@ -15266,7 +15266,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Zapdos": {
                 "label": "Electric",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "A legendary bird POKÃ©MON that is said to appear from clouds while dropping enormous lightning bolts."
                 ],
@@ -15363,7 +15363,7 @@ FullScreenPokemon.prototype.settings.math = {
                 }
             }, "Zubat": {
                 "label": "Bat",
-                "sprite": "water",
+                "sprite": "Water",
                 "info": [
                     "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets."
                 ],
