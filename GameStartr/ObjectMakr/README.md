@@ -38,9 +38,14 @@ constructors, keyed by their names.
 one including all properties of parent classes) should be made for each class
 (defaults to false).
 
+* **[giveFunctionsNames]** *`Boolean`* - Whether Functions should have their own
+names (by defualt, false).
+
 * **[indexMap]** *`Object`* - Alternative aliases for properties that can be
 used as shorthand shortcuts under properties.
 
+* **[onMake]** *`String`* - A String index for each generated Object's Function
+to be run when made.
 
 ## Sample Usage
 
@@ -48,6 +53,7 @@ used as shorthand shortcuts under properties.
 
     ```javascript
     var ObjectMaker = new ObjectMakr({
+        "giveFunctionsNames": true,
         "inheritance": {
             "Circle": {},
             "Rectangle": {
@@ -78,6 +84,7 @@ used as shorthand shortcuts under properties.
 
    ```javascript
     var ObjectMaker = new ObjectMakr({
+        "giveFunctionsNames": true,
         "indexMap": ["perimeter", "area"],
         "inheritance": {
             "Circle": {},

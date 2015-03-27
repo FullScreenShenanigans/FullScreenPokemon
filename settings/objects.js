@@ -2,6 +2,7 @@ FullScreenPokemon.prototype.settings.objects = {
     "onMake": "onMake",
     "indexMap": ["width", "height"],
     "doPropertiesFull": true,
+    "giveFunctionsNames": true,
     "inheritance": {
         "Quadrant": {},
         "Map": {},
