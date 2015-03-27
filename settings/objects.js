@@ -1082,7 +1082,8 @@ FullScreenPokemon.prototype.settings.objects = {
         "CharHP": [5.5, 2],
         "CharLevel": [3, 2.5],
         "Char$": {
-            "width": 2.5,
+            "width": 4,
+            "spritewidth": 2.5,
             "height": 4,
             "offsetX": FullScreenPokemon.unitsize / 2,
             "offsetY": FullScreenPokemon.unitsize / 2,

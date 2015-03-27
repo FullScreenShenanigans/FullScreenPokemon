@@ -833,7 +833,8 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": 8,
                     "top": 6
                 }
-            }
+            },
+            "textXOffset": 8
         },
         "Battle": {
             "size": {

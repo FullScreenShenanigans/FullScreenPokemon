@@ -148,10 +148,6 @@ function StateHoldr(settings) {
         var collectionKeyOther = prefix + collectionKeyOtherRaw,
             otherCollection;
 
-        console.log("Setting...");
-        console.log.apply(console, arguments);
-        console.log("\n");
-        
         ensureCollectionKeyExists(collectionKeyOther);
         otherCollection = StatsHolder.get(collectionKeyOther);
 

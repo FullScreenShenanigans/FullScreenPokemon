@@ -2407,7 +2407,7 @@ var FullScreenPokemon = (function (GameStartr) {
         if (!thing.player || !other.alive) {
             return;
         }
-        
+
         if (other.dialog) {
             thing.EightBitter.activateMenuTriggerer(thing, other);
             return;
@@ -4927,8 +4927,29 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /**
      * 
+     * 
+     * @todo Add constants for all items, for display names
      */
     function cutscenePokeMartBuyMenu(EightBitter, settings) {
+        var options = settings.triggerer.items.map(function (reference) {
+            var text = reference.item.toUpperCase(),
+                cost = reference.cost;
+
+            return {
+                "text": text,
+                "textsFloating": [{
+                    "text": "$200",
+                    "x": 42 - String(cost).length * 3.5,
+                    "y": 4
+                }],
+                "reference": reference
+            }
+        });
+
+        options.push({
+            "text": "CANCEL"
+        })
+
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "finishAutomatically": true
         });
@@ -4938,7 +4959,12 @@ var FullScreenPokemon = (function (GameStartr) {
                 "Take your time."
             ],
             function () {
-                EightBitter.MenuGrapher.createMenu("ShopItems");
+                EightBitter.MenuGrapher.createMenu("ShopItems", {
+                    "backMenu": "Buy/Sell"
+                });
+                EightBitter.MenuGrapher.addMenuList("ShopItems", {
+                    "options": options
+                });
                 EightBitter.MenuGrapher.setActiveMenu("ShopItems");
             }
         );
@@ -6272,6 +6298,10 @@ var FullScreenPokemon = (function (GameStartr) {
             )
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        EightBitter.StateHolder.addCollectionChange(
+            "Viridian City::PokeMart", "CashierDetector", "dialog", false
+        );
     }
 
     /**
@@ -7791,6 +7821,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "activate": FullScreenPokemon.prototype.activateCutsceneResponder,
                 "cutscene": "PokeMart",
                 "keepAlive": true,
+                "items": reference.items,
                 "dialog": reference.responderDialog
             }, {
                 "thing": "PokeCenterDeskLeft",
