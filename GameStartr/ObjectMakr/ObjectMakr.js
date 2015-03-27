@@ -339,7 +339,7 @@ function ObjectMakr(settings) {
      *          names, like those starting with numbers, are not filtered out). 
      */
     function cleanFunctionName(str) {
-        return str.replace(/[^\w]/g, '');
+        return str.replace(/[^\w$]/g, '');
     }
 
     /**
