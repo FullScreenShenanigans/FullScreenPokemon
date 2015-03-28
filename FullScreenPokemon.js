@@ -1893,7 +1893,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 thing, other.pushDirection, onStop
             );
         }
-        
+
         if (other.gift) {
             thing.EightBitter.MenuGrapher.createMenu("GeneralText");
             thing.EightBitter.MenuGrapher.addMenuDialog(
@@ -1963,7 +1963,7 @@ var FullScreenPokemon = (function (GameStartr) {
             "options": [{
                 "text": "YES",
                 "callback": generateCallback(options.Yes)
-                }, {
+            }, {
                 "text": "NO",
                 "callback": generateCallback(options.No)
             }]
@@ -7374,13 +7374,51 @@ var FullScreenPokemon = (function (GameStartr) {
             y = reference.y || 0,
             width = reference.width || 32,
             stories = reference.stories || 1,
-            output = [{
-                "thing": "HouseTop",
-                "x": x,
-                "y": y,
-                "width": width
-            }],
+            output = [],
             door, i;
+
+        output.push({
+            "thing": "HouseTopRoofLeft",
+            "x": x,
+            "y": y,
+        });
+        output.push({
+            "thing": "HouseTopRoof",
+            "x": x + 8,
+            "y": y,
+            "width": width - 16
+        })
+        output.push({
+            "thing": "HouseTopRoofRight",
+            "x": x + width - 8,
+            "y": y,
+        });
+        output.push({
+            "thing": "HouseLeft",
+            "x": x,
+            "y": y + 8
+        });
+        output.push({
+            "thing": "HouseRight",
+            "x": x + width - 8,
+            "y": y + 8
+        });
+
+        if (stories === 1 && reference.door) {
+            output.push({
+                "thing": "HouseMiddle",
+                "x": x + 16,
+                "y": y + 8,
+                "width": width - 24
+            });
+        } else {
+            output.push({
+                "thing": "HouseMiddle",
+                "x": x + 8,
+                "y": y + 8,
+                "width": width - 16
+            });
+        }
 
         y += 16;
         for (i = 1; i < stories; i += 1) {

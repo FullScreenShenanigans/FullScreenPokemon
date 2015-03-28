@@ -10,6 +10,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "Location": {},
         "Thing": {
             "Character": {
+                "Boss": {},
                 "BugCatcher": {},
                 "Buzzer": {},
                 "Cashier": {},
@@ -76,7 +77,17 @@ FullScreenPokemon.prototype.settings.objects = {
                 "HealingMachine": {},
                 "HealingMachineBall": {},
                 "HouseBase": {
+                    "HouseSide": {
+                        "HouseLeft": {},
+                        "HouseMiddle": {},
+                        "HouseRight": {}
+                    },
                     "HouseTop": {},
+                    "HouseTopRoof": {},
+                    "HouseTopRoofSide": {
+                        "HouseTopRoofLeft": {},
+                        "HouseTopRoofRight": {}
+                    }
                 },
                 "HouseCenterLeft": {},
                 "HouseCenterMiddle": {},
@@ -150,6 +161,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Book": {},
                 "Doormat": {},
                 "DoormatDotted": {},
+                "DoormatDashed": {},
                 "Flower": {},
                 "FlowerVase": {},
                 "Painting": {},
@@ -851,10 +863,23 @@ FullScreenPokemon.prototype.settings.objects = {
             "spritewidth": 16,
             "spriteheight": 16
         },
+        "HouseSide": {
+            "width": 8,
+            "spritewidth": 8,
+            "spriteheight": 8
+        },
         "HouseTop": {
             "width": 32,
             "height": 16,
             "spritewidth": 16
+        },
+        "HouseTopRoof": {
+            "spritewidth": .5
+        },
+        "HouseTopRoofSide": {
+            "width": 8,
+            "spritewidth": 8,
+            "spriteheight": 8
         },
         "HouseLargeBase": {
             "width": 48,
@@ -964,6 +989,10 @@ FullScreenPokemon.prototype.settings.objects = {
         "DoormatDotted": {
             "spritewidth": 3.5,
             "spriteheight": 7.5
+        },
+        "DoormatDashed": {
+            "spritewidth": 4,
+            "spriteheight": 8
         },
         "Flower": {
             "width": 4,

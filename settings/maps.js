@@ -366,11 +366,17 @@ FullScreenPokemon.prototype.settings.maps = {
             "name": "Viridian City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
+                "Nicknamer House Front Door": {
+                    "area": "Land"
+                },
                 "PokeCenter Outside Door": {
                     "area": "Land"
                 },
                 "PokeMart Outside Door": {
                     "area": "Land"
+                },
+                "Nicknamer House Floor 1 Door": {
+                    "area": "Nicknamer House"
                 },
                 "PokeCenter Inside Door": {
                     "area": "PokeCenter"
@@ -415,7 +421,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtWhite", "x": 160, "y": 48, "width": 16, "height": 32 },
                         { "thing": "FenceVertical", "x": 160, "y": 48, "width": 8, "height": 16 },
                         { "thing": "Sign", "x": 216, "y": 56, "dialog": "VIRIDIAN CITY \n %%%%%%%POKEMON%%%%%%% GYM" },
-                        { "macro": "House", "x": 160, "y": 64, "door": true },
+                        { "macro": "House", "x": 160, "y": 64, "door": true, "entrance": "Nicknamer House Front Door", "transport": "Nicknamer House Floor 1 Door" },
                         { "thing": "OldMan", "x": 240, "y": 64, "name": "GymWatcher", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["This %%%%%%%POKEMON%%%%%%% gym is always closed.", "I wonder who the LEADER is?"] },
                         { "thing": "MenuTriggerer", "x": 248, "y": 64, "dialog": "The GYM's doors are locked...", "pushDirection": 2, "pushSteps": [1] },
                         { "thing": "DirtMedium", "x": 224, "y": 64, "width": 48, "height": 16 },
@@ -503,6 +509,18 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 176, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
                         { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "offsetX": 80 },
+                    ]
+                },
+                "Nicknamer House": {
+                    "width": 64,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "WallIndoorHorizontalBands", "width": 64 },
+                        { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
+                        { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Nicknamer House Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Nicknamer House Front Door" }, "requireDirection": 2 }
                     ]
                 },
                 "PokeCenter": {
