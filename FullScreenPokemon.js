@@ -2063,7 +2063,7 @@ var FullScreenPokemon = (function (GameStartr) {
             speed = 2,
             steps = 14,
             changed = 0,
-            hesitant = !thing.keys[thing.direction];
+            hesitant = thing.keys && !thing.keys[thing.direction];
 
         thing.ledge = other;
 
@@ -7552,6 +7552,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     "start": x + 4,
                     "end": x + width - 4
                 },
+                "door": true,
                 "doorOffset": width - 16
             }, {
                 "thing": "GymLabel",
