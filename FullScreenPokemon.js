@@ -3079,12 +3079,23 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.createMenu("Items");
         EightBitter.MenuGrapher.setActiveMenu("Items");
         EightBitter.MenuGrapher.addMenuList("Items", {
-            "options": items.map(function (item) {
+            "options": items.map(function (schema) {
                 return {
-                    "text": item.title
+                    "text": schema.item,
+                    "textsFloating": [{
+                        "text": [["Times"]],
+                        "x": 32,
+                        "y": 4.5
+                    }, {
+                        "text": makeDigit(schema.amount, 2, " "),
+                        "x": 36.5,
+                        "y": 4
+                    }]
                 };
             })
         });
+
+        console.warn("Once math.js contains item info, react to non-stackable items...");
     }
 
     /**
@@ -5103,7 +5114,10 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.StatsHolder.decrease("money", routineArguments.costTotal);
         EightBitter.MenuGrapher.createMenu("Money");
-        console.warn("Should add item to bag!");
+        EightBitter.StatsHolder.get("items").push({
+            "item": routineArguments.reference.item,
+            "amount": routineArguments.amount
+        });
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
@@ -5111,8 +5125,9 @@ var FullScreenPokemon = (function (GameStartr) {
             [
                 "Here you are! \n Thank you!"
             ],
-            EightBitter.ScenePlayer.bindRoutine("BuyMenu")
+            EightBitter.ScenePlayer.bindRoutine("ContinueShopping")
         );
+        
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
