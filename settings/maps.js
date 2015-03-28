@@ -276,6 +276,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 1",
+            "locationDefault": "Top Path",
             "locations": {
                 "Top Path": {
                     "area": "Land",
@@ -385,12 +386,8 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Viridian City",
+            "locationDefault": "PokeCenter Outside Door",
             "locations": {
-                "Temp": {
-                    "area": "Land",
-                    "xloc": 200,
-                    "yloc": 140
-                },
                 "PokeCenter Outside Door": {
                     "area": "Land"
                 },

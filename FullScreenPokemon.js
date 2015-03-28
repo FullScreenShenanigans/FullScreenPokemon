@@ -1252,7 +1252,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 }
             ),
             animation = thing.EightBitter.NumberMaker.randomArrayMember([
-                /*"LineSpiral", */"Flash"
+                "LineSpiral", "Flash"
             ]);
 
         thing.EightBitter.removeClass(thing, "walking");
@@ -2353,7 +2353,7 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
-        thing.hidden = thing.dead = true;
+        thing.nocollide = thing.hidden = thing.dead = true;
         thing.alive = false;
         thing.numquads = 0;
         thing.movement = undefined;
@@ -2701,6 +2701,7 @@ var FullScreenPokemon = (function (GameStartr) {
             area = map.areas[thing.area];
 
         if (area === thing.EightBitter.MapsHandler.getArea()) {
+            thing.EightBitter.killNormal(thing);
             return;
         }
 
@@ -2708,6 +2709,7 @@ var FullScreenPokemon = (function (GameStartr) {
             area.spawnedBy
             && area.spawnedBy === thing.EightBitter.MapsHandler.getArea().spawnedBy
         ) {
+            thing.EightBitter.killNormal(thing);
             return;
         }
 
@@ -2789,6 +2791,7 @@ var FullScreenPokemon = (function (GameStartr) {
         );
 
         area.spawned = true;
+        EightBitter.killNormal(thing);
 
         //MapScreener.setVariables();
     }
