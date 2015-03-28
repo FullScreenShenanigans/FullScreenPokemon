@@ -56,7 +56,11 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "Options": FullScreenPokemon.prototype.cutscenePokeMartOptions,
                 "BuyMenu": FullScreenPokemon.prototype.cutscenePokeMartBuyMenu,
                 "SelectAmount": FullScreenPokemon.prototype.cutscenePokeMartSelectAmount,
+                "ConfirmPurchase": FullScreenPokemon.prototype.cutscenePokeMartConfirmPurchase,
+                "CancelPurchase": FullScreenPokemon.prototype.cutscenePokeMartCancelPurchase,
                 "TryPurchase": FullScreenPokemon.prototype.cutscenePokeMartTryPurchase,
+                "FailPurchase": FullScreenPokemon.prototype.cutscenePokeMartFailPurchase,
+                "ContinueShopping": FullScreenPokemon.prototype.cutscenePokeMartContinueShopping,
                 "Exit": FullScreenPokemon.prototype.cutscenePokeMartExit
             }
         },

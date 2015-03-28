@@ -4985,6 +4985,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutscenePokeMartSelectAmount(EightBitter, settings) {
         var routineArguments = settings.routineArguments,
+            reference = routineArguments.reference,
             amount = routineArguments.amount,
             cost = routineArguments.cost,
             costTotal = cost * amount,
@@ -5012,17 +5013,17 @@ var FullScreenPokemon = (function (GameStartr) {
             }],
             "onUp": EightBitter.ScenePlayer.bindRoutine("SelectAmount", {
                 "amount": (amount === 99) ? 1 : amount + 1,
-                "cost": cost
+                "cost": cost,
+                "reference": reference
             }),
             "onDown": EightBitter.ScenePlayer.bindRoutine("SelectAmount", {
                 "amount": (amount === 1) ? 99 : amount - 1,
-                "cost": cost
+                "cost": cost,
+                "reference": reference
             }),
-            "callback": EightBitter.ScenePlayer.bindRoutine("TryPurchase", {
-                "reference": routineArguments.reference,
-                "amount": amount,
-                "cost": cost
-            })
+            "callback": EightBitter.ScenePlayer.bindRoutine(
+                "ConfirmPurchase", routineArguments
+            )
         });
         EightBitter.MenuGrapher.setActiveMenu("ShopItemsAmount");
     }
@@ -5030,8 +5031,127 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutscenePokeMartTryPurchase(EightBitter, setings) {
-        debugger;
+    function cutscenePokeMartConfirmPurchase(EightBitter, settings) {
+        var routineArguments = settings.routineArguments,
+            reference = routineArguments.reference,
+            cost = routineArguments.cost,
+            amount = routineArguments.amount,
+            costTotal = routineArguments.costTotal = cost * amount;
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "finishAutomatically": true
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?" 
+            ],
+            function () {
+                EightBitter.MenuGrapher.createMenu("Yes/No", {
+                    "position": {
+                        "horizontal": "right",
+                        "vertical": "bottom",
+                        "offset": {
+                            "top": 0,
+                            "left": 0
+                        }
+                    },
+                    "onMenuDelete": EightBitter.ScenePlayer.bindRoutine(
+                        "CancelPurchase"   
+                    ),
+                    "container": "ShopItemsAmount"
+                });
+                EightBitter.MenuGrapher.addMenuList("Yes/No", {
+                    "options": [{
+                        "text": "YES",
+                        "callback": EightBitter.ScenePlayer.bindRoutine(
+                            "TryPurchase", routineArguments
+                        )
+                    }, {
+                        "text": "NO",
+                        "callback": EightBitter.ScenePlayer.bindRoutine(
+                            "CancelPurchase"
+                        )
+                    }]
+                });
+                EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     * 
+     * @todo Why is the BuyMenu text appearing twice?
+     */
+    function cutscenePokeMartCancelPurchase(EightBitter, settings) {
+        EightBitter.ScenePlayer.playRoutine("BuyMenu");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartTryPurchase(EightBitter, settings) {
+        var routineArguments = settings.routineArguments,
+            costTotal = routineArguments.costTotal;
+
+        if (EightBitter.StatsHolder.get("money") < costTotal) {
+            EightBitter.ScenePlayer.playRoutine("FailPurchase", routineArguments);
+            return;
+        }
+
+        EightBitter.StatsHolder.decrease("money", routineArguments.costTotal);
+        EightBitter.MenuGrapher.createMenu("Money");
+        console.warn("Should add item to bag!");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Here you are! \n Thank you!"
+            ],
+            EightBitter.ScenePlayer.bindRoutine("BuyMenu")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartFailPurchase(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "You don't have enough money."
+            ],
+            EightBitter.ScenePlayer.bindRoutine("ContinueShopping")
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
+    function cutscenePokeMartContinueShopping(EightBitter, settings) {
+        if (EightBitter.MenuGrapher.getMenu("Yes/No")) {
+            delete EightBitter.MenuGrapher.getMenu("Yes/No").onMenuDelete;
+        }
+
+        EightBitter.MenuGrapher.deleteMenu("ShopItems");
+        EightBitter.MenuGrapher.deleteMenu("ShopItemsAmount");
+        EightBitter.MenuGrapher.deleteMenu("Yes/No");
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "Is there anything else I can do?"
+            ]
+        );
+
+        EightBitter.MenuGrapher.setActiveMenu("Buy/Sell");
     }
 
     /**
@@ -7809,14 +7929,14 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "thing": "FloorDiamonds",
                 "x": x,
-                "y": y + 4,
+                "y": y + 8,
                 "width": 64,
-                "height": 60
+                "height": 56
             }, {
                 "thing": "FloorDiamondsDark",
                 "x": x,
-                "y": y + 4,
-                "height": 20
+                "y": y + 16,
+                "height": 8
             }, {
                 "thing": "StoreFridge",
                 "x": x + 16,
@@ -7861,7 +7981,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "thing": "FloorDiamondsDark",
                 "x": x + 16,
                 "y": y + 32,
-                "height": 24
+                "height": 24,
             }, {
                 "thing": "SquareWallTop",
                 "x": x + 8,
@@ -7875,7 +7995,7 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "thing": "FloorDiamondsDark",
                 "x": x,
-                "y": y + 40
+                "y": y + 40,
             }, {
                 "thing": "Register",
                 "x": x + 8,
@@ -7898,7 +8018,7 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "thing": "FloorDiamondsDark",
                 "x": x,
-                "y": y + 56
+                "y": y + 56,
             }, {
                 "thing": "Doormat",
                 "x": x + 24,
@@ -8162,7 +8282,11 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutscenePokeMartBuyMenu": cutscenePokeMartBuyMenu,
         "cutscenePokeMartSelectAmount": cutscenePokeMartSelectAmount,
         "cutscenePokeMartExit": cutscenePokeMartExit,
+        "cutscenePokeMartConfirmPurchase": cutscenePokeMartConfirmPurchase,
+        "cutscenePokeMartCancelPurchase": cutscenePokeMartCancelPurchase,
         "cutscenePokeMartTryPurchase": cutscenePokeMartTryPurchase,
+        "cutscenePokeMartFailPurchase": cutscenePokeMartFailPurchase,
+        "cutscenePokeMartContinueShopping": cutscenePokeMartContinueShopping,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
