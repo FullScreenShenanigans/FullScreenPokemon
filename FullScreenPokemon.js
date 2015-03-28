@@ -1905,6 +1905,7 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
             // TODO: have a combiner function for items
+            console.warn("Items should have a combiner function...");
             thing.EightBitter.StatsHolder.get("items").push({
                 "item": other.gift,
                 "amount": 1
@@ -1924,6 +1925,50 @@ var FullScreenPokemon = (function (GameStartr) {
                 other.id, "dialogNext", undefined
             );
         }
+
+        if (other.dialogOptions) {
+            thing.EightBitter.animateCharacterDialogOptions(thing, other);
+        }
+    }
+
+    /**
+     * 
+     */
+    function animateCharacterDialogOptions(thing, other) {
+        var dialogOptions = other.dialogOptions,
+            options = dialogOptions.options,
+            generateCallback = function (dialog) {
+                return function () {
+                    thing.EightBitter.MenuGrapher.deleteMenu("Yes/No");
+                    thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
+                        "deleteOnFinish": true
+                    });
+                    thing.EightBitter.MenuGrapher.addMenuDialog(
+                        "GeneralText", dialog
+                    );
+                    thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                };
+            };
+
+        console.warn("DialogOptions assumes type = Yes/No for now...");
+
+        thing.EightBitter.MenuGrapher.createMenu("Yes/No", {
+            "position": {
+                "offset": {
+                    "left": 28
+                }
+            }
+        });
+        thing.EightBitter.MenuGrapher.addMenuList("Yes/No", {
+            "options": [{
+                "text": "YES",
+                "callback": generateCallback(options.Yes)
+                }, {
+                "text": "NO",
+                "callback": generateCallback(options.No)
+            }]
+        });
+        thing.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
@@ -2245,7 +2290,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (!thing.EightBitter.MenuGrapher.getActiveMenu()) {
             thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
-                "deleteOnFinish": true
+                "deleteOnFinish": !other.dialogOptions
             });
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
             thing.EightBitter.MenuGrapher.addMenuDialog(
@@ -8273,6 +8318,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "animateUnflipOnDirection": animateUnflipOnDirection,
         "animateSwitchFlipOnDirection": animateSwitchFlipOnDirection,
         "animateCharacterDialogFinish": animateCharacterDialogFinish,
+        "animateCharacterDialogOptions": animateCharacterDialogOptions,
         "animateCharacterFollow": animateCharacterFollow,
         "animateCharacterFollowContinue": animateCharacterFollowContinue,
         "animateCharacterFollowStop": animateCharacterFollowStop,
