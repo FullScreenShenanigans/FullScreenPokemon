@@ -531,6 +531,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 16, "y": 32 },
                         { "thing": "Stool", "x": 40, "y": 32 },
                         { "thing": "Girl", "x": 8, "y": 32, "roaming": true, "roamingDirections": [0, 2], "dialog": "My daddy loves %%%%%%%POKEMON%%%%%%% too." },
+                        { "thing": "BirdPokemon", "x": 48, "y": 40, "direction": 3, "roaming": true, "roamingDirections": [1,3], "dialog": "SPEARY: Tetweet!" },
                         { "thing": "PottedPalmTree", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 56, "y": 48 },
                         { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Nicknamer House Floor 1 Door" },

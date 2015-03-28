@@ -10,6 +10,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "Location": {},
         "Thing": {
             "Character": {
+                "BirdPokemon": {},
                 "Boss": {},
                 "BugCatcher": {},
                 "Buzzer": {},
@@ -23,6 +24,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Gentleman": {},
                 "GlassesOldGuy": {},
                 "Lady": {},
+                "LandPokemon": {},
                 "Mother": {},
                 "Nurse": {},
                 "Oak": {},
@@ -30,7 +32,8 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Player": {},
                 "Pokeball": {},
                 "Rival": {},
-                "Scientist": {}
+                "Scientist": {},
+                "WaterPokemon": {}
             },
             "Solid": {
                 "AsianScroll": {},
@@ -190,10 +193,6 @@ FullScreenPokemon.prototype.settings.objects = {
                     "LtSurgePortrait": {},
                     "MistyPortrait": {},
                     "SabrinaPortrait": {},
-                    "PokemonPortrait": {
-                        "LandPokemon": {},
-                        "WaterPokemon": {}
-                    }
                 },
                 "BattleSprite": {
                     "BattleSpriteFront": {
