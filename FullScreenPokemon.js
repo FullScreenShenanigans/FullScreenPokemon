@@ -1927,29 +1927,45 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (other.dialogOptions) {
-            thing.EightBitter.animateCharacterDialogOptions(thing, other);
+            thing.EightBitter.animateCharacterDialogOptions(
+                thing, other, other.dialogOptions
+            );
         }
     }
 
     /**
      * 
      */
-    function animateCharacterDialogOptions(thing, other) {
-        var dialogOptions = other.dialogOptions,
-            options = dialogOptions.options,
+    function animateCharacterDialogOptions(thing, other, dialogOptions) {
+        var options = dialogOptions.options,
             generateCallback = function (dialog) {
+                var callback, words;
+
+                if (!dialog) {
+                    return undefined;
+                }
+
+                if (dialog.constructor === Object && dialog.options) {
+                    words = dialog.words;
+                    callback = animateCharacterDialogOptions.bind(
+                        thing.EightBitter, thing, other, dialog
+                    );
+                } else {
+                    words = dialog.words || dialog;
+                }
+
                 return function () {
                     thing.EightBitter.MenuGrapher.deleteMenu("Yes/No");
                     thing.EightBitter.MenuGrapher.createMenu("GeneralText", {
-                        "deleteOnFinish": true
+                        //"deleteOnFinish": true
                     });
                     thing.EightBitter.MenuGrapher.addMenuDialog(
-                        "GeneralText", dialog
+                        "GeneralText", words, callback
                     );
                     thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
                 };
             };
-
+        
         console.warn("DialogOptions assumes type = Yes/No for now...");
 
         thing.EightBitter.MenuGrapher.createMenu("Yes/No", {
