@@ -10,8 +10,10 @@ FullScreenPokemon.prototype.settings.objects = {
         "Location": {},
         "Thing": {
             "Character": {
+                "BugCatcher": {},
                 "Buzzer": {},
                 "Cashier": {},
+                "CoolTrainerM": {},
                 "Daisy": {},
                 "DeskWoman": {},
                 "Fatty": {},
