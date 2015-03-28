@@ -4192,9 +4192,10 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleVictory(EightBitter, settings) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo();
+        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
+            opponent = battleInfo.opponent;
 
-        if (!battleInfo.opponent.hasActors) {
+        if (!opponent.hasActors) {
             EightBitter.BattleMover.closeBattle(
                 EightBitter.animateFadeFromColor.bind(
                     EightBitter, EightBitter, {
@@ -4209,7 +4210,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%% defeated %%%%%%%RIVAL%%%%%%%!"
+                "%%%%%%%PLAYER%%%%%%% defeated " + opponent.name + "!"
             ],
             EightBitter.ScenePlayer.bindRoutine("VictorySpeech")
         );
@@ -4248,18 +4249,43 @@ var FullScreenPokemon = (function (GameStartr) {
                 EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
                     battleInfo.textVictory,
-                    EightBitter.BattleMover.closeBattle.bind(
-                        EightBitter.BattleMover,
-                        EightBitter.animateFadeFromColor.bind(
-                            EightBitter, EightBitter, {
-                                "color": "White"
-                            }
-                        )
-                    )
+                    EightBitter.ScenePlayer.bindRoutine("VictoryWinnings")
                 );
                 EightBitter.MenuGrapher.setActiveMenu("GeneralText");
             }
         );
+    }
+
+    /**
+     * 
+     */
+    function cutsceneBattleVictoryWinnings(EightBitter, settings) {
+        var reward = settings.battleInfo.opponent.reward,
+            callback = EightBitter.BattleMover.closeBattle.bind(
+                EightBitter.BattleMover,
+                EightBitter.animateFadeFromColor.bind(
+                    EightBitter, EightBitter, {
+                        "color": "White"
+                    }
+                )
+            );
+
+        if (!reward) {
+            callback();
+            return;
+        }
+
+        EightBitter.StatsHolder.increase("money", reward);
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%% got $" + reward + " for winning!"
+            ],
+            callback
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -4961,7 +4987,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     "y": 4
                 }],
                 "callback": EightBitter.ScenePlayer.bindRoutine(
-                    "SelectAmount", 
+                    "SelectAmount",
                     {
                         "reference": reference,
                         "amount": 1,
@@ -5062,7 +5088,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
-                reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?" 
+                reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?"
             ],
             function () {
                 EightBitter.MenuGrapher.createMenu("Yes/No", {
@@ -5075,7 +5101,7 @@ var FullScreenPokemon = (function (GameStartr) {
                         }
                     },
                     "onMenuDelete": EightBitter.ScenePlayer.bindRoutine(
-                        "CancelPurchase"   
+                        "CancelPurchase"
                     ),
                     "container": "ShopItemsAmount"
                 });
@@ -5134,7 +5160,7 @@ var FullScreenPokemon = (function (GameStartr) {
             ],
             EightBitter.ScenePlayer.bindRoutine("ContinueShopping")
         );
-        
+
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -6344,6 +6370,40 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneOakIntroRivalBattleChallenge(EightBitter, settings) {
         var keptThings = [settings.player, settings.rival],
+            battleInfo = {
+                "player": {
+                    "sprite": "PlayerBack",
+                    "name": EightBitter.StatsHolder.get("name"),
+                    "category": "Trainer",
+                    "actors": EightBitter.StatsHolder.get("PokemonInParty")
+                },
+                "opponent": {
+                    "sprite": "RivalPortrait",
+                    "name": EightBitter.StatsHolder.get("nameRival"),
+                    "category": "Trainer",
+                    "hasActors": true,
+                    "reward": 175,
+                    "actors": [
+                        EightBitter.MathDecider.compute(
+                            "newPokemon",
+                            EightBitter.StatsHolder.get("starterRival"),
+                            5
+                        )
+                    ]
+                },
+                "textStart": ["", " wants to fight!"],
+                "textDefeat": ["SHOULD FILL THIS OUT YES"],
+                "textVictory": [
+                    [
+                        "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                        "Unbelievable!",
+                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+                    ].join(" ")
+                ],
+                "noBlackout": true,
+                "keptThings": ["player", "Rival"],
+                "nextCutscene": "OakIntroRivalLeaves",
+            },
             steps;
 
         switch (EightBitter.StatsHolder.get("starterRival")) {
@@ -6375,40 +6435,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     {
                         "keptThings": ["player", "Rival"],
                         "callback": EightBitter.BattleMover.startBattle.bind(
-                            EightBitter.BattleMover,
-                            {
-                                "player": {
-                                    "sprite": "PlayerBack",
-                                    "name": EightBitter.StatsHolder.get("name"),
-                                    "category": "Trainer",
-                                    "actors": EightBitter.StatsHolder.get("PokemonInParty")
-                                },
-                                "opponent": {
-                                    "sprite": "RivalPortrait",
-                                    "name": EightBitter.StatsHolder.get("nameRival"),
-                                    "category": "Trainer",
-                                    "hasActors": true,
-                                    "actors": [
-                                        EightBitter.MathDecider.compute(
-                                            "newPokemon",
-                                            EightBitter.StatsHolder.get("starterRival"),
-                                            5
-                                        )
-                                    ]
-                                },
-                                "textStart": ["", " wants to fight!"],
-                                "textDefeat": ["SHOULD FILL THIS OUT YES"],
-                                "textVictory": [
-                                    [
-                                        "%%%%%%%RIVAL%%%%%%%: WHAT?",
-                                        "Unbelievable!",
-                                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
-                                    ].join(" ")
-                                ],
-                                "noBlackout": true,
-                                "keptThings": ["player", "Rival"],
-                                "nextCutscene": "OakIntroRivalLeaves",
-                            }
+                            EightBitter.BattleMover, battleInfo
                         )
                     }
                 )
@@ -8302,6 +8329,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattleExitFailReturn": cutsceneBattleExitFailReturn,
         "cutsceneBattleVictory": cutsceneBattleVictory,
         "cutsceneBattleVictorySpeech": cutsceneBattleVictorySpeech,
+        "cutsceneBattleVictoryWinnings": cutsceneBattleVictoryWinnings,
         "cutsceneBattleDefeat": cutsceneBattleDefeat,
         "cutsceneBattleComplete": cutsceneBattleComplete,
         // Battle transitions
