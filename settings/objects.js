@@ -24,7 +24,9 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Gentleman": {},
                 "GlassesOldGuy": {},
                 "Lady": {},
+                "Lass": {},
                 "LandPokemon": {},
+                "LittleGirl": {},
                 "Mother": {},
                 "Nurse": {},
                 "Oak": {},
@@ -163,6 +165,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 }
             },
             "Scenery": {
+                "Blackboard": {},
                 "Book": {},
                 "Clipboard": {},
                 "Doormat": {},
@@ -170,6 +173,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "DoormatDashed": {},
                 "Flower": {},
                 "FlowerVase": {},
+                "Notepad": {},
                 "Painting": {},
                 "PokeCenterPoster": {},
                 "Shadow": {},
@@ -984,6 +988,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "groupType": "Scenery",
             "repeat": true
         },
+        "Blackboard": [16, 8],
         "Clipboard": {
             "offsetY": FullScreenPokemon.unitsize * -1.5
         },

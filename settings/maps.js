@@ -369,6 +369,9 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Nicknamer House Front Door": {
                     "area": "Land"
                 },
+                "School Front Door": {
+                    "area": "Land"
+                },
                 "PokeCenter Outside Door": {
                     "area": "Land"
                 },
@@ -377,6 +380,9 @@ FullScreenPokemon.prototype.settings.maps = {
                 },
                 "Nicknamer House Floor 1 Door": {
                     "area": "Nicknamer House"
+                },
+                "School Floor 1 Door": {
+                    "area": "School"
                 },
                 "PokeCenter Inside Door": {
                     "area": "PokeCenter"
@@ -436,7 +442,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceVertical", "x": 160, "y": 104, "width": 128, "height": 8 },
                         { "thing": "DirtMedium", "y": 112, "width": 56, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 112, "xnum": 16, "ynum": 2 },
-                        { "macro": "House", "x": 160, "y": 112, "door": true },
+                        { "macro": "House", "x": 160, "y": 112, "door": true, "entrance": "School Front Door", "transport": "School Floor 1 Door" },
                         { "thing": "DirtLight", "y": 128, "width": 16, "height": 24 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 128, "xnum": 4, "ynum": 2 },
                         { "thing": "DirtLight", "x": 128, "y": 128, "width": 16, "height": 16 },
@@ -530,12 +536,54 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 24 },
                         { "thing": "Stool", "x": 16, "y": 32 },
                         { "thing": "Stool", "x": 40, "y": 32 },
-                        { "thing": "Girl", "x": 8, "y": 32, "roaming": true, "roamingDirections": [0, 2], "dialog": "My daddy loves %%%%%%%POKEMON%%%%%%% too." },
+                        { "thing": "LittleGirl", "x": 8, "y": 32, "roaming": true, "roamingDirections": [0, 2], "dialog": "My daddy loves %%%%%%%POKEMON%%%%%%% too." },
                         { "thing": "BirdPokemon", "x": 48, "y": 40, "direction": 3, "roaming": true, "roamingDirections": [1,3], "dialog": "SPEARY: Tetweet!" },
                         { "thing": "PottedPalmTree", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 56, "y": 48 },
                         { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Nicknamer House Floor 1 Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Nicknamer House Front Door" }, "requireDirection": 2 }
+                    ]
+                },
+                "School": {
+                    "width": 64,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "WallIndoorHorizontalBands", "width": 64 },
+                        { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "Window", "x": 8 },
+                        { "thing": "Blackboard", "x": 24 },
+                        { "thing": "Bookshelf", "x": 56 },
+                        { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
+                        { "thing": "Lass", "x": 32, "y": 8, "direction": 2, "directionPreferred": 2, "dialog": ["Okay!", "Be sure to read the blackboard carefully!"] },
+                        { "thing": "Table2x3", "x": 24, "y": 24 },
+                        { "thing": "Notepad", "x": 24, "y": 28 },
+                        {
+                            "thing": "DialogResponder", "x": 24, "y": 28, "dialog": ["Looked at the notebook!", "First page...", "%%%%%%%POKE%%%%%%% BALLs are used to catch %%%%%%%POKEMON%%%%%%%.", "Up to 6 %%%%%%%POKEMON%%%%%%% can be carried.", "People who raise and make %%%%%%%POKEMON%%%%%%% fight are called %%%%%%%POKEMON%%%%%%% trainers.", "Turn the page?"], "dialogOptions":
+                              {
+                                "options": {
+                                    "Yes": {
+                                        "words": ["Second page...", "A healty %%%%%%%POKEMON%%%%%%% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
+                                        "options": {
+                                            "Yes": {
+                                                "words": ["Third page...", "%%%%%%%POKEMON%%%%%%% trainers seek others to engage in %%%%%%%POKEMON%%%%%%% fights.", "Battles are constantly fought at %%%%%%%POKEMON%%%%%%% GYMs.", "Turn the page?"],
+                                                "options": {
+                                                    "Yes": {
+                                                        "words": ["Fourth page...", "The goal for %%%%%%%POKEMON%%%%%%% trainers is to beat the top 8 %%%%%%%POKEMON%%%%%%% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %%%%%%%POKEMON%%%%%%% LEAGUE!", "GIRL: Hey! Don't look at my notes!"]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        { "thing": "Stool", "x": 24, "y": 40 },
+                        { "thing": "Girl", "x": 24, "y": 40, "direction": 0, "dialog": "Whew! I'm trying to memorize all my notes." },
+                        { "thing": "PottedPalmTree", "y": 48 },
+                        { "thing": "PottedPalmTree", "x": 56, "y": 48 },
+                        { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "School Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "School Front Door" }, "requireDirection": 2 }
                     ]
                 },
                 "PokeCenter": {
