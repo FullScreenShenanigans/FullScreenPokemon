@@ -3072,12 +3072,11 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function openItemsMenu() {
+    function openItemsMenu(settings) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             items = EightBitter.StatsHolder.get("items");
 
-        EightBitter.MenuGrapher.createMenu("Items");
-        EightBitter.MenuGrapher.setActiveMenu("Items");
+        EightBitter.MenuGrapher.createMenu("Items", settings);
         EightBitter.MenuGrapher.addMenuList("Items", {
             "options": items.map(function (schema) {
                 return {
@@ -3094,6 +3093,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 };
             })
         });
+        EightBitter.MenuGrapher.setActiveMenu("Items");
 
         console.warn("Once math.js contains item info, react to non-stackable items...");
     }

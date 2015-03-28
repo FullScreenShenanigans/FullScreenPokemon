@@ -313,30 +313,20 @@ function BattleMovr(settings) {
      * 
      */
     self.openItemsMenu = function () {
-        var items = EightBitter.StatsHolder.get("items");
-
-        EightBitter.MenuGrapher.createMenu(menuNames.items, {
-            "container": "Battle",
-            "backMenu": "BattleOptions",
-            "size": {
-                "height": 44
-            },
+        EightBitter.openItemsMenu({
             "position": {
                 "horizontal": "right",
                 "vertical": "bottom",
                 "offset": {
                     "left": 0
                 }
-            }
-        });
-
-        EightBitter.MenuGrapher.setActiveMenu(menuNames.items);
-        EightBitter.MenuGrapher.addMenuList(menuNames.items, {
-            "options": items.map(function (item) {
-                return {
-                    "text": item.title
-                };
-            })
+            },
+            "size": {
+                "height": 44
+            },
+            "container": "Battle",
+            "backMenu": "BattleOptions",
+            "scrollingItems": 4
         });
     };
 
