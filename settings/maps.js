@@ -518,7 +518,21 @@ FullScreenPokemon.prototype.settings.maps = {
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "Cabinet", "width": 16 },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP. (TO DO: TRIGGER TOWN MAP)" },
+                        { "thing": "Clipboard", "x": 32, "dialog": "SPEAROW \n Name: SPEARY" },
+                        { "thing": "Window", "x": 40 },
+                        { "thing": "Bookshelf", "x": 56 },
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
+                        { "thing": "Table2x3", "x": 24, "y": 24 },
+                        { "thing": "Dad", "x": 40, "y": 24, "direction": 3, "roaming": true, "roamingDirections": [], "dialog": ["Coming up with nicknames is fun, but hard.", "Simple names are the easiest to remember."] },
+                        { "thing": "Stool", "x": 16, "y": 24 },
+                        { "thing": "Stool", "x": 40, "y": 24 },
+                        { "thing": "Stool", "x": 16, "y": 32 },
+                        { "thing": "Stool", "x": 40, "y": 32 },
+                        { "thing": "Girl", "x": 8, "y": 32, "roaming": true, "roamingDirections": [0, 2], "dialog": "My daddy loves %%%%%%%POKEMON%%%%%%% too." },
+                        { "thing": "PottedPalmTree", "y": 48 },
+                        { "thing": "PottedPalmTree", "x": 56, "y": 48 },
                         { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Nicknamer House Floor 1 Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Nicknamer House Front Door" }, "requireDirection": 2 }
                     ]
