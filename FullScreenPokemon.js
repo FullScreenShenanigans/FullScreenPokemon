@@ -1691,7 +1691,7 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
-        if (thing.allowedRoaming.indexOf(direction) === -1) {
+        if (thing.roamingDirections.indexOf(direction) === -1) {
             thing.EightBitter.animateCharacterSetDirection(thing, direction);
         } else {
             thing.EightBitter.animateCharacterStartWalking(thing, direction);
