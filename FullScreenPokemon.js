@@ -5894,8 +5894,8 @@ var FullScreenPokemon = (function (GameStartr) {
                 1,
                 EightBitter.setMap.bind(
                     EightBitter,
-                    "Oak's Lab",
-                    "Ground Floor Door",
+                    "Pallet Town",
+                    "Oak's Lab Floor 1 Door",
                     false
                 )
             ]
@@ -6498,10 +6498,8 @@ var FullScreenPokemon = (function (GameStartr) {
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-        // TODO
-        console.warn("This should be eventually changed to Pallet Town::Oak's Lab...")
         EightBitter.StateHolder.addCollectionChange(
-            "Oak's Lab::Ground Floor", "Oak", "cutscene", "OakParcelDelivery"
+            "Pallet Town::Oak's Lab", "Oak", "cutscene", "OakParcelDelivery"
         );
     }
 

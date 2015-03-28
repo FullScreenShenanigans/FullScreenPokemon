@@ -63,11 +63,32 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Player's House Door": {
                     "area": "Land"
                 },
+                "Player's House Floor 1 Door": {
+                    "area": "Player's House"
+                },
+                "Player's House Floor 1 Stairs": {
+                    "area": "Player's House"
+                },
+                "Player's House Floor 2 Stairs": {
+                    "area": "Player's House Floor 2"
+                },
+                "Start Game": {
+                    "area": "Player's House Floor 2",
+                    "xloc": 24,
+                    "yloc": 40,
+                    "direction": 0
+                },
                 "Rival's House Door": {
                     "area": "Land"
                 },
+                "Rival's House Floor 1 Door": {
+                    "area": "Rival's House"
+                },
                 "Oak's Lab Door": {
                     "area": "Land"
+                },
+                "Oak's Lab Floor 1 Door": {
+                    "area": "Oak's Lab"
                 }
             },
             "locationDefault": "Player's House Door",
@@ -98,8 +119,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 8, "xnum": 16, "ynum": 2, "offset": 1 },
                         { "thing": "DirtMedium", "x": 144, "y": 8, "height": 128, "width": 16 },
                         { "thing": "FenceWide", "x": 152, "y": 8, "height": 128 },
-                        { "macro": "House", "x": 32, "y": 16, "stories": 2, "door": true, "entrance": "Player's House Door", "transport": { "map": "Player's House", "location": "Ground Floor Door" } },
-                        { "macro": "House", "x": 96, "y": 16, "stories": 2, "door": true, "entrance": "Rival's House Door", "transport": { "map": "Rival's House", "location": "Ground Floor Door" } },
+                        { "macro": "House", "x": 32, "y": 16, "stories": 2, "door": true, "entrance": "Player's House Door", "transport": { "location": "Player's House Floor 1 Door" } },
+                        { "macro": "House", "x": 96, "y": 16, "stories": 2, "door": true, "entrance": "Rival's House Door", "transport": { "location": "Rival's House Floor 1 Door" } },
                         { "thing": "DirtLight", "x": 16, "y": 24, "width": 16, "height": 16 },
                         { "thing": "DirtLight", "x": 80, "y": 24, "width": 16, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 24, "xnum": 6, "ynum": 2 },
@@ -111,7 +132,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Lady", "x": 24, "y": 56, "roaming": true, "dialog": ["I'm raising %%%%%%%POKEMON%%%%%%% too!", "When they get strong, they can protect me!"] },
                         { "thing": "DirtLight", "x": 32, "y": 56, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 56, "xnum": 2, "ynum": 6 },
-                        { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "door": true, "stories": 2, "white": { "start": 84, "end": 96 }, "id": "Oak's Lab Door", "entrance": "Oak's Lab Door", "transport": { "map": "Oak's Lab", "location": "Ground Floor Door" } },
+                        { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "door": true, "stories": 2, "white": { "start": 84, "end": 96 }, "id": "Oak's Lab Door", "entrance": "Oak's Lab Door", "transport": { "location": "Oak's Lab Floor 1 Door" } },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 56, "xnum": 8, "ynum": 4 },
                         { "thing": "FenceVertical", "x": 32, "y": 64, "width": 24 },
                         { "thing": "Sign", "x": 56, "y": 64, "dialog": "PALLET TOWN \n Shades of your journey await!" },
@@ -131,33 +152,10 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtLight", "x": 128, "y": 104, "width": 16, "height": 32 },
                         { "thing": "DirtLight", "x": 80, "y": 120, "width": 48, "height": 16 },
                         { "thing": "FenceWide", "x": 64, "y": 128, "width": 88 },
-
                         { "thing": "FenceWide", "x": 8, "y": 128 }
                     ]
-                }
-            }
-        }, {
-            "name": "Player's House",
-            "locations": {
-                "Ground Floor Stairs": {
-                    "area": "Ground Floor"
                 },
-                "Ground Floor Door": {
-                    "area": "Ground Floor"
-                },
-                "Start Game": {
-                    "area": "Bedroom",
-                    "xloc": 24,
-                    "yloc": 40,
-                    "direction": 0
-                },
-                "Bedroom Stairs": {
-                    "area": "Bedroom"
-                }
-            },
-            "locationDefault": "Ground Floor Door",
-            "areas": {
-                "Ground Floor": {
+                "Player's House": {
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -168,7 +166,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WindowBlinds", "x": 56 },
                         { "thing": "Bookshelf", "width": 16 },
                         { "thing": "TelevisionMonitor", "x": 24, "y": 8, "dialogDirections": true, "dialog": ["Oops, wrong side.", "Oops, wrong side.", ["There's a movie on TV. Four boys are walking on railroad tracks.", "I better go too."], "Oops, wrong side."] },
-                        { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Ground Floor Stairs", "transport": "Bedroom Stairs" },
+                        { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Player's House Floor 1 Stairs", "transport": "Player's House Floor 2 Stairs" },
                         { "thing": "Table2x3", "x": 24, "y": 32 },
                         { "thing": "Stool", "x": 16, "y": 32 },
                         { "thing": "Stool", "x": 16, "y": 40 },
@@ -176,12 +174,11 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 40 },
                         { "thing": "FlowerVase", "x": 29, "y": 34 },
                         { "thing": "Mother", "x": 40, "y": 32, "direction": 3, "directionPreferred": 3, "dialog": ["MOM: Right. All boys leave home some day. It said so on TV.", "PROF.OAK, next door, is looking for you."] },
-                        //{ "thing": "Mother", "x": 40, "y": 32, "direction": 3, "dialog": ["MOM: %%%%%%%PLAYER%%%%%%%! You and your %%%%%%%POKEMON%%%%%%% should take a quick rest."] },
-                        { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
-                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Player's House Door" }, "requireDirection": 2 }
+                        { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Player's House Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Player's House Door" }, "requireDirection": 2 }
                     ]
                 },
-                "Bedroom": {
+                "Player's House Floor 2": {
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -189,7 +186,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
                         { "thing": "ComputerDesk" },
                         { "thing": "Table2x2", "x": 8 },
-                        { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Bedroom Stairs", "transport": "Ground Floor Stairs" },
+                        { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Player's House Floor 2 Stairs", "transport": "Player's House Floor 1 Stairs" },
                         { "thing": "WindowBlinds", "x": 40 },
                         { "thing": "WindowBlinds", "x": 56 },
                         { "thing": "ConsoleAndController", "x": 24, "y": 32, "dialog": "%%%%%%%PLAYER%%%%%%% is playing the SNES! ...Okay! It's time to go!" },
@@ -197,18 +194,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "BedSingle", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 48, "y": 48 }
                     ]
-                }
-            }
-        }, {
-            "name": "Rival's House",
-            "locations": {
-                "Ground Floor Door": {
-                    "area": "Ground Floor"
-                }
-            },
-            "locationDefault": "Ground Floor Door",
-            "areas": {
-                "Ground Floor": {
+                },
+                "Rival's House": {
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -227,22 +214,11 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 32 },
                         { "thing": "PottedPalmTree", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 56, "y": 48 },
-                        { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
-                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Rival's House Door" }, "requireDirection": 2 }
+                        { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Rival's House Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Rival's House Door" }, "requireDirection": 2 }
                     ]
-                }
-            }
-        }, {
-            "name": "Oak's Lab",
-            "locations": {
-                "Ground Floor Door": {
-                    "area": "Ground Floor",
-                    "routine": "WalkToTable"
-                }
-            },
-            "locationDefault": "Ground Floor Door",
-            "areas": {
-                "Ground Floor": {
+                },
+                "Oak's Lab": {
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorLightWithDarkBottom", "width": 64 },
@@ -269,8 +245,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Scientist", "x": 16, "y": 80, "name": "Scientist One", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },
                         { "thing": "Scientist", "x": 64, "y": 80, "name": "Scientist Two", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },
                         { "thing": "Doormat", "x": 32, "y": 88, "id": "DoormatLeft" },
-                        { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Ground Floor Door" },
-                        { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
+                        { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Oak's Lab Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "location": "Oak's Lab Door" }, "requireDirection": 2 },
                     ]
                 }
             }
