@@ -1893,6 +1893,37 @@ var FullScreenPokemon = (function (GameStartr) {
                 thing, other.pushDirection, onStop
             );
         }
+        
+        if (other.gift) {
+            thing.EightBitter.MenuGrapher.createMenu("GeneralText");
+            thing.EightBitter.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!"
+                ]
+            );
+            thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+            // TODO: have a combiner function for items
+            thing.EightBitter.StatsHolder.get("items").push({
+                "item": other.gift,
+                "amount": 1
+            })
+
+            other.gift = undefined;
+            thing.EightBitter.StateHolder.addChange(other.id, "gift", undefined);
+        }
+
+        if (other.dialogNext) {
+            other.dialog = other.dialogNext;
+            other.dialogNext = undefined;
+            thing.EightBitter.StateHolder.addChange(
+                other.id, "dialog", other.dialog
+            );
+            thing.EightBitter.StateHolder.addChange(
+                other.id, "dialogNext", undefined
+            );
+        }
     }
 
     /**
