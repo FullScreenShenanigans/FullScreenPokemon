@@ -1070,6 +1070,7 @@ function MenuGraphr(settings) {
         }
 
         if (activeMenu.callback) {
+            console.log("Doing callback", activeMenu.callback);
             activeMenu.callback(activeMenu.name);
         }
     };
@@ -1078,7 +1079,15 @@ function MenuGraphr(settings) {
      * 
      */
     self.registerB = function () {
-        if (!activeMenu || activeMenu.ignoreB) {
+        if (!activeMenu) {
+            return;
+        }
+
+        if (activeMenu.progress) {
+            return self.registerA();
+        }
+
+        if (activeMenu.ignoreB) {
             return;
         }
 
