@@ -1691,7 +1691,11 @@ var FullScreenPokemon = (function (GameStartr) {
             }
         }
 
-        thing.EightBitter.animateCharacterStartWalking(thing, direction);
+        if (thing.allowedRoaming.indexOf(direction) === -1) {
+            thing.EightBitter.animateCharacterSetDirection(thing, direction);
+        } else {
+            thing.EightBitter.animateCharacterStartWalking(thing, direction);
+        }
     }
 
     /**
