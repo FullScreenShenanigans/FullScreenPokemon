@@ -265,9 +265,9 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
                         { "thing": "MenuTriggerer", "x": 32, "y": 56, "width": 32, "id": "OakBlocker", "pushDirection": 0, "pushSteps": [1], "keepAlive": true, "nocollide": true, "dialog": "OAK: Hey! Don't go away yet!" },
                         { "thing": "CutsceneTriggerer", "x": 32, "y": 56, "width": 32, "id": "RivalBlocker", "cutscene": "OakIntroRivalBattle", "routine": "Approach", "nocollide": true },
-                        { "thing": "Lady", "x": 8, "y": 72, "dialog": ["PROF.OAK is the authority on %%%%%%%POKEMON%%%%%%%!", "Many %%%%%%%POKEMON%%%%%%% trainers hold him in high regard!"], "roaming": true, "allowedRoaming": [0, 2] },
-                        { "thing": "Scientist", "x": 16, "y": 80, "name": "Scientist One", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "allowedRoaming": [] },
-                        { "thing": "Scientist", "x": 64, "y": 80, "name": "Scientist Two", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "allowedRoaming": [] },
+                        { "thing": "Lady", "x": 8, "y": 72, "dialog": ["PROF.OAK is the authority on %%%%%%%POKEMON%%%%%%%!", "Many %%%%%%%POKEMON%%%%%%% trainers hold him in high regard!"], "roaming": true, "roamingDirections": [0, 2] },
+                        { "thing": "Scientist", "x": 16, "y": 80, "name": "Scientist One", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },
+                        { "thing": "Scientist", "x": 64, "y": 80, "name": "Scientist Two", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },
                         { "thing": "Doormat", "x": 32, "y": 88, "id": "DoormatLeft" },
                         { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
@@ -536,8 +536,8 @@ FullScreenPokemon.prototype.settings.maps = {
                     "invisibleWallBorders": true,
                     "creation": [
                         { "macro": "PokeMart", "entrance": "PokeMart Inside Door", "transport": "PokeMart Outside Door", "responderId": "CashierDetector", "responderDialog": "Okay! Say hi to PROF. Oak for me!", "items": [{ "item": "Pokeball", "cost": 200 }, { "item": "Antidote", "cost": 100 }, { "item": "Parlyz Heal", "cost": 200 }, { "item": "Burn Heal", "cost": 250 }] },
-                        { "thing": "CoolTrainer", "x": 24, "y": 24, "direction": 2 },
-                        { "thing": "BugCatcher", "x": 48, "y": 40, "direction": 0 },
+                        { "thing": "CoolTrainerM", "x": 24, "y": 24, "direction": 2, "roaming": true, "roamingDirections": [] },
+                        { "thing": "BugCatcher", "x": 48, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2] },
                         { "thing": "CutsceneTriggerer", "x": 24, "y": 56, "width": 16, "id": "OakParcelPickup", "active": true, "cutscene": "OakParcelPickup" }
                     ]
                 }
