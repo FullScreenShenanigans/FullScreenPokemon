@@ -1070,7 +1070,6 @@ function MenuGraphr(settings) {
         }
 
         if (activeMenu.callback) {
-            console.log("Doing callback", activeMenu.callback);
             activeMenu.callback(activeMenu.name);
         }
     };

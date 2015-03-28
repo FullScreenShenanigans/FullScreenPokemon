@@ -741,11 +741,10 @@ FullScreenPokemon.prototype.settings.objects = {
             "height": 3,
             "nocollide": true
         },
-        "Mother": {
-            "directionPreferred": 3
-        },
-        "Oak": {
-            "nocollide": true  // remove...
+        "CoolTrainerM": {
+            "attributes": {
+                "sitting": {}
+            }
         },
         "OldMan": {
             "attributes": {

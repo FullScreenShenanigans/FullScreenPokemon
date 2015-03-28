@@ -7878,7 +7878,11 @@ var FullScreenPokemon = (function (GameStartr) {
             }, {
                 "thing": "DeskWoman",
                 "x": x + 88,
-                "y": y + 16
+                "y": y + 16,
+                "dialog": [
+                    "Welcome to the Cable Club!",
+                    "This area is reserved for 2 friends who are linked by cable."
+                ]
             }, {
                 "thing": "PokeCenterDeskBlocker",
                 "x": x + 96,
@@ -7931,6 +7935,25 @@ var FullScreenPokemon = (function (GameStartr) {
                 "transport": reference.transport,
                 "requireDirection": 2
             });
+        }
+
+        if (!reference.excludeCoolTrainer) {
+            output.push({
+                "thing": "CoolTrainerM",
+                "x": x,
+                "y": y + 32,
+                "offsetX": FullScreenPokemon.unitsize * 1.75,
+                "offsetY": 0,
+                "direction": 1,
+                "sitting": true,
+                "dialogDirections": true,
+                "dialog": reference.coolTrainerDialog || [
+                    "",
+                    "%%%%%%%POKEMON%%%%%%% CENTERs heal your tired, hurt, or fainted %%%%%%%POKEMON%%%%%%%!",
+                    "",
+                    ""
+                ]
+            })
         }
 
         return output;

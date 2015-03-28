@@ -175,7 +175,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 40, "y": 32 },
                         { "thing": "Stool", "x": 40, "y": 40 },
                         { "thing": "FlowerVase", "x": 29, "y": 34 },
-                        { "thing": "Mother", "x": 40, "y": 32, "direction": 3, "dialog": ["MOM: Right. All boys leave home some day. It said so on TV.", "PROF.OAK, next door, is looking for you."] },
+                        { "thing": "Mother", "x": 40, "y": 32, "direction": 3, "directionPreferred": 3, "dialog": ["MOM: Right. All boys leave home some day. It said so on TV.", "PROF.OAK, next door, is looking for you."] },
                         //{ "thing": "Mother", "x": 40, "y": 32, "direction": 3, "dialog": ["MOM: %%%%%%%PLAYER%%%%%%%! You and your %%%%%%%POKEMON%%%%%%% should take a quick rest."] },
                         { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Ground Floor Door" },
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Player's House Door" }, "requireDirection": 2 }
@@ -527,7 +527,9 @@ FullScreenPokemon.prototype.settings.maps = {
                     "height": 64,
                     "invisibleWallBorders": true,
                     "creation": [
-                        { "macro": "PokeCenter", "entrance": "PokeCenter Inside Door", "transport": "PokeCenter Outside Door" }
+                        { "macro": "PokeCenter", "entrance": "PokeCenter Inside Door", "transport": "PokeCenter Outside Door" },
+                        { "thing": "CoolTrainerM", "x": 32, "y": 24, "roaming": true, "roamingDirections": [], "dialog": ["There's a %%%%%%%POKEMON%%%%%%% CENTER in every town ahead.", "They don't charge any money either!"] },
+                        { "thing": "Gentleman", "x": 80, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2], "dialog": ["You can use that PC in the corner.", "The receptionist told me. So kind!"] }
                     ]
                 },
                 "PokeMart": {
@@ -536,8 +538,8 @@ FullScreenPokemon.prototype.settings.maps = {
                     "invisibleWallBorders": true,
                     "creation": [
                         { "macro": "PokeMart", "entrance": "PokeMart Inside Door", "transport": "PokeMart Outside Door", "responderId": "CashierDetector", "responderDialog": "Okay! Say hi to PROF. Oak for me!", "items": [{ "item": "Pokeball", "cost": 200 }, { "item": "Antidote", "cost": 100 }, { "item": "Parlyz Heal", "cost": 200 }, { "item": "Burn Heal", "cost": 250 }] },
-                        { "thing": "CoolTrainerM", "x": 24, "y": 24, "direction": 2, "roaming": true, "roamingDirections": [] },
-                        { "thing": "BugCatcher", "x": 48, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2] },
+                        { "thing": "CoolTrainerM", "x": 24, "y": 24, "direction": 2, "roaming": true, "roamingDirections": [], "dialog": "No! POTIONS are all sold out." },
+                        { "thing": "BugCatcher", "x": 48, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2], "dialog": "This shop sells many ANTIDOTEs." },
                         { "thing": "CutsceneTriggerer", "x": 24, "y": 56, "width": 16, "id": "OakParcelPickup", "active": true, "cutscene": "OakParcelPickup" }
                     ]
                 }
