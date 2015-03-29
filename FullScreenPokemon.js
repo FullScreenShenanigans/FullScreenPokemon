@@ -7449,10 +7449,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 "height": height,
             }];
 
-        if (!open) {
-            return output;
-        }
-
         if (!open[0]) {
             output.push({
                 "thing": "WaterEdgeTop",
@@ -7941,13 +7937,15 @@ var FullScreenPokemon = (function (GameStartr) {
                 });
             }
 
-            output.push({
-                "thing": "MountainRight",
-                "x": x + width - 8,
-                "y": y + 8,
-                "width": 8,
-                "height": height - 16
-            });
+            if (height > 16) {
+                output.push({
+                    "thing": "MountainRight",
+                    "x": x + width - 8,
+                    "y": y + 8,
+                    "width": 8,
+                    "height": height - 16
+                });
+            }
 
             width -= 8;
         }
@@ -8010,19 +8008,21 @@ var FullScreenPokemon = (function (GameStartr) {
                 });
             }
 
-            output.push({
-                "thing": "MountainLeft",
-                "x": x,
-                "y": y + 8,
-                "width": 8,
-                "height": height - 16
-            });
+            if (height > 16) {
+                output.push({
+                    "thing": "MountainLeft",
+                    "x": x,
+                    "y": y + 8,
+                    "width": 8,
+                    "height": height - 16
+                });
+            }
 
             width -= 8;
             x += 8;
         }
 
-        if (reference.top) {
+        if (reference.top && width > 0) {
             output.push({
                 "thing": "MountainTop",
                 "x": x,
@@ -8033,7 +8033,7 @@ var FullScreenPokemon = (function (GameStartr) {
             height -= 5;
         }
 
-        if (reference.bottom) {
+        if (reference.bottom && width > 0) {
             output.push({
                 "thing": "MountainBottom",
                 "x": x,
@@ -8044,13 +8044,15 @@ var FullScreenPokemon = (function (GameStartr) {
             height -= 8;
         }
 
-        output.push({
-            "thing": "Mountain",
-            "x": x,
-            "y": y,
-            "width": width,
-            "height": height
-        });
+        if (width > 0 && height > 0) {
+            output.push({
+                "thing": "Mountain",
+                "x": x,
+                "y": y,
+                "width": width,
+                "height": height
+            });
+        }
 
         return output;
     }
