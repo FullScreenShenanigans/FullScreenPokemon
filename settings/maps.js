@@ -959,7 +959,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Grass", "x": 8, "y": 320, "width": 32, "height": 32 },
                         { "thing": "Grass", "x": 72, "y": 320, "width": 48, "height": 16 },
                         { "thing": "Grass", "x": 152, "y": 320, "width": 48, "height": 16 },
-                        { "thing": "Sign", "x": 192, "y": 320, "forest": true },
+                        { "thing": "Sign", "x": 192, "y": 320, "forest": true, "dialog": ["TRAINER TIPS", "If you want to avoid battles", "stay away from grassy areas!"] },
+                        { "thing": "BugCatcher", "x": 216, "y": 320, "roaming": true, "roamingDirections": [], "dialog": ["I ran out of %%%%%%%POKE%%%%%%% BALLs to catch %%%%%%%POKEMON%%%%%%% with!", "You should carry extras!"]},
                         { "thing": "Grass", "x": 224, "y": 320, "width": 40, "height": 32 },
                         { "thing": "Stump", "x": 264, "y": 320, "height": 32 },
                         { "thing": "PlantLarge", "x": 128, "y": 328 },
@@ -967,7 +968,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stump", "x": 112, "y": 352, "height": 32 },
                         { "thing": "Stump", "x": 152, "y": 352, "height": 32 },
                         { "thing": "PlantLarge", "x": 160, "y": 352, "width": 112, "height": 32 },
-                        { "thing": "Sign", "x": 144, "y": 360, "forest": true },
+                        { "thing": "BugCatcher", "x": 160, "y": 368, "direction": 2, "directionPreferred": 2, "dialog": ["I cam here with some friends!", "They're out for %%%%%%%POKEMON%%%%%%% fights!"]},
+                        { "thing": "Sign", "x": 144, "y": 360, "forest": true, "dialog": ["TRAINER TIPS", "Weaken %%%%%%%POKEMON%%%%%%% before attempting capture!", "When healthy, they may escape!"] },
                         { "thing": "GroundArrow", "x": 132, "y": 368, "width": 8 },
                         { "thing": "HiddenTransporter", "x": 120, "y": 376, "width": 32, "directionRequired": 2, "transport": "Gate South Door North"  }
                     ]
