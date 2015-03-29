@@ -396,6 +396,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 320,
                     "height": 288,
                     "creation": [
+                        { "thing": "AreaSpawner", "height": 288, "map": "Route 22", "area": "Land", "direction": 3, "offsetY": 64 },
                         { "macro": "Mountain", "width": 48, "height": 112, "bottom": true, "right": true },
                         { "thing": "DirtMedium", "x": 48, "width": 80, "height": 144 },
                         { "thing": "PlantSmall", "x": 48, "width": 80, "height": 32 },
@@ -650,10 +651,11 @@ FullScreenPokemon.prototype.settings.maps = {
                         }, {
                             "title": "NidoranM",
                             "levels": [3, 4],
-                            "rate": .5
+                            "rate": .05
                         }]
                     },
                     "creation": [
+                        { "thing": "AreaSpawner", "x": 320, "height": 320, "map": "Viridian City", "area": "Land", "offsetY": -64 },
                         { "thing": "FenceWide", "width": 16, "height": 16 },
                         { "thing": "DirtLight", "width": 112, "height": 48 },
                         { "macro": "Building", "x": 16, "stories": 3, "width": 96, "door": true, "doorOffset": 48, "entrance": "Pokemon League" },
@@ -669,7 +671,6 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "LedgeOpening", "x": 264, "y": 28 },
                         { "thing": "Ledge", "x": 272, "y": 28, "width": 16 },
                         { "thing": "BrickRoad", "x": 128, "y": 32, "width": 160, "height": 16 },
-                        { "thing": "Tree", "x": 232, "y": 32 },
                         { "thing": "BrickRoad", "x": 16, "y": 48, "width": 96, "height": 16 },
                         { "thing": "DirtMedium", "x": 128, "y": 48, "width": 48, "height": 16 },
                         { "macro": "Water", "x": 176, "y": 48, "width": 32, "height": 32, "open": [false, false, true, false] },
