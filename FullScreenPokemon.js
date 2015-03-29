@@ -605,7 +605,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function canInputsTrigger(EightBitter) {
-        return true;
+        return !EightBitter.MapScreener.blockInputs;
     }
 
     /**
@@ -3192,7 +3192,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function openItemsMenu(settings) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            items = EightBitter.StatsHolder.get("items");
+            items = settings.items || EightBitter.StatsHolder.get("items");
 
         EightBitter.MenuGrapher.createMenu("Items", settings);
         EightBitter.MenuGrapher.addMenuList("Items", {
@@ -3586,12 +3586,23 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneBattleOpeningText(EightBitter, settings) {
         var battleInfo = settings.battleInfo,
             textStart = battleInfo.textStart,
-            callback;
+            nextRoutine, callback;
 
         if (settings.battleInfo.opponent.hasActors) {
-            callback = "EnemyIntro";
+            nextRoutine = "EnemyIntro";
         } else {
-            callback = "PlayerIntro";
+            nextRoutine = "PlayerIntro";
+        }
+
+        if (battleInfo.automaticMenus) {
+            callback = EightBitter.TimeHandler.addEvent.bind(
+                EightBitter.TimeHandler,
+                EightBitter.ScenePlayer.playRoutine,
+                70,
+                nextRoutine
+            );
+        } else {
+            callback = EightBitter.ScenePlayer.bindRoutine(nextRoutine);
         }
 
         EightBitter.MenuGrapher.createMenu("BattlePlayerHealth");
@@ -3613,10 +3624,13 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.addBattleDisplayPokemonHealth(EightBitter, "opponent")
         }
 
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "finishAutomatically": battleInfo.automaticMenus
+        });
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             textStart[0] + battleInfo.opponent.name.toUpperCase() + textStart[1],
-            EightBitter.ScenePlayer.bindRoutine(callback)
+            callback
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -3737,6 +3751,10 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneBattleShowPlayerMenu(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.BattleMover.showPlayerMenu();
+
+        if (settings.battleInfo.onShowPlayerMenu) {
+            settings.battleInfo.onShowPlayerMenu(EightBitter);
+        }
     }
 
     /**
@@ -6912,6 +6930,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOldManTrainingStartBattle(EightBitter, settings) {
+        EightBitter.MapScreener.blockInputs = true;
         EightBitter.cutsceneBattleTransitionFlash(EightBitter, {
             "keptThings": [settings.player, settings.triggerer],
             "callback": EightBitter.BattleMover.startBattle.bind(
@@ -6932,12 +6951,31 @@ var FullScreenPokemon = (function (GameStartr) {
                                 "newPokemon", "Weedle", 5
                             )
                         ]
+                    },
+                    "items": [{
+                        "item": "Pokeball",
+                        "amount": 50
+                    }],
+                    "automaticMenus": true,
+                    "onShowPlayerMenu": function () {
+                        var timeout = 70;
+
+                        EightBitter.TimeHandler.addEvent(
+                            EightBitter.MenuGrapher.registerDown, timeout
+                        );
+
+                        EightBitter.TimeHandler.addEvent(
+                            EightBitter.MenuGrapher.registerA, timeout * 2
+                        );
+
+                        EightBitter.TimeHandler.addEvent(
+                            EightBitter.MenuGrapher.registerA, timeout * 3
+                        );
                     }
                 }
             )
         });
     }
-
 
     /* Saving
     */

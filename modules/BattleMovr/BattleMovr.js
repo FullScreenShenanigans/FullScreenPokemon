@@ -314,6 +314,7 @@ function BattleMovr(settings) {
      */
     self.openItemsMenu = function () {
         EightBitter.openItemsMenu({
+            "items": battleInfo.items,
             "position": {
                 "horizontal": "right",
                 "vertical": "bottom",
