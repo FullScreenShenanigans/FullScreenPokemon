@@ -64,6 +64,7 @@ FullScreenPokemon.prototype.settings.objects = {
                     "CutsceneTriggerer": {},
                     "MenuTriggerer": {},
                     "Transporter": {
+                        "CaveOpening": {},
                         "Door": {},
                         "HiddenTransporter": {},
                         "StairsDown": {},

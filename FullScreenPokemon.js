@@ -7980,6 +7980,7 @@ var FullScreenPokemon = (function (GameStartr) {
             y = reference.y || 0,
             width = reference.width || 8,
             height = reference.height || 8,
+            openingOffset = reference.openingOffset || 8,
             output = [];
 
         if (reference.right) {
@@ -8137,13 +8138,41 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (reference.bottom && width > 0) {
-            output.push({
-                "thing": "MountainBottom",
-                "x": x,
-                "y": y + height - 8,
-                "width": width,
-                "height": 8
-            });
+            if (reference.opening) {
+                if (openingOffset > 0) {
+                    output.push({
+                        "thing": "MountainBottom",
+                        "x": x,
+                        "y": y + height - 8,
+                        "width": openingOffset,
+                        "height": 8
+                    })
+                }
+                output.push({
+                    "thing": "CaveOpening",
+                    "x": x + openingOffset,
+                    "y": y + height - 8,
+                    "entrance": reference.entrance,
+                    "transport": reference.transport
+                });
+                if (openingOffset < width) {
+                    output.push({
+                        "thing": "MountainBottom",
+                        "x": x + openingOffset + 8,
+                        "y": y + height - 8,
+                        "width": width - openingOffset - 8,
+                        "height": 8
+                    });
+                }
+            } else {
+                output.push({
+                    "thing": "MountainBottom",
+                    "x": x,
+                    "y": y + height - 8,
+                    "width": width,
+                    "height": 8
+                });
+            }
             height -= 8;
         }
 
