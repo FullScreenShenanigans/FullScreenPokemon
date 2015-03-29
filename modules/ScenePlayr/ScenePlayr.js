@@ -129,6 +129,7 @@ function ScenePlayr(settings) {
      * 
      */
     self.playRoutine = function (name, args) {
+        console.log("playing routine", name);
         if (!cutscene) {
             throw new Error("No cutscene is currently playing!");
         }

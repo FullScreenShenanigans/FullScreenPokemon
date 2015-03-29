@@ -166,6 +166,12 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "Greeting": FullScreenPokemon.prototype.cutsceneDaisyTownMapGreeting,
                 "ReceiveMap": FullScreenPokemon.prototype.cutsceneDaisyTownMapReceiveMap
             }
+        },
+        "OldManTraining": {
+            "firstRoutine": "StartBattle",
+            "routines": {
+                "StartBattle": FullScreenPokemon.prototype.cutsceneOldManTrainingStartBattle
+            }
         }
     }
 };

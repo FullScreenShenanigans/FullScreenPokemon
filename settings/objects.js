@@ -360,6 +360,7 @@ FullScreenPokemon.prototype.settings.objects = {
                         }
                     },
                     "BattleSpriteBack": {
+                        "OldManBack": {},
                         "PlayerBack": {},
                         "BulbasaurBack": {},
                         "IvysaurBack": {},
@@ -1034,6 +1035,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "scale": 2,
             "repeat": false
         },
+        "OldManBack": [14, 14],
         "PlayerBack": [14, 14],
         "Terrain": {
             "groupType": "Terrain",
