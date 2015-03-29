@@ -37,6 +37,7 @@ FullScreenPokemon.prototype.settings.maps = {
     })([
         {
             "name": "Blank",
+            "locationDefault": "Black",
             "locations": {
                 "Black": {
                     "area": "Black",
@@ -47,7 +48,6 @@ FullScreenPokemon.prototype.settings.maps = {
                     "entry": "Blank"
                 }
             },
-            "locationDefault": "Black",
             "areas": {
                 "Black": {
                     "creation": []
@@ -551,7 +551,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stool", "x": 16, "y": 32 },
                         { "thing": "Stool", "x": 40, "y": 32 },
                         { "thing": "LittleGirl", "x": 8, "y": 32, "roaming": true, "roamingDirections": [0, 2], "dialog": "My daddy loves %%%%%%%POKEMON%%%%%%% too." },
-                        { "thing": "BirdPokemon", "x": 48, "y": 40, "direction": 3, "roaming": true, "roamingDirections": [1,3], "dialog": "SPEARY: Tetweet!" },
+                        { "thing": "BirdPokemon", "x": 48, "y": 40, "direction": 3, "roaming": true, "roamingDirections": [1, 3], "dialog": "SPEARY: Tetweet!" },
                         { "thing": "PottedPalmTree", "y": 48 },
                         { "thing": "PottedPalmTree", "x": 56, "y": 48 },
                         { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Nicknamer House Floor 1 Door" },
@@ -575,22 +575,22 @@ FullScreenPokemon.prototype.settings.maps = {
                         {
                             "thing": "DialogResponder", "x": 24, "y": 28, "dialog": ["Looked at the notebook!", "First page...", "%%%%%%%POKE%%%%%%% BALLs are used to catch %%%%%%%POKEMON%%%%%%%.", "Up to 6 %%%%%%%POKEMON%%%%%%% can be carried.", "People who raise and make %%%%%%%POKEMON%%%%%%% fight are called %%%%%%%POKEMON%%%%%%% trainers.", "Turn the page?"], "dialogOptions":
                               {
-                                "options": {
-                                    "Yes": {
-                                        "words": ["Second page...", "A healty %%%%%%%POKEMON%%%%%%% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
-                                        "options": {
-                                            "Yes": {
-                                                "words": ["Third page...", "%%%%%%%POKEMON%%%%%%% trainers seek others to engage in %%%%%%%POKEMON%%%%%%% fights.", "Battles are constantly fought at %%%%%%%POKEMON%%%%%%% GYMs.", "Turn the page?"],
-                                                "options": {
-                                                    "Yes": {
-                                                        "words": ["Fourth page...", "The goal for %%%%%%%POKEMON%%%%%%% trainers is to beat the top 8 %%%%%%%POKEMON%%%%%%% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %%%%%%%POKEMON%%%%%%% LEAGUE!", "GIRL: Hey! Don't look at my notes!"]
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                                  "options": {
+                                      "Yes": {
+                                          "words": ["Second page...", "A healty %%%%%%%POKEMON%%%%%%% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
+                                          "options": {
+                                              "Yes": {
+                                                  "words": ["Third page...", "%%%%%%%POKEMON%%%%%%% trainers seek others to engage in %%%%%%%POKEMON%%%%%%% fights.", "Battles are constantly fought at %%%%%%%POKEMON%%%%%%% GYMs.", "Turn the page?"],
+                                                  "options": {
+                                                      "Yes": {
+                                                          "words": ["Fourth page...", "The goal for %%%%%%%POKEMON%%%%%%% trainers is to beat the top 8 %%%%%%%POKEMON%%%%%%% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %%%%%%%POKEMON%%%%%%% LEAGUE!", "GIRL: Hey! Don't look at my notes!"]
+                                                      }
+                                                  }
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
                         },
                         { "thing": "Stool", "x": 24, "y": 40 },
                         { "thing": "Girl", "x": 24, "y": 40, "direction": 0, "dialog": "Whew! I'm trying to memorize all my notes." },
@@ -619,6 +619,48 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "CoolTrainerM", "x": 24, "y": 24, "direction": 2, "roaming": true, "roamingDirections": [], "dialog": "No! POTIONS are all sold out." },
                         { "thing": "BugCatcher", "x": 48, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2], "dialog": "This shop sells many ANTIDOTEs." },
                         { "thing": "CutsceneTriggerer", "x": 24, "y": 56, "width": 16, "id": "OakParcelPickup", "active": true, "cutscene": "OakParcelPickup" }
+                    ]
+                }
+            }
+        }, {
+            "name": "Route 22",
+            "locationDefault": "Pokemon League",
+            "locations": {
+                "Pokemon League": {
+                    "area": "Land"
+                }
+            },
+            "areas": {
+                "Land": {
+                    "width": 320,
+                    "height": 144,
+                    "wildPokemon": {
+                        "grass": [{
+                            "title": "Rattata",
+                            "levels": [2, 3, 4],
+                            "rate": .5
+                        }, {
+                            "title": "Spearow",
+                            "levels": [3, 5],
+                            "rate": .1
+                        }, {
+                            "title": "NidoranF",
+                            "levels": [2, 3, 4],
+                            "rate": .35
+                        }, {
+                            "title": "NidoranM",
+                            "levels": [3, 4],
+                            "rate": .5
+                        }]
+                    },
+                    "creation": [
+                        { "thing": "FenceWide", "width": 16, "height": 16 },
+                        { "thing": "DirtLight", "width": 104, "height": 56 },
+                        { "macro": "Building", "x": 16, "stories": 4, "width": 88, "door": true, "doorOffset": 48 },
+
+                        { "macro": "Mountain", "y": 16, "top": true, "right": true, "width": 16, "height": 112 },
+                        
+                        { "thing": "BrickRoad", "x": 16, "y": 56, "width": 88, "height": 16 }
                     ]
                 }
             }

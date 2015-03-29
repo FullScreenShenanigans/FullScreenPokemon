@@ -111,6 +111,8 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
+
+        setTimeout(function () { FSP.setMap("Route 22"); }, 35);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 

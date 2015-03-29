@@ -524,6 +524,7 @@ FullScreenPokemon.prototype.settings.objects = {
                         "WallIndoorLightWithDarkBottom": {}
                     }
                 },
+                "BrickRoad": {},
                 "DirtClean": {},
                 "DirtLight": {},
                 "DirtMedium": {},
@@ -1048,6 +1049,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "spritewidth": 2,
             "spriteheight": 2
         },
+        "BrickRoad": [4, 4],
         "Mountain": [4, 4],
         "WallIndoorLightWithDarkBottom": {
             "spritewidth": .5,
