@@ -172,6 +172,13 @@ FullScreenPokemon.prototype.settings.scenes = {
             "routines": {
                 "StartBattle": FullScreenPokemon.prototype.cutsceneOldManTrainingStartBattle
             }
+        },
+        "RivalRoute22": {
+            "firstRoutine": "RivalEmerges",
+            "routines": {
+                "RivalEmerges": FullScreenPokemon.prototype.cutsceneRivalRoute22RivalEmerges,
+                "RivalTalks": FullScreenPokemon.prototype.cutsceneRivalRoute22RivalTalks
+            }
         }
     }
 };

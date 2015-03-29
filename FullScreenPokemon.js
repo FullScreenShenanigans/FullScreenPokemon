@@ -111,8 +111,6 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
-
-        setTimeout(function () { FSP.setMap("Route 22"); }, 35);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 
@@ -4492,7 +4490,7 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneBattleTransitionLineSpiral(EightBitter, settings) {
         var unitsize = EightBitter.unitsize,
-            divisor = settings.divisor || 10,
+            divisor = settings.divisor || 15,
             screenWidth = EightBitter.MapScreener.width,
             screenHeight = EightBitter.MapScreener.height,
             width = Math.ceil(screenWidth / divisor),
@@ -6510,6 +6508,7 @@ var FullScreenPokemon = (function (GameStartr) {
                     "sprite": "PlayerBack",
                     "name": EightBitter.StatsHolder.get("name"),
                     "category": "Trainer",
+                    "hasActors": true,
                     "actors": EightBitter.StatsHolder.get("PokemonInParty")
                 },
                 "opponent": {
@@ -6978,6 +6977,110 @@ var FullScreenPokemon = (function (GameStartr) {
             )
         });
     }
+
+    /**
+     * 
+     */
+    function cutsceneRivalRoute22RivalEmerges(EightBitter, settings) {
+        var player = settings.player,
+            triggerer = settings.triggerer,
+            playerUpper = Number(
+                Math.abs(player.top - triggerer.top) < EightBitter.unitsize
+            ),
+            steps = [
+                2,
+                "right",
+                3 + playerUpper, 
+            ],
+            rival = settings.rival = EightBitter.ObjectMaker.make("Rival", {
+                "direction": 0,
+                "nocollide": true,
+                "opacity": 0
+            });
+
+        if (playerUpper) {
+            steps.push("top");
+            steps.push(0);
+        }
+
+        steps.push(EightBitter.ScenePlayer.bindRoutine("RivalTalks"));
+
+        // thing, attribute, change, goal, speed, onCompletion
+        EightBitter.animateFadeAttribute(rival, "opacity", .2, 1, 3);
+
+        EightBitter.addThing(
+            rival,
+            triggerer.left - EightBitter.unitsize * 28,
+            triggerer.top + EightBitter.unitsize * 24
+        );
+
+        EightBitter.animateCharacterStartTurning(rival, 0, steps);
+    }
+
+    /**
+     * 
+     */
+    function cutsceneRivalRoute22RivalTalks(EightBitter, settings) {
+        var battleInfo = {
+            "player": {
+                "sprite": "PlayerBack",
+                "name": EightBitter.StatsHolder.get("name"),
+                "category": "Trainer",
+                "hasActors": true,
+                "actors": EightBitter.StatsHolder.get("PokemonInParty")
+            },
+            "opponent": {
+                "sprite": "RivalPortrait",
+                "name": EightBitter.StatsHolder.get("nameRival"),
+                "category": "Trainer",
+                "hasActors": true,
+                "reward": 280,
+                "actors": [
+                    EightBitter.MathDecider.compute(
+                        "newPokemon",
+                        EightBitter.StatsHolder.get("starterRival"),
+                        8
+                    ),
+                    EightBitter.MathDecider.compute(
+                        "newPokemon", "Pidgey", 9
+                    )
+                ]
+            },
+            "textStart": ["", " wants to fight!"],
+            "textDefeat": ["Yeah! Am I great or what?"],
+            "textVictory": ["Awww! You just lucked out!"],
+            "keptThings": ["player", "Rival"]
+        };
+
+        EightBitter.animateCharacterSetDirection(
+            settings.player,
+            EightBitter.getDirectionBordering(settings.player, settings.rival)
+        );
+
+        EightBitter.MenuGrapher.createMenu("GeneralText");
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%RIVAL%%%%%%%: Hey! %%%%%%%PLAYER%%%%%%%!",
+                "You're going to %%%%%%%POKEMON%%%%%%% LEAGUE?",
+                "Forget it! You probably don't have any BADGES!",
+                "The guard won't let you through!",
+                "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?"
+            ],
+            EightBitter.cutsceneBattleTransitionLineSpiral.bind(
+                EightBitter,
+                EightBitter,
+                {
+                    "keptThings": ["player", "Rival"],
+                    "callback": EightBitter.BattleMover.startBattle.bind(
+                        EightBitter.BattleMover, battleInfo
+                    )
+                }
+            )
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
 
     /* Saving
     */
@@ -8674,6 +8777,8 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneDaisyTownMapGreeting": cutsceneDaisyTownMapGreeting,
         "cutsceneDaisyTownMapReceiveMap": cutsceneDaisyTownMapReceiveMap,
         "cutsceneOldManTrainingStartBattle": cutsceneOldManTrainingStartBattle,
+        "cutsceneRivalRoute22RivalEmerges": cutsceneRivalRoute22RivalEmerges,
+        "cutsceneRivalRoute22RivalTalks": cutsceneRivalRoute22RivalTalks,
         // Saving
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,

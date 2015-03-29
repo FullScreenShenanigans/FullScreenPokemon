@@ -672,6 +672,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Ledge", "x": 272, "y": 28, "width": 16 },
                         { "thing": "BrickRoad", "x": 128, "y": 32, "width": 160, "height": 16 },
                         { "thing": "BrickRoad", "x": 16, "y": 48, "width": 96, "height": 16 },
+                        { "thing": "CutsceneTriggerer", "x": 228, "y": 32, "height": 16, "id": "RivalTriggerer", "cutscene": "RivalRoute22" },
                         { "thing": "DirtMedium", "x": 128, "y": 48, "width": 48, "height": 16 },
                         { "macro": "Water", "x": 176, "y": 48, "width": 32, "height": 32, "open": [false, false, true, false] },
                         { "thing": "DirtMedium", "x": 208, "y": 48, "width": 80, "height": 64 },

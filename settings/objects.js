@@ -793,6 +793,9 @@ FullScreenPokemon.prototype.settings.objects = {
         "Pokeball": {
             "activate": FullScreenPokemon.prototype.collidePokeball
         },
+        "Rival": {
+            "id": "Rival"
+        },
         "Solid": {
             "repeat": true,
             "groupType": "Solid",
