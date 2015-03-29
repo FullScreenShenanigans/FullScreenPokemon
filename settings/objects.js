@@ -968,9 +968,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "Table2x2": [16, 16],
         "Table2x3": [16, 16],
         "Table3x1": [24, 12],
-        "Tree": {
-            "dialog": "IT WOULD BE NICE TO CUT THE TREE DOWN LEL"
-        },
+        "Tree": {},
         "Door": {
             "width": 8,
             "height": 8

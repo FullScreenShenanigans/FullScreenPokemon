@@ -6624,6 +6624,23 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.StateHolder.addCollectionChange(
             "Viridian City::PokeMart", "CashierDetector", "dialog", false
         );
+
+        EightBitter.StateHolder.addCollectionChange(
+            "Viridian City::Land", "CrankyGrandpa", "alive", false
+        );
+        EightBitter.StateHolder.addCollectionChange(
+            "Viridian City::Land", "CrankyGrandpaBlocker", "alive", false
+        );
+        EightBitter.StateHolder.addCollectionChange(
+            "Viridian City::Land", "CrankyGranddaughter", "alive", false
+        );
+
+        EightBitter.StateHolder.addCollectionChange(
+            "Viridian City::Land", "HappyGrandpa", "alive", true
+        );
+        EightBitter.StateHolder.addCollectionChange(
+            "Viridian City::Land", "HappyGranddaughter", "alive", true
+        );
     }
 
     /**
@@ -7393,47 +7410,55 @@ var FullScreenPokemon = (function (GameStartr) {
             output = [],
             door, i;
 
-        output.push({
-            "thing": "HouseTopRoofLeft",
-            "x": x,
-            "y": y,
-        });
-        output.push({
-            "thing": "HouseTopRoof",
-            "x": x + 8,
-            "y": y,
-            "width": width - 16
-        })
-        output.push({
-            "thing": "HouseTopRoofRight",
-            "x": x + width - 8,
-            "y": y,
-        });
-        output.push({
-            "thing": "HouseLeft",
-            "x": x,
-            "y": y + 8
-        });
-        output.push({
-            "thing": "HouseRight",
-            "x": x + width - 8,
-            "y": y + 8
-        });
-
-        if (stories === 1 && reference.door) {
+        if (stories === 1) {
             output.push({
-                "thing": "HouseMiddle",
-                "x": x + 16,
-                "y": y + 8,
-                "width": width - 24
+                "thing": "HouseTopRoofLeft",
+                "x": x,
+                "y": y,
             });
+            output.push({
+                "thing": "HouseTopRoof",
+                "x": x + 8,
+                "y": y,
+                "width": width - 16
+            })
+            output.push({
+                "thing": "HouseTopRoofRight",
+                "x": x + width - 8,
+                "y": y,
+            });
+            output.push({
+                "thing": "HouseLeft",
+                "x": x,
+                "y": y + 8
+            });
+            output.push({
+                "thing": "HouseRight",
+                "x": x + width - 8,
+                "y": y + 8
+            });
+
+            if (reference.door) {
+                output.push({
+                    "thing": "HouseMiddle",
+                    "x": x + 16,
+                    "y": y + 8,
+                    "width": width - 24
+                });
+            } else {
+                output.push({
+                    "thing": "HouseMiddle",
+                    "x": x + 8,
+                    "y": y + 8,
+                    "width": width - 16
+                });
+            }
         } else {
             output.push({
-                "thing": "HouseMiddle",
-                "x": x + 8,
-                "y": y + 8,
-                "width": width - 16
-            });
+                "thing": "HouseTop",
+                "x": x,
+                "y": y
+            })
         }
 
         y += 16;

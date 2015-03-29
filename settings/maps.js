@@ -432,7 +432,21 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "MenuTriggerer", "x": 248, "y": 64, "dialog": "The GYM's doors are locked...", "pushDirection": 2, "pushSteps": [1] },
                         { "thing": "DirtMedium", "x": 224, "y": 64, "width": 48, "height": 16 },
                         { "thing": "Lady", "x": 136, "y": 72, "id": "CrankyGranddaughter", "direction": 1, "directionPreferred": 1, "dialog": "Oh Grandpa! Don't be so mean! \n He hasn't had his coffee yet." },
+                        { "thing": "Lady", "x": 136, "y": 72, "id": "HappyGranddaughter", "alive": false, "direction": 1, "directionPreferred": 1, "dialog": "When I go to shop in PEWTER CITY, I have to take the winding trail in VIRIDIAN FOREST." },
                         { "thing": "OldMan", "x": 144, "y": 72, "id": "CrankyGrandpa", "resting": true, "pushDirection": 2, "pushSteps": [1], "dialog": "You can't go through here! This is private property!" },
+                        {
+                            "thing": "OldMan", "x": 144, "y": 40, "id": "HappyGrandpa", "alive": false, "roaming": true, "roamingDirections": [1, 3], "dialog": ["Ahh, I've had my coffee now and I feel great!", "Sure you can go through.", "Are you in a hurry?"], "dialogOptions":
+                            {
+                                "type": "Yes/No",
+                                "options": {
+                                    "Yes": "Time is money... Go along then.",
+                                    "No": {
+                                        "words": ["I see you're using a %%%%%%%POKEDEX%%%%%%%.", "When you catch a %%%%%%%POKEMON%%%%%%%, %%%%%%%POKEDEX%%%%%%% is automatically updated.", "What? Don't you know how to catch %%%%%%%POKEMON%%%%%%%?", "I'll show you how to then."],
+                                        "cutscene": "OldManTraining"
+                                    }
+                                }
+                            }
+                        },
                         { "thing": "MenuTriggerer", "x": 152, "y": 72, "id": "CrankyGrandpaBlocker", "pushDirection": 2, "pushSteps": [1], "keepAlive": true, "requireOverlap": true, "dialog": "You can't go through here! This is private property!" },
                         { "thing": "Ledge", "x": 192, "y": 76, "width": 32, "jagged": true },
                         { "thing": "Ledge", "x": 224, "y": 76, "width": 48 },
