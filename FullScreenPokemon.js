@@ -111,6 +111,8 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
+
+        setTimeout(function () { FSP.setMap("Viridian Forest", "Gate South Door North"); }, 35);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 

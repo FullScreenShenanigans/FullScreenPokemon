@@ -151,6 +151,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "StoreSaleBin": {},
                 "Stump": {},
                 "Table": {
+                    "Table1x2": {},
                     "Table2x2": {},
                     "Table2x3": {},
                     "Table3x1": {},
@@ -524,8 +525,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "Terrain": {
                 "TerrainSmall": {
                     "TerrainSmallRepeating": {
-                        "WallIndoorHorizontalBands": {
-                        },
+                        "WallIndoorHorizontalBands": {},
                         "WallIndoorLightWithDarkBottom": {}
                     }
                 },
@@ -535,11 +535,13 @@ FullScreenPokemon.prototype.settings.objects = {
                 "DirtLight": {},
                 "DirtMedium": {},
                 "DirtWhite": {},
+                "FloorCheckered": {},
                 "FloorDiamonds": {},
                 "FloorLinedHorizontal": {},
                 "FloorTiledDiagonal": {},
                 "Mountain": {},
                 "Water": {},
+                "WallIndoorFancyWithDarkBottom": {},
                 "WallIndoorHorizontalBandsDark": {}
             },
             "Text": {
@@ -982,6 +984,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "Table": {
             "tolBottom": FullScreenPokemon.unitsize * 4
         },
+        "Table1x2": [8, 16],
         "Table2x2": [16, 16],
         "Table2x3": [16, 16],
         "Table3x1": [24, 12],
@@ -989,7 +992,10 @@ FullScreenPokemon.prototype.settings.objects = {
         "Door": {
             "width": 8,
             "height": 8,
-            "requireDirection": 0
+            "requireDirection": 0,
+            "attributes": {
+                "indoor": {}
+            }
         },
         "WaterEdge": [4, 4],
         "WindowDetector": {
@@ -1073,6 +1079,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "spritewidth": .5,
             "spriteheight": 8
         },
+        "WallIndoorFancyWithDarkBottom": [4, 8],
         "WallIndoorHorizontalBandsDark": {
             "width": 8,
             "height": 8,

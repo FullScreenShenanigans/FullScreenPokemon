@@ -800,7 +800,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "y": 328 },
                         { "thing": "PlantSmall", "x": 64, "y": 328 },
                         { "thing": "PlantSmall", "x": 112, "y": 328, "width": 32, "height": 40 },
-                        { "macro": "Building", "x": 48, "y": 336, "width": 32, "height": 32, "door": true, "entrance": "Viridian Forest" },
+                        { "macro": "Building", "x": 48, "y": 336, "width": 32, "height": 32, "door": true, "entrance": "Viridian Forest", "transport": { "map": "Viridian Forest", "location": "Gate South Door South" } },
                         { "thing": "FenceWide", "x": 32, "y": 360, "width": 16 },
                         { "thing": "FenceWide", "x": 80, "y": 360, "width": 32 },
                         { "thing": "Ledge", "x": 144, "y": 364, "crumbleRight": true },
@@ -871,14 +871,20 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Viridian Forest",
-            "locationDefault": "Bottom Inside Entrance",
+            "locationDefault": "Forest Bottom",
             "locations": {
-                "Bottom Inside Entrance": {
+                "Forest Bottom": {
                     "area": "Forest",
-                    "xloc": 80,
-                    "yloc": 264,
-                    //"xloc": 144,
-                    //"yloc": 376
+                    "xloc": 136,
+                    "yloc": 376,
+                    "direction": 0
+                },
+                "Gate South Door North": {
+                    "area": "Gate South"
+                },
+                "Gate South Door South": {
+                    "area": "Gate South",
+                    "direction": 0
                 }
             },
             "areas": {
@@ -962,7 +968,34 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stump", "x": 152, "y": 352, "height": 32 },
                         { "thing": "PlantLarge", "x": 160, "y": 352, "width": 112, "height": 32 },
                         { "thing": "Sign", "x": 144, "y": 360, "forest": true },
-                        { "thing": "GroundArrow", "x": 132, "y": 368, "width": 8 }
+                        { "thing": "GroundArrow", "x": 132, "y": 368, "width": 8 },
+                        { "thing": "HiddenTransporter", "x": 120, "y": 376, "width": 32, "directionRequired": 2, "transport": "Gate South Door North"  }
+                    ]
+                },
+                "Gate North": {
+
+                },
+                "Gate South": {
+                    "width": 80,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
+                        { "thing": "InvisibleWall", "width": 40 },
+                        { "thing": "Door", "x": 40, "indoor": true, "transport": "Forest Bottom", "entrance": "Gate South Door North" },
+                        { "thing": "WallIndoorFancyWithDarkBottom", "x": 48, "width": 32 },
+                        { "thing": "InvisibleWall", "x": 48, "width": 32 },
+                        { "thing": "FloorCheckered", "y": 8, "width": 80, "height": 56 },
+                        { "thing": "PottedPalmTree", "y": 16, "height": 48 },
+                        { "thing": "Table1x2", "x": 48, "y": 16 },
+                        { "thing": "Table1x2", "x": 64, "y": 16 },
+                        { "thing": "PottedPalmTree", "x": 72, "y": 16, "height": 48 },
+                        { "thing": "Table1x2", "x": 48, "y": 40 },
+                        { "thing": "Table1x2", "x": 64, "y": 40 },
+                        { "thing": "Lady", "x": 64, "y": 32, "direction": 3, "dialog": "Are you going to VIRIDIAN FOREST? Be careful, it's a natural maze!" },
+                        { "thing": "LittleGirl", "x": 16, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2], "dialog": "RATTATA may be small, but its bite is wicked! Did you get one?" },
+                        { "thing": "Doormat", "x": 32, "y": 56, "width": 16, "entrance": "Gate South Door South" },
+                        { "thing": "HiddenTransporter", "x": 32, "y": 56, "width": 16, "directionRequired": 2, "transport": { "map": "Route 2" } }
                     ]
                 }
             }
