@@ -973,7 +973,8 @@ FullScreenPokemon.prototype.settings.objects = {
         "Tree": {},
         "Door": {
             "width": 8,
-            "height": 8
+            "height": 8,
+            "requireDirection": 0
         },
         "WaterEdge": [4, 4],
         "WindowDetector": {
