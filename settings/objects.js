@@ -131,6 +131,7 @@ FullScreenPokemon.prototype.settings.objects = {
                     "MountainBottomLeft": {},
                     "MountainBottomRight": {},
                 },
+                "PlantLarge": {},
                 "PlantSmall": {},
                 "PokeCenterDesk": {
                     "PokeCenterDeskBlocker": {},
@@ -148,6 +149,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "StoreAisle": {},
                 "StoreFridge": {},
                 "StoreSaleBin": {},
+                "Stump": {},
                 "Table": {
                     "Table2x2": {},
                     "Table2x3": {},
@@ -174,6 +176,8 @@ FullScreenPokemon.prototype.settings.objects = {
                 "DoormatDashed": {},
                 "Flower": {},
                 "FlowerVase": {},
+                "ForestDirt": {},
+                "GroundArrow": {},
                 "Notepad": {},
                 "Painting": {},
                 "PokeCenterPoster": {},
@@ -527,6 +531,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 },
                 "BrickRoad": {},
                 "DirtClean": {},
+                "DirtForest": {},
                 "DirtLight": {},
                 "DirtMedium": {},
                 "DirtWhite": {},
@@ -944,6 +949,7 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "MountainSolidBase": [4, 4],
         "MountainTop": [4, 5],
+        "PlantLarge": [16, 16],
         "PokeCenterDeskBlocker": {
             "width": 8,
             "height": 8,
@@ -951,6 +957,11 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "PokeCenterDeskLeft": [4, 8],
         "PottedPalmTree": [8, 16],
+        "Sign": {
+            "attributes": {
+                "forest": {}
+            }
+        },
         "SofaLeft": [8, 16],
         "Spawner": {
             "hidden": true,
@@ -1017,6 +1028,8 @@ FullScreenPokemon.prototype.settings.objects = {
             ]
         },
         "FlowerVase": [6, 6],
+        "ForestDirt": [4, 4],
+        "GroundArrow": [4, 4],
         "HPBar": {
             "width": .5,
             "height": 2,

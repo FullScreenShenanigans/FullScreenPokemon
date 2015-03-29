@@ -59,6 +59,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Pallet Town",
+            "locationDefault": "Player's House Door",
             "locations": {
                 "Player's House Door": {
                     "area": "Land"
@@ -91,7 +92,6 @@ FullScreenPokemon.prototype.settings.maps = {
                     "area": "Oak's Lab"
                 }
             },
-            "locationDefault": "Player's House Door",
             "areas": {
                 "Land": {
                     "width": 152,
@@ -866,6 +866,103 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceVertical", "x": 80, "y": 576, "width": 8, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 96, "y": 576, "xnum": 2, "ynum": 2 },
                         { "thing": "AreaSpawner", "y": 584, "width": 608, "map": "Viridian City", "area": "Land", "offsetX": -48 }
+                    ]
+                }
+            }
+        }, {
+            "name": "Viridian Forest",
+            "locationDefault": "Bottom Inside Entrance",
+            "locations": {
+                "Bottom Inside Entrance": {
+                    "area": "Forest",
+                    "xloc": 80,
+                    "yloc": 264,
+                    //"xloc": 144,
+                    //"yloc": 376
+                }
+            },
+            "areas": {
+                "Forest": {
+                    "width": 272,
+                    "height": 384,
+                    "creation": [
+                        { "thing": "DirtForest", "width": 272, "height": 384 },
+                        { "thing": "Stump", "height": 208 },
+                        { "thing": "Stump", "x": 24, "height": 176 },
+                        { "thing": "PlantLarge", "x": 32, "height": 176 },
+                        { "thing": "Stump", "x": 48, "width": 64 },
+                        { "thing": "PlantLarge", "x": 112, "height": 128 },
+                        { "thing": "Stump", "x": 128, "width": 144 },
+                        { "thing": "Sign", "x": 16, "y": 8, "forest": true },
+                        { "thing": "Stump", "x": 264, "y": 8, "height": 264 },
+                        { "thing": "Stump", "x": 160, "y": 24, "width": 80 },
+                        { "thing": "ForestDirt", "x": 104, "y": 28 },
+                        { "thing": "ForestDirt", "x": 152, "y": 28 },
+                        { "thing": "ForestDirt", "x": 248, "y": 28 },
+                        { "thing": "Stump", "x": 72, "y": 32, "height": 160 },
+                        { "thing": "Stump", "x": 80, "y": 32, "height": 128 },
+                        { "thing": "Stump", "x": 152, "y": 32, "height": 32 },
+                        { "thing": "PlantLarge", "x": 160, "y": 32, "width": 80, "height": 32 },
+                        { "thing": "Stump", "x": 240, "y": 32, "height": 32 },
+                        { "thing": "Grass", "x": 8, "y": 48, "width": 16, "height": 144 },
+                        { "thing": "Grass", "x": 48, "y": 48, "width": 24, "height": 144 },
+                        { "thing": "Grass", "x": 88, "y": 48, "width": 24, "height": 96 },
+                        { "thing": "Grass", "x": 128, "y": 48, "width": 24, "height": 96 },
+                        { "thing": "Grass", "x": 152, "y": 64, "width": 40, "height": 16 },
+                        { "thing": "ForestDirt", "x": 216, "y": 76 },
+                        { "thing": "Stump", "x": 152, "y": 80, "height": 80 },
+                        { "thing": "PlantLarge", "x": 160, "y": 80, "width": 32, "height": 80 },
+                        { "thing": "Stump", "x": 192, "y": 80, "height": 240 },
+                        { "thing": "Stump", "x": 216, "y": 80, "height": 64 },
+                        { "thing": "PlantLarge", "x": 224, "y": 80, "height": 64 },
+                        { "thing": "Grass", "x": 240, "y": 80, "width": 24, "height": 64 },
+                        { "thing": "Sign", "x": 208, "y": 138, "forest": true },
+                        { "thing": "ForestDirt", "x": 104, "y": 156 },
+                        { "thing": "ForestDirt", "x": 216, "y": 156 },
+                        { "thing": "PlantLarge", "x": 80, "y": 160, "width": 112, "height": 32 },
+                        { "thing": "Grass", "x": 200, "y": 160, "width": 24, "height": 96 },
+                        { "thing": "PlantLarge", "x": 224, "y": 160, "height": 96 },
+                        { "thing": "Stump", "x": 240, "y": 160, "height": 96 },
+                        { "thing": "Grass", "x": 24, "y": 176, "height": 16 },
+                        { "thing": "Sign", "x": 32, "y": 192, "forest": true },
+                        { "thing": "ForestDirt", "x": 56, "y": 204 },
+                        { "thing": "Stump", "x": 104, "y": 192, "height": 48 },
+                        { "thing": "PlantLarge", "x": 112, "y": 192, "width": 80, "height": 48 },
+                        { "thing": "PlantLarge", "y": 208, "width": 80, "height": 32 },
+                        { "thing": "Stump", "x": 80, "y": 208, "height": 32 },
+                        { "thing": "Stump", "y": 240, "height": 16 },
+                        { "thing": "Grass", "x": 8, "y": 240, "width": 64, "height": 16 },
+                        { "thing": "Stump", "x": 72, "y": 240, "height": 16 },
+                        { "thing": "PlantLarge", "x": 80, "y": 240, "width": 112 },
+                        { "thing": "PlantLarge", "y": 256, "width": 48, "height": 64 },
+                        { "thing": "Grass", "x": 64, "y": 256, "width": 64, "height": 16 },
+                        { "thing": "Sign", "x": 128, "y": 256, "forest": true },
+                        { "thing": "Grass", "x": 144, "y": 256, "height": 80 },
+                        { "thing": "Stump", "x": 152, "y": 256, "height": 64 },
+                        { "thing": "PlantLarge", "x": 160, "y": 256, "width": 32, "height": 64 },
+                        { "thing": "Grass", "x": 200, "y": 256, "height": 80 },
+                        { "thing": "ForestDirt", "x": 56, "y": 268 },
+                        { "thing": "ForestDirt", "x": 248, "y": 268 },
+                        { "thing": "Grass", "x": 64, "y": 272, "height": 64 },
+                        { "thing": "Stump", "x": 72, "y": 272, "height": 48 },
+                        { "thing": "PlantLarge", "x": 80, "y": 272, "width": 32, "height": 48 },
+                        { "thing": "Stump", "x": 112, "y": 272, "height": 48 },
+                        { "thing": "Grass", "x": 120, "y": 272, "height": 64 },
+                        { "thing": "PlantLarge", "x": 224, "y": 272, "width": 48, "height": 48 },
+                        { "thing": "Stump", "y": 320, "height": 32 },
+                        { "thing": "Grass", "x": 8, "y": 320, "width": 32, "height": 32 },
+                        { "thing": "Grass", "x": 72, "y": 320, "width": 48, "height": 16 },
+                        { "thing": "Grass", "x": 152, "y": 320, "width": 48, "height": 16 },
+                        { "thing": "Sign", "x": 192, "y": 320, "forest": true },
+                        { "thing": "Grass", "x": 224, "y": 320, "width": 40, "height": 32 },
+                        { "thing": "Stump", "x": 264, "y": 320, "height": 32 },
+                        { "thing": "PlantLarge", "x": 128, "y": 328 },
+                        { "thing": "PlantLarge", "y": 352, "width": 112, "height": 32 },
+                        { "thing": "Stump", "x": 112, "y": 352, "height": 32 },
+                        { "thing": "Stump", "x": 152, "y": 352, "height": 32 },
+                        { "thing": "PlantLarge", "x": 160, "y": 352, "width": 112, "height": 32 },
+                        { "thing": "Sign", "x": 144, "y": 360, "forest": true },
+                        { "thing": "GroundArrow", "x": 132, "y": 368, "width": 8 }
                     ]
                 }
             }
