@@ -1176,7 +1176,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceVertical", "x": 144, "y": 144, "width": 8, "height": 32 },
                         { "thing": "DirtLight", "x": 256, "y": 144, "width": 16, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 272, "y": 144, "xnum": 6, "ynum": 2 },
-                        { "thing": "Sign", "x": 264, "y": 152 },
+                        { "thing": "Sign", "x": 264, "y": 152, "dialog": ["NOTICE!", "Thieves have been stealing %%%%%%%POKEMON%%%%%%% fossils at MT. MOON! Please call PEWTER POLICE with any info!"] },
                         { "thing": "DirtMedium", "x": 48, "y": 160, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 160, "xnum": 2, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 96, "y": 160, "width": 48, "height": 16 },
@@ -1190,7 +1190,17 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Building", "x": 96, "y": 176, "door": true, "label": "Poke" },
                         { "thing": "DirtLight", "x": 160, "y": 176, "width": 96, "height": 16 },
                         { "thing": "FenceVertical", "x": 176, "y": 184, "width": 24 },
-                        { "thing": "Sign", "x": 200, "y": 184 },
+                        { "thing": "Sign", "x": 200, "y": 184, "dialog": "PEWTER CITY \n A Stone Gray \n City" },
+                        {
+                            "thing": "CoolTrainerM", "x": 200, "y": 200, "direction": 3, "roaming": true, "roamingDirections": [1, 3], "dialog": "Psssst! Do you know what I'm doing?",
+                            "dialogOptions": {
+                                "type": "Yes/No",
+                                "options": {
+                                    "Yes": "That's right! It's hard work!",
+                                    "No": "I'm spraying REPEL to keep %%%%%%%POKEMON%%%%%%% out of my garden!"
+                                }
+                            }
+                        },
                         { "thing": "FenceVertical", "x": 208, "y": 184, "width": 32 },
                         { "thing": "DirtMedium", "x": 48, "y": 192, "width": 96, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 192, "xnum": 2, "ynum": 2 },
@@ -1199,6 +1209,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 240, "y": 192, "height": 48 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 128, "y": 196, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 176, "y": 196, "xnum": 16, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "thing": "CoolTrainerM", "x": 136, "y": 200, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["There aren't many serious %%%%%%%POKEMON%%%%%%% trainers here!", "They're all like BUG CATCHERs, but PEWTER GYM's BROCK is totally into it!"]  },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 48, "y": 208, "xnum": 14, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 272, "y": 208, "width": 48, "height": 48 },
                         { "thing": "FenceWide", "x": 280, "y": 208, "height": 48 },
@@ -1207,7 +1218,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "House", "x": 48, "y": 224, "door": true },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 228, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "DirtLight", "x": 144, "y": 224, "width": 16, "height": 16 },
-                        { "thing": "Sign", "x": 152, "y": 232 },
+                        { "thing": "Sign", "x": 152, "y": 232, "dialog": ["TRAINER TIPS", "Any %%%%%%%POKEMON%%%%%%% that takes part in battle, however short, earns EXP!"] },
                         { "macro": "Mountain", "y": 232, "width": 16, "height": 32, "right": true, "bottom": true },
                         { "macro": "Mountain", "x": 16, "y": 232, "width": 16, "bottom": true, "right": true },
                         { "thing": "Ledge", "x": 176, "y": 236, "width": 24 },
