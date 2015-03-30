@@ -38,7 +38,7 @@
 //           going to have to add more stuff later)
 
 //           "Theme_00_Name" : {
-//                               "gbs_source" : "blue"
+//                               "gbsSource" : "blue"
 //                               "track_num"  : 0
 //                               }
 
@@ -112,7 +112,7 @@ function AudioPlayr(settings) {
 
     function decodeAll() {
         for (var i in library) {
-            library[i].gbs = window.atob(library[i].gbs).split('').map(
+            library[i].gbs = atob(library[i].gbs).split('').map(
                 function (c) {
                     return c.charCodeAt(0);
                 }
@@ -130,7 +130,7 @@ function AudioPlayr(settings) {
         for (i in library) {
             for (track in library[i].tracks) {
                 directory[track] = {
-                    "gbs_source": i,
+                    "gbsSource": i,
                     "track_num": library[i].tracks[track]
                 };
             }
@@ -182,13 +182,14 @@ function AudioPlayr(settings) {
      * @example AudioPlayer.play("openingTheme");
      */
     self.play = function (track) {
-
         // @TODO proper stop function
         if (themeNode) {
             themeNode.disconnect();
             themeNode = null;
         }
-        var payload = library[directory[track].gbs_source].gbs,
+
+        var folder = directory[track].gbsSource,
+            payload = library[folder].gbs,
             subtune = directory[track].track_num,
             // Required for libgme.js
             ref = Module.allocate(1, "i32", Module.ALLOC_STATIC),
@@ -213,15 +214,14 @@ function AudioPlayr(settings) {
 
         // Actually play the track.
         theme = track;
-        node = play_song(ctx, emu);
-        window.savedReferences = [ctx, node];
+        node = playSong(ctx, emu);
 
     }
 
     /** 
      * Private function that ACTUALLY plays the song, in user's current context.
      */
-    function play_song(ctx, emu) {
+    function playSong(ctx, emu) {
         var bufferSize = 1024 * 16,
             buffer = Module.allocate(
                 bufferSize * 2, "i32", Module.ALLOC_STATIC
