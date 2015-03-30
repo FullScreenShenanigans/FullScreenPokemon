@@ -111,8 +111,6 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
-
-        setTimeout(function () { FSP.setMap("Pewter City", "Pewter Gym Floor 1 Door"); }, 7);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 
@@ -3917,6 +3915,8 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleShowPlayerMenu(EightBitter, settings) {
+        EightBitter.MenuGrapher.deleteMenu("Yes/No");
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.BattleMover.showPlayerMenu();
 
@@ -4326,6 +4326,51 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneBattleOpponentSwitchesPokemon(EightBitter, settings) {
+        var battleInfo = settings.battleInfo,
+            opponent = battleInfo.opponent;
+
+        opponent.selectedIndex += 1;
+        opponent.selectedActor = opponent.actors[opponent.selectedIndex];
+
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "deleteOnFinish": false
+        })
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                opponent.name + " is \n about to use " + opponent.selectedActor.nickname + "!",
+                "Will %%%%%%%PLAYER%%%%%%% change %%%%%%%POKEMON%%%%%%%?"
+            ],
+            function () {
+                EightBitter.MenuGrapher.createMenu("Yes/No");
+                EightBitter.MenuGrapher.addMenuList("Yes/No", {
+                    "options": [{
+                        "text": "Yes",
+                        "callback": EightBitter.ScenePlayer.bindRoutine(
+                            "PlayerSwitchesPokemon", {
+                                "nextRoutine": "OpponentSendOut"
+                            }
+                        )
+                    }, {
+                        "text": "No",
+                        "callback": EightBitter.ScenePlayer.bindRoutine(
+                            "OpponentSendOut", {
+                                "nextRoutine": "ShowPlayerMenu"
+                            }
+                        )
+                    }]
+                });
+                EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+            }
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText")
+        
+    }
+
+    /**
+     * 
+     */
     function cutsceneBattleExperienceGain(EightBitter, settings) {
         var battleInfo = settings.battleInfo,
             routineArguments = settings.routineArguments,
@@ -4445,33 +4490,6 @@ var FullScreenPokemon = (function (GameStartr) {
                 }
             }
         });
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleOpponentChoosesPokemon(EightBitter, settings) {
-        var battleInfo = settings.battleInfo,
-            opponent = battleInfo.opponent,
-            actors = opponent.actors,
-            actor, i;
-
-        for (i = 0; i < actors.length; i += 1) {
-            actor = actors[i];
-            if (!actors.HP) {
-                continue;
-            }
-
-            opponent.selectedIndex = i;
-            opponent.selectedActor = actor;
-            EightBitter.ScenePlayer.playRoutine("OpponentSendOut");
-            return;
-        }
-
-        if (!actor) {
-            console.log("Opponent has no available actors. Victory!");
-            EightBitter.ScenePlayer.playRoutine("Victory");
-        }
     }
 
     /**
@@ -8926,11 +8944,11 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattlePokemonFaints": cutsceneBattlePokemonFaints,
         "cutsceneBattleAfterPlayerPokemonFaints": cutsceneBattleAfterPlayerPokemonFaints,
         "cutsceneBattleAfterOpponentPokemonFaints": cutsceneBattleAfterOpponentPokemonFaints,
+        "cutsceneBattleOpponentSwitchesPokemon": cutsceneBattleOpponentSwitchesPokemon,
         "cutsceneBattleExperienceGain": cutsceneBattleExperienceGain,
         "cutsceneBattleLevelUp": cutsceneBattleLevelUp,
         "cutsceneBattleLevelUpStats": cutsceneBattleLevelUpStats,
         "cutsceneBattlePlayerChoosesPokemon": cutsceneBattlePlayerChoosesPokemon,
-        "cutsceneBattleOpponentChoosesPokemon": cutsceneBattleOpponentChoosesPokemon,
         "cutsceneBattleExitFail": cutsceneBattleExitFail,
         "cutsceneBattleExitFailReturn": cutsceneBattleExitFailReturn,
         "cutsceneBattleVictory": cutsceneBattleVictory,

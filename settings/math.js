@@ -16809,7 +16809,7 @@ FullScreenPokemon.prototype.settings.math = {
                     ["Raise", "Defense", 2],
                     ["Raise", "Speed", 2],
                     ["Raise", "Special", 2],
-                    ["effect", "Heal"],
+                    ["Effect", "Heal"],
                     ["Lower", "Defense", 2],
                     ["Move", "Light Screen"],
                     ["Move", "Reflect"]
