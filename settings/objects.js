@@ -88,6 +88,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "FenceVertical": {},
                 "FloorDiamondsDark": {},
                 "Grass": {},
+                "GymStatue": {},
                 "HealingMachine": {},
                 "HealingMachineBall": {},
                 "HouseBase": {
@@ -145,6 +146,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 },
                 "PottedPalmTree": {},
                 "Register": {},
+                "Rock": {},
                 "Sign": {},
                 "SofaLeft": {},
                 "Spawner": {},
@@ -531,7 +533,9 @@ FullScreenPokemon.prototype.settings.objects = {
             "Terrain": {
                 "TerrainSmall": {
                     "TerrainSmallRepeating": {
-                        "WallIndoorHorizontalBands": {},
+                        "WallIndoorHorizontalBands": {
+                            "WallIndoorHorizontalBandsInverse": {}
+                        },
                         "WallIndoorLightWithDarkBottom": {}
                     }
                 },
@@ -880,6 +884,10 @@ FullScreenPokemon.prototype.settings.objects = {
         "Grass": {
             "rarity": 10,
             "collide": FullScreenPokemon.prototype.collideCharacterGrass
+        },
+        "GymStatue": {
+            "height": 16,
+            "activate": FullScreenPokemon.prototype.activateGymStatue
         },
         "HealingMachine": [16, 16],
         "HealingMachineBall": [3, 3],

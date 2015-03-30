@@ -1112,6 +1112,9 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Museum of Science Outside Door": {
                     "area": "Land"
                 },
+                "Pewter Gym Outside Door": {
+                    "area": "Land"
+                },
                 "PokeCenter Outside Door": {
                     "area": "Land"
                 },
@@ -1126,6 +1129,10 @@ FullScreenPokemon.prototype.settings.maps = {
                 },
                 "Museum of Science Inside Door": {
                     "area": "Museum of Science"
+                },
+                "Pewter Gym Floor 1 Door": {
+                    "area": "Pewter Gym",
+                    "direction": 0
                 },
                 "PokeCenter Inside Door": {
                     "area": "PokeCenter",
@@ -1297,6 +1304,31 @@ FullScreenPokemon.prototype.settings.maps = {
                     "creation": [
                         { "thing": "FloorCheckered", "width": 8, "height": 16 },
                         { "thing": "Scientist", "dialog": "Apologies, the Pewter Museum of Science is closed in this release of Full Screen %%%%%%%POKEMON%%%%%%%. Try again later!", "transport": { "map": "Pewter City", "location": "Museum of Science Outside Door" } }
+                    ]
+                },
+                "Pewter Gym": {
+                    "width": 80,
+                    "height": 112,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "WallIndoorHorizontalBandsInverse", "width": 80, "height": 112 },
+                        { "thing": "Rock", "width": 80 },
+                        { "thing": "Rock", "y": 8, "height": 72 },
+                        { "thing": "CoolTrainerM", "x": 32, "y": 8, "trainer": true },
+                        { "thing": "Rock", "x": 72, "y": 8, "height": 72 },
+                        { "thing": "Rock", "x": 8, "y": 24, "width": 24 },
+                        { "thing": "Rock", "x": 48, "y": 24, "width": 24 },
+                        { "thing": "Rock", "x": 16, "y": 40 },
+                        { "thing": "Rock", "x": 40, "y": 40, "width": 24 },
+                        { "thing": "CoolTrainerM", "x": 24, "y": 48, "direction": 1, "trainer": true },
+                        { "thing": "Rock", "x": 16, "y": 56 },
+                        { "thing": "Rock", "x": 40, "y": 56, "width": 24 },
+                        { "thing": "Rock", "x": 8, "y": 72, "width": 16 },
+                        { "thing": "GymStatue", "x": 24, "y": 72, "gym": "Pewter City", "leader": "Brock" },
+                        { "thing": "GymStatue", "x": 48, "y": 72, "gym": "Pewter City", "leader": "Brock" },
+                        { "thing": "Rock", "x": 56, "y": 72, "width": 16 },
+                        { "thing": "GymGuide", "x": 64, "y": 80, "dialog": "nope" },
+                        { "thing": "Doormat", "x": 32, "y": 104, "width": 16, "entrance": "Pewter Gym Floor 1 Door", "transport": { "map": "Pewter City", "location": "Petwer Gym Outside Door" } }
                     ]
                 },
                 "PokeCenter": {

@@ -111,6 +111,8 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
+
+        setTimeout(function () { FSP.setMap("Pewter City", "Pewter Gym Floor 1 Door"); }, 7);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 
@@ -2746,8 +2748,25 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function activateTransporterAnimated(thing, other) {
-        thing.EightBitter.activateTransporter(thing, other);
+    function activateGymStatue(thing, other) {
+        if (thing.direction !== 0) {
+            return;
+        }
+
+        var gym = other.gym,
+            leader = other.leader,
+            dialog = [
+                gym.toUpperCase() + " \n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: " + leader.toUpperCase(),
+                "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
+            ];
+
+        if (thing.EightBitter.StatsHolder.get("badges")[leader]) {
+            dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
+        }
+
+        thing.EightBitter.MenuGrapher.createMenu("GeneralText");
+        thing.EightBitter.MenuGrapher.addMenuDialog("GeneralText", dialog);
+        thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
 
@@ -8844,7 +8863,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "activateMenuTriggerer": activateMenuTriggerer,
         "activateSightDetector": activateSightDetector,
         "activateTransporter": activateTransporter,
-        "activateTransporterAnimated": activateTransporterAnimated,
+        "activateGymStatue": activateGymStatue,
         // Physics
         "getDirectionBordering": getDirectionBordering,
         "isThingWithinOther": isThingWithinOther,
