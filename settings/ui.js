@@ -144,23 +144,23 @@ FullScreenPokemon.prototype.settings.ui = {
                     "minimum": 0,
                     "maximum": 100,
                     "source": function (EightBitter) {
-                        return Math.round(EightBitter.GBSEmulater.getVolume() * 100);
+                        return Math.round(EightBitter.GBSEmulator.getVolume() * 100);
                     },
                     "update": function (EightBitter, value) {
-                        EightBitter.GBSEmulater.setVolume(value / 100);
+                        EightBitter.GBSEmulator.setVolume(value / 100);
                     }
                 },
                 {
                     "title": "Mute",
                     "type": "Boolean",
                     "source": function (EightBitter) {
-                        return EightBitter.GBSEmulater.getMuted();
+                        return EightBitter.GBSEmulator.getMuted();
                     },
                     "enable": function (EightBitter) {
-                        EightBitter.GBSEmulater.setMutedOn();
+                        EightBitter.GBSEmulator.setMutedOn();
                     },
                     "disable": function (EightBitter) {
-                        EightBitter.GBSEmulater.setMutedOff();
+                        EightBitter.GBSEmulator.setMutedOff();
                     }
                 },
                 {

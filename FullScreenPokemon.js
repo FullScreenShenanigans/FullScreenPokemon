@@ -798,7 +798,7 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
-        player.EightBitter.GBSEmulater.toggleMuted();
+        player.EightBitter.GBSEmulator.toggleMuted();
         player.EightBitter.ModAttacher.fireEvent("onKeyDownMute");
 
         if (event && event.preventDefault) {
@@ -2618,11 +2618,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateThemePlayer(thing, other) {
-        if (thing.EightBitter.GBSEmulater.getTheme() === other.theme) {
+        if (thing.EightBitter.GBSEmulator.getTheme() === other.theme) {
             return;
         }
 
-        thing.EightBitter.GBSEmulater.play(other.theme);
+        thing.EightBitter.GBSEmulator.play(other.theme);
     }
 
     /**
@@ -5637,7 +5637,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         settings.oak = oak;
 
-        EightBitter.GBSEmulater.play("Introduction");
+        EightBitter.GBSEmulator.play("Introduction");
         EightBitter.ModAttacher.fireEvent("onIntroFadeIn", oak);
 
         // GET THIS STUFF OUTTA HERE
@@ -7524,10 +7524,11 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function setLocation(name, noEntrance) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
-            location;
+            location, theme;
 
         name = name || 0;
 
+        EightBitter.GBSEmulator.clearAll();
         EightBitter.GroupHolder.clearArrays();
         EightBitter.MapScreener.clearScreen();
         EightBitter.MapScreener.thingsById = {};
@@ -7552,8 +7553,13 @@ var FullScreenPokemon = (function (GameStartr) {
             location.area.map.name + "::" + location.area.name
         );
 
-        EightBitter.GBSEmulater.clearAll();
         EightBitter.QuadsKeeper.resetQuadrants();
+
+        theme = location.theme || location.area.theme || location.area.map.theme;
+        console.log("oh", theme, location.theme, location.area.theme, location.area.map.theme);
+        if (theme) {
+            EightBitter.GBSEmulator.play(theme);
+        }
 
         if (!noEntrance) {
             location.entry(EightBitter, location);

@@ -179,7 +179,7 @@ function GBSEmulatr(settings) {
     /**
      * Plays a sound or theme, keyed by track name.
      * 
-     * @example GBSEmulater.play("openingTheme");
+     * @example GBSEmulator.play("openingTheme");
      */
     self.play = function (track) {
         // @TODO proper stop function
