@@ -15,6 +15,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "BugCatcher": {},
                 "Buzzer": {},
                 "Cashier": {},
+                "ChubbyGuy": {},
                 "CoolTrainerM": {},
                 "Dad": {},
                 "Daisy": {},
@@ -37,6 +38,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Pokeball": {},
                 "Rival": {},
                 "Scientist": {},
+                "Toddler": {},
                 "WaterPokemon": {}
             },
             "Solid": {

@@ -1115,6 +1115,9 @@ FullScreenPokemon.prototype.settings.maps = {
                 "PokeMart Outside Door": {
                     "area": "Land"
                 },
+                "Outsider House Front Door": {
+                    "area": "Land"
+                },
                 "Info House Front Door": {
                     "area": "Land"
                 },
@@ -1123,6 +1126,10 @@ FullScreenPokemon.prototype.settings.maps = {
                 },
                 "PokeMart Inside Door": {
                     "area": "PokeMart"
+                },
+                "Outsider House Floor 1 Door": {
+                    "area": "Outsider House",
+                    "direction": 0
                 },
                 "Info House Floor 1 Door": {
                     "area": "Info House",
@@ -1287,7 +1294,32 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Gentleman", "x": 88, "y": 56, "direction": 3, "directionPreferred": 3, "dialog": ["What!?", "TEAM ROCKET is at MT. MOON? Huh? I'm on the phone!", "Scram!"] }
                     ]
                 },
-
+                "Outsider House": {
+                    "width": 64,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "WallIndoorHorizontalBands", "width": 64 },
+                        { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "Cabinet", "width": 16 },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP. (TO DO: TRIGGER TOWN MAP)" },
+                        { "thing": "Window", "x": 40 },
+                        { "thing": "Bookshelf", "x": 56 },
+                        { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
+                        { "thing": "ChubbyGuy", "x": 8, "y": 16, "direction": 1, "roaming": true, "roamingDirections": [], "dialog": ["Our %%%%%%%POKEMON%%%%%%%'s an outsider, so it's hard to handle.", "An outsider is a %%%%%%%POKEMON%%%%%%% that you get in a trade.", "It grows fast, but it may ignore an unskilled trainer in battle!", "If only we had some BADGEs..."] },
+                        { "thing": "Table2x3", "x": 24, "y": 24 },
+                        { "thing": "Stool", "x": 16, "y": 24 },
+                        { "thing": "Stool", "x": 40, "y": 24 },
+                        { "thing": "Stool", "x": 16, "y": 32 },
+                        { "thing": "Stool", "x": 40, "y": 32 },
+                        { "thing": "Toddler", "x": 24, "y": 40, "direction": 1, "directionPreferred": 1, "dialog": "NIDORAN sit!" },
+                        { "thing": "LandPokemon", "x": 32, "y": 40, "direction": 3, "directionPreferred": 3, "dialog": "NIDORAN: Bowbow! x" },
+                        { "thing": "PottedPalmTree", "y": 48 },
+                        { "thing": "PottedPalmTree", "x": 56, "y": 48 },
+                        { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Outsider House Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Outsider House Front Door" }, "requireDirection": 2 }
+                    ]
+                },
                 "Info House": {
                     "width": 64,
                     "height": 64,
