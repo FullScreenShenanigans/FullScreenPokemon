@@ -65,7 +65,8 @@ FullScreenPokemon.prototype.settings.maps = {
                     "area": "Land"
                 },
                 "Player's House Floor 1 Door": {
-                    "area": "Player's House"
+                    "area": "Player's House",
+                    "direction": 0
                 },
                 "Player's House Floor 1 Stairs": {
                     "area": "Player's House"
@@ -83,13 +84,15 @@ FullScreenPokemon.prototype.settings.maps = {
                     "area": "Land"
                 },
                 "Rival's House Floor 1 Door": {
-                    "area": "Rival's House"
+                    "area": "Rival's House",
+                    "direction": 0
                 },
                 "Oak's Lab Door": {
                     "area": "Land"
                 },
                 "Oak's Lab Floor 1 Door": {
-                    "area": "Oak's Lab"
+                    "area": "Oak's Lab",
+                    "direction": 0
                 }
             },
             "areas": {
@@ -465,7 +468,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtLight", "x": 160, "y": 128, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 192, "y": 128, "xnum": 2, "ynum": 4 },
                         { "thing": "DirtMedium", "x": 208, "y": 128, "width": 64, "height": 32 },
-                        { "macro": "Building", "x": 224, "y": 128, "door": true, "label": "Mart", "transport": "PokeMart Inside Door" },
+                        { "macro": "Building", "x": 224, "y": 128, "door": true, "label": "Mart", "transport": { "map": "Viridian City", "location": "PokeMart Inside Door" }, "entrance": { "map": "Viridian City", "location": "PokeMart Outside Door" } },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 272, "y": 128, "xnum": 2, "ynum": 4 },
                         { "thing": "Sign", "x": 136, "y": 136, "dialog": "VIRIDIAN CITY \n The Eternally Green Paradise" },
                         { "thing": "FenceVertical", "x": 160, "y": 136, "width": 32 },
@@ -483,7 +486,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 128, "y": 176, "xnum": 2, "ynum": 4 },
                         { "thing": "DirtMedium", "x": 144, "y": 176, "width": 16, "height": 64 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 176, "xnum": 8, "ynum": 4 },
-                        { "macro": "Building", "x": 176, "y": 176, "door": true, "label": "Poke", "entrance": "PokeCenter Outside Door", "transport": "PokeCenter Inside Door" },
+                        { "macro": "Building", "x": 176, "y": 176, "door": true, "label": "Poke", "entrance": "PokeCenter Outside Door", "transport": { "map": "Viridian City", "location": "PokeCenter Inside Door" } },
                         { "thing": "DirtMedium", "x": 224, "y": 176, "width": 48, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 272, "y": 176, "xnum": 2, "ynum": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 180, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
@@ -1104,13 +1107,27 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Pewter City",
-            "locationDefault": "Temp",
+            "locationDefault": "PokeCenter Outside Door",
             "locations": {
-                "Temp": {
-                    "area": "Land",
-                    "xloc": 80,
-                    "yloc": 176
-                }
+                "PokeCenter Outside Door": {
+                    "area": "Land"
+                },
+                "PokeMart Outside Door": {
+                    "area": "Land"
+                },
+                "Info House Front Door": {
+                    "area": "Land"
+                },
+                "PokeCenter Inside Door": {
+                    "area": "PokeCenter"
+                },
+                "PokeMart Inside Door": {
+                    "area": "PokeMart"
+                },
+                "Info House Floor 1 Door": {
+                    "area": "Info House",
+                    "direction": 0
+                },
             },
             "areas": {
                 "Land": {
@@ -1167,7 +1184,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 48, "y": 112, "width": 32, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 112, "xnum": 24, "ynum": 2 },
                         { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, },
-                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart" },
+                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart", "transport": { "map": "Pewter City", "location": "PokeMart Inside Door" }, "entrance": { "map": "Pewter City", "location": "PokeMart Outside Door" } },
                         { "thing": "Lass", "x": 64, "y": 120, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["It's rumored that CLEFAIRYs came from the moon!", "They appeared after MOON STONE fell on MT. MOON."] },
                         { "thing": "DirtLight", "x": 80, "y": 128, "width": 64, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 128, "xnum": 2, "ynum": 2 },
@@ -1202,7 +1219,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Mountain", "x": 272, "y": 160, "width": 48, "height": 48, "top": true, "bottom": true, "left": true },
                         { "thing": "PlantSmall", "x": 32, "y": 168, "width": 112 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 48, "y": 176, "xnum": 14, "ynum": 2 },
-                        { "macro": "Building", "x": 96, "y": 176, "door": true, "label": "Poke" },
+                        { "macro": "Building", "x": 96, "y": 176, "door": true, "label": "Poke", "entrance": "PokeCenter Outside Door", "transport": { "map": "Pewter City", "location": "PokeCenter Inside Door" } },
                         { "thing": "DirtLight", "x": 160, "y": 176, "width": 96, "height": 16 },
                         { "thing": "FenceVertical", "x": 176, "y": 184, "width": 24 },
                         { "thing": "Sign", "x": 200, "y": 184, "dialog": "PEWTER CITY \n A Stone Gray \n City" },
@@ -1230,7 +1247,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 280, "y": 208, "height": 48 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 176, "y": 212, "xnum": 16, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "DirtMedium", "x": 48, "y": 224, "width": 96, "height": 16 },
-                        { "macro": "House", "x": 48, "y": 224, "door": true },
+                        { "macro": "House", "x": 48, "y": 224, "door": true, "entrance": "Info House Front Door", "transport": { "map": "Pewter City", "location": "Info House Floor 1 Door" } },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 228, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "DirtLight", "x": 144, "y": 224, "width": 16, "height": 16 },
                         { "thing": "Sign", "x": 152, "y": 232, "dialog": ["TRAINER TIPS", "Any %%%%%%%POKEMON%%%%%%% that takes part in battle, however short, earns EXP!"] },
@@ -1252,7 +1269,50 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
                         { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
                     ]
-                }
+                },
+                "PokeCenter": {
+                    "width": 112,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "macro": "PokeCenter", "entrance": "PokeCenter Inside Door", "transport": "PokeCenter Outside Door", "coolTrainerDialog": ["Yawn!", "When JIGGLYPUFF sings, %%%%%%%POKEMON%%%%%%% get drowsy...", "...Me too... \n Snore..."] },
+                    ]
+                },
+                "PokeMart": {
+                    "width": 64,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "macro": "PokeMart", "entrance": "PokeMart Inside Door", "transport": "PokeMart Outside Door", "responderId": "CashierDetector", "responderDialog": "Okay! Say hi to PROF. Oak for me!", "items": [{ "item": "Pokeball", "cost": 200 }, { "item": "Antidote", "cost": 100 }, { "item": "Parlyz Heal", "cost": 200 }, { "item": "Burn Heal", "cost": 250 }] },
+                        { "thing": "Gentleman", "x": 88, "y": 56, "direction": 3, "directionPreferred": 3, "dialog": ["What!?", "TEAM ROCKET is at MT. MOON? Huh? I'm on the phone!", "Scram!"] }
+                    ]
+                },
+
+                "Info House": {
+                    "width": 64,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "WallIndoorHorizontalBands", "width": 64 },
+                        { "thing": "InvisibleWall", "width": 64 },
+                        { "thing": "Cabinet", "width": 16 },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP. (TO DO: TRIGGER TOWN MAP)" },
+                        { "thing": "Window", "x": 40 },
+                        { "thing": "Bookshelf", "x": 56 },
+                        { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
+                        { "thing": "Table2x3", "x": 24, "y": 24 },
+                        { "thing": "Elder", "x": 16, "y": 24, "direction": 1, "directionPreferred": 1, "dialog": ["%%%%%%%POKEMON%%%%%%% learn new techniques as they grow!", "But, some moves must be taught by the trainer!"] },
+                        { "thing": "Stool", "x": 16, "y": 24 },
+                        { "thing": "Stool", "x": 40, "y": 24 },
+                        { "thing": "Stool", "x": 16, "y": 32 },
+                        { "thing": "Stool", "x": 40, "y": 32 },
+                        { "thing": "BugCatcher", "x": 32, "y": 40, "direction": 2, "roaming": true, "roamingDirections": [], "dialog": ["%%%%%%%POKEMON%%%%%%% become easier to catch when they are hurt or asleep!", "But, it's not a sure thing!"] },
+                        { "thing": "PottedPalmTree", "y": 48 },
+                        { "thing": "PottedPalmTree", "x": 56, "y": 48 },
+                        { "thing": "DoormatDashed", "x": 16, "y": 56, "width": 16, "entrance": "Info House Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Info House Front Door" }, "requireDirection": 2 }
+                    ]
+                },
             }
         }
     ])
