@@ -16942,6 +16942,332 @@ FullScreenPokemon.prototype.settings.math = {
                     ["Super", "Dragon, Dragon"]
                 ]
             }
+        }, 
+        "items" {
+              {
+                "name": "Antidote",
+                "price": "100",
+                "effect": "Cures Poison",
+                "category": "Main"
+            },{
+                "name": "Awakening",
+                "price": "250",
+                "effect": "Cures Sleep",
+                "category": "Main"
+            },{
+                "name": "Burn Heal",
+                "price": "250",
+                "effect": "Cures Burn",
+                "category": "Main"
+            },{
+                "name": "Calcium",
+                "price": "9800",
+                "effect": "Raises Special Attack",
+                "category": "Main"
+            },{
+                "name": "Carbos",
+                "price": "9800",
+                "effect": "Raises Speed",
+                "category": "Main"
+            },{
+                "name": "Dire Hit",
+                "price": "650",
+                "effect": "Raises chances of a Critical Hit in battle",
+                "category": "Main"
+            },{
+                "name": "Elixir",
+                "effect": "Restores 10PP to each move",
+                "category": "Main"
+            },{
+                "name": "Escape Rope",
+                "price": "550",
+                "effect": "Escape from the current cave",
+                "category": "Main"
+            },{
+                "name": "Ether",
+                "effect": "Restores 10PP of one move",
+                "category": "Main"
+            },{
+                "name": "Fire Stone",
+                "price": "2100",
+                "effect": "Evolves Eevee, Growlithe and Vulpix",
+                "category": "Main"
+            },{
+                "name": "Fresh Water",
+                "price": "200",
+                "effect": "Recovers 50HP",
+                "category": "Main"
+            },{
+                "name": "Full Heal",
+                "price": "600",
+                "effect": "Cures all status ailments",
+                "category": "Main"
+            },{
+                "name": "Full Restore",
+                "price": "3000",
+                "effect": "Restores all HP and cures all status ailments",
+                "category": "Main"
+            },{
+                "name": "Guard Spec",
+                "price": "700",
+                "effect": "Prevents stat reduction in a battle",
+                "category": "Main"
+            },{
+                "name": "HP Up",
+                "price": "9800",
+                "effect": "Raises max HP",
+                "category": "Main"
+            },{
+                "name": "Hyper Potion",
+                "price": "1200",
+                "effect": "Restores 200HP",
+                "category": "Main"
+            },{
+                "name": "Ice Heal",
+                "price": "250",
+                "effect": "Cures Freeze",
+                "category": "Main"
+            },{
+                "name": "Iron",
+                "price": "9800",
+                "effect": "Raises Defense",
+                "category": "Main"
+            },{
+                "name": "Leaf Stone",
+                "effect": "Evolves Exeggcute, Gloom, and Weepinbell",
+                "category": "Main"
+            },{
+                "name": "Lemonade",
+                "price": "350",
+                "effect": "Restores 80HP",
+                "category": "Main"
+            },{
+                "name": "Max Elixir",
+                "effect": "Restores all PP to all moves",
+                "category": "Main"
+            },{
+                "name": "Max Ether",
+                "effect": "Restores all PP to one move",
+                "category": "Main"
+            },{
+                "name": "Max Potion",
+                "price": "2500",
+                "effect": "Restores all HP",
+                "category": "Main"
+            },{
+                "name": "Max Repel",
+                "price": "700",
+                "effect": "Repels weaker Pokemon for 250 steps",
+                "category": "Main"
+            },{
+                "name": "Max Revive",
+                "effect": "Revives a fainted Pokemon to max HP",
+                "category": "Main"
+            },{
+                "name": "Moon Stone",
+                "effect": "Evolves Clefairy, Jigglypuff, Nidorina and Nidorino",
+                "category": "Main"
+            },{
+                "name": "Nugget",
+                "effect": "Sell for money",
+                "category": "Main"
+            },{
+                "name": "Paralyz Heal",
+                "price": "200",
+                "effect": "Cures Paralysis",
+                "category": "Main"
+            },{
+                "name": "Poke Doll",
+                "price": "1000",
+                "effect": "Trade for TM31 in Saffron, Allows escape from battle",
+                "category": "Main"
+            },{
+                "name": "Potion",
+                "price": "300",
+                "effect": "Restores 20HP",
+                "category": "Main"
+            },{
+                "name": "PP Up",
+                "effect": "Increases the max PP of a move",
+                "category": "Main"
+            },{
+                "name": "Protein",
+                "price": "9800",
+                "effect": "Raises Attack",
+                "category": "Main"
+            },{
+                "name": "Rare Candy",
+                "effect": "Raises a Pokemon's level by one",
+                "category": "Main"
+            },{
+                "name": "Repel",
+                "price": "350",
+                "effect": "Repels weaker Pokemon for 100 steps",
+                "category": "Main"
+            },{
+                "name": "Revive",
+                "price": "1500",
+                "effect": "Recovers a fainted Pokemon to half max HP",
+                "category": "Main"
+            },{
+                "name": "Soda Pop",
+                "price": "300",
+                "effect": "Recovers 80HP",
+                "category": "Main"
+            },{
+                "name": "Super Potion",
+                "price": "700",
+                "effect": "Restores 50HP",
+                "category": "Main"
+            },{
+                "name": "Super Repel",
+                "price": "500",
+                "effect": "Repels weaker Pokemon for 200 steps",
+                "category": "Main"
+            },{
+                "name": "Thunderstone",
+                "price": "2100",
+                "effect": "Evolves Eevee and Pikachu",
+                "category": "Main"
+            },{
+                "name": "Water Stone",
+                "price": "2100",
+                "effect": "Evolves Eevee, Poliwag, Shellder and Staryu",
+                "category": "Main"
+            },{
+                "name": "X Accuracy",
+                "price": "950",
+                "effect": "Raises accuracy in a battle",
+                "category": "Main"
+            },{
+                "name": "X Attack",
+                "price": "500",
+                "effect": "Raises attack in a battle",
+                "category": "Main"
+            },{
+                "name": "X Defend",
+                "price": "550",
+                "effect": "Raises defense in a battle",
+                "category": "Main"
+            },{
+                "name": "X Special",
+                "price": "350",
+                "effect": "Raises special in a battle",
+                "category": "Main"
+            },{
+                "name": "X Speed",
+                "price": "350",
+                "effect": "Raises speed in a battle",
+                "category": "Main"
+            },{
+                "name": "Pokeball",
+                "price": "200",
+                "effect": "Catches Pokemon",
+                "category": "PokeBall"
+            },{
+                "name": "Great Ball",
+                "price": "600",
+                "effect": "Greater chance of catching Pokemon than a Pokeball",
+                "category": "PokeBall"
+            },{
+                "name": "Ultra Ball",
+                "price": "1200",
+                "effect": "Greater chance of catching Pokemon than a Great Ball",
+                "category": "PokeBall"
+            },{
+                "name": "Master Ball",
+                "effect": "Always catches Pokemon",
+                "category": "PokeBall"
+            },{
+                "name": "Safari Ball",
+                "effect": "A special ball for use in the Safari Zone",
+                "category": "PokeBall"
+            },{
+                "name": "Bicycle",
+                "effect": "Allows travel at double speed",
+                "category": "Key"
+            },{
+                "name": "Bike Voucher",
+                "effect": "Redeem at Cerulean Bike Shop for a free Bicycle",
+                "category": "Key"
+            },{
+                "name": "Card Key",
+                "effect": "Unlocks doors in the Silph Co. building",
+                "category": "Key"
+            },{
+                "name": "Coin Case",
+                "effect": "Holds 9999 Casino coins for use at Celadon Casino",
+                "category": "Key"
+            },{
+                "name": "Dome Fossil",
+                "effect": "Used to clone Kabuto at the Cinnabar Island Laboratory",
+                "category": "Key"
+            },{
+                "name": "EXP. All",
+                "effect": "Divides EXP from battle between all party members",
+                "category": "Key"
+            },{
+                "name": "Gold Teeth",
+                "effect": "Return to Safari Zone Warden and receive HM04",
+                "category": "Key"
+            },{
+                "name": "Good Rod",
+                "effect": "Fish for medium-levelled water Pokemon",
+                "category": "Key"
+            },{
+                "name": "Helix Fossil",
+                "effect": "Used to clone Omanyte at the Cinnabar Island Laboratory",
+                "category": "Key"
+            },{
+                "name": "Itemfinder",
+                "effect": "Detects hidden items in close proximity",
+                "category": "Key"
+            },{
+                "name": "Lift Key",
+                "effect": "Unlocks the elevator in the Team Rocket Hideout, Celadon City",
+                "category": "Key"
+            },{
+                "name": "Oak's Parcel",
+                "effect": "Deliver to Prof. Oak in Pallet Town and receive a Pokedex",
+                "category": "Key"
+            },{
+                "name": "Old Amber",
+                "effect": "Used to clone Aerodactyl at the Cinnabar Island Laboratoy",
+                "category": "Key"
+            },{
+                "name": "Old Rod",
+                "effect": "Fish for low-levelled water Pokemon",
+                "category": "Key"
+            },{
+                "name": "Pokeflute",
+                "effect": "Awakens sleeping Pokemon",
+                "category": "Key"
+            },{
+                "name": "Pokedex",
+                "effect": "Records all information about Pokemon seen and caught",
+                "category": "Key"
+            },{
+                "name": "S.S. Ticket",
+                "effect": "Use to board the S.S. Anne in Vermilion City",
+                "category": "Key"
+            },{
+                "name": "Secret Key",
+                "effect": "Unlocks Blaine's Gym on Cinnabar Island",
+                "category": "Key"
+            },{
+                "name": "Silph Scope",
+                "effect": "Allows Ghosts to be detected in the Pokemon Tower, Lavendar Town",
+                "category": "Key"
+            },{
+                "name": "Super Rod",
+                "effect": "Fish for high-levelled water Pokemon",
+                "category": "Key"
+            },{
+                "name": "Town Map",
+                "effect": "Shows your position in the Pokemon World",
+                "category": "Key"
+            }
+
         }
     }
 };
