@@ -871,8 +871,20 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Viridian Forest",
-            "locationDefault": "Forest Bottom",
+            "locationDefault": "Forest Top",
             "locations": {
+                "Gate North Door North": {
+                    "area": "Gate North"
+                },
+                "Gate North Door South": {
+                    "area": "Gate North",
+                    "direction": 0
+                },
+                "Forest Top": {
+                    "area": "Forest",
+                    "xloc": 8,
+                    "direction": 2
+                },
                 "Forest Bottom": {
                     "area": "Forest",
                     "xloc": 136,
@@ -888,6 +900,28 @@ FullScreenPokemon.prototype.settings.maps = {
                 }
             },
             "areas": {
+                "Gate North": {
+                    "width": 80,
+                    "height": 64,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "Guy", "x": 24, "y": 16, "roaming": true, "roamingDirections": [] },
+                        { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
+                        { "thing": "InvisibleWall", "width": 40 },
+                        { "thing": "Door", "x": 40, "indoor": true, "transport": "Forest Top", "entrance": "Gate North Door North" },
+                        { "thing": "WallIndoorFancyWithDarkBottom", "x": 48, "width": 32 },
+                        { "thing": "InvisibleWall", "x": 48, "width": 32 },
+                        { "thing": "FloorCheckered", "y": 8, "width": 80, "height": 56 },
+                        { "thing": "PottedPalmTree", "y": 16, "height": 48 },
+                        { "thing": "Table1x2", "x": 48, "y": 16 },
+                        { "thing": "Table1x2", "x": 64, "y": 16 },
+                        { "thing": "PottedPalmTree", "x": 72, "y": 16, "height": 48 },
+                        { "thing": "Table1x2", "x": 48, "y": 40 },
+                        { "thing": "Table1x2", "x": 64, "y": 40 },
+                        { "thing": "Doormat", "x": 32, "y": 56, "width": 16, "entrance": "Gate North Door South" },
+                        { "thing": "HiddenTransporter", "x": 32, "y": 56, "width": 16, "directionRequired": 2, "transport": { "map": "Viridian Forest", "location": "Forest Top" } }
+                    ],
+                },
                 "Forest": {
                     "width": 272,
                     "height": 384,
@@ -915,6 +949,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         }]
                     },
                     "creation": [
+                        { "thing": "HiddenTransporter", "x": 8, "width": 16, "directionRequired": 0, "transport": "Gate North Door South" },
                         { "thing": "DirtForest", "width": 272, "height": 384 },
                         { "thing": "Stump", "height": 208 },
                         { "thing": "Stump", "x": 24, "height": 176 },
@@ -922,7 +957,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stump", "x": 48, "width": 64 },
                         { "thing": "PlantLarge", "x": 112, "height": 128 },
                         { "thing": "Stump", "x": 128, "width": 144 },
-                        { "thing": "Sign", "x": 16, "y": 8, "forest": true },
+                        { "thing": "Sign", "x": 16, "y": 8, "forest": true, "dialog": "LEAVING \n VIRIDIAN FOREST PEWTER CITY AHEAD" },
                         { "thing": "Stump", "x": 264, "y": 8, "height": 264 },
                         { "thing": "Stump", "x": 160, "y": 24, "width": 80 },
                         { "thing": "ForestDirt", "x": 104, "y": 28 },
@@ -948,7 +983,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Pokeball", "x": 200, "y": 88, "name": "Item One", "item": "Antidote" },
                         { "thing": "Sign", "x": 208, "y": 136, "forest": true, "dialog": ["TRAINER TIPS", "Contact PROF. OAK via PC to get your %%%%%%%POKEDEX%%%%%%% evaluated!"] },
                         {
-                            "thing": "BugCatcher", "x": 240, "y": 152, "name": "Trainer Two", "direction": 3, "sight": 4, "trainer": true, 
+                            "thing": "BugCatcher", "x": 240, "y": 152, "name": "Trainer Two", "direction": 3, "sight": 4, "trainer": true,
                             "reward": 70,
                             "dialog": "Yo! You can't jam out if you're a %%%%%%%POKEMON%%%%%%% trainer!",
                             "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
@@ -1027,7 +1062,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Grass", "x": 72, "y": 320, "width": 48, "height": 16 },
                         { "thing": "Grass", "x": 152, "y": 320, "width": 48, "height": 16 },
                         { "thing": "Sign", "x": 192, "y": 320, "forest": true, "dialog": ["TRAINER TIPS", "If you want to avoid battles", "stay away from grassy areas!"] },
-                        { "thing": "BugCatcher", "x": 216, "y": 320, "roaming": true, "roamingDirections": [], "dialog": ["I ran out of %%%%%%%POKE%%%%%%% BALLs to catch %%%%%%%POKEMON%%%%%%% with!", "You should carry extras!"]},
+                        { "thing": "BugCatcher", "x": 216, "y": 320, "roaming": true, "roamingDirections": [], "dialog": ["I ran out of %%%%%%%POKE%%%%%%% BALLs to catch %%%%%%%POKEMON%%%%%%% with!", "You should carry extras!"] },
                         { "thing": "Grass", "x": 224, "y": 320, "width": 40, "height": 32 },
                         { "thing": "Stump", "x": 264, "y": 320, "height": 32 },
                         { "thing": "PlantLarge", "x": 128, "y": 328 },
@@ -1035,14 +1070,11 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stump", "x": 112, "y": 352, "height": 32 },
                         { "thing": "Stump", "x": 152, "y": 352, "height": 32 },
                         { "thing": "PlantLarge", "x": 160, "y": 352, "width": 112, "height": 32 },
-                        { "thing": "BugCatcher", "x": 160, "y": 368, "direction": 2, "directionPreferred": 2, "dialog": ["I cam here with some friends!", "They're out for %%%%%%%POKEMON%%%%%%% fights!"]},
+                        { "thing": "BugCatcher", "x": 160, "y": 368, "direction": 2, "directionPreferred": 2, "dialog": ["I cam here with some friends!", "They're out for %%%%%%%POKEMON%%%%%%% fights!"] },
                         { "thing": "Sign", "x": 144, "y": 360, "forest": true, "dialog": ["TRAINER TIPS", "Weaken %%%%%%%POKEMON%%%%%%% before attempting capture!", "When healthy, they may escape!"] },
                         { "thing": "GroundArrow", "x": 132, "y": 368, "width": 8 },
-                        { "thing": "HiddenTransporter", "x": 120, "y": 376, "width": 32, "directionRequired": 2, "transport": "Gate South Door North"  }
+                        { "thing": "HiddenTransporter", "x": 120, "y": 376, "width": 32, "directionRequired": 2, "transport": "Gate South Door North" }
                     ]
-                },
-                "Gate North": {
-
                 },
                 "Gate South": {
                     "width": 80,
