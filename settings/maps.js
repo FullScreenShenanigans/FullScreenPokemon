@@ -1153,7 +1153,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 64, "xnum": 10, "ynum": 2 },
                         { "thing": "DirtLight", "x": 112, "y": 64, "width": 16, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 128, "y": 64, "xnum": 4, "ynum": 2 },
-                        { "thing": "Sign", "x": 120, "y": 72 },
+                        { "thing": "Sign", "x": 120, "y": 72, "dialog": "PEWTER MUSEUM OF SCIENCE"  },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 80, "xnum": 2, "ynum": 22 },
                         { "thing": "DirtMedium", "x": 48, "y": 80, "width": 96, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 80, "xnum": 16, "ynum": 2 },
@@ -1167,11 +1167,26 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 48, "y": 112, "width": 32, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 112, "xnum": 24, "ynum": 2 },
                         { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, },
+                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart" },
+                        { "thing": "Lass", "x": 64, "y": 120, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["It's rumored that CLEFAIRYs came from the moon!", "They appeared after MOON STONE fell on MT. MOON."] },
                         { "thing": "DirtLight", "x": 80, "y": 128, "width": 64, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 128, "xnum": 2, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 160, "y": 128, "width": 96, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 256, "y": 128, "xnum": 8, "ynum": 2 },
                         { "thing": "Sign", "x": 88, "y": 136 },
+                        {
+                            "thing": "CoolTrainerM", "x": 208, "y": 136, "name": "MuseumLover", "roaming": true, "roamingDirections": [], "dialog": "Did you check out the museum?",
+                            "dialogOptions": {
+                                "type": "Yes/No",
+                                "options": {
+                                    "Yes": "Weren't those fossils from MT. Moon amazing?",
+                                    "No": {
+                                        "words": "Really? You absolutely have to go!",
+                                        "cutscene": "WalkToMuseum"
+                                    }
+                                }
+                            }
+                        },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 48, "y": 144, "xnum": 26, "ynum": 2 },
                         { "thing": "FenceVertical", "x": 144, "y": 144, "width": 8, "height": 32 },
                         { "thing": "DirtLight", "x": 256, "y": 144, "width": 16, "height": 16 },
@@ -1192,7 +1207,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceVertical", "x": 176, "y": 184, "width": 24 },
                         { "thing": "Sign", "x": 200, "y": 184, "dialog": "PEWTER CITY \n A Stone Gray \n City" },
                         {
-                            "thing": "CoolTrainerM", "x": 200, "y": 200, "direction": 3, "roaming": true, "roamingDirections": [1, 3], "dialog": "Psssst! Do you know what I'm doing?",
+                            "thing": "CoolTrainerM", "x": 200, "y": 200, "name": "Gardener", "direction": 3, "roaming": true, "roamingDirections": [1, 3], "dialog": "Psssst! Do you know what I'm doing?",
                             "dialogOptions": {
                                 "type": "Yes/No",
                                 "options": {
@@ -1209,7 +1224,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 240, "y": 192, "height": 48 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 128, "y": 196, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 176, "y": 196, "xnum": 16, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                        { "thing": "CoolTrainerM", "x": 136, "y": 200, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["There aren't many serious %%%%%%%POKEMON%%%%%%% trainers here!", "They're all like BUG CATCHERs, but PEWTER GYM's BROCK is totally into it!"]  },
+                        { "thing": "CoolTrainerM", "x": 136, "y": 200, "name": "SeriousTrainer", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["There aren't many serious %%%%%%%POKEMON%%%%%%% trainers here!", "They're all like BUG CATCHERs, but PEWTER GYM's BROCK is totally into it!"]  },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 48, "y": 208, "xnum": 14, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 272, "y": 208, "width": 48, "height": 48 },
                         { "thing": "FenceWide", "x": 280, "y": 208, "height": 48 },
