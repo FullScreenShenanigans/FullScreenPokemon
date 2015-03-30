@@ -93,10 +93,10 @@ else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
   }
   if (ENVIRONMENT_IS_WEB) {
     Module['print'] = function(x) {
-      console.log(x);
+      //console.log(x);
     };
     Module['printErr'] = function(x) {
-      console.log(x);
+      //console.log(x);
     };
     this['Module'] = Module;
   } else if (ENVIRONMENT_IS_WORKER) {
@@ -3977,12 +3977,10 @@ function copyTempDouble(ptr) {
           Browser.hasBlobConstructor = true;
         } catch(e) {
           Browser.hasBlobConstructor = false;
-          console.log("warning: no blob constructor, cannot create blobs with mimetypes");
         }
-        Browser.BlobBuilder = typeof MozBlobBuilder != "undefined" ? MozBlobBuilder : (typeof WebKitBlobBuilder != "undefined" ? WebKitBlobBuilder : (!Browser.hasBlobConstructor ? console.log("warning: no BlobBuilder") : null));
+        Browser.BlobBuilder = typeof MozBlobBuilder != "undefined" ? MozBlobBuilder : (typeof WebKitBlobBuilder != "undefined" ? WebKitBlobBuilder : (!Browser.hasBlobConstructor ? /* console.log("warning: no BlobBuilder") */ null : null));
         Browser.URLObject = typeof window != "undefined" ? (window.URL ? window.URL : window.webkitURL) : undefined;
         if (!Module.noImageDecoding && typeof Browser.URLObject === 'undefined') {
-          console.log("warning: Browser does not support creating object URLs. Built-in browser image decoding will not be available.");
           Module.noImageDecoding = true;
         }
         // Support for plugins that can process preloaded files. You can add more of these to
@@ -4028,7 +4026,6 @@ function copyTempDouble(ptr) {
             if (onload) onload(byteArray);
           };
           img.onerror = function(event) {
-            console.log('Image ' + url + ' could not be decoded');
             if (onerror) onerror();
           };
           img.src = url;
@@ -4063,7 +4060,6 @@ function copyTempDouble(ptr) {
             audio.addEventListener('canplaythrough', function() { finish(audio) }, false); // use addEventListener due to chromium bug 124926
             audio.onerror = function(event) {
               if (done) return;
-              console.log('warning: browser could not fully decode audio ' + name + ', trying slower base64 approach');
               function encode64(data) {
                 var BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
                 var PAD = '=';

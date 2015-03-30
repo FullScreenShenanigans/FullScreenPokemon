@@ -236,7 +236,6 @@ function AudioPlayr(settings) {
                 // Can put any 'end-of-song' event handlers here, once 
                 // AudioPlayr is more fleshed out.
                 node.disconnect();
-                console.log("end of song");
                 theme = null;
                 return;
             }
