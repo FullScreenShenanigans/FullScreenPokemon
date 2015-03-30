@@ -891,6 +891,29 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Forest": {
                     "width": 272,
                     "height": 384,
+                    "wildPokemon": {
+                        "grass": [{
+                            "title": "Caterpie",
+                            "levels": [3, 5],
+                            "rate": .5
+                        }, {
+                            "title": "Metapod",
+                            "levels": [4, 5, 6],
+                            "rate": .35
+                        }, {
+                            "title": "Weedle",
+                            "level": 3,
+                            "rate": .05
+                        }, {
+                            "title": "Kakuna",
+                            "level": 4,
+                            "rate": .05
+                        }, {
+                            "title": "Pikachu",
+                            "levels": [3, 5],
+                            "rate": .05
+                        }]
+                    },
                     "creation": [
                         { "thing": "DirtForest", "width": 272, "height": 384 },
                         { "thing": "Stump", "height": 208 },
@@ -922,7 +945,24 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stump", "x": 216, "y": 80, "height": 64 },
                         { "thing": "PlantLarge", "x": 224, "y": 80, "height": 64 },
                         { "thing": "Grass", "x": 240, "y": 80, "width": 24, "height": 64 },
-                        { "thing": "Sign", "x": 208, "y": 138, "forest": true },
+                        { "thing": "Pokeball", "x": 200, "y": 88, "item": "Antidote" },
+                        { "thing": "Sign", "x": 208, "y": 136, "forest": true, "dialog": ["TRAINER TIPS", "Contact PROF. OAK via PC to get your %%%%%%%POKEDEX%%%%%%% evaluated!"] },
+                        {
+                            "thing": "BugCatcher", "x": 240, "y": 152, "name": "Trainer Two", "direction": 3, "sight": 4, "trainer": true, "reward": 70,
+                            "dialog": "Yo! You can't jam out if you're a %%%%%%%POKEMON%%%%%%% trainer!",
+                            "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
+                            "dialogNext": "Ssh! You'll scare the bugs away!",
+                            "actors": [{
+                                "title": "Weedle",
+                                "level": 7
+                            }, {
+                                "title": "Kakuna",
+                                "level": 7
+                            }, {
+                                "title": "Weedle",
+                                "level": 7
+                            }]
+                        },
                         { "thing": "ForestDirt", "x": 104, "y": 156 },
                         { "thing": "ForestDirt", "x": 216, "y": 156 },
                         { "thing": "PlantLarge", "x": 80, "y": 160, "width": 112, "height": 32 },
@@ -948,15 +988,18 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantLarge", "x": 160, "y": 256, "width": 32, "height": 64 },
                         { "thing": "Grass", "x": 200, "y": 256, "height": 80 },
                         {
-                            "thing": "BugCatcher", "x": 232, "y": 264, "name": "Trainer One", "direction": 3, "sight": 4, "trainer": true, "reward": 60, "dialog": "Hey! You have %%%%%%%POKEMON%%%%%%%! Come on! Let's battle' em!", "actors": [
-                            {
+                            "thing": "BugCatcher", "x": 232, "y": 264, "name": "Trainer One", "direction": 3, "sight": 3, "trainer": true, "reward": 60,
+                            "dialog": "Hey! You have %%%%%%%POKEMON%%%%%%%! Come on! Let's battle' em!",
+                            "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
+                            "dialogNext": "Ssh! You'll scare the bugs away!",
+                            "actors": [{
                                 "title": "Weedle",
                                 "level": 6
                             }, {
                                 "title": "Caterpie",
                                 "level": 6
-                            }
-                        ]},
+                            }]
+                        },
                         { "thing": "ForestDirt", "x": 56, "y": 268 },
                         { "thing": "ForestDirt", "x": 248, "y": 268 },
                         { "thing": "Grass", "x": 64, "y": 272, "height": 64 },
