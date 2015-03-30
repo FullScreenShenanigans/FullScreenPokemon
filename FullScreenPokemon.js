@@ -1228,10 +1228,7 @@ var FullScreenPokemon = (function (GameStartr) {
             chosen = thing.EightBitter.chooseRandomWildPokemon(
                 thing.EightBitter, options
             ),
-            chosenPokemon = thing.EightBitter.createPokemon({
-                "title": chosen.title,
-                "level": thing.EightBitter.NumberMaker.randomArrayMember(chosen.levels)
-            }),
+            chosenPokemon = thing.EightBitter.createPokemon(chosen),
             callback = thing.EightBitter.BattleMover.startBattle.bind(
                 thing.EightBitter.BattleMover,
                 {
@@ -1258,6 +1255,8 @@ var FullScreenPokemon = (function (GameStartr) {
         if (thing.shadow) {
             thing.EightBitter.removeClass(thing.shadow, "walking");
         }
+
+        thing.EightBitter.animateCharacterPreventWalking(thing);
 
         thing.EightBitter["cutsceneBattleTransition" + animation](
             thing.EightBitter, {
@@ -1288,9 +1287,7 @@ var FullScreenPokemon = (function (GameStartr) {
                         "hasActors": true,
                         "reward": other.reward,
                         "actors": other.actors.map(
-                            thing.EightBitter.createPokemon.bind(
-                                thing.EightBitter, thing.EightBitter
-                            )
+                            thing.EightBitter.createPokemon.bind(thing.EightBitter)
                         )
                     },
                     "textStart": ["", " wants to fight!"],
@@ -3525,9 +3522,10 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function createPokemon(EightBitter, schema) {
-        var level = typeof schema.levels !== "undefined"
-                ? EightBitter.NumberMaker.randomArrayMember(chosen.levels)
+    function createPokemon(schema) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            level = typeof schema.levels !== "undefined"
+                ? EightBitter.NumberMaker.randomArrayMember(schema.levels)
                 : schema.level,
             pokemon = EightBitter.MathDecider.compute(
                 "newPokemon", schema.title, level 
@@ -3569,7 +3567,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function chooseRandomWildPokemon(EightBitter, options) {
-        var choice = EightBitter.NumberMaker.randomInt(options.length),
+        var choice = EightBitter.NumberMaker.random(),
             sum = 0,
             i;
 
