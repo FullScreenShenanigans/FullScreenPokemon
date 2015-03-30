@@ -26,6 +26,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Gentleman": {},
                 "GlassesOldGuy": {},
                 "Guy": {},
+                "GymGuide": {},
                 "Lady": {},
                 "Lass": {},
                 "LandPokemon": {},
