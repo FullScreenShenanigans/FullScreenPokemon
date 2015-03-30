@@ -2641,6 +2641,17 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function activateThemePlayer(thing, other) {
+        if (thing.EightBitter.AudioPlayer.getTheme() === other.theme) {
+            return;
+        }
+
+        thing.EightBitter.AudioPlayer.play(other.theme);
+    }
+
+    /**
+     * 
+     */
     function activateCutsceneResponder(thing, other) {
         if (!thing.player || !other.alive) {
             return;
@@ -5644,6 +5655,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroFirstDialog(EightBitter, settings) {
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -8932,6 +8944,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Death
         "killNormal": killNormal,
         // Activations
+        "activateThemePlayer": activateThemePlayer,
         "activateCutsceneTriggerer": activateCutsceneTriggerer,
         "activateCutsceneResponder": activateCutsceneResponder,
         "activateMenuTriggerer": activateMenuTriggerer,

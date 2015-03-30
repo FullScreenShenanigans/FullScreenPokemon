@@ -69,6 +69,7 @@ FullScreenPokemon.prototype.settings.objects = {
                     "CutsceneTriggerer": {},
                     "MenuTriggerer": {},
                     "SightDetector": {},
+                    "ThemePlayer": {},
                     "Transporter": {
                         "CaveOpening": {},
                         "Door": {},
@@ -850,6 +851,11 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "SightDetector": {
             "activate": FullScreenPokemon.prototype.activateSightDetector,
+            "requireOverlap": true,
+            "hidden": true
+        },
+        "ThemePlayer": {
+            "activate": FullScreenPokemon.prototype.activateThemePlayer,
             "requireOverlap": true,
             "hidden": true
         },
