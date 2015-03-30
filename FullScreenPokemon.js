@@ -338,35 +338,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * @todo Put the Oak shenanigans in the Intro cutscene
      */
     function gameStartIntro(EightBitter) {
-        var oak = EightBitter.ObjectMaker.make("OakPortrait", {
-            "opacity": .01 // why won't 0 work?
-        });
-
         EightBitter.StatsHolder.clear();
+        EightBitter.ScenePlayer.startCutscene("Intro");
 
-        EightBitter.ModAttacher.fireEvent("onGameStartIntro", oak);
+        EightBitter.ModAttacher.fireEvent("onGameStartIntro");
 
-        // GET THIS STUFF OUTTA HERE
-
-        EightBitter.setMap("Blank", "White");
-        EightBitter.MenuGrapher.deleteActiveMenu();
-
-        EightBitter.addThing(oak);
-        EightBitter.setMidX(oak, EightBitter.MapScreener.middleX);
-        EightBitter.setMidY(oak, EightBitter.MapScreener.middleY);
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.animateFadeAttribute,
-            70,
-            oak,
-            "opacity",
-            .15,
-            1,
-            14,
-            EightBitter.ScenePlayer.bindCutscene("Intro", {
-                "oak": oak
-            })
-        );
     }
 
     /**
@@ -5643,6 +5619,39 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneIntroFadeIn(EightBitter, settings) {
+        var oak = EightBitter.ObjectMaker.make("OakPortrait", {
+            "opacity": 0
+        });
+
+        settings.oak = oak;
+
+        EightBitter.ModAttacher.fireEvent("onIntroFadeIn", oak);
+
+        // GET THIS STUFF OUTTA HERE
+
+        EightBitter.setMap("Blank", "White");
+        EightBitter.MenuGrapher.deleteActiveMenu();
+
+        EightBitter.addThing(oak);
+        EightBitter.setMidX(oak, EightBitter.MapScreener.middleX);
+        EightBitter.setMidY(oak, EightBitter.MapScreener.middleY);
+
+        EightBitter.TimeHandler.addEvent(
+            EightBitter.animateFadeAttribute,
+            70,
+            oak,
+            "opacity",
+            .15,
+            1,
+            14,
+            EightBitter.ScenePlayer.bindRoutine("FirstDialog")
+        );
+    }
+
+    /**
+     * 
+     */
     function cutsceneIntroFirstDialog(EightBitter, settings) {
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
@@ -9035,6 +9044,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutscenePokeMartTryPurchase": cutscenePokeMartTryPurchase,
         "cutscenePokeMartFailPurchase": cutscenePokeMartFailPurchase,
         "cutscenePokeMartContinueShopping": cutscenePokeMartContinueShopping,
+        "cutsceneIntroFadeIn": cutsceneIntroFadeIn,
         "cutsceneIntroFirstDialog": cutsceneIntroFirstDialog,
         "cutsceneIntroFirstDialogFade": cutsceneIntroFirstDialogFade,
         "cutsceneIntroPokemonExpo": cutsceneIntroPokemonExpo,
