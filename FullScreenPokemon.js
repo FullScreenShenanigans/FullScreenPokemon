@@ -1294,6 +1294,9 @@ var FullScreenPokemon = (function (GameStartr) {
                     },
                     "textStart": ["", " wants to fight!"],
                     "textDefeat": other.textDefeat,
+                    "textAfterBattle": other.textAfterBattle,
+                    "giftAfterBattle": other.giftAfterBattle,
+                    "badge": other.badge,
                     "textVictory": other.textVictory,
                     "nextCutscene": other.nextCutscene
                 }
@@ -2022,7 +2025,10 @@ var FullScreenPokemon = (function (GameStartr) {
                 "GeneralText",
                 [
                     "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!"
-                ]
+                ],
+                thing.EightBitter.animateCharacterDialogFinish.bind(
+                    thing, other
+                )
             );
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
@@ -2035,6 +2041,8 @@ var FullScreenPokemon = (function (GameStartr) {
 
             other.gift = undefined;
             thing.EightBitter.StateHolder.addChange(other.id, "gift", undefined);
+            
+            return;
         }
 
         if (other.dialogNext) {
@@ -4585,15 +4593,40 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleVictoryWinnings(EightBitter, settings) {
-        var reward = settings.battleInfo.opponent.reward,
+        var battleInfo = settings.battleInfo,
+            reward = settings.battleInfo.opponent.reward,
+            animationSettings = {
+                "color": "White"
+            },
             callback = EightBitter.BattleMover.closeBattle.bind(
                 EightBitter.BattleMover,
                 EightBitter.animateFadeFromColor.bind(
-                    EightBitter, EightBitter, {
-                        "color": "White"
-                    }
+                    EightBitter, EightBitter, animationSettings
                 )
             );
+
+        if (battleInfo.giftAfterBattle) {
+            // TODO: have a combiner function for items
+            console.warn("Items should have a combiner function...");
+            EightBitter.StatsHolder.get("items").push({
+                "item": battleInfo.giftAfterBattle,
+                "amount": 1
+            });
+        }
+
+        if (battleInfo.badge) {
+            EightBitter.StatsHolder.get("badges")[battleInfo.badge] = true;
+        }
+
+        if (battleInfo.textAfterBattle) {
+            animationSettings.callback = function () {
+                EightBitter.MenuGrapher.createMenu("GeneralText");
+                EightBitter.MenuGrapher.addMenuDialog(
+                    "GeneralText", battleInfo.textAfterBattle
+                );
+                EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+            };
+        }
 
         if (!reward) {
             callback();
@@ -4651,6 +4684,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneBattleComplete(EightBitter, settings) {
+        console.log("Complete!");
         var battleInfo = settings.battleInfo,
             keptThings, thing, i;
 
