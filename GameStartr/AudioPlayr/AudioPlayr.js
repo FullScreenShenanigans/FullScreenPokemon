@@ -59,8 +59,11 @@ function AudioPlayr(settings) {
         // Master lookup table, keyed by trackName.
         directory,
 
-        // The currently playing theme.
+        // The currently playing theme, as a string.
         theme,
+
+        // The actual node playing audio.
+        themeNode,
 
         // Storage container for settings like volume and muted status.
         StatsHolder;
@@ -89,8 +92,9 @@ function AudioPlayr(settings) {
 
         // Initially, the directory is empty, and nothing is playing.
         directory = {};
-        theme = null;
 
+        theme = null;
+        themeNode = null;
         // Decode and ascii-fy all "gbs" library entries.
         decodeAll();
 
@@ -178,6 +182,12 @@ function AudioPlayr(settings) {
      * @example AudioPlayer.play("openingTheme");
      */
     self.play = function (track) {
+
+        // @TODO proper stop function
+        if (themeNode) {
+            themeNode.disconnect();
+            themeNode = null;
+        }
         var payload = library[directory[track].gbs_source].gbs,
             subtune = directory[track].track_num,
             // Required for libgme.js
@@ -227,6 +237,8 @@ function AudioPlayr(settings) {
             node = ctx.createScriptProcessor(bufferSize, inputs, outputs);
         }
 
+        themeNode = node;
+
         node.onaudioprocess = function (e) {
             if (
                 Module.ccall(
@@ -272,14 +284,19 @@ function AudioPlayr(settings) {
         return node;
     }
 
-    /* 
-    self.stop = function (){
-        if (node) {
-            node.disconnect();
-            node = null; 
-        }
+    
+    /**
+     * 
+     */
+
+    self.stop = function () {
+
+        if (themeNode) {
+                themeNode.disconnect();
+                themeNode = null;
+            }
     }   
-    */
+    
 
     /**
      * 
