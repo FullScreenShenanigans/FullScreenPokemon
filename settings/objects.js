@@ -316,6 +316,7 @@ FullScreenPokemon.prototype.settings.objects = {
                             "DragonairFront": {}
                         },
                         "BattleSpriteFrontLarge": {
+                            "JrTrainerFront": {},
                             "VenusaurFront": {},
                             "CharizardFront": {},
                             "BlastoiseFront": {},

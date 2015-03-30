@@ -1272,7 +1272,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function animateTrainerBattleStart(thing, other) {
-        var callback = thing.EightBitter.BattleMover.startBattle.bind(
+        var battleName = other.battleName || other.title,
+            battleSprite = other.battleSprite || battleName,
+            callback = thing.EightBitter.BattleMover.startBattle.bind(
                 thing.EightBitter.BattleMover,
                 {
                     "player": {
@@ -1283,8 +1285,8 @@ var FullScreenPokemon = (function (GameStartr) {
                         "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
                     },
                     "opponent": {
-                        "name": other.battleName || other.title,
-                        "sprite": other.title + "Front",
+                        "name": battleName,
+                        "sprite": battleSprite + "Front",
                         "category": "Trainer",
                         "hasActors": true,
                         "reward": other.reward,
@@ -4090,9 +4092,15 @@ var FullScreenPokemon = (function (GameStartr) {
             });
         };
 
-        EightBitter.ScenePlayer.playRoutine(
-            "Attack" + choice.replace(" ", ""), routineArguments
-        );
+        // @todo: When all moves have been implemented, this will be simplified.
+        if (!EightBitter.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+            console.warn(choice + " attack animation not implemented...");
+            routineArguments.callback();
+        } else {
+            EightBitter.ScenePlayer.playRoutine(
+                "Attack" + choice.replace(" ", ""), routineArguments
+            );
+        }
     }
 
     /**

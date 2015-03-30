@@ -11,7 +11,7 @@ FullScreenPokemon.prototype.settings.math = {
                     "types": constants.pokemon[title].types,
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
-                    "experience": this.compute("experienceStarting", title, level)
+                    "experience": this.compute("newPokemonExperience", title, level)
                 },
                 i;
 
@@ -78,6 +78,16 @@ FullScreenPokemon.prototype.settings.math = {
                 "Speed": 0,
                 "Special": 0
             }
+        },
+        "newPokemonExperience": function (NumberMaker, constants, equations, title, level) {
+            var current = this.compute("experienceStarting", title, level),
+                next = this.compute("experienceStarting", title, level + 1);
+
+            return {
+                "current": current,
+                "next": next,
+                "remaining": next - current
+            };
         },
         // http://bulbapedia.bulbagarden.net/wiki/Individual_values
         // Note: the page mentions rounding errors... 
