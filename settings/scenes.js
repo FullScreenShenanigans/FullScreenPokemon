@@ -75,8 +75,9 @@ FullScreenPokemon.prototype.settings.scenes = {
             }
         },
         "Intro": {
-            "firstRoutine": "FirstDialog",
+            "firstRoutine": "FadeIn",
             "routines": {
+                "FadeIn": FullScreenPokemon.prototype.cutsceneIntroFadeIn,
                 "FirstDialog": FullScreenPokemon.prototype.cutsceneIntroFirstDialog,
                 "FirstDialogFade": FullScreenPokemon.prototype.cutsceneIntroFirstDialogFade,
                 "PokemonExpo": FullScreenPokemon.prototype.cutsceneIntroPokemonExpo,
