@@ -7556,7 +7556,6 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.QuadsKeeper.resetQuadrants();
 
         theme = location.theme || location.area.theme || location.area.map.theme;
-        console.log("oh", theme, location.theme, location.area.theme, location.area.map.theme);
         if (theme) {
             EightBitter.GBSEmulator.play(theme);
         }

@@ -65,6 +65,9 @@ function GBSEmulatr(settings) {
         // The actual node playing audio.
         themeNode,
 
+        // The AudioContext governing audio output
+        context,
+
         // Storage container for settings like volume and muted status.
         StatsHolder;
 
@@ -88,6 +91,7 @@ function GBSEmulatr(settings) {
         }
 
         library = settings.library;
+        context = settings.context || new AudioContext();
         StatsHolder = new StatsHoldr(settings.statistics);
 
         // Initially, the directory is empty, and nothing is playing.
@@ -177,6 +181,13 @@ function GBSEmulatr(settings) {
     };
 
     /**
+     * 
+     */
+    self.getContext = function () {
+        return context;
+    }
+
+    /**
      * Plays a sound or theme, keyed by track name.
      * 
      * @example GBSEmulator.play("openingTheme");
@@ -193,14 +204,13 @@ function GBSEmulatr(settings) {
             subtune = directory[track].track_num,
             // Required for libgme.js
             ref = Module.allocate(1, "i32", Module.ALLOC_STATIC),
-            ctx = new AudioContext(),
             emu, node;
 
         if (Module.ccall(
             "gme_open_data",
             "number",
             ["array", "number", "number", "number"],
-            [payload, payload.length, ref, ctx.sampleRate]
+            [payload, payload.length, ref, context.sampleRate]
         )) {
             throw new Error("GBSEmulatr could not call gme_open_data.");
         }
@@ -214,14 +224,14 @@ function GBSEmulatr(settings) {
 
         // Actually play the track.
         theme = track;
-        node = playSong(ctx, emu);
+        node = playSong(emu);
 
     }
 
     /** 
      * Private function that ACTUALLY plays the song, in user's current context.
      */
-    function playSong(ctx, emu) {
+    function playSong(emu) {
         var bufferSize = 1024 * 16,
             buffer = Module.allocate(
                 bufferSize * 2, "i32", Module.ALLOC_STATIC
@@ -231,11 +241,7 @@ function GBSEmulatr(settings) {
             outputs = 2,
             node, channels, error, temp, i, n;
 
-        if (ctx.createJavaScriptNode) {
-            node = ctx.createJavaScriptNode(bufferSize, inputs, outputs);
-        } else if (!node && ctx.createScriptProcessor) {
-            node = ctx.createScriptProcessor(bufferSize, inputs, outputs);
-        }
+        node = context.createScriptProcessor(bufferSize, inputs, outputs);
 
         themeNode = node;
 
@@ -280,7 +286,7 @@ function GBSEmulatr(settings) {
             }
         }
 
-        node.connect(ctx.destination)
+        node.connect(context.destination)
         return node;
     }
 
@@ -288,15 +294,12 @@ function GBSEmulatr(settings) {
     /**
      * 
      */
-
     self.stop = function () {
-
         if (themeNode) {
-                themeNode.disconnect();
-                themeNode = null;
-            }
-    }   
-    
+            themeNode.disconnect();
+            themeNode = null;
+        }
+    };
 
     /**
      * 

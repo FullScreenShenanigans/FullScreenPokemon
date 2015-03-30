@@ -361,6 +361,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 72, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 96, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 24, "y": 288 },
+                        { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Route 2" },
+                        { "thing": "ThemePlayer", "x": 80, "y": 288, "width": 16, "theme": "Pallet Town" },
                         { "thing": "FenceWide", "x": 144, "y": 288 },
                         { "thing": "AreaSpawner", "y": 288, "width": 160, "map": "Pallet Town", "area": "Land", "direction": 2 }
                     ]
