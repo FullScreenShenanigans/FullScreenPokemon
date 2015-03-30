@@ -63,6 +63,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "CollisionDetector": {
                     "CutsceneTriggerer": {},
                     "MenuTriggerer": {},
+                    "SightDetector": {},
                     "Transporter": {
                         "CaveOpening": {},
                         "Door": {},
@@ -255,9 +256,9 @@ FullScreenPokemon.prototype.settings.objects = {
                             "KabutoFront": {},
                             "DratiniFront": {},
                             "MewFront": {}
-
                         },
                         "BattleSpriteFrontMedium": {
+                            "BugCatcherFront": {},
                             "IvysaurFront": {},
                             "CharmeleonFront": {},
                             "WartortleFront": {},
@@ -755,14 +756,10 @@ FullScreenPokemon.prototype.settings.objects = {
             "direction": 2, // top,right,bottom,left is 0,1,2,3
             "offsetY": FullScreenPokemon.unitsize * -2,
             "roamingDirections": [0, 1, 2, 3],
+            "onThingAdd": FullScreenPokemon.prototype.spawnCharacter,
             "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
             "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking,
             "activate": FullScreenPokemon.prototype.collideCharacterDialog,
-            "attributes": {
-                "roaming": {
-                    "onThingAdd": FullScreenPokemon.prototype.spawnCharacterRoaming
-                }
-            }
         },
         "Buzzer": {
             "width": 3.5,
@@ -839,6 +836,11 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "MenuTriggerer": {
             "activate": FullScreenPokemon.prototype.activateMenuTriggerer
+        },
+        "SightDetector": {
+            "activate": FullScreenPokemon.prototype.activateSightDetector,
+            "requireOverlap": true,
+            "hidden": true
         },
         "Transporter": {
             "activate": FullScreenPokemon.prototype.activateTransporter,

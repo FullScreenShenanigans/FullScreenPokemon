@@ -38,6 +38,14 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "AttackTailWhip": FullScreenPokemon.prototype.cutsceneBattleAttackTailWhip
             }
         },
+        "TrainerSpotted": {
+            "firstRoutine": "Exclamation",
+            "routines": {
+                "Exclamation": FullScreenPokemon.prototype.cutsceneTrainerSpottedExclamation,
+                "Approach": FullScreenPokemon.prototype.cutsceneTrainerSpottedApproach,
+                "Dialog": FullScreenPokemon.prototype.cutsceneTrainerSpottedDialog
+            }
+        },
         "PokeCenter": {
             "firstRoutine": "Welcome",
             "routines": {

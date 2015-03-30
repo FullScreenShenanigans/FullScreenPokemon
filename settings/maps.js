@@ -947,6 +947,16 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Stump", "x": 152, "y": 256, "height": 64 },
                         { "thing": "PlantLarge", "x": 160, "y": 256, "width": 32, "height": 64 },
                         { "thing": "Grass", "x": 200, "y": 256, "height": 80 },
+                        {
+                            "thing": "BugCatcher", "x": 232, "y": 264, "name": "Trainer One", "direction": 3, "sight": 4, "trainer": true, "reward": 60, "dialog": "Hey! You have %%%%%%%POKEMON%%%%%%%! Come on! Let's battle' em!", "actors": [
+                            {
+                                "title": "Weedle",
+                                "level": 6
+                            }, {
+                                "title": "Caterpie",
+                                "level": 6
+                            }
+                        ]},
                         { "thing": "ForestDirt", "x": 56, "y": 268 },
                         { "thing": "ForestDirt", "x": 248, "y": 268 },
                         { "thing": "Grass", "x": 64, "y": 272, "height": 64 },
