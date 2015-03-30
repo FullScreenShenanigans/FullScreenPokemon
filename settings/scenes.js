@@ -175,10 +175,10 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "ReceiveMap": FullScreenPokemon.prototype.cutsceneDaisyTownMapReceiveMap
             }
         },
-        "OldManTraining": {
+        "ElderTraining": {
             "firstRoutine": "StartBattle",
             "routines": {
-                "StartBattle": FullScreenPokemon.prototype.cutsceneOldManTrainingStartBattle
+                "StartBattle": FullScreenPokemon.prototype.cutsceneElderTrainingStartBattle
             }
         },
         "RivalRoute22": {

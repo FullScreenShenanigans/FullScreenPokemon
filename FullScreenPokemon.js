@@ -7116,7 +7116,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function cutsceneOldManTrainingStartBattle(EightBitter, settings) {
+    function cutsceneElderTrainingStartBattle(EightBitter, settings) {
         EightBitter.MapScreener.blockInputs = true;
         EightBitter.cutsceneBattleTransitionFlash(EightBitter, {
             "keptThings": [settings.player, settings.triggerer],
@@ -7125,7 +7125,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 {
                     "player": {
                         "name": "OLD MAN",
-                        "sprite": "OldManBack",
+                        "sprite": "ElderBack",
                         "category": "Wild",
                         "actors": []
                     },
@@ -8999,7 +8999,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneOakParcelDeliveryRivalAccepts": cutsceneOakParcelDeliveryRivalAccepts,
         "cutsceneDaisyTownMapGreeting": cutsceneDaisyTownMapGreeting,
         "cutsceneDaisyTownMapReceiveMap": cutsceneDaisyTownMapReceiveMap,
-        "cutsceneOldManTrainingStartBattle": cutsceneOldManTrainingStartBattle,
+        "cutsceneElderTrainingStartBattle": cutsceneElderTrainingStartBattle,
         "cutsceneRivalRoute22RivalEmerges": cutsceneRivalRoute22RivalEmerges,
         "cutsceneRivalRoute22RivalTalks": cutsceneRivalRoute22RivalTalks,
         // Saving

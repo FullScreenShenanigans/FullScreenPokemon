@@ -430,21 +430,21 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceVertical", "x": 160, "y": 48, "width": 8, "height": 16 },
                         { "thing": "Sign", "x": 216, "y": 56, "dialog": "VIRIDIAN CITY \n %%%%%%%POKEMON%%%%%%% GYM" },
                         { "macro": "House", "x": 160, "y": 64, "door": true, "entrance": "Nicknamer House Front Door", "transport": "Nicknamer House Floor 1 Door" },
-                        { "thing": "OldMan", "x": 240, "y": 64, "name": "GymWatcher", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["This %%%%%%%POKEMON%%%%%%% gym is always closed.", "I wonder who the LEADER is?"] },
+                        { "thing": "Elder", "x": 240, "y": 64, "name": "GymWatcher", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["This %%%%%%%POKEMON%%%%%%% gym is always closed.", "I wonder who the LEADER is?"] },
                         { "thing": "MenuTriggerer", "x": 248, "y": 64, "dialog": "The GYM's doors are locked...", "pushDirection": 2, "pushSteps": [1] },
                         { "thing": "DirtMedium", "x": 224, "y": 64, "width": 48, "height": 16 },
                         { "thing": "Lady", "x": 136, "y": 72, "id": "CrankyGranddaughter", "direction": 1, "directionPreferred": 1, "dialog": "Oh Grandpa! Don't be so mean! \n He hasn't had his coffee yet." },
                         { "thing": "Lady", "x": 136, "y": 72, "id": "HappyGranddaughter", "alive": false, "direction": 1, "directionPreferred": 1, "dialog": "When I go to shop in PEWTER CITY, I have to take the winding trail in VIRIDIAN FOREST." },
-                        { "thing": "OldMan", "x": 144, "y": 72, "id": "CrankyGrandpa", "resting": true, "pushDirection": 2, "pushSteps": [1], "dialog": "You can't go through here! This is private property!" },
+                        { "thing": "Elder", "x": 144, "y": 72, "id": "CrankyGrandpa", "resting": true, "pushDirection": 2, "pushSteps": [1], "dialog": "You can't go through here! This is private property!" },
                         {
-                            "thing": "OldMan", "x": 144, "y": 40, "id": "HappyGrandpa", "alive": false, "roaming": true, "roamingDirections": [1, 3], "dialog": ["Ahh, I've had my coffee now and I feel great!", "Sure you can go through.", "Are you in a hurry?"], "dialogOptions":
+                            "thing": "Elder", "x": 144, "y": 40, "id": "HappyGrandpa", "alive": false, "roaming": true, "roamingDirections": [1, 3], "dialog": ["Ahh, I've had my coffee now and I feel great!", "Sure you can go through.", "Are you in a hurry?"], "dialogOptions":
                             {
                                 "type": "Yes/No",
                                 "options": {
                                     "Yes": "Time is money... Go along then.",
                                     "No": {
                                         "words": ["I see you're using a %%%%%%%POKEDEX%%%%%%%.", "When you catch a %%%%%%%POKEMON%%%%%%%, %%%%%%%POKEDEX%%%%%%% is automatically updated.", "What? Don't you know how to catch %%%%%%%POKEMON%%%%%%%?", "I'll show you how to then."],
-                                        "cutscene": "OldManTraining"
+                                        "cutscene": "ElderTraining"
                                     }
                                 }
                             }
@@ -716,9 +716,12 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 2",
-            "locationDefault": "Viridian Forest",
+            "locationDefault": "Viridian Forest Bottom",
             "locations": {
-                "Viridian Forest": {
+                "Viridian Forest Top": {
+                    "area": "Land"
+                },
+                "Viridian Forest Bottom": {
                     "area": "Land"
                 }
             },
@@ -758,6 +761,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 144, "y": 100, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "PlantSmall", "x": 48, "y": 104 },
                         { "thing": "Sign", "x": 120, "y": 104 },
+                        { "thing": "HiddenTransporter", "x": 56, "y": 104, "directionRequired": 2, "entrance": "Viridian Forest Top", "transport": { "map": "Viridian Forest", "location": "Gate North Door North" } },
                         { "macro": "Building", "x": 48, "y": 112, "door": true },
                         { "thing": "DirtLight", "x": 144, "y": 112, "width": 48, "height": 16 },
                         { "thing": "DirtMedium", "x": 112, "y": 128, "width": 64, "height": 16 },
@@ -800,7 +804,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "y": 328 },
                         { "thing": "PlantSmall", "x": 64, "y": 328 },
                         { "thing": "PlantSmall", "x": 112, "y": 328, "width": 32, "height": 40 },
-                        { "macro": "Building", "x": 48, "y": 336, "width": 32, "height": 32, "door": true, "entrance": "Viridian Forest", "transport": { "map": "Viridian Forest", "location": "Gate South Door South" } },
+                        { "macro": "Building", "x": 48, "y": 336, "width": 32, "height": 32, "door": true, "entrance": "Viridian Forest Bottom", "transport": { "map": "Viridian Forest", "location": "Gate South Door South" } },
                         { "thing": "FenceWide", "x": 32, "y": 360, "width": 16 },
                         { "thing": "FenceWide", "x": 80, "y": 360, "width": 32 },
                         { "thing": "Ledge", "x": 144, "y": 364, "crumbleRight": true },
@@ -880,11 +884,6 @@ FullScreenPokemon.prototype.settings.maps = {
                     "area": "Gate North",
                     "direction": 0
                 },
-                "Forest Top": {
-                    "area": "Forest",
-                    "xloc": 8,
-                    "direction": 2
-                },
                 "Forest Bottom": {
                     "area": "Forest",
                     "xloc": 136,
@@ -905,17 +904,18 @@ FullScreenPokemon.prototype.settings.maps = {
                     "height": 64,
                     "invisibleWallBorders": true,
                     "creation": [
-                        { "thing": "Guy", "x": 24, "y": 16, "roaming": true, "roamingDirections": [] },
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
                         { "thing": "InvisibleWall", "width": 40 },
-                        { "thing": "Door", "x": 40, "indoor": true, "transport": "Forest Top", "entrance": "Gate North Door North" },
+                        { "thing": "Door", "x": 40, "indoor": true, "transport": { "map": "Route 2", "location": "Viridian Forest Top" }, "entrance": "Gate North Door North" },
                         { "thing": "WallIndoorFancyWithDarkBottom", "x": 48, "width": 32 },
                         { "thing": "InvisibleWall", "x": 48, "width": 32 },
                         { "thing": "FloorCheckered", "y": 8, "width": 80, "height": 56 },
                         { "thing": "PottedPalmTree", "y": 16, "height": 48 },
+                        { "thing": "Guy", "x": 24, "y": 16, "roaming": true, "roamingDirections": [], "dialog": ["Many %%%%%%%POKEMON%%%%%%% live only in forests and caves.", "You need to look everywhere to get different kinds!"] },
                         { "thing": "Table1x2", "x": 48, "y": 16 },
                         { "thing": "Table1x2", "x": 64, "y": 16 },
                         { "thing": "PottedPalmTree", "x": 72, "y": 16, "height": 48 },
+                        { "thing": "OldMan", "x": 16, "y": 40, "roaming": true, "roamingDirections": [], "dialog": ["Have you noticed the bushes on the roadside?", "They can be cut down by a special %%%%%%%POKEMON%%%%%%% move."] },
                         { "thing": "Table1x2", "x": 48, "y": 40 },
                         { "thing": "Table1x2", "x": 64, "y": 40 },
                         { "thing": "Doormat", "x": 32, "y": 56, "width": 16, "entrance": "Gate North Door South" },

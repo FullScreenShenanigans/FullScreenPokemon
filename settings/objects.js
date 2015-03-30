@@ -19,6 +19,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "Dad": {},
                 "Daisy": {},
                 "DeskWoman": {},
+                "Elder": {},
                 "Fatty": {},
                 "Girl": {},
                 "Gentleman": {},
@@ -368,7 +369,7 @@ FullScreenPokemon.prototype.settings.objects = {
                         }
                     },
                     "BattleSpriteBack": {
-                        "OldManBack": {},
+                        "ElderBack": {},
                         "PlayerBack": {},
                         "BulbasaurBack": {},
                         "IvysaurBack": {},
@@ -772,7 +773,7 @@ FullScreenPokemon.prototype.settings.objects = {
                 "sitting": {}
             }
         },
-        "OldMan": {
+        "Elder": {
             "attributes": {
                 "resting": {}
             }
@@ -1063,7 +1064,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "scale": 2,
             "repeat": false
         },
-        "OldManBack": [14, 14],
+        "ElderBack": [14, 14],
         "PlayerBack": [14, 14],
         "Terrain": {
             "groupType": "Terrain",
