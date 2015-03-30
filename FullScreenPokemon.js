@@ -5637,6 +5637,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         settings.oak = oak;
 
+        EightBitter.AudioPlayer.play("Introduction");
         EightBitter.ModAttacher.fireEvent("onIntroFadeIn", oak);
 
         // GET THIS STUFF OUTTA HERE
