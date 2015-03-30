@@ -798,7 +798,7 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
-        player.EightBitter.AudioPlayer.toggleMuted();
+        player.EightBitter.GBSEmulater.toggleMuted();
         player.EightBitter.ModAttacher.fireEvent("onKeyDownMute");
 
         if (event && event.preventDefault) {
@@ -2618,11 +2618,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function activateThemePlayer(thing, other) {
-        if (thing.EightBitter.AudioPlayer.getTheme() === other.theme) {
+        if (thing.EightBitter.GBSEmulater.getTheme() === other.theme) {
             return;
         }
 
-        thing.EightBitter.AudioPlayer.play(other.theme);
+        thing.EightBitter.GBSEmulater.play(other.theme);
     }
 
     /**
@@ -5637,7 +5637,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         settings.oak = oak;
 
-        EightBitter.AudioPlayer.play("Introduction");
+        EightBitter.GBSEmulater.play("Introduction");
         EightBitter.ModAttacher.fireEvent("onIntroFadeIn", oak);
 
         // GET THIS STUFF OUTTA HERE
@@ -7552,7 +7552,7 @@ var FullScreenPokemon = (function (GameStartr) {
             location.area.map.name + "::" + location.area.name
         );
 
-        EightBitter.AudioPlayer.clearAll();
+        EightBitter.GBSEmulater.clearAll();
         EightBitter.QuadsKeeper.resetQuadrants();
 
         if (!noEntrance) {

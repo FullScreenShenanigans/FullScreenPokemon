@@ -45,7 +45,7 @@ var GameStartr = (function (EightBittr) {
             "customs": customs,
             "requirements": {
                 "global": {
-                    "AudioPlayr": "src/AudioPlayr/AudioPlayr.js",
+                    "GBSEmulatr": "src/GBSEmulatr/GBSEmulatr.js",
                     "ChangeLinr": "src/ChangeLinr/ChangeLinr.js",
                     "FPSAnalyzr": "src/FPSAnalyzr/FPSAnalyzr.js",
                     "GamesRunnr": "src/GamesRunnr/GamesRunnr.js",
@@ -81,7 +81,7 @@ var GameStartr = (function (EightBittr) {
         "resetObjectMaker",
         "resetPixelRender",
         "resetTimeHandler",
-        "resetAudioPlayer",
+        "resetGBSEmulater",
         "resetQuadsKeeper",
         "resetGamesRunner",
         "resetStatsHolder",
@@ -228,15 +228,15 @@ var GameStartr = (function (EightBittr) {
     }
 
     /**
-     * Sets self.AudioPlayer.
+     * Sets self.GBSEmulater.
      * 
      * @param {EightBittr} EightBitter
      * @param {Object} [customs]
-     * @remarks Requirement(s): AudioPlayr (src/AudioPlayr/AudioPlayr.js)
+     * @remarks Requirement(s): GBSEmulatr (src/GBSEmulatr/GBSEmulatr.js)
      *                          audio.js (settings/audio.js)
      */
-    function resetAudioPlayer(EightBitter, customs) {
-        EightBitter.AudioPlayer = new AudioPlayr(proliferate({
+    function resetGBSEmulater(EightBitter, customs) {
+        EightBitter.GBSEmulater = new GBSEmulatr(proliferate({
             "statistics": {
                 "proliferate": EightBitter.proliferate
             }
@@ -1468,7 +1468,7 @@ var GameStartr = (function (EightBittr) {
         "resetQuadsKeeper": resetQuadsKeeper,
         "resetPixelRender": resetPixelRender,
         "resetTimeHandler": resetTimeHandler,
-        "resetAudioPlayer": resetAudioPlayer,
+        "resetGBSEmulater": resetGBSEmulater,
         "resetGamesRunner": resetGamesRunner,
         "resetStatsHolder": resetStatsHolder,
         "resetGroupHolder": resetGroupHolder,

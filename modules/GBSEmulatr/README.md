@@ -1,4 +1,4 @@
-# AudioPlayr
+# GBSEmulatr
 
 An audio library to automate preloading and controlled playback of multiple audio 
 tracks, with support for different sources and fileTypes. 
@@ -24,12 +24,12 @@ To view the javascript port yourself, check out GameStartr/libgme.js
 
 #### Important Member Variables
 
-* **library** *`Object<String, Object>`* - The listing of audio sources, 
+* **library** *`Object<Object>`* - The listing of audio sources, 
 keyed by name. Each audio source has a "gbs" attribute containing the 
 stringified base64 encoded gbs file, and a "tracks" object, which maps
 trackName to trackNumber.
 
-* **directory** *`Object<String, Object>`* - The listing of all available
+* **directory** *`Object<Object>`* - The listing of all available
 tracks, keyed by name. Each track has a "gbs_source" attribute, representing 
 where to find it in the library, and a "track_num" attribute. 
 

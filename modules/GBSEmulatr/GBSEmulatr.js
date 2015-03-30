@@ -1,5 +1,5 @@
 /**
- * AudioPlayr.js
+ * GBSEmulatr.js
  * 
  * An audio library to automate loading and controlled playback of Gameboy audio
  * tracks via the ASM module. 
@@ -20,7 +20,7 @@
 //           In audio.js the gbs data will be stored as a base64 encoded string. Later on, however, we'll
 //           decode that and ascii-fy each character to play nicely with the player. 
 
-//           then, audioPlayr can interpret 
+//           then, GBSEmulatr can interpret 
 
 //                   play("ThemeViridianCity") 
 
@@ -46,10 +46,10 @@
 //           I'll scrape them from somewhere online and include them in audio.js.
 
 
-function AudioPlayr(settings) {
+function GBSEmulatr(settings) {
     "use strict";
     if (!this || this === window) {
-        return new AudioPlayr(settings);
+        return new GBSEmulatr(settings);
     }
     var self = this,
 
@@ -69,7 +69,7 @@ function AudioPlayr(settings) {
         StatsHolder;
 
     /**
-     * Resets the AudioPlayr.
+     * Resets the GBSEmulatr.
      * 
      * @constructor
      * @param {Object} library   Tracklists and encoded contents of any sound 
@@ -80,11 +80,11 @@ function AudioPlayr(settings) {
      */
     self.reset = function (settings) {
         if (typeof settings.library === "undefined") {
-            throw new Error("No library given to AudioPlayr.");
+            throw new Error("No library given to GBSEmulatr.");
         }
 
         if (typeof settings.statistics === "undefined") {
-            throw new Error("No statistics given to AudioPlayr.");
+            throw new Error("No statistics given to GBSEmulatr.");
         }
 
         library = settings.library;
@@ -179,7 +179,7 @@ function AudioPlayr(settings) {
     /**
      * Plays a sound or theme, keyed by track name.
      * 
-     * @example AudioPlayer.play("openingTheme");
+     * @example GBSEmulater.play("openingTheme");
      */
     self.play = function (track) {
         // @TODO proper stop function
@@ -202,7 +202,7 @@ function AudioPlayr(settings) {
             ["array", "number", "number", "number"],
             [payload, payload.length, ref, ctx.sampleRate]
         )) {
-            throw new Error("AudioPlayr could not call gme_open_data.");
+            throw new Error("GBSEmulatr could not call gme_open_data.");
         }
 
         // Determine the type of emulator to use to play this payload.
@@ -246,7 +246,7 @@ function AudioPlayr(settings) {
                 ) == 1
             ) {
                 // Can put any 'end-of-song' event handlers here, once 
-                // AudioPlayr is more fleshed out.
+                // GBSEmulatr is more fleshed out.
                 node.disconnect();
                 theme = null;
                 return;
