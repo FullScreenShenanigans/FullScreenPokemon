@@ -1109,6 +1109,9 @@ FullScreenPokemon.prototype.settings.maps = {
             "name": "Pewter City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
+                "Museum of Science Outside Door": {
+                    "area": "Land"
+                },
                 "PokeCenter Outside Door": {
                     "area": "Land"
                 },
@@ -1121,11 +1124,21 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Info House Front Door": {
                     "area": "Land"
                 },
+                "Museum of Science Inside Door": {
+                    "area": "Museum of Science"
+                },
                 "PokeCenter Inside Door": {
-                    "area": "PokeCenter"
+                    "area": "PokeCenter",
+                    "direction": 0
                 },
                 "PokeMart Inside Door": {
-                    "area": "PokeMart"
+                    "area": "PokeMart",
+                    "direction": 0
+                },
+                "Museum of Science Floor 1 Door": {
+                    "area": "Museum of Science",
+                    "yloc": 8,
+                    "direction": 0
                 },
                 "Outsider House Floor 1 Door": {
                     "area": "Outsider House",
@@ -1158,7 +1171,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 48, "y": 20, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 240, "y": 20, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "PlantSmall", "x": 192, "y": 24, "width": 32 },
-                        { "macro": "HouseLarge", "x": 80, "y": 32, "width": 64, "stories": 2, "door": true, "doorOffset": 32 },
+                        { "macro": "HouseLarge", "x": 80, "y": 32, "width": 64, "stories": 2, "door": true, "doorOffset": 32, "entrance": "Museum of Science Outside Door", "transport": { "map": "Pewter City", "location": "Museum of Science Floor 1 Door" } },
                         { "thing": "Tree", "x": 208, "y": 32 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 48, "y": 36, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 240, "y": 36, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
@@ -1177,7 +1190,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 64, "xnum": 10, "ynum": 2 },
                         { "thing": "DirtLight", "x": 112, "y": 64, "width": 16, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 128, "y": 64, "xnum": 4, "ynum": 2 },
-                        { "thing": "Sign", "x": 120, "y": 72, "dialog": "PEWTER MUSEUM OF SCIENCE"  },
+                        { "thing": "Sign", "x": 120, "y": 72, "dialog": "PEWTER MUSEUM OF SCIENCE" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 80, "xnum": 2, "ynum": 22 },
                         { "thing": "DirtMedium", "x": 48, "y": 80, "width": 96, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 80, "xnum": 16, "ynum": 2 },
@@ -1248,7 +1261,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 240, "y": 192, "height": 48 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 128, "y": 196, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 176, "y": 196, "xnum": 16, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                        { "thing": "CoolTrainerM", "x": 136, "y": 200, "name": "SeriousTrainer", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["There aren't many serious %%%%%%%POKEMON%%%%%%% trainers here!", "They're all like BUG CATCHERs, but PEWTER GYM's BROCK is totally into it!"]  },
+                        { "thing": "CoolTrainerM", "x": 136, "y": 200, "name": "SeriousTrainer", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["There aren't many serious %%%%%%%POKEMON%%%%%%% trainers here!", "They're all like BUG CATCHERs, but PEWTER GYM's BROCK is totally into it!"] },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 48, "y": 208, "xnum": 14, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 272, "y": 208, "width": 48, "height": 48 },
                         { "thing": "FenceWide", "x": 280, "y": 208, "height": 48 },
@@ -1275,6 +1288,15 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 208, "y": 256, "width": 80 },
                         { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
                         { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
+                    ]
+                },
+                "Museum of Science": {
+                    "width": 8,
+                    "height": 16,
+                    "invisibleWallBorders": true,
+                    "creation": [
+                        { "thing": "FloorCheckered", "width": 8, "height": 16 },
+                        { "thing": "Scientist", "dialog": "Apologies, the Pewter Museum of Science is closed in this release of Full Screen %%%%%%%POKEMON%%%%%%%. Try again later!", "transport": { "map": "Pewter City", "location": "Museum of Science Outside Door" } }
                     ]
                 },
                 "PokeCenter": {

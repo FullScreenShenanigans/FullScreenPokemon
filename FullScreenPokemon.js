@@ -2002,6 +2002,12 @@ var FullScreenPokemon = (function (GameStartr) {
             );
         }
 
+        if (other.transport) {
+            other.active = true;
+            thing.EightBitter.activateTransporter(thing, other);
+            return;
+        }
+        
         if (typeof other.pushDirection !== "undefined") {
             thing.EightBitter.animateCharacterStartTurning(
                 thing, other.pushDirection, onStop
