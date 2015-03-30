@@ -2452,43 +2452,28 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function collidePokeball(thing, other) {
-        switch (other.action) {
-            case "cutscene":
-                thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
-                    "player": thing,
-                    "triggerer": other
-                });
-                if (other.routine) {
-                    thing.EightBitter.ScenePlayer.playRoutine(other.routine);
-                }
-
-                break;
-            case "pokedex":
-                thing.EightBitter.openPokedexListing(other.pokemon);
-                break;
-            case "dialog":
-                thing.EightBitter.MenuGrapher.createMenu("GeneralText");
-                thing.EightBitter.MenuGrapher.addMenuDialog(
-                    "GeneralText", other.dialog
+        thing.EightBitter.MenuGrapher.createMenu("GeneralText");
+        thing.EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
+            ],
+            function () {
+                thing.EightBitter.MenuGrapher.deleteActiveMenu();
+                thing.EightBitter.killNormal(other);
+                thing.EightBitter.StateHolder.addChange(
+                    other.id, "alive", false
                 );
-                thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-                break;
-            case "yes/no":
-                thing.EightBitter.MenuGrapher.createMenu("Yes/No", {
-                    "killOnB": ["GeneralText"],
-                });
-                thing.EightBitter.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [{
-                        "text": "YES",
-                        "callback": console.log.bind(console, "What do, yes?")
-                    }, {
-                        "text": "NO",
-                        "callback": console.log.bind(console, "What do, no?")
-                    }]
-                });
-                thing.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
-                break;
-        }
+            }
+        );
+        thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        // TODO: Collapser for items
+        console.warn("Should have collapser for items...");
+        thing.EightBitter.StatsHolder.get("items").push({
+            "item": other.item,
+            "amount": other.amount || 1
+        });
     }
 
     /**
@@ -3528,7 +3513,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 ? EightBitter.NumberMaker.randomArrayMember(schema.levels)
                 : schema.level,
             pokemon = EightBitter.MathDecider.compute(
-                "newPokemon", schema.title, level 
+                "newPokemon", schema.title, level
             );
 
         if (schema.moves) {
