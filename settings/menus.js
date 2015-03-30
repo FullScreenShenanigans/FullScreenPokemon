@@ -73,7 +73,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": 60
                 }
             },
-            "onDelete": FullScreenPokemon.prototype.closePauseMenu,
+            "onMenuDelete": FullScreenPokemon.prototype.closePauseMenu,
             "textXOffset": 8,
             "textYOffset": 8,
             "textPaddingY": 7.75
@@ -727,6 +727,133 @@ FullScreenPokemon.prototype.settings.menus = {
             "textXOffset": 8,
             "textYOffset": 3.5
         },
+        "Heal/Cancel": {
+            "size": {
+                "width": 36,
+                "height": 24
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 22,
+                    "top": 14
+                }
+            },
+            "arrowXOffset": 1,
+            "textXOffset": 8,
+        },
+        "Buy/Sell": {
+            "size": {
+                "width": 44,
+                "height": 28
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": -18,
+                    "top": -10
+                }
+            },
+            "textXOffset": 8,
+            "textYOffset": 4
+        },
+        "Money": {
+            "size": {
+                "width": 36,
+                "height": 12
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 22,
+                    "top": -18
+                }
+            },
+            "childrenSchemas": [{
+                "type": "thing",
+                "thing": "WhiteSquare",
+                "size": {
+                    "width": 20,
+                    "height": 3.5
+                },
+                "position": {
+                    "vertical": "top",
+                    "horizontal": "right",
+                    "offset": {
+                        "left": -8
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": ["MONEY"],
+                "position": {
+                    "offset": {
+                        "left": 8,
+                        "top": -.25
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": [{
+                    "command": "padLeft",
+                    "length": "%%%%%%%MONEY%%%%%%%",
+                    "word": "$"
+                }],
+                "position": {
+                    "offset": {
+                        "top": 4
+                    }
+                }
+            }, {
+                "type": "text",
+                "words": [{
+                    "command": "padLeft",
+                    "length": 8,
+                    "word": "%%%%%%%MONEY%%%%%%%"
+                }],
+                "position": {
+                    "offset": {
+                        "top": 4
+                    }
+                }
+            }],
+            "textSpeed": 0
+        },
+        "ShopItems": {
+            "size": {
+                "width": 64,
+                "height": 44
+            },
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 8,
+                    "top": 6
+                }
+            },
+            "textXOffset": 8,
+            "scrollingItems": 4
+        },
+        "ShopItemsAmount": {
+            "size": {
+                "width": 52,
+                "height": 12
+            },
+            "position": {
+                "horizontal": "right",
+                "vertical": "bottom",
+                "offset": {
+                    "top": -4
+                }
+            },
+            "container": "ShopItems",
+            "backMenu": "ShopItems",
+            "textSpeed": 0
+        },
         "Battle": {
             "size": {
                 "width": 80,
@@ -1156,6 +1283,21 @@ FullScreenPokemon.prototype.settings.menus = {
             "textYOffset": 3.5,
             "textPaddingY": 4,
             "arrowXOffset": 1
+        },
+        "LevelUpStats": {
+            "size": {
+                "width": 44,
+                "height": 40
+            },
+            "position": {
+
+            },
+            "textSpeed": 0,
+            "textXOffset": 8,
+            "textYOffset": 4,
+            "textPaddingY": 4,
+            //"textStartingX": "right",
+            //"textWidthMultiplier": -1
         },
         "NameOptions": {
             "size": {

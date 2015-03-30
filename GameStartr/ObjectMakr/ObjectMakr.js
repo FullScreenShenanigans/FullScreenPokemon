@@ -9,6 +9,7 @@
  * @example
  * // Creating and using an ObjectMakr to generate a shape class hierarchy.
  * var ObjectMaker = new ObjectMakr({
+ *     "giveFunctionsNames": true,
  *     "inheritance": {
  *         "Circle": {},
  *         "Rectangle": {
@@ -30,13 +31,14 @@
  *     }
  * });
  * console.log(ObjectMaker.make("Square")); // Square {constructor: function... 
- * console.log(ObjectMaker.make("Square").area); // "width ^ 2
+ * console.log(ObjectMaker.make("Square").area); // "width ^ 2"
  * console.log(ObjectMaker.getFunction("Square")); // function Square() {}
  * 
  * @example
  * // Creating and using an ObjectMakr to generate a shape class hierarchy using 
  * // an index mapping.
  * var ObjectMaker = new ObjectMakr({
+ *     "giveFunctionsNames": true,
  *     "indexMap": ["perimeter", "area"],
  *     "inheritance": {
  *         "Circle": {},
@@ -62,18 +64,18 @@ function ObjectMakr(settings) {
     }
     var self = this,
 
-        // The sketch of classes inheritance, keyed by name.
+        // The sketch of class inheritance, keyed by name.
         inheritance,
 
-        // An associative array of type properties, as "name" => {properties}.
+        // Type properties for each Function, as "name" => {properties}.
         properties,
 
         // Stored keys for the functions to be made.
         functions,
-        
-        // Whether a full property mapping should be made for each type
+
+        // Whether a full property mapping should be made for each type.
         doPropertiesFull,
-        
+
         // If doPropertiesFull, a version of properties that contains the sum
         // properties for each type (rather than missing inherited attributes).
         propertiesFull,
@@ -81,25 +83,47 @@ function ObjectMakr(settings) {
         // Optionally, how properties can be mapped from an array to an object.
         indexMap,
 
-        // Optionally, an index of a function to be run when an object is made.
+        // Optionally, whether Functions should have their own names (requires
+        // internal usage of eval).
+        giveFunctionsNames,
+
+        // Optionally, a String index for each generated Objects' Function to be
+        // run when made.
         onMake;
 
     /**
+     * Resets the ObjectMakr.
      * 
+     * @constructor
+     * 
+     * @param {Object} inheritance   The sketch of class inheritance, keyed by
+     *                               name.
+     * @param {Object} properties   Type properties for each Function.
+     * @param {Boolean} [doPropertiesFull]   Whether a full property mapping
+     *                                       should be made for each type (by
+     *                                       default, false).
+     * @param {Boolean} [giveFunctionsName]   Whether Functions should have 
+     *                                        their own names (by defualt, 
+     *                                        false).
+     * @param {Object} [indexMap]   Alternative aliases for properties as 
+     *                              shorthand.
+     * @param {String} [onMake]   A String index for each generated Object's
+     *                            Function to be run when made.
      */
     self.reset = function (settings) {
-        inheritance = settings.inheritance;
-        properties = settings.properties || {};
-        indexMap = settings.indexMap;
-        onMake = settings.onMake;
-        doPropertiesFull = settings.doPropertiesFull;
-        
-        if (!inheritance) {
+        if (typeof settings.inheritance === "undefined") {
             throw new Error("No inheritance mapping given to ObjectMakr.");
         }
 
+        inheritance = settings.inheritance;
+        properties = settings.properties || {};
+        doPropertiesFull = settings.doPropertiesFull;
+        indexMap = settings.indexMap;
+        onMake = settings.onMake;
+        giveFunctionsNames = settings.giveFunctionsNames;
+
         functions = {};
-        
+
         if (doPropertiesFull) {
             propertiesFull = {};
         }
@@ -110,11 +134,11 @@ function ObjectMakr(settings) {
 
         processFunctions(inheritance, Object);
     };
-    
-    
+
+
     /* Simple gets
     */
-    
+
 
     /**
      * @return {Object} The complete inheritance mapping Object.
@@ -143,7 +167,7 @@ function ObjectMakr(settings) {
     self.getFullProperties = function () {
         return propertiesFull;
     };
-    
+
     /**
      * @return {Object} The full properties Object for a particular class, if
      *                  doPropertiesFull is on.
@@ -151,7 +175,7 @@ function ObjectMakr(settings) {
     self.getFullPropertiesOf = function (title) {
         return doPropertiesFull ? propertiesFull[title] : undefined;
     };
-    
+
     /**
      * @return {Object} The full mapping of class constructors.
      */
@@ -195,7 +219,7 @@ function ObjectMakr(settings) {
         if (!functions.hasOwnProperty(type)) {
             throw new Error("Unknown type given to ObjectMakr: " + type);
         }
-        
+
         // Create the new object, copying any given settings
         output = new functions[type]();
         if (settings) {
@@ -271,8 +295,8 @@ function ObjectMakr(settings) {
      *                        for children that inherit from these functions
      * @param {Function} parent   The parent function of the functions about to
      *                            be made
-     * @remarks This uses eval which is evil and almost never a good idea, but
-     *          here it's the only way to make functions with dynamic names.
+     * @remarks This may use eval, which is evil and almost never a good idea, 
+     *          but here it's the only way to make functions with dynamic names.
      */
     function processFunctions(base, parent, parentName) {
         var name, ref;
@@ -285,7 +309,11 @@ function ObjectMakr(settings) {
 
                 // Eval is evil, you should *almost* never use it!
                 // cleanFunctionName(name) ensures this is "safe", though slow.
-                eval("functions[name] = function " + name + "() {};");
+                if (giveFunctionsNames) {
+                    eval("functions[name] = function " + name + "() {};");
+                } else {
+                    functions[name] = function () { };
+                }
 
                 // This sets the function as inheriting from the parent
                 functions[name].prototype = new parent();
@@ -297,21 +325,21 @@ function ObjectMakr(settings) {
                         functions[name].prototype[ref] = properties[name][ref];
                     }
                 }
-                
+
                 // If the entire property tree is being mapped, copy everything
                 // from both this and its parent to its equivalent
                 if (doPropertiesFull) {
                     propertiesFull[name] = {};
-                    
+
                     if (parentName) {
                         for (ref in propertiesFull[parentName]) {
                             if (propertiesFull[parentName].hasOwnProperty(ref)) {
-                                propertiesFull[name][ref] 
+                                propertiesFull[name][ref]
                                     = propertiesFull[parentName][ref];
                             }
                         }
                     }
-                    
+
                     for (ref in properties[name]) {
                         if (properties[name].hasOwnProperty(ref)) {
                             propertiesFull[name][ref] = properties[name][ref];
@@ -339,7 +367,7 @@ function ObjectMakr(settings) {
      *          names, like those starting with numbers, are not filtered out). 
      */
     function cleanFunctionName(str) {
-        return str.replace(/[^\w]/g, '');
+        return str.replace(/[^\w$]/g, '');
     }
 
     /**
@@ -355,7 +383,9 @@ function ObjectMakr(settings) {
         // For each attribute of the donor
         for (i in donor) {
             // If noOverride is specified, don't override if it already exists
-            if (noOverride && recipient.hasOwnProperty(i)) continue;
+            if (noOverride && recipient.hasOwnProperty(i)) {
+                continue;
+            }
 
             // If it's an object, recurse on a new version of it
             setting = donor[i];
@@ -365,14 +395,14 @@ function ObjectMakr(settings) {
                 }
                 proliferate(recipient[i], setting, noOverride);
             }
-            // Regular primitives are easy to copy otherwise
+                // Regular primitives are easy to copy otherwise
             else {
                 recipient[i] = setting;
             }
         }
         return recipient;
     }
-    
+
 
     self.reset(settings || {});
 }

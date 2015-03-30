@@ -63,6 +63,30 @@ function MenuGraphr(settings) {
         return menus[name];
     };
 
+    /**
+     * 
+     */
+    self.getExistingMenu = function (name) {
+        if (!menus[name]) {
+            throw new Error("'" + menu + "' menu does not exist.");
+        }
+        return menus[name];
+    };
+
+    /**
+     * 
+     */
+    self.getAliases = function () {
+        return aliases;
+    };
+
+    /**
+     * 
+     */
+    self.getReplacements = function () {
+        return replacements;
+    };
+
 
     /* Menu positioning
     */
@@ -131,7 +155,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.createMenuWord = function (name, schema) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             container = EightBitter.ObjectMaker.make("Menu");
 
         self.positionItem(container, schema.size, schema.position, menu, true);
@@ -144,7 +168,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.createMenuThing = function (name, schema) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             thing = EightBitter.ObjectMaker.make(schema.thing, schema.args);
 
         self.positionItem(thing, schema.size, schema.position, menu);
@@ -215,8 +239,8 @@ function MenuGraphr(settings) {
         EightBitter.killNormal(child);
         self.deleteMenuChildren(name);
 
-        if (child.onDelete) {
-            child.onDelete.call(EightBitter);
+        if (child.onMenuDelete) {
+            child.onMenuDelete.call(EightBitter);
         }
 
         if (child.children) {
@@ -320,7 +344,9 @@ function MenuGraphr(settings) {
      * 
      */
     self.addMenuDialog = function (name, dialog, onCompletion) {
-        if (dialog.constructor === String) {
+        if (!dialog) {
+            dialog = [""];
+        } else if (dialog.constructor === String) {
             dialog = [dialog];
         }
 
@@ -344,7 +370,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.addMenuText = function (name, words, onCompletion) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             x = EightBitter.getMidX(menu), // - menu.textAreaWidth / 2,
             y = menu.top + menu.textYOffset * EightBitter.unitsize;
 
@@ -375,9 +401,10 @@ function MenuGraphr(settings) {
      *       all children, although apostrophes are tiny.
      */
     self.addMenuWord = function (name, words, i, x, y, onCompletion) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             word = self.filterWord(words[i]),
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
+            things = [],
             textWidth, textHeight, textPaddingX, textPaddingY, textSpeed,
             textWidthMultiplier,
             title, character, j;
@@ -413,11 +440,23 @@ function MenuGraphr(settings) {
         textWidthMultiplier = menu.textWidthMultiplier || 1;
         
         if (word.constructor === Object && word.command) {
+            title = self.filterWord(getCharacterEquivalent(word.word));
+
             switch (word.command) {
                 case "padLeft":
-                    word = EightBitter.stringOf(
-                        " ", word.length - self.filterWord(word.word).length
-                    ) + self.filterWord(word.word);
+                    if (word.length.constructor === String) {
+                        word = EightBitter.stringOf(
+                            " ",
+                            (
+                                self.filterWord(word.length).length 
+                                - title.length
+                            )
+                        ) + self.filterWord(title);
+                    } else {
+                        word = EightBitter.stringOf(
+                            " ", word.length - title.length
+                        ) + title;
+                    }
                     break;
             }
         }
@@ -432,6 +471,7 @@ function MenuGraphr(settings) {
                     character = EightBitter.ObjectMaker.make(title);
                     character.paddingY = textPaddingY;
                     menu.children.push(character);
+                    things.push(character);
 
                     if (textSpeed) {
                         EightBitter.TimeHandler.addEvent(
@@ -465,7 +505,7 @@ function MenuGraphr(settings) {
                     (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed
                 );
             }
-            return;
+            return things;
         }
 
         if (!word.skipSpacing) {
@@ -495,7 +535,7 @@ function MenuGraphr(settings) {
                 "y": y - (textPaddingY),
                 "onCompletion": onCompletion
             };
-            return;
+            return things;
         }
 
         if (textSpeed) {
@@ -512,13 +552,15 @@ function MenuGraphr(settings) {
         } else {
             self.addMenuWord(name, words, i + 1, x, y, onCompletion);
         }
+
+        return things;
     }
 
     /**
      * 
      */
     self.continueMenu = function (name) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             children = menu.children,
             progress = menu.progress,
             character, i;
@@ -569,7 +611,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.addMenuList = function (name, settings) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             options = settings.options instanceof Function
                 ? settings.options()
                 : settings.options,
@@ -582,12 +624,14 @@ function MenuGraphr(settings) {
             arrowXOffset = (menu.arrowXOffset || 0) * EightBitter.unitsize,
             arrowYOffset = (menu.arrowYOffset || 0) * EightBitter.unitsize,
             selectedIndex = settings.selectedIndex || [0, 0],
+            optionChildren = [],
             index = 0,
             y = top,
-            option, schema, title, character, column,
-            x, i, j;
+            option, optionChild, schema, title, character, column,
+            x, i, j, k;
 
         menu.options = options;
+        menu.optionChildren = optionChildren;
 
         menu.callback = self.selectMenuListOption;
         menu.onActive = self.activateMenuList;
@@ -604,6 +648,12 @@ function MenuGraphr(settings) {
         for (i = 0; i < options.length; i += 1) {
             x = left;
             option = options[i];
+            optionChild = {
+                "option": option,
+                "things": []
+            };
+
+            optionChildren.push(optionChild);
 
             option.x = x;
             option.y = y;
@@ -621,6 +671,7 @@ function MenuGraphr(settings) {
                     schema = option.things[j];
                     character = self.createMenuThing(name, schema);
                     menu.children.push(character);
+                    optionChild.things.push(character);
 
                     if (!schema.position || !schema.position.relative) {
                         EightBitter.shiftVert(character, y - menu.top);
@@ -632,12 +683,14 @@ function MenuGraphr(settings) {
                 for (j = 0; j < option.textsFloating.length; j += 1) {
                     schema = option.textsFloating[j];
                     
-                    self.addMenuWord(
-                        name,
-                        [schema.text],
-                        0,
-                        x + schema.x * EightBitter.unitsize,
-                        y + schema.y * EightBitter.unitsize
+                    optionChild.things = optionChild.things.concat(
+                        self.addMenuWord(
+                            name,
+                            [schema.text],
+                            0,
+                            x + schema.x * EightBitter.unitsize,
+                            y + schema.y * EightBitter.unitsize
+                        )
                     );
                 }
             }
@@ -657,6 +710,7 @@ function MenuGraphr(settings) {
                         option.title = title = "Char" + getCharacterEquivalent(schema[j]);
                         character = EightBitter.ObjectMaker.make(title);
                         menu.children.push(character);
+                        optionChild.things.push(character);
 
                         EightBitter.addThing(character, x, y);
 
@@ -685,6 +739,12 @@ function MenuGraphr(settings) {
         if (settings.bottom) {
             option = settings.bottom;
             option.schema = schema = self.filterWord(option.text);
+
+            optionChild = {
+                "option": option,
+                "things": []
+            }
+            optionChildren.push(optionChild);
             
             x = menu.left + (menu.textXOffset + option.position.left) * EightBitter.unitsize;
             y = menu.top + (menu.textYOffset + option.position.top) * EightBitter.unitsize;
@@ -706,6 +766,7 @@ function MenuGraphr(settings) {
                     option.title = title = "Char" + getCharacterEquivalent(schema[j]);
                     character = EightBitter.ObjectMaker.make(title);
                     menu.children.push(character);
+                    optionChild.things.push(character);
 
                     EightBitter.addThing(character, x, y);
 
@@ -718,6 +779,18 @@ function MenuGraphr(settings) {
             menu.gridRows += 1;
             for (j = 0; j < menu.grid.length; j += 1) {
                 menu.grid[j].push(option);
+            }
+        }
+
+        if (menu.scrollingItems) {
+            menu.scrollingAmount = 0;
+            menu.scrollingAmountReal = 0;
+
+            for (i = menu.scrollingItems; i < menu.gridRows; i += 1) {
+                optionChild = optionChildren[i];
+                for (j = 0; j < optionChild.things.length; j += 1) {
+                    optionChild.things[j].hidden = true;
+                }
             }
         }
 
@@ -769,37 +842,101 @@ function MenuGraphr(settings) {
      * 
      */
     self.shiftSelectedIndex = function (name, dx, dy) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             textProperties = EightBitter.ObjectMaker.getPropertiesOf("Text"),
             textWidth = textProperties.width * EightBitter.unitsize,
             textHeight = textProperties.height * EightBitter.unitsize,
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * EightBitter.unitsize,
-            x = (menu.selectedIndex[0] + dx) % menu.gridColumns,
-            y = (menu.selectedIndex[1] + dy) % menu.gridRows,
-            option;
+            x, y, option;
 
-        while (x < 0) {
-            x += menu.gridColumns;
-        }
-        while (y < 0) {
-            y += menu.gridRows;
+        if (menu.scrollingItems) {
+            x = menu.selectedIndex[0] + dx;
+            y = menu.selectedIndex[1] + dy;
+
+            x = Math.max(Math.min(menu.gridColumns - 1, x), 0);
+            y = Math.max(Math.min(menu.gridRows - 1, y), 0);
+        } else {
+            x = (menu.selectedIndex[0] + dx) % menu.gridColumns;
+            y = (menu.selectedIndex[1] + dy) % menu.gridRows;
+            
+            while (x < 0) {
+                x += menu.gridColumns;
+            }
+
+            while (y < 0) {
+                y += menu.gridRows;
+            }
         }
 
-        y = Math.min(menu.grid[x].length - 1, y);
+        if (x === menu.selectedIndex[0] && y === menu.selectedIndex[1]) {
+            return;
+        }
+
+        //y = Math.min(menu.grid[x].length - 1, y);
 
         menu.selectedIndex[0] = x;
         menu.selectedIndex[1] = y;
         option = self.getMenuSelectedOption(name);
 
-        EightBitter.setRight(menu.arrow, option.x - menu.arrowXOffset * EightBitter.unitsize);
-        EightBitter.setTop(menu.arrow, option.y + menu.arrowYOffset * EightBitter.unitsize);
+        if (menu.scrollingItems) {
+            adjustVerticalScrollingListThings(name, dy, textPaddingY);
+        }
+
+        EightBitter.setRight(
+            menu.arrow, option.x - menu.arrowXOffset * EightBitter.unitsize
+        );
+        EightBitter.setTop(
+            menu.arrow, option.y + menu.arrowYOffset * EightBitter.unitsize
+        );
     };
 
     /**
      * 
      */
+    function adjustVerticalScrollingListThings(name, dy, textPaddingY) {
+        var menu = self.getExistingMenu(name),
+            scrollingItems = menu.scrollingItems,
+            scrollingOld = menu.scrollingAmount,
+            offset = -dy * textPaddingY,
+            scrollingNew, indexNew, option, optionChild, i, j;
+
+        menu.scrollingAmount += dy;
+
+        if (dy > 0) {
+            if (scrollingOld < menu.scrollingItems - 2) {
+                return;
+            }
+        } else if (menu.scrollingAmount < menu.scrollingItems - 2) {
+            return;
+        }
+
+        menu.scrollingAmountReal += dy;
+
+        for (i = 0; i < menu.optionChildren.length; i += 1) {
+            option = menu.options[i];
+            optionChild = menu.optionChildren[i];
+
+            option.y += offset;
+
+            for (j = 0; j < optionChild.things.length; j += 1) {
+                EightBitter.shiftVert(optionChild.things[j], offset);
+                if (
+                    i < menu.scrollingAmountReal
+                    || i >= menu.scrollingItems + menu.scrollingAmountReal
+                ) {
+                    optionChild.things[j].hidden = true;
+                } else {
+                    optionChild.things[j].hidden = false;
+                }
+            }
+        }
+    }
+
+    /**
+     * 
+     */
     self.selectMenuListOption = function (name, index) {
-        var menu = menus[name],
+        var menu = self.getExistingMenu(name),
             selected = self.getMenuSelectedOption(name);
 
         if (selected.callback) {
@@ -864,8 +1001,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, -1, 0);
+        }
+
+        if (activeMenu.onLeft) {
+            activeMenu.onLeft(EightBitter);
         }
     };
 
@@ -877,8 +1018,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, 1, 0);
+        }
+        
+        if (activeMenu.onRight) {
+            activeMenu.onRight(EightBitter);
         }
     };
 
@@ -890,8 +1035,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, 0, -1);
+        }
+        
+        if (activeMenu.onUp) {
+            activeMenu.onUp(EightBitter);
         }
     };
 
@@ -903,8 +1052,12 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (typeof activeMenu.selectedIndex !== "undefined") {
+        if (activeMenu.selectedIndex) {
             self.shiftSelectedIndex(activeMenu.name, 0, 1);
+        }
+        
+        if (activeMenu.onDown) {
+            activeMenu.onDown(EightBitter);
         }
     };
 
@@ -912,7 +1065,7 @@ function MenuGraphr(settings) {
      * 
      */
     self.registerA = function () {
-        if (!activeMenu) {
+        if (!activeMenu || activeMenu.ignoreA) {
             return;
         }
 
@@ -925,7 +1078,15 @@ function MenuGraphr(settings) {
      * 
      */
     self.registerB = function () {
-        if (!activeMenu || activeMenu.ignoreB) {
+        if (!activeMenu) {
+            return;
+        }
+
+        if (activeMenu.progress) {
+            return self.registerA();
+        }
+
+        if (activeMenu.ignoreB) {
             return;
         }
 

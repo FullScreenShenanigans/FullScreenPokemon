@@ -2,6 +2,7 @@ FullScreenPokemon.prototype.settings.objects = {
     "onMake": "onMake",
     "indexMap": ["width", "height"],
     "doPropertiesFull": true,
+    "giveFunctionsNames": true,
     "inheritance": {
         "Quadrant": {},
         "Map": {},
@@ -9,15 +10,37 @@ FullScreenPokemon.prototype.settings.objects = {
         "Location": {},
         "Thing": {
             "Character": {
+                "BirdPokemon": {},
+                "Boss": {},
+                "BugCatcher": {},
+                "Buzzer": {},
+                "Cashier": {},
+                "ChubbyGuy": {},
+                "CoolTrainerM": {},
+                "Dad": {},
+                "Daisy": {},
+                "DeskWoman": {},
+                "Elder": {},
                 "Fatty": {},
+                "Girl": {},
+                "Gentleman": {},
+                "GlassesOldGuy": {},
+                "Guy": {},
+                "GymGuide": {},
                 "Lady": {},
+                "Lass": {},
+                "LandPokemon": {},
+                "LittleGirl": {},
                 "Mother": {},
+                "Nurse": {},
                 "Oak": {},
+                "OldMan": {},
                 "Player": {},
                 "Pokeball": {},
                 "Rival": {},
-                "RivalMother": {},
-                "Scientist": {}
+                "Scientist": {},
+                "Toddler": {},
+                "WaterPokemon": {}
             },
             "Solid": {
                 "AsianScroll": {},
@@ -35,26 +58,51 @@ FullScreenPokemon.prototype.settings.objects = {
                         "BuildingMiddleRight": {},
                         "BuildingMiddleWindow": {}
                     },
-                    "BuildingBottom": {},
+                    "BuildingBottom": {
+                        "BuildingBottomLeft": {},
+                        "BuildingBottomMiddle": {},
+                        "BuildingBottomRight": {}
+                    },
                 },
                 "Cabinet": {},
                 "CollisionDetector": {
                     "CutsceneTriggerer": {},
                     "MenuTriggerer": {},
+                    "SightDetector": {},
                     "Transporter": {
+                        "CaveOpening": {},
                         "Door": {},
                         "HiddenTransporter": {},
                         "StairsDown": {},
-                        "StairsUp": {}
+                        "StairsUp": {},
+                        "StairsVertical": {}
                     },
                 },
+                "Computer": {},
                 "ComputerDesk": {},
                 "ConsoleAndController": {},
+                "DialogResponder": {
+                    "CutsceneResponder": {}
+                },
                 "FenceWide": {},
                 "FenceVertical": {},
+                "FloorDiamondsDark": {},
                 "Grass": {},
+                "GymStatue": {},
+                "HealingMachine": {},
+                "HealingMachineBall": {},
                 "HouseBase": {
+                    "HouseSide": {
+                        "HouseLeft": {},
+                        "HouseMiddle": {},
+                        "HouseRight": {}
+                    },
                     "HouseTop": {},
+                    "HouseTopRoof": {},
+                    "HouseTopRoofSide": {
+                        "HouseTopRoofLeft": {},
+                        "HouseTopRoofRight": {}
+                    }
                 },
                 "HouseCenterLeft": {},
                 "HouseCenterMiddle": {},
@@ -90,12 +138,28 @@ FullScreenPokemon.prototype.settings.objects = {
                     "MountainBottomLeft": {},
                     "MountainBottomRight": {},
                 },
+                "PlantLarge": {},
                 "PlantSmall": {},
-                "PokeLabel": {},
+                "PokeCenterDesk": {
+                    "PokeCenterDeskBlocker": {},
+                    "PokeCenterDeskLeft": {}
+                },
                 "PottedPalmTree": {},
+                "Register": {},
+                "Rock": {},
                 "Sign": {},
+                "SofaLeft": {},
                 "Spawner": {},
+                "SquareWall": {
+                    "SquareWallTop": {},
+                    "SquareWallFront": {}
+                },
+                "StoreAisle": {},
+                "StoreFridge": {},
+                "StoreSaleBin": {},
+                "Stump": {},
                 "Table": {
+                    "Table1x2": {},
                     "Table2x2": {},
                     "Table2x3": {},
                     "Table3x1": {},
@@ -113,12 +177,20 @@ FullScreenPokemon.prototype.settings.objects = {
                 }
             },
             "Scenery": {
+                "Blackboard": {},
                 "Book": {},
+                "Clipboard": {},
                 "Doormat": {},
                 "DoormatDotted": {},
+                "DoormatDashed": {},
                 "Flower": {},
                 "FlowerVase": {},
+                "ForestDirt": {},
+                "GroundArrow": {},
+                "Notepad": {},
                 "Painting": {},
+                "PokeCenterPoster": {},
+                "Shadow": {},
                 "SmokeSmall": {},
                 "SmokeMedium": {},
                 "SmokeLarge": {},
@@ -139,10 +211,6 @@ FullScreenPokemon.prototype.settings.objects = {
                     "LtSurgePortrait": {},
                     "MistyPortrait": {},
                     "SabrinaPortrait": {},
-                    "PokemonPortrait": {
-                        "LandPokemon": {},
-                        "WaterPokemon": {}
-                    }
                 },
                 "BattleSprite": {
                     "BattleSpriteFront": {
@@ -195,9 +263,9 @@ FullScreenPokemon.prototype.settings.objects = {
                             "KabutoFront": {},
                             "DratiniFront": {},
                             "MewFront": {}
-
                         },
                         "BattleSpriteFrontMedium": {
+                            "BugCatcherFront": {},
                             "IvysaurFront": {},
                             "CharmeleonFront": {},
                             "WartortleFront": {},
@@ -248,6 +316,8 @@ FullScreenPokemon.prototype.settings.objects = {
                             "DragonairFront": {}
                         },
                         "BattleSpriteFrontLarge": {
+                            "BrockFront": {},
+                            "JrTrainerFront": {},
                             "VenusaurFront": {},
                             "CharizardFront": {},
                             "BlastoiseFront": {},
@@ -306,6 +376,7 @@ FullScreenPokemon.prototype.settings.objects = {
                         }
                     },
                     "BattleSpriteBack": {
+                        "ElderBack": {},
                         "PlayerBack": {},
                         "BulbasaurBack": {},
                         "IvysaurBack": {},
@@ -464,18 +535,26 @@ FullScreenPokemon.prototype.settings.objects = {
             "Terrain": {
                 "TerrainSmall": {
                     "TerrainSmallRepeating": {
-                        "WallIndoorHorizontalBands": {},
+                        "WallIndoorHorizontalBands": {
+                            "WallIndoorHorizontalBandsInverse": {}
+                        },
                         "WallIndoorLightWithDarkBottom": {}
                     }
                 },
+                "BrickRoad": {},
                 "DirtClean": {},
+                "DirtForest": {},
                 "DirtLight": {},
                 "DirtMedium": {},
                 "DirtWhite": {},
+                "FloorCheckered": {},
+                "FloorDiamonds": {},
                 "FloorLinedHorizontal": {},
                 "FloorTiledDiagonal": {},
                 "Mountain": {},
-                "Water": {}
+                "Water": {},
+                "WallIndoorFancyWithDarkBottom": {},
+                "WallIndoorHorizontalBandsDark": {}
             },
             "Text": {
                 "Exclamation": {},
@@ -600,7 +679,8 @@ FullScreenPokemon.prototype.settings.objects = {
                     "CharBallEmpty": {},
                     "CharCircle": {},
                     "CharHP": {},
-                    "CharLevel": {}
+                    "CharLevel": {},
+                    "Char$": {}
                 },
                 "CharArrow": {
                     "CharArrowUp": {},
@@ -683,22 +763,29 @@ FullScreenPokemon.prototype.settings.objects = {
             "isWalking": false,
             "shouldWalk": false,
             "switchDirectionOnDialog": true,
+            "heightGrass": 4,
             "direction": 2, // top,right,bottom,left is 0,1,2,3
             "offsetY": FullScreenPokemon.unitsize * -2,
+            "roamingDirections": [0, 1, 2, 3],
+            "onThingAdd": FullScreenPokemon.prototype.spawnCharacter,
             "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
             "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking,
             "activate": FullScreenPokemon.prototype.collideCharacterDialog,
+        },
+        "Buzzer": {
+            "width": 3.5,
+            "height": 3,
+            "nocollide": true
+        },
+        "CoolTrainerM": {
             "attributes": {
-                "roaming": {
-                    "onThingAdd": FullScreenPokemon.prototype.spawnCharacterRoaming
-                }
+                "sitting": {}
             }
         },
-        "Mother": {
-            "directionPreferred": 3
-        },
-        "Oak": {
-            "nocollide": true  // remove...
+        "Elder": {
+            "attributes": {
+                "resting": {}
+            }
         },
         "Player": {
             "id": "player",
@@ -721,6 +808,9 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "Pokeball": {
             "activate": FullScreenPokemon.prototype.collidePokeball
+        },
+        "Rival": {
+            "id": "Rival"
         },
         "Solid": {
             "repeat": true,
@@ -758,6 +848,11 @@ FullScreenPokemon.prototype.settings.objects = {
         "MenuTriggerer": {
             "activate": FullScreenPokemon.prototype.activateMenuTriggerer
         },
+        "SightDetector": {
+            "activate": FullScreenPokemon.prototype.activateSightDetector,
+            "requireOverlap": true,
+            "hidden": true
+        },
         "Transporter": {
             "activate": FullScreenPokemon.prototype.activateTransporter,
             "requireOverlap": true,
@@ -767,23 +862,60 @@ FullScreenPokemon.prototype.settings.objects = {
             "hidden": true,
             "noStretchBoundaries": true
         },
+        "Computer": {
+            "width": 8,
+            "height": 12,
+            "tolBottom": FullScreenPokemon.unitsize * 4
+        },
         "ComputerDesk": [8, 16],
         "ConsoleController": [8, 5],
+        "DialogResponder": {
+            "hidden": true
+        },
+        "CutsceneResponder": {
+            "activate": FullScreenPokemon.prototype.activateCutsceneResponder
+        },
         "FenceVertical": [4, 8],
+        "FloorDiamondsDark": {
+            "width": 4,
+            "height": 8,
+            "spritewidth": 8,
+            "spriteheight": 8,
+            "nocollide": true
+        },
         "Grass": {
             "rarity": 10,
-            "collide": FullScreenPokemon.prototype.collidePlayerGrass
+            "collide": FullScreenPokemon.prototype.collideCharacterGrass
         },
+        "GymStatue": {
+            "height": 16,
+            "activate": FullScreenPokemon.prototype.activateGymStatue
+        },
+        "HealingMachine": [16, 16],
+        "HealingMachineBall": [3, 3],
         "HouseBase": {
             "width": 32,
             "height": 8,
             "spritewidth": 16,
             "spriteheight": 16
         },
+        "HouseSide": {
+            "width": 8,
+            "spritewidth": 8,
+            "spriteheight": 8
+        },
         "HouseTop": {
             "width": 32,
             "height": 16,
             "spritewidth": 16
+        },
+        "HouseTopRoof": {
+            "spritewidth": .5
+        },
+        "HouseTopRoofSide": {
+            "width": 8,
+            "spritewidth": 8,
+            "spriteheight": 8
         },
         "HouseLargeBase": {
             "width": 48,
@@ -818,6 +950,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "width": 8,
             "height": 4,
             "spritewidth": 4,
+            "direction": 2,
             "collide": FullScreenPokemon.prototype.collideLedge,
             "attributes": {
                 "jagged": {
@@ -835,7 +968,20 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "MountainSolidBase": [4, 4],
         "MountainTop": [4, 5],
+        "PlantLarge": [16, 16],
+        "PokeCenterDeskBlocker": {
+            "width": 8,
+            "height": 8,
+            "spritewidth": 1
+        },
+        "PokeCenterDeskLeft": [4, 8],
         "PottedPalmTree": [8, 16],
+        "Sign": {
+            "attributes": {
+                "forest": {}
+            }
+        },
+        "SofaLeft": [8, 16],
         "Spawner": {
             "hidden": true,
             "onThingAdd": FullScreenPokemon.prototype.activateSpawner
@@ -843,18 +989,30 @@ FullScreenPokemon.prototype.settings.objects = {
         "AreaSpawner": {
             "activate": FullScreenPokemon.prototype.spawnAreaSpawner
         },
+        "SquareWallTop": {
+            "spriteheight": .5
+        },
+        "SquareWallFront": {
+            "spriteheight": 1.5
+        },
+        "StoreAisle": [16, 16],
+        "StoreFridge": [8, 16],
+        "StoreSaleBin": [8, 12],
         "Table": {
             "tolBottom": FullScreenPokemon.unitsize * 4
         },
+        "Table1x2": [8, 16],
         "Table2x2": [16, 16],
         "Table2x3": [16, 16],
         "Table3x1": [24, 12],
-        "Tree": {
-            "dialog": "IT WOULD BE NICE TO CUT THE TREE DOWN LEL"
-        },
+        "Tree": {},
         "Door": {
             "width": 8,
-            "height": 8
+            "height": 8,
+            "requireDirection": 0,
+            "attributes": {
+                "indoor": {}
+            }
         },
         "WaterEdge": [4, 4],
         "WindowDetector": {
@@ -869,6 +1027,10 @@ FullScreenPokemon.prototype.settings.objects = {
             "groupType": "Scenery",
             "repeat": true
         },
+        "Blackboard": [16, 8],
+        "Clipboard": {
+            "offsetY": FullScreenPokemon.unitsize * -1.5
+        },
         "Doormat": {
             "spritewidth": .5,
             "spriteheight": 8
@@ -876,6 +1038,10 @@ FullScreenPokemon.prototype.settings.objects = {
         "DoormatDotted": {
             "spritewidth": 3.5,
             "spriteheight": 7.5
+        },
+        "DoormatDashed": {
+            "spritewidth": 4,
+            "spriteheight": 8
         },
         "Flower": {
             "width": 4,
@@ -885,12 +1051,15 @@ FullScreenPokemon.prototype.settings.objects = {
             ]
         },
         "FlowerVase": [6, 6],
+        "ForestDirt": [4, 4],
+        "GroundArrow": [4, 4],
         "HPBar": {
             "width": .5,
             "height": 2,
             "repeat": true
         },
         "Note": [6.5, 7],
+        "Shadow": [7, 4],
         "SmokeSmall": [5.5, 5.5],
         "SmokeMedium": [7.5, 7.5],
         "SmokeLarge": [7.5, 7.5],
@@ -908,10 +1077,11 @@ FullScreenPokemon.prototype.settings.objects = {
             "scale": 2,
             "repeat": false
         },
+        "ElderBack": [14, 14],
         "PlayerBack": [14, 14],
         "Terrain": {
             "groupType": "Terrain",
-            "repeat": true
+            "repeat": true,
         },
         "TerrainSmall": [2, 2],
         "TerrainSmallRepeating": {
@@ -920,10 +1090,18 @@ FullScreenPokemon.prototype.settings.objects = {
             "spritewidth": 2,
             "spriteheight": 2
         },
+        "BrickRoad": [4, 4],
         "Mountain": [4, 4],
         "WallIndoorLightWithDarkBottom": {
             "spritewidth": .5,
             "spriteheight": 8
+        },
+        "WallIndoorFancyWithDarkBottom": [4, 8],
+        "WallIndoorHorizontalBandsDark": {
+            "width": 8,
+            "height": 8,
+            "spritewidth": .5,
+            "spriteheight": 2,
         },
         "Water": {
             "spriteCycle": [
@@ -989,6 +1167,13 @@ FullScreenPokemon.prototype.settings.objects = {
         "CharCircle": [2.5, 2.5],
         "CharHP": [5.5, 2],
         "CharLevel": [3, 2.5],
+        "Char$": {
+            "width": 4,
+            "spritewidth": 2.5,
+            "height": 4,
+            "offsetX": FullScreenPokemon.unitsize / 2,
+            "offsetY": FullScreenPokemon.unitsize / 2,
+        },
         "CharArrowUp": [3.5, 2.5],
         "CharArrowRight": [2.5, 3.5],
         "CharArrowDown": [3.5, 2.5],

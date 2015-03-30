@@ -180,7 +180,9 @@ function BattleMovr(settings) {
 
         EightBitter.ScenePlayer.startCutscene("Battle", {
             "things": things,
-            "battleInfo": battleInfo    
+            "battleInfo": battleInfo,
+            "nextCutscene": settings.nextCutscene,
+            "nextCutsceneSettings": settings.nextCutsceneSettings
         });
     };
 
@@ -201,10 +203,22 @@ function BattleMovr(settings) {
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
         EightBitter.MenuGrapher.deleteMenu("BattleOptions");
 
-        EightBitter.ScenePlayer.stopCutscene();
-
         if (callback) {
             callback();
+        }
+
+        EightBitter.ScenePlayer.playRoutine("Complete");
+
+        if (battleInfo.nextCutscene) {
+            EightBitter.ScenePlayer.startCutscene(
+                battleInfo.nextCutscene, battleInfo.nextCutsceneSettings
+            );
+        } else if (battleInfo.nextRoutine) {
+            EightBitter.ScenePlayer.playRoutine(
+                battleInfo.nextRoutine, battleInfo.nextRoutineSettings
+            );
+        } else {
+            EightBitter.ScenePlayer.stopCutscene();
         }
     };
 
@@ -299,30 +313,21 @@ function BattleMovr(settings) {
      * 
      */
     self.openItemsMenu = function () {
-        var items = EightBitter.StatsHolder.get("items");
-
-        EightBitter.MenuGrapher.createMenu(menuNames.items, {
-            "container": "Battle",
-            "backMenu": "BattleOptions",
-            "size": {
-                "height": 44
-            },
+        EightBitter.openItemsMenu({
+            "items": battleInfo.items,
             "position": {
                 "horizontal": "right",
                 "vertical": "bottom",
                 "offset": {
                     "left": 0
                 }
-            }
-        });
-
-        EightBitter.MenuGrapher.setActiveMenu(menuNames.items);
-        EightBitter.MenuGrapher.addMenuList(menuNames.items, {
-            "options": items.map(function (item) {
-                return {
-                    "text": item.title
-                };
-            })
+            },
+            "size": {
+                "height": 44
+            },
+            "container": "Battle",
+            "backMenu": "BattleOptions",
+            "scrollingItems": 4
         });
     };
 

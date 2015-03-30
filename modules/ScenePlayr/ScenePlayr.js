@@ -60,6 +60,13 @@ function ScenePlayr(settings) {
     /**
      * 
      */
+    self.getOtherRoutine = function (name) {
+        return cutscene.routines[name];
+    };
+
+    /**
+     * 
+     */
     self.getCutsceneName = function () {
         return cutsceneName;
     };
@@ -111,13 +118,10 @@ function ScenePlayr(settings) {
      * 
      */
     self.stopCutscene = function (settings) {
-        if (cutscene.lastRoutine) {
-            self.playRoutine(cutscene.lastRoutine, settings);
-        }
-
         cutscene = undefined;
         cutsceneName = undefined;
         cutsceneSettings = undefined;
+
         cutsceneArguments.pop();
     };
 

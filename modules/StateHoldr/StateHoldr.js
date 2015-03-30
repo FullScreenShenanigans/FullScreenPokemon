@@ -144,10 +144,20 @@ function StateHoldr(settings) {
     /**
      * 
      */
-    self.markCollectionState = function (collectionKeyOther, itemKey, value) {
-        var otherCollection = StatsHolder.get(prefix + collectionKeyOther);
-        otherCollection[itemKey] = value;
-        StatsHolder.set(item, value);
+    self.addCollectionChange = function (collectionKeyOtherRaw, itemKey, valueKey, value) {
+        var collectionKeyOther = prefix + collectionKeyOtherRaw,
+            otherCollection;
+
+        ensureCollectionKeyExists(collectionKeyOther);
+        otherCollection = StatsHolder.get(collectionKeyOther);
+
+        if (typeof otherCollection[itemKey] === "undefined") {
+            otherCollection[itemKey] = {};
+        }
+
+        otherCollection[itemKey][valueKey] = value;
+
+        StatsHolder.set(collectionKeyOther, otherCollection);
     };
 
     /**

@@ -2,7 +2,6 @@ FullScreenPokemon.prototype.settings.scenes = {
     "cutscenes": {
         "Battle": {
             "firstRoutine": "Entrance",
-            "lastRoutine": "PlayerGroupReset",
             "routines": {
                 "Entrance": FullScreenPokemon.prototype.cutsceneBattleEntrance,
                 "OpeningText": FullScreenPokemon.prototype.cutsceneBattleOpeningText,
@@ -21,18 +20,58 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "PokemonFaints": FullScreenPokemon.prototype.cutsceneBattlePokemonFaints,
                 "AfterPlayerPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterPlayerPokemonFaints,
                 "AfterOpponentPokemonFaints": FullScreenPokemon.prototype.cutsceneBattleAfterOpponentPokemonFaints,
+                "OpponentSwitchesPokemon": FullScreenPokemon.prototype.cutsceneBattleOpponentSwitchesPokemon,
+                "ExperienceGain": FullScreenPokemon.prototype.cutsceneBattleExperienceGain,
+                "LevelUp": FullScreenPokemon.prototype.cutsceneBattleLevelUp,
+                "LevelUpStats": FullScreenPokemon.prototype.cutsceneBattleLevelUpStats,
                 "BattleExitFail": FullScreenPokemon.prototype.cutsceneBattleExitFail,
                 "BattleExitFailReturn": FullScreenPokemon.prototype.cutsceneBattleExitFailReturn,
                 "Victory": FullScreenPokemon.prototype.cutsceneBattleVictory,
                 "VictorySpeech": FullScreenPokemon.prototype.cutsceneBattleVictorySpeech,
+                "VictoryWinnings": FullScreenPokemon.prototype.cutsceneBattleVictoryWinnings,
                 "Defeat": FullScreenPokemon.prototype.cutsceneBattleDefeat,
-                "PlayerGroupReset": FullScreenPokemon.prototype.cutscenePlayerGroupReset,
+                "Complete": FullScreenPokemon.prototype.cutsceneBattleComplete,
                 // Attack utilities
                 "ChangeStatistic": FullScreenPokemon.prototype.cutsceneBattleChangeStatistic,
                 // Attack animations
                 "AttackGrowl": FullScreenPokemon.prototype.cutsceneBattleAttackGrowl,
                 "AttackTackle": FullScreenPokemon.prototype.cutsceneBattleAttackTackle,
                 "AttackTailWhip": FullScreenPokemon.prototype.cutsceneBattleAttackTailWhip
+            }
+        },
+        "TrainerSpotted": {
+            "firstRoutine": "Exclamation",
+            "routines": {
+                "Exclamation": FullScreenPokemon.prototype.cutsceneTrainerSpottedExclamation,
+                "Approach": FullScreenPokemon.prototype.cutsceneTrainerSpottedApproach,
+                "Dialog": FullScreenPokemon.prototype.cutsceneTrainerSpottedDialog
+            }
+        },
+        "PokeCenter": {
+            "firstRoutine": "Welcome",
+            "routines": {
+                "Welcome": FullScreenPokemon.prototype.cutscenePokeCenterWelcome,
+                "Choose": FullScreenPokemon.prototype.cutscenePokeCenterChoose,
+                "ChooseHeal": FullScreenPokemon.prototype.cutscenePokeCenterChooseHeal,
+                "Healing": FullScreenPokemon.prototype.cutscenePokeCenterHealing,
+                "HealingAction": FullScreenPokemon.prototype.cutscenePokeCenterHealingAction,
+                "HealingComplete": FullScreenPokemon.prototype.cutscenePokeCenterHealingComplete,
+                "ChooseCancel": FullScreenPokemon.prototype.cutscenePokeCenterChooseCancel,
+            }
+        },
+        "PokeMart": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutscenePokeMartGreeting,
+                "Options": FullScreenPokemon.prototype.cutscenePokeMartOptions,
+                "BuyMenu": FullScreenPokemon.prototype.cutscenePokeMartBuyMenu,
+                "SelectAmount": FullScreenPokemon.prototype.cutscenePokeMartSelectAmount,
+                "ConfirmPurchase": FullScreenPokemon.prototype.cutscenePokeMartConfirmPurchase,
+                "CancelPurchase": FullScreenPokemon.prototype.cutscenePokeMartCancelPurchase,
+                "TryPurchase": FullScreenPokemon.prototype.cutscenePokeMartTryPurchase,
+                "FailPurchase": FullScreenPokemon.prototype.cutscenePokeMartFailPurchase,
+                "ContinueShopping": FullScreenPokemon.prototype.cutscenePokeMartContinueShopping,
+                "Exit": FullScreenPokemon.prototype.cutscenePokeMartExit
             }
         },
         "Intro": {
@@ -97,6 +136,57 @@ FullScreenPokemon.prototype.settings.scenes = {
             "routines": {
                 "Challenge": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleChallenge,
                 "Approach": FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleApproach
+            }
+        },
+        "OakIntroRivalLeaves": {
+            "firstRoutine": "AfterBattle",
+            "routines": {
+                "AfterBattle": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesAfterBattle,
+                "Complaint": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesComplaint,
+                "Goodbye": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesGoodbye,
+                "Walking": FullScreenPokemon.prototype.cutsceneOakIntroRivalLeavesWalking
+            }
+        },
+        "OakParcelPickup": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutsceneOakParcelPickupGreeting,
+                "WalkToCounter": FullScreenPokemon.prototype.cutsceneOakParcelPickupWalkToCounter,
+                "CounterDialog": FullScreenPokemon.prototype.cutsceneOakParcelPickupCounterDialog
+            }
+        },
+        "OakParcelDelivery": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryGreeting,
+                "RivalInterrupts": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalInterrupts,
+                "RivalWalksUp": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalWalksUp,
+                "RivalInquires": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalInquires,
+                "OakRequests": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakRequests,
+                "OakDescribesPokedex": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakDescribesPokedex,
+                "OakGivesPokedex": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakGivesPokedex,
+                "OakDescribesGoal": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryOakDescribesGoal,
+                "RivalAccepts": FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalAccepts
+            }
+        },
+        "DaisyTownMap": {
+            "firstRoutine": "Greeting",
+            "routines": {
+                "Greeting": FullScreenPokemon.prototype.cutsceneDaisyTownMapGreeting,
+                "ReceiveMap": FullScreenPokemon.prototype.cutsceneDaisyTownMapReceiveMap
+            }
+        },
+        "ElderTraining": {
+            "firstRoutine": "StartBattle",
+            "routines": {
+                "StartBattle": FullScreenPokemon.prototype.cutsceneElderTrainingStartBattle
+            }
+        },
+        "RivalRoute22": {
+            "firstRoutine": "RivalEmerges",
+            "routines": {
+                "RivalEmerges": FullScreenPokemon.prototype.cutsceneRivalRoute22RivalEmerges,
+                "RivalTalks": FullScreenPokemon.prototype.cutsceneRivalRoute22RivalTalks
             }
         }
     }

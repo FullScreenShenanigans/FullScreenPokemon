@@ -426,7 +426,7 @@ document.onreadystatechange = (function (settings) {
     },
     "inputSelector": "#input",
     "outputSelector": "#output",
-    "paletteDefault": "Mario",
+    "paletteDefault": "GameBoy",
     "palettes": {
         "Black & White": [
           [0,0,0,0],
@@ -434,7 +434,7 @@ document.onreadystatechange = (function (settings) {
           [0,0,0,255]
         ],
         "GameBoy": [
-           [0,0,0,0],
+          [0,0,0,0],
           [255,255,255,255],
           [0,0,0,255],
           [199,199,192,255],

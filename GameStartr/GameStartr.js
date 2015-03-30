@@ -573,7 +573,7 @@ var GameStartr = (function (EightBittr) {
      * @param {Number} [top]   Defaults to 0.
      */
     function addThing(thing, left, top) {
-        if (typeof (thing) === "string" || thing instanceof String) {
+        if (typeof thing === "string" || thing instanceof String) {
             thing = this.ObjectMaker.make(thing);
         } else if (thing.constructor === Array) {
             thing = this.ObjectMaker.make.apply(this.ObjectMaker, thing);
@@ -1402,7 +1402,7 @@ var GameStartr = (function (EightBittr) {
 
         array.splice(location, 1);
 
-        if (typeof (thing.onDelete) === "function") {
+        if (typeof thing.onDelete === "function") {
             thing.onDelete.call(thing.EightBitter, thing);
         }
     }
