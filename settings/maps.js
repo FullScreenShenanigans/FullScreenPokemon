@@ -1314,20 +1314,53 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WallIndoorHorizontalBandsInverse", "width": 80, "height": 112 },
                         { "thing": "Rock", "width": 80 },
                         { "thing": "Rock", "y": 8, "height": 72 },
-                        { "thing": "CoolTrainerM", "x": 32, "y": 8, "trainer": true },
+                        {
+                            "thing": "CoolTrainerM", "x": 32, "y": 8, "name": "Brock", "trainer": true, "battleName": "Brock", "battleSprite": "Brock", "dialog": ["I'm BROCK! \n I'm PEWTER's GYM LEADER!", "I believe in rock hard defense and determination!", "That's why my %%%%%%%POKEMON%%%%%%% are all the rock-type!", "Do you still want to challenge me? Fine then! Show me your best!"],
+                            "reward": -1,
+                            "badge": "Brock",
+                            "textDefeat": "",
+                            "actors": [{
+                                "title": "Geodude",
+                                "level": 12
+                            }, {
+                                "title": "Onix",
+                                "level": 14
+                            }]
+                        },
                         { "thing": "Rock", "x": 72, "y": 8, "height": 72 },
                         { "thing": "Rock", "x": 8, "y": 24, "width": 24 },
                         { "thing": "Rock", "x": 48, "y": 24, "width": 24 },
                         { "thing": "Rock", "x": 16, "y": 40 },
                         { "thing": "Rock", "x": 40, "y": 40, "width": 24 },
-                        { "thing": "CoolTrainerM", "x": 24, "y": 48, "direction": 1, "trainer": true },
+                        {
+                            "thing": "CoolTrainerM", "x": 24, "y": 48, "direction": 1, "trainer": true, "sight": 4, "battleName": "Jr. Trainer", "battleSprite": "JrTrainer", "dialog": ["Stop right there, kid!", "You're still light years from facing BROCK!"],
+                            "reward": 220,
+                            "textDefeat": ["Darn!", "Light years isn't time! It measures distance!"],
+                            "dialogNext": "You're pretty hot, but not as hot as BROCK!",
+                            "actors": [{
+                                "title": "Diglett",
+                                "level": 11
+                            }, {
+                                "title": "Sandshrew",
+                                "level": 11
+                            }]
+                        },
                         { "thing": "Rock", "x": 16, "y": 56 },
                         { "thing": "Rock", "x": 40, "y": 56, "width": 24 },
                         { "thing": "Rock", "x": 8, "y": 72, "width": 16 },
                         { "thing": "GymStatue", "x": 24, "y": 72, "gym": "Pewter City", "leader": "Brock" },
                         { "thing": "GymStatue", "x": 48, "y": 72, "gym": "Pewter City", "leader": "Brock" },
                         { "thing": "Rock", "x": 56, "y": 72, "width": 16 },
-                        { "thing": "GymGuide", "x": 64, "y": 80, "dialog": "nope" },
+                        {
+                            "thing": "GymGuide", "x": 64, "y": 80, "dialog": "nope", "dialog": ["Hiya! I can tell you have what it takes to become a %%%%%%%POKEMON%%%%%%% champ!", "I'm no trainer, but I can tell you how to win!", "Let me take you to the top!"],
+                            "dialogOptions": {
+                                "type": "Yes/No",
+                                "options": {
+                                    "Yes": ["All right! Let's get happening!", "The 1st %%%%%%%POKEMON%%%%%%% out in a match is at the top of the %%%%%%%POKEMON%%%%%%% LIST!", "By changing the order of %%%%%%%POKEMON%%%%%%%, matches could be made easier!"],
+                                    "No": ["It's a free service! Let's get happening!", "The 1st %%%%%%%POKEMON%%%%%%% out in a match is at the top of the %%%%%%%POKEMON%%%%%%% LIST!", "By changing the order of %%%%%%%POKEMON%%%%%%%, matches could be made easier!"]
+                                }
+                            }
+                        },
                         { "thing": "Doormat", "x": 32, "y": 104, "width": 16, "entrance": "Pewter Gym Floor 1 Door", "transport": { "map": "Pewter City", "location": "Petwer Gym Outside Door" } }
                     ]
                 },
