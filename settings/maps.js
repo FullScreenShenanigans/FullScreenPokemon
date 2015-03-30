@@ -59,6 +59,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Pallet Town",
+            "theme": "Pallet Town",
             "locationDefault": "Player's House Door",
             "locations": {
                 "Player's House Door": {
