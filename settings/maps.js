@@ -716,10 +716,11 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 2",
-            "locationDefault": "Viridian Forest Bottom",
+            "locationDefault": "Viridian Forest Top",
             "locations": {
                 "Viridian Forest Top": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 0
                 },
                 "Viridian Forest Bottom": {
                     "area": "Land"
@@ -730,6 +731,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 224,
                     "height": 592,
                     "creation": [
+                        { "thing": "AreaSpawner", "width": 224, "direction": 0, "map": "Pewter City", "area": "Land", "offsetX": -48 },
                         { "thing": "DirtMedium", "width": 96, "height": 16 },
                         { "thing": "PlantSmall", "width": 96, "height": 16 },
                         { "thing": "DirtMedium", "x": 112, "width": 120, "height": 16 },
@@ -1113,7 +1115,7 @@ FullScreenPokemon.prototype.settings.maps = {
             "areas": {
                 "Land": {
                     "width": 320,
-                    "height": 278,
+                    "height": 288,
                     "creation": [
                         { "thing": "DirtMedium", "width": 320, "height": 16 },
                         { "thing": "FenceWide", "x": 32, "y": 8, "width": 240 },
@@ -1122,9 +1124,9 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtLight", "x": 24, "y": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 16, "xnum": 2, "ynum": 4 },
                         { "thing": "DirtMedium", "x": 48, "y": 16, "width": 96, "height": 48 },
-                        { "thing": "HouseLargeTopLeft", "x": 80, "y": 16, "height": 16 },
+                        { "thing": "HouseLargeTopLeft", "x": 80, "y": 16, "height": 20 },
                         { "thing": "HouseLargeTopMiddle", "x": 88, "y": 16, "width": 48, "height": 16 },
-                        { "thing": "HouseLargeTopRight", "x": 136, "y": 16, "height": 16 },
+                        { "thing": "HouseLargeTopRight", "x": 136, "y": 16, "height": 20 },
                         { "thing": "DirtMedium", "x": 144, "y": 16, "width": 136, "height": 32 },
                         { "macro": "Building", "x": 144, "y": 16, "width": 48, "door": true },
                         { "thing": "DirtMedium", "x": 280, "y": 8, "width": 40, "height": 72 },
@@ -1221,7 +1223,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 160, "y": 256, "width": 160, "height": 32 },
                         { "thing": "PlantSmall", "x": 160, "y": 256, "width": 48, "height": 32 },
                         { "thing": "FenceWide", "x": 208, "y": 256, "width": 80 },
-                        { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 }
+                        { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
+                        { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
                     ]
                 }
             }
