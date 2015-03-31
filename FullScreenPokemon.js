@@ -298,8 +298,8 @@ var FullScreenPokemon = (function (GameStartr) {
         }, {
             "text": "LOAD FILE",
             "callback": EightBitter.gameLoadFile.bind(EightBitter, EightBitter)
-        //}, {
-        //    "text": "OPTION"
+            //}, {
+            //    "text": "OPTION"
         }];
 
         if (EightBitter.StatsHolder.get("gameStarted")) {
@@ -2010,7 +2010,7 @@ var FullScreenPokemon = (function (GameStartr) {
             thing.EightBitter.StateHolder.addChange(
                 other.id, "trainer", false
             );
-            
+
             if (other.sight) {
                 other.sight = undefined;
                 thing.EightBitter.StateHolder.addChange(
@@ -5809,9 +5809,9 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneIntroPlayerAppear(EightBitter, settings) {
         var middleX = EightBitter.MapScreener.middleX,
                 player = EightBitter.ObjectMaker.make("PlayerPortrait", {
-                "flipHoriz": true,
-                "opacity": .01
-            });
+                    "flipHoriz": true,
+                    "opacity": .01
+                });
 
         settings.player = player;
 
@@ -7523,6 +7523,32 @@ var FullScreenPokemon = (function (GameStartr) {
         );
     }
 
+    /**
+     * 
+     */
+    function MARATHON(EightBitter) {
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "position": {
+                "horizontal": "center",
+                "vertical": "center",
+                "offset": {
+                    "left": 0,
+                    "top": 0
+                }
+            }
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                "FULL SCREEN POKEMON",
+                "Coming April 1st, 2016!",
+                "We promise!"
+            ],
+            EightBitter.MARATHON.bind(EightBitter, EightBitter)
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
 
     /* Map sets
     */
@@ -8172,6 +8198,8 @@ var FullScreenPokemon = (function (GameStartr) {
                     "start": x + 4,
                     "end": x + width - 4
                 },
+                "transport": reference.transport,
+                "entrance": reference.entrance,
                 "door": true,
                 "doorOffset": width - 16
             }, {
@@ -8909,7 +8937,7 @@ var FullScreenPokemon = (function (GameStartr) {
         object[keyTitle] = title;
         object[keyCount] = count;
         array.push(object);
-        
+
         return true;
     }
 
@@ -9197,6 +9225,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "saveCharacterPosition": saveCharacterPosition,
         "downloadSaveGame": downloadSaveGame,
         "addItemToBag": addItemToBag,
+        "MARATHON": MARATHON,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
