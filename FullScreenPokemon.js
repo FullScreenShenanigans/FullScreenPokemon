@@ -6197,7 +6197,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.ScenePlayer.stopCutscene();
         EightBitter.StatsHolder.set("gameStarted", true);
 
-        EightBitter.setMap("Player's House", "Start Game");
+        EightBitter.setMap("Pallet Town", "Start Game");
     }
 
     /**
