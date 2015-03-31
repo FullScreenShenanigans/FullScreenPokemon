@@ -6707,7 +6707,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 other = "Bulbasaur";
                 break;
             case "Charmander":
-                steps = 2;
+                steps = 3;
                 other = "Squirtle";
                 break;
             case "Bulbasaur":
