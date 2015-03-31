@@ -335,7 +335,6 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      * 
-     * @todo Put the Oak shenanigans in the Intro cutscene
      */
     function gameStartIntro(EightBitter) {
         EightBitter.StatsHolder.clear();
@@ -2008,12 +2007,7 @@ var FullScreenPokemon = (function (GameStartr) {
             );
             thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-            // TODO: have a combiner function for items
-            console.warn("Items should have a combiner function...");
-            thing.EightBitter.StatsHolder.get("items").push({
-                "item": other.gift,
-                "amount": 1
-            })
+            thing.EightBitter.addItemToBag(thing.EightBitter, other.gift);
 
             other.gift = undefined;
             thing.EightBitter.StateHolder.addChange(other.id, "gift", undefined);
@@ -2474,12 +2468,9 @@ var FullScreenPokemon = (function (GameStartr) {
         );
         thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-        // TODO: Collapser for items
-        console.warn("Should have collapser for items...");
-        thing.EightBitter.StatsHolder.get("items").push({
-            "item": other.item,
-            "amount": other.amount || 1
-        });
+        thing.EightBitter.addItemToBag(
+            thing.EightBitter, other.item, other.amount
+        );
     }
 
     /**
@@ -4607,12 +4598,7 @@ var FullScreenPokemon = (function (GameStartr) {
             );
 
         if (battleInfo.giftAfterBattle) {
-            // TODO: have a combiner function for items
-            console.warn("Items should have a combiner function...");
-            EightBitter.StatsHolder.get("items").push({
-                "item": battleInfo.giftAfterBattle,
-                "amount": 1
-            });
+            EightBitter.addItemToBag(EightBitter, battleInfo.giftAfterBattle);
         }
 
         if (battleInfo.badge) {
@@ -7389,7 +7375,7 @@ var FullScreenPokemon = (function (GameStartr) {
     }
 
 
-    /* Saving
+    /* Memory
     */
 
     /**
@@ -7486,6 +7472,19 @@ var FullScreenPokemon = (function (GameStartr) {
         link.click();
         EightBitter.container.removeChild(link);
     };
+
+    /**
+     * 
+     */
+    function addItemToBag(EightBitter, item, amount) {
+        EightBitter.combineArrayMembers(
+            EightBitter.StatsHolder.get("items"),
+            item,
+            amount || 1,
+            "item",
+            "amount"
+        );
+    }
 
 
     /* Map sets
@@ -8854,6 +8853,28 @@ var FullScreenPokemon = (function (GameStartr) {
         return false;
     }
 
+    /**
+     * 
+     */
+    function combineArrayMembers(array, title, count, keyTitle, keyCount) {
+        var object;
+
+        for (var i = 0; i < array.length; i += 1) {
+            object = array[i];
+            if (array[i][keyTitle] === title) {
+                array[i][keyCount] += count;
+                return false;
+            }
+        }
+
+        object = {};
+        object[keyTitle] = title;
+        object[keyCount] = count;
+        array.push(object);
+        
+        return true;
+    }
+
 
     proliferateHard(FullScreenPokemon.prototype, {
         // Resets
@@ -9130,11 +9151,12 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneElderTrainingStartBattle": cutsceneElderTrainingStartBattle,
         "cutsceneRivalRoute22RivalEmerges": cutsceneRivalRoute22RivalEmerges,
         "cutsceneRivalRoute22RivalTalks": cutsceneRivalRoute22RivalTalks,
-        // Saving
+        // Memory
         "saveGame": saveGame,
         "saveCharacterPositions": saveCharacterPositions,
         "saveCharacterPosition": saveCharacterPosition,
         "downloadSaveGame": downloadSaveGame,
+        "addItemToBag": addItemToBag,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
@@ -9164,7 +9186,8 @@ var FullScreenPokemon = (function (GameStartr) {
         // Miscellaneous utilities
         "stringOf": stringOf,
         "makeDigit": makeDigit,
-        "checkArrayMembersIndex": checkArrayMembersIndex
+        "checkArrayMembersIndex": checkArrayMembersIndex,
+        "combineArrayMembers": combineArrayMembers
     });
 
     return FullScreenPokemon;
