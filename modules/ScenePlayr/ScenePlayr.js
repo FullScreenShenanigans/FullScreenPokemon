@@ -117,7 +117,7 @@ function ScenePlayr(settings) {
     /**
      * 
      */
-    self.stopCutscene = function (settings) {
+    self.stopCutscene = function () {
         cutscene = undefined;
         cutsceneName = undefined;
         cutsceneSettings = undefined;

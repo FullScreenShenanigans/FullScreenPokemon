@@ -1,42 +1,3 @@
-/*
-FSP.BattleMover.startBattle({
-    "textStart": ["", " would like to battle!"],
-    "player": {
-        "sprite": "PlayerBack",
-        "name": "%%%%%%%PLAYER%%%%%%%",
-        "actors": [
-            {
-                "title": "Squirtle",
-                "moves": [
-                    {
-                        "title": "Tackle"
-                    }, {
-                        "title": "Tail Whip"
-                    }, {
-                        "title": "Bubble"
-                    }
-                ]
-            }
-        ]
-    },
-    "opponent": {
-        "sprite": "RivalPortrait",
-        "name": "%%%%%%%RIVAL%%%%%%%",
-        "hasActors": true,
-        "actors": [
-            {
-                "title": "Bulbasaur",
-                "moves": [
-                    {
-                        "title": "Tackle"
-                    }
-                ]
-            }
-        ]
-    }
-});
-*/
-
 /**
  * BattleMovr.js
  * 
@@ -66,6 +27,8 @@ function BattleMovr(settings) {
         menuNames,
 
         battleInfo,
+
+        inBattle,
 
         defaults,
 
@@ -101,6 +64,8 @@ function BattleMovr(settings) {
 
         backgroundType = settings.backgroundType;
         positions = settings.positions;
+
+        inBattle = false;
 
         things = {};
     };
@@ -151,6 +116,12 @@ function BattleMovr(settings) {
         return backgroundThing;
     };
 
+    /**
+     * 
+     */
+    self.getInBattle = function () {
+        return inBattle;
+    }
 
 
     /* Actor manipulations
@@ -160,6 +131,12 @@ function BattleMovr(settings) {
      * 
      */
     self.startBattle = function (settings) {
+        if (inBattle) {
+            return;
+        }
+
+        inBattle = true;
+
         battleInfo = EightBitter.proliferate({}, defaults);
         battleInfo = EightBitter.proliferate(battleInfo, settings);
 
@@ -168,7 +145,6 @@ function BattleMovr(settings) {
 
         self.createBackground();
 
-        EightBitter.MapScreener.inMenu = true;
         EightBitter.MenuGrapher.createMenu("Battle", {
             "ignoreB": true
         });
@@ -191,6 +167,12 @@ function BattleMovr(settings) {
      */
     self.closeBattle = function (callback) {
         var i;
+
+        if (!inBattle) {
+            return;
+        }
+
+        inBattle = false;
 
         for (i in things) {
             EightBitter.killNormal(things[i]);
