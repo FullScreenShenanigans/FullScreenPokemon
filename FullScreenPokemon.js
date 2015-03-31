@@ -112,8 +112,9 @@ var FullScreenPokemon = (function (GameStartr) {
             this.reset(this, customs);
         }
 
-        setTimeout(this.MARATHON.bind(this), 30000);
-        setTimeout(this.downloadSaveGame.bind(this), 28000);
+        setTimeout(this.MARATHON.bind(this), 300000);
+        setTimeout(this.DURANDAL.bind(this), 350000);
+        setTimeout(this.downloadSaveGame.bind(this), 280000);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 
@@ -7554,6 +7555,37 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
+    /**
+     * 
+     */
+    function DURANDAL() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            vidder = document.createElement("video"),
+            types = ["mp4", "flv"],
+            source, i;
+
+        for (i = 0; i < types.length; i += 1) {
+            source = document.createElement("source");
+            source.src = "Theme/Video." + types[i];
+            source.type = "video/" + types[i];
+            vidder.appendChild(source);
+        }
+
+        vidder.style.width = "100%";
+        vidder.style.height = "100%";
+        vidder.style.zIndex = 49;
+        vidder.style.position = "fixed";
+
+        vidder.volume = 1;
+        vidder.autoplay = true;
+        vidder.play();
+        vidder.oncanplay = function () {
+            document.body.insertBefore(
+                vidder, document.body.firstChild
+            );
+        };
+    }
+
 
     /* Map sets
     */
@@ -9231,6 +9263,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "downloadSaveGame": downloadSaveGame,
         "addItemToBag": addItemToBag,
         "MARATHON": MARATHON,
+        "DURANDAL": DURANDAL,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
