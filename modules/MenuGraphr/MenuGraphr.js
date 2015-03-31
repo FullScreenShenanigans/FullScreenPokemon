@@ -348,6 +348,8 @@ function MenuGraphr(settings) {
             dialog = [""];
         } else if (dialog.constructor === String) {
             dialog = [dialog];
+        } else if (!(dialog instanceof Array)) {
+            dialog = [String(dialog)];
         }
 
         self.addMenuText(name, dialog[0], function () {

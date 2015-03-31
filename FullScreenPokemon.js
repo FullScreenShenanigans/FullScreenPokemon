@@ -580,6 +580,21 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function canInputsTrigger(EightBitter) {
+        return true;
+    }
+
+    /**
+     * 
+     */
+    function canDirectionsTrigger(EightBitter) {
+        if (EightBitter.GamesRunner.getPaused()) {
+            return false;
+        }
+
+        if (EightBitter.MenuGrapher.getActiveMenu()) {
+            return true;
+        }
+
         return !EightBitter.MapScreener.blockInputs;
     }
 
@@ -604,7 +619,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {Player} player
      */
     function keyDownLeft(player, event) {
-        if (player.EightBitter.GamesRunner.getPaused()) {
+        if (!player.EightBitter.canDirectionsTrigger(player.EightBitter)) {
             return;
         }
 
@@ -626,7 +641,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {Player} player
      */
     function keyDownRight(player, event) {
-        if (player.EightBitter.GamesRunner.getPaused()) {
+        if (!player.EightBitter.canDirectionsTrigger(player.EightBitter)) {
             return;
         }
 
@@ -649,7 +664,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {Player} player
      */
     function keyDownUp(player, event) {
-        if (player.EightBitter.GamesRunner.getPaused()) {
+        if (!player.EightBitter.canDirectionsTrigger(player.EightBitter)) {
             return;
         }
 
@@ -674,7 +689,7 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {Player} player
      */
     function keyDownDown(player, event) {
-        if (player.EightBitter.GamesRunner.getPaused()) {
+        if (!player.EightBitter.canDirectionsTrigger(player.EightBitter)) {
             return;
         }
 
@@ -6251,6 +6266,9 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animatePlayerDialogFreeze(settings.player);
         EightBitter.animateCharacterSetDirection(settings.player, 2);
 
+        EightBitter.GBSEmulator.play("Professor Oak");
+        EightBitter.MapScreener.blockInputs = true;
+
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "finishAutomatically": true,
             "finishAutomaticSpeed": 28
@@ -6346,6 +6364,9 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroEnterLab(EightBitter, settings) {
+        EightBitter.StateHolder.addChange(
+            "Pallet Town::Oak's Lab::Oak", "alive", true
+        );
         EightBitter.TimeHandler.addEvent(
             EightBitter.animateCharacterStartTurning,
             EightBitter.getCharacterWalkingInterval(EightBitter.player),
@@ -6353,12 +6374,13 @@ var FullScreenPokemon = (function (GameStartr) {
             0,
             [
                 1,
-                EightBitter.setMap.bind(
-                    EightBitter,
-                    "Pallet Town",
-                    "Oak's Lab Floor 1 Door",
-                    false
-                )
+                function () {
+                    EightBitter.setMap(
+                        "Pallet Town", "Oak's Lab Floor 1 Door", false
+                    );
+
+                    EightBitter.ScenePlayer.playRoutine("WalkToTable");
+                }
             ]
         );
     }
@@ -6379,6 +6401,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.setBottom(oak, settings.player.top);
 
         EightBitter.StateHolder.addChange(oak.id, "hidden", false);
+        EightBitter.StateHolder.addChange(oak.id, "nocollide", false);
         EightBitter.StateHolder.addChange(oak.id, "dialog", oak.dialog);
 
         EightBitter.animateCharacterStartWalking(oak, 0, [
@@ -6479,6 +6502,8 @@ var FullScreenPokemon = (function (GameStartr) {
         blocker.nocollide = false;
         EightBitter.StateHolder.addChange(blocker.id, "nocollide", false);
 
+        EightBitter.MapScreener.blockInputs = false;
+
         EightBitter.MenuGrapher.deleteMenu("GeneralText");
 
         EightBitter.TimeHandler.addEvent(
@@ -6566,10 +6591,7 @@ var FullScreenPokemon = (function (GameStartr) {
                         "callback": EightBitter.ScenePlayer.bindRoutine("PlayerTakesPokemon")
                     }, {
                         "text": "NO",
-                        "callback": EightBitter.MenuGrapher.deleteMenu.bind(
-                            EightBitter.MenuGrapher,
-                            "GeneralText"
-                        )
+                        "callback": EightBitter.MenuGrapher.registerB
                     }]
                 });
                 EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -6582,12 +6604,22 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroPokemonChoicePlayerTakesPokemon(EightBitter, settings) {
+        var oak = EightBitter.getThingById("Oak"),
+            rival = EightBitter.getThingById("Rival"),
+            dialogOak = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!",
+            dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
+
+        settings.oak = oak;
+        oak.dialog = dialogOak;
+        EightBitter.StateHolder.addChange(oak.id, "dialog", dialogOak);
+
+        settings.rival = rival;
+        rival.dialog = dialogRival;
+        EightBitter.StateHolder.addChange(rival.id, "dialog", dialogRival)
+
         EightBitter.StatsHolder.set("starter", settings.chosen);
         settings.triggerer.hidden = true;
         EightBitter.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
-
-        settings.oak.dialog = dialog;
-        EightBitter.StateHolder.addChange(settings.oak.id, "dialog", dialog);
 
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
         EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -6732,6 +6764,8 @@ var FullScreenPokemon = (function (GameStartr) {
         var rival = EightBitter.getThingById("Rival"),
             dx = Math.abs(settings.triggerer.left - settings.player.left),
             further = dx < EightBitter.unitsize;
+
+        EightBitter.GBSEmulator.play("Rival Appears");
 
         settings.rival = rival;
         EightBitter.animateCharacterSetDirection(rival, 2);
@@ -8936,6 +8970,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "getThingById": getThingById,
         // Inputs
         "canInputsTrigger": canInputsTrigger,
+        "canDirectionsTrigger": canDirectionsTrigger,
         "keyDownGeneric": keyDownGeneric,
         "keyDownLeft": keyDownLeft,
         "keyDownRight": keyDownRight,

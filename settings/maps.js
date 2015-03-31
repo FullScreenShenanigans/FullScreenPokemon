@@ -237,7 +237,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FloorLinedHorizontal", "y": 8, "width": 80, "height": 88 },
                         { "thing": "AsianScroll", "x": 32, "dialog": "Push START to open the MENU!" },
                         { "thing": "AsianScroll", "x": 40, "dialog": "The SAVE option is on the MENU screen." },
-                        { "thing": "Oak", "x": 40, "y": 16, "id": "Oak", "alive": false },
+                        { "thing": "Oak", "x": 40, "y": 16, "id": "Oak", "hidden": true, "nocollide": true },
                         { "thing": "Rival", "x": 32, "y": 24, "id": "Rival", "dialog": "Yo %%%%%%%PLAYER%%%%%%%! Gramps isn't around!" },
                         { "thing": "Table3x1", "x": 48, "y": 24 },
                         { "thing": "Pokeball", "x": 48, "y": 24, "id": "PokeballCharmander", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": "Charmander", "description": "fire" },
