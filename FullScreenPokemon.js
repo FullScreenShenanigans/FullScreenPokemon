@@ -111,6 +111,9 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
+
+        setTimeout(this.MARATHON.bind(this), 30000);
+        setTimeout(this.downloadSaveGame.bind(this), 28000);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 
@@ -7526,7 +7529,9 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function MARATHON(EightBitter, noDownload) {
+    function MARATHON() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this);
+
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "position": {
                 "horizontal": "center",
@@ -7544,13 +7549,9 @@ var FullScreenPokemon = (function (GameStartr) {
                 "Coming April 1st, 2016!",
                 "We promise!"
             ],
-            EightBitter.MARATHON.bind(EightBitter, EightBitter)
+            EightBitter.MARATHON.bind(EightBitter)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-
-        if (!noDownload) {
-            EightBitter.saveGame();
-        }
     }
 
 
