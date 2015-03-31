@@ -1216,7 +1216,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 256, "y": 96, "xnum": 2, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 48, "y": 112, "width": 32, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 112, "xnum": 24, "ynum": 2 },
-                        { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, },
+                        { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, "transport": { "map": "Pewter City", "location": "Pewter Gym Floor 1 Door" } },
                         { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart", "transport": { "map": "Pewter City", "location": "PokeMart Inside Door" }, "entrance": { "map": "Pewter City", "location": "PokeMart Outside Door" } },
                         { "thing": "Lass", "x": 64, "y": 120, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["It's rumored that CLEFAIRYs came from the moon!", "They appeared after MOON STONE fell on MT. MOON."] },
                         { "thing": "DirtLight", "x": 80, "y": 128, "width": 64, "height": 16 },
