@@ -7526,7 +7526,7 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
-    function MARATHON(EightBitter) {
+    function MARATHON(EightBitter, noDownload) {
         EightBitter.MenuGrapher.createMenu("GeneralText", {
             "position": {
                 "horizontal": "center",
@@ -7547,6 +7547,10 @@ var FullScreenPokemon = (function (GameStartr) {
             EightBitter.MARATHON.bind(EightBitter, EightBitter)
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+
+        if (!noDownload) {
+            EightBitter.saveGame();
+        }
     }
 
 
