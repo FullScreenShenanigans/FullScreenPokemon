@@ -1218,28 +1218,7 @@ var FullScreenPokemon = (function (GameStartr) {
             chosen = thing.EightBitter.chooseRandomWildPokemon(
                 thing.EightBitter, options
             ),
-            chosenPokemon = thing.EightBitter.createPokemon(chosen),
-            callback = thing.EightBitter.BattleMover.startBattle.bind(
-                thing.EightBitter.BattleMover,
-                {
-                    "player": {
-                        "name": "%%%%%%%PLAYER%%%%%%%",
-                        "sprite": "PlayerBack",
-                        "category": "Trainer",
-                        "hasActors": true,
-                        "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
-                    },
-                    "opponent": {
-                        "name": chosen.title,
-                        "sprite": chosen.title + "Front",
-                        "category": "Wild",
-                        "actors": [chosenPokemon]
-                    }
-                }
-            ),
-            animation = thing.EightBitter.NumberMaker.randomArrayMember([
-                "LineSpiral", "Flash"
-            ]);
+            chosenPokemon = thing.EightBitter.createPokemon(chosen);
 
         thing.EightBitter.removeClass(thing, "walking");
         if (thing.shadow) {
@@ -1248,12 +1227,16 @@ var FullScreenPokemon = (function (GameStartr) {
 
         thing.EightBitter.animateCharacterPreventWalking(thing);
 
-        thing.EightBitter["cutsceneBattleTransition" + animation](
-            thing.EightBitter, {
-                "callback": callback,
-                "keptThings": [thing, thing.shadow]
+        thing.EightBitter.ScenePlayer.playCutscene("Battle", {
+            "battleInfo": {
+                "opponent": {
+                    "name": chosen.title,
+                    "sprite": chosen.title + "Front",
+                    "category": "Wild",
+                    "actors": [chosenPokemon]
+                }
             }
-        );
+        })
     }
 
     /**
@@ -1261,46 +1244,29 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function animateTrainerBattleStart(thing, other) {
         var battleName = other.battleName || other.title,
-            battleSprite = other.battleSprite || battleName,
-            callback = thing.EightBitter.BattleMover.startBattle.bind(
-                thing.EightBitter.BattleMover,
-                {
-                    "player": {
-                        "name": "%%%%%%%PLAYER%%%%%%%",
-                        "sprite": "PlayerBack",
-                        "category": "Trainer",
-                        "hasActors": true,
-                        "actors": thing.EightBitter.StatsHolder.get("PokemonInParty")
-                    },
-                    "opponent": {
-                        "name": battleName,
-                        "sprite": battleSprite + "Front",
-                        "category": "Trainer",
-                        "hasActors": true,
-                        "reward": other.reward,
-                        "actors": other.actors.map(
-                            thing.EightBitter.createPokemon.bind(thing.EightBitter)
-                        )
-                    },
-                    "textStart": ["", " wants to fight!"],
-                    "textDefeat": other.textDefeat,
-                    "textAfterBattle": other.textAfterBattle,
-                    "giftAfterBattle": other.giftAfterBattle,
-                    "badge": other.badge,
-                    "textVictory": other.textVictory,
-                    "nextCutscene": other.nextCutscene
-                }
-            ),
-            animation = thing.EightBitter.NumberMaker.randomArrayMember([
-                "LineSpiral", "Flash"
-            ]);
+            battleSprite = other.battleSprite || battleName;
 
-        thing.EightBitter["cutsceneBattleTransition" + animation](
-            thing.EightBitter, {
-                "callback": callback,
-                "keptThings": [thing, other]
+        thing.EightBitter.ScenePlayer.playCutscene("Battle", {
+            "battleInfo": {
+                "opponent": {
+                    "name": battleName,
+                    "sprite": battleSprite + "Front",
+                    "category": "Trainer",
+                    "hasActors": true,
+                    "reward": other.reward,
+                    "actors": other.actors.map(
+                        thing.EightBitter.createPokemon.bind(thing.EightBitter)
+                    )
+                },
+                "textStart": ["", " wants to fight!"],
+                "textDefeat": other.textDefeat,
+                "textAfterBattle": other.textAfterBattle,
+                "giftAfterBattle": other.giftAfterBattle,
+                "badge": other.badge,
+                "textVictory": other.textVictory,
+                "nextCutscene": other.nextCutscene
             }
-        );
+        });
     }
 
     /**
@@ -2614,6 +2580,10 @@ var FullScreenPokemon = (function (GameStartr) {
         if (!thing) {
             return;
         }
+        if (thing.title === "RivalBlocker") {
+            console.log("Aha!");
+            debugger;
+        }
 
         thing.nocollide = thing.hidden = thing.dead = true;
         thing.alive = false;
@@ -3585,6 +3555,37 @@ var FullScreenPokemon = (function (GameStartr) {
 
     /* Battles
     */
+
+    /**
+     * 
+     */
+    function startBattle(battleInfo) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            animations = battleInfo.animations || [
+                "LineSpiral", "Flash"
+            ],
+            animation = EightBitter.NumberMaker.randomArrayMember(animations),
+            player = battleInfo.player;
+
+        if (!player) {
+            battleInfo.player = player = {};
+        }
+
+        player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
+        player.sprite = player.sprite || "PlayerBack";
+        player.category = player.category || "Trainer";
+        player.actors = player.actors || EightBitter.StatsHolder.get("PokemonInParty");
+        player.hasActors = typeof player.hasActors === "undefined"
+            ? true : player.hasActors;
+
+        EightBitter.GBSEmulator.play(battleInfo.theme || "Trainer Battle");
+
+        EightBitter["cutsceneBattleTransition" + animation](EightBitter, {
+            "callback": EightBitter.BattleMover.startBattle.bind(
+                EightBitter.BattleMover, battleInfo
+            )
+        });
+    }
 
     /**
      * 
@@ -6619,6 +6620,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.StatsHolder.set("starter", settings.chosen);
         settings.triggerer.hidden = true;
+        EightBitter.StateHolder.addChange(settings.triggerer.id, "hidden", true);
         EightBitter.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
 
         EightBitter.MenuGrapher.deleteMenu("Yes/No");
@@ -6789,10 +6791,10 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneOakIntroRivalLeavesAfterBattle(EightBitter, settings) {
-        var rivalblocker = EightBitter.getThingById("RivalBlocker");
+        //var rivalblocker = EightBitter.getThingById("RivalBlocker");
 
-        rivalblocker.nocollide = true;
-        EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
+        //rivalblocker.nocollide = true;
+        //EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.ScenePlayer.bindRoutine("Complaint"), 49
@@ -6866,13 +6868,6 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneOakIntroRivalBattleChallenge(EightBitter, settings) {
         var keptThings = [settings.player, settings.rival],
             battleInfo = {
-                "player": {
-                    "sprite": "PlayerBack",
-                    "name": EightBitter.StatsHolder.get("name"),
-                    "category": "Trainer",
-                    "hasActors": true,
-                    "actors": EightBitter.StatsHolder.get("PokemonInParty")
-                },
                 "opponent": {
                     "sprite": "RivalPortrait",
                     "name": EightBitter.StatsHolder.get("nameRival"),
@@ -6896,6 +6891,8 @@ var FullScreenPokemon = (function (GameStartr) {
                         "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
                     ].join(" ")
                 ],
+                "animation": "LineSpiral",
+                "theme": "Trainer Battle",
                 "noBlackout": true,
                 "keptThings": ["player", "Rival"],
                 "nextCutscene": "OakIntroRivalLeaves",
@@ -6925,16 +6922,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 steps,
                 "bottom",
                 1,
-                cutsceneBattleTransitionLineSpiral.bind(
-                    EightBitter,
-                    EightBitter,
-                    {
-                        "keptThings": ["player", "Rival"],
-                        "callback": EightBitter.BattleMover.startBattle.bind(
-                            EightBitter.BattleMover, battleInfo
-                        )
-                    }
-                )
+                EightBitter.startBattle.bind(EightBitter, battleInfo)
             ]
         );
     }
@@ -7294,49 +7282,44 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutsceneElderTrainingStartBattle(EightBitter, settings) {
         EightBitter.MapScreener.blockInputs = true;
-        EightBitter.cutsceneBattleTransitionFlash(EightBitter, {
+        EightBitter.startBattle({
             "keptThings": [settings.player, settings.triggerer],
-            "callback": EightBitter.BattleMover.startBattle.bind(
-                EightBitter.BattleMover,
-                {
-                    "player": {
-                        "name": "OLD MAN",
-                        "sprite": "ElderBack",
-                        "category": "Wild",
-                        "actors": []
-                    },
-                    "opponent": {
-                        "name": "WEEDLE",
-                        "sprite": "WeedleFront",
-                        "category": "Wild",
-                        "actors": [
-                            EightBitter.MathDecider.compute(
-                                "newPokemon", "Weedle", 5
-                            )
-                        ]
-                    },
-                    "items": [{
-                        "item": "Pokeball",
-                        "amount": 50
-                    }],
-                    "automaticMenus": true,
-                    "onShowPlayerMenu": function () {
-                        var timeout = 70;
+            "player": {
+                "name": "OLD MAN",
+                "sprite": "ElderBack",
+                "category": "Wild",
+                "actors": []
+            },
+            "opponent": {
+                "name": "WEEDLE",
+                "sprite": "WeedleFront",
+                "category": "Wild",
+                "actors": [
+                    EightBitter.MathDecider.compute(
+                        "newPokemon", "Weedle", 5
+                    )
+                ]
+            },
+            "items": [{
+                "item": "Pokeball",
+                "amount": 50
+            }],
+            "automaticMenus": true,
+            "onShowPlayerMenu": function () {
+                var timeout = 70;
 
-                        EightBitter.TimeHandler.addEvent(
-                            EightBitter.MenuGrapher.registerDown, timeout
-                        );
+                EightBitter.TimeHandler.addEvent(
+                    EightBitter.MenuGrapher.registerDown, timeout
+                );
 
-                        EightBitter.TimeHandler.addEvent(
-                            EightBitter.MenuGrapher.registerA, timeout * 2
-                        );
+                EightBitter.TimeHandler.addEvent(
+                    EightBitter.MenuGrapher.registerA, timeout * 2
+                );
 
-                        EightBitter.TimeHandler.addEvent(
-                            EightBitter.MenuGrapher.registerA, timeout * 3
-                        );
-                    }
-                }
-            )
+                EightBitter.TimeHandler.addEvent(
+                    EightBitter.MenuGrapher.registerA, timeout * 3
+                );
+            }
         });
     }
 
@@ -7383,37 +7366,6 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneRivalRoute22RivalTalks(EightBitter, settings) {
-        var battleInfo = {
-            "player": {
-                "sprite": "PlayerBack",
-                "name": EightBitter.StatsHolder.get("name"),
-                "category": "Trainer",
-                "hasActors": true,
-                "actors": EightBitter.StatsHolder.get("PokemonInParty")
-            },
-            "opponent": {
-                "sprite": "RivalPortrait",
-                "name": EightBitter.StatsHolder.get("nameRival"),
-                "category": "Trainer",
-                "hasActors": true,
-                "reward": 280,
-                "actors": [
-                    EightBitter.MathDecider.compute(
-                        "newPokemon",
-                        EightBitter.StatsHolder.get("starterRival"),
-                        8
-                    ),
-                    EightBitter.MathDecider.compute(
-                        "newPokemon", "Pidgey", 9
-                    )
-                ]
-            },
-            "textStart": ["", " wants to fight!"],
-            "textDefeat": ["Yeah! Am I great or what?"],
-            "textVictory": ["Awww! You just lucked out!"],
-            "keptThings": ["player", "Rival"]
-        };
-
         EightBitter.animateCharacterSetDirection(
             settings.player,
             EightBitter.getDirectionBordering(settings.player, settings.rival)
@@ -7429,16 +7381,29 @@ var FullScreenPokemon = (function (GameStartr) {
                 "The guard won't let you through!",
                 "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?"
             ],
-            EightBitter.cutsceneBattleTransitionLineSpiral.bind(
-                EightBitter,
-                EightBitter,
-                {
-                    "keptThings": ["player", "Rival"],
-                    "callback": EightBitter.BattleMover.startBattle.bind(
-                        EightBitter.BattleMover, battleInfo
-                    )
-                }
-            )
+            EightBitter.startBattle.bind(EightBitter, {
+                "opponent": {
+                    "sprite": "RivalPortrait",
+                    "name": EightBitter.StatsHolder.get("nameRival"),
+                    "category": "Trainer",
+                    "hasActors": true,
+                    "reward": 280,
+                    "actors": [
+                        EightBitter.MathDecider.compute(
+                            "newPokemon",
+                            EightBitter.StatsHolder.get("starterRival"),
+                            8
+                        ),
+                        EightBitter.MathDecider.compute(
+                            "newPokemon", "Pidgey", 9
+                        )
+                    ]
+                },
+                "textStart": ["", " wants to fight!"],
+                "textDefeat": ["Yeah! Am I great or what?"],
+                "textVictory": ["Awww! You just lucked out!"],
+                "keptThings": ["player", "Rival"]
+            })
         );
         EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -9086,6 +9051,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "addKeyboardMenuValue": addKeyboardMenuValue,
         "switchKeyboardCase": switchKeyboardCase,
         // Battles and battle animations
+        "startBattle": startBattle,
         "createPokemon": createPokemon,
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,
