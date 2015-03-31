@@ -460,7 +460,13 @@ function StatsHoldr(settings) {
             return value;
         }
 
-        return JSON.parse(value);
+        try {
+            return JSON.parse(value);
+        } catch (error) {
+            console.error("Error parsing " + this.key + ":", error);
+        }
+
+        return undefined;
     };
 
     /**
