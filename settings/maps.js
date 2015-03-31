@@ -748,6 +748,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 224,
                     "height": 592,
                     "creation": [
+                        { "thing": "ThemePlayer", "x": 96, "width": 16, "height": 400, "theme": "Route 1" },
                         { "thing": "AreaSpawner", "width": 224, "direction": 0, "map": "Pewter City", "area": "Land", "offsetX": -48 },
                         { "thing": "DirtMedium", "width": 96, "height": 16 },
                         { "thing": "PlantSmall", "width": 96, "height": 16 },
@@ -1130,6 +1131,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Pewter City",
+            "theme": "Viridian City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Museum of Science Outside Door": {
@@ -1233,8 +1235,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 256, "y": 96, "xnum": 2, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 48, "y": 112, "width": 32, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 112, "xnum": 24, "ynum": 2 },
-                        { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, "transport": { "map": "Pewter City", "location": "Pewter Gym Floor 1 Door" } },
-                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart", "transport": { "map": "Pewter City", "location": "PokeMart Inside Door" }, "entrance": { "map": "Pewter City", "location": "PokeMart Outside Door" } },
+                        { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, "transport": { "map": "Pewter City", "location": "Pewter Gym Floor 1 Door" }, "entrance": "Pewter Gym Outside Door" },
+                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart", "transport": { "map": "Pewter City", "location": "PokeMart Inside Door" }, "entrance": "PokeMart Outside Door" },
                         { "thing": "Lass", "x": 64, "y": 120, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["It's rumored that CLEFAIRYs came from the moon!", "They appeared after MOON STONE fell on MT. MOON."] },
                         { "thing": "DirtLight", "x": 80, "y": 128, "width": 64, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 128, "xnum": 2, "ynum": 2 },
@@ -1317,6 +1319,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 160, "y": 256, "width": 48, "height": 32 },
                         { "thing": "FenceWide", "x": 208, "y": 256, "width": 80 },
                         { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
+                        { "thing": "ThemePlayer", "x": 144, "y": 280, "width": 16, "height": 200, "theme": "Viridian City" },
                         { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
                     ]
                 },
@@ -1332,6 +1335,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Pewter Gym": {
                     "width": 80,
                     "height": 112,
+                    "theme": "Gym",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBandsInverse", "width": 80, "height": 112 },
