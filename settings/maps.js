@@ -364,8 +364,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 96, "y": 256, "width": 48 },
                         { "thing": "FenceWide", "x": 72, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 96, "y": 264, "height": 32 },
-                        { "thing": "FenceWide", "x": 24, "y": 288 },
                         { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Route 1" },
+                        { "thing": "FenceWide", "x": 24, "y": 288 },
                         { "thing": "ThemePlayer", "x": 80, "y": 288, "width": 16, "theme": "Pallet Town" },
                         { "thing": "FenceWide", "x": 144, "y": 288 },
                         { "thing": "AreaSpawner", "y": 288, "width": 160, "map": "Pallet Town", "area": "Land", "direction": 2 }
@@ -407,7 +407,6 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 320,
                     "height": 288,
                     "creation": [
-                        { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Viridian City" },
                         { "thing": "AreaSpawner", "width": 320, "map": "Route 2", "area": "Land", "direction": 0, "offsetX": 48 },
                         { "thing": "AreaSpawner", "height": 288, "map": "Route 22", "area": "Land", "direction": 3, "offsetY": 64 },
                         { "macro": "Mountain", "width": 48, "height": 112, "bottom": true, "right": true },
@@ -415,6 +414,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "width": 80, "height": 32 },
                         { "thing": "DirtWhite", "x": 128, "width": 16, "height": 32 },
                         { "thing": "FenceVertical", "x": 128, "width": 8, "height": 32 },
+                        { "thing": "ThemePlayer", "x": 136, "width": 24, "theme": "Viridian City" },
                         { "thing": "DirtLight", "x": 144, "width": 16, "height": 16 },
                         { "thing": "DirtMedium", "x": 160, "width": 128, "height": 16 },
                         { "thing": "PlantSmall", "x": 160, "width": 32, "height": 32 },
@@ -469,6 +469,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtLight", "x": 160, "y": 96, "width": 128, "height": 16 },
                         { "thing": "FenceVertical", "x": 160, "y": 104, "width": 128, "height": 8 },
                         { "thing": "DirtMedium", "y": 112, "width": 56, "height": 16 },
+                        { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Viridian City" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 112, "xnum": 16, "ynum": 2 },
                         { "macro": "House", "x": 160, "y": 112, "door": true, "entrance": "School Front Door", "transport": "School Floor 1 Door" },
                         { "thing": "DirtLight", "y": 128, "width": 16, "height": 24 },
@@ -731,6 +732,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 2",
+            "theme": "Route 1",
             "locationDefault": "Viridian Forest Top",
             "locations": {
                 "Viridian Forest Top": {
@@ -885,6 +887,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "y": 576, "width": 32, "height": 16 },
                         { "thing": "DirtWhite", "x": 80, "y": 576, "width": 16, "height": 16 },
                         { "thing": "FenceVertical", "x": 80, "y": 576, "width": 8, "height": 16 },
+                        { "thing": "ThemePlayer", "x": 88, "y": 576, "width": 24, "theme": "Route 1" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 96, "y": 576, "xnum": 2, "ynum": 2 },
                         { "thing": "AreaSpawner", "y": 584, "width": 608, "map": "Viridian City", "area": "Land", "offsetX": -48 }
                     ]
@@ -892,6 +895,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Viridian Forest",
+            "theme": "Viridian Forest",
             "locationDefault": "Forest Top",
             "locations": {
                 "Gate North Door North": {
@@ -907,6 +911,11 @@ FullScreenPokemon.prototype.settings.maps = {
                     "yloc": 376,
                     "direction": 0
                 },
+                "Forest Top": {
+                    "area": "Forest",
+                    "xloc": 8,
+                    "direction": 2,
+                },
                 "Gate South Door North": {
                     "area": "Gate South"
                 },
@@ -919,6 +928,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Gate North": {
                     "width": 80,
                     "height": 64,
+                    "theme": "Viridian City",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
@@ -1096,6 +1106,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Gate South": {
                     "width": 80,
                     "height": 64,
+                    "theme": "Viridian City",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
