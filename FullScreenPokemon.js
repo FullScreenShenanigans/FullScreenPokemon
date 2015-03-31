@@ -3517,17 +3517,20 @@ var FullScreenPokemon = (function (GameStartr) {
         menuResult.completeValue += selected.text[0];
         menuResult.selectedChild += 1;
 
-        if (menuResult.selectedChild < menuResult.children.length) {
+        if (menuResult.selectedChild < menuResult.children.length - 1) {
             child = menuResult.children[menuResult.selectedChild];
             child.hidden = true;
         } else {
             menuResult.blinker.hidden = true;
-            if (menuResult.selectedIndexOnFull) {
-                console.log("something with menuKeys");
-            }
+            EightBitter.MenuGrapher.setSelectedIndex(
+                "KeyboardKeys",
+                menuKeys.gridColumns - 1,
+                menuKeys.gridRows - 2 // assume there's a bottom option
+            );
         }
 
-        EightBitter.setLeft(menuResult.blinker, child.left, child.top);
+        EightBitter.setLeft(menuResult.blinker, child.left);
+        EightBitter.setTop(menuResult.blinker, child.top);
     }
 
     /**
@@ -6040,7 +6043,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 "text": "NEW NAME",
                 "callback": EightBitter.openKeyboardMenu.bind(EightBitter, {
                     "title": "RIVAL's NAME?",
-                    "callback": fromKeyboard
+                    "callback": fromKeyboard,
                 })
             }, {
                 "text": "RED",

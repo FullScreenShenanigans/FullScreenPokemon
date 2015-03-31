@@ -895,6 +895,16 @@ function MenuGraphr(settings) {
     /**
      * 
      */
+    self.setSelectedIndex = function (name, x, y) {
+        var menu = self.getExistingMenu(name),
+            selectedIndex = menu.selectedIndex;
+
+        self.shiftSelectedIndex(name, x - selectedIndex[0], y - selectedIndex[1]);
+    };
+
+    /**
+     * 
+     */
     function adjustVerticalScrollingListThings(name, dy, textPaddingY) {
         var menu = self.getExistingMenu(name),
             scrollingItems = menu.scrollingItems,
