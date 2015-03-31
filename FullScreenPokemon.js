@@ -4589,6 +4589,8 @@ var FullScreenPokemon = (function (GameStartr) {
             return;
         }
 
+        EightBitter.GBSEmulator.playTheme(EightBitter.MapScreener.theme);
+
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -4710,6 +4712,8 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             callback = EightBitter.BattleMover.closeBattle;
         }
+
+        EightBitter.GBSEmulator.playTheme(EightBitter.MenuScreener.theme);
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
         EightBitter.MenuGrapher.addMenuDialog(
@@ -7589,6 +7593,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.QuadsKeeper.resetQuadrants();
 
         theme = location.theme || location.area.theme || location.area.map.theme;
+        EightBitter.MapScreener.theme = theme;
         if (theme && theme !== EightBitter.GBSEmulator.getTheme()) {
             EightBitter.GBSEmulator.play(theme);
         }
