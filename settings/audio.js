@@ -26,6 +26,7 @@ FullScreenPokemon.prototype.settings.audio = {
                 "Route 2": 17,
                 "The Final Road": 20,
                 "Last Rival Battle": 24,
+                "Oak's Lab": 30,
                 "Recovery": 44,
                 "1": 1,
                 "5": 5,

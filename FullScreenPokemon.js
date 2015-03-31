@@ -2452,25 +2452,67 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function collidePokeball(thing, other) {
-        thing.EightBitter.MenuGrapher.createMenu("GeneralText");
-        thing.EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
-            ],
-            function () {
-                thing.EightBitter.MenuGrapher.deleteActiveMenu();
-                thing.EightBitter.killNormal(other);
-                thing.EightBitter.StateHolder.addChange(
-                    other.id, "alive", false
+        switch (other.action) {
+            case "item":
+                thing.EightBitter.MenuGrapher.createMenu("GeneralText");
+                thing.EightBitter.MenuGrapher.addMenuDialog(
+                    "GeneralText",
+                    [
+                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
+                    ],
+                    function () {
+                        thing.EightBitter.MenuGrapher.deleteActiveMenu();
+                        thing.EightBitter.killNormal(other);
+                        thing.EightBitter.StateHolder.addChange(
+                            other.id, "alive", false
+                        );
+                    }
                 );
-            }
-        );
-        thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-        thing.EightBitter.addItemToBag(
-            thing.EightBitter, other.item, other.amount
-        );
+                thing.EightBitter.addItemToBag(
+                    thing.EightBitter, other.item, other.amount
+                );
+                break;
+
+            case "cutscene":
+                thing.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
+                    "player": thing,
+                    "triggerer": other
+                });
+                if (other.routine) {
+                    thing.EightBitter.ScenePlayer.playRoutine(other.routine);
+                }
+                break;
+
+            case "pokedex":
+                thing.EightBitter.openPokedexListing(other.pokemon);
+                break;
+
+            case "dialog":
+                thing.EightBitter.MenuGrapher.createMenu("GeneralText");
+                thing.EightBitter.MenuGrapher.addMenuDialog(
+                    "GeneralText", other.dialog
+                );
+                thing.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                break;
+
+            case "yes/no":
+                thing.EightBitter.MenuGrapher.createMenu("Yes/No", {
+                    "killOnB": ["GeneralText"],
+                });
+                thing.EightBitter.MenuGrapher.addMenuList("Yes/No", {
+                    "options": [{
+                        "text": "YES",
+                        "callback": console.log.bind(console, "What do, yes?")
+                    }, {
+                        "text": "NO",
+                        "callback": console.log.bind(console, "What do, no?")
+                    }]
+                });
+                thing.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+                break;
+        }
     }
 
     /**
@@ -7555,7 +7597,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.QuadsKeeper.resetQuadrants();
 
         theme = location.theme || location.area.theme || location.area.map.theme;
-        if (theme) {
+        if (theme && theme !== EightBitter.GBSEmulator.getTheme()) {
             EightBitter.GBSEmulator.play(theme);
         }
 

@@ -70,10 +70,12 @@ FullScreenPokemon.prototype.settings.maps = {
                     "direction": 0
                 },
                 "Player's House Floor 1 Stairs": {
-                    "area": "Player's House"
+                    "area": "Player's House",
+                    "direction": 3
                 },
                 "Player's House Floor 2 Stairs": {
-                    "area": "Player's House Floor 2"
+                    "area": "Player's House Floor 2",
+                    "direction": 3
                 },
                 "Start Game": {
                     "area": "Player's House Floor 2",
@@ -206,7 +208,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
                         { "thing": "Cabinet", "width": 16 },
-                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP (do town map action)" },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP." },
                         { "thing": "Window", "x": 40 },
                         { "thing": "Bookshelf", "x": 56 },
                         { "thing": "Table2x3", "x": 24, "y": 24 },
@@ -223,18 +225,19 @@ FullScreenPokemon.prototype.settings.maps = {
                     ]
                 },
                 "Oak's Lab": {
+                    "theme": "Oak's Lab",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorLightWithDarkBottom", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "Table2x2", "y": 4, "width": 32 },
-                        { "thing": "LabComputer", "y": 8 },
-                        { "thing": "Book", "x": 16, "y": 8, "id": "BookLeft" },
-                        { "thing": "Book", "x": 24, "y": 8, "id": "BookRight" },
+                        { "thing": "LabComputer", "y": 8, "dialog": ["There's an e-mail message here!", "...", "Calling all %%%%%%%POKEMON%%%%%%% trainers!", "The elite trainers of %%%%%%%POKEMON%%%%%%% LEAGUE are ready to take on all comers!", "Bring your best %%%%%%%POKEMON%%%%%%% and see how you rate as a trainer!", "%%%%%%%POKEMON%%%%%%% LEAGUE HQ INDIGO PLATEAU", "PS: PROF. OAK, please visit us! ..."] },
+                        { "thing": "Book", "x": 16, "y": 8, "id": "BookLeft", "dialog": "It's encyclopedia- like, but the pages are blank!" },
+                        { "thing": "Book", "x": 24, "y": 8, "id": "BookRight", "dialog": "It's encyclopedia- like, but the pages are blank!" },
                         { "thing": "FloorLinedHorizontal", "y": 8, "width": 80, "height": 88 },
                         { "thing": "AsianScroll", "x": 32, "dialog": "Push START to open the MENU!" },
                         { "thing": "AsianScroll", "x": 40, "dialog": "The SAVE option is on the MENU screen." },
-                        { "thing": "Oak", "x": 40, "y": 16, "id": "Oak", "hidden": true },
+                        { "thing": "Oak", "x": 40, "y": 16, "id": "Oak", "alive": false },
                         { "thing": "Rival", "x": 32, "y": 24, "id": "Rival", "dialog": "Yo %%%%%%%PLAYER%%%%%%%! Gramps isn't around!" },
                         { "thing": "Table3x1", "x": 48, "y": 24 },
                         { "thing": "Pokeball", "x": 48, "y": 24, "id": "PokeballCharmander", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": "Charmander", "description": "fire" },
@@ -547,7 +550,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "Cabinet", "width": 16 },
-                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP. (TO DO: TRIGGER TOWN MAP)" },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP." },
                         { "thing": "Clipboard", "x": 32, "dialog": "SPEAROW \n Name: SPEARY" },
                         { "thing": "Window", "x": 40 },
                         { "thing": "Bookshelf", "x": 56 },
@@ -1396,7 +1399,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "Cabinet", "width": 16 },
-                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP. (TO DO: TRIGGER TOWN MAP)" },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP." },
                         { "thing": "Window", "x": 40 },
                         { "thing": "Bookshelf", "x": 56 },
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
@@ -1422,7 +1425,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "WallIndoorHorizontalBands", "width": 64 },
                         { "thing": "InvisibleWall", "width": 64 },
                         { "thing": "Cabinet", "width": 16 },
-                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP. (TO DO: TRIGGER TOWN MAP)" },
+                        { "thing": "Painting", "x": 24, "dialog": "A TOWN MAP." },
                         { "thing": "Window", "x": 40 },
                         { "thing": "Bookshelf", "x": 56 },
                         { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },

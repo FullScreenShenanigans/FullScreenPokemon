@@ -45,6 +45,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "Solid": {
                 "AsianScroll": {},
                 "BedSingle": {},
+                "Book": {},
                 "Bookshelf": {},
                 "BuildingBase": {
                     "BuildingTopBase": {
@@ -179,7 +180,6 @@ FullScreenPokemon.prototype.settings.objects = {
             },
             "Scenery": {
                 "Blackboard": {},
-                "Book": {},
                 "Clipboard": {},
                 "Doormat": {},
                 "DoormatDotted": {},
@@ -808,6 +808,7 @@ FullScreenPokemon.prototype.settings.objects = {
             }
         },
         "Pokeball": {
+            "action": "item",
             "activate": FullScreenPokemon.prototype.collidePokeball
         },
         "Rival": {
