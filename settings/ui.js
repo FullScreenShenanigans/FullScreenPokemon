@@ -246,7 +246,7 @@ FullScreenPokemon.prototype.settings.ui = {
                         }
                     };
                 });
-            })(["a", "b", "left", "right", "up", "down", "sprint", "pause"])
+            })(["a", "b", "left", "right", "up", "down", "pause"])
         //}, {
         //    "title": "Mods!",
         //    "generator": "OptionsButtons",
