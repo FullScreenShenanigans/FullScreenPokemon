@@ -1320,7 +1320,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "height": 72
             },
             "position": {
-                "vertical": "bottom",
+                "vertical": "center",
                 "horizontal": "center"
             },
             "childrenSchemas": [{

@@ -3445,7 +3445,6 @@ var FullScreenPokemon = (function (GameStartr) {
             onComplete = (settings.callback || onKeyPress).bind(EightBitter),
             menuKeyboard = EightBitter.MenuGrapher.createMenu("Keyboard", {
                 "settings": settings,
-                "position": settings.position,
                 "onKeyPress": onKeyPress,
                 "onComplete": onComplete,
                 "ignoreB": true
