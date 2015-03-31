@@ -288,6 +288,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     },
                     "creation": [
                         { "thing": "AreaSpawner", "width": 160, "map": "Viridian City", "area": "Land", "direction": 0, "offsetX": -80 },
+                        { "thing": "ThemePlayer", "x": 80, "width": 16, "theme": "Route 1" },
                         { "thing": "DirtMedium", "width": 32, "height": 296 },
                         { "thing": "FenceWide", "x": 24, "height": 48 },
                         { "thing": "DirtMedium", "x": 24, "width": 56, "height": 80 },
@@ -364,7 +365,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 72, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 96, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 24, "y": 288 },
-                        { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Route 2" },
+                        { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Route 1" },
                         { "thing": "ThemePlayer", "x": 80, "y": 288, "width": 16, "theme": "Pallet Town" },
                         { "thing": "FenceWide", "x": 144, "y": 288 },
                         { "thing": "AreaSpawner", "y": 288, "width": 160, "map": "Pallet Town", "area": "Land", "direction": 2 }
@@ -373,6 +374,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Viridian City",
+            "theme": "Viridian City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Nicknamer House Front Door": {
@@ -539,6 +541,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 152, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 176, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
+                        { "thing": "ThemePlayer", "x": 160, "y": 272, "width": 16, "theme": "Viridian City" },
                         { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "offsetX": 80 },
                     ]
                 },
