@@ -110,7 +110,7 @@ FullScreenPokemon.prototype.settings.ui = {
             }]
         }
     },
-    "sizeDefault": "Large",
+    "sizeDefault": "Wide",
     "sizes": {
         "NES": {
             "width": 512,
@@ -119,7 +119,7 @@ FullScreenPokemon.prototype.settings.ui = {
         },
         "Wide": {
             "width": Infinity,
-            "height": 464,
+            "height": 580,
             "full": false
         },
         "Large": {
@@ -246,79 +246,79 @@ FullScreenPokemon.prototype.settings.ui = {
                         }
                     };
                 });
-            })(["left", "right", "up", "down", "sprint", "pause"])
-        }, {
-            "title": "Mods!",
-            "generator": "OptionsButtons",
-            "keyActive": "enabled",
-            "assumeInactive": true,
-            "options": function (EightBitter) {
-                return EightBitter.ModAttacher.getMods();
-            },
-            "callback": function (EightBitter, schema, button) {
-                EightBitter.ModAttacher.toggleMod(button.getAttribute("value") || button.textContent);
-            }
-        }, {
-            "title": "Editor",
-            "generator": "LevelEditor"
-        }, {
-            "title": "Maps",
-            "generator": "MapsGrid",
-            "extras": {
-                "Map Generator!": (function () {
-                    var shuffle = function (string) {
-                        return string
-                            .split('')
-                            // Same function used in browserchoice.eu :)
-                            .sort(function () {
-                                return 0.5 - Math.random()
-                            })
-                            .reverse()
-                            .join('');
-                    };
+            })(["a", "b", "left", "right", "up", "down", "sprint", "pause"])
+        //}, {
+        //    "title": "Mods!",
+        //    "generator": "OptionsButtons",
+        //    "keyActive": "enabled",
+        //    "assumeInactive": true,
+        //    "options": function (EightBitter) {
+        //        return EightBitter.ModAttacher.getMods();
+        //    },
+        //    "callback": function (EightBitter, schema, button) {
+        //        EightBitter.ModAttacher.toggleMod(button.getAttribute("value") || button.textContent);
+        //    }
+        //}, {
+        //    "title": "Editor",
+        //    "generator": "LevelEditor"
+        //}, {
+        //    "title": "Maps",
+        //    "generator": "MapsGrid",
+        //    "extras": {
+        //        "Map Generator!": (function () {
+        //            var shuffle = function (string) {
+        //                return string
+        //                    .split('')
+        //                    // Same function used in browserchoice.eu :)
+        //                    .sort(function () {
+        //                        return 0.5 - Math.random()
+        //                    })
+        //                    .reverse()
+        //                    .join('');
+        //            };
                     
-                    var getNewSeed = function () {
-                        return shuffle(String(new Date().getTime()));
-                    };
+        //            var getNewSeed = function () {
+        //                return shuffle(String(new Date().getTime()));
+        //            };
                     
-                    return {
-                        "title": "Map Generator!",
-                        "callback": function (EightBitter, schema, button, event) {
-                            var parent = event.target.parentNode,
-                                randomizer = parent.querySelector(".randomInput");
+        //            return {
+        //                "title": "Map Generator!",
+        //                "callback": function (EightBitter, schema, button, event) {
+        //                    var parent = event.target.parentNode,
+        //                        randomizer = parent.querySelector(".randomInput");
                                 
-                            randomizer.value = randomizer.value.replace(/[^\d]/g, '');
-                            if (!randomizer.value) {
-                                randomizer.value = getNewSeed();
-                            }
+        //                    randomizer.value = randomizer.value.replace(/[^\d]/g, '');
+        //                    if (!randomizer.value) {
+        //                        randomizer.value = getNewSeed();
+        //                    }
                             
-                            EightBitter.LevelEditor.disable();
-                            EightBitter.NumberMaker.resetFromSeed(randomizer.value);
-                            EightBitter.setMap("Random");
+        //                    EightBitter.LevelEditor.disable();
+        //                    EightBitter.NumberMaker.resetFromSeed(randomizer.value);
+        //                    EightBitter.setMap("Random");
                             
-                            if (!randomizer.getAttribute("custom")) {
-                                randomizer.value = getNewSeed();
-                            }
-                        },
-                        "extraElements": [
-                            [
-                                "input", {
-                                    "className": "randomInput maps-grid-input",
-                                    "type": "text",
-                                    "value": getNewSeed(),
-                                    "onchange": function (event) {
-                                        event.target.setAttribute("custom", true)
-                                    }
-                                }
-                            ]
-                        ]
-                    };
-                })()
-            },
-            "callback": function (EightBitter, schema, button, event) {
-                EightBitter.LevelEditor.disable();
-                EightBitter.setMap(button.getAttribute("value") || button.textContent);
-            }
+        //                    if (!randomizer.getAttribute("custom")) {
+        //                        randomizer.value = getNewSeed();
+        //                    }
+        //                },
+        //                "extraElements": [
+        //                    [
+        //                        "input", {
+        //                            "className": "randomInput maps-grid-input",
+        //                            "type": "text",
+        //                            "value": getNewSeed(),
+        //                            "onchange": function (event) {
+        //                                event.target.setAttribute("custom", true)
+        //                            }
+        //                        }
+        //                    ]
+        //                ]
+        //            };
+        //        })()
+        //    },
+        //    "callback": function (EightBitter, schema, button, event) {
+        //        EightBitter.LevelEditor.disable();
+        //        EightBitter.setMap(button.getAttribute("value") || button.textContent);
+        //    }
         }
     ]
 };
