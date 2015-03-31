@@ -139,7 +139,9 @@ function InputWritr(settings) {
             "left": 37,
             "up": 38,
             "right": 39,
-            "down": 40
+            "down": 40,
+            "enter": 13,
+            "back": 8
         };
         
         keyCodesToAliases = settings.keyCodesToAliases || {
@@ -149,7 +151,9 @@ function InputWritr(settings) {
             "37": "left",
             "38": "up",
             "39": "right",
-            "40": "down"
+            "40": "down",
+            "13": "enter",
+            "8": "back"
         };
     };
 
