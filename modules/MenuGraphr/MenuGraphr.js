@@ -1102,6 +1102,11 @@ function MenuGraphr(settings) {
             return;
         }
 
+        if (activeMenu.onBPress) {
+            activeMenu.onBPress(activeMenu.name);
+            return;
+        }
+
         if (activeMenu.keepOnBack) {
             self.setActiveMenu(activeMenu.backMenu);
         } else {

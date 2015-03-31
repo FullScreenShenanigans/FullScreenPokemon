@@ -1348,8 +1348,7 @@ FullScreenPokemon.prototype.settings.menus = {
             "container": "Keyboard",
             "textColumnWidth": 8,
             "textXOffset": 8,
-            "textYOffset": 3.5,
-            "ignoreB": true
+            "textYOffset": 3.5
         },
         "KeyboardResult": {
             "size": {

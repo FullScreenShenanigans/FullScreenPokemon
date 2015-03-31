@@ -3438,12 +3438,13 @@ var FullScreenPokemon = (function (GameStartr) {
                 settings.value || ["_", "_", "_", "_", "_", "_", "_"]
             ],
             onKeyPress = EightBitter.addKeyboardMenuValue.bind(EightBitter),
+            onBPress = EightBitter.removeKeyboardMenuValue.bind(EightBitter),
             onComplete = (settings.callback || onKeyPress).bind(EightBitter),
             menuKeyboard = EightBitter.MenuGrapher.createMenu("Keyboard", {
                 "settings": settings,
                 "onKeyPress": onKeyPress,
                 "onComplete": onComplete,
-                "ignoreB": true
+                "ignoreB": false
             }),
             menuResults = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
             lowercase = settings.lowercase,
@@ -3477,6 +3478,7 @@ var FullScreenPokemon = (function (GameStartr) {
                 }
             }
         });
+        EightBitter.MenuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
         EightBitter.MenuGrapher.setActiveMenu("KeyboardKeys");
 
         menuResults.displayedValue = value.slice()[0];
@@ -3508,9 +3510,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.killNormal(child);
         menuResult.children[menuResult.selectedChild] = EightBitter.addThing(
-            selected.title,
-            child.left,
-            child.top
+            selected.title, child.left, child.top
         );
 
         menuResult.displayedValue[menuResult.selectedChild] = selected.text[0];
@@ -3528,6 +3528,36 @@ var FullScreenPokemon = (function (GameStartr) {
                 menuKeys.gridRows - 2 // assume there's a bottom option
             );
         }
+
+        EightBitter.setLeft(menuResult.blinker, child.left);
+        EightBitter.setTop(menuResult.blinker, child.top);
+    }
+
+    /**
+     * 
+     */
+    function removeKeyboardMenuValue() {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            menuResult = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
+            child = menuResult.children[menuResult.selectedChild - 1];
+
+        if (menuResult.selectedChild <= 0) {
+            return;
+        }
+
+        menuResult.selectedChild -= 1;
+        menuResult.completeValue = menuResult.completeValue.slice(
+            0, menuResult.completeValue.length - 1
+        );
+        menuResult.displayedValue[menuResult.selectedChild] = "_";
+
+        EightBitter.killNormal(child);
+
+        child = menuResult.children[menuResult.selectedChild];
+
+        menuResult.children[menuResult.selectedChild + 1] = EightBitter.addThing(
+            "CharUnderscore", child.right, child.top
+        );
 
         EightBitter.setLeft(menuResult.blinker, child.left);
         EightBitter.setTop(menuResult.blinker, child.top);
@@ -9087,6 +9117,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "openSaveMenu": openSaveMenu,
         "openKeyboardMenu": openKeyboardMenu,
         "addKeyboardMenuValue": addKeyboardMenuValue,
+        "removeKeyboardMenuValue": removeKeyboardMenuValue,
         "switchKeyboardCase": switchKeyboardCase,
         // Battles and battle animations
         "startBattle": startBattle,
