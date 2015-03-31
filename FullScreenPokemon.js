@@ -1227,7 +1227,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         thing.EightBitter.animateCharacterPreventWalking(thing);
 
-        thing.EightBitter.ScenePlayer.playCutscene("Battle", {
+        thing.EightBitter.startBattle({
             "battleInfo": {
                 "opponent": {
                     "name": chosen.title,
@@ -1246,7 +1246,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var battleName = other.battleName || other.title,
             battleSprite = other.battleSprite || battleName;
 
-        thing.EightBitter.ScenePlayer.playCutscene("Battle", {
+        thing.EightBitter.startBattle({
             "battleInfo": {
                 "opponent": {
                     "name": battleName,
