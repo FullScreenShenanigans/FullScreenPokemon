@@ -407,6 +407,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 320,
                     "height": 288,
                     "creation": [
+                        { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Viridian City" },
                         { "thing": "AreaSpawner", "width": 320, "map": "Route 2", "area": "Land", "direction": 0, "offsetX": 48 },
                         { "thing": "AreaSpawner", "height": 288, "map": "Route 22", "area": "Land", "direction": 3, "offsetY": 64 },
                         { "macro": "Mountain", "width": 48, "height": 112, "bottom": true, "right": true },
@@ -638,6 +639,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 22",
+            "theme": "Route 22",
             "locationDefault": "Pokemon League",
             "locations": {
                 "Pokemon League": {
@@ -692,6 +694,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 288, "y": 48, "width": 32, "height": 16 },
                         { "macro": "Mountain", "x": 208, "y": 48, "width": 32, "height": 64, "top": true, "right": true, "bottom": true, "left": true },
                         { "thing": "FenceWide", "x": 272, "y": 48, "width": 16 },
+                        { "thing": "AudioPlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
                         { "thing": "FenceWide", "x": 272, "y": 56, "height": 40 },
                         { "thing": "Ledge", "x": 128, "y": 60, "width": 48 },
                         { "thing": "Ledge", "x": 240, "y": 60, "crumbleRight": true },
