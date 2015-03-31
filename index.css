@@ -31,6 +31,12 @@ a {
     text-decoration: none;
 }
 
+h1 {
+    margin: 0;
+    padding-bottom: 3px;
+    text-align: center;
+}
+
 
 /* General animations */
 
