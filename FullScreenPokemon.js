@@ -12,7 +12,7 @@
  * });
  * 
  * @example 
- * // Creating a 15 x 14.5 blocks sized FullScreenPokemon object and logging the
+ * // Creating a 15 x 14.5 blocks sized FullScreenPokemon object and
  * // logging the amount of time each reset function took.
  * var FSP = new FullScreenPokemon({
  *     "width": 480, 

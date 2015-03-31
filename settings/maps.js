@@ -1367,7 +1367,8 @@ FullScreenPokemon.prototype.settings.maps = {
                                 }
                             }
                         },
-                        { "thing": "Doormat", "x": 32, "y": 104, "width": 16, "entrance": "Pewter Gym Floor 1 Door", "transport": { "map": "Pewter City", "location": "Petwer Gym Outside Door" } }
+                        { "thing": "Doormat", "x": 32, "y": 104, "width": 16, "entrance": "Pewter Gym Floor 1 Door" },
+                        { "thing": "HiddenTransporter", "x": 32, "y": 104, "width": 16, "transport": { "map": "Pewter City", "location": "Pewter Gym Outside Door" }, "requireDirection": 2 }
                     ]
                 },
                 "PokeCenter": {
