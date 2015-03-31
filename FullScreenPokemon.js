@@ -298,8 +298,8 @@ var FullScreenPokemon = (function (GameStartr) {
         }, {
             "text": "LOAD FILE",
             "callback": EightBitter.gameLoadFile.bind(EightBitter, EightBitter)
-        }, {
-            "text": "OPTION"
+        //}, {
+        //    "text": "OPTION"
         }];
 
         if (EightBitter.StatsHolder.get("gameStarted")) {
@@ -5788,11 +5788,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroPlayerAppear(EightBitter, settings) {
-        var player = EightBitter.ObjectMaker.make("PlayerPortrait", {
-            "flipHoriz": true,
-            "opacity": .01
-        }),
-            middleX = EightBitter.MapScreener.middleX;
+        var middleX = EightBitter.MapScreener.middleX,
+                player = EightBitter.ObjectMaker.make("PlayerPortrait", {
+                "flipHoriz": true,
+                "opacity": .01
+            });
 
         settings.player = player;
 
@@ -5859,9 +5859,6 @@ var FullScreenPokemon = (function (GameStartr) {
             fromKeyboard = EightBitter.ScenePlayer.bindRoutine("PlayerNameFromKeyboard");
 
         EightBitter.MenuGrapher.createMenu("NameOptions");
-
-        var nameOptions = EightBitter.MenuGrapher.getMenu("NameOptions");
-        EightBitter.setMidY(nameOptions, EightBitter.MapScreener.middleY);
 
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
             "options": [{
@@ -6018,11 +6015,7 @@ var FullScreenPokemon = (function (GameStartr) {
         var fromMenu = EightBitter.ScenePlayer.bindRoutine("RivalNameFromMenu"),
             fromKeyboard = EightBitter.ScenePlayer.bindRoutine("RivalNameFromKeyboard");
 
-
         EightBitter.MenuGrapher.createMenu("NameOptions");
-
-        var nameOptions = EightBitter.MenuGrapher.getMenu("NameOptions");
-        EightBitter.setMidY(nameOptions, EightBitter.MapScreener.middleY);
 
         EightBitter.MenuGrapher.addMenuList("NameOptions", {
             "options": [{

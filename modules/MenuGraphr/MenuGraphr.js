@@ -513,7 +513,7 @@ function MenuGraphr(settings) {
                 word === "\n"
                 || (
                     x + (
-                        (self.filterWord(words[i + 1]).length)
+                        (self.filterWord(words[i + 1]).length + .5)
                         * textWidthMultiplier * textWidth
                         + menu.textXOffset * EightBitter.unitsize
                     )
