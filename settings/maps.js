@@ -253,7 +253,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Scientist", "x": 64, "y": 80, "name": "Scientist Two", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },
                         { "thing": "Doormat", "x": 32, "y": 88, "id": "DoormatLeft" },
                         { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Oak's Lab Floor 1 Door" },
-                        { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "location": "Oak's Lab Door" }, "requireDirection": 2 },
+                        { "thing": "HiddenTransporter", "x": 32, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
                     ]
                 }
             }
