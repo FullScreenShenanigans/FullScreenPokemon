@@ -6368,7 +6368,8 @@ var FullScreenPokemon = (function (GameStartr) {
     function cutsceneOakIntroCatchup(EightBitter, settings) {
         var door = EightBitter.getThingById("Oak's Lab Door"),
             oak = EightBitter.ObjectMaker.make("Oak", {
-                "outerok": true
+                "outerok": true,
+                "nocollide": true
             });
 
         settings.oak = oak;
