@@ -13547,7 +13547,7 @@ FullScreenPokemon.prototype.settings.math = {
                     }]
                 }
             }, "Squirtle": {
-                "label": "Tiny Turtle",
+                "label": "TinyTurtle",
                 "sprite": "Water",
                 "info": [
                     "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth."
