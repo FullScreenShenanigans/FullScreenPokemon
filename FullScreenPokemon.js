@@ -7910,6 +7910,12 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeFromColor(EightBitter, {
             "color": "Black"
         });
+
+        if (location.push) {
+            EightBitter.animateCharacterStartWalking(
+                EightBitter.player, EightBitter.player.direction
+            );
+        }
     }
 
     /**

@@ -63,7 +63,9 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "Player's House Door",
             "locations": {
                 "Player's House Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Player's House Floor 1 Door": {
                     "area": "Player's House",
@@ -84,14 +86,18 @@ FullScreenPokemon.prototype.settings.maps = {
                     "direction": 0
                 },
                 "Rival's House Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Rival's House Floor 1 Door": {
                     "area": "Rival's House",
                     "direction": 0
                 },
                 "Oak's Lab Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Oak's Lab Floor 1 Door": {
                     "area": "Oak's Lab",
@@ -403,16 +409,24 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Nicknamer House Front Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "School Front Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "PokeCenter Outside Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "PokeMart Outside Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Nicknamer House Floor 1 Door": {
                     "area": "Nicknamer House"
@@ -699,7 +713,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "AreaSpawner", "x": 320, "height": 320, "map": "Viridian City", "area": "Land", "offsetY": -64 },
                         { "thing": "FenceWide", "width": 16, "height": 16 },
                         { "thing": "DirtLight", "width": 112, "height": 48 },
-                        { "macro": "Building", "x": 16, "stories": 3, "width": 96, "door": true, "doorOffset": 48, "entrance": "Pokemon League" },
+                        { "macro": "Building", "x": 16, "stories": 3, "width": 96,/* "door": true,*/ "doorOffset": 48, "entrance": "Pokemon League" },
                         { "macro": "Mountain", "x": 112, "width": 208, "height": 8, "left": true },
                         { "macro": "Mountain", "x": 112, "y": 8, "width": 128, "height": 24, "right": true, "bottom": true, "left": true },
                         { "macro": "Mountain", "x": 232, "y": 8, "width": 56, "bottom": true },
@@ -720,7 +734,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 288, "y": 48, "width": 32, "height": 16 },
                         { "macro": "Mountain", "x": 208, "y": 48, "width": 32, "height": 64, "top": true, "right": true, "bottom": true, "left": true },
                         { "thing": "FenceWide", "x": 272, "y": 48, "width": 16 },
-                        { "thing": "AudioPlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
+                        { "thing": "ThemePlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
                         { "thing": "FenceWide", "x": 272, "y": 56, "height": 40 },
                         { "thing": "Ledge", "x": 128, "y": 60, "width": 48 },
                         { "thing": "Ledge", "x": 240, "y": 60, "crumbleRight": true },
@@ -925,7 +939,9 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "Forest Top",
             "locations": {
                 "Gate North Door North": {
-                    "area": "Gate North"
+                    "area": "Gate North",
+                    "direction": 2,
+                    "push": true
                 },
                 "Gate North Door South": {
                     "area": "Gate North",
@@ -943,7 +959,9 @@ FullScreenPokemon.prototype.settings.maps = {
                     "direction": 2,
                 },
                 "Gate South Door North": {
-                    "area": "Gate South"
+                    "area": "Gate South",
+                    "direction": 2,
+                    "push": true
                 },
                 "Gate South Door South": {
                     "area": "Gate South",
@@ -1160,22 +1178,34 @@ FullScreenPokemon.prototype.settings.maps = {
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Museum of Science Outside Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Pewter Gym Outside Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "PokeCenter Outside Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "PokeMart Outside Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Outsider House Front Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Info House Front Door": {
-                    "area": "Land"
+                    "area": "Land",
+                    "direction": 2,
+                    "push": true
                 },
                 "Museum of Science Inside Door": {
                     "area": "Museum of Science"
