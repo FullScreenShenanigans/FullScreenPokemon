@@ -137,16 +137,16 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    self.createChild = function (name, schema) {
+    self.createChild = function (name, schema, attributes) {
         switch (schema.type) {
             case "menu":
-                self.createMenu(schema.name);
+                self.createMenu(schema.name, schema.attributes);
                 break;
             case "text":
-                self.createMenuWord(name, schema);
+                self.createMenuWord(name, schema, schema.attributes);
                 break;
             case "thing":
-                self.createMenuThing(name, schema);
+                self.createMenuThing(name, schema, schema.attributes);
                 break;
         }
     };
@@ -895,6 +895,16 @@ function MenuGraphr(settings) {
     /**
      * 
      */
+    self.setSelectedIndex = function (name, x, y) {
+        var menu = self.getExistingMenu(name),
+            selectedIndex = menu.selectedIndex;
+
+        self.shiftSelectedIndex(name, x - selectedIndex[0], y - selectedIndex[1]);
+    };
+
+    /**
+     * 
+     */
     function adjustVerticalScrollingListThings(name, dy, textPaddingY) {
         var menu = self.getExistingMenu(name),
             scrollingItems = menu.scrollingItems,
@@ -1089,6 +1099,11 @@ function MenuGraphr(settings) {
         }
 
         if (activeMenu.ignoreB) {
+            return;
+        }
+
+        if (activeMenu.onBPress) {
+            activeMenu.onBPress(activeMenu.name);
             return;
         }
 

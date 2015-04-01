@@ -6,10 +6,9 @@ FullScreenPokemon.prototype.settings.input = {
             "right":  [68, 39],     // d,     right
             "up":     [87, 38, 32], // w,     up,    space
             "down":   [83, 40],     // s,     down
-            "sprint": [16, 17],     // shift, ctrl
-            "pause":  [80],         // p
             "a":      [90, 13],     // z,     enter
             "b":      [88, 8],      // x,     backspace
+            "pause": [80, 17],      // p, ctrl
             // Mouse aliases
             "rightclick": [3],
         },

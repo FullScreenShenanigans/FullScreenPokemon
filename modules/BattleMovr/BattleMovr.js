@@ -316,8 +316,11 @@ function BattleMovr(settings) {
     /**
      * 
      */
-    self.openActorsMenu = function () {
-        EightBitter.openPokemonMenu("BattleOptions", "Battle");
+    self.openActorsMenu = function (callback) {
+        EightBitter.openPokemonMenu({
+            "backMenu": "BattleOptions",
+            "container": "Battle",
+        });
     };
 
     /* Battle shenanigans

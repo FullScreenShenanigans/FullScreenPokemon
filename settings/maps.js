@@ -253,7 +253,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Scientist", "x": 64, "y": 80, "name": "Scientist Two", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },
                         { "thing": "Doormat", "x": 32, "y": 88, "id": "DoormatLeft" },
                         { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Oak's Lab Floor 1 Door" },
-                        { "thing": "HiddenTransporter", "x": 40, "y": 88, "width": 16, "transport": { "location": "Oak's Lab Door" }, "requireDirection": 2 },
+                        { "thing": "HiddenTransporter", "x": 32, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
                     ]
                 }
             }
@@ -319,7 +319,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Grass", "x": 112, "y": 96, "width": 32, "height": 32 },
                         { "thing": "PlantSmall", "x": 32, "y": 104, "width": 16 },
                         { "thing": "PlantSmall", "x": 80, "y": 104, "width": 32 },
-                        { "thing": "BugCatcher", "x": 120, "y": 104, "direction": 3, "roaming": true, "roamingDirections": [1, 3], "dialog": ["See those ledges along the road?", "It's a bit scary, but you can jump from them.", "You can get back to Pallet Town quicker that way."] },
+                        { "thing": "BugCatcher", "x": 120, "y": 104, "direction": 3, "roaming": true, "roamingDirections": [1, 3], "name": "LedgeAdvertiser", "dialog": ["See those ledges along the road?", "It's a bit scary, but you can jump from them.", "You can get back to Pallet Town quicker that way."] },
                         { "thing": "Ledge", "x": 48, "y": 108, "width": 32 },
                         { "thing": "FenceWide", "x": 24, "y": 112, "height": 112 },
                         { "thing": "FenceWide", "x": 144, "y": 112, "height": 112 },
@@ -340,7 +340,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "Grass", "x": 96, "y": 176, "width": 32, "height": 32 },
                         { "thing": "DirtLight", "x": 128, "y": 176, "width": 16, "height": 32 },
                         { "thing": "PlantSmall", "x": 32, "y": 184, "width": 64 },
-                        { "thing": "BugCatcher", "x": 40, "y": 192, "direction": 2, "roaming": true, "roamingDirections": [0, 2], "dialog": ["Hi! I work at a %%%%%%%POKEMON%%%%%%% MART.", "It's a convenient shop, so please visit us in VIRIDIAN CITY.", "I know, I'll give you a sample! Here you go!"], "dialogNext": "We also carry %%%%%%%POKE%%%%%%% BALLs for catching %%%%%%%POKEMON%%%%%%%!", "gift": "Potion" },
+                        { "thing": "BugCatcher", "x": 40, "y": 192, "direction": 2, "roaming": true, "roamingDirections": [0, 2], "name": "ShopAdvertiser", "dialog": ["Hi! I work at a %%%%%%%POKEMON%%%%%%% MART.", "It's a convenient shop, so please visit us in VIRIDIAN CITY.", "I know, I'll give you a sample! Here you go!"], "dialogNext": "We also carry %%%%%%%POKE%%%%%%% BALLs for catching %%%%%%%POKEMON%%%%%%%!", "gift": "Potion" },
                         { "thing": "Ledge", "x": 128, "y": 188, "width": 16, "jagged": true },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 64, "y": 196, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "DirtLight", "x": 32, "y": 208, "width": 112, "height": 16 },
@@ -364,8 +364,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "FenceWide", "x": 96, "y": 256, "width": 48 },
                         { "thing": "FenceWide", "x": 72, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 96, "y": 264, "height": 32 },
-                        { "thing": "FenceWide", "x": 24, "y": 288 },
                         { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Route 1" },
+                        { "thing": "FenceWide", "x": 24, "y": 288 },
                         { "thing": "ThemePlayer", "x": 80, "y": 288, "width": 16, "theme": "Pallet Town" },
                         { "thing": "FenceWide", "x": 144, "y": 288 },
                         { "thing": "AreaSpawner", "y": 288, "width": 160, "map": "Pallet Town", "area": "Land", "direction": 2 }
@@ -414,6 +414,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "width": 80, "height": 32 },
                         { "thing": "DirtWhite", "x": 128, "width": 16, "height": 32 },
                         { "thing": "FenceVertical", "x": 128, "width": 8, "height": 32 },
+                        { "thing": "ThemePlayer", "x": 136, "width": 24, "theme": "Viridian City" },
                         { "thing": "DirtLight", "x": 144, "width": 16, "height": 16 },
                         { "thing": "DirtMedium", "x": 160, "width": 128, "height": 16 },
                         { "thing": "PlantSmall", "x": 160, "width": 32, "height": 32 },
@@ -468,6 +469,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtLight", "x": 160, "y": 96, "width": 128, "height": 16 },
                         { "thing": "FenceVertical", "x": 160, "y": 104, "width": 128, "height": 8 },
                         { "thing": "DirtMedium", "y": 112, "width": 56, "height": 16 },
+                        { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Viridian City" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 112, "xnum": 16, "ynum": 2 },
                         { "macro": "House", "x": 160, "y": 112, "door": true, "entrance": "School Front Door", "transport": "School Floor 1 Door" },
                         { "thing": "DirtLight", "y": 128, "width": 16, "height": 24 },
@@ -638,6 +640,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 22",
+            "theme": "Route 22",
             "locationDefault": "Pokemon League",
             "locations": {
                 "Pokemon League": {
@@ -692,6 +695,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtMedium", "x": 288, "y": 48, "width": 32, "height": 16 },
                         { "macro": "Mountain", "x": 208, "y": 48, "width": 32, "height": 64, "top": true, "right": true, "bottom": true, "left": true },
                         { "thing": "FenceWide", "x": 272, "y": 48, "width": 16 },
+                        { "thing": "AudioPlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
                         { "thing": "FenceWide", "x": 272, "y": 56, "height": 40 },
                         { "thing": "Ledge", "x": 128, "y": 60, "width": 48 },
                         { "thing": "Ledge", "x": 240, "y": 60, "crumbleRight": true },
@@ -728,6 +732,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Route 2",
+            "theme": "Route 1",
             "locationDefault": "Viridian Forest Top",
             "locations": {
                 "Viridian Forest Top": {
@@ -743,6 +748,7 @@ FullScreenPokemon.prototype.settings.maps = {
                     "width": 224,
                     "height": 592,
                     "creation": [
+                        { "thing": "ThemePlayer", "x": 96, "width": 16, "height": 400, "theme": "Route 1" },
                         { "thing": "AreaSpawner", "width": 224, "direction": 0, "map": "Pewter City", "area": "Land", "offsetX": -48 },
                         { "thing": "DirtMedium", "width": 96, "height": 16 },
                         { "thing": "PlantSmall", "width": 96, "height": 16 },
@@ -882,6 +888,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "y": 576, "width": 32, "height": 16 },
                         { "thing": "DirtWhite", "x": 80, "y": 576, "width": 16, "height": 16 },
                         { "thing": "FenceVertical", "x": 80, "y": 576, "width": 8, "height": 16 },
+                        { "thing": "ThemePlayer", "x": 88, "y": 576, "width": 24, "theme": "Route 1" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 96, "y": 576, "xnum": 2, "ynum": 2 },
                         { "thing": "AreaSpawner", "y": 584, "width": 608, "map": "Viridian City", "area": "Land", "offsetX": -48 }
                     ]
@@ -889,6 +896,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Viridian Forest",
+            "theme": "Viridian Forest",
             "locationDefault": "Forest Top",
             "locations": {
                 "Gate North Door North": {
@@ -904,6 +912,11 @@ FullScreenPokemon.prototype.settings.maps = {
                     "yloc": 376,
                     "direction": 0
                 },
+                "Forest Top": {
+                    "area": "Forest",
+                    "xloc": 8,
+                    "direction": 2,
+                },
                 "Gate South Door North": {
                     "area": "Gate South"
                 },
@@ -916,6 +929,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Gate North": {
                     "width": 80,
                     "height": 64,
+                    "theme": "Viridian City",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
@@ -1093,6 +1107,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Gate South": {
                     "width": 80,
                     "height": 64,
+                    "theme": "Viridian City",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
@@ -1116,6 +1131,7 @@ FullScreenPokemon.prototype.settings.maps = {
             }
         }, {
             "name": "Pewter City",
+            "theme": "Viridian City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Museum of Science Outside Door": {
@@ -1219,8 +1235,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 256, "y": 96, "xnum": 2, "ynum": 2 },
                         { "thing": "DirtMedium", "x": 48, "y": 112, "width": 32, "height": 32 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 112, "xnum": 24, "ynum": 2 },
-                        { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, "transport": { "map": "Pewter City", "location": "Pewter Gym Floor 1 Door" } },
-                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart", "transport": { "map": "Pewter City", "location": "PokeMart Inside Door" }, "entrance": { "map": "Pewter City", "location": "PokeMart Outside Door" } },
+                        { "macro": "Gym", "x": 96, "y": 112, "door": true, "doorOffset": 40, "transport": { "map": "Pewter City", "location": "Pewter Gym Floor 1 Door" }, "entrance": "Pewter Gym Outside Door" },
+                        { "macro": "Building", "x": 168, "y": 112, "door": true, "label": "Mart", "transport": { "map": "Pewter City", "location": "PokeMart Inside Door" }, "entrance": "PokeMart Outside Door" },
                         { "thing": "Lass", "x": 64, "y": 120, "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["It's rumored that CLEFAIRYs came from the moon!", "They appeared after MOON STONE fell on MT. MOON."] },
                         { "thing": "DirtLight", "x": 80, "y": 128, "width": 64, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 144, "y": 128, "xnum": 2, "ynum": 2 },
@@ -1303,6 +1319,7 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "PlantSmall", "x": 160, "y": 256, "width": 48, "height": 32 },
                         { "thing": "FenceWide", "x": 208, "y": 256, "width": 80 },
                         { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
+                        { "thing": "ThemePlayer", "x": 144, "y": 280, "width": 16, "height": 200, "theme": "Viridian City" },
                         { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
                     ]
                 },
@@ -1318,6 +1335,7 @@ FullScreenPokemon.prototype.settings.maps = {
                 "Pewter Gym": {
                     "width": 80,
                     "height": 112,
+                    "theme": "Gym",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorHorizontalBandsInverse", "width": 80, "height": 112 },

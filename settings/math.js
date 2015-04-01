@@ -9,6 +9,7 @@ FullScreenPokemon.prototype.settings.math = {
                     "level": level,
                     "moves": moves || this.compute("newPokemonMoves", title, level),
                     "types": constants.pokemon[title].types,
+                    "status": "",
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
                     "experience": this.compute("newPokemonExperience", title, level)
@@ -732,7 +733,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Fossil",
                 "sprite": "Water",
                 "info": [
-                    "A ferocious, prehistoric POKÃ©MON that goes for the enemy's throat with its serrated saw-like fangs."
+                    "A ferocious, prehistoric %%%%%%%POKEMON%%%%%%% that goes for the enemy's throat with its serrated saw-like fangs."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -1053,7 +1054,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Legendary",
                 "sprite": "Water",
                 "info": [
-                    "A POKÃ©MON that has been admired since the past for its beauty. It runs agilely as if on wings."
+                    "A %%%%%%%POKEMON%%%%%%% that has been admired since the past for its beauty. It runs agilely as if on wings."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -1195,7 +1196,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Freeze",
                 "sprite": "Water",
                 "info": [
-                    "A legendary bird POKÃ©MON that is said to appear to doomed people who are lost in icy mountains."
+                    "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear to doomed people who are lost in icy mountains."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -1341,7 +1342,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Flower",
                 "sprite": "Water",
                 "info": [
-                    "A carnivorous POKÃ©MON that traps and eats bugs. It uses its root feet to soak up needed moisture."
+                    "A carnivorous %%%%%%%POKEMON%%%%%%% that traps and eats bugs. It uses its root feet to soak up needed moisture."
                 ],
                 "evolvesInto": "Weepinbell",
                 "evolvesVia": "Level 21",
@@ -1432,7 +1433,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Shellfish",
                 "sprite": "Water",
                 "info": [
-                    "A brutal POKÃ©MON with pressurized water jets on its shell. They are used for high speed tackles."
+                    "A brutal %%%%%%%POKEMON%%%%%%% with pressurized water jets on its shell. They are used for high speed tackles."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -1565,7 +1566,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Seed",
                 "sprite": "Water",
                 "info": [
-                    "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKÃ©MON."
+                    "A strange seed was planted on its back at birth. The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%."
                 ],
                 "evolvesInto": "Ivysaur",
                 "evolvesVia": "Level 16",
@@ -1790,7 +1791,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Egg",
                 "sprite": "Water",
                 "info": [
-                    "A rare and elusive POKÃ©MON that is said to bring happiness to those who manage to get it."
+                    "A rare and elusive %%%%%%%POKEMON%%%%%%% that is said to bring happiness to those who manage to get it."
                 ],
                 "evolvesInto": "Blissey",
                 "evolvesVia": "Happiness",
@@ -2310,7 +2311,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Fairy",
                 "sprite": "Water",
                 "info": [
-                    "A timid fairy POKÃ©MON that is rarely seen. It will run and hide the moment it senses people."
+                    "A timid fairy %%%%%%%POKEMON%%%%%%% that is rarely seen. It will run and hide the moment it senses people."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -2541,7 +2542,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Lonely",
                 "sprite": "Water",
                 "info": [
-                    "Because it never removes its skull helmet, no one has ever seen this POKÃ©MON's real face."
+                    "Because it never removes its skull helmet, no one has ever seen this %%%%%%%POKEMON%%%%%%%'s real face."
                 ],
                 "evolvesInto": "Marowak",
                 "evolvesVia": "Level 28",
@@ -3072,7 +3073,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Dragon",
                 "sprite": "Water",
                 "info": [
-                    "A mystical POKÃ©MON that exudes a gentle aura. Has the ability to change climate conditions."
+                    "A mystical %%%%%%%POKEMON%%%%%%% that exudes a gentle aura. Has the ability to change climate conditions."
                 ],
                 "evolvesInto": "Dragonite",
                 "evolvesVia": "Level 55",
@@ -3187,7 +3188,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Dragon",
                 "sprite": "Water",
                 "info": [
-                    "An extremely rarely seen marine POKÃ©MON. Its intelligence is said to match that of humans."
+                    "An extremely rarely seen marine %%%%%%%POKEMON%%%%%%%. Its intelligence is said to match that of humans."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -3317,7 +3318,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Dragon",
                 "sprite": "Water",
                 "info": [
-                    "Long considered a mythical POKÃ©MON until recently when a small colony was found living underwater."
+                    "Long considered a mythical %%%%%%%POKEMON%%%%%%% until recently when a small colony was found living underwater."
                 ],
                 "evolvesInto": "Dragonair",
                 "evolvesVia": "Level 30",
@@ -4475,7 +4476,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Gas",
                 "sprite": "Water",
                 "info": [
-                    "Almost invisible, this gaseous POKÃ©MON cloaks the target and puts it to sleep without notice."
+                    "Almost invisible, this gaseous %%%%%%%POKEMON%%%%%%% cloaks the target and puts it to sleep without notice."
                 ],
                 "evolvesInto": "Haunter",
                 "evolvesVia": "Level 25",
@@ -4527,7 +4528,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Shadow",
                 "sprite": "Water",
                 "info": [
-                    "Under a full moon, this POKÃ©MON likes to mimic the shadows of people and laugh at their fright."
+                    "Under a full moon, this %%%%%%%POKEMON%%%%%%% likes to mimic the shadows of people and laugh at their fright."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -6551,7 +6552,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Shellfish",
                 "sprite": "Water",
                 "info": [
-                    "A POKÃ©MON that was resurrected from a fossil found in what was once the ocean floor eons ago."
+                    "A %%%%%%%POKEMON%%%%%%% that was resurrected from a fossil found in what was once the ocean floor eons ago."
                 ],
                 "evolvesInto": "Kabutops",
                 "evolvesVia": "Level 40",
@@ -6872,7 +6873,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Cocoon",
                 "sprite": "Water",
                 "info": [
-                    "Almost incapable of moving, this POKÃ©MON can only harden its shell to protect itself from predators."
+                    "Almost incapable of moving, this %%%%%%%POKEMON%%%%%%% can only harden its shell to protect itself from predators."
                 ],
                 "evolvesInto": "Beedrill",
                 "evolvesVia": "Level 10",
@@ -7315,7 +7316,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Transport",
                 "sprite": "Water",
                 "info": [
-                    "A POKÃ©MON that has been overhunted almost to extinction. It can ferry people across the water."
+                    "A %%%%%%%POKEMON%%%%%%% that has been overhunted almost to extinction. It can ferry people across the water."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -8533,7 +8534,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Cocoon",
                 "sprite": "Water",
                 "info": [
-                    "This POKÃ©MON is vulnerable to attack while its shell is soft, exposing its weak and tender body."
+                    "This %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body."
                 ],
                 "evolvesInto": "Butterfree",
                 "evolvesVia": "Level 10",
@@ -9318,7 +9319,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Poison Pin",
                 "sprite": "Water",
                 "info": [
-                    "Although small, its venomous barbs render this POKÃ©MON dangerous. The female has smaller horns."
+                    "Although small, its venomous barbs render this %%%%%%%POKEMON%%%%%%% dangerous. The female has smaller horns."
                 ],
                 "evolvesInto": "Nidorina",
                 "evolvesVia": "Level 16",
@@ -9717,7 +9718,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Poison Pin",
                 "sprite": "Water",
                 "info": [
-                    "An aggressive POKÃ©MON that is quick to attack. The horn on its head secretes a powerful venom."
+                    "An aggressive %%%%%%%POKEMON%%%%%%% that is quick to attack. The horn on its head secretes a powerful venom."
                 ],
                 "evolvesInto": "Nidoking",
                 "evolvesVia": "use Moon Stone",
@@ -10090,7 +10091,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Spiral",
                 "sprite": "Water",
                 "info": [
-                    "A prehistoric POKÃ©MON that died out when its heavy shell made it impossible to catch prey."
+                    "A prehistoric %%%%%%%POKEMON%%%%%%% that died out when its heavy shell made it impossible to catch prey."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -10702,7 +10703,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Bird",
                 "sprite": "Water",
                 "info": [
-                    "Very protective of its sprawling territorial area, this POKÃ©MON will fiercely peck at any intruder."
+                    "Very protective of its sprawling territorial area, this %%%%%%%POKEMON%%%%%%% will fiercely peck at any intruder."
                 ],
                 "evolvesInto": "Pidgeot",
                 "evolvesVia": "Level 36",
@@ -10881,7 +10882,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Mouse",
                 "sprite": "Water",
                 "info": [
-                    "When several of these POKÃ©MON gather, their electricity could build and cause lightning storms."
+                    "When several of these %%%%%%%POKEMON%%%%%%% gather, their electricity could build and cause lightning storms."
                 ],
                 "evolvesInto": "Raichu",
                 "evolvesVia": "use Thunderstone",
@@ -11457,7 +11458,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Virtual",
                 "sprite": "Water",
                 "info": [
-                    "A POKÃ©MON that consists entirely of programming code. Capable of moving freely in cyberspace."
+                    "A %%%%%%%POKEMON%%%%%%% that consists entirely of programming code. Capable of moving freely in cyberspace."
                 ],
                 "evolvesInto": "Porygon2",
                 "evolvesVia": "trade holdingUp-Grade",
@@ -11690,7 +11691,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Duck",
                 "sprite": "Water",
                 "info": [
-                    "While lulling its enemies with its vacant look, this wily POKÃ©MON will use psychokinetic powers."
+                    "While lulling its enemies with its vacant look, this wily %%%%%%%POKEMON%%%%%%% will use psychokinetic powers."
                 ],
                 "evolvesInto": "Golduck",
                 "evolvesVia": "Level 33",
@@ -11836,7 +11837,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Fire Horse",
                 "sprite": "Water",
                 "info": [
-                    "Very competitive, this POKÃ©MON will chase anything that moves fast in the hopes of racing it."
+                    "Very competitive, this %%%%%%%POKEMON%%%%%%% will chase anything that moves fast in the hopes of racing it."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
@@ -13547,7 +13548,7 @@ FullScreenPokemon.prototype.settings.math = {
                     }]
                 }
             }, "Squirtle": {
-                "label": "Tiny Turtle",
+                "label": "TinyTurtle",
                 "sprite": "Water",
                 "info": [
                     "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth."
@@ -13705,7 +13706,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Star Shape",
                 "sprite": "Water",
                 "info": [
-                    "An enigmatic POKÃ©MON that can effortlessly regenerate any appendage it loses in battle."
+                    "An enigmatic %%%%%%%POKEMON%%%%%%% that can effortlessly regenerate any appendage it loses in battle."
                 ],
                 "evolvesInto": "Starmie",
                 "evolvesVia": "use Water Stone",
@@ -15277,7 +15278,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "label": "Electric",
                 "sprite": "Water",
                 "info": [
-                    "A legendary bird POKÃ©MON that is said to appear from clouds while dropping enormous lightning bolts."
+                    "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear from clouds while dropping enormous lightning bolts."
                 ],
                 "evolvesInto": "Undefined",
                 "evolvesVia": "Undefined",
