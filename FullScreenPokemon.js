@@ -138,28 +138,55 @@ var FullScreenPokemon = (function (GameStartr) {
     FullScreenPokemon.inputTimeTolerance = 4;
 
     FullScreenPokemon.keysUppercase = [
-        "A", "J", "S", "Times", "-",
-        "B", "K", "T", "(", "?",
-        "C", "L", "U", ")", "!",
-        "D", "M", "V", ":", "MaleSymbol",
-        "E", "N", "W", ";", "FemaleSymbol",
-        "F", "O", "X", "[", "/",
-        "G", "P", "Y", "]", ".",
-        "H", "Q", "Z", "Poke", ",",
-        "I", "R", " ", "Mon", "ED"
+    ];
+
+    FullScreenPokemon.keysUppercase = [
+        "A", "J", "S", " ", " ",
+        "B", "K", "T", " ", " ",
+        "C", "L", "U", " ", " ",
+        "D", "M", "V", " ", " ",
+        "E", "N", "W", " ", " ",
+        "F", "O", "X", " ", " ",
+        "G", "P", "Y", " ", " ",
+        "H", "Q", "Z", " ", " ",
+        "I", "R", " ", " ", " ",
     ];
 
     FullScreenPokemon.keysLowercase = [
-        "a", "j", "s", "Times", "-",
-        "b", "k", "t", "(", "?",
-        "c", "l", "u", ")", "!",
-        "d", "m", "v", ":", "MaleSymbol",
-        "e", "n", "w", ";", "FemaleSymbol",
-        "f", "o", "x", "[", "/",
-        "g", "p", "y", "]", ".",
-        "h", "q", "z", "Poke", ",",
-        "i", "r", " ", "Mon", "ED"
+        "a", "j", "s", " ", " ",
+        "b", "k", "t", " ", " ",
+        "c", "l", "u", " ", " ",
+        "d", "m", "v", " ", " ",
+        "e", "n", "w", " ", " ",
+        "f", "o", "x", " ", " ",
+        "g", "p", "y", " ", " ",
+        "h", "q", "z", " ", " ",
+        "i", "r", " ", " ", " ",
     ];
+
+    //FullScreenPokemon.keysUppercase = [
+    //    "A", "J", "S", "Times", "-",
+    //    "B", "K", "T", "(", "?",
+    //    "C", "L", "U", ")", "!",
+    //    "D", "M", "V", ":", "MaleSymbol",
+    //    "E", "N", "W", ";", "FemaleSymbol",
+    //    "F", "O", "X", "[", "/",
+    //    "G", "P", "Y", "]", ".",
+    //    "H", "Q", "Z", "Poke", ",",
+    //    "I", "R", " ", "Mon", "ED"
+    //];
+
+    //FullScreenPokemon.keysLowercase = [
+    //    "a", "j", "s", "Times", "-",
+    //    "b", "k", "t", "(", "?",
+    //    "c", "l", "u", ")", "!",
+    //    "d", "m", "v", ":", "MaleSymbol",
+    //    "e", "n", "w", ";", "FemaleSymbol",
+    //    "f", "o", "x", "[", "/",
+    //    "g", "p", "y", "]", ".",
+    //    "h", "q", "z", "Poke", ",",
+    //    "i", "r", " ", "Mon", "ED"
+    //];
 
 
     /* Resets
@@ -3745,6 +3772,8 @@ var FullScreenPokemon = (function (GameStartr) {
         settings.lowercase = !settings.lowercase;
         settings.value = keyboardResult.displayedValue;
         settings.selectedChild = keyboardResult.selectedChild;
+        settings.displayedValue = keyboardResult.displayedValue;
+        settings.completeValue = keyboardResult.completeValue;
         settings.selectedIndex = keyboardKeys.selectedIndex;
 
         EightBitter.openKeyboardMenu(settings);
@@ -3760,7 +3789,8 @@ var FullScreenPokemon = (function (GameStartr) {
     function startBattle(battleInfo) {
         var EightBitter = EightBittr.ensureCorrectCaller(this),
             animations = battleInfo.animations || [
-                "LineSpiral", "Flash"
+                //"LineSpiral", "Flash"
+                "Flash"
             ],
             animation = EightBitter.NumberMaker.randomArrayMember(animations),
             player = battleInfo.player;
@@ -7107,7 +7137,7 @@ var FullScreenPokemon = (function (GameStartr) {
                         "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
                     ].join(" ")
                 ],
-                "animation": "LineSpiral",
+                //"animation": "LineSpiral",
                 "theme": "Trainer Battle",
                 "noBlackout": true,
                 "keptThings": ["player", "Rival"],
