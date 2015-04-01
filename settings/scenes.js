@@ -12,6 +12,7 @@ FullScreenPokemon.prototype.settings.scenes = {
                 "OpponentSendOutAppear": FullScreenPokemon.prototype.cutsceneBattleOpponentSendOutAppear,
                 "PlayerSendOut": FullScreenPokemon.prototype.cutsceneBattlePlayerSendOut,
                 "PlayerSendOutAppear": FullScreenPokemon.prototype.cutsceneBattlePlayerSendOutAppear,
+                "PlayerSwitchesSamePokemon": FullScreenPokemon.prototype.cutsceneBattlePlayerSwitchesSamePokemon,
                 "MovePlayer": FullScreenPokemon.prototype.cutsceneBattleMovePlayer,
                 "MovePlayerAnimate": FullScreenPokemon.prototype.cutsceneBattleMovePlayerAnimate,
                 "MoveOpponent": FullScreenPokemon.prototype.cutsceneBattleMoveOpponent,

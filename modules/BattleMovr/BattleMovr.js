@@ -320,6 +320,7 @@ function BattleMovr(settings) {
         EightBitter.openPokemonMenu({
             "backMenu": "BattleOptions",
             "container": "Battle",
+            "onSwitch": self.switchActor
         });
     };
 
@@ -350,6 +351,25 @@ function BattleMovr(settings) {
                 "choiceOpponent": choiceOpponent
             });
         }
+    };
+
+    /**
+     * 
+     */
+    self.switchActor = function (battlerName, i) {
+        var battler = battleInfo[battlerName];
+
+        if (battler.selectedIndex === i) {
+            EightBitter.ScenePlayer.playRoutine("PlayerSwitchesSamePokemon");
+            return;
+        }
+
+        battler.selectedIndex = i;
+        battler.selectedActor = battler.actors[i];
+
+        EightBitter.ScenePlayer.playRoutine(
+            (battlerName === "player" ? "Player" : "Opponent") + "SendOut"
+        );
     };
 
 

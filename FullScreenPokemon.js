@@ -3458,7 +3458,9 @@ var FullScreenPokemon = (function (GameStartr) {
                     "callback": EightBitter.openPokemonMenuContext.bind(
                         EightBitter, {
                             "pokemon": listing,
-                            "onSwitch": settings.onSwitch
+                            "onSwitch": settings.onSwitch.bind(
+                                EightBitter, "player", i
+                            )
                         }
                     ),
                     "things": [{
@@ -4301,6 +4303,22 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function cutsceneBattlePlayerSwitchesSamePokemon(EightBitter, settings) {
+        EightBitter.MenuGrapher.createMenu("GeneralText", {
+            "backMenu": "PokemonMenuContext"
+        });
+        EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                settings.battleInfo.player.selectedActor.nickname + " is already out!"
+            ]
+        );
+        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * 
+     */
     function cutsceneBattleMovePlayer(EightBitter, settings) {
         var player = settings.battleInfo.player,
             playerActor = player.selectedActor,
@@ -4604,6 +4622,9 @@ var FullScreenPokemon = (function (GameStartr) {
         var battleInfo = settings.battleInfo,
             opponent = battleInfo.opponent;
 
+        EightBitter.BattleMover.switchActor(
+            "opponent", opponent.selectedIndex + 1
+        );
         opponent.selectedIndex += 1;
         opponent.selectedActor = opponent.actors[opponent.selectedIndex];
 
@@ -9331,6 +9352,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "cutsceneBattlePlayerSendOut": cutsceneBattlePlayerSendOut,
         "cutsceneBattleOpponentSendOutAppear": cutsceneBattleOpponentSendOutAppear,
         "cutsceneBattlePlayerSendOutAppear": cutsceneBattlePlayerSendOutAppear,
+        "cutsceneBattlePlayerSwitchesSamePokemon": cutsceneBattlePlayerSwitchesSamePokemon,
         "cutsceneBattleMovePlayer": cutsceneBattleMovePlayer,
         "cutsceneBattleMovePlayerAnimate": cutsceneBattleMovePlayerAnimate,
         "cutsceneBattleMoveOpponent": cutsceneBattleMoveOpponent,
