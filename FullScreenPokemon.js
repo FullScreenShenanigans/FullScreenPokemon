@@ -5931,8 +5931,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.deleteActiveMenu();
 
         EightBitter.addThing(oak);
-        EightBitter.setMidX(oak, EightBitter.MapScreener.middleX);
-        EightBitter.setMidY(oak, EightBitter.MapScreener.middleY);
+        EightBitter.setMidX(oak, EightBitter.MapScreener.middleX | 0);
+        EightBitter.setMidY(oak, EightBitter.MapScreener.middleY | 0);
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.animateFadeAttribute,
@@ -6000,7 +6000,7 @@ var FullScreenPokemon = (function (GameStartr) {
 
         EightBitter.addThing(
             pokemon,
-            EightBitter.MapScreener.middleX + 24 * EightBitter.unitsize,
+            (EightBitter.MapScreener.middleX + 24 * EightBitter.unitsize) | 0,
             0
         );
 
@@ -6017,7 +6017,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             pokemon,
             -EightBitter.unitsize * 2,
-            EightBitter.MapScreener.middleX,
+            EightBitter.MapScreener.middleX | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("PokemonExplanation")
         );
@@ -6045,11 +6045,11 @@ var FullScreenPokemon = (function (GameStartr) {
      * 
      */
     function cutsceneIntroPlayerAppear(EightBitter, settings) {
-        var middleX = EightBitter.MapScreener.middleX,
-                player = EightBitter.ObjectMaker.make("PlayerPortrait", {
-                    "flipHoriz": true,
-                    "opacity": .01
-                });
+        var middleX = EightBitter.MapScreener.middleX | 0,
+            player = EightBitter.ObjectMaker.make("PlayerPortrait", {
+                "flipHoriz": true,
+                "opacity": .01
+            });
 
         settings.player = player;
 
@@ -6102,7 +6102,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             settings.player,
             EightBitter.unitsize,
-            EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize,
+            (EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize) | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("PlayerNameOptions")
         );
@@ -6149,7 +6149,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             settings.player,
             -EightBitter.unitsize,
-            EightBitter.MapScreener.middleX,
+            EightBitter.MapScreener.middleX | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("PlayerNameConfirm")
         );
@@ -6167,7 +6167,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             settings.player,
             -EightBitter.unitsize,
-            EightBitter.MapScreener.middleX,
+            EightBitter.MapScreener.middleX | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("PlayerNameConfirm")
         );
@@ -6224,8 +6224,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.GroupHolder.applyOnAll(EightBitter, EightBitter.killNormal);
 
         EightBitter.addThing(rival, 0, 0);
-        EightBitter.setMidX(rival, EightBitter.MapScreener.middleX);
-        EightBitter.setMidY(rival, EightBitter.MapScreener.middleY);
+        EightBitter.setMidX(rival, EightBitter.MapScreener.middleX | 0);
+        EightBitter.setMidY(rival, EightBitter.MapScreener.middleY | 0);
         EightBitter.animateFadeAttribute(
             rival,
             "opacity",
@@ -6259,7 +6259,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             settings.rival,
             EightBitter.unitsize,
-            EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize,
+            (EightBitter.MapScreener.middleX + 16 * EightBitter.unitsize) | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("RivalNameOptions")
         );
@@ -6306,7 +6306,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             settings.rival,
             -EightBitter.unitsize,
-            EightBitter.MapScreener.middleX,
+            EightBitter.MapScreener.middleX | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("RivalNameConfirm")
         );
@@ -6324,7 +6324,7 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.animateFadeHorizontal(
             settings.rival,
             -EightBitter.unitsize,
-            EightBitter.MapScreener.middleX,
+            EightBitter.MapScreener.middleX | 0,
             1,
             EightBitter.ScenePlayer.bindRoutine("RivalNameConfirm")
         );
@@ -6381,8 +6381,8 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.GroupHolder.applyOnAll(EightBitter, EightBitter.killNormal);
 
         EightBitter.addThing(portrait, 0, 0);
-        EightBitter.setMidX(portrait, EightBitter.MapScreener.middleX);
-        EightBitter.setMidY(portrait, EightBitter.MapScreener.middleY);
+        EightBitter.setMidX(portrait, EightBitter.MapScreener.middleX | 0);
+        EightBitter.setMidY(portrait, EightBitter.MapScreener.middleY | 0);
 
         EightBitter.animateFadeAttribute(
             portrait,
@@ -8070,7 +8070,10 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function centerMapScreenHorizontallyOnPlayer(EightBitter) {
         var boundaries = EightBitter.MapScreener.boundaries,
-            difference = EightBitter.getMidX(EightBitter.player) - EightBitter.MapScreener.middleX;
+            difference = (
+                EightBitter.getMidX(EightBitter.player)
+                - EightBitter.MapScreener.middleX
+            ) | 0;
 
         if (Math.abs(difference) > 0) {
             EightBitter.scrollWindow(difference);
@@ -8082,7 +8085,10 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function centerMapScreenVerticallyOnPlayer(EightBitter) {
         var boundaries = EightBitter.MapScreener.boundaries,
-            difference = EightBitter.getMidY(EightBitter.player) - EightBitter.MapScreener.middleY;
+            difference = (
+                EightBitter.getMidY(EightBitter.player) 
+                - EightBitter.MapScreener.middleY
+            ) | 0;
 
         if (Math.abs(difference) > 0) {
             EightBitter.scrollWindow(0, difference);
