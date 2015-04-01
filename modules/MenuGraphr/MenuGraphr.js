@@ -1094,7 +1094,7 @@ function MenuGraphr(settings) {
             return;
         }
 
-        if (activeMenu.progress) {
+        if (activeMenu.progress && !activeMenu.ignoreProgressB) {
             return self.registerA();
         }
 

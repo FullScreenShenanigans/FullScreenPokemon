@@ -410,7 +410,7 @@ FullScreenPokemon.prototype.settings.menus = {
                 "type": "menu",
                 "name": "PokemonDialog"
             }],
-            "onActivate": console.log.bind("HA"),
+            "ignoreProgressB": true,
             "arrowXOffset": 8,
             "arrowYOffset": 3,
             "textSpeed": 0,
