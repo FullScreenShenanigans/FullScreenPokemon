@@ -185,10 +185,6 @@ var FullScreenPokemon = (function (GameStartr) {
     //    "i", "r", " ", "Mon", "ED"
     //];
 
-    setTimeout(function () {
-        FSP.setMap("Pallet Town");
-    }, 35)
-
 
     /* Resets
     */
