@@ -2615,6 +2615,12 @@ var FullScreenPokemon = (function (GameStartr) {
 
         if (!other.keepAlive) {
             other.alive = false;
+
+            if (other.id.indexOf("Anonymous") != -1) {
+                console.warn("Deleting CutsceneTriggerer without ID");
+            }
+
+            thing.EightBitter.StateHolder.addChange(other.id, "alive", false);
             thing.EightBitter.killNormal(other);
         }
 
