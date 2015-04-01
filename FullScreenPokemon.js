@@ -112,8 +112,8 @@ var FullScreenPokemon = (function (GameStartr) {
             this.reset(this, customs);
         }
 
-        setTimeout(this.MARATHON.bind(this), 300000);
-        setTimeout(this.DURANDAL.bind(this), 350000);
+        setTimeout(this.MARATHON.bind(this), 4900);
+        setTimeout(this.DURANDAL.bind(this), 7000);
         setTimeout(this.downloadSaveGame.bind(this), 280000);
     }
     FullScreenPokemon.prototype = GameStartrProto;
