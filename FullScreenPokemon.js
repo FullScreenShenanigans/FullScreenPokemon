@@ -149,7 +149,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "F", "O", "X", " ", " ",
         "G", "P", "Y", " ", " ",
         "H", "Q", "Z", " ", " ",
-        "I", "R", " ", " ", " ",
+        "I", "R", " ", " ", "ED",
     ];
 
     FullScreenPokemon.keysLowercase = [
@@ -161,7 +161,7 @@ var FullScreenPokemon = (function (GameStartr) {
         "f", "o", "x", " ", " ",
         "g", "p", "y", " ", " ",
         "h", "q", "z", " ", " ",
-        "i", "r", " ", " ", " ",
+        "i", "r", " ", " ", "ED",
     ];
 
     //FullScreenPokemon.keysUppercase = [
