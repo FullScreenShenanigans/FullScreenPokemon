@@ -1311,9 +1311,7 @@ FullScreenPokemon.prototype.settings.menus = {
             },
             "container": "BattlePlayerHealth",
             "hidden": true,
-            "textStartingX": "right",
-            "textWidthMultiplier": -1,
-            "textXOffset": 0,
+            "textXOffset": 4,
             "textYOffset": 0,
             "textSpeed": 0
         },

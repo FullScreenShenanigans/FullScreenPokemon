@@ -812,7 +812,9 @@ function MenuGraphr(settings) {
      * 
      */
     self.activateMenuList = function (name) {
-        menus[name].arrow.hidden = false;
+        if (menus[name] && menus[name].arrow) {
+            menus[name].arrow.hidden = false;
+        }
     };
 
     /**

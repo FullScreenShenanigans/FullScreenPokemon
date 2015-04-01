@@ -3959,12 +3959,28 @@ var FullScreenPokemon = (function (GameStartr) {
      * @param {String} actor
      */
     function setBattleDisplayPokemonHealthBar(EightBitter, battlerName, hp, hpNormal) {
-        var bar = EightBitter.getThingById(
-                "HPBarFill" + battlerName[0].toUpperCase() + battlerName.slice(1)
-            ),
+        var nameUpper = battlerName[0].toUpperCase() + battlerName.slice(1),
+            menuNumbers = "Battle" + nameUpper + "HealthNumbers",
+            bar = EightBitter.getThingById("HPBarFill" + nameUpper),
             health = EightBitter.MathDecider.compute(
                 "widthHealthBar", 25, hp, hpNormal
             );
+
+        if (EightBitter.MenuGrapher.getMenu(menuNumbers)) {
+            EightBitter.MenuGrapher.getMenu(menuNumbers).children.forEach(
+                EightBitter.killNormal
+            );
+            EightBitter.MenuGrapher.addMenuDialog(
+                menuNumbers,
+                [
+                    [
+                        makeDigit(hp, 3, " ")
+                        + "/"
+                        + makeDigit(hpNormal, 3, " ")
+                    ]
+                ]
+            );
+        }
 
         EightBitter.setWidth(bar, health);
         bar.hidden = health === 0;
@@ -4322,9 +4338,12 @@ var FullScreenPokemon = (function (GameStartr) {
         EightBitter.MenuGrapher.addMenuDialog(
             "BattlePlayerHealthNumbers",
             [
-                String(pokemonInfo.HP).split("").reverse().join(""),
-                String(pokemonInfo.HPNormal + "/").split("").reverse().join("")
-            ].join(" ")
+                [
+                    makeDigit(pokemonInfo.HP, 3, " ")
+                    + "/"
+                    + makeDigit(pokemonInfo.HPNormal, 3, " ")
+                ]
+            ]
         );
 
         EightBitter.ScenePlayer.playRoutine(settings.routineArguments.nextRoutine);
@@ -4813,7 +4832,9 @@ var FullScreenPokemon = (function (GameStartr) {
         var battleInfo = EightBitter.BattleMover.getBattleInfo(),
             opponent = battleInfo.opponent;
 
-        EightBitter.GBSEmulator.play(EightBitter.MapScreener.theme);
+        if (EightBitter.MapScreener.theme) {
+            EightBitter.GBSEmulator.play(EightBitter.MapScreener.theme);
+        }
 
         if (!opponent.hasActors) {
             EightBitter.BattleMover.closeBattle(
