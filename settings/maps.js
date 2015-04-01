@@ -164,7 +164,8 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "DirtLight", "x": 128, "y": 104, "width": 16, "height": 32 },
                         { "thing": "DirtLight", "x": 80, "y": 120, "width": 48, "height": 16 },
                         { "thing": "FenceWide", "x": 64, "y": 128, "width": 88 },
-                        { "thing": "FenceWide", "x": 8, "y": 128 }
+                        { "thing": "FenceWide", "x": 8, "y": 128 },
+                        { "thing": "AreaSpawner", "y": 128, "map": "Route 21", "area": "Land", "direction": 2}
                     ]
                 },
                 "Player's House": {
@@ -674,98 +675,6 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "CoolTrainerM", "x": 24, "y": 24, "direction": 2, "roaming": true, "roamingDirections": [], "dialog": "No! POTIONS are all sold out." },
                         { "thing": "BugCatcher", "x": 48, "y": 40, "direction": 0, "roaming": true, "roamingDirections": [0, 2], "dialog": "This shop sells many ANTIDOTEs." },
                         { "thing": "CutsceneTriggerer", "x": 24, "y": 56, "width": 16, "id": "OakParcelPickup", "active": true, "cutscene": "OakParcelPickup" }
-                    ]
-                }
-            }
-        }, {
-            "name": "Route 22",
-            "theme": "Route 22",
-            "locationDefault": "Pokemon League",
-            "locations": {
-                "Pokemon League": {
-                    "area": "Land"
-                }
-            },
-            "areas": {
-                "Land": {
-                    "width": 320,
-                    "height": 144,
-                    "wildPokemon": {
-                        "grass": [{
-                            "title": "Rattata",
-                            "levels": [2, 3, 4],
-                            "rate": .5
-                        }, {
-                            "title": "Spearow",
-                            "levels": [3, 5],
-                            "rate": .1
-                        }, {
-                            "title": "NidoranF",
-                            "levels": [2, 3, 4],
-                            "rate": .35
-                        }, {
-                            "title": "NidoranM",
-                            "levels": [3, 4],
-                            "rate": .05
-                        }]
-                    },
-                    "creation": [
-                        { "thing": "AreaSpawner", "x": 320, "height": 320, "map": "Viridian City", "area": "Land", "offsetY": -64 },
-                        { "thing": "FenceWide", "width": 16, "height": 16 },
-                        { "thing": "DirtLight", "width": 112, "height": 48 },
-                        { "macro": "Building", "x": 16, "stories": 3, "width": 96,/* "door": true,*/ "doorOffset": 48, "entrance": "Pokemon League" },
-                        { "macro": "Mountain", "x": 112, "width": 208, "height": 8, "left": true },
-                        { "macro": "Mountain", "x": 112, "y": 8, "width": 128, "height": 24, "right": true, "bottom": true, "left": true },
-                        { "macro": "Mountain", "x": 232, "y": 8, "width": 56, "bottom": true },
-                        { "macro": "Mountain", "x": 288, "y": 8, "width": 32, "height": 40, "bottom": true, "left": true },
-                        { "macro": "Mountain", "y": 16, "top": true, "right": true, "width": 16, "height": 112 },
-                        { "thing": "DirtMedium", "x": 240, "y": 16, "width": 48, "height": 16 },
-                        { "thing": "DirtLight", "x": 112, "y": 32, "width": 16, "height": 64 },
-                        { "thing": "FenceWide", "x": 112, "y": 32, "width": 16, "height": 64 },
-                        { "thing": "Ledge", "x": 240, "y": 28, "width": 24, "crumbleRight": true },
-                        { "thing": "LedgeOpening", "x": 264, "y": 28 },
-                        { "thing": "Ledge", "x": 272, "y": 28, "width": 16 },
-                        { "thing": "BrickRoad", "x": 128, "y": 32, "width": 160, "height": 16 },
-                        { "thing": "BrickRoad", "x": 16, "y": 48, "width": 96, "height": 16 },
-                        { "thing": "CutsceneTriggerer", "x": 228, "y": 32, "height": 16, "id": "RivalTriggerer", "cutscene": "RivalRoute22" },
-                        { "thing": "DirtMedium", "x": 128, "y": 48, "width": 48, "height": 16 },
-                        { "macro": "Water", "x": 176, "y": 48, "width": 32, "height": 32, "open": [false, false, true, false] },
-                        { "thing": "DirtMedium", "x": 208, "y": 48, "width": 80, "height": 64 },
-                        { "thing": "DirtMedium", "x": 288, "y": 48, "width": 32, "height": 16 },
-                        { "macro": "Mountain", "x": 208, "y": 48, "width": 32, "height": 64, "top": true, "right": true, "bottom": true, "left": true },
-                        { "thing": "FenceWide", "x": 272, "y": 48, "width": 16 },
-                        { "thing": "ThemePlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
-                        { "thing": "FenceWide", "x": 272, "y": 56, "height": 40 },
-                        { "thing": "Ledge", "x": 128, "y": 60, "width": 48 },
-                        { "thing": "Ledge", "x": 240, "y": 60, "crumbleRight": true },
-                        { "thing": "LedgeOpening", "x": 248, "y": 60 },
-                        { "thing": "Ledge", "x": 256, "y": 60, "width": 16 },
-                        { "thing": "DirtMedium", "x": 16, "y": 64, "width": 96, "height": 16 },
-                        { "thing": "DirtMedium", "x": 128, "y": 64, "width": 48, "height": 32 },
-                        { "thing": "Grass", "x": 128, "y": 64, "width": 48, "height": 32 },
-                        { "thing": "Grass", "x": 240, "y": 64, "width": 32, "height": 32 },
-                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 288, "y": 64, "xnum": 4, "ynum": 2 },
-                        { "thing": "Ledge", "x": 16, "y": 76, "width": 72, "crumbleRight": true },
-                        { "thing": "LedgeOpening", "x": 88, "y": 76 },
-                        { "thing": "Ledge", "x": 96, "y": 76, "width": 16 },
-                        { "thing": "DirtLight", "x": 16, "y": 80, "width": 96, "height": 16 },
-                        { "thing": "BrickRoad", "x": 176, "y": 80, "width": 32, "height": 16 },
-                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 288, "y": 80, "xnum": 2, "ynum": 2 },
-                        { "thing": "FenceVertical", "x": 48, "y": 88, "width": 8 },
-                        { "thing": "Sign", "x": 56, "y": 88, "dialog": "POKEMON LEAGUE Front Gate" },
-                        { "thing": "FenceVertical", "x": 64, "y": 88, "width": 48 },
-                        { "thing": "DirtClean", "x": 304, "y": 80 },
-                        { "macro": "Mountain", "x": 304, "y": 80, "top": true, "left": true, "width": 16, "height": 48 },
-                        { "thing": "DirtMedium", "x": 16, "y": 96, "width": 192, "height": 16 },
-                        { "thing": "DirtMedium", "x": 288, "y": 96, "width": 16, "height": 16 },
-                        { "thing": "Ledge", "x": 16, "y": 108, "width": 192 },
-                        { "thing": "Ledge", "x": 240, "y": 108, "width": 24, "crumbleRight": true },
-                        { "thing": "LedgeOpening", "x": 264, "y": 108 },
-                        { "thing": "Ledge", "x": 272, "y": 108, "width": 32 },
-                        { "thing": "BrickRoad", "x": 16, "y": 112, "width": 288, "height": 16 },
-                        { "thing": "Mountain", "y": 128, "width": 16, "height": 16 },
-                        { "thing": "Mountain", "x": 16, "y": 128, "width": 288, "height": 16, "top": true },
-                        { "thing": "Mountain", "x": 304, "y": 128, "width": 16, "height": 16 }
                     ]
                 }
             }
@@ -1518,6 +1427,133 @@ FullScreenPokemon.prototype.settings.maps = {
                         { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Info House Front Door" }, "requireDirection": 2 }
                     ]
                 },
+            }
+        }, {
+            "name": "Route 21",
+            "locationDefault": "Temp",
+            "locations": {
+                "Temp": {
+                    "area": "Land"
+                }
+            },
+            "areas": {
+                "Land": {
+                    "width": 160,
+                    "height": 720,
+                    "creation": [
+                        { "thing": "AreaSpawner", "map": "Pallet Town", "area": "Land", "direction": 0 },
+                        { "thing": "DirtMedium", "width": 32, "height": 112 },
+                        { "thing": "FenceWide", "width": 32 },
+                        { "macro": "Water", "x": 32, "width": 32, "height": 80, "open": [true, false, true, false] },
+                        { "thing": "DirtMedium", "x": 64, "width": 96, "height": 80 },
+                        { "thing": "FenceWide", "x": 64, "width": 96 },
+                        { "thing": "FenceWide", "x": 24, "y": 8, "height": 104 },
+                        { "thing": "FenceWide", "x": 112, "y": 8, "height": 120 },
+                        { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 20, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "thing": "Grass", "x": 64, "y": 32, "width": 48, "height": 48 },
+                        { "macro": "Checkered", "things": ["", "Flower"], "x": 128, "y": 36, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "macro": "Checkered", "things": ["", "Flower"], "y": 36, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "macro": "Checkered", "things": ["", "Flower"], "y": 52, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "macro": "Checkered", "things": ["", "Flower"], "y": 68, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "macro": "Water", "x": 32, "y": 80, "width": 32, "height": 32, "open": [true, true, true, false] },
+                        { "macro": "Checkered", "things": ["", "Flower"], "y": 84, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
+                        { "macro": "Water", "x": 64, "y": 80, "width": 96, "height": 32, "open": [false, true, true, true] },
+                        { "macro": "Water", "y": 112, "width": 32, "height": 200, "open": [false, true, true, true] },
+                        { "macro": "Water", "x": 32, "y": 112, "width": 128, "height": 200, "open": [true, true, true, true] },
+                    ]
+                }
+            }
+        }, {
+            "name": "Route 22",
+            "theme": "Route 22",
+            "locationDefault": "Pokemon League",
+            "locations": {
+                "Pokemon League": {
+                    "area": "Land"
+                }
+            },
+            "areas": {
+                "Land": {
+                    "width": 320,
+                    "height": 144,
+                    "wildPokemon": {
+                        "grass": [{
+                            "title": "Rattata",
+                            "levels": [2, 3, 4],
+                            "rate": .5
+                        }, {
+                            "title": "Spearow",
+                            "levels": [3, 5],
+                            "rate": .1
+                        }, {
+                            "title": "NidoranF",
+                            "levels": [2, 3, 4],
+                            "rate": .35
+                        }, {
+                            "title": "NidoranM",
+                            "levels": [3, 4],
+                            "rate": .05
+                        }]
+                    },
+                    "creation": [
+                        { "thing": "AreaSpawner", "x": 320, "height": 320, "map": "Viridian City", "area": "Land", "offsetY": -64 },
+                        { "thing": "FenceWide", "width": 16, "height": 16 },
+                        { "thing": "DirtLight", "width": 112, "height": 48 },
+                        { "macro": "Building", "x": 16, "stories": 3, "width": 96,/* "door": true,*/ "doorOffset": 48, "entrance": "Pokemon League" },
+                        { "macro": "Mountain", "x": 112, "width": 208, "height": 8, "left": true },
+                        { "macro": "Mountain", "x": 112, "y": 8, "width": 128, "height": 24, "right": true, "bottom": true, "left": true },
+                        { "macro": "Mountain", "x": 232, "y": 8, "width": 56, "bottom": true },
+                        { "macro": "Mountain", "x": 288, "y": 8, "width": 32, "height": 40, "bottom": true, "left": true },
+                        { "macro": "Mountain", "y": 16, "top": true, "right": true, "width": 16, "height": 112 },
+                        { "thing": "DirtMedium", "x": 240, "y": 16, "width": 48, "height": 16 },
+                        { "thing": "DirtLight", "x": 112, "y": 32, "width": 16, "height": 64 },
+                        { "thing": "FenceWide", "x": 112, "y": 32, "width": 16, "height": 64 },
+                        { "thing": "Ledge", "x": 240, "y": 28, "width": 24, "crumbleRight": true },
+                        { "thing": "LedgeOpening", "x": 264, "y": 28 },
+                        { "thing": "Ledge", "x": 272, "y": 28, "width": 16 },
+                        { "thing": "BrickRoad", "x": 128, "y": 32, "width": 160, "height": 16 },
+                        { "thing": "BrickRoad", "x": 16, "y": 48, "width": 96, "height": 16 },
+                        { "thing": "CutsceneTriggerer", "x": 228, "y": 32, "height": 16, "id": "RivalTriggerer", "cutscene": "RivalRoute22" },
+                        { "thing": "DirtMedium", "x": 128, "y": 48, "width": 48, "height": 16 },
+                        { "macro": "Water", "x": 176, "y": 48, "width": 32, "height": 32, "open": [false, false, true, false] },
+                        { "thing": "DirtMedium", "x": 208, "y": 48, "width": 80, "height": 64 },
+                        { "thing": "DirtMedium", "x": 288, "y": 48, "width": 32, "height": 16 },
+                        { "macro": "Mountain", "x": 208, "y": 48, "width": 32, "height": 64, "top": true, "right": true, "bottom": true, "left": true },
+                        { "thing": "FenceWide", "x": 272, "y": 48, "width": 16 },
+                        { "thing": "ThemePlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
+                        { "thing": "FenceWide", "x": 272, "y": 56, "height": 40 },
+                        { "thing": "Ledge", "x": 128, "y": 60, "width": 48 },
+                        { "thing": "Ledge", "x": 240, "y": 60, "crumbleRight": true },
+                        { "thing": "LedgeOpening", "x": 248, "y": 60 },
+                        { "thing": "Ledge", "x": 256, "y": 60, "width": 16 },
+                        { "thing": "DirtMedium", "x": 16, "y": 64, "width": 96, "height": 16 },
+                        { "thing": "DirtMedium", "x": 128, "y": 64, "width": 48, "height": 32 },
+                        { "thing": "Grass", "x": 128, "y": 64, "width": 48, "height": 32 },
+                        { "thing": "Grass", "x": 240, "y": 64, "width": 32, "height": 32 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 288, "y": 64, "xnum": 4, "ynum": 2 },
+                        { "thing": "Ledge", "x": 16, "y": 76, "width": 72, "crumbleRight": true },
+                        { "thing": "LedgeOpening", "x": 88, "y": 76 },
+                        { "thing": "Ledge", "x": 96, "y": 76, "width": 16 },
+                        { "thing": "DirtLight", "x": 16, "y": 80, "width": 96, "height": 16 },
+                        { "thing": "BrickRoad", "x": 176, "y": 80, "width": 32, "height": 16 },
+                        { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 288, "y": 80, "xnum": 2, "ynum": 2 },
+                        { "thing": "FenceVertical", "x": 48, "y": 88, "width": 8 },
+                        { "thing": "Sign", "x": 56, "y": 88, "dialog": "POKEMON LEAGUE Front Gate" },
+                        { "thing": "FenceVertical", "x": 64, "y": 88, "width": 48 },
+                        { "thing": "DirtClean", "x": 304, "y": 80 },
+                        { "macro": "Mountain", "x": 304, "y": 80, "top": true, "left": true, "width": 16, "height": 48 },
+                        { "thing": "DirtMedium", "x": 16, "y": 96, "width": 192, "height": 16 },
+                        { "thing": "DirtMedium", "x": 288, "y": 96, "width": 16, "height": 16 },
+                        { "thing": "Ledge", "x": 16, "y": 108, "width": 192 },
+                        { "thing": "Ledge", "x": 240, "y": 108, "width": 24, "crumbleRight": true },
+                        { "thing": "LedgeOpening", "x": 264, "y": 108 },
+                        { "thing": "Ledge", "x": 272, "y": 108, "width": 32 },
+                        { "thing": "BrickRoad", "x": 16, "y": 112, "width": 288, "height": 16 },
+                        { "thing": "Mountain", "y": 128, "width": 16, "height": 16 },
+                        { "thing": "Mountain", "x": 16, "y": 128, "width": 288, "height": 16, "top": true },
+                        { "thing": "Mountain", "x": 304, "y": 128, "width": 16, "height": 16 }
+                    ]
+                }
             }
         }
     ])

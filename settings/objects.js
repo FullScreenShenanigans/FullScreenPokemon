@@ -180,6 +180,7 @@ FullScreenPokemon.prototype.settings.objects = {
             },
             "Scenery": {
                 "Blackboard": {},
+                "Bridge": {},
                 "Clipboard": {},
                 "Doormat": {},
                 "DoormatDotted": {},
@@ -1036,6 +1037,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "repeat": true
         },
         "Blackboard": [16, 8],
+        "Bridge": [4, 4],
         "Clipboard": {
             "offsetY": FullScreenPokemon.unitsize * -1.5
         },

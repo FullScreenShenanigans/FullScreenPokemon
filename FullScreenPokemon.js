@@ -138,9 +138,6 @@ var FullScreenPokemon = (function (GameStartr) {
     FullScreenPokemon.inputTimeTolerance = 4;
 
     FullScreenPokemon.keysUppercase = [
-    ];
-
-    FullScreenPokemon.keysUppercase = [
         "A", "J", "S", " ", " ",
         "B", "K", "T", " ", " ",
         "C", "L", "U", " ", " ",
@@ -187,6 +184,10 @@ var FullScreenPokemon = (function (GameStartr) {
     //    "h", "q", "z", "Poke", ",",
     //    "i", "r", " ", "Mon", "ED"
     //];
+
+    setTimeout(function () {
+        FSP.setMap("Pallet Town");
+    }, 35)
 
 
     /* Resets
@@ -8231,7 +8232,7 @@ var FullScreenPokemon = (function (GameStartr) {
             y = reference.y || 0,
             width = reference.width || 8,
             height = reference.height || 8,
-            open = reference.open,
+            open = reference.open || [true, true, true, true],
             output = [{
                 "thing": "Water",
                 "x": x,
