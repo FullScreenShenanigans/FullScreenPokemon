@@ -137,16 +137,16 @@ function MenuGraphr(settings) {
     /**
      * 
      */
-    self.createChild = function (name, schema) {
+    self.createChild = function (name, schema, attributes) {
         switch (schema.type) {
             case "menu":
-                self.createMenu(schema.name);
+                self.createMenu(schema.name, schema.attributes);
                 break;
             case "text":
-                self.createMenuWord(name, schema);
+                self.createMenuWord(name, schema, schema.attributes);
                 break;
             case "thing":
-                self.createMenuThing(name, schema);
+                self.createMenuThing(name, schema, schema.attributes);
                 break;
         }
     };

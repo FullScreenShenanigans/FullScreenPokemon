@@ -661,6 +661,7 @@ FullScreenPokemon.prototype.settings.objects = {
                     "CharPoke": {},
                     "CharMon": {},
                     "CharNo": {},
+                    "CharID": {},
                     "CharHyphen": {},
                     "CharMDash": {},
                     "CharUnderscore": {},
@@ -1153,6 +1154,11 @@ FullScreenPokemon.prototype.settings.objects = {
             "offsetY": FullScreenPokemon.unitsize * .5
         },
         "CharNo": {
+            "width": 4,
+            "height": 3,
+            "offsetY": FullScreenPokemon.unitsize * .5
+        },
+        "CharID": {
             "width": 4,
             "height": 3,
             "offsetY": FullScreenPokemon.unitsize * .5
