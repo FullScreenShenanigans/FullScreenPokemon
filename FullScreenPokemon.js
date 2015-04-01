@@ -3639,6 +3639,26 @@ var FullScreenPokemon = (function (GameStartr) {
     /**
      * 
      */
+    function healPokemon(pokemon) {
+        var EightBitter = EightBittr.ensureCorrectCaller(this),
+            moves = EightBitter.MathDecider.getConstant("moves"),
+            statisticNames = EightBitter.MathDecider.getConstant("statisticNames"),
+            i;
+
+        for (i = 0; i < statisticNames.length; i += 1) {
+            pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
+        }
+
+        for (i = 0 ; i < pokemon.moves.length; i += 1) {
+            pokemon.moves[i].remaining = moves[pokemon.moves[i].title].PP;
+        }
+
+        pokemon.status = "";
+    }
+
+    /**
+     * 
+     */
     function checkPlayerGrassBattle(thing) {
         if (!thing.grass || thing.EightBitter.MenuGrapher.getActiveMenu()) {
             return;
@@ -5304,8 +5324,6 @@ var FullScreenPokemon = (function (GameStartr) {
             top = settings.machine.top + 7 * EightBitter.unitsize,
             i = 0;
 
-        party.length = 6;
-
         EightBitter.animateCharacterSetDirection(settings.nurse, 3);
 
         EightBitter.TimeHandler.addEventInterval(function () {
@@ -5354,7 +5372,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }, 21, numFlashes);
 
         EightBitter.TimeHandler.addEvent(
-            EightBitter.ScenePlayer.playRoutine,
+            EightBitter.ScenePlayer.playRoutine, 
             (numFlashes + 2) * 21,
             "HealingComplete",
             {
@@ -5368,9 +5386,12 @@ var FullScreenPokemon = (function (GameStartr) {
      */
     function cutscenePokeCenterHealingComplete(EightBitter, settings) {
         var routineArguments = settings.routineArguments,
-            balls = routineArguments.balls;
+            balls = routineArguments.balls,
+            party = EightBitter.StatsHolder.get("PokemonInParty");
 
         balls.forEach(EightBitter.killNormal);
+
+        party.forEach(EightBitter.healPokemon.bind(EightBitter));
 
         EightBitter.animateCharacterSetDirection(settings.nurse, 2);
 
@@ -6830,6 +6851,10 @@ var FullScreenPokemon = (function (GameStartr) {
 
         //rivalblocker.nocollide = true;
         //EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
+
+        EightBitter.StatsHolder.get("PokemonInParty").forEach(
+            EightBitter.healPokemon.bind(EightBitter)
+        );
 
         EightBitter.TimeHandler.addEvent(
             EightBitter.ScenePlayer.bindRoutine("Complaint"), 49
@@ -9122,6 +9147,7 @@ var FullScreenPokemon = (function (GameStartr) {
         // Battles and battle animations
         "startBattle": startBattle,
         "createPokemon": createPokemon,
+        "healPokemon": healPokemon,
         "checkPlayerGrassBattle": checkPlayerGrassBattle,
         "chooseRandomWildPokemon": chooseRandomWildPokemon,
         "addBattleDisplayPokeballs": addBattleDisplayPokeballs,

@@ -9,6 +9,7 @@ FullScreenPokemon.prototype.settings.math = {
                     "level": level,
                     "moves": moves || this.compute("newPokemonMoves", title, level),
                     "types": constants.pokemon[title].types,
+                    "status": "",
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
                     "experience": this.compute("newPokemonExperience", title, level)
