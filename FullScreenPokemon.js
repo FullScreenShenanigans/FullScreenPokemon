@@ -9478,8 +9478,6 @@ var FullScreenPokemon = (function (GameStartr) {
         "saveCharacterPosition": saveCharacterPosition,
         "downloadSaveGame": downloadSaveGame,
         "addItemToBag": addItemToBag,
-        "MARATHON": MARATHON,
-        "DURANDAL": DURANDAL,
         // Map sets
         "setMap": setMap,
         "setLocation": setLocation,
