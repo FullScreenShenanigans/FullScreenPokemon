@@ -111,10 +111,6 @@ var FullScreenPokemon = (function (GameStartr) {
         } else {
             this.reset(this, customs);
         }
-
-        setTimeout(this.MARATHON.bind(this), 4900);
-        setTimeout(this.DURANDAL.bind(this), 7000);
-        setTimeout(this.downloadSaveGame.bind(this), 280000);
     }
     FullScreenPokemon.prototype = GameStartrProto;
 
@@ -7786,65 +7782,6 @@ var FullScreenPokemon = (function (GameStartr) {
             "item",
             "amount"
         );
-    }
-
-    /**
-     * 
-     */
-    function MARATHON() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "position": {
-                "horizontal": "center",
-                "vertical": "center",
-                "offset": {
-                    "left": 0,
-                    "top": 0
-                }
-            }
-        });
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                "FULL SCREEN POKEMON",
-                "Coming April 1st, 2016!",
-                "We promise!"
-            ],
-            EightBitter.MARATHON.bind(EightBitter)
-        );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function DURANDAL() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            vidder = document.createElement("video"),
-            types = ["mp4", "flv"],
-            source, i;
-
-        for (i = 0; i < types.length; i += 1) {
-            source = document.createElement("source");
-            source.src = "Theme/Video." + types[i];
-            source.type = "video/" + types[i];
-            vidder.appendChild(source);
-        }
-
-        vidder.style.width = "100%";
-        vidder.style.height = "100%";
-        vidder.style.zIndex = 49;
-        vidder.style.position = "fixed";
-
-        vidder.volume = 1;
-        vidder.autoplay = true;
-        vidder.play();
-        vidder.oncanplay = function () {
-            document.body.insertBefore(
-                vidder, document.body.firstChild
-            );
-        };
     }
 
 
