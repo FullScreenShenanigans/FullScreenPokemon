@@ -4965,7 +4965,7 @@ var FullScreenPokemon = (function (GameStartr) {
         }
 
         if (EightBitter.MapScreener.theme) {
-            EightBitter.GBSEmulator.playTheme(EightBitter.MapScreener.theme);
+            EightBitter.GBSEmulator.play(EightBitter.MapScreener.theme);
         }
 
         EightBitter.MenuGrapher.createMenu("GeneralText");
