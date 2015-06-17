@@ -1,28 +1,33 @@
 {
-    "name": "FullScreenPokemon",
-    "description": "FullScreenPokemon - A free HTML5 remake of Pokemon generations I & II, expanded for modern browsing.",
-    "version": "0.0.0",
+    "name": "FullScreenMario",
+    "description": "An HTML5 remake of the original Super Mario Brothers - expanded for modern browsing.",
+    "version": "0.10.0",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenMario.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
+        "url": "https://github.com/FullScreenShenanigans/FullScreenMario/issues"
     },
     "license": "MIT",
     "dependencies": {
-        "chai": "2.2.X",
-        "grunt": "0.4.X",
-        "grunt-cli": "0.1.X",
-        "grunt-contrib-copy": "0.8.X",
-        "grunt-contrib-uglify": "0.8.X",
-        "grunt-mocha-phantomjs": "0.6.X",
+        "chai": "~2.2.X",
+        "grunt": "~0.4.X",
+        "grunt-cli": "~0.1.X",
+        "grunt-contrib-clean": "~0.6.0",
+        "grunt-contrib-copy": "~0.8.X",
+        "grunt-contrib-cssmin": "~0.12.X",
+        "grunt-contrib-uglify": "~0.8.X",
+        "grunt-mocha-phantomjs": "~0.6.X",
+        "grunt-processhtml": "~0.3.X",
+        "grunt-preprocess": "~4.1.X",
         "grunt-tslint": "2.0.X",
         "grunt-typescript": "0.6.X",
+        "grunt-zip": "0.16.X",
         "mocha": "~2.2.X",
         "tslint": "~2.0.X",
         "typescript": "~1.4.X"
