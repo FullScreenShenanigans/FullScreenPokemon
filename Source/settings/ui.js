@@ -143,37 +143,37 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
                     "type": "Number",
                     "minimum": 0,
                     "maximum": 100,
-                    "source": function (EightBitter) {
-                        return Math.round(EightBitter.GBSEmulator.getVolume() * 100);
+                    "source": function (FSP) {
+                        return Math.round(FSP.GBSEmulator.getVolume() * 100);
                     },
-                    "update": function (EightBitter, value) {
-                        EightBitter.GBSEmulator.setVolume(value / 100);
+                    "update": function (FSP, value) {
+                        FSP.GBSEmulator.setVolume(value / 100);
                     }
                 },
                 {
                     "title": "Mute",
                     "type": "Boolean",
-                    "source": function (EightBitter) {
-                        return EightBitter.GBSEmulator.getMuted();
+                    "source": function (FSP) {
+                        return FSP.GBSEmulator.getMuted();
                     },
-                    "enable": function (EightBitter) {
-                        EightBitter.GBSEmulator.setMutedOn();
+                    "enable": function (FSP) {
+                        FSP.GBSEmulator.setMutedOn();
                     },
-                    "disable": function (EightBitter) {
-                        EightBitter.GBSEmulator.setMutedOff();
+                    "disable": function (FSP) {
+                        FSP.GBSEmulator.setMutedOff();
                     }
                 },
                 {
                     "title": "Speed",
                     "type": "Select",
-                    "options": function (EightBitter) {
+                    "options": function (FSP) {
                         return [".25x", ".5x", "1x", "2x", "5x"];
                     },
-                    "source": function (EightBitter) {
+                    "source": function (FSP) {
                         return "1x";
                     },
-                    "update": function (EightBitter, value) {
-                        EightBitter.GamesRunner.setSpeed(
+                    "update": function (FSP, value) {
+                        FSP.GamesRunner.setSpeed(
                             Number(value.replace('x', ''))
                         );
                     },
@@ -186,15 +186,15 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
                 {
                     "title": "Framerate",
                     "type": "Select",
-                    "options": function (EightBitter) {
+                    "options": function (FSP) {
                         return ["60fps", "30fps"];
                     },
-                    "source": function (EightBitter) {
-                        return (1 / EightBitter.PixelDrawer.getFramerateSkip() * 60) + "fps";
+                    "source": function (FSP) {
+                        return (1 / FSP.PixelDrawer.getFramerateSkip() * 60) + "fps";
                     },
-                    "update": function (EightBitter, value) {
+                    "update": function (FSP, value) {
                         var numeric = Number(value.replace("fps", ""));
-                        EightBitter.PixelDrawer.setFramerateSkip(1 / numeric * 60);
+                        FSP.PixelDrawer.setFramerateSkip(1 / numeric * 60);
                     },
                     "storeLocally": true
                 },
@@ -202,13 +202,13 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
                     "title": "Tilt Controls",
                     "type": "Boolean",
                     "storeLocally": true,
-                    "source": function (EightBitter) {
+                    "source": function (FSP) {
                         return false;
                     },
-                    "enable": function (EightBitter) {
-                        window.ondevicemotion = EightBitter.InputWriter.makePipe("ondevicemotion", "type");
+                    "enable": function (FSP) {
+                        window.ondevicemotion = FSP.InputWriter.makePipe("ondevicemotion", "type");
                     },
-                    "disable": function (EightBitter) {
+                    "disable": function (FSP) {
                         window.ondevicemotion = undefined;
                     }
                 }
@@ -216,8 +216,8 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
             "actions": [
                 {
                     "title": "Screenshot",
-                    "action": function (EightBitter) {
-                        EightBitter.takeScreenshot();
+                    "action": function (FSP) {
+                        FSP.takeScreenshot();
                     }
                 }
             ]
@@ -230,18 +230,18 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
                         "title": title[0].toUpperCase() + title.substr(1),
                         "type": "Keys",
                         "storeLocally": true,
-                        "source": function (EightBitter) {
-                            return EightBitter.InputWriter
+                        "source": function (FSP) {
+                            return FSP.InputWriter
                                 .getAliasAsKeyStrings(title)
                                 .map(function (string) {
                                     return string.toLowerCase();
                                 });
                         },
-                        "callback": function (EightBitter, valueOld, valueNew) {
-                            EightBitter.InputWriter.switchAliasValues(
+                        "callback": function (FSP, valueOld, valueNew) {
+                            FSP.InputWriter.switchAliasValues(
                                 title,
-                                [EightBitter.InputWriter.convertKeyStringToAlias(valueOld)],
-                                [EightBitter.InputWriter.convertKeyStringToAlias(valueNew)]
+                                [FSP.InputWriter.convertKeyStringToAlias(valueOld)],
+                                [FSP.InputWriter.convertKeyStringToAlias(valueNew)]
                             );
                         }
                     };
@@ -252,11 +252,11 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
         //    "generator": "OptionsButtons",
         //    "keyActive": "enabled",
         //    "assumeInactive": true,
-        //    "options": function (EightBitter) {
-        //        return EightBitter.ModAttacher.getMods();
+        //    "options": function (FSP) {
+        //        return FSP.ModAttacher.getMods();
         //    },
-        //    "callback": function (EightBitter, schema, button) {
-        //        EightBitter.ModAttacher.toggleMod(button.getAttribute("value") || button.textContent);
+        //    "callback": function (FSP, schema, button) {
+        //        FSP.ModAttacher.toggleMod(button.getAttribute("value") || button.textContent);
         //    }
         //}, {
         //    "title": "Editor",
@@ -283,7 +283,7 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
                     
         //            return {
         //                "title": "Map Generator!",
-        //                "callback": function (EightBitter, schema, button, event) {
+        //                "callback": function (FSP, schema, button, event) {
         //                    var parent = event.target.parentNode,
         //                        randomizer = parent.querySelector(".randomInput");
                                 
@@ -292,9 +292,9 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
         //                        randomizer.value = getNewSeed();
         //                    }
                             
-        //                    EightBitter.LevelEditor.disable();
-        //                    EightBitter.NumberMaker.resetFromSeed(randomizer.value);
-        //                    EightBitter.setMap("Random");
+        //                    FSP.LevelEditor.disable();
+        //                    FSP.NumberMaker.resetFromSeed(randomizer.value);
+        //                    FSP.setMap("Random");
                             
         //                    if (!randomizer.getAttribute("custom")) {
         //                        randomizer.value = getNewSeed();
@@ -315,9 +315,9 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
         //            };
         //        })()
         //    },
-        //    "callback": function (EightBitter, schema, button, event) {
-        //        EightBitter.LevelEditor.disable();
-        //        EightBitter.setMap(button.getAttribute("value") || button.textContent);
+        //    "callback": function (FSP, schema, button, event) {
+        //        FSP.LevelEditor.disable();
+        //        FSP.setMap(button.getAttribute("value") || button.textContent);
         //    }
         }
     ]

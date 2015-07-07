@@ -1,7 +1,15 @@
 // @echo '/// <reference path="GameStartr-0.2.0.ts" />'
+// @echo '/// <reference path="BattleMovr-0.2.0.ts" />'
+// @echo '/// <reference path="GBSEmulatr-0.2.0.ts" />'
+// @echo '/// <reference path="MenuGraphr-0.2.0.ts" />'
+// @echo '/// <reference path="StateHoldr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/GameStartr-0.2.0.ts" />
+/// <reference path="References/BattleMovr-0.2.0.ts" />
+/// <reference path="References/GBSEmulatr-0.2.0.ts" />
+/// <reference path="References/MenuGraphr-0.2.0.ts" />
+/// <reference path="References/StateHoldr-0.2.0.ts" />
 /// <reference path="FullScreenPokemon.d.ts" />
 // @endif
 
@@ -56,6 +64,26 @@ module FullScreenPokemon {
          * Overriden MapScreenr refers to the IMapScreenr defined in FullScreenPokemon.d.ts.
          */
         public MapScreener: IMapScreenr;
+
+        /**
+         * 
+         */
+        public GBSEmulator: GBSEmulatr.IGBSEmulatr;
+
+        /**
+         * 
+         */
+        public StateHolder: StateHoldr.IStateHoldr;
+
+        /**
+         * 
+         */
+        public MenuGrapher: MenuGraphr.IMenuGraphr;
+
+        /**
+         * 
+         */
+        public BattleMover: BattleMovr.IBattleMovr;
 
         /**
          * Internal reference to the static settings.
@@ -116,10 +144,10 @@ module FullScreenPokemon {
                     "scale"
                 ],
                 "extraResets": [
+                    "resetGBSEmulator",
+                    "resetStateHolder",
                     "resetMenuGrapher",
                     "resetBattleMover",
-                    "resetStateHolder",
-                    "resetGBSEmulator"
                 ]
             });
 
@@ -140,7 +168,48 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetAudioPlayer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+        resetAudioPlayer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void { }
+
+        /**
+         * Sets this.GBSEmulator.
+         * 
+         * @param {FullScreenPokemon} FSP
+         * @param {Object} customs
+         */
+        resetGBSEmulator(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+            FSP.GBSEmulator = new GBSEmulatr.GBSEmulatr(FSP.proliferate({
+                "ItemsHolder": FSP.ItemsHolder,
+                "Module": Module
+            }, FSP.settings.audio));
+        }
+
+        /**
+         * Sets this.StateHolder.
+         * 
+         * @param {FullScreenPokemon} FSP
+         * @param {Object} customs
+         */
+        resetStateHolder(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+
+        }
+
+        /**
+         * Sets this.MenuGrapher.
+         * 
+         * @param {FullScreenPokemon} FSP
+         * @param {Object} customs
+         */
+        resetMenuGrapher(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+
+        }
+
+        /**
+         * Sets this.BattleMover.
+         * 
+         * @param {FullScreenPokemon} FSP
+         * @param {Object} customs
+         */
+        resetBattleMover(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
 
         }
 
