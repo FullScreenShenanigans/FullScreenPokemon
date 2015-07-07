@@ -1,5 +1,5 @@
-FullScreenPokemon.prototype.settings.sprites = {
-    "scale": FullScreenPokemon.scale,
+FullScreenPokemon.FullScreenPokemon.settings.sprites = {
+    "scale": FullScreenPokemon.FullScreenPokemon.scale,
     "spriteWidth": "spritewidthpixels",
     "spriteHeight": "spriteheightpixels",
     "flipVert": "flip-vert",

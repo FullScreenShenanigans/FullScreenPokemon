@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.menus = {
+FullScreenPokemon.FullScreenPokemon.settings.menus = {
     "aliases": {
         "(": "LeftParenthesis",
         ")": "RightParenthesis",
@@ -73,7 +73,7 @@ FullScreenPokemon.prototype.settings.menus = {
                     "left": 60
                 }
             },
-            "onMenuDelete": FullScreenPokemon.prototype.closePauseMenu,
+            "onMenuDelete": FullScreenPokemon.FullScreenPokemon.prototype.closePauseMenu,
             "textXOffset": 8,
             "textYOffset": 8,
             "textPaddingY": 7.75

@@ -82,7 +82,6 @@ module FullScreenPokemon {
          * Static game settings are stored in the appropriate settings/*.js object
          * as members of the FullScreenPokemon.prototype object.
          * Dynamic game settings may be given as members of the "customs" argument.
-         * On typical machines, game startup time is approximately 500-700ms.
          */
         constructor(customs: GameStartr.IGameStartrCustoms) {
             super({

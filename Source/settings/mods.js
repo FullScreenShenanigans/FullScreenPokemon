@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.mods = {
+FullScreenPokemon.FullScreenPokemon.settings.mods = {
     "storeLocally": true,
     "prefix": "FullScreenPokemon::Mods::",
     "mods": []

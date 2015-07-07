@@ -1,3 +1,3 @@
-FullScreenPokemon.prototype.settings.generator = {
+FullScreenPokemon.FullScreenPokemon.settings.generator = {
     "possibilities": {}
 };

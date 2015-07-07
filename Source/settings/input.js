@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.input = {
+FullScreenPokemon.FullScreenPokemon.settings.input = {
     "InputWritrArgs": {
         "aliases": {
             // Keyboard aliases
@@ -14,30 +14,30 @@ FullScreenPokemon.prototype.settings.input = {
         },
         "triggers": {
             "onkeydown": {
-                "left": FullScreenPokemon.prototype.keyDownLeft,
-                "right": FullScreenPokemon.prototype.keyDownRight,
-                "up": FullScreenPokemon.prototype.keyDownUp,
-                "down": FullScreenPokemon.prototype.keyDownDown,
-                "a": FullScreenPokemon.prototype.keyDownA,
-                "b": FullScreenPokemon.prototype.keyDownB,
-                "pause": FullScreenPokemon.prototype.togglePauseMenu,
-                "mute": FullScreenPokemon.prototype.keyDownMute,
+                "left": FullScreenPokemon.FullScreenPokemon.prototype.keyDownLeft,
+                "right": FullScreenPokemon.FullScreenPokemon.prototype.keyDownRight,
+                "up": FullScreenPokemon.FullScreenPokemon.prototype.keyDownUp,
+                "down": FullScreenPokemon.FullScreenPokemon.prototype.keyDownDown,
+                "a": FullScreenPokemon.FullScreenPokemon.prototype.keyDownA,
+                "b": FullScreenPokemon.FullScreenPokemon.prototype.keyDownB,
+                "pause": FullScreenPokemon.FullScreenPokemon.prototype.togglePauseMenu,
+                "mute": FullScreenPokemon.FullScreenPokemon.prototype.keyDownMute,
             },
             "onkeyup": {
-                "left": FullScreenPokemon.prototype.keyUpLeft,
-                "right": FullScreenPokemon.prototype.keyUpRight,
-                "up": FullScreenPokemon.prototype.keyUpUp,
-                "down": FullScreenPokemon.prototype.keyUpDown,
-                "a": FullScreenPokemon.prototype.keyUpA,
-                "b": FullScreenPokemon.prototype.keyUpB,
-                "pause": FullScreenPokemon.prototype.keyUpPause
+                "left": FullScreenPokemon.FullScreenPokemon.prototype.keyUpLeft,
+                "right": FullScreenPokemon.FullScreenPokemon.prototype.keyUpRight,
+                "up": FullScreenPokemon.FullScreenPokemon.prototype.keyUpUp,
+                "down": FullScreenPokemon.FullScreenPokemon.prototype.keyUpDown,
+                "a": FullScreenPokemon.FullScreenPokemon.prototype.keyUpA,
+                "b": FullScreenPokemon.FullScreenPokemon.prototype.keyUpB,
+                "pause": FullScreenPokemon.FullScreenPokemon.prototype.keyUpPause
             },
             "onmousedown": {
-                "rightclick": FullScreenPokemon.prototype.mouseDownRight
+                "rightclick": FullScreenPokemon.FullScreenPokemon.prototype.mouseDownRight
             },
             "oncontextmenu": {},
             "ondevicemotion": {
-                //"devicemotion": FullScreenPokemon.prototype.deviceMotion
+                //"devicemotion": FullScreenPokemon.FullScreenPokemon.prototype.deviceMotion
             }
         }
     }

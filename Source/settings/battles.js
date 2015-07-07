@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.battles = {
+FullScreenPokemon.FullScreenPokemon.settings.battles = {
     "battleMenuName": "Battle",
     "battleOptionNames": {
         "moves": "FIGHT",

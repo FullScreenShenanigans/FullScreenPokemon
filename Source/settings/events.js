@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.events = {
+FullScreenPokemon.FullScreenPokemon.settings.events = {
     "keyOnSpriteCycleStart": "onThingAdd",
     "keyDoSpriteCycleStart": "placed",
     "keyCycleCheckValidity": "alive",

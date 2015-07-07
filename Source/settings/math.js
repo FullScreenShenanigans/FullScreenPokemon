@@ -1,7 +1,7 @@
-FullScreenPokemon.prototype.settings.math = {
+FullScreenPokemon.FullScreenPokemon.settings.math = {
     "equations": {
-        "proliferate": EightBittr.prototype.proliferate,
-        "newPokemon": function (NumberMaker, constants, equations, title, level, moves, iv, ev) {
+        "proliferate": EightBittr.EightBittr.prototype.proliferate,
+        "newPokemon": function (constants, equations, title, level, moves, iv, ev) {
             var statisticNames = constants.statisticNames,
                 pokemon = {
                     "title": title,
@@ -26,7 +26,7 @@ FullScreenPokemon.prototype.settings.math = {
             return pokemon;
         },
         // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
-        "newPokemonMoves": function (NumberMaker, constants, equations, title, level) {
+        "newPokemonMoves": function (constants, equations, title, level) {
             var possibilities = constants.pokemon[title].moves.natural,
                 output = [],
                 move, moveInfo, newMove, end, i, j;
@@ -51,11 +51,11 @@ FullScreenPokemon.prototype.settings.math = {
             return output;
         },
         // http://bulbapedia.bulbagarden.net/wiki/Individual_values
-        "newPokemonIVs": function (NumberMaker, constants, equations) {
-            var attack = NumberMaker.randomIntWithin(0, 15),
-                defense = NumberMaker.randomIntWithin(0, 15),
-                speed = NumberMaker.randomIntWithin(0, 15),
-                special = NumberMaker.randomIntWithin(0, 15),
+        "newPokemonIVs": function (constants, equations) {
+            var attack = constants.NumberMaker.randomIntWithin(0, 15),
+                defense = constants.NumberMaker.randomIntWithin(0, 15),
+                speed = constants.NumberMaker.randomIntWithin(0, 15),
+                special = constants.NumberMaker.randomIntWithin(0, 15),
                 output = {
                     "Attack": attack,
                     "Defense": defense,
@@ -72,7 +72,7 @@ FullScreenPokemon.prototype.settings.math = {
 
             return output;
         },
-        "newPokemonEVs": function (NumberMaker, constants, equations) {
+        "newPokemonEVs": function (constants, equations) {
             return {
                 "Attack": 0,
                 "Defense": 0,
@@ -80,7 +80,7 @@ FullScreenPokemon.prototype.settings.math = {
                 "Special": 0
             }
         },
-        "newPokemonExperience": function (NumberMaker, constants, equations, title, level) {
+        "newPokemonExperience": function (constants, equations, title, level) {
             var current = this.compute("experienceStarting", title, level),
                 next = this.compute("experienceStarting", title, level + 1);
 
@@ -92,7 +92,7 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://bulbapedia.bulbagarden.net/wiki/Individual_values
         // Note: the page mentions rounding errors... 
-        "pokemonStatistic": function (NumberMaker, constants, equations, pokemon, statistic) {
+        "pokemonStatistic": function (constants, equations, pokemon, statistic) {
             var topExtra = 0,
                 added = 5,
                 base = constants.pokemon[pokemon.title][statistic],
@@ -111,11 +111,11 @@ FullScreenPokemon.prototype.settings.math = {
             return (numerator / 50 + added) | 0;
         },
         // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
-        "doesGrassEncounterHappen": function (NumberMaker, constants, equations, grass) {
-            return NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
+        "doesGrassEncounterHappen": function (constants, equations, grass) {
+            return constants.NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
         },
         // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
-        "canCatchPokemon": function (NumberMaker, constants, equations, pokemon, ball) {
+        "canCatchPokemon": function (constants, equations, pokemon, ball) {
             var n, m, f;
 
             // 1. If a Master Ball is used, the Pokemon is caught.
@@ -124,7 +124,7 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             // 2. Generate a random number, N, depending on the type of ball used.
-            n = NumberMaker.randomInt(ball.probabilityMax);
+            n = constants.NumberMaker.randomInt(ball.probabilityMax);
 
             // 3. The Pokemon is caught if...
             if (pokemon.status) {
@@ -148,7 +148,7 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             // 5. If not, generate a random value, M, between 0 and 255.
-            m = NumberMaker.randomInt(255);
+            m = constants.NumberMaker.randomInt(255);
 
             // 6. Calculate f.
             f = Math.max(
@@ -163,20 +163,20 @@ FullScreenPokemon.prototype.settings.math = {
             return f > m;
         },
         // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
-        "canEscapePokemon": function (NumberMaker, constants, equations, pokemon, enemy, battleInfo) {
+        "canEscapePokemon": function (constants, equations, pokemon, enemy, battleInfo) {
             var a = pokemon.speed,
                 b = (enemy.speed / 4) % 256,
                 c = battleInfo.currentEscapeAttempts,
-                f = NumberMaker.randomBooleanProbability((a * 32) / b + 30 * c);
+                f = constants.NumberMaker.randomBooleanProbability((a * 32) / b + 30 * c);
 
             if (f > 255 || b === 0) {
                 return true;
             }
 
-            return NumberMaker.randomInt(256) < f;
+            return constants.NumberMaker.randomInt(256) < f;
         },
         // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
-        "numBallShakes": function (NumberMaker, constants, equations, pokemon, ball) {
+        "numBallShakes": function (constants, equations, pokemon, ball) {
             // 1. Calculate d.
             var d = pokemon.rate * 100 / ball.rate,
                 f, x;
@@ -216,18 +216,18 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
         // TO DO: Also filter for moves with > 0 remaining remaining...
-        "opponentMove": function (NumberMaker, constants, equations, player, opponent) {
+        "opponentMove": function (constants, equations, player, opponent) {
             var possibilities = opponent.selectedActor.moves.map(function (move) {
-                    return {
-                        "move": move.title,
-                        "priority": 10
-                    };
-                }),
+                return {
+                    "move": move.title,
+                    "priority": 10
+                };
+            }),
                 move, lowest, i;
 
             // Wild Pokemon just choose randomly
             if (opponent.category === "Wild") {
-                return NumberMaker.randomArrayMember(possibilities).move;
+                return constants.NumberMaker.randomArrayMember(possibilities).move;
             }
 
             // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
@@ -286,9 +286,9 @@ FullScreenPokemon.prototype.settings.math = {
                 });
             }
 
-            return NumberMaker.randomArrayMember(possibilities).move;
+            return constants.NumberMaker.randomArrayMember(possibilities).move;
         },
-        "opponentMatchesTypes": function (NumberMaker, constants, equations, opponent, types) {
+        "opponentMatchesTypes": function (constants, equations, opponent, types) {
             for (var i = 0; i < types.length; i += 1) {
                 if (opponent[types[i]]) {
                     return true;
@@ -297,10 +297,10 @@ FullScreenPokemon.prototype.settings.math = {
 
             return false;
         },
-        "moveOnlyStatuses": function (NumberMaker, constants, equations, move) {
+        "moveOnlyStatuses": function (constants, equations, move) {
             return move.Damage === "Non-Damaging" && move.Effect === "Status";
         },
-        "applyMoveEffectPrority": function (NumberMaker, constants, equations, possibility, modifications, target, amount) {
+        "applyMoveEffectPrority": function (constants, equations, possibility, modifications, target, amount) {
             var preferences = modifications.preferences,
                 move = constants.moves[possibility.move],
                 preference, i;
@@ -370,7 +370,7 @@ FullScreenPokemon.prototype.settings.math = {
         // http://bulbapedia.bulbagarden.net/wiki/Priority
         // TO DO: Account for items, switching, etc.
         // TO DO: Factor in spec differences from paralyze, etc.
-        "playerMovesFirst": function (NumberMaker, constants, equations, player, choicePlayer, opponent, choiceOpponent) {
+        "playerMovesFirst": function (constants, equations, player, choicePlayer, opponent, choiceOpponent) {
             var movePlayer = constants.moves[choicePlayer],
                 moveOpponent = constants.moves[choiceOpponent];
 
@@ -383,7 +383,7 @@ FullScreenPokemon.prototype.settings.math = {
         // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
         // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
         // TO DO: Factor in spec differences from burns, etc.
-        "damage": function (NumberMaker, constants, equations, move, attacker, defender) {
+        "damage": function (constants, equations, move, attacker, defender) {
             var critical = this.compute("criticalHit", move, attacker),
                 level = attacker.level * critical,
                 attack = attacker.Attack,
@@ -400,14 +400,14 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
         // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-        "damageModifier": function (NumberMaker, constants, equations, move, critical, attacker, defender) {
+        "damageModifier": function (constants, equations, move, critical, attacker, defender) {
             var stab = attacker.types.indexOf(move.Type) !== -1 ? 1.5 : 1,
                 type = this.compute("typeEffectiveness", move, defender);
 
-            return stab * type * NumberMaker.randomWithin(.85, 1);
+            return stab * type * constants.NumberMaker.randomWithin(.85, 1);
         },
         // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-        "criticalHit": function (NumberMaker, constants, equations, move, attacker) {
+        "criticalHit": function (constants, equations, move, attacker) {
             var moveInfo = constants.moves[move],
                 baseSpeed = constants.pokemon[attacker.title].Speed,
                 denominator = 512;
@@ -427,12 +427,12 @@ FullScreenPokemon.prototype.settings.math = {
             }
 
             // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%, it instead becomes 255/256 or about 99.6%.
-            return NumberMaker.randomBooleanProbability(
+            return constants.NumberMaker.randomBooleanProbability(
                 Math.max(baseSpeed / denominator, 255 / 256)
             ) | 0;
         },
         // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-        "typeEffectiveness": function (NumberMaker, constants, equations, move, defender) {
+        "typeEffectiveness": function (constants, equations, move, defender) {
             var defenderTypes = constants.pokemon[defender.title].types,
                 moveType = constants.moves[move].Type,
                 moveIndex = constants.types.indices[constants.moves[move].Type],
@@ -447,7 +447,7 @@ FullScreenPokemon.prototype.settings.math = {
         },
         // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
         // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
-        "experienceStarting": function (NumberMaker, constants, equations, title, level) {
+        "experienceStarting": function (constants, equations, title, level) {
             var reference = constants.pokemon[title];
 
             // TODO: remove defaulting to mediumFast
@@ -468,7 +468,7 @@ FullScreenPokemon.prototype.settings.math = {
             }
         },
         // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
-        "experienceGained": function (NumberMaker, constants, equations, player, opponent) {
+        "experienceGained": function (constants, equations, player, opponent) {
             var a, b, lf, s, t;
 
             // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
@@ -493,7 +493,7 @@ FullScreenPokemon.prototype.settings.math = {
 
             return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
         },
-        "widthHealthBar": function (NumberMaker, constants, equations, widthFullBar, hp, hpNormal) {
+        "widthHealthBar": function (constants, equations, widthFullBar, hp, hpNormal) {
             return (widthFullBar - 1) * hp / hpNormal;
         },
     },

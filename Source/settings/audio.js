@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.audio = {
+FullScreenPokemon.FullScreenPokemon.settings.audio = {
     "statistics": {
         "prefix": "FullScreenPokemon::GBSEmulator::",
         "values": {

@@ -1,29 +1,29 @@
-FullScreenPokemon.prototype.settings.maps = {
+FullScreenPokemon.FullScreenPokemon.settings.maps = {
     "mapDefault": "Blank",
     "locationDefault": "Black",
     "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
     "requireEntrance": true,
     "screenAttributes": [],
     "screenVariables": {
-        "boundaries": FullScreenPokemon.prototype.getAreaBoundariesReal,
-        "scrollability": FullScreenPokemon.prototype.getScreenScrollability,
-        "thingsById": FullScreenPokemon.prototype.generateThingsByIdContainer
+        "boundaries": FullScreenPokemon.FullScreenPokemon.prototype.getAreaBoundariesReal,
+        "scrollability": FullScreenPokemon.FullScreenPokemon.prototype.getScreenScrollability,
+        "thingsById": FullScreenPokemon.FullScreenPokemon.prototype.generateThingsByIdContainer
     },
-    "onSpawn": FullScreenPokemon.prototype.addPreThing,
+    "onSpawn": FullScreenPokemon.FullScreenPokemon.prototype.addPreThing,
     "macros": {
-        "Checkered": FullScreenPokemon.prototype.macroCheckered,
-        "Water": FullScreenPokemon.prototype.macroWater,
-        "House": FullScreenPokemon.prototype.macroHouse,
-        "HouseLarge": FullScreenPokemon.prototype.macroHouseLarge,
-        "Building": FullScreenPokemon.prototype.macroBuilding,
-        "Gym": FullScreenPokemon.prototype.macroGym,
-        "Mountain": FullScreenPokemon.prototype.macroMountain,
-        "PokeCenter": FullScreenPokemon.prototype.macroPokeCenter,
-        "PokeMart": FullScreenPokemon.prototype.macroPokeMart
+        "Checkered": FullScreenPokemon.FullScreenPokemon.prototype.macroCheckered,
+        "Water": FullScreenPokemon.FullScreenPokemon.prototype.macroWater,
+        "House": FullScreenPokemon.FullScreenPokemon.prototype.macroHouse,
+        "HouseLarge": FullScreenPokemon.FullScreenPokemon.prototype.macroHouseLarge,
+        "Building": FullScreenPokemon.FullScreenPokemon.prototype.macroBuilding,
+        "Gym": FullScreenPokemon.FullScreenPokemon.prototype.macroGym,
+        "Mountain": FullScreenPokemon.FullScreenPokemon.prototype.macroMountain,
+        "PokeCenter": FullScreenPokemon.FullScreenPokemon.prototype.macroPokeCenter,
+        "PokeMart": FullScreenPokemon.FullScreenPokemon.prototype.macroPokeMart
     },
     "entrances": {
-        "Blank": FullScreenPokemon.prototype.mapEntranceBlank,
-        "Normal": FullScreenPokemon.prototype.mapEntranceNormal
+        "Blank": FullScreenPokemon.FullScreenPokemon.prototype.mapEntranceBlank,
+        "Normal": FullScreenPokemon.FullScreenPokemon.prototype.mapEntranceNormal
     },
     "library": (function (maps) {
         var library = {},

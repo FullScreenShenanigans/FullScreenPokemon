@@ -1,6 +1,6 @@
 (function (things, macros) {
-    FullScreenPokemon.prototype.settings.editor = {
-        "blocksize": FullScreenPokemon.unitsize * 4,
+    FullScreenPokemon.FullScreenPokemon.settings.editor = {
+        "blocksize": FullScreenPokemon.FullScreenPokemon.unitsize * 4,
         "mapDefault": {
             "name": "New Map",
             "locations": {

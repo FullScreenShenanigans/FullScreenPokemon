@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.ui = {
+FullScreenPokemon.FullScreenPokemon.settings.ui = {
     "globalName": "FSP",
     "styleSheet": {
         ".FullScreenPokemon": {

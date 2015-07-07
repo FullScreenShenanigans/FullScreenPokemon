@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.objects = {
+FullScreenPokemon.FullScreenPokemon.settings.objects = {
     "onMake": "onMake",
     "indexMap": ["width", "height"],
     "doPropertiesFull": true,
@@ -720,7 +720,7 @@ FullScreenPokemon.prototype.settings.objects = {
             //"stretches": [
             ////{ "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
             //],
-            "onMake": FullScreenPokemon.prototype.areaProcess,
+            "onMake": FullScreenPokemon.FullScreenPokemon.prototype.areaProcess,
             "attributes": {
                 "invisibleWallBorders": {
                     "afters": [
@@ -758,7 +758,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "tolBottom": 0,
             "tolLeft": 0,
             // Triggered Functions
-            "onMake": FullScreenPokemon.prototype.thingProcess
+            "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess
         },
         "Character": {
             "groupType": "Character",
@@ -770,10 +770,10 @@ FullScreenPokemon.prototype.settings.objects = {
             "direction": 2, // top,right,bottom,left is 0,1,2,3
             "offsetY": FullScreenPokemon.unitsize * -2,
             "roamingDirections": [0, 1, 2, 3],
-            "onThingAdd": FullScreenPokemon.prototype.spawnCharacter,
-            "onWalkingStart": FullScreenPokemon.prototype.animateCharacterStartWalking,
-            "onWalkingStop": FullScreenPokemon.prototype.animateCharacterStopWalking,
-            "activate": FullScreenPokemon.prototype.collideCharacterDialog,
+            "onThingAdd": FullScreenPokemon.FullScreenPokemon.prototype.spawnCharacter,
+            "onWalkingStart": FullScreenPokemon.FullScreenPokemon.prototype.animateCharacterStartWalking,
+            "onWalkingStop": FullScreenPokemon.FullScreenPokemon.prototype.animateCharacterStopWalking,
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.collideCharacterDialog,
         },
         "Buzzer": {
             "width": 3.5,
@@ -796,8 +796,8 @@ FullScreenPokemon.prototype.settings.objects = {
             "canKeyWalking": true,
             "direction": 2,
             "speed": FullScreenPokemon.unitsize / 2,
-            "onWalkingStart": FullScreenPokemon.prototype.animatePlayerStartWalking,
-            "onWalkingStop": FullScreenPokemon.prototype.animatePlayerStopWalking,
+            "onWalkingStart": FullScreenPokemon.FullScreenPokemon.prototype.animatePlayerStartWalking,
+            "onWalkingStop": FullScreenPokemon.FullScreenPokemon.prototype.animatePlayerStopWalking,
             "getKeys": function () {
                 return {
                     "0": false,
@@ -811,7 +811,7 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "Pokeball": {
             "action": "item",
-            "activate": FullScreenPokemon.prototype.collidePokeball
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.collidePokeball
         },
         "Rival": {
             "id": "Rival"
@@ -819,7 +819,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "Solid": {
             "repeat": true,
             "groupType": "Solid",
-            "activate": FullScreenPokemon.prototype.collideCharacterDialog
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.collideCharacterDialog
         },
         "BedSingle": [8, 16],
         "Bookshelf": {
@@ -842,28 +842,28 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "Cabinet": [8, 16],
         "CollisionDetector": {
-            "collide": FullScreenPokemon.prototype.collideCollisionDetector,
+            "collide": FullScreenPokemon.FullScreenPokemon.prototype.collideCollisionDetector,
             "active": false,
             "hidden": true
         },
         "CutsceneTriggerer": {
-            "activate": FullScreenPokemon.prototype.activateCutsceneTriggerer
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCutsceneTriggerer
         },
         "MenuTriggerer": {
-            "activate": FullScreenPokemon.prototype.activateMenuTriggerer
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateMenuTriggerer
         },
         "SightDetector": {
-            "activate": FullScreenPokemon.prototype.activateSightDetector,
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateSightDetector,
             "requireOverlap": true,
             "hidden": true
         },
         "ThemePlayer": {
-            "activate": FullScreenPokemon.prototype.activateThemePlayer,
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateThemePlayer,
             "requireOverlap": true,
             "hidden": true
         },
         "Transporter": {
-            "activate": FullScreenPokemon.prototype.activateTransporter,
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateTransporter,
             "requireOverlap": true,
             "hidden": false
         },
@@ -882,7 +882,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "hidden": true
         },
         "CutsceneResponder": {
-            "activate": FullScreenPokemon.prototype.activateCutsceneResponder
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCutsceneResponder
         },
         "FenceVertical": [4, 8],
         "FloorDiamondsDark": {
@@ -894,11 +894,11 @@ FullScreenPokemon.prototype.settings.objects = {
         },
         "Grass": {
             "rarity": 10,
-            "collide": FullScreenPokemon.prototype.collideCharacterGrass
+            "collide": FullScreenPokemon.FullScreenPokemon.prototype.collideCharacterGrass
         },
         "GymStatue": {
             "height": 16,
-            "activate": FullScreenPokemon.prototype.activateGymStatue
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateGymStatue
         },
         "HealingMachine": [16, 16],
         "HealingMachineBall": [3, 3],
@@ -960,7 +960,7 @@ FullScreenPokemon.prototype.settings.objects = {
             "height": 4,
             "spritewidth": 4,
             "direction": 2,
-            "collide": FullScreenPokemon.prototype.collideLedge,
+            "collide": FullScreenPokemon.FullScreenPokemon.prototype.collideLedge,
             "attributes": {
                 "jagged": {
                     "spritewidth": 16
@@ -993,10 +993,10 @@ FullScreenPokemon.prototype.settings.objects = {
         "SofaLeft": [8, 16],
         "Spawner": {
             "hidden": true,
-            "onThingAdd": FullScreenPokemon.prototype.activateSpawner
+            "onThingAdd": FullScreenPokemon.FullScreenPokemon.prototype.activateSpawner
         },
         "AreaSpawner": {
-            "activate": FullScreenPokemon.prototype.spawnAreaSpawner
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.spawnAreaSpawner
         },
         "SquareWallTop": {
             "spriteheight": .5
@@ -1026,7 +1026,7 @@ FullScreenPokemon.prototype.settings.objects = {
         "WaterEdge": [4, 4],
         "WindowDetector": {
             "hidden": true,
-            "onThingAdd": FullScreenPokemon.prototype.spawnWindowDetector
+            "onThingAdd": FullScreenPokemon.FullScreenPokemon.prototype.spawnWindowDetector
         },
         "FloorLinedHorizontal": {
             "spritewidth": .5,

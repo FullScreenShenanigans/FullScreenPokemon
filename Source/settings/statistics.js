@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.statistics = {
+FullScreenPokemon.FullScreenPokemon.settings.statistics = {
     "prefix": "FullScreenPokemon::",
     "defaults": {
         "storeLocally": true

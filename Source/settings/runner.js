@@ -1,4 +1,4 @@
-FullScreenPokemon.prototype.settings.runner = {
+FullScreenPokemon.FullScreenPokemon.settings.runner = {
     "upkeepScheduler": setTimeout,
     "upkeepCanceller": clearTimeout,
     "interval": 1000 / 60,
