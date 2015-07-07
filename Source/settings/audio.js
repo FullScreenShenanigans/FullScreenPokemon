@@ -1,17 +1,4 @@
 FullScreenPokemon.FullScreenPokemon.settings.audio = {
-    "statistics": {
-        "prefix": "FullScreenPokemon::GBSEmulator::",
-        "values": {
-            "volume": {
-                "valueDefault": 0.5,
-                "storeLocally": true
-            },
-            "muted": {
-                "valueDefault": 0,
-                "storeLocally": true
-            }
-        }
-    },
     "library": {
         "blueThemes": {
             // gbs file encoded base 64

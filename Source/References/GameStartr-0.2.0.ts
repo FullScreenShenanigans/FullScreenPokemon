@@ -10,6 +10,7 @@
 /// <reference path="MapsCreatr-0.2.1.ts" />
 /// <reference path="MapScreenr-0.2.1.ts" />
 /// <reference path="MapsHandlr-0.2.0.ts" />
+/// <reference path="MathDecidr-0.2.0.ts" />
 /// <reference path="ModAttachr-0.2.2.ts" />
 /// <reference path="NumberMakr-0.2.2.ts" />
 /// <reference path="ObjectMakr-0.2.2.ts" />
@@ -21,6 +22,7 @@
 /// <reference path="ThingHittr-0.2.0.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
 /// <reference path="TouchPassr-0.2.0.ts" />
+/// <reference path="UserWrappr-0.2.0.ts" />
 /// <reference path="WorldSeedr-0.2.0.ts" />
 /// <reference path="js_beautify.ts" />
 
@@ -28,6 +30,7 @@ declare module GameStartr {
     export interface IGameStartrSettings {
         "constantsSource"?: any;
         "constants"?: any;
+        "extraResets"?: string[];
     }
 
     export interface IGameStartrCustoms {
@@ -53,6 +56,7 @@ declare module GameStartr {
         "events": ITimeHandlrCustoms;
         "input": IInputWritrCustoms;
         "maps": IMapsCreatrCustoms;
+        "math": IMathDecidrCustoms;
         "mods": IModAttachrCustoms;
         "objects": IObjectMakrCustoms;
         "quadrants": IQuadsKeeprCustoms;
@@ -62,6 +66,7 @@ declare module GameStartr {
         "sprites": IPixelRendrCustoms;
         "statistics": IItemsHoldrCustoms;
         "touch": ITouchPassrCustoms;
+        "ui": IUserWrapprCustoms;
         [i: string]: IGameStartrCustomsObject;
     }
 
@@ -146,6 +151,8 @@ declare module GameStartr {
         "library": { [i: string]: MapsCreatr.IMapsCreatrMapRaw };
     }
 
+    export interface IMathDecidrCustoms extends IGameStartrCustomsObject { }
+
     export interface IModAttachrCustoms extends IGameStartrCustomsObject {
         "storeLocally"?: boolean;
         "mods": ModAttachr.IModAttachrMod[];
@@ -174,6 +181,13 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
+    export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
+        "numRows": number;
+        "numCols": number;
+        "tolerance"?: number;
+        "groupNames": string[];
+    }
+
     export interface IScenePlayrCustoms extends IGameStartrCustomsObject { }
 
     export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
@@ -190,12 +204,7 @@ declare module GameStartr {
 
     export interface ITouchPassrCustoms extends IGameStartrCustomsObject, TouchPassr.ITouchPassrSettings { }
 
-    export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
-        "numRows": number;
-        "numCols": number;
-        "tolerance"?: number;
-        "groupNames": string[];
-    }
+    export interface IUserWrapprCustoms extends IGameStartrCustomsObject { }
 
     export interface IWorldSeedrCustoms extends IGameStartrCustomsObject {
         possibilities: WorldSeedr.IPossibilityContainer;
@@ -210,23 +219,24 @@ declare module GameStartr {
         GamesRunner: GamesRunnr.IGamesRunnr;
         GroupHolder: GroupHoldr.IGroupHoldr;
         InputWriter: InputWritr.IInputWritr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
         LevelEditor: LevelEditr.ILevelEditr;
         NumberMaker: NumberMakr.INumberMakr;
         MapsCreator: MapsCreatr.IMapsCreatr;
         MapScreener: MapScreenr.IMapScreenr;
         MapsHandler: MapsHandlr.IMapsHandlr;
+        MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
+        ObjectMaker: ObjectMakr.IObjectMakr;
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
-        ObjectMaker: ObjectMakr.IObjectMakr;
-        ItemsHolder: ItemsHoldr.IItemsHoldr;
+        QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        ScenePlayer: ScenePlayr.IScenePlayr;
         ThingHitter: ThingHittr.IThingHittr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         TouchPasser: TouchPassr.ITouchPassr;
-        QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        UserWrapper: UserWrappr.IUserWrappr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
-        ScenePlayer: ScenePlayr.IScenePlayr;
-        UserWrapper: any;
         reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
         resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
         resetAudioPlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
@@ -239,6 +249,7 @@ declare module GameStartr {
         resetMapsCreator(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapScreener(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapsHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
@@ -249,6 +260,7 @@ declare module GameStartr {
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetScenePlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         scrollWindow(dx: number, dy?: number): void;
@@ -263,6 +275,7 @@ declare module GameStartr {
         onGamePause(GameStarter: GameStartr): void;
         canInputsTrigger(GameStarter: GameStartr): boolean;
         gameStart(): void;
+        killNormal(thing: IThing): void;
         markChanged(thing: IThing): void;
         shiftVert(thing: IThing, dy: number, notChanged?: boolean): void;
         shiftHoriz(thing: IThing, dx: number, notChanged?: boolean): void;
@@ -309,6 +322,7 @@ declare module GameStartr {
         name: string;
         groupType: string;
         className: string;
+        alive?: boolean;
         placed?: boolean;
         changed?: boolean;
         maxquads: number;
@@ -349,34 +363,29 @@ module GameStartr {
     "use strict";
 
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
-        public AudioPlayer: AudioPlayr.AudioPlayr;
-        public FPSAnalyzer: FPSAnalyzr.FPSAnalyzr;
-        public GamesRunner: GamesRunnr.GamesRunnr;
-        public GroupHolder: GroupHoldr.GroupHoldr;
-        public InputWriter: InputWritr.InputWritr;
-        public ItemsHolder: ItemsHoldr.ItemsHoldr;
-        public LevelEditor: LevelEditr.LevelEditr;
-        public NumberMaker: NumberMakr.NumberMakr;
-        public MapsCreator: MapsCreatr.MapsCreatr;
-        public MapScreener: MapScreenr.MapScreenr;
-        public MapsHandler: MapsHandlr.MapsHandlr;
-        public ModAttacher: ModAttachr.ModAttachr;
-        public PixelDrawer: PixelDrawr.PixelDrawr;
-        public PixelRender: PixelRendr.PixelRendr;
-        public ObjectMaker: ObjectMakr.ObjectMakr;
-        public ScenePlayer: ScenePlayr.ScenePlayr;
-        public ThingHitter: ThingHittr.ThingHittr;
-        public TimeHandler: TimeHandlr.TimeHandlr;
-        public TouchPasser: TouchPassr.TouchPassr;
-        public QuadsKeeper: QuadsKeepr.QuadsKeepr;
-        public WorldSeeder: WorldSeedr.WorldSeedr;
-
-        /**
-         * A "UserWrapper" is allowed to hook onto a GameStarter to add user
-         * interface controls. There's an actual UserWrapper module that commonly
-         * does this, but it isn't referenced in GameStartr.ts.
-         */
-        public UserWrapper: any;
+        public AudioPlayer: AudioPlayr.IAudioPlayr;
+        public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
+        public GamesRunner: GamesRunnr.IGamesRunnr;
+        public GroupHolder: GroupHoldr.IGroupHoldr;
+        public InputWriter: InputWritr.IInputWritr;
+        public ItemsHolder: ItemsHoldr.IItemsHoldr;
+        public LevelEditor: LevelEditr.ILevelEditr;
+        public NumberMaker: NumberMakr.INumberMakr;
+        public MapsCreator: MapsCreatr.IMapsCreatr;
+        public MapScreener: MapScreenr.IMapScreenr;
+        public MapsHandler: MapsHandlr.IMapsHandlr;
+        public MathDecider: MathDecidr.IMathDecidr;
+        public ModAttacher: ModAttachr.IModAttachr;
+        public ObjectMaker: ObjectMakr.IObjectMakr;
+        public PixelDrawer: PixelDrawr.IPixelDrawr;
+        public PixelRender: PixelRendr.IPixelRendr;
+        public QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        public ScenePlayer: ScenePlayr.IScenePlayr;
+        public ThingHitter: ThingHittr.IThingHittr;
+        public TimeHandler: TimeHandlr.ITimeHandlr;
+        public TouchPasser: TouchPassr.ITouchPassr;
+        public UserWrapper: UserWrappr.IUserWrappr;
+        public WorldSeeder: WorldSeedr.IWorldSeedr;
 
         /**
          * Settings for individual modules are stored as sub-Objects here.
@@ -406,6 +415,7 @@ module GameStartr {
             "resetLevelEditor",
             "resetWorldSeeder",
             "resetScenePlayer",
+            "resetMathDecider",
             "resetModAttacher",
             "startModAttacher",
             "resetContainer"
@@ -446,10 +456,12 @@ module GameStartr {
                         "NumberMakr": "References/NumberMakr/NumberMakr.ts",
                         "MapScreenr": "References/MapScreenr/MapScreenr.ts",
                         "MapsHandlr": "References/MapsHandlr/MapsHandlr.ts",
+                        "MathDecidr": "References/MathDecidr/MathDecidr.ts",
                         "ModAttachr": "References/ModAttachr/ModAttachr.ts",
                         "ObjectMakr": "References/ObjectMakr/ObjectMakr.ts",
                         "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
                         "PixelRendr": "References/PixelRendr/PixelRendr.ts",
+                        "ScenePlayr": "References/ScenePlayr/ScenePlayr.ts",
                         "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
                         "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
                         "StringFilr": "References/StringFilr/StringFilr.ts",
@@ -458,24 +470,28 @@ module GameStartr {
                     }
                 }
             });
+
+            if (customs.extraResets) {
+                this.resets.push.apply(this.resets, customs.extraResets);
+            }
         }
 
         /* Resets
         */
 
         /**
-         * Resets the GameStartr by calling the parent EightBittr.EightBittr.prototype.reset.
+         * Resets the GameStartr by calling the parent EightBittr.prototype.reset.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} customs
          */
         reset(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): void {
-            EightBittr.EightBittr.prototype.reset(GameStarter, GameStarter.resets, customs);
+            super.reset(GameStarter, GameStarter.resets, customs);
         }
 
         /**
          * Resets the EightBittr and records the time by calling the parent 
-         * EightBittr.EightBittr.prototype.resetTimed.
+         * EightBittr.prototype.resetTimed.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} customs
@@ -483,7 +499,7 @@ module GameStartr {
          *                 operation, in milliseconds.
          */
         resetTimed(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): any[] {
-            return EightBittr.EightBittr.prototype.resetTimed(GameStarter, GameStarter.resets, customs);
+            return super.resetTimed(GameStarter, GameStarter.resets, customs);
         }
 
         /**
@@ -813,6 +829,18 @@ module GameStartr {
          */
         resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.generator);
+        }
+
+        /**
+         * Sets this.MathDecider.
+         * 
+         * 
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): math.js (settings/math.js)
+         */
+        resetMathDecider(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.MathDecider = new MathDecidr.MathDecidr(GameStarter.settings.math);
         }
 
         /**
@@ -1157,8 +1185,8 @@ module GameStartr {
          *                                       WorldSeedr.generateFull call.
          */
         mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void {
-            var MapsCreator: MapsCreatr.MapsCreatr = GameStarter.MapsCreator,
-                MapsHandler: MapsHandlr.MapsHandlr = GameStarter.MapsHandler,
+            var MapsCreator: MapsCreatr.IMapsCreatr = GameStarter.MapsCreator,
+                MapsHandler: MapsHandlr.IMapsHandlr = GameStarter.MapsHandler,
                 prethings: { [i: string]: MapsCreatr.IPreThing[] } = MapsHandler.getPreThings(),
                 area: MapsCreatr.IMapsCreatrArea = MapsHandler.getArea(),
                 map: MapsCreatr.IMapsCreatrMap = MapsHandler.getMap(),
@@ -1221,8 +1249,25 @@ module GameStartr {
             this.ModAttacher.fireEvent("onGameStart");
         }
 
+
         /* Physics & similar
         */
+
+        /**
+         * Generically kills a Thing by setting its alive to false, hidden to true,
+         * and clearing its movement.
+         * 
+         * @param {Thing} thing
+         */
+        killNormal(thing: IThing): void {
+            if (!thing) {
+                return;
+            }
+
+            thing.alive = false;
+            thing.hidden = true;
+            thing.movement = undefined;
+        }
 
         /** 
          * Sets a Thing's "changed" flag to true, which indicates to the PixelDrawr

@@ -26,7 +26,7 @@ declare module BattleMovr {
 
     export interface IThingsContainer {
         [i: string]: IThing;
-        menu ?: IThing;
+        menu?: IThing;
     }
 
     export interface IThing extends EightBittr.IThing {

@@ -28,6 +28,7 @@ module FullScreenPokemon {
             "groups": undefined,
             "events": undefined,
             "input": undefined,
+            "math": undefined,
             "maps": undefined,
             "mods": undefined,
             "objects": undefined,
@@ -113,6 +114,12 @@ module FullScreenPokemon {
                 "constants": [
                     "unitsize",
                     "scale"
+                ],
+                "extraResets": [
+                    "resetMenuGrapher",
+                    "resetBattleMover",
+                    "resetStateHolder",
+                    "resetGBSEmulator"
                 ]
             });
 
@@ -126,6 +133,16 @@ module FullScreenPokemon {
 
         /* Resets
         */
+
+        /**
+         * Does not set this.AudioPlayer, as it's not used in FullScreenPokemon.
+         * 
+         * @param {FullScreenPokemon} FSP
+         * @param {Object} customs
+         */
+        resetAudioPlayer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+
+        }
 
 
 

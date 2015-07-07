@@ -14932,21 +14932,24 @@ var GameStartr;
                 "startModAttacher",
                 "resetContainer"
             ];
+            if (customs.extraResets) {
+                this.resets.push.apply(this.resets, customs.extraResets);
+            }
         }
         /* Resets
         */
         /**
-         * Resets the GameStartr by calling the parent EightBittr.EightBittr.prototype.reset.
+         * Resets the GameStartr by calling the parent EightBittr.prototype.reset.
          *
          * @param {GameStartr} GameStarter
          * @param {Object} customs
          */
         GameStartr.prototype.reset = function (GameStarter, customs) {
-            EightBittr.EightBittr.prototype.reset(GameStarter, GameStarter.resets, customs);
+            _super.prototype.reset.call(this, GameStarter, GameStarter.resets, customs);
         };
         /**
          * Resets the EightBittr and records the time by calling the parent
-         * EightBittr.EightBittr.prototype.resetTimed.
+         * EightBittr.prototype.resetTimed.
          *
          * @param {GameStartr} GameStarter
          * @param {Object} customs
@@ -14954,7 +14957,7 @@ var GameStartr;
          *                 operation, in milliseconds.
          */
         GameStartr.prototype.resetTimed = function (GameStarter, customs) {
-            return EightBittr.EightBittr.prototype.resetTimed(GameStarter, GameStarter.resets, customs);
+            return _super.prototype.resetTimed.call(this, GameStarter, GameStarter.resets, customs);
         };
         /**
          * Sets this.ObjectMaker.
