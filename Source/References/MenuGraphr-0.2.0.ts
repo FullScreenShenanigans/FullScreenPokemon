@@ -13,6 +13,7 @@ declare module MenuGraphr {
         ObjectMaker: ObjectMakr.IObjectMakr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         addThing(thing: IThing | string | any[], left?: number, top?: number): IThing;
+        killNormal(thing: IThing): void;
         setHeight(thing: IThing, height: number);
         setWidth(thing: IThing, width: number);
     }
@@ -195,13 +196,8 @@ declare module MenuGraphr {
         paddingY: number;
     }
 
-    export interface IKillFunction {
-        (thing: IThing): void;
-    }
-
     export interface IMenuGraphrSettings {
         GameStarter: IGameStartr;
-        killNormal: IKillFunction;
         schemas?: {
             [i: string]: IMenuSchema;
         };
@@ -304,14 +300,11 @@ module MenuGraphr {
             [i: string]: boolean
         };
 
-        private killNormal: IKillFunction;
-
         /**
          * 
          */
         constructor(settings: IMenuGraphrSettings) {
             this.GameStarter = settings.GameStarter;
-            this.killNormal = settings.killNormal;
 
             this.schemas = settings.schemas || {};
             this.aliases = settings.aliases || {};
@@ -512,7 +505,7 @@ module MenuGraphr {
                 delete this.menus[child.name];
             }
 
-            this.killNormal(child);
+            this.GameStarter.killNormal(child);
             this.deleteMenuChildren(name);
 
             if (child.onMenuDelete) {
@@ -1456,7 +1449,7 @@ module MenuGraphr {
             this.GameStarter.shiftVert(character, -this.GameStarter.unitsize);
 
             if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                this.killNormal(character);
+                this.GameStarter.killNormal(character);
                 return true;
             }
 
