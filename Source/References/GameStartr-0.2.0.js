@@ -1,39 +1,39 @@
-var StatsHoldr;
-(function (_StatsHoldr) {
+var ItemsHoldr;
+(function (ItemsHoldr_1) {
     "use strict";
-    var StatsValue = (function () {
+    var ItemValue = (function () {
         /**
-         * Creates a new StatsValue with the given key and settings. Defaults are given
+         * Creates a new ItemValue with the given key and settings. Defaults are given
          * to the value via proliferate before the settings.
          *
          * @constructor
-         * @param {StatsHoldr} StatsHolder   The container for this value.
-         * @param {String} key   The key to reference this new StatsValue by.
-         * @param {IStatsValueSettings} settings   Any optional custom settings.
+         * @param {ItemsHoldr} ItemsHolder   The container for this value.
+         * @param {String} key   The key to reference this new ItemValue by.
+         * @param {IItemValueSettings} settings   Any optional custom settings.
          */
-        function StatsValue(StatsHolder, key, settings) {
+        function ItemValue(ItemsHolder, key, settings) {
             if (settings === void 0) { settings = {}; }
-            this.StatsHolder = StatsHolder;
-            StatsHolder.proliferate(this, StatsHolder.getDefaults());
-            StatsHolder.proliferate(this, settings);
+            this.ItemsHolder = ItemsHolder;
+            ItemsHolder.proliferate(this, ItemsHolder.getDefaults());
+            ItemsHolder.proliferate(this, settings);
             this.key = key;
             if (!this.hasOwnProperty("value")) {
                 this.value = this.valueDefault;
             }
             if (this.hasElement) {
-                this.element = StatsHolder.createElement(this.elementTag || "div", {
-                    className: StatsHolder.getPrefix() + "_value " + key
+                this.element = ItemsHolder.createElement(this.elementTag || "div", {
+                    className: ItemsHolder.getPrefix() + "_value " + key
                 });
-                this.element.appendChild(StatsHolder.createElement("div", {
+                this.element.appendChild(ItemsHolder.createElement("div", {
                     "textContent": key
                 }));
-                this.element.appendChild(StatsHolder.createElement("div", {
+                this.element.appendChild(ItemsHolder.createElement("div", {
                     "textContent": this.value
                 }));
             }
             if (this.storeLocally) {
                 // If there exists an old version of this property, get it 
-                if (StatsHolder.getLocalStorage().hasOwnProperty(StatsHolder.getPrefix() + key)) {
+                if (ItemsHolder.getLocalStorage().hasOwnProperty(ItemsHolder.getPrefix() + key)) {
                     this.value = this.retrieveLocalStorage();
                 }
                 else {
@@ -47,18 +47,18 @@ var StatsHoldr;
          * It runs all the trigger, modular, etc. checks, updates the HTML element
          * if there is one, and updates localStorage if needed.
          */
-        StatsValue.prototype.update = function () {
+        ItemValue.prototype.update = function () {
             // Mins and maxes must be obeyed before any other considerations
             if (this.hasOwnProperty("minimum") && Number(this.value) <= Number(this.minimum)) {
                 this.value = this.minimum;
                 if (this.onMinimum) {
-                    this.onMinimum.apply(this, this.StatsHolder.getCallbackArgs());
+                    this.onMinimum.apply(this, this.ItemsHolder.getCallbackArgs());
                 }
             }
             else if (this.hasOwnProperty("maximum") && Number(this.value) <= Number(this.maximum)) {
                 this.value = this.maximum;
                 if (this.onMaximum) {
-                    this.onMaximum.apply(this, this.StatsHolder.getCallbackArgs());
+                    this.onMaximum.apply(this, this.ItemsHolder.getCallbackArgs());
                 }
             }
             if (this.modularity) {
@@ -78,11 +78,11 @@ var StatsHoldr;
          * Checks if the current value should trigger a callback, and if so calls
          * it.
          *
-         * @this {StatsValue}
+         * @this {ItemValue}
          */
-        StatsValue.prototype.checkTriggers = function () {
+        ItemValue.prototype.checkTriggers = function () {
             if (this.triggers.hasOwnProperty(this.value)) {
-                this.triggers[this.value].apply(this, this.StatsHolder.getCallbackArgs());
+                this.triggers[this.value].apply(this, this.ItemsHolder.getCallbackArgs());
             }
         };
         /**
@@ -90,40 +90,40 @@ var StatsHoldr;
          * modular is a non-zero Numbers), and if so, continuously reduces value and
          * calls this.onModular.
          *
-         * @this {StatsValue}
+         * @this {ItemValue}
          */
-        StatsValue.prototype.checkModularity = function () {
+        ItemValue.prototype.checkModularity = function () {
             if (this.value.constructor !== Number || !this.modularity) {
                 return;
             }
             while (this.value >= this.modularity) {
                 this.value = Math.max(0, this.value - this.modularity);
                 if (this.onModular) {
-                    this.onModular.apply(this, this.StatsHolder.getCallbackArgs());
+                    this.onModular.apply(this, this.ItemsHolder.getCallbackArgs());
                 }
             }
         };
         /**
-         * Updates the StatsValue's element's second child to be the StatsValue's value.
+         * Updates the ItemValue's element's second child to be the ItemValue's value.
          *
-         * @this {StatsValue}
+         * @this {ItemValue}
          */
-        StatsValue.prototype.updateElement = function () {
-            if (this.StatsHolder.hasDisplayChange(this.value)) {
-                this.element.children[1].textContent = this.StatsHolder.getDisplayChange(this.value);
+        ItemValue.prototype.updateElement = function () {
+            if (this.ItemsHolder.hasDisplayChange(this.value)) {
+                this.element.children[1].textContent = this.ItemsHolder.getDisplayChange(this.value);
             }
             else {
                 this.element.children[1].textContent = this.value;
             }
         };
         /**
-         * Retrieves a StatsValue's value from localStorage, making sure not to try to
+         * Retrieves a ItemValue's value from localStorage, making sure not to try to
          * JSON.parse an undefined or null value.
          *
          * @return {Mixed}
          */
-        StatsValue.prototype.retrieveLocalStorage = function () {
-            var value = localStorage.getItem(this.StatsHolder.getPrefix() + this.key);
+        ItemValue.prototype.retrieveLocalStorage = function () {
+            var value = localStorage.getItem(this.ItemsHolder.getPrefix() + this.key);
             switch (value) {
                 case "undefined":
                     return undefined;
@@ -136,35 +136,35 @@ var StatsHoldr;
             return JSON.parse(value);
         };
         /**
-         * Stores a StatsValue's value in localStorage under the prefix plus its key.
+         * Stores a ItemValue's value in localStorage under the prefix plus its key.
          *
          * @param {Boolean} [overrideAutoSave]   Whether the policy on saving should
          *                                       be ignored (so saving happens
          *                                       regardless). By default, false.
          */
-        StatsValue.prototype.updateLocalStorage = function (overrideAutoSave) {
+        ItemValue.prototype.updateLocalStorage = function (overrideAutoSave) {
             if (overrideAutoSave === void 0) { overrideAutoSave = false; }
-            if (this.StatsHolder.getAutoSave() || overrideAutoSave) {
-                this.StatsHolder.getLocalStorage()[this.StatsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
+            if (this.ItemsHolder.getAutoSave() || overrideAutoSave) {
+                this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
             }
         };
-        return StatsValue;
+        return ItemValue;
     })();
-    _StatsHoldr.StatsValue = StatsValue;
+    ItemsHoldr_1.ItemValue = ItemValue;
     /**
      * A versatile container to store and manipulate values in localStorage, and
      * optionally keep an updated HTML container showing these values. Operations
      * such as setting, increasing/decreasing, and default values are all abstracted
-     * automatically. StatsValues are stored in memory as well as in localStorage for
+     * automatically. ItemValues are stored in memory as well as in localStorage for
      * fast lookups.
      *
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
-    var StatsHoldr = (function () {
+    var ItemsHoldr = (function () {
         /**
-         * @param {IStatsHoldrSettings} [settings]
+         * @param {IItemsHoldrSettings} [settings]
          */
-        function StatsHoldr(settings) {
+        function ItemsHoldr(settings) {
             if (settings === void 0) { settings = {}; }
             var key;
             this.prefix = settings.prefix || "";
@@ -197,8 +197,8 @@ var StatsHoldr;
             if (settings.doMakeContainer) {
                 this.containersArguments = settings.containersArguments || [
                     ["div", {
-                        "className": this.prefix + "_container"
-                    }]
+                            "className": this.prefix + "_container"
+                        }]
                 ];
                 this.container = this.makeContainer(settings.containersArguments);
             }
@@ -208,63 +208,63 @@ var StatsHoldr;
         /**
          *
          */
-        StatsHoldr.prototype.key = function (index) {
+        ItemsHoldr.prototype.key = function (index) {
             return this.itemKeys[index];
         };
         /**
          * @return {Mixed} The values contained within, keyed by their keys.
          */
-        StatsHoldr.prototype.getValues = function () {
+        ItemsHoldr.prototype.getValues = function () {
             return this.items;
         };
         /**
          * @return {Mixed} Default attributes for values.
          */
-        StatsHoldr.prototype.getDefaults = function () {
+        ItemsHoldr.prototype.getDefaults = function () {
             return this.defaults;
         };
         /**
          * @return {Mixed} A reference to localStorage or a replacment object.
          */
-        StatsHoldr.prototype.getLocalStorage = function () {
+        ItemsHoldr.prototype.getLocalStorage = function () {
             return this.localStorage;
         };
         /**
          * @return {Boolean} Whether this should save changes to localStorage
          *                   automatically.
          */
-        StatsHoldr.prototype.getAutoSave = function () {
+        ItemsHoldr.prototype.getAutoSave = function () {
             return this.autoSave;
         };
         /**
          * @return {String} The prefix to store thigns under in localStorage.
          */
-        StatsHoldr.prototype.getPrefix = function () {
+        ItemsHoldr.prototype.getPrefix = function () {
             return this.prefix;
         };
         /**
          * @return {HTMLElement} The container HTML element, if it exists.
          */
-        StatsHoldr.prototype.getContainer = function () {
+        ItemsHoldr.prototype.getContainer = function () {
             return this.container;
         };
         /**
          * @return {Mixed[][]} The createElement arguments for the HTML container
          *                     elements, outside-to-inside.
          */
-        StatsHoldr.prototype.getContainersArguments = function () {
+        ItemsHoldr.prototype.getContainersArguments = function () {
             return this.containersArguments;
         };
         /**
          * @return {Mixed} Any hard-coded changes to element content.
          */
-        StatsHoldr.prototype.getDisplayChanges = function () {
+        ItemsHoldr.prototype.getDisplayChanges = function () {
             return this.displayChanges;
         };
         /**
          * @return {Mixed[]} Arguments to be passed to triggered events.
          */
-        StatsHoldr.prototype.getCallbackArgs = function () {
+        ItemsHoldr.prototype.getCallbackArgs = function () {
             return this.callbackArgs;
         };
         /* Retrieval
@@ -272,14 +272,14 @@ var StatsHoldr;
         /**
          * @return {String[]} The names of all value's keys.
          */
-        StatsHoldr.prototype.getKeys = function () {
+        ItemsHoldr.prototype.getKeys = function () {
             return Object.keys(this.items);
         };
         /**
          * @param {String} key   The key for a known value.
          * @return {Mixed} The known value of a key, assuming that key exists.
          */
-        StatsHoldr.prototype.getItem = function (key) {
+        ItemsHoldr.prototype.getItem = function (key) {
             this.checkExistence(key);
             return this.items[key].value;
         };
@@ -287,21 +287,21 @@ var StatsHoldr;
          * @param {String} key   The key for a known value.
          * @return {Object} The settings for that particular key.
          */
-        StatsHoldr.prototype.getObject = function (key) {
+        ItemsHoldr.prototype.getObject = function (key) {
             return this.items[key];
         };
         /**
          * @param {String} key   The key for a potentially known value.
          * @return {Boolean} Whether there is a value under that key.
          */
-        StatsHoldr.prototype.hasKey = function (key) {
+        ItemsHoldr.prototype.hasKey = function (key) {
             return this.items.hasOwnProperty(key);
         };
         /**
          * @return {Object} A mapping of key names to the actual values of all
          *                  objects being stored.
          */
-        StatsHoldr.prototype.exportItems = function () {
+        ItemsHoldr.prototype.exportItems = function () {
             var output = {}, i;
             for (i in this.items) {
                 if (this.items.hasOwnProperty(i)) {
@@ -310,18 +310,18 @@ var StatsHoldr;
             }
             return output;
         };
-        /* StatsValues
+        /* ItemValues
         */
         /**
-         * Adds a new key & value pair to by linking to a newly created StatsValue.
+         * Adds a new key & value pair to by linking to a newly created ItemValue.
          *
-         * @param {String} key   The key to reference by new StatsValue by.
-         * @param {Object} settings   The settings for the new StatsValue.
-         * @return {StatsValue} The newly created StatsValue.
+         * @param {String} key   The key to reference by new ItemValue by.
+         * @param {Object} settings   The settings for the new ItemValue.
+         * @return {ItemValue} The newly created ItemValue.
          */
-        StatsHoldr.prototype.addItem = function (key, settings) {
+        ItemsHoldr.prototype.addItem = function (key, settings) {
             if (settings === void 0) { settings = {}; }
-            this.items[key] = new StatsValue(this, key, settings);
+            this.items[key] = new ItemValue(this, key, settings);
             this.itemKeys.push(key);
             return this.items[key];
         };
@@ -333,7 +333,7 @@ var StatsHoldr;
          *
          * @param {String} key   The key of the element to remove.
          */
-        StatsHoldr.prototype.removeItem = function (key) {
+        ItemsHoldr.prototype.removeItem = function (key) {
             if (!this.items.hasOwnProperty(key)) {
                 return;
             }
@@ -344,10 +344,10 @@ var StatsHoldr;
             delete this.items[key];
         };
         /**
-         * Completely clears all values from the StatsHoldr, removing their
+         * Completely clears all values from the ItemsHoldr, removing their
          * elements from the container (if they both exist) as well.
          */
-        StatsHoldr.prototype.clear = function () {
+        ItemsHoldr.prototype.clear = function () {
             var i;
             if (this.container) {
                 for (i in this.items) {
@@ -360,38 +360,38 @@ var StatsHoldr;
             this.itemKeys = [];
         };
         /**
-         * Sets the value for the StatsValue under the given key, then updates the StatsValue
-         * (including the StatsValue's element and localStorage, if needed).
+         * Sets the value for the ItemValue under the given key, then updates the ItemValue
+         * (including the ItemValue's element and localStorage, if needed).
          *
-         * @param {String} key   The key of the StatsValue.
-         * @param {Mixed} value   The new value for the StatsValue.
+         * @param {String} key   The key of the ItemValue.
+         * @param {Mixed} value   The new value for the ItemValue.
          */
-        StatsHoldr.prototype.setItem = function (key, value) {
+        ItemsHoldr.prototype.setItem = function (key, value) {
             this.checkExistence(key);
             this.items[key].value = value;
             this.items[key].update();
         };
         /**
-         * Increases the value for the StatsValue under the given key, via addition for
+         * Increases the value for the ItemValue under the given key, via addition for
          * Numbers or concatenation for Strings.
          *
-         * @param {String} key   The key of the StatsValue.
+         * @param {String} key   The key of the ItemValue.
          * @param {Mixed} [amount]   The amount to increase by (by default, 1).
          */
-        StatsHoldr.prototype.increase = function (key, amount) {
+        ItemsHoldr.prototype.increase = function (key, amount) {
             if (amount === void 0) { amount = 1; }
             this.checkExistence(key);
             this.items[key].value += arguments.length > 1 ? amount : 1;
             this.items[key].update();
         };
         /**
-         * Increases the value for the StatsValue under the given key, via addition for
+         * Increases the value for the ItemValue under the given key, via addition for
          * Numbers or concatenation for Strings.
          *
-         * @param {String} key   The key of the StatsValue.
+         * @param {String} key   The key of the ItemValue.
          * @param {Number} [amount]   The amount to increase by (by default, 1).
          */
-        StatsHoldr.prototype.decrease = function (key, amount) {
+        ItemsHoldr.prototype.decrease = function (key, amount) {
             if (amount === void 0) { amount = 1; }
             this.checkExistence(key);
             this.items[key].value -= amount;
@@ -400,9 +400,9 @@ var StatsHoldr;
         /**
          * Toggles whether a value is 1 or 0.
          *
-         * @param {String} key   The key of the StatsValue.
+         * @param {String} key   The key of the ItemValue.
          */
-        StatsHoldr.prototype.toggle = function (key) {
+        ItemsHoldr.prototype.toggle = function (key) {
             this.checkExistence(key);
             this.items[key].value = this.items[key].value ? 0 : 1;
             this.items[key].update();
@@ -413,21 +413,22 @@ var StatsHoldr;
          *
          * @param {String} key
          */
-        StatsHoldr.prototype.checkExistence = function (key) {
+        ItemsHoldr.prototype.checkExistence = function (key) {
             if (!this.items.hasOwnProperty(key)) {
                 if (this.allowNewItems) {
                     this.addItem(key);
                 }
                 else {
-                    throw new Error("Unknown key given to StatsHoldr: '" + key + "'.");
+                    throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
                 }
             }
         };
         /**
          * Manually saves all values to localStorage, ignoring the autoSave flag.
          */
-        StatsHoldr.prototype.saveAll = function () {
-            for (var key in this.items) {
+        ItemsHoldr.prototype.saveAll = function () {
+            var key;
+            for (key in this.items) {
                 if (this.items.hasOwnProperty(key)) {
                     this.items[key].updateLocalStorage(true);
                 }
@@ -438,28 +439,28 @@ var StatsHoldr;
         /**
          * Hides the container Element by setting its visibility to hidden.
          */
-        StatsHoldr.prototype.hideContainer = function () {
+        ItemsHoldr.prototype.hideContainer = function () {
             this.container.style.visibility = "hidden";
         };
         /**
          * Shows the container Element by setting its visibility to visible.
          */
-        StatsHoldr.prototype.displayContainer = function () {
+        ItemsHoldr.prototype.displayContainer = function () {
             this.container.style.visibility = "visible";
         };
         /**
-         * Creates the container Element, which contains a child for each StatsValue that
+         * Creates the container Element, which contains a child for each ItemValue that
          * specifies hasElement to be true.
          *
          * @param {Mixed[][]} containers   An Array representing the Element to be
          *                                 created and the children between it and
-         *                                 the contained StatsValues. Each contained
+         *                                 the contained ItemValues. Each contained
          *                                 Mixed[]  has a String tag name as its
          *                                 first member, followed by any number of
          *                                 Objects to apply via createElement.
          * @return {HTMLElement}
          */
-        StatsHoldr.prototype.makeContainer = function (containers) {
+        ItemsHoldr.prototype.makeContainer = function (containers) {
             var output = this.createElement.apply(this, containers[0]), current = output, child, key, i;
             for (i = 1; i < containers.length; ++i) {
                 child = this.createElement.apply(this, containers[i]);
@@ -477,13 +478,13 @@ var StatsHoldr;
          * @return {Boolean} Whether displayChanges has an entry for a particular
          *                   value.
          */
-        StatsHoldr.prototype.hasDisplayChange = function (value) {
+        ItemsHoldr.prototype.hasDisplayChange = function (value) {
             return this.displayChanges.hasOwnProperty(value);
         };
         /**
          * @return {String} The displayChanges entry for a particular value.
          */
-        StatsHoldr.prototype.getDisplayChange = function (value) {
+        ItemsHoldr.prototype.getDisplayChange = function (value) {
             return this.displayChanges[value];
         };
         /* Utilities
@@ -497,13 +498,14 @@ var StatsHoldr;
          *                             onto the new HTMLElement.
          * @return {HTMLElement}
          */
-        StatsHoldr.prototype.createElement = function (tag) {
+        ItemsHoldr.prototype.createElement = function (tag) {
             if (tag === void 0) { tag = "div"; }
             var args = [];
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
             }
             var element = document.createElement(tag), i;
+            // For each provided object, add those settings to the element
             for (i = 0; i < args.length; i += 1) {
                 this.proliferateElement(element, args[i]);
             }
@@ -518,9 +520,10 @@ var StatsHoldr;
          * @param {Boolean} [noOverride]   If recipient properties may be overriden
          *                                 (by default, false).
          */
-        StatsHoldr.prototype.proliferate = function (recipient, donor, noOverride) {
+        ItemsHoldr.prototype.proliferate = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
             var setting, i;
+            // For each attribute of the donor:
             for (i in donor) {
                 if (donor.hasOwnProperty(i)) {
                     // If noOverride, don't override already existing properties
@@ -553,9 +556,10 @@ var StatsHoldr;
          * @param {Boolean} [noOverride]
          * @return {HTMLElement}
          */
-        StatsHoldr.prototype.proliferateElement = function (recipient, donor, noOverride) {
+        ItemsHoldr.prototype.proliferateElement = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
             var setting, i, j;
+            // For each attribute of the donor:
             for (i in donor) {
                 if (donor.hasOwnProperty(i)) {
                     // If noOverride, don't override already existing properties
@@ -563,7 +567,9 @@ var StatsHoldr;
                         continue;
                     }
                     setting = donor[i];
+                    // Special cases for HTML elements
                     switch (i) {
+                        // Children: just append all of them directly
                         case "children":
                             if (typeof (setting) !== "undefined") {
                                 for (j = 0; j < setting.length; j += 1) {
@@ -571,9 +577,11 @@ var StatsHoldr;
                                 }
                             }
                             break;
+                        // Style: proliferate (instead of making a new Object)
                         case "style":
                             this.proliferate(recipient[i], setting);
                             break;
+                        // By default, use the normal proliferate logic
                         default:
                             // If it's an object, recurse on a new version of it
                             if (typeof setting === "object") {
@@ -598,7 +606,7 @@ var StatsHoldr;
          *
          * @return {Object}
          */
-        StatsHoldr.prototype.createPlaceholderStorage = function () {
+        ItemsHoldr.prototype.createPlaceholderStorage = function () {
             var i, output = {
                 "keys": [],
                 "getItem": function (key) {
@@ -635,18 +643,18 @@ var StatsHoldr;
             });
             return output;
         };
-        return StatsHoldr;
+        return ItemsHoldr;
     })();
-    _StatsHoldr.StatsHoldr = StatsHoldr;
-})(StatsHoldr || (StatsHoldr = {}));
-/// <reference path="StatsHoldr-0.2.1.ts" />
+    ItemsHoldr_1.ItemsHoldr = ItemsHoldr;
+})(ItemsHoldr || (ItemsHoldr = {}));
+/// <reference path="ItemsHoldr-0.2.1.ts" />
 var AudioPlayr;
-(function (_AudioPlayr) {
+(function (AudioPlayr_1) {
     "use strict";
     /**
      * An audio library to automate preloading and controlled playback of multiple
      * audio tracks, with support for different browsers' preferred file types.
-     * Volume and mute status are stored locally using a StatsHoldr.
+     * Volume and mute status are stored locally using a ItemsHoldr.
      */
     var AudioPlayr = (function () {
         /**
@@ -663,27 +671,28 @@ var AudioPlayr;
             if (typeof settings.fileTypes === "undefined") {
                 throw new Error("No fileTypes given to AudioPlayr.");
             }
-            if (!settings.StatsHolder) {
-                throw new Error("No StatsHoldr given to AudioPlayr.");
+            if (!settings.ItemsHolder) {
+                throw new Error("No ItemsHoldr given to AudioPlayr.");
             }
-            this.StatsHolder = settings.StatsHolder;
+            this.ItemsHolder = settings.ItemsHolder;
             this.library = settings.library;
             this.directory = settings.directory;
             this.fileTypes = settings.fileTypes;
             this.getThemeDefault = settings.getThemeDefault || "Theme";
-            this.getVolumeLocal = typeof settings.getVolumeLocal === "undefined" ? 1 : settings.getVolumeLocal;
+            this.getVolumeLocal = typeof settings.getVolumeLocal === "undefined"
+                ? 1 : settings.getVolumeLocal;
             // Sounds should always start blank
             this.sounds = {};
             // Preload everything!
             this.libraryLoad();
-            volumeInitial = this.StatsHolder.getItem("volume");
+            volumeInitial = this.ItemsHolder.getItem("volume");
             if (volumeInitial === undefined) {
                 this.setVolume(1);
             }
             else {
-                this.setVolume(this.StatsHolder.getItem("volume"));
+                this.setVolume(this.ItemsHolder.getItem("volume"));
             }
-            this.setMuted(this.StatsHolder.getItem("muted") || false);
+            this.setMuted(this.ItemsHolder.getItem("muted") || false);
         }
         /* Simple getters
         */
@@ -722,10 +731,10 @@ var AudioPlayr;
         */
         /**
          * @return {Number} The current volume, which is a Number in [0,1],
-         *                  retrieved by the StatsHoldr.
+         *                  retrieved by the ItemsHoldr.
          */
         AudioPlayr.prototype.getVolume = function () {
-            return Number(this.StatsHolder.getItem("volume") || 0);
+            return Number(this.ItemsHolder.getItem("volume") || 0);
         };
         /**
          * Sets the current volume. If not muted, all sounds will have their volume
@@ -742,13 +751,13 @@ var AudioPlayr;
                     }
                 }
             }
-            this.StatsHolder.setItem("volume", volume.toString());
+            this.ItemsHolder.setItem("volume", volume.toString());
         };
         /**
          * @return {Boolean} whether this is currently muted.
          */
         AudioPlayr.prototype.getMuted = function () {
-            return Boolean(Number(this.StatsHolder.getItem("muted")));
+            return Boolean(Number(this.ItemsHolder.getItem("muted")));
         };
         /**
          * Calls either setMutedOn or setMutedOff as is appropriate.
@@ -766,19 +775,20 @@ var AudioPlayr;
         };
         /**
          * Sets volume to 0 in all currently playing sounds and stores the muted
-         * status as on in the internal StatsHoldr.
+         * status as on in the internal ItemsHoldr.
          */
         AudioPlayr.prototype.setMutedOn = function () {
-            for (var i in this.sounds) {
+            var i;
+            for (i in this.sounds) {
                 if (this.sounds.hasOwnProperty(i)) {
                     this.sounds[i].volume = 0;
                 }
             }
-            this.StatsHolder.setItem("muted", "1");
+            this.ItemsHolder.setItem("muted", "1");
         };
         /**
          * Sets sound volumes to their actual volumes and stores the muted status
-         * as off in the internal StatsHoldr.
+         * as off in the internal ItemsHoldr.
          */
         AudioPlayr.prototype.setMutedOff = function () {
             var volume = this.getVolume(), sound, i;
@@ -788,7 +798,7 @@ var AudioPlayr;
                     sound.volume = Number(sound.getAttribute("volumeReal")) * volume;
                 }
             }
-            this.StatsHolder.setItem("muted", "0");
+            this.ItemsHolder.setItem("muted", "0");
         };
         /* Other modifiers
         */
@@ -1125,11 +1135,13 @@ var AudioPlayr;
          */
         AudioPlayr.prototype.libraryLoad = function () {
             var section, name, sectionName, j;
+            // For each given section (e.g. names, themes):
             for (sectionName in this.library) {
                 if (!this.library.hasOwnProperty(sectionName)) {
                     continue;
                 }
                 section = this.library[sectionName];
+                // For each thing in that section:
                 for (j in section) {
                     if (!section.hasOwnProperty(j)) {
                         continue;
@@ -1149,6 +1161,7 @@ var AudioPlayr;
          */
         AudioPlayr.prototype.createAudio = function (name, sectionName) {
             var sound = document.createElement("audio"), sourceType, child, i;
+            // Create an audio source for each child
             for (i = 0; i < this.fileTypes.length; i += 1) {
                 sourceType = this.fileTypes[i];
                 child = document.createElement("source");
@@ -1193,10 +1206,10 @@ var AudioPlayr;
         };
         return AudioPlayr;
     })();
-    _AudioPlayr.AudioPlayr = AudioPlayr;
+    AudioPlayr_1.AudioPlayr = AudioPlayr;
 })(AudioPlayr || (AudioPlayr = {}));
 var ChangeLinr;
-(function (_ChangeLinr) {
+(function (ChangeLinr_1) {
     "use strict";
     /**
      * A general utility for transforming raw input to processed output. This is
@@ -1217,10 +1230,13 @@ var ChangeLinr;
                 throw new Error("No transforms given to ChangeLinr.");
             }
             this.transforms = settings.transforms || {};
-            this.doMakeCache = typeof settings.doMakeCache === "undefined" ? true : settings.doMakeCache;
-            this.doUseCache = typeof settings.doUseCache === "undefined" ? true : settings.doUseCache;
+            this.doMakeCache = typeof settings.doMakeCache === "undefined"
+                ? true : settings.doMakeCache;
+            this.doUseCache = typeof settings.doUseCache === "undefined"
+                ? true : settings.doUseCache;
             this.cache = {};
             this.cacheFull = {};
+            // Ensure the pipeline is formatted correctly
             for (i = 0; i < this.pipeline.length; ++i) {
                 // Don't allow null/false transforms
                 if (!this.pipeline[i]) {
@@ -1229,12 +1245,14 @@ var ChangeLinr;
                 // Make sure each part of the pipeline exists
                 if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
                     if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
-                        throw new Error("Pipe[" + i + "] (\"" + this.pipeline[i] + "\") " + "not found in transforms.");
+                        throw new Error("Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
+                            + "not found in transforms.");
                     }
                 }
                 // Also make sure each part of the pipeline is a Function
                 if (!(this.transforms[this.pipeline[i]] instanceof Function)) {
-                    throw new Error("Pipe[" + i + "] (\"" + this.pipeline[i] + "\") " + "is not a valid Function from transforms.");
+                    throw new Error("Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
+                        + "is not a valid Function from transforms.");
                 }
                 this.cacheFull[i] = this.cacheFull[this.pipeline[i]] = {};
             }
@@ -1298,6 +1316,7 @@ var ChangeLinr;
             if (this.doUseCache && this.cache.hasOwnProperty(key)) {
                 return this.cache[key];
             }
+            // Apply (and optionally cache) each transform in order
             for (i = 0; i < this.pipeline.length; ++i) {
                 data = this.transforms[this.pipeline[i]](data, key, attributes, this);
                 if (this.doMakeCache) {
@@ -1331,10 +1350,10 @@ var ChangeLinr;
         };
         return ChangeLinr;
     })();
-    _ChangeLinr.ChangeLinr = ChangeLinr;
+    ChangeLinr_1.ChangeLinr = ChangeLinr;
 })(ChangeLinr || (ChangeLinr = {}));
 var EightBittr;
-(function (_EightBittr) {
+(function (EightBittr_1) {
     "use strict";
     /**
      * An abstract class used exclusively as the parent of GameStartr. EightBittr
@@ -1387,6 +1406,8 @@ var EightBittr;
          */
         EightBittr.prototype.checkRequirements = function (scope, requirements, name) {
             var fails = [], requirement;
+            // For each requirement in the given object, if it isn't visible as a
+            // member of scope (evaluates to falsy), complain
             for (requirement in requirements) {
                 if (requirements.hasOwnProperty(requirement) && !scope[requirement]) {
                     fails.push(requirement);
@@ -1395,9 +1416,12 @@ var EightBittr;
             // If there was at least one failure added to the fails array, throw
             // an error with each fail split by endlines
             if (fails.length) {
-                throw new Error("Missing " + fails.length + " requirement(s) " + "in " + name + ".\n" + fails.map(function (requirement, i) {
-                    return i + ". " + requirement + ": is the '" + requirements[requirement] + "' file included?";
-                }).join("\n"));
+                throw new Error("Missing " + fails.length + " requirement(s) "
+                    + "in " + name + ".\n"
+                    + fails.map(function (requirement, i) {
+                        return i + ". " + requirement + ": is the '"
+                            + requirements[requirement] + "' file included?";
+                    }).join("\n"));
             }
         };
         /**
@@ -1657,7 +1681,8 @@ var EightBittr;
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         EightBittr.prototype.setMidXObj = function (thing, other) {
-            thing.EightBitter.setLeft(thing, thing.EightBitter.getMidX(other) - (thing.width * thing.EightBitter.unitsize / 2));
+            thing.EightBitter.setLeft(thing, thing.EightBitter.getMidX(other)
+                - (thing.width * thing.EightBitter.unitsize / 2));
         };
         /**
          * Shifts a Thing so that its vertical midpoint is centered on the
@@ -1667,7 +1692,8 @@ var EightBittr;
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         EightBittr.prototype.setMidYObj = function (thing, other) {
-            thing.EightBitter.setTop(thing, thing.EightBitter.getMidY(other) - (thing.height * thing.EightBitter.unitsize / 2));
+            thing.EightBitter.setTop(thing, thing.EightBitter.getMidY(other)
+                - (thing.height * thing.EightBitter.unitsize / 2));
         };
         /**
          * @param {Thing} thing
@@ -1784,7 +1810,9 @@ var EightBittr;
          */
         EightBittr.prototype.ensureCorrectCaller = function (current) {
             if (!(current instanceof EightBittr)) {
-                throw new Error("A function requires the caller ('this') to be the " + "manipulated EightBittr object. Unfortunately, 'this' is a " + typeof (this) + ".");
+                throw new Error("A function requires the caller ('this') to be the "
+                    + "manipulated EightBittr object. Unfortunately, 'this' is a "
+                    + typeof (this) + ".");
             }
             return current;
         };
@@ -1804,6 +1832,7 @@ var EightBittr;
         EightBittr.prototype.proliferate = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
             var setting, i;
+            // For each attribute of the donor:
             for (i in donor) {
                 if (donor.hasOwnProperty(i)) {
                     // If noOverride, don't override already existing properties
@@ -1842,6 +1871,7 @@ var EightBittr;
         EightBittr.prototype.proliferateHard = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
             var setting, i;
+            // For each attribute of the donor:
             for (i in donor) {
                 if (donor.hasOwnProperty(i)) {
                     // If noOverride, don't override already existing properties
@@ -1877,6 +1907,7 @@ var EightBittr;
         EightBittr.prototype.proliferateElement = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
             var setting, i, j;
+            // For each attribute of the donor:
             for (i in donor) {
                 if (donor.hasOwnProperty(i)) {
                     // If noOverride, don't override already existing properties
@@ -1884,7 +1915,9 @@ var EightBittr;
                         continue;
                     }
                     setting = donor[i];
+                    // Special cases for HTML elements
                     switch (i) {
+                        // Children: just append all of them directly
                         case "children":
                             if (typeof (setting) !== "undefined") {
                                 for (j = 0; j < setting.length; j += 1) {
@@ -1892,9 +1925,11 @@ var EightBittr;
                                 }
                             }
                             break;
+                        // Style: proliferate (instead of making a new Object)
                         case "style":
                             this.proliferate(recipient[i], setting);
                             break;
+                        // By default, use the normal proliferate logic
                         default:
                             // If it's null, don't do anything (like .textContent)
                             if (setting === null) {
@@ -1933,6 +1968,7 @@ var EightBittr;
                 args[_i - 1] = arguments[_i];
             }
             var EightBitter = EightBittr.prototype.ensureCorrectCaller(this), element = document.createElement(tag || "div"), i;
+            // For each provided object, add those settings to the element
             for (i = 1; i < arguments.length; i += 1) {
                 EightBitter.proliferateElement(element, arguments[i]);
             }
@@ -1995,11 +2031,11 @@ var EightBittr;
         };
         return EightBittr;
     })();
-    _EightBittr.EightBittr = EightBittr;
+    EightBittr_1.EightBittr = EightBittr;
     ;
 })(EightBittr || (EightBittr = {}));
 var FPSAnalyzr;
-(function (_FPSAnalyzr) {
+(function (FPSAnalyzr_1) {
     "use strict";
     /**
      * A general utility for obtaining and analyzing framerate measurements. The
@@ -2028,7 +2064,11 @@ var FPSAnalyzr;
                     };
                 }
                 else {
-                    this.getTimestamp = (performance.now || performance.webkitNow || performance.mozNow || performance.msNow || performance.oNow).bind(performance);
+                    this.getTimestamp = (performance.now
+                        || performance.webkitNow
+                        || performance.mozNow
+                        || performance.msNow
+                        || performance.oNow).bind(performance);
                 }
             }
             else {
@@ -2200,11 +2240,11 @@ var FPSAnalyzr;
         };
         return FPSAnalyzr;
     })();
-    _FPSAnalyzr.FPSAnalyzr = FPSAnalyzr;
+    FPSAnalyzr_1.FPSAnalyzr = FPSAnalyzr;
 })(FPSAnalyzr || (FPSAnalyzr = {}));
 /// <reference path="FPSAnalyzr-0.2.1.ts" />
 var GamesRunnr;
-(function (_GamesRunnr) {
+(function (GamesRunnr_1) {
     "use strict";
     /**
      * A class to continuously series of "game" Functions. Each game is run in a
@@ -2437,10 +2477,10 @@ var GamesRunnr;
         };
         return GamesRunnr;
     })();
-    _GamesRunnr.GamesRunnr = GamesRunnr;
+    GamesRunnr_1.GamesRunnr = GamesRunnr;
 })(GamesRunnr || (GamesRunnr = {}));
 var GroupHoldr;
-(function (_GroupHoldr) {
+(function (GroupHoldr_1) {
     "use strict";
     /**
      * A general utility to keep Arrays and/or Objects by key names within a
@@ -2942,10 +2982,10 @@ var GroupHoldr;
         };
         return GroupHoldr;
     })();
-    _GroupHoldr.GroupHoldr = GroupHoldr;
+    GroupHoldr_1.GroupHoldr = GroupHoldr;
 })(GroupHoldr || (GroupHoldr = {}));
 var InputWritr;
-(function (_InputWritr) {
+(function (InputWritr_1) {
     "use strict";
     /**
      * A general utility for automating interactions with user-called events linked
@@ -2972,19 +3012,27 @@ var InputWritr;
                     };
                 }
                 else {
-                    this.getTimestamp = (performance.now || performance.webkitNow || performance.mozNow || performance.msNow || performance.oNow).bind(performance);
+                    this.getTimestamp = (performance.now
+                        || performance.webkitNow
+                        || performance.mozNow
+                        || performance.msNow
+                        || performance.oNow).bind(performance);
                 }
             }
             else {
                 this.getTimestamp = settings.getTimestamp;
             }
             this.eventInformation = settings.eventInformation;
-            this.canTrigger = settings.hasOwnProperty("canTrigger") ? settings.canTrigger : function () {
-                return true;
-            };
-            this.isRecording = settings.hasOwnProperty("isRecording") ? settings.isRecording : function () {
-                return true;
-            };
+            this.canTrigger = settings.hasOwnProperty("canTrigger")
+                ? settings.canTrigger
+                : function () {
+                    return true;
+                };
+            this.isRecording = settings.hasOwnProperty("isRecording")
+                ? settings.isRecording
+                : function () {
+                    return true;
+                };
             this.history = {};
             this.histories = {
                 "length": 0
@@ -3073,7 +3121,8 @@ var InputWritr;
             if (alias > 64 && alias < 97) {
                 return String.fromCharCode(alias);
             }
-            return typeof this.keyCodesToAliases[alias] !== "undefined" ? this.keyCodesToAliases[alias] : "?";
+            return typeof this.keyCodesToAliases[alias] !== "undefined"
+                ? this.keyCodesToAliases[alias] : "?";
         };
         /**
          * @param {Mixed} key   The number code of an input.
@@ -3174,11 +3223,13 @@ var InputWritr;
             else {
                 this.aliases[name].push.apply(this.aliases[name], values);
             }
+            // triggerName = "onkeydown", "onkeyup", ...
             for (triggerName in this.triggers) {
                 if (this.triggers.hasOwnProperty(triggerName)) {
                     // triggerGroup = { "left": function, ... }, ...
                     triggerGroup = this.triggers[triggerName];
                     if (triggerGroup.hasOwnProperty(name)) {
+                        // values[i] = 37, 65, ...
                         for (i = 0; i < values.length; i += 1) {
                             triggerGroup[values[i]] = triggerGroup[name];
                         }
@@ -3202,11 +3253,13 @@ var InputWritr;
             for (i = 0; i < values.length; i += 1) {
                 this.aliases[name].splice(this.aliases[name].indexOf(values[i], 1));
             }
+            // triggerName = "onkeydown", "onkeyup", ...
             for (triggerName in this.triggers) {
                 if (this.triggers.hasOwnProperty(triggerName)) {
                     // triggerGroup = { "left": function, ... }, ...
                     triggerGroup = this.triggers[triggerName];
                     if (triggerGroup.hasOwnProperty(name)) {
+                        // values[i] = 37, 65, ...
                         for (i = 0; i < values.length; i += 1) {
                             if (triggerGroup.hasOwnProperty(values[i])) {
                                 delete triggerGroup[values[i]];
@@ -3330,21 +3383,21 @@ var InputWritr;
          *
          * @param {Function, String} event   The event function (or string alias of
          *                                   it) that will be called.
-         * @param {Number} [keycode]   The alias of the event function under
-         *                             triggers[event], if event is a String.
+         * @param {Mixed} [keyCode]   The alias of the event function under
+         *                            triggers[event], if event is a String.
          * @param {Event} [sourceEvent]   The raw event that caused the calling Pipe
          *                                to be triggered, such as a MouseEvent.
          * @return {Mixed}
          */
-        InputWritr.prototype.callEvent = function (event, keycode, sourceEvent) {
-            if (!this.canTrigger(event, keycode)) {
+        InputWritr.prototype.callEvent = function (event, keyCode, sourceEvent) {
+            if (!this.canTrigger(event, keyCode)) {
                 return;
             }
             if (!event) {
                 throw new Error("Blank event given, ignoring it.");
             }
             if (event.constructor === String) {
-                event = this.triggers[event][keycode];
+                event = this.triggers[event][keyCode];
             }
             return event(this.eventInformation, sourceEvent);
         };
@@ -3384,7 +3437,7 @@ var InputWritr;
         /**
          * Curry utility to create a closure that runs call() when called.
          *
-         * @param {Array} info   An array containing [alias, keycode].
+         * @param {Array} info   An array containing [alias, keyCode].
          * @return {Function} A closure Function that activates a trigger
          *                    when called.
          */
@@ -3395,10 +3448,10 @@ var InputWritr;
         };
         return InputWritr;
     })();
-    _InputWritr.InputWritr = InputWritr;
+    InputWritr_1.InputWritr = InputWritr;
 })(InputWritr || (InputWritr = {}));
 var ObjectMakr;
-(function (_ObjectMakr) {
+(function (ObjectMakr_1) {
     "use strict";
     /**
      * An Abstract Factory for JavaScript classes that automates the process of
@@ -3530,6 +3583,7 @@ var ObjectMakr;
          */
         ObjectMakr.prototype.processProperties = function (properties) {
             var name;
+            // For each of the given properties:
             for (name in properties) {
                 if (this.properties.hasOwnProperty(name)) {
                     // If it's an array, replace it with a mapped version
@@ -3550,6 +3604,7 @@ var ObjectMakr;
          */
         ObjectMakr.prototype.processPropertyArray = function (properties) {
             var output = {}, i;
+            // For each [i] in properties, set that property as under indexMap[i]
             for (i = properties.length - 1; i >= 0; --i) {
                 output[this.indexMap[i]] = properties[i];
             }
@@ -3570,12 +3625,14 @@ var ObjectMakr;
          */
         ObjectMakr.prototype.processFunctions = function (base, parent, parentName) {
             var name, ref;
+            // For each name in the current object:
             for (name in base) {
                 if (base.hasOwnProperty(name)) {
                     this.functions[name] = (new Function());
                     // This sets the function as inheriting from the parent
                     this.functions[name].prototype = new parent();
                     this.functions[name].prototype.constructor = this.functions[name];
+                    // Add each property from properties to the function prototype
                     for (ref in this.properties[name]) {
                         if (this.properties[name].hasOwnProperty(ref)) {
                             this.functions[name].prototype[ref] = this.properties[name][ref];
@@ -3588,7 +3645,8 @@ var ObjectMakr;
                         if (parentName) {
                             for (ref in this.propertiesFull[parentName]) {
                                 if (this.propertiesFull[parentName].hasOwnProperty(ref)) {
-                                    this.propertiesFull[name][ref] = this.propertiesFull[parentName][ref];
+                                    this.propertiesFull[name][ref]
+                                        = this.propertiesFull[parentName][ref];
                                 }
                             }
                         }
@@ -3616,6 +3674,7 @@ var ObjectMakr;
         ObjectMakr.prototype.proliferate = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
             var setting, i;
+            // For each attribute of the donor
             for (i in donor) {
                 // If noOverride is specified, don't override if it already exists
                 if (noOverride && recipient.hasOwnProperty(i)) {
@@ -3638,11 +3697,11 @@ var ObjectMakr;
         };
         return ObjectMakr;
     })();
-    _ObjectMakr.ObjectMakr = ObjectMakr;
+    ObjectMakr_1.ObjectMakr = ObjectMakr;
 })(ObjectMakr || (ObjectMakr = {}));
 /// <reference path="ObjectMakr-0.2.2.ts" />
 var MapsCreatr;
-(function (_MapsCreatr) {
+(function (MapsCreatr_1) {
     "use strict";
     /**
      * Basic storage container for a single Thing to be stored in an Area's
@@ -3663,15 +3722,17 @@ var MapsCreatr;
             this.spawned = false;
             this.left = reference.x || 0;
             this.top = reference.y || 0;
-            this.right = this.left + (reference.width || ObjectMaker.getFullPropertiesOf(this.title).width);
-            this.bottom = this.top + (reference.height || ObjectMaker.getFullPropertiesOf(this.title).height);
+            this.right = this.left + (reference.width
+                || ObjectMaker.getFullPropertiesOf(this.title).width);
+            this.bottom = this.top + (reference.height
+                || ObjectMaker.getFullPropertiesOf(this.title).height);
             if (reference.position) {
                 this.position = reference.position;
             }
         }
         return PreThing;
     })();
-    _MapsCreatr.PreThing = PreThing;
+    MapsCreatr_1.PreThing = PreThing;
     /**
      * Storage container and lazy loader for GameStarter maps that is the back-end
      * counterpart to MapsHandlr. Maps are created with their custom Location and
@@ -3988,6 +4049,7 @@ var MapsCreatr;
             var areasRaw = map.areas, locationsRaw = map.locations, 
             // The parsed containers should be the same types as the originals
             areasParsed = new areasRaw.constructor(), locationsParsed = new locationsRaw.constructor(), area, location, i;
+            // Parse all the Area objects (works for both Arrays and Objects)
             for (i in areasRaw) {
                 if (areasRaw.hasOwnProperty(i)) {
                     area = this.ObjectMaker.make("Area", areasRaw[i]);
@@ -4002,6 +4064,7 @@ var MapsCreatr;
                     };
                 }
             }
+            // Parse all the Location objects (works for both Arrays and Objects)
             for (i in locationsRaw) {
                 if (locationsRaw.hasOwnProperty(i)) {
                     location = this.ObjectMaker.make("Location", locationsRaw[i]);
@@ -4039,6 +4102,7 @@ var MapsCreatr;
             var locsRaw = map.locations, 
             // The parsed container should be the same type as the original
             locsParsed = new locsRaw.constructor(), location, i;
+            // Parse all the keys in locasRaw (works for both Arrays and Objects)
             for (i in locsRaw) {
                 if (locsRaw.hasOwnProperty(i)) {
                     location = this.ObjectMaker.make("Location", locsRaw[i]);
@@ -4213,10 +4277,10 @@ var MapsCreatr;
         };
         return MapsCreatr;
     })();
-    _MapsCreatr.MapsCreatr = MapsCreatr;
+    MapsCreatr_1.MapsCreatr = MapsCreatr;
 })(MapsCreatr || (MapsCreatr = {}));
 var MapScreenr;
-(function (_MapScreenr) {
+(function (MapScreenr_1) {
     "use strict";
     /**
      * A simple container for Map attributes given by switching to an Area within
@@ -4321,13 +4385,13 @@ var MapScreenr;
         };
         return MapScreenr;
     })();
-    _MapScreenr.MapScreenr = MapScreenr;
+    MapScreenr_1.MapScreenr = MapScreenr;
 })(MapScreenr || (MapScreenr = {}));
 /// <reference path="MapsCreatr-0.2.1.ts" />
 /// <reference path="MapScreenr-0.2.1.ts" />
 /// <reference path="ObjectMakr-0.2.2.ts" />
 var MapsHandlr;
-(function (_MapsHandlr) {
+(function (MapsHandlr_1) {
     "use strict";
     /**
      * Map manipulator and spawner for GameStartr maps that is the front-end
@@ -4486,6 +4550,7 @@ var MapsHandlr;
                 "bottom": 0,
                 "left": 0
             };
+            // Copy all the settings from that area into the MapScreenr container
             for (i = 0; i < this.screenAttributes.length; i += 1) {
                 attribute = this.screenAttributes[i];
                 this.MapScreener[attribute] = this.areaCurrent[attribute];
@@ -4588,6 +4653,7 @@ var MapsHandlr;
          */
         MapsHandlr.prototype.applySpawnAction = function (callback, status, direction, top, right, bottom, left) {
             var name, group, prething, mid, start, end, i;
+            // For each group of PreThings currently able to spawn...
             for (name in this.prethings) {
                 if (!this.prethings.hasOwnProperty(name)) {
                     continue;
@@ -4602,6 +4668,8 @@ var MapsHandlr;
                 mid = (group.length / 2) | 0;
                 start = this.findPreThingsSpawnStart(direction, group, mid, top, right, bottom, left);
                 end = this.findPreThingsSpawnEnd(direction, group, mid, top, right, bottom, left);
+                // Loop through all the directionally valid PreThings, spawning if 
+                // they're within the bounding box
                 for (i = start; i <= end; i += 1) {
                     prething = group[i];
                     // For example: if status is true (spawned), don't spawn again
@@ -4707,10 +4775,10 @@ var MapsHandlr;
         };
         return MapsHandlr;
     })();
-    _MapsHandlr.MapsHandlr = MapsHandlr;
+    MapsHandlr_1.MapsHandlr = MapsHandlr;
 })(MapsHandlr || (MapsHandlr = {}));
 var StringFilr;
-(function (_StringFilr) {
+(function (StringFilr_1) {
     "use strict";
     /**
      * A general utility for retrieving data from an Object based on nested class
@@ -4847,6 +4915,7 @@ var StringFilr;
             if (!keys || !keys.length) {
                 return current;
             }
+            // For each key in the current array...
             for (i = 0; i < keys.length; i += 1) {
                 key = keys[i];
                 // ...if it matches, recurse on the other keys
@@ -4869,17 +4938,19 @@ var StringFilr;
         StringFilr.prototype.ensureLibraryNormal = function () {
             var caught = this.findLackingNormal(this.library, "base", []);
             if (caught.length) {
-                throw new Error("Found " + caught.length + " library " + "sub-directories missing the normal: " + "\r\n  " + caught.join("\r\n  "));
+                throw new Error("Found " + caught.length + " library "
+                    + "sub-directories missing the normal: "
+                    + "\r\n  " + caught.join("\r\n  "));
             }
         };
         return StringFilr;
     })();
-    _StringFilr.StringFilr = StringFilr;
+    StringFilr_1.StringFilr = StringFilr;
 })(StringFilr || (StringFilr = {}));
 /// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
 var PixelRendr;
-(function (_PixelRendr) {
+(function (PixelRendr_1) {
     "use strict";
     /**
      * A moderately unusual graphics module designed to compress images as
@@ -4923,7 +4994,9 @@ var PixelRendr;
             this.flipHoriz = settings.flipHoriz || "flip-horiz";
             this.spriteWidth = settings.spriteWidth || "spriteWidth";
             this.spriteHeight = settings.spriteHeight || "spriteHeight";
-            this.Uint8ClampedArray = (settings.Uint8ClampedArray || window.Uint8ClampedArray || window.Uint8Array);
+            this.Uint8ClampedArray = (settings.Uint8ClampedArray
+                || window.Uint8ClampedArray
+                || window.Uint8Array);
             // The first ChangeLinr does the raw processing of Strings to sprites
             // This is used to load & parse sprites into memory on startup
             this.ProcessorBase = new ChangeLinr.ChangeLinr({
@@ -5116,7 +5189,10 @@ var PixelRendr;
                     forceZeroColor = true;
                     continue;
                 }
-                if (tree[data[i]] && tree[data[i]][data[i + 1]] && tree[data[i]][data[i + 1]][data[i + 2]] && tree[data[i]][data[i + 1]][data[i + 2]][data[i + 3]]) {
+                if (tree[data[i]]
+                    && tree[data[i]][data[i + 1]]
+                    && tree[data[i]][data[i + 1]][data[i + 2]]
+                    && tree[data[i]][data[i + 1]][data[i + 2]][data[i + 3]]) {
                     continue;
                 }
                 if (!tree[data[i]]) {
@@ -5153,7 +5229,9 @@ var PixelRendr;
                 }
             });
             if (forceZeroColor) {
-                output = [new this.Uint8ClampedArray([0, 0, 0, 0])].concat(colorsGrayscale).concat(colorsGeneral);
+                output = [new this.Uint8ClampedArray([0, 0, 0, 0])]
+                    .concat(colorsGrayscale)
+                    .concat(colorsGeneral);
             }
             else {
                 output = colorsGrayscale.concat(colorsGeneral);
@@ -5211,15 +5289,18 @@ var PixelRendr;
          */
         PixelRendr.prototype.libraryParse = function (reference, path) {
             var setnew = {}, objref, i;
+            // For each child of the current layer:
             for (i in reference) {
                 if (!reference.hasOwnProperty(i)) {
                     continue;
                 }
                 objref = reference[i];
                 switch (objref.constructor) {
+                    // If it's a string, parse it
                     case String:
                         setnew[i] = this.ProcessorBase.process(objref, path + " " + i);
                         break;
+                    // If it's an array, it should have a command such as 'same' to be post-processed
                     case Array:
                         this.library.posts.push({
                             caller: setnew,
@@ -5228,6 +5309,7 @@ var PixelRendr;
                             path: path + " " + i
                         });
                         break;
+                    // If it's anything else, simply recurse
                     default:
                         setnew[i] = this.libraryParse(objref, path + " " + i);
                         break;
@@ -5259,6 +5341,8 @@ var PixelRendr;
         PixelRendr.prototype.evaluatePost = function (caller, command, path) {
             var spriteRaw, filter;
             switch (command[0]) {
+                // Same: just returns a reference to the target
+                // ["same", ["container", "path", "to", "target"]]
                 case "same":
                     spriteRaw = this.followPath(this.library.raws, command[1], 0);
                     if (spriteRaw.constructor === String) {
@@ -5268,6 +5352,8 @@ var PixelRendr;
                         return this.evaluatePost(caller, spriteRaw, path);
                     }
                     return this.libraryParse(spriteRaw, path);
+                // Filter: takes a reference to the target, and applies a filter to it
+                // ["filter", ["container", "path", "to", "target"], filters.DoThisFilter]
                 case "filter":
                     // Find the sprite this should be filtering from
                     spriteRaw = this.followPath(this.library.raws, command[1], 0);
@@ -5277,8 +5363,15 @@ var PixelRendr;
                         filter = {};
                     }
                     return this.evaluatePostFilter(spriteRaw, path, filter);
+                // Multiple: uses more than one image, either vertically or horizontally
+                // Not to be confused with having .repeat = true.
+                // ["multiple", "vertical", {
+                //    top: "...",       // (just once at the top)
+                //    middle: "..."     // (repeated after top)
+                //  }
                 case "multiple":
                     return this.evaluatePostMultiple(path, command);
+                // Commands not evaluated by the switch are unknown and bad
                 default:
                     console.warn("Unknown post command: '" + command[0] + "'.", caller, command, path);
             }
@@ -5378,6 +5471,7 @@ var PixelRendr;
             var paletteref = this.getPaletteReferenceStarting(this.paletteDefault), digitsize = this.digitsizeDefault, clength = colors.length, current, rep, nixloc, output = "", loc = 0;
             while (loc < clength) {
                 switch (colors[loc]) {
+                    // A loop, ordered as 'x char times ,'
                     case "x":
                         // Get the location of the ending comma
                         nixloc = colors.indexOf(",", ++loc);
@@ -5385,11 +5479,13 @@ var PixelRendr;
                         current = this.makeDigit(paletteref[colors.slice(loc, loc += digitsize)], this.digitsizeDefault);
                         // Get the rep times
                         rep = Number(colors.slice(loc, nixloc));
+                        // Add that int to output, rep many times
                         while (rep--) {
                             output += current;
                         }
                         loc = nixloc + 1;
                         break;
+                    // A palette changer, in the form 'p[X,Y,Z...]' (or "p" for default)
                     case "p":
                         // If the next character is a "[", customize.
                         if (colors[++loc] === "[") {
@@ -5405,6 +5501,7 @@ var PixelRendr;
                             digitsize = this.digitsizeDefault;
                         }
                         break;
+                    // A typical number
                     default:
                         output += this.makeDigit(paletteref[colors.slice(loc, loc += digitsize)], this.digitsizeDefault);
                         break;
@@ -5421,8 +5518,10 @@ var PixelRendr;
          */
         PixelRendr.prototype.spriteExpand = function (colors) {
             var output = "", clength = colors.length, i = 0, j, current;
+            // For each number,
             while (i < clength) {
                 current = colors.slice(i, i += this.digitsizeDefault);
+                // Put it into output as many times as needed
                 for (j = 0; j < this.scale; ++j) {
                     output += current;
                 }
@@ -5451,10 +5550,12 @@ var PixelRendr;
                 return colors;
             }
             switch (filterName) {
+                // Palette filters switch all instances of one color with another
                 case "palette":
                     // Split the colors on on each digit
                     // ("...1234..." => [..., "12", "34", ...]
                     var split = colors.match(this.digitsplit), i;
+                    // For each color filter to be applied, replace it
                     for (i in filter[1]) {
                         if (filter[1].hasOwnProperty(i)) {
                             this.arrayReplace(split, i, filter[1][i]);
@@ -5476,9 +5577,11 @@ var PixelRendr;
          */
         PixelRendr.prototype.spriteGetArray = function (colors) {
             var clength = colors.length, numcolors = clength / this.digitsizeDefault, split = colors.match(this.digitsplit), olength = numcolors * 4, output = new this.Uint8ClampedArray(olength), reference, i, j, k;
+            // For each color,
             for (i = 0, j = 0; i < numcolors; ++i) {
                 // Grab its RGBA ints
                 reference = this.paletteDefault[Number(split[i])];
+                // Place each in output
                 for (k = 0; k < 4; ++k) {
                     output[j + k] = reference[k];
                 }
@@ -5501,7 +5604,9 @@ var PixelRendr;
          */
         PixelRendr.prototype.spriteRepeatRows = function (sprite, key, attributes) {
             var parsed = new this.Uint8ClampedArray(sprite.length * this.scale), rowsize = attributes[this.spriteWidth] * 4, heightscale = attributes[this.spriteHeight] * this.scale, readloc = 0, writeloc = 0, si, sj;
+            // For each row:
             for (si = 0; si < heightscale; ++si) {
+                // Add it to parsed x scale
                 for (sj = 0; sj < this.scale; ++sj) {
                     this.memcpyU8(sprite, parsed, readloc, writeloc, rowsize);
                     writeloc += rowsize;
@@ -5544,10 +5649,13 @@ var PixelRendr;
          */
         PixelRendr.prototype.flipSpriteArrayHoriz = function (sprite, attributes) {
             var length = sprite.length, width = attributes[this.spriteWidth] + 0, newsprite = new this.Uint8ClampedArray(length), rowsize = width * 4, newloc, oldloc, i, j, k;
+            // For each row:
             for (i = 0; i < length; i += rowsize) {
                 newloc = i;
                 oldloc = i + rowsize - 4;
+                // For each pixel:
                 for (j = 0; j < rowsize; j += 4) {
+                    // Copy it over
                     for (k = 0; k < 4; ++k) {
                         newsprite[newloc + k] = sprite[oldloc + k];
                     }
@@ -5567,8 +5675,11 @@ var PixelRendr;
          */
         PixelRendr.prototype.flipSpriteArrayVert = function (sprite, attributes) {
             var length = sprite.length, width = attributes[this.spriteWidth] + 0, newsprite = new this.Uint8ClampedArray(length), rowsize = width * 4, newloc = 0, oldloc = length - rowsize, i, j;
+            // For each row
             while (newloc < length) {
+                // For each pixel in the rows
                 for (i = 0; i < rowsize; i += 4) {
+                    // For each rgba value
                     for (j = 0; j < 4; ++j) {
                         newsprite[newloc + i + j] = sprite[oldloc + i + j];
                     }
@@ -5854,11 +5965,11 @@ var PixelRendr;
         };
         return PixelRendr;
     })();
-    _PixelRendr.PixelRendr = PixelRendr;
+    PixelRendr_1.PixelRendr = PixelRendr;
 })(PixelRendr || (PixelRendr = {}));
 /// <reference path="ObjectMakr-0.2.2.ts" />
 var QuadsKeepr;
-(function (_QuadsKeepr) {
+(function (QuadsKeepr_1) {
     "use strict";
     /**
      * Quadrant-based collision detection. A grid structure of Quadrants is kept,
@@ -6259,21 +6370,25 @@ var QuadsKeepr;
          * added.
          */
         QuadsKeepr.prototype.adjustOffsets = function () {
+            // Quadrant shift: add to the right
             while (-this.offsetX > this.quadrantWidth) {
                 this.shiftQuadrantCol(true);
                 this.pushQuadrantCol(true);
                 this.offsetX += this.quadrantWidth;
             }
+            // Quadrant shift: add to the left
             while (this.offsetX > this.quadrantWidth) {
                 this.popQuadrantCol(true);
                 this.unshiftQuadrantCol(true);
                 this.offsetX -= this.quadrantWidth;
             }
+            // Quadrant shift: add to the bottom
             while (-this.offsetY > this.quadrantHeight) {
                 this.unshiftQuadrantRow(true);
                 this.pushQuadrantRow(true);
                 this.offsetY += this.quadrantHeight;
             }
+            // Quadrant shift: add to the top
             while (this.offsetY > this.quadrantHeight) {
                 this.popQuadrantRow(true);
                 this.unshiftQuadrantRow(true);
@@ -6467,7 +6582,7 @@ var QuadsKeepr;
         };
         return QuadsKeepr;
     })();
-    _QuadsKeepr.QuadsKeepr = QuadsKeepr;
+    QuadsKeepr_1.QuadsKeepr = QuadsKeepr;
 })(QuadsKeepr || (QuadsKeepr = {}));
 /// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="ObjectMakr-0.2.2.ts" />
@@ -6475,7 +6590,7 @@ var QuadsKeepr;
 /// <reference path="QuadsKeepr-0.2.1.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
 var PixelDrawr;
-(function (_PixelDrawr) {
+(function (PixelDrawr_1) {
     "use strict";
     /**
      * A front-end to PixelRendr to automate drawing mass amounts of sprites to a
@@ -6772,7 +6887,11 @@ var PixelDrawr;
             var quadrant, i;
             for (i = 0; i < quadrants.length; i += 1) {
                 quadrant = quadrants[i];
-                if (quadrant.changed && quadrant[this.keyTop] < this.MapScreener[this.keyHeight] && quadrant[this.keyRight] > 0 && quadrant[this.keyBottom] > 0 && quadrant[this.keyLeft] < this.MapScreener[this.keyWidth]) {
+                if (quadrant.changed
+                    && quadrant[this.keyTop] < this.MapScreener[this.keyHeight]
+                    && quadrant[this.keyRight] > 0
+                    && quadrant[this.keyBottom] > 0
+                    && quadrant[this.keyLeft] < this.MapScreener[this.keyWidth]) {
                     this.refillQuadrant(quadrant);
                     this.context.drawImage(quadrant.canvas, quadrant[this.keyLeft], quadrant[this.keyTop]);
                 }
@@ -6808,7 +6927,14 @@ var PixelDrawr;
          * @param {Thing} thing   The Thing to be drawn onto the context.
          */
         PixelDrawr.prototype.drawThingOnContext = function (context, thing) {
-            if (thing.hidden || thing.opacity < this.epsilon || thing[this.keyHeight] < 1 || thing[this.keyWidth] < 1 || this.getTop(thing) > this.MapScreener[this.keyHeight] || this.getRight(thing) < 0 || this.getBottom(thing) < 0 || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
+            if (thing.hidden
+                || thing.opacity < this.epsilon
+                || thing[this.keyHeight] < 1
+                || thing[this.keyWidth] < 1
+                || this.getTop(thing) > this.MapScreener[this.keyHeight]
+                || this.getRight(thing) < 0
+                || this.getBottom(thing) < 0
+                || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
                 return;
             }
             // If Thing hasn't had a sprite yet (previously hidden), do that first
@@ -6833,7 +6959,12 @@ var PixelDrawr;
          * @param {Quadrant} quadrant
          */
         PixelDrawr.prototype.drawThingOnQuadrant = function (thing, quadrant) {
-            if (thing.hidden || this.getTop(thing) > quadrant[this.keyBottom] || this.getRight(thing) < quadrant[this.keyLeft] || this.getBottom(thing) < quadrant[this.keyTop] || this.getLeft(thing) > quadrant[this.keyRight] || thing.opacity < this.epsilon) {
+            if (thing.hidden
+                || this.getTop(thing) > quadrant[this.keyBottom]
+                || this.getRight(thing) < quadrant[this.keyLeft]
+                || this.getBottom(thing) < quadrant[this.keyTop]
+                || this.getLeft(thing) > quadrant[this.keyRight]
+                || thing.opacity < this.epsilon) {
                 return;
             }
             // If there's just one sprite, it's pretty simple
@@ -6884,6 +7015,7 @@ var PixelDrawr;
         PixelDrawr.prototype.drawThingOnContextMultiple = function (context, canvases, thing, left, top) {
             var sprite = thing.sprite, topreal = top, leftreal = left, rightreal = left + thing.unitwidth, bottomreal = top + thing.unitheight, widthreal = thing.unitwidth, heightreal = thing.unitheight, spritewidthpixels = thing.spritewidthpixels, spriteheightpixels = thing.spriteheightpixels, widthdrawn = Math.min(widthreal, spritewidthpixels), heightdrawn = Math.min(heightreal, spriteheightpixels), opacity = thing.opacity, diffhoriz, diffvert, canvasref;
             switch (canvases.direction) {
+                // Vertical sprites may have 'top', 'bottom', 'middle'
                 case "vertical":
                     // If there's a bottom, draw that and push up bottomreal
                     if ((canvasref = canvases[this.keyBottom])) {
@@ -6900,6 +7032,7 @@ var PixelDrawr;
                         heightreal -= diffvert;
                     }
                     break;
+                // Horizontal sprites may have 'left', 'right', 'middle'
                 case "horizontal":
                     // If there's a left, draw that and push forward leftreal
                     if ((canvasref = canvases[this.keyLeft])) {
@@ -6916,6 +7049,8 @@ var PixelDrawr;
                         widthreal -= diffhoriz;
                     }
                     break;
+                // Corner (vertical + horizontal + corner) sprites must have corners
+                // in 'topRight', 'bottomRight', 'bottomLeft', and 'topLeft'.
                 case "corners":
                     // topLeft, left, bottomLeft
                     diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteheightpixels;
@@ -7028,16 +7163,19 @@ var PixelDrawr;
             context.globalAlpha = opacity;
             context.translate(left, top);
             context.fillStyle = context.createPattern(source, "repeat");
-            context.fillRect(0, 0, width, height);
+            context.fillRect(0, 0, 
+            // Math.max(width, left - MapScreener[keyRight]),
+            // Math.max(height, top - MapScreener[keyBottom])
+            width, height);
             context.translate(-left, -top);
             context.globalAlpha = 1;
         };
         return PixelDrawr;
     })();
-    _PixelDrawr.PixelDrawr = PixelDrawr;
+    PixelDrawr_1.PixelDrawr = PixelDrawr;
 })(PixelDrawr || (PixelDrawr = {}));
 var TimeHandlr;
-(function (_TimeHandlr) {
+(function (TimeHandlr_1) {
     "use strict";
     /**
      * A timed events library intended to provide a flexible alternative to
@@ -7194,6 +7332,7 @@ var TimeHandlr;
             if (!currentEvents) {
                 return;
             }
+            // For each event currently scheduled:
             for (i = 0, length = currentEvents.length; i < length; ++i) {
                 event = currentEvents[i];
                 // Call the function, using apply to pass in arguments dynamically
@@ -7516,7 +7655,7 @@ var TimeHandlr;
         };
         return TimeHandlr;
     })();
-    _TimeHandlr.TimeHandlr = TimeHandlr;
+    TimeHandlr_1.TimeHandlr = TimeHandlr;
 })(TimeHandlr || (TimeHandlr = {}));
 /// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="GroupHoldr-0.2.1.ts" />
@@ -7528,18 +7667,19 @@ var TimeHandlr;
 /// <reference path="PixelDrawr-0.2.0.ts" />
 /// <reference path="PixelRendr-0.2.0.ts" />
 /// <reference path="QuadsKeepr-0.2.1.ts" />
-/// <reference path="StatsHoldr-0.2.1.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
 var LevelEditr;
-(function (_LevelEditr) {
+(function (LevelEditr_1) {
     "use strict";
     /**
-     * A GameStartr module to let the user edit levels. Etc. etc.
+     * A level editor designed to work natively on top of an existing GameStartr
+     * sub-class.
      */
     var LevelEditr = (function () {
         /**
-         *
+         * @param {ILevelEditrSettings} settings
          */
         function LevelEditr(settings) {
             this.GameStarter = settings.GameStarter;
@@ -7558,6 +7698,7 @@ var LevelEditr;
             this.currentPreThings = [];
             this.currentMode = "Build";
             this.currentClickMode = "Thing";
+            this.canClick = true;
         }
         /* Simple gets
         */
@@ -7674,6 +7815,12 @@ var LevelEditr;
          */
         LevelEditr.prototype.getKeyUndefined = function () {
             return this.keyUndefined;
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.getCanClick = function () {
+            return this.canClick;
         };
         /* State resets
         */
@@ -7870,15 +8017,26 @@ var LevelEditr;
                 if (!prething.thing) {
                     continue;
                 }
-                this.GameStarter.setLeft(prething.thing, this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize) + (prething.left || 0) * this.GameStarter.unitsize);
-                this.GameStarter.setTop(prething.thing, this.roundTo(y - this.GameStarter.container.offsetTop, this.blocksize) - (prething.top || 0) * this.GameStarter.unitsize);
+                this.GameStarter.setLeft(prething.thing, this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize)
+                    + (prething.left || 0) * this.GameStarter.unitsize);
+                this.GameStarter.setTop(prething.thing, this.roundTo(y - this.GameStarter.container.offsetTop, this.blocksize)
+                    - (prething.top || 0) * this.GameStarter.unitsize);
             }
+        };
+        /**
+         * Temporarily disables this.canClick, so double clicking doesn't happen.
+         */
+        LevelEditr.prototype.afterClick = function () {
+            this.canClick = false;
+            setTimeout(function () {
+                this.canClick = true;
+            }, 70);
         };
         /**
          *
          */
         LevelEditr.prototype.onClickEditingThing = function (event) {
-            if (this.currentMode !== "Build") {
+            if (!this.canClick || this.currentMode !== "Build") {
                 return;
             }
             var x = this.roundTo(event.x || event.clientX || 0, this.blocksize), y = this.roundTo(event.y || event.clientY || 0, this.blocksize);
@@ -7891,7 +8049,7 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.onClickEditingMacro = function (event) {
-            if (this.currentMode !== "Build") {
+            if (!this.canClick || this.currentMode !== "Build") {
                 return;
             }
             var x = this.roundTo(event.x || event.clientX || 0, this.blocksize), y = this.roundTo(event.y || event.clientY || 0, this.blocksize), prething, i;
@@ -7922,7 +8080,8 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.onThingIconClick = function (title, event) {
-            var x = event.x || event.clientX || 0, y = event.y || event.clientY || 0, target = event.target.nodeName === "DIV" ? event.target : event.target.parentNode, scope = this;
+            var x = event.x || event.clientX || 0, y = event.y || event.clientY || 0, target = event.target.nodeName === "DIV"
+                ? event.target : event.target.parentNode, scope = this;
             this.cancelEvent(event);
             this.killCurrentPreThings();
             setTimeout(function () {
@@ -7999,7 +8158,7 @@ var LevelEditr;
                 map.name = name;
                 this.display.namer.value = name;
                 this.setTextareaValue(this.stringifySmart(map), true);
-                this.GameStarter.StatsHolder.setItem("world", name);
+                this.GameStarter.ItemsHolder.setItem("world", name);
             }
         };
         /**
@@ -8023,7 +8182,7 @@ var LevelEditr;
                 this.display.sections.MapSettings.Time.value = time.toString();
             }
             this.setTextareaValue(this.stringifySmart(map), true);
-            this.GameStarter.StatsHolder.setItem("time", time);
+            this.GameStarter.ItemsHolder.setItem("time", time);
             this.GameStarter.TimeHandler.cancelAllEvents();
         };
         /**
@@ -8110,7 +8269,8 @@ var LevelEditr;
             }
             location = this.getCurrentLocationObject(map);
             if (fromGui) {
-                this.display.sections.MapSettings.Area.value = location.area ? location.area.toString() : "0";
+                this.display.sections.MapSettings.Area.value = location.area
+                    ? location.area.toString() : "0";
             }
             else {
                 console.warn("This code is never reached, right?");
@@ -8284,7 +8444,8 @@ var LevelEditr;
         };
         LevelEditr.prototype.resetDisplayGui = function () {
             this.display.gui = this.GameStarter.createElement("div", {
-                "className": "EditorGui"
+                "className": "EditorGui",
+                "onclick": this.afterClick.bind(this)
             });
             this.display.container.appendChild(this.display.gui);
         };
@@ -8483,13 +8644,7 @@ var LevelEditr;
                                 "textContent": "Time"
                             }),
                             this.display.sections.MapSettings.Time = this.createSelect([
-                                "100",
-                                "200",
-                                "300",
-                                "400",
-                                "500",
-                                "1000",
-                                "Infinity"
+                                "100", "200", "300", "400", "500", "1000", "Infinity"
                             ], {
                                 "value": this.mapTimeDefault.toString(),
                                 "onchange": this.setMapTime.bind(this, true)
@@ -8525,26 +8680,17 @@ var LevelEditr;
                                 "textContent": "Setting"
                             }),
                             this.display.sections.MapSettings.Setting.Primary = this.createSelect([
-                                "Overworld",
-                                "Underworld",
-                                "Underwater",
-                                "Castle"
+                                "Overworld", "Underworld", "Underwater", "Castle"
                             ], {
                                 "onchange": this.setMapSetting.bind(this, true)
                             }),
                             this.display.sections.MapSettings.Setting.Secondary = this.createSelect([
-                                "",
-                                "Night",
-                                "Underwater",
-                                "Alt"
+                                "", "Night", "Underwater", "Alt"
                             ], {
                                 "onchange": this.setMapSetting.bind(this, true)
                             }),
                             this.display.sections.MapSettings.Setting.Tertiary = this.createSelect([
-                                "",
-                                "Night",
-                                "Underwater",
-                                "Alt"
+                                "", "Night", "Underwater", "Alt"
                             ], {
                                 "onchange": this.setMapSetting.bind(this, true)
                             })
@@ -8557,11 +8703,7 @@ var LevelEditr;
                                 "textContent": "Entrance"
                             }),
                             this.display.sections.MapSettings.Entry = this.createSelect([
-                                "Plain",
-                                "Normal",
-                                "Castle",
-                                "PipeVertical",
-                                "PipeHorizontal"
+                                "Plain", "Normal", "Castle", "PipeVertical", "PipeHorizontal"
                             ], {
                                 "onchange": this.setMapEntry.bind(this, true)
                             })
@@ -8874,6 +9016,7 @@ var LevelEditr;
         // mergin this into createVisualOption
         LevelEditr.prototype.createVisualOptionObject = function (optionRaw) {
             var option;
+            // If the option isn't already an Object, make it one
             switch (optionRaw.constructor) {
                 case Number:
                     option = {
@@ -8902,8 +9045,7 @@ var LevelEditr;
          */
         LevelEditr.prototype.createVisualOptionBoolean = function () {
             return this.createSelect([
-                "false",
-                "true"
+                "false", "true"
             ], {
                 "className": "VisualOptionValue",
                 "data:type": "Boolean",
@@ -8929,8 +9071,7 @@ var LevelEditr;
                     input.setAttribute("data:mod", modReal.toString());
                     if (option.Infinite) {
                         var valueOld = undefined, infinite = scope.createSelect([
-                            "Number",
-                            "Infinite"
+                            "Number", "Infinite"
                         ], {
                             "className": "VisualOptionInfiniter",
                             "onchange": function () {
@@ -9151,7 +9292,9 @@ var LevelEditr;
                     });
                 }
             }
-            this.GameStarter.StatsHolder.setItem("time", Infinity);
+            // Helps prevent triggers such as Bowser jumping
+            this.GameStarter.player.dead = true;
+            this.GameStarter.ItemsHolder.setItem("time", Infinity);
         };
         /**
          *
@@ -9176,7 +9319,9 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.getNormalizedY = function (raw) {
-            return this.GameStarter.MapScreener.floor - (raw / this.GameStarter.unitsize) + this.GameStarter.unitsize * 3; // Why +3?
+            return this.GameStarter.MapScreener.floor
+                - (raw / this.GameStarter.unitsize)
+                + this.GameStarter.unitsize * 3; // Why +3?
         };
         /**
          *
@@ -9575,11 +9720,114 @@ var LevelEditr;
         };
         return LevelEditr;
     })();
-    _LevelEditr.LevelEditr = LevelEditr;
+    LevelEditr_1.LevelEditr = LevelEditr;
 })(LevelEditr || (LevelEditr = {}));
-/// <reference path="StatsHoldr-0.2.1.ts" />
+var MathDecidr;
+(function (MathDecidr_1) {
+    "use strict";
+    var MathDecidr = (function () {
+        /**
+         * @param {IMathDecidrSettings} settings
+         */
+        function MathDecidr(settings) {
+            if (settings === void 0) { settings = {}; }
+            var i;
+            this.constants = settings.constants || {};
+            this.equations = {};
+            this.equationsRaw = settings.equations || {};
+            if (this.equationsRaw) {
+                for (i in this.equationsRaw) {
+                    if (this.equationsRaw.hasOwnProperty(i)) {
+                        this.addEquation(i, this.equationsRaw[i]);
+                    }
+                }
+            }
+        }
+        /* Simple gets
+        */
+        /**
+         * @return {Object} Useful constants the MathDecidr may use in equations.
+         */
+        MathDecidr.prototype.getConstants = function () {
+            return this.constants;
+        };
+        /**
+         * @param {String} name   The name of a constant to return.
+         * @return {Mixed} The value for the requested constant.
+         */
+        MathDecidr.prototype.getConstant = function (name) {
+            return this.constants[name];
+        };
+        /**
+         * @return {Object} Stored equations with the internal members bound as
+         *                  their arguments.
+         */
+        MathDecidr.prototype.getEquations = function () {
+            return this.equations;
+        };
+        /**
+         * @return {Object} The raw equations, unbound.
+         */
+        MathDecidr.prototype.getRawEquations = function () {
+            return this.equationsRaw;
+        };
+        /**
+         * @param {String} name
+         * @return {Function} The equation under the given name.
+         */
+        MathDecidr.prototype.getEquation = function (name) {
+            return this.equations[name];
+        };
+        /**
+         * @param {String} name
+         * @return {Function} The raw equation under the given name.
+         */
+        MathDecidr.prototype.getRawEquation = function (name) {
+            return this.equationsRaw[name];
+        };
+        /* Simple additions
+        */
+        /**
+         * Adds a constant of the given name and value.
+         *
+         * @param {String} name
+         * @param {Mixed} value
+         */
+        MathDecidr.prototype.addConstant = function (name, value) {
+            this.constants[name] = value;
+        };
+        /**
+         * Adds an equation Function under the given name.
+         *
+         * @param {String} name
+         * @param {Function} value
+         */
+        MathDecidr.prototype.addEquation = function (name, value) {
+            this.equationsRaw[name] = value;
+            this.equations[name] = value.bind(this, this.constants, this.equations);
+        };
+        /* Computations
+        */
+        /**
+         * Runs a stored equation with any number of arguments, returning the result.
+         *
+         * @param {String} name   The name of the equation to run.
+         * @param {Mixed} ...args   Any arguments to pass to the equation.
+         */
+        MathDecidr.prototype.compute = function (name) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            return this.equations[name].apply(this, Array.prototype.slice.call(arguments, 1));
+        };
+        return MathDecidr;
+    })();
+    MathDecidr_1.MathDecidr = MathDecidr;
+})(MathDecidr || (MathDecidr = {}));
+/// <reference path="ItemsHoldr-0.2.1.ts" />
 var ModAttachr;
-(function (_ModAttachr) {
+(function (ModAttachr_1) {
     "use strict";
     /**
      * An addon for for extensible modding functionality. "Mods" register triggers
@@ -9596,13 +9844,13 @@ var ModAttachr;
                 return;
             }
             this.scopeDefault = settings.scopeDefault;
-            // If a StatsHoldr is provided, use it
-            if (settings.StatsHoldr) {
-                this.StatsHolder = settings.StatsHoldr;
+            // If a ItemsHoldr is provided, use it
+            if (settings.ItemsHoldr) {
+                this.ItemsHolder = settings.ItemsHoldr;
             }
             else if (settings.storeLocally) {
                 // If one isn't provided by storeLocally is still true, make one
-                this.StatsHolder = new StatsHoldr.StatsHoldr();
+                this.ItemsHolder = new ItemsHoldr.ItemsHoldr();
             }
             if (settings.mods) {
                 this.addMods(settings.mods);
@@ -9636,11 +9884,11 @@ var ModAttachr;
             return this.events[name];
         };
         /**
-         * @return {StatsHoldr} The StatsHoldr if storeLocally is true, or undefined
+         * @return {ItemsHoldr} The ItemsHoldr if storeLocally is true, or undefined
          *                      otherwise.
          */
-        ModAttachr.prototype.getStatsHolder = function () {
-            return this.StatsHolder;
+        ModAttachr.prototype.getItemsHolder = function () {
+            return this.ItemsHolder;
         };
         /* Alterations
         */
@@ -9672,14 +9920,14 @@ var ModAttachr;
             if (mod.enabled && mod.events.hasOwnProperty("onModEnable")) {
                 this.fireModEvent("onModEnable", mod.name, arguments);
             }
-            // If there's a StatsHoldr, record the mod in it
-            if (this.StatsHolder) {
-                this.StatsHolder.addItem(mod.name, {
+            // If there's a ItemsHoldr, record the mod in it
+            if (this.ItemsHolder) {
+                this.ItemsHolder.addItem(mod.name, {
                     "valueDefault": 0,
                     "storeLocally": true
                 });
                 // If there was already a (true) value, immediately enable the mod
-                if (this.StatsHolder.getItem(mod.name)) {
+                if (this.ItemsHolder.getItem(mod.name)) {
                     this.enableMod(mod.name);
                 }
             }
@@ -9708,8 +9956,8 @@ var ModAttachr;
             mod.enabled = true;
             args = Array.prototype.slice.call(arguments);
             args[0] = mod;
-            if (this.StatsHolder) {
-                this.StatsHolder.setItem(name, true);
+            if (this.ItemsHolder) {
+                this.ItemsHolder.setItem(name, true);
             }
             if (mod.events.hasOwnProperty("onModEnable")) {
                 return this.fireModEvent("onModEnable", mod.name, arguments);
@@ -9742,8 +9990,8 @@ var ModAttachr;
             this.mods[name].enabled = false;
             args = Array.prototype.slice.call(arguments);
             args[0] = mod;
-            if (this.StatsHolder) {
-                this.StatsHolder.setItem(name, false);
+            if (this.ItemsHolder) {
+                this.ItemsHolder.setItem(name, false);
             }
             if (mod.events.hasOwnProperty("onModDisable")) {
                 return this.fireModEvent("onModDisable", mod.name, args);
@@ -9843,10 +10091,10 @@ var ModAttachr;
         };
         return ModAttachr;
     })();
-    _ModAttachr.ModAttachr = ModAttachr;
+    ModAttachr_1.ModAttachr = ModAttachr;
 })(ModAttachr || (ModAttachr = {}));
 var NumberMakr;
-(function (_NumberMakr) {
+(function (NumberMakr_1) {
     "use strict";
     /**
      * An updated version of the traditional MersenneTwister JavaScript class by
@@ -9998,7 +10246,8 @@ var NumberMakr;
             this.stateVector[0] = seedNew >>> 0;
             for (this.stateIndex = 1; this.stateIndex < this.stateLength; this.stateIndex += 1) {
                 s = this.stateVector[this.stateIndex - 1] ^ (this.stateVector[this.stateIndex - 1] >>> 30);
-                this.stateVector[this.stateIndex] = ((((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253) + this.stateIndex) >>> 0;
+                this.stateVector[this.stateIndex] = ((((((s & 0xffff0000) >>> 16) * 1812433253) << 16)
+                    + (s & 0x0000ffff) * 1812433253) + this.stateIndex) >>> 0;
             }
             this.seed = seedNew;
         };
@@ -10020,7 +10269,8 @@ var NumberMakr;
             k = this.stateLength > keyLength ? this.stateLength : keyLength;
             while (k > 0) {
                 s = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
-                this.stateVector[i] = (this.stateVector[i] ^ (((((s & 0xffff0000) >>> 16) * 1664525) << 16) + ((s & 0x0000ffff) * 1664525)) + keyInitial[j] + j) >>> 0;
+                this.stateVector[i] = (this.stateVector[i] ^ (((((s & 0xffff0000) >>> 16) * 1664525) << 16)
+                    + ((s & 0x0000ffff) * 1664525)) + keyInitial[j] + j) >>> 0;
                 i += 1;
                 j += 1;
                 if (i >= this.stateLength) {
@@ -10033,7 +10283,8 @@ var NumberMakr;
             }
             for (k = this.stateLength - 1; k; k -= 1) {
                 s = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
-                this.stateVector[i] = ((this.stateVector[i] ^ (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) + (s & 0x0000ffff) * 1566083941)) - i) >>> 0;
+                this.stateVector[i] = ((this.stateVector[i] ^ (((((s & 0xffff0000) >>> 16) * 1566083941) << 16)
+                    + (s & 0x0000ffff) * 1566083941)) - i) >>> 0;
                 i += 1;
                 if (i >= this.stateLength) {
                     this.stateVector[0] = this.stateVector[this.stateLength - 1];
@@ -10055,15 +10306,23 @@ var NumberMakr;
                     this.resetFromSeed(5489);
                 }
                 for (kk = 0; kk < this.stateLength - this.statePeriod; kk += 1) {
-                    y = (this.stateVector[kk] & this.maskUpper) | (this.stateVector[kk + 1] & this.maskLower);
-                    this.stateVector[kk] = this.stateVector[kk + this.statePeriod] ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
+                    y = (this.stateVector[kk] & this.maskUpper)
+                        | (this.stateVector[kk + 1] & this.maskLower);
+                    this.stateVector[kk] = this.stateVector[kk + this.statePeriod]
+                        ^ (y >>> 1)
+                        ^ this.matrixAMagic[y & 0x1];
                 }
                 for (; kk < this.stateLength - 1; kk += 1) {
-                    y = (this.stateVector[kk] & this.maskUpper) | (this.stateVector[kk + 1] & this.maskLower);
-                    this.stateVector[kk] = this.stateVector[kk + (this.statePeriod - this.stateLength)] ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
+                    y = (this.stateVector[kk] & this.maskUpper)
+                        | (this.stateVector[kk + 1] & this.maskLower);
+                    this.stateVector[kk] = this.stateVector[kk + (this.statePeriod - this.stateLength)]
+                        ^ (y >>> 1)
+                        ^ this.matrixAMagic[y & 0x1];
                 }
-                y = (this.stateVector[this.stateLength - 1] & this.maskUpper) | (this.stateVector[0] & this.maskLower);
-                this.stateVector[this.stateLength - 1] = this.stateVector[this.statePeriod - 1] ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
+                y = (this.stateVector[this.stateLength - 1] & this.maskUpper)
+                    | (this.stateVector[0] & this.maskLower);
+                this.stateVector[this.stateLength - 1] = this.stateVector[this.statePeriod - 1]
+                    ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
                 this.stateIndex = 0;
             }
             y = this.stateVector[this.stateIndex];
@@ -10186,11 +10445,155 @@ var NumberMakr;
         };
         return NumberMakr;
     })();
-    _NumberMakr.NumberMakr = NumberMakr;
+    NumberMakr_1.NumberMakr = NumberMakr;
 })(NumberMakr || (NumberMakr = {}));
+var ScenePlayr;
+(function (ScenePlayr_1) {
+    "use strict";
+    var ScenePlayr = (function () {
+        /**
+         * @param {IScenePlayrSettings} [settings]
+         */
+        function ScenePlayr(settings) {
+            if (settings === void 0) { settings = {}; }
+            this.cutscenes = settings.cutscenes || {};
+            this.cutsceneArguments = settings.cutsceneArguments || [];
+        }
+        /* Simple gets
+        */
+        /**
+         * @return {Object} The complete listing of cutscenes that may be played.
+         */
+        ScenePlayr.prototype.getCutscenes = function () {
+            return this.cutscenes;
+        };
+        /**
+         * @return {Object} The currently playing cutscene.
+         */
+        ScenePlayr.prototype.getCutscene = function () {
+            return this.cutscene;
+        };
+        /**
+         * @return {Object} The cutscene referred to by the given name.
+         */
+        ScenePlayr.prototype.getOtherCutscene = function (name) {
+            return this.cutscenes[name];
+        };
+        /**
+         * @return {Function} The currently playing routine.
+         */
+        ScenePlayr.prototype.getRoutine = function () {
+            return this.routine;
+        };
+        /**
+         * @return {Function} The routine within the current cutscene referred to
+         *                    by the given name.
+         */
+        ScenePlayr.prototype.getOtherRoutine = function (name) {
+            return this.cutscene.routines[name];
+        };
+        /**
+         * @return {String} The name of the currently playing cutscene.
+         */
+        ScenePlayr.prototype.getCutsceneName = function () {
+            return this.cutsceneName;
+        };
+        /**
+         * @return {Object} The settings used by the current cutscene.
+         */
+        ScenePlayr.prototype.getCutsceneSettings = function () {
+            return this.cutsceneSettings;
+        };
+        /* Playback
+        */
+        /**
+         * Starts the cutscene of the given name, keeping the settings Object (if
+         * given one). The cutsceneArguments unshift the settings, and if the
+         * cutscene specifies a firstRoutine, it's started.
+         *
+         * @param {String} name   The name of the cutscene to play.
+         * @param {Object} [settings]   Additional settings to be kept as a
+         *                              persistent Object throughout the cutscene.
+         */
+        ScenePlayr.prototype.startCutscene = function (name, settings) {
+            if (settings === void 0) { settings = {}; }
+            if (!name) {
+                throw new Error("No name given to ScenePlayr.playScene.");
+            }
+            if (this.cutsceneName) {
+                this.stopCutscene();
+            }
+            this.cutscene = this.cutscenes[name];
+            this.cutsceneName = name;
+            this.cutsceneSettings = settings || {};
+            this.cutsceneSettings.cutscene = this.cutscene;
+            this.cutsceneSettings.cutsceneName = name;
+            this.cutsceneArguments.unshift(this.cutsceneSettings);
+            if (this.cutscene.firstRoutine) {
+                this.playRoutine(this.cutscene.firstRoutine);
+            }
+        };
+        /**
+         * Returns this.startCutscene bound to the given name and settings.
+         *
+         * @param {String} name   The name of the cutscene to play.
+         * @param {Object} [settings]   Additional settings to be kept as a
+         *                              persistent Object throughout the cutscene.
+         */
+        ScenePlayr.prototype.bindCutscene = function (name, settings) {
+            return this.startCutscene.bind(self, name, settings);
+        };
+        /**
+         * Stops the currently playing cutscene, clearing the internal data.
+         */
+        ScenePlayr.prototype.stopCutscene = function () {
+            this.cutscene = undefined;
+            this.cutsceneName = undefined;
+            this.cutsceneSettings = undefined;
+            this.routine = undefined;
+            this.cutsceneArguments.shift();
+        };
+        /**
+         * Plays a particular routine within the current cutscene, passing
+         * the given args as cutsceneSettings.routineArguments.
+         *
+         * @param {String} name   The name of the routine to play.
+         * @param {Array} ...args   Any additional arguments to pass to the routine.
+         */
+        ScenePlayr.prototype.playRoutine = function (name) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            if (!this.cutscene) {
+                throw new Error("No cutscene is currently playing.");
+            }
+            if (!this.cutscene.routines[name]) {
+                throw new Error("The " + this.cutsceneName + " cutscene does not contain a " + name + " routine.");
+            }
+            this.routine = this.cutscene.routines[name];
+            this.cutsceneSettings.routine = this.routine;
+            this.cutsceneSettings.routineName = name;
+            this.cutsceneSettings.routineArguments = args;
+            this.routine.apply(this, this.cutsceneArguments);
+        };
+        /**
+         *
+         * Returns this.startCutscene bound to the given name and arguments.
+         *
+         * @param {String} name   The name of the cutscene to play.
+         * @param {Object} [settings]   Any additional arguments to pass to the routine.
+         */
+        ScenePlayr.prototype.bindRoutine = function (name, args) {
+            return this.playRoutine.bind(this, name, args);
+        };
+        return ScenePlayr;
+    })();
+    ScenePlayr_1.ScenePlayr = ScenePlayr;
+})(ScenePlayr || (ScenePlayr = {}));
 /// <reference path="QuadsKeepr-0.2.1.ts" />
 var ThingHittr;
-(function (_ThingHittr) {
+(function (ThingHittr_1) {
     "use strict";
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
@@ -10283,6 +10686,7 @@ var ThingHittr;
                 if (typeof this.globalChecks[this.typeName] !== "undefined" && !this.globalChecks[this.typeName](thing)) {
                     return;
                 }
+                // For each quadrant this is in, look at that quadrant's groups
                 for (i = 0; i < thing[this.keyNumQuads]; i += 1) {
                     for (j = 0; j < this.groupNames.length; j += 1) {
                         hitCheck = this.hitChecks[typeName][this.groupNames[j]];
@@ -10291,6 +10695,7 @@ var ThingHittr;
                             continue;
                         }
                         others = thing[this.keyQuadrants][i].things[this.groupNames[j]];
+                        // For each other Thing in this group that should be checked...
                         for (k = 0; k < others.length; k += 1) {
                             other = others[k];
                             // If they are the same, breaking prevents double hits
@@ -10298,7 +10703,8 @@ var ThingHittr;
                                 break;
                             }
                             // Do nothing if these two shouldn't be colliding
-                            if (typeof this.globalChecks[other[this.keyGroupName]] !== "undefined" && !this.globalChecks[other[this.keyGroupName]](other)) {
+                            if (typeof this.globalChecks[other[this.keyGroupName]] !== "undefined"
+                                && !this.globalChecks[other[this.keyGroupName]](other)) {
                                 continue;
                             }
                             // If they do hit, call the corresponding hitFunction
@@ -10361,10 +10767,1687 @@ var ThingHittr;
         };
         return ThingHittr;
     })();
-    _ThingHittr.ThingHittr = ThingHittr;
+    ThingHittr_1.ThingHittr = ThingHittr;
 })(ThingHittr || (ThingHittr = {}));
+/// <reference path="InputWritr-0.2.0.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var TouchPassr;
+(function (TouchPassr_1) {
+    "use strict";
+    /**
+     * Abstract class for on-screen controls. Element creation for .element
+     * and .elementInner within the constrained position is provided.
+     */
+    var Control = (function () {
+        /**
+         * Resets the control by setting member variables and calling resetElement.
+         *
+         * @param {InputWritr} InputWriter
+         * @param {Object} schema
+         */
+        function Control(InputWriter, schema, styles) {
+            this.InputWriter = InputWriter;
+            this.schema = schema;
+            this.resetElement(styles);
+        }
+        /**
+         * @return {HTMLElement} The outer container element.
+         */
+        Control.prototype.getElement = function () {
+            return this.element;
+        };
+        /**
+         * @return {HTMLElement} The inner container element.
+         */
+        Control.prototype.getElementInner = function () {
+            return this.elementInner;
+        };
+        /**
+         * Creates and returns an HTMLElement of the specified type. Any additional
+         * settings Objects may be given to be proliferated onto the Element via
+         * proliferateElement.
+         *
+         * @param {String} type   The tag of the Element to be created.
+         * @param {Object} [settings]   Additional settings for the Element, such as
+         *                              className or style.
+         * @return {HTMLElement}
+         */
+        Control.prototype.createElement = function (tag) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            var element = document.createElement(tag || "div"), i;
+            // For each provided object, add those settings to the element
+            for (i = 1; i < arguments.length; i += 1) {
+                this.proliferateElement(element, arguments[i]);
+            }
+            return element;
+        };
+        /**
+         * Identical to proliferate, but tailored for HTML elements because many
+         * element attributes don't play nicely with JavaScript Array standards.
+         * Looking at you, HTMLCollection!
+         *
+         * @param {HTMLElement} recipient
+         * @param {Any} donor
+         * @param {Boolean} [noOverride]
+         * @return {HTMLElement}
+         */
+        Control.prototype.proliferateElement = function (recipient, donor, noOverride) {
+            if (noOverride === void 0) { noOverride = false; }
+            var setting, i, j;
+            // For each attribute of the donor:
+            for (i in donor) {
+                if (donor.hasOwnProperty(i)) {
+                    // If noOverride, don't override already existing properties
+                    if (noOverride && recipient.hasOwnProperty(i)) {
+                        continue;
+                    }
+                    setting = donor[i];
+                    // Special cases for HTML elements
+                    switch (i) {
+                        // Children: just append all of them directly
+                        case "children":
+                            if (typeof (setting) !== "undefined") {
+                                for (j = 0; j < setting.length; j += 1) {
+                                    recipient.appendChild(setting[j]);
+                                }
+                            }
+                            break;
+                        // Style: proliferate (instead of making a new Object)
+                        case "style":
+                            this.proliferateElement(recipient[i], setting);
+                            break;
+                        // By default, use the normal proliferate logic
+                        default:
+                            // If it's null, don't do anything (like .textContent)
+                            if (setting === null) {
+                                recipient[i] = null;
+                            }
+                            else if (typeof setting === "object") {
+                                // If it's an object, recurse on a new version of it
+                                if (!recipient.hasOwnProperty(i)) {
+                                    recipient[i] = new setting.constructor();
+                                }
+                                this.proliferateElement(recipient[i], setting, noOverride);
+                            }
+                            else {
+                                // Regular primitives are easy to copy otherwise
+                                recipient[i] = setting;
+                            }
+                            break;
+                    }
+                }
+            }
+            return recipient;
+        };
+        /**
+         * Resets the container elements. In any inherited resetElement, this should
+         * still be called, as it implements the schema's position.
+         *
+         * @param {Object} styles   Container styles for the contained elements.
+         */
+        Control.prototype.resetElement = function (styles, customType) {
+            var position = this.schema.position, offset = position.offset;
+            this.element = this.createElement("div", {
+                "className": "control",
+                "style": {
+                    "position": "absolute",
+                    "width": 0,
+                    "height": 0,
+                    "boxSizing": "border-box",
+                    "opacity": ".84"
+                }
+            });
+            this.elementInner = this.createElement("div", {
+                "className": "control-inner",
+                "textContent": this.schema.label,
+                "style": {
+                    "position": "absolute",
+                    "boxSizing": "border-box",
+                    "textAlign": "center"
+                }
+            });
+            this.element.appendChild(this.elementInner);
+            if (position.horizontal === "left") {
+                this.element.style.left = "0";
+            }
+            else if (position.horizontal === "right") {
+                this.element.style.right = "0";
+            }
+            else if (position.horizontal === "center") {
+                this.element.style.left = "50%";
+            }
+            if (position.vertical === "top") {
+                this.element.style.top = "0";
+            }
+            else if (position.vertical === "bottom") {
+                this.element.style.bottom = "0";
+            }
+            else if (position.vertical === "center") {
+                this.element.style.top = "50%";
+            }
+            this.passElementStyles(styles.global);
+            this.passElementStyles(styles[customType]);
+            this.passElementStyles(this.schema.styles);
+            if (offset.left) {
+                this.elementInner.style.marginLeft = this.createPixelMeasurement(offset.left);
+            }
+            if (offset.top) {
+                this.elementInner.style.marginTop = this.createPixelMeasurement(offset.top);
+            }
+            // elementInner's center-based positioning must wait until its total width is done setting
+            setTimeout(function () {
+                if (position.horizontal === "center") {
+                    this.elementInner.style.left = Math.round(this.elementInner.offsetWidth / -2) + "px";
+                }
+                if (position.vertical === "center") {
+                    this.elementInner.style.top = Math.round(this.elementInner.offsetHeight / -2) + "px";
+                }
+            }.bind(this));
+        };
+        /**
+         * Converts a String or Number into a CSS-ready String measurement.
+         *
+         * @param {Mixed} raw   A raw measurement, such as "7" or "7px" or "7em".
+         * @return {String} The raw measurement as a CSS measurement.
+         */
+        Control.prototype.createPixelMeasurement = function (raw) {
+            if (!raw) {
+                return "0";
+            }
+            if (typeof raw === "number" || raw.constructor === Number) {
+                return raw + "px";
+            }
+            return raw;
+        };
+        /**
+         * Passes a style schema to .element and .elementInner.
+         *
+         * @param {Object} styles   A container for styles to apply.
+         */
+        Control.prototype.passElementStyles = function (styles) {
+            if (!styles) {
+                return;
+            }
+            if (styles.element) {
+                this.proliferateElement(this.element, styles.element);
+            }
+            if (styles.elementInner) {
+                this.proliferateElement(this.elementInner, styles.elementInner);
+            }
+        };
+        /**
+         * Sets the rotation of an HTML element via CSS.
+         *
+         * @param {HTMLElement} element
+         * @param {Number} rotation
+         */
+        Control.prototype.setRotation = function (element, rotation) {
+            element.style.transform = "rotate(" + rotation + "deg)";
+        };
+        /**
+         * Finds the position offset of an element relative to the page, factoring in
+         * its parent elements' offsets recursively.
+         *
+         * @param {HTMLElement} element
+         * @return {Number[]} The left and top offset of the element, in px.
+         */
+        Control.prototype.getOffsets = function (element) {
+            var output;
+            if (element.offsetParent && element !== element.offsetParent) {
+                output = this.getOffsets(element.offsetParent);
+                output[0] += element.offsetLeft;
+                output[1] += element.offsetTop;
+            }
+            else {
+                output = [element.offsetLeft, element.offsetTop];
+            }
+            return output;
+        };
+        return Control;
+    })();
+    TouchPassr_1.Control = Control;
+    /**
+     * Simple button control. It activates its triggers when the users presses
+     * it or releases it, and contains a simple label.
+     */
+    var ButtonControl = (function (_super) {
+        __extends(ButtonControl, _super);
+        function ButtonControl() {
+            _super.apply(this, arguments);
+        }
+        /**
+         * Resets the elements by adding listeners for mouse and touch
+         * activation and deactivation events.
+         *
+         * @param {Object} styles   Container styles for the contained elements.
+         */
+        ButtonControl.prototype.resetElement = function (styles) {
+            var onActivated = this.onEvent.bind(this, "activated"), onDeactivated = this.onEvent.bind(this, "deactivated");
+            _super.prototype.resetElement.call(this, styles, "Button");
+            this.element.addEventListener("mousedown", onActivated);
+            this.element.addEventListener("touchstart", onActivated);
+            this.element.addEventListener("mouseup", onDeactivated);
+            this.element.addEventListener("touchend", onDeactivated);
+        };
+        /**
+         * Reation callback for a triggered event.
+         *
+         * @param {String} which   The pipe being activated, such as
+         *                         "activated" or "deactivated".
+         * @param {Event} event
+         */
+        ButtonControl.prototype.onEvent = function (which, event) {
+            var events = this.schema.pipes[which], i, j;
+            if (!events) {
+                return;
+            }
+            for (i in events) {
+                if (!events.hasOwnProperty(i)) {
+                    continue;
+                }
+                for (j = 0; j < events[i].length; j += 1) {
+                    this.InputWriter.callEvent(i, events[i][j], event);
+                }
+            }
+        };
+        return ButtonControl;
+    })(Control);
+    TouchPassr_1.ButtonControl = ButtonControl;
+    /**
+     * Joystick control. An inner circle can be dragged to one of a number
+     * of directions to trigger pipes on and off.
+     */
+    var JoystickControl = (function (_super) {
+        __extends(JoystickControl, _super);
+        function JoystickControl() {
+            _super.apply(this, arguments);
+        }
+        /**
+         * Resets the element by creating a tick for each direction, along with
+         * the multiple circular elements with their triggers.
+         *
+         * @param {Object} styles   Container styles for the contained elements.
+         */
+        JoystickControl.prototype.resetElement = function (styles) {
+            _super.prototype.resetElement.call(this, styles, "Joystick");
+            var directions = this.schema.directions, element, degrees, sin, cos, dx, dy, i;
+            this.proliferateElement(this.elementInner, {
+                "style": {
+                    "border-radius": "100%"
+                }
+            });
+            // The visible circle is what is actually visible to the user
+            this.elementCircle = this.createElement("div", {
+                "className": "control-inner control-joystick-circle",
+                "style": {
+                    "position": "absolute",
+                    "background": "red",
+                    "borderRadius": "100%"
+                }
+            });
+            this.proliferateElement(this.elementCircle, styles.Joystick.circle);
+            // Each direction creates a "tick" element, like on a clock
+            for (i = 0; i < directions.length; i += 1) {
+                degrees = directions[i].degrees;
+                // sin and cos are an amount / 1 the tick is offset from the center
+                sin = Math.sin(degrees * Math.PI / 180);
+                cos = Math.cos(degrees * Math.PI / 180);
+                // dx and dy are measured as percent from the center, based on sin & cos
+                dx = cos * 50 + 50;
+                dy = sin * 50 + 50;
+                element = this.createElement("div", {
+                    "className": "control-joystick-tick",
+                    "style": {
+                        "position": "absolute",
+                        "left": dx + "%",
+                        "top": dy + "%",
+                        "marginLeft": (-cos * 5 - 5) + "px",
+                        "marginTop": (-sin * 2 - 1) + "px"
+                    }
+                });
+                this.proliferateElement(element, styles.Joystick.tick);
+                this.setRotation(element, degrees);
+                this.elementCircle.appendChild(element);
+            }
+            // In addition to the ticks, a drag element shows current direction
+            this.elementDragLine = this.createElement("div", {
+                "className": "control-joystick-drag-line",
+                "style": {
+                    "position": "absolute",
+                    "opacity": "0",
+                    "top": ".77cm",
+                    "left": ".77cm"
+                }
+            });
+            this.proliferateElement(this.elementDragLine, styles.Joystick.dragLine);
+            this.elementCircle.appendChild(this.elementDragLine);
+            // A shadow-like circle supports the drag effect
+            this.elementDragShadow = this.createElement("div", {
+                "className": "control-joystick-drag-shadow",
+                "style": {
+                    "position": "absolute",
+                    "opacity": "1",
+                    "top": "14%",
+                    "right": "14%",
+                    "bottom": "14%",
+                    "left": "14%",
+                    "marginLeft": "0",
+                    "marginTop": "0",
+                    "borderRadius": "100%"
+                }
+            });
+            this.proliferateElement(this.elementDragShadow, styles.Joystick.dragShadow);
+            this.elementCircle.appendChild(this.elementDragShadow);
+            this.elementInner.appendChild(this.elementCircle);
+            this.elementInner.addEventListener("click", this.triggerDragger.bind(this));
+            this.elementInner.addEventListener("touchmove", this.triggerDragger.bind(this));
+            this.elementInner.addEventListener("mousemove", this.triggerDragger.bind(this));
+            this.elementInner.addEventListener("mouseover", this.positionDraggerEnable.bind(this));
+            this.elementInner.addEventListener("touchstart", this.positionDraggerEnable.bind(this));
+            this.elementInner.addEventListener("mouseout", this.positionDraggerDisable.bind(this));
+            this.elementInner.addEventListener("touchend", this.positionDraggerDisable.bind(this));
+        };
+        /**
+         * Enables dragging, showing the elementDragLine.
+         */
+        JoystickControl.prototype.positionDraggerEnable = function () {
+            this.dragEnabled = true;
+            this.elementDragLine.style.opacity = "1";
+        };
+        /**
+         * Disables dragging, hiding the drag line and re-centering the
+         * inner circle shadow.
+         */
+        JoystickControl.prototype.positionDraggerDisable = function () {
+            this.dragEnabled = false;
+            this.elementDragLine.style.opacity = "0";
+            this.elementDragShadow.style.top = "14%";
+            this.elementDragShadow.style.right = "14%";
+            this.elementDragShadow.style.bottom = "14%";
+            this.elementDragShadow.style.left = "14%";
+            if (this.currentDirection) {
+                if (this.currentDirection.pipes && this.currentDirection.pipes.deactivated) {
+                    this.onEvent(this.currentDirection.pipes.deactivated, event);
+                }
+                this.currentDirection = undefined;
+            }
+        };
+        /**
+         * Triggers a movement point for the joystick, and snaps the stick to
+         * the nearest direction (based on the angle from the center to the point).
+         *
+         * @param {Event} event
+         */
+        JoystickControl.prototype.triggerDragger = function (event) {
+            event.preventDefault();
+            if (!this.dragEnabled) {
+                return;
+            }
+            var coordinates = this.getEventCoordinates(event), x = coordinates[0], y = coordinates[1], offsets = this.getOffsets(this.elementInner), midX = offsets[0] + this.elementInner.offsetWidth / 2, midY = offsets[1] + this.elementInner.offsetHeight / 2, dxRaw = (x - midX) | 0, dyRaw = (midY - y) | 0, thetaRaw = this.getThetaRaw(dxRaw, dyRaw), directionNumber = this.findClosestDirection(thetaRaw), direction = this.schema.directions[directionNumber], theta = direction.degrees, components = this.getThetaComponents(theta), dx = components[0], dy = -components[1];
+            this.proliferateElement(this.elementDragLine, {
+                "style": {
+                    "marginLeft": ((dx * 77) | 0) + "%",
+                    "marginTop": ((dy * 77) | 0) + "%"
+                }
+            });
+            this.proliferateElement(this.elementDragShadow, {
+                "style": {
+                    "top": ((14 + dy * 10) | 0) + "%",
+                    "right": ((14 - dx * 10) | 0) + "%",
+                    "bottom": ((14 - dy * 10) | 0) + "%",
+                    "left": ((14 + dx * 10) | 0) + "%"
+                }
+            });
+            // Ensure theta is above 0, and offset it by 90 for visual rotation
+            theta = (theta + 450) % 360;
+            this.setRotation(this.elementDragLine, theta);
+            this.positionDraggerEnable();
+            this.setCurrentDirection(direction, event);
+        };
+        /**
+         * Finds the raw coordinates of an event, whether it's a drag (touch)
+         * or mouse event.
+         *
+         * @return {Number[]} The x- and y- coordinates of the event.
+         */
+        JoystickControl.prototype.getEventCoordinates = function (event) {
+            if (event.type === "touchmove") {
+                // TypeScript 1.5 doesn't seem to have TouchEvent yet.
+                var touch = event.touches[0];
+                return [touch.pageX, touch.pageY];
+            }
+            return [event.x, event.y];
+        };
+        /**
+         * Finds the angle from a joystick center to an x and y. This assumes
+         * straight up is 0, to the right is 90, down is 180, and left is 270.
+         *
+         * @return {Number} The degrees to the given point.
+         */
+        JoystickControl.prototype.getThetaRaw = function (dxRaw, dyRaw) {
+            // Based on the quadrant, theta changes...
+            if (dxRaw > 0) {
+                if (dyRaw > 0) {
+                    // Quadrant I
+                    return Math.atan(dxRaw / dyRaw) * 180 / Math.PI;
+                }
+                else {
+                    // Quadrant II
+                    return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 90;
+                }
+            }
+            else {
+                if (dyRaw < 0) {
+                    // Quadrant III
+                    return Math.atan(dxRaw / dyRaw) * 180 / Math.PI + 180;
+                }
+                else {
+                    // Quadrant IV
+                    return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 270;
+                }
+            }
+        };
+        /**
+         * Converts an angle to its relative dx and dy coordinates.
+         *
+         * @param {Number} thetaRaw
+         * @return {Number[]} The x- and y- parts of an angle.
+         */
+        JoystickControl.prototype.getThetaComponents = function (thetaRaw) {
+            var theta = thetaRaw * Math.PI / 180;
+            return [Math.sin(theta), Math.cos(theta)];
+        };
+        /**
+         * Finds the index of the closest direction to an angle.
+         *
+         * @param {Number} degrees
+         * @return {Number}
+         */
+        JoystickControl.prototype.findClosestDirection = function (degrees) {
+            var directions = this.schema.directions, difference = Math.abs(directions[0].degrees - degrees), smallestDegrees = directions[0].degrees, smallestDegreesRecord = 0, record = 0, differenceTest, i;
+            // Find the direction with the smallest difference in degrees
+            for (i = 1; i < directions.length; i += 1) {
+                differenceTest = Math.abs(directions[i].degrees - degrees);
+                if (differenceTest < difference) {
+                    difference = differenceTest;
+                    record = i;
+                }
+                if (directions[i].degrees < smallestDegrees) {
+                    smallestDegrees = directions[i].degrees;
+                    smallestDegreesRecord = i;
+                }
+            }
+            // 359 is closer to 360 than 0, so pretend the smallest is above 360
+            differenceTest = Math.abs(smallestDegrees + 360 - degrees);
+            if (differenceTest < difference) {
+                difference = differenceTest;
+                record = smallestDegreesRecord;
+            }
+            return record;
+        };
+        /**
+         * Sets the current direction of the joystick, calling the relevant
+         * InputWriter pipes if necessary.
+         *
+         * @param {Object} direction
+         * @param {Event} [event]
+         */
+        JoystickControl.prototype.setCurrentDirection = function (direction, event) {
+            if (this.currentDirection === direction) {
+                return;
+            }
+            if (this.currentDirection && this.currentDirection.pipes) {
+                if (this.currentDirection.pipes.deactivated) {
+                    this.onEvent(this.currentDirection.pipes.deactivated, event);
+                }
+            }
+            if (direction.pipes && direction.pipes.activated) {
+                this.onEvent(direction.pipes.activated, event);
+            }
+            this.currentDirection = direction;
+        };
+        /**
+         * Trigger for calling pipes when a new direction is set. All children
+         * of the pipe has each of its keys triggered.
+         *
+         * @param {Object} pipes
+         * @param {Event} [event]
+         */
+        JoystickControl.prototype.onEvent = function (pipes, event) {
+            var i, j;
+            for (i in pipes) {
+                if (!pipes.hasOwnProperty(i)) {
+                    continue;
+                }
+                for (j = 0; j < pipes[i].length; j += 1) {
+                    this.InputWriter.callEvent(i, pipes[i][j], event);
+                }
+            }
+        };
+        return JoystickControl;
+    })(Control);
+    TouchPassr_1.JoystickControl = JoystickControl;
+    /**
+     *
+     */
+    var TouchPassr = (function () {
+        /**
+         * @param {ITouchPassrSettings} settings
+         */
+        function TouchPassr(settings) {
+            this.InputWriter = settings.InputWriter;
+            this.styles = settings.styles || {};
+            this.resetContainer(settings.container);
+            this.controls = {};
+            if (settings.controls) {
+                this.addControls(settings.controls);
+            }
+            if (typeof settings.enabled === "undefined") {
+                this.enabled = true;
+            }
+            else {
+                this.enabled = settings.enabled;
+            }
+            this.enabled ? this.enable() : this.disable();
+        }
+        /* Simple gets
+        */
+        /**
+         * @return {InputWritr} The InputWritr for controls to pipe event triggers to.
+         */
+        TouchPassr.prototype.getInputWriter = function () {
+            return this.InputWriter;
+        };
+        /**
+         * @return {Boolean} Whether this is currently enabled and visually on the screen.
+         */
+        TouchPassr.prototype.getEnabled = function () {
+            return this.enabled;
+        };
+        /**
+         * @return {Object} The root container for styles to be added to control elements.
+         */
+        TouchPassr.prototype.getStyles = function () {
+            return this.styles;
+        };
+        /**
+         * @return {Object} The container for generated controls, keyed by their name.
+         */
+        TouchPassr.prototype.getControls = function () {
+            return this.controls;
+        };
+        /**
+         * @return {HTMLElement} The HTMLElement all controls are placed within.
+         */
+        TouchPassr.prototype.getContainer = function () {
+            return this.container;
+        };
+        /**
+         * @return {HTMLElement} The HTMLElement containing the controls container.
+         */
+        TouchPassr.prototype.getParentContainer = function () {
+            return this.parentContainer;
+        };
+        /* Core functionality
+        */
+        /**
+         * Enables the TouchPassr by showing the container.
+         */
+        TouchPassr.prototype.enable = function () {
+            this.enabled = true;
+            this.container.style.display = "block";
+        };
+        /**
+         * Disables the TouchPassr by hiding the container.
+         */
+        TouchPassr.prototype.disable = function () {
+            this.enabled = false;
+            this.container.style.display = "none";
+        };
+        /**
+         * Sets the parent container surrounding the controls container.
+         *
+         * @param {HTMLElement} parentElement
+         */
+        TouchPassr.prototype.setParentContainer = function (parentElement) {
+            this.parentContainer = parentElement;
+            this.parentContainer.appendChild(this.container);
+        };
+        /**
+         * Adds any number of controls to the internal listing and HTML container.
+         *
+         * @param {Object} schemas   Schemas for new controls to be made, keyed by name.
+         */
+        TouchPassr.prototype.addControls = function (schemas) {
+            var i;
+            for (i in schemas) {
+                if (schemas.hasOwnProperty(i)) {
+                    this.addControl(schemas[i]);
+                }
+            }
+        };
+        /**
+         * Adds a control to the internal listing and HTML container.
+         *
+         * @param {Object} schema   The schema for the new control to be made.
+         */
+        TouchPassr.prototype.addControl = function (schema) {
+            var control;
+            switch (schema.control) {
+                case "Button":
+                    control = new ButtonControl(this.InputWriter, schema, this.styles);
+                    break;
+                case "Joystick":
+                    control = new JoystickControl(this.InputWriter, schema, this.styles);
+                    break;
+                default:
+                    break;
+            }
+            this.controls[schema.name] = control;
+            this.container.appendChild(control.getElement());
+        };
+        /* HTML manipulations
+        */
+        /**
+         * Resets the base controls container. If a parent element is provided,
+         * the container is added to it.
+         *
+         * @param {HTMLElement} [parentContainer]   A container element, such as
+         *                                          from GameStartr.
+         */
+        TouchPassr.prototype.resetContainer = function (parentContainer) {
+            this.container = Control.prototype.createElement("div", {
+                "className": "touch-passer-container",
+                "style": {
+                    "position": "absolute",
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
+                }
+            });
+            if (parentContainer) {
+                this.setParentContainer(parentContainer);
+            }
+        };
+        return TouchPassr;
+    })();
+    TouchPassr_1.TouchPassr = TouchPassr;
+})(TouchPassr || (TouchPassr = {}));
+/// <reference path="GamesRunnr-0.2.0.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
+/// <reference path="InputWritr-0.2.0.ts" />
+/// <reference path="LevelEditr-0.2.0.ts" />
+var UserWrappr;
+(function (UserWrappr_1) {
+    "use strict";
+    /**
+     * A user interface manager made to work on top of GameStartr implementations
+     * and provide a configurable HTML display of options.
+     */
+    var UserWrappr = (function () {
+        /**
+         * @param {IUserWrapprSettings} settings
+         */
+        function UserWrappr(settings) {
+            /**
+             * The document element that will contain the game.
+             */
+            this.documentElement = document.documentElement;
+            /**
+             * A browser-dependent method for request to enter full screen mode.
+             */
+            this.requestFullScreen = (this.documentElement.requestFullScreen
+                || this.documentElement.webkitRequestFullScreen
+                || this.documentElement.mozRequestFullScreen
+                || this.documentElement.msRequestFullscreen
+                || function () {
+                    console.warn("Not able to request full screen...");
+                }).bind(this.documentElement);
+            /**
+             * A browser-dependent method for request to exit full screen mode.
+             */
+            this.cancelFullScreen = (this.documentElement.cancelFullScreen
+                || this.documentElement.webkitCancelFullScreen
+                || this.documentElement.mozCancelFullScreen
+                || this.documentElement.msCancelFullScreen
+                || function () {
+                    console.warn("Not able to cancel full screen...");
+                }).bind(document);
+            this.customs = settings.customs || {};
+            this.GameStartrConstructor = settings.GameStartrConstructor;
+            this.settings = settings;
+            this.helpSettings = this.settings.helpSettings;
+            this.globalName = settings.globalName;
+            this.importSizes(settings.sizes);
+            this.gameNameAlias = this.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
+            this.gameElementSelector = settings.gameElementSelector || "#game";
+            this.gameControlsSelector = settings.gameControlsSelector || "#controls";
+            this.log = settings.log || console.log.bind(console);
+            this.isFullScreen = false;
+            this.setCurrentSize(this.sizes[settings.sizeDefault]);
+            this.allPossibleKeys = settings.allPossibleKeys || [
+                "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+                "up", "right", "down", "left", "space", "shift", "ctrl"
+            ];
+            // Size information is also passed to modules via this.customs
+            this.GameStartrConstructor.prototype.proliferate(this.customs, this.currentSize, true);
+            this.resetGameStarter(settings, this.customs);
+        }
+        /**
+         * Resets the internal GameStarter by storing it under window, adding
+         * InputWritr pipes for input to the page, creating the HTML buttons,
+         * and setting additional CSS styles and page visiblity.
+         *
+         * @param {IUserWrapprSettings} settings
+         * @param {IGameStartrCustoms} customs
+         */
+        UserWrappr.prototype.resetGameStarter = function (settings, customs) {
+            if (customs === void 0) { customs = {}; }
+            this.loadGameStarter(this.fixCustoms(customs || {}));
+            window[settings.globalName || "GameStarter"] = this.GameStarter;
+            this.GameStarter.UserWrapper = this;
+            this.loadGenerators();
+            this.loadControls(settings.schemas);
+            if (settings.styleSheet) {
+                this.GameStarter.addPageStyles(settings.styleSheet);
+            }
+            this.resetPageVisibilityHandlers();
+            this.GameStarter.gameStart();
+        };
+        /* Simple gets
+        */
+        /**
+         * @return {IGameStartrConstructor} The GameStartr implementation this
+         *                                  is wrapping around.
+         */
+        UserWrappr.prototype.getGameStartrConstructor = function () {
+            return this.GameStartrConstructor;
+        };
+        /**
+         * @return {GameStartr} The GameStartr instance created by GameStartrConstructor
+         *                      and stored under window.
+         */
+        UserWrappr.prototype.getGameStarter = function () {
+            return this.GameStarter;
+        };
+        /**
+         * @return {ItemsHoldr} The ItemsHoldr used to store UI settings.
+         */
+        UserWrappr.prototype.getItemsHolder = function () {
+            return this.ItemsHolder;
+        };
+        /**
+         * @return {Object} The settings used to construct this UserWrappr.
+         */
+        UserWrappr.prototype.getSettings = function () {
+            return this.settings;
+        };
+        /**
+         * @return {Object} The customs used to construct the GameStartr.
+         */
+        UserWrappr.prototype.getCustoms = function () {
+            return this.customs;
+        };
+        /**
+         * @return {Object} The help settings from settings.helpSettings.
+         */
+        UserWrappr.prototype.getHelpSettings = function () {
+            return this.helpSettings;
+        };
+        /**
+         * @return {String} What the global object is called, such as "window".
+         */
+        UserWrappr.prototype.getGlobalName = function () {
+            return this.globalName;
+        };
+        /**
+         * @return {String} What to replace with the name of the game in help
+         *                  text settings.
+         */
+        UserWrappr.prototype.getGameNameAlias = function () {
+            return this.gameNameAlias;
+        };
+        /**
+         * @return {String} All the keys the user is allowed to pick from.
+         */
+        UserWrappr.prototype.getAllPossibleKeys = function () {
+            return this.allPossibleKeys;
+        };
+        /**
+         * @return {Object} The allowed sizes for the game.
+         */
+        UserWrappr.prototype.getSizes = function () {
+            return this.sizes;
+        };
+        /**
+         * @return {Object} The currently selected size for the game.
+         */
+        UserWrappr.prototype.getCurrentSize = function () {
+            return this.currentSize;
+        };
+        /**
+         * @return {Boolean} Whether the game is currently in full screen mode.
+         */
+        UserWrappr.prototype.getIsFullScreen = function () {
+            return this.isFullScreen;
+        };
+        /**
+         * @return {Boolean} Whether the page is currently known to be hidden.
+         */
+        UserWrappr.prototype.getIsPageHidden = function () {
+            return this.isPageHidden;
+        };
+        /**
+         * @return {Function} A utility Function to log messages, commonly console.log.
+         */
+        UserWrappr.prototype.getLog = function () {
+            return this.log;
+        };
+        /**
+         * @return {Object} Generators used to generate HTML controls for the user.
+         */
+        UserWrappr.prototype.getGenerators = function () {
+            return this.generators;
+        };
+        /**
+         * @return {HTMLHtmlElement} The document element that contains the game.
+         */
+        UserWrappr.prototype.getDocumentElement = function () {
+            return this.documentElement;
+        };
+        /**
+         * @return {Function} The method to request to enter full screen mode.
+         */
+        UserWrappr.prototype.getRequestFullScreen = function () {
+            return this.requestFullScreen;
+        };
+        /**
+         * @return {Function} The method to request to exit full screen mode.
+         */
+        UserWrappr.prototype.getCancelFullScreen = function () {
+            return this.cancelFullScreen;
+        };
+        /* Externally allowed sets
+        */
+        /**
+         * Sets the size of the GameStartr by resetting the game with the size
+         * information as part of its customs object. Full screen status is
+         * changed accordingly.
+         *
+         * @param {Mixed} The size to set, as a String to retrieve the size from
+         *                known info, or a container of settings.
+         */
+        UserWrappr.prototype.setCurrentSize = function (size) {
+            if (typeof size === "string" || size.constructor === String) {
+                if (!this.sizes.hasOwnProperty(size)) {
+                    throw new Error("Size " + size + " does not exist on the UserWrappr.");
+                }
+                size = this.sizes[size];
+            }
+            this.customs = this.fixCustoms(this.customs);
+            if (size.full) {
+                this.requestFullScreen();
+                this.isFullScreen = true;
+            }
+            else if (this.isFullScreen) {
+                this.cancelFullScreen();
+                this.isFullScreen = false;
+            }
+            this.currentSize = size;
+            if (this.GameStarter) {
+                this.GameStarter.container.parentNode.removeChild(this.GameStarter.container);
+                this.resetGameStarter(this.settings, this.customs);
+            }
+        };
+        /* Help dialog
+        */
+        /**
+         * Displays the root help menu dialog, which contains all the openings
+         * for each help settings opening.
+         */
+        UserWrappr.prototype.displayHelpMenu = function () {
+            this.helpSettings.openings.forEach(this.logHelpText.bind(this));
+        };
+        /**
+         * Displays the texts of each help settings options, all surrounded by
+         * instructions on how to focus on a group.
+         */
+        UserWrappr.prototype.displayHelpOptions = function () {
+            this.logHelpText("To focus on a group, enter `"
+                + this.globalName
+                + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
+            Object.keys(this.helpSettings.options).forEach(this.displayHelpGroupSummary.bind(this));
+            this.logHelpText("\nTo focus on a group, enter `"
+                + this.globalName
+                + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
+        };
+        /**
+         * Displays the summary for a help group of the given optionName.
+         *
+         * @param {String} optionName   The help group to display the summary of.
+         */
+        UserWrappr.prototype.displayHelpGroupSummary = function (optionName) {
+            var actions = this.helpSettings.options[optionName], action, maxTitleLength = 0, i;
+            this.log("\n" + optionName);
+            for (i = 0; i < actions.length; i += 1) {
+                maxTitleLength = Math.max(maxTitleLength, this.filterHelpText(actions[i].title).length);
+            }
+            for (i = 0; i < actions.length; i += 1) {
+                action = actions[i];
+                this.log(this.padTextRight(this.filterHelpText(action.title), maxTitleLength) + " ... " + action.description);
+            }
+        };
+        /**
+         * Displays the full information on a help group of the given optionName.
+         *
+         * @param {String} optionName   The help group to display the information of.
+         */
+        UserWrappr.prototype.displayHelpOption = function (optionName) {
+            var actions = this.helpSettings.options[optionName], action, example, maxExampleLength, i, j;
+            for (i = 0; i < actions.length; i += 1) {
+                action = actions[i];
+                maxExampleLength = 0;
+                this.logHelpText(action.title + " -- " + action.description);
+                if (action.usage) {
+                    this.logHelpText(action.usage);
+                }
+                if (action.examples) {
+                    for (j = 0; j < action.examples.length; j += 1) {
+                        example = action.examples[j];
+                        maxExampleLength = Math.max(maxExampleLength, this.filterHelpText("    " + example.code).length);
+                    }
+                    for (j = 0; j < action.examples.length; j += 1) {
+                        example = action.examples[j];
+                        this.logHelpText(this.padTextRight(this.filterHelpText("    " + example.code), maxExampleLength)
+                            + "  // " + example.comment);
+                    }
+                }
+                this.log("\n");
+            }
+        };
+        /**
+         * Logs a bit of help text, filtered by this.filterHelpText.
+         *
+         * @param {String} text   The text to be filtered and logged.
+         */
+        UserWrappr.prototype.logHelpText = function (text) {
+            this.log(this.filterHelpText(text));
+        };
+        /**
+         * @param {String} text
+         * @return {String} The text, with gamenameAlias replaced by globalName.
+         */
+        UserWrappr.prototype.filterHelpText = function (text) {
+            return text.replace(new RegExp(this.gameNameAlias, "g"), this.globalName);
+        };
+        /**
+         * Ensures a bit of text is of least a certain length.
+         *
+         * @param {String} text   The text to pad.
+         * @param {Number} length   How wide the text must be, at minimum.
+         * @return {String} The text with spaces padded to the right.
+         */
+        UserWrappr.prototype.padTextRight = function (text, length) {
+            var diff = 1 + length - text.length;
+            if (diff <= 0) {
+                return text;
+            }
+            return text + Array.call(Array, diff).join(" ");
+        };
+        /* Settings parsing
+        */
+        /**
+         * Sets the internal this.sizes as a copy of the given sizes, but with
+         * names as members of every size summary.
+         *
+         * @param {Object} sizes   The listing of preset sizes to go by.
+         */
+        UserWrappr.prototype.importSizes = function (sizes) {
+            var i;
+            this.sizes = this.GameStartrConstructor.prototype.proliferate({}, sizes);
+            for (i in this.sizes) {
+                if (this.sizes.hasOwnProperty(i)) {
+                    this.sizes[i].name = this.sizes[i].name || i;
+                }
+            }
+        };
+        /**
+         *
+         */
+        UserWrappr.prototype.fixCustoms = function (customsRaw) {
+            var customs = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
+            this.GameStartrConstructor.prototype.proliferate(customs, this.currentSize);
+            if (!isFinite(customs.width)) {
+                customs.width = document.body.clientWidth;
+            }
+            if (!isFinite(customs.height)) {
+                if (customs.full) {
+                    customs.height = screen.height;
+                }
+                else if (this.isFullScreen) {
+                    // Guess for browser window...
+                    // @todo Actually compute this!
+                    customs.height = window.innerHeight - 140;
+                }
+                else {
+                    customs.height = window.innerHeight;
+                }
+                // 49px from header, 35px from menus
+                customs.height -= 84;
+            }
+            return customs;
+        };
+        /* Page visibility
+        */
+        /**
+         * Adds a "visibilitychange" handler to the document bound to
+         * this.handleVisibilityChange.
+         */
+        UserWrappr.prototype.resetPageVisibilityHandlers = function () {
+            document.addEventListener("visibilitychange", this.handleVisibilityChange.bind(this));
+        };
+        /**
+         * Handles a visibility change event by calling either this.onPageHidden
+         * or this.onPageVisible.
+         *
+         * @param {Event} event
+         */
+        UserWrappr.prototype.handleVisibilityChange = function (event) {
+            switch (document.visibilityState) {
+                case "hidden":
+                    this.onPageHidden();
+                    return;
+                case "visible":
+                    this.onPageVisible();
+                    return;
+                default:
+                    return;
+            }
+        };
+        /**
+         * Reacts to the page becoming hidden by pausing the GameStartr.
+         */
+        UserWrappr.prototype.onPageHidden = function () {
+            if (!this.GameStarter.GamesRunner.getPaused()) {
+                this.isPageHidden = true;
+                this.GameStarter.GamesRunner.pause();
+            }
+        };
+        /**
+         * Reacts to the page becoming visible by unpausing the GameStartr.
+         */
+        UserWrappr.prototype.onPageVisible = function () {
+            if (this.isPageHidden) {
+                this.isPageHidden = false;
+                this.GameStarter.GamesRunner.play();
+            }
+        };
+        /* Control section loaders
+        */
+        /**
+         * Loads the internal GameStarter, resetting it with the given customs
+         * and attaching handlers to document.body and the holder elements.
+         *
+         * @param {Object} customs   Custom arguments to pass to this.GameStarter.
+         */
+        UserWrappr.prototype.loadGameStarter = function (customs) {
+            var section = document.querySelector(this.gameElementSelector);
+            if (this.GameStarter) {
+                this.GameStarter.GamesRunner.pause();
+            }
+            this.GameStarter = new this.GameStartrConstructor(customs);
+            section.textContent = "";
+            section.appendChild(this.GameStarter.container);
+            this.GameStarter.proliferate(document.body, {
+                "onkeydown": this.GameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
+                "onkeyup": this.GameStarter.InputWriter.makePipe("onkeyup", "keyCode")
+            });
+            this.GameStarter.proliferate(section, {
+                "onmousedown": this.GameStarter.InputWriter.makePipe("onmousedown", "which"),
+                "oncontextmenu": this.GameStarter.InputWriter.makePipe("oncontextmenu", null, true)
+            });
+        };
+        /**
+         * Loads the internal OptionsGenerator instances under this.generators.
+         */
+        UserWrappr.prototype.loadGenerators = function () {
+            this.generators = {
+                OptionsButtons: new UISchemas.OptionsButtonsGenerator(this),
+                OptionsTable: new UISchemas.OptionsTableGenerator(this),
+                LevelEditor: new UISchemas.LevelEditorGenerator(this),
+                MapsGrid: new UISchemas.MapsGridGenerator(this)
+            };
+        };
+        /**
+         * Loads the externally facing UI controls and the internal ItemsHolder,
+         * appending the controls to the controls HTML element.
+         *
+         * @param {Object[]} schemas   The schemas each a UI control to be made.
+         */
+        UserWrappr.prototype.loadControls = function (schemas) {
+            var section = document.querySelector(this.gameControlsSelector), length = schemas.length, i;
+            this.ItemsHolder = new ItemsHoldr.ItemsHoldr({
+                "prefix": this.globalName + "::UserWrapper::ItemsHolder"
+            });
+            section.textContent = "";
+            section.className = "length-" + length;
+            for (i = 0; i < length; i += 1) {
+                section.appendChild(this.loadControlDiv(schemas[i]));
+            }
+        };
+        /**
+         * Creates an individual UI control element based on a UI schema.
+         *
+         * @param {Object} schema
+         * @return {HTMLDivElement}
+         */
+        UserWrappr.prototype.loadControlDiv = function (schema) {
+            var control = document.createElement("div"), heading = document.createElement("h4"), inner = document.createElement("div");
+            control.className = "control";
+            control.id = "control-" + schema.title;
+            heading.textContent = schema.title;
+            inner.className = "control-inner";
+            inner.appendChild(this.generators[schema.generator].generate(schema));
+            control.appendChild(heading);
+            control.appendChild(inner);
+            // Touch events often propogate to children before the control div has
+            // been fully extended. Setting the "active" attribute fixes that.
+            control.onmouseover = setTimeout.bind(undefined, function () {
+                control.setAttribute("active", "on");
+            }, 35);
+            control.onmouseout = function () {
+                control.setAttribute("active", "off");
+            };
+            return control;
+        };
+        return UserWrappr;
+    })();
+    UserWrappr_1.UserWrappr = UserWrappr;
+    var UISchemas;
+    (function (UISchemas) {
+        /**
+         * Base class for options generators. These all store a UserWrapper and
+         * its GameStartr, along with a generate Function
+         */
+        var AbstractOptionsGenerator = (function () {
+            /**
+             * @param {UserWrappr} UserWrappr
+             */
+            function AbstractOptionsGenerator(UserWrapper) {
+                this.UserWrapper = UserWrapper;
+                this.GameStarter = this.UserWrapper.getGameStarter();
+            }
+            /**
+             * Generates a control element based on the provided schema.
+             */
+            AbstractOptionsGenerator.prototype.generate = function (schema) {
+                throw new Error("AbstractOptionsGenerator is abstract. Subclass it.");
+            };
+            /**
+             * Recursively searches for an element with the "control" class
+             * that's a parent of the given element.
+             *
+             * @param {HTMLElement} element
+             * @return {HTMLElement}
+             */
+            AbstractOptionsGenerator.prototype.getParentControlDiv = function (element) {
+                if (element.className === "control") {
+                    return element;
+                }
+                else if (!element.parentNode) {
+                    return undefined;
+                }
+                return this.getParentControlDiv(element.parentElement);
+            };
+            /**
+             * Ensures a child's required local storage value is being stored,
+             * and adds it to the internal GameStarter.ItemsHolder if not. If it
+             * is, and the child's value isn't equal to it, the value is set.
+             *
+             * @param {Mixed} childRaw   An input or select element, or an Array
+             *                           thereof.
+             * @param {Object} details   Details containing the title of the item
+             *                           and the source Function to get its value.
+             * @param {Object} schema   The container schema this child is within.
+             */
+            AbstractOptionsGenerator.prototype.ensureLocalStorageValue = function (childRaw, details, schema) {
+                if (childRaw.constructor === Array) {
+                    this.ensureLocalStorageValues(childRaw, details, schema);
+                    return;
+                }
+                var child = childRaw, key = schema.title + "::" + details.title, valueDefault = details.source.call(this, this.GameStarter).toString(), value;
+                child.setAttribute("localStorageKey", key);
+                this.GameStarter.ItemsHolder.addItem(key, {
+                    "storeLocally": true,
+                    "valueDefault": valueDefault
+                });
+                value = this.GameStarter.ItemsHolder.getItem(key);
+                if (value !== "" && value !== child.value) {
+                    child.value = value;
+                    if (child.setValue) {
+                        child.setValue(value);
+                    }
+                    else if (child.onchange) {
+                        child.onchange(undefined);
+                    }
+                    else if (child.onclick) {
+                        child.onclick(undefined);
+                    }
+                }
+            };
+            /**
+             * The equivalent of ensureLocalStorageValue for an entire set of
+             * elements, running the equivalent logic on all of them.
+             *
+             * @param {Mixed} childRaw   An Array of input or select elements.
+             * @param {Object} details   Details containing the title of the item
+             *                           and the source Function to get its value.
+             * @param {Object} schema   The container schema this child is within.
+             */
+            AbstractOptionsGenerator.prototype.ensureLocalStorageValues = function (children, details, schema) {
+                var keyGeneral = schema.title + "::" + details.title, values = details.source.call(this, this.GameStarter), key, value, child, i;
+                for (i = 0; i < children.length; i += 1) {
+                    key = keyGeneral + "::" + i;
+                    child = children[i];
+                    child.setAttribute("localStorageKey", key);
+                    this.GameStarter.ItemsHolder.addItem(key, {
+                        "storeLocally": true,
+                        "valueDefault": values[i]
+                    });
+                    value = this.GameStarter.ItemsHolder.getItem(key);
+                    if (value !== "" && value !== child.value) {
+                        child.value = value;
+                        if (child.onchange) {
+                            child.onchange(undefined);
+                        }
+                        else if (child.onclick) {
+                            child.onclick(undefined);
+                        }
+                    }
+                }
+            };
+            /**
+             * Stores an element's value in the internal GameStarter.ItemsHolder,
+             * if it has the "localStorageKey" attribute.
+             *
+             * @param {HTMLElement} child   An element with a value to store.
+             * @param {Mixed} value   What value is to be stored under the key.
+             */
+            AbstractOptionsGenerator.prototype.storeLocalStorageValue = function (child, value) {
+                var key = child.getAttribute("localStorageKey");
+                if (key) {
+                    this.GameStarter.ItemsHolder.setItem(key, value);
+                }
+            };
+            return AbstractOptionsGenerator;
+        })();
+        UISchemas.AbstractOptionsGenerator = AbstractOptionsGenerator;
+        /**
+         * A buttons generator for an options section that contains any number
+         * of general buttons.
+         */
+        var OptionsButtonsGenerator = (function (_super) {
+            __extends(OptionsButtonsGenerator, _super);
+            function OptionsButtonsGenerator() {
+                _super.apply(this, arguments);
+            }
+            OptionsButtonsGenerator.prototype.generate = function (schema) {
+                var output = document.createElement("div"), options = schema.options instanceof Function
+                    ? schema.options.call(self, this.GameStarter)
+                    : schema.options, optionKeys = Object.keys(options), keyActive = schema.keyActive || "active", classNameStart = "select-option options-button-option", scope = this, option, element, i;
+                output.className = "select-options select-options-buttons";
+                for (i = 0; i < optionKeys.length; i += 1) {
+                    option = options[optionKeys[i]];
+                    element = document.createElement("div");
+                    element.className = classNameStart;
+                    element.textContent = optionKeys[i];
+                    element.onclick = function (schema, element) {
+                        if (scope.getParentControlDiv(element).getAttribute("active") !== "on") {
+                            return;
+                        }
+                        schema.callback.call(scope, scope.GameStarter, schema, element);
+                        if (element.getAttribute("option-enabled") === "true") {
+                            element.setAttribute("option-enabled", "false");
+                            element.className = classNameStart + " option-disabled";
+                        }
+                        else {
+                            element.setAttribute("option-enabled", "true");
+                            element.className = classNameStart + " option-enabled";
+                        }
+                    }.bind(undefined, schema, element);
+                    if (option[keyActive]) {
+                        element.className += " option-enabled";
+                        element.setAttribute("option-enabled", "true");
+                    }
+                    else if (schema.assumeInactive) {
+                        element.className += " option-disabled";
+                        element.setAttribute("option-enabled", "false");
+                    }
+                    else {
+                        element.setAttribute("option-enabled", "true");
+                    }
+                    output.appendChild(element);
+                }
+                return output;
+            };
+            return OptionsButtonsGenerator;
+        })(AbstractOptionsGenerator);
+        UISchemas.OptionsButtonsGenerator = OptionsButtonsGenerator;
+        /**
+         * An options generator for a table of options,.
+         */
+        var OptionsTableGenerator = (function (_super) {
+            __extends(OptionsTableGenerator, _super);
+            function OptionsTableGenerator() {
+                _super.apply(this, arguments);
+                this.optionTypes = {
+                    "Boolean": this.setBooleanInput,
+                    "Keys": this.setKeyInput,
+                    "Number": this.setNumberInput,
+                    "Select": this.setSelectInput,
+                    "ScreenSize": this.setScreenSizeInput
+                };
+            }
+            OptionsTableGenerator.prototype.generate = function (schema) {
+                var output = document.createElement("div"), table = document.createElement("table"), option, action, row, label, input, child, i;
+                output.className = "select-options select-options-table";
+                if (schema.options) {
+                    for (i = 0; i < schema.options.length; i += 1) {
+                        row = document.createElement("tr");
+                        label = document.createElement("td");
+                        input = document.createElement("td");
+                        option = schema.options[i];
+                        label.className = "options-label-" + option.type;
+                        label.textContent = option.title;
+                        input.className = "options-cell-" + option.type;
+                        row.appendChild(label);
+                        row.appendChild(input);
+                        child = this.optionTypes[schema.options[i].type].call(this, input, option, schema);
+                        if (option.storeLocally) {
+                            this.ensureLocalStorageValue(child, option, schema);
+                        }
+                        table.appendChild(row);
+                    }
+                }
+                output.appendChild(table);
+                if (schema.actions) {
+                    for (i = 0; i < schema.actions.length; i += 1) {
+                        row = document.createElement("div");
+                        action = schema.actions[i];
+                        row.className = "select-option options-button-option";
+                        row.textContent = action.title;
+                        row.onclick = action.action.bind(this, this.GameStarter);
+                        output.appendChild(row);
+                    }
+                }
+                return output;
+            };
+            OptionsTableGenerator.prototype.setBooleanInput = function (input, details, schema) {
+                var status = details.source.call(this, this.GameStarter), statusClass = status ? "enabled" : "disabled", scope = this;
+                input.className = "select-option options-button-option option-" + statusClass;
+                input.textContent = status ? "on" : "off";
+                input.onclick = function () {
+                    input.setValue(input.textContent === "off");
+                };
+                input.setValue = function (newStatus) {
+                    if (newStatus.constructor === String) {
+                        if (newStatus === "false" || newStatus === "off") {
+                            newStatus = false;
+                        }
+                        else if (newStatus === "true" || newStatus === "on") {
+                            newStatus = true;
+                        }
+                    }
+                    if (newStatus) {
+                        details.enable.call(scope, scope.GameStarter);
+                        input.textContent = "on";
+                        input.className = input.className.replace("disabled", "enabled");
+                    }
+                    else {
+                        details.disable.call(scope, scope.GameStarter);
+                        input.textContent = "off";
+                        input.className = input.className.replace("enabled", "disabled");
+                    }
+                    if (details.storeLocally) {
+                        scope.storeLocalStorageValue(input, newStatus.toString());
+                    }
+                };
+                return input;
+            };
+            OptionsTableGenerator.prototype.setKeyInput = function (input, details, schema) {
+                var values = details.source.call(this, this.GameStarter), children = [], child, scope = this, i, j;
+                for (i = 0; i < values.length; i += 1) {
+                    child = document.createElement("select");
+                    child.className = "options-key-option";
+                    for (j = 0; j < this.UserWrapper.getAllPossibleKeys().length; j += 1) {
+                        child.appendChild(new Option(this.UserWrapper.getAllPossibleKeys()[j]));
+                    }
+                    child.value = child.valueOld = values[i].toLowerCase();
+                    child.onchange = (function (child) {
+                        details.callback.call(scope, scope.GameStarter, child.valueOld, child.value);
+                        if (details.storeLocally) {
+                            scope.storeLocalStorageValue(child, child.value);
+                        }
+                    }).bind(undefined, child);
+                    children.push(child);
+                    input.appendChild(child);
+                }
+                return children;
+            };
+            OptionsTableGenerator.prototype.setNumberInput = function (input, details, schema) {
+                var child = document.createElement("input"), scope = this;
+                child.type = "number";
+                child.value = Number(details.source.call(scope, scope.GameStarter)).toString();
+                child.min = (details.minimum || 0).toString();
+                child.max = (details.maximum || Math.max(details.minimum + 10, 10)).toString();
+                child.onchange = child.oninput = function () {
+                    if (child.checkValidity()) {
+                        details.update.call(scope, scope.GameStarter, child.value);
+                    }
+                    if (details.storeLocally) {
+                        scope.storeLocalStorageValue(child, child.value);
+                    }
+                };
+                input.appendChild(child);
+                return child;
+            };
+            OptionsTableGenerator.prototype.setSelectInput = function (input, details, schema) {
+                var child = document.createElement("select"), options = details.options(this.GameStarter), scope = this, i;
+                for (i = 0; i < options.length; i += 1) {
+                    child.appendChild(new Option(options[i]));
+                }
+                child.value = details.source.call(scope, scope.GameStarter);
+                child.onchange = function () {
+                    details.update.call(scope, scope.GameStarter, child.value);
+                    child.blur();
+                    if (details.storeLocally) {
+                        scope.storeLocalStorageValue(child, child.value);
+                    }
+                };
+                input.appendChild(child);
+                return child;
+            };
+            OptionsTableGenerator.prototype.setScreenSizeInput = function (input, details, schema) {
+                var scope = this, child;
+                details.options = function () {
+                    return Object.keys(scope.UserWrapper.getSizes());
+                };
+                details.source = function () {
+                    return scope.UserWrapper.getCurrentSize().name;
+                };
+                details.update = function (GameStarter, value) {
+                    if (value === scope.UserWrapper.getCurrentSize()) {
+                        return undefined;
+                    }
+                    scope.UserWrapper.setCurrentSize(value);
+                };
+                child = scope.setSelectInput(input, details, schema);
+                return child;
+            };
+            return OptionsTableGenerator;
+        })(AbstractOptionsGenerator);
+        UISchemas.OptionsTableGenerator = OptionsTableGenerator;
+        /**
+         * Options generator for a LevelEditr dialog.
+         */
+        var LevelEditorGenerator = (function (_super) {
+            __extends(LevelEditorGenerator, _super);
+            function LevelEditorGenerator() {
+                _super.apply(this, arguments);
+            }
+            LevelEditorGenerator.prototype.generate = function (schema) {
+                var output = document.createElement("div"), title = document.createElement("div"), button = document.createElement("div"), between = document.createElement("div"), uploader = this.createUploaderDiv(), scope = this;
+                output.className = "select-options select-options-level-editor";
+                title.className = "select-option-title";
+                title.textContent = "Create your own custom levels:";
+                button.className = "select-option select-option-large options-button-option";
+                button.innerHTML = "Start the <br /> Level Editor!";
+                button.onclick = function () {
+                    scope.GameStarter.LevelEditor.enable();
+                };
+                between.className = "select-option-title";
+                between.innerHTML = "<em>- or -</em><br />";
+                output.appendChild(title);
+                output.appendChild(button);
+                output.appendChild(between);
+                output.appendChild(uploader);
+                return output;
+            };
+            LevelEditorGenerator.prototype.createUploaderDiv = function () {
+                var uploader = document.createElement("div"), input = document.createElement("input");
+                uploader.className = "select-option select-option-large options-button-option";
+                uploader.textContent = "Click to upload and continue your editor files!";
+                uploader.setAttribute("textOld", uploader.textContent);
+                input.type = "file";
+                input.className = "select-upload-input";
+                input.onchange = this.handleFileDrop.bind(this, input, uploader);
+                uploader.ondragenter = this.handleFileDragEnter.bind(this, uploader);
+                uploader.ondragover = this.handleFileDragOver.bind(this, uploader);
+                uploader.ondragleave = input.ondragend = this.handleFileDragLeave.bind(this, uploader);
+                uploader.ondrop = this.handleFileDrop.bind(this, input, uploader);
+                uploader.onclick = input.click.bind(input);
+                uploader.appendChild(input);
+                return uploader;
+            };
+            LevelEditorGenerator.prototype.handleFileDragEnter = function (uploader, event) {
+                if (event.dataTransfer) {
+                    event.dataTransfer.dropEffect = "copy";
+                }
+                uploader.className += " hovering";
+            };
+            LevelEditorGenerator.prototype.handleFileDragOver = function (uploader, event) {
+                event.preventDefault();
+                return false;
+            };
+            LevelEditorGenerator.prototype.handleFileDragLeave = function (element, event) {
+                if (event.dataTransfer) {
+                    event.dataTransfer.dropEffect = "none";
+                }
+                element.className = element.className.replace(" hovering", "");
+            };
+            LevelEditorGenerator.prototype.handleFileDrop = function (input, uploader, event) {
+                var files = input.files || event.dataTransfer.files, file = files[0], reader = new FileReader();
+                this.handleFileDragLeave(input, event);
+                event.preventDefault();
+                event.stopPropagation();
+                reader.onprogress = this.handleFileUploadProgress.bind(this, file, uploader);
+                reader.onloadend = this.handleFileUploadCompletion.bind(this, file, uploader);
+                reader.readAsText(file);
+            };
+            LevelEditorGenerator.prototype.handleFileUploadProgress = function (file, uploader, event) {
+                var percent;
+                if (!event.lengthComputable) {
+                    return;
+                }
+                percent = Math.round((event.loaded / event.total) * 100);
+                if (percent > 100) {
+                    percent = 100;
+                }
+                uploader.innerText = "Uploading '" + file.name + "' (" + percent + "%)...";
+            };
+            LevelEditorGenerator.prototype.handleFileUploadCompletion = function (file, uploader, event) {
+                this.GameStarter.LevelEditor.handleUploadCompletion(event);
+                uploader.innerText = uploader.getAttribute("textOld");
+            };
+            return LevelEditorGenerator;
+        })(AbstractOptionsGenerator);
+        UISchemas.LevelEditorGenerator = LevelEditorGenerator;
+        /**
+         * Options generator for a grid of maps, along with other options.
+         */
+        var MapsGridGenerator = (function (_super) {
+            __extends(MapsGridGenerator, _super);
+            function MapsGridGenerator() {
+                _super.apply(this, arguments);
+            }
+            MapsGridGenerator.prototype.generate = function (schema) {
+                var output = document.createElement("div");
+                output.className = "select-options select-options-maps-grid";
+                if (schema.rangeX && schema.rangeY) {
+                    output.appendChild(this.generateRangedTable(schema));
+                }
+                if (schema.extras) {
+                    this.appendExtras(output, schema);
+                }
+                return output;
+            };
+            MapsGridGenerator.prototype.generateRangedTable = function (schema) {
+                var scope = this, table = document.createElement("table"), rangeX = schema.rangeX, rangeY = schema.rangeY, row, cell, i, j;
+                for (i = rangeY[0]; i <= rangeY[1]; i += 1) {
+                    row = document.createElement("tr");
+                    row.className = "maps-grid-row";
+                    for (j = rangeX[0]; j <= rangeX[1]; j += 1) {
+                        cell = document.createElement("td");
+                        cell.className = "select-option maps-grid-option maps-grid-option-range";
+                        cell.textContent = i + "-" + j;
+                        cell.onclick = (function (callback) {
+                            if (scope.getParentControlDiv(cell).getAttribute("active") === "on") {
+                                callback();
+                            }
+                        }).bind(scope, schema.callback.bind(scope, scope.GameStarter, schema, cell));
+                        row.appendChild(cell);
+                    }
+                    table.appendChild(row);
+                }
+                return table;
+            };
+            MapsGridGenerator.prototype.appendExtras = function (output, schema) {
+                var element, extra, i, j;
+                for (i in schema.extras) {
+                    if (!schema.extras.hasOwnProperty(i)) {
+                        continue;
+                    }
+                    extra = schema.extras[i];
+                    element = document.createElement("div");
+                    element.className = "select-option maps-grid-option maps-grid-option-extra";
+                    element.textContent = extra.title;
+                    element.setAttribute("value", extra.title);
+                    element.onclick = extra.callback.bind(this, this.GameStarter, schema, element);
+                    output.appendChild(element);
+                    if (extra.extraElements) {
+                        for (j = 0; j < extra.extraElements.length; j += 1) {
+                            output.appendChild(this.GameStarter.createElement.apply(this.GameStarter, extra.extraElements[j]));
+                        }
+                    }
+                }
+            };
+            return MapsGridGenerator;
+        })(AbstractOptionsGenerator);
+        UISchemas.MapsGridGenerator = MapsGridGenerator;
+    })(UISchemas = UserWrappr_1.UISchemas || (UserWrappr_1.UISchemas = {}));
+})(UserWrappr || (UserWrappr = {}));
 var WorldSeedr;
-(function (_WorldSeedr) {
+(function (WorldSeedr_1) {
     "use strict";
     /**
      * A randomization utility to automate random, recursive generation of
@@ -10592,6 +12675,8 @@ var WorldSeedr;
          */
         WorldSeedr.prototype.generateChildrenRepeat = function (contents, position, direction, spacing) {
             var choices = contents.children, children = [], choice, child, i = 0;
+            // Continuously loops through the choices and adds them to the output
+            // children, so long as there's still room for them
             while (this.positionIsNotEmpty(position, direction)) {
                 choice = choices[i];
                 if (choice.type === "Final") {
@@ -10636,6 +12721,8 @@ var WorldSeedr;
          */
         WorldSeedr.prototype.generateChildrenRandom = function (contents, position, direction, spacing) {
             var children = [], child;
+            // Continuously add random choices to the output children as long as 
+            // there's room in the position's bounding box
             while (this.positionIsNotEmpty(position, direction)) {
                 child = this.generateChild(contents, position, direction);
                 if (!child) {
@@ -10718,7 +12805,9 @@ var WorldSeedr;
             var title = choice.title, schema = this.possibilities[title], output = {
                 "title": title,
                 "type": choice.type,
-                "arguments": choice.arguments instanceof Array ? (this.chooseAmong(choice.arguments)).values : choice.arguments,
+                "arguments": choice.arguments instanceof Array
+                    ? (this.chooseAmong(choice.arguments)).values
+                    : choice.arguments,
                 "width": undefined,
                 "height": undefined,
                 "top": undefined,
@@ -11105,7 +13194,9 @@ var WorldSeedr;
                     continue;
                 }
                 name = this.sizingNames[i];
-                output[name] = (choice.sizing && typeof choice.sizing[name] !== "undefined") ? choice.sizing[name] : schema[name];
+                output[name] = (choice.sizing && typeof choice.sizing[name] !== "undefined")
+                    ? choice.sizing[name]
+                    : schema[name];
             }
         };
         /**
@@ -11127,7 +13218,7 @@ var WorldSeedr;
         };
         return WorldSeedr;
     })();
-    _WorldSeedr.WorldSeedr = WorldSeedr;
+    WorldSeedr_1.WorldSeedr = WorldSeedr;
 })(WorldSeedr || (WorldSeedr = {}));
 /*jshint curly:true, eqeqeq:true, laxbreak:true, noempty:false */
 /*
@@ -11317,7 +13408,8 @@ var WorldSeedr;
             var nextIndent_level = 0;
             if (flags_base) {
                 nextIndent_level = flags_base.indentation_level;
-                if (!justAdded_newline() && flags_base.lineIndent_level > nextIndent_level) {
+                if (!justAdded_newline() &&
+                    flags_base.lineIndent_level > nextIndent_level) {
                     nextIndent_level = flags_base.lineIndent_level;
                 }
             }
@@ -11422,6 +13514,7 @@ var WorldSeedr;
                 token_text = t[0];
                 token_type = t[1];
                 if (token_type === 'TK_EOF') {
+                    // Unwind any open statements
                     while (flags.mode === MODE.Statement) {
                         restore_mode();
                     }
@@ -11451,12 +13544,14 @@ var WorldSeedr;
                 // The cleanest handling of inline comments is to treat them as though they aren't there.
                 // Just continue formatting and the behavior should be logical.
                 // Also ignore unknown tokens.  Again, this should result in better behavior.
-                if (token_type !== 'TKInLINE_COMMENT' && token_type !== 'TK_COMMENT' && token_type !== 'TK_BLOCK_COMMENT' && token_type !== 'TK_UNKNOWN') {
+                if (token_type !== 'TKInLINE_COMMENT' && token_type !== 'TK_COMMENT' &&
+                    token_type !== 'TK_BLOCK_COMMENT' && token_type !== 'TK_UNKNOWN') {
                     last_last_text = flags.last_text;
                     last_type = token_type;
                     flags.last_text = token_text;
                 }
-                flags.had_comment = (token_type === 'TKInLINE_COMMENT' || token_type === 'TK_COMMENT' || token_type === 'TK_BLOCK_COMMENT');
+                flags.had_comment = (token_type === 'TKInLINE_COMMENT' || token_type === 'TK_COMMENT'
+                    || token_type === 'TK_BLOCK_COMMENT');
             }
             sweet_code = output_lines[0].text.join('');
             for (var lineIndex = 1; lineIndex < output_lines.length; lineIndex++) {
@@ -11469,14 +13564,18 @@ var WorldSeedr;
             eat_newlines = (eat_newlines === undefined) ? false : eat_newlines;
             if (output_lines.length) {
                 trimOutput_line(output_lines[output_lines.length - 1]);
-                while (eat_newlines && output_lines.length > 1 && output_lines[output_lines.length - 1].text.length === 0) {
+                while (eat_newlines && output_lines.length > 1 &&
+                    output_lines[output_lines.length - 1].text.length === 0) {
                     output_lines.pop();
                     trimOutput_line(output_lines[output_lines.length - 1]);
                 }
             }
         }
         function trimOutput_line(line) {
-            while (line.text.length && (line.text[line.text.length - 1] === ' ' || line.text[line.text.length - 1] === indent_string || line.text[line.text.length - 1] === preindent_string)) {
+            while (line.text.length &&
+                (line.text[line.text.length - 1] === ' ' ||
+                    line.text[line.text.length - 1] === indent_string ||
+                    line.text[line.text.length - 1] === preindent_string)) {
                 line.text.pop();
             }
         }
@@ -11520,7 +13619,8 @@ var WorldSeedr;
                 var proposed_line_length = 0;
                 // never wrap the first token of a line.
                 if (line.text.length > 0) {
-                    proposed_line_length = line.text.join('').length + token_text.length + (output_space_before_token ? 1 : 0);
+                    proposed_line_length = line.text.join('').length + token_text.length +
+                        (output_space_before_token ? 1 : 0);
                     if (proposed_line_length >= opt.wrap_line_length) {
                         force_linewrap = true;
                     }
@@ -11595,7 +13695,8 @@ var WorldSeedr;
             flags.indentation_level += 1;
         }
         function deindent() {
-            if (flags.indentation_level > 0 && ((!flags.parent) || flags.indentation_level > flags.parent.indentation_level))
+            if (flags.indentation_level > 0 &&
+                ((!flags.parent) || flags.indentation_level > flags.parent.indentation_level))
                 flags.indentation_level -= 1;
         }
         function remove_redundantIndentation(frame) {
@@ -11656,10 +13757,20 @@ var WorldSeedr;
             }
         }
         function start_of_object_property() {
-            return flags.parent.mode === MODE.ObjectLiteral && flags.mode === MODE.Statement && flags.last_text === ':' && flags.ternary_depth === 0;
+            return flags.parent.mode === MODE.ObjectLiteral && flags.mode === MODE.Statement && flags.last_text === ':' &&
+                flags.ternary_depth === 0;
         }
         function start_of_statement() {
-            if ((last_type === 'TK_RESERVED' && in_array(flags.last_text, ['var', 'let', 'const']) && token_type === 'TK_WORD') || (last_type === 'TK_RESERVED' && flags.last_text === 'do') || (last_type === 'TK_RESERVED' && flags.last_text === 'return' && !input_wanted_newline) || (last_type === 'TK_RESERVED' && flags.last_text === 'else' && !(token_type === 'TK_RESERVED' && token_text === 'if')) || (last_type === 'TK_END_EXPR' && (previous_flags.mode === MODE.ForInitializer || previous_flags.mode === MODE.Conditional)) || (last_type === 'TK_WORD' && flags.mode === MODE.BlockStatement && !flags.in_case && !(token_text === '--' || token_text === '++') && token_type !== 'TK_WORD' && token_type !== 'TK_RESERVED') || (flags.mode === MODE.ObjectLiteral && flags.last_text === ':' && flags.ternary_depth === 0)) {
+            if ((last_type === 'TK_RESERVED' && in_array(flags.last_text, ['var', 'let', 'const']) && token_type === 'TK_WORD') ||
+                (last_type === 'TK_RESERVED' && flags.last_text === 'do') ||
+                (last_type === 'TK_RESERVED' && flags.last_text === 'return' && !input_wanted_newline) ||
+                (last_type === 'TK_RESERVED' && flags.last_text === 'else' && !(token_type === 'TK_RESERVED' && token_text === 'if')) ||
+                (last_type === 'TK_END_EXPR' && (previous_flags.mode === MODE.ForInitializer || previous_flags.mode === MODE.Conditional)) ||
+                (last_type === 'TK_WORD' && flags.mode === MODE.BlockStatement
+                    && !flags.in_case
+                    && !(token_text === '--' || token_text === '++')
+                    && token_type !== 'TK_WORD' && token_type !== 'TK_RESERVED') ||
+                (flags.mode === MODE.ObjectLiteral && flags.last_text === ':' && flags.ternary_depth === 0)) {
                 set_mode(MODE.Statement);
                 indent();
                 if (last_type === 'TK_RESERVED' && in_array(flags.last_text, ['var', 'let', 'const']) && token_type === 'TK_WORD') {
@@ -11828,7 +13939,9 @@ var WorldSeedr;
                     c += sign + t[0];
                     return [c, 'TK_WORD'];
                 }
-                if (!(last_type === 'TK_DOT' || (last_type === 'TK_RESERVED' && in_array(flags.last_text, ['set', 'get']))) && in_array(c, reserved_words)) {
+                if (!(last_type === 'TK_DOT' ||
+                    (last_type === 'TK_RESERVED' && in_array(flags.last_text, ['set', 'get'])))
+                    && in_array(c, reserved_words)) {
                     if (c === 'in') {
                         return [c, 'TK_OPERATOR'];
                     }
@@ -11891,7 +14004,14 @@ var WorldSeedr;
                     return [comment, 'TK_COMMENT'];
                 }
             }
-            if (c === '`' || c === "'" || c === '"' || ((c === '/') || (opt.e4x && c === "<" && input.slice(parser_pos - 1).match(/^<([-a-zA-Z:0-9_.]+|{[^{}]*}|!\[CDATA\[[\s\S]*?\]\])\s*([-a-zA-Z:0-9_.]+=('[^']*'|"[^"]*"|{[^{}]*})\s*)*\/?\s*>/))) && ((last_type === 'TK_RESERVED' && is_special_word(flags.last_text)) || (last_type === 'TK_END_EXPR' && in_array(previous_flags.mode, [MODE.Conditional, MODE.ForInitializer])) || (in_array(last_type, ['TK_COMMENT', 'TK_START_EXPR', 'TK_START_BLOCK', 'TK_END_BLOCK', 'TK_OPERATOR', 'TK_EQUALS', 'TK_EOF', 'TK_SEMICOLON', 'TK_COMMA'])))) {
+            if (c === '`' || c === "'" || c === '"' ||
+                ((c === '/') ||
+                    (opt.e4x && c === "<" && input.slice(parser_pos - 1).match(/^<([-a-zA-Z:0-9_.]+|{[^{}]*}|!\[CDATA\[[\s\S]*?\]\])\s*([-a-zA-Z:0-9_.]+=('[^']*'|"[^"]*"|{[^{}]*})\s*)*\/?\s*>/)) // xml
+                ) && ((last_type === 'TK_RESERVED' && is_special_word(flags.last_text)) ||
+                    (last_type === 'TK_END_EXPR' && in_array(previous_flags.mode, [MODE.Conditional, MODE.ForInitializer])) ||
+                    (in_array(last_type, ['TK_COMMENT', 'TK_START_EXPR', 'TK_START_BLOCK',
+                        'TK_END_BLOCK', 'TK_OPERATOR', 'TK_EQUALS', 'TK_EOF', 'TK_SEMICOLON', 'TK_COMMA'
+                    ])))) {
                 var sep = c, esc = false, has_char_escapes = false;
                 resulting_string = c;
                 if (parser_pos < input_length) {
@@ -11955,6 +14075,9 @@ var WorldSeedr;
                         }
                     }
                     else {
+                        //
+                        // handle string
+                        //
                         while (esc || input.charAt(parser_pos) !== sep) {
                             resulting_string += input.charAt(parser_pos);
                             if (esc) {
@@ -11981,6 +14104,7 @@ var WorldSeedr;
                     resulting_string = unescape_string(resulting_string);
                 }
                 if (sep === '/') {
+                    // regexps may have modifiers /regexp/MOD , so fetch those, too
                     while (parser_pos < input_length && in_array(input.charAt(parser_pos), wordchar)) {
                         resulting_string += input.charAt(parser_pos);
                         parser_pos += 1;
@@ -11989,7 +14113,8 @@ var WorldSeedr;
                 return [resulting_string, 'TK_STRING'];
             }
             if (c === '#') {
-                if (output_lines.length === 1 && output_lines[0].text.length === 0 && input.charAt(parser_pos) === '!') {
+                if (output_lines.length === 1 && output_lines[0].text.length === 0 &&
+                    input.charAt(parser_pos) === '!') {
                     // shebang
                     resulting_string = c;
                     while (parser_pos < input_length && c !== '\n') {
@@ -12081,7 +14206,8 @@ var WorldSeedr;
                 }
                 next_mode = MODE.ArrayLiteral;
                 if (is_array(flags.mode)) {
-                    if (flags.last_text === '[' || (flags.last_text === ',' && (last_last_text === ']' || last_last_text === '}'))) {
+                    if (flags.last_text === '[' ||
+                        (flags.last_text === ',' && (last_last_text === ']' || last_last_text === '}'))) {
                         // ], [ goes to new line
                         // }, [ goes to new line
                         if (!opt.keep_arrayIndentation) {
@@ -12110,7 +14236,8 @@ var WorldSeedr;
             else if (!(last_type === 'TK_RESERVED' && token_text === '(') && last_type !== 'TK_WORD' && last_type !== 'TK_OPERATOR') {
                 output_space_before_token = true;
             }
-            else if ((last_type === 'TK_RESERVED' && (flags.last_word === 'function' || flags.last_word === 'typeof')) || (flags.last_text === '*' && last_last_text === 'function')) {
+            else if ((last_type === 'TK_RESERVED' && (flags.last_word === 'function' || flags.last_word === 'typeof')) ||
+                (flags.last_text === '*' && last_last_text === 'function')) {
                 // function () vs function ()
                 if (opt.jslint_happy) {
                     output_space_before_token = true;
@@ -12140,6 +14267,8 @@ var WorldSeedr;
             indent();
         }
         function handle_end_expr() {
+            // statements inside expressions are not valid syntax, but...
+            // statements must all be closed when their container closes
             while (flags.mode === MODE.Statement) {
                 restore_mode();
             }
@@ -12175,9 +14304,13 @@ var WorldSeedr;
         function handle_start_block() {
             set_mode(MODE.BlockStatement);
             var empty_braces = is_next('}');
-            var empty_anonymous_function = empty_braces && flags.last_word === 'function' && last_type === 'TK_END_EXPR';
+            var empty_anonymous_function = empty_braces && flags.last_word === 'function' &&
+                last_type === 'TK_END_EXPR';
             if (opt.brace_style === "expand") {
-                if (last_type !== 'TK_OPERATOR' && (empty_anonymous_function || last_type === 'TK_EQUALS' || (last_type === 'TK_RESERVED' && is_special_word(flags.last_text) && flags.last_text !== 'else'))) {
+                if (last_type !== 'TK_OPERATOR' &&
+                    (empty_anonymous_function ||
+                        last_type === 'TK_EQUALS' ||
+                        (last_type === 'TK_RESERVED' && is_special_word(flags.last_text) && flags.last_text !== 'else'))) {
                     output_space_before_token = true;
                 }
                 else {
@@ -12210,6 +14343,7 @@ var WorldSeedr;
             indent();
         }
         function handle_end_block() {
+            // statements must all be closed when their container closes
             while (flags.mode === MODE.Statement) {
                 restore_mode();
             }
@@ -12239,7 +14373,10 @@ var WorldSeedr;
         function handle_word() {
             if (start_of_statement()) {
             }
-            else if (input_wanted_newline && !is_expression(flags.mode) && (last_type !== 'TK_OPERATOR' || (flags.last_text === '--' || flags.last_text === '++')) && last_type !== 'TK_EQUALS' && (opt.preserve_newlines || !(last_type === 'TK_RESERVED' && in_array(flags.last_text, ['var', 'let', 'const', 'set', 'get'])))) {
+            else if (input_wanted_newline && !is_expression(flags.mode) &&
+                (last_type !== 'TK_OPERATOR' || (flags.last_text === '--' || flags.last_text === '++')) &&
+                last_type !== 'TK_EQUALS' &&
+                (opt.preserve_newlines || !(last_type === 'TK_RESERVED' && in_array(flags.last_text, ['var', 'let', 'const', 'set', 'get'])))) {
                 print_newline();
             }
             if (flags.do_block && !flags.do_while) {
@@ -12347,7 +14484,8 @@ var WorldSeedr;
             else if (last_type === 'TK_STRING') {
                 prefix = 'NEWLINE';
             }
-            else if (last_type === 'TK_RESERVED' || last_type === 'TK_WORD' || (flags.last_text === '*' && last_last_text === 'function')) {
+            else if (last_type === 'TK_RESERVED' || last_type === 'TK_WORD' ||
+                (flags.last_text === '*' && last_last_text === 'function')) {
                 prefix = 'SPACE';
             }
             else if (last_type === 'TK_START_BLOCK') {
@@ -12479,7 +14617,8 @@ var WorldSeedr;
                 return;
             }
             print_token();
-            if (flags.mode === MODE.ObjectLiteral || (flags.mode === MODE.Statement && flags.parent.mode === MODE.ObjectLiteral)) {
+            if (flags.mode === MODE.ObjectLiteral ||
+                (flags.mode === MODE.Statement && flags.parent.mode === MODE.ObjectLiteral)) {
                 if (flags.mode === MODE.Statement) {
                     restore_mode();
                 }
@@ -12492,7 +14631,9 @@ var WorldSeedr;
         }
         function handle_operator() {
             // Check if this is a BlockStatement that should be treated as a ObjectLiteral
-            if (token_text === ':' && flags.mode === MODE.BlockStatement && last_last_text === '{' && (last_type === 'TK_WORD' || last_type === 'TK_RESERVED')) {
+            if (token_text === ':' && flags.mode === MODE.BlockStatement &&
+                last_last_text === '{' &&
+                (last_type === 'TK_WORD' || last_type === 'TK_RESERVED')) {
                 flags.mode = MODE.ObjectLiteral;
             }
             if (start_of_statement()) {
@@ -12665,37 +14806,66 @@ var WorldSeedr;
         global.js_beautify = js_beautify;
     }
 }());
-/// <reference path="AudioPlayr-0.2.1.ts" />
-/// <reference path="ChangeLinr-0.2.0.ts" />
-/// <reference path="EightBittr-0.2.0.ts" />
-/// <reference path="FPSAnalyzr-0.2.1.ts" />
-/// <reference path="GamesRunnr-0.2.0.ts" />
-/// <reference path="GroupHoldr-0.2.1.ts" />
-/// <reference path="InputWritr-0.2.0.ts" />
-/// <reference path="LevelEditr-0.2.0.ts" />
-/// <reference path="MapsCreatr-0.2.1.ts" />
-/// <reference path="MapScreenr-0.2.1.ts" />
-/// <reference path="MapsHandlr-0.2.0.ts" />
-/// <reference path="ModAttachr-0.2.2.ts" />
-/// <reference path="NumberMakr-0.2.2.ts" />
-/// <reference path="ObjectMakr-0.2.2.ts" />
-/// <reference path="PixelDrawr-0.2.0.ts" />
-/// <reference path="PixelRendr-0.2.0.ts" />
-/// <reference path="QuadsKeepr-0.2.1.ts" />
-/// <reference path="StatsHoldr-0.2.1.ts" />
-/// <reference path="StringFilr-0.2.1.ts" />
-/// <reference path="ThingHittr-0.2.0.ts" />
-/// <reference path="TimeHandlr-0.2.0.ts" />
-/// <reference path="WorldSeedr-0.2.0.ts" />
-/// <reference path="js_beautify.ts" />
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
+// @echo '/// <reference path="AudioPlayr-0.2.1.ts" />'
+// @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
+// @echo '/// <reference path="EightBittr-0.2.0.ts" />'
+// @echo '/// <reference path="FPSAnalyzr-0.2.1.ts" />'
+// @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
+// @echo '/// <reference path="GroupHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="InputWritr-0.2.0.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="LevelEditr-0.2.0.ts" />'
+// @echo '/// <reference path="MapsCreatr-0.2.1.ts" />'
+// @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
+// @echo '/// <reference path="MapsHandlr-0.2.0.ts" />'
+// @echo '/// <reference path="MathDecidr-0.2.0.ts" />'
+// @echo '/// <reference path="ModAttachr-0.2.2.ts" />'
+// @echo '/// <reference path="NumberMakr-0.2.2.ts" />'
+// @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
+// @echo '/// <reference path="PixelDrawr-0.2.0.ts" />'
+// @echo '/// <reference path="PixelRendr-0.2.0.ts" />'
+// @echo '/// <reference path="QuadsKeepr-0.2.1.ts" />'
+// @echo '/// <reference path="ScenePlayr-0.2.0.ts" />'
+// @echo '/// <reference path="StringFilr-0.2.1.ts" />'
+// @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
+// @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
+// @echo '/// <reference path="TouchPassr-0.2.0.ts" />'
+// @echo '/// <reference path="UserWrappr-0.2.0.ts" />'
+// @echo '/// <reference path="WorldSeedr-0.2.0.ts" />'
+// @echo '/// <reference path="js_beautify.ts" />'
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/AudioPlayr-0.2.1.ts" />
+/// <reference path="References/ChangeLinr-0.2.0.ts" />
+/// <reference path="References/EightBittr-0.2.0.ts" />
+/// <reference path="References/FPSAnalyzr-0.2.1.ts" />
+/// <reference path="References/GamesRunnr-0.2.0.ts" />
+/// <reference path="References/GroupHoldr-0.2.1.ts" />
+/// <reference path="References/InputWritr-0.2.0.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
+/// <reference path="References/LevelEditr-0.2.0.ts" />
+/// <reference path="References/MapsCreatr-0.2.1.ts" />
+/// <reference path="References/MapScreenr-0.2.1.ts" />
+/// <reference path="References/MapsHandlr-0.2.0.ts" />
+/// <reference path="References/MathDecidr-0.2.0.ts" />
+/// <reference path="References/ModAttachr-0.2.2.ts" />
+/// <reference path="References/NumberMakr-0.2.2.ts" />
+/// <reference path="References/ObjectMakr-0.2.2.ts" />
+/// <reference path="References/PixelDrawr-0.2.0.ts" />
+/// <reference path="References/PixelRendr-0.2.0.ts" />
+/// <reference path="References/QuadsKeepr-0.2.1.ts" />
+/// <reference path="References/ScenePlayr-0.2.0.ts" />
+/// <reference path="References/StringFilr-0.2.1.ts" />
+/// <reference path="References/ThingHittr-0.2.0.ts" />
+/// <reference path="References/TimeHandlr-0.2.0.ts" />
+/// <reference path="References/TouchPassr-0.2.0.ts" />
+/// <reference path="References/UserWrappr-0.2.0.ts" />
+/// <reference path="References/WorldSeedr-0.2.0.ts" />
+/// <reference path="References/js_beautify.ts" />
+/// <reference path="GameStartr.d.ts" />
+// @endif
+// @include ../Source/GameStartr.d.ts
 var GameStartr;
-(function (_GameStartr) {
+(function (GameStartr_1) {
     "use strict";
     var GameStartr = (function (_super) {
         __extends(GameStartr, _super);
@@ -12720,12 +14890,14 @@ var GameStartr;
                         "NumberMakr": "References/NumberMakr/NumberMakr.ts",
                         "MapScreenr": "References/MapScreenr/MapScreenr.ts",
                         "MapsHandlr": "References/MapsHandlr/MapsHandlr.ts",
+                        "MathDecidr": "References/MathDecidr/MathDecidr.ts",
                         "ModAttachr": "References/ModAttachr/ModAttachr.ts",
                         "ObjectMakr": "References/ObjectMakr/ObjectMakr.ts",
                         "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
                         "PixelRendr": "References/PixelRendr/PixelRendr.ts",
+                        "ScenePlayr": "References/ScenePlayr/ScenePlayr.ts",
                         "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
-                        "StatsHoldr": "References/StatsHoldr/StatsHoldr.ts",
+                        "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
                         "StringFilr": "References/StringFilr/StringFilr.ts",
                         "ThingHittr": "References/ThingHittr/ThingHittr.ts",
                         "TimeHandlr": "References/TimeHandlr/TimeHandlr.ts"
@@ -12739,7 +14911,7 @@ var GameStartr;
                 "resetObjectMaker",
                 "resetPixelRender",
                 "resetTimeHandler",
-                "resetStatsHolder",
+                "resetItemsHolder",
                 "resetAudioPlayer",
                 "resetQuadsKeeper",
                 "resetGamesRunner",
@@ -12751,8 +14923,11 @@ var GameStartr;
                 "resetMapsCreator",
                 "resetMapsHandler",
                 "resetInputWriter",
+                "resetTouchPasser",
                 "resetLevelEditor",
                 "resetWorldSeeder",
+                "resetScenePlayer",
+                "resetMathDecider",
                 "resetModAttacher",
                 "startModAttacher",
                 "resetContainer"
@@ -12764,7 +14939,7 @@ var GameStartr;
          * Resets the GameStartr by calling the parent EightBittr.EightBittr.prototype.reset.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          */
         GameStartr.prototype.reset = function (GameStarter, customs) {
             EightBittr.EightBittr.prototype.reset(GameStarter, GameStarter.resets, customs);
@@ -12774,23 +14949,22 @@ var GameStartr;
          * EightBittr.EightBittr.prototype.resetTimed.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          * @return {Array} How long each reset Function took followed by the entire
-         * operation, in milliseconds.
+         *                 operation, in milliseconds.
          */
         GameStartr.prototype.resetTimed = function (GameStarter, customs) {
             return EightBittr.EightBittr.prototype.resetTimed(GameStarter, GameStarter.resets, customs);
         };
         /**
-         * Sets self.ObjectMaker.
+         * Sets this.ObjectMaker.
          *
          * Because many Thing functions require access to other FSM modules, each is
          * given a reference to this container FSM via properties.thing.GameStarter.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): ObjectMakr (src/ObjectMakr/ObjectMakr.js)
-         *                          objects.js (settings/objects.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): objects.js (settings/objects.js)
          */
         GameStartr.prototype.resetObjectMaker = function (GameStarter, customs) {
             GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(GameStarter.proliferate({
@@ -12807,12 +14981,11 @@ var GameStartr;
             }, GameStarter.settings.objects));
         };
         /**
-         * Sets self.QuadsKeeper.
+         * Sets this.QuadsKeeper.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): QuadsKeepr (src/QuadsKeepr/QuadsKeepr.js)
-         *                          quadrants.js (settings/quadrants.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): quadrants.js (settings/quadrants.js)
          */
         GameStartr.prototype.resetQuadsKeeper = function (GameStarter, customs) {
             var quadrantWidth = customs.width / (GameStarter.settings.quadrants.numCols - 3), quadrantHeight = customs.height / (GameStarter.settings.quadrants.numRows - 2);
@@ -12828,12 +15001,11 @@ var GameStartr;
             }, GameStarter.settings.quadrants));
         };
         /**
-         * Sets self.PixelRender.
+         * Sets this.PixelRender.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): PixelRendr (src/PixelRendr/PixelRendr.js)
-         *                          sprites.js (settings/sprites.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): sprites.js (settings/sprites.js)
          */
         GameStartr.prototype.resetPixelRender = function (GameStarter, customs) {
             GameStarter.PixelRender = new PixelRendr.PixelRendr(GameStarter.proliferate({
@@ -12843,12 +15015,11 @@ var GameStartr;
             }, GameStarter.settings.sprites));
         };
         /**
-         * Sets self.PixelDrawer.
+         * Sets this.PixelDrawer.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): PixelDrawr (src/PixelDrawr/PixelDrawr.js)
-         *                          renderer.js (settings/renderer.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): renderer.js (settings/renderer.js)
          */
         GameStartr.prototype.resetPixelDrawer = function (GameStarter, customs) {
             GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(GameStarter.proliferate({
@@ -12863,9 +15034,8 @@ var GameStartr;
          * Sets EightBitter.TimeHandler.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): TimeHandlr (src/TimeHandlr/TimeHandlr.js)
-         *                          events.js (settings/events.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): events.js (settings/events.js)
          */
         GameStartr.prototype.resetTimeHandler = function (GameStarter, customs) {
             GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(GameStarter.proliferate({
@@ -12874,25 +15044,23 @@ var GameStartr;
             }, GameStarter.settings.events));
         };
         /**
-         * Sets self.AudioPlayer.
+         * Sets this.AudioPlayer.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): AudioPlayr (src/AudioPlayr/AudioPlayr.js)
-         *                          audio.js (settings/audio.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): audio.js (settings/audio.js)
          */
         GameStartr.prototype.resetAudioPlayer = function (GameStarter, customs) {
             GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(GameStarter.proliferate({
-                "StatsHolder": GameStarter.StatsHolder
+                "ItemsHolder": GameStarter.ItemsHolder
             }, GameStarter.settings.audio));
         };
         /**
-         * Sets self.GamesRunner.
+         * Sets this.GamesRunner.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): GamesRunnr (src/GamesRunnr/GamesRunnr.js)
-         *                          runner.js (settings/runner.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): runner.js (settings/runner.js)
          */
         GameStartr.prototype.resetGamesRunner = function (GameStarter, customs) {
             GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(GameStarter.proliferate({
@@ -12905,36 +15073,33 @@ var GameStartr;
             }, GameStarter.settings.runner));
         };
         /**
-         * Sets self.StatsHolder.
+         * Sets this.ItemsHolder.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): StatsHoldr (src/StatsHoldr/StatsHoldr.js)
-         *                          statistics.js (settings/statistics.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): statistics.js (settings/statistics.js)
          */
-        GameStartr.prototype.resetStatsHolder = function (GameStarter, customs) {
-            GameStarter.StatsHolder = new StatsHoldr.StatsHoldr(GameStarter.proliferate({
+        GameStartr.prototype.resetItemsHolder = function (GameStarter, customs) {
+            GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(GameStarter.proliferate({
                 "callbackArgs": [GameStarter]
             }, GameStarter.settings.statistics));
         };
         /**
-         * Sets self.GroupHolder.
+         * Sets this.GroupHolder.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): GroupHoldr (src/ThingHittr/GroupHoldr.js)
-         *                          groups.js (settings/groups.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): groups.js (settings/groups.js)
          */
         GameStartr.prototype.resetGroupHolder = function (GameStarter, customs) {
             GameStarter.GroupHolder = new GroupHoldr.GroupHoldr(GameStarter.settings.groups);
         };
         /**
-         * Sets self.ThingHitter.
+         * Sets this.ThingHitter.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): ThingHittr (src/ThingHittr/ThingHittr.js)
-         *                          collisions.js (settings/collisions.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): collisions.js (settings/collisions.js)
          */
         GameStartr.prototype.resetThingHitter = function (GameStarter, customs) {
             GameStarter.ThingHitter = new ThingHittr.ThingHittr(GameStarter.proliferate({
@@ -12942,12 +15107,11 @@ var GameStartr;
             }, GameStarter.settings.collisions));
         };
         /**
-         * Sets self.MapScreener.
+         * Sets this.MapScreener.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): MapScreenr (src/MapScreenr/MapScreenr.js)
-         *                          maps.js (settings/maps.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         GameStartr.prototype.resetMapScreener = function (GameStarter, customs) {
             GameStarter.MapScreener = new MapScreenr.MapScreenr({
@@ -12960,21 +15124,19 @@ var GameStartr;
             });
         };
         /**
-         * Sets self.NumberMaker.
+         * Sets this.NumberMaker.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): NumberMaker (src/NumberMakr/NumberMakr.js)
+         * @param {Object} customs
          */
         GameStartr.prototype.resetNumberMaker = function (GameStarter, customs) {
             GameStarter.NumberMaker = new NumberMakr.NumberMakr();
         };
         /**
-         * Sets self.MapCreator.
+         * Sets this.MapCreator.
          *
          * @param {GameStartr} GameStarter
-         * @remarks Requirement(s): MapCreatr (src/MapCreatr/MapCreatr.js)
-         *                          maps.js (settings/maps.js)
+         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         GameStartr.prototype.resetMapsCreator = function (GameStarter, customs) {
             GameStarter.MapsCreator = new MapsCreatr.MapsCreatr({
@@ -12987,12 +15149,11 @@ var GameStartr;
             });
         };
         /**
-         * Sets self.MapsHandler.
+         * Sets this.MapsHandler.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): MapsHandlr (src/MapsHandlr/MapsHandlr.js)
-         *                          maps.js (settings/maps.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         GameStartr.prototype.resetMapsHandler = function (GameStarter, customs) {
             GameStarter.MapsHandler = new MapsHandlr.MapsHandlr({
@@ -13004,12 +15165,11 @@ var GameStartr;
             });
         };
         /**
-         * Sets self.InputWriter.
+         * Sets this.InputWriter.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): InputWritr (src/InputWritr/InputWritr.js)
-         *                          input.js (settings/input.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): input.js (settings/input.js)
          */
         GameStartr.prototype.resetInputWriter = function (GameStarter, customs) {
             GameStarter.InputWriter = new InputWritr.InputWritr(GameStarter.proliferate({
@@ -13017,26 +15177,36 @@ var GameStartr;
             }, GameStarter.settings.input.InputWritrArgs));
         };
         /**
-         * Sets self.LevelEditor.
+         * Sets this.InputWriter.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): LevelEditr (src/LevelEditr/LevelEditr.js)
-         *                          editor.js (settings/editor.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): touch.js (settings/touch.js)
+         */
+        GameStartr.prototype.resetTouchPasser = function (GameStarter, customs) {
+            GameStarter.TouchPasser = new TouchPassr.TouchPassr(GameStarter.proliferate({
+                "InputWriter": GameStarter.InputWriter
+            }, GameStarter.settings.touch));
+        };
+        /**
+         * Sets this.LevelEditor.
+         *
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): editor.js (settings/editor.js)
          */
         GameStartr.prototype.resetLevelEditor = function (GameStarter, customs) {
             GameStarter.LevelEditor = new LevelEditr.LevelEditr(GameStarter.proliferate({
                 "GameStarter": GameStarter,
-                "beautifier": js_beautify // Eventually there will be a custom beautifier... maybe
+                "beautifier": js_beautify
             }, GameStarter.settings.editor));
         };
         /**
-         * Sets self.WorldSeeder.
+         * Sets this.WorldSeeder.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): WorldSeedr (src/WorldSeedr/WorldSeedr.js)
-         *                          generator.js (settings/generator.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): generator.js (settings/generator.js)
          */
         GameStartr.prototype.resetWorldSeeder = function (GameStarter, customs) {
             GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(GameStarter.proliferate({
@@ -13045,17 +15215,38 @@ var GameStartr;
             }, GameStarter.settings.generator));
         };
         /**
-         * Sets self.ModAttacher.
+         * Sets this.ScenePlayer.
+         *
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): ModAttachr (src/ModAttachr/ModAttachr.js)
-         *                          mods.js (settings/mods.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): scenes.js (settings/scenes.js)
+         */
+        GameStartr.prototype.resetScenePlayer = function (GameStarter, customs) {
+            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.generator);
+        };
+        /**
+         * Sets this.MathDecider.
+         *
+         *
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): math.js (settings/math.js)
+         */
+        GameStartr.prototype.resetMathDecider = function (GameStarter, customs) {
+            GameStarter.MathDecider = new MathDecidr.MathDecidr(GameStarter.settings.math);
+        };
+        /**
+         * Sets this.ModAttacher.
+         *
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): mods.js (settings/mods.js)
          */
         GameStartr.prototype.resetModAttacher = function (GameStarter, customs) {
             GameStarter.ModAttacher = new ModAttachr.ModAttachr(GameStarter.proliferate({
                 "scopeDefault": GameStarter,
-                "StatsHoldr": GameStarter.StatsHolder
+                "ItemsHoldr": GameStarter.ItemsHolder
             }, GameStarter.settings.mods));
         };
         /**
@@ -13063,7 +15254,7 @@ var GameStartr;
          * is fired.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          */
         GameStartr.prototype.startModAttacher = function (GameStarter, customs) {
             var mods = customs.mods, i;
@@ -13078,10 +15269,10 @@ var GameStartr;
         };
         /**
          * Resets the parent HTML container. Width and height are set by customs,
-         * and canvas and StatsHolder container elements are added.
+         * and canvas, ItemsHolder, and TouchPassr container elements are added.
          *
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          */
         GameStartr.prototype.resetContainer = function (GameStarter, customs) {
             GameStarter.container = GameStarter.createElement("div", {
@@ -13095,6 +15286,7 @@ var GameStartr;
             GameStarter.canvas = GameStarter.createCanvas(customs.width, customs.height);
             GameStarter.PixelDrawer.setCanvas(GameStarter.canvas);
             GameStarter.container.appendChild(GameStarter.canvas);
+            GameStarter.TouchPasser.setParentContainer(GameStarter.container);
         };
         /* Global manipulations
         */
@@ -13295,6 +15487,7 @@ var GameStartr;
          */
         GameStartr.prototype.thingProcessAttributes = function (thing, attributes) {
             var attribute;
+            // For each listing in the attributes...
             for (attribute in attributes) {
                 // If the thing has that attribute as true:
                 if (thing[attribute]) {
@@ -13369,6 +15562,20 @@ var GameStartr;
         };
         /* Physics & similar
         */
+        /**
+         * Generically kills a Thing by setting its alive to false, hidden to true,
+         * and clearing its movement.
+         *
+         * @param {Thing} thing
+         */
+        GameStartr.prototype.killNormal = function (thing) {
+            if (!thing) {
+                return;
+            }
+            thing.alive = false;
+            thing.hidden = true;
+            thing.movement = undefined;
+        };
         /**
          * Sets a Thing's "changed" flag to true, which indicates to the PixelDrawr
          * to redraw the Thing and its quadrant.
@@ -13730,7 +15937,9 @@ var GameStartr;
          * @return {String} A key that to identify the Thing's sprite.
          */
         GameStartr.prototype.generateObjectKey = function (thing) {
-            return thing.GameStarter.MapsHandler.getArea().setting + " " + thing.groupType + " " + thing.title + " " + thing.className;
+            return thing.GameStarter.MapsHandler.getArea().setting
+                + " " + thing.groupType + " "
+                + thing.title + " " + thing.className;
         };
         /**
          * Sets the class of a Thing, sets the new sprite for it, and marks it as
@@ -13914,7 +16123,9 @@ var GameStartr;
          */
         GameStartr.prototype.ensureCorrectCaller = function (current) {
             if (!(current instanceof GameStartr)) {
-                throw new Error("A function requires the scope ('this') to be the " + "manipulated GameStartr object. Unfortunately, 'this' is a " + typeof (this) + ".");
+                throw new Error("A function requires the scope ('this') to be the "
+                    + "manipulated GameStartr object. Unfortunately, 'this' is a "
+                    + typeof (this) + ".");
             }
             return current;
         };
@@ -13985,990 +16196,5 @@ var GameStartr;
         };
         return GameStartr;
     })(EightBittr.EightBittr);
-    _GameStartr.GameStartr = GameStartr;
+    GameStartr_1.GameStartr = GameStartr;
 })(GameStartr || (GameStartr = {}));
-// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
-// @echo '/// <reference path="GameStartr-0.2.0.ts" />'
-// @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/StatsHoldr-0.2.1.ts" />
-/// <reference path="References/GameStartr-0.2.0.ts" />
-/// <reference path="UserWrappr.d.ts" />
-// @endif
-// @include ../Source/UserWrappr.d.ts
-var UserWrappr;
-(function (_UserWrappr) {
-    "use strict";
-    /**
-     * A user interface manager made to work on top of GameStartr implementations
-     * and provide a configurable HTML display of options.
-     */
-    var UserWrappr = (function () {
-        /**
-         * @param {IUserWrapprSettings} settings
-         */
-        function UserWrappr(settings) {
-            /**
-             * The document element that will contain the game.
-             */
-            this.documentElement = document.documentElement;
-            /**
-             * A browser-dependent method for request to enter full screen mode.
-             */
-            this.requestFullScreen = (this.documentElement.requestFullScreen || this.documentElement.webkitRequestFullScreen || this.documentElement.mozRequestFullScreen || this.documentElement.msRequestFullscreen || function () {
-                console.warn("Not able to request full screen...");
-            }).bind(this.documentElement);
-            /**
-             * A browser-dependent method for request to exit full screen mode.
-             */
-            this.cancelFullScreen = (this.documentElement.cancelFullScreen || this.documentElement.webkitCancelFullScreen || this.documentElement.mozCancelFullScreen || this.documentElement.msCancelFullScreen || function () {
-                console.warn("Not able to cancel full screen...");
-            }).bind(document);
-            this.customs = settings.customs || {};
-            this.GameStartrConstructor = settings.GameStartrConstructor;
-            this.settings = settings;
-            this.helpSettings = this.settings.helpSettings;
-            this.globalName = settings.globalName;
-            this.importSizes(settings.sizes);
-            this.gameNameAlias = this.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
-            this.gameElementSelector = settings.gameElementSelector || "#game";
-            this.gameControlsSelector = settings.gameControlsSelector || "#controls";
-            this.log = settings.log || console.log.bind(console);
-            this.isFullScreen = false;
-            this.setCurrentSize(this.sizes[settings.sizeDefault]);
-            this.allPossibleKeys = settings.allPossibleKeys || [
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "f",
-                "g",
-                "h",
-                "i",
-                "j",
-                "k",
-                "l",
-                "m",
-                "n",
-                "o",
-                "p",
-                "q",
-                "r",
-                "s",
-                "t",
-                "u",
-                "v",
-                "w",
-                "x",
-                "y",
-                "z",
-                "up",
-                "right",
-                "down",
-                "left",
-                "space",
-                "shift",
-                "ctrl"
-            ];
-            // Size information is also passed to modules via this.customs
-            this.GameStartrConstructor.prototype.proliferate(this.customs, this.currentSize, true);
-            this.resetGameStarter(settings, this.customs);
-        }
-        /**
-         * Resets the internal GameStarter by storing it under window, adding
-         * InputWritr pipes for input to the page, creating the HTML buttons,
-         * and setting additional CSS styles and page visiblity.
-         *
-         * @param {IUserWrapprSettings} settings
-         * @param {GameStartr.IGameStartrCustoms} customs
-         */
-        UserWrappr.prototype.resetGameStarter = function (settings, customs) {
-            if (customs === void 0) { customs = {}; }
-            this.loadGameStarter(this.fixCustoms(customs || {}));
-            window[settings.globalName || "GameStarter"] = this.GameStarter;
-            this.GameStarter.UserWrapper = this;
-            this.loadGenerators();
-            this.loadControls(settings.schemas);
-            if (settings.styleSheet) {
-                this.GameStarter.addPageStyles(settings.styleSheet);
-            }
-            this.resetPageVisibilityHandlers();
-            this.GameStarter.gameStart();
-        };
-        /* Simple gets
-        */
-        /**
-         * @return {IGameStartrConstructor} The GameStartr implementation this
-         *                                  is wrapping around.
-         */
-        UserWrappr.prototype.getGameStartrConstructor = function () {
-            return this.GameStartrConstructor;
-        };
-        /**
-         * @return {GameStartr} The GameStartr instance created by GameStartrConstructor
-         *                      and stored under window.
-         */
-        UserWrappr.prototype.getGameStarter = function () {
-            return this.GameStarter;
-        };
-        /**
-         * @return {StatsHoldr} The StatsHoldr used to store UI settings.
-         */
-        UserWrappr.prototype.getStatsHolder = function () {
-            return this.StatsHolder;
-        };
-        /**
-         * @return {Object} The settings used to construct this UserWrappr.
-         */
-        UserWrappr.prototype.getSettings = function () {
-            return this.settings;
-        };
-        /**
-         * @return {Object} The customs used to construct the GameStartr.
-         */
-        UserWrappr.prototype.getCustoms = function () {
-            return this.customs;
-        };
-        /**
-         * @return {Object} The help settings from settings.helpSettings.
-         */
-        UserWrappr.prototype.getHelpSettings = function () {
-            return this.helpSettings;
-        };
-        /**
-         * @return {String} What the global object is called, such as "window".
-         */
-        UserWrappr.prototype.getGlobalName = function () {
-            return this.globalName;
-        };
-        /**
-         * @return {String} What to replace with the name of the game in help
-         *                  text settings.
-         */
-        UserWrappr.prototype.getGameNameAlias = function () {
-            return this.gameNameAlias;
-        };
-        /**
-         * @return {String} All the keys the user is allowed to pick from.
-         */
-        UserWrappr.prototype.getAllPossibleKeys = function () {
-            return this.allPossibleKeys;
-        };
-        /**
-         * @return {Object} The allowed sizes for the game.
-         */
-        UserWrappr.prototype.getSizes = function () {
-            return this.sizes;
-        };
-        /**
-         * @return {Object} The currently selected size for the game.
-         */
-        UserWrappr.prototype.getCurrentSize = function () {
-            return this.currentSize;
-        };
-        /**
-         * @return {Boolean} Whether the game is currently in full screen mode.
-         */
-        UserWrappr.prototype.getIsFullScreen = function () {
-            return this.isFullScreen;
-        };
-        /**
-         * @return {Boolean} Whether the page is currently known to be hidden.
-         */
-        UserWrappr.prototype.getIsPageHidden = function () {
-            return this.isPageHidden;
-        };
-        /**
-         * @return {Function} A utility Function to log messages, commonly console.log.
-         */
-        UserWrappr.prototype.getLog = function () {
-            return this.log;
-        };
-        /**
-         * @return {Object} Generators used to generate HTML controls for the user.
-         */
-        UserWrappr.prototype.getGenerators = function () {
-            return this.generators;
-        };
-        /**
-         * @return {HTMLHtmlElement} The document element that contains the game.
-         */
-        UserWrappr.prototype.getDocumentElement = function () {
-            return this.documentElement;
-        };
-        /**
-         * @return {Function} The method to request to enter full screen mode.
-         */
-        UserWrappr.prototype.getRequestFullScreen = function () {
-            return this.requestFullScreen;
-        };
-        /**
-         * @return {Function} The method to request to exit full screen mode.
-         */
-        UserWrappr.prototype.getCancelFullScreen = function () {
-            return this.cancelFullScreen;
-        };
-        /* Externally allowed sets
-        */
-        /**
-         * Sets the size of the GameStartr by resetting the game with the size
-         * information as part of its customs object. Full screen status is
-         * changed accordingly.
-         *
-         * @param {Mixed} The size to set, as a String to retrieve the size from
-         *                known info, or a container of settings.
-         */
-        UserWrappr.prototype.setCurrentSize = function (size) {
-            if (typeof size === "string" || size.constructor === String) {
-                if (!this.sizes.hasOwnProperty(size)) {
-                    throw new Error("Size " + size + " does not exist on the UserWrappr.");
-                }
-                size = this.sizes[size];
-            }
-            this.customs = this.fixCustoms(this.customs);
-            if (size.full) {
-                this.requestFullScreen();
-                this.isFullScreen = true;
-            }
-            else if (this.isFullScreen) {
-                this.cancelFullScreen();
-                this.isFullScreen = false;
-            }
-            this.currentSize = size;
-            if (this.GameStarter) {
-                this.GameStarter.container.parentNode.removeChild(this.GameStarter.container);
-                this.resetGameStarter(this.settings, this.customs);
-            }
-        };
-        /* Help dialog
-        */
-        /**
-         * Displays the root help menu dialog, which contains all the openings
-         * for each help settings opening.
-         */
-        UserWrappr.prototype.displayHelpMenu = function () {
-            this.helpSettings.openings.forEach(this.logHelpText.bind(this));
-        };
-        /**
-         * Displays the texts of each help settings options, all surrounded by
-         * instructions on how to focus on a group.
-         */
-        UserWrappr.prototype.displayHelpOptions = function () {
-            this.logHelpText("To focus on a group, enter `" + this.globalName + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
-            Object.keys(this.helpSettings.options).forEach(this.displayHelpGroupSummary.bind(this));
-            this.logHelpText("\nTo focus on a group, enter `" + this.globalName + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
-        };
-        /**
-         * Displays the summary for a help group of the given optionName.
-         *
-         * @param {String} optionName   The help group to display the summary of.
-         */
-        UserWrappr.prototype.displayHelpGroupSummary = function (optionName) {
-            var actions = this.helpSettings.options[optionName], action, maxTitleLength = 0, i;
-            this.log("\n" + optionName);
-            for (i = 0; i < actions.length; i += 1) {
-                maxTitleLength = Math.max(maxTitleLength, this.filterHelpText(actions[i].title).length);
-            }
-            for (i = 0; i < actions.length; i += 1) {
-                action = actions[i];
-                this.log(this.padTextRight(this.filterHelpText(action.title), maxTitleLength) + " ... " + action.description);
-            }
-        };
-        /**
-         * Displays the full information on a help group of the given optionName.
-         *
-         * @param {String} optionName   The help group to display the information of.
-         */
-        UserWrappr.prototype.displayHelpOption = function (optionName) {
-            var actions = this.helpSettings.options[optionName], action, example, maxExampleLength, i, j;
-            for (i = 0; i < actions.length; i += 1) {
-                action = actions[i];
-                maxExampleLength = 0;
-                this.logHelpText(action.title + " -- " + action.description);
-                if (action.usage) {
-                    this.logHelpText(action.usage);
-                }
-                if (action.examples) {
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        maxExampleLength = Math.max(maxExampleLength, this.filterHelpText("    " + example.code).length);
-                    }
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        this.logHelpText(this.padTextRight(this.filterHelpText("    " + example.code), maxExampleLength) + "  // " + example.comment);
-                    }
-                }
-                this.log("\n");
-            }
-        };
-        /**
-         * Logs a bit of help text, filtered by this.filterHelpText.
-         *
-         * @param {String} text   The text to be filtered and logged.
-         */
-        UserWrappr.prototype.logHelpText = function (text) {
-            this.log(this.filterHelpText(text));
-        };
-        /**
-         * @param {String} text
-         * @return {String} The text, with gamenameAlias replaced by globalName.
-         */
-        UserWrappr.prototype.filterHelpText = function (text) {
-            return text.replace(new RegExp(this.gameNameAlias, "g"), this.globalName);
-        };
-        /**
-         * Ensures a bit of text is of least a certain length.
-         *
-         * @param {String} text   The text to pad.
-         * @param {Number} length   How wide the text must be, at minimum.
-         * @return {String} The text with spaces padded to the right.
-         */
-        UserWrappr.prototype.padTextRight = function (text, length) {
-            var diff = 1 + length - text.length;
-            if (diff <= 0) {
-                return text;
-            }
-            return text + Array.call(Array, diff).join(" ");
-        };
-        /* Settings parsing
-        */
-        /**
-         * Sets the internal this.sizes as a copy of the given sizes, but with
-         * names as members of every size summary.
-         *
-         * @param {Object} sizes   The listing of preset sizes to go by.
-         */
-        UserWrappr.prototype.importSizes = function (sizes) {
-            var i;
-            this.sizes = this.GameStartrConstructor.prototype.proliferate({}, sizes);
-            for (i in this.sizes) {
-                if (this.sizes.hasOwnProperty(i)) {
-                    this.sizes[i].name = this.sizes[i].name || i;
-                }
-            }
-        };
-        /**
-         *
-         */
-        UserWrappr.prototype.fixCustoms = function (customsRaw) {
-            var customs = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
-            this.GameStartrConstructor.prototype.proliferate(customs, this.currentSize);
-            if (!isFinite(customs.width)) {
-                customs.width = document.body.clientWidth;
-            }
-            if (!isFinite(customs.height)) {
-                if (customs.full) {
-                    customs.height = screen.height;
-                }
-                else if (this.isFullScreen) {
-                    // Guess for browser window...
-                    // @todo Actually compute this!
-                    customs.height = window.innerHeight - 140;
-                }
-                else {
-                    customs.height = window.innerHeight;
-                }
-                // 49px from header, 35px from menus
-                customs.height -= 84;
-            }
-            return customs;
-        };
-        /* Page visibility
-        */
-        /**
-         * Adds a "visibilitychange" handler to the document bound to
-         * this.handleVisibilityChange.
-         */
-        UserWrappr.prototype.resetPageVisibilityHandlers = function () {
-            document.addEventListener("visibilitychange", this.handleVisibilityChange.bind(this));
-        };
-        /**
-         * Handles a visibility change event by calling either this.onPageHidden
-         * or this.onPageVisible.
-         *
-         * @param {Event} event
-         */
-        UserWrappr.prototype.handleVisibilityChange = function (event) {
-            switch (document.visibilityState) {
-                case "hidden":
-                    this.onPageHidden();
-                    return;
-                case "visible":
-                    this.onPageVisible();
-                    return;
-                default:
-                    return;
-            }
-        };
-        /**
-         * Reacts to the page becoming hidden by pausing the GameStartr.
-         */
-        UserWrappr.prototype.onPageHidden = function () {
-            if (!this.GameStarter.GamesRunner.getPaused()) {
-                this.isPageHidden = true;
-                this.GameStarter.GamesRunner.pause();
-            }
-        };
-        /**
-         * Reacts to the page becoming visible by unpausing the GameStartr.
-         */
-        UserWrappr.prototype.onPageVisible = function () {
-            if (this.isPageHidden) {
-                this.isPageHidden = false;
-                this.GameStarter.GamesRunner.play();
-            }
-        };
-        /* Control section loaders
-        */
-        /**
-         * Loads the internal GameStarter, resetting it with the given customs
-         * and attaching handlers to document.body and the holder elements.
-         *
-         * @param {Object} customs   Custom arguments to pass to this.GameStarter.
-         */
-        UserWrappr.prototype.loadGameStarter = function (customs) {
-            var section = document.querySelector(this.gameElementSelector);
-            if (this.GameStarter) {
-                this.GameStarter.GamesRunner.pause();
-            }
-            this.GameStarter = new this.GameStartrConstructor(customs);
-            section.textContent = "";
-            section.appendChild(this.GameStarter.container);
-            this.GameStarter.proliferate(document.body, {
-                "onkeydown": this.GameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
-                "onkeyup": this.GameStarter.InputWriter.makePipe("onkeyup", "keyCode")
-            });
-            this.GameStarter.proliferate(section, {
-                "onmousedown": this.GameStarter.InputWriter.makePipe("onmousedown", "which"),
-                "oncontextmenu": this.GameStarter.InputWriter.makePipe("oncontextmenu", null, true)
-            });
-        };
-        /**
-         * Loads the internal OptionsGenerator instances under this.generators.
-         */
-        UserWrappr.prototype.loadGenerators = function () {
-            this.generators = {
-                OptionsButtons: new UISchemas.OptionsButtonsGenerator(this),
-                OptionsTable: new UISchemas.OptionsTableGenerator(this),
-                LevelEditor: new UISchemas.LevelEditorGenerator(this),
-                MapsGrid: new UISchemas.MapsGridGenerator(this)
-            };
-        };
-        /**
-         * Loads the externally facing UI controls and the internal StatsHolder,
-         * appending the controls to the controls HTML element.
-         *
-         * @param {Object[]} schemas   The schemas each a UI control to be made.
-         */
-        UserWrappr.prototype.loadControls = function (schemas) {
-            var section = document.querySelector(this.gameControlsSelector), length = schemas.length, i;
-            this.StatsHolder = new StatsHoldr.StatsHoldr({
-                "prefix": this.globalName + "::UserWrapper::StatsHolder",
-                "proliferate": this.GameStarter.proliferate,
-                "createElement": this.GameStarter.createElement
-            });
-            section.textContent = "";
-            section.className = "length-" + length;
-            for (i = 0; i < length; i += 1) {
-                section.appendChild(this.loadControlDiv(schemas[i]));
-            }
-        };
-        /**
-         * Creates an individual UI control element based on a UI schema.
-         *
-         * @param {Object} schema
-         * @return {HTMLDivElement}
-         */
-        UserWrappr.prototype.loadControlDiv = function (schema) {
-            var control = document.createElement("div"), heading = document.createElement("h4"), inner = document.createElement("div");
-            control.className = "control";
-            control.id = "control-" + schema.title;
-            heading.textContent = schema.title;
-            inner.className = "control-inner";
-            inner.appendChild(this.generators[schema.generator].generate(schema));
-            control.appendChild(heading);
-            control.appendChild(inner);
-            // Touch events often propogate to children before the control div has
-            // been fully extended. Setting the "active" attribute fixes that.
-            control.onmouseover = setTimeout.bind(undefined, function () {
-                control.setAttribute("active", "on");
-            }, 35);
-            control.onmouseout = function () {
-                control.setAttribute("active", "off");
-            };
-            return control;
-        };
-        return UserWrappr;
-    })();
-    _UserWrappr.UserWrappr = UserWrappr;
-    var UISchemas;
-    (function (UISchemas) {
-        /**
-         * Base class for options generators. These all store a UserWrapper and
-         * its GameStartr, along with a generate Function
-         */
-        var AbstractOptionsGenerator = (function () {
-            /**
-             * @param {UserWrappr} UserWrappr
-             */
-            function AbstractOptionsGenerator(UserWrapper) {
-                this.UserWrapper = UserWrapper;
-                this.GameStarter = this.UserWrapper.getGameStarter();
-            }
-            /**
-             * Generates a control element based on the provided schema.
-             */
-            AbstractOptionsGenerator.prototype.generate = function (schema) {
-                throw new Error("AbstractOptionsGenerator is abstract. Subclass it.");
-            };
-            /**
-             * Recursively searches for an element with the "control" class
-             * that's a parent of the given element.
-             *
-             * @param {HTMLElement} element
-             * @return {HTMLElement}
-             */
-            AbstractOptionsGenerator.prototype.getParentControlDiv = function (element) {
-                if (element.className === "control") {
-                    return element;
-                }
-                else if (!element.parentNode) {
-                    return undefined;
-                }
-                return this.getParentControlDiv(element.parentElement);
-            };
-            /**
-             * Ensures a child's required local storage value is being stored,
-             * and adds it to the internal GameStarter.StatsHolder if not. If it
-             * is, and the child's value isn't equal to it, the value is set.
-             *
-             * @param {Mixed} childRaw   An input or select element, or an Array
-             *                           thereof.
-             * @param {Object} details   Details containing the title of the item
-             *                           and the source Function to get its value.
-             * @param {Object} schema   The container schema this child is within.
-             */
-            AbstractOptionsGenerator.prototype.ensureLocalStorageValue = function (childRaw, details, schema) {
-                if (childRaw.constructor === Array) {
-                    this.ensureLocalStorageValues(childRaw, details, schema);
-                    return;
-                }
-                var child = childRaw, key = schema.title + "::" + details.title, valueDefault = details.source.call(this, this.GameStarter).toString(), value;
-                child.setAttribute("localStorageKey", key);
-                this.GameStarter.StatsHolder.addItem(key, {
-                    "storeLocally": true,
-                    "valueDefault": valueDefault
-                });
-                value = this.GameStarter.StatsHolder.getItem(key);
-                if (value !== "" && value !== child.value) {
-                    child.value = value;
-                    if (child.setValue) {
-                        child.setValue(value);
-                    }
-                    else if (child.onchange) {
-                        child.onchange(undefined);
-                    }
-                    else if (child.onclick) {
-                        child.onclick(undefined);
-                    }
-                }
-            };
-            /**
-             * The equivalent of ensureLocalStorageValue for an entire set of
-             * elements, running the equivalent logic on all of them.
-             *
-             * @param {Mixed} childRaw   An Array of input or select elements.
-             * @param {Object} details   Details containing the title of the item
-             *                           and the source Function to get its value.
-             * @param {Object} schema   The container schema this child is within.
-             */
-            AbstractOptionsGenerator.prototype.ensureLocalStorageValues = function (children, details, schema) {
-                var keyGeneral = schema.title + "::" + details.title, values = details.source.call(this, this.GameStarter), key, value, child, i;
-                for (i = 0; i < children.length; i += 1) {
-                    key = keyGeneral + "::" + i;
-                    child = children[i];
-                    child.setAttribute("localStorageKey", key);
-                    this.GameStarter.StatsHolder.addItem(key, {
-                        "storeLocally": true,
-                        "valueDefault": values[i]
-                    });
-                    value = this.GameStarter.StatsHolder.getItem(key);
-                    if (value !== "" && value !== child.value) {
-                        child.value = value;
-                        if (child.onchange) {
-                            child.onchange(undefined);
-                        }
-                        else if (child.onclick) {
-                            child.onclick(undefined);
-                        }
-                    }
-                }
-            };
-            /**
-             * Stores an element's value in the internal GameStarter.StatsHolder,
-             * if it has the "localStorageKey" attribute.
-             *
-             * @param {HTMLElement} child   An element with a value to store.
-             * @param {Mixed} value   What value is to be stored under the key.
-             */
-            AbstractOptionsGenerator.prototype.storeLocalStorageValue = function (child, value) {
-                var key = child.getAttribute("localStorageKey");
-                if (key) {
-                    this.GameStarter.StatsHolder.setItem(key, value);
-                }
-            };
-            return AbstractOptionsGenerator;
-        })();
-        UISchemas.AbstractOptionsGenerator = AbstractOptionsGenerator;
-        /**
-         * A buttons generator for an options section that contains any number
-         * of general buttons.
-         */
-        var OptionsButtonsGenerator = (function (_super) {
-            __extends(OptionsButtonsGenerator, _super);
-            function OptionsButtonsGenerator() {
-                _super.apply(this, arguments);
-            }
-            OptionsButtonsGenerator.prototype.generate = function (schema) {
-                var output = document.createElement("div"), options = schema.options instanceof Function ? schema.options.call(self, this.GameStarter) : schema.options, optionKeys = Object.keys(options), keyActive = schema.keyActive || "active", classNameStart = "select-option options-button-option", scope = this, option, element, i;
-                output.className = "select-options select-options-buttons";
-                for (i = 0; i < optionKeys.length; i += 1) {
-                    option = options[optionKeys[i]];
-                    element = document.createElement("div");
-                    element.className = classNameStart;
-                    element.textContent = optionKeys[i];
-                    element.onclick = function (schema, element) {
-                        if (scope.getParentControlDiv(element).getAttribute("active") !== "on") {
-                            return;
-                        }
-                        schema.callback.call(scope, scope.GameStarter, schema, element);
-                        if (element.getAttribute("option-enabled") === "true") {
-                            element.setAttribute("option-enabled", "false");
-                            element.className = classNameStart + " option-disabled";
-                        }
-                        else {
-                            element.setAttribute("option-enabled", "true");
-                            element.className = classNameStart + " option-enabled";
-                        }
-                    }.bind(undefined, schema, element);
-                    if (option[keyActive]) {
-                        element.className += " option-enabled";
-                        element.setAttribute("option-enabled", "true");
-                    }
-                    else if (schema.assumeInactive) {
-                        element.className += " option-disabled";
-                        element.setAttribute("option-enabled", "false");
-                    }
-                    else {
-                        element.setAttribute("option-enabled", "true");
-                    }
-                    output.appendChild(element);
-                }
-                return output;
-            };
-            return OptionsButtonsGenerator;
-        })(AbstractOptionsGenerator);
-        UISchemas.OptionsButtonsGenerator = OptionsButtonsGenerator;
-        /**
-         * An options generator for a table of options,.
-         */
-        var OptionsTableGenerator = (function (_super) {
-            __extends(OptionsTableGenerator, _super);
-            function OptionsTableGenerator() {
-                _super.apply(this, arguments);
-                this.optionTypes = {
-                    "Boolean": this.setBooleanInput,
-                    "Keys": this.setKeyInput,
-                    "Number": this.setNumberInput,
-                    "Select": this.setSelectInput,
-                    "ScreenSize": this.setScreenSizeInput
-                };
-            }
-            OptionsTableGenerator.prototype.generate = function (schema) {
-                var output = document.createElement("div"), table = document.createElement("table"), option, action, row, label, input, child, i;
-                output.className = "select-options select-options-table";
-                if (schema.options) {
-                    for (i = 0; i < schema.options.length; i += 1) {
-                        row = document.createElement("tr");
-                        label = document.createElement("td");
-                        input = document.createElement("td");
-                        option = schema.options[i];
-                        label.className = "options-label-" + option.type;
-                        label.textContent = option.title;
-                        input.className = "options-cell-" + option.type;
-                        row.appendChild(label);
-                        row.appendChild(input);
-                        child = this.optionTypes[schema.options[i].type].call(this, input, option, schema);
-                        if (option.storeLocally) {
-                            this.ensureLocalStorageValue(child, option, schema);
-                        }
-                        table.appendChild(row);
-                    }
-                }
-                output.appendChild(table);
-                if (schema.actions) {
-                    for (i = 0; i < schema.actions.length; i += 1) {
-                        row = document.createElement("div");
-                        action = schema.actions[i];
-                        row.className = "select-option options-button-option";
-                        row.textContent = action.title;
-                        row.onclick = action.action.bind(this, this.GameStarter);
-                        output.appendChild(row);
-                    }
-                }
-                return output;
-            };
-            OptionsTableGenerator.prototype.setBooleanInput = function (input, details, schema) {
-                var status = details.source.call(this, this.GameStarter), statusClass = status ? "enabled" : "disabled", scope = this;
-                input.className = "select-option options-button-option option-" + statusClass;
-                input.textContent = status ? "on" : "off";
-                input.onclick = function () {
-                    input.setValue(input.textContent === "off");
-                };
-                input.setValue = function (newStatus) {
-                    if (newStatus.constructor === String) {
-                        if (newStatus === "false" || newStatus === "off") {
-                            newStatus = false;
-                        }
-                        else if (newStatus === "true" || newStatus === "on") {
-                            newStatus = true;
-                        }
-                    }
-                    if (newStatus) {
-                        details.enable.call(scope, scope.GameStarter);
-                        input.textContent = "on";
-                        input.className = input.className.replace("disabled", "enabled");
-                    }
-                    else {
-                        details.disable.call(scope, scope.GameStarter);
-                        input.textContent = "off";
-                        input.className = input.className.replace("enabled", "disabled");
-                    }
-                    if (details.storeLocally) {
-                        scope.storeLocalStorageValue(input, newStatus.toString());
-                    }
-                };
-                return input;
-            };
-            OptionsTableGenerator.prototype.setKeyInput = function (input, details, schema) {
-                var values = details.source.call(this, this.GameStarter), children = [], child, scope = this, i, j;
-                for (i = 0; i < values.length; i += 1) {
-                    child = document.createElement("select");
-                    child.className = "options-key-option";
-                    for (j = 0; j < this.UserWrapper.getAllPossibleKeys().length; j += 1) {
-                        child.appendChild(new Option(this.UserWrapper.getAllPossibleKeys()[j]));
-                    }
-                    child.value = child.valueOld = values[i].toLowerCase();
-                    child.onchange = (function (child) {
-                        details.callback.call(scope, scope.GameStarter, child.valueOld, child.value);
-                        if (details.storeLocally) {
-                            scope.storeLocalStorageValue(child, child.value);
-                        }
-                    }).bind(undefined, child);
-                    children.push(child);
-                    input.appendChild(child);
-                }
-                return children;
-            };
-            OptionsTableGenerator.prototype.setNumberInput = function (input, details, schema) {
-                var child = document.createElement("input"), scope = this;
-                child.type = "number";
-                child.value = Number(details.source.call(scope, scope.GameStarter)).toString();
-                child.min = (details.minimum || 0).toString();
-                child.max = (details.maximum || Math.max(details.minimum + 10, 10)).toString();
-                child.onchange = child.oninput = function () {
-                    if (child.checkValidity()) {
-                        details.update.call(scope, scope.GameStarter, child.value);
-                    }
-                    if (details.storeLocally) {
-                        scope.storeLocalStorageValue(child, child.value);
-                    }
-                };
-                input.appendChild(child);
-                return child;
-            };
-            OptionsTableGenerator.prototype.setSelectInput = function (input, details, schema) {
-                var child = document.createElement("select"), options = details.options(this.GameStarter), scope = this, i;
-                for (i = 0; i < options.length; i += 1) {
-                    child.appendChild(new Option(options[i]));
-                }
-                child.value = details.source.call(scope, scope.GameStarter);
-                child.onchange = function () {
-                    details.update.call(scope, scope.GameStarter, child.value);
-                    child.blur();
-                    if (details.storeLocally) {
-                        scope.storeLocalStorageValue(child, child.value);
-                    }
-                };
-                input.appendChild(child);
-                return child;
-            };
-            OptionsTableGenerator.prototype.setScreenSizeInput = function (input, details, schema) {
-                var scope = this, child;
-                details.options = function () {
-                    return Object.keys(scope.UserWrapper.getSizes());
-                };
-                details.source = function () {
-                    return scope.UserWrapper.getCurrentSize().name;
-                };
-                details.update = function (GameStarter, value) {
-                    if (value === scope.UserWrapper.getCurrentSize()) {
-                        return undefined;
-                    }
-                    scope.UserWrapper.setCurrentSize(value);
-                };
-                child = scope.setSelectInput(input, details, schema);
-                return child;
-            };
-            return OptionsTableGenerator;
-        })(AbstractOptionsGenerator);
-        UISchemas.OptionsTableGenerator = OptionsTableGenerator;
-        /**
-         * Options generator for a LevelEditr dialog.
-         */
-        var LevelEditorGenerator = (function (_super) {
-            __extends(LevelEditorGenerator, _super);
-            function LevelEditorGenerator() {
-                _super.apply(this, arguments);
-            }
-            LevelEditorGenerator.prototype.generate = function (schema) {
-                var output = document.createElement("div"), title = document.createElement("div"), button = document.createElement("div"), between = document.createElement("div"), uploader = this.createUploaderDiv(), scope = this;
-                output.className = "select-options select-options-level-editor";
-                title.className = "select-option-title";
-                title.textContent = "Create your own custom levels:";
-                button.className = "select-option select-option-large options-button-option";
-                button.innerHTML = "Start the <br /> Level Editor!";
-                button.onclick = function () {
-                    scope.GameStarter.LevelEditor.enable();
-                };
-                between.className = "select-option-title";
-                between.innerHTML = "<em>- or -</em><br />";
-                output.appendChild(title);
-                output.appendChild(button);
-                output.appendChild(between);
-                output.appendChild(uploader);
-                return output;
-            };
-            LevelEditorGenerator.prototype.createUploaderDiv = function () {
-                var uploader = document.createElement("div"), input = document.createElement("input");
-                uploader.className = "select-option select-option-large options-button-option";
-                uploader.textContent = "Click to upload and continue your editor files!";
-                uploader.setAttribute("textOld", uploader.textContent);
-                input.type = "file";
-                input.className = "select-upload-input";
-                input.onchange = this.handleFileDrop.bind(this, input, uploader);
-                uploader.ondragenter = this.handleFileDragEnter.bind(this, uploader);
-                uploader.ondragover = this.handleFileDragOver.bind(this, uploader);
-                uploader.ondragleave = input.ondragend = this.handleFileDragLeave.bind(this, uploader);
-                uploader.ondrop = this.handleFileDrop.bind(this, input, uploader);
-                uploader.onclick = input.click.bind(input);
-                uploader.appendChild(input);
-                return uploader;
-            };
-            LevelEditorGenerator.prototype.handleFileDragEnter = function (uploader, event) {
-                if (event.dataTransfer) {
-                    event.dataTransfer.dropEffect = "copy";
-                }
-                uploader.className += " hovering";
-            };
-            LevelEditorGenerator.prototype.handleFileDragOver = function (uploader, event) {
-                event.preventDefault();
-                return false;
-            };
-            LevelEditorGenerator.prototype.handleFileDragLeave = function (element, event) {
-                if (event.dataTransfer) {
-                    event.dataTransfer.dropEffect = "none";
-                }
-                element.className = element.className.replace(" hovering", "");
-            };
-            LevelEditorGenerator.prototype.handleFileDrop = function (input, uploader, event) {
-                var files = input.files || event.dataTransfer.files, file = files[0], reader = new FileReader();
-                this.handleFileDragLeave(input, event);
-                event.preventDefault();
-                event.stopPropagation();
-                reader.onprogress = this.handleFileUploadProgress.bind(this, file, uploader);
-                reader.onloadend = this.handleFileUploadCompletion.bind(this, file, uploader);
-                reader.readAsText(file);
-            };
-            LevelEditorGenerator.prototype.handleFileUploadProgress = function (file, uploader, event) {
-                var percent;
-                if (!event.lengthComputable) {
-                    return;
-                }
-                percent = Math.round((event.loaded / event.total) * 100);
-                if (percent > 100) {
-                    percent = 100;
-                }
-                uploader.innerText = "Uploading '" + file.name + "' (" + percent + "%)...";
-            };
-            LevelEditorGenerator.prototype.handleFileUploadCompletion = function (file, uploader, event) {
-                this.GameStarter.LevelEditor.handleUploadCompletion(event);
-                uploader.innerText = uploader.getAttribute("textOld");
-            };
-            return LevelEditorGenerator;
-        })(AbstractOptionsGenerator);
-        UISchemas.LevelEditorGenerator = LevelEditorGenerator;
-        /**
-         * Options generator for a grid of maps, along with other options.
-         */
-        var MapsGridGenerator = (function (_super) {
-            __extends(MapsGridGenerator, _super);
-            function MapsGridGenerator() {
-                _super.apply(this, arguments);
-            }
-            MapsGridGenerator.prototype.generate = function (schema) {
-                var output = document.createElement("div");
-                output.className = "select-options select-options-maps-grid";
-                if (schema.rangeX && schema.rangeY) {
-                    output.appendChild(this.generateRangedTable(schema));
-                }
-                if (schema.extras) {
-                    this.appendExtras(output, schema);
-                }
-                return output;
-            };
-            MapsGridGenerator.prototype.generateRangedTable = function (schema) {
-                var scope = this, table = document.createElement("table"), rangeX = schema.rangeX, rangeY = schema.rangeY, row, cell, i, j;
-                for (i = rangeY[0]; i <= rangeY[1]; i += 1) {
-                    row = document.createElement("tr");
-                    row.className = "maps-grid-row";
-                    for (j = rangeX[0]; j <= rangeX[1]; j += 1) {
-                        cell = document.createElement("td");
-                        cell.className = "select-option maps-grid-option maps-grid-option-range";
-                        cell.textContent = i + "-" + j;
-                        cell.onclick = (function (callback) {
-                            if (scope.getParentControlDiv(cell).getAttribute("active") === "on") {
-                                callback();
-                            }
-                        }).bind(scope, schema.callback.bind(scope, scope.GameStarter, schema, cell));
-                        row.appendChild(cell);
-                    }
-                    table.appendChild(row);
-                }
-                return table;
-            };
-            MapsGridGenerator.prototype.appendExtras = function (output, schema) {
-                var element, extra, i, j;
-                for (i in schema.extras) {
-                    if (!schema.extras.hasOwnProperty(i)) {
-                        continue;
-                    }
-                    extra = schema.extras[i];
-                    element = document.createElement("div");
-                    element.className = "select-option maps-grid-option maps-grid-option-extra";
-                    element.textContent = extra.title;
-                    element.setAttribute("value", extra.title);
-                    element.onclick = extra.callback.bind(this, this.GameStarter, schema, element);
-                    output.appendChild(element);
-                    if (extra.extraElements) {
-                        for (j = 0; j < extra.extraElements.length; j += 1) {
-                            output.appendChild(this.GameStarter.createElement.apply(this.GameStarter, extra.extraElements[j]));
-                        }
-                    }
-                }
-            };
-            return MapsGridGenerator;
-        })(AbstractOptionsGenerator);
-        UISchemas.MapsGridGenerator = MapsGridGenerator;
-    })(UISchemas = _UserWrappr.UISchemas || (_UserWrappr.UISchemas = {}));
-})(UserWrappr || (UserWrappr = {}));

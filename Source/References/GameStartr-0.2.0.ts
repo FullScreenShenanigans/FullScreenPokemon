@@ -5,6 +5,7 @@
 /// <reference path="GamesRunnr-0.2.0.ts" />
 /// <reference path="GroupHoldr-0.2.1.ts" />
 /// <reference path="InputWritr-0.2.0.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
 /// <reference path="LevelEditr-0.2.0.ts" />
 /// <reference path="MapsCreatr-0.2.1.ts" />
 /// <reference path="MapScreenr-0.2.1.ts" />
@@ -15,10 +16,11 @@
 /// <reference path="PixelDrawr-0.2.0.ts" />
 /// <reference path="PixelRendr-0.2.0.ts" />
 /// <reference path="QuadsKeepr-0.2.1.ts" />
-/// <reference path="StatsHoldr-0.2.1.ts" />
+/// <reference path="ScenePlayr-0.2.0.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
 /// <reference path="ThingHittr-0.2.0.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
+/// <reference path="TouchPassr-0.2.0.ts" />
 /// <reference path="WorldSeedr-0.2.0.ts" />
 /// <reference path="js_beautify.ts" />
 
@@ -56,8 +58,10 @@ declare module GameStartr {
         "quadrants": IQuadsKeeprCustoms;
         "renderer": IPixelDrawrCustoms;
         "runner": IGamesRunnrCustoms;
+        "scenes": IScenePlayrCustoms;
         "sprites": IPixelRendrCustoms;
-        "statistics": IStatsHoldrCustoms;
+        "statistics": IItemsHoldrCustoms;
+        "touch": ITouchPassrCustoms;
         [i: string]: IGameStartrCustomsObject;
     }
 
@@ -96,6 +100,15 @@ declare module GameStartr {
             keyCodesToAliases?: { [i: number]: string };
             isRecording?: boolean | InputWritr.IInputWriterBooleanGetter;
         }
+    }
+
+    export interface IItemsHoldrCustoms extends IGameStartrCustomsObject {
+        "prefix": string;
+        "doMakeContainer"?: boolean;
+        "displayChanges"?: { [i: string]: string };
+        "containersArguments": any[][];
+        "defaults": { [i: string]: string };
+        "values": { [i: string]: ItemsHoldr.IItemValueSettings };
     }
 
     export interface ILevelEditrCustoms extends IGameStartrCustomsObject {
@@ -161,14 +174,7 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
-    export interface IStatsHoldrCustoms extends IGameStartrCustomsObject {
-        "prefix": string;
-        "doMakeContainer"?: boolean;
-        "displayChanges"?: { [i: string]: string };
-        "containersArguments": any[][];
-        "defaults": { [i: string]: string };
-        "values": { [i: string]: StatsHoldr.IStatsValueSettings };
-    }
+    export interface IScenePlayrCustoms extends IGameStartrCustomsObject { }
 
     export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
 
@@ -181,6 +187,8 @@ declare module GameStartr {
         "keyCycleCheckValidity"?: string;
         "copyCycleSettings"?: boolean;
     }
+
+    export interface ITouchPassrCustoms extends IGameStartrCustomsObject, TouchPassr.ITouchPassrSettings { }
 
     export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
         "numRows": number;
@@ -211,11 +219,13 @@ declare module GameStartr {
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
         ObjectMaker: ObjectMakr.IObjectMakr;
-        StatsHolder: StatsHoldr.IStatsHoldr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
         ThingHitter: ThingHittr.IThingHittr;
         TimeHandler: TimeHandlr.ITimeHandlr;
+        TouchPasser: TouchPassr.ITouchPassr;
         QuadsKeeper: QuadsKeepr.IQuadsKeepr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
+        ScenePlayer: ScenePlayr.IScenePlayr;
         UserWrapper: any;
         reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
         resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
@@ -223,6 +233,7 @@ declare module GameStartr {
         resetGamesRunner(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetGroupHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetInputWriter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetTouchPasser(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetLevelEditor(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetNumberMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapsCreator(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
@@ -232,11 +243,12 @@ declare module GameStartr {
         resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetObjectMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetStatsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetItemsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetThingHitter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetTimeHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetScenePlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         scrollWindow(dx: number, dy?: number): void;
@@ -342,6 +354,7 @@ module GameStartr {
         public GamesRunner: GamesRunnr.GamesRunnr;
         public GroupHolder: GroupHoldr.GroupHoldr;
         public InputWriter: InputWritr.InputWritr;
+        public ItemsHolder: ItemsHoldr.ItemsHoldr;
         public LevelEditor: LevelEditr.LevelEditr;
         public NumberMaker: NumberMakr.NumberMakr;
         public MapsCreator: MapsCreatr.MapsCreatr;
@@ -351,9 +364,10 @@ module GameStartr {
         public PixelDrawer: PixelDrawr.PixelDrawr;
         public PixelRender: PixelRendr.PixelRendr;
         public ObjectMaker: ObjectMakr.ObjectMakr;
-        public StatsHolder: StatsHoldr.StatsHoldr;
+        public ScenePlayer: ScenePlayr.ScenePlayr;
         public ThingHitter: ThingHittr.ThingHittr;
         public TimeHandler: TimeHandlr.TimeHandlr;
+        public TouchPasser: TouchPassr.TouchPassr;
         public QuadsKeeper: QuadsKeepr.QuadsKeepr;
         public WorldSeeder: WorldSeedr.WorldSeedr;
 
@@ -376,7 +390,7 @@ module GameStartr {
             "resetObjectMaker",
             "resetPixelRender",
             "resetTimeHandler",
-            "resetStatsHolder",
+            "resetItemsHolder",
             "resetAudioPlayer",
             "resetQuadsKeeper",
             "resetGamesRunner",
@@ -388,8 +402,10 @@ module GameStartr {
             "resetMapsCreator",
             "resetMapsHandler",
             "resetInputWriter",
+            "resetTouchPasser",
             "resetLevelEditor",
             "resetWorldSeeder",
+            "resetScenePlayer",
             "resetModAttacher",
             "startModAttacher",
             "resetContainer"
@@ -435,7 +451,7 @@ module GameStartr {
                         "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
                         "PixelRendr": "References/PixelRendr/PixelRendr.ts",
                         "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
-                        "StatsHoldr": "References/StatsHoldr/StatsHoldr.ts",
+                        "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
                         "StringFilr": "References/StringFilr/StringFilr.ts",
                         "ThingHittr": "References/ThingHittr/ThingHittr.ts",
                         "TimeHandlr": "References/TimeHandlr/TimeHandlr.ts"
@@ -451,10 +467,10 @@ module GameStartr {
          * Resets the GameStartr by calling the parent EightBittr.EightBittr.prototype.reset.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          */
         reset(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): void {
-            super.reset(GameStarter, GameStarter.resets, customs);
+            EightBittr.EightBittr.prototype.reset(GameStarter, GameStarter.resets, customs);
         }
 
         /**
@@ -462,193 +478,209 @@ module GameStartr {
          * EightBittr.EightBittr.prototype.resetTimed.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          * @return {Array} How long each reset Function took followed by the entire
-         * operation, in milliseconds.
+         *                 operation, in milliseconds.
          */
         resetTimed(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): any[] {
             return EightBittr.EightBittr.prototype.resetTimed(GameStarter, GameStarter.resets, customs);
         }
 
         /**
-         * Sets self.ObjectMaker.
+         * Sets this.ObjectMaker.
          * 
          * Because many Thing functions require access to other FSM modules, each is
          * given a reference to this container FSM via properties.thing.GameStarter. 
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): ObjectMakr (src/ObjectMakr/ObjectMakr.js)
-         *                          objects.js (settings/objects.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): objects.js (settings/objects.js)
          */
         resetObjectMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(GameStarter.proliferate({
-                "properties": {
-                    "Quadrant": {
-                        "EightBitter": GameStarter,
-                        "GameStarter": GameStarter
+            GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(
+                GameStarter.proliferate(
+                    {
+                        "properties": {
+                            "Quadrant": {
+                                "EightBitter": GameStarter,
+                                "GameStarter": GameStarter
+                            },
+                            "Thing": {
+                                "EightBitter": GameStarter,
+                                "GameStarter": GameStarter
+                            }
+                        }
                     },
-                    "Thing": {
-                        "EightBitter": GameStarter,
-                        "GameStarter": GameStarter
-                    }
-                }
-            }, GameStarter.settings.objects));
+                    GameStarter.settings.objects));
         }
 
         /**
-         * Sets self.QuadsKeeper.
+         * Sets this.QuadsKeeper.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): QuadsKeepr (src/QuadsKeepr/QuadsKeepr.js)
-         *                          quadrants.js (settings/quadrants.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): quadrants.js (settings/quadrants.js)
          */
         resetQuadsKeeper(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             var quadrantWidth: number = customs.width / (GameStarter.settings.quadrants.numCols - 3),
                 quadrantHeight: number = customs.height / (GameStarter.settings.quadrants.numRows - 2);
 
-            GameStarter.QuadsKeeper = new QuadsKeepr.QuadsKeepr(GameStarter.proliferate({
-                "ObjectMaker": GameStarter.ObjectMaker,
-                "createCanvas": GameStarter.createCanvas,
-                "quadrantWidth": quadrantWidth,
-                "quadrantHeight": quadrantHeight,
-                "startLeft": -quadrantWidth,
-                "startHeight": -quadrantHeight,
-                "onAdd": GameStarter.onAreaSpawn.bind(GameStarter, GameStarter),
-                "onRemove": GameStarter.onAreaUnspawn.bind(GameStarter, GameStarter)
-            }, GameStarter.settings.quadrants));
+            GameStarter.QuadsKeeper = new QuadsKeepr.QuadsKeepr(
+                GameStarter.proliferate(
+                    {
+                        "ObjectMaker": GameStarter.ObjectMaker,
+                        "createCanvas": GameStarter.createCanvas,
+                        "quadrantWidth": quadrantWidth,
+                        "quadrantHeight": quadrantHeight,
+                        "startLeft": -quadrantWidth,
+                        "startHeight": -quadrantHeight,
+                        "onAdd": GameStarter.onAreaSpawn.bind(GameStarter, GameStarter),
+                        "onRemove": GameStarter.onAreaUnspawn.bind(GameStarter, GameStarter)
+                    },
+                    GameStarter.settings.quadrants));
         }
 
         /**
-         * Sets self.PixelRender.
+         * Sets this.PixelRender.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): PixelRendr (src/PixelRendr/PixelRendr.js)
-         *                          sprites.js (settings/sprites.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): sprites.js (settings/sprites.js)
          */
         resetPixelRender(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.PixelRender = new PixelRendr.PixelRendr(GameStarter.proliferate({
-                "scale": GameStarter.scale,
-                "QuadsKeeper": GameStarter.QuadsKeeper,
-                "unitsize": GameStarter.unitsize
-            }, GameStarter.settings.sprites));
+            GameStarter.PixelRender = new PixelRendr.PixelRendr(
+                GameStarter.proliferate(
+                    {
+                        "scale": GameStarter.scale,
+                        "QuadsKeeper": GameStarter.QuadsKeeper,
+                        "unitsize": GameStarter.unitsize
+                    },
+                    GameStarter.settings.sprites));
         }
 
         /**
-         * Sets self.PixelDrawer.
+         * Sets this.PixelDrawer.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): PixelDrawr (src/PixelDrawr/PixelDrawr.js)
-         *                          renderer.js (settings/renderer.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): renderer.js (settings/renderer.js)
          */
         resetPixelDrawer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(GameStarter.proliferate({
-                "PixelRender": GameStarter.PixelRender,
-                "MapScreener": GameStarter.MapScreener,
-                "createCanvas": GameStarter.createCanvas,
-                "unitsize": GameStarter.unitsize,
-                "generateObjectKey": GameStarter.generateObjectKey
-            }, GameStarter.settings.renderer));
+            GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(
+                GameStarter.proliferate(
+                    {
+                        "PixelRender": GameStarter.PixelRender,
+                        "MapScreener": GameStarter.MapScreener,
+                        "createCanvas": GameStarter.createCanvas,
+                        "unitsize": GameStarter.unitsize,
+                        "generateObjectKey": GameStarter.generateObjectKey
+                    },
+                    GameStarter.settings.renderer));
         }
 
         /**
          * Sets EightBitter.TimeHandler.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): TimeHandlr (src/TimeHandlr/TimeHandlr.js)
-         *                          events.js (settings/events.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): events.js (settings/events.js)
          */
         resetTimeHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(GameStarter.proliferate({
-                "classAdd": GameStarter.addClass,
-                "classRemove": GameStarter.removeClass
-            }, GameStarter.settings.events));
+            GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(
+                GameStarter.proliferate(
+                    {
+                        "classAdd": GameStarter.addClass,
+                        "classRemove": GameStarter.removeClass
+                    },
+                    GameStarter.settings.events));
         }
 
         /**
-         * Sets self.AudioPlayer.
+         * Sets this.AudioPlayer.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): AudioPlayr (src/AudioPlayr/AudioPlayr.js)
-         *                          audio.js (settings/audio.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): audio.js (settings/audio.js)
          */
         resetAudioPlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(GameStarter.proliferate({
-                "StatsHolder": GameStarter.StatsHolder
-            }, GameStarter.settings.audio));
+            GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(
+                GameStarter.proliferate(
+                    {
+                        "ItemsHolder": GameStarter.ItemsHolder
+                    },
+                    GameStarter.settings.audio));
         }
 
         /**
-         * Sets self.GamesRunner.
+         * Sets this.GamesRunner.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): GamesRunnr (src/GamesRunnr/GamesRunnr.js)
-         *                          runner.js (settings/runner.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): runner.js (settings/runner.js)
          */
         resetGamesRunner(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(GameStarter.proliferate({
-                "adjustFramerate": true,
-                "interval": 1000 / 60,
-                "scope": GameStarter,
-                "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
-                "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
-                "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
-            }, GameStarter.settings.runner));
+            GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(
+                GameStarter.proliferate(
+                    {
+                        "adjustFramerate": true,
+                        "interval": 1000 / 60,
+                        "scope": GameStarter,
+                        "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
+                        "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
+                        "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
+                    },
+                    GameStarter.settings.runner));
         }
 
         /**
-         * Sets self.StatsHolder.
+         * Sets this.ItemsHolder.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): StatsHoldr (src/StatsHoldr/StatsHoldr.js)
-         *                          statistics.js (settings/statistics.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): statistics.js (settings/statistics.js)
          */
-        resetStatsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.StatsHolder = new StatsHoldr.StatsHoldr(GameStarter.proliferate({
-                "callbackArgs": [GameStarter]
-            }, GameStarter.settings.statistics));
+        resetItemsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(
+                GameStarter.proliferate(
+                    {
+                        "callbackArgs": [GameStarter]
+                    },
+                    GameStarter.settings.statistics));
         }
 
         /**
-         * Sets self.GroupHolder.
+         * Sets this.GroupHolder.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): GroupHoldr (src/ThingHittr/GroupHoldr.js)
-         *                          groups.js (settings/groups.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): groups.js (settings/groups.js)
          */
         resetGroupHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.GroupHolder = new GroupHoldr.GroupHoldr(GameStarter.settings.groups);
         }
 
         /**
-         * Sets self.ThingHitter.
+         * Sets this.ThingHitter.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): ThingHittr (src/ThingHittr/ThingHittr.js)
-         *                          collisions.js (settings/collisions.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): collisions.js (settings/collisions.js)
          */
         resetThingHitter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ThingHitter = new ThingHittr.ThingHittr(GameStarter.proliferate({
-                "scope": GameStarter
-            }, GameStarter.settings.collisions));
+            GameStarter.ThingHitter = new ThingHittr.ThingHittr(
+                GameStarter.proliferate(
+                    {
+                        "scope": GameStarter
+                    },
+                    GameStarter.settings.collisions));
         }
 
         /**
-         * Sets self.MapScreener.
+         * Sets this.MapScreener.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): MapScreenr (src/MapScreenr/MapScreenr.js)
-         *                          maps.js (settings/maps.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         resetMapScreener(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.MapScreener = new MapScreenr.MapScreenr({
@@ -662,22 +694,20 @@ module GameStartr {
         }
 
         /**
-         * Sets self.NumberMaker.
+         * Sets this.NumberMaker.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): NumberMaker (src/NumberMakr/NumberMakr.js)
+         * @param {Object} customs
          */
         resetNumberMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.NumberMaker = new NumberMakr.NumberMakr();
         }
 
         /**
-         * Sets self.MapCreator.
+         * Sets this.MapCreator.
          * 
          * @param {GameStartr} GameStarter
-         * @remarks Requirement(s): MapCreatr (src/MapCreatr/MapCreatr.js)
-         *                          maps.js (settings/maps.js)
+         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         resetMapsCreator(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.MapsCreator = new MapsCreatr.MapsCreatr({
@@ -691,12 +721,11 @@ module GameStartr {
         }
 
         /**
-         * Sets self.MapsHandler.
+         * Sets this.MapsHandler.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): MapsHandlr (src/MapsHandlr/MapsHandlr.js)
-         *                          maps.js (settings/maps.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         resetMapsHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.MapsHandler = new MapsHandlr.MapsHandlr({
@@ -709,62 +738,98 @@ module GameStartr {
         }
 
         /**
-         * Sets self.InputWriter.
+         * Sets this.InputWriter.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): InputWritr (src/InputWritr/InputWritr.js)
-         *                          input.js (settings/input.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): input.js (settings/input.js)
          */
         resetInputWriter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.InputWriter = new InputWritr.InputWritr(GameStarter.proliferate({
-                "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
-            }, GameStarter.settings.input.InputWritrArgs));
+            GameStarter.InputWriter = new InputWritr.InputWritr(
+                GameStarter.proliferate(
+                    {
+                        "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
+                    },
+                    GameStarter.settings.input.InputWritrArgs));
         }
 
         /**
-         * Sets self.LevelEditor.
+         * Sets this.InputWriter.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): LevelEditr (src/LevelEditr/LevelEditr.js)
-         *                          editor.js (settings/editor.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): touch.js (settings/touch.js)
+         */
+        resetTouchPasser(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.TouchPasser = new TouchPassr.TouchPassr(
+                GameStarter.proliferate(
+                    {
+                        "InputWriter": GameStarter.InputWriter
+                    },
+                    GameStarter.settings.touch));
+        }
+
+        /**
+         * Sets this.LevelEditor.
+         * 
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): editor.js (settings/editor.js)
          */
         resetLevelEditor(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.LevelEditor = new LevelEditr.LevelEditr(GameStarter.proliferate({
-                "GameStarter": GameStarter,
-                "beautifier": js_beautify // Eventually there will be a custom beautifier... maybe
-            }, GameStarter.settings.editor));
+            GameStarter.LevelEditor = new LevelEditr.LevelEditr(
+                GameStarter.proliferate(
+                    {
+                        "GameStarter": GameStarter,
+                        "beautifier": js_beautify
+                    },
+                    GameStarter.settings.editor));
         }
 
         /**
-         * Sets self.WorldSeeder.
+         * Sets this.WorldSeeder.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): WorldSeedr (src/WorldSeedr/WorldSeedr.js)
-         *                          generator.js (settings/generator.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): generator.js (settings/generator.js)
          */
         resetWorldSeeder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(GameStarter.proliferate({
-                "random": GameStarter.NumberMaker.random.bind(GameStarter.NumberMaker),
-                "onPlacement": GameStarter.mapPlaceRandomCommands.bind(GameStarter, GameStarter)
-            }, GameStarter.settings.generator));
+            GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(
+                GameStarter.proliferate(
+                    {
+                        "random": GameStarter.NumberMaker.random.bind(GameStarter.NumberMaker),
+                        "onPlacement": GameStarter.mapPlaceRandomCommands.bind(GameStarter, GameStarter)
+                    },
+                    GameStarter.settings.generator));
         }
 
         /**
-         * Sets self.ModAttacher.
+         * Sets this.ScenePlayer.
+         * 
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
-         * @remarks Requirement(s): ModAttachr (src/ModAttachr/ModAttachr.js)
-         *                          mods.js (settings/mods.js)
+         * @param {Object} customs
+         * @remarks Requirement(s): scenes.js (settings/scenes.js)
+         */
+        resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.generator);
+        }
+
+        /**
+         * Sets this.ModAttacher.
+         * 
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): mods.js (settings/mods.js)
          */
         resetModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ModAttacher = new ModAttachr.ModAttachr(GameStarter.proliferate({
-                "scopeDefault": GameStarter,
-                "StatsHoldr": GameStarter.StatsHolder
-            }, GameStarter.settings.mods));
+            GameStarter.ModAttacher = new ModAttachr.ModAttachr(
+                GameStarter.proliferate(
+                    {
+                        "scopeDefault": GameStarter,
+                        "ItemsHoldr": GameStarter.ItemsHolder
+                    },
+                    GameStarter.settings.mods));
         }
 
         /** 
@@ -772,7 +837,7 @@ module GameStartr {
          * is fired.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          */
         startModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             var mods: { [i: string]: boolean } = customs.mods,
@@ -791,25 +856,28 @@ module GameStartr {
 
         /**
          * Resets the parent HTML container. Width and height are set by customs, 
-         * and canvas and StatsHolder container elements are added.
+         * and canvas, ItemsHolder, and TouchPassr container elements are added.
          * 
          * @param {GameStartr} GameStarter
-         * @param {Object} [customs]
+         * @param {Object} customs
          */
         resetContainer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.container = <HTMLDivElement>GameStarter.createElement("div", {
                 "className": "EightBitter",
-                "style": GameStarter.proliferate({
-                    "position": "relative",
-                    "width": customs.width + "px",
-                    "height": customs.height + "px"
-                }, customs.style)
+                "style": GameStarter.proliferate(
+                    {
+                        "position": "relative",
+                        "width": customs.width + "px",
+                        "height": customs.height + "px"
+                    },
+                    customs.style)
             });
 
             GameStarter.canvas = GameStarter.createCanvas(customs.width, customs.height);
             GameStarter.PixelDrawer.setCanvas(GameStarter.canvas);
-
             GameStarter.container.appendChild(GameStarter.canvas);
+
+            GameStarter.TouchPasser.setParentContainer(GameStarter.container);
         }
 
 
