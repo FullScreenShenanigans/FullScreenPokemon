@@ -2235,646 +2235,636 @@ module FullScreenPokemon {
             }
         }
 
-    /**
-     * 
-     */
-    function generateHitCharacterThing() {
-        return function hitCharacterSolid(thing, other) {
-            // If either Thing is the player, it should be the first
-            if (other.player && !thing.player) {
-                var temp = other;
-                other = thing;
-                thing = temp;
-            }
+        /**
+         * 
+         */
+        generateHitCharacterThing(): (thing: ICharacter, other: IThing) => boolean {
+            return function hitCharacterSolid(thing: ICharacter, other: ICharacter): boolean {
+                // If either Thing is the player, it should be the first
+                if (other.player && !thing.player) {
+                    var temp: ICharacter = other;
+                    other = thing;
+                    thing = temp;
+                }
 
-            // The other's collide may return true to cancel overlapping checks
-            if (other.collide && other.collide(thing, other)) {
+                // The other's collide may return true to cancel overlapping checks
+                if (other.collide && other.collide(thing, other)) {
+                    return;
+                }
+
+                // Both the thing and other should know they're bordering each other
+                // If other is a large solid, this will be irreleveant, so it's ok
+                // that multiple borderings will be replaced by the most recent
+                switch (thing.FSP.getDirectionBordering(thing, other)) {
+                    case 0:
+                        if (
+                            thing.left !== other.right - other.tolRight
+                            && thing.right !== other.left + other.tolLeft
+                            ) {
+                            thing.bordering[0] = other;
+                            other.bordering[2] = thing;
+                            thing.FSP.setTop(
+                                thing, other.bottom - other.tolBottom
+                                );
+                        }
+                        break;
+
+                    case 1:
+                        if (
+                            thing.top !== other.bottom - other.tolBottom
+                            && thing.bottom !== other.top + other.tolTop
+                            ) {
+                            thing.bordering[1] = other;
+                            other.bordering[3] = thing;
+                            thing.FSP.setRight(
+                                thing, other.left + other.tolLeft
+                                );
+                        }
+                        break;
+
+                    case 2:
+                        if (
+                            thing.left !== other.right - other.tolRight
+                            && thing.right !== other.left + other.tolLeft
+                            ) {
+                            thing.bordering[2] = other;
+                            other.bordering[0] = thing;
+                            thing.FSP.setBottom(
+                                thing, other.top + other.tolTop
+                                );
+                        }
+                        break;
+
+                    case 3:
+                        if (
+                            thing.top !== other.bottom - other.tolBottom
+                            && thing.bottom !== other.top + other.tolTop
+                            ) {
+                            thing.bordering[3] = other;
+                            other.bordering[1] = thing;
+                            thing.FSP.setLeft(
+                                thing, other.right - other.tolRight
+                                );
+                        }
+                        break;
+
+                    default:
+                        throw new Error("Unknown direction borering.");
+                }
+            }
+        }
+
+        /**
+         * 
+         */
+        collideCollisionDetector(thing: IPlayer, other: IDetector): boolean {
+            if (!thing.player) {
                 return;
             }
 
-            // Both the thing and other should know they're bordering each other
-            // If other is a large solid, this will be irreleveant, so it's ok
-            // that multiple borderings will be replaced by the most recent
-            switch (thing.FSP.getDirectionBordering(thing, other)) {
-                case 0:
-                    if (
-                        thing.left !== other.right - other.tolRight
-                        && thing.right !== other.left + other.tolLeft
-                        ) {
-                        thing.bordering[0] = other;
-                        other.bordering[2] = thing;
-                        thing.FSP.setTop(
-                            thing, other.bottom - other.tolBottom
-                            );
-                    }
-                    break;
-
-                case 1:
-                    if (
-                        thing.top !== other.bottom - other.tolBottom
-                        && thing.bottom !== other.top + other.tolTop
-                        ) {
-                        thing.bordering[1] = other;
-                        other.bordering[3] = thing;
-                        thing.FSP.setRight(
-                            thing, other.left + other.tolLeft
-                            );
-                    }
-                    break;
-
-                case 2:
-                    if (
-                        thing.left !== other.right - other.tolRight
-                        && thing.right !== other.left + other.tolLeft
-                        ) {
-                        thing.bordering[2] = other;
-                        other.bordering[0] = thing;
-                        thing.FSP.setBottom(
-                            thing, other.top + other.tolTop
-                            );
-                    }
-                    break;
-
-                case 3:
-                    if (
-                        thing.top !== other.bottom - other.tolBottom
-                        && thing.bottom !== other.top + other.tolTop
-                        ) {
-                        thing.bordering[3] = other;
-                        other.bordering[1] = thing;
-                        thing.FSP.setLeft(
-                            thing, other.right - other.tolRight
-                            );
-                    }
-                    break;
-            }
-        }
-    }
-
-    /**
-     * 
-     */
-    function collideCollisionDetector(thing, other) {
-        if (!thing.player) {
-            return;
-        }
-
-        if (other.active) {
-            if (
-                (!other.requireOverlap && !thing.isWalking)
-                || thing.FSP.isThingWithinOther(thing, other)
-                ) {
+            if (other.active) {
                 if (
-                    typeof other.requireDirection !== "undefined"
-                    && !thing.keys[other.requireDirection]
-                    && !thing.allowDirectionAsKeys
-                    && thing.direction !== other.requireDirection
+                    (!other.requireOverlap && !thing.isWalking)
+                    || thing.FSP.isThingWithinOther(thing, other)
                     ) {
-                    return;
+                    if (
+                        typeof other.requireDirection !== "undefined"
+                        && !thing.keys[other.requireDirection]
+                        && !thing.allowDirectionAsKeys
+                        && thing.direction !== other.requireDirection
+                        ) {
+                        return;
+                    }
+                    if (other.singleUse) {
+                        other.active = false;
+                    }
+                    other.activate(thing, other)
                 }
-                if (other.singleUse) {
-                    other.active = false;
-                }
-                other.activate(thing, other)
+                return true;
             }
-            return true;
+
+            // Find direction of movement using xvel, yvel
+            // if towards other, transport
+            var directionMovement = thing.direction,
+                directionActual = thing.FSP.getDirectionBordering(thing, other);
+
+            if (directionMovement === directionActual) {
+                other.active = true;
+                return true;
+            }
         }
 
-        // Find direction of movement using xvel, yvel
-        // if towards other, transport
-        var directionMovement = thing.direction,
-            directionActual = thing.FSP.getDirectionBordering(thing, other);
+        /**
+         * 
+         */
+        collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
+            var dialog = other.dialog,
+                direction;
 
-        if (directionMovement === directionActual) {
-            other.active = true;
-            return true;
-        }
-    }
+            if (other.cutscene) {
+                thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
+                    "thing": thing,
+                    "triggerer": other
+                });
+            }
 
-    /**
-     * 
-     */
-    function collideCharacterDialog(thing, other) {
-        var dialog = other.dialog,
-            direction;
-
-        if (other.cutscene) {
-            thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
-                "thing": thing,
-                "triggerer": other
-            });
-        }
-
-        if (!dialog) {
-            return;
-        }
-
-        direction = thing.FSP.getDirectionBordering(other, thing);
-
-        if (other.dialogDirections) {
-            dialog = dialog[direction];
             if (!dialog) {
                 return;
             }
-        }
 
-        thing.talking = true;
-        other.talking = true;
-        thing.canKeyWalking = false;
+            direction = thing.FSP.getDirectionBordering(other, thing);
 
-        if (!thing.FSP.MenuGrapher.getActiveMenu()) {
-            thing.FSP.MenuGrapher.createMenu("GeneralText", {
-                "deleteOnFinish": !other.dialogOptions
-            });
-            thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
-            thing.FSP.MenuGrapher.addMenuDialog(
-                "GeneralText",
-                dialog,
-                animateCharacterDialogFinish.bind(undefined, thing, other)
-                );
-        }
+            if (other.dialogDirections) {
+                dialog = dialog[direction];
+                if (!dialog) {
+                    return;
+                }
+            }
 
-        if (other.switchDirectionOnDialog) {
-            thing.FSP.animateCharacterSetDirection(other, direction);
-        }
-    }
+            thing.talking = true;
+            other.talking = true;
+            thing.canKeyWalking = false;
 
-    /**
-     * 
-     */
-    function collidePokeball(thing, other) {
-        switch (other.action) {
-            case "item":
-                thing.FSP.MenuGrapher.createMenu("GeneralText");
+            if (!thing.FSP.MenuGrapher.getActiveMenu()) {
+                thing.FSP.MenuGrapher.createMenu("GeneralText", {
+                    "deleteOnFinish": !other.dialogOptions
+                });
+                thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
                 thing.FSP.MenuGrapher.addMenuDialog(
                     "GeneralText",
-                    [
-                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
-                    ],
-                    function () {
-                        thing.FSP.MenuGrapher.deleteActiveMenu();
-                        thing.FSP.killNormal(other);
-                        thing.FSP.StateHolder.addChange(
-                            other.id, "alive", false
-                            );
+                    dialog,
+                    animateCharacterDialogFinish.bind(undefined, thing, other)
+                    );
+            }
+
+            if (other.switchDirectionOnDialog) {
+                thing.FSP.animateCharacterSetDirection(other, direction);
+            }
+        }
+
+        /**
+         * 
+         */
+        collidePokeball(thing: IThing, other: IPokeball) {
+            switch (other.action) {
+                case "item":
+                    thing.FSP.MenuGrapher.createMenu("GeneralText");
+                    thing.FSP.MenuGrapher.addMenuDialog(
+                        "GeneralText",
+                        [
+                            "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
+                        ],
+                        function () {
+                            thing.FSP.MenuGrapher.deleteActiveMenu();
+                            thing.FSP.killNormal(other);
+                            thing.FSP.StateHolder.addChange(
+                                other.id, "alive", false
+                                );
+                        }
+                        );
+                    thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+
+                    thing.FSP.addItemToBag(thing.FSP, other.item, other.amount);
+                    break;
+
+                case "cutscene":
+                    thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
+                        "player": thing,
+                        "triggerer": other
+                    });
+                    if (other.routine) {
+                        thing.FSP.ScenePlayer.playRoutine(other.routine);
                     }
-                    );
-                thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                    break;
 
-                thing.FSP.addItemToBag(
-                    thing.FSP, other.item, other.amount
-                    );
-                break;
+                case "pokedex":
+                    thing.FSP.openPokedexListing(other.pokemon);
+                    break;
 
-            case "cutscene":
+                case "dialog":
+                    thing.FSP.MenuGrapher.createMenu("GeneralText");
+                    thing.FSP.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
+                    thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                    break;
+
+                case "yes/no":
+                    thing.FSP.MenuGrapher.createMenu("Yes/No", {
+                        "killOnB": ["GeneralText"],
+                    });
+                    thing.FSP.MenuGrapher.addMenuList("Yes/No", {
+                        "options": [{
+                            "text": "YES",
+                            "callback": console.log.bind(console, "What do, yes?")
+                        }, {
+                                "text": "NO",
+                                "callback": console.log.bind(console, "What do, no?")
+                            }]
+                    });
+                    thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
+                    break;
+            }
+        }
+
+        /**
+         * 
+         */
+        collideCharacterGrass(thing: ICharacter, other: IGrass) {
+            if (
+                thing.grass
+                || !thing.FSP.isThingWithinGrass(thing, other)) {
+                return true;
+            }
+
+            thing.grass = other;
+            thing.heightOld = thing.height;
+
+            thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
+            thing.FSP.PixelDrawer.setThingSprite(thing);
+
+            thing.shadow = thing.FSP.ObjectMaker.make(thing.title, {
+                "nocollide": true
+            });
+
+            if (thing.shadow.className !== thing.className) {
+                thing.FSP.setClass(thing.shadow, thing.className);
+            }
+
+            delete thing.shadow.id;
+            thing.FSP.addThing(thing.shadow, thing.left, thing.top);
+
+            thing.FSP.GroupHolder.switchObjectGroup(
+                thing.shadow, thing.shadow.groupType, "Terrain"
+                );
+
+            thing.FSP.arrayToEnd(
+                thing.shadow, thing.FSP.GroupHolder.getTerrainGroup());
+
+            return true;
+        }
+
+        /**
+         * 
+         */
+        collideLedge(thing: ICharacter, other: IThing): boolean {
+            if (thing.ledge) {
+                return true;
+            }
+
+            if (thing.direction !== other.direction) {
+                return false;
+            }
+
+            switch (thing.direction % 2) {
+                case 0:
+                    if (thing.left === other.right || thing.right === other.left) {
+                        return true;
+                    }
+                    break;
+                case 1:
+                    if (thing.top === other.bottom || thing.bottom === other.top) {
+                        return true;
+                    }
+                    break;
+            }
+
+            thing.FSP.animateCharacterHopLedge(thing, other);
+
+            return true;
+        }
+
+
+        /* Death
+        */
+
+        /**
+         * Standard Function to kill a Thing, which means marking it as dead and
+         * clearing its numquads, resting, movement, and cycles. It will later be
+         * removed by its maintain* Function.
+         * 
+         * @param {Thing} thing
+         */
+        killNormal(thing: IThing): void {
+            if (!thing) {
+                return;
+            }
+
+            thing.nocollide = thing.hidden = thing.dead = true;
+            thing.alive = false;
+            thing.numquads = 0;
+            thing.movement = undefined;
+
+            if (thing.FSP) {
+                thing.FSP.TimeHandler.cancelAllCycles(thing);
+                thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
+
+                if (thing.id) {
+                    delete thing.FSP.MapScreener.thingsById[thing.id];
+                }
+            }
+        }
+
+
+        /* Activations
+        */
+
+        /**
+         * 
+         */
+        activateCutsceneTriggerer(thing: ICharacter, other: IDetector): void {
+            if (!other.alive || thing.collidedTrigger == other) {
+                return;
+            }
+
+            thing.collidedTrigger = other;
+            thing.FSP.animatePlayerDialogFreeze(thing);
+
+            if (!other.keepAlive) {
+                other.alive = false;
+
+                if (other.id.indexOf("Anonymous") !== -1) {
+                    console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
+                }
+
+                thing.FSP.StateHolder.addChange(other.id, "alive", false);
+                thing.FSP.killNormal(other);
+            }
+
+            if (other.cutscene) {
                 thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
                     "player": thing,
                     "triggerer": other
                 });
-                if (other.routine) {
-                    thing.FSP.ScenePlayer.playRoutine(other.routine);
-                }
-                break;
-
-            case "pokedex":
-                thing.FSP.openPokedexListing(other.pokemon);
-                break;
-
-            case "dialog":
-                thing.FSP.MenuGrapher.createMenu("GeneralText");
-                thing.FSP.MenuGrapher.addMenuDialog(
-                    "GeneralText", other.dialog
-                    );
-                thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
-                break;
-
-            case "yes/no":
-                thing.FSP.MenuGrapher.createMenu("Yes/No", {
-                    "killOnB": ["GeneralText"],
-                });
-                thing.FSP.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [{
-                        "text": "YES",
-                        "callback": console.log.bind(console, "What do, yes?")
-                    }, {
-                            "text": "NO",
-                            "callback": console.log.bind(console, "What do, no?")
-                        }]
-                });
-                thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
-                break;
-        }
-    }
-
-    /**
-     * 
-     */
-    function collideCharacterGrass(thing, other) {
-        if (
-            thing.grass
-            || !thing.FSP.isThingWithinGrass(thing, other)
-            ) {
-            return true;
-        }
-
-        thing.grass = other;
-        thing.heightOld = thing.height;
-
-        thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
-        thing.FSP.PixelDrawer.setThingSprite(thing);
-
-        thing.shadow = thing.FSP.ObjectMaker.make(thing.title, {
-            "nocollide": true
-        });
-
-        if (thing.shadow.className !== thing.className) {
-            thing.FSP.setClass(thing.shadow, thing.className);
-        }
-
-        delete thing.shadow.id;
-        thing.FSP.addThing(thing.shadow, thing.left, thing.top);
-
-        thing.FSP.GroupHolder.switchObjectGroup(
-            thing.shadow, thing.shadow.groupType, "Terrain"
-            );
-
-        thing.FSP.arrayToEnd(
-            thing.shadow, thing.FSP.GroupHolder.getTerrainGroup()
-            );
-
-        return true;
-    }
-
-    /**
-     * 
-     */
-    function collideLedge(thing, other) {
-        if (thing.ledge) {
-            return true;
-        }
-
-        if (thing.direction !== other.direction) {
-            return false;
-        }
-
-        switch (thing.direction % 2) {
-            case 0:
-                if (thing.left === other.right || thing.right === other.left) {
-                    return true;
-                }
-                break;
-            case 1:
-                if (thing.top === other.bottom || thing.bottom === other.top) {
-                    return true;
-                }
-                break;
-        }
-
-        thing.FSP.animateCharacterHopLedge(thing, other);
-
-        return true;
-    }
-
-
-    /* Death
-    */
-
-    /**
-     * Standard Function to kill a Thing, which means marking it as dead and
-     * clearing its numquads, resting, movement, and cycles. It will later be
-     * marked as gone by its maintain* Function (Solids or Characters).
-     * 
-     * @param {Thing} thing
-     */
-    function killNormal(thing) {
-        if (!thing) {
-            return;
-        }
-        if (thing.title === "RivalBlocker") {
-            console.log("Aha!");
-            debugger;
-        }
-
-        thing.nocollide = thing.hidden = thing.dead = true;
-        thing.alive = false;
-        thing.numquads = 0;
-        thing.movement = undefined;
-
-        if (thing.FSP) {
-            thing.FSP.TimeHandler.cancelAllCycles(thing);
-            thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
-
-            if (thing.id) {
-                delete thing.FSP.MapScreener.thingsById[thing.id];
-            }
-        }
-    }
-
-
-    /* Activations
-    */
-
-    /**
-     * 
-     */
-    function activateCutsceneTriggerer(thing, other) {
-        if (!other.alive || thing.collidedTrigger == other) {
-            return;
-        }
-
-        thing.collidedTrigger = other;
-        thing.FSP.animatePlayerDialogFreeze(thing);
-
-        if (!other.keepAlive) {
-            other.alive = false;
-
-            if (other.id.indexOf("Anonymous") !== -1) {
-                console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
             }
 
-            thing.FSP.StateHolder.addChange(other.id, "alive", false);
-            thing.FSP.killNormal(other);
+            if (other.routine) {
+                thing.FSP.ScenePlayer.playRoutine(other.routine);
+            }
         }
 
-        if (other.cutscene) {
+        /**
+         * 
+         */
+        activateThemePlayer(thing: ICharacter, other: IThemeDetector): void {
+            if (thing.FSP.GBSEmulator.getTheme() === other.theme) {
+                return;
+            }
+
+            thing.FSP.GBSEmulator.play(other.theme);
+        }
+
+        /**
+         * 
+         */
+        activateCutsceneResponder(thing: ICharacter, other: IDetector): void {
+            if (!thing.player || !other.alive) {
+                return;
+            }
+
+            if (other.dialog) {
+                thing.FSP.activateMenuTriggerer(thing, other);
+                return;
+            }
+
             thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
                 "player": thing,
                 "triggerer": other
             });
         }
 
-        if (other.routine) {
-            thing.FSP.ScenePlayer.playRoutine(other.routine);
-        }
-    }
+        /**
+         * 
+         */
+        activateMenuTriggerer(thing: ICharacter, other: IMenuTriggerer): void {
+            if (!other.alive || thing.collidedTrigger == other) {
+                return;
+            }
 
-    /**
-     * 
-     */
-    function activateThemePlayer(thing, other) {
-        if (thing.FSP.GBSEmulator.getTheme() === other.theme) {
-            return;
-        }
+            var name: string = other.menu || "GeneralText",
+                dialog: string | string[] = other.dialog;
 
-        thing.FSP.GBSEmulator.play(other.theme);
-    }
+            thing.collidedTrigger = other;
+            thing.FSP.animateCharacterPreventWalking(thing);
 
-    /**
-     * 
-     */
-    function activateCutsceneResponder(thing, other) {
-        if (!thing.player || !other.alive) {
-            return;
-        }
+            if (!other.keepAlive) {
+                other.alive = false;
+                thing.FSP.killNormal(other);
+            }
 
-        if (other.dialog) {
-            thing.FSP.activateMenuTriggerer(thing, other);
-            return;
-        }
+            if (dialog) {
+                thing.FSP.MenuGrapher.addMenuDialog(
+                    name,
+                    dialog,
+                    function (): void {
+                        var onStop;
 
-        thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
-            "player": thing,
-            "triggerer": other
-        });
-    }
+                        if (other.pushSteps) {
+                            onStop = other.pushSteps.slice();
+                        }
 
-    /**
-     * 
-     */
-    function activateMenuTriggerer(thing, other) {
-        if (!other.alive || thing.collidedTrigger == other) {
-            return;
-        }
+                        thing.FSP.MenuGrapher.deleteMenu("GeneralText");
 
-        var name = other.menu || "GeneralText",
-            menu = thing.FSP.MenuGrapher.createMenu(name),
-            dialog = other.dialog;
-
-        thing.collidedTrigger = other;
-        thing.FSP.animateCharacterPreventWalking(thing);
-
-        if (!other.keepAlive) {
-            other.alive = false;
-            thing.FSP.killNormal(other);
-        }
-
-        if (dialog) {
-            thing.FSP.MenuGrapher.addMenuDialog(
-                name,
-                dialog,
-                function () {
-                    var onStop;
-
-                    if (other.pushSteps) {
-                        onStop = other.pushSteps.slice();
-                    }
-
-                    thing.FSP.MenuGrapher.deleteMenu("GeneralText");
-
-                    if (typeof other.pushDirection !== "undefined") {
-                        onStop.push(function () {
+                        if (typeof other.pushDirection !== "undefined") {
+                            onStop.push(function () {
+                                thing.FSP.MapScreener.blockInputs = false;
+                                delete thing.collidedTrigger;
+                            });
+                            thing.FSP.animateCharacterStartTurning(
+                                thing, other.pushDirection, onStop)
+                        } else {
                             thing.FSP.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
-                        });
-                        thing.FSP.animateCharacterStartTurning(
-                            thing, other.pushDirection, onStop
-                            )
-                    } else {
-                        thing.FSP.MapScreener.blockInputs = false;
-                        delete thing.collidedTrigger;
-                    }
-                }
-                );
+                        }
+                    });
+            }
+
+            thing.FSP.MenuGrapher.setActiveMenu(name);
         }
 
-        thing.FSP.MenuGrapher.setActiveMenu(name);
-    }
+        /**
+         * 
+         */
+        activateSightDetector(thing: ICharacter, other: ISightDetector): void {
+            if (other.viewer.talking) {
+                return;
+            }
+            other.viewer.talking = true;
+            other.active = false;
 
-    /**
-     * 
-     */
-    function activateSightDetector(thing, other) {
-        if (other.viewer.talking) {
-            return;
-        }
-        other.viewer.talking = true;
-        other.active = false;
+            thing.FSP.MapScreener.blockInputs = true;
 
-        thing.FSP.MapScreener.blockInputs = true;
-
-        thing.FSP.ScenePlayer.startCutscene("TrainerSpotted", {
-            "player": thing,
-            "sightDetector": other,
-            "triggerer": other.viewer
-        });
-    }
-
-    /**
-     * Activation callback for level transports (any Thing with a .transport 
-     * attribute). Depending on the transport, either the map or location are 
-     * shifted to it.
-     * 
-     * @param {Player} thing
-     * @param {Thing} other
-     */
-    function activateTransporter(thing, other) {
-        if (!thing.player || !other.active) {
-            return;
+            thing.FSP.ScenePlayer.startCutscene("TrainerSpotted", {
+                "player": thing,
+                "sightDetector": other,
+                "triggerer": other.viewer
+            });
         }
 
-        var transport = other.transport,
-            callback, args;
+        /**
+         * Activation callback for level transports (any Thing with a .transport 
+         * attribute). Depending on the transport, either the map or location are 
+         * shifted to it.
+         * 
+         * @param {Player} thing
+         * @param {Thing} other
+         */
+        activateTransporter(thing: ICharacter, other: ITransporter) {
+            if (!thing.player || !other.active) {
+                return;
+            }
 
-        if (typeof transport === "undefined") {
-            throw new Error("No transport given to activateTransporter");
+            if (typeof other.transport === "undefined") {
+                throw new Error("No transport given to activateTransporter");
+            }
+
+            var transport = <ITransportSchema>other.transport,
+                callback: Function,
+                args: any[];
+
+            if (transport.constructor === String) {
+                callback = thing.FSP.setLocation.bind(thing.FSP);
+                args = [transport];
+            } else if (typeof transport.map !== "undefined") {
+                callback = thing.FSP.setMap.bind(thing.FSP);
+                args = [transport.map, transport.location];
+            } else if (typeof transport.location !== "undefined") {
+                callback = thing.FSP.setLocation.bind(thing.FSP);
+                args = [transport.location];
+            } else {
+                throw new Error("Unknown transport type:" + transport);
+            }
+
+            other.active = false;
+
+            thing.FSP.animateFadeToColor(thing.FSP, {
+                "color": "Black",
+                "callback": callback.apply.bind(callback, thing.FSP, args)
+            });
         }
 
-        if (transport.constructor === String) {
-            callback = thing.FSP.setLocation;
-            args = [transport];
-        } else if (typeof transport.map !== "undefined") {
-            callback = thing.FSP.setMap;
-            args = [transport.map, transport.location];
-        } else if (typeof transport.location !== "undefined") {
-            callback = thing.FSP.setLocation;
-            args = [transport.location];
-        } else {
-            throw new Error("Unknown transport type:" + transport);
+        /**
+         * 
+         */
+        activateGymStatue(thing: ICharacter, other: IGymDetector): void {
+            if (thing.direction !== 0) {
+                return;
+            }
+
+            var gym = other.gym,
+                leader = other.leader,
+                dialog = [
+                    gym.toUpperCase()
+                    + " \n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: "
+                    + leader.toUpperCase(),
+                    "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
+                ];
+
+            if (thing.FSP.ItemsHolder.getItem("badges")[leader]) {
+                dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
+            }
+
+            thing.FSP.MenuGrapher.createMenu("GeneralText");
+            thing.FSP.MenuGrapher.addMenuDialog("GeneralText", dialog);
+            thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
-        other.active = false;
 
-        thing.FSP.animateFadeToColor(thing.FSP, {
-            "color": "Black",
-            "callback": callback.apply.bind(callback, thing.FSP, args)
-        });
-    }
+        /* Physics
+        */
 
-    /**
-     * 
-     */
-    function activateGymStatue(thing, other) {
-        if (thing.direction !== 0) {
-            return;
+        /**
+         * 
+         * 
+         * @todo I would like this to be more elegant. 
+         */
+        getDirectionBordering(thing: IThing, other: IThing): number {
+            if (
+                Math.abs((thing.top) - (other.bottom - other.tolBottom))
+                < thing.FSP.unitsize
+                ) {
+                return 0;
+            }
+
+            if (
+                Math.abs(thing.right - other.left)
+                < thing.FSP.unitsize
+                ) {
+                return 1;
+            }
+
+            if (
+                Math.abs(thing.bottom - other.top)
+                < thing.FSP.unitsize
+                ) {
+                return 2;
+            }
+
+            if (
+                Math.abs(thing.left - other.right)
+                < thing.FSP.unitsize
+                ) {
+                return 3;
+            }
         }
 
-        var gym = other.gym,
-            leader = other.leader,
-            dialog = [
-                gym.toUpperCase() + " \n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: " + leader.toUpperCase(),
-                "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
-            ];
-
-        if (thing.FSP.ItemsHolder.getItem("badges")[leader]) {
-            dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
+        /**
+         * 
+         */
+        isThingWithinOther(thing: IThing, other: IThing): boolean {
+            return (
+                thing.top >= other.top - thing.FSP.unitsize
+                && thing.right <= other.right + thing.FSP.unitsize
+                && thing.bottom <= other.bottom + thing.FSP.unitsize
+                && thing.left >= other.left - thing.FSP.unitsize);
         }
 
-        thing.FSP.MenuGrapher.createMenu("GeneralText");
-        thing.FSP.MenuGrapher.addMenuDialog("GeneralText", dialog);
-        thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
-    }
+        /**
+         * 
+         */
+        isThingWithinGrass(thing: ICharacter, other: IGrass): boolean {
+            if (thing.right <= other.left) {
+                return false;
+            }
 
+            if (thing.left >= other.right) {
+                return false;
+            }
 
-    /* Physics
-    */
+            if (other.top > (
+                thing.top + thing.heightGrass * thing.FSP.unitsize)) {
+                return false;
+            }
 
-    /**
-     * 
-     * 
-     * @todo I would like this to be more elegant. 
-     */
-    function getDirectionBordering(thing, other) {
-        if (
-            Math.abs((thing.top) - (other.bottom - other.tolBottom))
-            < thing.FSP.unitsize
-            ) {
-            return 0;
+            if (other.bottom < (
+                thing.top + thing.heightGrass * thing.FSP.unitsize)) {
+                return false;
+            }
+
+            return true;
         }
 
-        if (
-            Math.abs(thing.right - other.left)
-            < thing.FSP.unitsize
-            ) {
-            return 1;
+        /**
+         * 
+         */
+        shiftCharacter(thing: ICharacter): void {
+            if (thing.xvel !== 0) {
+                thing.bordering[1] = thing.bordering[3] = undefined;
+            } else if (thing.yvel !== 0) {
+                thing.bordering[0] = thing.bordering[2] = undefined;
+            } else {
+                return;
+            }
+
+            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
         }
 
-        if (
-            Math.abs(thing.bottom - other.top)
-            < thing.FSP.unitsize
-            ) {
-            return 2;
+        /**
+         * 
+         */
+        setPlayerDirection(thing: IPlayer, direction: Direction): void {
+            thing.direction = direction;
+            thing.FSP.MapScreener.playerDirection = direction;
+            thing.shouldWalk = true;
         }
-
-        if (
-            Math.abs(thing.left - other.right)
-            < thing.FSP.unitsize
-            ) {
-            return 3;
-        }
-    }
-
-    /**
-     * 
-     */
-    function isThingWithinOther(thing, other) {
-        return (
-            thing.top >= other.top - thing.FSP.unitsize
-            && thing.right <= other.right + thing.FSP.unitsize
-            && thing.bottom <= other.bottom + thing.FSP.unitsize
-            && thing.left >= other.left - thing.FSP.unitsize
-            );
-    }
-
-    /**
-     * 
-     */
-    function isThingWithinGrass(thing, other) {
-        if (thing.right <= other.left) {
-            return false;
-        }
-
-        if (thing.left >= other.right) {
-            return false;
-        }
-
-        if (other.top > (
-            thing.top + thing.heightGrass * thing.FSP.unitsize
-            )) {
-            return false;
-        }
-
-        if (other.bottom < (
-            thing.top + thing.heightGrass * thing.FSP.unitsize
-            )) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 
-     */
-    function shiftCharacter(thing) {
-        if (thing.xvel !== 0) {
-            thing.bordering[1] = thing.bordering[3] = undefined;
-        } else if (thing.yvel !== 0) {
-            thing.bordering[0] = thing.bordering[2] = undefined;
-        } else {
-            return;
-        }
-
-        thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
-    }
-
-    /**
-     * 
-     */
-    function setPlayerDirection(thing, direction) {
-        thing.direction = direction;
-        thing.FSP.MapScreener.playerDirection = direction;
-        thing.shouldWalk = true;
-    }
 
 
     /* Spawning

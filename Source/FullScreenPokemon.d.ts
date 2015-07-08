@@ -11,6 +11,7 @@ declare module FullScreenPokemon {
 
     export interface IMapScreenr extends MapScreenr.IMapScreenr {
         blockInputs: boolean;
+        playerDirection: Direction;
         scrollability: string;
         thingsById: {
             [i: string]: IThing;
@@ -83,11 +84,14 @@ declare module FullScreenPokemon {
         activate(activator: IThing, activated: IThing): void;
         areaName: string;
         bordering: IThing[];
+        collide(thing: IThing, other: IThing): boolean;
         cycles?: any;
+        dead?: boolean;
         direction: Direction;
         flickering?: boolean;
         id: string;
         mapName: string;
+        numquads: number;
         offsetX?: number;
         offsetY?: number;
         position: string;
@@ -100,8 +104,11 @@ declare module FullScreenPokemon {
 
     export interface ICharacter extends IThing {
         active?: boolean;
+        collidedTrigger?: IDetector;
+        cutscene?: string;
         destination: number;
         dialog?: string | string[];
+        dialogDirections?: Direction[];
         dialogNext?: string | string[];
         dialogOptions?: IDialogOptions;
         directionPreferred?: Direction;
@@ -111,6 +118,8 @@ declare module FullScreenPokemon {
         followingLoop?: TimeHandlr.IEvent;
         gift?: string;
         grass?: IThing;
+        heightGrass?: number;
+        heightOld?: number;
         isMoving: boolean;
         ledge?: IThing;
         onWalkingStart(character: ICharacter, direction: Direction): void;
@@ -151,6 +160,7 @@ declare module FullScreenPokemon {
         allowDirectionAsKeys?: boolean;
         canKeyWalking: boolean;
         getKeys(): IPlayerKeys;
+        isWalking?: boolean;
         keys: IPlayerKeys;
         nextDirection?: Direction;
     }
@@ -158,6 +168,56 @@ declare module FullScreenPokemon {
     export interface IGrass extends IThing {
 
     }
+
+    export interface IDetector extends IThing {
+        active?: boolean;
+        cutscene?: string;
+        dialog?: string | string[];
+        keepAlive?: boolean;
+        requireDirection?: Direction;
+        requireOverlap?: boolean;
+        routine?: string;
+        singleUse?: boolean;
+    }
+
+    export interface IGymDetector extends IThing {
+        gym: string;
+        leader: string;
+    }
+
+    export interface IMenuTriggerer extends IDetector {
+        menu?: string;
+        pushDirection?: Direction;
+        pushSteps?: any[];
+    }
+
+    export interface ISightDetector extends IDetector {
+        viewer: ICharacter;
+    }
+
+    export interface IThemeDetector extends IDetector {
+        theme: string;
+    }
+
+    export interface ITransporter extends IDetector {
+        transport: string | ITransportSchema
+    }
+
+    export interface ITransportSchema {
+        map?: string;
+        location?: string;
+    }
+
+    export interface IPokeball extends IDetector {
+        action: string;
+        amount?: number;
+        dialog?: string;
+        item?: string;
+        pokemon?: string;
+        routine?: string;
+    }
+
+    export interface IMenu extends MenuGraphr.IMenu, IThing { }
 
     export interface IPlayerKeys {
         a: boolean;
