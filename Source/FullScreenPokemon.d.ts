@@ -10,14 +10,11 @@ declare module FullScreenPokemon {
     }
 
     export interface IMapScreenr extends MapScreenr.IMapScreenr {
+        blockInputs: boolean;
         scrollability: string;
         thingsById: {
             [i: string]: IThing;
         }
-    }
-
-    export interface IPlayer extends GameStartr.IThing {
-
     }
 
     export interface IFullScreenPokemonStoredSettings extends GameStartr.IGameStartrStoredSettings {
@@ -66,6 +63,17 @@ declare module FullScreenPokemon {
 
     }
 
+    export interface IDialog {
+        cutscene?: string;
+        options?: IDialogOptions;
+        words: string;
+    }
+
+    export interface IDialogOptions {
+        Yes: string | IDialog;
+        No: string | IDialog;
+    }
+
     export interface IPreThing extends MapsCreatr.IPreThing {
         thing: IThing;
     }
@@ -75,22 +83,54 @@ declare module FullScreenPokemon {
         activate(activator: IThing, activated: IThing): void;
         areaName: string;
         bordering: IThing[];
+        cycles?: any;
         direction: Direction;
+        flickering?: boolean;
         id: string;
-        keys: IPlayerKeys;
-        getKeys(): IPlayerKeys;
         mapName: string;
+        offsetX?: number;
+        offsetY?: number;
         position: string;
         spawned: boolean; // part of the big MapsHandlr expansion to be added back
+        tolBottom: number;
+        tolLeft: number;
+        tolRight: number;
+        tolTop: number;
     }
 
     export interface ICharacter extends IThing {
+        active?: boolean;
+        destination: number;
+        dialog?: string | string[];
+        dialogNext?: string | string[];
+        dialogOptions?: IDialogOptions;
+        directionPreferred?: Direction;
+        distance: number;
+        follower?: ICharacter;
+        following?: ICharacter;
+        followingLoop?: TimeHandlr.IEvent;
+        gift?: string;
         grass?: IThing;
         isMoving: boolean;
+        ledge?: IThing;
         onWalkingStart(character: ICharacter, direction: Direction): void;
+        onWalkingStop(character: ICharacter, onStop: any[]): void;
         outerOk?: boolean;
+        player?: boolean;
+        pushDirection?: Direction;
+        pushSteps?: any[];
+        roamingDirections?: Direction[];
+        sight?: boolean;
+        sightDetector?: ICharacter;
         shadow?: IThing;
         shouldWalk: boolean;
+        speed: number;
+        speedOld?: number;
+        talking?: boolean;
+        trainer?: boolean;
+        transport?: any;
+        turning?: Direction;
+        walkingCommands?: Direction[];
         walkingFlipping?: TimeHandlr.IEvent;
     }
 
@@ -108,9 +148,11 @@ declare module FullScreenPokemon {
     }
 
     export interface IPlayer extends ICharacter {
+        allowDirectionAsKeys?: boolean;
         canKeyWalking: boolean;
+        getKeys(): IPlayerKeys;
+        keys: IPlayerKeys;
         nextDirection?: Direction;
-        turning?: Direction;
     }
 
     export interface IGrass extends IThing {

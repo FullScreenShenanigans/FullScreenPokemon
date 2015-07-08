@@ -565,16 +565,16 @@ module FullScreenPokemon {
         /**
          * 
          */
-        keyDownGeneric(player: IPlayer, direction: Direction, event: Event): void {
+        keyDownGeneric(thing: ICharacter, direction: Direction, event?: Event): void {
             switch (direction) {
                 case 0:
-                    return player.FSP.keyDownUp(player, event);
+                    return thing.FSP.keyDownUp(thing, event);
                 case 1:
-                    return player.FSP.keyDownRight(player, event);
+                    return thing.FSP.keyDownRight(thing, event);
                 case 2:
-                    return player.FSP.keyDownDown(player, event);
+                    return thing.FSP.keyDownDown(thing, event);
                 case 3:
-                    return player.FSP.keyDownLeft(player, event);
+                    return thing.FSP.keyDownLeft(thing, event);
                 default:
                     throw new Error("Unknown direction: " + direction + ".");
             }
@@ -584,38 +584,42 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyDownLeft(player: IPlayer, event: Event): void {
-            if (!player.FSP.canDirectionsTrigger(player.FSP)) {
+        keyDownLeft(thing: ICharacter, event?: Event): void {
+            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
                 return;
             }
 
-            player.keys[3] = true;
+            if (thing.player) {
+                (<IPlayer>thing).keys[3] = true;
+            }
 
-            player.FSP.TimeHandler.addEvent(
-                player.FSP.keyDownDirectionReal,
-                player.FSP.inputTimeTolerance,
-                player,
+            thing.FSP.TimeHandler.addEvent(
+                thing.FSP.keyDownDirectionReal,
+                thing.FSP.inputTimeTolerance,
+                thing,
                 3);
 
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownLeft");
+            thing.FSP.ModAttacher.fireEvent("onKeyDownLeft");
         }
 
         /**
          * 
          * @param {Player} player
          */
-        keyDownRight(player: IPlayer, event: Event): void {
-            if (!player.FSP.canDirectionsTrigger(player.FSP)) {
+        keyDownRight(thing: ICharacter, event?: Event): void {
+            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
                 return;
             }
 
-            player.keys[1] = true;
+            if (thing.player) {
+                (<IPlayer>thing).keys[1] = true;
+            }
 
-            player.FSP.TimeHandler.addEvent(
-                player.FSP.keyDownDirectionReal,
-                player.FSP.inputTimeTolerance,
-                player,
+            thing.FSP.TimeHandler.addEvent(
+                thing.FSP.keyDownDirectionReal,
+                thing.FSP.inputTimeTolerance,
+                thing,
                 1);
 
             if (event && event.preventDefault) {
@@ -627,20 +631,22 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyDownUp(player: IPlayer, event: Event): void {
-            if (!player.FSP.canDirectionsTrigger(player.FSP)) {
+        keyDownUp(thing: ICharacter, event?: Event): void {
+            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
                 return;
             }
 
-            player.keys[0] = true;
+            if (thing.player) {
+                (<IPlayer>thing).keys[0] = true;
+            }
 
-            player.FSP.TimeHandler.addEvent(
-                player.FSP.keyDownDirectionReal,
-                player.FSP.inputTimeTolerance,
-                player,
+            thing.FSP.TimeHandler.addEvent(
+                thing.FSP.keyDownDirectionReal,
+                thing.FSP.inputTimeTolerance,
+                thing,
                 0);
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownUpReal");
+            thing.FSP.ModAttacher.fireEvent("onKeyDownUpReal");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -651,20 +657,22 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyDownDown(player: IPlayer, event: Event): void {
-            if (!player.FSP.canDirectionsTrigger(player.FSP)) {
+        keyDownDown(thing: ICharacter, event?: Event): void {
+            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
                 return;
             }
 
-            player.keys[2] = true;
+            if (thing.player) {
+                (<IPlayer>thing).keys[2] = true;
+            }
 
-            player.FSP.TimeHandler.addEvent(
-                player.FSP.keyDownDirectionReal,
-                player.FSP.inputTimeTolerance,
-                player,
+            thing.FSP.TimeHandler.addEvent(
+                thing.FSP.keyDownDirectionReal,
+                thing.FSP.inputTimeTolerance,
+                thing,
                 2);
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownDown");
+            thing.FSP.ModAttacher.fireEvent("onKeyDownDown");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -674,49 +682,53 @@ module FullScreenPokemon {
         /**
          * 
          */
-        keyDownDirectionReal(player: IPlayer, direction: Direction): void {
-            if (!player.keys[direction]) {
+        keyDownDirectionReal(thing: ICharacter, direction: Direction): void {
+            if (!thing.player || !(<IPlayer>thing).keys[direction]) {
                 return;
             }
 
-            if (player.FSP.MenuGrapher.getActiveMenu()) {
-                player.FSP.MenuGrapher.registerDirection(direction);
-            } else if (!player.FSP.MenuGrapher.getActiveMenu()) {
-                if (player.direction !== direction) {
-                    player.turning = direction;
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                thing.FSP.MenuGrapher.registerDirection(direction);
+            } else if (!thing.FSP.MenuGrapher.getActiveMenu()) {
+                if (thing.direction !== direction) {
+                    thing.turning = direction;
                 }
 
-                if (player.canKeyWalking) {
-                    player.FSP.setPlayerDirection(player, direction);
-                } else {
-                    player.nextDirection = direction;
+                if (thing.player) {
+                    if ((<IPlayer>thing).canKeyWalking) {
+                        thing.FSP.setPlayerDirection(thing, direction);
+                    } else {
+                        (<IPlayer>thing).nextDirection = direction;
+                    }
                 }
             }
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
+            thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
         }
 
         /**
          * 
          */
-        keyDownA(player: IPlayer, event: Event): void {
-            if (player.FSP.GamesRunner.getPaused()) {
+        keyDownA(thing: ICharacter, event?: Event): void {
+            if (thing.FSP.GamesRunner.getPaused()) {
                 return;
             }
 
-            if (player.FSP.MenuGrapher.getActiveMenu()) {
-                player.FSP.MenuGrapher.registerA();
-            } else if (player.bordering[player.direction]) {
-                if (player.bordering[player.direction].activate) {
-                    player.bordering[player.direction].activate(
-                        player,
-                        player.bordering[player.direction]);
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                thing.FSP.MenuGrapher.registerA();
+            } else if (thing.bordering[thing.direction]) {
+                if (thing.bordering[thing.direction].activate) {
+                    thing.bordering[thing.direction].activate(
+                        thing,
+                        thing.bordering[thing.direction]);
                 }
 
-                player.keys.a = true;
+                if ((<IPlayer>thing).keys) {
+                    (<IPlayer>thing).keys.a = true;
+                }
             }
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownA");
+            thing.FSP.ModAttacher.fireEvent("onKeyDownA");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -726,18 +738,18 @@ module FullScreenPokemon {
         /**
          * 
          */
-        keyDownB(player: IPlayer, event: Event): void {
-            if (player.FSP.GamesRunner.getPaused()) {
+        keyDownB(thing: ICharacter, event?: Event): void {
+            if (thing.FSP.GamesRunner.getPaused()) {
                 return;
             }
 
-            if (player.FSP.MenuGrapher.getActiveMenu()) {
-                player.FSP.MenuGrapher.registerB();
-            } else {
-                player.keys.b = true;
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                thing.FSP.MenuGrapher.registerB();
+            } else if ((<IPlayer>thing).keys) {
+                (<IPlayer>thing).keys.b = true;
             }
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownB");
+            thing.FSP.ModAttacher.fireEvent("onKeyDownB");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -748,12 +760,12 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyDownPause(player: IPlayer, event: Event): void {
-            if (!player.FSP.GamesRunner.getPaused()) {
-                player.FSP.TimeHandler.addEvent(player.FSP.GamesRunner.pause, 7, true);
+        keyDownPause(thing: ICharacter, event?: Event): void {
+            if (!thing.FSP.GamesRunner.getPaused()) {
+                thing.FSP.TimeHandler.addEvent(thing.FSP.GamesRunner.pause, 7, true);
             }
 
-            player.FSP.ModAttacher.fireEvent("onKeyDownPause");
+            thing.FSP.ModAttacher.fireEvent("onKeyDownPause");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -764,13 +776,13 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyDownMute(player: IPlayer, event: IEvent): void {
-            if (player.FSP.GamesRunner.getPaused()) {
+        keyDownMute(thing: ICharacter, event?: Event): void {
+            if (thing.FSP.GamesRunner.getPaused()) {
                 return;
             }
 
-            player.FSP.GBSEmulator.toggleMuted();
-            player.FSP.ModAttacher.fireEvent("onKeyDownMute");
+            thing.FSP.GBSEmulator.toggleMuted();
+            thing.FSP.ModAttacher.fireEvent("onKeyDownMute");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -780,16 +792,16 @@ module FullScreenPokemon {
         /**
          * 
          */
-        keyUpGeneric(player: IPlayer, direction: Direction, event: Event): void {
+        keyUpGeneric(thing: ICharacter, direction: Direction, event?: Event): void {
             switch (direction) {
                 case 0:
-                    return player.FSP.keyUpUp(player, event);
+                    return thing.FSP.keyUpUp(thing, event);
                 case 1:
-                    return player.FSP.keyUpRight(player, event);
+                    return thing.FSP.keyUpRight(thing, event);
                 case 2:
-                    return player.FSP.keyUpDown(player, event);
+                    return thing.FSP.keyUpDown(thing, event);
                 case 3:
-                    return player.FSP.keyUpLeft(player, event);
+                    return thing.FSP.keyUpLeft(thing, event);
                 default:
                     throw new Error("Unknown direction: " + direction + ".");
             }
@@ -799,12 +811,15 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyUpLeft(player: IPlayer, event: Event): void {
-            player.FSP.ModAttacher.fireEvent("onKeyUpLeft");
+        keyUpLeft(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyUpLeft");
 
-            player.keys[3] = false;
-            if (player.nextDirection === 3) {
-                delete player.nextDirection;
+            if (thing.player) {
+                (<IPlayer>thing).keys[3] = false;
+
+                if ((<IPlayer>thing).nextDirection === 3) {
+                    delete (<IPlayer>thing).nextDirection;
+                }
             }
 
             if (event && event.preventDefault) {
@@ -816,12 +831,15 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyUpRight(player: IPlayer, event: Event): void {
-            player.FSP.ModAttacher.fireEvent("onKeyUpRight");
+        keyUpRight(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyUpRight");
 
-            player.keys[1] = false;
-            if (player.nextDirection === 1) {
-                delete player.nextDirection;
+            if (thing.player) {
+                (<IPlayer>thing).keys[1] = false;
+
+                if ((<IPlayer>thing).nextDirection === 1) {
+                    delete (<IPlayer>thing).nextDirection;
+                }
             }
 
             if (event && event.preventDefault) {
@@ -833,12 +851,15 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyUpUp(player: IPlayer, event: Event): void {
-            player.FSP.ModAttacher.fireEvent("onKeyUpUp");
+        keyUpUp(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyUpUp");
 
-            player.keys[0] = false;
-            if (player.nextDirection === 0) {
-                delete player.nextDirection;
+            if (thing.player) {
+                (<IPlayer>thing).keys[0] = false;
+
+                if ((<IPlayer>thing).nextDirection === 0) {
+                    delete (<IPlayer>thing).nextDirection;
+                }
             }
 
             if (event && event.preventDefault) {
@@ -850,12 +871,15 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        keyUpDown(player: IPlayer, event: Event): void {
-            player.FSP.ModAttacher.fireEvent("onKeyUpDown");
+        keyUpDown(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyUpDown");
 
-            player.keys[2] = false;
-            if (player.nextDirection === 2) {
-                delete player.nextDirection;
+            if (thing.player) {
+                (<IPlayer>thing).keys[2] = false;
+
+                if ((<IPlayer>thing).nextDirection === 2) {
+                    delete (<IPlayer>thing).nextDirection;
+                }
             }
 
             if (event && event.preventDefault) {
@@ -866,10 +890,12 @@ module FullScreenPokemon {
         /*
          * 
          */
-        keyUpA(player: IPlayer, event: Event): void {
-            player.FSP.ModAttacher.fireEvent("onKeyUpA");
+        keyUpA(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyUpA");
 
-            player.keys.a = false;
+            if (thing.player) {
+                (<IPlayer>thing).keys.a = false;
+            }
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -879,25 +905,12 @@ module FullScreenPokemon {
         /**
          * 
          */
-        keyUpB(player: IPlayer, event: Event): void {
-            player.FSP.ModAttacher.fireEvent("onKeyUpB");
+        keyUpB(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyUpB");
 
-            player.keys.b = false;
-
-            if (event && event.preventDefault) {
-                event.preventDefault();
+            if (thing.player) {
+                (<IPlayer>thing).keys.b = false;
             }
-        }
-
-        /**
-         * 
-         * @param {Player} player
-         */
-        keyUpPause(player: IPlayer, event: Event): void {
-            if (player.FSP.GamesRunner.getPaused()) {
-                player.FSP.GamesRunner.play();
-            }
-            player.FSP.ModAttacher.fireEvent("onKeyUpPause");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -908,10 +921,25 @@ module FullScreenPokemon {
          * 
          * @param {Player} player
          */
-        mouseDownRight(player: IPlayer, event: Event): void {
-            player.FSP.togglePauseMenu(player);
+        keyUpPause(thing: ICharacter, event?: Event): void {
+            if (thing.FSP.GamesRunner.getPaused()) {
+                thing.FSP.GamesRunner.play();
+            }
+            thing.FSP.ModAttacher.fireEvent("onKeyUpPause");
 
-            player.FSP.ModAttacher.fireEvent("onMouseDownRight");
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
+        }
+
+        /**
+         * 
+         * @param {Player} player
+         */
+        mouseDownRight(thing: ICharacter, event?: Event): void {
+            thing.FSP.togglePauseMenu(thing);
+
+            thing.FSP.ModAttacher.fireEvent("onMouseDownRight");
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -1365,867 +1393,847 @@ module FullScreenPokemon {
                 FSP.animateExpandCorners,
                 7,
                 things,
-                FSP.unitsize * 2
-                );
+                FSP.unitsize * 2);
 
-            FSP.TimeHandler.addEvent(
-                things.forEach.bind(things), 21, FSP.killNormal
-                );
+            FSP.TimeHandler.addEvent(things.forEach.bind(things), 21, FSP.killNormal);
 
             if (callback) {
                 FSP.TimeHandler.addEvent(callback, 21);
             }
         }
 
-    /**
-     * 
-     */
-    function animateExclamation(thing, timeout, callback) {
-        var exclamation = thing.FSP.addThing("Exclamation");
+        /**
+         * 
+         */
+        animateExclamation(thing: IThing, timeout: number = 140, callback?: () => void): IThing {
+            var exclamation = thing.FSP.addThing("Exclamation");
 
-        timeout = timeout || 140;
+            timeout = timeout || 140;
 
-        thing.FSP.setMidXObj(exclamation, thing);
-        thing.FSP.setBottom(exclamation, thing.top);
+            thing.FSP.setMidXObj(exclamation, thing);
+            thing.FSP.setBottom(exclamation, thing.top);
 
-        thing.FSP.TimeHandler.addEvent(
-            thing.FSP.killNormal, timeout, exclamation
-            );
+            thing.FSP.TimeHandler.addEvent(thing.FSP.killNormal, timeout, exclamation);
 
-        if (callback) {
-            thing.FSP.TimeHandler.addEvent(callback, timeout);
+            if (callback) {
+                thing.FSP.TimeHandler.addEvent(callback, timeout);
+            }
+
+            return exclamation;
         }
 
-        return exclamation;
-    }
+        /**
+         * 
+         */
+        animateFadeToColor(FSP: FullScreenPokemon, settings: any = {}): IThing {
+            var color = settings.color || "White",
+                callback: (...args: any[]) => void = settings.callback,
+                change: number = settings.change || .33,
+                speed: number = settings.speed || 4,
+                blank: IThing = FSP.ObjectMaker.make(color + "Square", {
+                    "width": FSP.MapScreener.width,
+                    "height": FSP.MapScreener.height,
+                    "opacity": 0
+                }),
+                args: IArguments = arguments;
 
-    /**
-     * 
-     */
-    function animateFadeToColor(EightBitter, settings) {
-        var color = settings.color,
-            callback = settings.callback,
-            change = settings.change || .33,
-            speed = settings.speed || 4,
-            blank = EightBitter.ObjectMaker.make(color + "Square", {
-                "width": EightBitter.MapScreener.width,
-                "height": EightBitter.MapScreener.height,
-                "opacity": 0
-            }),
-            args = arguments;
+            FSP.addThing(blank);
 
-        EightBitter.addThing(blank);
+            FSP.animateFadeAttribute(
+                blank,
+                "opacity",
+                change,
+                1,
+                4,
+                function () {
+                    FSP.killNormal(blank);
+                    if (callback) {
+                        callback.apply(this, args);
+                    }
+                });
 
-        EightBitter.animateFadeAttribute(
-            blank,
-            "opacity",
-            change,
-            1,
-            4,
-            function () {
-                EightBitter.killNormal(blank);
-                if (callback) {
-                    callback.apply(this, args);
+            return blank;
+        }
+
+        /**
+         * 
+         */
+        animateFadeFromColor(FSP: FullScreenPokemon, settings?: any): IThing {
+            var color: string = settings.color || "White",
+                callback: (...args: any[]) => void = settings.callback,
+                change: number = settings.change || .33,
+                speed: number = settings.speed || 4,
+                blank: IThing = FSP.ObjectMaker.make(color + "Square", {
+                    "width": FSP.MapScreener.width,
+                    "height": FSP.MapScreener.height,
+                    "opacity": 1,
+                }),
+                args: IArguments = arguments;
+
+            FSP.addThing(blank);
+
+            FSP.animateFadeAttribute(
+                blank,
+                "opacity",
+                -change,
+                0,
+                speed,
+                function () {
+                    FSP.killNormal(blank);
+                    if (callback) {
+                        callback.apply(this, args);
+                    }
+                });
+
+            return blank;
+        }
+
+        /**
+         * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
+         * flag for a little while.
+         * 
+         * @param {Thing} thing
+         * @param {Number} [cleartime]   How long to wait to stop the effect (by 
+         *                               default, 49).
+         * @param {Number} [interval]   How many steps between hidden toggles (by
+         *                              default, 2).
+         * @param {Function} [callback]   A Function that may be called on the Thing
+         *                                when flickering is done.
+         */
+        animateFlicker(thing: IThing, cleartime: number = 49, interval: number = 2, callback?: (thing: IThing) => void): void {
+            var timeTotal = ((cleartime * interval) | 0) + 1;
+
+            thing.flickering = true;
+
+            thing.FSP.TimeHandler.addEventInterval(function () {
+                thing.hidden = !thing.hidden;
+                if (!thing.hidden) {
+                    thing.FSP.PixelDrawer.setThingSprite(thing);
                 }
-            }
-            );
+            }, interval | 0, cleartime | 0);
 
-        return blank;
-    }
-
-    /**
-     * 
-     */
-    function animateFadeFromColor(EightBitter, settings) {
-        var color = settings.color,
-            callback = settings.callback,
-            change = settings.change || .33,
-            speed = settings.speed || 4,
-            blank = EightBitter.ObjectMaker.make(color + "Square", {
-                "width": EightBitter.MapScreener.width,
-                "height": EightBitter.MapScreener.height,
-                "opacity": 1,
-            }),
-            args = arguments;
-
-        EightBitter.addThing(blank);
-
-        EightBitter.animateFadeAttribute(
-            blank,
-            "opacity",
-            -change,
-            0,
-            speed,
-            function () {
-                EightBitter.killNormal(blank);
-                if (callback) {
-                    callback.apply(this, args);
-                }
-            }
-            );
-
-        return blank;
-    }
-
-    /**
-     * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
-     * flag for a little while.
-     * 
-     * @param {Thing} thing
-     * @param {Number} [cleartime]   How long to wait to stop the effect (by 
-     *                               default, 49).
-     * @param {Number} [interval]   How many steps between hidden toggles (by
-     *                              default, 2).
-     * @param {Function} [callback]   A Function that may be called on the Thing
-     *                                when flickering is done.
-     */
-    function animateFlicker(thing, cleartime, interval, callback) {
-        cleartime = cleartime | 0 || 49;
-        interval = interval | 0 || 2;
-
-        thing.flickering = true;
-
-        thing.FSP.TimeHandler.addEventInterval(function () {
-            thing.hidden = !thing.hidden;
-            if (!thing.hidden) {
+            thing.FSP.TimeHandler.addEvent(function () {
+                thing.flickering = thing.hidden = false;
                 thing.FSP.PixelDrawer.setThingSprite(thing);
-            }
-        }, interval, cleartime);
 
-        thing.FSP.TimeHandler.addEvent(function () {
-            thing.flickering = thing.hidden = false;
-            thing.FSP.PixelDrawer.setThingSprite(thing);
-
-            if (callback) {
-                callback(thing);
-            }
-        }, cleartime * interval + 1);
-    }
-
-    /**
-     * 
-     */
-    function animateScreenShake(EightBitter, dx, dy, cleartime, interval, callback) {
-        dx = dx | 0;
-        dy = dy | 0;
-
-        cleartime = cleartime | 0 || 8;
-        interval = interval | 0 || 8;
-
-        EightBitter.TimeHandler.addEventInterval(function () {
-            EightBitter.GroupHolder.callOnAll(
-                EightBitter, EightBitter.shiftHoriz, dx
-                );
-            EightBitter.GroupHolder.callOnAll(
-                EightBitter, EightBitter.shiftVert, dy
-                );
-        }, 1, cleartime * interval);
-
-        EightBitter.TimeHandler.addEvent(function () {
-            dx *= -1;
-            dy *= -1;
-
-            EightBitter.TimeHandler.addEventInterval(function () {
-                dx *= -1;
-                dy *= -1;
-            }, interval, cleartime);
-
-            if (callback) {
-                EightBitter.TimeHandler.addEvent(
-                    callback, interval * cleartime, EightBitter
-                    );
-            }
-        },(interval / 2) | 0);
-    }
-
-
-    /* Character movement animations
-    */
-
-    /**
-     * 
-     */
-    function animateCharacterSetDistanceVelocity(thing, distance) {
-        thing.distance = distance;
-
-        switch (thing.direction) {
-            case 0:
-                thing.xvel = 0;
-                thing.yvel = -thing.speed;
-                thing.destination = thing.top - distance;
-                break;
-            case 1:
-                thing.xvel = thing.speed;
-                thing.yvel = 0;
-                thing.destination = thing.right + distance;
-                break;
-            case 2:
-                thing.xvel = 0;
-                thing.yvel = thing.speed;
-                thing.destination = thing.bottom + distance;
-                break;
-            case 3:
-                thing.xvel = -thing.speed;
-                thing.yvel = 0;
-                thing.destination = thing.left - distance;
-                break;
-        }
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterStartTurning(thing, direction, onStop) {
-        if (onStop.length === 0) {
-            return;
-        }
-
-        if (onStop[0] === 0) {
-            if (onStop.length > 1) {
-                if (onStop[1] instanceof Function) {
-                    onStop[1](thing);
-                    return;
+                if (callback) {
+                    callback(thing);
                 }
-                thing.FSP.animateCharacterSetDirection(
-                    thing, thing.FSP.directionNumbers[onStop[1]]
-                    );
-                thing.FSP.animateCharacterStartTurning(
-                    thing,
-                    thing.FSP.directionNumbers[onStop[1]],
-                    onStop.slice(2)
-                    );
-            }
-            return;
+            }, timeTotal);
         }
 
-        if (thing.follower) {
-            thing.walkingCommands.push(direction);
+        /**
+         * 
+         */
+        animateScreenShake(
+            FSP: FullScreenPokemon,
+            dx: number = 0,
+            dy: number = 0,
+            cleartime: number = 8,
+            interval: number = 8,
+            callback): void {
+
+            var intervalEnd: number = (interval / 2) | 0;
+
+            FSP.TimeHandler.addEventInterval(
+                function (): void {
+                    FSP.GroupHolder.callOnAll(FSP, FSP.shiftHoriz, dx);
+                    FSP.GroupHolder.callOnAll(FSP, FSP.shiftVert, dy);
+                },
+                1,
+                cleartime * interval);
+
+            FSP.TimeHandler.addEvent(
+                function (): void {
+                    dx *= -1;
+                    dy *= -1;
+
+                    FSP.TimeHandler.addEventInterval(function () {
+                        dx *= -1;
+                        dy *= -1;
+                    }, interval, cleartime);
+
+                    if (callback) {
+                        FSP.TimeHandler.addEvent(callback, interval * cleartime, FSP);
+                    }
+                },
+                intervalEnd);
         }
 
-        thing.FSP.animateCharacterStartWalking(thing, direction, onStop);
 
-        thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
-    }
+        /* Character movement animations
+        */
 
-    /**
-     * 
-     */
-    function animateCharacterStartWalking(thing, direction, onStop) {
-        var repeats = thing.FSP.getCharacterWalkingInterval(thing),
-            distance = repeats * thing.speed;
+        /**
+         * 
+         */
+        animateCharacterSetDistanceVelocity(thing: ICharacter, distance: number): void {
+            thing.distance = distance;
 
-        direction = direction || 0;
-        thing.FSP.animateCharacterSetDirection(thing, direction);
-        thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
-
-        if (!thing.cycles || !thing.cycles.walking) {
-            thing.FSP.TimeHandler.addClassCycle(
-                thing, ["walking", "standing"], "walking", repeats / 2
-                );
-        }
-
-        if (!thing.walkingFlipping) {
-            thing.walkingFlipping = thing.FSP.TimeHandler.addEventInterval(
-                thing.FSP.animateSwitchFlipOnDirection, repeats, Infinity, thing
-                );
-        }
-
-        if (thing.sight) {
-            thing.sightDetector.nocollide = true;
-        }
-
-        thing.FSP.TimeHandler.addEventInterval(
-            thing.onWalkingStop, repeats, Infinity, thing, onStop
-            );
-
-        thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterStartWalkingRandom(thing) {
-        var totalAllowed = 0,
-            direction, i;
-
-        for (i = 0; i < 4; i += 1) {
-            if (!thing.bordering[i]) {
-                totalAllowed += 1;
-            }
-        }
-
-        if (totalAllowed === 0) {
-            return;
-        }
-
-        direction = thing.FSP.NumberMaker.randomInt(totalAllowed);
-
-        for (i = 0; i <= direction; i += 1) {
-            if (thing.bordering[i]) {
-                direction += 1;
+            switch (thing.direction) {
+                case 0:
+                    thing.xvel = 0;
+                    thing.yvel = -thing.speed;
+                    thing.destination = thing.top - distance;
+                    break;
+                case 1:
+                    thing.xvel = thing.speed;
+                    thing.yvel = 0;
+                    thing.destination = thing.right + distance;
+                    break;
+                case 2:
+                    thing.xvel = 0;
+                    thing.yvel = thing.speed;
+                    thing.destination = thing.bottom + distance;
+                    break;
+                case 3:
+                    thing.xvel = -thing.speed;
+                    thing.yvel = 0;
+                    thing.destination = thing.left - distance;
+                    break;
+                default:
+                    throw new Error("Unknown direction: " + thing.direction + ".");
             }
         }
 
-        if (thing.roamingDirections.indexOf(direction) === -1) {
-            thing.FSP.animateCharacterSetDirection(thing, direction);
-        } else {
-            thing.FSP.animateCharacterStartWalking(thing, direction);
-        }
-    }
-
-    /**
-     * 
-     */
-    function animatePlayerStartWalking(thing) {
-        if (typeof thing.turning !== "undefined") {
-            if (!thing.keys[thing.turning]) {
-                thing.FSP.animateCharacterSetDirection(
-                    thing, thing.turning
-                    );
-                thing.turning = undefined;
+        /**
+         * 
+         */
+        animateCharacterStartTurning(thing: ICharacter, direction: Direction, onStop: any): void {
+            if (onStop.length === 0) {
                 return;
             }
-            thing.turning = undefined;
-        }
 
-        thing.canKeyWalking = false;
-        thing.FSP.animateCharacterStartWalking(thing, thing.direction);
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterSetDirection(thing, direction) {
-        thing.direction = direction;
-
-        if (direction !== 1) {
-            thing.FSP.unflipHoriz(thing);
-        } else {
-            thing.FSP.flipHoriz(thing);
-        }
-
-        thing.FSP.removeClasses(thing, "up left down");
-
-        switch (direction) {
-            case 0:
-                thing.FSP.addClass(thing, "up");
-                break;
-            case 1:
-                thing.FSP.addClass(thing, "left");
-                break;
-            case 2:
-                thing.FSP.addClass(thing, "down");
-                break;
-            case 3:
-                thing.FSP.addClass(thing, "left");
-                break;
-        }
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterSetDirectionRandom(thing) {
-        thing.FSP.animateCharacterSetDirection(
-            thing, thing.FSP.NumberMaker.randomIntWithin(0, 3)
-            )
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterStopWalking(thing, onStop) {
-        thing.xvel = 0;
-        thing.yvel = 0;
-
-        thing.FSP.removeClass(thing, "walking");
-        thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
-
-        if (thing.walkingFlipping) {
-            thing.FSP.TimeHandler.cancelEvent(thing.walkingFlipping);
-            thing.walkingFlipping = undefined;
-        }
-
-        thing.FSP.animateSnapToGrid(thing);
-
-        if (thing.sight) {
-            thing.sightDetector.nocollide = false;
-            thing.FSP.animatePositionSightDetector(thing);
-        }
-
-        if (!onStop) {
-            return true;
-        }
-
-        switch (onStop.constructor) {
-            case Number:
-                thing.FSP.animatePlayerStartWalking(thing, thing.direction, onStop - 1);
-                return true;
-            case Array:
-                if (onStop[0] > 0) {
-                    onStop[0] -= 1;
-                    thing.FSP.animateCharacterStartTurning(thing, thing.direction, onStop);
-                } else if (onStop.length === 0) {
-                    return true;
-                } else {
-                    if (onStop[1] instanceof Function) {
-                        return onStop[1](thing);
+            if (onStop[0] === 0) {
+                if (onStop.length > 1) {
+                    if (typeof onStop[1] === "function") {
+                        onStop[1](thing);
+                        return;
                     }
+
+                    thing.FSP.animateCharacterSetDirection(
+                        thing,
+                        thing.FSP.directionNumbers[onStop[1]]);
+
                     thing.FSP.animateCharacterStartTurning(
                         thing,
                         thing.FSP.directionNumbers[onStop[1]],
-                        onStop.slice(2)
-                        );
+                        onStop.slice(2));
                 }
+
+                return;
+            }
+
+            if (thing.follower) {
+                thing.walkingCommands.push(direction);
+            }
+
+            thing.FSP.animateCharacterStartWalking(thing, direction, onStop);
+
+            thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+        }
+
+        /**
+         * 
+         */
+        animateCharacterStartWalking(thing: ICharacter, direction: Direction, onStop: any): void {
+            var repeats = thing.FSP.getCharacterWalkingInterval(thing),
+                distance = repeats * thing.speed;
+
+            direction = direction || 0;
+            thing.FSP.animateCharacterSetDirection(thing, direction);
+            thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
+
+            if (!thing.cycles || !thing.cycles.walking) {
+                thing.FSP.TimeHandler.addClassCycle(
+                    thing,
+                    ["walking", "standing"],
+                    "walking",
+                    repeats / 2);
+            }
+
+            if (!thing.walkingFlipping) {
+                thing.walkingFlipping = thing.FSP.TimeHandler.addEventInterval(
+                    thing.FSP.animateSwitchFlipOnDirection, repeats, Infinity, thing);
+            }
+
+            if (thing.sight) {
+                thing.sightDetector.nocollide = true;
+            }
+
+            thing.FSP.TimeHandler.addEventInterval(
+                thing.onWalkingStop, repeats, Infinity, thing, onStop);
+
+            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+        }
+
+        /**
+         * 
+         */
+        animateCharacterStartWalkingRandom(thing: ICharacter): void {
+            var totalAllowed: number = 0,
+                direction: Direction,
+                i: number;
+
+            for (i = 0; i < 4; i += 1) {
+                if (!thing.bordering[i]) {
+                    totalAllowed += 1;
+                }
+            }
+
+            if (totalAllowed === 0) {
+                return;
+            }
+
+            direction = thing.FSP.NumberMaker.randomInt(totalAllowed);
+
+            for (i = 0; i <= direction; i += 1) {
+                if (thing.bordering[i]) {
+                    direction += 1;
+                }
+            }
+
+            if (thing.roamingDirections.indexOf(direction) === -1) {
+                thing.FSP.animateCharacterSetDirection(thing, direction);
+            } else {
+                thing.FSP.animateCharacterStartWalking(thing, direction);
+            }
+        }
+
+        /**
+         * 
+         */
+        animatePlayerStartWalking(thing: IPlayer): void {
+            if (typeof thing.turning !== "undefined") {
+                if (!thing.keys[thing.turning]) {
+                    thing.FSP.animateCharacterSetDirection(thing, thing.turning);
+                    thing.turning = undefined;
+                    return;
+                }
+                thing.turning = undefined;
+            }
+
+            thing.canKeyWalking = false;
+            thing.FSP.animateCharacterStartWalking(thing, thing.direction);
+        }
+
+        /**
+         * 
+         */
+        animateCharacterSetDirection(thing: ICharacter, direction: Direction): void {
+            thing.direction = direction;
+
+            if (direction !== 1) {
+                thing.FSP.unflipHoriz(thing);
+            } else {
+                thing.FSP.flipHoriz(thing);
+            }
+
+            thing.FSP.removeClasses(thing, "up left down");
+
+            switch (direction) {
+                case 0:
+                    thing.FSP.addClass(thing, "up");
+                    break;
+                case 1:
+                    thing.FSP.addClass(thing, "left");
+                    break;
+                case 2:
+                    thing.FSP.addClass(thing, "down");
+                    break;
+                case 3:
+                    thing.FSP.addClass(thing, "left");
+                    break;
+                default:
+                    throw new Error("Unknown direction: " + direction + ".");
+            }
+        }
+
+        /**
+         * 
+         */
+        animateCharacterSetDirectionRandom(thing: ICharacter): void {
+            thing.FSP.animateCharacterSetDirection(thing, thing.FSP.NumberMaker.randomIntWithin(0, 3))
+        }
+
+        /**
+         * 
+         */
+        animateCharacterStopWalking(thing: ICharacter, onStop: any): boolean {
+            thing.xvel = 0;
+            thing.yvel = 0;
+
+            thing.FSP.removeClass(thing, "walking");
+            thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
+
+            if (thing.walkingFlipping) {
+                thing.FSP.TimeHandler.cancelEvent(thing.walkingFlipping);
+                thing.walkingFlipping = undefined;
+            }
+
+            thing.FSP.animateSnapToGrid(thing);
+
+            if (thing.sight) {
+                thing.sightDetector.nocollide = false;
+                thing.FSP.animatePositionSightDetector(thing);
+            }
+
+            if (!onStop) {
                 return true;
-            case Function:
-                return onStop(thing);
-        }
-    }
+            }
 
-    /**
-     * 
-     */
-    function animatePlayerStopWalking(thing, onStop) {
-        if (thing.FSP.checkPlayerGrassBattle(thing)) {
-            return;
+            switch (onStop.constructor) {
+                case Number:
+                    console.warn("Should this be animateCharacterStartWalking?");
+                    thing.FSP.animatePlayerStartWalking(<IPlayer>thing);
+                    return true;
+                case Array:
+                    if (onStop[0] > 0) {
+                        onStop[0] -= 1;
+                        thing.FSP.animateCharacterStartTurning(thing, thing.direction, onStop);
+                    } else if (onStop.length === 0) {
+                        return true;
+                    } else {
+                        if (onStop[1] instanceof Function) {
+                            return onStop[1](thing);
+                        }
+                        thing.FSP.animateCharacterStartTurning(
+                            thing,
+                            thing.FSP.directionNumbers[onStop[1]],
+                            onStop.slice(2));
+                    }
+                    return true;
+                case Function:
+                    return (<any>onStop)(thing);
+            }
         }
 
-        if (thing.following) {
+        /**
+         * 
+         */
+        animatePlayerStopWalking(thing: IPlayer, onStop: any): boolean {
+            if (thing.FSP.checkPlayerGrassBattle(thing)) {
+                return;
+            }
+
+            if (thing.following) {
+                return thing.FSP.animateCharacterStopWalking(thing, onStop);
+            }
+
+            if (
+                !thing.FSP.MenuGrapher.getActiveMenu()
+                && thing.keys[thing.direction]) {
+                thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
+                return false;
+            } else {
+                if (typeof thing.nextDirection !== "undefined") {
+                    if (thing.nextDirection !== thing.direction) {
+                        thing.FSP.setPlayerDirection(thing, thing.nextDirection);
+                    }
+                    delete thing.nextDirection;
+                }
+            }
+
+            thing.canKeyWalking = true;
             return thing.FSP.animateCharacterStopWalking(thing, onStop);
         }
 
-        if (
-            !thing.FSP.MenuGrapher.getActiveMenu()
-            && thing.keys[thing.direction]
-            ) {
-            thing.FSP.animateCharacterSetDistanceVelocity(
-                thing, thing.distance
-                );
-            return false;
-        } else {
-            if (typeof thing.nextDirection !== "undefined") {
-                if (thing.nextDirection !== thing.direction) {
-                    thing.FSP.setPlayerDirection(
-                        thing,
-                        thing.nextDirection
-                        );
-                }
-                delete thing.nextDirection;
+        /**
+         * 
+         */
+        animateCharacterPreventWalking(thing: ICharacter): void {
+            thing.isMoving = thing.shouldWalk = false;
+            thing.xvel = thing.yvel = 0;
+
+            if (thing.getKeys) {
+                thing.keys = thing.getKeys();
             }
+
+            thing.FSP.MapScreener.blockInputs = true;
         }
 
-        thing.canKeyWalking = true;
-        return thing.FSP.animateCharacterStopWalking(thing, onStop);
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterPreventWalking(thing) {
-        thing.isMoving = thing.shouldWalk = false;
-        thing.xvel = thing.yvel = 0;
-
-        if (thing.getKeys) {
-            thing.keys = thing.getKeys();
-        }
-
-        thing.FSP.MapScreener.blockInputs = true;
-    }
-
-    /**
-     * 
-     */
-    function animateFlipOnDirection(thing) {
-        if (thing.direction % 2 === 0) {
-            thing.FSP.flipHoriz(thing);
-        }
-    }
-
-    /**
-     * 
-     */
-    function animateUnflipOnDirection(thing) {
-        if (thing.direction % 2 === 0) {
-            thing.FSP.unflipHoriz(thing);
-        }
-    }
-
-    /**
-     * 
-     */
-    function animateSwitchFlipOnDirection(thing) {
-        if (thing.direction % 2 !== 0) {
-            return;
-        }
-
-        if (thing.flipHoriz) {
-            thing.FSP.unflipHoriz(thing);
-        } else {
-            thing.FSP.flipHoriz(thing);
-        }
-    }
-
-    /**
-     * 
-     */
-    function animatePositionSightDetector(thing) {
-        var detector = thing.sightDetector,
-            direction = thing.direction,
-            sight = thing.sight;
-
-        if (detector.direction !== direction) {
+        /**
+         * 
+         */
+        animateFlipOnDirection(thing: ICharacter): void {
             if (thing.direction % 2 === 0) {
-                thing.FSP.setWidth(detector, thing.width);
-                thing.FSP.setHeight(detector, sight * 8);
-            } else {
-                thing.FSP.setWidth(detector, sight * 8);
-                thing.FSP.setHeight(detector, thing.height);
+                thing.FSP.flipHoriz(thing);
             }
-            detector.direction = direction;
         }
 
-        switch (direction) {
-            case 0:
-                thing.FSP.setBottom(detector, thing.top);
-                thing.FSP.setMidXObj(detector, thing);
-                break;
-            case 1:
-                thing.FSP.setLeft(detector, thing.right);
-                thing.FSP.setMidYObj(detector, thing);
-                break;
-            case 2:
-                thing.FSP.setTop(detector, thing.bottom);
-                thing.FSP.setMidXObj(detector, thing);
-                break;
-            case 3:
-                thing.FSP.setRight(detector, thing.left);
-                thing.FSP.setMidYObj(detector, thing);
-                break;
-        }
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterDialogFinish(thing, other) {
-        var onStop;
-
-        if (other.pushSteps) {
-            onStop = other.pushSteps;
+        /**
+         * 
+         */
+        animateUnflipOnDirection(thing: ICharacter): void {
+            if (thing.direction % 2 === 0) {
+                thing.FSP.unflipHoriz(thing);
+            }
         }
 
-        thing.talking = false;
-        other.talking = false;
-        thing.canKeyWalking = true;
+        /**
+         * 
+         */
+        animateSwitchFlipOnDirection(thing: ICharacter): void {
+            if (thing.direction % 2 !== 0) {
+                return;
+            }
 
-        if (other.directionPreferred) {
-            thing.FSP.animateCharacterSetDirection(
-                other, other.directionPreferred
-                );
+            if (thing.flipHoriz) {
+                thing.FSP.unflipHoriz(thing);
+            } else {
+                thing.FSP.flipHoriz(thing);
+            }
         }
 
-        if (other.transport) {
-            other.active = true;
-            thing.FSP.activateTransporter(thing, other);
-            return;
+        /**
+         * 
+         */
+        animatePositionSightDetector(thing: ICharacter): void {
+            var detector: ICharacter = thing.sightDetector,
+                direction: Direction = thing.direction,
+                sight: number = Number(thing.sight);
+
+            if (detector.direction !== direction) {
+                if (thing.direction % 2 === 0) {
+                    thing.FSP.setWidth(detector, thing.width);
+                    thing.FSP.setHeight(detector, sight * 8);
+                } else {
+                    thing.FSP.setWidth(detector, sight * 8);
+                    thing.FSP.setHeight(detector, thing.height);
+                }
+                detector.direction = direction;
+            }
+
+            switch (direction) {
+                case 0:
+                    thing.FSP.setBottom(detector, thing.top);
+                    thing.FSP.setMidXObj(detector, thing);
+                    break;
+                case 1:
+                    thing.FSP.setLeft(detector, thing.right);
+                    thing.FSP.setMidYObj(detector, thing);
+                    break;
+                case 2:
+                    thing.FSP.setTop(detector, thing.bottom);
+                    thing.FSP.setMidXObj(detector, thing);
+                    break;
+                case 3:
+                    thing.FSP.setRight(detector, thing.left);
+                    thing.FSP.setMidYObj(detector, thing);
+                    break;
+                default:
+                    throw new Error("Unknown direction: " + direction + ".");
+            }
         }
 
-        if (typeof other.pushDirection !== "undefined") {
-            thing.FSP.animateCharacterStartTurning(
-                thing, other.pushDirection, onStop
-                );
-        }
+        /**
+         * 
+         */
+        animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
+            var onStop: any;
 
-        if (other.gift) {
-            thing.FSP.MenuGrapher.createMenu("GeneralText");
-            thing.FSP.MenuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!"
-                ],
-                thing.FSP.animateCharacterDialogFinish.bind(
-                    thing, other
-                    )
-                );
-            thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+            if (other.pushSteps) {
+                onStop = other.pushSteps;
+            }
 
-            thing.FSP.addItemToBag(thing.FSP, other.gift);
+            thing.talking = false;
+            other.talking = false;
+            thing.canKeyWalking = true;
 
-            other.gift = undefined;
-            thing.FSP.StateHolder.addChange(other.id, "gift", undefined);
+            if (other.directionPreferred) {
+                thing.FSP.animateCharacterSetDirection(other, other.directionPreferred);
+            }
 
-            return;
-        }
+            if (other.transport) {
+                other.active = true;
+                thing.FSP.activateTransporter(thing, other);
+                return;
+            }
 
-        if (other.dialogNext) {
-            other.dialog = other.dialogNext;
-            other.dialogNext = undefined;
-            thing.FSP.StateHolder.addChange(
-                other.id, "dialog", other.dialog
-                );
-            thing.FSP.StateHolder.addChange(
-                other.id, "dialogNext", undefined
-                );
-        }
-
-        if (other.trainer) {
-            other.trainer = false;
-            thing.FSP.StateHolder.addChange(
-                other.id, "trainer", false
-                );
-
-            if (other.sight) {
-                other.sight = undefined;
-                thing.FSP.StateHolder.addChange(
-                    other.id, "sight", undefined
+            if (typeof other.pushDirection !== "undefined") {
+                thing.FSP.animateCharacterStartTurning(
+                    thing, other.pushDirection, onStop
                     );
             }
-        }
 
-        if (other.dialogOptions) {
-            thing.FSP.animateCharacterDialogOptions(
-                thing, other, other.dialogOptions
-                );
-        } else if (other.trainer) {
-            thing.FSP.animateTrainerBattleStart(thing, other);
-        }
-    }
+            if (other.gift) {
+                thing.FSP.MenuGrapher.createMenu("GeneralText");
+                thing.FSP.MenuGrapher.addMenuDialog(
+                    "GeneralText",
+                    [
+                        "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!"
+                    ],
+                    thing.FSP.animateCharacterDialogFinish.bind(
+                        thing, other
+                        )
+                    );
+                thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
 
-    /**
-     * 
-     */
-    function animateCharacterDialogOptions(thing, other, dialogOptions) {
-        var options = dialogOptions.options,
-            generateCallback = function (dialog) {
-                var callback, words;
+                thing.FSP.addItemToBag(thing.FSP, other.gift);
 
-                if (!dialog) {
-                    return undefined;
+                other.gift = undefined;
+                thing.FSP.StateHolder.addChange(other.id, "gift", undefined);
+
+                return;
+            }
+
+            if (other.dialogNext) {
+                other.dialog = other.dialogNext;
+                other.dialogNext = undefined;
+                thing.FSP.StateHolder.addChange(other.id, "dialog", other.dialog);
+                thing.FSP.StateHolder.addChange(other.id, "dialogNext", undefined);
+            }
+
+            if (other.trainer) {
+                other.trainer = false;
+                thing.FSP.StateHolder.addChange(other.id, "trainer", false);
+
+                if (other.sight) {
+                    other.sight = undefined;
+                    thing.FSP.StateHolder.addChange(other.id, "sight", undefined);
                 }
+            }
 
-                if (dialog.constructor === Object && dialog.options) {
-                    words = dialog.words;
-                    callback = animateCharacterDialogOptions.bind(
-                        thing.FSP, thing, other, dialog
-                        );
-                } else {
-                    words = dialog.words || dialog;
-                    if (dialog.cutscene) {
-                        callback = thing.FSP.ScenePlayer.bindCutscene(
-                            dialog.cutscene, {
-                                "player": thing,
-                                "tirggerer": other
-                            }
-                            );
+            if (other.dialogOptions) {
+                thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
+            } else if (other.trainer) {
+                thing.FSP.animateTrainerBattleStart(thing, <IEnemy>other);
+            }
+        }
+
+        /**
+         * 
+         */
+        animateCharacterDialogOptions(thing: IPlayer, other: ICharacter, dialog: IDialog) {
+            var options: IDialogOptions = dialog.options,
+                generateCallback = function (dialog: string | IDialog): () => void {
+                    var callback: (...args: any[]) => void,
+                        words: string;
+
+                    if (!dialog) {
+                        return undefined;
+                    }
+
+                    if (dialog.constructor === Object && (<IDialog>dialog).options) {
+                        words = (<IDialog>dialog).words;
+                        callback = thing.FSP.animateCharacterDialogOptions.bind(
+                            thing.FSP, thing, other, dialog);
+                    } else {
+                        words = (<IDialog>dialog).words || <string>dialog;
+                        if ((<IDialog>dialog).cutscene) {
+                            callback = thing.FSP.ScenePlayer.bindCutscene(
+                                (<IDialog>dialog).cutscene,
+                                {
+                                    "player": thing,
+                                    "tirggerer": other
+                                });
+                        }
+                    }
+
+                    return function (): void {
+                        thing.FSP.MenuGrapher.deleteMenu("Yes/No");
+                        thing.FSP.MenuGrapher.createMenu("GeneralText", {
+                            //"deleteOnFinish": true
+                        });
+                        thing.FSP.MenuGrapher.addMenuDialog(
+                            "GeneralText", words, callback);
+                        thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                    };
+                };
+
+            console.warn("DialogOptions assumes type = Yes/No for now...");
+
+            thing.FSP.MenuGrapher.createMenu("Yes/No", {
+                "position": {
+                    "offset": {
+                        "left": 28
                     }
                 }
-
-                return function () {
-                    thing.FSP.MenuGrapher.deleteMenu("Yes/No");
-                    thing.FSP.MenuGrapher.createMenu("GeneralText", {
-                        //"deleteOnFinish": true
-                    });
-                    thing.FSP.MenuGrapher.addMenuDialog(
-                        "GeneralText", words, callback
-                        );
-                    thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
-                };
-            };
-
-        console.warn("DialogOptions assumes type = Yes/No for now...");
-
-        thing.FSP.MenuGrapher.createMenu("Yes/No", {
-            "position": {
-                "offset": {
-                    "left": 28
-                }
-            }
-        });
-        thing.FSP.MenuGrapher.addMenuList("Yes/No", {
-            "options": [{
-                "text": "YES",
-                "callback": generateCallback(options.Yes)
-            }, {
-                    "text": "NO",
-                    "callback": generateCallback(options.No)
-                }]
-        });
-        thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterFollow(thing, other) {
-        var direction = thing.FSP.getDirectionBordering(thing, other);
-
-        thing.nocollide = true;
-        thing.allowDirectionAsKeys = true;
-
-        thing.following = other;
-        other.follower = thing;
-
-        thing.speedOld = thing.speed;
-        thing.speed = other.speed;
-
-        other.walkingCommands = [direction];
-
-        thing.FSP.animateCharacterSetDirection(thing, direction);
-
-        switch (direction) {
-            case 0:
-                thing.FSP.setTop(thing, other.bottom);
-                break;
-            case 1:
-                thing.FSP.setRight(thing, other.left);
-                break;
-            case 2:
-                thing.FSP.setBottom(thing, other.top);
-                break;
-            case 3:
-                thing.FSP.setLeft(thing, other.right);
-                break;
+            });
+            thing.FSP.MenuGrapher.addMenuList("Yes/No", {
+                "options": [{
+                    "text": "YES",
+                    "callback": generateCallback(options.Yes)
+                }, {
+                        "text": "NO",
+                        "callback": generateCallback(options.No)
+                    }]
+            });
+            thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
         }
 
-        thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
-            thing.FSP.animateCharacterFollowContinue,
-            thing.FSP.getCharacterWalkingInterval(thing),
-            Infinity,
-            thing,
-            other
-            );
-    }
+        /**
+         * 
+         */
+        animateCharacterFollow(thing: ICharacter, other: ICharacter): void {
+            var direction = thing.FSP.getDirectionBordering(thing, other);
 
-    /**
-     * 
-     */
-    function animateCharacterFollowContinue(thing, other) {
-        if (other.walkingCommands.length <= 1) {
-            return;
-        }
+            thing.nocollide = true;
 
-        var direction = other.walkingCommands.shift();
-
-        thing.FSP.animateCharacterStartWalking(thing, direction, 0);
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterFollowStop(thing, other) {
-        var other = thing.following;
-        if (!other) {
-            return true;
-        }
-
-        thing.nocollide = false;
-        delete thing.following;
-        delete thing.followingDirection;
-        delete other.follower;
-
-        thing.FSP.animateCharacterStopWalking(thing);
-        thing.FSP.TimeHandler.cancelEvent(thing.followingLoop);
-    }
-
-    /**
-     * 
-     */
-    function getCharacterWalkingInterval(thing) {
-        return Math.round(8 * thing.FSP.unitsize / thing.speed);
-    }
-
-    /**
-     * 
-     */
-    function animateCharacterHopLedge(thing, other) {
-        var shadow = thing.shadow = thing.FSP.addThing("Shadow"),
-            dy = -thing.FSP.unitsize,
-            xvelOld = thing.xvel,
-            yvelOld = thing.yvel,
-            speed = 2,
-            steps = 14,
-            changed = 0,
-            hesitant = thing.keys && !thing.keys[thing.direction];
-
-        thing.ledge = other;
-
-        if (hesitant) {
-            thing.FSP.keyDownGeneric(thing, thing.direction);
-        }
-
-        thing.FSP.setMidXObj(shadow, thing);
-        thing.FSP.setBottom(shadow, thing.bottom);
-
-        thing.FSP.TimeHandler.addEventInterval(function () {
-            thing.FSP.setBottom(shadow, thing.bottom);
-
-            if (changed % speed === 0) {
-                thing.offsetY += dy;
+            if (thing.player) {
+                (<IPlayer>thing).allowDirectionAsKeys = true;
             }
 
-            changed += 1;
-        }, 1, steps * speed);
+            thing.following = other;
+            other.follower = thing;
 
-        thing.FSP.TimeHandler.addEvent(function () {
-            dy *= -1;
-        }, speed * (steps / 2) | 0);
+            thing.speedOld = thing.speed;
+            thing.speed = other.speed;
 
-        thing.FSP.TimeHandler.addEvent(function () {
-            delete thing.ledge;
-            thing.FSP.killNormal(shadow);
+            other.walkingCommands = [direction];
+
+            thing.FSP.animateCharacterSetDirection(thing, direction);
+
+            switch (direction) {
+                case 0:
+                    thing.FSP.setTop(thing, other.bottom);
+                    break;
+                case 1:
+                    thing.FSP.setRight(thing, other.left);
+                    break;
+                case 2:
+                    thing.FSP.setBottom(thing, other.top);
+                    break;
+                case 3:
+                    thing.FSP.setLeft(thing, other.right);
+                    break;
+            }
+
+            thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
+                thing.FSP.animateCharacterFollowContinue,
+                thing.FSP.getCharacterWalkingInterval(thing),
+                Infinity,
+                thing,
+                other);
+        }
+
+        /**
+         * 
+         */
+        animateCharacterFollowContinue(thing: ICharacter, other: ICharacter): void {
+            if (other.walkingCommands.length <= 1) {
+                return;
+            }
+
+            var direction: Direction = other.walkingCommands.shift();
+
+            thing.FSP.animateCharacterStartWalking(thing, direction, 0);
+        }
+
+        /**
+         * 
+         */
+        animateCharacterFollowStop(thing: ICharacter, other: ICharacter): boolean {
+            var other: ICharacter = thing.following;
+            if (!other) {
+                return true;
+            }
+
+            thing.nocollide = false;
+            delete thing.following;
+            delete other.follower;
+
+            thing.FSP.animateCharacterStopWalking(thing);
+            thing.FSP.TimeHandler.cancelEvent(thing.followingLoop);
+        }
+
+        /**
+         * 
+         */
+        getCharacterWalkingInterval(thing: ICharacter): number {
+            return Math.round(8 * thing.FSP.unitsize / thing.speed);
+        }
+
+        /**
+         * 
+         */
+        animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
+            var shadow: IThing = thing.FSP.addThing("Shadow"),
+                dy: number = -thing.FSP.unitsize,
+                xvelOld: number = thing.xvel,
+                yvelOld: number = thing.yvel,
+                speed: number = 2,
+                steps: number = 14,
+                changed: number = 0,
+                hesitant: boolean = (<IPlayer>thing).keys && !(<IPlayer>thing).keys[thing.direction];
+
+            thing.shadow = shadow;
+            thing.ledge = other;
 
             if (hesitant) {
-                thing.FSP.keyUpGeneric(thing, thing.direction);
+                thing.FSP.keyDownGeneric(thing, thing.direction);
             }
-        }, steps * speed);
-    }
 
+            thing.FSP.setMidXObj(shadow, thing);
+            thing.FSP.setBottom(shadow, thing.bottom);
 
-    /* Collision detection
-    */
+            thing.FSP.TimeHandler.addEventInterval(function () {
+                thing.FSP.setBottom(shadow, thing.bottom);
 
-    /**
-     * 
-     */
-    function generateCanThingCollide() {
-        return function (thing) {
-            return thing.alive;
+                if (changed % speed === 0) {
+                    thing.offsetY += dy;
+                }
+
+                changed += 1;
+            }, 1, steps * speed);
+
+            thing.FSP.TimeHandler.addEvent(function () {
+                dy *= -1;
+            }, speed * (steps / 2) | 0);
+
+            thing.FSP.TimeHandler.addEvent(function () {
+                delete thing.ledge;
+                thing.FSP.killNormal(shadow);
+
+                if (hesitant) {
+                    thing.FSP.keyUpGeneric(thing, thing.direction);
+                }
+            }, steps * speed);
         }
-    }
 
-    /**
-     * 
-     */
-    function generateIsCharacterTouchingCharacter() {
-        return function isCharacterTouchingCharacter(thing, other) {
-            //if (other.xvel || other.yvel) {
-            //    // check destination...
-            //}
-            return (
-                !thing.nocollide && !other.nocollide
-                && thing.right >= (other.left + other.tolLeft)
-                && thing.left <= (other.right - other.tolRight)
-                && thing.bottom >= (other.top + other.tolTop)
-                && thing.top <= (other.bottom - other.tolBottom)
-                );
-        }
-    }
 
-    /**
-     * 
-     */
-    function generateIsCharacterTouchingSolid() {
-        return function isCharacterTouchingSolid(thing, other) {
-            return (
-                !thing.nocollide && !other.nocollide
-                && thing.right >= (other.left + other.tolLeft)
-                && thing.left <= (other.right - other.tolRight)
-                && thing.bottom >= (other.top + other.tolTop)
-                && thing.top <= (other.bottom - other.tolBottom)
-                );
+        /* Collision detection
+        */
+
+        /**
+         * 
+         */
+        generateCanThingCollide(): (thing: IThing) => boolean {
+            return function (thing: IThing): boolean {
+                return thing.alive;
+            };
         }
-    }
+
+        /**
+         * 
+         */
+        generateIsCharacterTouchingCharacter(): (thing: ICharacter, other: ICharacter) => boolean {
+            return function isCharacterTouchingCharacter(thing: ICharacter, other: ICharacter): boolean {
+                //if (other.xvel || other.yvel) {
+                //    // check destination...
+                //}
+                return (
+                    !thing.nocollide && !other.nocollide
+                    && thing.right >= (other.left + other.tolLeft)
+                    && thing.left <= (other.right - other.tolRight)
+                    && thing.bottom >= (other.top + other.tolTop)
+                    && thing.top <= (other.bottom - other.tolBottom));
+            }
+        }
+
+        /**
+         * 
+         */
+        generateIsCharacterTouchingSolid(): (thing: ICharacter, other: IThing) => boolean {
+            return function isCharacterTouchingSolid(thing: ICharacter, other: IThing): boolean {
+                return (
+                    !thing.nocollide && !other.nocollide
+                    && thing.right >= (other.left + other.tolLeft)
+                    && thing.left <= (other.right - other.tolRight)
+                    && thing.bottom >= (other.top + other.tolTop)
+                    && thing.top <= (other.bottom - other.tolBottom));
+            }
+        }
 
     /**
      * 
