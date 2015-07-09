@@ -3219,7 +3219,7 @@ module FullScreenPokemon {
          * 
          */
         openPokemonMenuStats(settings: any): void {
-            var EightBitter = EightBittr.ensureCorrectCaller(this),
+            var EightBitter = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon = settings.pokemon,
                 schemas = EightBitter.MathDecider.getConstant("pokemon"),
                 schema = schemas[pokemon.title];
@@ -7451,7 +7451,7 @@ module FullScreenPokemon {
          * 
          */
         saveCharacterPositions(FSP: FullScreenPokemon): void {
-            var characters: ICharacter[] = <ICharacter[]>FSP.GroupHolder.getCharacterGroup(),
+            var characters: ICharacter[] = <ICharacter[]>FSP.GroupHolder.getGroup("Character"),
                 character: ICharacter,
                 id: string,
                 i: number;
@@ -7462,1524 +7462,1498 @@ module FullScreenPokemon {
 
                 FSP.saveCharacterPosition(FSP, character, id);
             }
+        }
+
+        /**
+         * 
+         */
+        saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
+            FSP.StateHolder.addChange(
+                id,
+                "xloc",
+                (character.left + FSP.MapScreener.left) / FSP.unitsize);
+            FSP.StateHolder.addChange(
+                id,
+                "yloc",
+                (character.top + FSP.MapScreener.top) / FSP.unitsize);
+            FSP.StateHolder.addChange(
+                id,
+                "direction",
+                character.direction);
+        }
+
+        /**
+         * 
+         */
+        saveGame(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
+            FSP.ItemsHolder.setItem("map", FSP.MapsHandler.getMapName());
+            FSP.ItemsHolder.setItem("area", FSP.MapsHandler.getAreaName());
+            FSP.ItemsHolder.setItem("location", FSP.MapsHandler.getLocationCurrentName());
+
+            FSP.saveCharacterPositions(FSP);
+            FSP.ItemsHolder.saveAll();
+            FSP.StateHolder.saveCollection();
+
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText", [
+                    "Now saving..."
+                ]);
+
+            FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher), 49);
         };
 
-    /**
-     * 
-     */
-    function saveCharacterPosition(EightBitter, character, id) {
-        EightBitter.StateHolder.addChange(
-            id,
-            "xloc",
-            (character.left + EightBitter.MapScreener.left) / EightBitter.unitsize
-            );
-        EightBitter.StateHolder.addChange(
-            id,
-            "yloc",
-            (character.top + EightBitter.MapScreener.top) / EightBitter.unitsize
-            );
-        EightBitter.StateHolder.addChange(
-            id,
-            "direction",
-            character.direction
-            );
-    }
+        /**
+         * 
+         */
+        downloadSaveGame(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                link: HTMLLinkElement = document.createElement("a");
 
-    /**
-     * 
-     */
-    function saveGame() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
+            FSP.saveGame();
 
-        EightBitter.ItemsHolder.setItem(
-            "map", EightBitter.MapsHandler.getMapName()
-            );
-        EightBitter.ItemsHolder.setItem(
-            "area", EightBitter.MapsHandler.getAreaName()
-            );
-        EightBitter.ItemsHolder.setItem(
-            "location", EightBitter.MapsHandler.getLocationCurrentName()
-            );
+            link.setAttribute(
+                "download",
+                FSP.ItemsHolder.getItem("filename") + " " + Date.now() + ".json");
+            link.setAttribute(
+                "href",
+                "data:text/json;charset=utf-8," + encodeURIComponent(
+                    FSP.LevelEditor.beautify(JSON.stringify(FSP.ItemsHolder.export())));
 
-        EightBitter.saveCharacterPositions(EightBitter);
-        EightBitter.ItemsHolder.saveAll();
-        EightBitter.StateHolder.saveCollection();
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText", [
-                "Now saving..."
-            ]
-            );
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.MenuGrapher.registerB, 49
-            );
-    };
-
-    /**
-     * 
-     */
-    function downloadSaveGame() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            link = document.createElement("a");
-
-        EightBitter.saveGame();
-
-        link.setAttribute(
-            "download",
-            EightBitter.ItemsHolder.getItem("filename") + " " + Date.now() + ".json"
-            );
-        link.setAttribute(
-            "href",
-            "data:text/json;charset=utf-8," + encodeURIComponent(
-                EightBitter.LevelEditor.beautify(
-                    JSON.stringify(EightBitter.ItemsHolder.export())
-                    )
-                )
-            );
-
-        EightBitter.container.appendChild(link);
-        link.click();
-        EightBitter.container.removeChild(link);
-    };
-
-    /**
-     * 
-     */
-    function addItemToBag(EightBitter, item, amount) {
-        EightBitter.combineArrayMembers(
-            EightBitter.ItemsHolder.getItem("items"),
-            item,
-            amount || 1,
-            "item",
-            "amount"
-            );
-    }
-
-
-    /* Map sets
-    */
-
-    /**
-     * 
-     */
-    function setMap(name, location, noEntrance) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            map;
-
-        if (typeof name === "undefined" || name instanceof EightBittr) {
-            name = EightBitter.MapsHandler.getMapName();
+            FSP.container.appendChild(link);
+            link.click();
+            FSP.container.removeChild(link);
         }
 
-        map = EightBitter.MapsHandler.setMap(name);
-
-        EightBitter.ModAttacher.fireEvent("onPreSetMap", map);
-
-        EightBitter.NumberMaker.resetFromSeed(map.seed);
-        EightBitter.InputWriter.restartHistory();
-
-        EightBitter.ModAttacher.fireEvent("onSetMap", map);
-
-        EightBitter.setLocation(
-            location
-            || map.locationDefault
-            || EightBitter.settings.maps.locationDefault,
-            noEntrance
-            );
-    }
-
-    /**
-     * 
-     */
-    function setLocation(name, noEntrance) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            location, theme;
-
-        name = name || 0;
-
-        EightBitter.GBSEmulator.clearAll();
-        EightBitter.GroupHolder.clearArrays();
-        EightBitter.MapScreener.clearScreen();
-        EightBitter.MapScreener.thingsById = {};
-        EightBitter.MenuGrapher.setActiveMenu(undefined);
-        EightBitter.TimeHandler.cancelAllEvents();
-
-        EightBitter.MapsHandler.setLocation(name);
-        EightBitter.MapScreener.setVariables();
-        location = EightBitter.MapsHandler.getLocation(name);
-        location.area.spawnedBy = {
-            "name": name,
-            "timestamp": new Date().getTime()
-        };
-
-        EightBitter.ModAttacher.fireEvent("onPreSetLocation", location);
-
-        EightBitter.PixelDrawer.setBackground(
-            EightBitter.MapsHandler.getArea().background
-            );
-
-        EightBitter.StateHolder.setCollection(
-            location.area.map.name + "::" + location.area.name
-            );
-
-        EightBitter.QuadsKeeper.resetQuadrants();
-
-        theme = location.theme || location.area.theme || location.area.map.theme;
-        EightBitter.MapScreener.theme = theme;
-        if (theme && theme !== EightBitter.GBSEmulator.getTheme()) {
-            EightBitter.GBSEmulator.play(theme);
+        /**
+         * 
+         */
+        addItemToBag(FSP: FullScreenPokemon, item: string, amount: number = 1): void {
+            FSP.combineArrayMembers(
+                FSP.ItemsHolder.getItem("items"),
+                item,
+                amount,
+                "item",
+                "amount");
         }
 
-        if (!noEntrance) {
-            location.entry(EightBitter, location);
-        }
 
-        EightBitter.ModAttacher.fireEvent("onSetLocation", location);
+        /* Map sets
+        */
 
-        EightBitter.GamesRunner.play();
+        /**
+         * 
+         */
+        setMap(name: string, location: string, noEntrance?: boolean): void {
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                map: IMap;
 
-        EightBitter.animateFadeFromColor(EightBitter, {
-            "color": "Black"
-        });
-
-        if (location.push) {
-            EightBitter.animateCharacterStartWalking(
-                EightBitter.player, EightBitter.player.direction
-                );
-        }
-    }
-
-    /**
-     * 
-     */
-    function getAreaBoundariesReal(EightBitter) {
-        var area = EightBitter.MapsHandler.getArea();
-
-        if (!area) {
-            return {
-                "top": 0,
-                "right": 0,
-                "bottom": 0,
-                "left": 0,
-                "width": 0,
-                "height": 0
+            if (typeof name === "undefined" || name.constructor === FullScreenPokemon) {
+                name = FSP.MapsHandler.getMapName();
             }
-        };
 
-        return {
-            "top": area.boundaries.top * EightBitter.unitsize,
-            "right": area.boundaries.right * EightBitter.unitsize,
-            "bottom": area.boundaries.bottom * EightBitter.unitsize,
-            "left": area.boundaries.left * EightBitter.unitsize,
-            "width": (area.boundaries.right - area.boundaries.left) * EightBitter.unitsize,
-            "height": (area.boundaries.bottom - area.boundaries.top) * EightBitter.unitsize
-        }
-    }
+            map = <IMap>FSP.MapsHandler.setMap(name);
 
-    /**
-     * 
-     */
-    function getScreenScrollability(EightBitter) {
-        var area = EightBitter.MapsHandler.getArea(),
-            boundaries, width, height;
+            FSP.ModAttacher.fireEvent("onPreSetMap", map);
 
-        if (!area) {
-            return "none";
+            FSP.NumberMaker.resetFromSeed(map.seed);
+            FSP.InputWriter.restartHistory();
+
+            FSP.ModAttacher.fireEvent("onSetMap", map);
+
+            FSP.setLocation(
+                location
+                || map.locationDefault
+                || FSP.settings.maps.locationDefault,
+                noEntrance);
         }
 
-        boundaries = area.boundaries;
-        width = (boundaries.right - boundaries.left) * EightBitter.unitsize;
-        height = (boundaries.bottom - boundaries.top) * EightBitter.unitsize;
+        /**
+         * 
+         */
+        setLocation(name: string, noEntrance?: boolean): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                location: ILocation,
+                theme;
 
-        if (width > EightBitter.MapScreener.width) {
-            if (height > EightBitter.MapScreener.height) {
-                return "both";
-            } else {
-                return "horizontal";
+            name = name || "0";
+
+            FSP.GBSEmulator.clearAll();
+            FSP.GroupHolder.clearArrays();
+            FSP.MapScreener.clearScreen();
+            FSP.MapScreener.thingsById = {};
+            FSP.MenuGrapher.setActiveMenu(undefined);
+            FSP.TimeHandler.cancelAllEvents();
+
+            FSP.MapsHandler.setLocation(name);
+            FSP.MapScreener.setVariables();
+            location = <ILocation>FSP.MapsHandler.getLocation(name);
+            location.area.spawnedBy = {
+                "name": name,
+                "timestamp": new Date().getTime()
+            };
+
+            FSP.ModAttacher.fireEvent("onPreSetLocation", location);
+
+            FSP.PixelDrawer.setBackground((<IArea>FSP.MapsHandler.getArea()).background);
+
+            FSP.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
+
+            FSP.QuadsKeeper.resetQuadrants();
+
+            theme = location.theme || location.area.theme || location.area.map.theme;
+            FSP.MapScreener.theme = theme;
+            if (theme && theme !== FSP.GBSEmulator.getTheme()) {
+                FSP.GBSEmulator.play(theme);
             }
-        } else if (height > EightBitter.MapScreener.height) {
-            return "vertical";
-        } else {
-            return "none";
-        }
-    }
 
-    /**
-     * 
-     */
-    function generateThingsByIdContainer() {
-        return {};
-    }
+            if (!noEntrance) {
+                location.entry(FSP, location);
+            }
 
-    /**
-     * 
-     * 
-     * @remarks Direction is taken in by the .forEach call as the index. Clever.
-     */
-    function mapAddAfter(prething, direction) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            MapsCreator = EightBitter.MapsCreator,
-            MapsHandler = EightBitter.MapsHandler,
-            prethings = MapsHandler.getPreThings(),
-            area = MapsHandler.getArea(),
-            map = MapsHandler.getMap(),
-            boundaries = EightBitter.MapsHandler.getArea().boundaries;
+            FSP.ModAttacher.fireEvent("onSetLocation", location);
 
-        prething.direction = direction;
-        switch (direction) {
-            case 0:
-                prething.x = boundaries.left;
-                prething.y = boundaries.top - 8;
-                prething.width = boundaries.right - boundaries.left;
-                break;
-            case 1:
-                prething.x = boundaries.right;
-                prething.y = boundaries.top;
-                prething.height = boundaries.bottom - boundaries.top;
-                break;
-            case 2:
-                prething.x = boundaries.left;
-                prething.y = boundaries.bottom;
-                prething.width = boundaries.right - boundaries.left;
-                break;
-            case 3:
-                prething.x = boundaries.left - 8;
-                prething.y = boundaries.top;
-                prething.height = boundaries.bottom - boundaries.top;
-                break;
-        }
+            FSP.GamesRunner.play();
 
-        MapsCreator.analyzePreSwitch(prething, prethings, area, map);
-    }
-
-
-    /* Map entrances
-    */
-
-    /**
-     * 
-     */
-    function centerMapScreen(EightBitter) {
-        switch (EightBitter.MapScreener.scrollability) {
-            case "none":
-                EightBitter.centerMapScreenHorizontally(EightBitter);
-                EightBitter.centerMapScreenVertically(EightBitter);
-                return;
-            case "vertical":
-                EightBitter.centerMapScreenHorizontally(EightBitter);
-                EightBitter.centerMapScreenVerticallyOnPlayer(EightBitter);
-                return;
-            case "horizontal":
-                EightBitter.centerMapScreenHorizontallyOnPlayer(EightBitter);
-                EightBitter.centerMapScreenVertically(EightBitter);
-                return;
-            case "both":
-                EightBitter.centerMapScreenHorizontallyOnPlayer(EightBitter);
-                EightBitter.centerMapScreenVerticallyOnPlayer(EightBitter);
-                return;
-        }
-    }
-
-    /**
-     * 
-     */
-    function centerMapScreenHorizontally(EightBitter) {
-        var boundaries = EightBitter.MapScreener.boundaries,
-            difference = EightBitter.MapScreener.width - boundaries.width;
-
-        if (difference > 0) {
-            EightBitter.scrollWindow(difference / -2);
-        }
-    }
-
-    /**
-     * 
-     */
-    function centerMapScreenVertically(EightBitter) {
-        var boundaries = EightBitter.MapScreener.boundaries,
-            difference = EightBitter.MapScreener.height - boundaries.height;
-
-        EightBitter.scrollWindow(0, difference / -2);
-    }
-
-    /**
-     * 
-     */
-    function centerMapScreenHorizontallyOnPlayer(EightBitter) {
-        var boundaries = EightBitter.MapScreener.boundaries,
-            difference = (
-                EightBitter.getMidX(EightBitter.player)
-                - EightBitter.MapScreener.middleX
-                ) | 0;
-
-        if (Math.abs(difference) > 0) {
-            EightBitter.scrollWindow(difference);
-        }
-    }
-
-    /**
-     * 
-     */
-    function centerMapScreenVerticallyOnPlayer(EightBitter) {
-        var boundaries = EightBitter.MapScreener.boundaries,
-            difference = (
-                EightBitter.getMidY(EightBitter.player)
-                - EightBitter.MapScreener.middleY
-                ) | 0;
-
-        if (Math.abs(difference) > 0) {
-            EightBitter.scrollWindow(0, difference);
-        }
-    }
-
-    /**
-     * 
-     */
-    function mapEntranceBlank(EightBitter, location) {
-        EightBitter.addPlayer(0, 0);
-        EightBitter.player.hidden = true;
-    }
-
-
-    /**
-     * 
-     */
-    function mapEntranceNormal(EightBitter, location) {
-        EightBitter.addPlayer(
-            location.xloc ? location.xloc * EightBitter.unitsize : 0,
-            location.yloc ? location.yloc * EightBitter.unitsize : 0
-            );
-
-        EightBitter.animateCharacterSetDirection(
-            EightBitter.player,
-            typeof location.direction === "undefined"
-                ? EightBitter.MapScreener.playerDirection
-                : location.direction
-            );
-
-        EightBitter.centerMapScreen(EightBitter);
-
-        if (location.cutscene) {
-            EightBitter.ScenePlayer.startCutscene(location.cutscene, {
-                "player": player
+            FSP.animateFadeFromColor(FSP, {
+                "color": "Black"
             });
+
+            if (location.push) {
+                FSP.animateCharacterStartWalking(FSP.player, FSP.player.direction);
+            }
         }
 
-        if (location.routine && EightBitter.ScenePlayer.getCutsceneName()) {
-            EightBitter.ScenePlayer.playRoutine(location.routine);
-        }
-    }
+        /**
+         * 
+         */
+        getAreaBoundariesReal(FSP: FullScreenPokemon): IAreaBoundaries {
+            var area: IArea = <IArea>FSP.MapsHandler.getArea();
 
-    /**
-     * 
-     */
-    function mapEntranceResume(EightBitter) {
-        var savedInfo = EightBitter.StateHolder.getChanges("player") || {};
-
-        EightBitter.addPlayer(
-            (savedInfo.xloc || 0),
-            (savedInfo.yloc || 0),
-            true
-            );
-
-        EightBitter.animateCharacterSetDirection(
-            EightBitter.player, savedInfo.direction
-            );
-
-        EightBitter.centerMapScreen(EightBitter);
-    }
-
-
-    /* Map macros
-    */
-
-    /**
-     * 
-     */
-    function macroCheckered(reference) {
-        var xStart = reference.x || 0,
-            yStart = reference.y || 0,
-            xnum = reference.xnum || 1,
-            ynum = reference.ynum || 1,
-            xwidth = reference.xwidth || 8,
-            yheight = reference.yheight || 8,
-            offset = reference.offset || 0,
-            things = reference.things,
-            mod = things.length,
-            output = [],
-            thing, x, y, i, j;
-
-        y = yStart;
-        for (i = 0; i < ynum; i += 1) {
-            x = xStart;
-            for (j = 0; j < xnum; j += 1) {
-                thing = reference.things[(i + j + offset) % mod];
-                if (thing !== "") {
-                    output.push({
-                        "x": x,
-                        "y": y,
-                        "thing": thing
-                    })
+            if (!area) {
+                return {
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0,
+                    "width": 0,
+                    "height": 0
                 }
-                x += xwidth;
+            };
+
+            return {
+                "top": area.boundaries.top * FSP.unitsize,
+                "right": area.boundaries.right * FSP.unitsize,
+                "bottom": area.boundaries.bottom * FSP.unitsize,
+                "left": area.boundaries.left * FSP.unitsize,
+                "width": (area.boundaries.right - area.boundaries.left) * FSP.unitsize,
+                "height": (area.boundaries.bottom - area.boundaries.top) * FSP.unitsize
             }
-            y += yheight;
         }
 
-        return output;
-    }
+        /**
+         * 
+         */
+        getScreenScrollability(FSP: FullScreenPokemon): string {
+            var area: IArea = <IArea>FSP.MapsHandler.getArea(),
+                boundaries: IAreaBoundaries,
+                width: number,
+                height: number;
 
-    /**
-     * 
-    */
-    function macroWater(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            width = reference.width || 8,
-            height = reference.height || 8,
-            open = reference.open || [true, true, true, true],
-            output = [{
-                "thing": "Water",
-                "x": x,
-                "y": y,
-                "width": width,
-                "height": height,
-            }];
+            if (!area) {
+                return "none";
+            }
 
-        if (!open[0]) {
-            output.push({
-                "thing": "WaterEdgeTop",
-                "x": x,
-                "y": y,
-                "width": width
-            });
+            boundaries = area.boundaries;
+            width = (boundaries.right - boundaries.left) * FSP.unitsize;
+            height = (boundaries.bottom - boundaries.top) * FSP.unitsize;
+
+            if (width > FSP.MapScreener.width) {
+                if (height > FSP.MapScreener.height) {
+                    return "both";
+                } else {
+                    return "horizontal";
+                }
+            } else if (height > FSP.MapScreener.height) {
+                return "vertical";
+            } else {
+                return "none";
+            }
         }
 
-        if (!open[1]) {
-            output.push({
-                "thing": "WaterEdgeRight",
-                "x": x + width - 4,
-                "y": open[0] ? y : y + 4,
-                "height": open[0] ? height : height - 4
-            });
+        /**
+         * 
+         */
+        generateThingsByIdContainer(): {} {
+            return {};
         }
 
-        if (!open[2]) {
-            output.push({
-                "thing": "WaterEdgeBottom",
-                "x": x,
-                "y": y + height - 4,
-                "width": width
-            });
+        /**
+         * 
+         * 
+         * @remarks Direction is taken in by the .forEach call as the index. Clever.
+         */
+        mapAddAfter(prething: IPreThing, direction: Direction): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                MapsCreator: MapsCreatr.IMapsCreatr = FSP.MapsCreator,
+                MapsHandler: MapsHandlr.IMapsHandlr = FSP.MapsHandler,
+                prethings: any = MapsHandler.getPreThings(),
+                area = MapsHandler.getArea(),
+                map = MapsHandler.getMap(),
+                boundaries = FSP.MapsHandler.getArea().boundaries;
+
+            prething.direction = direction;
+            switch (direction) {
+                case 0:
+                    prething.x = boundaries.left;
+                    prething.y = boundaries.top - 8;
+                    prething.width = boundaries.right - boundaries.left;
+                    break;
+                case 1:
+                    prething.x = boundaries.right;
+                    prething.y = boundaries.top;
+                    prething.height = boundaries.bottom - boundaries.top;
+                    break;
+                case 2:
+                    prething.x = boundaries.left;
+                    prething.y = boundaries.bottom;
+                    prething.width = boundaries.right - boundaries.left;
+                    break;
+                case 3:
+                    prething.x = boundaries.left - 8;
+                    prething.y = boundaries.top;
+                    prething.height = boundaries.bottom - boundaries.top;
+                    break;
+            }
+
+            MapsCreator.analyzePreSwitch(prething, prethings, area, map);
         }
 
-        if (!open[3]) {
-            output.push({
-                "thing": "WaterEdgeLeft",
-                "x": x,
-                "y": y,
-                "height": height
-            });
+
+        /* Map entrances
+        */
+
+        /**
+         * 
+         */
+        centerMapScreen(FSP: FullScreenPokemon): void {
+            switch (FSP.MapScreener.scrollability) {
+                case "none":
+                    FSP.centerMapScreenHorizontally(FSP);
+                    FSP.centerMapScreenVertically(FSP);
+                    return;
+                case "vertical":
+                    FSP.centerMapScreenHorizontally(FSP);
+                    FSP.centerMapScreenVerticallyOnPlayer(FSP);
+                    return;
+                case "horizontal":
+                    FSP.centerMapScreenHorizontallyOnPlayer(FSP);
+                    FSP.centerMapScreenVertically(FSP);
+                    return;
+                case "both":
+                    FSP.centerMapScreenHorizontallyOnPlayer(FSP);
+                    FSP.centerMapScreenVerticallyOnPlayer(FSP);
+                    return;
+            }
         }
 
-        return output;
-    };
+        /**
+         * 
+         */
+        centerMapScreenHorizontally(FSP: FullScreenPokemon): void {
+            var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
+                difference: number = FSP.MapScreener.width - boundaries.width;
 
-    /**
-     * 
-     */
-    function macroHouse(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            width = reference.width || 32,
-            stories = reference.stories || 1,
-            output = [],
-            door, i;
+            if (difference > 0) {
+                FSP.scrollWindow(difference / -2);
+            }
+        }
 
-        if (stories === 1) {
-            output.push({
-                "thing": "HouseTopRoofLeft",
-                "x": x,
-                "y": y,
-            });
-            output.push({
-                "thing": "HouseTopRoof",
-                "x": x + 8,
-                "y": y,
-                "width": width - 16
-            })
-            output.push({
-                "thing": "HouseTopRoofRight",
-                "x": x + width - 8,
-                "y": y,
-            });
-            output.push({
-                "thing": "HouseLeft",
-                "x": x,
-                "y": y + 8
-            });
-            output.push({
-                "thing": "HouseRight",
-                "x": x + width - 8,
-                "y": y + 8
-            });
+        /**
+         * 
+         */
+        centerMapScreenVertically(FSP: FullScreenPokemon): void {
+            var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
+                difference: number = FSP.MapScreener.height - boundaries.height;
+
+            FSP.scrollWindow(0, difference / -2);
+        }
+
+        /**
+         * 
+         */
+        centerMapScreenHorizontallyOnPlayer(FSP: FullScreenPokemon): void {
+            var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
+                difference: number = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
+
+            if (Math.abs(difference) > 0) {
+                FSP.scrollWindow(difference);
+            }
+        }
+
+        /**
+         * 
+         */
+        centerMapScreenVerticallyOnPlayer(FSP: FullScreenPokemon): void {
+            var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
+                difference: number = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
+
+            if (Math.abs(difference) > 0) {
+                FSP.scrollWindow(0, difference);
+            }
+        }
+
+        /**
+         * 
+         */
+        mapEntranceBlank(FSP: FullScreenPokemon, location: ILocation): void {
+            FSP.addPlayer(0, 0);
+            FSP.player.hidden = true;
+        }
+
+
+        /**
+         * 
+         */
+        mapEntranceNormal(FSP: FullScreenPokemon, location: ILocation): void {
+            FSP.addPlayer(
+                location.xloc ? location.xloc * FSP.unitsize : 0,
+                location.yloc ? location.yloc * FSP.unitsize : 0);
+
+            FSP.animateCharacterSetDirection(
+                FSP.player,
+                typeof location.direction === "undefined"
+                    ? FSP.MapScreener.playerDirection
+                    : location.direction
+                );
+
+            FSP.centerMapScreen(FSP);
+
+            if (location.cutscene) {
+                FSP.ScenePlayer.startCutscene(location.cutscene, {
+                    "player": FSP.player
+                });
+            }
+
+            if (location.routine && FSP.ScenePlayer.getCutsceneName()) {
+                FSP.ScenePlayer.playRoutine(location.routine);
+            }
+        }
+
+        /**
+         * 
+         */
+        mapEntranceResume(FSP: FullScreenPokemon): void {
+            var savedInfo: any = FSP.StateHolder.getChanges("player") || {};
+
+            FSP.addPlayer((savedInfo.xloc || 0),(savedInfo.yloc || 0), true);
+
+            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction);
+
+            FSP.centerMapScreen(FSP);
+        }
+
+
+        /* Map macros
+        */
+
+        /**
+         * 
+         */
+        macroCheckered(reference: any): any[] {
+            var xStart: number = reference.x || 0,
+                yStart: number = reference.y || 0,
+                xnum: number = reference.xnum || 1,
+                ynum: number = reference.ynum || 1,
+                xwidth: number = reference.xwidth || 8,
+                yheight: number = reference.yheight || 8,
+                offset: number = reference.offset || 0,
+                things: string[] = reference.things,
+                mod: number = things.length,
+                output: any[] = [],
+                thing: string,
+                x: number,
+                y: number,
+                i: number,
+                j: number;
+
+            y = yStart;
+            for (i = 0; i < ynum; i += 1) {
+                x = xStart;
+                for (j = 0; j < xnum; j += 1) {
+                    thing = reference.things[(i + j + offset) % mod];
+                    if (thing !== "") {
+                        output.push({
+                            "x": x,
+                            "y": y,
+                            "thing": thing
+                        })
+                    }
+                    x += xwidth;
+                }
+                y += yheight;
+            }
+
+            return output;
+        }
+
+        /**
+         * 
+        */
+        macroWater(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                width: number = reference.width || 8,
+                height: number = reference.height || 8,
+                open: boolean[] = reference.open || [true, true, true, true],
+                output: any[] = [{
+                    "thing": "Water",
+                    "x": x,
+                    "y": y,
+                    "width": width,
+                    "height": height,
+                }];
+
+            if (!open[0]) {
+                output.push({
+                    "thing": "WaterEdgeTop",
+                    "x": x,
+                    "y": y,
+                    "width": width
+                });
+            }
+
+            if (!open[1]) {
+                output.push({
+                    "thing": "WaterEdgeRight",
+                    "x": x + width - 4,
+                    "y": open[0] ? y : y + 4,
+                    "height": open[0] ? height : height - 4
+                });
+            }
+
+            if (!open[2]) {
+                output.push({
+                    "thing": "WaterEdgeBottom",
+                    "x": x,
+                    "y": y + height - 4,
+                    "width": width
+                });
+            }
+
+            if (!open[3]) {
+                output.push({
+                    "thing": "WaterEdgeLeft",
+                    "x": x,
+                    "y": y,
+                    "height": height
+                });
+            }
+
+            return output;
+        }
+
+        /**
+         * 
+         */
+        macroHouse(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                width: number = reference.width || 32,
+                stories: number = reference.stories || 1,
+                output: any[] = [],
+                door: any,
+                i: number;
+
+            if (stories === 1) {
+                output.push({
+                    "thing": "HouseTopRoofLeft",
+                    "x": x,
+                    "y": y,
+                });
+                output.push({
+                    "thing": "HouseTopRoof",
+                    "x": x + 8,
+                    "y": y,
+                    "width": width - 16
+                })
+                output.push({
+                    "thing": "HouseTopRoofRight",
+                    "x": x + width - 8,
+                    "y": y,
+                });
+                output.push({
+                    "thing": "HouseLeft",
+                    "x": x,
+                    "y": y + 8
+                });
+                output.push({
+                    "thing": "HouseRight",
+                    "x": x + width - 8,
+                    "y": y + 8
+                });
+
+                if (reference.door) {
+                    output.push({
+                        "thing": "HouseMiddle",
+                        "x": x + 16,
+                        "y": y + 8,
+                        "width": width - 24
+                    });
+                } else {
+                    output.push({
+                        "thing": "HouseMiddle",
+                        "x": x + 8,
+                        "y": y + 8,
+                        "width": width - 16
+                    });
+                }
+            } else {
+                output.push({
+                    "thing": "HouseTop",
+                    "x": x,
+                    "y": y
+                })
+            }
+
+            y += 16;
+            for (i = 1; i < stories; i += 1) {
+                output.push({
+                    "thing": "HouseCenterLeft",
+                    "x": x,
+                    "y": y
+                });
+                output.push({
+                    "thing": "HouseCenterRight",
+                    "x": x + 16,
+                    "y": y,
+                    "width": width - 16
+                });
+                y += 8;
+            }
 
             if (reference.door) {
+                door = {
+                    "thing": "Door",
+                    "x": x + 8,
+                    "y": y - 8,
+                    "requireDirection": 0
+                }
+                if (reference.entrance) {
+                    door.entrance = reference.entrance;
+                }
+                if (reference.transport) {
+                    door.transport = reference.transport;
+                }
+                output.push(door);
+            }
+
+            return output;
+        }
+
+        /**
+         * 
+         */
+        macroHouseLarge(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                width: number = reference.width || 48,
+                stories: number = reference.stories || 1,
+                doorOffset: number = reference.doorOffset || 16,
+                output: any[] = [
+                    {
+                        "thing": "HouseLargeTopLeft",
+                        "x": x,
+                        "y": y
+                    }, {
+                        "thing": "HouseLargeTopMiddle",
+                        "x": x + 8,
+                        "y": y,
+                        "width": width - 16
+                    }, {
+                        "thing": "HouseLargeTopRight",
+                        "x": x + width - 8,
+                        "y": y,
+                    }],
+                door: any,
+                i: number;
+
+            y += 20;
+            for (i = 2; i < stories; i += 1) {
                 output.push({
-                    "thing": "HouseMiddle",
+                    "thing": "HouseLargeCenter",
+                    "x": x,
+                    "y": y,
+                    "width": width
+                })
+
+                if (reference.white) {
+                    output.push({
+                        "thing": "HouseWallWhitewash",
+                        "x": reference.white.start,
+                        "y": y,
+                        "width": reference.white.end - reference.white.start,
+                        "position": "end"
+                    });
+                }
+
+                y += 16;
+            }
+
+            if (!reference.door) {
+                output.push({
+                    "thing": "HouseLargeCenterLeft",
+                    "x": x,
+                    "y": y,
+                    "width": 16
+                });
+                output.push({
+                    "thing": "HouseLargeCenterMiddle",
                     "x": x + 16,
-                    "y": y + 8,
+                    "y": y,
+                    "width": 8
+                });
+                output.push({
+                    "thing": "HouseLargeCenterRight",
+                    "x": x + 24,
+                    "y": y,
                     "width": width - 24
                 });
             } else {
                 output.push({
-                    "thing": "HouseMiddle",
-                    "x": x + 8,
-                    "y": y + 8,
-                    "width": width - 16
+                    "thing": "HouseLargeCenterLeft",
+                    "x": x,
+                    "y": y,
+                    "width": doorOffset
                 });
-            }
-        } else {
-            output.push({
-                "thing": "HouseTop",
-                "x": x,
-                "y": y
-            })
-        }
-
-        y += 16;
-        for (i = 1; i < stories; i += 1) {
-            output.push({
-                "thing": "HouseCenterLeft",
-                "x": x,
-                "y": y
-            });
-            output.push({
-                "thing": "HouseCenterRight",
-                "x": x + 16,
-                "y": y,
-                "width": width - 16
-            });
-            y += 8;
-        }
-
-        if (reference.door) {
-            door = {
-                "thing": "Door",
-                "x": x + 8,
-                "y": y - 8,
-                "requireDirection": 0
-            }
-            if (reference.entrance) {
-                door.entrance = reference.entrance;
-            }
-            if (reference.transport) {
-                door.transport = reference.transport;
-            }
-            output.push(door);
-        }
-
-        return output;
-    }
-
-    /**
-     * 
-    */
-    function macroHouseLarge(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            width = reference.width || 48,
-            stories = reference.stories || 1,
-            doorOffset = reference.doorOffset || 16,
-            output = [{
-                "thing": "HouseLargeTopLeft",
-                "x": x,
-                "y": y
-            }, {
-                    "thing": "HouseLargeTopMiddle",
-                    "x": x + 8,
-                    "y": y,
-                    "width": width - 16
-                }, {
-                    "thing": "HouseLargeTopRight",
-                    "x": x + width - 8,
-                    "y": y,
-                }],
-            door, i;
-
-        y += 20;
-        for (i = 2; i < stories; i += 1) {
-            output.push({
-                "thing": "HouseLargeCenter",
-                "x": x,
-                "y": y,
-                "width": width
-            })
-
-            if (reference.white) {
                 output.push({
-                    "thing": "HouseWallWhitewash",
-                    "x": reference.white.start,
+                    "thing": "HouseLargeCenterMiddle",
+                    "x": x + doorOffset,
                     "y": y,
-                    "width": reference.white.end - reference.white.start,
-                    "position": "end"
+                    "width": 8,
+                    "height": 4
                 });
+                output.push({
+                    "thing": "HouseLargeCenterRight",
+                    "x": x + doorOffset + 8,
+                    "y": y,
+                    "width": width - doorOffset - 8
+                });
+                if (reference.white) {
+                    output.push({
+                        "thing": "HouseWallWhitewash",
+                        "x": reference.white.start,
+                        "y": y,
+                        "width": reference.white.end - reference.white.start,
+                        "position": "end"
+                    });
+                }
+
+                y += 16;
+
+                door = {
+                    "thing": "Door",
+                    "x": x + doorOffset,
+                    "y": y - 12,
+                    "requireDirection": 0,
+                    "id": reference.id
+                };
+                if (reference.entrance) {
+                    door.entrance = reference.entrance;
+                }
+                if (reference.transport) {
+                    door.transport = reference.transport;
+                }
+                output.push(door);
             }
 
-            y += 16;
+            return output;
         }
 
-        if (!reference.door) {
-            output.push({
-                "thing": "HouseLargeCenterLeft",
-                "x": x,
-                "y": y,
-                "width": 16
-            });
-            output.push({
-                "thing": "HouseLargeCenterMiddle",
-                "x": x + 16,
-                "y": y,
-                "width": 8
-            });
-            output.push({
-                "thing": "HouseLargeCenterRight",
-                "x": x + 24,
-                "y": y,
-                "width": width - 24
-            });
-        } else {
-            output.push({
-                "thing": "HouseLargeCenterLeft",
-                "x": x,
-                "y": y,
-                "width": doorOffset
-            });
-            output.push({
-                "thing": "HouseLargeCenterMiddle",
-                "x": x + doorOffset,
-                "y": y,
-                "width": 8,
-                "height": 4
-            });
-            output.push({
-                "thing": "HouseLargeCenterRight",
-                "x": x + doorOffset + 8,
-                "y": y,
-                "width": width - doorOffset - 8
-            });
-            if (reference.white) {
-                output.push({
-                    "thing": "HouseWallWhitewash",
-                    "x": reference.white.start,
-                    "y": y,
-                    "width": reference.white.end - reference.white.start,
-                    "position": "end"
-                });
-            }
+        /**
+         * 
+         */
+        macroGym(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                width: number = reference.width || 48,
+                stories: number = reference.stories || 2,
+                output: any[] = [
+                    {
+                        "macro": "HouseLarge",
+                        "x": x,
+                        "y": y,
+                        "width": width,
+                        "stories": stories,
+                        "white": {
+                            "start": x + 4,
+                            "end": x + width - 4
+                        },
+                        "transport": reference.transport,
+                        "entrance": reference.entrance,
+                        "door": true,
+                        "doorOffset": width - 16
+                    }, {
+                        "thing": "GymLabel",
+                        "x": x + 16,
+                        "y": y + 16,
+                        "width": width - 32
+                    }];
+
+            return output;
+        }
+
+        /**
+         * 
+         */
+        macroBuilding(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                width: number = reference.width || 32,
+                stories: number = reference.stories || 1,
+                doorOffset: number = reference.doorOffset || 8,
+                output: any[] = [
+                    {
+                        "thing": "BuildingTopLeft",
+                        "x": x,
+                        "y": y,
+                    }, {
+                        "thing": "BuildingTopMiddle",
+                        "x": x + 4,
+                        "y": y,
+                        "width": width - 8
+                    }, {
+                        "thing": "BuildingTopRight",
+                        "x": x + width - 4,
+                        "y": y,
+                    }],
+                door, i;
 
             y += 16;
 
-            door = {
-                "thing": "Door",
-                "x": x + doorOffset,
-                "y": y - 12,
-                "requireDirection": 0,
-                "id": reference.id
-            };
-            if (reference.entrance) {
-                door.entrance = reference.entrance;
-            }
-            if (reference.transport) {
-                door.transport = reference.transport;
-            }
-            output.push(door);
-        }
-
-        return output;
-    };
-
-    /**
-     * 
-     */
-    function macroGym(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            width = reference.width || 48,
-            stories = reference.stories || 2,
-            output = [{
-                "macro": "HouseLarge",
-                "x": x,
-                "y": y,
-                "width": width,
-                "stories": stories,
-                "white": {
-                    "start": x + 4,
-                    "end": x + width - 4
-                },
-                "transport": reference.transport,
-                "entrance": reference.entrance,
-                "door": true,
-                "doorOffset": width - 16
-            }, {
-                    "thing": "GymLabel",
-                    "x": x + 16,
-                    "y": y + 16,
-                    "width": width - 32
-                }];
-
-        return output;
-    }
-
-    /**
-     * 
-     */
-    function macroBuilding(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            width = reference.width || 32,
-            stories = reference.stories || 1,
-            doorOffset = reference.doorOffset || 8,
-            output = [{
-                "thing": "BuildingTopLeft",
-                "x": x,
-                "y": y,
-            }, {
-                    "thing": "BuildingTopMiddle",
+            for (i = 0; i < stories; i += 1) {
+                output.push({
+                    "thing": "BuildingMiddleLeft",
+                    "x": x,
+                    "y": y
+                });
+                output.push({
+                    "thing": "BuildingMiddleWindow",
                     "x": x + 4,
                     "y": y,
-                    "width": width - 8
-                }, {
-                    "thing": "BuildingTopRight",
+                    "width": width - 8,
+                    "height": 4
+                });
+                output.push({
+                    "thing": "BuildingMiddleMiddle",
+                    "x": x + 4,
+                    "y": y + 4,
+                    "width": width - 8,
+                    "height": 4
+                });
+                output.push({
+                    "thing": "BuildingMiddleRight",
                     "x": x + width - 4,
-                    "y": y,
-                }],
-            door, i;
+                    "y": y
+                });
 
-        y += 16;
+                y += 8;
+            }
 
-        for (i = 0; i < stories; i += 1) {
             output.push({
                 "thing": "BuildingMiddleLeft",
                 "x": x,
-                "y": y
-            });
-            output.push({
-                "thing": "BuildingMiddleWindow",
-                "x": x + 4,
                 "y": y,
-                "width": width - 8,
-                "height": 4
-            });
-            output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + 4,
-                "y": y + 4,
-                "width": width - 8,
                 "height": 4
             });
             output.push({
                 "thing": "BuildingMiddleRight",
                 "x": x + width - 4,
-                "y": y
-            });
-
-            y += 8;
-        }
-
-        output.push({
-            "thing": "BuildingMiddleLeft",
-            "x": x,
-            "y": y,
-            "height": 4
-        });
-        output.push({
-            "thing": "BuildingMiddleRight",
-            "x": x + width - 4,
-            "y": y,
-            "height": 4
-        });
-
-        if (reference.door) {
-            door = {
-                "thing": "Door",
-                "x": x + doorOffset,
                 "y": y,
-                "entrance": reference.entrance
-            };
-            if (reference.entrance) {
-                door.entrance = reference.entrance;
-            }
-            if (reference.transport) {
-                door.transport = reference.transport;
-            }
-
-            output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + 4,
-                "y": y,
-                "height": 4,
-                "width": doorOffset - 4,
-            });
-            output.push(door);
-            output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + doorOffset + 8,
-                "y": y,
-                "height": 4,
-                "width": width - doorOffset - 8,
-            });
-            output.push({
-                "thing": "BuildingBottomLeft",
-                "x": x,
-                "y": y + 4,
-                "width": doorOffset
-            });
-            output.push({
-                "thing": "BuildingBottomRight",
-                "x": x + doorOffset + 8,
-                "y": y + 4,
-                "width": width - doorOffset - 8
-            });
-        } else {
-            output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + 4,
-                "y": y,
-                "width": width - 8,
                 "height": 4
             });
-            output.push({
-                "thing": "BuildingBottom",
-                "x": x,
-                "y": y + 4,
-                "width": width
-            });
-        }
 
-        if (reference.label) {
-            output.push({
-                "thing": reference.label + "Label",
-                "x": x + 16,
-                "y": y
-            });
-        }
+            if (reference.door) {
+                door = {
+                    "thing": "Door",
+                    "x": x + doorOffset,
+                    "y": y,
+                    "entrance": reference.entrance
+                };
+                if (reference.entrance) {
+                    door.entrance = reference.entrance;
+                }
+                if (reference.transport) {
+                    door.transport = reference.transport;
+                }
 
-        return output;
-    }
-
-    /**
-     * 
-     */
-    function macroMountain(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            width = reference.width || 8,
-            height = reference.height || 8,
-            openingOffset = reference.openingOffset || 8,
-            output = [];
-
-        if (reference.right) {
-            if (reference.top) {
                 output.push({
-                    "thing": "MountainTopRight",
-                    "x": x + width - 8,
+                    "thing": "BuildingMiddleMiddle",
+                    "x": x + 4,
+                    "y": y,
+                    "height": 4,
+                    "width": doorOffset - 4,
+                });
+                output.push(door);
+                output.push({
+                    "thing": "BuildingMiddleMiddle",
+                    "x": x + doorOffset + 8,
+                    "y": y,
+                    "height": 4,
+                    "width": width - doorOffset - 8,
+                });
+                output.push({
+                    "thing": "BuildingBottomLeft",
+                    "x": x,
+                    "y": y + 4,
+                    "width": doorOffset
+                });
+                output.push({
+                    "thing": "BuildingBottomRight",
+                    "x": x + doorOffset + 8,
+                    "y": y + 4,
+                    "width": width - doorOffset - 8
+                });
+            } else {
+                output.push({
+                    "thing": "BuildingMiddleMiddle",
+                    "x": x + 4,
+                    "y": y,
+                    "width": width - 8,
+                    "height": 4
+                });
+                output.push({
+                    "thing": "BuildingBottom",
+                    "x": x,
+                    "y": y + 4,
+                    "width": width
+                });
+            }
+
+            if (reference.label) {
+                output.push({
+                    "thing": reference.label + "Label",
+                    "x": x + 16,
                     "y": y
                 });
+            }
+
+            return output;
+        }
+
+        /**
+         * 
+         */
+        macroMountain(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                width: number = reference.width || 8,
+                height: number = reference.height || 8,
+                openingOffset: number = reference.openingOffset || 8,
+                output: any[] = [];
+
+            if (reference.right) {
+                if (reference.top) {
+                    output.push({
+                        "thing": "MountainTopRight",
+                        "x": x + width - 8,
+                        "y": y
+                    });
+                    output.push({
+                        "thing": "MountainRight",
+                        "x": x + width - 8,
+                        "y": y + 4
+                    });
+                    output.push({
+                        "thing": "MountainTopRight",
+                        "x": x + width - 4,
+                        "y": y + 4
+                    });
+                } else {
+                    output.push({
+                        "thing": "MountainRight",
+                        "x": x + width - 8,
+                        "y": y,
+                        "width": 8,
+                        "height": 8
+                    });
+                }
+
+                if (reference.bottom) {
+                    output.push({
+                        "thing": "MountainBottomRight",
+                        "x": x + width - 8,
+                        "y": y + height - 8
+                    });
+                    output.push({
+                        "thing": "MountainRight",
+                        "x": x + width - 4,
+                        "y": y + height - 8
+                    });
+                    output.push({
+                        "thing": "MountainBottom",
+                        "x": x + width - 8,
+                        "y": y + height - 4
+                    });
+                    output.push({
+                        "thing": "MountainBottomRight",
+                        "x": x + width - 4,
+                        "y": y + height - 4
+                    });
+                } else {
+                    output.push({
+                        "thing": "MountainRight",
+                        "x": x + width - 8,
+                        "y": y + height - 8,
+                        "width": 8,
+                        "height": 8
+                    });
+                }
+
+                if (height > 16) {
+                    output.push({
+                        "thing": "MountainRight",
+                        "x": x + width - 8,
+                        "y": y + 8,
+                        "width": 8,
+                        "height": height - 16
+                    });
+                }
+
+                width -= 8;
+            }
+
+            if (reference.left) {
+                if (reference.top) {
+                    output.push({
+                        "thing": "MountainTopLeft",
+                        "x": x + 4,
+                        "y": y
+                    });
+                    output.push({
+                        "thing": "MountainTopLeft",
+                        "x": x,
+                        "y": y + 4
+                    });
+                    output.push({
+                        "thing": "MountainLeft",
+                        "x": x + 4,
+                        "y": y + 4
+                    });
+                } else {
+                    output.push({
+                        "thing": "MountainLeft",
+                        "x": x,
+                        "y": y,
+                        "width": 8,
+                        "height": 8
+                    });
+                }
+
+                if (reference.bottom) {
+                    output.push({
+                        "thing": "MountainLeft",
+                        "x": x,
+                        "y": y + height - 8
+                    });
+                    output.push({
+                        "thing": "MountainBottomLeft",
+                        "x": x + 4,
+                        "y": y + height - 8
+                    });
+                    output.push({
+                        "thing": "MountainBottomLeft",
+                        "x": x,
+                        "y": y + height - 4
+                    });
+                    output.push({
+                        "thing": "MountainBottom",
+                        "x": x + 4,
+                        "y": y + height - 4
+                    });
+                } else {
+                    output.push({
+                        "thing": "MountainLeft",
+                        "x": x,
+                        "y": y + height - 8,
+                        "width": 8,
+                        "height": 8
+                    });
+                }
+
+                if (height > 16) {
+                    output.push({
+                        "thing": "MountainLeft",
+                        "x": x,
+                        "y": y + 8,
+                        "width": 8,
+                        "height": height - 16
+                    });
+                }
+
+                width -= 8;
+                x += 8;
+            }
+
+            if (reference.top && width > 0) {
                 output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y + 4
-                });
-                output.push({
-                    "thing": "MountainTopRight",
-                    "x": x + width - 4,
-                    "y": y + 4
-                });
-            } else {
-                output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
+                    "thing": "MountainTop",
+                    "x": x,
                     "y": y,
-                    "width": 8,
-                    "height": 8
+                    "width": width,
                 });
+                y += 5;
+                height -= 5;
             }
 
-            if (reference.bottom) {
-                output.push({
-                    "thing": "MountainBottomRight",
-                    "x": x + width - 8,
-                    "y": y + height - 8
-                });
-                output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 4,
-                    "y": y + height - 8
-                });
-                output.push({
-                    "thing": "MountainBottom",
-                    "x": x + width - 8,
-                    "y": y + height - 4
-                });
-                output.push({
-                    "thing": "MountainBottomRight",
-                    "x": x + width - 4,
-                    "y": y + height - 4
-                });
-            } else {
-                output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y + height - 8,
-                    "width": 8,
-                    "height": 8
-                });
-            }
-
-            if (height > 16) {
-                output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y + 8,
-                    "width": 8,
-                    "height": height - 16
-                });
-            }
-
-            width -= 8;
-        }
-
-        if (reference.left) {
-            if (reference.top) {
-                output.push({
-                    "thing": "MountainTopLeft",
-                    "x": x + 4,
-                    "y": y
-                });
-                output.push({
-                    "thing": "MountainTopLeft",
-                    "x": x,
-                    "y": y + 4
-                });
-                output.push({
-                    "thing": "MountainLeft",
-                    "x": x + 4,
-                    "y": y + 4
-                });
-            } else {
-                output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y,
-                    "width": 8,
-                    "height": 8
-                });
-            }
-
-            if (reference.bottom) {
-                output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y + height - 8
-                });
-                output.push({
-                    "thing": "MountainBottomLeft",
-                    "x": x + 4,
-                    "y": y + height - 8
-                });
-                output.push({
-                    "thing": "MountainBottomLeft",
-                    "x": x,
-                    "y": y + height - 4
-                });
-                output.push({
-                    "thing": "MountainBottom",
-                    "x": x + 4,
-                    "y": y + height - 4
-                });
-            } else {
-                output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y + height - 8,
-                    "width": 8,
-                    "height": 8
-                });
-            }
-
-            if (height > 16) {
-                output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y + 8,
-                    "width": 8,
-                    "height": height - 16
-                });
-            }
-
-            width -= 8;
-            x += 8;
-        }
-
-        if (reference.top && width > 0) {
-            output.push({
-                "thing": "MountainTop",
-                "x": x,
-                "y": y,
-                "width": width,
-            });
-            y += 5;
-            height -= 5;
-        }
-
-        if (reference.bottom && width > 0) {
-            if (reference.opening) {
-                if (openingOffset > 0) {
+            if (reference.bottom && width > 0) {
+                if (reference.opening) {
+                    if (openingOffset > 0) {
+                        output.push({
+                            "thing": "MountainBottom",
+                            "x": x,
+                            "y": y + height - 8,
+                            "width": openingOffset,
+                            "height": 8
+                        })
+                    }
+                    output.push({
+                        "thing": "CaveOpening",
+                        "x": x + openingOffset,
+                        "y": y + height - 8,
+                        "entrance": reference.entrance,
+                        "transport": reference.transport
+                    });
+                    if (openingOffset < width) {
+                        output.push({
+                            "thing": "MountainBottom",
+                            "x": x + openingOffset + 8,
+                            "y": y + height - 8,
+                            "width": width - openingOffset - 8,
+                            "height": 8
+                        });
+                    }
+                } else {
                     output.push({
                         "thing": "MountainBottom",
                         "x": x,
                         "y": y + height - 8,
-                        "width": openingOffset,
-                        "height": 8
-                    })
-                }
-                output.push({
-                    "thing": "CaveOpening",
-                    "x": x + openingOffset,
-                    "y": y + height - 8,
-                    "entrance": reference.entrance,
-                    "transport": reference.transport
-                });
-                if (openingOffset < width) {
-                    output.push({
-                        "thing": "MountainBottom",
-                        "x": x + openingOffset + 8,
-                        "y": y + height - 8,
-                        "width": width - openingOffset - 8,
+                        "width": width,
                         "height": 8
                     });
                 }
-            } else {
+                height -= 8;
+            }
+
+            if (width > 0 && height > 0) {
                 output.push({
-                    "thing": "MountainBottom",
+                    "thing": "Mountain",
                     "x": x,
-                    "y": y + height - 8,
+                    "y": y,
                     "width": width,
-                    "height": 8
+                    "height": height
                 });
             }
-            height -= 8;
+
+            return output;
         }
 
-        if (width > 0 && height > 0) {
-            output.push({
-                "thing": "Mountain",
-                "x": x,
-                "y": y,
-                "width": width,
-                "height": height
-            });
-        }
+        /**
+         * 
+         */
+        macroPokeCenter(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                output: any = [
+                    {
+                        "thing": "FloorDiamonds",
+                        "width": 112,
+                        "height": 64,
+                        "x": x,
+                        "y": y
+                    }, {
+                        "thing": "SquareWallTop",
+                        "x": x,
+                        "y": y,
+                        "height": 16
+                    }, {
+                        "thing": "HealingMachine",
+                        "x": x + 8,
+                        "y": y,
+                        "id": "HealingMachine"
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x + 8,
+                        "y": y,
+                        "width": 32
+                    }, {
+                        "thing": "PokeCenterPoster",
+                        "x": x + 28,
+                        "y": y
+                    }, {
+                        "thing": "SquareWallTop",
+                        "x": x + 40,
+                        "y": y,
+                        "height": 16
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x + 48,
+                        "y": y,
+                        "width": 32
+                    }, {
+                        "thing": "StairsVertical",
+                        "x": x + 80,
+                        "y": y
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x + 88,
+                        "y": y
+                    }, {
+                        "thing": "StairsVertical",
+                        "x": x + 96,
+                        "y": y
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x + 104,
+                        "y": y
+                    }, {
+                        "thing": "Nurse",
+                        "id": "Nurse",
+                        "x": x + 24,
+                        "y": y + 8
+                    }, {
+                        "thing": "SquareWallFront",
+                        "x": x,
+                        "y": y + 16
+                    }, {
+                        "thing": "PokeCenterDeskLeft",
+                        "x": x + 8,
+                        "y": y + 16
+                    }, {
+                        "thing": "PokeCenterDesk",
+                        "x": x + 12,
+                        "y": y + 16,
+                        "width": 32
+                    }, {
+                        "thing": "CutsceneResponder",
+                        "x": x + 24,
+                        "y": y + 16,
+                        "cutscene": "PokeCenter",
+                        "keepAlive": true
+                    }, {
+                        "thing": "SquareWallFront",
+                        "x": x + 40,
+                        "y": y + 16
+                    }, {
+                        "thing": "PokeCenterDesk",
+                        "x": x + 48,
+                        "y": y + 16,
+                        "width": 32
+                    }, {
+                        "thing": "PokeCenterDeskBlocker",
+                        "x": x + 80,
+                        "y": y + 16
+                    }, {
+                        "thing": "DeskWoman",
+                        "x": x + 88,
+                        "y": y + 16,
+                        "dialog": [
+                            "Welcome to the Cable Club!",
+                            "This area is reserved for 2 friends who are linked by cable."
+                        ]
+                    }, {
+                        "thing": "PokeCenterDeskBlocker",
+                        "x": x + 96,
+                        "y": y + 16
+                    }, {
+                        "thing": "PokeCenterDesk",
+                        "x": x + 104,
+                        "y": y + 16
+                    }, {
+                        "thing": "Buzzer",
+                        "x": x + 28,
+                        "y": y + 19
+                    }, {
+                        "thing": "Computer",
+                        "x": x + 104,
+                        "y": y + 24
+                    }, {
+                        "thing": "SofaLeft",
+                        "x": x,
+                        "y": y + 32
+                    }, {
+                        "thing": "PottedPalmTree",
+                        "x": x,
+                        "y": y + 48,
+                        "width": 16
+                    }, {
+                        "thing": "PottedPalmTree",
+                        "x": x + 48,
+                        "y": y + 48,
+                        "width": 16
+                    }, {
+                        "thing": "PottedPalmTree",
+                        "x": x + 96,
+                        "y": y + 48,
+                        "width": 16
+                    }, {
+                        "thing": "Doormat",
+                        "x": x + 24,
+                        "y": y + 56,
+                        "width": 16,
+                        "entrance": reference.entrance
+                    }];
 
-        return output;
-    }
+            if (reference.transport) {
+                output.push({
+                    "thing": "HiddenTransporter",
+                    "x": x + 24,
+                    "y": y + 56,
+                    "width": 16,
+                    "transport": reference.transport,
+                    "requireDirection": 2
+                });
+            }
 
-    /**
-     * 
-     */
-    function macroPokeCenter(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            output = [{
-                "thing": "FloorDiamonds",
-                "width": 112,
-                "height": 64,
-                "x": x,
-                "y": y
-            }, {
-                    "thing": "SquareWallTop",
+            if (!reference.excludeCoolTrainer) {
+                output.push({
+                    "thing": "CoolTrainerM",
                     "x": x,
-                    "y": y,
-                    "height": 16
-                }, {
-                    "thing": "HealingMachine",
-                    "x": x + 8,
-                    "y": y,
-                    "id": "HealingMachine"
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 8,
-                    "y": y,
-                    "width": 32
-                }, {
-                    "thing": "PokeCenterPoster",
-                    "x": x + 28,
-                    "y": y
-                }, {
-                    "thing": "SquareWallTop",
-                    "x": x + 40,
-                    "y": y,
-                    "height": 16
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 48,
-                    "y": y,
-                    "width": 32
-                }, {
-                    "thing": "StairsVertical",
-                    "x": x + 80,
-                    "y": y
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 88,
-                    "y": y
-                }, {
-                    "thing": "StairsVertical",
-                    "x": x + 96,
-                    "y": y
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 104,
-                    "y": y
-                }, {
-                    "thing": "Nurse",
-                    "id": "Nurse",
-                    "x": x + 24,
-                    "y": y + 8
-                }, {
-                    "thing": "SquareWallFront",
-                    "x": x,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDeskLeft",
-                    "x": x + 8,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 12,
-                    "y": y + 16,
-                    "width": 32
-                }, {
-                    "thing": "CutsceneResponder",
-                    "x": x + 24,
-                    "y": y + 16,
-                    "cutscene": "PokeCenter",
-                    "keepAlive": true
-                }, {
-                    "thing": "SquareWallFront",
-                    "x": x + 40,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 48,
-                    "y": y + 16,
-                    "width": 32
-                }, {
-                    "thing": "PokeCenterDeskBlocker",
-                    "x": x + 80,
-                    "y": y + 16
-                }, {
-                    "thing": "DeskWoman",
-                    "x": x + 88,
-                    "y": y + 16,
-                    "dialog": [
-                        "Welcome to the Cable Club!",
-                        "This area is reserved for 2 friends who are linked by cable."
+                    "y": y + 32,
+                    "offsetX": FullScreenPokemon.unitsize * 1.75,
+                    "offsetY": 0,
+                    "direction": 1,
+                    "sitting": true,
+                    "dialogDirections": true,
+                    "dialog": reference.coolTrainerDialog || [
+                        "",
+                        "%%%%%%%POKEMON%%%%%%% CENTERs heal your tired, hurt, or fainted %%%%%%%POKEMON%%%%%%%!",
+                        "",
+                        ""
                     ]
-                }, {
-                    "thing": "PokeCenterDeskBlocker",
-                    "x": x + 96,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 104,
-                    "y": y + 16
-                }, {
-                    "thing": "Buzzer",
-                    "x": x + 28,
-                    "y": y + 19
-                }, {
-                    "thing": "Computer",
-                    "x": x + 104,
-                    "y": y + 24
-                }, {
-                    "thing": "SofaLeft",
-                    "x": x,
-                    "y": y + 32
-                }, {
-                    "thing": "PottedPalmTree",
-                    "x": x,
-                    "y": y + 48,
-                    "width": 16
-                }, {
-                    "thing": "PottedPalmTree",
-                    "x": x + 48,
-                    "y": y + 48,
-                    "width": 16
-                }, {
-                    "thing": "PottedPalmTree",
-                    "x": x + 96,
-                    "y": y + 48,
-                    "width": 16
-                }, {
-                    "thing": "Doormat",
+                })
+            }
+
+            return output;
+        }
+
+        /**
+         * 
+         */
+        macroPokeMart(reference: any): any[] {
+            var x: number = reference.x || 0,
+                y: number = reference.y || 0,
+                output: any[] = [
+                    {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x,
+                        "y": y,
+                        "width": 16,
+                        "height": 4
+                    }, {
+                        "thing": "FloorDiamonds",
+                        "x": x,
+                        "y": y + 8,
+                        "width": 64,
+                        "height": 56
+                    }, {
+                        "thing": "FloorDiamondsDark",
+                        "x": x,
+                        "y": y + 16,
+                        "height": 8
+                    }, {
+                        "thing": "StoreFridge",
+                        "x": x + 16,
+                        "y": y,
+                        "width": 32
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x + 48,
+                        "y": y,
+                        "width": 16,
+                        "height": 4
+                    }, {
+                        "thing": "StoreSaleBin",
+                        "x": x,
+                        "y": y + 4,
+                        "width": 16
+                    }, {
+                        "thing": "StoreSaleBin",
+                        "x": x + 48,
+                        "y": y + 4,
+                        "width": 16
+                    }, {
+                        "thing": "StoreAisle",
+                        "x": x,
+                        "y": y + 24,
+                        "height": 8
+                    }, {
+                        "thing": "StoreAisle",
+                        "x": x + 32,
+                        "y": y + 24,
+                        "width": 32
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x,
+                        "y": y + 32
+                    }, {
+                        "thing": "WallIndoorHorizontalBandsDark",
+                        "x": x + 8,
+                        "y": y + 32,
+                        "height": 4
+                    }, {
+                        "thing": "FloorDiamondsDark",
+                        "x": x + 16,
+                        "y": y + 32,
+                        "height": 24,
+                    }, {
+                        "thing": "SquareWallTop",
+                        "x": x + 8,
+                        "y": y + 36,
+                        "height": 16
+                    }, {
+                        "thing": "Cashier",
+                        "x": x,
+                        "y": y + 40,
+                        "direction": 1
+                    }, {
+                        "thing": "FloorDiamondsDark",
+                        "x": x,
+                        "y": y + 40,
+                    }, {
+                        "thing": "Register",
+                        "x": x + 8,
+                        "y": y + 40,
+                        "id": reference.responderId,
+                        "activate": FullScreenPokemon.prototype.activateCutsceneResponder,
+                        "cutscene": "PokeMart",
+                        "keepAlive": true,
+                        "items": reference.items,
+                        "dialog": reference.responderDialog
+                    }, {
+                        "thing": "PokeCenterDeskLeft",
+                        "x": x,
+                        "y": y + 48
+                    }, {
+                        "thing": "PokeCenterDesk",
+                        "x": x + 4,
+                        "y": y + 48,
+                        "width": 12
+                    }, {
+                        "thing": "FloorDiamondsDark",
+                        "x": x,
+                        "y": y + 56,
+                    }, {
+                        "thing": "Doormat",
+                        "x": x + 24,
+                        "y": y + 56,
+                        "width": 16,
+                        "entrance": reference.entrance
+                    }];
+
+            if (reference.transport) {
+                output.push({
+                    "thing": "HiddenTransporter",
                     "x": x + 24,
                     "y": y + 56,
                     "width": 16,
-                    "entrance": reference.entrance
-                }];
-
-        if (reference.transport) {
-            output.push({
-                "thing": "HiddenTransporter",
-                "x": x + 24,
-                "y": y + 56,
-                "width": 16,
-                "transport": reference.transport,
-                "requireDirection": 2
-            });
-        }
-
-        if (!reference.excludeCoolTrainer) {
-            output.push({
-                "thing": "CoolTrainerM",
-                "x": x,
-                "y": y + 32,
-                "offsetX": FullScreenPokemon.unitsize * 1.75,
-                "offsetY": 0,
-                "direction": 1,
-                "sitting": true,
-                "dialogDirections": true,
-                "dialog": reference.coolTrainerDialog || [
-                    "",
-                    "%%%%%%%POKEMON%%%%%%% CENTERs heal your tired, hurt, or fainted %%%%%%%POKEMON%%%%%%%!",
-                    "",
-                    ""
-                ]
-            })
-        }
-
-        return output;
-    }
-
-    /**
-     * 
-     */
-    function macroPokeMart(reference) {
-        var x = reference.x || 0,
-            y = reference.y || 0,
-            output = [{
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x,
-                "y": y,
-                "width": 16,
-                "height": 4
-            }, {
-                    "thing": "FloorDiamonds",
-                    "x": x,
-                    "y": y + 8,
-                    "width": 64,
-                    "height": 56
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x,
-                    "y": y + 16,
-                    "height": 8
-                }, {
-                    "thing": "StoreFridge",
-                    "x": x + 16,
-                    "y": y,
-                    "width": 32
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 48,
-                    "y": y,
-                    "width": 16,
-                    "height": 4
-                }, {
-                    "thing": "StoreSaleBin",
-                    "x": x,
-                    "y": y + 4,
-                    "width": 16
-                }, {
-                    "thing": "StoreSaleBin",
-                    "x": x + 48,
-                    "y": y + 4,
-                    "width": 16
-                }, {
-                    "thing": "StoreAisle",
-                    "x": x,
-                    "y": y + 24,
-                    "height": 8
-                }, {
-                    "thing": "StoreAisle",
-                    "x": x + 32,
-                    "y": y + 24,
-                    "width": 32
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x,
-                    "y": y + 32
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 8,
-                    "y": y + 32,
-                    "height": 4
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x + 16,
-                    "y": y + 32,
-                    "height": 24,
-                }, {
-                    "thing": "SquareWallTop",
-                    "x": x + 8,
-                    "y": y + 36,
-                    "height": 16
-                }, {
-                    "thing": "Cashier",
-                    "x": x,
-                    "y": y + 40,
-                    "direction": 1
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x,
-                    "y": y + 40,
-                }, {
-                    "thing": "Register",
-                    "x": x + 8,
-                    "y": y + 40,
-                    "id": reference.responderId,
-                    "activate": FullScreenPokemon.prototype.activateCutsceneResponder,
-                    "cutscene": "PokeMart",
-                    "keepAlive": true,
-                    "items": reference.items,
-                    "dialog": reference.responderDialog
-                }, {
-                    "thing": "PokeCenterDeskLeft",
-                    "x": x,
-                    "y": y + 48
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 4,
-                    "y": y + 48,
-                    "width": 12
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x,
-                    "y": y + 56,
-                }, {
-                    "thing": "Doormat",
-                    "x": x + 24,
-                    "y": y + 56,
-                    "width": 16,
-                    "entrance": reference.entrance
-                }];
-
-        if (reference.transport) {
-            output.push({
-                "thing": "HiddenTransporter",
-                "x": x + 24,
-                "y": y + 56,
-                "width": 16,
-                "transport": reference.transport,
-                "requireDirection": 2
-            });
-        }
-
-        return output;
-    }
-
-
-    /* Miscellaneous utilities
-    */
-
-    /**
-     * Creates a new String equivalent to an old String repeated any number of
-     * times. If times is 0, a blank String is returned.
-     * 
-     * @param {String} string   The characters to repeat.
-     * @param {Number} [times]   How many times to repeat (by default, 1).
-     */
-    function stringOf(string, times) {
-        return (times === 0) ? '' : new Array(1 + (times || 1)).join(string);
-    }
-
-    /**
-     * Turns a Number into a String with a prefix added to pad it to a certain
-     * number of digits.
-     * 
-     * @param {Number} number   The original Number being padded.
-     * @param {Number} size   How many digits the output must contain.
-     * @param {String} [prefix]   A prefix to repeat for padding (by default,
-     *                            "0").
-     * @return {String}
-     * @example 
-     * makeDigit(7, 3); // '007'
-     * makeDigit(7, 3, 1); // '117'
-     */
-    function makeDigit(number, size, prefix) {
-        return stringOf(
-            prefix || "0",
-            Math.max(0, size - String(number).length)
-            ) + number;
-    }
-
-    /**
-     * 
-     */
-    function checkArrayMembersIndex(array, index) {
-        for (var i = 0; i < array.length; i += 1) {
-            if (array[i][index]) {
-                return true;
+                    "transport": reference.transport,
+                    "requireDirection": 2
+                });
             }
+
+            return output;
         }
 
-        return false;
-    }
 
-    /**
-     * 
-     */
-    function combineArrayMembers(array, title, count, keyTitle, keyCount) {
-        var object;
+        /* Miscellaneous utilities
+        */
 
-        for (var i = 0; i < array.length; i += 1) {
-            object = array[i];
-            if (array[i][keyTitle] === title) {
-                array[i][keyCount] += count;
-                return false;
+        /**
+         * Creates a new String equivalent to an old String repeated any number of
+         * times. If times is 0, a blank String is returned.
+         * 
+         * @param {String} string   The characters to repeat.
+         * @param {Number} [times]   How many times to repeat (by default, 1).
+         */
+        stringOf(str: string, times: number = 1): string {
+            return (times === 0) ? '' : new Array(1 + (times || 1)).join(str);
+        }
+
+        /**
+         * Turns a Number into a String with a prefix added to pad it to a certain
+         * number of digits.
+         * 
+         * @param {Number} number   The original Number being padded.
+         * @param {Number} size   How many digits the output must contain.
+         * @param {String} [prefix]   A prefix to repeat for padding (by default,
+         *                            "0").
+         * @return {String}
+         * @example 
+         * makeDigit(7, 3); // '007'
+         * makeDigit(7, 3, 1); // '117'
+         */
+        makeDigit(num: number, size: number, prefix?: number): string {
+            return FullScreenPokemon.prototype.stringOf(
+                prefix ? prefix.toString() : "0",
+                Math.max(0, size - String(num).length)
+                ) + num;
+        }
+
+        /**
+         * 
+         */
+        checkArrayMembersIndex(array: any[], index: string): boolean {
+            var i: number;
+
+            for (i = 0; i < array.length; i += 1) {
+                if (array[i][index]) {
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        object = {};
-        object[keyTitle] = title;
-        object[keyCount] = count;
-        array.push(object);
+        /**
+         * 
+         */
+        combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
+            var object;
 
-        return true;
-    }
+            for (var i = 0; i < array.length; i += 1) {
+                object = array[i];
+                if (array[i][keyTitle] === title) {
+                    array[i][keyCount] += count;
+                    return false;
+                }
+            }
 
+            object = {};
+            object[keyTitle] = title;
+            object[keyCount] = count;
+            array.push(object);
 
-    /* Miscellaneous utilities
-    */
-
-    /**
-     * Ensures the current object is a GameStartr by throwing an error if it 
-     * is not. This should be used for functions in any GameStartr descendants
-     * that have to call 'this' to ensure their caller is what the programmer
-     * expected it to be.
-     * 
-     * @param {Mixed} current   
-     */
-    ensureCorrectCaller(current: any): FullScreenPokemon {
-        if (!(current instanceof FullScreenPokemon)) {
-            throw new Error("A function requires the scope ('this') to be the "
-                + "manipulated FullScreenPokemon object. Unfortunately, 'this' is a "
-                + typeof (this) + ".");
+            return true;
         }
-        return current;
+
+        /**
+         * Ensures the current object is a GameStartr by throwing an error if it 
+         * is not. This should be used for functions in any GameStartr descendants
+         * that have to call 'this' to ensure their caller is what the programmer
+         * expected it to be.
+         * 
+         * @param {Mixed} current   
+         */
+        ensureCorrectCaller(current: any): FullScreenPokemon {
+            if (!(current instanceof FullScreenPokemon)) {
+                throw new Error("A function requires the scope ('this') to be the "
+                    + "manipulated FullScreenPokemon object. Unfortunately, 'this' is a "
+                    + typeof (this) + ".");
+            }
+            return current;
+        }
     }
-}
 }

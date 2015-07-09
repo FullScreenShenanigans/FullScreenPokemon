@@ -11,6 +11,7 @@ declare module FullScreenPokemon {
 
     export interface IMapScreenr extends MapScreenr.IMapScreenr {
         blockInputs: boolean;
+        boundaries: IAreaBoundaries;
         cutscene?: string;
         playerDirection: Direction;
         scrollability: string;
@@ -80,16 +81,29 @@ declare module FullScreenPokemon {
             [i: string]: IArea;
             [i: number]: IArea;
         };
+        theme?: string;
         name: string;
     }
 
     export interface IArea extends MapsCreatr.IMapsCreatrArea {
+        background: string;
+        boundaries: IAreaBoundaries;
         height: number;
         map: IMap;
         spawned: boolean;
         spawnedBy: IAreaSpawnedBy;
+        theme?: string
         width: number;
         wildPokemon: IAreaWildPokemonOptionGroups;
+    }
+
+    export interface IAreaBoundaries {
+        width: number;
+        height: number;
+        top: number;
+        right: number;
+        bottom: number;
+        left: number;
     }
 
     export interface IAreaSpawnedBy {
@@ -104,6 +118,17 @@ declare module FullScreenPokemon {
 
     export interface IAreaWildPokemonOptionGroup {
 
+    }
+
+    export interface ILocation extends MapsCreatr.IMapsCreatrLocation {
+        area: IArea;
+        cutscene?: string;
+        direction?: Direction;
+        push?: boolean;
+        routine?: string;
+        theme?: string;
+        xloc?: number;
+        yloc?: number;
     }
 
     export interface IPokemonSchema {
@@ -138,7 +163,7 @@ declare module FullScreenPokemon {
 
     export interface IBattleInfo extends BattleMovr.IBattleInfo {
         badge?: string;
-        giftAfterBattle?: string; 
+        giftAfterBattle?: string;
         giftAfterBattleAmount?: string;
         noBlackout?: boolean;
     }
@@ -155,7 +180,12 @@ declare module FullScreenPokemon {
     }
 
     export interface IPreThing extends MapsCreatr.IPreThing {
+        direction?: Direction;
         thing: IThing;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
     }
 
     export interface IThing extends GameStartr.IThing {
