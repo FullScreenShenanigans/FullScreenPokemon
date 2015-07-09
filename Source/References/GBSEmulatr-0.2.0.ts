@@ -42,7 +42,6 @@ declare module GBSEmulatr {
 
     export interface IGBSEmulatr {
         getLibrary(): ILibrary;
-        getDirection(): IDirectory;
         getTheme(): string;
         getThemeNode(): ScriptProcessorNode;
         getContext(): AudioContext;
