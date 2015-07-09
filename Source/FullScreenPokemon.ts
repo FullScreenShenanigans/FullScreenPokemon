@@ -71,6 +71,41 @@ module FullScreenPokemon {
         ];
 
         /**
+         * Quickly tapping direction keys means to look in a direction, not walk.
+         */
+        public static inputTimeTolerance: number = 4;
+
+        /**
+         * The allowed uppercase keys to be shown in a keyboard.
+         */
+        public static keysUppercase: string[] = [
+            "A", "J", "S", " ", " ",
+            "B", "K", "T", " ", " ",
+            "C", "L", "U", " ", " ",
+            "D", "M", "V", " ", " ",
+            "E", "N", "W", " ", " ",
+            "F", "O", "X", " ", " ",
+            "G", "P", "Y", " ", " ",
+            "H", "Q", "Z", " ", " ",
+            "I", "R", " ", " ", "ED",
+        ];
+
+        /*
+         * The allowed lowercase keys to be shown in a keyboard.
+         */
+        public static keysLowercase: string[] = [
+            "a", "j", "s", " ", " ",
+            "b", "k", "t", " ", " ",
+            "c", "l", "u", " ", " ",
+            "d", "m", "v", " ", " ",
+            "e", "n", "w", " ", " ",
+            "f", "o", "x", " ", " ",
+            "g", "p", "y", " ", " ",
+            "h", "q", "z", " ", " ",
+            "i", "r", " ", " ", "ED",
+        ];
+
+        /**
          * Overriden MapScreenr refers to the IMapScreenr defined in FullScreenPokemon.d.ts.
          */
         public MapScreener: IMapScreenr;
@@ -513,7 +548,7 @@ module FullScreenPokemon {
          * 
          */
         addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-            var FSP: FullScreenPokemon = FullScreenPokemon.ensureCorrectCaller(this),
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 player: IPlayer;
 
             left = left || 0;
@@ -597,7 +632,7 @@ module FullScreenPokemon {
 
             thing.FSP.TimeHandler.addEvent(
                 thing.FSP.keyDownDirectionReal,
-                thing.FSP.inputTimeTolerance,
+                FullScreenPokemon.inputTimeTolerance,
                 thing,
                 3);
 
@@ -620,7 +655,7 @@ module FullScreenPokemon {
 
             thing.FSP.TimeHandler.addEvent(
                 thing.FSP.keyDownDirectionReal,
-                thing.FSP.inputTimeTolerance,
+                FullScreenPokemon.inputTimeTolerance,
                 thing,
                 1);
 
@@ -644,7 +679,7 @@ module FullScreenPokemon {
 
             thing.FSP.TimeHandler.addEvent(
                 thing.FSP.keyDownDirectionReal,
-                thing.FSP.inputTimeTolerance,
+                FullScreenPokemon.inputTimeTolerance,
                 thing,
                 0);
 
@@ -670,7 +705,7 @@ module FullScreenPokemon {
 
             thing.FSP.TimeHandler.addEvent(
                 thing.FSP.keyDownDirectionReal,
-                thing.FSP.inputTimeTolerance,
+                FullScreenPokemon.inputTimeTolerance,
                 thing,
                 2);
 
@@ -698,7 +733,7 @@ module FullScreenPokemon {
 
                 if (thing.player) {
                     if ((<IPlayer>thing).canKeyWalking) {
-                        thing.FSP.setPlayerDirection(thing, direction);
+                        thing.FSP.setPlayerDirection(<IPlayer>thing, direction);
                     } else {
                         (<IPlayer>thing).nextDirection = direction;
                     }
@@ -3719,7 +3754,7 @@ module FullScreenPokemon {
                     "Flash"
                 ],
                 animation: string = FSP.NumberMaker.randomArrayMember(animations),
-                player: BattleMovr.IBattleThingInfo = battleInfo.player;
+                player: any = battleInfo.player;
 
             if (!player) {
                 battleInfo.player = player = {};
@@ -3743,7 +3778,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        createPokemon(schema: IPokemonSchema): void {
+        createPokemon(schema: IPokemonSchema): IPokemon {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 level = typeof schema.levels !== "undefined"
                     ? FSP.NumberMaker.randomArrayMember(schema.levels)
