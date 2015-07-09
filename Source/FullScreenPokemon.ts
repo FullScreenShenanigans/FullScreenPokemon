@@ -255,7 +255,9 @@ module FullScreenPokemon {
         /**
          * 
          */
-        gameStart(FSP: FullScreenPokemon): void {
+        gameStart(): void {
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
             // if (EightBitter.ItemsHolder.getItem("gameStarted")) {
             //     EightBitter.gameStartPlay(EightBitter);
             // } else {
@@ -472,8 +474,8 @@ module FullScreenPokemon {
          * @param {PreThing} prething
          */
         addPreThing(prething: IPreThing): void {
-            var thing = prething.thing,
-                position = prething.position || thing.position;
+            var thing: IThing = prething.thing,
+                position: string = prething.position || thing.position;
 
             if (thing.spawned) {
                 return;
@@ -533,7 +535,7 @@ module FullScreenPokemon {
          * 
          */
         getThingById(id: string): IThing {
-            return FullScreenPokemon.ensureCorrectCaller(this).MapScreener.thingsById[id];
+            return FullScreenPokemon.prototype.ensureCorrectCaller(this).MapScreener.thingsById[id];
         }
 
 
@@ -1720,7 +1722,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateCharacterSetDirection(thing: ICharacter, direction: Direction): void {
+        animateCharacterSetDirection(thing: IThing, direction: Direction): void {
             thing.direction = direction;
 
             if (direction !== 1) {
@@ -3111,7 +3113,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        togglePauseMenu(player: IPlayer): void {
+        togglePauseMenu(thing: IThing): void {
             if (player.FSP.MenuGrapher.getActiveMenu()) {
                 player.FSP.MenuGrapher.registerStart();
             } else if (player.FSP.MenuGrapher.getActiveMenu()) {
@@ -7546,7 +7548,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        setMap(name: string, location: string, noEntrance?: boolean): void {
+        setMap(name: string, location?: string, noEntrance?: boolean): void {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 map: IMap;
 
@@ -8895,7 +8897,7 @@ module FullScreenPokemon {
          * makeDigit(7, 3); // '007'
          * makeDigit(7, 3, 1); // '117'
          */
-        makeDigit(num: number, size: number, prefix?: number): string {
+        makeDigit(num: number, size: number, prefix?: string): string {
             return FullScreenPokemon.prototype.stringOf(
                 prefix ? prefix.toString() : "0",
                 Math.max(0, size - String(num).length)

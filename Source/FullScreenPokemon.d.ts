@@ -81,6 +81,8 @@ declare module FullScreenPokemon {
             [i: string]: IArea;
             [i: number]: IArea;
         };
+        locationDefault?: string;
+        seed?: number;
         theme?: string;
         name: string;
     }
