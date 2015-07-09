@@ -41,7 +41,23 @@ declare module GBSEmulatr {
     }
 
     export interface IGBSEmulatr {
-
+        getLibrary(): ILibrary;
+        getDirection(): IDirectory;
+        getTheme(): string;
+        getThemeNode(): ScriptProcessorNode;
+        getContext(): AudioContext;
+        getItemsHolder(): ItemsHoldr.IItemsHoldr;
+        getModule(): IModule;
+        getBufferSize(): number;
+        getInt16Max(): number;
+        getVolume(): number;
+        getMuted(): number;
+        stop(): void;
+        clearAll(): void;
+        setMutedOn(): void;
+        setMutedOff(): void;
+        toggleMuted(): void;
+        play(track: string): void;
     }
 }
 
@@ -276,6 +292,13 @@ module GBSEmulatr {
          * 
          */
         setMutedOff(): void {
+            throw new Error("Not implemented.");
+        }
+
+        /**
+         * 
+         */
+        toggleMuted(): void {
             throw new Error("Not implemented.");
         }
 

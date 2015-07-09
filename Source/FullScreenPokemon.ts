@@ -1379,7 +1379,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateExpandCorners(things: IThing[], amount: number, groupType: string) {
+        animateExpandCorners(things: IThing[], amount: number) {
             var FSP: FullScreenPokemon = things[0].FSP,
                 i: number;
 
@@ -3536,7 +3536,7 @@ module FullScreenPokemon {
                                 "x": 32,
                                 "y": 4.5
                             }, {
-                                "text": makeDigit(schema.amount, 2, " "),
+                                "text": FSP.makeDigit(schema.amount, 2, " "),
                                 "x": 36.5,
                                 "y": 4
                             }
@@ -3756,9 +3756,9 @@ module FullScreenPokemon {
                 animation: string = FSP.NumberMaker.randomArrayMember(animations),
                 player: any = battleInfo.player;
 
-            if (!player) {
-                battleInfo.player = player = {};
-            }
+            // if (!player) {
+            //     battleInfo.player = player = {};
+            // }
 
             player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
             player.sprite = player.sprite || "PlayerBack";
@@ -4808,7 +4808,7 @@ module FullScreenPokemon {
                 animationSettings: any = {
                     "color": "White"
                 },
-                callback: Function = FSP.BattleMover.closeBattle.bind(
+                callback: () => void = FSP.BattleMover.closeBattle.bind(
                     FSP.BattleMover,
                     FSP.animateFadeFromColor.bind(FSP, FSP, animationSettings));
 

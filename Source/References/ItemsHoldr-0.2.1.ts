@@ -68,8 +68,22 @@ declare module ItemsHoldr {
         hasKey(key: string): boolean;
         exportItems(): any;
         addItem(key: string, settings: any): IItemValue;
+        removeItem(key: string): void;
+        clear(): void;
         setItem(key: string, value: any): void;
         increase(key: string, amount?: number | string): void;
+        decrease(key: string, amount?: number): void;
+        toggle(key: string): void;
+        checkExistence(key: string): void;
+        saveAll(): void;
+        hideContainer(): void;
+        displayContainer(): void;
+        makeContainer(containrs: any[][]): HTMLElement;
+        hasDisplayChange(value: string): boolean;
+        getDisplayChange(value: string): string;
+        createElement(tag?: string, ...args: any[]): HTMLElement;
+        proliferate(recipient: any, donor: any, noOverride?: boolean): any;
+        proliferateElement(recipient: any, donor: any, noOverride?: boolean): any;
     }
 }
 
@@ -755,7 +769,7 @@ module ItemsHoldr {
          * @param {Boolean} [noOverride]   If recipient properties may be overriden
          *                                 (by default, false).
          */
-        proliferate(recipient: any, donor: any, noOverride: boolean = false): any {
+        proliferate(recipient: any, donor: any, noOverride?: boolean): any {
             var setting: any,
                 i: string;
 

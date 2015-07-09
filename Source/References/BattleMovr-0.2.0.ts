@@ -41,14 +41,14 @@ declare module BattleMovr {
     }
 
     export interface IBattleInfo {
-        exitDialog: string;
-        items: any;
+        exitDialog?: string | string[];
+        items?: any;
         nextCutscene?: string;
         nextCutsceneSettings?: any;
         nextRoutine?: string;
         nextRoutineSettings?: any;
-        opponent: IBattleThingInfo;
-        player: IBattleThingInfo;
+        opponent?: IBattleThingInfo;
+        player?: IBattleThingInfo;
     }
 
     export interface IBattleInfoDefaults {

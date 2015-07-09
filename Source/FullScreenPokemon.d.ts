@@ -171,13 +171,12 @@ declare module FullScreenPokemon {
         giftAfterBattleAmount?: number;
         keptThings?: (string | IPlayer)[];
         noBlackout?: boolean;
-        textAfterBattle?: string[];
-        textOpponentSendOut?: string[];
-        textPlayerSendOut?: string[];
-        textStart: string[];
-        textVictory?: string[];
+        textAfterBattle?: string | string[];
+        textOpponentSendOut?: string | string[];
+        textPlayerSendOut?: string | string[];
+        textStart?: string[];
+        textVictory?: string | string[];
         theme?: string;
-        player: any;
     }
 
     export interface IDialog {
