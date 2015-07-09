@@ -10,7 +10,7 @@ var BattleMovr;
     "use strict";
     var BattleMovr = (function () {
         /**
-         *
+         * @param {IBattleMovrSettings} settings
          */
         function BattleMovr(settings) {
             if (typeof settings.GameStarter === "undefined") {

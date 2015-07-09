@@ -114,12 +114,8 @@ declare module FullScreenPokemon {
     }
 
     export interface IAreaWildPokemonOptionGroups {
-        grass?: IAreaWildPokemonOptionGroup;
-        [i: string]: IAreaWildPokemonOptionGroup;
-    }
-
-    export interface IAreaWildPokemonOptionGroup {
-
+        grass?: IPokemonSchema[];
+        [i: string]: IPokemonSchema[];
     }
 
     export interface ILocation extends MapsCreatr.IMapsCreatrLocation {
@@ -134,32 +130,10 @@ declare module FullScreenPokemon {
     }
 
     export interface IPokemonSchema {
-        title: string;
         level: number;
         levels?: number[];
         moves?: string[];
-    }
-
-    export interface IPokemon {
-        Attack: number;
-        AttackNormal: number;
-        Defense: number;
-        DefenseNormal: number;
-        HP: number;
-        HPNormal: number;
-        Special: number;
-        SpecialNormal: number;
-        Speed: number;
-        SpeedNormal: number;
-        level: number;
-        moves: IPokemonMove[];
-        nickname: string;
-        status: string;
-        title: string;
-    }
-
-    export interface IPokemonMove {
-        remaining: number;
+        rate?: number;
         title: string;
     }
 

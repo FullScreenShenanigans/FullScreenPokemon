@@ -1259,9 +1259,9 @@ module FullScreenPokemon {
         animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
             var grassMap: IMap = <IMap>thing.FSP.MapsHandler.getMap(grass.mapName),
                 grassArea: IArea = <IArea>grassMap.areas[grass.areaName],
-                options: IAreaWildPokemonOptionGroup = grassArea.wildPokemon.grass,
+                options: IPokemonSchema[] = grassArea.wildPokemon.grass,
                 chosen: IPokemonSchema = thing.FSP.chooseRandomWildPokemon(thing.FSP, options),
-                chosenPokemon: IPokemon = thing.FSP.createPokemon(chosen);
+                chosenPokemon: BattleMovr.IActor = thing.FSP.createPokemon(chosen);
 
             thing.FSP.removeClass(thing, "walking");
             if (thing.shadow) {
@@ -1272,10 +1272,10 @@ module FullScreenPokemon {
 
             thing.FSP.startBattle({
                 "opponent": {
-                    "name": chosen.title,
-                    "sprite": chosen.title + "Front",
+                    "actors": [chosenPokemon],
                     "category": "Wild",
-                    "actors": [chosenPokemon]
+                    "name": chosen.title,
+                    "sprite": chosen.title + "Front"
                 }
             })
         }
@@ -1294,7 +1294,7 @@ module FullScreenPokemon {
                     "category": "Trainer",
                     "hasActors": true,
                     "reward": other.reward,
-                    "actors": other.actors.map(thing.FSP.createPokemon.bind(thing.FSP))
+                    "actors": <BattleMovr.IActor[]>other.actors.map(thing.FSP.createPokemon.bind(thing.FSP))
                 },
                 "textStart": ["", " wants to fight!"],
                 "textDefeat": other.textDefeat,
@@ -3322,7 +3322,7 @@ module FullScreenPokemon {
          */
         openPokemonStats(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                pokemon: IPokemonSchema = settings.pokemon,
+                pokemon: BattleMovr.IActorSchema = settings.pokemon,
                 statistics = FSP.MathDecider.getConstant("statisticNames").filter(
                     function (statistic: string): boolean {
                         return statistic !== "HP";
@@ -3778,7 +3778,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        createPokemon(schema: IPokemonSchema): IPokemon {
+        createPokemon(schema: IPokemonSchema): BattleMovr.IActor {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 level = typeof schema.levels !== "undefined"
                     ? FSP.NumberMaker.randomArrayMember(schema.levels)
@@ -3795,7 +3795,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        healPokemon(pokemon: IPokemon): void {
+        healPokemon(pokemon: BattleMovr.IActor): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 moves = FSP.MathDecider.getConstant("moves"),
                 statisticNames = FSP.MathDecider.getConstant("statisticNames"),
@@ -3837,7 +3837,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        chooseRandomWildPokemon(FSP: FullScreenPokemon, options: any[]): void {
+        chooseRandomWildPokemon(FSP: FullScreenPokemon, options: IPokemonSchema[]): IPokemonSchema {
             var choice = FSP.NumberMaker.random(),
                 sum = 0,
                 i;

@@ -58,10 +58,10 @@ declare module BattleMovr {
     export interface IBattleThingInfo {
         actors: IActor[];
         category: string;
-        hasActors: boolean;
+        hasActors?: boolean;
         name: string;
-        selectedActor: IActor;
-        selectedIndex: number;
+        selectedActor?: IActor;
+        selectedIndex?: number;
         sprite: string;
     }
 
