@@ -11,8 +11,10 @@ declare module FullScreenPokemon {
 
     export interface IMapScreenr extends MapScreenr.IMapScreenr {
         blockInputs: boolean;
+        cutscene?: string;
         playerDirection: Direction;
         scrollability: string;
+        theme?: string;
         thingsById: {
             [i: string]: IThing;
         }
@@ -124,6 +126,7 @@ declare module FullScreenPokemon {
         SpeedNormal: number;
         level: number;
         moves: IPokemonMove[];
+        nickname: string;
         status: string;
         title: string;
     }
@@ -131,6 +134,13 @@ declare module FullScreenPokemon {
     export interface IPokemonMove {
         remaining: number;
         title: string;
+    }
+
+    export interface IBattleInfo extends BattleMovr.IBattleInfo {
+        badge?: string;
+        giftAfterBattle?: string; 
+        giftAfterBattleAmount?: string;
+        noBlackout?: boolean;
     }
 
     export interface IDialog {
