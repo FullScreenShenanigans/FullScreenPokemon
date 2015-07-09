@@ -165,10 +165,14 @@ declare module FullScreenPokemon {
 
     export interface IBattleInfo extends BattleMovr.IBattleInfo {
         animations: string[];
+        automaticMenus?: boolean;
         badge?: string;
         giftAfterBattle?: string;
         giftAfterBattleAmount?: string;
         noBlackout?: boolean;
+        textPlayerSendOut?: string[];
+        textOpponentSendOut?: string[];
+        textStart: string[]
         theme?: string;
         player: any;
     }

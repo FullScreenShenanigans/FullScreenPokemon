@@ -10537,11 +10537,15 @@ var ScenePlayr;
          * Returns this.startCutscene bound to the given name and settings.
          *
          * @param {String} name   The name of the cutscene to play.
-         * @param {Object} [settings]   Additional settings to be kept as a
-         *                              persistent Object throughout the cutscene.
+         * @param {Mixed} [...args]   Additional settings to be kept as a
+         *                            persistent Object throughout the cutscene.
          */
-        ScenePlayr.prototype.bindCutscene = function (name, settings) {
-            return this.startCutscene.bind(self, name, settings);
+        ScenePlayr.prototype.bindCutscene = function (name) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            return this.startCutscene.bind(self, name, args);
         };
         /**
          * Stops the currently playing cutscene, clearing the internal data.
@@ -10582,9 +10586,13 @@ var ScenePlayr;
          * Returns this.startCutscene bound to the given name and arguments.
          *
          * @param {String} name   The name of the cutscene to play.
-         * @param {Object} [settings]   Any additional arguments to pass to the routine.
+         * @param {Mixed} [...args]   Any additional arguments to pass to the routine.
          */
-        ScenePlayr.prototype.bindRoutine = function (name, args) {
+        ScenePlayr.prototype.bindRoutine = function (name) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
             return this.playRoutine.bind(this, name, args);
         };
         return ScenePlayr;

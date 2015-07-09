@@ -1,12 +1,12 @@
-// @echo '/// <reference path="GameStartr-0.2.0.ts" />'
 // @echo '/// <reference path="BattleMovr-0.2.0.ts" />'
+// @echo '/// <reference path="GameStartr-0.2.0.ts" />'
 // @echo '/// <reference path="GBSEmulatr-0.2.0.ts" />'
 // @echo '/// <reference path="MenuGraphr-0.2.0.ts" />'
 // @echo '/// <reference path="StateHoldr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/GameStartr-0.2.0.ts" />
 /// <reference path="References/BattleMovr-0.2.0.ts" />
+/// <reference path="References/GameStartr-0.2.0.ts" />
 /// <reference path="References/GBSEmulatr-0.2.0.ts" />
 /// <reference path="References/MenuGraphr-0.2.0.ts" />
 /// <reference path="References/StateHoldr-0.2.0.ts" />
@@ -3918,9 +3918,9 @@ module FullScreenPokemon {
                     menuNumbers,
                     [
                         [
-                            makeDigit(hp, 3, " ")
+                            FSP.makeDigit(hp, 3, " ")
                             + "/"
-                            + makeDigit(hpNormal, 3, " ")
+                            + FSP.makeDigit(hpNormal, 3, " ")
                         ]
                     ]);
             }
@@ -4040,14 +4040,14 @@ module FullScreenPokemon {
             FSP.MenuGrapher.createMenu("BattlePlayerHealth");
             FSP.addBattleDisplayPokeballs(
                 FSP,
-                FSP.MenuGrapher.getMenu("BattlePlayerHealth"),
+                <IMenu>FSP.MenuGrapher.getMenu("BattlePlayerHealth"),
                 battleInfo.player);
 
             if (battleInfo.opponent.hasActors) {
                 FSP.MenuGrapher.createMenu("BattleOpponentHealth");
                 FSP.addBattleDisplayPokeballs(
                     FSP,
-                    FSP.MenuGrapher.getMenu("BattleOpponentHealth"),
+                    <IMenu>FSP.MenuGrapher.getMenu("BattleOpponentHealth"),
                     battleInfo.player,
                     true);
             } else {
@@ -4166,10 +4166,8 @@ module FullScreenPokemon {
                     "PlayerSendOut",
                     {
                         "nextRoutine": "ShowPlayerMenu"
-                    }
-                    ),
-                timeout
-                );
+                    }),
+                timeout);
         }
 
         /**
@@ -4215,7 +4213,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneBattleOpponentSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
-            var opponentInfo: IPlayer = settings.battleInfo.opponent,
+            var opponentInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
                 pokemonInfo: BattleMovr.IActor = opponentInfo.actors[opponentInfo.selectedIndex],
                 pokemon = FSP.BattleMover.setThing(
                     "opponent", pokemonInfo.title + "Front");
@@ -4258,21 +4256,20 @@ module FullScreenPokemon {
         cutsceneBattlePlayerSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
             var playerInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
                 pokemonInfo: BattleMovr.IActor = playerInfo.selectedActor,
-                pokemon = FSP.BattleMover.setThing(
-                    "player", pokemonInfo.title + "Back");
+                pokemon = FSP.BattleMover.setThing("player", pokemonInfo.title + "Back");
 
             console.log("Should make the zoom-in animation for appearing Pokemon...");
 
-            FSP.addBattleDisplayPokemonHealth(FSP, "player", playerInfo.selectedActor);
+            FSP.addBattleDisplayPokemonHealth(FSP, "player");
 
             FSP.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
             FSP.MenuGrapher.addMenuDialog(
                 "BattlePlayerHealthNumbers",
                 [
                     [
-                        makeDigit(pokemonInfo.HP, 3, " ")
+                        FSP.makeDigit(pokemonInfo.HP, 3, " ")
                         + "/"
-                        + makeDigit(pokemonInfo.HPNormal, 3, " ")
+                        + FSP.makeDigit(pokemonInfo.HPNormal, 3, " ")
                     ]
                 ]);
 
@@ -4388,10 +4385,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [opponent.selectedActor.nickname + " used " + choice + "!"],
-                FSP.ScenePlayer.bindRoutine(
-                    "MoveOpponentAnimate", routineArguments
-                    )
-                );
+                FSP.ScenePlayer.bindRoutine("MoveOpponentAnimate", routineArguments));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
