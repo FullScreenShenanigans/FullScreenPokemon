@@ -37,14 +37,62 @@ declare module FullScreenPokemon {
         ItemsHolder: ItemsHoldr.IItemsHoldr;
     }
 
+    export interface IPokedexListing {
+        caught: boolean;
+        height: string[]; // ["feet", "inches"] (e.x. ["1", "8"])
+        seen: boolean;
+        title: string;
+        label: string;
+        index: number;
+        sprite: string;
+        info: string[];
+        evolvesInto: string;
+        evolvesVia: number;
+        weight: number;
+        types: string[];
+        HP: number;
+        Attack: number;
+        Defense: number;
+        Special: number;
+        Speed: number;
+        moves: IPokedexMovesListing;
+    }
+
+    export interface IPokedexMovesListing {
+        natural: IPokedexMove[];
+        hm: IPokedexMove;
+        tm: IPokedexMove;
+    }
+
+    export interface IPokedexMove {
+        move: string;
+        level?: number;
+    }
+
     export interface ISaveFile {
         [i: string]: any;
     }
 
-    export interface IMap extends MapsCreatr.IMapsCreatrMap { }
+    export interface IMap extends MapsCreatr.IMapsCreatrMap {
+        areas: {
+            [i: string]: IArea;
+            [i: number]: IArea;
+        };
+        name: string;
+    }
 
     export interface IArea extends MapsCreatr.IMapsCreatrArea {
+        height: number;
+        map: IMap;
+        spawned: boolean;
+        spawnedBy: IAreaSpawnedBy;
+        width: number;
         wildPokemon: IAreaWildPokemonOptionGroups;
+    }
+
+    export interface IAreaSpawnedBy {
+        name: string;
+        timestamp: number;
     }
 
     export interface IAreaWildPokemonOptionGroups {
@@ -58,10 +106,31 @@ declare module FullScreenPokemon {
 
     export interface IPokemonSchema {
         title: string;
+        level: number;
+        levels?: number[];
+        moves?: string[];
     }
 
     export interface IPokemon {
+        Attack: number;
+        AttackNormal: number;
+        Defense: number;
+        DefenseNormal: number;
+        HP: number;
+        HPNormal: number;
+        Special: number;
+        SpecialNormal: number;
+        Speed: number;
+        SpeedNormal: number;
+        level: number;
+        moves: IPokemonMove[];
+        status: string;
+        title: string;
+    }
 
+    export interface IPokemonMove {
+        remaining: number;
+        title: string;
     }
 
     export interface IDialog {
@@ -81,7 +150,7 @@ declare module FullScreenPokemon {
 
     export interface IThing extends GameStartr.IThing {
         FSP: FullScreenPokemon;
-        activate(activator: IThing, activated: IThing): void;
+        activate?: (activator: IThing, activated?: IThing) => void;
         areaName: string;
         bordering: IThing[];
         collide(thing: IThing, other: IThing): boolean;
@@ -128,9 +197,10 @@ declare module FullScreenPokemon {
         player?: boolean;
         pushDirection?: Direction;
         pushSteps?: any[];
+        roaming?: boolean;
         roamingDirections?: Direction[];
         sight?: boolean;
-        sightDetector?: ICharacter;
+        sightDetector?: ISightDetector;
         shadow?: IThing;
         shouldWalk: boolean;
         speed: number;
@@ -171,6 +241,7 @@ declare module FullScreenPokemon {
 
     export interface IDetector extends IThing {
         active?: boolean;
+        activate?: (thing: IDetector) => void;
         cutscene?: string;
         dialog?: string | string[];
         keepAlive?: boolean;
@@ -180,7 +251,12 @@ declare module FullScreenPokemon {
         singleUse?: boolean;
     }
 
-    export interface IGymDetector extends IThing {
+    export interface IAreaSpawner extends IDetector {
+        map: string;
+        area: string;
+    }
+
+    export interface IGymDetector extends IDetector {
         gym: string;
         leader: string;
     }
@@ -217,7 +293,26 @@ declare module FullScreenPokemon {
         routine?: string;
     }
 
-    export interface IMenu extends MenuGraphr.IMenu, IThing { }
+    export interface IMenu extends MenuGraphr.IMenu, IThing {
+        children: IThing[];
+    }
+
+    export interface IKeyboardKeysMenu extends IMenu {
+        gridColumns: number;
+        gridRows: number;
+        selectedIndex: number[];
+    }
+
+    export interface IKeyboardKey extends IThing {
+        text: string;
+    }
+
+    export interface IKeyboardResultsMenu extends IMenu {
+        blinker: IThing;
+        completeValue: string;
+        displayedValue: string;
+        selectedChild: number;
+    }
 
     export interface IPlayerKeys {
         a: boolean;

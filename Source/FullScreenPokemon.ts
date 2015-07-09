@@ -2867,1735 +2867,1682 @@ module FullScreenPokemon {
         }
 
 
-    /* Spawning
-    */
+        /* Spawning
+        */
 
-    /**
-     * 
-     * 
-     * @remarks Should be the line after snaptogrid...
-     */
-    function spawnCharacter(thing) {
-        if (thing.sight) {
-            thing.sightDetector = thing.FSP.addThing("SightDetector", {
-                "direction": thing.direction
-            });
-            thing.sightDetector.viewer = thing;
-            thing.FSP.animatePositionSightDetector(thing);
+        /**
+         * 
+         * 
+         * @remarks Should be the line after snaptogrid...
+         */
+        spawnCharacter(thing: ICharacter): void {
+            if (thing.sight) {
+                thing.sightDetector = <ISightDetector>thing.FSP.addThing(
+                    [
+                        "SightDetector",
+                        {
+                            "direction": thing.direction
+                        }
+                    ]);
+                thing.sightDetector.viewer = thing;
+                thing.FSP.animatePositionSightDetector(thing);
+            }
+
+            if (thing.roaming) {
+                thing.FSP.TimeHandler.addEvent(
+                    thing.FSP.activateCharacterRoaming,
+                    thing.FSP.NumberMaker.randomInt(70),
+                    thing);
+            }
         }
 
-        if (thing.roaming) {
+        /**
+         * 
+         */
+        activateCharacterRoaming(thing: ICharacter): boolean {
+            if (!thing.alive) {
+                return true;
+            }
+
             thing.FSP.TimeHandler.addEvent(
                 thing.FSP.activateCharacterRoaming,
-                thing.FSP.NumberMaker.randomInt(70),
-                thing
-                );
-        }
-    }
+                70 + thing.FSP.NumberMaker.randomInt(210),
+                thing);
 
-    /**
-     * 
-     */
-    function activateCharacterRoaming(thing) {
-        if (!thing.alive) {
-            return true;
-        }
+            if (!thing.talking && !thing.FSP.MenuGrapher.getActiveMenu()) {
+                thing.FSP.animateCharacterStartWalkingRandom(thing);
+            }
 
-        thing.FSP.TimeHandler.addEvent(
-            thing.FSP.activateCharacterRoaming,
-            70 + thing.FSP.NumberMaker.randomInt(210),
-            thing
-            );
-
-        if (thing.talking || thing.FSP.MenuGrapher.getActiveMenu()) {
-            return;
-        }
-
-        thing.FSP.animateCharacterStartWalkingRandom(thing);
-    }
-
-    /**
-     * 
-     */
-    function activateSpawner(thing) {
-        thing.activate(thing);
-    }
-
-    /**
-     * 
-     */
-    function spawnWindowDetector(thing) {
-        if (!thing.FSP.checkWindowDetector(thing)) {
-            thing.FSP.TimeHandler.addEventInterval(
-                thing.FSP.checkWindowDetector, 7, Infinity, thing
-                );
-        }
-    }
-
-    /**
-     * 
-     */
-    function checkWindowDetector(thing) {
-        if (
-            thing.bottom < 0
-            || thing.left > thing.FSP.MapScreener.width
-            || thing.top > thing.FSP.MapScreener.height
-            || thing.right < 0
-            ) {
             return false;
         }
 
-        thing.activate(thing);
-        thing.FSP.killNormal(thing);
-        return true;
-    }
+        /**
+         * 
+         */
+        activateSpawner(thing: IDetector): void {
+            thing.activate(thing);
+        }
 
-    /**
-     * 
-     */
-    function spawnAreaSpawner(thing) {
-        var map = thing.FSP.MapsHandler.getMap(thing.map),
-            area = map.areas[thing.area];
+        /**
+         * 
+         */
+        spawnWindowDetector(thing: IDetector): void {
+            if (!thing.FSP.checkWindowDetector(thing)) {
+                thing.FSP.TimeHandler.addEventInterval(
+                    thing.FSP.checkWindowDetector, 7, Infinity, thing);
+            }
+        }
 
-        if (area === thing.FSP.MapsHandler.getArea()) {
+        /**
+         * 
+         */
+        checkWindowDetector(thing: IDetector): boolean {
+            if (
+                thing.bottom < 0
+                || thing.left > thing.FSP.MapScreener.width
+                || thing.top > thing.FSP.MapScreener.height
+                || thing.right < 0) {
+                return false;
+            }
+
+            thing.activate(thing);
             thing.FSP.killNormal(thing);
-            return;
+            return true;
         }
 
-        if (
-            area.spawnedBy
-            && area.spawnedBy === thing.FSP.MapsHandler.getArea().spawnedBy
-            ) {
-            thing.FSP.killNormal(thing);
-            return;
-        }
+        /**
+         * 
+         */
+        spawnAreaSpawner(thing: IAreaSpawner): void {
+            var map: IMap = <IMap>thing.FSP.MapsHandler.getMap(thing.map),
+                area: IArea = <IArea>map.areas[thing.area];
 
-        area.spawnedBy = thing.FSP.MapsHandler.getArea().spawnedBy;
-
-        thing.FSP.activateAreaSpawner(thing, area);
-    }
-
-    /**
-     * 
-     */
-    function activateAreaSpawner(thing, area) {
-        var creation = area.creation,
-            EightBitter = thing.FSP,
-            MapsCreator = EightBitter.MapsCreator,
-            MapScreener = EightBitter.MapScreener,
-            MapsHandler = EightBitter.MapsHandler,
-            QuadsKeeper = EightBitter.QuadsKeeper,
-            areaCurrent = MapsHandler.getArea(),
-            mapCurrent = MapsHandler.getMap(),
-            prethingsCurrent = MapsHandler.getPreThings(),
-            left = thing.left + thing.FSP.MapScreener.left,
-            top = thing.top + thing.FSP.MapScreener.top,
-            x, y, command, i;
-
-        switch (thing.direction) {
-            case 0:
-                top -= area.height * thing.FSP.unitsize;
-                break;
-            case 1:
-                left += thing.width * thing.FSP.unitsize;
-                break;
-            case 2:
-                top += thing.height * thing.FSP.unitsize;
-                break;
-            case 3:
-                left -= area.width * thing.FSP.unitsize;
-                break;
-        }
-
-        x = left / EightBitter.unitsize + (thing.offsetX || 0);
-        y = top / EightBitter.unitsize + (thing.offsetY || 0);
-
-        EightBitter.expandMapBoundaries(EightBitter, area, x, y);
-
-        for (i = 0; i < creation.length; i += 1) {
-            // A copy of the command must be used to not modify the original 
-            command = EightBitter.proliferate({
-                "noBoundaryStretch": true,
-                "areaName": area.name,
-                "mapName": area.map.name
-            }, creation[i]);
-
-            if (!command.x) {
-                command.x = x;
-            } else {
-                command.x += x;
-            }
-            if (!command.y) {
-                command.y = y;
-            } else {
-                command.y += y;
+            if (area === thing.FSP.MapsHandler.getArea()) {
+                thing.FSP.killNormal(thing);
+                return;
             }
 
-            // Having an entrance might conflict with previously set Locations
-            if (command.hasOwnProperty("entrance")) {
-                delete command.entrance;
+            if (
+                area.spawnedBy
+                && area.spawnedBy === (<IArea>thing.FSP.MapsHandler.getArea()).spawnedBy
+                ) {
+                thing.FSP.killNormal(thing);
+                return;
             }
 
-            MapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
+            area.spawnedBy = (<IArea>thing.FSP.MapsHandler.getArea()).spawnedBy;
+
+            thing.FSP.activateAreaSpawner(thing, area);
         }
 
-        MapsHandler.spawnMap(
-            "xInc",
-            QuadsKeeper.top / EightBitter.unitsize,
-            QuadsKeeper.right / EightBitter.unitsize,
-            QuadsKeeper.bottom / EightBitter.unitsize,
-            QuadsKeeper.left / EightBitter.unitsize
-            );
+        /**
+         * 
+         */
+        activateAreaSpawner(thing: IAreaSpawner, area: IArea): void {
+            var creation = area.creation,
+                FSP = thing.FSP,
+                MapsCreator = FSP.MapsCreator,
+                MapScreener = FSP.MapScreener,
+                MapsHandler = FSP.MapsHandler,
+                QuadsKeeper = FSP.QuadsKeeper,
+                areaCurrent = MapsHandler.getArea(),
+                mapCurrent = MapsHandler.getMap(),
+                prethingsCurrent = MapsHandler.getPreThings(),
+                left = thing.left + thing.FSP.MapScreener.left,
+                top = thing.top + thing.FSP.MapScreener.top,
+                x, y, command, i;
 
-        area.spawned = true;
-        EightBitter.killNormal(thing);
+            switch (thing.direction) {
+                case 0:
+                    top -= area.height * thing.FSP.unitsize;
+                    break;
+                case 1:
+                    left += thing.width * thing.FSP.unitsize;
+                    break;
+                case 2:
+                    top += thing.height * thing.FSP.unitsize;
+                    break;
+                case 3:
+                    left -= area.width * thing.FSP.unitsize;
+                    break;
+            }
 
-        //MapScreener.setVariables();
-    }
+            x = left / FSP.unitsize + (thing.offsetX || 0);
+            y = top / FSP.unitsize + (thing.offsetY || 0);
 
-    /**
-     * 
-     * 
-     * @todo It would be nice to intelligently do this based on boundaries, but
-     *       this works and that doesn't (easily / yet / without bugs).
-     */
-    function expandMapBoundaries(EightBitter, area, x, y) {
-        EightBitter.MapScreener.scrollability = "both";
-    }
+            FSP.expandMapBoundaries(FSP, area, x, y);
 
+            for (i = 0; i < creation.length; i += 1) {
+                // A copy of the command must be used to not modify the original 
+                command = FSP.proliferate({
+                    "noBoundaryStretch": true,
+                    "areaName": area.name,
+                    "mapName": area.map.name
+                }, creation[i]);
 
-    /* Menus
-    */
-
-    /**
-     * 
-     */
-    function openPauseMenu() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.MenuGrapher.createMenu("Pause");
-        EightBitter.MenuGrapher.setActiveMenu("Pause");
-        EightBitter.MenuGrapher.addMenuList("Pause", {
-            "options": [{
-                "text": "%%%%%%%POKEDEX%%%%%%%",
-                "callback": EightBitter.openPokedexMenu.bind(EightBitter)
-            }, {
-                    "text": "%%%%%%%POKEMON%%%%%%%",
-                    "callback": EightBitter.openPokemonMenu.bind(EightBitter)
-                }, {
-                    "text": "ITEM",
-                    "callback": EightBitter.openItemsMenu.bind(EightBitter)
-                }, {
-                    "text": "%%%%%%%PLAYER%%%%%%%",
-                    "callback": EightBitter.openPlayerMenu.bind(EightBitter)
-                }, {
-                    "text": "SAVE",
-                    "callback": EightBitter.openSaveMenu.bind(EightBitter)
-                }, {
-                    "text": "OPTION"
-                }, {
-                    "text": "Exit",
-                    "callback": EightBitter.closePauseMenu.bind(EightBitter)
-                }]
-        });
-    };
-
-    /**
-     * 
-     */
-    function closePauseMenu() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.MenuGrapher.deleteMenu("Pause");
-    };
-
-    /**
-     * 
-     */
-    function togglePauseMenu(player) {
-        if (player.FSP.MenuGrapher.getActiveMenu()) {
-            player.FSP.MenuGrapher.registerStart();
-        } else if (player.FSP.MenuGrapher.getActiveMenu()) {
-            player.FSP.closePauseMenu();
-        } else {
-            player.FSP.openPauseMenu();
-        }
-    }
-
-    /**
-     * 
-     */
-    function openPokedexMenu() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.ItemsHolder.getItem("Pokedex");
-
-        EightBitter.MenuGrapher.createMenu("Pokedex");
-        EightBitter.MenuGrapher.setActiveMenu("Pokedex");
-        EightBitter.MenuGrapher.addMenuList("Pokedex", {
-            "options": listings.map(function (listing, i) {
-                var characters = EightBitter.makeDigit(i + 1, 3, 0).split("");
-
-                characters.push({
-                    "command": true,
-                    "y": 4
-                });
-
-                if (listing.caught) {
-                    characters.push({
-                        "command": true,
-                        "x": -4,
-                        "y": 1
-                    });
-                    characters.push("Ball");
-                    characters.push({
-                        "command": true,
-                        "y": -1
-                    });
-                }
-
-                if (listing.seen) {
-                    characters.push.apply(characters, listing.title.split(""));
+                if (!command.x) {
+                    command.x = x;
                 } else {
-                    characters.push.apply(characters, "----------".split(""));
+                    command.x += x;
+                }
+                if (!command.y) {
+                    command.y = y;
+                } else {
+                    command.y += y;
                 }
 
-                characters.push({
-                    "command": true,
-                    "y": -4
-                });
-
-                return {
-                    "text": characters
-                };
-            })
-        });
-
-        EightBitter.MenuGrapher.createMenu("PokedexOptions");
-        EightBitter.MenuGrapher.addMenuList("PokedexOptions", {
-            "options": [{
-                "text": "DATA"
-            }, {
-                    "text": "CRY"
-                }, {
-                    "text": "AREA"
-                }, {
-                    "text": "QUIT",
-                    "callback": EightBitter.MenuGrapher.registerB
-                }]
-        });
-    };
-
-    /**
-     * 
-     */
-    function openPokemonMenuContext(settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.MenuGrapher.createMenu("PokemonMenuContext", {
-            "backMenu": "Pokemon"
-        });
-        EightBitter.MenuGrapher.addMenuList("PokemonMenuContext", {
-            "options": [{
-                "text": "STATS",
-                "callback": EightBitter.openPokemonMenuStats.bind(
-                    EightBitter, {
-                        "pokemon": settings.pokemon
-                    }
-                    )
-            }, {
-                    "text": "SWITCH",
-                    "callback": settings.onSwitch
-                }, {
-                    "text": "CANCEL",
-                    "callback": EightBitter.MenuGrapher.registerB
-                }]
-        });
-        EightBitter.MenuGrapher.setActiveMenu("PokemonMenuContext");
-    }
-
-    /**
-     * 
-     */
-    function openPokemonMenuStats(settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            pokemon = settings.pokemon,
-            schemas = EightBitter.MathDecider.getConstant("pokemon"),
-            schema = schemas[pokemon.title];
-
-        EightBitter.MenuGrapher.createMenu("PokemonMenuStats", {
-            "backMenu": "PokemonMenuContext",
-            "container": "Pokemon"
-        });
-
-        EightBitter.openPokemonStats({
-            "pokemon": pokemon,
-            "container": "PokemonMenuStats",
-            "size": {
-                "width": 36,
-                "height": 40,
-            },
-            "position": {
-                "vertical": "bottom",
-                "horizontal": "left"
-            },
-            "textXOffset": 4
-        });
-
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokemonMenuStatsTitle", pokemon.nickname
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokemonMenuStatsLevel", pokemon.level
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokemonMenuStatsNumber", EightBitter.makeDigit(schema.number, 3, 0)
-            );
-        EightBitter.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokemonMenuStatsType", pokemon.types.join(" \n ")
-            );
-        EightBitter.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "H819");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokemonMenuStatsOT",
-            [
-                "%%%%%%%PLAYER%%%%%%%"
-            ]
-            );
-
-        EightBitter.MenuGrapher.createMenuThing("PokemonMenuStats", {
-            "type": "thing",
-            "thing": "SquirtleFront", // pokemon.title + "Front",
-            "args": {
-                "flipHoriz": true
-            },
-            "position": {
-                "vertical": "bottom",
-                "offset": {
-                    "left": 8,
-                    "top": -44
+                // Having an entrance might conflict with previously set Locations
+                if (command.hasOwnProperty("entrance")) {
+                    delete command.entrance;
                 }
+
+                MapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
             }
-        });
 
-        EightBitter.MenuGrapher.setActiveMenu("PokemonMenuStats");
-    }
+            MapsHandler.spawnMap(
+                "xInc",
+                QuadsKeeper.top / FSP.unitsize,
+                QuadsKeeper.right / FSP.unitsize,
+                QuadsKeeper.bottom / FSP.unitsize,
+                QuadsKeeper.left / FSP.unitsize);
 
-    /**
-     * 
-     */
-    function openPokemonStats(settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            pokemon = settings.pokemon,
-            statistics = EightBitter.MathDecider.getConstant("statisticNames")
-                .filter(function (statistic) {
-                return statistic !== "HP";
-            }),
-            numStatistics = statistics.length,
-            textXOffset = settings.textXOffset || 8,
-            top, left, i;
+            area.spawned = true;
+            FSP.killNormal(thing);
 
-        for (i = 0; i < numStatistics; i += 1) {
-            statistics.push(EightBitter.makeDigit(
-                pokemon[statistics[i]], 3, " ")
+            //MapScreener.setVariables();
+        }
+
+        /**
+         * 
+         * 
+         * @todo It would be nice to intelligently do this based on boundaries, but
+         *       this works and that doesn't (easily / yet / without bugs).
+         */
+        expandMapBoundaries(FSP: FullScreenPokemon, area: IArea, x: number, y: number): void {
+            FSP.MapScreener.scrollability = "both";
+        }
+
+
+        /* Menus
+        */
+
+        /**
+         * 
+         */
+        openPauseMenu(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
+            FSP.MenuGrapher.createMenu("Pause");
+            FSP.MenuGrapher.setActiveMenu("Pause");
+            FSP.MenuGrapher.addMenuList("Pause", {
+                "options": [{
+                    "text": "%%%%%%%POKEDEX%%%%%%%",
+                    "callback": FSP.openPokedexMenu.bind(FSP)
+                }, {
+                        "text": "%%%%%%%POKEMON%%%%%%%",
+                        "callback": FSP.openPokemonMenu.bind(FSP)
+                    }, {
+                        "text": "ITEM",
+                        "callback": FSP.openItemsMenu.bind(FSP)
+                    }, {
+                        "text": "%%%%%%%PLAYER%%%%%%%",
+                        "callback": FSP.openPlayerMenu.bind(FSP)
+                    }, {
+                        "text": "SAVE",
+                        "callback": FSP.openSaveMenu.bind(FSP)
+                    }, {
+                        "text": "OPTION"
+                    }, {
+                        "text": "Exit",
+                        "callback": FSP.closePauseMenu.bind(FSP)
+                    }]
+            });
+        }
+
+        /**
+         * 
+         */
+        closePauseMenu(): void {
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
+            FSP.MenuGrapher.deleteMenu("Pause");
+        }
+
+        /**
+         * 
+         */
+        togglePauseMenu(player: IPlayer): void {
+            if (player.FSP.MenuGrapher.getActiveMenu()) {
+                player.FSP.MenuGrapher.registerStart();
+            } else if (player.FSP.MenuGrapher.getActiveMenu()) {
+                player.FSP.closePauseMenu();
+            } else {
+                player.FSP.openPauseMenu();
+            }
+        }
+
+        /**
+         * 
+         */
+        openPokedexMenu(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                listings: IPokedexListing[] = FSP.ItemsHolder.getItem("Pokedex");
+
+            FSP.MenuGrapher.createMenu("Pokedex");
+            FSP.MenuGrapher.setActiveMenu("Pokedex");
+            FSP.MenuGrapher.addMenuList("Pokedex", {
+                "options": listings.map(function (listing: IPokedexListing, i: number): any {
+                    var characters: any[] = FSP.makeDigit(i + 1, 3, 0).split("");
+
+                    characters.push({
+                        "command": true,
+                        "y": 4
+                    });
+
+                    if (listing.caught) {
+                        characters.push({
+                            "command": true,
+                            "x": -4,
+                            "y": 1
+                        });
+                        characters.push("Ball");
+                        characters.push({
+                            "command": true,
+                            "y": -1
+                        });
+                    }
+
+                    if (listing.seen) {
+                        characters.push.apply(characters, listing.title.split(""));
+                    } else {
+                        characters.push.apply(characters, "----------".split(""));
+                    }
+
+                    characters.push({
+                        "command": true,
+                        "y": -4
+                    });
+
+                    return {
+                        "text": characters
+                    };
+                })
+            });
+
+            FSP.MenuGrapher.createMenu("PokedexOptions");
+            FSP.MenuGrapher.addMenuList("PokedexOptions", {
+                "options": [
+                    {
+                        "text": "DATA"
+                    }, {
+                        "text": "CRY"
+                    }, {
+                        "text": "AREA"
+                    }, {
+                        "text": "QUIT",
+                        "callback": FSP.MenuGrapher.registerB
+                    }
+                ]
+            });
+        }
+
+        /**
+         * 
+         */
+        openPokemonMenuContext(settings: any): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
+            FSP.MenuGrapher.createMenu("PokemonMenuContext", {
+                "backMenu": "Pokemon"
+            });
+            FSP.MenuGrapher.addMenuList("PokemonMenuContext", {
+                "options": [
+                    {
+                        "text": "STATS",
+                        "callback": FSP.openPokemonMenuStats.bind(
+                            FSP,
+                            {
+                                "pokemon": settings.pokemon
+                            })
+                    }, {
+                        "text": "SWITCH",
+                        "callback": settings.onSwitch
+                    }, {
+                        "text": "CANCEL",
+                        "callback": FSP.MenuGrapher.registerB
+                    }]
+            });
+            FSP.MenuGrapher.setActiveMenu("PokemonMenuContext");
+        }
+
+        /**
+         * 
+         */
+        openPokemonMenuStats(settings: any): void {
+            var EightBitter = EightBittr.ensureCorrectCaller(this),
+                pokemon = settings.pokemon,
+                schemas = EightBitter.MathDecider.getConstant("pokemon"),
+                schema = schemas[pokemon.title];
+
+            EightBitter.MenuGrapher.createMenu("PokemonMenuStats", {
+                "backMenu": "PokemonMenuContext",
+                "container": "Pokemon"
+            });
+
+            EightBitter.openPokemonStats({
+                "pokemon": pokemon,
+                "container": "PokemonMenuStats",
+                "size": {
+                    "width": 36,
+                    "height": 40,
+                },
+                "position": {
+                    "vertical": "bottom",
+                    "horizontal": "left"
+                },
+                "textXOffset": 4
+            });
+
+            EightBitter.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsTitle", pokemon.nickname);
+            EightBitter.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsLevel", pokemon.level);
+            EightBitter.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
+            EightBitter.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsNumber", EightBitter.makeDigit(schema.number, 3, 0));
+            EightBitter.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+            EightBitter.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsType", pokemon.types.join(" \n "));
+            EightBitter.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "H819");
+            EightBitter.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsOT",
+                [
+                    "%%%%%%%PLAYER%%%%%%%"
+                ]
                 );
-            statistics[i] = statistics[i].toUpperCase();
+
+            EightBitter.MenuGrapher.createMenuThing("PokemonMenuStats", {
+                "type": "thing",
+                "thing": "SquirtleFront", // pokemon.title + "Front",
+                "args": {
+                    "flipHoriz": true
+                },
+                "position": {
+                    "vertical": "bottom",
+                    "offset": {
+                        "left": 8,
+                        "top": -44
+                    }
+                }
+            });
+
+            EightBitter.MenuGrapher.setActiveMenu("PokemonMenuStats");
         }
 
-        EightBitter.MenuGrapher.createMenu("LevelUpStats", {
-            "container": settings.container,
-            "size": settings.size || {
-                "width": 44,
-                "height": 40
-            },
-            "position": settings.position || {
-                "horizontal": "center",
-                "vertical": "center"
-            },
-            "onMenuDelete": settings.onMenuDelete,
-            "childrenSchemas": statistics.map(function (string, i) {
-                if (i < numStatistics) {
-                    top = i * 8 + 4;
-                    left = textXOffset;
-                } else {
-                    top = (i - numStatistics + 1) * 8;
-                    left = textXOffset + 16;
-                }
+        /**
+         * 
+         */
+        openPokemonStats(settings: any): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                pokemon: IPokemonSchema = settings.pokemon,
+                statistics = FSP.MathDecider.getConstant("statisticNames").filter(
+                    function (statistic: string): boolean {
+                        return statistic !== "HP";
+                    }),
+                numStatistics: number = statistics.length,
+                textXOffset: number = settings.textXOffset || 8,
+                top: number,
+                left: number,
+                i: number;
 
-                return {
-                    "type": "text",
-                    "words": [string],
-                    "position": {
-                        "offset": {
-                            "top": top - .5,
-                            "left": left
-                        }
-                    }
-                };
-            })
-        });
-    }
-
-    /**
-     * 
-     */
-    function openPokedexListing(title, callback, settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            pokemon = EightBitter.MathDecider.getConstant("pokemon")[title],
-            height = pokemon.height,
-            feet = [].slice.call(height[0]).reverse().join(""),
-            inches = [].slice.call(height[1]).reverse().join("");
-
-        EightBitter.MenuGrapher.createMenu("PokedexListing", settings);
-        EightBitter.MenuGrapher.createMenuThing("PokedexListingSprite", {
-            "thing": title + "Front",
-            "args": {
-                "flipHoriz": true
+            for (i = 0; i < numStatistics; i += 1) {
+                statistics.push(FSP.makeDigit(pokemon[statistics[i]], 3, " "));
+                statistics[i] = statistics[i].toUpperCase();
             }
-        });
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingName", title.toUpperCase()
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingLabel", pokemon.label
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingHeightFeet", feet
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingHeightInches", inches
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingWeight", pokemon.weight
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingNumber",
-            EightBitter.makeDigit(pokemon.number, 3, '0')
-            );
-        EightBitter.MenuGrapher.addMenuDialog(
-            "PokedexListingInfo",
-            pokemon.info[0],
-            function () {
-                EightBitter.MenuGrapher.createMenu("PokedexListingInfo");
-                EightBitter.MenuGrapher.addMenuDialog(
-                    "PokedexListingInfo",
-                    pokemon.info[1],
-                    function () {
-                        EightBitter.MenuGrapher.deleteMenu("PokedexListing");
-                        if (callback) {
-                            callback();
-                        }
+
+            FSP.MenuGrapher.createMenu("LevelUpStats", {
+                "container": settings.container,
+                "size": settings.size || {
+                    "width": 44,
+                    "height": 40
+                },
+                "position": settings.position || {
+                    "horizontal": "center",
+                    "vertical": "center"
+                },
+                "onMenuDelete": settings.onMenuDelete,
+                "childrenSchemas": statistics.map(function (string, i) {
+                    if (i < numStatistics) {
+                        top = i * 8 + 4;
+                        left = textXOffset;
+                    } else {
+                        top = (i - numStatistics + 1) * 8;
+                        left = textXOffset + 16;
                     }
-                    );
-                EightBitter.MenuGrapher.setActiveMenu("PokedexListingInfo");
-            }
-            );
 
-        EightBitter.MenuGrapher.setActiveMenu("PokedexListingInfo");
-    }
-
-    /**
-     * 
-     */
-    function openPokemonMenu(settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            listings = EightBitter.ItemsHolder.getItem("PokemonInParty"),
-            references = EightBitter.MathDecider.getConstant("pokemon");
-
-        EightBitter.MenuGrapher.createMenu("Pokemon", settings);
-        EightBitter.MenuGrapher.addMenuList("Pokemon", {
-            "options": listings.map(function (listing, i) {
-                var sprite = references[listing.title].sprite + "Pokemon",
-                    barWidth = 25,
-                    health = EightBitter.MathDecider.compute(
-                        "widthHealthBar", barWidth, listing.HP, listing.HPNormal
-                        );
-
-                return {
-                    "text": listing.title.split(""),
-                    "callback": EightBitter.openPokemonMenuContext.bind(
-                        EightBitter, {
-                            "pokemon": listing,
-                            "onSwitch": settings.onSwitch.bind(
-                                EightBitter, "player", i
-                                )
-                        }
-                        ),
-                    "things": [{
-                        "thing": sprite,
+                    return {
+                        "type": "text",
+                        "words": [string],
                         "position": {
                             "offset": {
-                                "left": 7.5,
-                                "top": .5
+                                "top": top - .5,
+                                "left": left
                             }
                         }
-                    }, {
-                            "thing": "CharLevel",
-                            "position": {
-                                "offset": {
-                                    "left": 56,
-                                    "top": 1.5
-                                }
-                            }
-                        }, {
-                            "thing": "CharHP",
-                            "position": {
-                                "offset": {
-                                    "left": 20,
-                                    "top": 5.5
-                                }
-                            }
-                        }, {
-                            "thing": "HPBar",
-                            "args": {
-                                "width": barWidth
-                            },
-                            "position": {
-                                "offset": {
-                                    "left": 27,
-                                    "top": 5.5
-                                }
-                            }
-                        }, {
-                            "thing": "LightGraySquare",
-                            "args": {
-                                "width": Math.max(health, 1),
-                                "height": 1,
-                                "hidden": health === 0
-                            },
-                            "position": {
-                                "offset": {
-                                    "left": 27.5,
-                                    "top": 6
-                                }
-                            }
-                        }],
-                    "textsFloating": [{
-                        "text": String(listing.level),
-                        "x": 44.25,
-                        "y": 0
-                    }, {
-                            "text": listing.HP + "/ " + listing.HPNormal,
-                            "x": 43.75,
-                            "y": 4
-                        }],
-                };
-            })
-        });
-        EightBitter.MenuGrapher.setActiveMenu("Pokemon");
-    };
-
-    /**
-     * 
-     */
-    function openItemsMenu(settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            items = settings.items || EightBitter.ItemsHolder.getItem("items");
-
-        EightBitter.MenuGrapher.createMenu("Items", settings);
-        EightBitter.MenuGrapher.addMenuList("Items", {
-            "options": items.map(function (schema) {
-                return {
-                    "text": schema.item,
-                    "textsFloating": [{
-                        "text": [["Times"]],
-                        "x": 32,
-                        "y": 4.5
-                    }, {
-                            "text": makeDigit(schema.amount, 2, " "),
-                            "x": 36.5,
-                            "y": 4
-                        }]
-                };
-            })
-        });
-        EightBitter.MenuGrapher.setActiveMenu("Items");
-
-        console.warn("Once math.js contains item info, react to non-stackable items...");
-    }
-
-    /**
-     * 
-     */
-    function openPlayerMenu() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.MenuGrapher.createMenu("Player");
-        EightBitter.MenuGrapher.setActiveMenu("Player");
-    };
-
-    /**
-     * 
-     */
-    function openSaveMenu() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this);
-
-        EightBitter.MenuGrapher.createMenu("Save");
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText", [
-                "Would you like to SAVE the game?"
-            ]
-            );
-
-        EightBitter.MenuGrapher.createMenu("Yes/No", {
-            "backMenu": "Pause",
-            "killOnB": ["GeneralText", "Save"]
-        });
-        EightBitter.MenuGrapher.addMenuList("Yes/No", {
-            "options": [{
-                "text": "YES",
-                "callback": EightBitter.downloadSaveGame.bind(EightBitter)
-            }, {
-                    "text": "NO",
-                    "callback": EightBitter.MenuGrapher.registerB
-                }]
-        });
-        EightBitter.MenuGrapher.setActiveMenu("Yes/No");
-    };
-
-    /**
-     * 
-     */
-    function openKeyboardMenu(settings) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            value = [
-                settings.value || ["_", "_", "_", "_", "_", "_", "_"]
-            ],
-            onKeyPress = EightBitter.addKeyboardMenuValue.bind(EightBitter),
-            onBPress = EightBitter.removeKeyboardMenuValue.bind(EightBitter),
-            onComplete = (settings.callback || onKeyPress).bind(EightBitter),
-            menuKeyboard = EightBitter.MenuGrapher.createMenu("Keyboard", {
-                "settings": settings,
-                "onKeyPress": onKeyPress,
-                "onComplete": onComplete,
-                "ignoreB": false
-            }),
-            menuResults = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
-            lowercase = settings.lowercase,
-            letters = lowercase
-                ? EightBitter.keysLowercase
-                : EightBitter.keysUppercase,
-            options = letters.map(function (letter) {
-                return {
-                    "text": [letter],
-                    "callback": letter !== "ED"
-                        ? onKeyPress
-                        : onComplete
-                };
+                    };
+                })
             });
-
-        EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[
-            settings.title || "",
-        ]]);
-
-        EightBitter.MenuGrapher.addMenuDialog("KeyboardResult", value);
-
-        EightBitter.MenuGrapher.addMenuList("KeyboardKeys", {
-            "options": options,
-            "selectedIndex": settings.selectedIndex,
-            "bottom": {
-                "text": lowercase ? "UPPER CASE" : "lower case",
-                "callback": EightBitter.switchKeyboardCase.bind(EightBitter),
-                "position": {
-                    "top": 40,
-                    "left": 0
-                }
-            }
-        });
-        EightBitter.MenuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
-        EightBitter.MenuGrapher.setActiveMenu("KeyboardKeys");
-
-        menuResults.displayedValue = value.slice()[0];
-
-        menuResults.completeValue = settings.completeValue || "";
-        menuResults.selectedChild = settings.selectedChild || 0;
-        menuResults.blinker = EightBitter.addThing(
-            "CharMDash",
-            menuResults.children[menuResults.selectedChild].left,
-            menuResults.children[menuResults.selectedChild].top
-            );
-        menuResults.children.push(menuResults.blinker);
-        menuResults.children[menuResults.selectedChild].hidden = true;
-    }
-
-    /**
-     * 
-     */
-    function addKeyboardMenuValue() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            menuKeys = EightBitter.MenuGrapher.getMenu("KeyboardKeys"),
-            menuResult = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
-            child = menuResult.children[menuResult.selectedChild],
-            selected = EightBitter.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
-
-        if (!child) {
-            return;
         }
 
-        EightBitter.killNormal(child);
-        menuResult.children[menuResult.selectedChild] = EightBitter.addThing(
-            selected.title, child.left, child.top
-            );
+        /**
+         * 
+         */
+        openPokedexListing(title: string, callback: (...args: any[]) => void, settings: any): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                pokemon: IPokedexListing = FSP.MathDecider.getConstant("pokemon")[title],
+                height = pokemon.height,
+                feet = [].slice.call(height[0]).reverse().join(""),
+                inches = [].slice.call(height[1]).reverse().join("");
 
-        menuResult.displayedValue[menuResult.selectedChild] = selected.text[0];
-        menuResult.completeValue += selected.text[0];
-        menuResult.selectedChild += 1;
+            FSP.MenuGrapher.createMenu("PokedexListing", settings);
+            FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
+                "thing": title + "Front",
+                "args": {
+                    "flipHoriz": true
+                }
+            });
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingName", title.toUpperCase());
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingLabel", pokemon.label);
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingHeightFeet", feet);
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingHeightInches", inches);
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingWeight", pokemon.weight);
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingNumber",
+                FSP.makeDigit(pokemon.index, 3, '0'));
+            FSP.MenuGrapher.addMenuDialog(
+                "PokedexListingInfo",
+                pokemon.info[0],
+                function (): void {
+                    FSP.MenuGrapher.createMenu("PokedexListingInfo");
+                    FSP.MenuGrapher.addMenuDialog(
+                        "PokedexListingInfo",
+                        pokemon.info[1],
+                        function () {
+                            FSP.MenuGrapher.deleteMenu("PokedexListing");
+                            if (callback) {
+                                callback();
+                            }
+                        }
+                        );
+                    FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
+                });
 
-        if (menuResult.selectedChild < menuResult.children.length - 1) {
+            FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
+        }
+
+        /**
+         * 
+         */
+        openPokemonMenu(settings: any): void {
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                listings: IPokemon[] = FSP.ItemsHolder.getItem("PokemonInParty"),
+                references: any = FSP.MathDecider.getConstant("pokemon");
+
+            FSP.MenuGrapher.createMenu("Pokemon", settings);
+            FSP.MenuGrapher.addMenuList("Pokemon", {
+                "options": listings.map(function (listing: IPokemon, i: number): any {
+                    var sprite = references[listing.title].sprite + "Pokemon",
+                        barWidth = 25,
+                        health = FSP.MathDecider.compute(
+                            "widthHealthBar", barWidth, listing.HP, listing.HPNormal
+                            );
+
+                    return {
+                        "text": listing.title.split(""),
+                        "callback": FSP.openPokemonMenuContext.bind(
+                            FSP, {
+                                "pokemon": listing,
+                                "onSwitch": settings.onSwitch.bind(FSP, "player", i)
+                            }),
+                        "things": [
+                            {
+                                "thing": sprite,
+                                "position": {
+                                    "offset": {
+                                        "left": 7.5,
+                                        "top": .5
+                                    }
+                                }
+                            },
+                            {
+                                "thing": "CharLevel",
+                                "position": {
+                                    "offset": {
+                                        "left": 56,
+                                        "top": 1.5
+                                    }
+                                }
+                            },
+                            {
+                                "thing": "CharHP",
+                                "position": {
+                                    "offset": {
+                                        "left": 20,
+                                        "top": 5.5
+                                    }
+                                }
+                            },
+                            {
+                                "thing": "HPBar",
+                                "args": {
+                                    "width": barWidth
+                                },
+                                "position": {
+                                    "offset": {
+                                        "left": 27,
+                                        "top": 5.5
+                                    }
+                                }
+                            },
+                            {
+                                "thing": "LightGraySquare",
+                                "args": {
+                                    "width": Math.max(health, 1),
+                                    "height": 1,
+                                    "hidden": health === 0
+                                },
+                                "position": {
+                                    "offset": {
+                                        "left": 27.5,
+                                        "top": 6
+                                    }
+                                }
+                            }],
+                        "textsFloating": [
+                            {
+                                "text": String(listing.level),
+                                "x": 44.25,
+                                "y": 0
+                            },
+                            {
+                                "text": listing.HP + "/ " + listing.HPNormal,
+                                "x": 43.75,
+                                "y": 4
+                            }],
+                    };
+                })
+            });
+            FSP.MenuGrapher.setActiveMenu("Pokemon");
+        }
+
+        /**
+         * 
+         */
+        openItemsMenu(settings: any): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                items: any[] = settings.items || FSP.ItemsHolder.getItem("items");
+
+            FSP.MenuGrapher.createMenu("Items", settings);
+            FSP.MenuGrapher.addMenuList("Items", {
+                "options": items.map(function (schema: any): any {
+                    return {
+                        "text": schema.item,
+                        "textsFloating": [
+                            {
+                                "text": [["Times"]],
+                                "x": 32,
+                                "y": 4.5
+                            }, {
+                                "text": makeDigit(schema.amount, 2, " "),
+                                "x": 36.5,
+                                "y": 4
+                            }
+                        ]
+                    };
+                })
+            });
+            FSP.MenuGrapher.setActiveMenu("Items");
+
+            console.warn("Once math.js contains item info, react to non-stackable items...");
+        }
+
+        /**
+         * 
+         */
+        openPlayerMenu(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
+            FSP.MenuGrapher.createMenu("Player");
+            FSP.MenuGrapher.setActiveMenu("Player");
+        };
+
+        /**
+         * 
+         */
+        openSaveMenu(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+
+            FSP.MenuGrapher.createMenu("Save");
+
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    "Would you like to SAVE the game?"
+                ]);
+
+            FSP.MenuGrapher.createMenu("Yes/No", {
+                "backMenu": "Pause",
+                "killOnB": ["GeneralText", "Save"]
+            });
+            FSP.MenuGrapher.addMenuList("Yes/No", {
+                "options": [
+                    {
+                        "text": "YES",
+                        "callback": FSP.downloadSaveGame.bind(FSP)
+                    }, {
+                        "text": "NO",
+                        "callback": FSP.MenuGrapher.registerB
+                    }]
+            });
+            FSP.MenuGrapher.setActiveMenu("Yes/No");
+        }
+
+        /**
+         * 
+         */
+        openKeyboardMenu(settings: any): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                value = [
+                    settings.value || ["_", "_", "_", "_", "_", "_", "_"]
+                ],
+                onKeyPress = FSP.addKeyboardMenuValue.bind(FSP),
+                onBPress = FSP.removeKeyboardMenuValue.bind(FSP),
+                onComplete = (settings.callback || onKeyPress).bind(FSP),
+                menuKeyboard = FSP.MenuGrapher.createMenu("Keyboard", {
+                    "settings": settings,
+                    "onKeyPress": onKeyPress,
+                    "onComplete": onComplete,
+                    "ignoreB": false
+                }),
+                menuResults: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+                lowercase = settings.lowercase,
+                letters = lowercase
+                    ? FSP.keysLowercase
+                    : FSP.keysUppercase,
+                options = letters.map(function (letter) {
+                    return {
+                        "text": [letter],
+                        "callback": letter !== "ED"
+                            ? onKeyPress
+                            : onComplete
+                    };
+                });
+
+            FSP.MenuGrapher.addMenuDialog("KeyboardTitle", [[
+                settings.title || "",
+            ]]);
+
+            FSP.MenuGrapher.addMenuDialog("KeyboardResult", value);
+
+            FSP.MenuGrapher.addMenuList("KeyboardKeys", {
+                "options": options,
+                "selectedIndex": settings.selectedIndex,
+                "bottom": {
+                    "text": lowercase ? "UPPER CASE" : "lower case",
+                    "callback": FSP.switchKeyboardCase.bind(FSP),
+                    "position": {
+                        "top": 40,
+                        "left": 0
+                    }
+                }
+            });
+            FSP.MenuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
+            FSP.MenuGrapher.setActiveMenu("KeyboardKeys");
+
+            menuResults.displayedValue = value.slice()[0];
+
+            menuResults.completeValue = settings.completeValue || "";
+            menuResults.selectedChild = settings.selectedChild || 0;
+            menuResults.blinker = FSP.addThing(
+                "CharMDash",
+                menuResults.children[menuResults.selectedChild].left,
+                menuResults.children[menuResults.selectedChild].top);
+            menuResults.children.push(menuResults.blinker);
+            menuResults.children[menuResults.selectedChild].hidden = true;
+        }
+
+        /**
+         * 
+         */
+        addKeyboardMenuValue(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                menuKeys: IKeyboardKeysMenu = <IKeyboardKeysMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
+                menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+                child: IThing = menuResult.children[menuResult.selectedChild],
+                selected: IKeyboardKey = FSP.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
+
+            if (!child) {
+                return;
+            }
+
+            FSP.killNormal(child);
+            menuResult.children[menuResult.selectedChild] = FSP.addThing(
+                selected.title, child.left, child.top);
+
+            menuResult.displayedValue[menuResult.selectedChild] = selected.text[0];
+            menuResult.completeValue += selected.text[0];
+            menuResult.selectedChild += 1;
+
+            if (menuResult.selectedChild < menuResult.children.length - 1) {
+                child = menuResult.children[menuResult.selectedChild];
+                child.hidden = true;
+            } else {
+                menuResult.blinker.hidden = true;
+                FSP.MenuGrapher.setSelectedIndex(
+                    "KeyboardKeys",
+                    menuKeys.gridColumns - 1,
+                    menuKeys.gridRows - 2); // assume there's a bottom option
+            }
+
+            FSP.setLeft(menuResult.blinker, child.left);
+            FSP.setTop(menuResult.blinker, child.top);
+        }
+
+        /**
+         * 
+         */
+        removeKeyboardMenuValue(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+                child: IThing = menuResult.children[menuResult.selectedChild - 1];
+
+            if (menuResult.selectedChild <= 0) {
+                return;
+            }
+
+            menuResult.selectedChild -= 1;
+            menuResult.completeValue = menuResult.completeValue.slice(
+                0, menuResult.completeValue.length - 1);
+            menuResult.displayedValue[menuResult.selectedChild] = "_";
+
+            FSP.killNormal(child);
+
             child = menuResult.children[menuResult.selectedChild];
-            child.hidden = true;
-        } else {
-            menuResult.blinker.hidden = true;
-            EightBitter.MenuGrapher.setSelectedIndex(
-                "KeyboardKeys",
-                menuKeys.gridColumns - 1,
-                menuKeys.gridRows - 2 // assume there's a bottom option
-                );
+
+            menuResult.children[menuResult.selectedChild + 1] = FSP.addThing(
+                "CharUnderscore", child.right, child.top);
+
+            FSP.setLeft(menuResult.blinker, child.left);
+            FSP.setTop(menuResult.blinker, child.top);
         }
 
-        EightBitter.setLeft(menuResult.blinker, child.left);
-        EightBitter.setTop(menuResult.blinker, child.top);
-    }
+        /**
+         * 
+         */
+        switchKeyboardCase(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                keyboard: IMenu = <IMenu>FSP.MenuGrapher.getMenu("Keyboard"),
+                keyboardKeys: IKeyboardKeysMenu = <IKeyboardKeysMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
+                keyboardResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+                settings: any = keyboard.settings;
 
-    /**
-     * 
-     */
-    function removeKeyboardMenuValue() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            menuResult = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
-            child = menuResult.children[menuResult.selectedChild - 1];
+            settings.lowercase = !settings.lowercase;
+            settings.value = keyboardResult.displayedValue;
+            settings.selectedChild = keyboardResult.selectedChild;
+            settings.displayedValue = keyboardResult.displayedValue;
+            settings.completeValue = keyboardResult.completeValue;
+            settings.selectedIndex = keyboardKeys.selectedIndex;
 
-        if (menuResult.selectedChild <= 0) {
-            return;
+            FSP.openKeyboardMenu(settings);
         }
 
-        menuResult.selectedChild -= 1;
-        menuResult.completeValue = menuResult.completeValue.slice(
-            0, menuResult.completeValue.length - 1
-            );
-        menuResult.displayedValue[menuResult.selectedChild] = "_";
 
-        EightBitter.killNormal(child);
+        /* Battles
+        */
 
-        child = menuResult.children[menuResult.selectedChild];
+        /**
+         * 
+         */
+        startBattle(battleInfo: BattleMovr.IBattleInfo): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                animations: string[] = battleInfo.animations || [
+                //"LineSpiral", "Flash"
+                    "Flash"
+                ],
+                animation: string = FSP.NumberMaker.randomArrayMember(animations),
+                player: BattleMovr.IBattleThingInfo = battleInfo.player;
 
-        menuResult.children[menuResult.selectedChild + 1] = EightBitter.addThing(
-            "CharUnderscore", child.right, child.top
-            );
-
-        EightBitter.setLeft(menuResult.blinker, child.left);
-        EightBitter.setTop(menuResult.blinker, child.top);
-    }
-
-    /**
-     * 
-     */
-    function switchKeyboardCase() {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            keyboard = EightBitter.MenuGrapher.getMenu("Keyboard"),
-            keyboardKeys = EightBitter.MenuGrapher.getMenu("KeyboardKeys"),
-            keyboardResult = EightBitter.MenuGrapher.getMenu("KeyboardResult"),
-            settings = keyboard.settings,
-            i;
-
-        settings.lowercase = !settings.lowercase;
-        settings.value = keyboardResult.displayedValue;
-        settings.selectedChild = keyboardResult.selectedChild;
-        settings.displayedValue = keyboardResult.displayedValue;
-        settings.completeValue = keyboardResult.completeValue;
-        settings.selectedIndex = keyboardKeys.selectedIndex;
-
-        EightBitter.openKeyboardMenu(settings);
-    }
-
-
-    /* Battles
-    */
-
-    /**
-     * 
-     */
-    function startBattle(battleInfo) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            animations = battleInfo.animations || [
-            //"LineSpiral", "Flash"
-                "Flash"
-            ],
-            animation = EightBitter.NumberMaker.randomArrayMember(animations),
-            player = battleInfo.player;
-
-        if (!player) {
-            battleInfo.player = player = {};
-        }
-
-        player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
-        player.sprite = player.sprite || "PlayerBack";
-        player.category = player.category || "Trainer";
-        player.actors = player.actors || EightBitter.ItemsHolder.getItem("PokemonInParty");
-        player.hasActors = typeof player.hasActors === "undefined"
-            ? true : player.hasActors;
-
-        EightBitter.GBSEmulator.play(battleInfo.theme || "Trainer Battle");
-
-        EightBitter["cutsceneBattleTransition" + animation](EightBitter, {
-            "callback": EightBitter.BattleMover.startBattle.bind(
-                EightBitter.BattleMover, battleInfo
-                )
-        });
-    }
-
-    /**
-     * 
-     */
-    function createPokemon(schema) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            level = typeof schema.levels !== "undefined"
-                ? EightBitter.NumberMaker.randomArrayMember(schema.levels)
-                : schema.level,
-            pokemon = EightBitter.MathDecider.compute(
-                "newPokemon", schema.title, level
-                );
-
-        if (schema.moves) {
-            pokemon.moves = schema.moves;
-        }
-
-        return pokemon;
-    }
-
-    /**
-     * 
-     */
-    function healPokemon(pokemon) {
-        var EightBitter = EightBittr.ensureCorrectCaller(this),
-            moves = EightBitter.MathDecider.getConstant("moves"),
-            statisticNames = EightBitter.MathDecider.getConstant("statisticNames"),
-            i;
-
-        for (i = 0; i < statisticNames.length; i += 1) {
-            pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
-        }
-
-        for (i = 0; i < pokemon.moves.length; i += 1) {
-            pokemon.moves[i].remaining = moves[pokemon.moves[i].title].PP;
-        }
-
-        pokemon.status = "";
-    }
-
-    /**
-     * 
-     */
-    function checkPlayerGrassBattle(thing) {
-        if (!thing.grass || thing.FSP.MenuGrapher.getActiveMenu()) {
-            return;
-        }
-
-        if (!thing.FSP.ThingHitter.checkHit(
-            thing, thing.grass, thing.title, thing.grass.groupType
-            )) {
-            delete thing.grass;
-            return;
-        }
-
-        if (!thing.FSP.MathDecider.compute(
-            "doesGrassEncounterHappen", thing.grass
-            )) {
-            return;
-        }
-
-        thing.keys = thing.getKeys();
-        thing.FSP.animateGrassBattleStart(thing, thing.grass);
-    }
-
-    /**
-     * 
-     */
-    function chooseRandomWildPokemon(EightBitter, options) {
-        var choice = EightBitter.NumberMaker.random(),
-            sum = 0,
-            i;
-
-        for (i = 0; i < options.length; i += 1) {
-            sum += options[i].rate;
-            if (sum >= choice) {
-                return options[i];
+            if (!player) {
+                battleInfo.player = player = {};
             }
-        }
-    }
 
-    /**
-     * 
-     */
-    function addBattleDisplayPokeballs(EightBitter, menu, battler, opposite) {
-        var text = [],
-            i;
+            player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
+            player.sprite = player.sprite || "PlayerBack";
+            player.category = player.category || "Trainer";
+            player.actors = player.actors || FSP.ItemsHolder.getItem("PokemonInParty");
+            player.hasActors = typeof player.hasActors === "undefined"
+                ? true : player.hasActors;
 
-        for (i = 0; i < battler.actors.length; i += 1) {
-            text.push("Ball");
-        }
+            FSP.GBSEmulator.play(battleInfo.theme || "Trainer Battle");
 
-        for (; i < 6; i += 1) {
-            text.push("BallEmpty");
+            FSP["cutsceneBattleTransition" + animation](FSP, {
+                "callback": FSP.BattleMover.startBattle.bind(
+                    FSP.BattleMover, battleInfo)
+            });
         }
 
-        if (opposite) {
-            text.reverse();
-        }
+        /**
+         * 
+         */
+        createPokemon(schema: IPokemonSchema): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                level = typeof schema.levels !== "undefined"
+                    ? FSP.NumberMaker.randomArrayMember(schema.levels)
+                    : schema.level,
+                pokemon = FSP.MathDecider.compute("newPokemon", schema.title, level);
 
-        EightBitter.MenuGrapher.addMenuDialog(menu.name, [[text]]);
-    }
-
-    /**
-     * 
-     */
-    function addBattleDisplayPokemonHealth(EightBitter, battlerName) {
-        var battleInfo = EightBitter.BattleMover.getBattleInfo(),
-            pokemon = battleInfo[battlerName].selectedActor,
-            menu = [
-                "Battle",
-                battlerName[0].toUpperCase(),
-                battlerName.slice(1),
-                "Health"
-            ].join("");
-
-        EightBitter.MenuGrapher.createMenu(menu);
-        EightBitter.MenuGrapher.createMenu(menu + "Title");
-        EightBitter.MenuGrapher.createMenu(menu + "Level");
-        EightBitter.MenuGrapher.createMenu(menu + "Amount");
-
-        EightBitter.setBattleDisplayPokemonHealthBar(
-            EightBitter,
-            battlerName,
-            pokemon.HP,
-            pokemon.HPNormal
-            );
-
-        EightBitter.MenuGrapher.addMenuDialog(
-            menu + "Title",
-            pokemon.nickname
-            );
-
-        EightBitter.MenuGrapher.addMenuDialog(
-            menu + "Level",
-            String(pokemon.level)
-            );
-    }
-
-    /**
-     * 
-     * 
-     * @param {String} actor
-     */
-    function setBattleDisplayPokemonHealthBar(EightBitter, battlerName, hp, hpNormal) {
-        var nameUpper = battlerName[0].toUpperCase() + battlerName.slice(1),
-            menuNumbers = "Battle" + nameUpper + "HealthNumbers",
-            bar = EightBitter.getThingById("HPBarFill" + nameUpper),
-            health = EightBitter.MathDecider.compute(
-                "widthHealthBar", 25, hp, hpNormal
-                );
-
-        if (EightBitter.MenuGrapher.getMenu(menuNumbers)) {
-            EightBitter.MenuGrapher.getMenu(menuNumbers).children.forEach(
-                EightBitter.killNormal
-                );
-            EightBitter.MenuGrapher.addMenuDialog(
-                menuNumbers,
-                [
-                    [
-                        makeDigit(hp, 3, " ")
-                        + "/"
-                        + makeDigit(hpNormal, 3, " ")
-                    ]
-                ]
-                );
-        }
-
-        EightBitter.setWidth(bar, health);
-        bar.hidden = health === 0;
-    }
-
-    /**
-     * 
-     */
-    function animateBattleDisplayPokemonHealthBar(EightBitter, actorName, hpStart, hpEnd, hpNormal, callback) {
-        var direction = hpStart > hpEnd ? -1 : 1,
-            hpNew = Math.round(hpStart + direction);
-
-        EightBitter.setBattleDisplayPokemonHealthBar(
-            EightBitter, actorName, hpNew, hpNormal
-            );
-
-        if (hpNew === hpEnd) {
-            if (callback) {
-                callback();
+            if (schema.moves) {
+                pokemon.moves = schema.moves;
             }
-            return;
+
+            return pokemon;
         }
 
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.animateBattleDisplayPokemonHealthBar,
-            2,
-            EightBitter,
-            actorName,
-            hpNew,
-            hpEnd,
-            hpNormal,
-            callback
-            );
-    }
+        /**
+         * 
+         */
+        healPokemon(pokemon: IPokemon): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                moves = FSP.MathDecider.getConstant("moves"),
+                statisticNames = FSP.MathDecider.getConstant("statisticNames"),
+                i;
 
-    /* Cutscenes
-    */
+            for (i = 0; i < statisticNames.length; i += 1) {
+                pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
+            }
 
-    /**
-     * 
-     */
-    function cutsceneBattleEntrance(EightBitter, settings) {
-        var things = settings.things,
-            battleInfo = settings.battleInfo,
-            player = things.player,
-            opponent = things.opponent,
-            menu = EightBitter.MenuGrapher.getMenu("BattleDisplayInitial"),
-            playerX, opponentX, playerGoal, opponentGoal,
-            timeout = 70;
+            for (i = 0; i < pokemon.moves.length; i += 1) {
+                pokemon.moves[i].remaining = moves[pokemon.moves[i].title].PP;
+            }
 
-        battleInfo.player.selectedIndex = 0;
-        battleInfo.player.selectedActor = battleInfo.player.actors[0];
-        battleInfo.opponent.selectedIndex = 0;
-        battleInfo.opponent.selectedActor = battleInfo.opponent.actors[0];
-
-        player.opacity = 0;
-        opponent.opacity = 0;
-
-        EightBitter.setLeft(player, menu.right + player.width * EightBitter.unitsize);
-        EightBitter.setRight(opponent, menu.left);
-        EightBitter.setTop(opponent, menu.top);
-
-        // They should be visible halfway through (2 * (1 / timeout))
-        EightBitter.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
-        EightBitter.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
-
-        playerX = EightBitter.getMidX(player);
-        opponentX = EightBitter.getMidX(opponent);
-        playerGoal = menu.left + player.width * EightBitter.unitsize / 2;
-        opponentGoal = menu.right - opponent.width * EightBitter.unitsize / 2;
-
-        EightBitter.animateFadeHorizontal(
-            player,(playerGoal - playerX) / timeout, playerGoal, 1
-            );
-
-        EightBitter.animateFadeHorizontal(
-            opponent,(opponentGoal - opponentX) / timeout, opponentGoal, 1
-            );
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.ScenePlayer.bindRoutine("OpeningText"),
-            timeout
-            );
-
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleOpeningText(EightBitter, settings) {
-        var battleInfo = settings.battleInfo,
-            textStart = battleInfo.textStart,
-            nextRoutine, callback;
-
-        if (settings.battleInfo.opponent.hasActors) {
-            nextRoutine = "EnemyIntro";
-        } else {
-            nextRoutine = "PlayerIntro";
+            pokemon.status = "";
         }
 
-        if (battleInfo.automaticMenus) {
-            callback = EightBitter.TimeHandler.addEvent.bind(
-                EightBitter.TimeHandler,
-                EightBitter.ScenePlayer.playRoutine,
-                70,
-                nextRoutine
-                );
-        } else {
-            callback = EightBitter.ScenePlayer.bindRoutine(nextRoutine);
+        /**
+         * 
+         */
+        checkPlayerGrassBattle(thing: IPlayer): void {
+            if (!thing.grass || thing.FSP.MenuGrapher.getActiveMenu()) {
+                return;
+            }
+
+            if (!thing.FSP.ThingHitter.checkHit(
+                thing, thing.grass, thing.title, thing.grass.groupType)) {
+                delete thing.grass;
+                return;
+            }
+
+            if (!thing.FSP.MathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
+                return;
+            }
+
+            thing.keys = thing.getKeys();
+            thing.FSP.animateGrassBattleStart(thing, thing.grass);
         }
 
-        EightBitter.MenuGrapher.createMenu("BattlePlayerHealth");
-        EightBitter.addBattleDisplayPokeballs(
-            EightBitter,
-            EightBitter.MenuGrapher.getMenu("BattlePlayerHealth"),
-            battleInfo.player
-            );
+        /**
+         * 
+         */
+        chooseRandomWildPokemon(FSP: FullScreenPokemon, options: any[]): void {
+            var choice = FSP.NumberMaker.random(),
+                sum = 0,
+                i;
 
-        if (battleInfo.opponent.hasActors) {
-            EightBitter.MenuGrapher.createMenu("BattleOpponentHealth");
-            EightBitter.addBattleDisplayPokeballs(
-                EightBitter,
-                EightBitter.MenuGrapher.getMenu("BattleOpponentHealth"),
-                battleInfo.player,
-                true
-                );
-        } else {
-            EightBitter.addBattleDisplayPokemonHealth(EightBitter, "opponent")
-        }
-
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": battleInfo.automaticMenus
-        });
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            textStart[0] + battleInfo.opponent.name.toUpperCase() + textStart[1],
-            callback
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleEnemyIntro(EightBitter, settings) {
-        var things = settings.things,
-            opponent = things.opponent,
-            menu = EightBitter.MenuGrapher.getMenu("GeneralText"),
-            opponentX = EightBitter.getMidX(opponent),
-            opponentGoal = menu.right + opponent.width * EightBitter.unitsize / 2,
-            battleInfo = settings.battleInfo,
-            callback = battleInfo.opponent.hasActors
-                ? "OpponentSendOut"
-                : "PlayerIntro",
-            timeout = 49;
-
-        EightBitter.animateFadeHorizontal(
-            opponent,(opponentGoal - opponentX) / timeout, opponentGoal, 1
-            );
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.animateFadeAttribute,
-            (timeout / 2) | 0,
-            opponent,
-            "opacity",
-            -2 / timeout,
-            0,
-            1
-            );
-
-        EightBitter.MenuGrapher.deleteMenu("BattleOpponentHealth");
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
-        });
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                battleInfo.textOpponentSendOut[0]
-                + battleInfo.opponent.name
-                + battleInfo.textOpponentSendOut[1]
-                + battleInfo.opponent.actors[0].nickname
-                + battleInfo.textOpponentSendOut[2]
-            ]
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.ScenePlayer.bindRoutine(callback, {
-                "nextRoutine": "PlayerIntro",
-            }),
-            timeout
-            );
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattlePlayerIntro(EightBitter, settings) {
-        var things = settings.things,
-            player = things.player,
-            menu = EightBitter.MenuGrapher.getMenu("GeneralText"),
-            playerX = EightBitter.getMidX(player),
-            playerGoal = menu.left - player.width * EightBitter.unitsize / 2,
-            battleInfo = settings.battleInfo,
-            timeout = 24;
-
-        EightBitter.MenuGrapher.deleteMenu("BattlePlayerHealth");
-
-        if (!battleInfo.player.hasActors) {
-            EightBitter.ScenePlayer.playRoutine("ShowPlayerMenu");
-            return;
-        }
-
-        EightBitter.animateFadeHorizontal(
-            player,(playerGoal - playerX) / timeout, playerGoal, 1
-            );
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.animateFadeAttribute,
-            (timeout / 2) | 0,
-            player,
-            "opacity",
-            -2 / timeout,
-            0,
-            1
-            );
-
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
-        });
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                battleInfo.textPlayerSendOut[0]
-                + battleInfo.player.actors[0].title
-                + battleInfo.textPlayerSendOut[1]
-            ]
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-
-        EightBitter.TimeHandler.addEvent(
-            EightBitter.ScenePlayer.bindRoutine(
-                "PlayerSendOut",
-                {
-                    "nextRoutine": "ShowPlayerMenu"
+            for (i = 0; i < options.length; i += 1) {
+                sum += options[i].rate;
+                if (sum >= choice) {
+                    return options[i];
                 }
-                ),
-            timeout
-            );
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleShowPlayerMenu(EightBitter, settings) {
-        EightBitter.MenuGrapher.deleteMenu("Yes/No");
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.BattleMover.showPlayerMenu();
-
-        if (settings.battleInfo.onShowPlayerMenu) {
-            settings.battleInfo.onShowPlayerMenu(EightBitter);
+            }
         }
-    }
 
-    /**
-     * 
-     */
-    function cutsceneBattleOpponentSendOut(EightBitter, settings) {
-        var menu = settings.things.menu,
-            left = menu.right - EightBitter.unitsize * 8,
-            top = menu.top + EightBitter.unitsize * 32;
+        /**
+         * 
+         */
+        addBattleDisplayPokeballs(FSP: FullScreenPokemon, menu: IMenu, battler: BattleMovr.IBattleThingInfo, opposite?: boolean): void {
+            var text: string[] = [],
+                i: number;
 
-        console.warn("Should reset *Normal statistics for opponent Pokemon.");
-
-        settings.opponentLeft = left;
-        settings.opponentTop = top;
-
-        EightBitter.MenuGrapher.setActiveMenu(undefined);
-
-        EightBitter.animateSmokeSmall(
-            EightBitter,
-            left,
-            top,
-            EightBitter.ScenePlayer.bindRoutine(
-                "OpponentSendOutAppear",
-                settings.routineArguments
-                )
-            );
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleOpponentSendOutAppear(EightBitter, settings) {
-        var opponentInfo = settings.battleInfo.opponent,
-            pokemonInfo = opponentInfo.actors[opponentInfo.selectedIndex],
-            pokemon = EightBitter.BattleMover.setThing(
-                "opponent", pokemonInfo.title + "Front"
-                );
-
-        console.log("Should make the zoom-in animation for appearing Pokemon...");
-
-        EightBitter.addBattleDisplayPokemonHealth(EightBitter, "opponent");
-
-        EightBitter.ScenePlayer.playRoutine(
-            settings.routineArguments.nextRoutine
-            );
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattlePlayerSendOut(EightBitter, settings) {
-        var menu = settings.things.menu,
-            left = menu.left + EightBitter.unitsize * 8,
-            top = menu.bottom - EightBitter.unitsize * 8;
-
-        console.warn("Should reset *Normal statistics for player Pokemon.");
-
-        settings.playerLeft = left;
-        settings.playerTop = top;
-
-        EightBitter.MenuGrapher.setActiveMenu(undefined);
-
-        EightBitter.animateSmokeSmall(
-            EightBitter,
-            left,
-            top,
-            EightBitter.ScenePlayer.bindRoutine(
-                "PlayerSendOutAppear",
-                settings.routineArguments
-                )
-            );
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattlePlayerSendOutAppear(EightBitter, settings) {
-        var playerInfo = settings.battleInfo.player,
-            pokemonInfo = playerInfo.selectedActor,
-            pokemon = EightBitter.BattleMover.setThing(
-                "player", pokemonInfo.title + "Back"
-                );
-
-        console.log("Should make the zoom-in animation for appearing Pokemon...");
-
-        EightBitter.addBattleDisplayPokemonHealth(
-            EightBitter, "player", playerInfo.selectedActor
-            );
-
-        EightBitter.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "BattlePlayerHealthNumbers",
-            [
-                [
-                    makeDigit(pokemonInfo.HP, 3, " ")
-                    + "/"
-                    + makeDigit(pokemonInfo.HPNormal, 3, " ")
-                ]
-            ]
-            );
-
-        EightBitter.ScenePlayer.playRoutine(settings.routineArguments.nextRoutine);
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattlePlayerSwitchesSamePokemon(EightBitter, settings) {
-        EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "backMenu": "PokemonMenuContext"
-        });
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                settings.battleInfo.player.selectedActor.nickname + " is already out!"
-            ]
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleMovePlayer(EightBitter, settings) {
-        var player = settings.battleInfo.player,
-            playerActor = player.selectedActor,
-            opponent = settings.battleInfo.opponent,
-            opponentActor = opponent.selectedActor,
-            routineArguments = settings.routineArguments,
-            choice = routineArguments.choicePlayer;
-
-        routineArguments.damage = EightBitter.MathDecider.compute(
-            "damage", choice, playerActor, opponentActor
-            );
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                playerActor.nickname + " used " + choice + "!"
-            ],
-            EightBitter.ScenePlayer.bindRoutine(
-                "MovePlayerAnimate", routineArguments
-                )
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleMovePlayerAnimate(EightBitter, settings) {
-        var routineArguments = settings.routineArguments,
-            choice = routineArguments.choicePlayer,
-            move = EightBitter.MathDecider.getConstant("moves")[choice];
-
-        routineArguments.attackerName = "player";
-        routineArguments.defenderName = "opponent";
-
-        routineArguments.callback = function () {
-            var callback;
-
-            routineArguments.movePlayerDone = true;
-
-            if (routineArguments.moveOpponentDone) {
-                callback = function () {
-                    routineArguments.movePlayerDone = false;
-                    routineArguments.moveOpponentDone = false;
-                    EightBitter.MenuGrapher.createMenu("GeneralText");
-                    EightBitter.BattleMover.showPlayerMenu();
-                };
-            } else {
-                callback = EightBitter.TimeHandler.addEvent.bind(
-                    EightBitter.TimeHandler,
-                    EightBitter.ScenePlayer.bindRoutine(
-                        "MoveOpponent", settings.routineArguments
-                        ),
-                    7
-                    );
+            for (i = 0; i < battler.actors.length; i += 1) {
+                text.push("Ball");
             }
 
-            EightBitter.ScenePlayer.playRoutine("Damage", {
-                "battlerName": "opponent",
-                "damage": routineArguments.damage,
-                "callback": callback
-            });
-        };
-
-        // @todo: When all moves have been implemented, this will be simplified.
-        if (!EightBitter.ScenePlayer.getOtherRoutine("Attack" + choice)) {
-            console.warn(choice + " attack animation not implemented...");
-            routineArguments.callback();
-        } else {
-            EightBitter.ScenePlayer.playRoutine(
-                "Attack" + choice.replace(" ", ""), routineArguments
-                );
-        }
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleMoveOpponent(EightBitter, settings) {
-        var opponent = settings.battleInfo.opponent,
-            opponentActor = opponent.selectedActor,
-            player = settings.battleInfo.player,
-            playerActor = player.selectedActor,
-            routineArguments = settings.routineArguments,
-            choice = routineArguments.choiceOpponent;
-
-        routineArguments.damage = EightBitter.MathDecider.compute(
-            "damage", choice, opponentActor, playerActor
-            );
-
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [opponent.selectedActor.nickname + " used " + choice + "!"],
-            EightBitter.ScenePlayer.bindRoutine(
-                "MoveOpponentAnimate", routineArguments
-                )
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleMoveOpponentAnimate(EightBitter, settings) {
-        var routineArguments = settings.routineArguments,
-            choice = routineArguments.choiceOpponent,
-            move = EightBitter.MathDecider.getConstant("moves")[choice];
-
-        routineArguments.attackerName = "opponent";
-        routineArguments.defenderName = "player";
-
-        routineArguments.callback = function () {
-            var callback;
-
-            routineArguments.moveOpponentDone = true;
-
-            if (routineArguments.movePlayerDone) {
-                callback = function () {
-                    routineArguments.movePlayerDone = false;
-                    routineArguments.moveOpponentDone = false;
-                    EightBitter.MenuGrapher.createMenu("GeneralText");
-                    EightBitter.BattleMover.showPlayerMenu();
-                };
-            } else {
-                callback = EightBitter.TimeHandler.addEvent.bind(
-                    EightBitter.TimeHandler,
-                    EightBitter.ScenePlayer.bindRoutine(
-                        "MovePlayer", settings.routineArguments
-                        ),
-                    7
-                    );
+            for (; i < 6; i += 1) {
+                text.push("BallEmpty");
             }
 
-            EightBitter.ScenePlayer.playRoutine("Damage", {
-                "battlerName": "player",
-                "damage": routineArguments.damage,
-                "callback": callback
-            });
-        };
+            if (opposite) {
+                text.reverse();
+            }
 
-        // @todo: When all moves have been implemented, this will be simplified.
-        if (!EightBitter.ScenePlayer.getOtherRoutine("Attack" + choice)) {
-            console.warn(choice + " attack animation not implemented...");
-            routineArguments.callback();
-        } else {
-            EightBitter.ScenePlayer.playRoutine(
-                "Attack" + choice.replace(" ", ""), routineArguments
-                );
+            FSP.MenuGrapher.addMenuDialog(menu.name, [[text]]);
         }
-    }
 
-    /**
-     * 
-     */
-    function cutsceneBattleDamage(EightBitter, settings) {
-        var battlerName = settings.routineArguments.battlerName,
-            damage = settings.routineArguments.damage,
-            battleInfo = EightBitter.BattleMover.getBattleInfo(),
-            battler = battleInfo[battlerName],
-            actor = battler.selectedActor,
-            hpStart = actor.HP,
-            hpEnd = Math.max(hpStart - damage, 0),
-            callback = hpEnd === 0
-                ? EightBitter.TimeHandler.addEvent.bind(
-                    EightBitter.TimeHandler,
-                    EightBitter.ScenePlayer.bindRoutine("PokemonFaints", {
-                        "battlerName": battlerName
-                    }),
-                    49
-                    )
-                : settings.routineArguments.callback;
+        /**
+         * 
+         */
+        addBattleDisplayPokemonHealth(FSP: FullScreenPokemon, battlerName: string): void {
+            var battleInfo: BattleMovr.IBattleInfo = FSP.BattleMover.getBattleInfo(),
+                pokemon: BattleMovr.IActor = battleInfo[battlerName].selectedActor,
+                menu: string = [
+                    "Battle",
+                    battlerName[0].toUpperCase(),
+                    battlerName.slice(1),
+                    "Health"
+                ].join("");
 
-        if (damage !== 0) {
-            EightBitter.animateBattleDisplayPokemonHealthBar(
-                EightBitter,
+            FSP.MenuGrapher.createMenu(menu);
+            FSP.MenuGrapher.createMenu(menu + "Title");
+            FSP.MenuGrapher.createMenu(menu + "Level");
+            FSP.MenuGrapher.createMenu(menu + "Amount");
+
+            FSP.setBattleDisplayPokemonHealthBar(
+                FSP,
                 battlerName,
-                hpStart,
+                pokemon.HP,
+                pokemon.HPNormal);
+
+            FSP.MenuGrapher.addMenuDialog(menu + "Title", pokemon.nickname);
+
+            FSP.MenuGrapher.addMenuDialog(menu + "Level", String(pokemon.level));
+        }
+
+        /**
+         * 
+         * 
+         * @param {String} actor
+         */
+        setBattleDisplayPokemonHealthBar(FSP: FullScreenPokemon, battlerName: string, hp: number, hpNormal: number): void {
+            var nameUpper: string = battlerName[0].toUpperCase() + battlerName.slice(1),
+                menuNumbers: string = "Battle" + nameUpper + "HealthNumbers",
+                bar: IThing = FSP.getThingById("HPBarFill" + nameUpper),
+                health: number = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal);
+
+            if (FSP.MenuGrapher.getMenu(menuNumbers)) {
+                FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
+                FSP.MenuGrapher.addMenuDialog(
+                    menuNumbers,
+                    [
+                        [
+                            makeDigit(hp, 3, " ")
+                            + "/"
+                            + makeDigit(hpNormal, 3, " ")
+                        ]
+                    ]);
+            }
+
+            FSP.setWidth(bar, health);
+            bar.hidden = health === 0;
+        }
+
+        /**
+         * 
+         */
+        animateBattleDisplayPokemonHealthBar(
+            FSP: FullScreenPokemon,
+            actorName: string,
+            hpStart: number,
+            hpEnd: number,
+            hpNormal: number,
+            callback?: (...args: any[]) => void): void {
+            var direction: number = hpStart > hpEnd ? -1 : 1,
+                hpNew: number = Math.round(hpStart + direction);
+
+            FSP.setBattleDisplayPokemonHealthBar(FSP, actorName, hpNew, hpNormal);
+
+            if (hpNew === hpEnd) {
+                if (callback) {
+                    callback();
+                }
+                return;
+            }
+
+            FSP.TimeHandler.addEvent(
+                FSP.animateBattleDisplayPokemonHealthBar,
+                2,
+                FSP,
+                actorName,
+                hpNew,
                 hpEnd,
-                actor.HPNormal,
+                hpNormal,
+                callback);
+        }
+
+        /* Cutscenes
+        */
+
+        /**
+         * 
+         */
+        cutsceneBattleEntrance(FSP: FullScreenPokemon, settings: any): void {
+            var things: any = settings.things,
+                battleInfo: BattleMovr.IBattleInfo = settings.battleInfo,
+                player: IPlayer = things.player,
+                opponent: ICharacter = things.opponent,
+                menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial"),
+                playerX: number,
+                opponentX: number,
+                playerGoal: number,
+                opponentGoal: number,
+                timeout: number = 70;
+
+            battleInfo.player.selectedIndex = 0;
+            battleInfo.player.selectedActor = battleInfo.player.actors[0];
+            battleInfo.opponent.selectedIndex = 0;
+            battleInfo.opponent.selectedActor = battleInfo.opponent.actors[0];
+
+            player.opacity = 0;
+            opponent.opacity = 0;
+
+            FSP.setLeft(player, menu.right + player.width * FSP.unitsize);
+            FSP.setRight(opponent, menu.left);
+            FSP.setTop(opponent, menu.top);
+
+            // They should be visible halfway through (2 * (1 / timeout))
+            FSP.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
+            FSP.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
+
+            playerX = FSP.getMidX(player);
+            opponentX = FSP.getMidX(opponent);
+            playerGoal = menu.left + player.width * FSP.unitsize / 2;
+            opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
+
+            FSP.animateFadeHorizontal(
+                player,(playerGoal - playerX) / timeout, playerGoal, 1);
+
+            FSP.animateFadeHorizontal(
+                opponent,(opponentGoal - opponentX) / timeout, opponentGoal, 1);
+
+            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("OpeningText"), timeout);
+
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleOpeningText(FSP: FullScreenPokemon, settings: any): void {
+            var battleInfo: BattleMovr.IBattleInfo = settings.battleInfo,
+                textStart: string[] = battleInfo.textStart,
+                nextRoutine: string,
+                callback: (...args: any[]) => void;
+
+            if (settings.battleInfo.opponent.hasActors) {
+                nextRoutine = "EnemyIntro";
+            } else {
+                nextRoutine = "PlayerIntro";
+            }
+
+            if (battleInfo.automaticMenus) {
+                callback = FSP.TimeHandler.addEvent.bind(
+                    FSP.TimeHandler,
+                    FSP.ScenePlayer.playRoutine,
+                    70,
+                    nextRoutine);
+            } else {
+                callback = FSP.ScenePlayer.bindRoutine(nextRoutine);
+            }
+
+            FSP.MenuGrapher.createMenu("BattlePlayerHealth");
+            FSP.addBattleDisplayPokeballs(
+                FSP,
+                FSP.MenuGrapher.getMenu("BattlePlayerHealth"),
+                battleInfo.player);
+
+            if (battleInfo.opponent.hasActors) {
+                FSP.MenuGrapher.createMenu("BattleOpponentHealth");
+                FSP.addBattleDisplayPokeballs(
+                    FSP,
+                    FSP.MenuGrapher.getMenu("BattleOpponentHealth"),
+                    battleInfo.player,
+                    true);
+            } else {
+                FSP.addBattleDisplayPokemonHealth(FSP, "opponent")
+            }
+
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "finishAutomatically": battleInfo.automaticMenus
+            });
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                textStart[0] + battleInfo.opponent.name.toUpperCase() + textStart[1],
                 callback
                 );
-
-            actor.HP = hpEnd;
-        } else {
-            callback(EightBitter);
-        }
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattlePokemonFaints(EightBitter, settings) {
-        var routineArguments = settings.routineArguments,
-            battlerName = routineArguments.battlerName,
-            battleInfo = EightBitter.BattleMover.getBattleInfo(),
-            actor = battleInfo[battlerName].selectedActor,
-            thing = settings.things[battlerName],
-            blank = EightBitter.ObjectMaker.make("WhiteSquare", {
-                "width": thing.width * thing.scale,
-                "height": thing.height * thing.scale
-            }),
-            texts = EightBitter.GroupHolder.getGroup("Text"),
-            background = EightBitter.BattleMover.getBackgroundThing(),
-            backgroundIndex = texts.indexOf(background),
-            nextRoutine = battlerName === "player"
-                ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints"
-
-        EightBitter.addThing(
-            blank,
-            thing.left,
-            thing.top + thing.height * thing.scale * thing.FSP.unitsize
-            );
-
-        EightBitter.arrayToIndex(blank, texts, backgroundIndex + 1);
-        EightBitter.arrayToIndex(thing, texts, backgroundIndex + 1);
-
-        EightBitter.animateFadeVertical(
-            thing,
-            EightBitter.unitsize * 2,
-            EightBitter.getMidY(thing) + thing.height * thing.scale * EightBitter.unitsize,
-            1,
-            function () {
-                EightBitter.killNormal(thing);
-                EightBitter.killNormal(blank);
-                EightBitter.MenuGrapher.createMenu("GeneralText");
-                EightBitter.MenuGrapher.addMenuDialog(
-                    "GeneralText",
-                    [
-                        actor.nickname + " fainted!"
-                    ],
-                    EightBitter.ScenePlayer.bindRoutine(
-                        nextRoutine, routineArguments
-                        )
-                    );
-                EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-            }
-            );
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleAfterPlayerPokemonFaints(EightBitter, settings) {
-        var actors = EightBitter.BattleMover.getBattleInfo(),
-            actorAvailable = EightBitter.checkArrayMembersIndex(actors, "HP");
-
-        if (actorAvailable) {
-            EightBitter.ScenePlayer.playRoutine("PlayerChoosesPokemon");
-        } else {
-            EightBitter.ScenePlayer.playRoutine("Defeat");
-        }
-    }
-
-    /**
-     * 
-     */
-    function cutsceneBattleAfterOpponentPokemonFaints(EightBitter, settings) {
-        var battleInfo = settings.battleInfo,
-            opponent = battleInfo.opponent,
-            actorAvailable = EightBitter.checkArrayMembersIndex(
-                opponent.actors, "HP"
-                ),
-            experienceGained = EightBitter.MathDecider.compute(
-                "experienceGained", battleInfo.player, battleInfo.opponent
-                ),
-            callback;
-
-        if (actorAvailable) {
-            callback = EightBitter.ScenePlayer.bindRoutine(
-                "OpponentSwitchesPokemon"
-                )
-        } else {
-            callback = EightBitter.ScenePlayer.bindRoutine("Victory");
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
-        EightBitter.MenuGrapher.createMenu("GeneralText");
-        EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText",
-            [
+        /**
+         * 
+         */
+        cutsceneBattleEnemyIntro(FSP: FullScreenPokemon, settings: any): void {
+            var things: any = settings.things,
+                opponent: ICharacter = things.opponent,
+                menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("GeneralText"),
+                opponentX: number = FSP.getMidX(opponent),
+                opponentGoal: number = menu.right + opponent.width * FSP.unitsize / 2,
+                battleInfo: BattleMovr.IBattleInfo = settings.battleInfo,
+                callback = battleInfo.opponent.hasActors
+                    ? "OpponentSendOut"
+                    : "PlayerIntro",
+                timeout: number = 49;
+
+            FSP.animateFadeHorizontal(
+                opponent,(opponentGoal - opponentX) / timeout, opponentGoal, 1);
+
+            FSP.TimeHandler.addEvent(
+                FSP.animateFadeAttribute,
+                (timeout / 2) | 0,
+                opponent,
+                "opacity",
+                -2 / timeout,
+                0,
+                1);
+
+            FSP.MenuGrapher.deleteMenu("BattleOpponentHealth");
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "finishAutomatically": true
+            });
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
                 [
-                    battleInfo.player.selectedActor.nickname,
-                    "gained",
-                    experienceGained,
-                    "EXP. points!"
-                ].join(" ")
-            ],
-            EightBitter.ScenePlayer.bindRoutine("ExperienceGain", {
-                "experienceGained": experienceGained,
-                "callback": callback
-            })
-            );
-        EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-    }
+                    battleInfo.textOpponentSendOut[0]
+                    + battleInfo.opponent.name
+                    + battleInfo.textOpponentSendOut[1]
+                    + battleInfo.opponent.actors[0].nickname
+                    + battleInfo.textOpponentSendOut[2]
+                ]
+                );
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+
+            FSP.TimeHandler.addEvent(
+                FSP.ScenePlayer.bindRoutine(
+                    callback,
+                    {
+                        "nextRoutine": "PlayerIntro",
+                    }),
+                timeout);
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattlePlayerIntro(FSP: FullScreenPokemon, settings: any): void {
+            var things: any = settings.things,
+                player: IPlayer = things.player,
+                menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("GeneralText"),
+                playerX: number = FSP.getMidX(player),
+                playerGoal: number = menu.left - player.width * FSP.unitsize / 2,
+                battleInfo: BattleMovr.IBattleInfo = settings.battleInfo,
+                timeout: number = 24;
+
+            FSP.MenuGrapher.deleteMenu("BattlePlayerHealth");
+
+            if (!battleInfo.player.hasActors) {
+                FSP.ScenePlayer.playRoutine("ShowPlayerMenu");
+                return;
+            }
+
+            FSP.animateFadeHorizontal(
+                player,(playerGoal - playerX) / timeout, playerGoal, 1);
+
+            FSP.TimeHandler.addEvent(
+                FSP.animateFadeAttribute,
+                (timeout / 2) | 0,
+                player,
+                "opacity",
+                -2 / timeout,
+                0,
+                1);
+
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "finishAutomatically": true
+            });
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    battleInfo.textPlayerSendOut[0]
+                    + battleInfo.player.actors[0].title
+                    + battleInfo.textPlayerSendOut[1]
+                ]
+                );
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+
+            FSP.TimeHandler.addEvent(
+                FSP.ScenePlayer.bindRoutine(
+                    "PlayerSendOut",
+                    {
+                        "nextRoutine": "ShowPlayerMenu"
+                    }
+                    ),
+                timeout
+                );
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleShowPlayerMenu(FSP: FullScreenPokemon, settings: any): void {
+            FSP.MenuGrapher.deleteMenu("Yes/No");
+
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.BattleMover.showPlayerMenu();
+
+            if (settings.battleInfo.onShowPlayerMenu) {
+                settings.battleInfo.onShowPlayerMenu(FSP);
+            }
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleOpponentSendOut(FSP: FullScreenPokemon, settings: any): void {
+            var menu: IMenu = settings.things.menu,
+                left: number = menu.right - FSP.unitsize * 8,
+                top: number = menu.top + FSP.unitsize * 32;
+
+            console.warn("Should reset *Normal statistics for opponent Pokemon.");
+
+            settings.opponentLeft = left;
+            settings.opponentTop = top;
+
+            FSP.MenuGrapher.setActiveMenu(undefined);
+
+            FSP.animateSmokeSmall(
+                FSP,
+                left,
+                top,
+                FSP.ScenePlayer.bindRoutine(
+                    "OpponentSendOutAppear",
+                    settings.routineArguments)
+                );
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleOpponentSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
+            var opponentInfo: IPlayer = settings.battleInfo.opponent,
+                pokemonInfo: BattleMovr.IActor = opponentInfo.actors[opponentInfo.selectedIndex],
+                pokemon = FSP.BattleMover.setThing(
+                    "opponent", pokemonInfo.title + "Front");
+
+            console.log("Should make the zoom-in animation for appearing Pokemon...");
+
+            FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
+
+            FSP.ScenePlayer.playRoutine(settings.routineArguments.nextRoutine);
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattlePlayerSendOut(FSP: FullScreenPokemon, settings: any): void {
+            var menu: IMenu = settings.things.menu,
+                left: number = menu.left + FSP.unitsize * 8,
+                top: number = menu.bottom - FSP.unitsize * 8;
+
+            console.warn("Should reset *Normal statistics for player Pokemon.");
+
+            settings.playerLeft = left;
+            settings.playerTop = top;
+
+            FSP.MenuGrapher.setActiveMenu(undefined);
+
+            FSP.animateSmokeSmall(
+                FSP,
+                left,
+                top,
+                FSP.ScenePlayer.bindRoutine(
+                    "PlayerSendOutAppear",
+                    settings.routineArguments
+                    ));
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattlePlayerSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
+            var playerInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
+                pokemonInfo: BattleMovr.IActor = playerInfo.selectedActor,
+                pokemon = FSP.BattleMover.setThing(
+                    "player", pokemonInfo.title + "Back");
+
+            console.log("Should make the zoom-in animation for appearing Pokemon...");
+
+            FSP.addBattleDisplayPokemonHealth(FSP, "player", playerInfo.selectedActor);
+
+            FSP.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
+            FSP.MenuGrapher.addMenuDialog(
+                "BattlePlayerHealthNumbers",
+                [
+                    [
+                        makeDigit(pokemonInfo.HP, 3, " ")
+                        + "/"
+                        + makeDigit(pokemonInfo.HPNormal, 3, " ")
+                    ]
+                ]);
+
+            FSP.ScenePlayer.playRoutine(settings.routineArguments.nextRoutine);
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattlePlayerSwitchesSamePokemon(FSP: FullScreenPokemon, settings: any): void {
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "backMenu": "PokemonMenuContext"
+            });
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    settings.battleInfo.player.selectedActor.nickname + " is already out!"
+                ]);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleMovePlayer(FSP: FullScreenPokemon, settings: any): void {
+            var player: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
+                playerActor: BattleMovr.IActor = player.selectedActor,
+                opponent: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
+                opponentActor: BattleMovr.IActor = opponent.selectedActor,
+                routineArguments: any = settings.routineArguments,
+                choice: string = routineArguments.choicePlayer;
+
+            routineArguments.damage = FSP.MathDecider.compute(
+                "damage", choice, playerActor, opponentActor);
+
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    playerActor.nickname + " used " + choice + "!"
+                ],
+                FSP.ScenePlayer.bindRoutine(
+                    "MovePlayerAnimate", routineArguments
+                    )
+                );
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleMovePlayerAnimate(FPS: FullScreenPokemon, settings: any): void {
+            var routineArguments: any = settings.routineArguments,
+                choice: string = routineArguments.choicePlayer,
+                move: IPokedexMove = FPS.MathDecider.getConstant("moves")[choice];
+
+            routineArguments.attackerName = "player";
+            routineArguments.defenderName = "opponent";
+
+            routineArguments.callback = function (): void {
+                var callback: Function;
+
+                routineArguments.movePlayerDone = true;
+
+                if (routineArguments.moveOpponentDone) {
+                    callback = function () {
+                        routineArguments.movePlayerDone = false;
+                        routineArguments.moveOpponentDone = false;
+                        FPS.MenuGrapher.createMenu("GeneralText");
+                        FPS.BattleMover.showPlayerMenu();
+                    };
+                } else {
+                    callback = FPS.TimeHandler.addEvent.bind(
+                        FPS.TimeHandler,
+                        FPS.ScenePlayer.bindRoutine(
+                            "MoveOpponent", settings.routineArguments
+                            ),
+                        7);
+                }
+
+                FPS.ScenePlayer.playRoutine("Damage", {
+                    "battlerName": "opponent",
+                    "damage": routineArguments.damage,
+                    "callback": callback
+                });
+            };
+
+            // @todo: When all moves have been implemented, this will be simplified.
+            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+                console.warn(choice + " attack animation not implemented...");
+                routineArguments.callback();
+            } else {
+                FPS.ScenePlayer.playRoutine(
+                    "Attack" + choice.replace(" ", ""), routineArguments);
+            }
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleMoveOpponent(FSP: FullScreenPokemon, settings: any): void {
+            var opponent: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
+                opponentActor: BattleMovr.IActor = opponent.selectedActor,
+                player: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
+                playerActor: BattleMovr.IActor = player.selectedActor,
+                routineArguments: any = settings.routineArguments,
+                choice: string = routineArguments.choiceOpponent;
+
+            routineArguments.damage = FSP.MathDecider.compute(
+                "damage", choice, opponentActor, playerActor);
+
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [opponent.selectedActor.nickname + " used " + choice + "!"],
+                FSP.ScenePlayer.bindRoutine(
+                    "MoveOpponentAnimate", routineArguments
+                    )
+                );
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleMoveOpponentAnimate(FSP: FullScreenPokemon, settings: any): void {
+            var routineArguments: any = settings.routineArguments,
+                choice: string = routineArguments.choiceOpponent,
+                move: string = FSP.MathDecider.getConstant("moves")[choice];
+
+            routineArguments.attackerName = "opponent";
+            routineArguments.defenderName = "player";
+
+            routineArguments.callback = function (): void {
+                var callback: Function;
+
+                routineArguments.moveOpponentDone = true;
+
+                if (routineArguments.movePlayerDone) {
+                    callback = function () {
+                        routineArguments.movePlayerDone = false;
+                        routineArguments.moveOpponentDone = false;
+                        FSP.MenuGrapher.createMenu("GeneralText");
+                        FSP.BattleMover.showPlayerMenu();
+                    };
+                } else {
+                    callback = FSP.TimeHandler.addEvent.bind(
+                        FSP.TimeHandler,
+                        FSP.ScenePlayer.bindRoutine(
+                            "MovePlayer", settings.routineArguments
+                            ),
+                        7);
+                }
+
+                FSP.ScenePlayer.playRoutine("Damage", {
+                    "battlerName": "player",
+                    "damage": routineArguments.damage,
+                    "callback": callback
+                });
+            };
+
+            // @todo: When all moves have been implemented, this will be simplified.
+            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+                console.warn(choice + " attack animation not implemented...");
+                routineArguments.callback();
+            } else {
+                FSP.ScenePlayer.playRoutine(
+                    "Attack" + choice.replace(" ", ""), routineArguments);
+            }
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleDamage(FSP: FullScreenPokemon, settings: any): void {
+            var battlerName: string = settings.routineArguments.battlerName,
+                damage: number = settings.routineArguments.damage,
+                battleInfo: BattleMovr.IBattleInfo = FSP.BattleMover.getBattleInfo(),
+                battler: BattleMovr.IBattleThingInfo = battleInfo[battlerName],
+                actor: BattleMovr.IActor = battler.selectedActor,
+                hpStart: number = actor.HP,
+                hpEnd: number = Math.max(hpStart - damage, 0),
+                callback = hpEnd === 0
+                    ? FSP.TimeHandler.addEvent.bind(
+                        FSP.TimeHandler,
+                        FSP.ScenePlayer.bindRoutine("PokemonFaints", {
+                            "battlerName": battlerName
+                        }),
+                        49)
+                    : settings.routineArguments.callback;
+
+            if (damage !== 0) {
+                FSP.animateBattleDisplayPokemonHealthBar(
+                    FSP,
+                    battlerName,
+                    hpStart,
+                    hpEnd,
+                    actor.HPNormal,
+                    callback);
+
+                actor.HP = hpEnd;
+            } else {
+                callback(FSP);
+            }
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattlePokemonFaints(FSP: FullScreenPokemon, settings: any): void {
+            var routineArguments: any = settings.routineArguments,
+                battlerName: string = routineArguments.battlerName,
+                battleInfo: BattleMovr.IBattleInfo = FSP.BattleMover.getBattleInfo(),
+                actor: BattleMovr.IActor = battleInfo[battlerName].selectedActor,
+                thing: IThing = settings.things[battlerName],
+                blank: IThing = FSP.ObjectMaker.make(
+                    "WhiteSquare",
+                    {
+                        "width": thing.width * thing.scale,
+                        "height": thing.height * thing.scale
+                    }),
+                texts: IThing[] = FSP.GroupHolder.getGroup("Text"),
+                background: IThing = FSP.BattleMover.getBackgroundThing(),
+                backgroundIndex: number = texts.indexOf(background),
+                nextRoutine: string = battlerName === "player"
+                    ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints"
+
+            FSP.addThing(
+                blank,
+                thing.left,
+                thing.top + thing.height * thing.scale * thing.FSP.unitsize);
+
+            FSP.arrayToIndex(blank, texts, backgroundIndex + 1);
+            FSP.arrayToIndex(thing, texts, backgroundIndex + 1);
+
+            FSP.animateFadeVertical(
+                thing,
+                FSP.unitsize * 2,
+                FSP.getMidY(thing) + thing.height * thing.scale * FSP.unitsize,
+                1,
+                function (): void {
+                    FSP.killNormal(thing);
+                    FSP.killNormal(blank);
+                    FSP.MenuGrapher.createMenu("GeneralText");
+                    FSP.MenuGrapher.addMenuDialog(
+                        "GeneralText",
+                        [
+                            actor.nickname + " fainted!"
+                        ],
+                        FSP.ScenePlayer.bindRoutine(
+                            nextRoutine, routineArguments
+                            )
+                        );
+                    FSP.MenuGrapher.setActiveMenu("GeneralText");
+                });
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleAfterPlayerPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
+            var battleInfo: BattleMovr.IBattleInfo = FSP.BattleMover.getBattleInfo(),
+                actorAvailable = FSP.checkArrayMembersIndex(battleInfo, "HP");
+
+            if (actorAvailable) {
+                FSP.ScenePlayer.playRoutine("PlayerChoosesPokemon");
+            } else {
+                FSP.ScenePlayer.playRoutine("Defeat");
+            }
+        }
+
+        /**
+         * 
+         */
+        cutsceneBattleAfterOpponentPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
+            var battleInfo: BattleMovr.IBattleInfo = settings.battleInfo,
+                opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent,
+                actorAvailable = FSP.checkArrayMembersIndex(opponent.actors, "HP"),
+                experienceGained = FSP.MathDecider.compute(
+                    "experienceGained", battleInfo.player, battleInfo.opponent),
+                callback;
+
+            if (actorAvailable) {
+                callback = FSP.ScenePlayer.bindRoutine("OpponentSwitchesPokemon")
+            } else {
+                callback = FSP.ScenePlayer.bindRoutine("Victory");
+            }
+
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    [
+                        battleInfo.player.selectedActor.nickname,
+                        "gained",
+                        experienceGained,
+                        "EXP. points!"
+                    ].join(" ")
+                ],
+                FSP.ScenePlayer.bindRoutine(
+                    "ExperienceGain",
+                    {
+                        "experienceGained": experienceGained,
+                        "callback": callback
+                    }));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        }
 
     /**
      * 
