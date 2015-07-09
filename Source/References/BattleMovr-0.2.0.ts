@@ -26,7 +26,7 @@ declare module BattleMovr {
 
     export interface IThingsContainer {
         [i: string]: IThing;
-        menu?: IThing;
+        menu ?: IThing;
     }
 
     export interface IThing extends EightBittr.IThing {
@@ -121,7 +121,25 @@ declare module BattleMovr {
     }
 
     export interface IBattleMovr {
-
+        getGameStarter(): IGameStartr;
+        getThings(): { [i: string]: IThing };
+        getThing(name: string): IThing;
+        getBattleInfo(): IBattleInfo;
+        getBackgroundType(): string;
+        getBackgroundThing(): IThing;
+        getInBattle(): boolean;
+        startBattle(settings: IBattleSettings): void;
+        closeBattle(callback?: () => void): void;
+        showPlayerMenu(): void;
+        setThing(name: string, title: string, settings?: any): IThing;
+        openMovesMenu(): void;
+        openItemsMenu(): void;
+        openActorsMenu(callback: (settings: any) => void): void;
+        playMove(choicePlayer: string): void;
+        switchActor(battlerName: string, i: number): void;
+        startBattleExit(): void;
+        createBackground(): void;
+        deleteBackground(): void;
     }
 }
 
@@ -203,7 +221,7 @@ module BattleMovr {
         private openActorsMenuCallback: (settings: any) => void;
 
         /**
-         * 
+         * @param {IBattleMovrSettings} settings
          */
         constructor(settings: IBattleMovrSettings) {
             if (typeof settings.GameStarter === "undefined") {
@@ -424,6 +442,7 @@ module BattleMovr {
             return thing;
         }
 
+
         /* In-battle menus
         */
 
@@ -490,6 +509,7 @@ module BattleMovr {
                 "onSwitch": this.switchActor
             });
         }
+
 
         /* Battle shenanigans
         */

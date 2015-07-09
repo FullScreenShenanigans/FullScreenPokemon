@@ -3611,8 +3611,8 @@ module FullScreenPokemon {
                 menuResults: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
                 lowercase = settings.lowercase,
                 letters = lowercase
-                    ? FSP.keysLowercase
-                    : FSP.keysUppercase,
+                    ? FullScreenPokemon.keysLowercase
+                    : FullScreenPokemon.keysUppercase,
                 options = letters.map(function (letter) {
                     return {
                         "text": [letter],
@@ -3876,7 +3876,7 @@ module FullScreenPokemon {
          * 
          */
         addBattleDisplayPokemonHealth(FSP: FullScreenPokemon, battlerName: string): void {
-            var battleInfo: IBattleInfo = FSP.BattleMover.getBattleInfo(),
+            var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 pokemon: BattleMovr.IActor = battleInfo[battlerName].selectedActor,
                 menu: string = [
                     "Battle",
@@ -4444,7 +4444,7 @@ module FullScreenPokemon {
         cutsceneBattleDamage(FSP: FullScreenPokemon, settings: any): void {
             var battlerName: string = settings.routineArguments.battlerName,
                 damage: number = settings.routineArguments.damage,
-                battleInfo: IBattleInfo = FSP.BattleMover.getBattleInfo(),
+                battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 battler: BattleMovr.IBattleThingInfo = battleInfo[battlerName],
                 actor: BattleMovr.IActor = battler.selectedActor,
                 hpStart: number = actor.HP,
@@ -4479,7 +4479,7 @@ module FullScreenPokemon {
         cutsceneBattlePokemonFaints(FSP: FullScreenPokemon, settings: any): void {
             var routineArguments: any = settings.routineArguments,
                 battlerName: string = routineArguments.battlerName,
-                battleInfo: IBattleInfo = FSP.BattleMover.getBattleInfo(),
+                battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 actor: BattleMovr.IActor = battleInfo[battlerName].selectedActor,
                 thing: IThing = settings.things[battlerName],
                 blank: IThing = FSP.ObjectMaker.make(
@@ -4488,8 +4488,8 @@ module FullScreenPokemon {
                         "width": thing.width * thing.scale,
                         "height": thing.height * thing.scale
                     }),
-                texts: IThing[] = FSP.GroupHolder.getGroup("Text"),
-                background: IThing = FSP.BattleMover.getBackgroundThing(),
+                texts: IThing[] = <IThing[]>FSP.GroupHolder.getGroup("Text"),
+                background: IThing = <IThing>FSP.BattleMover.getBackgroundThing(),
                 backgroundIndex: number = texts.indexOf(background),
                 nextRoutine: string = battlerName === "player"
                     ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints"
@@ -4528,7 +4528,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneBattleAfterPlayerPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: IBattleInfo = FSP.BattleMover.getBattleInfo(),
+            var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 actorAvailable = FSP.checkArrayMembersIndex(battleInfo, "HP");
 
             if (actorAvailable) {
@@ -4737,7 +4737,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneBattleVictory(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: IBattleInfo = FSP.BattleMover.getBattleInfo(),
+            var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
 
             if (FSP.MapScreener.theme) {
@@ -4771,7 +4771,7 @@ module FullScreenPokemon {
         cutsceneBattleVictorySpeech(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial"),
-                opponent: IThing = FSP.BattleMover.setThing("opponent", battleInfo.opponent.sprite),
+                opponent: IThing = <IThing>FSP.BattleMover.setThing("opponent", battleInfo.opponent.sprite),
                 timeout: number = 35,
                 opponentX: number,
                 opponentGoal: number;
@@ -4789,13 +4789,12 @@ module FullScreenPokemon {
                 (opponentGoal - opponentX) / timeout,
                 opponentGoal,
                 1,
-                function () {
+                function (): void {
                     FSP.MenuGrapher.createMenu("GeneralText");
                     FSP.MenuGrapher.addMenuDialog(
                         "GeneralText",
                         battleInfo.textVictory,
-                        FSP.ScenePlayer.bindRoutine("VictoryWinnings")
-                        );
+                        FSP.ScenePlayer.bindRoutine("VictoryWinnings"));
                     FSP.MenuGrapher.setActiveMenu("GeneralText");
                 });
         }
@@ -4806,13 +4805,12 @@ module FullScreenPokemon {
         cutsceneBattleVictoryWinnings(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 reward: number = settings.battleInfo.opponent.reward,
-                animationSettings = {
+                animationSettings: any = {
                     "color": "White"
                 },
-                callback = FSP.BattleMover.closeBattle.bind(
+                callback: Function = FSP.BattleMover.closeBattle.bind(
                     FSP.BattleMover,
-                    FSP.animateFadeFromColor.bind(FSP, FSP, animationSettings)
-                    );
+                    FSP.animateFadeFromColor.bind(FSP, FSP, animationSettings));
 
             if (battleInfo.giftAfterBattle) {
                 FSP.addItemToBag(FSP, battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
@@ -4889,7 +4887,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleComplete(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
-                keptThings: IThing[],
+                keptThings: (string | IThing)[],
                 thing, i;
 
             FSP.MapScreener.blockInputs = false;
@@ -5020,7 +5018,7 @@ module FullScreenPokemon {
                 if (keptThings) {
                     for (i = 0; i < keptThings.length; i += 1) {
                         FSP.arrayToEnd(
-                            <IThing>keptThings[i], FSP.GroupHolder.getTextGroup());
+                            <IThing>keptThings[i], <IThing[]>FSP.GroupHolder.getGroup("Text"));
                     }
                 }
 
@@ -5203,8 +5201,8 @@ module FullScreenPokemon {
                 routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
-                attacker = FSP.BattleMover.getThing(attackerName),
-                defender = FSP.BattleMover.getThing(defenderName),
+                attacker = <IThing>FSP.BattleMover.getThing(attackerName),
+                defender = <IThing>FSP.BattleMover.getThing(defenderName),
                 direction: number = attackerName === "player" ? 1 : -1,
                 xvel: number = 7 * direction,
                 dt: number = 7,
@@ -5258,8 +5256,8 @@ module FullScreenPokemon {
                 routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
-                attacker = FSP.BattleMover.getThing(attackerName),
-                defender = FSP.BattleMover.getThing(defenderName),
+                attacker = <IThing>FSP.BattleMover.getThing(attackerName),
+                defender = <IThing>FSP.BattleMover.getThing(defenderName),
                 direction: number = attackerName === "player" ? 1 : -1,
                 dt: number = 11,
                 dx: number = FSP.unitsize * 4;
@@ -5583,7 +5581,7 @@ module FullScreenPokemon {
          */
         cutscenePokeMartBuyMenu(FSP: FullScreenPokemon, settings: any): void {
             var options: any[] = settings.triggerer.items.map(
-                function (reference: any) {
+                function (reference: any): any {
                     var text: string = reference.item.toUpperCase(),
                         cost: number = reference.cost;
 
@@ -5641,7 +5639,7 @@ module FullScreenPokemon {
                 amount: number = routineArguments.amount,
                 cost: number = routineArguments.cost,
                 costTotal: number = cost * amount,
-                text: string = makeDigit(amount, 2) + makeDigit("$" + costTotal, 8, " ");
+                text: string = FSP.makeDigit(amount, 2) + FSP.makeDigit("$" + costTotal, 8, " ");
 
             FSP.MenuGrapher.createMenu("ShopItemsAmount", {
                 "childrenSchemas": [
@@ -6961,7 +6959,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalBattleChallenge(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: BattleMovr.IBattleInfo =
+            var battleInfo: IBattleInfo =
                 {
                     "opponent": {
                         "sprite": "RivalPortrait",
@@ -8917,7 +8915,7 @@ module FullScreenPokemon {
          * Turns a Number into a String with a prefix added to pad it to a certain
          * number of digits.
          * 
-         * @param {Number} number   The original Number being padded.
+         * @param {Mixed} number   The original Number being padded.
          * @param {Number} size   How many digits the output must contain.
          * @param {String} [prefix]   A prefix to repeat for padding (by default,
          *                            "0").
@@ -8926,7 +8924,7 @@ module FullScreenPokemon {
          * makeDigit(7, 3); // '007'
          * makeDigit(7, 3, 1); // '117'
          */
-        makeDigit(num: number, size: number, prefix?: string): string {
+        makeDigit(num: number | string, size: number, prefix?: string): string {
             return FullScreenPokemon.prototype.stringOf(
                 prefix ? prefix.toString() : "0",
                 Math.max(0, size - String(num).length)
