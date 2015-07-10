@@ -501,7 +501,7 @@ module MenuGraphr {
             }
 
             if (child.killOnB) {
-                child.killOnB.forEach(this.deleteMenu);
+                child.killOnB.forEach(this.deleteMenu.bind(this));
             }
 
             if (child.name) {
@@ -516,7 +516,7 @@ module MenuGraphr {
             }
 
             if (child.children) {
-                child.children.forEach(this.deleteMenuChild)
+                child.children.forEach(this.deleteMenuChild.bind(this))
             }
         }
 
@@ -527,7 +527,7 @@ module MenuGraphr {
             var menu: IMenu = this.menus[name];
 
             if (menu && menu.children) {
-                menu.children.forEach(this.deleteMenuChild);
+                menu.children.forEach(this.deleteMenuChild.bind(this));
             }
         }
 

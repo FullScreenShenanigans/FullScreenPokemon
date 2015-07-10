@@ -2427,7 +2427,7 @@ module FullScreenPokemon {
                         break;
 
                     default:
-                        throw new Error("Unknown direction borering.");
+                        throw new Error("Unknown direction bordering.");
                 }
             };
         }
@@ -2922,6 +2922,8 @@ module FullScreenPokemon {
                 ) {
                 return 3;
             }
+
+            return 0;
         }
 
         /**
@@ -7991,7 +7993,7 @@ module FullScreenPokemon {
 
             FSP.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
-            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction);
+            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction || 0);
 
             FSP.centerMapScreen(FSP);
         }

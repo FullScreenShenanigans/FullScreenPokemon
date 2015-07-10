@@ -1,5 +1,6 @@
 FullScreenPokemon.FullScreenPokemon.settings.collisions = {
     "groupNames": ["Solid", "Character"],
+    "keyGroupName": "groupType",
     "globalCheckGenerators": {
         "Character": FullScreenPokemon.FullScreenPokemon.prototype.generateCanThingCollide,
         "Solid": FullScreenPokemon.FullScreenPokemon.prototype.generateCanThingCollide

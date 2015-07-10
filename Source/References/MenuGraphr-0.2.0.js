@@ -2853,7 +2853,7 @@ var MenuGraphr;
                 }
             }
             if (child.killOnB) {
-                child.killOnB.forEach(this.deleteMenu);
+                child.killOnB.forEach(this.deleteMenu.bind(this));
             }
             if (child.name) {
                 delete this.menus[child.name];
@@ -2864,7 +2864,7 @@ var MenuGraphr;
                 child.onMenuDelete.call(this.GameStarter);
             }
             if (child.children) {
-                child.children.forEach(this.deleteMenuChild);
+                child.children.forEach(this.deleteMenuChild.bind(this));
             }
         };
         /**
@@ -2873,7 +2873,7 @@ var MenuGraphr;
         MenuGraphr.prototype.deleteMenuChildren = function (name) {
             var menu = this.menus[name];
             if (menu && menu.children) {
-                menu.children.forEach(this.deleteMenuChild);
+                menu.children.forEach(this.deleteMenuChild.bind(this));
             }
         };
         /**
