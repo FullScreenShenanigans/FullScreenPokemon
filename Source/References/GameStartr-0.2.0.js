@@ -521,7 +521,6 @@ var ItemsHoldr;
          *                                 (by default, false).
          */
         ItemsHoldr.prototype.proliferate = function (recipient, donor, noOverride) {
-            if (noOverride === void 0) { noOverride = false; }
             var setting, i;
             // For each attribute of the donor:
             for (i in donor) {
@@ -2028,6 +2027,18 @@ var EightBittr;
         EightBittr.prototype.arrayToEnd = function (thing, array) {
             array.splice(array.indexOf(thing), 1);
             array.push(thing);
+        };
+        /**
+         * Sets a Thing's position within an Array to a specific index by splicing
+         * it out, then back in.
+         *
+         * @param {Thing} thing
+         * @param {Array} array
+         * @param {Number} index
+         */
+        EightBittr.prototype.arrayToIndex = function (thing, array, index) {
+            array.splice(array.indexOf(thing), 1);
+            array.splice(index, 0, thing);
         };
         return EightBittr;
     })();
@@ -4493,6 +4504,12 @@ var MapsHandlr;
             return this.areaCurrent.map.locations[location];
         };
         /**
+         * @return {Location} The most recently entered Location in the current Area.
+         */
+        MapsHandlr.prototype.getLocationEntered = function () {
+            return this.locationEntered;
+        };
+        /**
          * Simple getter function for the internal prethings object. This will be
          * undefined before the first call to setMap.
          *
@@ -4542,7 +4559,7 @@ var MapsHandlr;
                 throw new Error("Unknown location in setLocation: '" + name + "'.");
             }
             // Since the location is valid, mark it as current (with its area)
-            this.locationCurrent = location;
+            this.locationEntered = location;
             this.areaCurrent = location.area;
             this.areaCurrent.boundaries = {
                 "top": 0,
@@ -7915,6 +7932,12 @@ var LevelEditr;
         LevelEditr.prototype.loadCurrentJSON = function () {
             this.display.inputDummy.click();
         };
+        /**
+         *
+         */
+        LevelEditr.prototype.beautify = function (text) {
+            return this.beautifier(text);
+        };
         /* Interactivity
         */
         /**
@@ -10528,7 +10551,7 @@ var ScenePlayr;
             this.cutsceneSettings = settings || {};
             this.cutsceneSettings.cutscene = this.cutscene;
             this.cutsceneSettings.cutsceneName = name;
-            this.cutsceneArguments.unshift(this.cutsceneSettings);
+            this.cutsceneArguments.push(this.cutsceneSettings);
             if (this.cutscene.firstRoutine) {
                 this.playRoutine(this.cutscene.firstRoutine);
             }
@@ -10555,7 +10578,7 @@ var ScenePlayr;
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.routine = undefined;
-            this.cutsceneArguments.shift();
+            this.cutsceneArguments.pop();
         };
         /**
          * Plays a particular routine within the current cutscene, passing
@@ -15234,7 +15257,9 @@ var GameStartr;
          * @remarks Requirement(s): scenes.js (settings/scenes.js)
          */
         GameStartr.prototype.resetScenePlayer = function (GameStarter, customs) {
-            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.generator);
+            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.proliferate({
+                "cutsceneArguments": [GameStarter]
+            }, GameStarter.settings.scenes));
         };
         /**
          * Sets this.MathDecider.

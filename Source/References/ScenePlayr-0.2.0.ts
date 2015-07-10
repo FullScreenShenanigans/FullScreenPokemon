@@ -171,7 +171,7 @@ module ScenePlayr {
             this.cutsceneSettings.cutscene = this.cutscene;
             this.cutsceneSettings.cutsceneName = name;
 
-            this.cutsceneArguments.unshift(this.cutsceneSettings);
+            this.cutsceneArguments.push(this.cutsceneSettings);
 
             if (this.cutscene.firstRoutine) {
                 this.playRoutine(this.cutscene.firstRoutine);
@@ -197,7 +197,7 @@ module ScenePlayr {
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.routine = undefined;
-            this.cutsceneArguments.shift();
+            this.cutsceneArguments.pop();
         }
 
         /**
