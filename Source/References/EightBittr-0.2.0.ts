@@ -63,7 +63,8 @@ declare module EightBittr {
         followPathHard(object: any, path: string[], num?: number): any;
         arraySwitch(thing: IThing, arrayOld: any[], arrayNew: any[]): void;
         arrayToBeginning(thing: IThing, array: any[]): void;
-        arrayToEnd(thing: IThing, array: any[]): any;
+        arrayToEnd(thing: IThing, array: any[]): void;
+        arrayToIndex(thing: IThing, array: any[], index: number): void;
     }
 }
 
@@ -858,6 +859,19 @@ module EightBittr {
         arrayToEnd(thing: IThing, array: any[]): void {
             array.splice(array.indexOf(thing), 1);
             array.push(thing);
+        }
+
+        /**
+         * Sets a Thing's position within an Array to a specific index by splicing 
+         * it out, then back in.
+         * 
+         * @param {Thing} thing
+         * @param {Array} array
+         * @param {Number} index
+         */
+        arrayToIndex(thing: IThing, array: any[], index: number): void {
+            array.splice(array.indexOf(thing), 1);
+            array.splice(index, 0, thing);
         }
     };
 }

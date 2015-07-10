@@ -4528,7 +4528,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleAfterPlayerPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
-                actorAvailable = FSP.checkArrayMembersIndex(battleInfo, "HP");
+                actorAvailable = FSP.checkArrayMembersIndex(battleInfo.player.actors, "HP");
 
             if (actorAvailable) {
                 FSP.ScenePlayer.playRoutine("PlayerChoosesPokemon");
