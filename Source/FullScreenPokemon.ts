@@ -216,7 +216,9 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetAudioPlayer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void { }
+        resetAudioPlayer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+            console.log("No AudioPlayer... yet!");
+        }
 
         /**
          * Sets this.GBSEmulator.
@@ -225,10 +227,13 @@ module FullScreenPokemon {
          * @param {Object} customs
          */
         resetGBSEmulator(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            FSP.GBSEmulator = new GBSEmulatr.GBSEmulatr(FSP.proliferate({
-                "ItemsHolder": FSP.ItemsHolder,
-                "Module": Module
-            }, FSP.settings.audio));
+            FSP.GBSEmulator = new GBSEmulatr.GBSEmulatr(
+                FSP.proliferate(
+                    {
+                        "ItemsHolder": FSP.ItemsHolder,
+                        "Module": Module
+                    },
+                    FSP.settings.audio));
         }
 
         /**
@@ -238,12 +243,15 @@ module FullScreenPokemon {
          * @param {Object} customs
          */
         resetMathDecider(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            FSP.MathDecider = new MathDecidr.MathDecidr(FSP.proliferate({
-                "constants": {
-                    "NumberMaker": FSP.NumberMaker,
-                    "statisticNames": FullScreenPokemon.statisticNames
-                }
-            }, FSP.settings.math));
+            FSP.MathDecider = new MathDecidr.MathDecidr(
+                FSP.proliferate(
+                    {
+                        "constants": {
+                            "NumberMaker": FSP.NumberMaker,
+                            "statisticNames": FullScreenPokemon.statisticNames
+                        }
+                    },
+                    FSP.settings.math));
         }
 
         /**
@@ -253,9 +261,12 @@ module FullScreenPokemon {
          * @param {Object} customs
          */
         resetStateHolder(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            FSP.StateHolder = new StateHoldr.StateHoldr(FSP.proliferate({
-                "ItemsHolder": FSP.ItemsHolder
-            }, FSP.settings.states));
+            FSP.StateHolder = new StateHoldr.StateHoldr(
+                FSP.proliferate(
+                    {
+                        "ItemsHolder": FSP.ItemsHolder
+                    },
+                    FSP.settings.states));
         }
 
         /**
@@ -265,9 +276,12 @@ module FullScreenPokemon {
          * @param {Object} customs
          */
         resetMenuGrapher(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            FSP.MenuGrapher = new MenuGraphr.MenuGraphr(FSP.proliferate({
-                "GameStarter": FSP
-            }, FSP.settings.menus));
+            FSP.MenuGrapher = new MenuGraphr.MenuGraphr(
+                FSP.proliferate(
+                    {
+                        "GameStarter": FSP
+                    },
+                    FSP.settings.menus));
         }
 
         /**
@@ -277,10 +291,13 @@ module FullScreenPokemon {
          * @param {Object} customs
          */
         resetBattleMover(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            FSP.BattleMover = new BattleMovr.BattleMovr(FSP.proliferate({
-                "GameStarter": FSP,
-                "MenuGrapher": FSP.MenuGrapher
-            }, FSP.settings.battles));
+            FSP.BattleMover = new BattleMovr.BattleMovr(
+                FSP.proliferate(
+                    {
+                        "GameStarter": FSP,
+                        "MenuGrapher": FSP.MenuGrapher
+                    },
+                    FSP.settings.battles));
         }
 
 
@@ -291,7 +308,7 @@ module FullScreenPokemon {
          * 
          */
         gameStart(): void {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
 
             // if (EightBitter.ItemsHolder.getItem("gameStarted")) {
             //     EightBitter.gameStartPlay(EightBitter);
@@ -312,8 +329,8 @@ module FullScreenPokemon {
                 }, {
                     "text": "LOAD FILE",
                     "callback": FSP.gameLoadFile.bind(FSP, FSP)
-                    //}, {
-                    //    "text": "OPTION"
+                    // }, {
+                    //     "text": "OPTION"
                 }];
 
             if (FSP.ItemsHolder.getItem("gameStarted")) {
@@ -360,7 +377,8 @@ module FullScreenPokemon {
          * 
          */
         gameLoadFile(FSP: FullScreenPokemon): void {
-            var dummy: HTMLInputElement = <HTMLInputElement>FSP.createElement("input",
+            var dummy: HTMLInputElement = <HTMLInputElement>FSP.createElement(
+                "input",
                 {
                     "type": "file",
                     "onchange": function (event: LevelEditr.IDataMouseEvent): void {
@@ -412,7 +430,7 @@ module FullScreenPokemon {
                 FSP.ItemsHolder.setItem(key, data[key]);
             }
 
-            FSP.MenuGrapher.deleteActiveMenu()
+            FSP.MenuGrapher.deleteActiveMenu();
             FSP.gameStartPlay(FSP);
             FSP.ItemsHolder.setItem("gameStarted", true);
         }
@@ -529,7 +547,7 @@ module FullScreenPokemon {
             // Either the prething or thing, in that order, may request to be in the
             // front or back of the container
             if (position) {
-                thing.FSP.TimeHandler.addEvent(function () {
+                thing.FSP.TimeHandler.addEvent(function (): void {
                     switch (position) {
                         case "beginning":
                             thing.FSP.arrayToBeginning(thing, <any[]>thing.FSP.GroupHolder.getGroup(thing.groupType));
@@ -537,6 +555,8 @@ module FullScreenPokemon {
                         case "end":
                             thing.FSP.arrayToEnd(thing, <any[]>thing.FSP.GroupHolder.getGroup(thing.groupType));
                             break;
+                        default:
+                            throw new Error("Unknown position: " + position + ".");
                     }
                 });
             }
@@ -580,7 +600,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        canInputsTrigger(FSP): boolean {
+        canInputsTrigger(FSP: FullScreenPokemon): boolean {
             return true;
         }
 
@@ -1007,7 +1027,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        maintainCharacters(FSP: FullScreenPokemon, characters: ICharacter[]) {
+        maintainCharacters(FSP: FullScreenPokemon, characters: ICharacter[]): void {
             var character: ICharacter,
                 i: number;
 
@@ -1040,7 +1060,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        maintainCharacterGrass(FSP: FullScreenPokemon, thing: ICharacter, other: IGrass) {
+        maintainCharacterGrass(FSP: FullScreenPokemon, thing: ICharacter, other: IGrass): void {
             if (thing.FSP.isThingWithinGrass(thing, other)) {
                 thing.FSP.setLeft(thing.shadow, thing.left);
                 thing.FSP.setTop(thing.shadow, thing.top);
@@ -1113,9 +1133,9 @@ module FullScreenPokemon {
          * 
          */
         animateSnapToGrid(thing: IThing): void {
-            var grid = thing.FSP.unitsize * 8,
-                x = (thing.FSP.MapScreener.left + thing.left) / grid,
-                y = (thing.FSP.MapScreener.top + thing.top) / grid;
+            var grid: number = thing.FSP.unitsize * 8,
+                x: number = (thing.FSP.MapScreener.left + thing.left) / grid,
+                y: number = (thing.FSP.MapScreener.top + thing.top) / grid;
 
             thing.FSP.setLeft(thing, Math.round(x) * grid - thing.FSP.MapScreener.left);
             thing.FSP.setTop(thing, Math.round(y) * grid - thing.FSP.MapScreener.top);
@@ -1277,7 +1297,7 @@ module FullScreenPokemon {
                     "name": chosen.title,
                     "sprite": chosen.title + "Front"
                 }
-            })
+            });
         }
 
         /**
@@ -1319,12 +1339,15 @@ module FullScreenPokemon {
                 );
 
             console.log("Should implement collapseLeft...");
-            //thing.FSP.TimeHandler.addEventInterval(
-            //    thing.FSP.collapseLeft, speed, width, thing, dx
-            //);
+            // thing.FSP.TimeHandler.addEventInterval(
+            //     thing.FSP.collapseLeft, speed, width, thing, dx
+            // );
 
             if (callback) {
-                thing.FSP.TimeHandler.addEvent(callback,(width * (dt + 2)), thing);
+                thing.FSP.TimeHandler.addEvent(
+                    callback,
+                    (width * (dt + 2)),
+                    thing);
             }
         }
 
@@ -1379,9 +1402,8 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateExpandCorners(things: IThing[], amount: number) {
-            var FSP: FullScreenPokemon = things[0].FSP,
-                i: number;
+        animateExpandCorners(things: IThing[], amount: number): void {
+            var FSP: FullScreenPokemon = things[0].FSP;
 
             FSP.shiftHoriz(things[0], amount);
             FSP.shiftHoriz(things[1], amount);
@@ -1397,7 +1419,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateSmokeSmall(FSP, x: number, y: number, callback: (thing: IThing) => void): void {
+        animateSmokeSmall(FSP: FullScreenPokemon, x: number, y: number, callback: (thing: IThing) => void): void {
             var things: IThing[] = FSP.animateThingCorners(FSP, x, y, "SmokeSmall", undefined, "Text");
 
             FSP.TimeHandler.addEvent(things.forEach.bind(things), 7, FSP.killNormal);
@@ -1443,7 +1465,7 @@ module FullScreenPokemon {
          * 
          */
         animateExclamation(thing: IThing, timeout: number = 140, callback?: () => void): IThing {
-            var exclamation = thing.FSP.addThing("Exclamation");
+            var exclamation: IThing = thing.FSP.addThing("Exclamation");
 
             timeout = timeout || 140;
 
@@ -1463,10 +1485,9 @@ module FullScreenPokemon {
          * 
          */
         animateFadeToColor(FSP: FullScreenPokemon, settings: any = {}): IThing {
-            var color = settings.color || "White",
+            var color: string = settings.color || "White",
                 callback: (...args: any[]) => void = settings.callback,
                 change: number = settings.change || .33,
-                speed: number = settings.speed || 4,
                 blank: IThing = FSP.ObjectMaker.make(color + "Square", {
                     "width": FSP.MapScreener.width,
                     "height": FSP.MapScreener.height,
@@ -1482,7 +1503,7 @@ module FullScreenPokemon {
                 change,
                 1,
                 4,
-                function () {
+                function (): void {
                     FSP.killNormal(blank);
                     if (callback) {
                         callback.apply(this, args);
@@ -1503,7 +1524,7 @@ module FullScreenPokemon {
                 blank: IThing = FSP.ObjectMaker.make(color + "Square", {
                     "width": FSP.MapScreener.width,
                     "height": FSP.MapScreener.height,
-                    "opacity": 1,
+                    "opacity": 1
                 }),
                 args: IArguments = arguments;
 
@@ -1515,7 +1536,7 @@ module FullScreenPokemon {
                 -change,
                 0,
                 speed,
-                function () {
+                function (): void {
                     FSP.killNormal(blank);
                     if (callback) {
                         callback.apply(this, args);
@@ -1538,25 +1559,30 @@ module FullScreenPokemon {
          *                                when flickering is done.
          */
         animateFlicker(thing: IThing, cleartime: number = 49, interval: number = 2, callback?: (thing: IThing) => void): void {
-            var timeTotal = ((cleartime * interval) | 0) + 1;
+            var timeTotal: number = ((cleartime * interval) | 0) + 1;
 
             thing.flickering = true;
 
-            thing.FSP.TimeHandler.addEventInterval(function () {
-                thing.hidden = !thing.hidden;
-                if (!thing.hidden) {
+            thing.FSP.TimeHandler.addEventInterval(
+                function (): void {
+                    thing.hidden = !thing.hidden;
+                    if (!thing.hidden) {
+                        thing.FSP.PixelDrawer.setThingSprite(thing);
+                    }
+                },
+                interval | 0,
+                cleartime | 0);
+
+            thing.FSP.TimeHandler.addEvent(
+                function (): void {
+                    thing.flickering = thing.hidden = false;
                     thing.FSP.PixelDrawer.setThingSprite(thing);
-                }
-            }, interval | 0, cleartime | 0);
 
-            thing.FSP.TimeHandler.addEvent(function () {
-                thing.flickering = thing.hidden = false;
-                thing.FSP.PixelDrawer.setThingSprite(thing);
-
-                if (callback) {
-                    callback(thing);
-                }
-            }, timeTotal);
+                    if (callback) {
+                        callback(thing);
+                    }
+                },
+                timeTotal);
         }
 
         /**
@@ -1568,7 +1594,7 @@ module FullScreenPokemon {
             dy: number = 0,
             cleartime: number = 8,
             interval: number = 8,
-            callback): void {
+            callback?: TimeHandlr.IEventCallback): void {
 
             var intervalEnd: number = (interval / 2) | 0;
 
@@ -1585,10 +1611,13 @@ module FullScreenPokemon {
                     dx *= -1;
                     dy *= -1;
 
-                    FSP.TimeHandler.addEventInterval(function () {
-                        dx *= -1;
-                        dy *= -1;
-                    }, interval, cleartime);
+                    FSP.TimeHandler.addEventInterval(
+                        function (): void {
+                            dx *= -1;
+                            dy *= -1;
+                        },
+                        interval,
+                        cleartime);
 
                     if (callback) {
                         FSP.TimeHandler.addEvent(callback, interval * cleartime, FSP);
@@ -1672,8 +1701,8 @@ module FullScreenPokemon {
          * 
          */
         animateCharacterStartWalking(thing: ICharacter, direction: Direction, onStop?: any): void {
-            var repeats = thing.FSP.getCharacterWalkingInterval(thing),
-                distance = repeats * thing.speed;
+            var repeats: number = thing.FSP.getCharacterWalkingInterval(thing),
+                distance: number = repeats * thing.speed;
 
             direction = direction || 0;
             thing.FSP.animateCharacterSetDirection(thing, direction);
@@ -1788,7 +1817,7 @@ module FullScreenPokemon {
          * 
          */
         animateCharacterSetDirectionRandom(thing: ICharacter): void {
-            thing.FSP.animateCharacterSetDirection(thing, thing.FSP.NumberMaker.randomIntWithin(0, 3))
+            thing.FSP.animateCharacterSetDirection(thing, thing.FSP.NumberMaker.randomIntWithin(0, 3));
         }
 
         /**
@@ -1840,6 +1869,8 @@ module FullScreenPokemon {
                     return true;
                 case Function:
                     return (<any>onStop)(thing);
+                default:
+                    throw new Error("Unknown onStop.");
             }
         }
 
@@ -2068,7 +2099,7 @@ module FullScreenPokemon {
                     return function (): void {
                         thing.FSP.MenuGrapher.deleteMenu("Yes/No");
                         thing.FSP.MenuGrapher.createMenu("GeneralText", {
-                            //"deleteOnFinish": true
+                            // "deleteOnFinish": true
                         });
                         thing.FSP.MenuGrapher.addMenuDialog(
                             "GeneralText", words, callback);
@@ -2102,7 +2133,7 @@ module FullScreenPokemon {
          * 
          */
         animateCharacterFollow(thing: ICharacter, other: ICharacter): void {
-            var direction = thing.FSP.getDirectionBordering(thing, other);
+            var direction: Direction = thing.FSP.getDirectionBordering(thing, other);
 
             thing.nocollide = true;
 
@@ -2133,6 +2164,8 @@ module FullScreenPokemon {
                 case 3:
                     thing.FSP.setLeft(thing, other.right);
                     break;
+                default:
+                    throw new Error("Unknown direction.");
             }
 
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
@@ -2159,7 +2192,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateCharacterFollowStop(thing: ICharacter, other: ICharacter): boolean {
+        animateCharacterFollowStop(thing: ICharacter): boolean {
             var other: ICharacter = thing.following;
             if (!other) {
                 return true;
@@ -2186,8 +2219,6 @@ module FullScreenPokemon {
         animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
             var shadow: IThing = thing.FSP.addThing("Shadow"),
                 dy: number = -thing.FSP.unitsize,
-                xvelOld: number = thing.xvel,
-                yvelOld: number = thing.yvel,
                 speed: number = 2,
                 steps: number = 14,
                 changed: number = 0,
@@ -2203,28 +2234,35 @@ module FullScreenPokemon {
             thing.FSP.setMidXObj(shadow, thing);
             thing.FSP.setBottom(shadow, thing.bottom);
 
-            thing.FSP.TimeHandler.addEventInterval(function () {
-                thing.FSP.setBottom(shadow, thing.bottom);
+            thing.FSP.TimeHandler.addEventInterval(
+                function (): void {
+                    thing.FSP.setBottom(shadow, thing.bottom);
 
-                if (changed % speed === 0) {
-                    thing.offsetY += dy;
-                }
+                    if (changed % speed === 0) {
+                        thing.offsetY += dy;
+                    }
 
-                changed += 1;
-            }, 1, steps * speed);
+                    changed += 1;
+                },
+                1,
+                steps * speed);
 
-            thing.FSP.TimeHandler.addEvent(function () {
-                dy *= -1;
-            }, speed * (steps / 2) | 0);
+            thing.FSP.TimeHandler.addEvent(
+                function (): void {
+                    dy *= -1;
+                },
+                speed * (steps / 2) | 0);
 
-            thing.FSP.TimeHandler.addEvent(function () {
-                delete thing.ledge;
-                thing.FSP.killNormal(shadow);
+            thing.FSP.TimeHandler.addEvent(
+                function (): void {
+                    delete thing.ledge;
+                    thing.FSP.killNormal(shadow);
 
-                if (hesitant) {
-                    thing.FSP.keyUpGeneric(thing, thing.direction);
-                }
-            }, steps * speed);
+                    if (hesitant) {
+                        thing.FSP.keyUpGeneric(thing, thing.direction);
+                    }
+                },
+                steps * speed);
         }
 
 
@@ -2245,16 +2283,16 @@ module FullScreenPokemon {
          */
         generateIsCharacterTouchingCharacter(): (thing: ICharacter, other: ICharacter) => boolean {
             return function isCharacterTouchingCharacter(thing: ICharacter, other: ICharacter): boolean {
-                //if (other.xvel || other.yvel) {
-                //    // check destination...
-                //}
+                // if (other.xvel || other.yvel) {
+                //     // check destination...
+                // }
                 return (
                     !thing.nocollide && !other.nocollide
                     && thing.right >= (other.left + other.tolLeft)
                     && thing.left <= (other.right - other.tolRight)
                     && thing.bottom >= (other.top + other.tolTop)
                     && thing.top <= (other.bottom - other.tolBottom));
-            }
+            };
         }
 
         /**
@@ -2268,7 +2306,7 @@ module FullScreenPokemon {
                     && thing.left <= (other.right - other.tolRight)
                     && thing.bottom >= (other.top + other.tolTop)
                     && thing.top <= (other.bottom - other.tolBottom));
-            }
+            };
         }
 
         /**
@@ -2347,7 +2385,7 @@ module FullScreenPokemon {
                     default:
                         throw new Error("Unknown direction borering.");
                 }
-            }
+            };
         }
 
         /**
@@ -2374,15 +2412,15 @@ module FullScreenPokemon {
                     if (other.singleUse) {
                         other.active = false;
                     }
-                    other.activate(thing, other)
+                    other.activate(thing, other);
                 }
                 return true;
             }
 
             // Find direction of movement using xvel, yvel
             // if towards other, transport
-            var directionMovement = thing.direction,
-                directionActual = thing.FSP.getDirectionBordering(thing, other);
+            var directionMovement: Direction = thing.direction,
+                directionActual: Direction = thing.FSP.getDirectionBordering(thing, other);
 
             if (directionMovement === directionActual) {
                 other.active = true;
@@ -2394,8 +2432,8 @@ module FullScreenPokemon {
          * 
          */
         collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
-            var dialog = other.dialog,
-                direction;
+            var dialog: string | string[] = other.dialog,
+                direction: Direction;
 
             if (other.cutscene) {
                 thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
@@ -2441,7 +2479,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        collidePokeball(thing: IThing, other: IPokeball) {
+        collidePokeball(thing: IThing, other: IPokeball): void {
             switch (other.action) {
                 case "item":
                     thing.FSP.MenuGrapher.createMenu("GeneralText");
@@ -2450,7 +2488,7 @@ module FullScreenPokemon {
                         [
                             "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                         ],
-                        function () {
+                        function (): void {
                             thing.FSP.MenuGrapher.deleteActiveMenu();
                             thing.FSP.killNormal(other);
                             thing.FSP.StateHolder.addChange(
@@ -2485,7 +2523,7 @@ module FullScreenPokemon {
 
                 case "yes/no":
                     thing.FSP.MenuGrapher.createMenu("Yes/No", {
-                        "killOnB": ["GeneralText"],
+                        "killOnB": ["GeneralText"]
                     });
                     thing.FSP.MenuGrapher.addMenuList("Yes/No", {
                         "options": [{
@@ -2498,13 +2536,16 @@ module FullScreenPokemon {
                     });
                     thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
                     break;
+
+                default:
+                    throw new Error("Unknown Pokeball action.");
             }
         }
 
         /**
          * 
          */
-        collideCharacterGrass(thing: ICharacter, other: IGrass) {
+        collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
             if (
                 thing.grass
                 || !thing.FSP.isThingWithinGrass(thing, other)) {
@@ -2550,17 +2591,14 @@ module FullScreenPokemon {
                 return false;
             }
 
-            switch (thing.direction % 2) {
-                case 0:
-                    if (thing.left === other.right || thing.right === other.left) {
-                        return true;
-                    }
-                    break;
-                case 1:
-                    if (thing.top === other.bottom || thing.bottom === other.top) {
-                        return true;
-                    }
-                    break;
+            if (thing.direction % 2 === 0) {
+                if (thing.left === other.right || thing.right === other.left) {
+                    return true;
+                }
+            } else {
+                if (thing.top === other.bottom || thing.bottom === other.top) {
+                    return true;
+                }
             }
 
             thing.FSP.animateCharacterHopLedge(thing, other);
@@ -2607,7 +2645,7 @@ module FullScreenPokemon {
          * 
          */
         activateCutsceneTriggerer(thing: ICharacter, other: IDetector): void {
-            if (!other.alive || thing.collidedTrigger == other) {
+            if (!other.alive || thing.collidedTrigger === other) {
                 return;
             }
 
@@ -2671,7 +2709,7 @@ module FullScreenPokemon {
          * 
          */
         activateMenuTriggerer(thing: ICharacter, other: IMenuTriggerer): void {
-            if (!other.alive || thing.collidedTrigger == other) {
+            if (!other.alive || thing.collidedTrigger === other) {
                 return;
             }
 
@@ -2691,7 +2729,7 @@ module FullScreenPokemon {
                     name,
                     dialog,
                     function (): void {
-                        var onStop;
+                        var onStop: any;
 
                         if (other.pushSteps) {
                             onStop = other.pushSteps.slice();
@@ -2700,12 +2738,12 @@ module FullScreenPokemon {
                         thing.FSP.MenuGrapher.deleteMenu("GeneralText");
 
                         if (typeof other.pushDirection !== "undefined") {
-                            onStop.push(function () {
+                            onStop.push(function (): void {
                                 thing.FSP.MapScreener.blockInputs = false;
                                 delete thing.collidedTrigger;
                             });
                             thing.FSP.animateCharacterStartTurning(
-                                thing, other.pushDirection, onStop)
+                                thing, other.pushDirection, onStop);
                         } else {
                             thing.FSP.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
@@ -2743,7 +2781,7 @@ module FullScreenPokemon {
          * @param {Player} thing
          * @param {Thing} other
          */
-        activateTransporter(thing: ICharacter, other: ITransporter) {
+        activateTransporter(thing: ICharacter, other: ITransporter): void {
             if (!thing.player || !other.active) {
                 return;
             }
@@ -2752,7 +2790,7 @@ module FullScreenPokemon {
                 throw new Error("No transport given to activateTransporter");
             }
 
-            var transport = <ITransportSchema>other.transport,
+            var transport: ITransportSchema = <ITransportSchema>other.transport,
                 callback: Function,
                 args: any[];
 
@@ -2785,9 +2823,9 @@ module FullScreenPokemon {
                 return;
             }
 
-            var gym = other.gym,
-                leader = other.leader,
-                dialog = [
+            var gym: string = other.gym,
+                leader: string = other.leader,
+                dialog: string[] = [
                     gym.toUpperCase()
                     + " \n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: "
                     + leader.toUpperCase(),
@@ -3015,18 +3053,20 @@ module FullScreenPokemon {
          * 
          */
         activateAreaSpawner(thing: IAreaSpawner, area: IArea): void {
-            var creation = area.creation,
-                FSP = thing.FSP,
-                MapsCreator = FSP.MapsCreator,
-                MapScreener = FSP.MapScreener,
-                MapsHandler = FSP.MapsHandler,
-                QuadsKeeper = FSP.QuadsKeeper,
-                areaCurrent = MapsHandler.getArea(),
-                mapCurrent = MapsHandler.getMap(),
-                prethingsCurrent = MapsHandler.getPreThings(),
-                left = thing.left + thing.FSP.MapScreener.left,
-                top = thing.top + thing.FSP.MapScreener.top,
-                x, y, command, i;
+            var creation: any[] = area.creation,
+                FSP: FullScreenPokemon = thing.FSP,
+                MapsCreator: MapsCreatr.IMapsCreatr = FSP.MapsCreator,
+                MapsHandler: MapsHandlr.IMapsHandlr = FSP.MapsHandler,
+                QuadsKeeper: QuadsKeepr.IQuadsKeepr = FSP.QuadsKeeper,
+                areaCurrent: IArea = <IArea>MapsHandler.getArea(),
+                mapCurrent: IMap = <IMap>MapsHandler.getMap(),
+                prethingsCurrent: any = MapsHandler.getPreThings(),
+                left: number = thing.left + thing.FSP.MapScreener.left,
+                top: number = thing.top + thing.FSP.MapScreener.top,
+                x: number,
+                y: number,
+                command: any,
+                i: number;
 
             switch (thing.direction) {
                 case 0:
@@ -3041,6 +3081,8 @@ module FullScreenPokemon {
                 case 3:
                     left -= area.width * thing.FSP.unitsize;
                     break;
+                default:
+                    throw new Error("Unknown direction.");
             }
 
             x = left / FSP.unitsize + (thing.offsetX || 0);
@@ -3049,12 +3091,14 @@ module FullScreenPokemon {
             FSP.expandMapBoundaries(FSP, area, x, y);
 
             for (i = 0; i < creation.length; i += 1) {
-                // A copy of the command must be used to not modify the original 
-                command = FSP.proliferate({
-                    "noBoundaryStretch": true,
-                    "areaName": area.name,
-                    "mapName": area.map.name
-                }, creation[i]);
+                // A copy of the command must be used, so as to not modify the original 
+                command = FSP.proliferate(
+                    {
+                        "noBoundaryStretch": true,
+                        "areaName": area.name,
+                        "mapName": area.map.name
+                    },
+                    creation[i]);
 
                 if (!command.x) {
                     command.x = x;
@@ -3085,7 +3129,7 @@ module FullScreenPokemon {
             area.spawned = true;
             FSP.killNormal(thing);
 
-            //MapScreener.setVariables();
+            // MapScreener.setVariables();
         }
 
         /**
@@ -3139,7 +3183,7 @@ module FullScreenPokemon {
          * 
          */
         closePauseMenu(): void {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
 
             FSP.MenuGrapher.deleteMenu("Pause");
         }
@@ -3255,22 +3299,22 @@ module FullScreenPokemon {
          * 
          */
         openPokemonMenuStats(settings: any): void {
-            var EightBitter = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                pokemon = settings.pokemon,
-                schemas = EightBitter.MathDecider.getConstant("pokemon"),
-                schema = schemas[pokemon.title];
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                pokemon: BattleMovr.IActor = settings.pokemon,
+                schemas: any = FSP.MathDecider.getConstant("pokemon"),
+                schema: any = schemas[pokemon.title];
 
-            EightBitter.MenuGrapher.createMenu("PokemonMenuStats", {
+            FSP.MenuGrapher.createMenu("PokemonMenuStats", {
                 "backMenu": "PokemonMenuContext",
                 "container": "Pokemon"
             });
 
-            EightBitter.openPokemonStats({
+            FSP.openPokemonStats({
                 "pokemon": pokemon,
                 "container": "PokemonMenuStats",
                 "size": {
                     "width": 36,
-                    "height": 40,
+                    "height": 40
                 },
                 "position": {
                     "vertical": "bottom",
@@ -3279,26 +3323,26 @@ module FullScreenPokemon {
                 "textXOffset": 4
             });
 
-            EightBitter.MenuGrapher.addMenuDialog(
+            FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsTitle", pokemon.nickname);
-            EightBitter.MenuGrapher.addMenuDialog(
+            FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsLevel", pokemon.level);
-            EightBitter.MenuGrapher.addMenuDialog(
+            FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
-            EightBitter.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsNumber", EightBitter.makeDigit(schema.number, 3, 0));
-            EightBitter.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
-            EightBitter.MenuGrapher.addMenuDialog(
+            FSP.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsNumber", FSP.makeDigit(schema.number, 3, 0));
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+            FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsType", pokemon.types.join(" \n "));
-            EightBitter.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "H819");
-            EightBitter.MenuGrapher.addMenuDialog(
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "H819");
+            FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsOT",
                 [
                     "%%%%%%%PLAYER%%%%%%%"
                 ]
                 );
 
-            EightBitter.MenuGrapher.createMenuThing("PokemonMenuStats", {
+            FSP.MenuGrapher.createMenuThing("PokemonMenuStats", {
                 "type": "thing",
                 "thing": "SquirtleFront", // pokemon.title + "Front",
                 "args": {
@@ -3313,7 +3357,7 @@ module FullScreenPokemon {
                 }
             });
 
-            EightBitter.MenuGrapher.setActiveMenu("PokemonMenuStats");
+            FSP.MenuGrapher.setActiveMenu("PokemonMenuStats");
         }
 
         /**
@@ -3322,7 +3366,7 @@ module FullScreenPokemon {
         openPokemonStats(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon: IPokemonSchema = settings.pokemon,
-                statistics = FSP.MathDecider.getConstant("statisticNames").filter(
+                statistics: string[] = FSP.MathDecider.getConstant("statisticNames").filter(
                     function (statistic: string): boolean {
                         return statistic !== "HP";
                     }),
@@ -3348,7 +3392,7 @@ module FullScreenPokemon {
                     "vertical": "center"
                 },
                 "onMenuDelete": settings.onMenuDelete,
-                "childrenSchemas": statistics.map(function (string, i) {
+                "childrenSchemas": statistics.map(function (text: string, i: number): any {
                     if (i < numStatistics) {
                         top = i * 8 + 4;
                         left = textXOffset;
@@ -3359,7 +3403,7 @@ module FullScreenPokemon {
 
                     return {
                         "type": "text",
-                        "words": [string],
+                        "words": [text],
                         "position": {
                             "offset": {
                                 "top": top - .5,
@@ -3374,12 +3418,12 @@ module FullScreenPokemon {
         /**
          * 
          */
-        openPokedexListing(title: string, callback?: (...args: any[]) => void, settings: any): void {
+        openPokedexListing(title: string, callback?: (...args: any[]) => void, settings?: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon: IPokedexListing = FSP.MathDecider.getConstant("pokemon")[title],
-                height = pokemon.height,
-                feet = [].slice.call(height[0]).reverse().join(""),
-                inches = [].slice.call(height[1]).reverse().join("");
+                height: string[] = pokemon.height,
+                feet: string = [].slice.call(height[0]).reverse().join(""),
+                inches: string = [].slice.call(height[1]).reverse().join("");
 
             FSP.MenuGrapher.createMenu("PokedexListing", settings);
             FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
@@ -3401,7 +3445,7 @@ module FullScreenPokemon {
                 "PokedexListingWeight", pokemon.weight);
             FSP.MenuGrapher.addMenuDialog(
                 "PokedexListingNumber",
-                FSP.makeDigit(pokemon.index, 3, '0'));
+                FSP.makeDigit(pokemon.index, 3, "0"));
             FSP.MenuGrapher.addMenuDialog(
                 "PokedexListingInfo",
                 pokemon.info[0],
@@ -3410,7 +3454,7 @@ module FullScreenPokemon {
                     FSP.MenuGrapher.addMenuDialog(
                         "PokedexListingInfo",
                         pokemon.info[1],
-                        function () {
+                        function (): void {
                             FSP.MenuGrapher.deleteMenu("PokedexListing");
                             if (callback) {
                                 callback();
@@ -3427,16 +3471,16 @@ module FullScreenPokemon {
          * 
          */
         openPokemonMenu(settings: any): void {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 listings: BattleMovr.IActor[] = FSP.ItemsHolder.getItem("PokemonInParty"),
                 references: any = FSP.MathDecider.getConstant("pokemon");
 
             FSP.MenuGrapher.createMenu("Pokemon", settings);
             FSP.MenuGrapher.addMenuList("Pokemon", {
                 "options": listings.map(function (listing: BattleMovr.IActor, i: number): any {
-                    var sprite = references[listing.title].sprite + "Pokemon",
-                        barWidth = 25,
-                        health = FSP.MathDecider.compute(
+                    var sprite: string = references[listing.title].sprite + "Pokemon",
+                        barWidth: number = 25,
+                        health: number = FSP.MathDecider.compute(
                             "widthHealthBar", barWidth, listing.HP, listing.HPNormal);
 
                     return {
@@ -3510,7 +3554,7 @@ module FullScreenPokemon {
                                 "text": listing.HP + "/ " + listing.HPNormal,
                                 "x": 43.75,
                                 "y": 4
-                            }],
+                            }]
                     };
                 })
             });
@@ -3595,24 +3639,18 @@ module FullScreenPokemon {
          */
         openKeyboardMenu(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                value = [
+                value: string[][] = [
                     settings.value || ["_", "_", "_", "_", "_", "_", "_"]
                 ],
-                onKeyPress = FSP.addKeyboardMenuValue.bind(FSP),
-                onBPress = FSP.removeKeyboardMenuValue.bind(FSP),
-                onComplete = (settings.callback || onKeyPress).bind(FSP),
-                menuKeyboard = FSP.MenuGrapher.createMenu("Keyboard", {
-                    "settings": settings,
-                    "onKeyPress": onKeyPress,
-                    "onComplete": onComplete,
-                    "ignoreB": false
-                }),
+                onKeyPress: (...args: any[]) => void = FSP.addKeyboardMenuValue.bind(FSP),
+                onBPress: (...args: any[]) => void = FSP.removeKeyboardMenuValue.bind(FSP),
+                onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(FSP),
                 menuResults: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
-                lowercase = settings.lowercase,
-                letters = lowercase
+                lowercase: boolean = settings.lowercase,
+                letters: string[] = lowercase
                     ? FullScreenPokemon.keysLowercase
                     : FullScreenPokemon.keysUppercase,
-                options = letters.map(function (letter) {
+                options: any[] = letters.map(function (letter: string): any {
                     return {
                         "text": [letter],
                         "callback": letter !== "ED"
@@ -3642,7 +3680,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
             FSP.MenuGrapher.setActiveMenu("KeyboardKeys");
 
-            menuResults.displayedValue = value.slice()[0];
+            menuResults.displayedValue = value.slice()[0][0];
 
             menuResults.completeValue = settings.completeValue || "";
             menuResults.selectedChild = settings.selectedChild || 0;
@@ -3749,7 +3787,7 @@ module FullScreenPokemon {
         startBattle(battleInfo: IBattleInfo): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 animations: string[] = battleInfo.animations || [
-                //"LineSpiral", "Flash"
+                // "LineSpiral", "Flash"
                     "Flash"
                 ],
                 animation: string = FSP.NumberMaker.randomArrayMember(animations),
@@ -3777,12 +3815,12 @@ module FullScreenPokemon {
         /**
          * 
          */
-        createPokemon(schema: IPokemonSchema): BattleMovr.IActor {
+        createPokemon(schema: any): BattleMovr.IActor {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                level = typeof schema.levels !== "undefined"
+                level: number = typeof schema.levels !== "undefined"
                     ? FSP.NumberMaker.randomArrayMember(schema.levels)
                     : schema.level,
-                pokemon = FSP.MathDecider.compute("newPokemon", schema.title, level);
+                pokemon: BattleMovr.IActor = FSP.MathDecider.compute("newPokemon", schema.title, level);
 
             if (schema.moves) {
                 pokemon.moves = schema.moves;
@@ -3796,9 +3834,9 @@ module FullScreenPokemon {
          */
         healPokemon(pokemon: BattleMovr.IActor): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                moves = FSP.MathDecider.getConstant("moves"),
-                statisticNames = FSP.MathDecider.getConstant("statisticNames"),
-                i;
+                moves: BattleMovr.IMove[] = FSP.MathDecider.getConstant("moves"),
+                statisticNames: string[] = FSP.MathDecider.getConstant("statisticNames"),
+                i: number;
 
             for (i = 0; i < statisticNames.length; i += 1) {
                 pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
@@ -3837,9 +3875,9 @@ module FullScreenPokemon {
          * 
          */
         chooseRandomWildPokemon(FSP: FullScreenPokemon, options: IPokemonSchema[]): IPokemonSchema {
-            var choice = FSP.NumberMaker.random(),
-                sum = 0,
-                i;
+            var choice: number = FSP.NumberMaker.random(),
+                sum: number = 0,
+                i: number;
 
             for (i = 0; i < options.length; i += 1) {
                 sum += options[i].rate;
@@ -4001,10 +4039,16 @@ module FullScreenPokemon {
             opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
 
             FSP.animateFadeHorizontal(
-                player,(playerGoal - playerX) / timeout, playerGoal, 1);
+                player,
+                (playerGoal - playerX) / timeout,
+                playerGoal,
+                1);
 
             FSP.animateFadeHorizontal(
-                opponent,(opponentGoal - opponentX) / timeout, opponentGoal, 1);
+                opponent,
+                (opponentGoal - opponentX) / timeout,
+                opponentGoal,
+                1);
 
             FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("OpeningText"), timeout);
 
@@ -4050,7 +4094,7 @@ module FullScreenPokemon {
                     battleInfo.player,
                     true);
             } else {
-                FSP.addBattleDisplayPokemonHealth(FSP, "opponent")
+                FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
             }
 
             FSP.MenuGrapher.createMenu("GeneralText", {
@@ -4074,13 +4118,16 @@ module FullScreenPokemon {
                 opponentX: number = FSP.getMidX(opponent),
                 opponentGoal: number = menu.right + opponent.width * FSP.unitsize / 2,
                 battleInfo: IBattleInfo = settings.battleInfo,
-                callback = battleInfo.opponent.hasActors
+                callback: string = battleInfo.opponent.hasActors
                     ? "OpponentSendOut"
                     : "PlayerIntro",
                 timeout: number = 49;
 
             FSP.animateFadeHorizontal(
-                opponent,(opponentGoal - opponentX) / timeout, opponentGoal, 1);
+                opponent,
+                (opponentGoal - opponentX) / timeout,
+                opponentGoal,
+                1);
 
             FSP.TimeHandler.addEvent(
                 FSP.animateFadeAttribute,
@@ -4111,7 +4158,7 @@ module FullScreenPokemon {
                 FSP.ScenePlayer.bindRoutine(
                     callback,
                     {
-                        "nextRoutine": "PlayerIntro",
+                        "nextRoutine": "PlayerIntro"
                     }),
                 timeout);
         }
@@ -4136,7 +4183,10 @@ module FullScreenPokemon {
             }
 
             FSP.animateFadeHorizontal(
-                player,(playerGoal - playerX) / timeout, playerGoal, 1);
+                player,
+                (playerGoal - playerX) / timeout,
+                playerGoal,
+                1);
 
             FSP.TimeHandler.addEvent(
                 FSP.animateFadeAttribute,
@@ -4214,10 +4264,10 @@ module FullScreenPokemon {
         cutsceneBattleOpponentSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
             var opponentInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
                 pokemonInfo: BattleMovr.IActor = opponentInfo.actors[opponentInfo.selectedIndex],
-                pokemon = FSP.BattleMover.setThing(
+                pokemon: BattleMovr.IThing = FSP.BattleMover.setThing(
                     "opponent", pokemonInfo.title + "Front");
 
-            console.log("Should make the zoom-in animation for appearing Pokemon...");
+            console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
             FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
 
@@ -4255,9 +4305,9 @@ module FullScreenPokemon {
         cutsceneBattlePlayerSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
             var playerInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
                 pokemonInfo: BattleMovr.IActor = playerInfo.selectedActor,
-                pokemon = FSP.BattleMover.setThing("player", pokemonInfo.title + "Back");
+                pokemon: BattleMovr.IThing = FSP.BattleMover.setThing("player", pokemonInfo.title + "Back");
 
-            console.log("Should make the zoom-in animation for appearing Pokemon...");
+            console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
             FSP.addBattleDisplayPokemonHealth(FSP, "player");
 
@@ -4325,6 +4375,8 @@ module FullScreenPokemon {
                 choice: string = routineArguments.choicePlayer,
                 move: IPokedexMove = FPS.MathDecider.getConstant("moves")[choice];
 
+            console.log("Should do something with", move);
+
             routineArguments.attackerName = "player";
             routineArguments.defenderName = "opponent";
 
@@ -4334,7 +4386,7 @@ module FullScreenPokemon {
                 routineArguments.movePlayerDone = true;
 
                 if (routineArguments.moveOpponentDone) {
-                    callback = function () {
+                    callback = function (): void {
                         routineArguments.movePlayerDone = false;
                         routineArguments.moveOpponentDone = false;
                         FPS.MenuGrapher.createMenu("GeneralText");
@@ -4396,6 +4448,8 @@ module FullScreenPokemon {
                 choice: string = routineArguments.choiceOpponent,
                 move: string = FSP.MathDecider.getConstant("moves")[choice];
 
+            console.log("Should do something with", move);
+
             routineArguments.attackerName = "opponent";
             routineArguments.defenderName = "player";
 
@@ -4405,7 +4459,7 @@ module FullScreenPokemon {
                 routineArguments.moveOpponentDone = true;
 
                 if (routineArguments.movePlayerDone) {
-                    callback = function () {
+                    callback = function (): void {
                         routineArguments.movePlayerDone = false;
                         routineArguments.moveOpponentDone = false;
                         FSP.MenuGrapher.createMenu("GeneralText");
@@ -4448,7 +4502,7 @@ module FullScreenPokemon {
                 actor: BattleMovr.IActor = battler.selectedActor,
                 hpStart: number = actor.HP,
                 hpEnd: number = Math.max(hpStart - damage, 0),
-                callback = hpEnd === 0
+                callback: (...args: any[]) => void = hpEnd === 0
                     ? FSP.TimeHandler.addEvent.bind(
                         FSP.TimeHandler,
                         FSP.ScenePlayer.bindRoutine("PokemonFaints", {
@@ -4491,7 +4545,7 @@ module FullScreenPokemon {
                 background: IThing = <IThing>FSP.BattleMover.getBackgroundThing(),
                 backgroundIndex: number = texts.indexOf(background),
                 nextRoutine: string = battlerName === "player"
-                    ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints"
+                    ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints";
 
             FSP.addThing(
                 blank,
@@ -4528,7 +4582,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleAfterPlayerPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
-                actorAvailable = FSP.checkArrayMembersIndex(battleInfo.player.actors, "HP");
+                actorAvailable: boolean = FSP.checkArrayMembersIndex(battleInfo.player.actors, "HP");
 
             if (actorAvailable) {
                 FSP.ScenePlayer.playRoutine("PlayerChoosesPokemon");
@@ -4543,13 +4597,13 @@ module FullScreenPokemon {
         cutsceneBattleAfterOpponentPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent,
-                actorAvailable = FSP.checkArrayMembersIndex(opponent.actors, "HP"),
-                experienceGained = FSP.MathDecider.compute(
+                actorAvailable: boolean = FSP.checkArrayMembersIndex(opponent.actors, "HP"),
+                experienceGained: number = FSP.MathDecider.compute(
                     "experienceGained", battleInfo.player, battleInfo.opponent),
-                callback;
+                callback: Function;
 
             if (actorAvailable) {
-                callback = FSP.ScenePlayer.bindRoutine("OpponentSwitchesPokemon")
+                callback = FSP.ScenePlayer.bindRoutine("OpponentSwitchesPokemon");
             } else {
                 callback = FSP.ScenePlayer.bindRoutine("Victory");
             }
@@ -4579,7 +4633,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleOpponentSwitchesPokemon(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
-                opponent = battleInfo.opponent;
+                opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
 
             FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
             opponent.selectedIndex += 1;
@@ -4587,14 +4641,14 @@ module FullScreenPokemon {
 
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": false
-            })
+            });
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
                     opponent.name + " is \n about to use " + opponent.selectedActor.nickname + "!",
                     "Will %%%%%%%PLAYER%%%%%%% change %%%%%%%POKEMON%%%%%%%?"
                 ],
-                function () {
+                function (): void {
                     FSP.MenuGrapher.createMenu("Yes/No");
                     FSP.MenuGrapher.addMenuList("Yes/No", {
                         "options": [
@@ -4617,7 +4671,7 @@ module FullScreenPokemon {
                     FSP.MenuGrapher.setActiveMenu("Yes/No");
                 }
                 );
-            FSP.MenuGrapher.setActiveMenu("GeneralText")
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
 
         }
 
@@ -4653,7 +4707,7 @@ module FullScreenPokemon {
         cutsceneBattleLevelUp(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 routineArguments: any = settings.routineArguments,
-                gains: number = routineArguments.experienceGained,
+                // gains: number = routineArguments.experienceGained,
                 actor: BattleMovr.IActor = battleInfo.player.selectedActor;
 
             actor.level += 1;
@@ -4777,7 +4831,7 @@ module FullScreenPokemon {
 
             opponent.opacity = 0;
 
-            FSP.setTop(opponent, menu.top)
+            FSP.setTop(opponent, menu.top);
             FSP.setLeft(opponent, menu.right);
             opponentX = FSP.getMidX(opponent);
             opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
@@ -4820,7 +4874,7 @@ module FullScreenPokemon {
             }
 
             if (battleInfo.textAfterBattle) {
-                animationSettings.callback = function () {
+                animationSettings.callback = function (): void {
                     FSP.MenuGrapher.createMenu("GeneralText");
                     FSP.MenuGrapher.addMenuDialog(
                         "GeneralText", battleInfo.textAfterBattle);
@@ -4859,7 +4913,7 @@ module FullScreenPokemon {
             if (!battleInfo.noBlackout) {
                 message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
                 transport = FSP.ItemsHolder.getItem("lastPokecenter");
-                callback = FSP.setMap.bind(FSP, transport.map, transport.location)
+                callback = FSP.setMap.bind(FSP, transport.map, transport.location);
             } else {
                 callback = FSP.BattleMover.closeBattle;
             }
@@ -4887,22 +4941,26 @@ module FullScreenPokemon {
         cutsceneBattleComplete(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 keptThings: (string | IThing)[],
-                thing, i;
+                thing: string | IThing,
+                i: number;
 
             FSP.MapScreener.blockInputs = false;
 
             if (battleInfo.keptThings) {
-                keptThings = battleInfo.keptThings.slice(),
+                keptThings = battleInfo.keptThings.slice();
                 keptThings.push(FSP.player);
 
                 for (i = 0; i < keptThings.length; i += 1) {
                     thing = keptThings[i];
 
                     if (thing.constructor === String) {
-                        thing = FSP.getThingById(thing);
+                        thing = FSP.getThingById(<string>thing);
                     }
 
-                    FSP.GroupHolder.switchObjectGroup(thing, "Text", thing.groupType);
+                    FSP.GroupHolder.switchObjectGroup(
+                        thing,
+                        "Text",
+                        (<IThing>thing).groupType);
                 }
             }
 
@@ -4941,11 +4999,17 @@ module FullScreenPokemon {
                         keptThings[i] = FSP.getThingById(<string>keptThings[i]);
                     }
                     FSP.GroupHolder.switchObjectGroup(
-                        keptThings[i],(<IThing>keptThings[i]).groupType, "Text");
+                        keptThings[i],
+                        (<IThing>keptThings[i]).groupType,
+                        "Text");
                 }
             }
 
-            function addThing() {
+            /**
+             * Yes, an inline Function. It makes things easier by calling itself
+             * a bunch of times.
+             */
+            function addThing(): void {
                 if (numTimes >= ((divisor / 2) | 0)) {
                     if (settings.callback) {
                         settings.callback();
@@ -4958,7 +5022,7 @@ module FullScreenPokemon {
                     case 0:
                         thing = FSP.ObjectMaker.make("BlackSquare", {
                             "width": width / unitsize,
-                            "height": screenHeight / unitsize,
+                            "height": screenHeight / unitsize
                         });
                         FSP.addThing(
                             thing,
@@ -5010,6 +5074,9 @@ module FullScreenPokemon {
                         difference = -width;
                         destination = numTimes * width;
                         break;
+
+                    default:
+                        throw new Error("Unknown direction.");
                 }
 
                 things.push(thing);
@@ -5021,30 +5088,33 @@ module FullScreenPokemon {
                     }
                 }
 
-                FSP.TimeHandler.addEventInterval(function () {
-                    if (direction % 2 === 1) {
-                        FSP.shiftHoriz(thing, difference);
-                    } else {
-                        FSP.shiftVert(thing, difference);
-                    }
-
-                    if (direction === 1 || direction === 2) {
-                        if (thing[Direction[direction]] < destination) {
-                            return;
+                FSP.TimeHandler.addEventInterval(
+                    function (): boolean {
+                        if (direction % 2 === 1) {
+                            FSP.shiftHoriz(thing, difference);
+                        } else {
+                            FSP.shiftVert(thing, difference);
                         }
-                    } else {
-                        if (thing[Direction[direction]] > destination) {
-                            return;
-                        }
-                    }
 
-                    direction = (direction + 3) % 4;
-                    if (direction === 2) {
-                        numTimes += 1;
-                    }
-                    addThing();
-                    return true;
-                }, 1, Infinity);
+                        if (direction === 1 || direction === 2) {
+                            if (thing[Direction[direction]] < destination) {
+                                return false;
+                            }
+                        } else {
+                            if (thing[Direction[direction]] > destination) {
+                                return false;
+                            }
+                        }
+
+                        direction = (direction + 3) % 4;
+                        if (direction === 2) {
+                            numTimes += 1;
+                        }
+                        addThing();
+                        return true;
+                    },
+                    1,
+                    Infinity);
             }
 
             addThing();
@@ -5061,7 +5131,9 @@ module FullScreenPokemon {
                 callback: Function = settings.callback,
                 change: number = settings.change || .33,
                 speed: number = settings.speed || 1,
-                repeater: () => void = function () {
+                completed: number = 0,
+                color: string,
+                repeater: () => void = function (): void {
                     if (completed >= flashes) {
                         if (callback) {
                             callback();
@@ -5086,9 +5158,7 @@ module FullScreenPokemon {
                                 "callback": repeater
                             })
                     });
-                },
-                completed = 0,
-                color;
+                };
 
             repeater();
         }
@@ -5174,34 +5244,37 @@ module FullScreenPokemon {
                 routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
-                attacker = FSP.BattleMover.getThing(attackerName),
-                defender = FSP.BattleMover.getThing(defenderName),
+                attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
+                defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName),
                 direction: number = attackerName === "player" ? 1 : -1,
                 notes: IThing[] = [
                     FSP.ObjectMaker.make("Note"),
                     FSP.ObjectMaker.make("Note")
                 ];
 
+            console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
+
             FSP.ScenePlayer.playRoutine(
                 "ChangeStatistic",
-                FSP.proliferate({
-                    "callback": routineArguments.callback,
-                    "defenderName": defenderName,
-                    "statistic": "Attack",
-                    "amount": -1
-                }, routineArguments));
+                FSP.proliferate(
+                    {
+                        "callback": routineArguments.callback,
+                        "defenderName": defenderName,
+                        "statistic": "Attack",
+                        "amount": -1
+                    },
+                    routineArguments));
         }
 
         /**
          * 
          */
         cutsceneBattleAttackTackle(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: IBattleInfo = settings.battleInfo,
-                routineArguments: any = settings.routineArguments,
+            var routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
-                attacker = <IThing>FSP.BattleMover.getThing(attackerName),
-                defender = <IThing>FSP.BattleMover.getThing(defenderName),
+                attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
+                defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName),
                 direction: number = attackerName === "player" ? 1 : -1,
                 xvel: number = 7 * direction,
                 dt: number = 7,
@@ -5227,7 +5300,7 @@ module FullScreenPokemon {
                     defender,
                     14,
                     5,
-                    routineArguments.callback)
+                    routineArguments.callback);
             } else {
                 FSP.TimeHandler.addEvent(
                     FSP.animateScreenShake,
@@ -5251,12 +5324,10 @@ module FullScreenPokemon {
          * 
          */
         cutsceneBattleAttackTailWhip(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: IBattleInfo = settings.battleInfo,
-                routineArguments: any = settings.routineArguments,
+            var routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
-                attacker = <IThing>FSP.BattleMover.getThing(attackerName),
-                defender = <IThing>FSP.BattleMover.getThing(defenderName),
+                attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
                 direction: number = attackerName === "player" ? 1 : -1,
                 dt: number = 11,
                 dx: number = FSP.unitsize * 4;
@@ -5407,7 +5478,7 @@ module FullScreenPokemon {
                 ],
                 FSP.ScenePlayer.bindRoutine("Healing")
                 );
-            FSP.MenuGrapher.setActiveMenu("GeneralText")
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
         /**
@@ -5424,16 +5495,19 @@ module FullScreenPokemon {
             settings.balls = balls;
             FSP.animateCharacterSetDirection(settings.nurse, 3);
 
-            FSP.TimeHandler.addEventInterval(function () {
-                balls.push(
-                    FSP.addThing(
-                        "HealingMachineBall",
-                        left + (i % 2) * 3 * FSP.unitsize,
-                        top + Math.floor(i / 2) * 2.5 * FSP.unitsize
-                        )
-                    );
-                i += 1;
-            }, dt, party.length);
+            FSP.TimeHandler.addEventInterval(
+                function (): void {
+                    balls.push(
+                        FSP.addThing(
+                            "HealingMachineBall",
+                            left + (i % 2) * 3 * FSP.unitsize,
+                            top + Math.floor(i / 2) * 2.5 * FSP.unitsize
+                            )
+                        );
+                    i += 1;
+                },
+                dt,
+                party.length);
 
             FSP.TimeHandler.addEvent(
                 FSP.ScenePlayer.playRoutine,
@@ -5600,13 +5674,13 @@ module FullScreenPokemon {
                             }
                             ),
                         "reference": reference
-                    }
+                    };
                 });
 
             options.push({
                 "text": "CANCEL",
                 "callback": FSP.MenuGrapher.registerB
-            })
+            });
 
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true
@@ -5878,7 +5952,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneIntroFirstDialogFade(FSP: FullScreenPokemon, settings: any): void {
-            var blank = FSP.ObjectMaker.make("WhiteSquare", {
+            var blank: IThing = FSP.ObjectMaker.make("WhiteSquare", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
                 "opacity": 0
@@ -5951,7 +6025,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerAppear(FSP: FullScreenPokemon, settings) {
+        cutsceneIntroPlayerAppear(FSP: FullScreenPokemon, settings: any): void {
             var middleX: number = FSP.MapScreener.middleX | 0,
                 player: IPlayer = FSP.ObjectMaker.make("PlayerPortrait", {
                     "flipHoriz": true,
@@ -6072,9 +6146,12 @@ module FullScreenPokemon {
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true
             });
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                "Right! So your name is " + settings.name + "!"
-            ], FSP.ScenePlayer.bindRoutine("PlayerNameComplete"));
+            FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    "Right! So your name is " + settings.name + "!"
+                ],
+                FSP.ScenePlayer.bindRoutine("PlayerNameComplete"));
 
             FSP.ItemsHolder.setItem("name", settings.name);
         }
@@ -6083,7 +6160,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneIntroPlayerNameComplete(FSP: FullScreenPokemon, settings: any): void {
-            var blank = FSP.ObjectMaker.make("WhiteSquare", {
+            var blank: IThing = FSP.ObjectMaker.make("WhiteSquare", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
                 "opacity": 0
@@ -6168,7 +6245,7 @@ module FullScreenPokemon {
                         "text": "NEW NAME",
                         "callback": FSP.openKeyboardMenu.bind(FSP, {
                             "title": "RIVAL's NAME?",
-                            "callback": fromKeyboard,
+                            "callback": fromKeyboard
                         })
                     }, {
                         "text": "RED",
@@ -6396,13 +6473,12 @@ module FullScreenPokemon {
                 [
                     "OAK: Hey! Wait! Don't go out!"
                 ],
-                function () {
+                function (): void {
                     if (!triggered) {
                         triggered = true;
                         FSP.ScenePlayer.playRoutine("Exclamation");
                     }
-                }
-                );
+                });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
@@ -6416,7 +6492,7 @@ module FullScreenPokemon {
 
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.hideMenu, timeout, "GeneralText");
 
-            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("Catchup"), timeout)
+            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("Catchup"), timeout);
         }
 
         /**
@@ -6484,10 +6560,8 @@ module FullScreenPokemon {
                 0,
                 [
                     1,
-                    function () {
-                        FSP.setMap(
-                            "Pallet Town", "Oak's Lab Floor 1 Door", false
-                            );
+                    function (): void {
+                        FSP.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
 
                         FSP.ScenePlayer.playRoutine("WalkToTable");
                     }
@@ -6560,8 +6634,7 @@ module FullScreenPokemon {
                     "When I was young, I was a serious %%%%%%%POKEMON%%%%%%% trainer!",
                     "In my old age, I have only 3 left, but you can have one! Choose!"
                 ],
-                FSP.ScenePlayer.bindRoutine("RivalProtests")
-                )
+                FSP.ScenePlayer.bindRoutine("RivalProtests"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
@@ -6710,7 +6783,7 @@ module FullScreenPokemon {
 
             settings.rival = rival;
             rival.dialog = dialogRival;
-            FSP.StateHolder.addChange(rival.id, "dialog", dialogRival)
+            FSP.StateHolder.addChange(rival.id, "dialog", dialogRival);
 
             FSP.ItemsHolder.setItem("starter", settings.chosen);
             settings.triggerer.hidden = true;
@@ -6755,7 +6828,7 @@ module FullScreenPokemon {
                                 }
                             },
                             "title": settings.chosen.toUpperCase(),
-                            "callback": FSP.ScenePlayer.bindRoutine("PlayerSetsNickname"),
+                            "callback": FSP.ScenePlayer.bindRoutine("PlayerSetsNickname")
                         })
                     }, {
                         "text": "NO",
@@ -6804,6 +6877,8 @@ module FullScreenPokemon {
                     steps = 5;
                     other = "Charmander";
                     break;
+                default:
+                    throw new Error("Unknown first Pokemon.");
             }
 
             settings.rivalPokemon = other;
@@ -6885,10 +6960,10 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalLeavesAfterBattle(FSP: FullScreenPokemon, settings: any): void {
-            //var rivalblocker = EightBitter.getThingById("RivalBlocker");
+            // var rivalblocker = EightBitter.getThingById("RivalBlocker");
 
-            //rivalblocker.nocollide = true;
-            //EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
+            // rivalblocker.nocollide = true;
+            // EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
 
             FSP.ItemsHolder.getItem("PokemonInParty").forEach(FSP.healPokemon.bind(FSP));
 
@@ -6938,14 +7013,16 @@ module FullScreenPokemon {
                     1,
                     "bottom",
                     6,
-                    function () {
+                    function (): void {
                         FSP.killNormal(rival);
                         FSP.StateHolder.addChange(rival.id, "alive", false);
                     }
                 ],
-                dialog = [
+                dialog: string[] = [
                     "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
                 ];
+
+            console.log("Shouldn't this say the dialog?", dialog);
 
             FSP.ScenePlayer.stopCutscene();
             FSP.MenuGrapher.deleteMenu("GeneralText");
@@ -6957,8 +7034,8 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalBattleChallenge(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: IBattleInfo =
-                {
+            var steps: number,
+                battleInfo: IBattleInfo = {
                     "opponent": {
                         "sprite": "RivalPortrait",
                         "name": FSP.ItemsHolder.getItem("nameRival"),
@@ -6981,13 +7058,12 @@ module FullScreenPokemon {
                             "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
                         ].join(" ")
                     ],
-                    //"animation": "LineSpiral",
+                    // "animation": "LineSpiral",
                     "theme": "Trainer Battle",
                     "noBlackout": true,
                     "keptThings": ["player", "Rival"],
-                    "nextCutscene": "OakIntroRivalLeaves",
-                },
-                steps;
+                    "nextCutscene": "OakIntroRivalLeaves"
+                };
 
             switch (FSP.ItemsHolder.getItem("starterRival")) {
                 case "Squirtle":
@@ -7146,7 +7222,7 @@ module FullScreenPokemon {
                 [
                     8,
                     FSP.ScenePlayer.bindRoutine("RivalInquires")
-                ])
+                ]);
         }
 
         /**
@@ -7209,8 +7285,8 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakParcelDeliveryOakGivesPokedex(FSP: FullScreenPokemon, settings: any): void {
-            var bookLeft = FSP.getThingById("BookLeft"),
-                bookRight = FSP.getThingById("BookRight");
+            var bookLeft: IThing = FSP.getThingById("BookLeft"),
+                bookRight: IThing = FSP.getThingById("BookRight");
 
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
@@ -7219,7 +7295,7 @@ module FullScreenPokemon {
                     "OAK: %%%%%%%PLAYER%%%%%%% and %%%%%%%RIVAL%%%%%%%! Take these with you!",
                     "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!"
                 ],
-                function () {
+                function (): void {
                     FSP.TimeHandler.addEvent(
                         FSP.ScenePlayer.playRoutine, 14, "OakDescribesGoal");
 
@@ -7373,20 +7449,12 @@ module FullScreenPokemon {
                     "amount": 50
                 }],
                 "automaticMenus": true,
-                "onShowPlayerMenu": function () {
+                "onShowPlayerMenu": function (): void {
                     var timeout: number = 70;
 
-                    FSP.TimeHandler.addEvent(
-                        FSP.MenuGrapher.registerDown, timeout
-                        );
-
-                    FSP.TimeHandler.addEvent(
-                        FSP.MenuGrapher.registerA, timeout * 2
-                        );
-
-                    FSP.TimeHandler.addEvent(
-                        FSP.MenuGrapher.registerA, timeout * 3
-                        );
+                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerDown, timeout);
+                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerA, timeout * 2);
+                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerA, timeout * 3);
                 }
             });
         }
@@ -7574,7 +7642,7 @@ module FullScreenPokemon {
          * 
          */
         setMap(name: string, location?: string, noEntrance?: boolean): void {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 map: IMap;
 
             if (typeof name === "undefined" || name.constructor === FullScreenPokemon) {
@@ -7603,7 +7671,7 @@ module FullScreenPokemon {
         setLocation(name: string, noEntrance?: boolean): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 location: ILocation,
-                theme;
+                theme: string;
 
             name = name || "0";
 
@@ -7667,8 +7735,8 @@ module FullScreenPokemon {
                     "left": 0,
                     "width": 0,
                     "height": 0
-                }
-            };
+                };
+            }
 
             return {
                 "top": area.boundaries.top * FSP.unitsize,
@@ -7677,7 +7745,7 @@ module FullScreenPokemon {
                 "left": area.boundaries.left * FSP.unitsize,
                 "width": (area.boundaries.right - area.boundaries.left) * FSP.unitsize,
                 "height": (area.boundaries.bottom - area.boundaries.top) * FSP.unitsize
-            }
+            };
         }
 
         /**
@@ -7727,9 +7795,9 @@ module FullScreenPokemon {
                 MapsCreator: MapsCreatr.IMapsCreatr = FSP.MapsCreator,
                 MapsHandler: MapsHandlr.IMapsHandlr = FSP.MapsHandler,
                 prethings: any = MapsHandler.getPreThings(),
-                area = MapsHandler.getArea(),
-                map = MapsHandler.getMap(),
-                boundaries = FSP.MapsHandler.getArea().boundaries;
+                area: IArea = <IArea>MapsHandler.getArea(),
+                map: IMap = <IMap>MapsHandler.getMap(),
+                boundaries: IAreaBoundaries = <IAreaBoundaries>FSP.MapsHandler.getArea().boundaries;
 
             prething.direction = direction;
             switch (direction) {
@@ -7753,6 +7821,8 @@ module FullScreenPokemon {
                     prething.y = boundaries.top;
                     prething.height = boundaries.bottom - boundaries.top;
                     break;
+                default:
+                    throw new Error("Unknown direction.");
             }
 
             MapsCreator.analyzePreSwitch(prething, prethings, area, map);
@@ -7783,6 +7853,8 @@ module FullScreenPokemon {
                     FSP.centerMapScreenHorizontallyOnPlayer(FSP);
                     FSP.centerMapScreenVerticallyOnPlayer(FSP);
                     return;
+                default:
+                    throw new Error("Unknown MapScreenr scrollability.");
             }
         }
 
@@ -7812,8 +7884,7 @@ module FullScreenPokemon {
          * 
          */
         centerMapScreenHorizontallyOnPlayer(FSP: FullScreenPokemon): void {
-            var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
-                difference: number = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
+            var difference: number = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
 
             if (Math.abs(difference) > 0) {
                 FSP.scrollWindow(difference);
@@ -7824,8 +7895,7 @@ module FullScreenPokemon {
          * 
          */
         centerMapScreenVerticallyOnPlayer(FSP: FullScreenPokemon): void {
-            var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
-                difference: number = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
+            var difference: number = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
 
             if (Math.abs(difference) > 0) {
                 FSP.scrollWindow(0, difference);
@@ -7875,7 +7945,7 @@ module FullScreenPokemon {
         mapEntranceResume(FSP: FullScreenPokemon): void {
             var savedInfo: any = FSP.StateHolder.getChanges("player") || {};
 
-            FSP.addPlayer((savedInfo.xloc || 0),(savedInfo.yloc || 0), true);
+            FSP.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
             FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction);
 
@@ -7916,7 +7986,7 @@ module FullScreenPokemon {
                             "x": x,
                             "y": y,
                             "thing": thing
-                        })
+                        });
                     }
                     x += xwidth;
                 }
@@ -7928,7 +7998,7 @@ module FullScreenPokemon {
 
         /**
          * 
-        */
+         */
         macroWater(reference: any): any[] {
             var x: number = reference.x || 0,
                 y: number = reference.y || 0,
@@ -7940,7 +8010,7 @@ module FullScreenPokemon {
                     "x": x,
                     "y": y,
                     "width": width,
-                    "height": height,
+                    "height": height
                 }];
 
             if (!open[0]) {
@@ -7998,18 +8068,18 @@ module FullScreenPokemon {
                 output.push({
                     "thing": "HouseTopRoofLeft",
                     "x": x,
-                    "y": y,
+                    "y": y
                 });
                 output.push({
                     "thing": "HouseTopRoof",
                     "x": x + 8,
                     "y": y,
                     "width": width - 16
-                })
+                });
                 output.push({
                     "thing": "HouseTopRoofRight",
                     "x": x + width - 8,
-                    "y": y,
+                    "y": y
                 });
                 output.push({
                     "thing": "HouseLeft",
@@ -8042,7 +8112,7 @@ module FullScreenPokemon {
                     "thing": "HouseTop",
                     "x": x,
                     "y": y
-                })
+                });
             }
 
             y += 16;
@@ -8067,7 +8137,7 @@ module FullScreenPokemon {
                     "x": x + 8,
                     "y": y - 8,
                     "requireDirection": 0
-                }
+                };
                 if (reference.entrance) {
                     door.entrance = reference.entrance;
                 }
@@ -8102,7 +8172,7 @@ module FullScreenPokemon {
                     }, {
                         "thing": "HouseLargeTopRight",
                         "x": x + width - 8,
-                        "y": y,
+                        "y": y
                     }],
                 door: any,
                 i: number;
@@ -8114,7 +8184,7 @@ module FullScreenPokemon {
                     "x": x,
                     "y": y,
                     "width": width
-                })
+                });
 
                 if (reference.white) {
                     output.push({
@@ -8245,7 +8315,7 @@ module FullScreenPokemon {
                     {
                         "thing": "BuildingTopLeft",
                         "x": x,
-                        "y": y,
+                        "y": y
                     }, {
                         "thing": "BuildingTopMiddle",
                         "x": x + 4,
@@ -8254,9 +8324,10 @@ module FullScreenPokemon {
                     }, {
                         "thing": "BuildingTopRight",
                         "x": x + width - 4,
-                        "y": y,
+                        "y": y
                     }],
-                door, i;
+                door: any,
+                i: number;
 
             y += 16;
 
@@ -8321,7 +8392,7 @@ module FullScreenPokemon {
                     "x": x + 4,
                     "y": y,
                     "height": 4,
-                    "width": doorOffset - 4,
+                    "width": doorOffset - 4
                 });
                 output.push(door);
                 output.push({
@@ -8329,7 +8400,7 @@ module FullScreenPokemon {
                     "x": x + doorOffset + 8,
                     "y": y,
                     "height": 4,
-                    "width": width - doorOffset - 8,
+                    "width": width - doorOffset - 8
                 });
                 output.push({
                     "thing": "BuildingBottomLeft",
@@ -8529,7 +8600,7 @@ module FullScreenPokemon {
                     "thing": "MountainTop",
                     "x": x,
                     "y": y,
-                    "width": width,
+                    "width": width
                 });
                 y += 5;
                 height -= 5;
@@ -8544,7 +8615,7 @@ module FullScreenPokemon {
                             "y": y + height - 8,
                             "width": openingOffset,
                             "height": 8
-                        })
+                        });
                     }
                     output.push({
                         "thing": "CaveOpening",
@@ -8760,7 +8831,7 @@ module FullScreenPokemon {
                         "",
                         ""
                     ]
-                })
+                });
             }
 
             return output;
@@ -8834,7 +8905,7 @@ module FullScreenPokemon {
                         "thing": "FloorDiamondsDark",
                         "x": x + 16,
                         "y": y + 32,
-                        "height": 24,
+                        "height": 24
                     }, {
                         "thing": "SquareWallTop",
                         "x": x + 8,
@@ -8848,7 +8919,7 @@ module FullScreenPokemon {
                     }, {
                         "thing": "FloorDiamondsDark",
                         "x": x,
-                        "y": y + 40,
+                        "y": y + 40
                     }, {
                         "thing": "Register",
                         "x": x + 8,
@@ -8871,7 +8942,7 @@ module FullScreenPokemon {
                     }, {
                         "thing": "FloorDiamondsDark",
                         "x": x,
-                        "y": y + 56,
+                        "y": y + 56
                     }, {
                         "thing": "Doormat",
                         "x": x + 24,
@@ -8906,7 +8977,7 @@ module FullScreenPokemon {
          * @param {Number} [times]   How many times to repeat (by default, 1).
          */
         stringOf(str: string, times: number = 1): string {
-            return (times === 0) ? '' : new Array(1 + (times || 1)).join(str);
+            return (times === 0) ? "" : new Array(1 + (times || 1)).join(str);
         }
 
         /**
@@ -8947,9 +9018,10 @@ module FullScreenPokemon {
          * 
          */
         combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
-            var object;
+            var object: any,
+                i: number;
 
-            for (var i = 0; i < array.length; i += 1) {
+            for (i = 0; i < array.length; i += 1) {
                 object = array[i];
                 if (array[i][keyTitle] === title) {
                     array[i][keyCount] += count;
