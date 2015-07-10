@@ -52,6 +52,7 @@ declare module MapsHandlr {
         getArea(): MapsCreatr.IMapsCreatrArea;
         getAreaName(): string;
         getLocation(location: string): MapsCreatr.IMapsCreatrLocation;
+        getLocationEntered(): MapsCreatr.IMapsCreatrLocation;
         getPreThings(): { [i: string]: MapsCreatr.IPreThing[] };
         setMap(name: string, location?: string): MapsCreatr.IMapsCreatrMap;
         setLocation(name: string): void;
@@ -121,7 +122,7 @@ module MapsHandlr {
         /**
          * The currently referenced Location, set by setLocation.
          */
-        private locationCurrent: MapsCreatr.IMapsCreatrLocation;
+        private locationEntered: MapsCreatr.IMapsCreatrLocation;
 
         /**
          * The name of the currently referenced Area, set by setMap.
@@ -152,12 +153,12 @@ module MapsHandlr {
          * If stretches exists, a Function to add stretches to an Area.
          */
         private stretchAdd: (title: string, index: number) => void;
-        
+
         /**
          * Optionally, PreThing settings to place at the end of an Area.
          */
         private afters: MapsCreatr.IPreThingSettings[];
-        
+
         /**
          * If afters exists, a Function to add afters to an Area.
          */
@@ -270,6 +271,13 @@ module MapsHandlr {
         }
 
         /**
+         * @return {Location} The most recently entered Location in the current Area.
+         */
+        getLocationEntered(): MapsCreatr.IMapsCreatrLocation {
+            return this.locationEntered;
+        }
+
+        /**
          * Simple getter function for the internal prethings object. This will be
          * undefined before the first call to setMap.
          * 
@@ -329,7 +337,7 @@ module MapsHandlr {
             }
 
             // Since the location is valid, mark it as current (with its area)
-            this.locationCurrent = location;
+            this.locationEntered = location;
             this.areaCurrent = location.area;
             this.areaCurrent.boundaries = {
                 "top": 0,

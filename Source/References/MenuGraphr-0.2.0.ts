@@ -162,10 +162,10 @@ declare module MenuGraphr {
     }
 
     export interface IMenuThingSchema extends IMenuChildSchema {
-        position: IMenuSchemaPosition;
-        size: IMenuSchemaSize;
-        thing: string;
         args: any;
+        position?: IMenuSchemaPosition;
+        size?: IMenuSchemaSize;
+        thing: string;
     }
 
     export interface IMenuWordFiltered {

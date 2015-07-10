@@ -130,11 +130,11 @@ declare module FullScreenPokemon {
     }
 
     export interface IPokemonSchema {
+        title: string;
         level: number;
         levels?: number[];
         moves?: string[];
         rate?: number;
-        title: string;
     }
 
     export interface IBattleInfo extends BattleMovr.IBattleInfo {
@@ -204,7 +204,7 @@ declare module FullScreenPokemon {
         dialog?: string | string[];
         dialogDirections?: Direction[];
         dialogNext?: string | string[];
-        dialogOptions?: IDialogOptions;
+        dialogOptions?: IDialog;
         directionPreferred?: Direction;
         distance: number;
         follower?: ICharacter;
@@ -230,6 +230,7 @@ declare module FullScreenPokemon {
         shouldWalk: boolean;
         speed: number;
         speedOld?: number;
+        switchDirectionOnDialog?: boolean;
         talking?: boolean;
         trainer?: boolean;
         transport?: any;
@@ -266,7 +267,7 @@ declare module FullScreenPokemon {
 
     export interface IDetector extends IThing {
         active?: boolean;
-        activate?: (thing: IDetector) => void;
+        activate?: (thing: IDetector, other?: IThing) => void;
         cutscene?: string;
         dialog?: string | string[];
         keepAlive?: boolean;
@@ -320,6 +321,7 @@ declare module FullScreenPokemon {
 
     export interface IMenu extends MenuGraphr.IMenu, IThing {
         children: IThing[];
+        settings?: any;
     }
 
     export interface IKeyboardKeysMenu extends IMenu {

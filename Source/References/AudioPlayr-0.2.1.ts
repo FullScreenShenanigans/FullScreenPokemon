@@ -68,6 +68,7 @@ declare module AudioPlayr {
         resumeAll(): void;
         pauseTheme(): void;
         resumeTheme(): void;
+        clearAll(): void;
         clearTheme(): void;
         playLocal(name: string, location?: any): HTMLAudioElement;
         playTheme(name?: string, loop?: boolean): HTMLAudioElement;
@@ -277,7 +278,9 @@ module AudioPlayr {
          * status as on in the internal ItemsHoldr.
          */
         setMutedOn(): void {
-            for (var i in this.sounds) {
+            var i: string;
+
+            for (i in this.sounds) {
                 if (this.sounds.hasOwnProperty(i)) {
                     this.sounds[i].volume = 0;
                 }
