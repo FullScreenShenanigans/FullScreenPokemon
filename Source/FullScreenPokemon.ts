@@ -209,6 +209,32 @@ module FullScreenPokemon {
 
         /* Resets
         */
+        
+        /**
+         * Sets this.ObjectMaker.
+         * 
+         * @param {FullScreenPokemon} FSP
+         * @param {Object} customs
+         */
+        resetObjectMaker(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+            FSP.ObjectMaker = new ObjectMakr.ObjectMakr(
+                FSP.proliferate(
+                    {
+                        "properties": {
+                            "Quadrant": {
+                                "EightBitter": FSP,
+                                "GameStarter": FSP,
+                                "FSP": FSP
+                            },
+                            "Thing": {
+                                "EightBitter": FSP,
+                                "GameStarter": FSP,
+                                "FSP": FSP
+                            }
+                        }
+                    },
+                    FSP.settings.objects));
+        }
 
         /**
          * Does not set this.AudioPlayer, as it's not used in FullScreenPokemon.
@@ -298,6 +324,24 @@ module FullScreenPokemon {
                         "MenuGrapher": FSP.MenuGrapher
                     },
                     FSP.settings.battles));
+        }
+
+        /**
+         * 
+         */
+        resetContainer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+            super.resetContainer(FSP, customs);
+
+            FSP.container.style.fontFamily = "Press Start";
+            FSP.container.className += " FullScreenPokemon";
+
+            FSP.PixelDrawer.setThingArrays([
+                <GameStartr.IThing[]>FSP.GroupHolder.getGroup("Terrain"),
+                <GameStartr.IThing[]>FSP.GroupHolder.getGroup("Solid"),
+                <GameStartr.IThing[]>FSP.GroupHolder.getGroup("Scenery"),
+                <GameStartr.IThing[]>FSP.GroupHolder.getGroup("Character"),
+                <GameStartr.IThing[]>FSP.GroupHolder.getGroup("Text")
+            ]);
         }
 
 
@@ -489,7 +533,7 @@ module FullScreenPokemon {
          *                                   Thing's position (by default, false).
          */
         addThing(thingRaw: string | IThing | any[], left: number = 0, top: number = 0, useSavedInfo?: boolean): IThing {
-            var thing: IThing = <IThing>super.addThing.call(this, thing, left, top);
+            var thing: IThing = <IThing>super.addThing.call(this, thingRaw, left, top);
 
             if (useSavedInfo) {
                 var savedInfo: any = thing.FSP.StateHolder.getChanges(thing.id);

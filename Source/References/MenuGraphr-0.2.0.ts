@@ -380,6 +380,7 @@ module MenuGraphr {
                         "bottom": this.GameStarter.MapScreener.height,
                         "width": Math.ceil(this.GameStarter.MapScreener.width / this.GameStarter.unitsize),
                         "height": Math.ceil(this.GameStarter.MapScreener.height / this.GameStarter.unitsize),
+                        "EightBitter": this.GameStarter,
                         "GameStarter": this.GameStarter,
                         "children": []
                     };
@@ -926,9 +927,9 @@ module MenuGraphr {
             menu.options = options;
             menu.optionChildren = optionChildren;
 
-            menu.callback = this.selectMenuListOption;
-            menu.onActive = this.activateMenuList;
-            menu.onInactive = this.deactivateMenuList;
+            menu.callback = this.selectMenuListOption.bind(this);
+            menu.onActive = this.activateMenuList.bind(this);
+            menu.onInactive = this.deactivateMenuList.bind(this);
 
             menu.grid = [];
             menu.grid[0] = column = [];

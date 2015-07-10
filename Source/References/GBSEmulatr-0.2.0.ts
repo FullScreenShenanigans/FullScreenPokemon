@@ -153,13 +153,13 @@ module GBSEmulatr {
          */
         constructor(settings: IGBSEmulatrSettings) {
             if (typeof settings.ItemsHolder === "undefined") {
-                throw new Error("No ItemsHolder given to GBSEmulatr.");
+                console.error("No ItemsHolder given to GBSEmulatr.");
             }
             if (typeof settings.Module === "undefined") {
-                throw new Error("No Module given to GBSEmulatr.");
+                console.error("No Module given to GBSEmulatr.");
             }
             if (typeof settings.library === "undefined") {
-                throw new Error("No library given to GBSEmulatr.");
+                console.error("No library given to GBSEmulatr.");
             }
 
             this.ItemsHolder = settings.ItemsHolder;
@@ -277,28 +277,28 @@ module GBSEmulatr {
          * 
          */
         clearAll(): void {
-            throw new Error("Not implemented.");
+            console.error("Not implemented.");
         }
 
         /**
          * 
          */
         setMutedOn(): void {
-            throw new Error("Not implemented.");
+            console.error("Not implemented.");
         }
 
         /**
          * 
          */
         setMutedOff(): void {
-            throw new Error("Not implemented.");
+            console.error("Not implemented.");
         }
 
         /**
          * 
          */
         toggleMuted(): void {
-            throw new Error("Not implemented.");
+            console.error("Not implemented.");
         }
 
         /**
@@ -323,14 +323,14 @@ module GBSEmulatr {
                 "number",
                 ["array", "number", "number", "number"],
                 [payload, payload.length, ref, this.context.sampleRate])) {
-                throw new Error("Could not call gme_open_data.");
+                console.error("Could not call gme_open_data.");
             }
 
             // Determine the type of emulator to use to play this payload.
             emu = this.Module.getValue(ref, "i32");
 
             if (this.Module.ccall("gme_start_track", "number", ["number", "number"], [emu, subtune])) {
-                throw new Error("Could not call gme_start_track.");
+                console.error("Could not call gme_start_track.");
             }
 
             // Actually play the track.
@@ -378,7 +378,7 @@ module GBSEmulatr {
             error = this.Module.ccall("gme_play", "number", ["number", "number", "number"], [emu, GBSEmulatr.bufferSize * 2, buffer]);
 
             if (error) {
-                throw new Error("Could not call gme_play.");
+                console.error("Could not call gme_play.");
             }
 
             for (i = 0; i < GBSEmulatr.bufferSize; i += 1) {
