@@ -7530,7 +7530,7 @@ module FullScreenPokemon {
                 ]);
 
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher), 49);
-        };
+        }
 
         /**
          * 
@@ -7547,7 +7547,7 @@ module FullScreenPokemon {
             link.setAttribute(
                 "href",
                 "data:text/json;charset=utf-8," + encodeURIComponent(
-                    FSP.LevelEditor.beautify(JSON.stringify(FSP.ItemsHolder.export()))));
+                    FSP.LevelEditor.beautify(JSON.stringify(FSP.ItemsHolder.exportItems()))));
 
             FSP.container.appendChild(link);
             link.click();
