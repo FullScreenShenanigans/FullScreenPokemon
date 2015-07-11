@@ -627,22 +627,25 @@ module MenuGraphr {
                 dialog = [String(dialog)];
             }
 
-            this.addMenuText(name, dialog[0], function (): boolean {
-                if (dialog.length === 1) {
-                    if (this.menus[name].deleteOnFinish) {
-                        this.deleteMenu(name);
+            this.addMenuText(
+                name,
+                dialog[0],
+                function (): boolean {
+                    if (dialog.length === 1) {
+                        if (this.menus[name].deleteOnFinish) {
+                            this.deleteMenu(name);
+                        }
+                        if (onCompletion) {
+                            return onCompletion();
+                        }
+                        return true;
                     }
-                    if (onCompletion) {
-                        return onCompletion();
-                    }
-                    return true;
-                }
 
-                this.deleteMenuChildren(name);
-                this.addMenuDialog(name, dialog.slice(1), onCompletion);
+                    this.deleteMenuChildren(name);
+                    this.addMenuDialog(name, dialog.slice(1), onCompletion);
 
-                return false;
-            });
+                    return false;
+                }.bind(this));
         }
 
         /**
@@ -669,7 +672,7 @@ module MenuGraphr {
                 words = (<string>words).split(/ /);
             }
 
-            menu.callback = this.continueMenu;
+            menu.callback = this.continueMenu.bind(this);
             menu.textX = x;
 
             this.addMenuWord(name, <string[]>words, 0, x, y, onCompletion);

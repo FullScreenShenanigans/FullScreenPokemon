@@ -2965,7 +2965,7 @@ var MenuGraphr;
                 this.deleteMenuChildren(name);
                 this.addMenuDialog(name, dialog.slice(1), onCompletion);
                 return false;
-            });
+            }.bind(this));
         };
         /**
          *
@@ -2984,7 +2984,7 @@ var MenuGraphr;
             if (words.constructor === String) {
                 words = words.split(/ /);
             }
-            menu.callback = this.continueMenu;
+            menu.callback = this.continueMenu.bind(this);
             menu.textX = x;
             this.addMenuWord(name, words, 0, x, y, onCompletion);
         };
