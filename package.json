@@ -1,17 +1,17 @@
 {
-    "name": "FullScreenMario",
-    "description": "An HTML5 remake of the original Super Mario Brothers - expanded for modern browsing.",
-    "version": "0.10.0",
+    "name": "FullScreenPokemon",
+    "description": "An HTML5 remake of Nintendo's original Pokemon - expanded for the modern web.",
+    "version": "0.0.0",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenMario.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/FullScreenMario/issues"
+        "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
     },
     "license": "MIT",
     "dependencies": {
