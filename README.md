@@ -1,4 +1,4 @@
-## FullScreenPokemon [![Build Status](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon)
+## FullScreenPokemon [![Build Status](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon.svg?branch=typescript)](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon)
 
 #### A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
 
