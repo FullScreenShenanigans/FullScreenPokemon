@@ -209,7 +209,7 @@ module FullScreenPokemon {
 
         /* Resets
         */
-        
+
         /**
          * Sets this.ObjectMaker.
          * 
