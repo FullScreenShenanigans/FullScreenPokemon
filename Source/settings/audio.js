@@ -25,7 +25,7 @@ FullScreenPokemon.FullScreenPokemon.settings.audio = {
             "Last Battle Rival",
             "Lavender Town from Vermilion",
             "Lavender Town",
-            "Levl Up Fanfare",
+            "Level Up Fanfare",
             "Mt Moon Cave",
             "Oak Research Lab",
             "Ocean",
