@@ -720,6 +720,12 @@ var AudioPlayr;
             return this.theme;
         };
         /**
+         * @return {String} The name of the currently playing theme.
+         */
+        AudioPlayr.prototype.getThemeName = function () {
+            return this.themeName;
+        };
+        /**
          * @return {String} The directory under which all filetype directories are
          *                  to be located.
          */
@@ -929,6 +935,7 @@ var AudioPlayr;
             this.pauseTheme();
             delete this.sounds[this.theme.getAttribute("name")];
             this.theme = undefined;
+            this.themeName = undefined;
         };
         /**
          * "Local" version of play that changes the output sound's volume depending
@@ -998,6 +1005,7 @@ var AudioPlayr;
             if (typeof this.theme !== "undefined" && this.theme.hasAttribute("name")) {
                 delete this.sounds[this.theme.getAttribute("name")];
             }
+            this.themeName = name;
             this.theme = this.sounds[name] = this.play(name);
             this.theme.loop = loop;
             // If it's used (no repeat), add the event listener to resume theme

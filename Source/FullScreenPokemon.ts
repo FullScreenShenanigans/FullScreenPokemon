@@ -1,13 +1,11 @@
 // @echo '/// <reference path="BattleMovr-0.2.0.ts" />'
 // @echo '/// <reference path="GameStartr-0.2.0.ts" />'
-// @echo '/// <reference path="GBSEmulatr-0.2.0.ts" />'
 // @echo '/// <reference path="MenuGraphr-0.2.0.ts" />'
 // @echo '/// <reference path="StateHoldr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/BattleMovr-0.2.0.ts" />
 /// <reference path="References/GameStartr-0.2.0.ts" />
-/// <reference path="References/GBSEmulatr-0.2.0.ts" />
 /// <reference path="References/MenuGraphr-0.2.0.ts" />
 /// <reference path="References/StateHoldr-0.2.0.ts" />
 /// <reference path="FullScreenPokemon.d.ts" />
@@ -113,11 +111,6 @@ module FullScreenPokemon {
         /**
          * 
          */
-        public GBSEmulator: GBSEmulatr.IGBSEmulatr;
-
-        /**
-         * 
-         */
         public StateHolder: StateHoldr.IStateHoldr;
 
         /**
@@ -192,7 +185,6 @@ module FullScreenPokemon {
                     "scale"
                 ],
                 "extraResets": [
-                    "resetGBSEmulator",
                     "resetStateHolder",
                     "resetMenuGrapher",
                     "resetBattleMover",
@@ -234,32 +226,6 @@ module FullScreenPokemon {
                         }
                     },
                     FSP.settings.objects));
-        }
-
-        /**
-         * Does not set this.AudioPlayer, as it's not used in FullScreenPokemon.
-         * 
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
-         */
-        resetAudioPlayer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            console.log("No AudioPlayer... yet!");
-        }
-
-        /**
-         * Sets this.GBSEmulator.
-         * 
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
-         */
-        resetGBSEmulator(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            FSP.GBSEmulator = new GBSEmulatr.GBSEmulatr(
-                FSP.proliferate(
-                    {
-                        "ItemsHolder": FSP.ItemsHolder,
-                        "Module": Module
-                    },
-                    FSP.settings.audio));
         }
 
         /**
@@ -882,7 +848,7 @@ module FullScreenPokemon {
                 return;
             }
 
-            thing.FSP.GBSEmulator.toggleMuted();
+            thing.FSP.AudioPlayer.toggleMuted();
             thing.FSP.ModAttacher.fireEvent("onKeyDownMute");
 
             if (event && event.preventDefault) {
@@ -2723,11 +2689,11 @@ module FullScreenPokemon {
          * 
          */
         activateThemePlayer(thing: ICharacter, other: IThemeDetector): void {
-            if (thing.FSP.GBSEmulator.getTheme() === other.theme) {
+            if (thing.FSP.AudioPlayer.getThemeName() === other.theme) {
                 return;
             }
 
-            thing.FSP.GBSEmulator.play(other.theme);
+            thing.FSP.AudioPlayer.play(other.theme);
         }
 
         /**
@@ -3856,7 +3822,7 @@ module FullScreenPokemon {
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
 
-            FSP.GBSEmulator.play(battleInfo.theme || "Trainer Battle");
+            FSP.AudioPlayer.play(battleInfo.theme || "Trainer Battle");
 
             FSP["cutsceneBattleTransition" + animation](FSP, {
                 "callback": FSP.BattleMover.startBattle.bind(
@@ -4846,7 +4812,7 @@ module FullScreenPokemon {
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
 
             if (FSP.MapScreener.theme) {
-                FSP.GBSEmulator.play(FSP.MapScreener.theme);
+                FSP.AudioPlayer.play(FSP.MapScreener.theme);
             }
 
             if (!opponent.hasActors) {
@@ -4971,7 +4937,7 @@ module FullScreenPokemon {
             }
 
             if (FSP.MapScreener.theme) {
-                FSP.GBSEmulator.play(FSP.MapScreener.theme);
+                FSP.AudioPlayer.play(FSP.MapScreener.theme);
             }
 
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -5963,7 +5929,7 @@ module FullScreenPokemon {
 
             settings.oak = oak;
 
-            FSP.GBSEmulator.play("Introduction");
+            FSP.AudioPlayer.play("Introduction");
             FSP.ModAttacher.fireEvent("onIntroFadeIn", oak);
 
             FSP.setMap("Blank", "White");
@@ -6513,7 +6479,7 @@ module FullScreenPokemon {
             FSP.animatePlayerDialogFreeze(settings.player);
             FSP.animateCharacterSetDirection(settings.player, 2);
 
-            FSP.GBSEmulator.play("Professor Oak");
+            FSP.AudioPlayer.play("Professor Oak");
             FSP.MapScreener.blockInputs = true;
 
             FSP.MenuGrapher.createMenu("GeneralText", {
@@ -6989,7 +6955,7 @@ module FullScreenPokemon {
                 dx: number = Math.abs(settings.triggerer.left - settings.player.left),
                 further: boolean = dx < FSP.unitsize;
 
-            FSP.GBSEmulator.play("Rival Appears");
+            FSP.AudioPlayer.play("Rival Appears");
 
             settings.rival = rival;
             FSP.animateCharacterSetDirection(rival, 2);
@@ -7727,7 +7693,7 @@ module FullScreenPokemon {
 
             name = name || "0";
 
-            FSP.GBSEmulator.clearAll();
+            FSP.AudioPlayer.clearAll();
             FSP.GroupHolder.clearArrays();
             FSP.MapScreener.clearScreen();
             FSP.MapScreener.thingsById = {};
@@ -7752,8 +7718,8 @@ module FullScreenPokemon {
 
             theme = location.theme || location.area.theme || location.area.map.theme;
             FSP.MapScreener.theme = theme;
-            if (theme && theme !== FSP.GBSEmulator.getTheme()) {
-                FSP.GBSEmulator.play(theme);
+            if (theme && FSP.AudioPlayer.getThemeName() !== theme) {
+                FSP.AudioPlayer.play(theme);
             }
 
             if (!noEntrance) {

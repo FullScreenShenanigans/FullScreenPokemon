@@ -144,23 +144,23 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
                     "minimum": 0,
                     "maximum": 100,
                     "source": function (FSP) {
-                        return Math.round(FSP.GBSEmulator.getVolume() * 100);
+                        return Math.round(FSP.AudioPlayer.getVolume() * 100);
                     },
                     "update": function (FSP, value) {
-                        FSP.GBSEmulator.setVolume(value / 100);
+                        FSP.AudioPlayer.setVolume(value / 100);
                     }
                 },
                 {
                     "title": "Mute",
                     "type": "Boolean",
                     "source": function (FSP) {
-                        return FSP.GBSEmulator.getMuted();
+                        return FSP.AudioPlayer.getMuted();
                     },
                     "enable": function (FSP) {
-                        FSP.GBSEmulator.setMutedOn();
+                        FSP.AudioPlayer.setMutedOn();
                     },
                     "disable": function (FSP) {
-                        FSP.GBSEmulator.setMutedOff();
+                        FSP.AudioPlayer.setMutedOff();
                     }
                 },
                 {
