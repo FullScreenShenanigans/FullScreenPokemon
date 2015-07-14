@@ -1,6 +1,3 @@
-// Module exists in libgme.js
-declare var Module: GBSEmulatr.IModule;
-
 declare module FullScreenPokemon {
     enum Direction {
         Top = 0,
