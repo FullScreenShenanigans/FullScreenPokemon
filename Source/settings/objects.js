@@ -762,13 +762,13 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "Character": {
             "groupType": "Character",
-            "speed": FullScreenPokemon.unitsize / 3,
+            "speed": FullScreenPokemon.FullScreenPokemon.unitsize / 3,
             "isWalking": false,
             "shouldWalk": false,
             "switchDirectionOnDialog": true,
             "heightGrass": 4,
             "direction": 2, // top,right,bottom,left is 0,1,2,3
-            "offsetY": FullScreenPokemon.unitsize * -2,
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -2,
             "roamingDirections": [0, 1, 2, 3],
             "onThingAdd": FullScreenPokemon.FullScreenPokemon.prototype.spawnCharacter,
             "onWalkingStart": FullScreenPokemon.FullScreenPokemon.prototype.animateCharacterStartWalking,
@@ -795,7 +795,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "player": true,
             "canKeyWalking": true,
             "direction": 2,
-            "speed": FullScreenPokemon.unitsize / 2,
+            "speed": FullScreenPokemon.FullScreenPokemon.unitsize / 2,
             "onWalkingStart": FullScreenPokemon.FullScreenPokemon.prototype.animatePlayerStartWalking,
             "onWalkingStop": FullScreenPokemon.FullScreenPokemon.prototype.animatePlayerStopWalking,
             "getKeys": function () {
@@ -874,7 +874,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "Computer": {
             "width": 8,
             "height": 12,
-            "tolBottom": FullScreenPokemon.unitsize * 4
+            "tolBottom": FullScreenPokemon.FullScreenPokemon.unitsize * 4
         },
         "ComputerDesk": [8, 16],
         "ConsoleController": [8, 5],
@@ -1008,7 +1008,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "StoreFridge": [8, 16],
         "StoreSaleBin": [8, 12],
         "Table": {
-            "tolBottom": FullScreenPokemon.unitsize * 4
+            "tolBottom": FullScreenPokemon.FullScreenPokemon.unitsize * 4
         },
         "Table1x2": [8, 16],
         "Table2x2": [16, 16],
@@ -1039,7 +1039,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "Blackboard": [16, 8],
         "Bridge": [4, 4],
         "Clipboard": {
-            "offsetY": FullScreenPokemon.unitsize * -1.5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -1.5
         },
         "Doormat": {
             "spritewidth": .5,
@@ -1130,7 +1130,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "Exclamation": {
             "width": 7,
             "height": 7,
-            "offsetY": FullScreenPokemon.unitsize * -2
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -2
         },
         "HalfArrowHorizontal": [4, 2],
         "Square": {
@@ -1139,7 +1139,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "repeat": true
         },
         "CharacterDropped": {
-            "offsetY": FullScreenPokemon.unitsize * .75
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .75
         },
         "CharacterShadow": [3.5, 3.5],
         "CharMDash": {
@@ -1150,29 +1150,29 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             }
         },
         "CharPoke": {
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharMon": {
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharNo": {
             "width": 4,
             "height": 3,
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharID": {
             "width": 4,
             "height": 3,
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharSlash": {
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharPeriod": {
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharComma": {
-            "offsetY": FullScreenPokemon.unitsize * .5
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * .5
         },
         "CharApostrophe": [1, 2],
         "CharFeet": [2, 1.5],
@@ -1186,8 +1186,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "width": 4,
             "spritewidth": 2.5,
             "height": 4,
-            "offsetX": FullScreenPokemon.unitsize / 2,
-            "offsetY": FullScreenPokemon.unitsize / 2,
+            "offsetX": FullScreenPokemon.FullScreenPokemon.unitsize / 2,
+            "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize / 2,
         },
         "CharArrowUp": [3.5, 2.5],
         "CharArrowRight": [2.5, 3.5],
