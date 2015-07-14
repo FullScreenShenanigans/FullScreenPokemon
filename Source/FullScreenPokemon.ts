@@ -54,7 +54,7 @@ module FullScreenPokemon {
         };
 
         /**
-         * Static unitsize of 4, as that's how Super Pokemon Bros. is.
+         * Static unitsize of 4, as that's how Pokemon. is.
          */
         public static unitsize: number = 4;
 

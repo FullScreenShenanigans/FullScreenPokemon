@@ -283,7 +283,7 @@ var EightBittr;
          * @param {Number} x
          */
         EightBittr.prototype.setMidX = function (thing, x) {
-            thing.EightBitter.setLeft(thing, x + thing.width * thing.EightBitter.unitsize / 2);
+            thing.EightBitter.setLeft(thing, x - thing.width * thing.EightBitter.unitsize / 2);
         };
         /**
          * Shifts a Thing so that it is vertically centered on the given y.
@@ -292,7 +292,7 @@ var EightBittr;
          * @param {Number} y
          */
         EightBittr.prototype.setMidY = function (thing, y) {
-            thing.EightBitter.setTop(thing, y + thing.height * thing.EightBitter.unitsize / 2);
+            thing.EightBitter.setTop(thing, y - thing.height * thing.EightBitter.unitsize / 2);
         };
         /**
          * @param {Thing} thing
