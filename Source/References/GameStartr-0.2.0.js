@@ -1636,7 +1636,7 @@ var EightBittr;
          * @param {Number} x
          */
         EightBittr.prototype.setMidX = function (thing, x) {
-            thing.EightBitter.setLeft(thing, x + thing.width * thing.EightBitter.unitsize / 2);
+            thing.EightBitter.setLeft(thing, x - thing.width * thing.EightBitter.unitsize / 2);
         };
         /**
          * Shifts a Thing so that it is vertically centered on the given y.
@@ -1645,7 +1645,7 @@ var EightBittr;
          * @param {Number} y
          */
         EightBittr.prototype.setMidY = function (thing, y) {
-            thing.EightBitter.setTop(thing, y + thing.height * thing.EightBitter.unitsize / 2);
+            thing.EightBitter.setTop(thing, y - thing.height * thing.EightBitter.unitsize / 2);
         };
         /**
          * @param {Thing} thing
@@ -1769,11 +1769,11 @@ var EightBittr;
             maxSpeed = maxSpeed || Infinity;
             // Thing to the left? Slide to the right.
             if (midx < x) {
-                thing.EightBitter.shiftHoriz(thing, Math.min(maxSpeed, (x - midx)));
+                thing.EightBitter.shiftHoriz(thing, Math.min(maxSpeed, x - midx));
             }
             else {
                 // Thing to the right? Slide to the left.
-                thing.EightBitter.shiftHoriz(thing, Math.max(-maxSpeed, (x - midx)));
+                thing.EightBitter.shiftHoriz(thing, Math.max(-maxSpeed, x - midx));
             }
         };
         /**
@@ -1790,11 +1790,11 @@ var EightBittr;
             maxSpeed = maxSpeed || Infinity;
             // Thing above? slide down.
             if (midy < y) {
-                thing.EightBitter.shiftVert(thing, Math.min(maxSpeed, (y - midy)));
+                thing.EightBitter.shiftVert(thing, Math.min(maxSpeed, y - midy));
             }
             else {
                 // Thing below? Slide up.
-                thing.EightBitter.shiftVert(thing, Math.max(-maxSpeed, (y - midy)));
+                thing.EightBitter.shiftVert(thing, Math.max(-maxSpeed, y - midy));
             }
         };
         /* EightBittr utilities

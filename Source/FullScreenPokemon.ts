@@ -4017,13 +4017,14 @@ module FullScreenPokemon {
                 callback);
         }
 
+
         /* Cutscenes
         */
 
         /**
          * 
          */
-        cutsceneBattleEntrance(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleEntrance(settings: any, FSP: FullScreenPokemon): void {
             var things: any = settings.things,
                 battleInfo: IBattleInfo = settings.battleInfo,
                 player: IPlayer = things.player,
@@ -4076,7 +4077,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleOpeningText(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleOpeningText(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 textStart: string[] = battleInfo.textStart,
                 nextRoutine: string,
@@ -4129,7 +4130,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleEnemyIntro(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleEnemyIntro(settings: any, FSP: FullScreenPokemon): void {
             var things: any = settings.things,
                 opponent: ICharacter = things.opponent,
                 menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("GeneralText"),
@@ -4186,7 +4187,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattlePlayerIntro(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattlePlayerIntro(settings: any, FSP: FullScreenPokemon): void {
             var things: any = settings.things,
                 player: IPlayer = things.player,
                 menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("GeneralText"),
@@ -4244,7 +4245,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleShowPlayerMenu(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleShowPlayerMenu(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.deleteMenu("Yes/No");
 
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -4258,7 +4259,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleOpponentSendOut(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleOpponentSendOut(settings: any, FSP: FullScreenPokemon): void {
             var menu: IMenu = settings.things.menu,
                 left: number = menu.right - FSP.unitsize * 8,
                 top: number = menu.top + FSP.unitsize * 32;
@@ -4283,7 +4284,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleOpponentSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleOpponentSendOutAppear(settings: any, FSP: FullScreenPokemon): void {
             var opponentInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
                 pokemonInfo: BattleMovr.IActor = opponentInfo.actors[opponentInfo.selectedIndex],
                 pokemon: BattleMovr.IThing = FSP.BattleMover.setThing(
@@ -4299,7 +4300,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattlePlayerSendOut(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattlePlayerSendOut(settings: any, FSP: FullScreenPokemon): void {
             var menu: IMenu = settings.things.menu,
                 left: number = menu.left + FSP.unitsize * 8,
                 top: number = menu.bottom - FSP.unitsize * 8;
@@ -4324,7 +4325,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattlePlayerSendOutAppear(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattlePlayerSendOutAppear(settings: any, FSP: FullScreenPokemon): void {
             var playerInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
                 pokemonInfo: BattleMovr.IActor = playerInfo.selectedActor,
                 pokemon: BattleMovr.IThing = FSP.BattleMover.setThing("player", pokemonInfo.title + "Back");
@@ -4350,7 +4351,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattlePlayerSwitchesSamePokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattlePlayerSwitchesSamePokemon(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "backMenu": "PokemonMenuContext"
             });
@@ -4365,7 +4366,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleMovePlayer(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleMovePlayer(settings: any, FSP: FullScreenPokemon): void {
             var player: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
                 playerActor: BattleMovr.IActor = player.selectedActor,
                 opponent: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
@@ -4443,7 +4444,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleMoveOpponent(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleMoveOpponent(settings: any, FSP: FullScreenPokemon): void {
             var opponent: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
                 opponentActor: BattleMovr.IActor = opponent.selectedActor,
                 player: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
@@ -4465,7 +4466,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleMoveOpponentAnimate(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleMoveOpponentAnimate(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 choice: string = routineArguments.choiceOpponent,
                 move: string = FSP.MathDecider.getConstant("moves")[choice];
@@ -4516,7 +4517,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleDamage(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleDamage(settings: any, FSP: FullScreenPokemon): void {
             var battlerName: string = settings.routineArguments.battlerName,
                 damage: number = settings.routineArguments.damage,
                 battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
@@ -4553,7 +4554,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattlePokemonFaints(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattlePokemonFaints(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 battlerName: string = routineArguments.battlerName,
                 battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
@@ -4604,7 +4605,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleAfterPlayerPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleAfterPlayerPokemonFaints(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 actorAvailable: boolean = FSP.checkArrayMembersIndex(battleInfo.player.actors, "HP");
 
@@ -4618,7 +4619,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleAfterOpponentPokemonFaints(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleAfterOpponentPokemonFaints(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent,
                 actorAvailable: boolean = FSP.checkArrayMembersIndex(opponent.actors, "HP"),
@@ -4657,7 +4658,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleOpponentSwitchesPokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleOpponentSwitchesPokemon(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
 
@@ -4708,7 +4709,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleExperienceGain(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleExperienceGain(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 routineArguments: any = settings.routineArguments,
                 gains: number = routineArguments.experienceGained,
@@ -4734,7 +4735,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleLevelUp(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleLevelUp(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 routineArguments: any = settings.routineArguments,
                 // gains: number = routineArguments.experienceGained,
@@ -4762,7 +4763,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleLevelUpStats(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleLevelUpStats(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments;
 
             FSP.openPokemonStats({
@@ -4785,7 +4786,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattlePlayerChoosesPokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattlePlayerChoosesPokemon(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("Pokemon", {
                 "position": {
                     "vertical": "center",
@@ -4799,7 +4800,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleExitFail(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleExitFail(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -4811,7 +4812,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleExitFailReturn(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleExitFailReturn(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.BattleMover.showPlayerMenu();
         }
@@ -4819,7 +4820,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleVictory(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleVictory(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
 
@@ -4851,7 +4852,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleVictorySpeech(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleVictorySpeech(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial"),
                 opponent: IThing = <IThing>FSP.BattleMover.setThing("opponent", battleInfo.opponent.sprite),
@@ -4885,7 +4886,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleVictoryWinnings(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleVictoryWinnings(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 reward: number = settings.battleInfo.opponent.reward,
                 animationSettings: any = {
@@ -4932,7 +4933,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleDefeat(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleDefeat(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 message: string[] = [
                     "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!"
@@ -4968,7 +4969,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleComplete(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleComplete(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 keptThings: (string | IThing)[],
                 thing: string | IThing,
@@ -5005,7 +5006,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleTransitionLineSpiral(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleTransitionLineSpiral(settings: any, FSP: FullScreenPokemon): void {
             var unitsize: number = FSP.unitsize,
                 divisor: number = settings.divisor || 15,
                 screenWidth: number = FSP.MapScreener.width,
@@ -5155,7 +5156,7 @@ module FullScreenPokemon {
          * 
          * @remarks Three [black, white] flashes, then the spiral
          */
-        cutsceneBattleTransitionFlash(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleTransitionFlash(settings: any, FSP: FullScreenPokemon): void {
             var flashes: number = settings.flashes || 6,
                 flashColors: string[] = settings.flashColors || ["Black", "White"],
                 callback: Function = settings.callback,
@@ -5202,23 +5203,25 @@ module FullScreenPokemon {
          * the maximum, rounded to a large amount to appear pixellated (perhaps,
          * unitsize * 32?).
          */
-        cutsceneBattleTransitionTwist(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleTransitionTwist(settings: any, FSP: FullScreenPokemon): void {
             throw new Error("Not yet implemented.");
         }
 
         /**
          * 
          */
-        cutsceneBattleTransitionFlashTwist(FSP: FullScreenPokemon, settings: any): void {
-            FSP.cutsceneBattleTransitionFlash(FSP, {
-                "callback": FSP.cutsceneBattleTransitionTwist.bind(FSP, settings)
-            });
+        cutsceneBattleTransitionFlashTwist(settings: any, FSP: FullScreenPokemon): void {
+            FSP.cutsceneBattleTransitionFlash(
+                {
+                    "callback": FSP.cutsceneBattleTransitionTwist.bind(FSP, settings)
+                },
+                FSP);
         }
 
         /**
          * 
          */
-        cutsceneBattleChangeStatistic(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleChangeStatistic(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 routineArguments: any = settings.routineArguments,
                 defenderName: string = routineArguments.defenderName,
@@ -5269,7 +5272,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleAttackGrowl(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleAttackGrowl(settings: any, FSP: FullScreenPokemon): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
@@ -5299,7 +5302,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleAttackTackle(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleAttackTackle(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
@@ -5353,7 +5356,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneBattleAttackTailWhip(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneBattleAttackTailWhip(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 attackerName: string = routineArguments.attackerName,
                 defenderName: string = routineArguments.defenderName,
@@ -5405,7 +5408,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneTrainerSpottedExclamation(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneTrainerSpottedExclamation(settings: any, FSP: FullScreenPokemon): void {
             FSP.animateCharacterPreventWalking(FSP.player);
             FSP.animateExclamation(
                 settings.triggerer,
@@ -5416,7 +5419,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneTrainerSpottedApproach(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneTrainerSpottedApproach(settings: any, FSP: FullScreenPokemon): void {
             var player: IPlayer = settings.player,
                 triggerer: ICharacter = settings.triggerer,
                 direction: Direction = triggerer.direction,
@@ -5441,7 +5444,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneTrainerSpottedDialog(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneTrainerSpottedDialog(settings: any, FSP: FullScreenPokemon): void {
             FSP.collideCharacterDialog(settings.player, settings.triggerer);
             FSP.MapScreener.blockInputs = false;
         }
@@ -5449,7 +5452,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterWelcome(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterWelcome(settings: any, FSP: FullScreenPokemon): void {
             settings.nurse = FSP.getThingById(settings.nurseId || "Nurse");
             settings.machine = FSP.getThingById(settings.machineId || "HealingMachine");
 
@@ -5469,7 +5472,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterChoose(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterChoose(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("Heal/Cancel");
             FSP.MenuGrapher.addMenuList(
                 "Heal/Cancel",
@@ -5496,7 +5499,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterChooseHeal(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterChooseHeal(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.deleteMenu("Heal/Cancel");
 
             FSP.MenuGrapher.createMenu("GeneralText", {
@@ -5516,7 +5519,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterHealing(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterHealing(settings: any, FSP: FullScreenPokemon): void {
             var party: BattleMovr.IActor[] = FSP.ItemsHolder.getItem("PokemonInParty"),
                 balls: IThing[] = [],
                 dt: number = 35,
@@ -5553,7 +5556,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterHealingAction(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterHealingAction(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 balls: IThing[] = routineArguments.balls,
                 numFlashes: number = 8,
@@ -5591,7 +5594,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterHealingComplete(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterHealingComplete(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 balls: IThing[] = routineArguments.balls,
                 party: BattleMovr.IActor[] = FSP.ItemsHolder.getItem("PokemonInParty");
@@ -5620,7 +5623,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeCenterChooseCancel(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeCenterChooseCancel(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.deleteMenu("Heal/Cancel");
 
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -5639,7 +5642,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartGreeting(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartGreeting(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true,
                 "ignoreA": true,
@@ -5657,7 +5660,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartOptions(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartOptions(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("Money");
 
             FSP.MenuGrapher.createMenu("Buy/Sell", {
@@ -5684,7 +5687,7 @@ module FullScreenPokemon {
          * 
          * @todo Add constants for all items, for display names
          */
-        cutscenePokeMartBuyMenu(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartBuyMenu(settings: any, FSP: FullScreenPokemon): void {
             var options: any[] = settings.triggerer.items.map(
                 function (reference: any): any {
                     var text: string = reference.item.toUpperCase(),
@@ -5739,7 +5742,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartSelectAmount(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartSelectAmount(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 reference: any = routineArguments.reference,
                 amount: number = routineArguments.amount,
@@ -5795,7 +5798,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartConfirmPurchase(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartConfirmPurchase(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 reference: any = routineArguments.reference,
                 cost: number = routineArguments.cost,
@@ -5847,14 +5850,14 @@ module FullScreenPokemon {
          * 
          * @todo Why is the BuyMenu text appearing twice?
          */
-        cutscenePokeMartCancelPurchase(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartCancelPurchase(settings: any, FSP: FullScreenPokemon): void {
             FSP.ScenePlayer.playRoutine("BuyMenu");
         }
 
         /**
          * 
          */
-        cutscenePokeMartTryPurchase(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartTryPurchase(settings: any, FSP: FullScreenPokemon): void {
             var routineArguments: any = settings.routineArguments,
                 costTotal: number = routineArguments.costTotal;
 
@@ -5884,7 +5887,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartFailPurchase(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartFailPurchase(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -5899,7 +5902,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartContinueShopping(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartContinueShopping(settings: any, FSP: FullScreenPokemon): void {
             if (FSP.MenuGrapher.getMenu("Yes/No")) {
                 delete FSP.MenuGrapher.getMenu("Yes/No").onMenuDelete;
             }
@@ -5921,7 +5924,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutscenePokeMartExit(FSP: FullScreenPokemon, settings: any): void {
+        cutscenePokeMartExit(settings: any, FSP: FullScreenPokemon): void {
             FSP.ScenePlayer.stopCutscene();
 
             FSP.MenuGrapher.deleteMenu("Buy/Sell");
@@ -5941,14 +5944,15 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroFadeIn(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroFadeIn(settings: any, FSP: FullScreenPokemon): void {
             var oak: IThing = FSP.ObjectMaker.make("OakPortrait", {
                 "opacity": 0
             });
 
             settings.oak = oak;
 
-            FSP.AudioPlayer.play("Introduction");
+            console.warn("Cannot find Introduction audio theme!");
+            // FSP.AudioPlayer.play("Introduction");
             FSP.ModAttacher.fireEvent("onIntroFadeIn", oak);
 
             FSP.setMap("Blank", "White");
@@ -5972,7 +5976,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroFirstDialog(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroFirstDialog(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -5988,7 +5992,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroFirstDialogFade(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroFirstDialogFade(settings: any, FSP: FullScreenPokemon): void {
             var blank: IThing = FSP.ObjectMaker.make("WhiteSquare", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
@@ -6011,7 +6015,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPokemonExpo(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPokemonExpo(settings: any, FSP: FullScreenPokemon): void {
             var pokemon: IThing = FSP.ObjectMaker.make("NidorinoFront", {
                 "flipHoriz": true,
                 "opacity": .01
@@ -6044,7 +6048,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPokemonExplanation(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPokemonExplanation(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6062,7 +6066,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerAppear(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerAppear(settings: any, FSP: FullScreenPokemon): void {
             var middleX: number = FSP.MapScreener.middleX | 0,
                 player: IPlayer = FSP.ObjectMaker.make("PlayerPortrait", {
                     "flipHoriz": true,
@@ -6090,7 +6094,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerName(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerName(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6104,7 +6108,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerSlide(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerSlide(settings: any, FSP: FullScreenPokemon): void {
             FSP.animateFadeHorizontal(
                 settings.player,
                 FSP.unitsize,
@@ -6116,7 +6120,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerNameOptions(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerNameOptions(settings: any, FSP: FullScreenPokemon): void {
             var fromMenu: Function = FSP.ScenePlayer.bindRoutine("PlayerNameFromMenu"),
                 fromKeyboard: Function = FSP.ScenePlayer.bindRoutine("PlayerNameFromKeyboard");
 
@@ -6146,7 +6150,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerNameFromMenu(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerNameFromMenu(settings: any, FSP: FullScreenPokemon): void {
             settings.name = FSP.MenuGrapher.getMenuSelectedOption("NameOptions").text;
 
             FSP.MenuGrapher.deleteMenu("NameOptions");
@@ -6162,7 +6166,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerNameFromKeyboard(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerNameFromKeyboard(settings: any, FSP: FullScreenPokemon): void {
             settings.name = (<IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult")).completeValue;
 
             FSP.MenuGrapher.deleteMenu("Keyboard");
@@ -6179,7 +6183,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerNameConfirm(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerNameConfirm(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true
             });
@@ -6196,7 +6200,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroPlayerNameComplete(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroPlayerNameComplete(settings: any, FSP: FullScreenPokemon): void {
             var blank: IThing = FSP.ObjectMaker.make("WhiteSquare", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
@@ -6219,7 +6223,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalAppear(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalAppear(settings: any, FSP: FullScreenPokemon): void {
             var rival: IThing = FSP.ObjectMaker.make("RivalPortrait", {
                 "opacity": 0
             });
@@ -6243,7 +6247,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalName(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalName(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6259,7 +6263,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalSlide(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalSlide(settings: any, FSP: FullScreenPokemon): void {
             FSP.animateFadeHorizontal(
                 settings.rival,
                 FSP.unitsize,
@@ -6271,7 +6275,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalNameOptions(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalNameOptions(settings: any, FSP: FullScreenPokemon): void {
             var fromMenu: Function = FSP.ScenePlayer.bindRoutine("RivalNameFromMenu"),
                 fromKeyboard: Function = FSP.ScenePlayer.bindRoutine("RivalNameFromKeyboard");
 
@@ -6301,7 +6305,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalNameFromMenu(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalNameFromMenu(settings: any, FSP: FullScreenPokemon): void {
             settings.name = FSP.MenuGrapher.getMenuSelectedOption("NameOptions").text;
 
             FSP.MenuGrapher.deleteMenu("NameOptions");
@@ -6317,7 +6321,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalNameFromKeyboard(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalNameFromKeyboard(settings: any, FSP: FullScreenPokemon): void {
             settings.name = (<IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult")).completeValue;
 
             FSP.MenuGrapher.deleteMenu("Keyboard");
@@ -6334,7 +6338,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalNameConfirm(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalNameConfirm(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6350,7 +6354,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroRivalNameComplete(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroRivalNameComplete(settings: any, FSP: FullScreenPokemon): void {
             var blank: IThing = FSP.ObjectMaker.make("WhiteSquare", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
@@ -6373,7 +6377,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroLastDialogAppear(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroLastDialogAppear(settings: any, FSP: FullScreenPokemon): void {
             var portrait: IThing = FSP.ObjectMaker.make("PlayerPortrait", {
                 "flipHoriz": true,
                 "opacity": 0
@@ -6399,7 +6403,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroLastDialog(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroLastDialog(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6415,7 +6419,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroShrinkPlayer(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroShrinkPlayer(settings: any, FSP: FullScreenPokemon): void {
             var silhouetteLarge: IThing = FSP.ObjectMaker.make("PlayerSilhouetteLarge"),
                 silhouetteSmall: IThing = FSP.ObjectMaker.make("PlayerSilhouetteSmall"),
                 player: IPlayer = FSP.ObjectMaker.make("Player"),
@@ -6449,7 +6453,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroFadeOut(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroFadeOut(settings: any, FSP: FullScreenPokemon): void {
             var blank: IThing = FSP.ObjectMaker.make("WhiteSquare", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
@@ -6472,7 +6476,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneIntroFinish(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneIntroFinish(settings: any, FSP: FullScreenPokemon): void {
             delete FSP.MapScreener.cutscene;
 
             FSP.MenuGrapher.deleteActiveMenu();
@@ -6485,7 +6489,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroFirstDialog(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroFirstDialog(settings: any, FSP: FullScreenPokemon): void {
             var triggered: boolean = false;
 
             settings.triggerer.alive = false;
@@ -6522,7 +6526,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroExclamation(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroExclamation(settings: any, FSP: FullScreenPokemon): void {
             var timeout: number = 49;
 
             FSP.animateExclamation(settings.player, timeout);
@@ -6535,7 +6539,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroCatchup(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroCatchup(settings: any, FSP: FullScreenPokemon): void {
             var door: IThing = FSP.getThingById("Oak's Lab Door"),
                 oak: ICharacter = FSP.ObjectMaker.make("Oak", {
                     "outerok": true,
@@ -6557,7 +6561,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroGrassWarning(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroGrassWarning(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6573,7 +6577,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroFollowToLab(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroFollowToLab(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.animateCharacterFollow(settings.player, settings.oak);
             FSP.animateCharacterStartTurning(
@@ -6588,7 +6592,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroEnterLab(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroEnterLab(settings: any, FSP: FullScreenPokemon): void {
             FSP.StateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
             FSP.TimeHandler.addEvent(
                 FSP.animateCharacterStartTurning,
@@ -6608,7 +6612,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroWalkToTable(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroWalkToTable(settings: any, FSP: FullScreenPokemon): void {
             var oak: ICharacter = <ICharacter>FSP.getThingById("Oak");
 
             settings.oak = oak;
@@ -6639,7 +6643,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalComplain(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalComplain(settings: any, FSP: FullScreenPokemon): void {
             settings.oak.nocollide = false;
             settings.player.nocollide = false;
             FSP.StateHolder.addChange(settings.oak.id, "nocollide", false);
@@ -6657,7 +6661,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroOakThinksToRival(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroOakThinksToRival(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6678,7 +6682,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalProtests(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalProtests(settings: any, FSP: FullScreenPokemon): void {
             var timeout: number = 21;
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
@@ -6703,7 +6707,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroOakRespondsToProtest(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroOakRespondsToProtest(settings: any, FSP: FullScreenPokemon): void {
             var blocker: IThing = FSP.getThingById("OakBlocker"),
                 timeout: number = 21;
 
@@ -6739,7 +6743,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoicePlayerChecksPokeball(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoicePlayerChecksPokeball(settings: any, FSP: FullScreenPokemon): void {
             var pokeball: IPokeball = settings.triggerer;
 
             // If Oak is hidden, this cutscene shouldn't be starting (too early)
@@ -6780,7 +6784,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6808,7 +6812,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoicePlayerTakesPokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoicePlayerTakesPokemon(settings: any, FSP: FullScreenPokemon): void {
             var oak: ICharacter = <ICharacter>FSP.getThingById("Oak"),
                 rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
                 dialogOak: string = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!",
@@ -6848,7 +6852,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoicePlayerChoosesNickname(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoicePlayerChoosesNickname(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("Yes/No", {
                 "ignoreB": true,
                 "killOnB": ["GeneralText"]
@@ -6878,7 +6882,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoicePlayerSetsNickname(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoicePlayerSetsNickname(settings: any, FSP: FullScreenPokemon): void {
             var party: BattleMovr.IActor[] = FSP.ItemsHolder.getItem("PokemonInParty"),
                 menu: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
                 result: string = menu.completeValue;
@@ -6891,7 +6895,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(settings: any, FSP: FullScreenPokemon): void {
             var rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
                 other: string,
                 steps: number,
@@ -6937,7 +6941,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroPokemonChoiceRivalTakesPokemon(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroPokemonChoiceRivalTakesPokemon(settings: any, FSP: FullScreenPokemon): void {
             var oakblocker: IThing = FSP.getThingById("OakBlocker"),
                 rivalblocker: IThing = FSP.getThingById("RivalBlocker");
 
@@ -6968,7 +6972,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalBattleApproach(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalBattleApproach(settings: any, FSP: FullScreenPokemon): void {
             var rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
                 dx: number = Math.abs(settings.triggerer.left - settings.player.left),
                 further: boolean = dx < FSP.unitsize;
@@ -6999,7 +7003,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalLeavesAfterBattle(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalLeavesAfterBattle(settings: any, FSP: FullScreenPokemon): void {
             // var rivalblocker = EightBitter.getThingById("RivalBlocker");
 
             // rivalblocker.nocollide = true;
@@ -7013,7 +7017,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalLeavesComplaint(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalLeavesComplaint(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7031,7 +7035,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalLeavesGoodbye(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalLeavesGoodbye(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7045,7 +7049,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalLeavesWalking(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalLeavesWalking(settings: any, FSP: FullScreenPokemon): void {
             var oak: ICharacter = <ICharacter>FSP.getThingById("Oak"),
                 rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
                 isRight: boolean = Math.abs(oak.left - rival.left) < FSP.unitsize,
@@ -7073,7 +7077,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakIntroRivalBattleChallenge(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakIntroRivalBattleChallenge(settings: any, FSP: FullScreenPokemon): void {
             var steps: number,
                 battleInfo: IBattleInfo = {
                     "opponent": {
@@ -7137,7 +7141,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelPickupGreeting(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelPickupGreeting(settings: any, FSP: FullScreenPokemon): void {
             settings.triggerer.alive = false;
             FSP.StateHolder.addChange(settings.triggerer.id, "alive", false);
 
@@ -7154,7 +7158,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelPickupWalkToCounter(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelPickupWalkToCounter(settings: any, FSP: FullScreenPokemon): void {
             FSP.animateCharacterStartTurning(
                 settings.player,
                 0,
@@ -7169,7 +7173,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelPickupCounterDialog(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelPickupCounterDialog(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7192,7 +7196,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryGreeting(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryGreeting(settings: any, FSP: FullScreenPokemon): void {
             settings.oak = settings.triggerer;
 
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -7233,7 +7237,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryRivalInterrupts(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryRivalInterrupts(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7248,7 +7252,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryRivalWalksUp(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryRivalWalksUp(settings: any, FSP: FullScreenPokemon): void {
             var doormat: IThing = FSP.getThingById("DoormatLeft"),
                 rival: ICharacter = <ICharacter>FSP.addThing("Rival", doormat.left, doormat.top);
 
@@ -7268,7 +7272,7 @@ module FullScreenPokemon {
         /**
          * pause, oh right i have a request
          */
-        cutsceneOakParcelDeliveryRivalInquires(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryRivalInquires(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7286,7 +7290,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryOakRequests(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryOakRequests(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7304,7 +7308,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryOakDescribesPokedex(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryOakDescribesPokedex(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7324,7 +7328,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryOakGivesPokedex(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryOakGivesPokedex(settings: any, FSP: FullScreenPokemon): void {
             var bookLeft: IThing = FSP.getThingById("BookLeft"),
                 bookRight: IThing = FSP.getThingById("BookRight");
 
@@ -7352,7 +7356,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryOakDescribesGoal(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryOakDescribesGoal(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7375,7 +7379,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneOakParcelDeliveryRivalAccepts(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneOakParcelDeliveryRivalAccepts(settings: any, FSP: FullScreenPokemon): void {
             FSP.animateCharacterSetDirection(settings.rival, 1);
 
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -7419,7 +7423,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneDaisyTownMapGreeting(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneDaisyTownMapGreeting(settings: any, FSP: FullScreenPokemon): void {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -7433,7 +7437,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneDaisyTownMapReceiveMap(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneDaisyTownMapReceiveMap(settings: any, FSP: FullScreenPokemon): void {
             var book: IThing = FSP.getThingById("Book"),
                 daisy: ICharacter = settings.triggerer;
 
@@ -7466,7 +7470,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneElderTrainingStartBattle(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneElderTrainingStartBattle(settings: any, FSP: FullScreenPokemon): void {
             FSP.MapScreener.blockInputs = true;
             FSP.startBattle({
                 "keptThings": [settings.player, settings.triggerer],
@@ -7502,7 +7506,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneRivalRoute22RivalEmerges(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneRivalRoute22RivalEmerges(settings: any, FSP: FullScreenPokemon): void {
             var player: IPlayer = settings.player,
                 triggerer: ICharacter = settings.triggerer,
                 playerUpper: number = Number(Math.abs(player.top - triggerer.top) < FSP.unitsize),
@@ -7540,7 +7544,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        cutsceneRivalRoute22RivalTalks(FSP: FullScreenPokemon, settings: any): void {
+        cutsceneRivalRoute22RivalTalks(settings: any, FSP: FullScreenPokemon): void {
             FSP.animateCharacterSetDirection(
                 settings.player,
                 FSP.getDirectionBordering(settings.player, settings.rival));

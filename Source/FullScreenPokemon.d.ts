@@ -344,6 +344,10 @@ declare module FullScreenPokemon {
         [i: number]: boolean; // Array-style usage, for direction numbers
     }
 
+    export interface ICutsceneSettings extends ScenePlayr.ICutsceneSettings {
+
+    }
+
     export interface IFullScreenPokemonSettings {
 
     }
