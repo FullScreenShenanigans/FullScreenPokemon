@@ -1,4 +1,7 @@
-/// <reference path="GameStartr-0.2.0.ts" />
+/// <reference path="GamesRunnr-0.2.0.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
+/// <reference path="InputWritr-0.2.0.ts" />
+/// <reference path="LevelEditr-0.2.0.ts" />
 
 interface HTMLElement {
     requestFullScreen: () => void;
@@ -12,8 +15,23 @@ interface HTMLElement {
 }
 
 declare module UserWrappr {
+    export interface IGameStartr {
+        GamesRunner: GamesRunnr.IGamesRunnr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
+        InputWriter: InputWritr.IInputWritr;
+        LevelEditor: LevelEditr.ILevelEditr;
+        UserWrapper: IUserWrappr;
+        container: HTMLElement;
+        addPageStyles(styles: StyleSheet): void;
+        gameStart(): void;
+        createElement(tag: string, ...args: any[]): HTMLElement;
+        proliferate(recipient: any, donor: any, noOverride?: boolean): any;
+    }
+
+    type IGameStartrCustoms = any;
+
     export interface IGameStartrConstructor {
-        new (GameStartrSettings?): GameStartr.IGameStartr;
+        new (GameStartrSettings?): IGameStartr;
     }
 
     export interface IGameStartrUIHelpSettings {
@@ -48,7 +66,7 @@ declare module UserWrappr {
         }
 
         export interface IOptionSource {
-            (GameStarter: GameStartr.IGameStartr, ...args: any[]): any;
+            (GameStarter: IGameStartr, ...args: any[]): any;
         }
 
         export interface IChoiceElement extends HTMLElement {
@@ -69,7 +87,7 @@ declare module UserWrappr {
         }
 
         export interface IOptionsButtonSchema extends IOption {
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             source: IOptionSource;
             storeLocally?: boolean;
             type: string;
@@ -86,7 +104,7 @@ declare module UserWrappr {
 
         export interface IOptionsTableAction {
             title: string;
-            action: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            action: (GameStarter: IGameStartr, ...args: any[]) => void;
         }
 
         export interface IOptionsTableOption extends IOption {
@@ -95,40 +113,40 @@ declare module UserWrappr {
         }
 
         export interface IOptionsTableBooleanOption extends IOptionsTableOption {
-            disable: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            enable: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            options?: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => string[];
+            disable: (GameStarter: IGameStartr, ...args: any[]) => void;
+            enable: (GameStarter: IGameStartr, ...args: any[]) => void;
+            options?: (GameStarter: IGameStartr, ...args: any[]) => string[];
             keyActive?: string;
             assumeInactive?: boolean;
         }
 
         export interface IOptionsTableKeysOption extends IOptionsTableOption {
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            source: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => string[];
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
+            source: (GameStarter: IGameStartr, ...args: any[]) => string[];
         }
 
         export interface IOptionsTableNumberOption extends IOptionsTableOption {
             minimum: number;
             maximum: number;
-            update: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            update: (GameStarter: IGameStartr, ...args: any[]) => void;
         }
 
         export interface IOptionsTableSelectOption extends IOptionsTableOption {
-            options: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => string[];
-            source: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            update: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            options: (GameStarter: IGameStartr, ...args: any[]) => string[];
+            source: (GameStarter: IGameStartr, ...args: any[]) => void;
+            update: (GameStarter: IGameStartr, ...args: any[]) => void;
         }
 
         export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
             options: () => string[];
             source: () => string;
-            update: (GameStarter: GameStartr.IGameStartr, value: IUserWrapprSizeSummary) => ISelectElement;
+            update: (GameStarter: IGameStartr, value: IUserWrapprSizeSummary) => ISelectElement;
         }
 
         export interface IOptionsMapGridSchema extends ISchema {
             rangeX: number[];
             rangeY: number[];
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             extras?: {
                 [i: string]: IOptionsMapGridExtra;
             };
@@ -136,7 +154,7 @@ declare module UserWrappr {
 
         export interface IOptionsMapGridExtra {
             title: string;
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             extraElements: IOptionsMapGridExtraElement[];
         }
 
@@ -169,21 +187,21 @@ declare module UserWrappr {
         gameElementSelector?: string;
         gameControlsSelector?: string;
         log?: (...args: any[]) => void;
-        customs?: GameStartr.IGameStartrCustoms;
+        customs?: IGameStartrCustoms;
         styleSheet?: StyleSheet;
     }
 
-    export interface IUserWrapprSettings extends IUISettings, GameStartr.IGameStartrCustomsObject {
+    export interface IUserWrapprSettings extends IUISettings {
         GameStartrConstructor: IGameStartrConstructor;
     }
 
     export interface IUserWrappr {
-        resetGameStarter(settings: IUserWrapprSettings, customs?: GameStartr.IGameStartrCustoms): void;
+        resetGameStarter(settings: IUserWrapprSettings, customs?: IGameStartrCustoms): void;
         getGameStartrConstructor(): IGameStartrConstructor;
-        getGameStarter(): GameStartr.IGameStartr;
+        getGameStarter(): IGameStartr;
         getItemsHolder(): ItemsHoldr.ItemsHoldr;
         getSettings(): IUserWrapprSettings;
-        getCustoms(): GameStartr.IGameStartrCustoms;
+        getCustoms(): IGameStartrCustoms;
         getHelpSettings(): IGameStartrUIHelpSettings;
         getGlobalName(): string;
         getGameNameAlias(): string;
@@ -227,7 +245,7 @@ module UserWrappr {
          * The GameStartr instance created by GameStartrConstructor and stored
          * under window.
          */
-        private GameStarter: GameStartr.IGameStartr;
+        private GameStarter: IGameStartr;
 
         /**
          * A ItemsHoldr used to store UI settings.
@@ -242,7 +260,7 @@ module UserWrappr {
         /**
          * Custom arguments to be passed to the GameStartr's modules.
          */
-        private customs: GameStartr.IGameStartrCustoms;
+        private customs: any;
 
         /**
          * Help settings specifically for the user interface, obtained from
@@ -378,9 +396,9 @@ module UserWrappr {
          * and setting additional CSS styles and page visiblity.
          * 
          * @param {IUserWrapprSettings} settings
-         * @param {GameStartr.IGameStartrCustoms} customs
+         * @param {IGameStartrCustoms} customs
          */
-        resetGameStarter(settings: IUserWrapprSettings, customs: GameStartr.IGameStartrCustoms = {}): void {
+        resetGameStarter(settings: IUserWrapprSettings, customs: any = {}): void {
             this.loadGameStarter(this.fixCustoms(customs || {}));
 
             window[settings.globalName || "GameStarter"] = this.GameStarter;
@@ -414,7 +432,7 @@ module UserWrappr {
          * @return {GameStartr} The GameStartr instance created by GameStartrConstructor
          *                      and stored under window.
          */
-        getGameStarter(): GameStartr.IGameStartr {
+        getGameStarter(): IGameStartr {
             return this.GameStarter;
         }
 
@@ -435,7 +453,7 @@ module UserWrappr {
         /**
          * @return {Object} The customs used to construct the GameStartr.
          */
-        getCustoms(): GameStartr.IGameStartrCustoms {
+        getCustoms(): IGameStartrCustoms {
             return this.customs;
         }
 
@@ -730,8 +748,8 @@ module UserWrappr {
         /**
          * 
          */
-        private fixCustoms(customsRaw: GameStartr.IGameStartrCustoms): any {
-            var customs: GameStartr.IGameStartrCustoms = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
+        private fixCustoms(customsRaw: IGameStartrCustoms): any {
+            var customs: IGameStartrCustoms = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
 
             this.GameStartrConstructor.prototype.proliferate(customs, this.currentSize);
 
@@ -816,7 +834,7 @@ module UserWrappr {
          * 
          * @param {Object} customs   Custom arguments to pass to this.GameStarter.
          */
-        private loadGameStarter(customs: GameStartr.IGameStartrCustoms): void {
+        private loadGameStarter(customs: IGameStartrCustoms): void {
             var section: HTMLElement = <HTMLElement>document.querySelector(this.gameElementSelector);
 
             if (this.GameStarter) {
@@ -863,9 +881,7 @@ module UserWrappr {
                 i: number;
 
             this.ItemsHolder = new ItemsHoldr.ItemsHoldr({
-                "prefix": this.globalName + "::UserWrapper::ItemsHolder",
-                "proliferate": this.GameStarter.proliferate,
-                "createElement": this.GameStarter.createElement
+                "prefix": this.globalName + "::UserWrapper::ItemsHolder"
             });
 
             section.textContent = "";
@@ -929,7 +945,7 @@ module UserWrappr {
             /**
              * 
              */
-            protected GameStarter: GameStartr.IGameStartr;
+            protected GameStarter: IGameStartr;
 
             /**
              * @param {UserWrappr} UserWrappr
@@ -1230,20 +1246,29 @@ module UserWrappr {
 
             protected setKeyInput(input: IInputElement, details: IOptionsTableKeysOption, schema: ISchema): ISelectElement[] {
                 var values: string = details.source.call(this, this.GameStarter),
+                    possibleKeys: string[] = this.UserWrapper.getAllPossibleKeys(),
                     children: ISelectElement[] = [],
                     child: ISelectElement,
                     scope: OptionsTableGenerator = this,
+                    valueLower: string,
                     i: number,
                     j: number;
 
                 for (i = 0; i < values.length; i += 1) {
+                    valueLower = values[i].toLowerCase();
+
                     child = <ISelectElement>document.createElement("select");
                     child.className = "options-key-option";
+                    child.value = child.valueOld = valueLower;
 
-                    for (j = 0; j < this.UserWrapper.getAllPossibleKeys().length; j += 1) {
-                        child.appendChild(new Option(this.UserWrapper.getAllPossibleKeys()[j]));
+                    for (j = 0; j < possibleKeys.length; j += 1) {
+                        child.appendChild(new Option(possibleKeys[j]));
+
+                        // Setting child.value won't work in IE or Edge...
+                        if (possibleKeys[j] === valueLower) {
+                            child.selectedIndex = j;
+                        }
                     }
-                    child.value = child.valueOld = values[i].toLowerCase();
 
                     child.onchange = (function (child: ISelectElement): void {
                         details.callback.call(scope, scope.GameStarter, child.valueOld, child.value);
@@ -1320,7 +1345,7 @@ module UserWrappr {
                     return scope.UserWrapper.getCurrentSize().name;
                 };
 
-                details.update = function (GameStarter: GameStartr.GameStartr, value: IUserWrapprSizeSummary | string): ISelectElement {
+                details.update = function (GameStarter: IGameStartr, value: IUserWrapprSizeSummary | string): ISelectElement {
                     if (value === scope.UserWrapper.getCurrentSize()) {
                         return undefined;
                     }

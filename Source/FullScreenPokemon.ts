@@ -4175,9 +4175,11 @@ module FullScreenPokemon {
             FSP.TimeHandler.addEvent(
                 FSP.ScenePlayer.bindRoutine(
                     callback,
-                    {
-                        "nextRoutine": "PlayerIntro"
-                    }),
+                    [
+                        {
+                            "nextRoutine": "PlayerIntro"
+                        }
+                    ]),
                 timeout);
         }
 
@@ -4231,9 +4233,11 @@ module FullScreenPokemon {
             FSP.TimeHandler.addEvent(
                 FSP.ScenePlayer.bindRoutine(
                     "PlayerSendOut",
-                    {
-                        "nextRoutine": "ShowPlayerMenu"
-                    }),
+                    [
+                        {
+                            "nextRoutine": "ShowPlayerMenu"
+                        }
+                    ]),
                 timeout);
         }
 
@@ -4523,9 +4527,11 @@ module FullScreenPokemon {
                 callback: (...args: any[]) => void = hpEnd === 0
                     ? FSP.TimeHandler.addEvent.bind(
                         FSP.TimeHandler,
-                        FSP.ScenePlayer.bindRoutine("PokemonFaints", {
-                            "battlerName": battlerName
-                        }),
+                        FSP.ScenePlayer.bindRoutine(
+                            "PokemonFaints",
+                            [{
+                                "battlerName": battlerName
+                            }]),
                         49)
                     : settings.routineArguments.callback;
 
@@ -4639,10 +4645,12 @@ module FullScreenPokemon {
                 ],
                 FSP.ScenePlayer.bindRoutine(
                     "ExperienceGain",
-                    {
-                        "experienceGained": experienceGained,
-                        "callback": callback
-                    }));
+                    [
+                        {
+                            "experienceGained": experienceGained,
+                            "callback": callback
+                        }
+                    ]));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
@@ -4674,16 +4682,20 @@ module FullScreenPokemon {
                                 "text": "Yes",
                                 "callback": FSP.ScenePlayer.bindRoutine(
                                     "PlayerSwitchesPokemon",
-                                    {
-                                        "nextRoutine": "OpponentSendOut"
-                                    })
+                                    [
+                                        {
+                                            "nextRoutine": "OpponentSendOut"
+                                        }
+                                    ])
                             }, {
                                 "text": "No",
                                 "callback": FSP.ScenePlayer.bindRoutine(
                                     "OpponentSendOut",
-                                    {
-                                        "nextRoutine": "ShowPlayerMenu"
-                                    })
+                                    [
+                                        {
+                                            "nextRoutine": "ShowPlayerMenu"
+                                        }
+                                    ])
                             }]
                     });
                     FSP.MenuGrapher.setActiveMenu("Yes/No");
@@ -5380,12 +5392,14 @@ module FullScreenPokemon {
                 undefined,
                 FSP.ScenePlayer.bindRoutine(
                     "ChangeStatistic",
-                    {
-                        "callback": routineArguments.callback,
-                        "defenderName": defenderName,
-                        "statistic": "Defense",
-                        "amount": -1
-                    }));
+                    [
+                        {
+                            "callback": routineArguments.callback,
+                            "defenderName": defenderName,
+                            "statistic": "Defense",
+                            "amount": -1
+                        }
+                    ]));
         }
 
         /**
@@ -5685,12 +5699,13 @@ module FullScreenPokemon {
                         }],
                         "callback": FSP.ScenePlayer.bindRoutine(
                             "SelectAmount",
-                            {
-                                "reference": reference,
-                                "amount": 1,
-                                "cost": cost
-                            }
-                            ),
+                            [
+                                {
+                                    "reference": reference,
+                                    "amount": 1,
+                                    "cost": cost
+                                }
+                            ]),
                         "reference": reference
                     };
                 });
@@ -5755,18 +5770,22 @@ module FullScreenPokemon {
                     }],
                 "onUp": FSP.ScenePlayer.bindRoutine(
                     "SelectAmount",
-                    {
-                        "amount": (amount === 99) ? 1 : amount + 1,
-                        "cost": cost,
-                        "reference": reference
-                    }),
+                    [
+                        {
+                            "amount": (amount === 99) ? 1 : amount + 1,
+                            "cost": cost,
+                            "reference": reference
+                        }
+                    ]),
                 "onDown": FSP.ScenePlayer.bindRoutine(
                     "SelectAmount",
-                    {
-                        "amount": (amount === 1) ? 99 : amount - 1,
-                        "cost": cost,
-                        "reference": reference
-                    }),
+                    [
+                        {
+                            "amount": (amount === 1) ? 99 : amount - 1,
+                            "cost": cost,
+                            "reference": reference
+                        }
+                    ]),
                 "callback": FSP.ScenePlayer.bindRoutine(
                     "ConfirmPurchase", routineArguments)
             });
@@ -6941,8 +6960,7 @@ module FullScreenPokemon {
                     settings.rivalPokeball.hidden = true;
                     FSP.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                     FSP.MenuGrapher.deleteActiveMenu();
-                }
-                );
+                });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
 
         }
@@ -6968,9 +6986,13 @@ module FullScreenPokemon {
                     "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
                     "Come on, I'll take you on!"
                 ],
-                FSP.ScenePlayer.bindRoutine("Challenge", {
-                    "further": further
-                }));
+                FSP.ScenePlayer.bindRoutine(
+                    "Challenge",
+                    [
+                        {
+                            "further": further
+                        }
+                    ]));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 

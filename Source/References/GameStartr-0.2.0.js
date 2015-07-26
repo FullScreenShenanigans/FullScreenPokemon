@@ -720,12 +720,6 @@ var AudioPlayr;
             return this.theme;
         };
         /**
-         * @return {String} The name of the currently playing theme.
-         */
-        AudioPlayr.prototype.getThemeName = function () {
-            return this.themeName;
-        };
-        /**
          * @return {String} The directory under which all filetype directories are
          *                  to be located.
          */
@@ -935,7 +929,6 @@ var AudioPlayr;
             this.pauseTheme();
             delete this.sounds[this.theme.getAttribute("name")];
             this.theme = undefined;
-            this.themeName = undefined;
         };
         /**
          * "Local" version of play that changes the output sound's volume depending
@@ -1005,7 +998,6 @@ var AudioPlayr;
             if (typeof this.theme !== "undefined" && this.theme.hasAttribute("name")) {
                 delete this.sounds[this.theme.getAttribute("name")];
             }
-            this.themeName = name;
             this.theme = this.sounds[name] = this.play(name);
             this.theme.loop = loop;
             // If it's used (no repeat), add the event listener to resume theme
@@ -1644,7 +1636,7 @@ var EightBittr;
          * @param {Number} x
          */
         EightBittr.prototype.setMidX = function (thing, x) {
-            thing.EightBitter.setLeft(thing, x - thing.width * thing.EightBitter.unitsize / 2);
+            thing.EightBitter.setLeft(thing, x + thing.width * thing.EightBitter.unitsize / 2);
         };
         /**
          * Shifts a Thing so that it is vertically centered on the given y.
@@ -1653,7 +1645,7 @@ var EightBittr;
          * @param {Number} y
          */
         EightBittr.prototype.setMidY = function (thing, y) {
-            thing.EightBitter.setTop(thing, y - thing.height * thing.EightBitter.unitsize / 2);
+            thing.EightBitter.setTop(thing, y + thing.height * thing.EightBitter.unitsize / 2);
         };
         /**
          * @param {Thing} thing
@@ -1777,11 +1769,11 @@ var EightBittr;
             maxSpeed = maxSpeed || Infinity;
             // Thing to the left? Slide to the right.
             if (midx < x) {
-                thing.EightBitter.shiftHoriz(thing, Math.min(maxSpeed, x - midx));
+                thing.EightBitter.shiftHoriz(thing, Math.min(maxSpeed, (x - midx)));
             }
             else {
                 // Thing to the right? Slide to the left.
-                thing.EightBitter.shiftHoriz(thing, Math.max(-maxSpeed, x - midx));
+                thing.EightBitter.shiftHoriz(thing, Math.max(-maxSpeed, (x - midx)));
             }
         };
         /**
@@ -1798,11 +1790,11 @@ var EightBittr;
             maxSpeed = maxSpeed || Infinity;
             // Thing above? slide down.
             if (midy < y) {
-                thing.EightBitter.shiftVert(thing, Math.min(maxSpeed, y - midy));
+                thing.EightBitter.shiftVert(thing, Math.min(maxSpeed, (y - midy)));
             }
             else {
                 // Thing below? Slide up.
-                thing.EightBitter.shiftVert(thing, Math.max(-maxSpeed, y - midy));
+                thing.EightBitter.shiftVert(thing, Math.max(-maxSpeed, (y - midy)));
             }
         };
         /* EightBittr utilities
@@ -4869,10 +4861,10 @@ var StringFilr;
          * @param {String} key
          */
         StringFilr.prototype.clearCached = function (key) {
-            if (this.normal) {
-                key = key.replace(this.normal, "");
-            }
             delete this.cache[key];
+            if (this.normal) {
+                delete this.cache[key.replace(this.normal, "")];
+            }
         };
         /**
          * Retrieves the deepest matching data in the library for a key.
@@ -4974,26 +4966,62 @@ var StringFilr;
 })(StringFilr || (StringFilr = {}));
 /// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
+/**
+ *
+ */
 var PixelRendr;
 (function (PixelRendr_1) {
     "use strict";
+    /**
+     * Summary container for a single PixelRendr sprite source. The original source
+     * is stored, along with any generated outputs, information on its container,
+     * and any filter.
+     */
+    var Render = (function () {
+        /**
+         * Resets the Render. No sprite computation is done here, so sprites is
+         * initialized to an empty container.
+         */
+        function Render(source, filter) {
+            this.source = source;
+            this.filter = filter;
+            this.sprites = {};
+            this.containers = [];
+        }
+        return Render;
+    })();
+    PixelRendr_1.Render = Render;
+    /**
+     * Container for a "multiple" sprite, which is a sprite that contains separate
+     * Uint8ClampedArray pieces of data for different sections (such as top, middle, etc.)
+     */
+    var SpriteMultiple = (function () {
+        /**
+         * Stores an already-computed container of sprites, and sets the direction
+         * sizes and middleStretch accordingly.
+         */
+        function SpriteMultiple(sprites, render) {
+            var sources = render.source[2];
+            this.sprites = sprites;
+            this.direction = render.source[1];
+            if (this.direction === "vertical" || this.direction === "corners") {
+                this.topheight = sources.topheight | 0;
+                this.bottomheight = sources.bottomheight | 0;
+            }
+            if (this.direction === "horizontal" || this.direction === "corners") {
+                this.rightwidth = sources.rightwidth | 0;
+                this.leftwidth = sources.leftwidth | 0;
+            }
+            this.middleStretch = sources.middleStretch || false;
+        }
+        return SpriteMultiple;
+    })();
+    PixelRendr_1.SpriteMultiple = SpriteMultiple;
     /**
      * A moderately unusual graphics module designed to compress images as
      * compressed text blobs and store the text blobs in a StringFilr. These tasks
      * are performed and cached quickly enough for use in real-time environments,
      * such as real-time video games.
-     *
-     * @todo
-     * The first versions of this library were made many years ago by an
-     * inexperienced author, and have undergone only moderate structural revisions
-     * since. There are two key improvements that should happen:
-     * 1. On reset, the source library should be mapped to a PartialRender class
-     *    that stores loading status and required ("post") references, to enable
-     *    lazy loading. See #71.
-     * 2. Once lazy loading is implemented for significantly shorter startup times,
-     *    an extra layer of compression should be added to compress the technically
-     *    human-readable String sources to a binary-ish format. See #236.
-     * 3. Rewrite the heck out of this piece of crap.
      */
     var PixelRendr = (function () {
         /**
@@ -5010,8 +5038,7 @@ var PixelRendr;
             this.digitsizeDefault = this.getDigitSize(this.paletteDefault);
             this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
             this.library = {
-                "raws": settings.library || {},
-                "posts": []
+                "raws": settings.library || {}
             };
             this.filters = settings.filters || {};
             this.scale = settings.scale || 1;
@@ -5066,14 +5093,17 @@ var PixelRendr;
                 ],
                 "doUseCache": false
             });
-            this.library.sprites = this.libraryParse(this.library.raws, "");
-            // Post commands are evaluated after the first processing run
-            this.libraryPosts();
+            this.library.sprites = this.libraryParse(this.library.raws);
             // The BaseFiler provides a searchable 'view' on the library of sprites
             this.BaseFiler = new StringFilr.StringFilr({
                 "library": this.library.sprites,
                 "normal": "normal" // to do: put this somewhere more official?
             });
+            this.commandGenerators = {
+                "multiple": this.generateSpriteCommandMultipleFromRender.bind(this),
+                "same": this.generateSpriteCommandSameFromRender.bind(this),
+                "filter": this.generateSpriteCommandFilterFromRender.bind(this)
+            };
         }
         /* Simple gets
         */
@@ -5113,8 +5143,8 @@ var PixelRendr;
         /**
          * @param {String} key
          * @return {Mixed} Returns the base sprite for a key. This will either be a
-         *                 Uint8ClampedArray if a sprite is found, or the deepest
-         *                 Object in the library.
+         *                 Uint8ClampedArrayor SpriteMultiple if a sprite is found,
+         *                 or the deepest matching Object in the library.
          */
         PixelRendr.prototype.getSpriteBase = function (key) {
             return this.BaseFiler.get(key);
@@ -5133,24 +5163,17 @@ var PixelRendr;
          * @return {Uint8ClampedArray}
          */
         PixelRendr.prototype.decode = function (key, attributes) {
-            // BaseFiler stores the cache of the base sprites. Note that it doesn't
-            // actually require the extra attributes
-            var sprite = this.BaseFiler.get(key);
-            if (!sprite) {
-                throw new Error("No raw sprite found for " + key + ".");
+            var render = this.BaseFiler.get(key), sprite;
+            if (!render) {
+                throw new Error("No sprite found for " + key + ".");
             }
-            // Multiple sprites have their sizings taken from attributes
-            if (sprite.multiple) {
-                if (!sprite.processed) {
-                    this.processSpriteMultiple(sprite, key, attributes);
-                }
+            // If the render doesn't have a listing for this key, create one
+            if (!render.sprites.hasOwnProperty(key)) {
+                this.generateRenderSprite(render, key, attributes);
             }
-            else {
-                // Single (actual) sprites process for size (row) scaling, and flipping
-                if (!(sprite instanceof this.Uint8ClampedArray)) {
-                    throw new Error("No single raw sprite found for: '" + key + "'");
-                }
-                sprite = this.ProcessorDims.process(sprite, key, attributes);
+            sprite = render.sprites[key];
+            if (!sprite || (sprite.constructor === Uint8ClampedArray && sprite.length === 0)) {
+                throw new Error("Could not generate sprite for " + key + ".");
             }
             return sprite;
         };
@@ -5182,7 +5205,7 @@ var PixelRendr;
          */
         PixelRendr.prototype.encodeUri = function (uri, callback) {
             var image = document.createElement("img");
-            image.onload = this.encode.bind(self, image, callback);
+            image.onload = this.encode.bind(this, image, callback);
             image.src = uri;
         };
         /**
@@ -5286,16 +5309,7 @@ var PixelRendr;
             if (readloc === void 0) { readloc = 0; }
             if (writeloc === void 0) { writeloc = 0; }
             if (writelength === void 0) { writelength = Math.max(0, Math.min(source.length, destination.length)); }
-            if (!source || !destination || readloc < 0 || writeloc < 0 || writelength <= 0) {
-                return;
-            }
-            if (readloc >= source.length || writeloc >= destination.length) {
-                // console.log("Alert: memcpyU8 requested out of bounds!");
-                // console.log("source, destination, readloc, writeloc, writelength");
-                // console.log(arguments);
-                return;
-            }
-            // JIT compilcation help
+            // JIT compilation help
             var lwritelength = writelength + 0, lwriteloc = writeloc + 0, lreadloc = readloc + 0;
             while (lwritelength--) {
                 destination[lwriteloc++] = source[lreadloc++];
@@ -5304,180 +5318,202 @@ var PixelRendr;
         /* Library parsing
          */
         /**
-         * Recursive Function to go throw a library and parse it. A copy of the
-         * structure is made where each result is either a parsed sprite, a
-         * placeholder for a post command, or a recursively generated child Object.
+         * Recursively travels through a library, turning all raw String sprites
+         * and any[] commands into Renders.
          *
          * @param {Object} reference   The raw source structure to be parsed.
          * @param {String} path   The path to the current place within the library.
          * @return {Object} The parsed library Object.
          */
-        PixelRendr.prototype.libraryParse = function (reference, path) {
-            var setnew = {}, objref, i;
+        PixelRendr.prototype.libraryParse = function (reference) {
+            var setNew = {}, source, i;
             // For each child of the current layer:
             for (i in reference) {
                 if (!reference.hasOwnProperty(i)) {
                     continue;
                 }
-                objref = reference[i];
-                switch (objref.constructor) {
-                    // If it's a string, parse it
+                source = reference[i];
+                switch (source.constructor) {
                     case String:
-                        setnew[i] = this.ProcessorBase.process(objref, path + " " + i);
+                        // Strings directly become IRenders
+                        setNew[i] = new Render(source);
                         break;
-                    // If it's an array, it should have a command such as 'same' to be post-processed
                     case Array:
-                        this.library.posts.push({
-                            caller: setnew,
-                            name: i,
-                            command: reference[i],
-                            path: path + " " + i
-                        });
+                        // Arrays contain a String filter, a String[] source, and any
+                        // number of following arguments
+                        setNew[i] = new Render(source, source[1]);
                         break;
-                    // If it's anything else, simply recurse
                     default:
-                        setnew[i] = this.libraryParse(objref, path + " " + i);
+                        // If it's anything else, simply recurse
+                        setNew[i] = this.libraryParse(source);
                         break;
                 }
-            }
-            return setnew;
-        };
-        /**
-         * Driver to evaluate post-processing commands, such as copies and filters.
-         * This is run after the main processing finishes. Each post command is
-         * given to evaluatePost.
-         */
-        PixelRendr.prototype.libraryPosts = function () {
-            var posts = this.library.posts, post, i;
-            for (i = 0; i < posts.length; i += 1) {
-                post = posts[i];
-                post.caller[post.name] = this.evaluatePost(post.caller, post.command, post.path);
-            }
-        };
-        /**
-         * Evaluates a post command and returns the result to be used in the
-         * library. It can be "same", "filter", or "vertical".
-         *
-         * @param {Object} caller   The place within the library store results in.
-         * @param {Array} command   The command from the library, represented as
-         *                          ["type", [info...]]
-         * @param {String} path   The path to the caller.
-         */
-        PixelRendr.prototype.evaluatePost = function (caller, command, path) {
-            var spriteRaw, filter;
-            switch (command[0]) {
-                // Same: just returns a reference to the target
-                // ["same", ["container", "path", "to", "target"]]
-                case "same":
-                    spriteRaw = this.followPath(this.library.raws, command[1], 0);
-                    if (spriteRaw.constructor === String) {
-                        return this.ProcessorBase.process(spriteRaw, path);
-                    }
-                    else if (spriteRaw.constructor === Array) {
-                        return this.evaluatePost(caller, spriteRaw, path);
-                    }
-                    return this.libraryParse(spriteRaw, path);
-                // Filter: takes a reference to the target, and applies a filter to it
-                // ["filter", ["container", "path", "to", "target"], filters.DoThisFilter]
-                case "filter":
-                    // Find the sprite this should be filtering from
-                    spriteRaw = this.followPath(this.library.raws, command[1], 0);
-                    filter = this.filters[command[2]];
-                    if (!filter) {
-                        console.warn("Invalid filter provided:", command[2], this.filters);
-                        filter = {};
-                    }
-                    return this.evaluatePostFilter(spriteRaw, path, filter);
-                // Multiple: uses more than one image, either vertically or horizontally
-                // Not to be confused with having .repeat = true.
-                // ["multiple", "vertical", {
-                //    top: "...",       // (just once at the top)
-                //    middle: "..."     // (repeated after top)
-                //  }
-                case "multiple":
-                    return this.evaluatePostMultiple(path, command);
-                // Commands not evaluated by the switch are unknown and bad
-                default:
-                    console.warn("Unknown post command: '" + command[0] + "'.", caller, command, path);
-            }
-        };
-        /**
-         * Driver function to recursively apply a filter on a sprite or Object.
-         *
-         * @param {Mixed} spriteRaw   What the filter is being applied on (either a
-         *                            sprite, or a collection of sprites).
-         * @param {String} path   The path to the spriteRaw in the library.
-         * @param {Object} filter   The pre-determined filter to apply.
-         */
-        PixelRendr.prototype.evaluatePostFilter = function (spriteRaw, path, filter) {
-            // If it's just a String, process the sprite normally
-            if (spriteRaw.constructor === String) {
-                return this.ProcessorBase.process(spriteRaw, path, {
-                    filter: filter
-                });
-            }
-            // If it's an Array, that's a post that hasn't yet been evaluated: evaluate it by the path
-            if (spriteRaw instanceof Array) {
-                return this.evaluatePostFilter(this.followPath(this.library.raws, spriteRaw[1], 0), spriteRaw[1].join(" "), filter);
-            }
-            // If it's a generic Object, go recursively on its children
-            if (spriteRaw instanceof Object) {
-                var output = {}, i;
-                for (i in spriteRaw) {
-                    if (spriteRaw.hasOwnProperty(i)) {
-                        output[i] = this.evaluatePostFilter(spriteRaw[i], path + " " + i, filter);
-                    }
+                // If a Render was created, mark setNew as a container
+                if (setNew[i].constructor === Render) {
+                    setNew[i].containers.push({
+                        "container": setNew,
+                        "key": i
+                    });
                 }
-                return output;
             }
-            // Anything else is a complaint
-            console.warn("Invalid sprite provided for a post filter.", spriteRaw, path, filter);
+            return setNew;
         };
         /**
-         * Creates a SpriteMultiple based on a library's command.
+         * Generates a sprite for a Render based on its internal source and an
+         * externally given String key and attributes Object. The sprite is stored
+         * in the Render's sprites container under that key.
          *
-         * @param {String} path   The path to the SpriteMultiple.
-         * @param {Array} command   The instructions from the library, in the form
-         *                          ["multiple", "{direction}", {Information}].
+         * @param {Render} render   A render whose sprite is being generated.
+         * @param {String} key   The key under which the sprite is stored.
+         * @param {Object} attributes   Any additional information to pass to the
+         *                              sprite generation process.
          */
-        PixelRendr.prototype.evaluatePostMultiple = function (path, command) {
-            var direction = command[1], sections = command[2], output = {
-                "direction": direction,
-                "multiple": true,
-                "sprites": {},
-                "processed": false,
-                "topheight": sections.topheight | 0,
-                "rightwidth": sections.rightwidth | 0,
-                "bottomheight": sections.bottomheight | 0,
-                "leftwidth": sections.leftwidth | 0,
-                "middleStretch": sections.middleStretch || false
-            }, i;
-            for (i in sections) {
-                if (sections.hasOwnProperty(i)) {
-                    output.sprites[i] = this.ProcessorBase.process(sections[i], path + direction + i);
+        PixelRendr.prototype.generateRenderSprite = function (render, key, attributes) {
+            var sprite;
+            if (render.source.constructor === String) {
+                sprite = this.generateSpriteSingleFromRender(render, key, attributes);
+            }
+            else {
+                sprite = this.commandGenerators[render.source[0]](render, key, attributes);
+            }
+            render.sprites[key] = sprite;
+        };
+        /**
+         * Generates the pixel data for a single sprite.
+         *
+         * @param {Render} render   A render whose sprite is being generated.
+         * @param {String} key   The key under which the sprite is stored.
+         * @param {Object} attributes   Any additional information to pass to the
+         *                              sprite generation process.
+         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         */
+        PixelRendr.prototype.generateSpriteSingleFromRender = function (render, key, attributes) {
+            var base = this.ProcessorBase.process(render.source, key, render.filter), sprite = this.ProcessorDims.process(base, key, attributes);
+            return sprite;
+        };
+        /**
+         * Generates the pixel data for a SpriteMultiple to be generated by creating
+         * a container in a new SpriteMultiple and filing it with processed single
+         * sprites.
+         *
+         * @param {Render} render   A render whose sprite is being generated.
+         * @param {String} key   The key under which the sprite is stored.
+         * @param {Object} attributes   Any additional information to pass to the
+         *                              sprite generation process.
+         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         */
+        PixelRendr.prototype.generateSpriteCommandMultipleFromRender = function (render, key, attributes) {
+            var sources = render.source[2], sprites = {}, sprite, path, output = new SpriteMultiple(sprites, render), i;
+            for (i in sources) {
+                if (sources.hasOwnProperty(i)) {
+                    path = key + " " + i;
+                    sprite = this.ProcessorBase.process(sources[i], path, render.filter);
+                    sprites[i] = this.ProcessorDims.process(sprite, path, attributes);
                 }
             }
             return output;
         };
         /**
-         * Processes each of the components in a SpriteMultiple. These are all
-         * individually processed using the attributes by the dimensions processor.
-         * Each sub-sprite will be processed as if it were in a sub-Object referred
-         * to by the path (so if path is "foo bar", "foo bar middle" will be the
-         * middle sprite's key).
+         * Generates the output of a "same" command. The referenced Render or
+         * directory are found, assigned to the old Render's directory, and
+         * this.decode is used to find the output.
          *
-         * @param {SpriteMultiple} sprite
-         * @param {String} key
-         * @param {Object} attributes
+         * @param {Render} render   A render whose sprite is being generated.
+         * @param {String} key   The key under which the sprite is stored.
+         * @param {Object} attributes   Any additional information to pass to the
+         *                              sprite generation process.
+         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
          */
-        PixelRendr.prototype.processSpriteMultiple = function (sprite, key, attributes) {
-            var i;
-            for (i in sprite.sprites) {
-                if (sprite.sprites[i] instanceof this.Uint8ClampedArray) {
-                    sprite.sprites[i] = this.ProcessorDims.process(sprite.sprites[i], key + " " + i, attributes);
+        PixelRendr.prototype.generateSpriteCommandSameFromRender = function (render, key, attributes) {
+            var replacement = this.followPath(this.library.sprites, render.source[1], 0);
+            // The (now temporary) Render's containers are given the Render or directory
+            // referenced by the source path
+            this.replaceRenderInContainers(render, replacement);
+            // BaseFiler will need to remember the new entry for the key,
+            // so the cache is cleared and decode restarted
+            this.BaseFiler.clearCached(key);
+            return this.decode(key, attributes);
+        };
+        /**
+         * Generates the output of a "filter" command. The referenced Render or
+         * directory are found, converted into a filtered Render or directory, and
+         * this.decode is used to find the output.
+         *
+         * @param {Render} render   A render whose sprite is being generated.
+         * @param {String} key   The key under which the sprite is stored.
+         * @param {Object} attributes   Any additional information to pass to the
+         *                              sprite generation process.
+         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         */
+        PixelRendr.prototype.generateSpriteCommandFilterFromRender = function (render, key, attributes) {
+            var filter = this.filters[render.source[2]], found = this.followPath(this.library.sprites, render.source[1], 0), filtered;
+            if (!filter) {
+                console.warn("Invalid filter provided: " + render.source[2]);
+            }
+            // If found is a Render, create a new one as a filtered copy
+            if (found.constructor === Render) {
+                filtered = new Render(found.source, {
+                    "filter": filter
+                });
+                this.generateRenderSprite(filtered, key, attributes);
+            }
+            else {
+                // Otherwise it's an IRenderLibrary; go through that recursively
+                filtered = this.generateRendersFromFilter(found, filter);
+            }
+            // The (now unused) render gives the filtered Render or directory to its containers
+            this.replaceRenderInContainers(render, filtered);
+            if (filtered.constructor === Render) {
+                return filtered.sprites[key];
+            }
+            else {
+                this.BaseFiler.clearCached(key);
+                return this.decode(key, attributes);
+            }
+        };
+        /**
+         * Recursively generates a directory of Renders from a filter. This is
+         * similar to this.libraryParse, though the filter is added and references
+         * aren't.
+         *
+         * @param {Object} directory   The current directory of Renders to create
+         *                             filtered versions of.
+         * @param {Array} filter   The filter being applied.
+         * @return {Object} An output directory containing Renders with the filter.
+         */
+        PixelRendr.prototype.generateRendersFromFilter = function (directory, filter) {
+            var output = {}, child, i;
+            for (i in directory) {
+                if (!directory.hasOwnProperty(i)) {
+                    continue;
+                }
+                child = directory[i];
+                if (child.constructor === Render) {
+                    output[i] = new Render(child.source, {
+                        "filter": filter
+                    });
+                }
+                else {
+                    output[i] = this.generateRendersFromFilter(child, filter);
                 }
             }
-            sprite.processed = true;
+            return output;
+        };
+        /**
+         * Switches all of a given Render's containers to point to a replacement instead.
+         *
+         * @param {Render} render
+         * @param {Mixed} replacement
+         */
+        PixelRendr.prototype.replaceRenderInContainers = function (render, replacement) {
+            var listing, i;
+            for (i = 0; i < render.containers.length; i += 1) {
+                listing = render.containers[i];
+                listing.container[listing.key] = replacement;
+                if (replacement.constructor === Render) {
+                    replacement.containers.push(listing);
+                }
+            }
         };
         /* Core pipeline functions
         */
@@ -5566,7 +5602,7 @@ var PixelRendr;
          * @return {String}
          */
         PixelRendr.prototype.spriteApplyFilter = function (colors, key, attributes) {
-            // If there isn't a filter (as is the normal), just return the sprite
+            // If there isn't a filter (as is the norm), just return the sprite
             if (!attributes || !attributes.filter) {
                 return colors;
             }
@@ -5628,11 +5664,11 @@ var PixelRendr;
          * @return {Uint8ClampedArray}
          */
         PixelRendr.prototype.spriteRepeatRows = function (sprite, key, attributes) {
-            var parsed = new this.Uint8ClampedArray(sprite.length * this.scale), rowsize = attributes[this.spriteWidth] * 4, heightscale = attributes[this.spriteHeight] * this.scale, readloc = 0, writeloc = 0, si, sj;
+            var parsed = new this.Uint8ClampedArray(sprite.length * this.scale), rowsize = attributes[this.spriteWidth] * 4, height = attributes[this.spriteHeight] / this.scale, readloc = 0, writeloc = 0, i, j;
             // For each row:
-            for (si = 0; si < heightscale; ++si) {
+            for (i = 0; i < height; ++i) {
                 // Add it to parsed x scale
-                for (sj = 0; sj < this.scale; ++sj) {
+                for (j = 0; j < this.scale; ++j) {
                     this.memcpyU8(sprite, parsed, readloc, writeloc, rowsize);
                     writeloc += rowsize;
                 }
@@ -5673,7 +5709,7 @@ var PixelRendr;
          * @return {Uint8ClampedArray}
          */
         PixelRendr.prototype.flipSpriteArrayHoriz = function (sprite, attributes) {
-            var length = sprite.length, width = attributes[this.spriteWidth] + 0, newsprite = new this.Uint8ClampedArray(length), rowsize = width * 4, newloc, oldloc, i, j, k;
+            var length = sprite.length + 0, width = attributes[this.spriteWidth] + 0, newsprite = new this.Uint8ClampedArray(length), rowsize = width * 4, newloc, oldloc, i, j, k;
             // For each row:
             for (i = 0; i < length; i += rowsize) {
                 newloc = i;
@@ -6784,9 +6820,9 @@ var PixelDrawr;
             // PixelRender does most of the work in fetching the rendered sprite
             thing.sprite = this.PixelRender.decode(this.generateObjectKey(thing), thing);
             // To do: remove dependency on .numSprites
-            // For now, kit's used to know whether it's had its sprite set, but 
+            // For now, it's used to know whether it's had its sprite set, but 
             // wouldn't physically having a .sprite do that?
-            if (thing.sprite.multiple) {
+            if (thing.sprite.constructor === PixelRendr.SpriteMultiple) {
                 thing.numSprites = 0;
                 this.refillThingCanvasMultiple(thing);
             }
@@ -10559,7 +10595,7 @@ var ScenePlayr;
             this.cutsceneSettings = settings || {};
             this.cutsceneSettings.cutscene = this.cutscene;
             this.cutsceneSettings.cutsceneName = name;
-            this.cutsceneArguments.push(this.cutsceneSettings);
+            this.cutsceneArguments.unshift(this.cutsceneSettings);
             if (this.cutscene.firstRoutine) {
                 this.playRoutine(this.cutscene.firstRoutine);
             }
@@ -10586,7 +10622,7 @@ var ScenePlayr;
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.routine = undefined;
-            this.cutsceneArguments.pop();
+            this.cutsceneArguments.shift();
         };
         /**
          * Plays a particular routine within the current cutscene, passing
@@ -12264,14 +12300,19 @@ var UserWrappr;
                 return input;
             };
             OptionsTableGenerator.prototype.setKeyInput = function (input, details, schema) {
-                var values = details.source.call(this, this.GameStarter), children = [], child, scope = this, i, j;
+                var values = details.source.call(this, this.GameStarter), possibleKeys = this.UserWrapper.getAllPossibleKeys(), children = [], child, scope = this, valueLower, i, j;
                 for (i = 0; i < values.length; i += 1) {
+                    valueLower = values[i].toLowerCase();
                     child = document.createElement("select");
                     child.className = "options-key-option";
-                    for (j = 0; j < this.UserWrapper.getAllPossibleKeys().length; j += 1) {
-                        child.appendChild(new Option(this.UserWrapper.getAllPossibleKeys()[j]));
+                    child.value = child.valueOld = valueLower;
+                    for (j = 0; j < possibleKeys.length; j += 1) {
+                        child.appendChild(new Option(possibleKeys[j]));
+                        // Setting child.value won't work in IE or Edge...
+                        if (possibleKeys[j] === valueLower) {
+                            child.selectedIndex = j;
+                        }
                     }
-                    child.value = child.valueOld = values[i].toLowerCase();
                     child.onchange = (function (child) {
                         details.callback.call(scope, scope.GameStarter, child.valueOld, child.value);
                         if (details.storeLocally) {

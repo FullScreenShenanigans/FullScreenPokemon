@@ -569,9 +569,9 @@ module PixelDrawr {
             thing.sprite = this.PixelRender.decode(this.generateObjectKey(thing), thing);
 
             // To do: remove dependency on .numSprites
-            // For now, kit's used to know whether it's had its sprite set, but 
+            // For now, it's used to know whether it's had its sprite set, but 
             // wouldn't physically having a .sprite do that?
-            if ((<PixelRendr.ISpriteMultiple>thing.sprite).multiple) {
+            if (thing.sprite.constructor === PixelRendr.SpriteMultiple) {
                 thing.numSprites = 0;
                 this.refillThingCanvasMultiple(thing);
             } else {
@@ -614,7 +614,7 @@ module PixelDrawr {
                 return;
             }
 
-            var spritesRaw: PixelRendr.ISpriteMultiple = <PixelRendr.ISpriteMultiple>thing.sprite,
+            var spritesRaw: PixelRendr.SpriteMultiple = <PixelRendr.SpriteMultiple>thing.sprite,
                 canvases: any = thing.canvases = {
                     "direction": spritesRaw.direction,
                     "multiple": true
@@ -730,8 +730,7 @@ module PixelDrawr {
                     && quadrant[this.keyTop] < this.MapScreener[this.keyHeight]
                     && quadrant[this.keyRight] > 0
                     && quadrant[this.keyBottom] > 0
-                    && quadrant[this.keyLeft] < this.MapScreener[this.keyWidth]
-                    ) {
+                    && quadrant[this.keyLeft] < this.MapScreener[this.keyWidth]) {
                     this.refillQuadrant(quadrant);
                     this.context.drawImage(quadrant.canvas, quadrant[this.keyLeft], quadrant[this.keyTop]);
                 }
@@ -761,8 +760,7 @@ module PixelDrawr {
                     0,
                     0,
                     quadrant.canvas[this.keyWidth],
-                    quadrant.canvas[this.keyHeight]
-                    );
+                    quadrant.canvas[this.keyHeight]);
             }
 
             for (i = this.groupNames.length - 1; i >= 0; i -= 1) {
@@ -793,8 +791,7 @@ module PixelDrawr {
                 || this.getTop(thing) > this.MapScreener[this.keyHeight]
                 || this.getRight(thing) < 0
                 || this.getBottom(thing) < 0
-                || this.getLeft(thing) > this.MapScreener[this.keyWidth]
-                ) {
+                || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
                 return;
             }
 
@@ -827,8 +824,7 @@ module PixelDrawr {
                 || this.getRight(thing) < quadrant[this.keyLeft]
                 || this.getBottom(thing) < quadrant[this.keyTop]
                 || this.getLeft(thing) > quadrant[this.keyRight]
-                || thing.opacity < this.epsilon
-                ) {
+                || thing.opacity < this.epsilon) {
                 return;
             }
 
@@ -839,8 +835,7 @@ module PixelDrawr {
                     thing.canvas,
                     thing,
                     this.getLeft(thing) - quadrant[this.keyLeft],
-                    this.getTop(thing) - quadrant[this.keyTop]
-                    );
+                    this.getTop(thing) - quadrant[this.keyTop]);
             } else {
                 // For multiple sprites, some calculations will be needed
                 return this.drawThingOnContextMultiple(
@@ -848,8 +843,7 @@ module PixelDrawr {
                     thing.canvases,
                     thing,
                     this.getLeft(thing) - quadrant[this.keyLeft],
-                    this.getTop(thing) - quadrant[this.keyTop]
-                    );
+                    this.getTop(thing) - quadrant[this.keyTop]);
             }
         }
 
@@ -899,7 +893,7 @@ module PixelDrawr {
             thing: IThing,
             left: number,
             top: number): void {
-            var sprite: PixelRendr.ISpriteMultiple = <PixelRendr.ISpriteMultiple>thing.sprite,
+            var sprite: PixelRendr.SpriteMultiple = <PixelRendr.SpriteMultiple>thing.sprite,
                 topreal: number = top,
                 leftreal: number = left,
                 rightreal: number = left + thing.unitwidth,
@@ -977,8 +971,7 @@ module PixelDrawr {
                         topreal,
                         widthdrawn,
                         heightdrawn,
-                        opacity
-                        );
+                        opacity);
                     this.drawPatternOnContext(
                         context,
                         canvases[this.keyLeft].canvas,
@@ -986,8 +979,7 @@ module PixelDrawr {
                         topreal + diffvert,
                         widthdrawn,
                         heightreal - diffvert * 2,
-                        opacity
-                        );
+                        opacity);
                     this.drawPatternOnContext(
                         context,
                         canvases.bottomLeft.canvas,
@@ -995,8 +987,7 @@ module PixelDrawr {
                         bottomreal - diffvert,
                         widthdrawn,
                         heightdrawn,
-                        opacity
-                        );
+                        opacity);
                     leftreal += diffhoriz;
                     widthreal -= diffhoriz;
 
@@ -1009,8 +1000,7 @@ module PixelDrawr {
                         topreal,
                         widthreal - diffhoriz,
                         heightdrawn,
-                        opacity
-                        );
+                        opacity);
                     this.drawPatternOnContext(
                         context,
                         canvases.topRight.canvas,
@@ -1018,8 +1008,7 @@ module PixelDrawr {
                         topreal,
                         widthdrawn,
                         heightdrawn,
-                        opacity
-                        );
+                        opacity);
                     topreal += diffvert;
                     heightreal -= diffvert;
 
@@ -1032,8 +1021,7 @@ module PixelDrawr {
                         topreal,
                         widthdrawn,
                         heightreal - diffvert,
-                        opacity
-                        );
+                        opacity);
                     this.drawPatternOnContext(
                         context,
                         canvases.bottomRight.canvas,
@@ -1041,8 +1029,7 @@ module PixelDrawr {
                         bottomreal - diffvert,
                         widthdrawn,
                         heightdrawn,
-                        opacity
-                        );
+                        opacity);
                     this.drawPatternOnContext(
                         context,
                         canvases[this.keyBottom].canvas,
@@ -1050,8 +1037,7 @@ module PixelDrawr {
                         bottomreal - diffvert,
                         widthreal - diffhoriz,
                         heightdrawn,
-                        opacity
-                        );
+                        opacity);
                     rightreal -= diffhoriz;
                     widthreal -= diffhoriz;
                     bottomreal -= diffvert;
@@ -1161,8 +1147,7 @@ module PixelDrawr {
                 0, 0,
             // Math.max(width, left - MapScreener[keyRight]),
             // Math.max(height, top - MapScreener[keyBottom])
-                width, height
-                );
+                width, height);
             context.translate(-left, -top);
             context.globalAlpha = 1;
         }
