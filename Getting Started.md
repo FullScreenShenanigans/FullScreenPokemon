@@ -74,7 +74,7 @@ The objects and map systems provide hooks for Things to have certain member func
 
 In order to progress game state and repaint the screen, the game calls `FullScreenPokemon.prototype.upkeep()` every 16 milliseconds (while running at 60fps). This is governed by FSP.GamesRunnr.
 
-Inside upkeep, a maintenance function is called for each group. `FullScreenPokemon.prototype.maintainGeneric` is normally used, except `FullScreenPokemon.prototype.maintainCharacters` is for characters. During these maintenance calls, for each character and solid, if they have a .movement property, it's called as a Function on the Thing. Walking around is done during `maintainCharacters`, and much of the logic is in (or is called by) the character's `onWalkingStart` property (by default, `FullScreenPokemon.prototype.animateCharacterStartWalking`.
+Inside upkeep, a maintenance function is called for each group. `FullScreenPokemon.prototype.maintainGeneric` is normally used, except `FullScreenPokemon.prototype.maintainCharacters` is for characters. During these maintenance calls, for each character and solid, if they have a .movement property, it's called as a Function on the Thing. Walking around is done during `maintainCharacters`, and much of the logic is in (or is called by) the character's `onWalkingStart` property (by default, `FullScreenPokemon.prototype.animateCharacterStartWalking`).
 
 ## Maps
 
