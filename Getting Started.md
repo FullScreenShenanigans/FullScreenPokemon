@@ -52,6 +52,7 @@ Each Thing has a groupType string property that determines what group it's consi
 * Character
 * Solid
 * Scenery
+* Terrain
 
 `FSP.GroupHoldr` contains an Array for each of the groups; each Array contains all the Things of that type currently in the game. Things are added to their respective group when added to the game, and removed when they die. The groups are accessible both by static name and via passing in a String:
 
@@ -73,7 +74,7 @@ The objects and map systems provide hooks for Things to have certain member func
 
 In order to progress game state and repaint the screen, the game calls `FullScreenPokemon.prototype.upkeep()` every 16 milliseconds (while running at 60fps). This is governed by FSP.GamesRunnr.
 
-Inside upkeep, a maintenance function is called for characters and solids. These are `FullScreenPokemon.prototype.maintainCharacters`, and `FullScreenPokemon.prototype.maintainSolids`. During these maintenance calls, for each character and solid, if they have a .movement property, it's called as a Function on the Thing. These will typically be `FullScreenPokemon.prototype.moveSimple` (such as Goombas) or `FullScreenPokemon.prototype.moveSmart` (such as smart Koopas).
+Inside upkeep, a maintenance function is called for each group. `FullScreenPokemon.prototype.maintainGeneric` is normally used, except `FullScreenPokemon.prototype.maintainCharacters` is for characters. During these maintenance calls, for each character and solid, if they have a .movement property, it's called as a Function on the Thing. Walking around is done during `maintainCharacters`, and much of the logic is in (or is called by) the character's `onWalkingStart` property (by default, `FullScreenPokemon.prototype.animateCharacterStartWalking`.
 
 ## Maps
 
@@ -91,4 +92,4 @@ Each Area's creation instructions are stored as an Array of Objects. You can see
 
 ### MapScreenr
 
-Information on the current visible screen are stored in `FSP.MapScreenr`. It's the closest thing to a global variable store in FullScreenPokemon; it stores the offsetX and offsetY of the current screen (from moving to the right). the current map's setting ("Overworld", "Underworld", etc.) and many more, which you can see during gameplay.
+Information on the current visible screen are stored in `FSP.MapScreenr`. It's the closest thing to a global variable store in FullScreenPokemon; it stores the offsetX and offsetY of the current screen (from moving to the right). the current map's setting ("Land", "Cave", etc.) and many more, which you can see during gameplay.
