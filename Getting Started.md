@@ -33,7 +33,7 @@ FSP.addThing("Computer", 32, 64) // Creates a new Computer and adds it at x=32, 
 
 All of FullScreenPokemon's non-GameStartr classes, including Thing and its subclasses, are defined in `settings/objects.js`. In short, the class hierarchy is stored under `FullScreenPokemon.prototype.settings.objects.inheritance` and the attributes for each class are stored under `FullScreenPokemon.prototype.settings.objects.properties`. You may read ObjectMakr's readme for a full explanation.
 
-`FSP.ObjectMakr.make("type")` is how you make a new Thing in the game. It takes in a string for the class name, and optionally an object containing additional properties for it. For example:
+`FSP.ObjectMakr.make("type")` is how you create a new Thing. It takes in a string for the class name, and optionally an object containing additional properties for it. For example:
 
 ```javascript
 FSP.ObjectMakr.make("Pokeball") // Creates a new Pokeball
