@@ -15,21 +15,22 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "chai": "~2.2.X",
+        "chai": "~2.X",
         "grunt": "~0.4.X",
         "grunt-cli": "~0.1.X",
         "grunt-contrib-clean": "~0.6.X",
         "grunt-contrib-copy": "~0.8.X",
-        "grunt-contrib-cssmin": "~0.12.X",
+        "grunt-contrib-cssmin": "~0.13.X",
+        "grunt-contrib-htmlmin": "~0.4.X",
         "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~0.7.X",
+        "grunt-mocha-phantomjs": "~2.X",
         "grunt-processhtml": "~0.3.X",
-        "grunt-preprocess": "~4.1.X",
-        "grunt-tslint": "~2.0.X",
-        "grunt-typescript": "~0.6.X",
-        "grunt-zip": "0.16.X",
-        "mocha": "~2.2.X",
-        "tslint": "~2.0.X",
-        "typescript": "~1.4.X"
+        "grunt-preprocess": "~5.X",
+        "grunt-tslint": "~2.4.X",
+        "grunt-typescript": "~0.7.X",
+        "grunt-zip": "~0.17.X",
+        "mocha": "~2.X",
+        "tslint": "~2.4.X",
+        "typescript": "~1.X"
     }
 }
