@@ -7967,10 +7967,10 @@ module FullScreenPokemon {
 
             FSP.animateCharacterSetDirection(
                 FSP.player,
-                typeof location.direction === "undefined"
+                (typeof location.direction === "undefined"
                     ? FSP.MapScreener.playerDirection
-                    : location.direction
-                );
+                    : location.direction)
+                || 0);
 
             FSP.centerMapScreen(FSP);
 
