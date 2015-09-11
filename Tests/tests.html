@@ -1,0 +1,50 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+
+    <script src="../Source/References/GameStartr-0.2.0.js"></script>
+    <script src="../Source/FullScreenPokemon.js"></script>
+    <script src="../Source/settings/audio.js"></script>
+    <script src="../Source/settings/battles.js"></script>
+    <script src="../Source/settings/collisions.js"></script>
+    <script src="../Source/settings/editor.js"></script>
+    <script src="../Source/settings/events.js"></script>
+    <script src="../Source/settings/generator.js"></script>
+    <script src="../Source/settings/groups.js"></script>
+    <script src="../Source/settings/input.js"></script>
+    <script src="../Source/settings/maps.js"></script>
+    <script src="../Source/settings/math.js"></script>
+    <script src="../Source/settings/mods.js"></script>
+    <script src="../Source/settings/objects.js"></script>
+    <script src="../Source/settings/quadrants.js"></script>
+    <script src="../Source/settings/renderer.js"></script>
+    <script src="../Source/settings/runner.js"></script>
+    <script src="../Source/settings/scenes.js"></script>
+    <script src="../Source/settings/sprites.js"></script>
+    <script src="../Source/settings/states.js"></script>
+    <script src="../Source/settings/statistics.js"></script>
+    <script src="../Source/settings/ui.js"></script>
+
+    <script>
+        mocha.setup("bdd")
+        mocha.reporter("html");
+    </script>
+
+    <script src="tests.js"></script>
+
+    <script>
+        if (typeof mochaPhantomJS !== "undefined") {
+            mochaPhantomJS.run();
+        } else {
+            mocha.run();
+        }
+    </script>
+</body>
+</html>
