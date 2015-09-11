@@ -27,7 +27,7 @@ FullScreenPokemon.FullScreenPokemon.settings.audio = {
             "Lavender Town",
             "Level Up Fanfare",
             "Mt Moon Cave",
-            "Oak Research Lab",
+            "Oak's Lab",
             "Ocean",
             "Opening Part 1",
             "Opening Part 2",
