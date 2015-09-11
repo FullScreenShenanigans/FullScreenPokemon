@@ -165,7 +165,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "DirtLight", "x": 80, "y": 120, "width": 48, "height": 16 },
                         { "thing": "FenceWide", "x": 64, "y": 128, "width": 88 },
                         { "thing": "FenceWide", "x": 8, "y": 128 },
-                        { "thing": "AreaSpawner", "y": 128, "map": "Route 21", "area": "Land", "direction": 2}
+                        { "thing": "AreaSpawner", "y": 128, "map": "Route 21", "area": "Land", "direction": 2 }
                     ]
                 },
                 "Player's House": {
@@ -291,6 +291,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
             }
         }, {
             "name": "Route 1",
+            "theme": "Viridian City from Pallet Town",
             "locationDefault": "Top Path",
             "locations": {
                 "Top Path": {
@@ -320,7 +321,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                     },
                     "creation": [
                         { "thing": "AreaSpawner", "width": 160, "map": "Viridian City", "area": "Land", "direction": 0, "offsetX": -80 },
-                        { "thing": "ThemePlayer", "x": 80, "width": 16, "theme": "Route 1" },
+                        { "thing": "ThemePlayer", "x": 80, "width": 16, "theme": "Viridian City from Pallet Town" },
                         { "thing": "DirtMedium", "width": 32, "height": 296 },
                         { "thing": "FenceWide", "x": 24, "height": 48 },
                         { "thing": "DirtMedium", "x": 24, "width": 56, "height": 80 },
@@ -396,7 +397,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "FenceWide", "x": 96, "y": 256, "width": 48 },
                         { "thing": "FenceWide", "x": 72, "y": 264, "height": 32 },
                         { "thing": "FenceWide", "x": 96, "y": 264, "height": 32 },
-                        { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Route 1" },
+                        { "thing": "ThemePlayer", "x": 80, "y": 280, "width": 16, "theme": "Viridian City from Pallet Town" },
                         { "thing": "FenceWide", "x": 24, "y": 288 },
                         { "thing": "ThemePlayer", "x": 80, "y": 288, "width": 16, "theme": "Pallet Town" },
                         { "thing": "FenceWide", "x": 144, "y": 288 },
@@ -584,7 +585,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "FenceWide", "x": 176, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
                         { "thing": "ThemePlayer", "x": 160, "y": 272, "width": 16, "theme": "Pewter City" },
-                        { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "offsetX": 80 },
+                        { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "direction": 1, "offsetX": 80 },
                     ]
                 },
                 "Nicknamer House": {
@@ -680,7 +681,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
             }
         }, {
             "name": "Route 2",
-            "theme": "Route 1",
+            "theme": "Viridian City from Pallet Town",
             "locationDefault": "Viridian Forest Top",
             "locations": {
                 "Viridian Forest Top": {
@@ -696,8 +697,8 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                     "width": 224,
                     "height": 592,
                     "creation": [
-                        { "thing": "ThemePlayer", "x": 96, "width": 16, "height": 400, "theme": "Route 1" },
-                        { "thing": "AreaSpawner", "width": 224, "direction": 0, "map": "Pewter City", "area": "Land", "offsetX": -48 },
+                        { "thing": "ThemePlayer", "x": 96, "width": 16, "height": 400, "theme": "Viridian City from Pallet Town" },
+                        { "thing": "AreaSpawner", "width": 224, "direction": 0, "map": "Pewter City", "area": "Land", "direction": 1, "offsetX": -48 },
                         { "thing": "DirtMedium", "width": 96, "height": 16 },
                         { "thing": "PlantSmall", "width": 96, "height": 16 },
                         { "thing": "DirtMedium", "x": 112, "width": 120, "height": 16 },
@@ -836,9 +837,9 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "y": 576, "width": 32, "height": 16 },
                         { "thing": "DirtWhite", "x": 80, "y": 576, "width": 16, "height": 16 },
                         { "thing": "FenceVertical", "x": 80, "y": 576, "width": 8, "height": 16 },
-                        { "thing": "ThemePlayer", "x": 88, "y": 576, "width": 24, "theme": "Route 1" },
+                        { "thing": "ThemePlayer", "x": 88, "y": 576, "width": 24, "theme": "Viridian City from Pallet Town" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 96, "y": 576, "xnum": 2, "ynum": 2 },
-                        { "thing": "AreaSpawner", "y": 584, "width": 608, "map": "Viridian City", "area": "Land", "offsetX": -48 }
+                        { "thing": "AreaSpawner", "y": 584, "width": 608, "map": "Viridian City", "area": "Land", "direction": 1, "offsetX": -48 }
                     ]
                 }
             }
@@ -1284,7 +1285,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "FenceWide", "x": 208, "y": 256, "width": 80 },
                         { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
                         { "thing": "ThemePlayer", "x": 144, "y": 280, "width": 16, "height": 200, "theme": "Pewter City" },
-                        { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
+                        { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "direction": 1, "offsetX": 48 }
                     ]
                 },
                 "Museum of Science": {
@@ -1496,7 +1497,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         }]
                     },
                     "creation": [
-                        { "thing": "AreaSpawner", "x": 320, "height": 320, "map": "Viridian City", "area": "Land", "offsetY": -64 },
+                        { "thing": "AreaSpawner", "x": 320, "height": 320, "map": "Viridian City", "area": "Land", "direction": 1, "offsetY": -64 },
                         { "thing": "FenceWide", "width": 16, "height": 16 },
                         { "thing": "DirtLight", "width": 112, "height": 48 },
                         { "macro": "Building", "x": 16, "stories": 3, "width": 96,/* "door": true,*/ "doorOffset": 48, "entrance": "Pokemon League" },
