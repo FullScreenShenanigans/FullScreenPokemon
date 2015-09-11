@@ -30,6 +30,7 @@ module FullScreenPokemon {
             "audio": undefined,
             "battles": undefined,
             "collisions": undefined,
+            "devices": undefined,
             "editor": undefined,
             "generator": undefined,
             "groups": undefined,

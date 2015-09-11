@@ -118,11 +118,11 @@ module StringFilr {
          * @param {String} key
          */
         clearCached(key: string): void {
-            if (this.normal) {
-                key = key.replace(this.normal, "");
-            }
-
             delete this.cache[key];
+
+            if (this.normal) {
+                delete this.cache[key.replace(this.normal, "")];
+            }
         }
 
         /**

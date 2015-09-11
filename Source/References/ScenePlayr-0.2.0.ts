@@ -37,11 +37,12 @@ declare module ScenePlayr {
         getOtherRoutine(name: string): IRoutine;
         getCutsceneName(): string;
         getCutsceneSettings(): any;
+        addCutsceneSetting(key: string, value: any): void;
         startCutscene(name: string, settings?: any): void;
-        bindCutscene(name: string, settings?: any): () => void;
+        bindCutscene(name: string, ...settings: any[]): () => void;
         stopCutscene(): void;
         playRoutine(name: string, ...args: any[]): void;
-        bindRoutine(name: string, args?: any[]): () => void;
+        bindRoutine(name: string, ...args: any[]): () => void;
     }
 }
 
@@ -138,8 +139,18 @@ module ScenePlayr {
         /**
          * @return {Object} The settings used by the current cutscene.
          */
-        getCutsceneSettings(): any {
+        getCutsceneSettings(): ICutsceneSettings {
             return this.cutsceneSettings;
+        }
+
+        /**
+         * Adds a setting to the internal cutscene settings.
+         * 
+         * @param {String} key   The key for the new setting.
+         * @param {Mixed} value   The value for the new setting.
+         */
+        addCutsceneSetting(key: string, value: any): void {
+            this.cutsceneSettings[key] = value;
         }
 
 
@@ -171,7 +182,7 @@ module ScenePlayr {
             this.cutsceneSettings.cutscene = this.cutscene;
             this.cutsceneSettings.cutsceneName = name;
 
-            this.cutsceneArguments.unshift(this.cutsceneSettings);
+            this.cutsceneArguments.push(this.cutsceneSettings);
 
             if (this.cutscene.firstRoutine) {
                 this.playRoutine(this.cutscene.firstRoutine);
@@ -182,11 +193,11 @@ module ScenePlayr {
          * Returns this.startCutscene bound to the given name and settings.
          * 
          * @param {String} name   The name of the cutscene to play.
-         * @param {Object} [settings]   Additional settings to be kept as a
-         *                              persistent Object throughout the cutscene.
+         * @param {Mixed} [...args]   Additional settings to be kept as a
+         *                            persistent Object throughout the cutscene.
          */
-        bindCutscene(name: string, settings?: any): () => void {
-            return this.startCutscene.bind(self, name, settings);
+        bindCutscene(name: string, ...args: any[]): () => void {
+            return this.startCutscene.bind(self, name, args);
         }
 
         /**
@@ -197,7 +208,7 @@ module ScenePlayr {
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.routine = undefined;
-            this.cutsceneArguments.shift();
+            this.cutsceneArguments.pop();
         }
 
         /**
@@ -226,13 +237,12 @@ module ScenePlayr {
         }
 
         /**
-         * 
          * Returns this.startCutscene bound to the given name and arguments.
          * 
          * @param {String} name   The name of the cutscene to play.
-         * @param {Object} [settings]   Any additional arguments to pass to the routine.
+         * @param {Mixed} [...args]   Any additional arguments to pass to the routine.
          */
-        bindRoutine(name: string, args?: any[]): () => void {
+        bindRoutine(name: string, ...args: any[]): () => void {
             return this.playRoutine.bind(this, name, args);
         }
     }

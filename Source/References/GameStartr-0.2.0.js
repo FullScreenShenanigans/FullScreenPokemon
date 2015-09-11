@@ -720,6 +720,12 @@ var AudioPlayr;
             return this.theme;
         };
         /**
+         * @return {String} The name of the currently playing theme.
+         */
+        AudioPlayr.prototype.getThemeName = function () {
+            return this.themeName;
+        };
+        /**
          * @return {String} The directory under which all filetype directories are
          *                  to be located.
          */
@@ -929,6 +935,7 @@ var AudioPlayr;
             this.pauseTheme();
             delete this.sounds[this.theme.getAttribute("name")];
             this.theme = undefined;
+            this.themeName = undefined;
         };
         /**
          * "Local" version of play that changes the output sound's volume depending
@@ -998,6 +1005,7 @@ var AudioPlayr;
             if (typeof this.theme !== "undefined" && this.theme.hasAttribute("name")) {
                 delete this.sounds[this.theme.getAttribute("name")];
             }
+            this.themeName = name;
             this.theme = this.sounds[name] = this.play(name);
             this.theme.loop = loop;
             // If it's used (no repeat), add the event listener to resume theme
@@ -1351,6 +1359,738 @@ var ChangeLinr;
     })();
     ChangeLinr_1.ChangeLinr = ChangeLinr;
 })(ChangeLinr || (ChangeLinr = {}));
+var InputWritr;
+(function (InputWritr_1) {
+    "use strict";
+    /**
+     * A general utility for automating interactions with user-called events linked
+     * with callbacks. Pipe functions are available that take in user input, switch
+     * on the event code, and call the appropriate callback. These Pipe functions
+     * can be made during runtime; further utilities allow for saving and playback
+     * of input histories in JSON format.
+     */
+    var InputWritr = (function () {
+        /**
+         * @param {IInputWritrSettings} settings
+         */
+        function InputWritr(settings) {
+            if (!settings.triggers) {
+                throw new Error("No triggers given to InputWritr.");
+            }
+            this.triggers = settings.triggers;
+            // Headless browsers like PhantomJS might not contain the performance
+            // class, so Date.now is used as a backup
+            if (typeof settings.getTimestamp === "undefined") {
+                if (typeof performance === "undefined") {
+                    this.getTimestamp = function () {
+                        return Date.now();
+                    };
+                }
+                else {
+                    this.getTimestamp = (performance.now
+                        || performance.webkitNow
+                        || performance.mozNow
+                        || performance.msNow
+                        || performance.oNow).bind(performance);
+                }
+            }
+            else {
+                this.getTimestamp = settings.getTimestamp;
+            }
+            this.eventInformation = settings.eventInformation;
+            this.canTrigger = settings.hasOwnProperty("canTrigger")
+                ? settings.canTrigger
+                : function () {
+                    return true;
+                };
+            this.isRecording = settings.hasOwnProperty("isRecording")
+                ? settings.isRecording
+                : function () {
+                    return true;
+                };
+            this.history = {};
+            this.histories = {
+                "length": 0
+            };
+            this.aliases = {};
+            this.addAliases(settings.aliases || {});
+            this.keyAliasesToCodes = settings.keyAliasesToCodes || {
+                "shift": 16,
+                "ctrl": 17,
+                "space": 32,
+                "left": 37,
+                "up": 38,
+                "right": 39,
+                "down": 40
+            };
+            this.keyCodesToAliases = settings.keyCodesToAliases || {
+                "16": "shift",
+                "17": "ctrl",
+                "32": "space",
+                "37": "left",
+                "38": "up",
+                "39": "right",
+                "40": "down"
+            };
+        }
+        /**
+         * Clears the currently tracked inputs history and resets the starting time,
+         * and (optionally) saves the current history.
+         *
+         * @param {Boolean} [keepHistory]   Whether the currently tracked history
+         *                                  of inputs should be added to the master
+         *                                  Array of histories (defaults to true).
+         */
+        InputWritr.prototype.restartHistory = function (keepHistory) {
+            if (keepHistory === void 0) { keepHistory = true; }
+            if (keepHistory) {
+                this.saveHistory(this.history);
+            }
+            this.history = {};
+            this.startingTime = this.getTimestamp();
+        };
+        /* Simple gets
+        */
+        /**
+         * @return {Object} The stored mapping of aliases to values.
+         */
+        InputWritr.prototype.getAliases = function () {
+            return this.aliases;
+        };
+        /**
+         * @return {Object} The stored mapping of aliases to values, with values
+         *                  mapped to their equivalent key Strings.
+         */
+        InputWritr.prototype.getAliasesAsKeyStrings = function () {
+            var output = {}, alias;
+            for (alias in this.aliases) {
+                if (this.aliases.hasOwnProperty(alias)) {
+                    output[alias] = this.getAliasAsKeyStrings(alias);
+                }
+            }
+            return output;
+        };
+        /**
+         * @param {Mixed} alias   An alias allowed to be passed in, typically a
+         *                        character code.
+         * @return {String[]}   The mapped key Strings corresponding to that alias,
+         *                      typically the human-readable Strings representing
+         *                      input names, such as "a" or "left".
+         */
+        InputWritr.prototype.getAliasAsKeyStrings = function (alias) {
+            return this.aliases[alias].map(this.convertAliasToKeyString.bind(this));
+        };
+        /**
+         * @param {Mixed} alias   The alias of an input, typically a character
+         *                        code.
+         * @return {String} The human-readable String representing the input name,
+         *                  such as "a" or "left".
+         */
+        InputWritr.prototype.convertAliasToKeyString = function (alias) {
+            if (alias.constructor === String) {
+                return alias;
+            }
+            if (alias > 96 && alias < 105) {
+                return String.fromCharCode(alias - 48);
+            }
+            if (alias > 64 && alias < 97) {
+                return String.fromCharCode(alias);
+            }
+            return typeof this.keyCodesToAliases[alias] !== "undefined"
+                ? this.keyCodesToAliases[alias] : "?";
+        };
+        /**
+         * @param {Mixed} key   The number code of an input.
+         * @return {Number} The machine-usable character code of the input.
+         *
+         */
+        InputWritr.prototype.convertKeyStringToAlias = function (key) {
+            if (key.constructor === Number) {
+                return key;
+            }
+            if (key.length === 1) {
+                return key.charCodeAt(0) - 32;
+            }
+            return typeof this.keyAliasesToCodes[key] !== "undefined" ? this.keyAliasesToCodes[key] : -1;
+        };
+        /**
+         * Get function for a single history, either the current or a past one.
+         *
+         * @param {String} [name]   The identifier for the old history to return. If
+         *                          none is provided, the current history is used.
+         * @return {Object}   A history of inputs in JSON-friendly form.
+         */
+        InputWritr.prototype.getHistory = function (name) {
+            if (name === void 0) { name = undefined; }
+            return arguments.length ? this.histories[name] : history;
+        };
+        /**
+         * @return {Object} All previously stored histories.
+         */
+        InputWritr.prototype.getHistories = function () {
+            return this.histories;
+        };
+        /**
+         * @return {Boolean} Whether this is currently allowing inputs.
+         */
+        InputWritr.prototype.getCanTrigger = function () {
+            return this.canTrigger;
+        };
+        /**
+         * @return {Boolean} Whether this is currently recording allowed inputs.
+         */
+        InputWritr.prototype.getIsRecording = function () {
+            return this.isRecording;
+        };
+        /* Simple sets
+        */
+        /**
+         * @param {Mixed} canTriggerNew   Whether this is now allowing inputs. This
+         *                                may be either a Function (to be evaluated
+         *                                on each input) or a general Boolean.
+         */
+        InputWritr.prototype.setCanTrigger = function (canTriggerNew) {
+            if (canTriggerNew.constructor === Boolean) {
+                this.canTrigger = function () {
+                    return canTriggerNew;
+                };
+            }
+            else {
+                this.canTrigger = canTriggerNew;
+            }
+        };
+        /**
+         * @param {Boolean} isRecordingNew   Whether this is now recording allowed
+         *                                   inputs.
+         */
+        InputWritr.prototype.setIsRecording = function (isRecordingNew) {
+            if (isRecordingNew.constructor === Boolean) {
+                this.isRecording = function () {
+                    return isRecordingNew;
+                };
+            }
+            else {
+                this.isRecording = isRecordingNew;
+            }
+        };
+        /**
+         * @param {Mixed} eventInformationNew   A new first argument for event
+         *                                      callbacks.
+         */
+        InputWritr.prototype.setEventInformation = function (eventInformationNew) {
+            this.eventInformation = eventInformationNew;
+        };
+        /* Aliases
+        */
+        /**
+         * Adds a list of values by which an event may be triggered.
+         *
+         * @param {String} name   The name of the event that is being given
+         *                        aliases, such as "left".
+         * @param {Array} values   An array of aliases by which the event will also
+         *                         be callable.
+         */
+        InputWritr.prototype.addAliasValues = function (name, values) {
+            var triggerName, triggerGroup, i;
+            if (!this.aliases.hasOwnProperty(name)) {
+                this.aliases[name] = values;
+            }
+            else {
+                this.aliases[name].push.apply(this.aliases[name], values);
+            }
+            // triggerName = "onkeydown", "onkeyup", ...
+            for (triggerName in this.triggers) {
+                if (this.triggers.hasOwnProperty(triggerName)) {
+                    // triggerGroup = { "left": function, ... }, ...
+                    triggerGroup = this.triggers[triggerName];
+                    if (triggerGroup.hasOwnProperty(name)) {
+                        // values[i] = 37, 65, ...
+                        for (i = 0; i < values.length; i += 1) {
+                            triggerGroup[values[i]] = triggerGroup[name];
+                        }
+                    }
+                }
+            }
+        };
+        /**
+         * Removes a list of values by which an event may be triggered.
+         *
+         * @param {String} name   The name of the event that is having aliases
+         *                        removed, such as "left".
+         * @param {Array} values   An array of aliases by which the event will no
+         *                         longer be callable.
+         */
+        InputWritr.prototype.removeAliasValues = function (name, values) {
+            var triggerName, triggerGroup, i;
+            if (!this.aliases.hasOwnProperty(name)) {
+                return;
+            }
+            for (i = 0; i < values.length; i += 1) {
+                this.aliases[name].splice(this.aliases[name].indexOf(values[i], 1));
+            }
+            // triggerName = "onkeydown", "onkeyup", ...
+            for (triggerName in this.triggers) {
+                if (this.triggers.hasOwnProperty(triggerName)) {
+                    // triggerGroup = { "left": function, ... }, ...
+                    triggerGroup = this.triggers[triggerName];
+                    if (triggerGroup.hasOwnProperty(name)) {
+                        // values[i] = 37, 65, ...
+                        for (i = 0; i < values.length; i += 1) {
+                            if (triggerGroup.hasOwnProperty(values[i])) {
+                                delete triggerGroup[values[i]];
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        /**
+         * Shortcut to remove old alias values and add new ones in.
+         *
+         *
+         * @param {String} name   The name of the event that is having aliases
+         *                        added and removed, such as "left".
+         * @param {Array} valuesOld   An array of aliases by which the event will no
+         *                            longer be callable.
+         * @param {Array} valuesNew   An array of aliases by which the event will
+         *                            now be callable.
+         */
+        InputWritr.prototype.switchAliasValues = function (name, valuesOld, valuesNew) {
+            this.removeAliasValues(name, valuesOld);
+            this.addAliasValues(name, valuesNew);
+        };
+        /**
+         * Adds a set of alises from an Object containing "name" => [values] pairs.
+         *
+         * @param {Object} aliasesRaw
+         */
+        InputWritr.prototype.addAliases = function (aliasesRaw) {
+            var aliasName;
+            for (aliasName in aliasesRaw) {
+                if (aliasesRaw.hasOwnProperty(aliasName)) {
+                    this.addAliasValues(aliasName, aliasesRaw[aliasName]);
+                }
+            }
+        };
+        /* Functions
+        */
+        /**
+         * Adds a triggerable event by marking a new callback under the trigger's
+         * triggers. Any aliases for the label are also given the callback.
+         *
+         * @param {String} trigger   The name of the triggered event.
+         * @param {Mixed} label   The code within the trigger to call within,
+         *                        typically either a character code or an alias.
+         * @param {Function} callback   The callback Function to be triggered.
+         */
+        InputWritr.prototype.addEvent = function (trigger, label, callback) {
+            var i;
+            if (!this.triggers.hasOwnProperty(trigger)) {
+                throw new Error("Unknown trigger requested: '" + trigger + "'.");
+            }
+            this.triggers[trigger][label] = callback;
+            if (this.aliases.hasOwnProperty(label)) {
+                for (i = 0; i < this.aliases[label].length; i += 1) {
+                    this.triggers[trigger][this.aliases[label][i]] = callback;
+                }
+            }
+        };
+        /**
+         * Removes a triggerable event by deleting any callbacks under the trigger's
+         * triggers. Any aliases for the label are also given the callback.
+         *
+         * @param {String} trigger   The name of the triggered event.
+         * @param {Mixed} label   The code within the trigger to call within,
+         *                        typically either a character code or an alias.
+         */
+        InputWritr.prototype.removeEvent = function (trigger, label) {
+            var i;
+            if (!this.triggers.hasOwnProperty(trigger)) {
+                throw new Error("Unknown trigger requested: '" + trigger + "'.");
+            }
+            delete this.triggers[trigger][label];
+            if (this.aliases.hasOwnProperty(label)) {
+                for (i = 0; i < this.aliases[label].length; i += 1) {
+                    if (this.triggers[trigger][this.aliases[label][i]]) {
+                        delete this.triggers[trigger][this.aliases[label][i]];
+                    }
+                }
+            }
+        };
+        /**
+         * Stores the current history in the histories listing. this.restartHistory
+         * is typically called directly after.
+         */
+        InputWritr.prototype.saveHistory = function (name) {
+            if (name === void 0) { name = undefined; }
+            this.histories[this.histories.length] = history;
+            this.histories.length += 1;
+            if (arguments.length) {
+                this.histories[name] = history;
+            }
+        };
+        /**
+         * Plays back the current history using this.playEvents.
+         */
+        InputWritr.prototype.playHistory = function () {
+            this.playEvents(this.history);
+        };
+        /**
+         * "Plays" back an Array of event information by simulating each keystroke
+         * in a new call, timed by setTimeout.
+         *
+         * @param {Object} events   The events history to play back.
+         * @remarks This will execute the same actions in the same order as before,
+         *          but the arguments object may be different.
+         */
+        InputWritr.prototype.playEvents = function (events) {
+            var timeouts = {}, time, call;
+            for (time in events) {
+                if (events.hasOwnProperty(time)) {
+                    call = this.makeEventCall(events[time]);
+                    timeouts[time] = setTimeout(call, (Number(time) - this.startingTime) | 0);
+                }
+            }
+        };
+        /**
+         * Primary driver function to run an event. The event is chosen from the
+         * triggers object, and called with eventInformation as the input.
+         *
+         * @param {Function, String} event   The event function (or string alias of
+         *                                   it) that will be called.
+         * @param {Mixed} [keyCode]   The alias of the event function under
+         *                            triggers[event], if event is a String.
+         * @param {Event} [sourceEvent]   The raw event that caused the calling Pipe
+         *                                to be triggered, such as a MouseEvent.
+         * @return {Mixed}
+         */
+        InputWritr.prototype.callEvent = function (event, keyCode, sourceEvent) {
+            if (!this.canTrigger(event, keyCode)) {
+                return;
+            }
+            if (!event) {
+                throw new Error("Blank event given, ignoring it.");
+            }
+            if (event.constructor === String) {
+                event = this.triggers[event][keyCode];
+            }
+            return event(this.eventInformation, sourceEvent);
+        };
+        /**
+         * Creates and returns a function to run a trigger.
+         *
+         * @param {String} trigger   The label for the Array of functions that the
+         *                           pipe function should choose from.
+         * @param {String} codeLabel   A mapping String for the alias to get the
+         *                             alias from the event.
+         * @param {Boolean} [preventDefaults]   Whether the input to the pipe
+         *                                       function will be an HTML-style
+         *                                       event, where .preventDefault()
+         *                                       should be clicked.
+         * @return {Function}
+         */
+        InputWritr.prototype.makePipe = function (trigger, codeLabel, preventDefaults) {
+            var functions = this.triggers[trigger], InputWriter = this;
+            if (!functions) {
+                throw new Error("No trigger of label '" + trigger + "' defined.");
+            }
+            return function Pipe(event) {
+                var alias = event[codeLabel];
+                // Typical usage means alias will be an event from a key/mouse input
+                if (preventDefaults && event.preventDefault instanceof Function) {
+                    event.preventDefault();
+                }
+                // If there's a function under that alias, run it
+                if (functions.hasOwnProperty(alias)) {
+                    if (InputWriter.isRecording()) {
+                        InputWriter.history[InputWriter.getTimestamp() | 0] = [trigger, alias];
+                    }
+                    InputWriter.callEvent(functions[alias], alias, event);
+                }
+            };
+        };
+        /**
+         * Curry utility to create a closure that runs call() when called.
+         *
+         * @param {Array} info   An array containing [alias, keyCode].
+         * @return {Function} A closure Function that activates a trigger
+         *                    when called.
+         */
+        InputWritr.prototype.makeEventCall = function (info) {
+            return function () {
+                this.callEvent(info[0], info[1]);
+            };
+        };
+        return InputWritr;
+    })();
+    InputWritr_1.InputWritr = InputWritr;
+})(InputWritr || (InputWritr = {}));
+/// <reference path="InputWritr-0.2.0.ts" />
+var DeviceLayr;
+(function (DeviceLayr_1) {
+    "use strict";
+    /**
+     * Status possibilities for an axis. Neutral is the default; positive is above
+     * its threshold; negative is below the threshold / -1.
+     */
+    (function (AxisStatus) {
+        /**
+         * Low axis status (lower than the negative of the threshold).
+         */
+        AxisStatus[AxisStatus["negative"] = 0] = "negative";
+        /**
+         * Default axis status (absolutely closer to 0 than the threshold).
+         */
+        AxisStatus[AxisStatus["neutral"] = 1] = "neutral";
+        /**
+         * High axis status (higher than the threshold).
+         */
+        AxisStatus[AxisStatus["positive"] = 2] = "positive";
+    })(DeviceLayr_1.AxisStatus || (DeviceLayr_1.AxisStatus = {}));
+    var AxisStatus = DeviceLayr_1.AxisStatus;
+    /**
+     *
+     */
+    var DeviceLayr = (function () {
+        /**
+         * @param {IDeviceLayerSettings} settings
+         */
+        function DeviceLayr(settings) {
+            this.InputWritr = settings.InputWriter;
+            this.triggers = settings.triggers;
+            this.aliases = settings.aliases;
+            this.gamepads = [];
+        }
+        /* Simple gets
+        */
+        /**
+         * @return {InputWritr} The internal InputWritr button and joystick triggers
+         *                      are piped to.
+         */
+        DeviceLayr.prototype.getInputWritr = function () {
+            return this.InputWritr;
+        };
+        /**
+         * @return {Object} Mapping of which device controls should cause what triggers,
+         *                  along with their current statuses.
+         */
+        DeviceLayr.prototype.getTriggers = function () {
+            return this.triggers;
+        };
+        /**
+         * @return {Object} For "on" and "off" activations, the equivalent event keys
+         *                  to pass to the internal InputWritr.
+         */
+        DeviceLayr.prototype.getAliases = function () {
+            return this.aliases;
+        };
+        /**
+         * @return {Gamepad[]} Any added gamepads (devices), in order of activation.
+         */
+        DeviceLayr.prototype.getGamepads = function () {
+            return this.gamepads;
+        };
+        /* Registration
+        */
+        /**
+         * If possible, checks the navigator for new gamepads, and adds them if found.
+         *
+         * @return {Number} How many gamepads were added.
+         */
+        DeviceLayr.prototype.checkNavigatorGamepads = function () {
+            if (typeof navigator.getGamepads === "undefined" || !navigator.getGamepads()[this.gamepads.length]) {
+                return 0;
+            }
+            this.registerGamepad(navigator.getGamepads()[this.gamepads.length]);
+            return this.checkNavigatorGamepads() + 1;
+        };
+        /**
+         * Registers a new gamepad.
+         *
+         * @param {Gamepad} gamepad
+         */
+        DeviceLayr.prototype.registerGamepad = function (gamepad) {
+            this.gamepads.push(gamepad);
+            this.setDefaultTriggerStatuses(gamepad, this.triggers);
+        };
+        /* Triggers
+        */
+        /**
+         * Checks the trigger statuses of all known gamepads.
+         */
+        DeviceLayr.prototype.activateAllGamepadTriggers = function () {
+            for (var i = 0; i < this.gamepads.length; i += 1) {
+                this.activateGamepadTriggers(this.gamepads[i]);
+            }
+        };
+        /**
+         * Checks the trigger status of a gamepad, calling the equivalent InputWritr
+         * events if any triggers have occurred.
+         *
+         * @param {Gamepad} gamepad
+         */
+        DeviceLayr.prototype.activateGamepadTriggers = function (gamepad) {
+            var mapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"], i;
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                this.activateAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis, gamepad.axes[i]);
+            }
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                this.activateButtonTrigger(gamepad, mapping.buttons[i], gamepad.buttons[i].pressed);
+            }
+        };
+        /**
+         * Checks for triggered changes to an axis, and calls the equivalent InputWritr
+         * event if one is found.
+         *
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, typically "x" or "y".
+         * @param {Number} magnitude   The current value of the axis, in [1, -1].
+         * @return {Boolean} Whether the trigger was activated.
+         */
+        DeviceLayr.prototype.activateAxisTrigger = function (gamepad, name, axis, magnitude) {
+            var listing = this.triggers[name][axis], status;
+            if (!listing) {
+                return;
+            }
+            // If the axis' current status matches the new one, don't do anything
+            status = this.getAxisStatus(gamepad, magnitude);
+            if (listing.status === status) {
+                return false;
+            }
+            // If it exists, release the old axis via the InputWritr using the off alias
+            if (listing.status !== undefined && listing[AxisStatus[listing.status]] !== undefined) {
+                this.InputWritr.callEvent(this.aliases.off, listing[AxisStatus[listing.status]]);
+            }
+            // Mark the new status in the listing
+            listing.status = status;
+            // Trigger the new status via the InputWritr using the on alias
+            if (listing[AxisStatus[status]] !== undefined) {
+                this.InputWritr.callEvent(this.aliases.on, listing[AxisStatus[status]]);
+            }
+            return true;
+        };
+        /**
+         * Checks for triggered changes to a button, and calls the equivalent InputWritr
+         * event if one is found.
+         *
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, such as "a" or "left".
+         * @param {Boolean} status   Whether the button is activated (pressed).
+         * @return {Boolean} Whether the trigger was activated.
+         */
+        DeviceLayr.prototype.activateButtonTrigger = function (gamepad, name, status) {
+            var listing = this.triggers[name];
+            // If the button's current status matches the new one, don't do anything
+            if (!listing || listing.status === status) {
+                return false;
+            }
+            listing.status = status;
+            // Trigger the new status via the InputWritr using the new alias
+            this.InputWritr.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
+            return true;
+        };
+        /* Private utilities
+        */
+        /**
+         * Puts the default values for all buttons and joystick axes that don't already
+         * have statuses. This is useful so activation checks don't glitch out.
+         *
+         * @param {Gamepad} gamepad
+         * @param {Object} [triggers]
+         */
+        DeviceLayr.prototype.setDefaultTriggerStatuses = function (gamepad, triggers) {
+            if (triggers === void 0) { triggers = this.triggers; }
+            var mapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"], button, joystick, i, j;
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                button = triggers[mapping.buttons[i]];
+                if (button && button.status === undefined) {
+                    button.status = false;
+                }
+            }
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                joystick = triggers[mapping.axes[i].name];
+                for (j in joystick) {
+                    if (!joystick.hasOwnProperty(j)) {
+                        continue;
+                    }
+                    if (joystick[j].status === undefined) {
+                        joystick[j].status = AxisStatus.neutral;
+                    }
+                }
+            }
+        };
+        /**
+         * @param {Gamepad} gamepad
+         * @param {Number} magnitude   The direction an axis is measured at, in [-1, 1].
+         * @return {AxisStatus} What direction a magnitude is relative to 0 (namely
+         *                      positive, negative, or neutral).
+         */
+        DeviceLayr.prototype.getAxisStatus = function (gamepad, magnitude) {
+            var joystickThreshold = DeviceLayr.controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
+            if (magnitude > joystickThreshold) {
+                return AxisStatus.positive;
+            }
+            if (magnitude < -joystickThreshold) {
+                return AxisStatus.negative;
+            }
+            return AxisStatus.neutral;
+        };
+        /**
+         * Known mapping schemas for standard controllers. These are referenced
+         * by added gamepads via the gamepads' .name attribute.
+         */
+        DeviceLayr.controllerMappings = {
+            /**
+             * Controller mapping for a typical Xbox style controller.
+             */
+            "standard": {
+                "axes": [
+                    {
+                        "axis": "x",
+                        "joystick": 0,
+                        "name": "leftJoystick"
+                    },
+                    {
+                        "axis": "y",
+                        "joystick": 0,
+                        "name": "leftJoystick"
+                    },
+                    {
+                        "axis": "x",
+                        "joystick": 1,
+                        "name": "rightJoystick"
+                    },
+                    {
+                        "axis": "y",
+                        "joystick": 1,
+                        "name": "rightJoystick"
+                    }
+                ],
+                "buttons": [
+                    "a",
+                    "b",
+                    "x",
+                    "y",
+                    "leftTop",
+                    "rightTop",
+                    "leftTrigger",
+                    "rightTrigger",
+                    "select",
+                    "start",
+                    "leftStick",
+                    "rightStick",
+                    "dpadUp",
+                    "dpadDown",
+                    "dpadLeft",
+                    "dpadRight"
+                ],
+                "joystickThreshold": .49
+            }
+        };
+        return DeviceLayr;
+    })();
+    DeviceLayr_1.DeviceLayr = DeviceLayr;
+})(DeviceLayr || (DeviceLayr = {}));
 var EightBittr;
 (function (EightBittr_1) {
     "use strict";
@@ -1680,8 +2420,7 @@ var EightBittr;
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         EightBittr.prototype.setMidXObj = function (thing, other) {
-            thing.EightBitter.setLeft(thing, thing.EightBitter.getMidX(other)
-                - (thing.width * thing.EightBitter.unitsize / 2));
+            thing.EightBitter.setMidX(thing, thing.EightBitter.getMidX(other));
         };
         /**
          * Shifts a Thing so that its vertical midpoint is centered on the
@@ -1691,8 +2430,7 @@ var EightBittr;
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         EightBittr.prototype.setMidYObj = function (thing, other) {
-            thing.EightBitter.setTop(thing, thing.EightBitter.getMidY(other)
-                - (thing.height * thing.EightBitter.unitsize / 2));
+            thing.EightBitter.setMidY(thing, thing.EightBitter.getMidY(other));
         };
         /**
          * @param {Thing} thing
@@ -2995,472 +3733,6 @@ var GroupHoldr;
     })();
     GroupHoldr_1.GroupHoldr = GroupHoldr;
 })(GroupHoldr || (GroupHoldr = {}));
-var InputWritr;
-(function (InputWritr_1) {
-    "use strict";
-    /**
-     * A general utility for automating interactions with user-called events linked
-     * with callbacks. Pipe functions are available that take in user input, switch
-     * on the event code, and call the appropriate callback. These Pipe functions
-     * can be made during runtime; further utilities allow for saving and playback
-     * of input histories in JSON format.
-     */
-    var InputWritr = (function () {
-        /**
-         * @param {IInputWritrSettings} settings
-         */
-        function InputWritr(settings) {
-            if (!settings.triggers) {
-                throw new Error("No triggers given to InputWritr.");
-            }
-            this.triggers = settings.triggers;
-            // Headless browsers like PhantomJS might not contain the performance
-            // class, so Date.now is used as a backup
-            if (typeof settings.getTimestamp === "undefined") {
-                if (typeof performance === "undefined") {
-                    this.getTimestamp = function () {
-                        return Date.now();
-                    };
-                }
-                else {
-                    this.getTimestamp = (performance.now
-                        || performance.webkitNow
-                        || performance.mozNow
-                        || performance.msNow
-                        || performance.oNow).bind(performance);
-                }
-            }
-            else {
-                this.getTimestamp = settings.getTimestamp;
-            }
-            this.eventInformation = settings.eventInformation;
-            this.canTrigger = settings.hasOwnProperty("canTrigger")
-                ? settings.canTrigger
-                : function () {
-                    return true;
-                };
-            this.isRecording = settings.hasOwnProperty("isRecording")
-                ? settings.isRecording
-                : function () {
-                    return true;
-                };
-            this.history = {};
-            this.histories = {
-                "length": 0
-            };
-            this.aliases = {};
-            this.addAliases(settings.aliases || {});
-            this.keyAliasesToCodes = settings.keyAliasesToCodes || {
-                "shift": 16,
-                "ctrl": 17,
-                "space": 32,
-                "left": 37,
-                "up": 38,
-                "right": 39,
-                "down": 40
-            };
-            this.keyCodesToAliases = settings.keyCodesToAliases || {
-                "16": "shift",
-                "17": "ctrl",
-                "32": "space",
-                "37": "left",
-                "38": "up",
-                "39": "right",
-                "40": "down"
-            };
-        }
-        /**
-         * Clears the currently tracked inputs history and resets the starting time,
-         * and (optionally) saves the current history.
-         *
-         * @param {Boolean} [keepHistory]   Whether the currently tracked history
-         *                                  of inputs should be added to the master
-         *                                  Array of histories (defaults to true).
-         */
-        InputWritr.prototype.restartHistory = function (keepHistory) {
-            if (keepHistory === void 0) { keepHistory = true; }
-            if (keepHistory) {
-                this.saveHistory(this.history);
-            }
-            this.history = {};
-            this.startingTime = this.getTimestamp();
-        };
-        /* Simple gets
-        */
-        /**
-         * @return {Object} The stored mapping of aliases to values.
-         */
-        InputWritr.prototype.getAliases = function () {
-            return this.aliases;
-        };
-        /**
-         * @return {Object} The stored mapping of aliases to values, with values
-         *                  mapped to their equivalent key Strings.
-         */
-        InputWritr.prototype.getAliasesAsKeyStrings = function () {
-            var output = {}, alias;
-            for (alias in this.aliases) {
-                if (this.aliases.hasOwnProperty(alias)) {
-                    output[alias] = this.getAliasAsKeyStrings(alias);
-                }
-            }
-            return output;
-        };
-        /**
-         * @param {Mixed} alias   An alias allowed to be passed in, typically a
-         *                        character code.
-         * @return {String[]}   The mapped key Strings corresponding to that alias,
-         *                      typically the human-readable Strings representing
-         *                      input names, such as "a" or "left".
-         */
-        InputWritr.prototype.getAliasAsKeyStrings = function (alias) {
-            return this.aliases[alias].map(this.convertAliasToKeyString.bind(this));
-        };
-        /**
-         * @param {Mixed} alias   The alias of an input, typically a character
-         *                        code.
-         * @return {String} The human-readable String representing the input name,
-         *                  such as "a" or "left".
-         */
-        InputWritr.prototype.convertAliasToKeyString = function (alias) {
-            if (alias.constructor === String) {
-                return alias;
-            }
-            if (alias > 96 && alias < 105) {
-                return String.fromCharCode(alias - 48);
-            }
-            if (alias > 64 && alias < 97) {
-                return String.fromCharCode(alias);
-            }
-            return typeof this.keyCodesToAliases[alias] !== "undefined"
-                ? this.keyCodesToAliases[alias] : "?";
-        };
-        /**
-         * @param {Mixed} key   The number code of an input.
-         * @return {Number} The machine-usable character code of the input.
-         *
-         */
-        InputWritr.prototype.convertKeyStringToAlias = function (key) {
-            if (key.constructor === Number) {
-                return key;
-            }
-            if (key.length === 1) {
-                return key.charCodeAt(0) - 32;
-            }
-            return typeof this.keyAliasesToCodes[key] !== "undefined" ? this.keyAliasesToCodes[key] : -1;
-        };
-        /**
-         * Get function for a single history, either the current or a past one.
-         *
-         * @param {String} [name]   The identifier for the old history to return. If
-         *                          none is provided, the current history is used.
-         * @return {Object}   A history of inputs in JSON-friendly form.
-         */
-        InputWritr.prototype.getHistory = function (name) {
-            if (name === void 0) { name = undefined; }
-            return arguments.length ? this.histories[name] : history;
-        };
-        /**
-         * @return {Object} All previously stored histories.
-         */
-        InputWritr.prototype.getHistories = function () {
-            return this.histories;
-        };
-        /**
-         * @return {Boolean} Whether this is currently allowing inputs.
-         */
-        InputWritr.prototype.getCanTrigger = function () {
-            return this.canTrigger;
-        };
-        /**
-         * @return {Boolean} Whether this is currently recording allowed inputs.
-         */
-        InputWritr.prototype.getIsRecording = function () {
-            return this.isRecording;
-        };
-        /* Simple sets
-        */
-        /**
-         * @param {Mixed} canTriggerNew   Whether this is now allowing inputs. This
-         *                                may be either a Function (to be evaluated
-         *                                on each input) or a general Boolean.
-         */
-        InputWritr.prototype.setCanTrigger = function (canTriggerNew) {
-            if (canTriggerNew.constructor === Boolean) {
-                this.canTrigger = function () {
-                    return canTriggerNew;
-                };
-            }
-            else {
-                this.canTrigger = canTriggerNew;
-            }
-        };
-        /**
-         * @param {Boolean} isRecordingNew   Whether this is now recording allowed
-         *                                   inputs.
-         */
-        InputWritr.prototype.setIsRecording = function (isRecordingNew) {
-            if (isRecordingNew.constructor === Boolean) {
-                this.isRecording = function () {
-                    return isRecordingNew;
-                };
-            }
-            else {
-                this.isRecording = isRecordingNew;
-            }
-        };
-        /**
-         * @param {Mixed} eventInformationNew   A new first argument for event
-         *                                      callbacks.
-         */
-        InputWritr.prototype.setEventInformation = function (eventInformationNew) {
-            this.eventInformation = eventInformationNew;
-        };
-        /* Aliases
-        */
-        /**
-         * Adds a list of values by which an event may be triggered.
-         *
-         * @param {String} name   The name of the event that is being given
-         *                        aliases, such as "left".
-         * @param {Array} values   An array of aliases by which the event will also
-         *                         be callable.
-         */
-        InputWritr.prototype.addAliasValues = function (name, values) {
-            var triggerName, triggerGroup, i;
-            if (!this.aliases.hasOwnProperty(name)) {
-                this.aliases[name] = values;
-            }
-            else {
-                this.aliases[name].push.apply(this.aliases[name], values);
-            }
-            // triggerName = "onkeydown", "onkeyup", ...
-            for (triggerName in this.triggers) {
-                if (this.triggers.hasOwnProperty(triggerName)) {
-                    // triggerGroup = { "left": function, ... }, ...
-                    triggerGroup = this.triggers[triggerName];
-                    if (triggerGroup.hasOwnProperty(name)) {
-                        // values[i] = 37, 65, ...
-                        for (i = 0; i < values.length; i += 1) {
-                            triggerGroup[values[i]] = triggerGroup[name];
-                        }
-                    }
-                }
-            }
-        };
-        /**
-         * Removes a list of values by which an event may be triggered.
-         *
-         * @param {String} name   The name of the event that is having aliases
-         *                        removed, such as "left".
-         * @param {Array} values   An array of aliases by which the event will no
-         *                         longer be callable.
-         */
-        InputWritr.prototype.removeAliasValues = function (name, values) {
-            var triggerName, triggerGroup, i;
-            if (!this.aliases.hasOwnProperty(name)) {
-                return;
-            }
-            for (i = 0; i < values.length; i += 1) {
-                this.aliases[name].splice(this.aliases[name].indexOf(values[i], 1));
-            }
-            // triggerName = "onkeydown", "onkeyup", ...
-            for (triggerName in this.triggers) {
-                if (this.triggers.hasOwnProperty(triggerName)) {
-                    // triggerGroup = { "left": function, ... }, ...
-                    triggerGroup = this.triggers[triggerName];
-                    if (triggerGroup.hasOwnProperty(name)) {
-                        // values[i] = 37, 65, ...
-                        for (i = 0; i < values.length; i += 1) {
-                            if (triggerGroup.hasOwnProperty(values[i])) {
-                                delete triggerGroup[values[i]];
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        /**
-         * Shortcut to remove old alias values and add new ones in.
-         *
-         *
-         * @param {String} name   The name of the event that is having aliases
-         *                        added and removed, such as "left".
-         * @param {Array} valuesOld   An array of aliases by which the event will no
-         *                            longer be callable.
-         * @param {Array} valuesNew   An array of aliases by which the event will
-         *                            now be callable.
-         */
-        InputWritr.prototype.switchAliasValues = function (name, valuesOld, valuesNew) {
-            this.removeAliasValues(name, valuesOld);
-            this.addAliasValues(name, valuesNew);
-        };
-        /**
-         * Adds a set of alises from an Object containing "name" => [values] pairs.
-         *
-         * @param {Object} aliasesRaw
-         */
-        InputWritr.prototype.addAliases = function (aliasesRaw) {
-            var aliasName;
-            for (aliasName in aliasesRaw) {
-                if (aliasesRaw.hasOwnProperty(aliasName)) {
-                    this.addAliasValues(aliasName, aliasesRaw[aliasName]);
-                }
-            }
-        };
-        /* Functions
-        */
-        /**
-         * Adds a triggerable event by marking a new callback under the trigger's
-         * triggers. Any aliases for the label are also given the callback.
-         *
-         * @param {String} trigger   The name of the triggered event.
-         * @param {Mixed} label   The code within the trigger to call within,
-         *                        typically either a character code or an alias.
-         * @param {Function} callback   The callback Function to be triggered.
-         */
-        InputWritr.prototype.addEvent = function (trigger, label, callback) {
-            var i;
-            if (!this.triggers.hasOwnProperty(trigger)) {
-                throw new Error("Unknown trigger requested: '" + trigger + "'.");
-            }
-            this.triggers[trigger][label] = callback;
-            if (this.aliases.hasOwnProperty(label)) {
-                for (i = 0; i < this.aliases[label].length; i += 1) {
-                    this.triggers[trigger][this.aliases[label][i]] = callback;
-                }
-            }
-        };
-        /**
-         * Removes a triggerable event by deleting any callbacks under the trigger's
-         * triggers. Any aliases for the label are also given the callback.
-         *
-         * @param {String} trigger   The name of the triggered event.
-         * @param {Mixed} label   The code within the trigger to call within,
-         *                        typically either a character code or an alias.
-         */
-        InputWritr.prototype.removeEvent = function (trigger, label) {
-            var i;
-            if (!this.triggers.hasOwnProperty(trigger)) {
-                throw new Error("Unknown trigger requested: '" + trigger + "'.");
-            }
-            delete this.triggers[trigger][label];
-            if (this.aliases.hasOwnProperty(label)) {
-                for (i = 0; i < this.aliases[label].length; i += 1) {
-                    if (this.triggers[trigger][this.aliases[label][i]]) {
-                        delete this.triggers[trigger][this.aliases[label][i]];
-                    }
-                }
-            }
-        };
-        /**
-         * Stores the current history in the histories listing. this.restartHistory
-         * is typically called directly after.
-         */
-        InputWritr.prototype.saveHistory = function (name) {
-            if (name === void 0) { name = undefined; }
-            this.histories[this.histories.length] = history;
-            this.histories.length += 1;
-            if (arguments.length) {
-                this.histories[name] = history;
-            }
-        };
-        /**
-         * Plays back the current history using this.playEvents.
-         */
-        InputWritr.prototype.playHistory = function () {
-            this.playEvents(this.history);
-        };
-        /**
-         * "Plays" back an Array of event information by simulating each keystroke
-         * in a new call, timed by setTimeout.
-         *
-         * @param {Object} events   The events history to play back.
-         * @remarks This will execute the same actions in the same order as before,
-         *          but the arguments object may be different.
-         */
-        InputWritr.prototype.playEvents = function (events) {
-            var timeouts = {}, time, call;
-            for (time in events) {
-                if (events.hasOwnProperty(time)) {
-                    call = this.makeEventCall(events[time]);
-                    timeouts[time] = setTimeout(call, (Number(time) - this.startingTime) | 0);
-                }
-            }
-        };
-        /**
-         * Primary driver function to run an event. The event is chosen from the
-         * triggers object, and called with eventInformation as the input.
-         *
-         * @param {Function, String} event   The event function (or string alias of
-         *                                   it) that will be called.
-         * @param {Mixed} [keyCode]   The alias of the event function under
-         *                            triggers[event], if event is a String.
-         * @param {Event} [sourceEvent]   The raw event that caused the calling Pipe
-         *                                to be triggered, such as a MouseEvent.
-         * @return {Mixed}
-         */
-        InputWritr.prototype.callEvent = function (event, keyCode, sourceEvent) {
-            if (!this.canTrigger(event, keyCode)) {
-                return;
-            }
-            if (!event) {
-                throw new Error("Blank event given, ignoring it.");
-            }
-            if (event.constructor === String) {
-                event = this.triggers[event][keyCode];
-            }
-            return event(this.eventInformation, sourceEvent);
-        };
-        /**
-         * Creates and returns a function to run a trigger.
-         *
-         * @param {String} trigger   The label for the Array of functions that the
-         *                           pipe function should choose from.
-         * @param {String} codeLabel   A mapping String for the alias to get the
-         *                             alias from the event.
-         * @param {Boolean} [preventDefaults]   Whether the input to the pipe
-         *                                       function will be an HTML-style
-         *                                       event, where .preventDefault()
-         *                                       should be clicked.
-         * @return {Function}
-         */
-        InputWritr.prototype.makePipe = function (trigger, codeLabel, preventDefaults) {
-            var functions = this.triggers[trigger], InputWriter = this;
-            if (!functions) {
-                throw new Error("No trigger of label '" + trigger + "' defined.");
-            }
-            return function Pipe(event) {
-                var alias = event[codeLabel];
-                // Typical usage means alias will be an event from a key/mouse input
-                if (preventDefaults && event.preventDefault instanceof Function) {
-                    event.preventDefault();
-                }
-                // If there's a function under that alias, run it
-                if (functions.hasOwnProperty(alias)) {
-                    if (InputWriter.isRecording()) {
-                        InputWriter.history[InputWriter.getTimestamp() | 0] = [trigger, alias];
-                    }
-                    InputWriter.callEvent(functions[alias], alias, event);
-                }
-            };
-        };
-        /**
-         * Curry utility to create a closure that runs call() when called.
-         *
-         * @param {Array} info   An array containing [alias, keyCode].
-         * @return {Function} A closure Function that activates a trigger
-         *                    when called.
-         */
-        InputWritr.prototype.makeEventCall = function (info) {
-            return function () {
-                this.callEvent(info[0], info[1]);
-            };
-        };
-        return InputWritr;
-    })();
-    InputWritr_1.InputWritr = InputWritr;
-})(InputWritr || (InputWritr = {}));
 var ObjectMakr;
 (function (ObjectMakr_1) {
     "use strict";
@@ -10571,6 +10843,15 @@ var ScenePlayr;
         ScenePlayr.prototype.getCutsceneSettings = function () {
             return this.cutsceneSettings;
         };
+        /**
+         * Adds a setting to the internal cutscene settings.
+         *
+         * @param {String} key   The key for the new setting.
+         * @param {Mixed} value   The value for the new setting.
+         */
+        ScenePlayr.prototype.addCutsceneSetting = function (key, value) {
+            this.cutsceneSettings[key] = value;
+        };
         /* Playback
         */
         /**
@@ -10595,7 +10876,7 @@ var ScenePlayr;
             this.cutsceneSettings = settings || {};
             this.cutsceneSettings.cutscene = this.cutscene;
             this.cutsceneSettings.cutsceneName = name;
-            this.cutsceneArguments.unshift(this.cutsceneSettings);
+            this.cutsceneArguments.push(this.cutsceneSettings);
             if (this.cutscene.firstRoutine) {
                 this.playRoutine(this.cutscene.firstRoutine);
             }
@@ -10622,7 +10903,7 @@ var ScenePlayr;
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.routine = undefined;
-            this.cutsceneArguments.shift();
+            this.cutsceneArguments.pop();
         };
         /**
          * Plays a particular routine within the current cutscene, passing
@@ -10649,7 +10930,6 @@ var ScenePlayr;
             this.routine.apply(this, this.cutsceneArguments);
         };
         /**
-         *
          * Returns this.startCutscene bound to the given name and arguments.
          *
          * @param {String} name   The name of the cutscene to play.
@@ -11557,6 +11837,7 @@ var TouchPassr;
     })();
     TouchPassr_1.TouchPassr = TouchPassr;
 })(TouchPassr || (TouchPassr = {}));
+/// <reference path="DeviceLayr-0.2.0.ts" />
 /// <reference path="GamesRunnr-0.2.0.ts" />
 /// <reference path="ItemsHoldr-0.2.1.ts" />
 /// <reference path="InputWritr-0.2.0.ts" />
@@ -11638,6 +11919,7 @@ var UserWrappr;
             }
             this.resetPageVisibilityHandlers();
             this.GameStarter.gameStart();
+            this.startCheckingDevices();
         };
         /* Simple gets
         */
@@ -11751,6 +12033,12 @@ var UserWrappr;
          */
         UserWrappr.prototype.getCancelFullScreen = function () {
             return this.cancelFullScreen;
+        };
+        /**
+         * @return {Number} The identifier for the device input checking interval.
+         */
+        UserWrappr.prototype.getDeviceChecker = function () {
+            return this.deviceChecker;
         };
         /* Externally allowed sets
         */
@@ -11878,6 +12166,25 @@ var UserWrappr;
                 return text;
             }
             return text + Array.call(Array, diff).join(" ");
+        };
+        /* Devices
+        */
+        /**
+         * Starts the checkDevices loop to scan for gamepad status changes.
+         */
+        UserWrappr.prototype.startCheckingDevices = function () {
+            this.checkDevices();
+        };
+        /**
+         * Calls the DeviceLayer to check for gamepad triggers, after scheduling
+         * another checkDevices call via setTimeout.
+         */
+        UserWrappr.prototype.checkDevices = function () {
+            this.deviceChecker = setTimeout(this.checkDevices.bind(this), this.GameStarter.GamesRunner.getPaused()
+                ? 117
+                : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
+            this.GameStarter.DeviceLayer.checkNavigatorGamepads();
+            this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
         };
         /* Settings parsing
         */
@@ -14888,6 +15195,7 @@ var WorldSeedr;
 }());
 // @echo '/// <reference path="AudioPlayr-0.2.1.ts" />'
 // @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
+// @echo '/// <reference path="DeviceLayr-0.2.0.ts" />'
 // @echo '/// <reference path="EightBittr-0.2.0.ts" />'
 // @echo '/// <reference path="FPSAnalyzr-0.2.1.ts" />'
 // @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
@@ -14916,6 +15224,7 @@ var WorldSeedr;
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/AudioPlayr-0.2.1.ts" />
 /// <reference path="References/ChangeLinr-0.2.0.ts" />
+/// <reference path="References/DeviceLayr-0.2.0.ts" />
 /// <reference path="References/EightBittr-0.2.0.ts" />
 /// <reference path="References/FPSAnalyzr-0.2.1.ts" />
 /// <reference path="References/GamesRunnr-0.2.0.ts" />
@@ -15003,6 +15312,7 @@ var GameStartr;
                 "resetMapsCreator",
                 "resetMapsHandler",
                 "resetInputWriter",
+                "resetDeviceLayer",
                 "resetTouchPasser",
                 "resetLevelEditor",
                 "resetWorldSeeder",
@@ -15256,8 +15566,21 @@ var GameStartr;
          */
         GameStartr.prototype.resetInputWriter = function (GameStarter, customs) {
             GameStarter.InputWriter = new InputWritr.InputWritr(GameStarter.proliferate({
-                "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
+                "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter),
+                "eventInformation": GameStarter
             }, GameStarter.settings.input.InputWritrArgs));
+        };
+        /**
+         * Sets this.DeviceLayer.
+         *
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): devices.js (settings/devices.js)
+         */
+        GameStartr.prototype.resetDeviceLayer = function (GameStarter, customs) {
+            GameStarter.DeviceLayer = new DeviceLayr.DeviceLayr(GameStarter.proliferate({
+                "InputWriter": GameStarter.InputWriter
+            }, GameStarter.settings.devices));
         };
         /**
          * Sets this.InputWriter.

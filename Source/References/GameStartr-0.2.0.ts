@@ -1,5 +1,6 @@
 /// <reference path="AudioPlayr-0.2.1.ts" />
 /// <reference path="ChangeLinr-0.2.0.ts" />
+/// <reference path="DeviceLayr-0.2.0.ts" />
 /// <reference path="EightBittr-0.2.0.ts" />
 /// <reference path="FPSAnalyzr-0.2.1.ts" />
 /// <reference path="GamesRunnr-0.2.0.ts" />
@@ -50,6 +51,7 @@ declare module GameStartr {
     export interface IGameStartrStoredSettings {
         "audio": IAudioPlayrCustoms;
         "collisions": IThingHittrCustoms;
+        "devices": IDeviceLayrCustoms;
         "editor": ILevelEditrCustoms;
         "generator": IWorldSeedrCustoms;
         "groups": IGroupHoldrCustoms;
@@ -86,6 +88,10 @@ declare module GameStartr {
                 [i: string]: string[];
             }
         };
+    }
+
+    export interface IDeviceLayrCustoms extends IGameStartrCustomsObject {
+
     }
 
     export interface IGamesRunnrCustoms extends IGameStartrCustomsObject {
@@ -216,6 +222,7 @@ declare module GameStartr {
         canvas: HTMLCanvasElement;
         scale: number;
         AudioPlayer: AudioPlayr.IAudioPlayr;
+        DeviceLayer: DeviceLayr.IDeviceLayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
         GroupHolder: GroupHoldr.IGroupHoldr;
         InputWriter: InputWritr.IInputWritr;
@@ -243,6 +250,7 @@ declare module GameStartr {
         resetGamesRunner(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetGroupHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetInputWriter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetDeviceLayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetTouchPasser(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetLevelEditor(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetNumberMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
@@ -364,6 +372,7 @@ module GameStartr {
 
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
         public AudioPlayer: AudioPlayr.IAudioPlayr;
+        public DeviceLayer: DeviceLayr.IDeviceLayr;
         public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
         public GamesRunner: GamesRunnr.IGamesRunnr;
         public GroupHolder: GroupHoldr.IGroupHoldr;
@@ -411,6 +420,7 @@ module GameStartr {
             "resetMapsCreator",
             "resetMapsHandler",
             "resetInputWriter",
+            "resetDeviceLayer",
             "resetTouchPasser",
             "resetLevelEditor",
             "resetWorldSeeder",
@@ -764,9 +774,26 @@ module GameStartr {
             GameStarter.InputWriter = new InputWritr.InputWritr(
                 GameStarter.proliferate(
                     {
-                        "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
+                        "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter),
+                        "eventInformation": GameStarter
                     },
                     GameStarter.settings.input.InputWritrArgs));
+        }
+
+        /**
+         * Sets this.DeviceLayer.
+         * 
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): devices.js (settings/devices.js)
+         */
+        resetDeviceLayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.DeviceLayer = new DeviceLayr.DeviceLayr(
+                GameStarter.proliferate(
+                    {
+                        "InputWriter": GameStarter.InputWriter
+                    },
+                    GameStarter.settings.devices));
         }
 
         /**

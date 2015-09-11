@@ -1,3 +1,4 @@
+/// <reference path="DeviceLayr-0.2.0.ts" />
 /// <reference path="GamesRunnr-0.2.0.ts" />
 /// <reference path="ItemsHoldr-0.2.1.ts" />
 /// <reference path="InputWritr-0.2.0.ts" />
@@ -16,6 +17,7 @@ interface HTMLElement {
 
 declare module UserWrappr {
     export interface IGameStartr {
+        DeviceLayer: DeviceLayr.IDeviceLayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
         ItemsHolder: ItemsHoldr.IItemsHoldr;
         InputWriter: InputWritr.IInputWritr;
@@ -332,6 +334,11 @@ module UserWrappr {
         private documentElement: HTMLHtmlElement = <HTMLHtmlElement>document.documentElement;
 
         /**
+         * Identifier for the interval Function checking for device input.
+         */
+        private deviceChecker: number;
+
+        /**
          * A browser-dependent method for request to enter full screen mode.
          */
         private requestFullScreen: () => void = (
@@ -414,6 +421,8 @@ module UserWrappr {
             this.resetPageVisibilityHandlers();
 
             this.GameStarter.gameStart();
+
+            this.startCheckingDevices();
         }
 
 
@@ -547,6 +556,13 @@ module UserWrappr {
          */
         getCancelFullScreen(): () => void {
             return this.cancelFullScreen;
+        }
+
+        /**
+         * @return {Number} The identifier for the device input checking interval.
+         */
+        getDeviceChecker(): number {
+            return this.deviceChecker;
         }
 
 
@@ -721,6 +737,32 @@ module UserWrappr {
             }
 
             return text + Array.call(Array, diff).join(" ");
+        }
+
+
+        /* Devices
+        */
+
+        /**
+         * Starts the checkDevices loop to scan for gamepad status changes.
+         */
+        private startCheckingDevices(): void {
+            this.checkDevices();
+        }
+
+        /**
+         * Calls the DeviceLayer to check for gamepad triggers, after scheduling
+         * another checkDevices call via setTimeout.
+         */
+        private checkDevices(): void {
+            this.deviceChecker = setTimeout(
+                this.checkDevices.bind(this),
+                this.GameStarter.GamesRunner.getPaused()
+                    ? 117
+                    : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
+
+            this.GameStarter.DeviceLayer.checkNavigatorGamepads();
+            this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
         }
 
 

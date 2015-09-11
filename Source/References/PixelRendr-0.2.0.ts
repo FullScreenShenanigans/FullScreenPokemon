@@ -1074,7 +1074,10 @@ module PixelRendr {
                             // Isolate and split the new palette's numbers
                             paletteref = this.getPaletteReference(colors.slice(loc + 1, nixloc).split(","));
                             loc = nixloc + 1;
-                            digitsize = 1;
+                            digitsize = 0;
+                            for (var n: number = Object.keys(paletteref).length; n >= 1; n /= 10) {
+                                ++digitsize;
+                            }
                         } else {
                             // Otherwise go back to default
                             paletteref = this.getPaletteReference(this.paletteDefault);
@@ -1487,7 +1490,11 @@ module PixelRendr {
          *                  any index of the palettte).
          */
         private getDigitSize(palette: any[]): number {
-            return Math.floor(Math.log(palette.length) / Math.LN10) + 1;
+            var digitsize: number = 0;
+            for (var n: number = palette.length; n >= 1; n /= 10) {
+                ++digitsize;
+            }
+            return digitsize;
         }
 
         /**
