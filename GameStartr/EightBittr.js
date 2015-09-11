@@ -648,11 +648,6 @@ var EightBittr = (function () {
                             }
                         }
                         break;
-
-                    // Styles have to use the pre-existing styles object
-                    case "style":
-                        proliferate(recipient[i], setting);
-                        break;
                     
                     // By default, use the normal proliferate logic
                     default:
