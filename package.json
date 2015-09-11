@@ -1,6 +1,6 @@
 {
     "name": "FullScreenPokemon",
-    "description": "FullScreenPokemon - A free HTML5 remake of Pokemon generations I & II, expanded for modern browsing.",
+    "description": "An HTML5 remake of Nintendo's original Pokemon - expanded for the modern web.",
     "version": "0.0.0",
     "author": {
         "name": "Josh Goldberg",
@@ -14,17 +14,23 @@
         "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
     },
     "license": "MIT",
-    "dependencies": {
-        "chai": "2.2.X",
-        "grunt": "0.4.X",
-        "grunt-cli": "0.1.X",
-        "grunt-contrib-copy": "0.8.X",
-        "grunt-contrib-uglify": "0.8.X",
-        "grunt-mocha-phantomjs": "0.6.X",
-        "grunt-tslint": "2.0.X",
-        "grunt-typescript": "0.6.X",
-        "mocha": "~2.2.X",
-        "tslint": "~2.0.X",
-        "typescript": "~1.4.X"
+    "devDependencies": {
+        "chai": "~2.X",
+        "grunt": "~0.4.X",
+        "grunt-cli": "~0.1.X",
+        "grunt-contrib-clean": "~0.6.X",
+        "grunt-contrib-copy": "~0.8.X",
+        "grunt-contrib-cssmin": "~0.13.X",
+        "grunt-contrib-htmlmin": "~0.4.X",
+        "grunt-contrib-uglify": "~0.8.X",
+        "grunt-mocha-phantomjs": "~2.X",
+        "grunt-processhtml": "~0.3.X",
+        "grunt-preprocess": "~5.X",
+        "grunt-tslint": "~2.4.X",
+        "grunt-typescript": "~0.7.X",
+        "grunt-zip": "~0.17.X",
+        "mocha": "~2.X",
+        "tslint": "~2.4.X",
+        "typescript": "~1.X"
     }
 }

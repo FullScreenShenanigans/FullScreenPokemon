@@ -1,5 +1,7 @@
-dist
-dist/**
-*.zip
+Distribution
+Distribution/**
+Source/*.js
+Source/*.md
+Source/*.txt
 node_modules/
 npm-debug.log
