@@ -1880,7 +1880,7 @@ module FullScreenPokemon {
                 case Function:
                     return (<any>onStop)(thing);
                 default:
-                    throw new Error("Unknown onStop.");
+                    throw new Error("Unknown onStop: " + onStop + ".");
             }
         }
 
@@ -2175,7 +2175,7 @@ module FullScreenPokemon {
                     thing.FSP.setLeft(thing, other.right);
                     break;
                 default:
-                    throw new Error("Unknown direction.");
+                    throw new Error("Unknown direction: " + direction + ".");
             }
 
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
@@ -2548,7 +2548,7 @@ module FullScreenPokemon {
                     break;
 
                 default:
-                    throw new Error("Unknown Pokeball action.");
+                    throw new Error("Unknown Pokeball action: " + other.action + ".");
             }
         }
 
@@ -3094,7 +3094,7 @@ module FullScreenPokemon {
                     left -= area.width * thing.FSP.unitsize;
                     break;
                 default:
-                    throw new Error("Unknown direction.");
+                    throw new Error("Unknown direction: " + thing.direction + ".");
             }
 
             x = left / FSP.unitsize + (thing.offsetX || 0);
@@ -5107,7 +5107,7 @@ module FullScreenPokemon {
                         break;
 
                     default:
-                        throw new Error("Unknown direction.");
+                        throw new Error("Unknown direction: " + direction + ".");
                 }
 
                 things.push(thing);
@@ -7866,7 +7866,7 @@ module FullScreenPokemon {
                     prething.height = boundaries.bottom - boundaries.top;
                     break;
                 default:
-                    throw new Error("Unknown direction.");
+                    throw new Error("Unknown direction: " + direction + ".");
             }
 
             MapsCreator.analyzePreSwitch(prething, prethings, area, map);
@@ -7898,7 +7898,9 @@ module FullScreenPokemon {
                     FSP.centerMapScreenVerticallyOnPlayer(FSP);
                     return;
                 default:
-                    throw new Error("Unknown MapScreenr scrollability.");
+                    throw new Error(
+                        "Unknown MapScreenr scrollability: "
+                        + FSP.MapScreener.scrollability + ".");
             }
         }
 

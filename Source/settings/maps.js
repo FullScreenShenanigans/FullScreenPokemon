@@ -406,7 +406,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
             }
         }, {
             "name": "Viridian City",
-            "theme": "Viridian City",
+            "theme": "Pewter City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Nicknamer House Front Door": {
@@ -454,7 +454,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "PlantSmall", "x": 48, "width": 80, "height": 32 },
                         { "thing": "DirtWhite", "x": 128, "width": 16, "height": 32 },
                         { "thing": "FenceVertical", "x": 128, "width": 8, "height": 32 },
-                        { "thing": "ThemePlayer", "x": 136, "width": 24, "theme": "Viridian City" },
+                        { "thing": "ThemePlayer", "x": 136, "width": 24, "theme": "Pewter City" },
                         { "thing": "DirtLight", "x": 144, "width": 16, "height": 16 },
                         { "thing": "DirtMedium", "x": 160, "width": 128, "height": 16 },
                         { "thing": "PlantSmall", "x": 160, "width": 32, "height": 32 },
@@ -509,7 +509,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "DirtLight", "x": 160, "y": 96, "width": 128, "height": 16 },
                         { "thing": "FenceVertical", "x": 160, "y": 104, "width": 128, "height": 8 },
                         { "thing": "DirtMedium", "y": 112, "width": 56, "height": 16 },
-                        { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Viridian City" },
+                        { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Pewter City" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 112, "xnum": 16, "ynum": 2 },
                         { "macro": "House", "x": 160, "y": 112, "door": true, "entrance": "School Front Door", "transport": "School Floor 1 Door" },
                         { "thing": "DirtLight", "y": 128, "width": 16, "height": 24 },
@@ -583,7 +583,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "FenceWide", "x": 152, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 176, "y": 256, "height": 32 },
                         { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
-                        { "thing": "ThemePlayer", "x": 160, "y": 272, "width": 16, "theme": "Viridian City" },
+                        { "thing": "ThemePlayer", "x": 160, "y": 272, "width": 16, "theme": "Pewter City" },
                         { "thing": "AreaSpawner", "y": 280, "width": 320, "map": "Route 1", "area": "Land", "offsetX": 80 },
                     ]
                 },
@@ -881,7 +881,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                 "Gate North": {
                     "width": 80,
                     "height": 64,
-                    "theme": "Viridian City",
+                    "theme": "Pewter City",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
@@ -1059,7 +1059,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                 "Gate South": {
                     "width": 80,
                     "height": 64,
-                    "theme": "Viridian City",
+                    "theme": "Pewter City",
                     "invisibleWallBorders": true,
                     "creation": [
                         { "thing": "WallIndoorFancyWithDarkBottom", "width": 40 },
@@ -1083,7 +1083,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
             }
         }, {
             "name": "Pewter City",
-            "theme": "Viridian City",
+            "theme": "Pewter City",
             "locationDefault": "PokeCenter Outside Door",
             "locations": {
                 "Museum of Science Outside Door": {
@@ -1283,7 +1283,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "PlantSmall", "x": 160, "y": 256, "width": 48, "height": 32 },
                         { "thing": "FenceWide", "x": 208, "y": 256, "width": 80 },
                         { "thing": "DirtMedium", "y": 264, "width": 144, "height": 24 },
-                        { "thing": "ThemePlayer", "x": 144, "y": 280, "width": 16, "height": 200, "theme": "Viridian City" },
+                        { "thing": "ThemePlayer", "x": 144, "y": 280, "width": 16, "height": 200, "theme": "Pewter City" },
                         { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 2", "area": "Land", "offsetX": 48 }
                     ]
                 },
