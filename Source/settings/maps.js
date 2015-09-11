@@ -1466,7 +1466,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
             }
         }, {
             "name": "Route 22",
-            "theme": "Route 22",
+            "theme": "Cerulean from Mount Moon",
             "locationDefault": "Pokemon League",
             "locations": {
                 "Pokemon League": {
@@ -1521,7 +1521,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "DirtMedium", "x": 288, "y": 48, "width": 32, "height": 16 },
                         { "macro": "Mountain", "x": 208, "y": 48, "width": 32, "height": 64, "top": true, "right": true, "bottom": true, "left": true },
                         { "thing": "FenceWide", "x": 272, "y": 48, "width": 16 },
-                        { "thing": "ThemePlayer", "x": 312, "y": 48, "height": 32, "theme": "Route 22" },
+                        { "thing": "ThemePlayer", "x": 312, "y": 48, "height": 32, "theme": "Cerulean from Mount Moon" },
                         { "thing": "FenceWide", "x": 272, "y": 56, "height": 40 },
                         { "thing": "Ledge", "x": 128, "y": 60, "width": 48 },
                         { "thing": "Ledge", "x": 240, "y": 60, "crumbleRight": true },
