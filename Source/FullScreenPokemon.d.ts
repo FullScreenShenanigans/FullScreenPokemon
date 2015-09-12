@@ -1,9 +1,19 @@
 declare module FullScreenPokemon {
-    enum Direction {
-        Top = 0,
-        Right = 1,
-        Bottom = 2,
-        Left = 3
+    export enum Direction { }
+
+    // Until TypeScript 1.6 is stable and adopted, this can't be used, as 1.5.X throws an error
+    // TS2413: Numeric index type 'string' is not assignable to string index type 'Direction'.
+    //export interface IDirections {
+    //    [i: number]: string;
+    //    [i: string]: Direction;
+    //}
+
+    export interface IDirectionsToAliases {
+        [i: number]: string;
+    }
+
+    export interface IDirectionAliases {
+        [i: string]: Direction;
     }
 
     export interface IMapScreenr extends MapScreenr.IMapScreenr {
