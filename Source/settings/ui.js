@@ -112,6 +112,10 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
     },
     "sizeDefault": "Wide",
     "sizes": {
+        "GameBoy": {
+            "width": 320,
+            "height": 288
+        },
         "NES": {
             "width": 512,
             "height": 464,

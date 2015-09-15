@@ -37,6 +37,13 @@ describe("constructor", function () {
             Uint8ClampedArray = FSP.PixelRender.Uint8ClampedArray;
         }
     });
+
+    it("runs with a tiny screen size", function () {
+        FSP = new FullScreenPokemon.FullScreenPokemon({
+            "width": 320,
+            "height": 288
+        });
+    });
 });
 
 describe("maps", function () {
