@@ -43,6 +43,30 @@ var ItemsHoldr;
             }
         }
         /**
+         * Retrieves the value being stored. If there is a transformGet, it is applied.
+         *
+         * @return {Mixed}
+         */
+        ItemValue.prototype.getValue = function () {
+            if (this.transformGet) {
+                return this.transformGet(this.value);
+            }
+            return this.value;
+        };
+        /**
+         * Sets the value being stored. If there is a transformSet, it is applied.
+         * @param {Mixed} value   The new value to store.
+         */
+        ItemValue.prototype.setValue = function (value) {
+            if (this.transformSet) {
+                this.value = this.transformSet(value);
+            }
+            else {
+                this.value = value;
+            }
+            this.update();
+        };
+        /**
          * General update Function to be run whenever the internal value is changed.
          * It runs all the trigger, modular, etc. checks, updates the HTML element
          * if there is one, and updates localStorage if needed.
@@ -77,8 +101,6 @@ var ItemsHoldr;
         /**
          * Checks if the current value should trigger a callback, and if so calls
          * it.
-         *
-         * @this {ItemValue}
          */
         ItemValue.prototype.checkTriggers = function () {
             if (this.triggers.hasOwnProperty(this.value)) {
@@ -89,8 +111,6 @@ var ItemsHoldr;
          * Checks if the current value is greater than the modularity (assuming
          * modular is a non-zero Numbers), and if so, continuously reduces value and
          * calls this.onModular.
-         *
-         * @this {ItemValue}
          */
         ItemValue.prototype.checkModularity = function () {
             if (this.value.constructor !== Number || !this.modularity) {
@@ -105,8 +125,6 @@ var ItemsHoldr;
         };
         /**
          * Updates the ItemValue's element's second child to be the ItemValue's value.
-         *
-         * @this {ItemValue}
          */
         ItemValue.prototype.updateElement = function () {
             if (this.ItemsHolder.hasDisplayChange(this.value)) {
@@ -124,11 +142,8 @@ var ItemsHoldr;
          */
         ItemValue.prototype.retrieveLocalStorage = function () {
             var value = localStorage.getItem(this.ItemsHolder.getPrefix() + this.key);
-            switch (value) {
-                case "undefined":
-                    return undefined;
-                case "null":
-                    return null;
+            if (value === "undefined") {
+                return undefined;
             }
             if (value.constructor !== String) {
                 return value;
@@ -157,8 +172,6 @@ var ItemsHoldr;
      * such as setting, increasing/decreasing, and default values are all abstracted
      * automatically. ItemValues are stored in memory as well as in localStorage for
      * fast lookups.
-     *
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     var ItemsHoldr = (function () {
         /**
@@ -281,7 +294,7 @@ var ItemsHoldr;
          */
         ItemsHoldr.prototype.getItem = function (key) {
             this.checkExistence(key);
-            return this.items[key].value;
+            return this.items[key].getValue();
         };
         /**
          * @param {String} key   The key for a known value.
@@ -305,7 +318,7 @@ var ItemsHoldr;
             var output = {}, i;
             for (i in this.items) {
                 if (this.items.hasOwnProperty(i)) {
-                    output[i] = this.items[i].value;
+                    output[i] = this.items[i].getValue();
                 }
             }
             return output;
@@ -368,8 +381,7 @@ var ItemsHoldr;
          */
         ItemsHoldr.prototype.setItem = function (key, value) {
             this.checkExistence(key);
-            this.items[key].value = value;
-            this.items[key].update();
+            this.items[key].setValue(value);
         };
         /**
          * Increases the value for the ItemValue under the given key, via addition for
@@ -381,8 +393,9 @@ var ItemsHoldr;
         ItemsHoldr.prototype.increase = function (key, amount) {
             if (amount === void 0) { amount = 1; }
             this.checkExistence(key);
-            this.items[key].value += arguments.length > 1 ? amount : 1;
-            this.items[key].update();
+            var value = this.items[key].getValue();
+            value += amount;
+            this.items[key].setValue(value);
         };
         /**
          * Increases the value for the ItemValue under the given key, via addition for
@@ -394,18 +407,20 @@ var ItemsHoldr;
         ItemsHoldr.prototype.decrease = function (key, amount) {
             if (amount === void 0) { amount = 1; }
             this.checkExistence(key);
-            this.items[key].value -= amount;
-            this.items[key].update();
+            var value = this.items[key].getValue();
+            value -= amount;
+            this.items[key].setValue(value);
         };
         /**
-         * Toggles whether a value is 1 or 0.
+         * Toggles whether a value is true or false.
          *
          * @param {String} key   The key of the ItemValue.
          */
         ItemsHoldr.prototype.toggle = function (key) {
             this.checkExistence(key);
-            this.items[key].value = this.items[key].value ? 0 : 1;
-            this.items[key].update();
+            var value = this.items[key].getValue();
+            value = value ? false : true;
+            this.items[key].setValue(value);
         };
         /**
          * Ensures a key exists in values. If it doesn't, and new values are
@@ -1974,7 +1989,7 @@ var DeviceLayr;
          * event if one is found.
          *
          * @param {Gamepad} gamepad
-         * @param {String} name   The name of the axis, such as "a" or "left".
+         * @param {String} name   The name of the button, such as "a" or "left".
          * @param {Boolean} status   Whether the button is activated (pressed).
          * @return {Boolean} Whether the trigger was activated.
          */
@@ -1988,6 +2003,48 @@ var DeviceLayr;
             // Trigger the new status via the InputWritr using the new alias
             this.InputWritr.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
             return true;
+        };
+        /**
+         * Clears the statuses of all axes and buttons on all known gamepads.
+         */
+        DeviceLayr.prototype.clearAllGamepadTriggers = function () {
+            for (var i = 0; i < this.gamepads.length; i += 1) {
+                this.clearGamepadTriggers(this.gamepads[i]);
+            }
+        };
+        /**
+         * Clears the status of all axes and buttons on a gamepad.
+         *
+         * @param {Gamepad} gamepad
+         */
+        DeviceLayr.prototype.clearGamepadTriggers = function (gamepad) {
+            var mapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"], i;
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                this.clearAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis);
+            }
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                this.clearButtonTrigger(gamepad, mapping.buttons[i]);
+            }
+        };
+        /**
+         * Sets the status of an axis to neutral.
+         *
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, typically "x" or "y".
+         */
+        DeviceLayr.prototype.clearAxisTrigger = function (gamepad, name, axis) {
+            var listing = this.triggers[name][axis];
+            listing.status = AxisStatus.neutral;
+        };
+        /**
+         * Sets the status of a button to off.
+         *
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the button, such as "a" or "left".
+         */
+        DeviceLayr.prototype.clearButtonTrigger = function (gamepad, name) {
+            var listing = this.triggers[name];
+            listing.status = false;
         };
         /* Private utilities
         */
