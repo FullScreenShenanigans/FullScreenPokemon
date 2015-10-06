@@ -312,6 +312,8 @@ module WorldSeedr {
                     case "Random":
                         this.generateFull(child);
                         break;
+                    default:
+                        throw new Error("Unknown child type: " + child.type);
                 }
             }
         }
@@ -354,6 +356,8 @@ module WorldSeedr {
                 case "Multiple":
                     children = this.generateChildrenMultiple(contents, objectMerged, direction, spacing);
                     break;
+                default:
+                    throw new Error("Unknown contents mode: " + contents.mode);
             }
 
             return this.wrapChoicePositionExtremes(children);
@@ -529,7 +533,7 @@ module WorldSeedr {
                 var output: IChoice = scope.parseChoice(choice, scope.objectCopy(position), direction);
 
                 if (direction) {
-                    scope.movePositionBySpacing(position, direction, spacing);
+                    (<WorldSeedr>scope).movePositionBySpacing(position, direction, spacing);
                 }
 
                 return output;
@@ -614,6 +618,8 @@ module WorldSeedr {
                     break;
                 case "left":
                     output.right = output.left + output.width;
+                    break;
+                default:
                     break;
             }
 
@@ -850,6 +856,8 @@ module WorldSeedr {
                 case "left":
                     position.right = child.left - this.parseSpacing(spacing);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -888,6 +896,8 @@ module WorldSeedr {
                     position.left -= space;
                     position.right -= space;
                     break;
+                default:
+                    throw new Error("Unknown direction: " + direction);
             }
         }
 
@@ -1066,7 +1076,9 @@ module WorldSeedr {
          *                            and .bottom.
          */
         private ensureDirectionBoundsOnChoice(output: IChoice, position: IPosition): void {
-            for (var i in this.directionNames) {
+            var i: string;
+
+            for (i in this.directionNames) {
                 if (this.directionNames.hasOwnProperty(i)) {
                     output[this.directionNames[i]] = position[this.directionNames[i]];
                 }

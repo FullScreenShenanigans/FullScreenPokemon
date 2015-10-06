@@ -328,7 +328,7 @@ module GroupHoldr {
          *                          defaults to this).
          * @param {Function} func   A function to apply to each group.
          */
-        callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void {
+        callAll(scope: any, func: (...args: any[]) => any): void {
             var args: any[] = Array.prototype.slice.call(arguments, 1),
                 i: number;
 

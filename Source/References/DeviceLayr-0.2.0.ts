@@ -416,7 +416,7 @@ module DeviceLayr {
          */
         clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void {
             var listing: IJoystickTriggerAxis = (<IJoystickListing>this.triggers[name])[axis];
-            
+
             listing.status = AxisStatus.neutral;
         }
 

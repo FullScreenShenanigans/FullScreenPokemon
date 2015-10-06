@@ -27,7 +27,7 @@ declare module NumberMakr {
         maskUpper?: number;
 
         /**
-         * A lower mask to binary-and on (the least significant r-bits).
+         * A lower mask to binary-and on (the least significant r bits).
          */
         maskLower?: number;
     }

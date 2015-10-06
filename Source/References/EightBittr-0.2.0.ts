@@ -471,7 +471,11 @@ module EightBittr {
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         setMidXObj(thing: IThing, other: IThing): void {
-            thing.EightBitter.setMidX(thing, thing.EightBitter.getMidX(other));
+            thing.EightBitter.setLeft(
+                thing,
+                thing.EightBitter.getMidX(other)
+                - (thing.width * thing.EightBitter.unitsize / 2)
+                );
         }
 
         /**
@@ -482,7 +486,11 @@ module EightBittr {
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         setMidYObj(thing: IThing, other: IThing): void {
-            thing.EightBitter.setMidY(thing, thing.EightBitter.getMidY(other));
+            thing.EightBitter.setTop(
+                thing,
+                thing.EightBitter.getMidY(other)
+                - (thing.height * thing.EightBitter.unitsize / 2)
+                );
         }
 
         /**

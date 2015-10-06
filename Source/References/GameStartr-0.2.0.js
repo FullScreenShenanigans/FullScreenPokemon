@@ -2477,7 +2477,8 @@ var EightBittr;
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         EightBittr.prototype.setMidXObj = function (thing, other) {
-            thing.EightBitter.setMidX(thing, thing.EightBitter.getMidX(other));
+            thing.EightBitter.setLeft(thing, thing.EightBitter.getMidX(other)
+                - (thing.width * thing.EightBitter.unitsize / 2));
         };
         /**
          * Shifts a Thing so that its vertical midpoint is centered on the
@@ -2487,7 +2488,8 @@ var EightBittr;
          * @param {Thing} other   The Thing whose midpoint is referenced.
          */
         EightBittr.prototype.setMidYObj = function (thing, other) {
-            thing.EightBitter.setMidY(thing, thing.EightBitter.getMidY(other));
+            thing.EightBitter.setTop(thing, thing.EightBitter.getMidY(other)
+                - (thing.height * thing.EightBitter.unitsize / 2));
         };
         /**
          * @param {Thing} thing
@@ -3471,10 +3473,6 @@ var GroupHoldr;
          * @param {Function} func   A function to apply to each group.
          */
         GroupHoldr.prototype.callAll = function (scope, func) {
-            var args = [];
-            for (var _i = 2; _i < arguments.length; _i++) {
-                args[_i - 2] = arguments[_i];
-            }
             var args = Array.prototype.slice.call(arguments, 1), i;
             if (!scope) {
                 scope = this;
@@ -5364,7 +5362,7 @@ var PixelRendr;
                 throw new Error("No paletteDefault given to PixelRendr.");
             }
             this.paletteDefault = settings.paletteDefault;
-            this.digitsizeDefault = this.getDigitSize(this.paletteDefault);
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
             this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
             this.library = {
                 "raws": settings.library || {}
@@ -5501,7 +5499,7 @@ var PixelRendr;
                 this.generateRenderSprite(render, key, attributes);
             }
             sprite = render.sprites[key];
-            if (!sprite || (sprite.constructor === Uint8ClampedArray && sprite.length === 0)) {
+            if (!sprite || (sprite.constructor === this.Uint8ClampedArray && sprite.length === 0)) {
                 throw new Error("Could not generate sprite for " + key + ".");
             }
             return sprite;
@@ -5883,7 +5881,7 @@ var PixelRendr;
                             // Isolate and split the new palette's numbers
                             paletteref = this.getPaletteReference(colors.slice(loc + 1, nixloc).split(","));
                             loc = nixloc + 1;
-                            digitsize = 1;
+                            digitsize = this.getDigitSizeFromObject(paletteref);
                         }
                         else {
                             // Otherwise go back to default
@@ -6149,7 +6147,7 @@ var PixelRendr;
          *                 data, and digitsize is the sprite's digit size.
          */
         PixelRendr.prototype.imageMapPalette = function (information) {
-            var pixels = information[0], occurences = information[1], palette = Object.keys(occurences), digitsize = this.getDigitSize(palette), paletteIndices = this.getValueIndices(palette), numbers = pixels.map(this.getKeyValue.bind(this, paletteIndices));
+            var pixels = information[0], occurences = information[1], palette = Object.keys(occurences), digitsize = this.getDigitSizeFromArray(palette), paletteIndices = this.getValueIndices(palette), numbers = pixels.map(this.getKeyValue.bind(this, paletteIndices));
             return [palette, numbers, digitsize];
         };
         /**
@@ -6192,8 +6190,25 @@ var PixelRendr;
          *                  should be (how many digits it would take to represent
          *                  any index of the palettte).
          */
-        PixelRendr.prototype.getDigitSize = function (palette) {
-            return Math.floor(Math.log(palette.length) / Math.LN10) + 1;
+        PixelRendr.prototype.getDigitSizeFromArray = function (palette) {
+            var digitsize = 0, i;
+            for (i = palette.length; i >= 1; i /= 10) {
+                digitsize += 1;
+            }
+            return digitsize;
+        };
+        /**
+         * @param {Object} palette
+         * @return {Number} What the digitsize for a sprite that uses the palette
+         *                  should be (how many digits it would take to represent
+         *                  any index of the palettte).
+         */
+        PixelRendr.prototype.getDigitSizeFromObject = function (palette) {
+            var digitsize = 0, i;
+            for (i = Object.keys(palette).length; i >= 1; i /= 10) {
+                digitsize += 1;
+            }
+            return digitsize;
         };
         /**
          * Generates an actual palette Object for a given palette, using a digitsize
@@ -6204,7 +6219,7 @@ var PixelRendr;
          *                  an index for every palette member.
          */
         PixelRendr.prototype.getPaletteReference = function (palette) {
-            var output = {}, digitsize = this.getDigitSize(palette), i;
+            var output = {}, digitsize = this.getDigitSizeFromArray(palette), i;
             for (i = 0; i < palette.length; i += 1) {
                 output[this.makeDigit(i, digitsize)] = this.makeDigit(palette[i], digitsize);
             }
@@ -7466,6 +7481,8 @@ var PixelDrawr;
                     bottomreal -= diffvert;
                     heightreal -= diffvert;
                     break;
+                default:
+                    throw new Error("Unknown or missing direction given in SpriteMultiple.");
             }
             // If there's still room, draw the actual canvas
             if ((canvasref = canvases.middle) && topreal < bottomreal && leftreal < rightreal) {
@@ -11182,7 +11199,7 @@ var ThingHittr;
     ThingHittr_1.ThingHittr = ThingHittr;
 })(ThingHittr || (ThingHittr = {}));
 /// <reference path="InputWritr-0.2.0.ts" />
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -13031,6 +13048,8 @@ var WorldSeedr;
                     case "Random":
                         this.generateFull(child);
                         break;
+                    default:
+                        throw new Error("Unknown child type: " + child.type);
                 }
             }
         };
@@ -13068,6 +13087,8 @@ var WorldSeedr;
                 case "Multiple":
                     children = this.generateChildrenMultiple(contents, objectMerged, direction, spacing);
                     break;
+                default:
+                    throw new Error("Unknown contents mode: " + contents.mode);
             }
             return this.wrapChoicePositionExtremes(children);
         };
@@ -13275,6 +13296,8 @@ var WorldSeedr;
                 case "left":
                     output.right = output.left + output.width;
                     break;
+                default:
+                    break;
             }
             if (choice.stretch) {
                 if (!output.arguments) {
@@ -13471,6 +13494,8 @@ var WorldSeedr;
                 case "left":
                     position.right = child.left - this.parseSpacing(spacing);
                     break;
+                default:
+                    break;
             }
         };
         /**
@@ -13505,6 +13530,8 @@ var WorldSeedr;
                     position.left -= space;
                     position.right -= space;
                     break;
+                default:
+                    throw new Error("Unknown direction: " + direction);
             }
         };
         /**
@@ -13654,7 +13681,8 @@ var WorldSeedr;
          *                            and .bottom.
          */
         WorldSeedr.prototype.ensureDirectionBoundsOnChoice = function (output, position) {
-            for (var i in this.directionNames) {
+            var i;
+            for (i in this.directionNames) {
                 if (this.directionNames.hasOwnProperty(i)) {
                     output[this.directionNames[i]] = position[this.directionNames[i]];
                 }
@@ -15321,7 +15349,6 @@ var GameStartr;
         function GameStartr(customs) {
             if (customs === void 0) { customs = {}; }
             _super.call(this, {
-                "customs": customs,
                 "constantsSource": customs.constantsSource,
                 "constants": customs.constants,
                 "requirements": {
