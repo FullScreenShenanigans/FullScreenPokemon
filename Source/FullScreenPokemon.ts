@@ -384,7 +384,9 @@ module FullScreenPokemon {
          */
         gameStartIntro(FSP: FullScreenPokemon): void {
             FSP.ItemsHolder.clear();
-            FSP.ScenePlayer.startCutscene("Intro");
+            FSP.ScenePlayer.startCutscene("Intro", {
+                "disablePauseMenu": true
+            });
 
             FSP.ModAttacher.fireEvent("onGameStartIntro");
         }
@@ -3214,11 +3216,17 @@ module FullScreenPokemon {
         togglePauseMenu(thing: IThing): void {
             if (thing.FSP.MenuGrapher.getActiveMenu()) {
                 thing.FSP.MenuGrapher.registerStart();
-            } else if (thing.FSP.MenuGrapher.getActiveMenu()) {
-                thing.FSP.closePauseMenu();
-            } else {
-                thing.FSP.openPauseMenu();
+                return;
             }
+
+            var cutsceneSettings: any = thing.FSP.ScenePlayer.getCutsceneSettings();
+            if (cutsceneSettings && cutsceneSettings.disablePauseMenu) {
+                return;
+            }
+
+            thing.FSP.MenuGrapher.getMenu("Pause")
+                ? thing.FSP.closePauseMenu()
+                : thing.FSP.openPauseMenu();
         }
 
         /**
