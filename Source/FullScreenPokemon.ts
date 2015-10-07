@@ -2183,7 +2183,7 @@ module FullScreenPokemon {
                     thing.FSP.setLeft(thing, other.right);
                     break;
                 default:
-                    throw new Error("Unknown direction: " + direction + ".");
+                    break;
             }
 
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
@@ -2355,10 +2355,9 @@ module FullScreenPokemon {
                         ) {
                             thing.bordering[0] = other;
                             other.bordering[2] = thing;
-                            thing.FSP.setTop(
-                                thing, other.bottom - other.tolBottom
-                            );
+                            thing.FSP.setTop(thing, other.bottom - other.tolBottom);
                         }
+
                         break;
 
                     case 1:
@@ -2368,9 +2367,7 @@ module FullScreenPokemon {
                         ) {
                             thing.bordering[1] = other;
                             other.bordering[3] = thing;
-                            thing.FSP.setRight(
-                                thing, other.left + other.tolLeft
-                            );
+                            thing.FSP.setRight(thing, other.left + other.tolLeft);
                         }
                         break;
 
@@ -2381,9 +2378,7 @@ module FullScreenPokemon {
                         ) {
                             thing.bordering[2] = other;
                             other.bordering[0] = thing;
-                            thing.FSP.setBottom(
-                                thing, other.top + other.tolTop
-                            );
+                            thing.FSP.setBottom(thing, other.top + other.tolTop);
                         }
                         break;
 
@@ -2394,14 +2389,12 @@ module FullScreenPokemon {
                         ) {
                             thing.bordering[3] = other;
                             other.bordering[1] = thing;
-                            thing.FSP.setLeft(
-                                thing, other.right - other.tolRight
-                            );
+                            thing.FSP.setLeft(thing, other.right - other.tolRight);
                         }
                         break;
 
                     default:
-                        throw new Error("Unknown direction bordering.");
+                        break;
                 }
             };
         }
@@ -2870,35 +2863,23 @@ module FullScreenPokemon {
          * @todo I would like this to be more elegant. 
          */
         getDirectionBordering(thing: IThing, other: IThing): number {
-            if (
-                Math.abs((thing.top) - (other.bottom - other.tolBottom))
-                < thing.FSP.unitsize
-            ) {
+            if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < thing.FSP.unitsize) {
                 return 0;
             }
 
-            if (
-                Math.abs(thing.right - other.left)
-                < thing.FSP.unitsize
-            ) {
+            if (Math.abs(thing.right - other.left) < thing.FSP.unitsize) {
                 return 1;
             }
 
-            if (
-                Math.abs(thing.bottom - other.top)
-                < thing.FSP.unitsize
-            ) {
+            if (Math.abs(thing.bottom - other.top) < thing.FSP.unitsize) {
                 return 2;
             }
 
-            if (
-                Math.abs(thing.left - other.right)
-                < thing.FSP.unitsize
-            ) {
+            if (Math.abs(thing.left - other.right) < thing.FSP.unitsize) {
                 return 3;
             }
 
-            return 0;
+            return undefined;
         }
 
         /**
@@ -5067,7 +5048,7 @@ module FullScreenPokemon {
                     return;
                 }
 
-                switch (direction) {
+                switch (thing.direction) {
                     case 0:
                         thing = FSP.ObjectMaker.make("BlackSquare", {
                             "width": width / unitsize,
