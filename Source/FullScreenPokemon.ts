@@ -6187,17 +6187,24 @@ module FullScreenPokemon {
          * 
          */
         cutsceneIntroPlayerNameConfirm(FSP: FullScreenPokemon, settings: any): void {
+            var message: (string | string[])[] = "Right! So your name is".split(" "),
+                name: string[] = settings.name.constructor === String
+                    ? settings.name.split("")
+                    : settings.name;
+
+            FSP.ItemsHolder.setItem("name", name);
+            name.push("!");
+            message.push(name);
+
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true
             });
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    ["Right! So your name is ", settings.name, "!"]
+                    message
                 ],
                 FSP.ScenePlayer.bindRoutine("PlayerNameComplete"));
-
-            FSP.ItemsHolder.setItem("name", settings.name);
         }
 
         /**
@@ -6342,16 +6349,23 @@ module FullScreenPokemon {
          * 
          */
         cutsceneIntroRivalNameConfirm(FSP: FullScreenPokemon, settings: any): void {
+            var message: (string | string[])[] = "That's right! I remember now! His name is".split(" "),
+                name: string[] = settings.name.constructor === String
+                    ? settings.name.split("")
+                    : settings.name;
+
+            FSP.ItemsHolder.setItem("nameRival", name);
+            name.push("!");
+            message.push(name);
+
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    ["That's right! I remember now! His name is ", settings.name, "!"]
+                    message
                 ],
                 FSP.ScenePlayer.bindRoutine("RivalNameComplete"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
-
-            FSP.ItemsHolder.setItem("nameRival", settings.name);
         }
 
         /**
