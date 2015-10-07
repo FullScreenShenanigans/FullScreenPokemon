@@ -345,13 +345,14 @@ declare module FullScreenPokemon {
     }
 
     export interface IKeyboardKey extends IThing {
-        text: string;
+        text: [string];
+        value: string;
     }
 
     export interface IKeyboardResultsMenu extends IMenu {
         blinker: IThing;
-        completeValue: string;
-        displayedValue: string;
+        completeValue: string[];
+        displayedValue: string[];
         selectedChild: number;
     }
 
