@@ -3661,13 +3661,6 @@ module FullScreenPokemon {
                 onKeyPress: (...args: any[]) => void = FSP.addKeyboardMenuValue.bind(FSP),
                 onBPress: (...args: any[]) => void = FSP.removeKeyboardMenuValue.bind(FSP),
                 onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(FSP),
-                // menuKeyboard: IMenu = <IMenu>FSP.MenuGrapher.createMenu("Keyboard", {
-                //     "settings": settings,
-                //     "onKeyPress": onKeyPress,
-                //     "onComplete": onComplete,
-                //     "ignoreB": false
-                // }),
-                menuResults: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
                 lowercase: boolean = settings.lowercase,
                 letters: string[] = lowercase
                     ? FullScreenPokemon.keysLowercase
@@ -3679,7 +3672,16 @@ module FullScreenPokemon {
                             ? onKeyPress
                             : onComplete
                     };
-                });
+                }),
+                menuResults: IKeyboardResultsMenu;
+
+            FSP.MenuGrapher.createMenu("Keyboard", <MenuGraphr.IMenuSchema>{
+                "settings": settings,
+                "onKeyPress": onKeyPress,
+                "onComplete": onComplete,
+                "ignoreB": false
+            });
+            menuResults = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult");
 
             FSP.MenuGrapher.addMenuDialog("KeyboardTitle", [[
                 settings.title || "",
