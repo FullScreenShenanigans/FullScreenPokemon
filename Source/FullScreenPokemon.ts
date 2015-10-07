@@ -183,33 +183,6 @@ module FullScreenPokemon {
          */
         constructor(customs: GameStartr.IGameStartrCustoms) {
             super({
-                "customs": customs,
-                "requirements": {
-                    "settings": {
-                        "audio": "settings/audio.js",
-                        "battles": "settings/battles.js",
-                        "collisions": "settings/collisions.js",
-                        "editor": "settings/editor.js",
-                        "events": "settings/events.js",
-                        "generator": "settings/generator.js",
-                        "input": "settings/inpug.js",
-                        "maps": "settings/maps.js",
-                        "math": "settings/math.js",
-                        "menus": "settings/menus.js",
-                        "mods": "settings/mods.js",
-                        "numbers": "settings/number.js",
-                        "objects": "settings/objetcs.js",
-                        "quadrants": "settings/quadrants.js",
-                        "renderer": "settings/renderer.js",
-                        "runner": "settings/runner.js",
-                        "scenes": "settings/scenes.js",
-                        "sprites": "settings/sprites.js",
-                        "states": "settings/states.js",
-                        "statistics": "settings/statistics.js",
-                        "touch": "settings/touch.js",
-                        "ui": "settings/ui.js"
-                    }
-                },
                 "constantsSource": FullScreenPokemon,
                 "constants": [
                     "unitsize",
@@ -5820,8 +5793,7 @@ module FullScreenPokemon {
                             "reference": reference
                         }
                     ]),
-                "callback": FSP.ScenePlayer.bindRoutine(
-                    "ConfirmPurchase", routineArguments)
+                "callback": FSP.ScenePlayer.bindRoutine("ConfirmPurchase", routineArguments)
             });
             FSP.MenuGrapher.setActiveMenu("ShopItemsAmount");
         }
@@ -7508,7 +7480,7 @@ module FullScreenPokemon {
          */
         cutsceneElderTrainingStartBattle(FSP: FullScreenPokemon, settings: any): void {
             FSP.MapScreener.blockInputs = true;
-            FSP.startBattle({
+            FSP.startBattle(<IBattleInfo>{
                 "keptThings": [settings.player, settings.triggerer],
                 "player": {
                     "name": "OLD MAN",
