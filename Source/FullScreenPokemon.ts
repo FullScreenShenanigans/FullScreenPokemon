@@ -108,30 +108,32 @@ module FullScreenPokemon {
          * The allowed uppercase keys to be shown in a keyboard.
          */
         public static keysUppercase: string[] = [
-            "A", "J", "S", " ", " ",
-            "B", "K", "T", " ", " ",
-            "C", "L", "U", " ", " ",
-            "D", "M", "V", " ", " ",
-            "E", "N", "W", " ", " ",
-            "F", "O", "X", " ", " ",
-            "G", "P", "Y", " ", " ",
-            "H", "Q", "Z", " ", " ",
-            "I", "R", " ", " ", "ED",
+            "A", "J", "S", "Times", "-",
+            "B", "K", "T", "(", "?",
+            "C", "L", "U", ")", "!",
+            "D", "M", "V", ":", "MaleSymbol",
+            "E", "N", "W", ";", "FemaleSymbol",
+            "F", "O", "X", "[", "/",
+            "G", "P", "Y", "]", ".",
+            "H", "Q", "Z", "Poke", ",",
+            "I", "R", " ", "Mon", "ED"
         ];
+
+
 
         /*
          * The allowed lowercase keys to be shown in a keyboard.
          */
         public static keysLowercase: string[] = [
-            "a", "j", "s", " ", " ",
-            "b", "k", "t", " ", " ",
-            "c", "l", "u", " ", " ",
-            "d", "m", "v", " ", " ",
-            "e", "n", "w", " ", " ",
-            "f", "o", "x", " ", " ",
-            "g", "p", "y", " ", " ",
-            "h", "q", "z", " ", " ",
-            "i", "r", " ", " ", "ED",
+            "a", "j", "s", "Times", "-",
+            "b", "k", "t", "(", "?",
+            "c", "l", "u", ")", "!",
+            "d", "m", "v", ":", "MaleSymbol",
+            "e", "n", "w", ";", "FemaleSymbol",
+            "f", "o", "x", "[", "/",
+            "g", "p", "y", "]", ".",
+            "h", "q", "z", "Poke", ",",
+            "i", "r", " ", "Mon", "ED"
         ];
 
         /**
