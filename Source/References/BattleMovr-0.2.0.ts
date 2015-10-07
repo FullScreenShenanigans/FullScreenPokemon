@@ -92,9 +92,9 @@ declare module BattleMovr {
         experience: IActorExperience;
         level: number;
         moves: IMove[];
-        nickname: string;
+        nickname: string[];
         status: string;
-        title: string;
+        title: string[];
         types: string[];
     }
 
