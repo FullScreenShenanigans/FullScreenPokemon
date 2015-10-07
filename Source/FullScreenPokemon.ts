@@ -2483,7 +2483,7 @@ module FullScreenPokemon {
                 thing.FSP.MenuGrapher.addMenuDialog(
                     "GeneralText",
                     dialog,
-                    this.animateCharacterDialogFinish.bind(this, thing, other)
+                    thing.FSP.animateCharacterDialogFinish.bind(thing.FSP, thing, other)
                 );
             }
 
