@@ -34,7 +34,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
         "TIME": true,
         "MONEY": true
     },
-    "replaceFromStatsHolder": true,
+    "replaceFromItemsHolder": true,
     "schemas": {
         "StartOptions": {
             "size": {
