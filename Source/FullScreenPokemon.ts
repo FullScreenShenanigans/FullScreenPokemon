@@ -4091,7 +4091,7 @@ module FullScreenPokemon {
             if (battleInfo.automaticMenus) {
                 callback = FSP.TimeHandler.addEvent.bind(
                     FSP.TimeHandler,
-                    FSP.ScenePlayer.playRoutine,
+                    FSP.ScenePlayer.playRoutine.bind(FSP.ScenePlayer),
                     70,
                     nextRoutine);
             } else {
@@ -6696,14 +6696,18 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalProtests(FSP: FullScreenPokemon, settings: any): void {
+            console.log("a");
             var timeout: number = 21;
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
-            FSP.TimeHandler.addEvent(FSP.MenuGrapher.createMenu, timeout, "GeneralText");
+            FSP.TimeHandler.addEvent(
+                FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher),
+                timeout,
+                "GeneralText");
 
             FSP.TimeHandler.addEvent(
-                FSP.MenuGrapher.addMenuDialog,
+                FSP.MenuGrapher.addMenuDialog.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText",
                 [
@@ -6712,7 +6716,7 @@ module FullScreenPokemon {
                 FSP.ScenePlayer.bindRoutine("OakRespondsToProtest"));
 
             FSP.TimeHandler.addEvent(
-                FSP.MenuGrapher.setActiveMenu,
+                FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText");
         }
@@ -6721,6 +6725,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroOakRespondsToProtest(FSP: FullScreenPokemon, settings: any): void {
+            console.log("b");
             var blocker: IThing = FSP.getThingById("OakBlocker"),
                 timeout: number = 21;
 
@@ -6735,12 +6740,12 @@ module FullScreenPokemon {
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
             FSP.TimeHandler.addEvent(
-                FSP.MenuGrapher.createMenu,
+                FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText");
 
             FSP.TimeHandler.addEvent(
-                FSP.MenuGrapher.addMenuDialog,
+                FSP.MenuGrapher.addMenuDialog.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText",
                 [
@@ -6748,7 +6753,7 @@ module FullScreenPokemon {
                 ]);
 
             FSP.TimeHandler.addEvent(
-                FSP.MenuGrapher.setActiveMenu,
+                FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText");
         }
@@ -6757,6 +6762,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroPokemonChoicePlayerChecksPokeball(FSP: FullScreenPokemon, settings: any): void {
+            console.log("c");
             var pokeball: IPokeball = settings.triggerer;
 
             // If Oak is hidden, this cutscene shouldn't be starting (too early)
@@ -7510,9 +7516,9 @@ module FullScreenPokemon {
                 "onShowPlayerMenu": function (): void {
                     var timeout: number = 70;
 
-                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerDown, timeout);
-                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerA, timeout * 2);
-                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerA, timeout * 3);
+                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerDown.bind(FSP.MenuGrapher), timeout);
+                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerA.bind(FSP.MenuGrapher), timeout * 2);
+                    FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerA.bind(FSP.MenuGrapher), timeout * 3);
                 }
             });
         }
