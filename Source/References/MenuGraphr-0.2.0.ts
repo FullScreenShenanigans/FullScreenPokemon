@@ -1270,7 +1270,6 @@ module MenuGraphr {
         changeReplacements(i: string, j: string): void{
             this.replacements[i]=j;
         }
-        
         /**
          * 
          */
