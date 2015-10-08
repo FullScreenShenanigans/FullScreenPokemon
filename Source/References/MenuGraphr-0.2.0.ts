@@ -716,6 +716,9 @@ module MenuGraphr {
                         }
                         break;
 
+                    case "padLeft":
+                        break;
+
                     default:
                         throw new Error("Unknown word command: " + (<any>word).command);
                 }
