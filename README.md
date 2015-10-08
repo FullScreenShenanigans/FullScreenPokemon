@@ -20,7 +20,7 @@ Upload the latest release of FullScreenPokemon (or your built version) to your F
 
 #### Build Process
 
-FullScreenPokemon uses [Grunt](http://gruntjs.com/) to automate building, which requires [Node.js](http://node.js.org). The process is straightforward; see [Grunt's help page](http://gruntjs.com/getting-started).
+FullScreenPokemon uses [Grunt](http://gruntjs.com/) to automate building, which requires [Node.js](https://nodejs.org/en/). The process is straightforward; see [Grunt's help page](http://gruntjs.com/getting-started).
 
 #### Coding
 
