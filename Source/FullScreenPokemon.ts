@@ -6200,6 +6200,13 @@ module FullScreenPokemon {
                     message
                 ],
                 FSP.ScenePlayer.bindRoutine("PlayerNameComplete"));
+<<<<<<< HEAD
+
+            FSP.ItemsHolder.setItem("name", settings.name);
+
+            FSP.MenuGrapher.changeReplacements("PLAYER", settings.name);
+=======
+>>>>>>> refs/remotes/FullScreenShenanigans/master
         }
 
         /**
@@ -6361,6 +6368,13 @@ module FullScreenPokemon {
                 ],
                 FSP.ScenePlayer.bindRoutine("RivalNameComplete"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
+<<<<<<< HEAD
+
+            FSP.ItemsHolder.setItem("nameRival", settings.name);
+
+            FSP.MenuGrapher.changeReplacements("RIVAL", settings.name);
+=======
+>>>>>>> refs/remotes/FullScreenShenanigans/master
         }
 
         /**

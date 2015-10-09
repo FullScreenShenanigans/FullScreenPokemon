@@ -207,6 +207,7 @@ declare module MenuGraphr {
         getMenu(name: string): IMenu;
         getExistingMenu(name: string): IMenu;
         getAliases(): { [i: string]: string };
+        changeReplacements(i: string, j: string): void;
         getReplacements(): { [i: string]: string };
         createMenu(name: string, attributes?: IMenuSchema): IMenu;
         createChild(name: string, schema: IMenuChildSchema): void;
@@ -349,6 +350,8 @@ module MenuGraphr {
         getReplacements(): { [i: string]: string } {
             return this.replacements;
         }
+
+
 
 
         /* Menu positioning
@@ -1255,6 +1258,12 @@ module MenuGraphr {
         /* Interactivity
         */
 
+        /**
+         * 
+         */
+        changeReplacements(i: string, j: string): void{
+            this.replacements[i]=j;
+        }
         /**
          * 
          */
