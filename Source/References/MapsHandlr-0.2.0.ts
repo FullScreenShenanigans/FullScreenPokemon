@@ -33,13 +33,13 @@ declare module MapsHandlr {
          * Function to add an Area's provided "stretches" commands to stretch
          * across an Area.
          */
-        stretchAdd?: (title: string, index: number) => void;
+        stretchAdd?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
 
         /**
          * Function to add an Area provides an "afters" command to add PreThings
          * to the end of an Area.
          */
-        afterAdd?: (title: string, index: number) => void;
+        afterAdd?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
     }
 
     export interface IMapsHandlr {
@@ -56,8 +56,8 @@ declare module MapsHandlr {
         getPreThings(): { [i: string]: MapsCreatr.IPreThing[] };
         setMap(name: string, location?: string): MapsCreatr.IMapsCreatrMap;
         setLocation(name: string): void;
-        setStretches(stretchesRaw: MapsCreatr.IPreThingSettings[]): void;
-        setAfters(aftersRaw: MapsCreatr.IPreThingSettings[]): void;
+        setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void;
+        setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void;
         spawnMap(direction: string, top: number, right: number, bottom: number, left: number): void;
         unspawnMap(direction: string, top: number, right: number, bottom: number, left: number): void;
     }
@@ -147,22 +147,22 @@ module MapsHandlr {
         /**
          * Optionally, PreThing settings to stretch across an Area.
          */
-        private stretches: MapsCreatr.IPreThingSettings[];
+        private stretches: (string | MapsCreatr.IPreThingSettings)[];
 
         /**
          * If stretches exists, a Function to add stretches to an Area.
          */
-        private stretchAdd: (title: string, index: number) => void;
+        private stretchAdd: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
 
         /**
          * Optionally, PreThing settings to place at the end of an Area.
          */
-        private afters: MapsCreatr.IPreThingSettings[];
+        private afters: (string | MapsCreatr.IPreThingSettings)[];
 
         /**
          * If afters exists, a Function to add afters to an Area.
          */
-        private afterAdd: (title: string, index: number) => void;
+        private afterAdd: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
 
         /**
          * @param {IMapsHandlrSettings} settings
@@ -377,7 +377,7 @@ module MapsHandlr {
          * 
          * @param {Object[]} stretchesRaw
          */
-        setStretches(stretchesRaw: MapsCreatr.IPreThingSettings[]): void {
+        setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
             this.stretches = stretchesRaw;
             this.stretches.forEach(this.stretchAdd);
         }
@@ -388,7 +388,7 @@ module MapsHandlr {
          * 
          * @param {Object[]} aftersRaw
          */
-        setAfters(aftersRaw: MapsCreatr.IPreThingSettings[]): void {
+        setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
             this.afters = aftersRaw;
             this.afters.forEach(this.afterAdd);
         }

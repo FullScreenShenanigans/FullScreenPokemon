@@ -1,6 +1,6 @@
 /// <reference path="ItemsHoldr-0.2.1.ts" />
 var StateHoldr;
-(function (_StateHoldr) {
+(function (StateHoldr_1) {
     "use strict";
     var StateHoldr = (function () {
         /**
@@ -174,5 +174,5 @@ var StateHoldr;
         };
         return StateHoldr;
     })();
-    _StateHoldr.StateHoldr = StateHoldr;
+    StateHoldr_1.StateHoldr = StateHoldr;
 })(StateHoldr || (StateHoldr = {}));

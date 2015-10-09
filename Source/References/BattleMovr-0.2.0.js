@@ -6,7 +6,7 @@
 /// <reference path="ObjectMakr-0.2.2.ts" />
 /// <reference path="ScenePlayr-0.2.0.ts" />
 var BattleMovr;
-(function (_BattleMovr) {
+(function (BattleMovr_1) {
     "use strict";
     var BattleMovr = (function () {
         /**
@@ -154,18 +154,18 @@ var BattleMovr;
             });
             this.MenuGrapher.addMenuList("BattleOptions", {
                 "options": [{
-                    "text": this.battleOptionNames.moves,
-                    "callback": this.openMovesMenu
-                }, {
-                    "text": this.battleOptionNames.items,
-                    "callback": this.openItemsMenu
-                }, {
-                    "text": this.battleOptionNames.actors,
-                    "callback": this.openActorsMenu
-                }, {
-                    "text": this.battleOptionNames.exit,
-                    "callback": this.startBattleExit
-                }]
+                        "text": this.battleOptionNames.moves,
+                        "callback": this.openMovesMenu
+                    }, {
+                        "text": this.battleOptionNames.items,
+                        "callback": this.openItemsMenu
+                    }, {
+                        "text": this.battleOptionNames.actors,
+                        "callback": this.openActorsMenu
+                    }, {
+                        "text": this.battleOptionNames.exit,
+                        "callback": this.startBattleExit
+                    }]
             });
             this.MenuGrapher.setActiveMenu("BattleOptions");
         };
@@ -314,5 +314,5 @@ var BattleMovr;
         };
         return BattleMovr;
     })();
-    _BattleMovr.BattleMovr = BattleMovr;
+    BattleMovr_1.BattleMovr = BattleMovr;
 })(BattleMovr || (BattleMovr = {}));

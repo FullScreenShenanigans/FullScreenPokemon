@@ -1,48 +1,6 @@
 /// <reference path="QuadsKeepr-0.2.1.ts" />
 
 declare module ThingHittr {
-    interface IThingHittrSettings {
-        /**
-         * The Function generators used for each group to test if a contained
-         * Thing may collide, keyed by group name.
-         */
-        globalCheckGenerators: IThingGroupCheckGeneratorContainer;
-
-        /**
-         * The Function generators used for hitChecks, as an Object with sub-Objects
-         * for each group, which have sub-Objects for each group they may collide 
-         * with.
-         */
-        hitCheckGenerators: IThingHitCheckGeneratorGroupContainer;
-
-        /**
-         * The Function generators used for collisions, as an Object with 
-         * sub- Objects for each group, which have sub- Objects for each group they
-         * they may collide with.
-         */
-        hitFunctionGenerators: IThingHitFunctionGeneratorGroupContainer;
-
-        /**
-         * The listing of the names of groups that may collide with each other.
-         */
-        groupNames: string[];
-
-        /**
-         * The key under which Things store their number of quadrants (by default, "numquads").
-         */
-        keyNumQuads?: string;
-
-        /**
-         * The key under which Things store their quadrants (by default, "quadrants").
-         */
-        keyQuadrants?: string;
-
-        /**
-         * The key under which Things store which group they fall under (by default, "group").
-         */
-        keyGroupName?: string;
-    }
-
     // Determines whether a group of Things may all have hits checked.
     export interface IThingGroupCheck {
         (): boolean;
@@ -111,6 +69,8 @@ declare module ThingHittr {
     export interface IThingHitsCheckContainer {
         [i: string]: IThingHitsCheck;
     }
+
+    type IThingHitContainer = IThingHitCheckContainer | IThingHitFunctionContainer;
 
     /**
      * Container to hold IThingHitCheck Functions, keyed by their respective group.
@@ -187,6 +147,48 @@ declare module ThingHittr {
      */
     export interface IThingGeneratedListing {
         [i: string]: boolean;
+    }
+
+    interface IThingHittrSettings {
+        /**
+         * The Function generators used for each group to test if a contained
+         * Thing may collide, keyed by group name.
+         */
+        globalCheckGenerators: IThingGroupCheckGeneratorContainer;
+
+        /**
+         * The Function generators used for hitChecks, as an Object with sub-Objects
+         * for each group, which have sub-Objects for each group they may collide 
+         * with.
+         */
+        hitCheckGenerators: IThingHitCheckGeneratorGroupContainer;
+
+        /**
+         * The Function generators used for collisions, as an Object with 
+         * sub- Objects for each group, which have sub- Objects for each group they
+         * they may collide with.
+         */
+        hitFunctionGenerators: IThingHitFunctionGeneratorGroupContainer;
+
+        /**
+         * The listing of the names of groups that may collide with each other.
+         */
+        groupNames: string[];
+
+        /**
+         * The key under which Things store their number of quadrants (by default, "numquads").
+         */
+        keyNumQuads?: string;
+
+        /**
+         * The key under which Things store their quadrants (by default, "quadrants").
+         */
+        keyQuadrants?: string;
+
+        /**
+         * The key under which Things store which group they fall under (by default, "group").
+         */
+        keyGroupName?: string;
     }
 
     export interface IThingHittr {
@@ -470,8 +472,7 @@ module ThingHittr {
          * @return {Object<Function>}
          */
         private cacheFunctionGroup(
-            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer
-            ): IThingHitCheckContainer | IThingHitFunctionContainer {
+            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer  {
             var output: IThingHitCheckContainer | IThingHitFunctionContainer = {},
                 i: string;
 

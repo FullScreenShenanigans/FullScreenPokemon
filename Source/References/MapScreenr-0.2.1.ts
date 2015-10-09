@@ -20,6 +20,11 @@ declare module MapScreenr {
          * Arguments to be passed to variable Functions.
          */
         variableArgs?: any[];
+
+        /**
+         * Any other arguments of any type may be added to the MapScreenr.
+         */
+        [i: string]: any;
     }
 
     export interface IMapScreenr {
@@ -62,32 +67,32 @@ module MapScreenr {
          * Arguments to be passed into variable computation Functions.
          */
         public variableArgs: any[];
-        
+
         /**
          * Top of the MapScreenr's bounding box.
          */
         public top: number;
-        
+
         /**
          * Right of the MapScreenr's bounding box.
          */
         public right: number;
-        
+
         /**
          * Bottom of the MapScreenr's bounding box.
          */
         public bottom: number;
-        
+
         /**
          * Left of the MapScreenr's bounding box.
          */
         public left: number;
-        
+
         /**
          * Horizontal midpoint of the MapScreenr's bounding box.
          */
         public middleX: number;
-        
+
         /**
          * Vertical midpoint of the MapScreenr's bounding box.
          */
@@ -97,7 +102,7 @@ module MapScreenr {
          * Width of the MapScreenr's bounding box.
          */
         public width: number;
-        
+
         /**
          * Height of the MapScreenr's bounding box.
          */

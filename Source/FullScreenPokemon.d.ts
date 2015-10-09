@@ -152,12 +152,19 @@ declare module FullScreenPokemon {
         giftAfterBattleAmount?: number;
         keptThings?: (string | IPlayer)[];
         noBlackout?: boolean;
+        opponent?: IBattleThingInfo;
+        player?: IBattleThingInfo;
         textAfterBattle?: string | string[];
+        textDefeat?: string | string[];
         textOpponentSendOut?: string | string[];
         textPlayerSendOut?: string | string[];
         textStart?: string[];
         textVictory?: string | string[];
         theme?: string;
+    }
+
+    export interface IBattleThingInfo extends BattleMovr.IBattleThingInfo {
+        reward?: number;
     }
 
     export interface IDialog {
@@ -296,6 +303,7 @@ declare module FullScreenPokemon {
 
     export interface IMenuTriggerer extends IDetector {
         menu?: string;
+        menuAttributes?: any;
         pushDirection?: Direction;
         pushSteps?: any[];
     }
@@ -326,7 +334,7 @@ declare module FullScreenPokemon {
         routine?: string;
     }
 
-    export interface IMenu extends MenuGraphr.IMenu, IThing {
+    export interface IMenu extends MenuGraphr.IMenuBase, IThing {
         children: IThing[];
         settings?: any;
     }
@@ -338,13 +346,14 @@ declare module FullScreenPokemon {
     }
 
     export interface IKeyboardKey extends IThing {
-        text: string;
+        text: [string];
+        value: string;
     }
 
     export interface IKeyboardResultsMenu extends IMenu {
         blinker: IThing;
-        completeValue: string;
-        displayedValue: string;
+        completeValue: string[];
+        displayedValue: string[];
         selectedChild: number;
     }
 

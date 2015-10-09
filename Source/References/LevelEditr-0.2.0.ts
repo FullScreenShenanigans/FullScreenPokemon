@@ -75,6 +75,9 @@ declare module LevelEditr {
 
     export interface IMapsCreatrMapRaw extends MapsCreatr.IMapsCreatrMapRaw {
         time: number;
+        areas: {
+            [i: string]: IMapsCreatrAreaRaw;
+        }
     }
 
     export interface IMapsCreatrAreaRaw extends MapsCreatr.IMapsCreatrAreaRaw {

@@ -99,6 +99,10 @@ declare module DeviceLayr {
         activateGamepadTriggers(gamepad: IGamepad): void;
         activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean;
         activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean);
+        clearAllGamepadTriggers(): void;
+        clearGamepadTriggers(gamepad: IGamepad): void;
+        clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void;
+        clearButtonTrigger(gamepad: IGamepad, name: string): void;
     }
 }
 
@@ -357,7 +361,7 @@ module DeviceLayr {
          * event if one is found.
          * 
          * @param {Gamepad} gamepad
-         * @param {String} name   The name of the axis, such as "a" or "left".
+         * @param {String} name   The name of the button, such as "a" or "left".
          * @param {Boolean} status   Whether the button is activated (pressed).
          * @return {Boolean} Whether the trigger was activated.
          */
@@ -375,6 +379,57 @@ module DeviceLayr {
             this.InputWritr.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
 
             return true;
+        }
+
+        /**
+         * Clears the statuses of all axes and buttons on all known gamepads.
+         */
+        clearAllGamepadTriggers(): void {
+            for (var i: number = 0; i < this.gamepads.length; i += 1) {
+                this.clearGamepadTriggers(this.gamepads[i]);
+            }
+        }
+
+        /**
+         * Clears the status of all axes and buttons on a gamepad.
+         * 
+         * @param {Gamepad} gamepad
+         */
+        clearGamepadTriggers(gamepad: IGamepad): void {
+            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"],
+                i: number;
+
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                this.clearAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis);
+            }
+
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                this.clearButtonTrigger(gamepad, mapping.buttons[i]);
+            }
+        }
+
+        /**
+         * Sets the status of an axis to neutral.
+         * 
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, typically "x" or "y".
+         */
+        clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void {
+            var listing: IJoystickTriggerAxis = (<IJoystickListing>this.triggers[name])[axis];
+
+            listing.status = AxisStatus.neutral;
+        }
+
+        /**
+         * Sets the status of a button to off.
+         * 
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the button, such as "a" or "left".
+         */
+        clearButtonTrigger(gamepad: IGamepad, name: string): void {
+            var listing: IButtonListing = <IButtonListing>this.triggers[name];
+
+            listing.status = false;
         }
 
 
