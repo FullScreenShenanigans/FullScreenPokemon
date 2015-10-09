@@ -2,7 +2,10 @@ Distribution
 Distribution/**
 Source/**/*.js
 !Source/index.js
-!Source/References/GameStartr.js
+!Source/References/BattleMovr-*.*.*.js
+!Source/References/GameStartr-*.*.*.js
+!Source/References/MenuGraphr-*.*.*.js
+!Source/References/StateHoldr-*.*.*.js
 Source/**/*.md
 Source/**/*.txt
 node_modules/
