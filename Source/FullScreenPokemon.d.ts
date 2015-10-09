@@ -303,6 +303,7 @@ declare module FullScreenPokemon {
 
     export interface IMenuTriggerer extends IDetector {
         menu?: string;
+        menuAttributes?: any;
         pushDirection?: Direction;
         pushSteps?: any[];
     }

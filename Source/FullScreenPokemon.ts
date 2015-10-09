@@ -2736,6 +2736,10 @@ module FullScreenPokemon {
                 thing.FSP.killNormal(other);
             }
 
+            if (!thing.FSP.MenuGrapher.getMenu(name)) {
+                thing.FSP.MenuGrapher.createMenu(name, other.menuAttributes);
+            }
+
             if (dialog) {
                 thing.FSP.MenuGrapher.addMenuDialog(
                     name,
