@@ -509,7 +509,7 @@ module TimeHandlr {
             cycle = thing[this.keyCycles][name] = this.setClassCycle(
                 thing,
                 settings,
-                isTimingFunction ? timing : 0 /*isTimingFunction ? 0 : timing*/
+                isTimingFunction ? 0 : timing
                 );
 
             // If there is a timing function, make it the count changer
