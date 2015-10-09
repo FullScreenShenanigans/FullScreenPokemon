@@ -6700,7 +6700,6 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalProtests(FSP: FullScreenPokemon, settings: any): void {
-            console.log("a");
             var timeout: number = 21;
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
@@ -6729,7 +6728,6 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroOakRespondsToProtest(FSP: FullScreenPokemon, settings: any): void {
-            console.log("b");
             var blocker: IThing = FSP.getThingById("OakBlocker"),
                 timeout: number = 21;
 
@@ -6766,7 +6764,6 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroPokemonChoicePlayerChecksPokeball(FSP: FullScreenPokemon, settings: any): void {
-            console.log("c");
             var pokeball: IPokeball = settings.triggerer;
 
             // If Oak is hidden, this cutscene shouldn't be starting (too early)
