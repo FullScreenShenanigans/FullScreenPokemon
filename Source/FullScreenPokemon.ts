@@ -3814,9 +3814,9 @@ module FullScreenPokemon {
                 animation: string = FSP.NumberMaker.randomArrayMember(animations),
                 player: any = battleInfo.player;
 
-            // if (!player) {
-            //     battleInfo.player = player = {};
-            // }
+            if (!player) {
+                battleInfo.player = player = <any>{};
+            }
 
             player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
             player.sprite = player.sprite || "PlayerBack";
