@@ -3825,7 +3825,7 @@ module FullScreenPokemon {
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
 
-            FSP.AudioPlayer.play(battleInfo.theme || "Trainer Battle");
+            FSP.AudioPlayer.play(battleInfo.theme || "Battle Trainer");
 
             FSP["cutsceneBattleTransition" + animation](FSP, {
                 "callback": FSP.BattleMover.startBattle.bind(
@@ -7124,7 +7124,6 @@ module FullScreenPokemon {
                         ].join(" ")
                     ],
                     // "animation": "LineSpiral",
-                    "theme": "Trainer Battle",
                     "noBlackout": true,
                     "keptThings": ["player", "Rival"],
                     "nextCutscene": "OakIntroRivalLeaves"
