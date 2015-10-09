@@ -6954,7 +6954,7 @@ module FullScreenPokemon {
                 rival,
                 2,
                 [
-                    2, "right", steps, "up", 1,
+                    2, "right", steps, "top", 1,
                     FSP.ScenePlayer.bindRoutine("RivalTakesPokemon")
                 ]);
         }
