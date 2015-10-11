@@ -253,6 +253,7 @@ declare module MenuGraphr {
         registerA(): void;
         registerB(): void;
         registerStart(): void;
+        combineCharactersIntoLine(...strings: (string | string[])[]): string[][];
     }
 }
 
@@ -263,7 +264,7 @@ module MenuGraphr {
     /**
      * 
      */
-    export class MenuGraphr {
+    export class MenuGraphr implements IMenuGraphr {
         private GameStarter: IGameStartr;
 
         private menus: IMenusContainer;
@@ -1438,6 +1439,71 @@ module MenuGraphr {
                 // } else if (activeMenu.callback) {
                 //     activeMenu.callback(activeMenu.name);
             }
+        }
+
+
+        /* Public utilities
+        */
+
+        /**
+         * Combines any number of Strings or String Arrays into a single String[][] that
+         * can be used as a single line of dialog.
+         * 
+         * @param strings   Any number of Strings or String Arrays to combine.
+         * @return An array containing words to be put in the line.
+         * 
+         * @example Creating a line out of oddly separated words.
+         * MenuGrapher.combineCharactersIntoLine("abc", ["d", " ", "e", "MaleSymbol", "!"]);
+         * // [["a", "b", "c", "d"], ["e", "MaleSymbol", "!"]]
+         * 
+         * @example Setting a line of dialog using a few oddly separated words.
+         * var prefix = "I know what ";
+         * var word = ["y", "o", "u", " ", "a", "r", "e", "."];
+         * var suffix = "MaleSymbol";
+         * var dialog = [MenuGrapher.combineCharactersIntoLine(prefix, word, suffix)];
+         * MenuGrapher.createMenu("GeneralText");
+         * MenuGrapher.addMenuDialog("GeneralText", dialog);
+         * MenuGrapher.setActiveMenu("GeneralText");
+         */
+        combineCharactersIntoLine(...strings: (string | string[])[]): string[][] {
+            var characters: string[] = [],
+                line: string[][] = [],
+                string: string | string[],
+                i: number;
+
+            // Collect all the unique characters from the input strings
+            for (i = 0; i < strings.length; i += 1) {
+                string = strings[i];
+
+                switch (string.constructor) {
+                    case String:
+                        characters.push(...(<string>string).split(""));
+                        break;
+
+                    case Array:
+                        characters.push(...(<string[]>string));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            // Combine the characters into words to be added to the line
+            i = 0;
+            while (i < characters.length) {
+                string = [];
+
+                while (i < characters.length && /\S/g.test(characters[i])) {
+                    (<string[]>string).push(characters[i]);
+                    i += 1;
+                }
+
+                line.push(<string[]>string);
+                i += 1;
+            }
+
+            return line;
         }
 
 
