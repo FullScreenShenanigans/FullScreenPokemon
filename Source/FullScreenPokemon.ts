@@ -3339,7 +3339,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsTitle", pokemon.nickname);
             FSP.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsLevel", pokemon.level);
+                "PokemonMenuStatsLevel", pokemon.level.toString());
             FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
             FSP.MenuGrapher.addMenuDialog(
@@ -3455,7 +3455,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "PokedexListingHeightInches", inches);
             FSP.MenuGrapher.addMenuDialog(
-                "PokedexListingWeight", pokemon.weight);
+                "PokedexListingWeight", pokemon.weight.toString());
             FSP.MenuGrapher.addMenuDialog(
                 "PokedexListingNumber",
                 FSP.makeDigit(pokemon.index, 3, "0"));
@@ -3927,7 +3927,7 @@ module FullScreenPokemon {
                 text.reverse();
             }
 
-            FSP.MenuGrapher.addMenuDialog(menu.name, [[text]]);
+            FSP.MenuGrapher.addMenuDialog(menu.name, [text]);
         }
 
         /**
@@ -4124,7 +4124,9 @@ module FullScreenPokemon {
             });
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
-                textStart[0] + battleInfo.opponent.name.toUpperCase() + textStart[1],
+                [
+                    textStart[0], battleInfo.opponent.name, textStart[1]
+                ],
                 callback
             );
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -4167,11 +4169,11 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    battleInfo.textOpponentSendOut[0]
-                    + battleInfo.opponent.name
-                    + battleInfo.textOpponentSendOut[1]
-                    + battleInfo.opponent.actors[0].nickname
-                    + battleInfo.textOpponentSendOut[2]
+                    battleInfo.textOpponentSendOut[0],
+                    battleInfo.opponent.name,
+                    battleInfo.textOpponentSendOut[1],
+                    battleInfo.opponent.actors[0].nickname,
+                    battleInfo.textOpponentSendOut[2]
                 ]
             );
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -4663,7 +4665,10 @@ module FullScreenPokemon {
          */
         cutsceneBattleOpponentSwitchesPokemon(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
-                opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
+                opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent,
+                nicknameExclaim: string[] = opponent.selectedActor.nickname.slice();
+
+            nicknameExclaim.push("!");
 
             FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
             opponent.selectedIndex += 1;
@@ -4675,7 +4680,9 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    opponent.name + " is \n about to use " + opponent.selectedActor.nickname + "!",
+                    opponent.name,
+                    "is about to use",
+                    nicknameExclaim,
                     "Will %%%%%%%PLAYER%%%%%%% change %%%%%%%POKEMON%%%%%%%?"
                 ],
                 function (): void {
@@ -4845,7 +4852,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "%%%%%%%PLAYER%%%%%%% defeated " + opponent.name + "!"
+                    "%%%%%%%PLAYER%%%%%%% defeated ", opponent.name, "!"
                 ],
                 FSP.ScenePlayer.bindRoutine("VictorySpeech")
             );
@@ -5762,7 +5769,7 @@ module FullScreenPokemon {
                         }
                     }, {
                         "type": "text",
-                        "words": [text],
+                        "words": [[text]],
                         "position": {
                             "offset": {
                                 "left": 8,
@@ -6196,9 +6203,7 @@ module FullScreenPokemon {
             });
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
-                [
-                    message
-                ],
+                message,
                 FSP.ScenePlayer.bindRoutine("PlayerNameComplete"));
         }
 
@@ -6356,9 +6361,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
-                [
-                    message
-                ],
+                message,
                 FSP.ScenePlayer.bindRoutine("RivalNameComplete"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
