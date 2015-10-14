@@ -618,19 +618,16 @@ module MenuGraphr {
             this.addMenuText(
                 name,
                 dialog,
-                function (): boolean {
-                    if (dialog.length === 1) {
-                        if (this.menus[name].deleteOnFinish) {
-                            this.deleteMenu(name);
-                        }
-                        if (onCompletion) {
-                            return onCompletion();
-                        }
-                        return true;
+                function () {
+                    if (this.menus[name].deleteOnFinish) {
+                        this.deleteMenu(name);
+                    }
+
+                    if (onCompletion) {
+                        onCompletion();
                     }
 
                     this.deleteMenuChildren(name);
-                    return false;
                 }.bind(this));
         }
 
@@ -682,8 +679,6 @@ module MenuGraphr {
                 title: string | IMenuWordFiltered,
                 character: IText,
                 j: number;
-
-            console.log("word", words[i]);
 
             // Command objects must be parsed here in case they modify the x/y position
             if ((<IMenuWordCommand>words[i]).command) {

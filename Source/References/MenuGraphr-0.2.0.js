@@ -262,17 +262,13 @@ var MenuGraphr;
         MenuGraphr.prototype.addMenuDialog = function (name, dialogRaw, onCompletion) {
             var dialog = this.parseRawDialog(dialogRaw);
             this.addMenuText(name, dialog, function () {
-                if (dialog.length === 1) {
-                    if (this.menus[name].deleteOnFinish) {
-                        this.deleteMenu(name);
-                    }
-                    if (onCompletion) {
-                        return onCompletion();
-                    }
-                    return true;
+                if (this.menus[name].deleteOnFinish) {
+                    this.deleteMenu(name);
+                }
+                if (onCompletion) {
+                    onCompletion();
                 }
                 this.deleteMenuChildren(name);
-                return false;
             }.bind(this));
         };
         /**
@@ -303,7 +299,6 @@ var MenuGraphr;
          */
         MenuGraphr.prototype.addMenuWord = function (name, words, i, x, y, onCompletion) {
             var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textHeight, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, title, character, j;
-            console.log("word", words[i]);
             // Command objects must be parsed here in case they modify the x/y position
             if (words[i].command) {
                 command = words[i];
