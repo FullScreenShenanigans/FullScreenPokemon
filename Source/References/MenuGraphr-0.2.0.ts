@@ -613,12 +613,17 @@ module MenuGraphr {
          * 
          */
         addMenuDialog(name: string, dialogRaw: string | (string | string[] | IMenuWordCommand)[], onCompletion?: () => any): void {
-            var dialog: (string[] | IMenuWordCommand)[] = this.parseRawDialog(dialogRaw);
+            var dialog: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialogRaw),
+                currentLine: number = 0,
+                callback: any = (function () {
+                    this.deleteMenuChildren(name);
 
-            this.addMenuText(
-                name,
-                dialog,
-                function () {
+                    if (dialog.length > currentLine) {
+                        currentLine += 1;
+                        this.addMenuText(name, dialog[currentLine - 1], callback);
+                        return;
+                    }
+
                     if (this.menus[name].deleteOnFinish) {
                         this.deleteMenu(name);
                     }
@@ -626,9 +631,9 @@ module MenuGraphr {
                     if (onCompletion) {
                         onCompletion();
                     }
-
-                    this.deleteMenuChildren(name);
                 }.bind(this));
+
+            callback();
         }
 
         /**
@@ -704,17 +709,20 @@ module MenuGraphr {
 
             // For each character in the word, schedule it appearing in the menu
             for (j = 0; j < word.length; j += 1) {
-                // Skip added whitespace (addMenuDialog filters it out, but this is a public function)
-                if (/\s/.test(word[j])) {
-                    // Move forward if the x-position isn't at the menu's starting x
-                    if (x !== menu.textX) {
-                        x += textWidth * textWidthMultiplier;
-                    }
+                // For non-whitespace characters, add them and move to the right
+                if (/\S/.test(word[j])) {
+                    character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
+                    x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
                     continue;
                 }
 
-                character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
-                x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
+                // Endlines skip a line; other whitespace moves right if not at the starting x
+                if (word[j] === "\n") {
+                    x = menu.textX;
+                    y += textPaddingY;
+                } else if (x !== menu.textX) {
+                    x += textWidth * textWidthMultiplier;
+                }
             }
 
             // If this is the last word in the the line (words), mark progress as done
@@ -1489,12 +1497,13 @@ module MenuGraphr {
         /**
          *
          */
-        private parseRawDialog(dialogRaw: string | (string | string[] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
+        private parseRawDialog(dialogRaw: string | (string | string[] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[][] {
+            // A raw String becomes a single line of dialog
             if (dialogRaw.constructor === String) {
-                return this.parseRawDialogString(<string>dialogRaw);
+                return [this.parseRawDialogString(<string>dialogRaw)];
             }
 
-            var output: (string[] | IMenuWordCommand)[] = [],
+            var output: (string[] | IMenuWordCommand)[][] = [],
                 component: string | string[] | IMenuWordCommand,
                 i: number;
 
@@ -1502,11 +1511,10 @@ module MenuGraphr {
                 component = dialogRaw[i];
 
                 if (component.constructor === String) {
-                    output.push(this.filterWord(<string>component));
-                    continue;
+                    output.push([this.filterWord(<string>component)]);
+                } else {
+                    output.push(this.filterArray(<string[]>component));
                 }
-
-                output.push(<any[]>component);
             }
 
             return output;
@@ -1577,6 +1585,20 @@ module MenuGraphr {
             }
 
             return word.split("");
+        }
+
+        /**
+         *
+         */
+        private filterArray(words: string[]): string[][] {
+            var output: string[][] = [],
+                i: number;
+
+            for (i = 0; i < words.length; i += 1) {
+                output.push(...this.parseRawDialogString(words[i]));
+            }
+
+            return output;
         }
 
         /**

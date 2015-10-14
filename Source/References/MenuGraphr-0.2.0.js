@@ -260,16 +260,21 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.addMenuDialog = function (name, dialogRaw, onCompletion) {
-            var dialog = this.parseRawDialog(dialogRaw);
-            this.addMenuText(name, dialog, function () {
+            var dialog = this.parseRawDialog(dialogRaw), currentLine = 0, callback = (function () {
+                this.deleteMenuChildren(name);
+                if (dialog.length > currentLine) {
+                    currentLine += 1;
+                    this.addMenuText(name, dialog[currentLine - 1], callback);
+                    return;
+                }
                 if (this.menus[name].deleteOnFinish) {
                     this.deleteMenu(name);
                 }
                 if (onCompletion) {
                     onCompletion();
                 }
-                this.deleteMenuChildren(name);
             }.bind(this));
+            callback();
         };
         /**
          *
@@ -321,16 +326,20 @@ var MenuGraphr;
             textWidthMultiplier = menu.textWidthMultiplier || 1;
             // For each character in the word, schedule it appearing in the menu
             for (j = 0; j < word.length; j += 1) {
-                // Skip added whitespace (addMenuDialog filters it out, but this is a public function)
-                if (/\s/.test(word[j])) {
-                    // Move forward if the x-position isn't at the menu's starting x
-                    if (x !== menu.textX) {
-                        x += textWidth * textWidthMultiplier;
-                    }
+                // For non-whitespace characters, add them and move to the right
+                if (/\S/.test(word[j])) {
+                    character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
+                    x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
                     continue;
                 }
-                character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
-                x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
+                // Endlines skip a line; other whitespace moves right if not at the starting x
+                if (word[j] === "\n") {
+                    x = menu.textX;
+                    y += textPaddingY;
+                }
+                else if (x !== menu.textX) {
+                    x += textWidth * textWidthMultiplier;
+                }
             }
             // If this is the last word in the the line (words), mark progress as done
             if (i === words.length - 1) {
@@ -898,17 +907,19 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.parseRawDialog = function (dialogRaw) {
+            // A raw String becomes a single line of dialog
             if (dialogRaw.constructor === String) {
-                return this.parseRawDialogString(dialogRaw);
+                return [this.parseRawDialogString(dialogRaw)];
             }
             var output = [], component, i;
             for (i = 0; i < dialogRaw.length; i += 1) {
                 component = dialogRaw[i];
                 if (component.constructor === String) {
-                    output.push(this.filterWord(component));
-                    continue;
+                    output.push([this.filterWord(component)]);
                 }
-                output.push(component);
+                else {
+                    output.push(this.filterArray(component));
+                }
             }
             return output;
         };
@@ -960,6 +971,16 @@ var MenuGraphr;
                 return output;
             }
             return word.split("");
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterArray = function (words) {
+            var output = [], i;
+            for (i = 0; i < words.length; i += 1) {
+                output.push.apply(output, this.parseRawDialogString(words[i]));
+            }
+            return output;
         };
         /**
          *
