@@ -253,7 +253,6 @@ declare module MenuGraphr {
         registerA(): void;
         registerB(): void;
         registerStart(): void;
-        combineCharactersIntoLine(...strings: (string | string[])[]): string[][];
     }
 }
 
@@ -615,22 +614,27 @@ module MenuGraphr {
         addMenuDialog(name: string, dialogRaw: string | (string | string[] | IMenuWordCommand)[], onCompletion?: () => any): void {
             var dialog: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialogRaw),
                 currentLine: number = 0,
-                callback: any = (function () {
-                    this.deleteMenuChildren(name);
-
-                    if (dialog.length > currentLine) {
-                        currentLine += 1;
-                        this.addMenuText(name, dialog[currentLine - 1], callback);
+                callback: any = (function (): void {
+                    // If all dialog has been exhausted, delete the menu and finish
+                    if (currentLine >= dialog.length) {
+                        if (this.menus[name].deleteOnFinish) {
+                            this.deleteMenu(name);
+                        }
+                        if (onCompletion) {
+                            onCompletion();
+                        }
                         return;
                     }
 
-                    if (this.menus[name].deleteOnFinish) {
-                        this.deleteMenu(name);
-                    }
+                    currentLine += 1;
 
-                    if (onCompletion) {
-                        onCompletion();
-                    }
+                    // Delete any previous texts. This is only done if continuing
+                    // so that when the dialog is finished, the last text remains
+                    this.deleteMenuChildren(name);
+
+                    // This continues the dialog with the next iteration (word)
+                    this.addMenuText(name, dialog[currentLine - 1], callback);
+                    return;
                 }.bind(this));
 
             callback();
@@ -1402,71 +1406,6 @@ module MenuGraphr {
         }
 
 
-        /* Public utilities
-        */
-
-        /**
-         * Combines any number of Strings or String Arrays into a single String[][] that
-         * can be used as a single line of dialog.
-         * 
-         * @param strings   Any number of Strings or String Arrays to combine.
-         * @return An array containing words to be put in the line.
-         * 
-         * @example Creating a line out of oddly separated words.
-         * MenuGrapher.combineCharactersIntoLine("abc", ["d", " ", "e", "MaleSymbol", "!"]);
-         * // [["a", "b", "c", "d"], ["e", "MaleSymbol", "!"]]
-         * 
-         * @example Setting a line of dialog using a few oddly separated words.
-         * var prefix = "I know what ";
-         * var word = ["y", "o", "u", " ", "a", "r", "e", "."];
-         * var suffix = "MaleSymbol";
-         * var dialog = [MenuGrapher.combineCharactersIntoLine(prefix, word, suffix)];
-         * MenuGrapher.createMenu("GeneralText");
-         * MenuGrapher.addMenuDialog("GeneralText", dialog);
-         * MenuGrapher.setActiveMenu("GeneralText");
-         */
-        combineCharactersIntoLine(...strings: (string | string[])[]): string[][] {
-            var characters: string[] = [],
-                line: string[][] = [],
-                string: string | string[],
-                i: number;
-
-            // Collect all the characters from the input strings
-            for (i = 0; i < strings.length; i += 1) {
-                string = strings[i];
-
-                switch (string.constructor) {
-                    case String:
-                        characters.push(...(<string>string).split(""));
-                        break;
-
-                    case Array:
-                        characters.push(...(<string[]>string));
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            // Combine the characters into words to be added to the line
-            i = 0;
-            while (i < characters.length) {
-                string = [];
-
-                while (i < characters.length && /\S/g.test(characters[i])) {
-                    (<string[]>string).push(characters[i]);
-                    i += 1;
-                }
-
-                line.push(<string[]>string);
-                i += 1;
-            }
-
-            return line;
-        }
-
-
         /* Utilities
         */
 
@@ -1511,7 +1450,7 @@ module MenuGraphr {
                 component = dialogRaw[i];
 
                 if (component.constructor === String) {
-                    output.push([this.filterWord(<string>component)]);
+                    output.push(this.parseRawDialogString(<string>component));
                 } else {
                     output.push(this.filterArray(<string[]>component));
                 }
