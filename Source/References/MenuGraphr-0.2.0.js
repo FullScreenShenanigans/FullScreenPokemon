@@ -314,10 +314,7 @@ var MenuGraphr;
             // Command objects must be parsed here in case they modify the x/y position
             if (words[i].command) {
                 command = words[i];
-                word = this.parseWordCommand(menu, command)
-                    .map(function (characters) {
-                    return characters.join("");
-                });
+                word = this.parseWordCommand(menu, command);
                 if (command.command === "position") {
                     x += command.x || 0;
                     y += command.y || 0;
@@ -1012,13 +1009,13 @@ var MenuGraphr;
                 default:
                     throw new Error("Unknown word command: " + word.command);
             }
-            return [word.word.split("")];
+            return word.word.split("");
         };
         /**
          *
          */
         MenuGraphr.prototype.parseWordCommandPadLeft = function (command) {
-            var filtered = this.filterText(command.word), length;
+            var filtered = this.filterWord(command.word), length;
             // Length may be a String (for its length) or a direct number
             switch (command.length.constructor) {
                 case String:
@@ -1037,19 +1034,27 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.getReplacement = function (key) {
-            var value = this.replacements[key];
-            if (typeof value === "undefined") {
-                return value;
+            var replacement = this.replacements[key], value;
+            if (typeof replacement === "undefined") {
+                return [""];
             }
             // if (this.replacementStatistics && this.replacementStatistics[value]) {
             //     return this.replacements[value](this.GameStarter);
             // }
             if (this.replaceFromItemsHolder) {
-                if (this.GameStarter.ItemsHolder.hasKey(value)) {
-                    return this.GameStarter.ItemsHolder.getItem(value);
+                if (this.GameStarter.ItemsHolder.hasKey(replacement)) {
+                    value = this.GameStarter.ItemsHolder.getItem(replacement);
                 }
             }
-            return value;
+            if (!value) {
+                return replacement.split("");
+            }
+            else if (value.constructor === String) {
+                return value.split("");
+            }
+            else {
+                return value;
+            }
         };
         /**
          * Creates a new String equivalent to an old String repeated any number of

@@ -695,10 +695,7 @@ module MenuGraphr {
             // Command objects must be parsed here in case they modify the x/y position
             if ((<IMenuWordCommand>words[i]).command) {
                 command = <IMenuWordCommand>words[i];
-                word = this.parseWordCommand(menu, <IMenuWordCommand>command)
-                    .map(function (characters: string[]): string {
-                        return characters.join("");
-                    });
+                word = this.parseWordCommand(menu, <IMenuWordCommand>command);
 
                 if ((<IMenuWordCommand>command).command === "position") {
                     x += (<IMenuWordPosition>command).x || 0;
@@ -1624,7 +1621,7 @@ module MenuGraphr {
         /**
          * 
          */
-        private parseWordCommand(menu: IMenu, word: IMenuWordCommand): string[][] {
+        private parseWordCommand(menu: IMenu, word: IMenuWordCommand): string[] {
             switch (word.command) {
                 case "attribute":
                     menu[word.attribute + "Old"] = menu[word.attribute];
@@ -1649,14 +1646,14 @@ module MenuGraphr {
                     throw new Error("Unknown word command: " + (<any>word).command);
             }
 
-            return [word.word.split("")];
+            return word.word.split("");
         }
 
         /**
          * 
          */
-        private parseWordCommandPadLeft(command: IMenuWordCommand): string[][] {
-            var filtered: string[][] = this.filterText(command.word),
+        private parseWordCommandPadLeft(command: IMenuWordCommand): string[] {
+            var filtered: string[] = this.filterWord(command.word),
                 length: number;
 
             // Length may be a String (for its length) or a direct number
@@ -1674,17 +1671,19 @@ module MenuGraphr {
             }
 
             filtered.unshift.apply(filtered, this.stringOf(" ", length).split(""));
+
             return filtered;
         }
 
         /**
          * 
          */
-        private getReplacement(key: string): string | string[] {
-            var value: any = this.replacements[key];
+        private getReplacement(key: string): string[] {
+            var replacement: string = this.replacements[key],
+                value: string | string[];
 
-            if (typeof value === "undefined") {
-                return value;
+            if (typeof replacement === "undefined") {
+                return [""];
             }
 
             // if (this.replacementStatistics && this.replacementStatistics[value]) {
@@ -1692,12 +1691,18 @@ module MenuGraphr {
             // }
 
             if (this.replaceFromItemsHolder) {
-                if (this.GameStarter.ItemsHolder.hasKey(value)) {
-                    return this.GameStarter.ItemsHolder.getItem(value);
+                if (this.GameStarter.ItemsHolder.hasKey(replacement)) {
+                    value = this.GameStarter.ItemsHolder.getItem(replacement);
                 }
             }
 
-            return value;
+            if (!value) {
+                return replacement.split("");
+            } else if (value.constructor === String) {
+                return (<string>value).split("");
+            } else {
+                return <string[]>value;
+            }
         }
 
         /**
