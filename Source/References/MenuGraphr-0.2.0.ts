@@ -158,7 +158,6 @@ declare module MenuGraphr {
 
     export interface IMenuWordFiltered {
         length?: number | string;
-        skipSpacing?: boolean;
         word?: string;
     }
 
@@ -167,6 +166,10 @@ declare module MenuGraphr {
         attribute: string;
         command: string;
         value: any;
+    }
+
+    export interface IMenuWordPadLeftCommand extends IMenuWordCommand {
+        alignRight?: boolean;
     }
 
     export interface IMenuWordReset extends IMenuWordFiltered {
@@ -695,7 +698,7 @@ module MenuGraphr {
             // Command objects must be parsed here in case they modify the x/y position
             if ((<IMenuWordCommand>words[i]).command) {
                 command = <IMenuWordCommand>words[i];
-                word = this.parseWordCommand(menu, <IMenuWordCommand>command);
+                word = this.parseWordCommand(<IMenuWordCommand>command, menu);
 
                 if ((<IMenuWordCommand>command).command === "position") {
                     x += (<IMenuWordPosition>command).x || 0;
@@ -720,11 +723,12 @@ module MenuGraphr {
                     continue;
                 }
 
-                // Endlines skip a line; other whitespace moves right if not at the starting x
+                // Endlines skip a line; general whitespace moves to the right
+                // (" " spaces at the start do not move to the right)
                 if (word[j] === "\n") {
                     x = menu.textX;
                     y += textPaddingY;
-                } else if (x !== menu.textX) {
+                } else if (word[j] !== " " || x !== menu.textX) {
                     x += textWidth * textWidthMultiplier;
                 }
             }
@@ -1621,7 +1625,12 @@ module MenuGraphr {
         /**
          * 
          */
-        private parseWordCommand(menu: IMenu, word: IMenuWordCommand): string[] {
+        private parseWordCommand(word: IMenuWordCommand, menu?: IMenu): string[] {
+            // If no menu is provided, this is from a simulation; pretend there is a menu
+            if (!menu) {
+                menu = <any>{};
+            }
+
             switch (word.command) {
                 case "attribute":
                     menu[word.attribute + "Old"] = menu[word.attribute];
@@ -1636,7 +1645,7 @@ module MenuGraphr {
                     break;
 
                 case "padLeft":
-                    return this.parseWordCommandPadLeft(word);
+                    return this.parseWordCommandPadLeft(<IMenuWordPadLeftCommand>word);
 
                 // Position is handled directly in addMenuWord
                 case "position":
@@ -1652,7 +1661,7 @@ module MenuGraphr {
         /**
          * 
          */
-        private parseWordCommandPadLeft(command: IMenuWordCommand): string[] {
+        private parseWordCommandPadLeft(command: IMenuWordPadLeftCommand): string[] {
             var filtered: string[] = this.filterWord(command.word),
                 length: number;
 
@@ -1670,7 +1679,13 @@ module MenuGraphr {
                     throw new Error("Unknown padLeft command: " + command);
             }
 
-            filtered.unshift.apply(filtered, this.stringOf(" ", length).split(""));
+            // Right-aligned commands reduce the amount of spacing by the length of the word
+            if (command.alignRight) {
+                length = Math.max(0, length - filtered.length);
+            }
+
+            // Tabs are considered to be a single space, so they're added to the left
+            filtered.unshift.apply(filtered, this.stringOf("\t", length).split(""));
 
             return filtered;
         }
@@ -1736,14 +1751,16 @@ module MenuGraphr {
          *          used in dialogs that react to box size. This may be wrong.
          */
         private computeFutureWordLength(wordRaw: string[] | IMenuWordCommand, textWidth: number, textPaddingX: number): number {
-            if (wordRaw.constructor !== Array) {
-                return 0;
-            }
-
-            var word: string[] = <string[]>wordRaw,
-                total: number = 0,
+            var total: number = 0,
+                word: string[],
                 letterRaw: string | IMenuWordFiltered,
                 i: number;
+
+            if (wordRaw.constructor === Array) {
+                word = <string[]>wordRaw;
+            } else {
+                word = this.parseWordCommand(<IMenuWordCommand>wordRaw);
+            }
 
             for (i = 0; i < word.length; i += 1) {
                 if (/\s/.test(word[i])) {

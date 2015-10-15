@@ -314,7 +314,7 @@ var MenuGraphr;
             // Command objects must be parsed here in case they modify the x/y position
             if (words[i].command) {
                 command = words[i];
-                word = this.parseWordCommand(menu, command);
+                word = this.parseWordCommand(command, menu);
                 if (command.command === "position") {
                     x += command.x || 0;
                     y += command.y || 0;
@@ -336,12 +336,13 @@ var MenuGraphr;
                     x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
                     continue;
                 }
-                // Endlines skip a line; other whitespace moves right if not at the starting x
+                // Endlines skip a line; general whitespace moves to the right
+                // (" " spaces at the start do not move to the right)
                 if (word[j] === "\n") {
                     x = menu.textX;
                     y += textPaddingY;
                 }
-                else if (x !== menu.textX) {
+                else if (word[j] !== " " || x !== menu.textX) {
                     x += textWidth * textWidthMultiplier;
                 }
             }
@@ -989,7 +990,11 @@ var MenuGraphr;
         /**
          *
          */
-        MenuGraphr.prototype.parseWordCommand = function (menu, word) {
+        MenuGraphr.prototype.parseWordCommand = function (word, menu) {
+            // If no menu is provided, this is from a simulation; pretend there is a menu
+            if (!menu) {
+                menu = {};
+            }
             switch (word.command) {
                 case "attribute":
                     menu[word.attribute + "Old"] = menu[word.attribute];
@@ -1027,7 +1032,12 @@ var MenuGraphr;
                 default:
                     throw new Error("Unknown padLeft command: " + command);
             }
-            filtered.unshift.apply(filtered, this.stringOf(" ", length).split(""));
+            // Right-aligned commands reduce the amount of spacing by the length of the word
+            if (command.alignRight) {
+                length = Math.max(0, length - filtered.length);
+            }
+            // Tabs are considered to be a single space, so they're added to the left
+            filtered.unshift.apply(filtered, this.stringOf("\t", length).split(""));
             return filtered;
         };
         /**
@@ -1085,10 +1095,13 @@ var MenuGraphr;
          *          used in dialogs that react to box size. This may be wrong.
          */
         MenuGraphr.prototype.computeFutureWordLength = function (wordRaw, textWidth, textPaddingX) {
-            if (wordRaw.constructor !== Array) {
-                return 0;
+            var total = 0, word, letterRaw, i;
+            if (wordRaw.constructor === Array) {
+                word = wordRaw;
             }
-            var word = wordRaw, total = 0, letterRaw, i;
+            else {
+                word = this.parseWordCommand(wordRaw);
+            }
             for (i = 0; i < word.length; i += 1) {
                 if (/\s/.test(word[i])) {
                     total += textWidth + textPaddingX;
