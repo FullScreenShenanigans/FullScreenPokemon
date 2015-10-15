@@ -13,11 +13,24 @@ FullScreenPokemon.FullScreenPokemon.settings.battles = {
     },
     "backgroundType": "DirtWhite",
     "defaults": {
-        "exitDialog": "Got away safely!",
-        "textStart": ["A wild ", " appeared!"],
-        "textEntry": ["Go! ", "!"],
-        "textOpponentSendOut": ["", " sent out ", "!"],
-        "textPlayerSendOut": ["Go! ", "!"]
+        "exitDialog": "Got away safely!".split(""),
+        "textStart": [
+            "A wild ".split(""),
+            " appeared!".split("")
+        ],
+        "textEntry": [
+            "Go! ".split(""),
+            "!".split("")
+        ],
+        "textOpponentSendOut": [
+            "".split(""),
+            " sent out ".split(""),
+            "!".split("")
+        ],
+        "textPlayerSendOut": [
+            "Go! ".split(""),
+            "!".split("")
+        ]
     },
     "positions": {
         "player": {

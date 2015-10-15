@@ -135,7 +135,7 @@ declare module MenuGraphr {
 
     export interface IMenuChildSchema extends IMenuSchema {
         type: string;
-        words?: (string[] | IMenuWordCommand)[];
+        words?: (string | IMenuWordCommand)[];
     }
 
     export interface IMenuChildMenuSchema extends IMenuChildSchema {
@@ -146,7 +146,7 @@ declare module MenuGraphr {
     export interface IMenuWordSchema extends IMenuChildSchema {
         position: IMenuSchemaPosition;
         size: IMenuSchemaSize;
-        words: (string[] | IMenuWordCommand)[];
+        words: (string | IMenuWordCommand)[];
     }
 
     export interface IMenuThingSchema extends IMenuChildSchema {
@@ -223,7 +223,7 @@ declare module MenuGraphr {
             position: IMenuSchemaPosition,
             container: IMenu,
             skipAdd?: boolean): void;
-        addMenuDialog(name: string, dialogRaw: string | (string | string[] | IMenuWordCommand)[], onCompletion?: () => any): void;
+        addMenuDialog(name: string, dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[], onCompletion?: () => any): void;
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
         addMenuWord(
             name: string,
@@ -423,12 +423,13 @@ module MenuGraphr {
          */
         createMenuWord(name: string, schema: IMenuWordSchema): void {
             var menu: IMenu = this.getExistingMenu(name),
-                container: IMenu = this.GameStarter.ObjectMaker.make("Menu");
+                container: IMenu = this.GameStarter.ObjectMaker.make("Menu"),
+                words: (string[] | IMenuWordCommand)[] = this.filterMenuWords(schema.words);
 
             this.positionItem(container, schema.size, schema.position, menu, true);
 
             menu.textX = container.left;
-            this.addMenuWord(name, schema.words, 0, container.left, container.top);
+            this.addMenuWord(name, words, 0, container.left, container.top);
         }
 
         /**
@@ -611,7 +612,7 @@ module MenuGraphr {
         /**
          * 
          */
-        addMenuDialog(name: string, dialogRaw: string | (string | string[] | IMenuWordCommand)[], onCompletion?: () => any): void {
+        addMenuDialog(name: string, dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[], onCompletion?: () => any): void {
             var dialog: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialogRaw),
                 currentLine: number = 0,
                 callback: any = (function (): void {
@@ -645,7 +646,7 @@ module MenuGraphr {
          */
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void {
             var menu: IMenu = this.getExistingMenu(name),
-                x: number = this.GameStarter.getMidX(menu), // - menu.textAreaWidth / 2,
+                x: number = this.GameStarter.getMidX(menu),
                 y: number = menu.top + menu.textYOffset * this.GameStarter.unitsize;
 
             switch (menu.textStartingX) {
@@ -663,15 +664,17 @@ module MenuGraphr {
             menu.callback = this.continueMenu.bind(this);
             menu.textX = x;
 
-            this.addMenuWord(name, words, 0, x, y, onCompletion);
+            if (words.length) {
+                this.addMenuWord(name, words, 0, x, y, onCompletion);
+            } else {
+                onCompletion();
+            }
         }
 
         /**
          * 
          * 
          * @remarks This is the real force behind addMenuDialog and addMenuText.
-         * @todo The calculation of whether a word can fit assumes equal width for
-         *       all children, although apostrophes are tiny. This is incorrect.
          */
         addMenuWord(name: string, words: (string[] | IMenuWordCommand)[], i: number, x: number, y: number, onCompletion?: (...args: any[]) => void): IThing[] {
             var menu: IMenu = this.getExistingMenu(name),
@@ -1436,14 +1439,14 @@ module MenuGraphr {
         /**
          *
          */
-        private parseRawDialog(dialogRaw: string | (string | string[] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[][] {
+        private parseRawDialog(dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[][] {
             // A raw String becomes a single line of dialog
             if (dialogRaw.constructor === String) {
                 return [this.parseRawDialogString(<string>dialogRaw)];
             }
 
             var output: (string[] | IMenuWordCommand)[][] = [],
-                component: string | string[] | IMenuWordCommand,
+                component: string | string[] | string[][] | IMenuWordCommand,
                 i: number;
 
             for (i = 0; i < dialogRaw.length; i += 1) {
@@ -1462,7 +1465,7 @@ module MenuGraphr {
         /**
          *
          */
-        private parseRawDialogString(dialogRaw: string): string[][] {
+        private parseRawDialogString(dialogRaw: string | string[]): string[][] {
             var characters: string[] = this.filterWord(dialogRaw),
                 words: string[][] = [],
                 word: string[],
@@ -1504,8 +1507,13 @@ module MenuGraphr {
          * 
          * 
          */
-        private filterWord(word: string): string[] {
-            var output: string[] = [],
+        private filterWord(wordRaw: string | string[]): string[] {
+            if (wordRaw.constructor === Array) {
+                return <string[]>wordRaw;
+            }
+
+            var word: string = <string>wordRaw,
+                output: string[] = [],
                 start: number = 0,
                 end: number,
                 inside: string | string[];
@@ -1524,6 +1532,24 @@ module MenuGraphr {
             }
 
             return word.split("");
+        }
+
+        /**
+         *
+         */
+        private filterMenuWords(words: (string | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
+            var output = [],
+                i: number;
+
+            for (i = 0; i < words.length; i += 1) {
+                if (words[i].constructor === String) {
+                    output.push(this.filterWord(<string>words[i]));
+                } else {
+                    output.push(words[i]);
+                }
+            }
+
+            return output;
         }
 
         /**
@@ -1582,6 +1608,17 @@ module MenuGraphr {
             }
 
             return [characters];
+        }
+
+        /**
+         *
+         */
+        private filterTextArray(text: string[] | string[][]): string[][] {
+            var output: string[][] = [];
+
+
+
+            return output;
         }
 
         /**

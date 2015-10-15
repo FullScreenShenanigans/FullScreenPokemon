@@ -115,10 +115,10 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.createMenuWord = function (name, schema) {
-            var menu = this.getExistingMenu(name), container = this.GameStarter.ObjectMaker.make("Menu");
+            var menu = this.getExistingMenu(name), container = this.GameStarter.ObjectMaker.make("Menu"), words = this.filterMenuWords(schema.words);
             this.positionItem(container, schema.size, schema.position, menu, true);
             menu.textX = container.left;
-            this.addMenuWord(name, schema.words, 0, container.left, container.top);
+            this.addMenuWord(name, words, 0, container.left, container.top);
         };
         /**
          *
@@ -285,8 +285,7 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.addMenuText = function (name, words, onCompletion) {
-            var menu = this.getExistingMenu(name), x = this.GameStarter.getMidX(menu), // - menu.textAreaWidth / 2,
-            y = menu.top + menu.textYOffset * this.GameStarter.unitsize;
+            var menu = this.getExistingMenu(name), x = this.GameStarter.getMidX(menu), y = menu.top + menu.textYOffset * this.GameStarter.unitsize;
             switch (menu.textStartingX) {
                 case "right":
                     x += menu.textAreaWidth / 2;
@@ -298,14 +297,17 @@ var MenuGraphr;
             }
             menu.callback = this.continueMenu.bind(this);
             menu.textX = x;
-            this.addMenuWord(name, words, 0, x, y, onCompletion);
+            if (words.length) {
+                this.addMenuWord(name, words, 0, x, y, onCompletion);
+            }
+            else {
+                onCompletion();
+            }
         };
         /**
          *
          *
          * @remarks This is the real force behind addMenuDialog and addMenuText.
-         * @todo The calculation of whether a word can fit assumes equal width for
-         *       all children, although apostrophes are tiny. This is incorrect.
          */
         MenuGraphr.prototype.addMenuWord = function (name, words, i, x, y, onCompletion) {
             var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textHeight, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, title, character, j;
@@ -909,8 +911,11 @@ var MenuGraphr;
          *
          *
          */
-        MenuGraphr.prototype.filterWord = function (word) {
-            var output = [], start = 0, end, inside;
+        MenuGraphr.prototype.filterWord = function (wordRaw) {
+            if (wordRaw.constructor === Array) {
+                return wordRaw;
+            }
+            var word = wordRaw, output = [], start = 0, end, inside;
             start = word.indexOf("%%%%%%%", start);
             end = word.indexOf("%%%%%%%", start + 1);
             if (start !== -1 && end !== -1) {
@@ -921,6 +926,21 @@ var MenuGraphr;
                 return output;
             }
             return word.split("");
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterMenuWords = function (words) {
+            var output = [], i;
+            for (i = 0; i < words.length; i += 1) {
+                if (words[i].constructor === String) {
+                    output.push(this.filterWord(words[i]));
+                }
+                else {
+                    output.push(words[i]);
+                }
+            }
+            return output;
         };
         /**
          *
@@ -961,6 +981,13 @@ var MenuGraphr;
                 characters.push.apply(characters, this.filterWord(component));
             }
             return [characters];
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterTextArray = function (text) {
+            var output = [];
+            return output;
         };
         /**
          *
