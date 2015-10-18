@@ -115,10 +115,10 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.createMenuWord = function (name, schema) {
-            var menu = this.getExistingMenu(name), container = this.GameStarter.ObjectMaker.make("Menu");
+            var menu = this.getExistingMenu(name), container = this.GameStarter.ObjectMaker.make("Menu"), words = this.filterMenuWords(schema.words);
             this.positionItem(container, schema.size, schema.position, menu, true);
             menu.textX = container.left;
-            this.addMenuWord(name, schema.words, 0, container.left, container.top);
+            this.addMenuWord(name, words, 0, container.left, container.top);
         };
         /**
          *
@@ -259,37 +259,35 @@ var MenuGraphr;
         /**
          *
          */
-        MenuGraphr.prototype.addMenuDialog = function (name, dialog, onCompletion) {
-            if (!dialog) {
-                dialog = [""];
-            }
-            else if (dialog.constructor === String) {
-                dialog = [dialog];
-            }
-            else if (!(dialog instanceof Array)) {
-                dialog = [String(dialog)];
-            }
-            this.addMenuText(name, dialog[0], function () {
-                if (dialog.length === 1) {
+        MenuGraphr.prototype.addMenuDialog = function (name, dialogRaw, onCompletion) {
+            var dialog = this.parseRawDialog(dialogRaw), currentLine = 1, callback = (function () {
+                // If all dialog has been exhausted, delete the menu and finish
+                if (currentLine >= dialog.length) {
                     if (this.menus[name].deleteOnFinish) {
                         this.deleteMenu(name);
                     }
                     if (onCompletion) {
-                        return onCompletion();
+                        onCompletion();
                     }
-                    return true;
+                    return;
                 }
+                currentLine += 1;
+                // Delete any previous texts. This is only done if continuing
+                // so that when the dialog is finished, the last text remains
                 this.deleteMenuChildren(name);
-                this.addMenuDialog(name, dialog.slice(1), onCompletion);
-                return false;
+                // This continues the dialog with the next iteration (word)
+                this.addMenuText(name, dialog[currentLine - 1], callback);
             }.bind(this));
+            // This first call to addmenuText shouldn't be the callback, because if there
+            // bing called from a childrenSchema of type "text", it shouldn't delete any
+            // other menu children from childrenSchemas.
+            this.addMenuText(name, dialog[0], callback);
         };
         /**
          *
          */
         MenuGraphr.prototype.addMenuText = function (name, words, onCompletion) {
-            var menu = this.getExistingMenu(name), x = this.GameStarter.getMidX(menu), // - menu.textAreaWidth / 2,
-            y = menu.top + menu.textYOffset * this.GameStarter.unitsize;
+            var menu = this.getExistingMenu(name), x = this.GameStarter.getMidX(menu), y = menu.top + menu.textYOffset * this.GameStarter.unitsize;
             switch (menu.textStartingX) {
                 case "right":
                     x += menu.textAreaWidth / 2;
@@ -299,95 +297,58 @@ var MenuGraphr;
                 default:
                     x -= menu.textAreaWidth / 2;
             }
-            if (words.constructor === String) {
-                words = words.split(/ /);
-            }
             menu.callback = this.continueMenu.bind(this);
             menu.textX = x;
-            this.addMenuWord(name, words, 0, x, y, onCompletion);
+            if (words.length) {
+                this.addMenuWord(name, words, 0, x, y, onCompletion);
+            }
+            else {
+                onCompletion();
+            }
         };
         /**
          *
          *
-         * @todo The calculation of whether a word can fit assumes equal width for
-         *       all children, although apostrophes are tiny.
+         * @remarks This is the real force behind addMenuDialog and addMenuText.
          */
         MenuGraphr.prototype.addMenuWord = function (name, words, i, x, y, onCompletion) {
-            var menu = this.getExistingMenu(name), word = this.filterWord(words[i]), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), things = [], textWidth, textHeight, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, title, character, j;
-            // First, filter for commands that affect the containing menu
-            if (word.constructor === Object && word.command) {
-                switch (word.command) {
-                    case "attribute":
-                        menu[word.attribute + "Old"] = menu[word.attribute];
-                        menu[word.attribute] = word.value;
-                        if (word.applyUnitsize) {
-                            menu[word.attribute] *= this.GameStarter.unitsize;
-                        }
-                        break;
-                    case "attributeReset":
-                        menu[word.attribute] = menu[word.attribute + "Old"];
-                        break;
-                    case "position":
-                        if (word.x) {
-                            x += word.x;
-                        }
-                        if (word.y) {
-                            y += word.y;
-                        }
-                        break;
-                    case "padLeft":
-                        break;
-                    default:
-                        throw new Error("Unknown word command: " + word.command);
+            var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textHeight, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, title, character, j;
+            // Command objects must be parsed here in case they modify the x/y position
+            if (words[i].command) {
+                command = words[i];
+                word = this.parseWordCommand(command, menu);
+                if (command.command === "position") {
+                    x += command.x || 0;
+                    y += command.y || 0;
                 }
             }
-            // Numerics require any commands that should have affected the window 
-            // to have already been applied
+            else {
+                word = words[i];
+            }
             textSpeed = menu.textSpeed;
             textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize;
-            textHeight = (menu.textHeight || textProperties.height) * this.GameStarter.unitsize;
             textPaddingX = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize;
             textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize;
             textWidthMultiplier = menu.textWidthMultiplier || 1;
-            if (word.constructor === Object && word.command) {
-                title = this.filterWord(this.getCharacterEquivalent(word.word));
-                switch (word.command) {
-                    // Length may be a String (for its length) or a direct number
-                    case "padLeft":
-                        if (word.length.constructor === String) {
-                            word = this.stringOf(" ", (this.filterWord(word.length).length
-                                - title.length)) + this.filterWord(title);
-                        }
-                        else {
-                            word = this.stringOf(" ", word.length - title.length) + title;
-                        }
-                        break;
-                    default:
-                        throw new Error("Unknown word command: " + word.command);
+            // For each character in the word, schedule it appearing in the menu
+            for (j = 0; j < word.length; j += 1) {
+                // For non-whitespace characters, add them and move to the right
+                if (/\S/.test(word[j])) {
+                    character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
+                    x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
+                    continue;
+                }
+                // Endlines skip a line; general whitespace moves to the right
+                // (" " spaces at the start do not move to the right)
+                if (word[j] === "\n") {
+                    x = menu.textX;
+                    y += textPaddingY;
+                }
+                else if (word[j] !== " " || x !== menu.textX) {
+                    x += textWidth * textWidthMultiplier;
                 }
             }
-            if ((word.constructor === String && word !== "\n")
-                || word.constructor === Array) {
-                for (j = 0; j < word.length; j += 1) {
-                    if (word[j] !== " ") {
-                        title = "Char" + this.getCharacterEquivalent(word[j]);
-                        character = this.GameStarter.ObjectMaker.make(title);
-                        character.paddingY = textPaddingY;
-                        menu.children.push(character);
-                        things.push(character);
-                        if (textSpeed) {
-                            this.GameStarter.TimeHandler.addEvent(this.GameStarter.addThing.bind(this.GameStarter), j * textSpeed, character, x, y);
-                        }
-                        else {
-                            this.GameStarter.addThing(character, x, y);
-                        }
-                        x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
-                    }
-                    else {
-                        x += textWidth * textWidthMultiplier;
-                    }
-                }
-            }
+            // If this is the last word in the the line (words), mark progress as done
             if (i === words.length - 1) {
                 menu.progress = {
                     "complete": true,
@@ -398,19 +359,12 @@ var MenuGraphr;
                 }
                 return things;
             }
-            if (!word.skipSpacing) {
-                if (word === "\n"
-                    || (x + ((this.filterWord(words[i + 1]).length + .5)
-                        * textWidthMultiplier * textWidth
-                        + menu.textXOffset * this.GameStarter.unitsize)
-                        > this.GameStarter.getMidX(menu) + menu.textAreaWidth / 2)) {
-                    x = menu.textX;
-                    y += textPaddingY;
-                }
-                else {
-                    x += textWidth * textWidthMultiplier;
-                }
+            // If the next word would pass the edge of the menu, move down a line
+            if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset) {
+                x = menu.textX;
+                y += textPaddingY;
             }
+            // If the bottom of the menu has been reached, pause its progress
             if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
                 menu.progress = {
                     "words": words,
@@ -432,6 +386,22 @@ var MenuGraphr;
         /**
          *
          */
+        MenuGraphr.prototype.addMenuCharacter = function (name, character, x, y, delay) {
+            var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, title = "Char" + this.getCharacterEquivalent(character), thing = this.GameStarter.ObjectMaker.make(title, {
+                "textPaddingY": textPaddingY
+            });
+            menu.children.push(thing);
+            if (delay) {
+                this.GameStarter.TimeHandler.addEvent(this.GameStarter.addThing.bind(this.GameStarter), delay, thing, x, y);
+            }
+            else {
+                this.GameStarter.addThing(thing, x, y);
+            }
+            return thing;
+        };
+        /**
+         *
+         */
         MenuGraphr.prototype.continueMenu = function (name) {
             var menu = this.getExistingMenu(name), children = menu.children, progress = menu.progress, character, i;
             if (!progress || progress.working) {
@@ -446,7 +416,7 @@ var MenuGraphr;
             }
             for (i = 0; i < children.length; i += 1) {
                 character = children[i];
-                this.GameStarter.TimeHandler.addEventInterval(this.scrollCharacterUp.bind(this), 1, character.paddingY / this.GameStarter.unitsize, character, menu, -1);
+                this.GameStarter.TimeHandler.addEventInterval(this.scrollCharacterUp.bind(this), 1, character.paddingY, character, menu, -1);
             }
             this.GameStarter.TimeHandler.addEvent(this.addMenuWord.bind(this), character.paddingY / this.GameStarter.unitsize + 1, name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
         };
@@ -458,7 +428,7 @@ var MenuGraphr;
         MenuGraphr.prototype.addMenuList = function (name, settings) {
             var menu = this.getExistingMenu(name), options = settings.options.constructor === Function
                 ? settings.options()
-                : settings.options, left = menu.left + menu.textXOffset * this.GameStarter.unitsize, top = menu.top + menu.textYOffset * this.GameStarter.unitsize, textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize, textHeight = (menu.textHeight || textProperties.height) * this.GameStarter.unitsize, textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, selectedIndex = settings.selectedIndex || [0, 0], optionChildren = [], index = 0, y = top, option, optionChild, schema, title, character, column, x, i, j;
+                : settings.options, left = menu.left + menu.textXOffset * this.GameStarter.unitsize, top = menu.top + menu.textYOffset * this.GameStarter.unitsize, textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize, textHeight = (menu.textHeight || textProperties.height) * this.GameStarter.unitsize, textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, selectedIndex = settings.selectedIndex || [0, 0], optionChildren = [], index = 0, y = top, option, optionChild, schema, title, character, column, x, i, j, k;
             menu.options = options;
             menu.optionChildren = optionChildren;
             menu.callback = this.selectMenuListOption.bind(this);
@@ -504,27 +474,29 @@ var MenuGraphr;
                         optionChild.things = optionChild.things.concat(this.addMenuWord(name, [schema.text], 0, x + schema.x * this.GameStarter.unitsize, y + schema.y * this.GameStarter.unitsize));
                     }
                 }
-                option.schema = schema = this.filterWord(option.text);
+                option.schema = schema = this.filterText(option.text);
                 if (schema !== "\n") {
                     for (j = 0; j < schema.length; j += 1) {
-                        if (schema[j].command) {
-                            if (schema[j].x) {
-                                x += schema[j].x * this.GameStarter.unitsize;
+                        for (k = 0; k < schema[j].length; k += 1) {
+                            if (schema[j][k].command) {
+                                if (schema[j][k].x) {
+                                    x += schema[j][k].x * this.GameStarter.unitsize;
+                                }
+                                if (schema[j][k].y) {
+                                    y += schema[j][k].y * this.GameStarter.unitsize;
+                                }
                             }
-                            if (schema[j].y) {
-                                y += schema[j].y * this.GameStarter.unitsize;
+                            else if (schema[j][k] !== " ") {
+                                option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
+                                character = this.GameStarter.ObjectMaker.make(title);
+                                menu.children.push(character);
+                                optionChild.things.push(character);
+                                this.GameStarter.addThing(character, x, y);
+                                x += character.width * this.GameStarter.unitsize;
                             }
-                        }
-                        else if (schema[j] !== " ") {
-                            option.title = title = "Char" + this.getCharacterEquivalent(schema[j]);
-                            character = this.GameStarter.ObjectMaker.make(title);
-                            menu.children.push(character);
-                            optionChild.things.push(character);
-                            this.GameStarter.addThing(character, x, y);
-                            x += character.width * this.GameStarter.unitsize;
-                        }
-                        else {
-                            x += textWidth;
+                            else {
+                                x += textWidth;
+                            }
                         }
                     }
                 }
@@ -542,7 +514,7 @@ var MenuGraphr;
             menu.gridColumns = menu.grid.length;
             if (settings.bottom) {
                 option = settings.bottom;
-                option.schema = schema = this.filterWord(option.text);
+                option.schema = schema = this.filterText(option.text);
                 optionChild = {
                     "option": option,
                     "things": []
@@ -886,40 +858,215 @@ var MenuGraphr;
         /**
          *
          */
-        MenuGraphr.prototype.filterWord = function (word) {
-            var start = 0, end, inside;
-            if (word.constructor !== String) {
+        MenuGraphr.prototype.parseRawDialog = function (dialogRaw) {
+            // A raw String becomes a single line of dialog
+            if (dialogRaw.constructor === String) {
+                return [this.parseRawDialogString(dialogRaw)];
+            }
+            var output = [], component, i;
+            for (i = 0; i < dialogRaw.length; i += 1) {
+                component = dialogRaw[i];
+                if (component.constructor === String) {
+                    output.push(this.parseRawDialogString(component));
+                }
+                else {
+                    output.push(this.filterArray(component));
+                }
+            }
+            return output;
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.parseRawDialogString = function (dialogRaw) {
+            var characters = this.filterWord(dialogRaw), words = [], word, currentlyWhitespace = undefined, i;
+            word = [];
+            // For each character to be added...
+            for (i = 0; i < characters.length; i += 1) {
+                // If it matches what's currently being added, keep going
+                if (currentlyWhitespace) {
+                    if (/\s/.test(characters[i])) {
+                        word.push(characters[i]);
+                        continue;
+                    }
+                }
+                else {
+                    if (/\S/.test(characters[i])) {
+                        word.push(characters[i]);
+                        continue;
+                    }
+                }
+                // Since it doesn't match, start a new word
+                currentlyWhitespace = /\s/.test(characters[i]);
+                words.push(word);
+                word = [characters[i]];
+            }
+            // Any extra characters should be added as well
+            if (word.length > 0) {
+                words.push(word);
+            }
+            return words;
+        };
+        /**
+         *
+         *
+         */
+        MenuGraphr.prototype.filterWord = function (wordRaw) {
+            if (wordRaw.constructor === Array) {
+                return wordRaw;
+            }
+            var word = wordRaw, output = [], start = 0, end, inside;
+            start = word.indexOf("%%%%%%%", start);
+            end = word.indexOf("%%%%%%%", start + 1);
+            if (start !== -1 && end !== -1) {
+                inside = this.getReplacement(word.substring(start + "%%%%%%%".length, end));
+                output.push.apply(output, word.substring(0, start).split(""));
+                output.push.apply(output, (inside.constructor === String ? inside.split("") : inside));
+                output.push.apply(output, this.filterWord(word.substring(end + "%%%%%%%".length)));
+                return output;
+            }
+            return word.split("");
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterMenuWords = function (words) {
+            var output = [], i;
+            for (i = 0; i < words.length; i += 1) {
+                if (words[i].constructor === String) {
+                    output.push(this.filterWord(words[i]));
+                }
+                else {
+                    output.push(words[i]);
+                }
+            }
+            return output;
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterArray = function (words) {
+            var output = [], i;
+            for (i = 0; i < words.length; i += 1) {
+                output.push.apply(output, this.parseRawDialogString(words[i]));
+            }
+            return output;
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterText = function (word) {
+            if (word.constructor === Array) {
+                if (word.length === 0) {
+                    return [];
+                }
+                if (word[0].constructor === String) {
+                    return [word];
+                }
                 return word;
             }
-            while (true) {
-                start = word.indexOf("%%%%%%%", start);
-                end = word.indexOf("%%%%%%%", start + 1);
-                if (start === -1 || end === -1) {
-                    return word;
+            var characters = [], total = word, component = "", start, end, i;
+            for (i = 0; i < total.length; i += 1) {
+                if (/\s/.test(total[i])) {
+                    if (component.length > 0) {
+                        characters.push.apply(characters, this.filterWord(component));
+                        component = "";
+                    }
+                    characters.push(total[i]);
+                    continue;
                 }
-                inside = word.substring(start + "%%%%%%%".length, end);
-                word = word.substring(0, start) + this.getReplacement(inside) + word.substring(end + "%%%%%%%".length);
-                start = end;
+                component += total[i];
             }
-            return word;
+            if (component.length > 0) {
+                characters.push.apply(characters, this.filterWord(component));
+            }
+            return [characters];
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.filterTextArray = function (text) {
+            var output = [];
+            return output;
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.parseWordCommand = function (word, menu) {
+            // If no menu is provided, this is from a simulation; pretend there is a menu
+            if (!menu) {
+                menu = {};
+            }
+            switch (word.command) {
+                case "attribute":
+                    menu[word.attribute + "Old"] = menu[word.attribute];
+                    menu[word.attribute] = word.value;
+                    if (word.applyUnitsize) {
+                        menu[word.attribute] *= this.GameStarter.unitsize;
+                    }
+                    break;
+                case "attributeReset":
+                    menu[word.attribute] = menu[word.attribute + "Old"];
+                    break;
+                case "padLeft":
+                    return this.parseWordCommandPadLeft(word);
+                // Position is handled directly in addMenuWord
+                case "position":
+                    break;
+                default:
+                    throw new Error("Unknown word command: " + word.command);
+            }
+            return word.word.split("");
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.parseWordCommandPadLeft = function (command) {
+            var filtered = this.filterWord(command.word), length;
+            // Length may be a String (for its length) or a direct number
+            switch (command.length.constructor) {
+                case String:
+                    length = this.filterText(command.length)[0].length;
+                    break;
+                case Number:
+                    length = command.length;
+                    break;
+                default:
+                    throw new Error("Unknown padLeft command: " + command);
+            }
+            // Right-aligned commands reduce the amount of spacing by the length of the word
+            if (command.alignRight) {
+                length = Math.max(0, length - filtered.length);
+            }
+            // Tabs are considered to be a single space, so they're added to the left
+            filtered.unshift.apply(filtered, this.stringOf("\t", length).split(""));
+            return filtered;
         };
         /**
          *
          */
         MenuGraphr.prototype.getReplacement = function (key) {
-            var value = this.replacements[key];
-            if (typeof value === "undefined") {
-                return value;
+            var replacement = this.replacements[key], value;
+            if (typeof replacement === "undefined") {
+                return [""];
             }
             // if (this.replacementStatistics && this.replacementStatistics[value]) {
             //     return this.replacements[value](this.GameStarter);
             // }
             if (this.replaceFromItemsHolder) {
-                if (this.GameStarter.ItemsHolder.hasKey(value)) {
-                    return this.GameStarter.ItemsHolder.getItem(value);
+                if (this.GameStarter.ItemsHolder.hasKey(replacement)) {
+                    value = this.GameStarter.ItemsHolder.getItem(replacement);
                 }
             }
-            return value;
+            if (!value) {
+                return replacement.split("");
+            }
+            else if (value.constructor === String) {
+                return value.split("");
+            }
+            else {
+                return value;
+            }
         };
         /**
          * Creates a new String equivalent to an old String repeated any number of
@@ -931,6 +1078,48 @@ var MenuGraphr;
         MenuGraphr.prototype.stringOf = function (str, times) {
             if (times === void 0) { times = 1; }
             return (times === 0) ? "" : new Array(1 + (times)).join(str);
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.isWordWhitespace = function (word) {
+            for (var i = 0; i < word.length; i += 1) {
+                if (/\S/.test(word[i])) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        /**
+         *
+         *
+         * @remarks This ignores commands under the assumption they shouldn't be
+         *          used in dialogs that react to box size. This may be wrong.
+         */
+        MenuGraphr.prototype.computeFutureWordLength = function (wordRaw, textWidth, textPaddingX) {
+            var total = 0, word, letterRaw, i;
+            if (wordRaw.constructor === Array) {
+                word = wordRaw;
+            }
+            else {
+                word = this.parseWordCommand(wordRaw);
+            }
+            for (i = 0; i < word.length; i += 1) {
+                if (/\s/.test(word[i])) {
+                    total += textWidth + textPaddingX;
+                }
+                else {
+                    total += this.computeFutureLetterLength(word[i], textPaddingX);
+                }
+            }
+            return total;
+        };
+        /**
+         *
+         */
+        MenuGraphr.prototype.computeFutureLetterLength = function (letter, textPaddingX) {
+            var title = "Char" + this.getCharacterEquivalent(letter), properties = this.GameStarter.ObjectMaker.getFullPropertiesOf(title);
+            return properties.width * this.GameStarter.unitsize + textPaddingX;
         };
         return MenuGraphr;
     })();

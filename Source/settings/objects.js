@@ -746,7 +746,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             // Sprites
             "sprite": "",
             "spriteType": "neither",
-            "opacity": 1,
+            "opacity": .49,
             "scale": 1,
             "offsetX": 0,
             "offsetY": 0,

@@ -41,7 +41,7 @@ declare module BattleMovr {
     }
 
     export interface IBattleInfo {
-        exitDialog?: string | string[];
+        exitDialog?: string[];
         items?: any;
         nextCutscene?: string;
         nextCutsceneSettings?: any;
@@ -52,14 +52,14 @@ declare module BattleMovr {
     }
 
     export interface IBattleInfoDefaults {
-        exitDialog: string;
+        exitDialog: string[];
     }
 
     export interface IBattleThingInfo {
         actors: IActor[];
         category: string;
         hasActors?: boolean;
-        name: string;
+        name: string[];
         selectedActor?: IActor;
         selectedIndex?: number;
         sprite: string;

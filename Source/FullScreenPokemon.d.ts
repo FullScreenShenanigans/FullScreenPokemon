@@ -53,7 +53,7 @@ declare module FullScreenPokemon {
         seen: boolean;
         title: string;
         label: string;
-        index: number;
+        number: number;
         sprite: string;
         info: string[];
         evolvesInto: string;
@@ -154,12 +154,12 @@ declare module FullScreenPokemon {
         noBlackout?: boolean;
         opponent?: IBattleThingInfo;
         player?: IBattleThingInfo;
-        textAfterBattle?: string | string[];
-        textDefeat?: string | string[];
-        textOpponentSendOut?: string | string[];
-        textPlayerSendOut?: string | string[];
-        textStart?: string[];
-        textVictory?: string | string[];
+        textAfterBattle?: string[];
+        textDefeat?: string[];
+        textOpponentSendOut?: string[][];
+        textPlayerSendOut?: string[][];
+        textStart?: string[][];
+        textVictory?: string[];
         theme?: string;
     }
 
@@ -261,9 +261,9 @@ declare module FullScreenPokemon {
         giftAfterBattle?: string;
         nextCutscene?: string;
         reward: number;
-        textDefeat?: string;
-        textAfterBattle?: string;
-        textVictory?: string;
+        textDefeat?: string[];
+        textAfterBattle?: string[];
+        textVictory?: string[];
     }
 
     export interface IPlayer extends ICharacter {

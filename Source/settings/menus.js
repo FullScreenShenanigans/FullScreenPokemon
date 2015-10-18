@@ -89,63 +89,65 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                     "left": -4
                 }
             },
-            "childrenSchemas": [{
-                "type": "thing",
-                "thing": "LineDecoratorVertical",
-                "position": {
-                    "vertical": "stretch",
-                    "offset": {
-                        "left": 60,
-                        "top": 3,
-                        "bottom": 3
+            "childrenSchemas": [
+                {
+                    "type": "thing",
+                    "thing": "LineDecoratorVertical",
+                    "position": {
+                        "vertical": "stretch",
+                        "offset": {
+                            "left": 60,
+                            "top": 3,
+                            "bottom": 3
+                        }
                     }
-                }
-            }, {
-                "type": "thing",
-                "thing": "LineSeparatorHorizontal",
-                "size": {
-                    "width": 21.5,
-                },
-                "position": {
-                    "horizontal": "right",
-                    "offset": {
-                        "left": -3,
-                        "top": 35,
+                }, {
+                    "type": "thing",
+                    "thing": "LineSeparatorHorizontal",
+                    "size": {
+                        "width": 21.5,
+                    },
+                    "position": {
+                        "horizontal": "right",
+                        "offset": {
+                            "left": -3,
+                            "top": 35,
+                        }
                     }
-                }
-            }, {
-                "type": "text",
-                "words": ["CONTENTS"],
-                "position": {
-                    "offset": {
-                        "left": 7,
-                        "top": 7
+                }, {
+                    "type": "text",
+                    "words": ["CONTENTS"],
+                    "position": {
+                        "offset": {
+                            "left": 7,
+                            "top": 7
+                        }
                     }
-                }
-            }, {
-                "type": "text",
-                "words": ["SEEN"],
-                "position": {
-                    "horizontal": "right",
-                    "vertical": "top",
-                    "offset": {
-                        "left": -13,
-                        "top": 11
+                }, {
+                    "type": "text",
+                    "words": ["SEEN"],
+                    "position": {
+                        "horizontal": "right",
+                        "vertical": "top",
+                        "offset": {
+                            "left": -13,
+                            "top": 11
+                        }
                     }
-                }
-            }, {
-                "type": "text",
-                "words": ["OWN"],
-                "position": {
-                    "horizontal": "right",
-                    "vertical": "top",
-                    "offset": {
-                        "left": -13,
-                        "top": 23
+                }, {
+                    "type": "text",
+                    "words": ["OWN"],
+                    "position": {
+                        "horizontal": "right",
+                        "vertical": "top",
+                        "offset": {
+                            "left": -13,
+                            "top": 23
+                        }
                     }
-                }
-            }],
+                }],
             "backMenu": "Pause",
+            "ignoreProgressB": true,
             "startMenu": "PokedexOptions",
             "textSpeed": 0,
             "textXOffset": 7,
@@ -239,6 +241,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 "width": 20,
                 "height": 20
             },
+            "hidden": true,
             "container": "PokedexListing"
         },
         "PokedexListingName": {
@@ -249,7 +252,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 }
             },
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textYOffset": 0
         },
@@ -261,7 +264,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 }
             },
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textYOffset": 0
         },
@@ -276,36 +279,37 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 "height": 10,
                 "width": 40
             },
-            "childrenSchemas": [{
-                "type": "text",
-                "words": ["HT"]
-            }, {
-                "type": "menu",
-                "name": "PokedexListingHeightFeet"
-            }, {
-                "type": "menu",
-                "name": "PokedexListingHeightInches"
-            }, {
-                "type": "thing",
-                "thing": "CharFeet",
-                "position": {
-                    "offset": {
-                        "left": 20,
-                        "top": .5
+            "childrenSchemas": [
+                {
+                    "type": "text",
+                    "words": ["HT"]
+                }, {
+                    "type": "menu",
+                    "name": "PokedexListingHeightFeet"
+                }, {
+                    "type": "menu",
+                    "name": "PokedexListingHeightInches"
+                }, {
+                    "type": "thing",
+                    "thing": "CharFeet",
+                    "position": {
+                        "offset": {
+                            "left": 20,
+                            "top": .5
+                        }
                     }
-                }
-            }, {
-                "type": "thing",
-                "thing": "CharInches",
-                "position": {
-                    "offset": {
-                        "left": 32,
-                        "top": .5
+                }, {
+                    "type": "thing",
+                    "thing": "CharInches",
+                    "position": {
+                        "offset": {
+                            "left": 32,
+                            "top": .5
+                        }
                     }
-                }
-            }],
+                }],
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": 8,
             "textYOffset": 0
@@ -339,20 +343,25 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                     "top": 31.5
                 }
             },
-            "childrenSchemas": [{
-                "type": "text",
-                "words": ["WT"]
-            }, {
-                "type": "text",
-                "words": ["lb"],
-                "position": {
-                    "offset": {
-                        "left": 32
+            "size": {
+                "height": 10,
+                "width": 40
+            },
+            "childrenSchemas": [
+                {
+                    "type": "text",
+                    "words": ["WT"]
+                }, {
+                    "type": "text",
+                    "words": ["lb"],
+                    "position": {
+                        "offset": {
+                            "left": 32
+                        }
                     }
-                }
-            }],
+                }],
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": 16,
             "textYOffset": 0
@@ -370,10 +379,10 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
             },
             "childrenSchemas": [{
                 "type": "text",
-                "words": [[["No"], "."]],
+                "words": [["No", "."]],
             }],
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": 8,
             "textYOffset": -.5
@@ -410,9 +419,10 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 "type": "menu",
                 "name": "PokemonDialog"
             }],
-            "ignoreProgressB": true,
+            "backMenu": "Pause",
             "arrowXOffset": 8,
             "arrowYOffset": 3,
+            "ignoreProgressB": true,
             "textSpeed": 0,
             "textXOffset": 15.75,
             "textYOffset": 4
@@ -762,49 +772,51 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
             "position": {
                 "horizontal": "center",
             },
-            "childrenSchemas": [{
-                "type": "menu",
-                "name": "PlayerTop",
-            }, {
-                "type": "thing",
-                "thing": "DirtWhite",
-                "position": {
-                    "horizontal": "stretch",
-                    "vertical": "center"
-                }
-            }, {
-                "type": "text",
-                "words": ["BADGES"],
-                "position": {
-                    "offset": {
-                        "left": 28,
-                        "top": 35.5
+            "childrenSchemas": [
+                {
+                    "type": "menu",
+                    "name": "PlayerTop",
+                }, {
+                    "type": "thing",
+                    "thing": "DirtWhite",
+                    "position": {
+                        "horizontal": "stretch",
+                        "vertical": "center"
                     }
-                }
-            }, {
-                "type": "text",
-                "words": [["Circle"]],
-                "position": {
-                    "offset": {
-                        "left": 24.5,
-                        "top": 37
+                }, {
+                    "type": "text",
+                    "words": ["BADGES"],
+                    "position": {
+                        "offset": {
+                            "left": 28,
+                            "top": 35.5
+                        }
                     }
-                }
-            }, {
-                "type": "text",
-                "words": [["Circle"]],
-                "position": {
-                    "offset": {
-                        "left": 52.5,
-                        "top": 37
+                }, {
+                    "type": "text",
+                    "words": [["Circle"]],
+                    "position": {
+                        "offset": {
+                            "left": 24.5,
+                            "top": 37
+                        }
                     }
-                }
-            }, {
-                "type": "menu",
-                "name": "PlayerBottom"
-            }],
-            "dirty": true,
+                }, {
+                    "type": "text",
+                    "words": [["Circle"]],
+                    "position": {
+                        "offset": {
+                            "left": 52.5,
+                            "top": 37
+                        }
+                    }
+                }, {
+                    "type": "menu",
+                    "name": "PlayerBottom"
+                }],
             "backMenu": "Pause",
+            "dirty": true,
+            "ignoreProgressB": true,
             "textSpeed": 0
         },
         "PlayerTop": {
@@ -962,52 +974,54 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                     "left": 8
                 }
             },
-            "childrenSchemas": [{
-                "type": "text",
-                "words": [
-                    "PLAYER",
-                    "\n",
-                    "BADGES",
-                    "\n",
-                    "%%%%%%%POKEDEX%%%%%%%",
-                    "\n",
-                    "TIME"
-                ],
-                "position": {
-                    "offset": {
-                        "left": 4,
-                        "top": 7
+            "childrenSchemas": [
+                {
+                    "type": "text",
+                    "words": [
+                        "PLAYER",
+                        "\n",
+                        "BADGES",
+                        "\n",
+                        "%%%%%%%POKEDEX%%%%%%%",
+                        "\n",
+                        "TIME"
+                    ],
+                    "position": {
+                        "offset": {
+                            "left": 4,
+                            "top": 7
+                        }
                     }
-                }
-            }, {
-                "type": "text",
-                "words": [{
-                    "command": "padLeft",
-                    "length": 15,
-                    "word": "%%%%%%%PLAYER%%%%%%%",
-                    "skipSpacing": true
                 }, {
-                    "command": "padLeft",
-                    "length": 15,
-                    "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
-                    "skipSpacing": true
-                }, {
-                    "command": "padLeft",
-                    "length": 15,
-                    "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
-                    "skipSpacing": true
-                }, {
-                    "command": "padLeft",
-                    "length": 15,
-                    "word": "%%%%%%%TIME%%%%%%%",
-                    "skipSpacing": true
+                    "type": "text",
+                    "words": [
+                        {
+                            "command": "padLeft",
+                            "length": 15,
+                            "word": "%%%%%%%PLAYER%%%%%%%",
+                            "alignRight": true
+                        }, {
+                            "command": "padLeft",
+                            "length": 15,
+                            "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
+                            "alignRight": true
+                        }, {
+                            "command": "padLeft",
+                            "length": 15,
+                            "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
+                            "alignRight": true
+                        }, {
+                            "command": "padLeft",
+                            "length": 15,
+                            "word": "%%%%%%%TIME%%%%%%%",
+                            "alignRight": true
+                        }],
+                    "position": {
+                        "offset": {
+                            "top": 7
+                        }
+                    }
                 }],
-                "position": {
-                    "offset": {
-                        "top": 7
-                    }
-                }
-            }],
             "textSpeed": 0
         },
         "Yes/No": {
