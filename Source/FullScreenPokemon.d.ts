@@ -53,7 +53,7 @@ declare module FullScreenPokemon {
         seen: boolean;
         title: string;
         label: string;
-        index: number;
+        number: number;
         sprite: string;
         info: string[];
         evolvesInto: string;

@@ -241,6 +241,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 "width": 20,
                 "height": 20
             },
+            "hidden": true,
             "container": "PokedexListing"
         },
         "PokedexListingName": {
@@ -251,7 +252,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 }
             },
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textYOffset": 0
         },
@@ -263,7 +264,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 }
             },
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textYOffset": 0
         },
@@ -278,36 +279,37 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                 "height": 10,
                 "width": 40
             },
-            "childrenSchemas": [{
-                "type": "text",
-                "words": ["HT"]
-            }, {
-                "type": "menu",
-                "name": "PokedexListingHeightFeet"
-            }, {
-                "type": "menu",
-                "name": "PokedexListingHeightInches"
-            }, {
-                "type": "thing",
-                "thing": "CharFeet",
-                "position": {
-                    "offset": {
-                        "left": 20,
-                        "top": .5
+            "childrenSchemas": [
+                {
+                    "type": "text",
+                    "words": ["HT"]
+                }, {
+                    "type": "menu",
+                    "name": "PokedexListingHeightFeet"
+                }, {
+                    "type": "menu",
+                    "name": "PokedexListingHeightInches"
+                }, {
+                    "type": "thing",
+                    "thing": "CharFeet",
+                    "position": {
+                        "offset": {
+                            "left": 20,
+                            "top": .5
+                        }
                     }
-                }
-            }, {
-                "type": "thing",
-                "thing": "CharInches",
-                "position": {
-                    "offset": {
-                        "left": 32,
-                        "top": .5
+                }, {
+                    "type": "thing",
+                    "thing": "CharInches",
+                    "position": {
+                        "offset": {
+                            "left": 32,
+                            "top": .5
+                        }
                     }
-                }
-            }],
+                }],
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": 8,
             "textYOffset": 0
@@ -341,20 +343,25 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                     "top": 31.5
                 }
             },
-            "childrenSchemas": [{
-                "type": "text",
-                "words": ["WT"]
-            }, {
-                "type": "text",
-                "words": ["lb"],
-                "position": {
-                    "offset": {
-                        "left": 32
+            "size": {
+                "height": 10,
+                "width": 40
+            },
+            "childrenSchemas": [
+                {
+                    "type": "text",
+                    "words": ["WT"]
+                }, {
+                    "type": "text",
+                    "words": ["lb"],
+                    "position": {
+                        "offset": {
+                            "left": 32
+                        }
                     }
-                }
-            }],
+                }],
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": 16,
             "textYOffset": 0
@@ -372,10 +379,10 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
             },
             "childrenSchemas": [{
                 "type": "text",
-                "words": [[["No"], "."]],
+                "words": [["No", "."]],
             }],
             "container": "PokedexListing",
-            "plain": true,
+            "hidden": true,
             "textSpeed": 0,
             "textXOffset": 8,
             "textYOffset": -.5

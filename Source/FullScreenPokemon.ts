@@ -3449,19 +3449,15 @@ module FullScreenPokemon {
                     "flipHoriz": true
                 }
             });
-            FSP.MenuGrapher.addMenuDialog(
-                "PokedexListingName", title.toUpperCase());
-            FSP.MenuGrapher.addMenuDialog(
-                "PokedexListingLabel", pokemon.label);
-            FSP.MenuGrapher.addMenuDialog(
-                "PokedexListingHeightFeet", feet);
-            FSP.MenuGrapher.addMenuDialog(
-                "PokedexListingHeightInches", inches);
-            FSP.MenuGrapher.addMenuDialog(
-                "PokedexListingWeight", pokemon.weight.toString());
+            FSP.MenuGrapher.addMenuDialog("PokedexListingName", title.toUpperCase());
+            FSP.MenuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
+            FSP.MenuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
+            FSP.MenuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
+            FSP.MenuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
             FSP.MenuGrapher.addMenuDialog(
                 "PokedexListingNumber",
-                FSP.makeDigit(pokemon.index, 3, "0"));
+                FSP.makeDigit(pokemon.number, 3, "0"));
+
             FSP.MenuGrapher.addMenuDialog(
                 "PokedexListingInfo",
                 pokemon.info[0],
@@ -6738,15 +6734,16 @@ module FullScreenPokemon {
             FSP.TimeHandler.addEvent(
                 FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher),
                 timeout,
-                "GeneralText");
+                "GeneralText",
+                {
+                    "deleteOnFinish": true
+                });
 
             FSP.TimeHandler.addEvent(
                 FSP.MenuGrapher.addMenuDialog.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText",
-                [
-                    "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!"
-                ]);
+                "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!");
 
             FSP.TimeHandler.addEvent(
                 FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher),

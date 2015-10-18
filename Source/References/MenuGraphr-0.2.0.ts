@@ -617,7 +617,7 @@ module MenuGraphr {
          */
         addMenuDialog(name: string, dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[], onCompletion?: () => any): void {
             var dialog: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialogRaw),
-                currentLine: number = 0,
+                currentLine: number = 1,
                 callback: any = (function (): void {
                     // If all dialog has been exhausted, delete the menu and finish
                     if (currentLine >= dialog.length) {
@@ -638,10 +638,12 @@ module MenuGraphr {
 
                     // This continues the dialog with the next iteration (word)
                     this.addMenuText(name, dialog[currentLine - 1], callback);
-                    return;
                 }.bind(this));
 
-            callback();
+            // This first call to addmenuText shouldn't be the callback, because if there
+            // bing called from a childrenSchema of type "text", it shouldn't delete any
+            // other menu children from childrenSchemas.
+            this.addMenuText(name, dialog[0], callback);
         }
 
         /**
@@ -790,17 +792,14 @@ module MenuGraphr {
         addMenuCharacter(name: string, character: string, x: number, y: number, delay?: number): IText {
             var menu: IMenu = this.getExistingMenu(name),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
-                textPaddingX: number = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize,
                 textPaddingY: number = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize,
                 title = "Char" + this.getCharacterEquivalent(character),
-                thing = this.GameStarter.ObjectMaker.make(
-                    title,
-                    {
-                        paddingY: textPaddingY
-                    });
+                thing = this.GameStarter.ObjectMaker.make(title, {
+                    "textPaddingY": textPaddingY
+                });
 
             menu.children.push(thing);
-
+            
             if (delay) {
                 this.GameStarter.TimeHandler.addEvent(
                     this.GameStarter.addThing.bind(this.GameStarter),
@@ -1351,7 +1350,7 @@ module MenuGraphr {
          * 
          */
         registerA(): void {
-            var menu: IListMenu = <IListMenu>this.activeMenu;
+            var menu: IMenu = this.activeMenu;
 
             if (!menu || menu.ignoreA) {
                 return;
@@ -1366,7 +1365,7 @@ module MenuGraphr {
          * 
          */
         registerB(): void {
-            var menu: IListMenu = <IListMenu>this.activeMenu;
+            var menu: IMenu = this.activeMenu;
 
             if (!menu) {
                 return;

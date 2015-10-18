@@ -2078,7 +2078,8 @@ FullScreenPokemon.FullScreenPokemon.settings.math = {
                 "label": "Lizard",
                 "sprite": "Water",
                 "info": [
-                    "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail."
+                    "Obviously prefers hot places.",
+                    "When it rains, steam is said to spout from the tip of its tail."
                 ],
                 "evolvesInto": "Charmeleon",
                 "evolvesVia": "Level 16",

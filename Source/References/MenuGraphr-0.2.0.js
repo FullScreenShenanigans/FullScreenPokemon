@@ -260,7 +260,7 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.addMenuDialog = function (name, dialogRaw, onCompletion) {
-            var dialog = this.parseRawDialog(dialogRaw), currentLine = 0, callback = (function () {
+            var dialog = this.parseRawDialog(dialogRaw), currentLine = 1, callback = (function () {
                 // If all dialog has been exhausted, delete the menu and finish
                 if (currentLine >= dialog.length) {
                     if (this.menus[name].deleteOnFinish) {
@@ -277,9 +277,11 @@ var MenuGraphr;
                 this.deleteMenuChildren(name);
                 // This continues the dialog with the next iteration (word)
                 this.addMenuText(name, dialog[currentLine - 1], callback);
-                return;
             }.bind(this));
-            callback();
+            // This first call to addmenuText shouldn't be the callback, because if there
+            // bing called from a childrenSchema of type "text", it shouldn't delete any
+            // other menu children from childrenSchemas.
+            this.addMenuText(name, dialog[0], callback);
         };
         /**
          *
@@ -385,8 +387,8 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.addMenuCharacter = function (name, character, x, y, delay) {
-            var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textPaddingX = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize, textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, title = "Char" + this.getCharacterEquivalent(character), thing = this.GameStarter.ObjectMaker.make(title, {
-                paddingY: textPaddingY
+            var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, title = "Char" + this.getCharacterEquivalent(character), thing = this.GameStarter.ObjectMaker.make(title, {
+                "textPaddingY": textPaddingY
             });
             menu.children.push(thing);
             if (delay) {
