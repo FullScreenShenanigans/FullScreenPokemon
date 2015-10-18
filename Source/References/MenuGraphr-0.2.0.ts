@@ -851,7 +851,7 @@ module MenuGraphr {
 
             this.GameStarter.TimeHandler.addEvent(
                 this.addMenuWord.bind(this),
-                character.paddingY / this.GameStarter.unitsize + 1,
+                character.paddingY + 1,
                 name,
                 progress.words,
                 progress.i,
