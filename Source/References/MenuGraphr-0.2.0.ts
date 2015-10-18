@@ -843,7 +843,7 @@ module MenuGraphr {
                 this.GameStarter.TimeHandler.addEventInterval(
                     this.scrollCharacterUp.bind(this),
                     1,
-                    (<IText>character).paddingY / this.GameStarter.unitsize,
+                    (<IText>character).paddingY,
                     character,
                     menu,
                     -1);

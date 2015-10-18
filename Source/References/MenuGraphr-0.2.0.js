@@ -416,7 +416,7 @@ var MenuGraphr;
             }
             for (i = 0; i < children.length; i += 1) {
                 character = children[i];
-                this.GameStarter.TimeHandler.addEventInterval(this.scrollCharacterUp.bind(this), 1, character.paddingY / this.GameStarter.unitsize, character, menu, -1);
+                this.GameStarter.TimeHandler.addEventInterval(this.scrollCharacterUp.bind(this), 1, character.paddingY, character, menu, -1);
             }
             this.GameStarter.TimeHandler.addEvent(this.addMenuWord.bind(this), character.paddingY / this.GameStarter.unitsize + 1, name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
         };
