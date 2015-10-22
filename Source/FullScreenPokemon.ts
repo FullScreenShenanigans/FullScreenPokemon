@@ -6611,7 +6611,8 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroWalkToTable(FSP: FullScreenPokemon, settings: any): void {
-            var oak: ICharacter = <ICharacter>FSP.getThingById("Oak");
+            var oak: ICharacter = <ICharacter>FSP.getThingById("Oak"),
+                rival: ICharacter = <ICharacter>FSP.getThingById("Rival");
 
             settings.oak = oak;
             settings.player = FSP.player;
@@ -6625,6 +6626,12 @@ module FullScreenPokemon {
             FSP.StateHolder.addChange(oak.id, "hidden", false);
             FSP.StateHolder.addChange(oak.id, "nocollide", false);
             FSP.StateHolder.addChange(oak.id, "dialog", oak.dialog);
+
+            rival.dialog = [
+                "%%%%%%%RIVAL%%%%%%%: Heh, I don't need to be greedy like you!",
+                "Go ahead and choose, %%%%%%%PLAYER%%%%%%%!"
+            ];
+            FSP.StateHolder.addChange(rival.id, "dialog", rival.dialog);
 
             FSP.animateCharacterStartWalking(oak, 0, [
                 8, "bottom", 0
@@ -6649,9 +6656,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
-                [
-                    "%%%%%%%RIVAL%%%%%%%: Gramps! I'm fed up with waiting!"
-                ],
+                "%%%%%%%RIVAL%%%%%%%: Gramps! I'm fed up with waiting!",
                 FSP.ScenePlayer.bindRoutine("OakThinksToRival"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
