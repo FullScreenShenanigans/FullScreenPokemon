@@ -678,7 +678,7 @@ var MenuGraphr;
         MenuGraphr.prototype.selectMenuListOption = function (name) {
             var selected = this.getMenuSelectedOption(name);
             if (selected.callback) {
-                selected.callback(name);
+                selected.callback.call(this, name);
             }
         };
         /* Interactivity

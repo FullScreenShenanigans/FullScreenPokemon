@@ -1215,7 +1215,7 @@ module MenuGraphr {
             var selected: any = this.getMenuSelectedOption(name);
 
             if (selected.callback) {
-                selected.callback(name);
+                selected.callback.call(this, name);
             }
         }
 
