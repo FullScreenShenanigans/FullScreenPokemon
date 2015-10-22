@@ -1672,8 +1672,7 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
             "hidden": true,
             "textSpeed": 0,
             "textXOffset": .5,
-            "textYOffset": 0,
-            "textPaddingX": -4
+            "textYOffset": 0
         },
         "KeyboardTitle": {
             "size": {

@@ -1019,24 +1019,26 @@ module MenuGraphr {
                 // Copy & pasted from the above options loop
                 // To do: make this into its own helper function?
                 for (j = 0; j < schema.length; j += 1) {
-                    if (schema[j].command) {
-                        if (schema[j].x) {
-                            x += schema[j].x * this.GameStarter.unitsize;
-                        }
-                        if (schema[j].y) {
-                            y += schema[j].y * this.GameStarter.unitsize;
-                        }
-                    } else if (schema[j] !== " ") {
-                        option.title = title = "Char" + this.getCharacterEquivalent(schema[j]);
-                        character = this.GameStarter.ObjectMaker.make(title);
-                        menu.children.push(character);
-                        optionChild.things.push(character);
+                    for (k = 0; k < schema[j].length; k += 1) {
+                        if (schema[j][k].command) {
+                            if (schema[j][k].x) {
+                                x += schema[j][k].x * this.GameStarter.unitsize;
+                            }
+                            if (schema[j][k].y) {
+                                y += schema[j][k].y * this.GameStarter.unitsize;
+                            }
+                        } else if (schema[j][k] !== " ") {
+                            option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
+                            character = this.GameStarter.ObjectMaker.make(title);
+                            menu.children.push(character);
+                            optionChild.things.push(character);
 
-                        this.GameStarter.addThing(character, x, y);
+                            this.GameStarter.addThing(character, x, y);
 
-                        x += character.width * this.GameStarter.unitsize;
-                    } else {
-                        x += textWidth;
+                            x += character.width * this.GameStarter.unitsize;
+                        } else {
+                            x += textWidth;
+                        }
                     }
                 }
 
