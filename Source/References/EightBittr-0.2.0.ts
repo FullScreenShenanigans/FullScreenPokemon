@@ -1,4 +1,8 @@
 declare module EightBittr {
+    /**
+     * A basic representation of an in-game Thing. Size, velocity, and position
+     * are stored, as well as a reference to the parent IEightBittr.
+     */
     export interface IThing {
         EightBitter: IEightBittr;
         top: number;
@@ -11,62 +15,409 @@ declare module EightBittr {
         yvel: number;
     }
 
-    export interface IEightBittrRequirementsListing {
-        global?: {
-            [i: string]: string;
-        }
-        self?: {
-            [i: string]: string;
-        }
-    }
-
+    /**
+     * Settings to initialize a new instance of the IEightBittr interface.
+     */
     export interface IEightBittrSettings {
+        /**
+         * How much to expand each pixel from raw sizing measurements to in-game.
+         */
         unitsize?: number;
-        constantsSource?: any;
+
+        /**
+         * A list of member attributes to copy from the source to the IEightBittr.
+         */
         constants?: string[];
-        requirements?: any;
+
+        /**
+         * Where the constants should be copied from, if not the IEightBittr itself.
+         */
+        constantsSource?: any;
     }
 
+    /**
+     * A summary of times for reset Functions and the overall operation.
+     */
+    export interface IResetTime {
+        /**
+         * The name of the reset Function called.
+         */
+        name: string;
+
+        /**
+         * The performance.now timestamp of when the reset started.
+         */
+        timeStart: number;
+
+        /**
+         * The performance.now timestamp of when the reset finished.
+         */
+        timeEnd: number;
+
+        /**
+         * Exactly how long it took between timeStart and timeEnd.
+         */
+        timeTaken: number;
+    }
+
+    /**
+     * A summary of times for reset Functions and the overall operation.
+     */
+    export interface IResetTimes {
+        /**
+         * What order the reset Functions were called.
+         */
+        order: string[];
+
+        /**
+         * The total start, end, and taken times for the reset operation.
+         */
+        total: IResetTime;
+
+        /**
+         * Start, end, and taken times for individual reset Functions, in order.
+         */
+        times: IResetTime[];
+    }
+
+    /**
+     * An interface used exclusively as the parent of IGameStartr. IEightBittr
+     * contains useful functions for manipulating IThings that are independent of
+     * the required GameStartr modules.
+     */
     export interface IEightBittr {
+        /**
+         * How much to expand each pixel from raw sizing measurements to in-game.
+         */
         unitsize: number;
-        checkRequirements(scope: any, requirements: any, name: string): void;
+
+        /**
+         * Timed result summaries of resetTimed, if it was called.
+         */
+        resetTimes: EightBittr.IResetTimes;
+
+        /**
+         * Resets the EightBittr by calling all of the named reset member Functions
+         * on itself.
+         * 
+         * @param EightBitter
+         * @param resets   The ordered Array of reset Functions to be called.
+         * @param customs   Additional arguments to pass to all reset Functions.
+         */
         reset(EightBitter: IEightBittr, resets: string[], customs?: any): void;
-        resetTimed(EightBitter: IEightBittr, resets: string[], customs?: any): any[];
-        get(name: any): Function;
+
+        /**
+         * Resets the EightBittr in a timed manner by calling all the named reset
+         * member Functions on itself and adding the time (in milliseconds) along 
+         * along with the total process time to an Array, which is then returned.
+         * 
+         * @param EightBitter
+         * @param resets   The ordered Array of reset Functions to be called.
+         * @param customs   Additional arguments to pass to all reset Functions.
+         */
+        resetTimed(EightBitter: IEightBittr, resets: string[], customs?: any): void;
+
+        /**
+         * Creates and returns a new HTML <canvas> element, with an optional scaling
+         * multiplier. Image smoothing is disabled.
+         * 
+         * @param width   How wide the canvas should be.
+         * @param height   How tall the canvas should be.
+         * @param scaling   How much to scale the style of the canvas (by default, 1
+         *                  for not at all).
+         * @returns A canvas of the given width, height, and scaling.
+         * @remarks TypeScript does not recognize imageSmoothingEnabled unless
+         *          prefixed by "ms", so context is cast to any.
+         */
         createCanvas(width: number, height: number, scaling?: number): HTMLCanvasElement;
+
+        /**
+         * Shifts a Thing vertically by changing its top and bottom attributes.
+         * 
+         * @param thing   The Thing to shift vertically.
+         * @param dy   How far to shift the Thing.
+         */
         shiftVert(thing: IThing, dy: number): void;
+
+        /**
+         * Shifts a Thing horizontally by changing its top and bottom attributes.
+         * 
+         * @param thing   The Thing to shift horizontally.
+         * @param dy   How far to shift the Thing.
+         */
         shiftHoriz(thing: IThing, dx: number): void;
+
+        /**
+         * Sets the top of a Thing to a set number, changing the bottom based on its
+         * height and the EightBittr's unisize.
+         * 
+         * @param thing   The Thing to shift vertically.
+         * @param top   Where the Thing's top should be.
+         */
         setTop(thing: IThing, top: number): void;
+
+        /**
+         * Sets the right of a Thing to a set number, changing the left based on its
+         * width and the EightBittr's unisize.
+         * 
+         * @param thing   The Thing to shift horizontally.
+         * @param top   Where the Thing's right should be.
+         */
         setRight(thing: IThing, right: number): void;
+
+        /**
+         * Sets the bottom of a Thing to a set number, changing the top based on its
+         * height and the EightBittr's unisize.
+         * 
+         * @param thing   The Thing to shift vertically.
+         * @param top   Where the Thing's bottom should be.
+         */
         setBottom(thing: IThing, bottom: number): void;
+
+        /**
+         * Sets the left of a Thing to a set number, changing the right based on its
+         * width and the EightBittr's unisize.
+         * 
+         * @param thing   The Thing to shift horizontally.
+         * @param top   Where the Thing's left should be.
+         */
         setLeft(thing: IThing, left: number): void;
-        setMid(thing: IThing, x: number, y: number): void;
+
+        /**
+         * Shifts a Thing so that it is horizontally centered on the given x.
+         * 
+         * @param thing   The Thing to shift horizontally.
+         * @param x   Where the Thing's horizontal midpoint should be.
+         */
         setMidX(thing: IThing, x: number): void;
+
+        /**
+         * Shifts a Thing so that it is vertically centered on the given y.
+         * 
+         * @param thing   The Thing to shift vertically.
+         * @param y   Where the Thing's vertical midpoint should be.
+         */
         setMidY(thing: IThing, y: number): void;
+
+        /**
+         * Shifts a Thing so that it is centered on the given x and y.
+         * 
+         * @param thing   The Thing to shift vertically and horizontally.
+         * @param x   Where the Thing's horizontal midpoint should be.
+         * @param y   Where the Thing's vertical midpoint should be.
+         */
+        setMid(thing: IThing, x: number, y: number): void;
+
+        /**
+         * @param thing
+         * @returns The horizontal midpoint of the Thing.
+         */
         getMidX(thing: IThing): number;
+
+        /**
+         * @param thing
+         * @returns The vertical midpoint of the Thing.
+         */
         getMidY(thing: IThing): number;
+
+        /**
+         * Shifts a Thing so that its midpoint is centered on the midpoint of the
+         * other Thing.
+         * 
+         * @param thing   The Thing to be shifted.
+         * @param other   The Thing whose midpoint is referenced.
+         */
         setMidObj(thing: IThing, other: IThing): void;
+
+        /**
+         * Shifts a Thing so that its horizontal midpoint is centered on the 
+         * midpoint of the other Thing.
+         * 
+         * @param thing   The Thing to be shifted horizontally.
+         * @param other   The Thing whose horizontal midpoint is referenced.
+         */
         setMidXObj(thing: IThing, other: IThing): void;
+
+        /**
+         * Shifts a Thing so that its vertical midpoint is centered on the 
+         * midpoint of the other Thing.
+         * 
+         * @param thing   The Thing to be shifted vertically.
+         * @param other   The Thing whose vertical midpoint is referenced.
+         */
         setMidYObj(thing: IThing, other: IThing): void;
+
+        /**
+         * @param thing
+         * @param other
+         * @returns Whether the first Thing's midpoint is to the left of the other's.
+         */
         objectToLeft(thing: IThing, other: IThing): boolean;
+
+        /**
+         * Shifts a Thing's top up, then sets the bottom (similar to a shiftVert and
+         * a setTop combined).
+         * 
+         * @param thing   The Thing to be shifted vertically.
+         * @param dy   How far to shift the Thing vertically.
+         */
         updateTop(thing: IThing, dy: number): void;
+
+        /**
+         * Shifts a Thing's right, then sets the left (similar to a shiftHoriz and a
+         * setRight combined).
+         * 
+         * @param thing   The Thing to be shifted horizontally.
+         * @param dx   How far to shift the Thing horizontally.
+         */
         updateRight(thing: IThing, dx: number): void;
+
+        /**
+         * Shifts a Thing's bottom down, then sets the bottom (similar to a 
+         * shiftVert and a setBottom combined).
+         * 
+         * @param thing   The Thing to be shifted vertically.
+         * @param dy   How far to shift the Thing vertically.
+         */
         updateBottom(thing: IThing, dy: number): void;
+
+        /**
+         * Shifts a Thing's left, then sets the right (similar to a shiftHoriz and a
+         * setLeft combined).
+         * 
+         * @param thing   The Thing to be shifted horizontally.
+         * @param dx   How far to shift the Thing horizontally.
+         */
         updateLeft(thing: IThing, dx: number): void;
-        slideToX(thing: IThing, x: number, maxSpeed: number): void;
-        slideToY(thing: IThing, y: number, maxSpeed: number): void;
+
+        /**
+         * Shifts a Thing toward a target x, but limits the total distance allowed.
+         * Distance is computed as from the Thing's horizontal midpoint.
+         * 
+         * @param thing   The Thing to be shifted horizontally.
+         * @param x   How far to shift the Thing horizontally.
+         * @param maxDistance   The maximum distance the Thing can be shifted.
+         */
+        slideToX(thing: IThing, x: number, maxDistance: number): void;
+
+        /**
+         * Shifts a Thing toward a target y, but limits the total distance allowed.
+         * Distance is computed as from the Thing's vertical midpoint.
+         * 
+         * @param thing   The Thing to be shifted vertically.
+         * @param x   How far to shift the Thing vertically.
+         * @param maxDistance   The maximum distance the Thing can be shifted.
+         */
+        slideToY(thing: IThing, y: number, maxDistance: number): void;
+
+        /**
+         * Ensures the current object is an EightBittr by throwing an error if it 
+         * is not. This should be used for functions in any EightBittr descendants
+         * that have to call 'this' to ensure their caller is what the programmer
+         * expected it to be.
+         * 
+         * @param current   The scope that should be an EightBittr.
+         */
         ensureCorrectCaller(current: any): IEightBittr;
+
+        /**
+         * "Proliferates" all properties of a donor onto a recipient by copying each
+         * of them and recursing onto child Objects. This is a deep copy.
+         * 
+         * @param recipient   An object to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
+         */
         proliferate(recipient: any, donor: any, noOverride?: boolean): any;
+
+        /**
+         * Identical to proliferate, but instead of checking whether the recipient
+         * hasOwnProperty on properties, it just checks if they're truthy.
+         * 
+         * @param recipient   An object to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
+         */
         proliferateHard(recipient: any, donor: any, noOverride?: boolean): any;
+
+        /**
+         * Identical to proliferate, but tailored for HTML elements because many
+         * element attributes don't play nicely with JavaScript Array standards. 
+         * Looking at you, HTMLCollection!
+         * 
+         * @param recipient   An HTMLElement to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
+         */
         proliferateElement(recipient: HTMLElement, donor: any, noOverride?: boolean): HTMLElement;
-        createElement(tag: string, ...args: any[]): HTMLElement;
-        followPathHard(object: any, path: string[], num?: number): any;
-        arraySwitch(thing: IThing, arrayOld: any[], arrayNew: any[]): void;
-        arrayToBeginning(thing: IThing, array: any[]): void;
-        arrayToEnd(thing: IThing, array: any[]): void;
-        arrayToIndex(thing: IThing, array: any[], index: number): void;
+
+        /**
+         * Creates and returns an HTMLElement of the specified type. Any additional
+         * settings Objects may be given to be proliferated onto the Element via
+         * proliferateElement.
+         * 
+         * @param type   The tag of the Element to be created.
+         * @param settings   Additional settings to proliferated onto the Element.
+         * @returns {HTMLElement}
+         */
+        createElement(tag?: string, ...args: any[]): HTMLElement;
+
+        /**
+         * Follows a path inside an Object recursively, based on a given path.
+         * 
+         * @param object   A container to follow a path inside.
+         * @param path   The ordered names of attributes to descend into.
+         * @param num   The starting index in path (by default, 0).
+         * @returns The discovered property within object, or undefined if the
+         *          full path doesn't exist.
+         */
+        followPathHard(object: any, path: string[], index?: number): any;
+
+        /**
+         * Switches an object from one Array to another using splice and push.
+         * 
+         * @param object    The object to move between Arrays.
+         * @param arrayOld   The Array to take the object out of.
+         * @param arrayNew   The Array to move the object into.
+         */
+        arraySwitch(object: any, arrayOld: any[], arrayNew: any[]): void;
+
+        /**
+         * Sets a Thing's position within an Array to the front by splicing and then
+         * unshifting it.
+         * 
+         * @param object   The object to move within the Array.
+         * @param array   An Array currently containing the object.
+         */
+        arrayToBeginning(object: any, array: any[]): void;
+
+        /**
+         * Sets a Thing's position within an Array to the front by splicing and then
+         * pushing it.
+         * 
+         * @param object   The object to move within the Array.
+         * @param array   An Array currently containing the object.
+         */
+        arrayToEnd(object: any, array: any[]): void;
+
+        /**
+         * Sets a Thing's position within an Array to a specific index by splicing 
+         * it out, then back in.
+         * 
+         * @param object   The object to move within the Array.
+         * @param array   An Array currently containing the object.
+         * @param index   Where the object should be moved to in the Array.
+         */
+        arrayToIndex(object: any, array: any[], index: number): void;
     }
 }
+
 
 module EightBittr {
     "use strict";
@@ -83,6 +434,11 @@ module EightBittr {
         public unitsize: number;
 
         /**
+         * Timed result summaries of resetTimed, if it was called.
+         */
+        public resetTimes: EightBittr.IResetTimes;
+
+        /**
          * Any custom settings passed in during construction to be passed to
          * reset Functions.
          */
@@ -95,45 +451,23 @@ module EightBittr {
         protected constants: string[];
 
         /**
-         * Variables that must exist, either listed under this EightBittr
-         * (such as from a sub-class) or globally.
-         */
-        protected requirements: IEightBittrRequirementsListing;
-
-        /**
-         * EightBittr constructor. Settings arguments are used to initialize 
-         * "constant" values and check for requirements.
+         * Initializes a new instance of the EightBittr class. Constants are copied
+         * onto the EightBittr from the designated source.
          * 
-         * @constructor
-         * @param {IEightBittrSettings} settings
+         * @param settings   Any optional custom settings.
          */
         constructor(settings: IEightBittrSettings = {}) {
             var EightBitter: EightBittr = EightBittr.prototype.ensureCorrectCaller(this),
                 constants: any = settings.constants,
                 constantsSource: any = settings.constantsSource || EightBitter,
-                requirements: any = settings.requirements,
                 i: number;
 
             EightBitter.unitsize = settings.unitsize || 1;
-
             EightBitter.constants = constants;
+
             if (constants) {
                 for (i = 0; i < constants.length; i += 1) {
                     EightBitter[constants[i]] = constantsSource[constants[i]];
-                }
-            }
-
-            EightBitter.requirements = requirements;
-            if (requirements) {
-                if (requirements.global) {
-                    if (typeof window !== "undefined") {
-                        EightBitter.checkRequirements(window, requirements.global, "global");
-                        // } else if (typeof global !== "undefined") {
-                        //     EightBitter.checkRequirements(global, requirements.global, "global");
-                    }
-                }
-                if (requirements.self) {
-                    EightBitter.checkRequirements(EightBitter, requirements.self, "self");
                 }
             }
         }
@@ -143,54 +477,14 @@ module EightBittr {
         */
 
         /**
-         * Given an associate array of requirement names to the files that should
-         * include them, this makes sure each of those requirements is a property of
-         * the given Object. 
-         * 
-         * @param {Mixed} scope    Generally either the window (for global checks,
-         *                         such as utility classes) or an EightBitter.    
-         * @param {Object} requirements   An associative array of properties to 
-         *                                check for under scope.
-         * @param {String} name   The name referring to scope, printed out in an
-         *                        Error if needed.
-         */
-        checkRequirements(scope: any, requirements: any, name: string): void {
-            var fails: string[] = [],
-                requirement: any;
-
-            // For each requirement in the given object, if it isn't visible as a
-            // member of scope (evaluates to falsy), complain
-            for (requirement in requirements) {
-                if (requirements.hasOwnProperty(requirement) && !scope[requirement]) {
-                    fails.push(requirement);
-                }
-            }
-
-            // If there was at least one failure added to the fails array, throw
-            // an error with each fail split by endlines
-            if (fails.length) {
-                throw new Error(
-                    "Missing " + fails.length + " requirement(s) "
-                    + "in " + name + ".\n"
-                    + fails.map(function (requirement: string, i: number): string {
-                        return i + ". " + requirement + ": is the '"
-                            + requirements[requirement] + "' file included?";
-                    }).join("\n")
-                    );
-            }
-        }
-
-        /**
          * Resets the EightBittr by calling all of the named reset member Functions
          * on itself.
          * 
-         * @param {EightBittr} EightBitter
-         * @param {String[]} resets   The ordered Array of reset Functions to be 
-         *                            called.
-         * @param {Object} [customs]   Additional arguments to pass to all reset
-         *                             Functions.
+         * @param EightBitter
+         * @param resets   The ordered Array of reset Functions to be called.
+         * @param customs   Additional arguments to pass to all reset Functions.
          */
-        reset(EightBitter: EightBittr, resets: string[], customs: any = undefined): void {
+        reset(EightBitter: EightBittr, resets: string[], customs?: any): void {
             var reset: string,
                 i: number;
 
@@ -212,74 +506,45 @@ module EightBittr {
          * member Functions on itself and adding the time (in milliseconds) along 
          * along with the total process time to an Array, which is then returned.
          * 
-         * @param {EightBittr} EightBitter
-         * @param {String[]} resets   The ordered Array of reset Functions to be 
-         *                            called.
-         * @param {Object} [customs]   Additional arguments to pass to all reset
-         *                             Functions.
-         * @return {String[]} 
+         * @param EightBitter
+         * @param resets   The ordered Array of reset Functions to be called.
+         * @param customs   Additional arguments to pass to all reset Functions.
          */
-        resetTimed(EightBitter: EightBittr, resets: string[], customs: any = undefined): any[] {
-            var timeStart: number = performance.now(),
-                times: any[] = [],
-                timeEach: number,
+        resetTimed(EightBitter: EightBittr, resets: string[], customs?: any): void {
+            var timeStartTotal: number = performance.now(),
+                timeEndTotal: number,
+                timeStart: number,
+                timeEnd: number,
                 i: number;
 
-            for (i = 0; i < resets.length; i += 1) {
-                timeEach = performance.now();
-                EightBitter[resets[i]](EightBitter, customs);
+            this.resetTimes = <any>{
+                order: resets,
+                times: []
+            };
 
-                times.push({
+            for (i = 0; i < resets.length; i += 1) {
+                timeStart = performance.now();
+                EightBitter[resets[i]](EightBitter, customs);
+                timeEnd = performance.now();
+
+                this.resetTimes.times.push({
                     "name": resets[i],
-                    "time": performance.now() - timeEach
+                    "timeStart": timeStart,
+                    "timeEnd": timeEnd,
+                    "timeTaken": timeEnd - timeStart
                 });
             }
 
-            times.push({
+            timeEndTotal = performance.now();
+
+            this.resetTimes.total = {
                 "name": "resetTimed",
-                "time": performance.now() - timeStart
-            });
-
-            return times;
+                "timeStart": timeStartTotal,
+                "timeEnd": timeEndTotal,
+                "timeTaken": timeEndTotal - timeStartTotal
+            };
         }
 
-        /**
-         * EightBittr.get is provided as a shortcut function to make binding member
-         * functions, particularily those using "this.unitsize" (where this needs to
-         * be an EightBitter, not an external calling object). At the very simplest,
-         * this.get(func) acts as a shortcut to this.bind(this, func).
-         * In addition, if the name is given as "a.b", EightBitter.followPath will
-         * be used on "a.b".split('.') (so EightBitter.prototype[a][b] is returned).
-         * 
-         * @this {EightBittr}
-         * @param {Mixed} name   Either the Function itself, or a string of the path
-         *                       to the Function (after ".prototype.").
-         * @return {Function}   A function, bound to set "this" to the calling
-         *                      EightBitter
-         */
-        get(name: any): Function {
-            var EightBitter: EightBittr = EightBittr.prototype.ensureCorrectCaller.call(this),
-                func: Function;
-
-            // If name is a string, turn it into a function path, and follow it
-            if (name.constructor === String) {
-                func = EightBitter.followPathHard(EightBitter, name.split("."), 0);
-            } else if (name instanceof Array) {
-                // If it's already a path (array), follow it
-                func = EightBitter.followPathHard(EightBitter, name, 0);
-            } else {
-                // Otherwise func is just name
-                func = name;
-            }
-
-            // Don't allow func to be undefined or some non-function object
-            if (typeof (func) !== "function") {
-                throw new Error(name + " is not defined in this EightBitter.");
-            }
-
-            // Bind the function to this
-            return func.bind(EightBitter);
-        }
 
         /* HTML Functions
         */
@@ -288,11 +553,11 @@ module EightBittr {
          * Creates and returns a new HTML <canvas> element, with an optional scaling
          * multiplier. Image smoothing is disabled.
          * 
-         * @param {Number} width   How wide the canvas should be.
-         * @param {Number} height   How tall the canvas should be.
-         * @param {Number} [scaling]   How much to scale the style of the canvas (by
-         *                             default, 1 for not at all).
-         * @return {HTMLCanvasElement}
+         * @param width   How wide the canvas should be.
+         * @param height   How tall the canvas should be.
+         * @param scaling   How much to scale the style of the canvas (by default, 1
+         *                  for not at all).
+         * @returns A canvas of the given width, height, and scaling.
          * @remarks TypeScript does not recognize imageSmoothingEnabled unless
          *          prefixed by "ms", so context is cast to any.
          */
@@ -310,7 +575,7 @@ module EightBittr {
             canvas.style.width = (width * scaling) + "px";
             canvas.style.height = (height * scaling) + "px";
 
-            // For speed's sake, disable image smoothing in all browsers
+            // For speed's sake, disable image smoothing in the first supported browsers
             if (typeof context.imageSmoothingEnabled !== "undefined") {
                 context.imageSmoothingEnabled = false;
             } else if (typeof context.webkitImageSmoothingEnabled !== "undefined") {
@@ -326,14 +591,15 @@ module EightBittr {
             return canvas;
         }
 
+
         /* Physics functions 
         */
 
         /**
          * Shifts a Thing vertically by changing its top and bottom attributes.
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
+         * @param thing   The Thing to shift vertically.
+         * @param dy   How far to shift the Thing.
          */
         shiftVert(thing: IThing, dy: number): void {
             thing.top += dy;
@@ -343,8 +609,8 @@ module EightBittr {
         /**
          * Shifts a Thing horizontally by changing its top and bottom attributes.
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
+         * @param thing   The Thing to shift horizontally.
+         * @param dy   How far to shift the Thing.
          */
         shiftHoriz(thing: IThing, dx: number): void {
             thing.left += dx;
@@ -355,8 +621,8 @@ module EightBittr {
          * Sets the top of a Thing to a set number, changing the bottom based on its
          * height and the EightBittr's unisize.
          * 
-         * @param {Thing} thing
-         * @param {Number} top
+         * @param thing   The Thing to shift vertically.
+         * @param top   Where the Thing's top should be.
          */
         setTop(thing: IThing, top: number): void {
             thing.top = top;
@@ -367,8 +633,8 @@ module EightBittr {
          * Sets the right of a Thing to a set number, changing the left based on its
          * width and the EightBittr's unisize.
          * 
-         * @param {Thing} thing
-         * @param {Number} right
+         * @param thing   The Thing to shift horizontally.
+         * @param top   Where the Thing's right should be.
          */
         setRight(thing: IThing, right: number): void {
             thing.right = right;
@@ -379,8 +645,8 @@ module EightBittr {
          * Sets the bottom of a Thing to a set number, changing the top based on its
          * height and the EightBittr's unisize.
          * 
-         * @param {Thing} thing
-         * @param {Number} bottom
+         * @param thing   The Thing to shift vertically.
+         * @param top   Where the Thing's bottom should be.
          */
         setBottom(thing: IThing, bottom: number): void {
             thing.bottom = bottom;
@@ -391,8 +657,8 @@ module EightBittr {
          * Sets the left of a Thing to a set number, changing the right based on its
          * width and the EightBittr's unisize.
          * 
-         * @param {Thing} thing
-         * @param {Number} left
+         * @param thing   The Thing to shift horizontally.
+         * @param top   Where the Thing's left should be.
          */
         setLeft(thing: IThing, left: number): void {
             thing.left = left;
@@ -400,22 +666,10 @@ module EightBittr {
         }
 
         /**
-         * Shifts a Thing so that it is centered on the given x and y.
-         * 
-         * @param {Thing} thing
-         * @param {Number} x
-         * @param {Number} y
-         */
-        setMid(thing: IThing, x: number, y: number): void {
-            thing.EightBitter.setMidX(thing, x);
-            thing.EightBitter.setMidY(thing, y);
-        }
-
-        /**
          * Shifts a Thing so that it is horizontally centered on the given x.
          * 
-         * @param {Thing} thing
-         * @param {Number} x
+         * @param thing   The Thing to shift horizontally.
+         * @param x   Where the Thing's horizontal midpoint should be.
          */
         setMidX(thing: IThing, x: number): void {
             thing.EightBitter.setLeft(
@@ -426,8 +680,8 @@ module EightBittr {
         /**
          * Shifts a Thing so that it is vertically centered on the given y.
          * 
-         * @param {Thing} thing
-         * @param {Number} y
+         * @param thing   The Thing to shift vertically.
+         * @param y   Where the Thing's vertical midpoint should be.
          */
         setMidY(thing: IThing, y: number): void {
             thing.EightBitter.setTop(
@@ -436,16 +690,28 @@ module EightBittr {
         }
 
         /**
-         * @param {Thing} thing
-         * @return {Number} The horizontal midpoint of the Thing.
+         * Shifts a Thing so that it is centered on the given x and y.
+         * 
+         * @param thing   The Thing to shift vertically and horizontally.
+         * @param x   Where the Thing's horizontal midpoint should be.
+         * @param y   Where the Thing's vertical midpoint should be.
+         */
+        setMid(thing: IThing, x: number, y: number): void {
+            thing.EightBitter.setMidX(thing, x);
+            thing.EightBitter.setMidY(thing, y);
+        }
+
+        /**
+         * @param thing
+         * @returns The horizontal midpoint of the Thing.
          */
         getMidX(thing: IThing): number {
             return thing.left + thing.width * thing.EightBitter.unitsize / 2;
         }
 
         /**
-         * @param {Thing} thing
-         * @return {Number} The vertical midpoint of the Thing.
+         * @param thing
+         * @returns The vertical midpoint of the Thing.
          */
         getMidY(thing: IThing): number {
             return thing.top + thing.height * thing.EightBitter.unitsize / 2;
@@ -455,8 +721,8 @@ module EightBittr {
          * Shifts a Thing so that its midpoint is centered on the midpoint of the
          * other Thing.
          * 
-         * @param {Thing} thing   The Thing to be shifted.
-         * @param {Thing} other   The Thing whose midpoint is referenced.
+         * @param thing   The Thing to be shifted.
+         * @param other   The Thing whose midpoint is referenced.
          */
         setMidObj(thing: IThing, other: IThing): void {
             thing.EightBitter.setMidXObj(thing, other);
@@ -467,50 +733,49 @@ module EightBittr {
          * Shifts a Thing so that its horizontal midpoint is centered on the 
          * midpoint of the other Thing.
          * 
-         * @param {Thing} thing   The Thing to be shifted.
-         * @param {Thing} other   The Thing whose midpoint is referenced.
+         * @param thing   The Thing to be shifted horizontally.
+         * @param other   The Thing whose horizontal midpoint is referenced.
          */
         setMidXObj(thing: IThing, other: IThing): void {
             thing.EightBitter.setLeft(
                 thing,
                 thing.EightBitter.getMidX(other)
                 - (thing.width * thing.EightBitter.unitsize / 2)
-                );
+            );
         }
 
         /**
          * Shifts a Thing so that its vertical midpoint is centered on the 
          * midpoint of the other Thing.
          * 
-         * @param {Thing} thing   The Thing to be shifted.
-         * @param {Thing} other   The Thing whose midpoint is referenced.
+         * @param thing   The Thing to be shifted vertically.
+         * @param other   The Thing whose vertical midpoint is referenced.
          */
         setMidYObj(thing: IThing, other: IThing): void {
             thing.EightBitter.setTop(
                 thing,
                 thing.EightBitter.getMidY(other)
                 - (thing.height * thing.EightBitter.unitsize / 2)
-                );
+            );
         }
 
         /**
-         * @param {Thing} thing
-         * @param {Thing} other
-         * @return {Boolean} Whether the first Thing's midpoint is to the left of
-         *                   the other's.
+         * @param thing
+         * @param other
+         * @returns Whether the first Thing's midpoint is to the left of the other's.
          */
         objectToLeft(thing: IThing, other: IThing): boolean {
             return (
                 thing.EightBitter.getMidX(thing) < thing.EightBitter.getMidX(other)
-                );
+            );
         }
 
         /**
          * Shifts a Thing's top up, then sets the bottom (similar to a shiftVert and
          * a setTop combined).
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
+         * @param thing   The Thing to be shifted vertically.
+         * @param dy   How far to shift the Thing vertically.
          */
         updateTop(thing: IThing, dy: number): void {
             // If a dy is provided, move the thing's top that much
@@ -524,8 +789,8 @@ module EightBittr {
          * Shifts a Thing's right, then sets the left (similar to a shiftHoriz and a
          * setRight combined).
          * 
-         * @param {Thing} thing
-         * @param {Number} dx
+         * @param thing   The Thing to be shifted horizontally.
+         * @param dx   How far to shift the Thing horizontally.
          */
         updateRight(thing: IThing, dx: number): void {
             // If a dx is provided, move the thing's right that much
@@ -539,8 +804,8 @@ module EightBittr {
          * Shifts a Thing's bottom down, then sets the bottom (similar to a 
          * shiftVert and a setBottom combined).
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
+         * @param thing   The Thing to be shifted vertically.
+         * @param dy   How far to shift the Thing vertically.
          */
         updateBottom(thing: IThing, dy: number): void {
             // If a dy is provided, move the thing's bottom that much
@@ -554,8 +819,8 @@ module EightBittr {
          * Shifts a Thing's left, then sets the right (similar to a shiftHoriz and a
          * setLeft combined).
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
+         * @param thing   The Thing to be shifted horizontally.
+         * @param dx   How far to shift the Thing horizontally.
          */
         updateLeft(thing: IThing, dx: number): void {
             // If a dx is provided, move the thing's left that much
@@ -569,22 +834,22 @@ module EightBittr {
          * Shifts a Thing toward a target x, but limits the total distance allowed.
          * Distance is computed as from the Thing's horizontal midpoint.
          * 
-         * @param {Thing} thing
-         * @param {Number} x
-         * @param {Number} maxSpeed
+         * @param thing   The Thing to be shifted horizontally.
+         * @param x   How far to shift the Thing horizontally.
+         * @param maxDistance   The maximum distance the Thing can be shifted.
          */
-        slideToX(thing: IThing, x: number, maxSpeed: number): void {
+        slideToX(thing: IThing, x: number, maxDistance: number): void {
             var midx: number = thing.EightBitter.getMidX(thing);
 
             // If no maxSpeed is provided, assume Infinity (so it doesn't matter)
-            maxSpeed = maxSpeed || Infinity;
+            maxDistance = maxDistance || Infinity;
 
             // Thing to the left? Slide to the right.
             if (midx < x) {
-                thing.EightBitter.shiftHoriz(thing, Math.min(maxSpeed, x - midx));
+                thing.EightBitter.shiftHoriz(thing, Math.min(maxDistance, x - midx));
             } else {
                 // Thing to the right? Slide to the left.
-                thing.EightBitter.shiftHoriz(thing, Math.max(-maxSpeed, x - midx));
+                thing.EightBitter.shiftHoriz(thing, Math.max(-maxDistance, x - midx));
             }
         }
 
@@ -592,22 +857,22 @@ module EightBittr {
          * Shifts a Thing toward a target y, but limits the total distance allowed.
          * Distance is computed as from the Thing's vertical midpoint.
          * 
-         * @param {Thing} thing
-         * @param {Number} y
-         * @param {Number} maxSpeed
+         * @param thing   The Thing to be shifted vertically.
+         * @param x   How far to shift the Thing vertically.
+         * @param maxDistance   The maximum distance the Thing can be shifted.
          */
-        slideToY(thing: IThing, y: number, maxSpeed: number): void {
+        slideToY(thing: IThing, y: number, maxDistance: number): void {
             var midy: number = thing.EightBitter.getMidY(thing);
 
             // If no maxSpeed is provided, assume Infinity (so it doesn't matter)
-            maxSpeed = maxSpeed || Infinity;
+            maxDistance = maxDistance || Infinity;
 
             // Thing above? slide down.
             if (midy < y) {
-                thing.EightBitter.shiftVert(thing, Math.min(maxSpeed, y - midy));
+                thing.EightBitter.shiftVert(thing, Math.min(maxDistance, y - midy));
             } else {
                 // Thing below? Slide up.
-                thing.EightBitter.shiftVert(thing, Math.max(-maxSpeed, y - midy));
+                thing.EightBitter.shiftVert(thing, Math.max(-maxDistance, y - midy));
             }
         }
 
@@ -621,7 +886,7 @@ module EightBittr {
          * that have to call 'this' to ensure their caller is what the programmer
          * expected it to be.
          * 
-         * @param {Mixed} current   
+         * @param current   The scope that should be an EightBittr.
          */
         ensureCorrectCaller(current: any): EightBittr {
             if (!(current instanceof EightBittr)) {
@@ -640,12 +905,11 @@ module EightBittr {
          * "Proliferates" all properties of a donor onto a recipient by copying each
          * of them and recursing onto child Objects. This is a deep copy.
          * 
-         * @param {Mixed} recipient
-         * @param {Mixed} donor
-         * @param {Boolean} [noOverride]   Whether pre-existing properties of the
-         *                                 recipient should be skipped (defaults to
-         *                                 false).
-         * @return {Mixed} recipient
+         * @param recipient   An object to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
          */
         proliferate(recipient: any, donor: any, noOverride: boolean = false): any {
             var setting: any,
@@ -672,23 +936,21 @@ module EightBittr {
                     }
                 }
             }
+
             return recipient;
         }
 
         /**
          * Identical to proliferate, but instead of checking whether the recipient
-         * hasOwnProperty on properties, it just checks if they're truthy
+         * hasOwnProperty on properties, it just checks if they're truthy.
          * 
-         * @param {Mixed} recipient
-         * @param {Mixed} donor
-         * @param {Boolean} [noOverride]   Whether pre-existing properties of the
-         *                                 recipient should be skipped (defaults to
-         *                                 false).
-         * @return {Mixed} recipient
-         * @remarks This may not be good with JSLint, but it works for prototypal
-         *          inheritance, since hasOwnProperty only is for the current class
+         * @param recipient   An object to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
          */
-        proliferateHard(recipient: any, donor: any, noOverride: boolean = false): any {
+        proliferateHard(recipient: any, donor: any, noOverride?: boolean): any {
             var setting: any,
                 i: string;
 
@@ -721,10 +983,11 @@ module EightBittr {
          * element attributes don't play nicely with JavaScript Array standards. 
          * Looking at you, HTMLCollection!
          * 
-         * @param {HTMLElement} recipient
-         * @param {Any} donor
-         * @param {Boolean} [noOverride]
-         * @return {HTMLElement}
+         * @param recipient   An HTMLElement to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
          */
         proliferateElement(recipient: HTMLElement, donor: any, noOverride: boolean = false): HTMLElement {
             var setting: any,
@@ -743,7 +1006,8 @@ module EightBittr {
 
                     // Special cases for HTML elements
                     switch (i) {
-                        // Children: just append all of them directly
+                        // Children and options: just append all of them directly
+                        case "children":
                         case "children":
                             if (typeof (setting) !== "undefined") {
                                 for (j = 0; j < setting.length; j += 1) {
@@ -776,6 +1040,7 @@ module EightBittr {
                     }
                 }
             }
+
             return recipient;
         }
 
@@ -784,19 +1049,18 @@ module EightBittr {
          * settings Objects may be given to be proliferated onto the Element via
          * proliferateElement.
          * 
-         * @param {String} type   The tag of the Element to be created.
-         * @param {Object} [settings]   Additional settings for the Element, such as
-         *                              className or style.
-         * @return {HTMLElement}
+         * @param type   The tag of the Element to be created.
+         * @param settings   Additional settings to proliferated onto the Element.
+         * @returns {HTMLElement}
          */
-        createElement(tag: string, ...args: any[]): HTMLElement {
+        createElement(tag?: string, ...args: any[]): HTMLElement {
             var EightBitter: EightBittr = EightBittr.prototype.ensureCorrectCaller(this),
-                element: any = document.createElement(tag || "div"),
+                element: HTMLElement = document.createElement(tag || "div"),
                 i: number;
 
             // For each provided object, add those settings to the element
-            for (i = 1; i < arguments.length; i += 1) {
-                EightBitter.proliferateElement(element, arguments[i]);
+            for (i = 0; i < args.length; i += 1) {
+                EightBitter.proliferateElement(element, args[i]);
             }
 
             return element;
@@ -805,71 +1069,71 @@ module EightBittr {
         /**
          * Follows a path inside an Object recursively, based on a given path.
          * 
-         * @param {Mixed} object
-         * @param {String[]} path   The ordered names of attributes to descend into.
-         * @param {Number} [num]   The starting index in path (by default, 0).
-         * @return {Mixed}
-         * @remarks This may not be good with JSLint, but it works for prototypal
-         *          inheritance, since hasOwnProperty only is for the current class
+         * @param object   A container to follow a path inside.
+         * @param path   The ordered names of attributes to descend into.
+         * @param num   The starting index in path (by default, 0).
+         * @returns The discovered property within object, or undefined if the
+         *          full path doesn't exist.
          */
-        followPathHard(object: any, path: string[], num: number = 0): any {
-            for (var i: number = num || 0; i < path.length; i += 1) {
+        followPathHard(object: any, path: string[], index: number = 0): any {
+            for (var i: number = index; i < path.length; i += 1) {
                 if (typeof object[path[i]] === "undefined") {
                     return undefined;
                 } else {
                     object = object[path[i]];
                 }
             }
+
             return object;
         }
 
         /**
-         * Switches a Thing from one Array to Another using splice and push.
+         * Switches an object from one Array to another using splice and push.
          * 
-         * @param {Thing} thing
-         * @param {Array} arrayOld
-         * @param {Array} arrayNew
+         * @param object    The object to move between Arrays.
+         * @param arrayOld   The Array to take the object out of.
+         * @param arrayNew   The Array to move the object into.
          */
-        arraySwitch(thing: IThing, arrayOld: any[], arrayNew: any[]): void {
-            arrayOld.splice(arrayOld.indexOf(thing), 1);
-            arrayNew.push(thing);
+        arraySwitch(object: any, arrayOld: any[], arrayNew: any[]): void {
+            arrayOld.splice(arrayOld.indexOf(object), 1);
+            arrayNew.push(object);
         }
 
         /**
          * Sets a Thing's position within an Array to the front by splicing and then
          * unshifting it.
          * 
-         * @param {Thing} thing
-         * @param {Array} array
+         * @param object   The object to move within the Array.
+         * @param array   An Array currently containing the object.
          */
-        arrayToBeginning(thing: IThing, array: any[]): void {
-            array.splice(array.indexOf(thing), 1);
-            array.unshift(thing);
+        arrayToBeginning(object: any, array: any[]): void {
+            array.splice(array.indexOf(object), 1);
+            array.unshift(object);
         }
 
         /**
          * Sets a Thing's position within an Array to the front by splicing and then
          * pushing it.
          * 
-         * @param {Thing} thing
-         * @param {Array} array
+         * @param object   The object to move within the Array.
+         * @param array   An Array currently containing the object.
          */
-        arrayToEnd(thing: IThing, array: any[]): void {
-            array.splice(array.indexOf(thing), 1);
-            array.push(thing);
+        arrayToEnd(object: IThing, array: any[]): void {
+            array.splice(array.indexOf(object), 1);
+            array.push(object);
         }
 
         /**
          * Sets a Thing's position within an Array to a specific index by splicing 
          * it out, then back in.
          * 
-         * @param {Thing} thing
-         * @param {Array} array
-         * @param {Number} index
+         * @param object   The object to move within the Array.
+         * @param array   An Array currently containing the object.
+         * @param index   Where the object should be moved to in the Array.
          */
-        arrayToIndex(thing: IThing, array: any[], index: number): void {
-            array.splice(array.indexOf(thing), 1);
-            array.splice(index, 0, thing);
+        arrayToIndex(object: IThing, array: any[], index: number): void {
+            array.splice(array.indexOf(object), 1);
+            array.splice(index, 0, object);
         }
     };
 }
