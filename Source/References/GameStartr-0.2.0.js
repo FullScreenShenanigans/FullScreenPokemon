@@ -1,69 +1,36 @@
-// @echo '/// <reference path="AudioPlayr-0.2.1.ts" />'
-// @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
-// @echo '/// <reference path="DeviceLayr-0.2.0.ts" />'
-// @echo '/// <reference path="EightBittr-0.2.0.ts" />'
-// @echo '/// <reference path="FPSAnalyzr-0.2.1.ts" />'
-// @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
-// @echo '/// <reference path="GroupHoldr-0.2.1.ts" />'
-// @echo '/// <reference path="InputWritr-0.2.0.ts" />'
-// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
-// @echo '/// <reference path="LevelEditr-0.2.0.ts" />'
-// @echo '/// <reference path="MapsCreatr-0.2.1.ts" />'
-// @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
-// @echo '/// <reference path="MapsHandlr-0.2.0.ts" />'
-// @echo '/// <reference path="MathDecidr-0.2.0.ts" />'
-// @echo '/// <reference path="ModAttachr-0.2.2.ts" />'
-// @echo '/// <reference path="NumberMakr-0.2.2.ts" />'
-// @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
-// @echo '/// <reference path="PixelDrawr-0.2.0.ts" />'
-// @echo '/// <reference path="PixelRendr-0.2.0.ts" />'
-// @echo '/// <reference path="QuadsKeepr-0.2.1.ts" />'
-// @echo '/// <reference path="ScenePlayr-0.2.0.ts" />'
-// @echo '/// <reference path="StringFilr-0.2.1.ts" />'
-// @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
-// @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
-// @echo '/// <reference path="TouchPassr-0.2.0.ts" />'
-// @echo '/// <reference path="UserWrappr-0.2.0.ts" />'
-// @echo '/// <reference path="WorldSeedr-0.2.0.ts" />'
-// @echo '/// <reference path="js_beautify.ts" />'
+/// <reference path="AudioPlayr-0.2.1.ts" />
+/// <reference path="ChangeLinr-0.2.0.ts" />
+/// <reference path="DeviceLayr-0.2.0.ts" />
+/// <reference path="EightBittr-0.2.0.ts" />
+/// <reference path="FPSAnalyzr-0.2.1.ts" />
+/// <reference path="GamesRunnr-0.2.0.ts" />
+/// <reference path="GroupHoldr-0.2.1.ts" />
+/// <reference path="InputWritr-0.2.0.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
+/// <reference path="LevelEditr-0.2.0.ts" />
+/// <reference path="MapsCreatr-0.2.1.ts" />
+/// <reference path="MapScreenr-0.2.1.ts" />
+/// <reference path="MapsHandlr-0.2.0.ts" />
+/// <reference path="MathDecidr-0.2.0.ts" />
+/// <reference path="ModAttachr-0.2.2.ts" />
+/// <reference path="NumberMakr-0.2.2.ts" />
+/// <reference path="ObjectMakr-0.2.2.ts" />
+/// <reference path="PixelDrawr-0.2.0.ts" />
+/// <reference path="PixelRendr-0.2.0.ts" />
+/// <reference path="QuadsKeepr-0.2.1.ts" />
+/// <reference path="ScenePlayr-0.2.0.ts" />
+/// <reference path="StringFilr-0.2.1.ts" />
+/// <reference path="ThingHittr-0.2.0.ts" />
+/// <reference path="TimeHandlr-0.2.0.ts" />
+/// <reference path="TouchPassr-0.2.0.ts" />
+/// <reference path="UserWrappr-0.2.0.ts" />
+/// <reference path="WorldSeedr-0.2.0.ts" />
+/// <reference path="js_beautify.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-// @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/AudioPlayr-0.2.1.ts" />
-/// <reference path="References/ChangeLinr-0.2.0.ts" />
-/// <reference path="References/DeviceLayr-0.2.0.ts" />
-/// <reference path="References/EightBittr-0.2.0.ts" />
-/// <reference path="References/FPSAnalyzr-0.2.1.ts" />
-/// <reference path="References/GamesRunnr-0.2.0.ts" />
-/// <reference path="References/GroupHoldr-0.2.1.ts" />
-/// <reference path="References/InputWritr-0.2.0.ts" />
-/// <reference path="References/ItemsHoldr-0.2.1.ts" />
-/// <reference path="References/LevelEditr-0.2.0.ts" />
-/// <reference path="References/MapsCreatr-0.2.1.ts" />
-/// <reference path="References/MapScreenr-0.2.1.ts" />
-/// <reference path="References/MapsHandlr-0.2.0.ts" />
-/// <reference path="References/MathDecidr-0.2.0.ts" />
-/// <reference path="References/ModAttachr-0.2.2.ts" />
-/// <reference path="References/NumberMakr-0.2.2.ts" />
-/// <reference path="References/ObjectMakr-0.2.2.ts" />
-/// <reference path="References/PixelDrawr-0.2.0.ts" />
-/// <reference path="References/PixelRendr-0.2.0.ts" />
-/// <reference path="References/QuadsKeepr-0.2.1.ts" />
-/// <reference path="References/ScenePlayr-0.2.0.ts" />
-/// <reference path="References/StringFilr-0.2.1.ts" />
-/// <reference path="References/ThingHittr-0.2.0.ts" />
-/// <reference path="References/TimeHandlr-0.2.0.ts" />
-/// <reference path="References/TouchPassr-0.2.0.ts" />
-/// <reference path="References/UserWrappr-0.2.0.ts" />
-/// <reference path="References/WorldSeedr-0.2.0.ts" />
-/// <reference path="References/js_beautify.ts" />
-/// <reference path="GameStartr.d.ts" />
-// @endif
-// @include ../Source/GameStartr.d.ts
 var GameStartr;
 (function (GameStartr_1) {
     "use strict";
@@ -115,6 +82,12 @@ var GameStartr;
             ];
             if (settings.extraResets) {
                 this.resets.push.apply(this.resets, settings.extraResets);
+            }
+            if (settings.resetTimed) {
+                this.resetTimed(this, settings);
+            }
+            else {
+                this.reset(this, settings);
             }
         }
         /* Resets

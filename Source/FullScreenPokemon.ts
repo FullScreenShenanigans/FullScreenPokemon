@@ -119,8 +119,6 @@ module FullScreenPokemon {
             "I", "R", " ", "Mon", "ED"
         ];
 
-
-
         /*
          * The allowed lowercase keys to be shown in a keyboard.
          */
@@ -137,7 +135,7 @@ module FullScreenPokemon {
         ];
 
         /**
-         * Overriden MapScreenr refers to the IMapScreenr defined in FullScreenPokemon.d.ts.
+         * Overridden MapScreenr refers to the IMapScreenr defined in FullScreenPokemon.d.ts.
          */
         public MapScreener: IMapScreenr;
 
@@ -159,18 +157,12 @@ module FullScreenPokemon {
         /**
          * Internal reference to the static settings.
          */
-        public settings: IFullScreenPokemonStoredSettings = FullScreenPokemon.settings;
+        public settings: IFullScreenPokemonStoredSettings;
 
         /**
          * Internal reference to the static unitsize.
          */
         public unitsize: number;
-
-        /**
-         * Timed result summaries of the constructor, if resetTimed was passed
-         * as true. Otherwise, this is undefined.
-         */
-        public resetTimes: any[];
 
         /**
          * The game's player, which (when defined) will always be a Player Thing.
@@ -183,25 +175,24 @@ module FullScreenPokemon {
          * as members of the FullScreenPokemon.prototype object.
          * Dynamic game settings may be given as members of the "customs" argument.
          */
-        constructor(customs: GameStartr.IGameStartrCustoms) {
-            super({
-                "constantsSource": FullScreenPokemon,
-                "constants": [
-                    "unitsize",
-                    "scale"
-                ],
-                "extraResets": [
-                    "resetStateHolder",
-                    "resetMenuGrapher",
-                    "resetBattleMover",
-                ]
-            });
+        constructor(settings: GameStartr.IGameStartrSettings) {
+            this.settings = FullScreenPokemon.settings;
 
-            if (customs.resetTimed) {
-                this.resetTimes = this.resetTimed(this, customs);
-            } else {
-                this.reset(this, customs);
-            }
+            super(
+                this.proliferate(
+                    {
+                        "constantsSource": FullScreenPokemon,
+                        "constants": [
+                            "unitsize",
+                            "scale"
+                        ],
+                        "extraResets": [
+                            "resetStateHolder",
+                            "resetMenuGrapher",
+                            "resetBattleMover",
+                        ]
+                    },
+                    settings));
         }
 
 
@@ -214,7 +205,7 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetObjectMaker(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+        resetObjectMaker(FSP: FullScreenPokemon, settings: GameStartr.IGameStartrSettings): void {
             FSP.ObjectMaker = new ObjectMakr.ObjectMakr(
                 FSP.proliferate(
                     {
@@ -240,7 +231,7 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetMathDecider(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+        resetMathDecider(FSP: FullScreenPokemon, settings: GameStartr.IGameStartrSettings): void {
             FSP.MathDecider = new MathDecidr.MathDecidr(
                 FSP.proliferate(
                     {
@@ -258,7 +249,7 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetStateHolder(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+        resetStateHolder(FSP: FullScreenPokemon, settings: GameStartr.IGameStartrSettings): void {
             FSP.StateHolder = new StateHoldr.StateHoldr(
                 FSP.proliferate(
                     {
@@ -273,7 +264,7 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetMenuGrapher(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+        resetMenuGrapher(FSP: FullScreenPokemon, settings: GameStartr.IGameStartrSettings): void {
             FSP.MenuGrapher = new MenuGraphr.MenuGraphr(
                 FSP.proliferate(
                     {
@@ -288,7 +279,7 @@ module FullScreenPokemon {
          * @param {FullScreenPokemon} FSP
          * @param {Object} customs
          */
-        resetBattleMover(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
+        resetBattleMover(FSP: FullScreenPokemon, settings: GameStartr.IGameStartrSettings): void {
             FSP.BattleMover = new BattleMovr.BattleMovr(
                 FSP.proliferate(
                     {
@@ -301,8 +292,8 @@ module FullScreenPokemon {
         /**
          * 
          */
-        resetContainer(FSP: FullScreenPokemon, customs: GameStartr.IGameStartrCustoms): void {
-            super.resetContainer(FSP, customs);
+        resetContainer(FSP: FullScreenPokemon, settings: GameStartr.IGameStartrSettings): void {
+            super.resetContainer(FSP, settings);
 
             FSP.container.style.fontFamily = "Press Start";
             FSP.container.className += " FullScreenPokemon";

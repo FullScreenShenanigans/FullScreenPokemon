@@ -594,7 +594,7 @@ module GameStartr {
         public scale: number;
 
         /**
-         * Initializes a new instance of the GameStartr class. 
+         * Initializes a new instance of the GameStartr class.
          * 
          * @param customs   Any optional custom settings.
          */
@@ -607,6 +607,12 @@ module GameStartr {
 
             if (settings.extraResets) {
                 this.resets.push.apply(this.resets, settings.extraResets);
+            }
+
+            if (settings.resetTimed) {
+                this.resetTimed(this, settings);
+            } else {
+                this.reset(this, settings);
             }
         }
 

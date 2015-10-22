@@ -1,7 +1,6 @@
 declare module FullScreenPokemon {
     export enum Direction { }
 
-    // Until TypeScript 1.6 is stable and adopted, this can't be used, as 1.5.X throws an error
     // TS2413: Numeric index type 'string' is not assignable to string index type 'Direction'.
     //export interface IDirections {
     //    [i: number]: string;
@@ -34,16 +33,16 @@ declare module FullScreenPokemon {
         states: IStateHoldrCustoms;
     }
 
-    export interface IBattleMovrCustoms extends GameStartr.IGameStartrCustomsObject {
+    export interface IBattleMovrCustoms extends GameStartr.IGameStartrSettingsObject {
         GameStarter: GameStartr.IGameStartr;
         MenuGrapher: MenuGraphr.IMenuGraphr;
     }
 
-    export interface IMenuGraphrCustoms extends GameStartr.IGameStartrCustomsObject {
+    export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject {
         GameStarter: GameStartr.IGameStartr;
     }
 
-    export interface IStateHoldrCustoms extends GameStartr.IGameStartrCustomsObject {
+    export interface IStateHoldrCustoms extends GameStartr.IGameStartrSettingsObject {
         ItemsHolder: ItemsHoldr.IItemsHoldr;
     }
 
