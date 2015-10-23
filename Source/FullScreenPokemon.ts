@@ -3636,7 +3636,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        openKeyboardMenu(settings: any): void {
+        openKeyboardMenu(settings: any = {}): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 value: string[][] = [
                     settings.value || ["_", "_", "_", "_", "_", "_", "_"]
@@ -3898,15 +3898,15 @@ module FullScreenPokemon {
          * 
          */
         addBattleDisplayPokeballs(FSP: FullScreenPokemon, menu: IMenu, battler: BattleMovr.IBattleThingInfo, opposite?: boolean): void {
-            var text: string[] = [],
+            var text: string[][] = [],
                 i: number;
 
             for (i = 0; i < battler.actors.length; i += 1) {
-                text.push("Ball");
+                text.push(["Ball"]);
             }
 
             for (; i < 6; i += 1) {
-                text.push("BallEmpty");
+                text.push(["BallEmpty"]);
             }
 
             if (opposite) {
