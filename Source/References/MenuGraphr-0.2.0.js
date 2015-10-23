@@ -486,16 +486,14 @@ var MenuGraphr;
                                     y += schema[j][k].y * this.GameStarter.unitsize;
                                 }
                             }
-                            else if (schema[j][k] !== " ") {
+                            else {
+                                //} else if (schema[j][k] !== " ") {
                                 option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
                                 character = this.GameStarter.ObjectMaker.make(title);
                                 menu.children.push(character);
                                 optionChild.things.push(character);
                                 this.GameStarter.addThing(character, x, y);
                                 x += character.width * this.GameStarter.unitsize;
-                            }
-                            else {
-                                x += textWidth;
                             }
                         }
                     }

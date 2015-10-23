@@ -1,5 +1,6 @@
 FullScreenPokemon.FullScreenPokemon.settings.menus = {
     "aliases": {
+        " ": "Space",
         "(": "LeftParenthesis",
         ")": "RightParenthesis",
         ":": "Colon",

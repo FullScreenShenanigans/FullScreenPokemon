@@ -978,6 +978,7 @@ FullScreenPokemon.FullScreenPokemon.settings.sprites = {
             "Char7Shadow": "p[0,2,3,4]21112202221223222122322212232221223x26,30x36,",
             "Char8Shadow": "p[0,2,3,4]21112202121223211122321212232111223x26,30x36,",
             "Char9Shadow": "p[0,2,3,4]21112202121223211122322212232221223x26,30x36,",
+            "CharSpace": "0",
             "CharTimes": "p[0,2]x017,100010000101x06,1x06,101000010001x010,",
             "CharLeftParenthesis": "p[0,2]x05,11x05,1x06,1x07,1x07,1x08,1x08,11x09,",
             "CharRightParenthesis": "p[0,2]11x08,1x08,1x07,1x07,1x06,1x05,11x014,",

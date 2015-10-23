@@ -652,6 +652,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                     "Char9": {}
                 },
                 "Symbol": {
+                    "CharSpace": {},
                     "CharTimes": {},
                     "CharLeftParenthesis": {},
                     "CharRightParenthesis": {},
