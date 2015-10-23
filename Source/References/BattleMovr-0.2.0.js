@@ -155,16 +155,16 @@ var BattleMovr;
             this.MenuGrapher.addMenuList("BattleOptions", {
                 "options": [{
                         "text": this.battleOptionNames.moves,
-                        "callback": this.openMovesMenu
+                        "callback": this.openMovesMenu.bind(this)
                     }, {
                         "text": this.battleOptionNames.items,
-                        "callback": this.openItemsMenu
+                        "callback": this.openItemsMenu.bind(this)
                     }, {
                         "text": this.battleOptionNames.actors,
-                        "callback": this.openActorsMenu
+                        "callback": this.openActorsMenu.bind(this)
                     }, {
                         "text": this.battleOptionNames.exit,
-                        "callback": this.startBattleExit
+                        "callback": this.startBattleExit.bind(this)
                     }]
             });
             this.MenuGrapher.setActiveMenu("BattleOptions");
@@ -236,7 +236,7 @@ var BattleMovr;
             this.openActorsMenuCallback({
                 "backMenu": "BattleOptions",
                 "container": "Battle",
-                "onSwitch": this.switchActor
+                "onSwitch": this.switchActor.bind(this)
             });
         };
         /* Battle shenanigans
@@ -287,7 +287,7 @@ var BattleMovr;
                 return;
             }
             this.MenuGrapher.deleteMenu("BattleOptions");
-            this.MenuGrapher.addMenuDialog("GeneralText", this.battleInfo.exitDialog || this.defaults.exitDialog || "", this.closeBattle);
+            this.MenuGrapher.addMenuDialog("GeneralText", this.battleInfo.exitDialog || this.defaults.exitDialog || "", this.closeBattle.bind(this));
             this.MenuGrapher.setActiveMenu("GeneralText");
         };
         /* Utilities

@@ -224,7 +224,6 @@ module ScenePlayr {
          * @param args   Any additional arguments to pass to the routine.
          */
         playRoutine(name: string, ...args: any[]): void {
-            console.log("Playing", name, "with", args);
             if (!this.cutscene) {
                 throw new Error("No cutscene is currently playing.");
             }
@@ -254,9 +253,6 @@ module ScenePlayr {
          * @param {Mixed} [...args]   Any additional arguments to pass to the routine.
          */
         bindRoutine(name: string, ...args: any[]): () => void {
-            var x: any = args;
-
-            console.log("Bound", name, "to", x);
             return this.playRoutine.bind(this, name, ...args);
         }
     }

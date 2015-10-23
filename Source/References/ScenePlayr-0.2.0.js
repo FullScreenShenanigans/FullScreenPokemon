@@ -131,7 +131,6 @@ var ScenePlayr;
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
             }
-            console.log("Playing", name, "with", args);
             if (!this.cutscene) {
                 throw new Error("No cutscene is currently playing.");
             }
@@ -159,8 +158,6 @@ var ScenePlayr;
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
             }
-            var x = args;
-            console.log("Bound", name, "to", x);
             return (_a = this.playRoutine).bind.apply(_a, [this, name].concat(args));
             var _a;
         };

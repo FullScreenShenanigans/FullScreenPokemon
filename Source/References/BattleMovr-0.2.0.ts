@@ -26,7 +26,7 @@ declare module BattleMovr {
 
     export interface IThingsContainer {
         [i: string]: IThing;
-        menu ?: IThing;
+        menu?: IThing;
     }
 
     export interface IThing extends EightBittr.IThing {
@@ -399,16 +399,16 @@ module BattleMovr {
             this.MenuGrapher.addMenuList("BattleOptions", {
                 "options": [{
                     "text": this.battleOptionNames.moves,
-                    "callback": this.openMovesMenu
+                    "callback": this.openMovesMenu.bind(this)
                 }, {
                         "text": this.battleOptionNames.items,
-                        "callback": this.openItemsMenu
+                        "callback": this.openItemsMenu.bind(this)
                     }, {
                         "text": this.battleOptionNames.actors,
-                        "callback": this.openActorsMenu
+                        "callback": this.openActorsMenu.bind(this)
                     }, {
                         "text": this.battleOptionNames.exit,
-                        "callback": this.startBattleExit
+                        "callback": this.startBattleExit.bind(this)
                     }]
             });
 
@@ -506,7 +506,7 @@ module BattleMovr {
             this.openActorsMenuCallback({
                 "backMenu": "BattleOptions",
                 "container": "Battle",
-                "onSwitch": this.switchActor
+                "onSwitch": this.switchActor.bind(this)
             });
         }
 
@@ -583,7 +583,7 @@ module BattleMovr {
             this.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 this.battleInfo.exitDialog || this.defaults.exitDialog || "",
-                this.closeBattle);
+                this.closeBattle.bind(this));
             this.MenuGrapher.setActiveMenu("GeneralText");
         }
 
@@ -601,10 +601,12 @@ module BattleMovr {
 
             this.backgroundThing = this.GameStarter.addThing(this.backgroundType);
 
-            this.GameStarter.setWidth(this.backgroundThing,
+            this.GameStarter.setWidth(
+                this.backgroundThing,
                 this.GameStarter.MapScreener.width / 4);
 
-            this.GameStarter.setHeight(this.backgroundThing,
+            this.GameStarter.setHeight(
+                this.backgroundThing,
                 this.GameStarter.MapScreener.height / 4);
 
             this.GameStarter.GroupHolder.switchObjectGroup(
