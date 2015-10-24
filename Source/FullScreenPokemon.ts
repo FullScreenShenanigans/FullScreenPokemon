@@ -3981,23 +3981,16 @@ module FullScreenPokemon {
             var nameUpper: string = battlerName[0].toUpperCase() + battlerName.slice(1),
                 menuNumbers: string = "Battle" + nameUpper + "HealthNumbers",
                 bar: IThing = FSP.getThingById("HPBarFill" + nameUpper),
-                health: number = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal);
+                barWidth: number = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal),
+                healthDialog = FSP.makeDigit(123, 3, " ") + "/" + FSP.makeDigit(hpNormal, 3, " ");
 
             if (FSP.MenuGrapher.getMenu(menuNumbers)) {
                 FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
-                FSP.MenuGrapher.addMenuDialog(
-                    menuNumbers,
-                    [
-                        [
-                            FSP.makeDigit(hp, 3, " ")
-                            + "/"
-                            + FSP.makeDigit(hpNormal, 3, " ")
-                        ]
-                    ]);
+                FSP.MenuGrapher.addMenuDialog(menuNumbers, healthDialog);
             }
 
-            FSP.setWidth(bar, health);
-            bar.hidden = health === 0;
+            FSP.setWidth(bar, barWidth);
+            bar.hidden = barWidth === 0;
         }
 
         /**
@@ -4308,7 +4301,7 @@ module FullScreenPokemon {
 
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
-            FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
+            FSP.addBattleDisplayPokemonHealth(FSP, "Opponent");
 
             FSP.ScenePlayer.playRoutine(args.nextRoutine);
         }
@@ -4348,16 +4341,7 @@ module FullScreenPokemon {
             FSP.addBattleDisplayPokemonHealth(FSP, "player");
 
             FSP.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
-            FSP.MenuGrapher.addMenuDialog(
-                "BattlePlayerHealthNumbers",
-                [
-                    [
-                        FSP.makeDigit(pokemonInfo.HP, 3, " ")
-                        + "/"
-                        + FSP.makeDigit(pokemonInfo.HPNormal, 3, " ")
-                    ]
-                ]);
-
+            FSP.setBattleDisplayPokemonHealthBar(FSP, "Player", pokemonInfo.HP, pokemonInfo.HPNormal);
             FSP.ScenePlayer.playRoutine(args.nextRoutine);
         }
 

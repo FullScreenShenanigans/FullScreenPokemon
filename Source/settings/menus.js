@@ -1197,37 +1197,38 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                     "left": -5.5
                 }
             },
-            "childrenSchemas": [{
-                "type": "thing",
-                "thing": "BlackSquare",
-                "position": {
-                    "horizontal": "right"
-                },
-                "args": {
-                    "height": 5.75
-                },
-            }, {
-                "type": "thing",
-                "thing": "BlackSquare",
-                "args": {
-                    "width": 37.5
-                },
-                "position": {
-                    "vertical": "bottom",
-                    "offset": {
-                        "left": .5
+            "childrenSchemas": [
+                {
+                    "type": "thing",
+                    "thing": "BlackSquare",
+                    "position": {
+                        "horizontal": "right"
+                    },
+                    "args": {
+                        "height": 5.75
+                    },
+                }, {
+                    "type": "thing",
+                    "thing": "BlackSquare",
+                    "args": {
+                        "width": 37.5
+                    },
+                    "position": {
+                        "vertical": "bottom",
+                        "offset": {
+                            "left": .5
+                        }
                     }
-                }
-            }, {
-                "type": "thing",
-                "thing": "HalfArrowHorizontal",
-                "position": {
-                    "vertical": "bottom",
-                },
-                "args": {
-                    "flipHoriz": true
-                }
-            }],
+                }, {
+                    "type": "thing",
+                    "thing": "HalfArrowHorizontal",
+                    "position": {
+                        "vertical": "bottom",
+                    },
+                    "args": {
+                        "flipHoriz": true
+                    }
+                }],
             "container": "Battle",
             "hidden": true,
             "textXOffset": 8.5,
@@ -1281,41 +1282,42 @@ FullScreenPokemon.FullScreenPokemon.settings.menus = {
                     "top": -3
                 }
             },
-            "childrenSchemas": [{
-                "type": "thing",
-                "thing": "CharHP"
-            }, {
-                "type": "thing",
-                "thing": "HPBar",
-                "args": {
-                    "width": 25
-                },
-                "position": {
-                    "offset": {
-                        "left": 7,
+            "childrenSchemas": [
+                {
+                    "type": "thing",
+                    "thing": "CharHP"
+                }, {
+                    "type": "thing",
+                    "thing": "HPBar",
+                    "args": {
+                        "width": 25
+                    },
+                    "position": {
+                        "offset": {
+                            "left": 7,
+                        }
                     }
-                }
-            }, {
-                "type": "thing",
-                "thing": "LightGraySquare",
-                "args": {
-                    "width": 24,
-                    "id": "HPBarFillPlayer"
-                },
-                "position": {
-                    "offset": {
-                        "left": 7.5,
-                        "top": .5
+                }, {
+                    "type": "thing",
+                    "thing": "LightGraySquare",
+                    "args": {
+                        "width": 24,
+                        "id": "HPBarFillPlayer"
+                    },
+                    "position": {
+                        "offset": {
+                            "left": 7.5,
+                            "top": .5
+                        }
                     }
-                }
-            }],
+                }],
             "container": "BattlePlayerHealth",
             "hidden": true,
             "textSpeed": 0
         },
         "BattlePlayerHealthNumbers": {
             "size": {
-                "width": 28,
+                "width": 36,
                 "height": 10
             },
             "position": {
