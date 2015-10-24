@@ -3165,16 +3165,9 @@ module FullScreenPokemon {
          * 
          */
         openPauseMenu(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
-
-            FSP.MenuGrapher.createMenu("Pause");
-            FSP.MenuGrapher.setActiveMenu("Pause");
-            FSP.MenuGrapher.addMenuList("Pause", {
-                "options": [
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                options: any[] = [
                     {
-                        "text": "%%%%%%%POKEDEX%%%%%%%",
-                        "callback": FSP.openPokedexMenu.bind(FSP)
-                    }, {
                         "text": "%%%%%%%POKEMON%%%%%%%",
                         "callback": FSP.openPokemonMenu.bind(FSP)
                     }, {
@@ -3191,8 +3184,21 @@ module FullScreenPokemon {
                     }, {
                         "text": "Exit",
                         "callback": FSP.closePauseMenu.bind(FSP)
-                    }]
+                    }];
+
+            // The Pokedex option is only shown if the Player has one
+            if (FSP.ItemsHolder.getItem("hasPokedex") === true) {
+                options.unshift({
+                    "text": "%%%%%%%POKEDEX%%%%%%%",
+                    "callback": FSP.openPokedexMenu.bind(FSP)
+                });
+            }
+
+            FSP.MenuGrapher.createMenu("Pause");
+            FSP.MenuGrapher.addMenuList("Pause", {
+                "options": options
             });
+            FSP.MenuGrapher.setActiveMenu("Pause");
         }
 
         /**
@@ -7331,6 +7337,8 @@ module FullScreenPokemon {
 
                     FSP.StateHolder.addChange(bookLeft.id, "alive", false);
                     FSP.StateHolder.addChange(bookRight.id, "alive", false);
+
+                    FSP.ItemsHolder.setItem("hasPokedex", true);
                 }
             );
             FSP.MenuGrapher.setActiveMenu("GeneralText");

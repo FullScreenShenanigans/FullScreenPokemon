@@ -51,6 +51,9 @@ FullScreenPokemon.FullScreenPokemon.settings.statistics = {
         "nameRival": {},
         "starter": {},
         "starterRival": {},
+        "hasPokedex": {
+            "valueDefault": false
+        },
         "Pokedex": {
             "valueDefault": []
         },
