@@ -3499,6 +3499,10 @@ module FullScreenPokemon {
                 listings: BattleMovr.IActor[] = FSP.ItemsHolder.getItem("PokemonInParty"),
                 references: any = FSP.MathDecider.getConstant("pokemon");
 
+            if (!listings || !listings.length) {
+                return;
+            }
+
             FSP.MenuGrapher.createMenu("Pokemon", settings);
             FSP.MenuGrapher.addMenuList("Pokemon", {
                 "options": listings.map(function (listing: BattleMovr.IActor, i: number): any {
