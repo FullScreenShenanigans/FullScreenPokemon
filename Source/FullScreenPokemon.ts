@@ -470,6 +470,24 @@ module FullScreenPokemon {
         }
 
         /**
+         * Processes additional Thing attributes. For each attribute the Area's
+         * class says it may have, if it has it, the attribute value proliferated 
+         * onto the Area.
+         * 
+         * @param area
+         */
+        areaProcess(area: IArea): void {
+            var attributes: { [i: string]: any } = area.attributes,
+                attribute: string;
+
+            for (attribute in attributes) {
+                if (area[attribute]) {
+                    FullScreenPokemon.prototype.proliferate(area, attributes[attribute]);
+                }
+            }
+        }
+
+        /**
          * 
          */
         onGamePlay(FSP: FullScreenPokemon): void {

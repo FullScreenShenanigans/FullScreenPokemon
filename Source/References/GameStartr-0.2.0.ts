@@ -295,6 +295,8 @@ declare module GameStartr {
         "screenVariables": { [i: string]: Function };
         "onSpawn": (prething: MapsCreatr.IPreThing) => void;
         "onUnspawn": (prething: MapsCreatr.IPreThing) => void;
+        "stretchAdd"?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        "afterAdd"?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
         "macros": { [i: string]: MapsCreatr.IMapsCreatrMacro };
         "entrances": { [i: string]: MapsCreatr.IMapsCreatrEntrance };
         "patterns"?: any;
@@ -358,6 +360,40 @@ declare module GameStartr {
 
     export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
         possibilities: WorldSeedr.IPossibilityContainer;
+    }
+
+    export interface IThing extends EightBittr.IThing, LevelEditr.IThing, QuadsKeepr.IThing {
+        GameStarter: IGameStartr;
+        name: string;
+        groupType: string;
+        className: string;
+        alive?: boolean;
+        placed?: boolean;
+        changed?: boolean;
+        maxquads: number;
+        quadrants: QuadsKeepr.IQuadrant[];
+        imageData: ImageData;
+        attributes?: any;
+        spriteCycle?: any[];
+        spriteCycleSynched?: any[];
+        xvelOld?: number;
+        yvelOld?: number;
+        parallaxHoriz?: number;
+        parallaxVert?: number;
+        flipHoriz?: boolean;
+        flipVert?: boolean;
+        noshiftx?: boolean;
+        noshifty?: boolean;
+        nofall?: boolean;
+        nofallOld?: boolean;
+        nocollide?: boolean;
+        nocollideOld?: boolean;
+        movement?: Function;
+        movementOld?: Function;
+        onThingAdd?: Function;
+        onThingAdded?: Function;
+        onThingMake?: Function;
+        onDelete?: Function;
     }
 
     export interface IGameStartr extends EightBittr.IEightBittr {
@@ -467,40 +503,6 @@ declare module GameStartr {
         arrayDeleteThing(thing: IThing, array: any[], location?: number): void;
         takeScreenshot(name: string, format?: string): void;
         addPageStyles(styles: any): void;
-    }
-
-    export interface IThing extends EightBittr.IThing, LevelEditr.IThing, QuadsKeepr.IThing {
-        GameStarter: IGameStartr;
-        name: string;
-        groupType: string;
-        className: string;
-        alive?: boolean;
-        placed?: boolean;
-        changed?: boolean;
-        maxquads: number;
-        quadrants: QuadsKeepr.IQuadrant[];
-        imageData: ImageData;
-        attributes?: any;
-        spriteCycle?: any[];
-        spriteCycleSynched?: any[];
-        xvelOld?: number;
-        yvelOld?: number;
-        parallaxHoriz?: number;
-        parallaxVert?: number;
-        flipHoriz?: boolean;
-        flipVert?: boolean;
-        noshiftx?: boolean;
-        noshifty?: boolean;
-        nofall?: boolean;
-        nofallOld?: boolean;
-        nocollide?: boolean;
-        nocollideOld?: boolean;
-        movement?: Function;
-        movementOld?: Function;
-        onThingAdd?: Function;
-        onThingAdded?: Function;
-        onThingMake?: Function;
-        onDelete?: Function;
     }
 }
 
@@ -891,7 +893,10 @@ module GameStartr {
                 "MapScreener": GameStarter.MapScreener,
                 "screenAttributes": GameStarter.settings.maps.screenAttributes,
                 "onSpawn": GameStarter.settings.maps.onSpawn,
-                "onUnspawn": GameStarter.settings.maps.onUnspawn
+                "onUnspawn": GameStarter.settings.maps.onUnspawn,
+                "stretchAdd": GameStarter.settings.maps.stretchAdd,
+                "afterAdd": GameStarter.settings.maps.afterAdd,
+                "commandScope": GameStarter
             });
         }
 

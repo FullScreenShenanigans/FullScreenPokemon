@@ -10,6 +10,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
         "thingsById": FullScreenPokemon.FullScreenPokemon.prototype.generateThingsByIdContainer
     },
     "onSpawn": FullScreenPokemon.FullScreenPokemon.prototype.addPreThing,
+    "afterAdd": FullScreenPokemon.FullScreenPokemon.prototype.mapAddAfter,
     "macros": {
         "Checkered": FullScreenPokemon.FullScreenPokemon.prototype.macroCheckered,
         "Water": FullScreenPokemon.FullScreenPokemon.prototype.macroWater,

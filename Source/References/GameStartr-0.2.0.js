@@ -319,7 +319,10 @@ var GameStartr;
                 "MapScreener": GameStarter.MapScreener,
                 "screenAttributes": GameStarter.settings.maps.screenAttributes,
                 "onSpawn": GameStarter.settings.maps.onSpawn,
-                "onUnspawn": GameStarter.settings.maps.onUnspawn
+                "onUnspawn": GameStarter.settings.maps.onUnspawn,
+                "stretchAdd": GameStarter.settings.maps.stretchAdd,
+                "afterAdd": GameStarter.settings.maps.afterAdd,
+                "commandScope": GameStarter
             });
         };
         /**

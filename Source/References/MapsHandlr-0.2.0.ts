@@ -3,6 +3,20 @@
 /// <reference path="ObjectMakr-0.2.2.ts" />
 
 declare module MapsHandlr {
+    /**
+     * A Function to add a map command, such as an after or stretch.
+     * 
+     * @param thing   The raw command to create a Thing, as either a title
+     *                or a JSON object.
+     * @param index   Which command this is, as passed through Array.forEach.
+     */
+    export interface ICommandAdder {
+        (thing: string | MapsCreatr.IPreThingSettings, index: number): void;
+    }
+
+    /**
+     * Settings to initialize a new IMapsHandlr.
+     */
     export interface IMapsHandlrSettings {
         /**
          * A MapsCreatr used to store and lazily initialize Maps.
@@ -33,13 +47,18 @@ declare module MapsHandlr {
          * Function to add an Area's provided "stretches" commands to stretch
          * across an Area.
          */
-        stretchAdd?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        stretchAdd?: ICommandAdder;
 
         /**
          * Function to add an Area provides an "afters" command to add PreThings
          * to the end of an Area.
          */
-        afterAdd?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        afterAdd?: ICommandAdder;
+
+        /**
+         * An optional scope to call stretchAdd and afterAdd on, if not this.
+         */
+        commandScope?: any;
     }
 
     export interface IMapsHandlr {
@@ -152,7 +171,7 @@ module MapsHandlr {
         /**
          * If stretches exists, a Function to add stretches to an Area.
          */
-        private stretchAdd: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        private stretchAdd: ICommandAdder;
 
         /**
          * Optionally, PreThing settings to place at the end of an Area.
@@ -162,7 +181,12 @@ module MapsHandlr {
         /**
          * If afters exists, a Function to add afters to an Area.
          */
-        private afterAdd: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        private afterAdd: ICommandAdder;
+
+        /** 
+         * An optional scope to call stretchAdd and afterAdd on, if not this.
+         */
+        private commandScope: any;
 
         /**
          * @param {IMapsHandlrSettings} settings
@@ -190,6 +214,7 @@ module MapsHandlr {
             this.screenAttributes = settings.screenAttributes || [];
             this.stretchAdd = settings.stretchAdd;
             this.afterAdd = settings.afterAdd;
+            this.commandScope = settings.commandScope;
         }
 
 
@@ -379,7 +404,7 @@ module MapsHandlr {
          */
         setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
             this.stretches = stretchesRaw;
-            this.stretches.forEach(this.stretchAdd);
+            this.stretches.forEach(this.stretchAdd.bind(this.commandScope || this));
         }
 
         /**
@@ -390,7 +415,7 @@ module MapsHandlr {
          */
         setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
             this.afters = aftersRaw;
-            this.afters.forEach(this.afterAdd);
+            this.afters.forEach(this.afterAdd.bind(this.commandScope || this));
         }
 
         /**

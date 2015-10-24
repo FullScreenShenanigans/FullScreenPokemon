@@ -94,6 +94,9 @@ declare module FullScreenPokemon {
     }
 
     export interface IArea extends MapsCreatr.IMapsCreatrArea {
+        attributes?: {
+            [i: string]: any;
+        };
         background: string;
         boundaries: IAreaBoundaries;
         height: number;

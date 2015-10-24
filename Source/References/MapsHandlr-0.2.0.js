@@ -33,6 +33,7 @@ var MapsHandlr;
             this.screenAttributes = settings.screenAttributes || [];
             this.stretchAdd = settings.stretchAdd;
             this.afterAdd = settings.afterAdd;
+            this.commandScope = settings.commandScope;
         }
         /* Simple gets
         */
@@ -198,7 +199,7 @@ var MapsHandlr;
          */
         MapsHandlr.prototype.setStretches = function (stretchesRaw) {
             this.stretches = stretchesRaw;
-            this.stretches.forEach(this.stretchAdd);
+            this.stretches.forEach(this.stretchAdd.bind(this.commandScope || this));
         };
         /**
          * Applies the afterAdd Function to each given "after" command and stores
@@ -208,7 +209,7 @@ var MapsHandlr;
          */
         MapsHandlr.prototype.setAfters = function (aftersRaw) {
             this.afters = aftersRaw;
-            this.afters.forEach(this.afterAdd);
+            this.afters.forEach(this.afterAdd.bind(this.commandScope || this));
         };
         /**
          * Calls onSpawn on every PreThing touched by the given bounding box,
