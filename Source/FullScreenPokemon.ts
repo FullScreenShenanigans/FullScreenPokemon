@@ -3626,7 +3626,9 @@ module FullScreenPokemon {
         openPlayerMenu(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
 
-            FSP.MenuGrapher.createMenu("Player");
+            FSP.MenuGrapher.createMenu("Player", {
+                "callback": FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher)
+            });
             FSP.MenuGrapher.setActiveMenu("Player");
         }
 
