@@ -384,11 +384,22 @@ FullScreenPokemon.FullScreenPokemon.settings.math = {
         // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
         // TO DO: Factor in spec differences from burns, etc.
         "damage": function (constants, equations, move, attacker, defender) {
+            var base = constants.moves[move].Power;
+
+            // A base attack that's not numeric means no damage, no matter what
+            if (!base || isNaN(base)) {
+                return 0;
+            }
+
+            // Don't bother calculating infinite damage: it's going to be infinite
+            if (base === Infinity) {
+                return Infinity;
+            }
+
             var critical = this.compute("criticalHit", move, attacker),
                 level = attacker.level * critical,
                 attack = attacker.Attack,
                 defense = defender.Defense,
-                base = constants.moves[move].Power,
                 modifier = this.compute("damageModifier", move, critical, attacker, defender);
 
             return Math.round(

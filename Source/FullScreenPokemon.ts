@@ -4301,7 +4301,7 @@ module FullScreenPokemon {
 
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
-            FSP.addBattleDisplayPokemonHealth(FSP, "Opponent");
+            FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
 
             FSP.ScenePlayer.playRoutine(args.nextRoutine);
         }
