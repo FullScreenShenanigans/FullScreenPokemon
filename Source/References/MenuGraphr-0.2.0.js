@@ -487,7 +487,6 @@ var MenuGraphr;
                                 }
                             }
                             else {
-                                //} else if (schema[j][k] !== " ") {
                                 option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
                                 character = this.GameStarter.ObjectMaker.make(title);
                                 menu.children.push(character);

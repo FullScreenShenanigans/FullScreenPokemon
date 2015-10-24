@@ -1343,10 +1343,7 @@ module FullScreenPokemon {
                     "reward": other.reward,
                     "actors": <BattleMovr.IActor[]>other.actors.map(thing.FSP.createPokemon.bind(thing.FSP))
                 },
-                "textStart": [
-                    "".split(""),
-                    " wants to fight!".split("")
-                ],
+                "textStart": ["", " wants to fight!"],
                 "textDefeat": other.textDefeat,
                 "textAfterBattle": other.textAfterBattle,
                 "giftAfterBattle": other.giftAfterBattle,
@@ -4086,7 +4083,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleOpeningText(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
-                textStart: string[][] = battleInfo.textStart,
+                textStart: string[] = battleInfo.textStart,
                 nextRoutine: string,
                 callback: (...args: any[]) => void;
 
@@ -4384,7 +4381,9 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    playerActor.nickname + " used " + choice + "!"
+                    [
+                        playerActor.nickname, " used ", choice + "!"
+                    ]
                 ],
                 FSP.ScenePlayer.bindRoutine("MovePlayerAnimate", args)
             );
@@ -4455,7 +4454,11 @@ module FullScreenPokemon {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
-                [opponent.selectedActor.nickname + " used " + choice + "!"],
+                [
+                    [
+                        opponent.selectedActor.nickname, " used ", choice + "!"
+                    ]
+                ],
                 FSP.ScenePlayer.bindRoutine("MoveOpponentAnimate", args));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
@@ -4630,10 +4633,10 @@ module FullScreenPokemon {
                 [
                     [
                         battleInfo.player.selectedActor.nickname,
-                        "gained",
-                        experienceGained,
-                        "EXP. points!"
-                    ].join(" ")
+                        " gained ",
+                        experienceGained.toString(),
+                        " EXP. points!"
+                    ]
                 ],
                 FSP.ScenePlayer.bindRoutine(
                     "ExperienceGain",
@@ -4827,7 +4830,11 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "%%%%%%%PLAYER%%%%%%% defeated ", opponent.name, "!"
+                    [
+                        "%%%%%%%PLAYER%%%%%%% defeated ",
+                        opponent.name,
+                        "!"
+                    ]
                 ],
                 FSP.ScenePlayer.bindRoutine("VictorySpeech")
             );
@@ -7070,11 +7077,8 @@ module FullScreenPokemon {
                                 5)
                         ]
                     },
-                    "textStart": [
-                        "".split(""),
-                        " wants to fight!".split("")
-                    ],
-                    "textDefeat": "SHOULD FILL THIS OUT YES".split(""),
+                    "textStart": ["", " wants to fight!"],
+                    "textDefeat": ["SHOULD FILL THIS OUT YES"],
                     "textVictory": [
                         [
                             "%%%%%%%RIVAL%%%%%%%: WHAT?",

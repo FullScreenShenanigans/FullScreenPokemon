@@ -158,9 +158,9 @@ declare module FullScreenPokemon {
         player?: IBattleThingInfo;
         textAfterBattle?: string[];
         textDefeat?: string[];
-        textOpponentSendOut?: string[][];
-        textPlayerSendOut?: string[][];
-        textStart?: string[][];
+        textOpponentSendOut?: string[];
+        textPlayerSendOut?: string[];
+        textStart?: string[];
         textVictory?: string[];
         theme?: string;
     }

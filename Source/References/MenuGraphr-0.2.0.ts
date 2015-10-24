@@ -161,6 +161,8 @@ declare module MenuGraphr {
         word?: string;
     }
 
+    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommand)[]
+
     export interface IMenuWordCommand extends IMenuWordFiltered {
         applyUnitsize?: boolean;
         attribute: string;
@@ -226,7 +228,7 @@ declare module MenuGraphr {
             position: IMenuSchemaPosition,
             container: IMenu,
             skipAdd?: boolean): void;
-        addMenuDialog(name: string, dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[], onCompletion?: () => any): void;
+        addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
         addMenuWord(
             name: string,
@@ -615,7 +617,7 @@ module MenuGraphr {
         /**
          * 
          */
-        addMenuDialog(name: string, dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[], onCompletion?: () => any): void {
+        addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void {
             var dialog: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialogRaw),
                 currentLine: number = 1,
                 callback: any = (function (): void {
@@ -799,7 +801,7 @@ module MenuGraphr {
                 });
 
             menu.children.push(thing);
-            
+
             if (delay) {
                 this.GameStarter.TimeHandler.addEvent(
                     this.GameStarter.addThing.bind(this.GameStarter),
@@ -970,7 +972,6 @@ module MenuGraphr {
                                     y += schema[j][k].y * this.GameStarter.unitsize;
                                 }
                             } else {
-                            //} else if (schema[j][k] !== " ") {
                                 option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
                                 character = this.GameStarter.ObjectMaker.make(title);
                                 menu.children.push(character);
@@ -979,8 +980,6 @@ module MenuGraphr {
                                 this.GameStarter.addThing(character, x, y);
 
                                 x += character.width * this.GameStarter.unitsize;
-                            //} else {
-                            //    x += textWidth;
                             }
                         }
                     }
@@ -1442,14 +1441,14 @@ module MenuGraphr {
         /**
          *
          */
-        private parseRawDialog(dialogRaw: string | (string | string[] | string[][] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[][] {
+        private parseRawDialog(dialogRaw: MenuDialogRaw): (string[] | IMenuWordCommand)[][] {
             // A raw String becomes a single line of dialog
             if (dialogRaw.constructor === String) {
                 return [this.parseRawDialogString(<string>dialogRaw)];
             }
 
             var output: (string[] | IMenuWordCommand)[][] = [],
-                component: string | string[] | string[][] | IMenuWordCommand,
+                component: string | string[] | (string | string[])[] | IMenuWordCommand,
                 i: number;
 
             for (i = 0; i < dialogRaw.length; i += 1) {
