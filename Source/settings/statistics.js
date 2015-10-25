@@ -7,9 +7,6 @@ FullScreenPokemon.FullScreenPokemon.settings.statistics = {
         "gameStarted": {
             "valueDefault": false
         },
-        "filename": {
-            "valueDefault": "FullScreenPokemon Save",
-        },
         "map": {
             "valueDefault": ""
         },

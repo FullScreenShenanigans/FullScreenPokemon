@@ -6259,13 +6259,13 @@ module FullScreenPokemon {
                             "callback": fromKeyboard
                         })
                     }, {
-                        "text": "RED",
+                        "text": "RED".split(""),
                         "callback": fromMenu
                     }, {
-                        "text": "ASH",
+                        "text": "ASH".split(""),
                         "callback": fromMenu
                     }, {
-                        "text": "JACK",
+                        "text": "JACK".split(""),
                         "callback": fromMenu
                     }]
             });
@@ -7640,10 +7640,10 @@ module FullScreenPokemon {
                 link: HTMLAnchorElement = document.createElement("a");
 
             FSP.saveGame();
-
+            
             link.setAttribute(
                 "download",
-                FSP.ItemsHolder.getItem("filename") + " " + Date.now() + ".json");
+                "FullScreenPokemon Save " + Date.now() + ".json");
             link.setAttribute(
                 "href",
                 "data:text/json;charset=utf-8," + encodeURIComponent(
