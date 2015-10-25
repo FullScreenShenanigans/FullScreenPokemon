@@ -3394,9 +3394,13 @@ module FullScreenPokemon {
         openPokemonStats(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon: IPokemonSchema = settings.pokemon,
-                statistics: string[] = FSP.MathDecider.getConstant("statisticNames").filter(
+                statistics: string[] = FSP.MathDecider.getConstant("statisticNames")
+                    .filter(
                     function (statistic: string): boolean {
                         return statistic !== "HP";
+                    })
+                    .map(function (statistic: string): string {
+                        return statistic + "Normal";
                     }),
                 numStatistics: number = statistics.length,
                 textXOffset: number = settings.textXOffset || 8,
@@ -3419,6 +3423,7 @@ module FullScreenPokemon {
                     "horizontal": "center",
                     "vertical": "center"
                 },
+                "callback": FSP.MenuGrapher.deleteMenu.bind(FSP.MenuGrapher, "LevelUpStats"),
                 "onMenuDelete": settings.onMenuDelete,
                 "childrenSchemas": statistics.map(function (text: string, i: number): any {
                     if (i < numStatistics) {
@@ -4237,7 +4242,7 @@ module FullScreenPokemon {
                 [
                     [
                         battleInfo.textPlayerSendOut[0],
-                        battleInfo.player.actors[0].title,
+                        battleInfo.player.actors[0].nickname,
                         battleInfo.textPlayerSendOut[1]
                     ]
                 ]
@@ -4739,7 +4744,12 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    actor.nickname + " grew to level " + actor.level + "!"
+                    [
+                        actor.nickname,
+                        " grew to level ",
+                        actor.level.toString(),
+                        "!"
+                    ]
                 ],
                 FSP.ScenePlayer.bindRoutine("LevelUpStats", args)
             );
