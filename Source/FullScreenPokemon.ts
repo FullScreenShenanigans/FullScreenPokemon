@@ -6536,18 +6536,23 @@ module FullScreenPokemon {
                 oak: ICharacter = FSP.ObjectMaker.make("Oak", {
                     "outerok": true,
                     "nocollide": true
-                });
+                }),
+                isToLeft: boolean = FSP.player.bordering[Direction.Left] !== undefined,
+                walkingSteps: any[] = [
+                    1, "left", 4, "top", 8, "right", 1, "top", 1, "right", 1, "top", 1
+                ];
+
+            if (!isToLeft) {
+                walkingSteps.push("right", 1, "top", 0);
+            }
+
+            walkingSteps.push(FSP.ScenePlayer.bindRoutine("GrassWarning"));
 
             settings.oak = oak;
+            settings.isToLeft = isToLeft;
 
             FSP.addThing(oak, door.left, door.top);
-            FSP.animateCharacterStartTurning(
-                oak,
-                2,
-                [
-                    1, "left", 3, "top", 10, "right", 1, "top", 0,
-                    FSP.ScenePlayer.bindRoutine("GrassWarning")
-                ]);
+            FSP.animateCharacterStartTurning(oak, 2, walkingSteps);
         }
 
         /**
@@ -6570,15 +6575,25 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroFollowToLab(FSP: FullScreenPokemon, settings: any): void {
+            var startingDirection: number,
+                walkingSteps: any[];
+
+            if (settings.isToLeft) {
+                startingDirection = Direction.Bottom;
+                walkingSteps = [5, "left", 1, "bottom", 5, "right", 3, "top", 1];
+            } else {
+                startingDirection = Direction.Left;
+                walkingSteps = [1, "bottom", 5, "left", 1, "bottom", 5, "right", 3, "top", 1];
+            }
+
+            walkingSteps.push(FSP.ScenePlayer.bindRoutine("EnterLab"));
+
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.animateCharacterFollow(settings.player, settings.oak);
             FSP.animateCharacterStartTurning(
                 settings.oak,
-                2,
-                [
-                    5, "left", 1, "bottom", 5, "right", 3, "top", 1,
-                    FSP.ScenePlayer.bindRoutine("EnterLab")
-                ]);
+                startingDirection,
+                walkingSteps);
         }
 
         /**
