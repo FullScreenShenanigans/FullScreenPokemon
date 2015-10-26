@@ -6324,7 +6324,11 @@ module FullScreenPokemon {
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
-                "That's right! I remember now! His name is " + settings.name + "!",
+                [
+                    [
+                        "That's right! I remember now! His name is ", settings.name, "!"
+                    ]
+                ],
                 FSP.ScenePlayer.bindRoutine("RivalNameComplete"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
@@ -6584,6 +6588,7 @@ module FullScreenPokemon {
                     1,
                     function (): void {
                         FSP.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
+                        FSP.player.hidden = true;
 
                         FSP.ScenePlayer.playRoutine("WalkToTable");
                     }
@@ -6621,11 +6626,14 @@ module FullScreenPokemon {
             ]);
 
             FSP.TimeHandler.addEvent(
-                FSP.animateCharacterStartWalking,
-                84,
-                settings.player,
-                0,
-                [8, FSP.ScenePlayer.bindRoutine("RivalComplain")]);
+                function () {
+                    FSP.player.hidden = false;
+                    FSP.animateCharacterStartWalking(
+                        settings.player,
+                        0,
+                        [8, FSP.ScenePlayer.bindRoutine("RivalComplain")]);
+                },
+                84);
         }
 
         /**
