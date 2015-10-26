@@ -2195,6 +2195,11 @@ module FullScreenPokemon {
                     break;
             }
 
+            // Manually start the walking process without giving a 0 onStop,
+            // so that it continues smoothly in the walking interval
+            thing.FSP.animateCharacterStartWalking(thing, direction);
+            other.walkingCommands.shift();
+
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
                 thing.FSP.animateCharacterFollowContinue,
                 thing.FSP.getCharacterWalkingInterval(thing),
@@ -2207,7 +2212,7 @@ module FullScreenPokemon {
          * 
          */
         animateCharacterFollowContinue(thing: ICharacter, other: ICharacter): void {
-            if (other.walkingCommands.length <= 1) {
+            if (other.walkingCommands.length === 0) {
                 return;
             }
 
@@ -2231,6 +2236,8 @@ module FullScreenPokemon {
 
             thing.FSP.animateCharacterStopWalking(thing);
             thing.FSP.TimeHandler.cancelEvent(thing.followingLoop);
+
+            return true;
         }
 
         /**
@@ -6579,13 +6586,15 @@ module FullScreenPokemon {
          */
         cutsceneOakIntroEnterLab(FSP: FullScreenPokemon, settings: any): void {
             FSP.StateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
+            settings.oak.hidden = true;
+
             FSP.TimeHandler.addEvent(
                 FSP.animateCharacterStartTurning,
                 FSP.getCharacterWalkingInterval(FSP.player),
                 FSP.player,
                 0,
                 [
-                    1,
+                    0,
                     function (): void {
                         FSP.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
                         FSP.player.hidden = true;
@@ -6628,12 +6637,17 @@ module FullScreenPokemon {
             FSP.TimeHandler.addEvent(
                 function () {
                     FSP.player.hidden = false;
+                },
+                112 - FSP.getCharacterWalkingInterval(settings.player));
+
+            FSP.TimeHandler.addEvent(
+                function () {
                     FSP.animateCharacterStartWalking(
                         settings.player,
                         0,
                         [8, FSP.ScenePlayer.bindRoutine("RivalComplain")]);
                 },
-                84);
+                112);
         }
 
         /**
@@ -7658,7 +7672,7 @@ module FullScreenPokemon {
                 link: HTMLAnchorElement = document.createElement("a");
 
             FSP.saveGame();
-            
+
             link.setAttribute(
                 "download",
                 "FullScreenPokemon Save " + Date.now() + ".json");
