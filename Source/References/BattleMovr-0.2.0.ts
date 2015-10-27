@@ -41,7 +41,7 @@ declare module BattleMovr {
     }
 
     export interface IBattleInfo {
-        exitDialog?: string[];
+        exitDialog?: string;
         items?: any;
         nextCutscene?: string;
         nextCutsceneSettings?: any;
@@ -52,7 +52,7 @@ declare module BattleMovr {
     }
 
     export interface IBattleInfoDefaults {
-        exitDialog: string[];
+        exitDialog: string;
     }
 
     export interface IBattleThingInfo {

@@ -13,7 +13,7 @@ FullScreenPokemon.FullScreenPokemon.settings.battles = {
     },
     "backgroundType": "DirtWhite",
     "defaults": {
-        "exitDialog": "Got away safely!".split(""),
+        "exitDialog": "Got away safely!",
         "textStart": [
             "A wild ".split(""),
             " appeared!".split("")
