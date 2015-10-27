@@ -3402,12 +3402,8 @@ module FullScreenPokemon {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon: IPokemonSchema = settings.pokemon,
                 statistics: string[] = FSP.MathDecider.getConstant("statisticNames")
-                    .filter(
-                    function (statistic: string): boolean {
+                    .filter(function (statistic: string): boolean {
                         return statistic !== "HP";
-                    })
-                    .map(function (statistic: string): string {
-                        return statistic + "Normal";
                     }),
                 numStatistics: number = statistics.length,
                 textXOffset: number = settings.textXOffset || 8,
@@ -3416,7 +3412,7 @@ module FullScreenPokemon {
                 i: number;
 
             for (i = 0; i < numStatistics; i += 1) {
-                statistics.push(FSP.makeDigit(pokemon[statistics[i]], 3, " "));
+                statistics.push(FSP.makeDigit(pokemon[statistics[i] + "Normal"], 3, " "));
                 statistics[i] = statistics[i].toUpperCase();
             }
 
