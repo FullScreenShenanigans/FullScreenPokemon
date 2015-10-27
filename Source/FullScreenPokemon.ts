@@ -3979,7 +3979,7 @@ module FullScreenPokemon {
                 pokemon.HP,
                 pokemon.HPNormal);
 
-            FSP.MenuGrapher.addMenuDialog(menu + "Title", pokemon.nickname);
+            FSP.MenuGrapher.addMenuDialog(menu + "Title", [[pokemon.nickname]]);
 
             FSP.MenuGrapher.addMenuDialog(menu + "Level", String(pokemon.level));
         }
@@ -4143,7 +4143,9 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    [textStart[0], battleInfo.opponent.name, textStart[1]]
+                    [
+                        textStart[0], battleInfo.opponent.name, textStart[1]
+                    ]
                 ],
                 callback
             );
