@@ -1060,11 +1060,9 @@ module FullScreenPokemon {
 
             for (i = 0; i < characters.length; i += 1) {
                 character = characters[i];
-                character.FSP.shiftCharacter(character);
+                FSP.shiftCharacter(character);
 
-                if (character.isMoving) {
-                    FSP.shiftBoth(character, character.xvel, character.yvel);
-                } else if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
+                if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
                     character.onWalkingStart(character, character.direction);
                     character.shouldWalk = false;
                 }
@@ -1732,6 +1730,7 @@ module FullScreenPokemon {
                 distance: number = repeats * thing.speed;
 
             direction = direction || 0;
+            thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
 
@@ -1853,6 +1852,7 @@ module FullScreenPokemon {
         animateCharacterStopWalking(thing: ICharacter, onStop?: any): boolean {
             thing.xvel = 0;
             thing.yvel = 0;
+            thing.walking = false;
 
             thing.FSP.removeClass(thing, "walking");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
@@ -1935,7 +1935,7 @@ module FullScreenPokemon {
          * 
          */
         animateCharacterPreventWalking(thing: ICharacter): void {
-            thing.isMoving = thing.shouldWalk = false;
+            thing.shouldWalk = false;
             thing.xvel = thing.yvel = 0;
 
             if (thing.player) {
@@ -2255,19 +2255,29 @@ module FullScreenPokemon {
                 dy: number = -thing.FSP.unitsize,
                 speed: number = 2,
                 steps: number = 14,
-                changed: number = 0,
-                hesitant: boolean = (<IPlayer>thing).keys && !(<IPlayer>thing).keys[thing.direction];
+                changed: number = 0;
 
             thing.shadow = shadow;
             thing.ledge = other;
 
-            if (hesitant) {
-                thing.FSP.keyDownGeneric(thing, thing.direction);
-            }
-
+            // Center the shadow below the Thing
             thing.FSP.setMidXObj(shadow, thing);
             thing.FSP.setBottom(shadow, thing.bottom);
 
+            // Continuously ensure The Thing still moves off the ledge if not walking
+            thing.FSP.TimeHandler.addEventInterval(
+                function (): boolean {
+                    if (thing.walking) {
+                        return false;
+                    }
+
+                    thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
+                    return true;
+                },
+                1,
+                steps * speed - 1);
+
+            // Keep the shadow below the Thing, and move the Thing's offsetY
             thing.FSP.TimeHandler.addEventInterval(
                 function (): void {
                     thing.FSP.setBottom(shadow, thing.bottom);
@@ -2281,19 +2291,21 @@ module FullScreenPokemon {
                 1,
                 steps * speed);
 
+            // Inverse the Thing's offsetY changes halfway through the hop
             thing.FSP.TimeHandler.addEvent(
                 function (): void {
                     dy *= -1;
                 },
                 speed * (steps / 2) | 0);
 
+            // Delete the shadow after the jump is done
             thing.FSP.TimeHandler.addEvent(
                 function (): void {
                     delete thing.ledge;
                     thing.FSP.killNormal(shadow);
 
-                    if (hesitant) {
-                        thing.FSP.keyUpGeneric(thing, thing.direction);
+                    if (!thing.walking) {
+                        thing.FSP.animateCharacterStopWalking(thing);
                     }
                 },
                 steps * speed);
@@ -2611,7 +2623,7 @@ module FullScreenPokemon {
          * 
          */
         collideLedge(thing: ICharacter, other: IThing): boolean {
-            if (thing.ledge) {
+            if (thing.ledge || !thing.walking) {
                 return true;
             }
 

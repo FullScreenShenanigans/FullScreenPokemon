@@ -251,6 +251,7 @@ declare module FullScreenPokemon {
         trainer?: boolean;
         transport?: any;
         turning?: Direction;
+        walking?: boolean;
         walkingCommands?: Direction[];
         walkingFlipping?: TimeHandlr.IEvent;
     }
