@@ -830,14 +830,14 @@ module MenuGraphr {
                 return;
             }
 
-            progress.working = true;
-
             if (progress.complete) {
                 if (!progress.onCompletion || progress.onCompletion(this.GameStarter, menu)) {
                     this.deleteMenu(name);
                 }
                 return;
             }
+
+            progress.working = true;
 
             for (i = 0; i < children.length; i += 1) {
                 character = children[i];

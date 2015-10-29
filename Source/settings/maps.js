@@ -378,7 +378,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "Ledge", "x": 128, "y": 188, "width": 16, "jagged": true },
                         { "macro": "Checkered", "things": ["", "Flower"], "x": 64, "y": 196, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
                         { "thing": "DirtLight", "x": 32, "y": 208, "width": 112, "height": 16 },
-                        { "thing": "Sign", "x": 72, "y": 216 },
+                        { "thing": "Sign", "x": 72, "y": 216, "dialog": "ROUTE 1 \n PALLET TOWN - VIRIDIAN CITY" },
                         { "thing": "Ledge", "x": 32, "y": 220, "width": 16, "jagged": true },
                         { "thing": "Ledge", "x": 80, "y": 220, "width": 64, "jagged": true },
                         { "thing": "PlantSmall", "x": 24, "y": 224, "height": 64 },

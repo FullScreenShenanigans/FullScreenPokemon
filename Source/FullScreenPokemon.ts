@@ -2050,15 +2050,13 @@ module FullScreenPokemon {
             }
 
             if (other.gift) {
-                thing.FSP.MenuGrapher.createMenu("GeneralText");
+                thing.FSP.MenuGrapher.createMenu("GeneralText", {
+                    "deleteOnFinish": true
+                });
                 thing.FSP.MenuGrapher.addMenuDialog(
                     "GeneralText",
-                    [
-                        "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!"
-                    ],
-                    thing.FSP.animateCharacterDialogFinish.bind(
-                        thing, other
-                    )
+                    "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
+                    thing.FSP.animateCharacterDialogFinish.bind(thing.FSP, thing, other)
                 );
                 thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
 
@@ -4002,7 +4000,7 @@ module FullScreenPokemon {
                 menuNumbers: string = "Battle" + nameUpper + "HealthNumbers",
                 bar: IThing = FSP.getThingById("HPBarFill" + nameUpper),
                 barWidth: number = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal),
-                healthDialog = FSP.makeDigit(123, 3, " ") + "/" + FSP.makeDigit(hpNormal, 3, " ");
+                healthDialog: string = FSP.makeDigit(123, 3, " ") + "/" + FSP.makeDigit(hpNormal, 3, " ");
 
             if (FSP.MenuGrapher.getMenu(menuNumbers)) {
                 FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
@@ -6660,13 +6658,13 @@ module FullScreenPokemon {
             ]);
 
             FSP.TimeHandler.addEvent(
-                function () {
+                function (): void {
                     FSP.player.hidden = false;
                 },
                 112 - FSP.getCharacterWalkingInterval(settings.player));
 
             FSP.TimeHandler.addEvent(
-                function () {
+                function (): void {
                     FSP.animateCharacterStartWalking(
                         settings.player,
                         0,
@@ -7131,7 +7129,7 @@ module FullScreenPokemon {
                         ]
                     },
                     "textStart": ["", " wants to fight!"],
-                    "textDefeat": ["SHOULD FILL THIS OUT YES"],
+                    "textDefeat": ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
                     "textVictory": [
                         [
                             "%%%%%%%RIVAL%%%%%%%: WHAT?",
