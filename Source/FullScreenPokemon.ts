@@ -4000,7 +4000,7 @@ module FullScreenPokemon {
                 menuNumbers: string = "Battle" + nameUpper + "HealthNumbers",
                 bar: IThing = FSP.getThingById("HPBarFill" + nameUpper),
                 barWidth: number = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal),
-                healthDialog: string = FSP.makeDigit(123, 3, " ") + "/" + FSP.makeDigit(hpNormal, 3, " ");
+                healthDialog: string = FSP.makeDigit(hp, 3, " ") + "/" + FSP.makeDigit(hpNormal, 3, " ");
 
             if (FSP.MenuGrapher.getMenu(menuNumbers)) {
                 FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
@@ -4604,7 +4604,9 @@ module FullScreenPokemon {
                     FSP.MenuGrapher.addMenuDialog(
                         "GeneralText",
                         [
-                            actor.nickname + " fainted!"
+                            [
+                                actor.nickname, " fainted!"
+                            ]
                         ],
                         FSP.ScenePlayer.bindRoutine(nextRoutine, args)
                     );
