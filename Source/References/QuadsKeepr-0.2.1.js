@@ -268,7 +268,7 @@ var QuadsKeepr;
             }
             this.top -= this.quadrantHeight;
             if (callUpdate && this.onAdd) {
-                this.onAdd("yInc", this.top, this.right, this.top + this.quadrantHeight, this.left);
+                this.onAdd("yDec", this.top, this.right, this.top + this.quadrantHeight, this.left);
             }
             return row;
         };
@@ -288,7 +288,7 @@ var QuadsKeepr;
             }
             this.left -= this.quadrantWidth;
             if (callUpdate && this.onAdd) {
-                this.onAdd("xInc", this.top, this.left, this.bottom, this.left + this.quadrantWidth);
+                this.onAdd("xDec", this.top, this.left, this.bottom, this.left + this.quadrantWidth);
             }
             return col;
         };
