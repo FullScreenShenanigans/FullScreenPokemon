@@ -7221,6 +7221,7 @@ module FullScreenPokemon {
                 function (): void {
                     FSP.MenuGrapher.deleteMenu("GeneralText");
                     FSP.ScenePlayer.stopCutscene();
+                    FSP.MapScreener.blockInputs = false;
                 });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
 
