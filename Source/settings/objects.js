@@ -763,7 +763,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "Character": {
             "groupType": "Character",
             "speed": FullScreenPokemon.FullScreenPokemon.unitsize / 3,
-            "isWalking": false,
+            "walking": false,
             "shouldWalk": false,
             "switchDirectionOnDialog": true,
             "heightGrass": 4,

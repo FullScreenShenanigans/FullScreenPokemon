@@ -2435,7 +2435,7 @@ module FullScreenPokemon {
 
             if (other.active) {
                 if (
-                    (!other.requireOverlap && !thing.isWalking)
+                    (!other.requireOverlap && !thing.walking)
                     || thing.FSP.isThingWithinOther(thing, other)
                 ) {
                     if (
@@ -2454,12 +2454,8 @@ module FullScreenPokemon {
                 return true;
             }
 
-            // Find direction of movement using xvel, yvel
-            // if towards other, transport
-            var directionMovement: Direction = thing.direction,
-                directionActual: Direction = thing.FSP.getDirectionBordering(thing, other);
-
-            if (directionMovement === directionActual) {
+            // If the thing is moving towards the triggerer, it's now active
+            if (thing.direction === thing.FSP.getDirectionBordering(thing, other)) {
                 other.active = true;
                 return true;
             }
@@ -5514,7 +5510,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "Ok. We'll need your Pokemon."
+                    "Ok. We'll need your %%%%%%%POKEMON%%%%%%%."
                 ],
                 FSP.ScenePlayer.bindRoutine("Healing")
             );
@@ -5550,7 +5546,7 @@ module FullScreenPokemon {
                 party.length);
 
             FSP.TimeHandler.addEvent(
-                FSP.ScenePlayer.playRoutine,
+                FSP.ScenePlayer.playRoutine.bind(FSP.ScenePlayer),
                 dt * (party.length + 1),
                 "HealingAction",
                 {
@@ -5586,7 +5582,7 @@ module FullScreenPokemon {
                 numFlashes);
 
             FSP.TimeHandler.addEvent(
-                FSP.ScenePlayer.playRoutine,
+                FSP.ScenePlayer.playRoutine.bind(FSP.ScenePlayer),
                 (numFlashes + 2) * 21,
                 "HealingComplete",
                 {
@@ -6495,6 +6491,7 @@ module FullScreenPokemon {
             FSP.StateHolder.addChange(settings.triggerer.id, "alive", false);
 
             if (FSP.ItemsHolder.getItem("starter")) {
+                FSP.MapScreener.blockInputs = false;
                 return;
             }
 
@@ -7378,7 +7375,9 @@ module FullScreenPokemon {
                 ],
                 function (): void {
                     FSP.TimeHandler.addEvent(
-                        FSP.ScenePlayer.playRoutine, 14, "OakDescribesGoal");
+                        FSP.ScenePlayer.playRoutine.bind(FSP.ScenePlayer),
+                        14,
+                        "OakDescribesGoal");
 
                     FSP.killNormal(bookLeft);
                     FSP.killNormal(bookRight);
