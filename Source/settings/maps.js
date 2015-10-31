@@ -520,7 +520,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps = {
                         { "thing": "DirtLight", "x": 160, "y": 128, "width": 32, "height": 16 },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 192, "y": 128, "xnum": 2, "ynum": 4 },
                         { "thing": "DirtMedium", "x": 208, "y": 128, "width": 64, "height": 32 },
-                        { "macro": "Building", "x": 224, "y": 128, "door": true, "label": "Mart", "transport": { "map": "Viridian City", "location": "PokeMart Inside Door" }, "entrance": { "map": "Viridian City", "location": "PokeMart Outside Door" } },
+                        { "macro": "Building", "x": 224, "y": 128, "door": true, "label": "Mart", "transport": { "map": "Viridian City", "location": "PokeMart Inside Door" }, "entrance": "PokeMart Outside Door" },
                         { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 272, "y": 128, "xnum": 2, "ynum": 4 },
                         { "thing": "Sign", "x": 136, "y": 136, "dialog": "VIRIDIAN CITY \n The Eternally Green Paradise" },
                         { "thing": "FenceVertical", "x": 160, "y": 136, "width": 32 },
