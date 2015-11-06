@@ -230,7 +230,7 @@ declare module MenuGraphr {
             skipAdd?: boolean): void;
         addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
-        addMenuWord(
+        addMenuWords(
             name: string,
             words: (string[] | IMenuWordCommand)[],
             i: number,
@@ -434,7 +434,7 @@ module MenuGraphr {
             this.positionItem(container, schema.size, schema.position, menu, true);
 
             menu.textX = container.left;
-            this.addMenuWord(name, words, 0, container.left, container.top);
+            this.addMenuWords(name, words, 0, container.left, container.top);
         }
 
         /**
@@ -672,7 +672,7 @@ module MenuGraphr {
             menu.textX = x;
 
             if (words.length) {
-                this.addMenuWord(name, words, 0, x, y, onCompletion);
+                this.addMenuWords(name, words, 0, x, y, onCompletion);
             } else {
                 onCompletion();
             }
@@ -683,7 +683,7 @@ module MenuGraphr {
          * 
          * @remarks This is the real force behind addMenuDialog and addMenuText.
          */
-        addMenuWord(name: string, words: (string[] | IMenuWordCommand)[], i: number, x: number, y: number, onCompletion?: (...args: any[]) => void): IThing[] {
+        addMenuWords(name: string, words: (string[] | IMenuWordCommand)[], i: number, x: number, y: number, onCompletion?: (...args: any[]) => void): IThing[] {
             var menu: IMenu = this.getExistingMenu(name),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
                 command: IMenuWordFiltered,
@@ -737,18 +737,27 @@ module MenuGraphr {
                 }
             }
 
+            // Only create a new progress object if one doesn't exist (slight performance boost)
+            if (!menu.progress) {
+                menu.progress = {};
+            }
+
             // If this is the last word in the the line (words), mark progress as done
             if (i === words.length - 1) {
-                menu.progress = {
-                    "complete": true,
-                    "onCompletion": onCompletion
-                };
+                menu.progress.complete = true;
+                menu.progress.onCompletion = onCompletion;
 
                 if (menu.finishAutomatically) {
                     this.GameStarter.TimeHandler.addEvent(
                         onCompletion,
                         (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed);
                 }
+
+                this.GameStarter.TimeHandler.addEvent(
+                    function (): void {
+                        menu.progress.working = false;
+                    },
+                    (j + 1) * textSpeed);
 
                 return things;
             }
@@ -759,21 +768,29 @@ module MenuGraphr {
                 y += textPaddingY;
             }
 
-            // If the bottom of the menu has been reached, pause its progress
+            // Mark the menu's progress as working and incomplete
+            menu.progress.working = true;
+            menu.progress.complete = false
+            menu.progress.onCompletion = onCompletion;
+            (<IListMenu>menu).progress.words = words;
+            (<IListMenu>menu).progress.i = i + 1;
+            (<IListMenu>menu).progress.x = x;
+            (<IListMenu>menu).progress.y = y - textPaddingY;
+
+            // If the bottom of the menu has been reached, pause the progress
             if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                (<IListMenu>menu).progress = {
-                    "words": words,
-                    "i": i + 1,
-                    "x": x,
-                    "y": y - (textPaddingY),
-                    "onCompletion": onCompletion
-                };
+                this.GameStarter.TimeHandler.addEvent(
+                    function (): void {
+                        menu.progress.working = false;
+                    },
+                    (j + 1) * textSpeed);
+
                 return things;
             }
 
             if (textSpeed) {
                 this.GameStarter.TimeHandler.addEvent(
-                    this.addMenuWord.bind(this),
+                    this.addMenuWords.bind(this),
                     (j + 1) * textSpeed,
                     name,
                     words,
@@ -782,7 +799,7 @@ module MenuGraphr {
                     y,
                     onCompletion);
             } else {
-                this.addMenuWord(name, words, i + 1, x, y, onCompletion);
+                this.addMenuWords(name, words, i + 1, x, y, onCompletion);
             }
 
             return things;
@@ -830,6 +847,8 @@ module MenuGraphr {
                 return;
             }
 
+            progress.working = true;
+
             if (progress.complete) {
                 if (!progress.onCompletion || progress.onCompletion(this.GameStarter, menu)) {
                     this.deleteMenu(name);
@@ -837,7 +856,6 @@ module MenuGraphr {
                 return;
             }
 
-            progress.working = true;
 
             for (i = 0; i < children.length; i += 1) {
                 character = children[i];
@@ -852,7 +870,7 @@ module MenuGraphr {
             }
 
             this.GameStarter.TimeHandler.addEvent(
-                this.addMenuWord.bind(this),
+                this.addMenuWords.bind(this),
                 character.paddingY + 1,
                 name,
                 progress.words,
@@ -949,7 +967,7 @@ module MenuGraphr {
                         schema = option.textsFloating[j];
 
                         optionChild.things = optionChild.things.concat(
-                            this.addMenuWord(
+                            this.addMenuWords(
                                 name,
                                 [schema.text],
                                 0,
