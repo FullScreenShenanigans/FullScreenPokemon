@@ -1,15 +1,35 @@
 /// <reference path="ItemsHoldr-0.2.1.ts" />
 
 declare module AudioPlayr {
+    /**
+     * Lookup for directories to the sounds contained within.
+     */
+    export interface ILibrarySettings {
+        [i: string]: string[];
+    }
+
+    /**
+     * Lookup for HTMLAudioElements keyed by their names.
+     */
+    export interface ISoundsLibrary {
+        [i: string]: HTMLAudioElement;
+    }
+
+    /**
+     * Lookup for directories of sounds to their sound libraries.
+     */
+    export interface IDirectoriesLibrary {
+        [i: string]: ISoundsLibrary;
+    }
+
+    /**
+     * Settings to initialize a new instance of an IAudioPlayr.
+     */
     export interface IAudioPlayrSettings {
         /**
          * The names of the audio files to be preloaded for on-demand playback.
          */
-        library: {
-            [i: string]: {
-                [i: string]: string;
-            }
-        };
+        library: ILibrarySettings;
 
         /**
          * The directory in which all sub-directories of audio files are stored.
@@ -45,37 +65,215 @@ declare module AudioPlayr {
          */
         getVolumeLocal?: number | { (...args: any[]): number };
     }
-
+    
+    /**
+     * An audio library to automate preloading and controlled playback of multiple
+     * audio tracks, with support for different browsers' preferred file types.
+     */
     export interface IAudioPlayr {
+        /**
+         * @returns The listing of <audio> Elements, keyed by name.
+         */
         getLibrary(): any;
+        
+        /**
+         * @returns The allowed filetypes for audio files.
+         */
         getFileTypes(): string[];
+        
+        /**
+         * @returns The currently playing <audio> Elements, keyed by name.
+         */
         getSounds(): any;
+        
+        /**
+         * @returns The current playing theme's <audio> Element.
+         */
         getTheme(): HTMLAudioElement;
+
+        /**
+         * @returns The name of the currently playing theme.
+         */
         getThemeName(): string;
+
+        /**
+         * @returns The directory under which all filetype directories are to be located.
+         */
         getDirectory(): string;
+
+        /**
+         * @returns The current volume as a Number in [0,1], retrieved by the ItemsHoldr.
+         */
         getVolume(): number;
+
+        /**
+         * Sets the current volume. If not muted, all sounds will have their volume
+         * updated.
+         * 
+         * @param volume   A Number in [0,1] to set as the current volume.
+         */
         setVolume(volume: number): void;
+
+        /**
+         * @returns Whether this is currently muted.
+         */
         getMuted(): boolean;
+
+        /**
+         * Calls either setMutedOn or setMutedOff as is appropriate.
+         * 
+         * @param muted   The new status for muted.
+         */
         setMuted(muted: boolean): void;
+
+        /**
+         * Calls either setMutedOn or setMutedOff to toggle whether this is muted.
+         */
         toggleMuted(): void;
+
+        /**
+         * Sets volume to 0 in all currently playing sounds and stores the muted
+         * status as on in the internal ItemsHoldr.
+         */
         setMutedOn(): void;
+
+        /**
+         * Sets sound volumes to their actual volumes and stores the muted status
+         * as off in the internal ItemsHoldr.
+         */
         setMutedOff(): void;
+
+        /**
+         * @returns The Function or Number used as the volume setter for local sounds.    
+         */
         getGetVolumeLocal(): any;
+
+        /**
+         * @param getVolumeLocal   A new Function or Number to use as the volume setter 
+         *                         for local sounds.
+         */
         setGetVolumeLocal(getVolumeLocalNew: any): void;
+
+        /**
+         * @returns The Function or String used to get the default theme for playTheme.
+         */
         getGetThemeDefault(): any;
+
+        /**
+         * @param getThemeDefaultNew A new Function or String to use as the source for
+         *                           theme names in default playTheme calls.
+         */
         setGetThemeDefault(getThemeDefaultNew: any): void;
+
+        /**
+         * Plays the sound of the given name. 
+         * 
+         * @param name   The name of the sound to play.
+         * @returns The sound's <audio> element, now playing.
+         * @remarks Internally, this stops any previously playing sound of that name 
+         *          and starts a new one, with volume set to the current volume and 
+         *          muted status. If the name wasn't previously being played (and 
+         *          therefore a new Element has been created), an event listener is 
+         *          added to delete it from sounds after.
+         */
         play(name: string): HTMLAudioElement;
+
+        /**
+         * Pauses all currently playing sounds.
+         */
         pauseAll(): void;
+
+        /**
+         * Un-pauses (resumes) all currently paused sounds.
+         */
         resumeAll(): void;
+
+        /**
+         * Pauses the currently playing theme, if there is one.
+         */
         pauseTheme(): void;
+
+        /**
+         * Resumes the theme, if there is one and it's paused.
+         */
         resumeTheme(): void;
+
+        /**
+         * Stops all sounds and any theme, and removes all references to them.
+         */
         clearAll(): void;
+
+        /**
+         * Pauses and removes the theme, if there is one.
+         */
         clearTheme(): void;
+
+        /**
+         * "Local" version of play that changes the output sound's volume depending
+         * on the result of a getVolumeLocal call.
+         * 
+         * @param name   The name of the sound to play.
+         * @param location   An argument for getVolumeLocal, if that's a Function.
+         * @returns The sound's <audio> element, now playing.
+         */
         playLocal(name: string, location?: any): HTMLAudioElement;
+
+        /**
+         * Pauses any previously playing theme and starts playback of a new theme.
+         * 
+         * @param name   The name of the sound to be used as the theme. If not 
+         *               provided, getThemeDefault is used to 
+         *                          provide one.
+         * @param loop   Whether the theme should always loop (by default, true).
+         * @returns The theme's <audio> element, now playing.
+         * @remarks This is different from normal sounds in that it normally loops
+         *          and is controlled by pauseTheme and co. If loop is on and the 
+         *          sound wasn't already playing, an event listener is added for 
+         *          when it ends.
+         */
         playTheme(name?: string, loop?: boolean): HTMLAudioElement;
+
+        /**
+         * Wrapper around playTheme that plays a sound, then a theme. This is 
+         * implemented using an event listener on the sound's ending.
+         * 
+         * @param prefix    The name of a sound to play before the theme.
+         * @param name   The name of the sound to be used as the theme. If not 
+         *               provided, getThemeDefault is used to 
+         *                          provide one.
+         * @param loop   Whether the theme should always loop (by default, false).
+         * @returns The sound's <audio> element, now playing.
+         */
         playThemePrefixed(prefix?: string, name?: string, loop?: boolean): HTMLAudioElement;
+
+        /**
+         * Adds an event listener to a currently playing sound. The sound will keep
+         * track of event listeners via an .addedEvents attribute, so they can be
+         * cancelled later.
+         * 
+         * @param name   The name of the sound.
+         * @param event   The name of the event, such as "ended".
+         * @param callback   The Function to be called by the event.
+         */
         addEventListener(name: string, event: string, callback: any): void;
+
+        /**
+         * Clears all events added by this.addEventListener to a sound under a given
+         * event. 
+         * 
+         * @param name   The name of the sound.
+         * @param event   The name of the event, such as "ended".
+         */
         removeEventListeners(name: string, event: string): void;
+
+        /**
+         * Adds an event listener to a sound. If the sound doesn't exist or has 
+         * finished playing, it's called immediately.
+         * 
+         * @param name   The name of the sound.
+         * @param event   The name of the event, such as "onended".
+         * @param callback   The Function to be called by the event.
+         */
         addEventImmediate(name: string, event: string, callback: any): void;
     }
 }
@@ -87,13 +285,17 @@ module AudioPlayr {
     /**
      * An audio library to automate preloading and controlled playback of multiple
      * audio tracks, with support for different browsers' preferred file types.
-     * Volume and mute status are stored locally using a ItemsHoldr.
      */
     export class AudioPlayr implements IAudioPlayr {
         /**
-         * A listing of filenames to be turned into <audio> objects.
+         * HTMLAudioElements keyed by their name.
          */
-        private library: any;
+        private library: ISoundsLibrary;
+
+        /**
+         * Directories mapping folder names to sound libraries.
+         */
+        private directories: IDirectoriesLibrary;
 
         /**
          * What file types to add as sources to sounds.
@@ -103,9 +305,7 @@ module AudioPlayr {
         /**
          * Currently playing sound objects, keyed by name (excluding extensions).
          */
-        private sounds: {
-            [i: string]: HTMLAudioElement;
-        };
+        private sounds: ISoundsLibrary;
 
         /**
          * The currently playing theme.
@@ -118,7 +318,7 @@ module AudioPlayr {
         private themeName: string;
 
         /**
-         * Directory from which audio files are AJAXED upon startup.
+         * Directory from which audio files are AJAXed upon startup.
          */
         private directory: string;
 
@@ -138,7 +338,9 @@ module AudioPlayr {
         private ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
 
         /**
-         * @param {IAudioPlayrSettings} settings
+         * Initializes a new instance of the AudioPlayr class.
+         * 
+         * @param settings   Settings to use for initialization.
          */
         constructor(settings: IAudioPlayrSettings) {
             var volumeInitial: number;
@@ -161,7 +363,6 @@ module AudioPlayr {
 
             this.ItemsHolder = settings.ItemsHolder;
 
-            this.library = settings.library;
             this.directory = settings.directory;
             this.fileTypes = settings.fileTypes;
             this.getThemeDefault = settings.getThemeDefault || "Theme";
@@ -172,7 +373,7 @@ module AudioPlayr {
             this.sounds = {};
 
             // Preload everything!
-            this.libraryLoad();
+            this.generateLibraryFromSettings(settings.library);
 
             volumeInitial = this.ItemsHolder.getItem("volume");
             if (volumeInitial === undefined) {
@@ -189,43 +390,42 @@ module AudioPlayr {
         */
 
         /**
-         * @return {Object} The listing of <audio> Elements, keyed by name.
+         * @returns The listing of <audio> Elements, keyed by name.
          */
         getLibrary(): any {
             return this.library;
         }
 
         /**
-         * @return {String[]} The allowed filetypes for audio files.
+         * @returns The allowed filetypes for audio files.
          */
         getFileTypes(): string[] {
             return this.fileTypes;
         }
 
         /**
-         * @return {Object} The currently playing <audio> Elements, keyed by name.
+         * @returns The currently playing <audio> Elements, keyed by name.
          */
         getSounds(): any {
             return this.sounds;
         }
 
         /**
-         * @return {HTMLAudioElement} The current playing theme's <audio> Element.
+         * @returns The current playing theme's <audio> Element.
          */
         getTheme(): HTMLAudioElement {
             return this.theme;
         }
 
         /**
-         * @return {String} The name of the currently playing theme.
+         * @returns The name of the currently playing theme.
          */
         getThemeName(): string {
             return this.themeName;
         }
 
         /**
-         * @return {String} The directory under which all filetype directories are 
-         *                  to be located.
+         * @returns The directory under which all filetype directories are to be located.
          */
         getDirectory(): string {
             return this.directory;
@@ -236,8 +436,7 @@ module AudioPlayr {
         */
 
         /**
-         * @return {Number} The current volume, which is a Number in [0,1],
-         *                  retrieved by the ItemsHoldr.
+         * @returns The current volume as a Number in [0,1], retrieved by the ItemsHoldr.
          */
         getVolume(): number {
             return Number(this.ItemsHolder.getItem("volume") || 0);
@@ -247,7 +446,7 @@ module AudioPlayr {
          * Sets the current volume. If not muted, all sounds will have their volume
          * updated.
          * 
-         * @param {Number} volume   A Number in [0,1] to set as the current volume.
+         * @param volume   A Number in [0,1] to set as the current volume.
          */
         setVolume(volume: number): void {
             var i: string;
@@ -264,7 +463,7 @@ module AudioPlayr {
         }
 
         /**
-         * @return {Boolean} whether this is currently muted.
+         * @returns Whether this is currently muted.
          */
         getMuted(): boolean {
             return Boolean(Number(this.ItemsHolder.getItem("muted")));
@@ -273,7 +472,7 @@ module AudioPlayr {
         /**
          * Calls either setMutedOn or setMutedOff as is appropriate.
          * 
-         * @param {Boolean} muted   The new status for muted.
+         * @param muted   The new status for muted.
          */
         setMuted(muted: boolean): void {
             this.getMuted() ? this.setMutedOn() : this.setMutedOff();
@@ -326,32 +525,30 @@ module AudioPlayr {
         */
 
         /**
-         * @return {Mixed} The Function or Number used as the volume setter for
-         *                 "local" sounds.    
+         * @returns The Function or Number used as the volume setter for local sounds.    
          */
         getGetVolumeLocal(): any {
             return this.getVolumeLocal;
         }
 
         /**
-         * @param {Mixed} getVolumeLocal   A new Function or Number to use as the
-         *                                 volume setter for "local" sounds.
+         * @param getVolumeLocal   A new Function or Number to use as the volume setter 
+         *                         for local sounds.
          */
         setGetVolumeLocal(getVolumeLocalNew: any): void {
             this.getVolumeLocal = getVolumeLocalNew;
         }
 
         /**
-         * @return {Mixed} The Function or String used to get the default theme for
-         *                 playTheme calls.
+         * @returns The Function or String used to get the default theme for playTheme.
          */
         getGetThemeDefault(): any {
             return this.getThemeDefault;
         }
 
         /**
-         * @param {Mixed} A new Function or String to use as the source for theme
-         *                names in default playTheme calls.
+         * @param getThemeDefaultNew A new Function or String to use as the source for
+         *                           theme names in default playTheme calls.
          */
         setGetThemeDefault(getThemeDefaultNew: any): void {
             this.getThemeDefault = getThemeDefaultNew;
@@ -362,14 +559,15 @@ module AudioPlayr {
         */
 
         /**
-         * Plays the sound of the given name. Internally, this stops any previously
-         * playing sound of that name and starts a new one, with volume set to the
-         * current volume and muted status. If the name wasn't previously being 
-         * played (and therefore a new Element has been created), an event listener
-         * is added to delete it from sounds after.
+         * Plays the sound of the given name. 
          * 
-         * @param {String} name   The name of the sound to play.
-         * @return {HTMLAudioElement} The sound's <audio> element, now playing.
+         * @param name   The name of the sound to play.
+         * @returns The sound's <audio> element, now playing.
+         * @remarks Internally, this stops any previously playing sound of that name 
+         *          and starts a new one, with volume set to the current volume and 
+         *          muted status. If the name wasn't previously being played (and 
+         *          therefore a new Element has been created), an event listener is 
+         *          added to delete it from sounds after.
          */
         play(name: string): HTMLAudioElement {
             var sound: HTMLAudioElement,
@@ -478,14 +676,11 @@ module AudioPlayr {
 
         /**
          * "Local" version of play that changes the output sound's volume depending
-         * on the result of a getVolumeLocal call. This defaults to 1, but may be
-         * less. For example, in a video game, sounds further from the viewpoint
-         * should have lessened volume.
+         * on the result of a getVolumeLocal call.
          * 
-         * @param {String} name   The name of the sound to play.
-         * @param {Mixed} [location]   An argument for getVolumeLocal, if that's a
-         *                             Function.
-         * @return {HTMLAudioElement} The sound's <audio> element, now playing.
+         * @param name   The name of the sound to play.
+         * @param location   An argument for getVolumeLocal, if that's a Function.
+         * @returns The sound's <audio> element, now playing.
          */
         playLocal(name: string, location: any = undefined): HTMLAudioElement {
             var sound: HTMLAudioElement = this.play(name),
@@ -515,17 +710,17 @@ module AudioPlayr {
         }
 
         /**
-         * Pauses any previously playing theme and starts playback of a new theme
-         * sound. This is different from normal sounds in that it normally loops and
-         * is controlled by pauseTheme and co. If loop is on and the sound wasn't
-         * already playing, an event listener is added for when it ends.
+         * Pauses any previously playing theme and starts playback of a new theme.
          * 
-         * @param {String} [name]   The name of the sound to be used as the theme.
-         *                          If not provided, getThemeDefault is used to 
+         * @param name   The name of the sound to be used as the theme. If not 
+         *               provided, getThemeDefault is used to 
          *                          provide one.
-         * @param {Boolean} [loop]   Whether the theme should always loop (by 
-         *                           default, true).
-         * @return {HTMLAudioElement} The theme's <audio> element, now playing.
+         * @param loop   Whether the theme should always loop (by default, true).
+         * @returns The theme's <audio> element, now playing.
+         * @remarks This is different from normal sounds in that it normally loops
+         *          and is controlled by pauseTheme and co. If loop is on and the 
+         *          sound wasn't already playing, an event listener is added for 
+         *          when it ends.
          */
         playTheme(name: string = undefined, loop: boolean = undefined): HTMLAudioElement {
             this.pauseTheme();
@@ -566,15 +761,14 @@ module AudioPlayr {
          * Wrapper around playTheme that plays a sound, then a theme. This is 
          * implemented using an event listener on the sound's ending.
          * 
-         * @param {String} [prefix]    A prefix for the sound? Not sure...
-         * @param {String} [name]   The name of the sound to be used as the theme.
-         *                          If not provided, getThemeDefault is used to 
+         * @param prefix    The name of a sound to play before the theme.
+         * @param name   The name of the sound to be used as the theme. If not 
+         *               provided, getThemeDefault is used to 
          *                          provide one.
-         * @param {Boolean} [loop]   Whether the theme should always loop (by 
-         *                           default, false).
-         * @return {HTMLAudioElement} The sound's <audio> element, now playing.
+         * @param loop   Whether the theme should always loop (by default, false).
+         * @returns The sound's <audio> element, now playing.
          */
-        playThemePrefixed(prefix: string = undefined, name: string = undefined, loop: boolean = undefined): HTMLAudioElement {
+        playThemePrefixed(prefix: string, name?: string, loop?: boolean): HTMLAudioElement {
             var sound: HTMLAudioElement = this.play(prefix);
 
             this.pauseTheme();
@@ -605,9 +799,9 @@ module AudioPlayr {
          * track of event listeners via an .addedEvents attribute, so they can be
          * cancelled later.
          * 
-         * @param {String} name   The name of the sound.
-         * @param {String} event   The name of the event, such as "ended".
-         * @param {Function} callback   The Function to be called by the event.
+         * @param name   The name of the sound.
+         * @param event   The name of the event, such as "ended".
+         * @param callback   The Function to be called by the event.
          */
         addEventListener(name: string, event: string, callback: any): void {
             var sound: any = this.library[name];
@@ -633,8 +827,8 @@ module AudioPlayr {
          * Clears all events added by this.addEventListener to a sound under a given
          * event. 
          * 
-         * @param {String} name   The name of the sound.
-         * @param {String} event   The name of the event, such as "ended".
+         * @param name   The name of the sound.
+         * @param event   The name of the event, such as "ended".
          */
         removeEventListeners(name: string, event: string): void {
             var sound: any = this.library[name],
@@ -665,9 +859,9 @@ module AudioPlayr {
          * Adds an event listener to a sound. If the sound doesn't exist or has 
          * finished playing, it's called immediately.
          * 
-         * @param {String} name   The name of the sound.
-         * @param {String} event   The name of the event, such as "onended".
-         * @param {Function} callback   The Function to be called by the event.
+         * @param name   The name of the sound.
+         * @param event   The name of the event, such as "onended".
+         * @param callback   The Function to be called by the event.
          */
         addEventImmediate(name: string, event: string, callback: any): void {
             if (!this.sounds.hasOwnProperty(name) || this.sounds[name].paused) {
@@ -685,7 +879,7 @@ module AudioPlayr {
         /**
          * Called when a sound has completed to get it out of sounds.
          * 
-         * @param {String} name   The name of the sound that just finished.
+         * @param name   The name of the sound that just finished.
          */
         private soundFinish(name: string): void {
             if (this.sounds.hasOwnProperty(name)) {
@@ -712,40 +906,46 @@ module AudioPlayr {
          * Loads every sound defined in the library via AJAX. Sounds are loaded
          * into <audio> elements via createAudio and stored in the library.
          */
-        private libraryLoad(): void {
-            var section: any,
+        private generateLibraryFromSettings(librarySettings: ILibrarySettings): void {
+            var directory: ISoundsLibrary = {},
+                directorySoundNames: string[],
+                directoryName: string,
                 name: string,
-                sectionName: string,
-                j: string;
+                j: number;
 
-            // For each given section (e.g. names, themes):
-            for (sectionName in this.library) {
-                if (!this.library.hasOwnProperty(sectionName)) {
+            this.library = {};
+            this.directories = {};
+
+            // For each given directory (e.g. names, themes):
+            for (directoryName in librarySettings) {
+                if (!librarySettings.hasOwnProperty(directoryName)) {
                     continue;
                 }
-                section = this.library[sectionName];
 
-                // For each thing in that section:
-                for (j in section) {
-                    if (!section.hasOwnProperty(j)) {
-                        continue;
-                    }
-                    name = section[j];
+                directory = {};
+                directorySoundNames = librarySettings[directoryName];
+
+                // For each audio file to be loaded in that directory:
+                for (j = 0; j < directorySoundNames.length; j += 1) {
+                    name = directorySoundNames[j];
 
                     // Create the sound and store it in the container
-                    this.library[name] = this.createAudio(name, sectionName);
+                    this.library[name] = directory[name] = this.createAudio(name, directoryName);
                 }
+
+                // The full directory is stored in the master directories
+                this.directories[directoryName] = directory;
             }
         }
 
         /**
          * Creates an audio element, gives it sources, and starts preloading.
          * 
-         * @param {String} name
-         * @param {String} sectionName
-         * @return {HTMLAudioElement}
+         * @param name   The name of the sound to play.
+         * @param sectionName   The name of the directory containing the sound.
+         * @returns An <audio> element ocntaining the sound, currently playing.
          */
-        private createAudio(name: string, sectionName: string): HTMLAudioElement {
+        private createAudio(name: string, directory: string): HTMLAudioElement {
             var sound: HTMLAudioElement = document.createElement("audio"),
                 sourceType: string,
                 child: HTMLSourceElement,
@@ -757,7 +957,7 @@ module AudioPlayr {
                 child = <HTMLSourceElement>document.createElement("source");
 
                 child.type = "audio/" + sourceType;
-                child.src = this.directory + "/" + sectionName + "/" + sourceType + "/" + name + "." + sourceType;
+                child.src = this.directory + "/" + directory + "/" + sourceType + "/" + name + "." + sourceType;
 
                 sound.appendChild(child);
             }
@@ -775,8 +975,8 @@ module AudioPlayr {
          * Utility to try to play a sound, which may not be possible in headless
          * environments like PhantomJS.
          * 
-         * @param {HTMLAudioElement} sound
-         * @return {Boolean} Whether the sound was able to play.
+         * @param sound   An <audio> element to play.
+         * @returns Whether the sound was able to play.
          */
         private playSound(sound: HTMLAudioElement): boolean {
             if (sound && sound.play) {
@@ -790,8 +990,8 @@ module AudioPlayr {
          * Utility to try to pause a sound, which may not be possible in headless
          * environments like PhantomJS.
          * 
-         * @param {HTMLAudioElement} sound
-         * @return {Boolean} Whether the sound was able to pause.
+         * @param sound   An <audio> element to pause.
+         * @returns Whether the sound was able to pause.
          */
         private pauseSound(sound: HTMLAudioElement): boolean {
             if (sound && sound.pause) {

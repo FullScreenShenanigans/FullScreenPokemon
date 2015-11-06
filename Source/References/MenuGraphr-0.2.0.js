@@ -118,7 +118,7 @@ var MenuGraphr;
             var menu = this.getExistingMenu(name), container = this.GameStarter.ObjectMaker.make("Menu"), words = this.filterMenuWords(schema.words);
             this.positionItem(container, schema.size, schema.position, menu, true);
             menu.textX = container.left;
-            this.addMenuWord(name, words, 0, container.left, container.top);
+            this.addMenuWords(name, words, 0, container.left, container.top);
         };
         /**
          *
@@ -300,7 +300,7 @@ var MenuGraphr;
             menu.callback = this.continueMenu.bind(this);
             menu.textX = x;
             if (words.length) {
-                this.addMenuWord(name, words, 0, x, y, onCompletion);
+                this.addMenuWords(name, words, 0, x, y, onCompletion);
             }
             else {
                 onCompletion();
@@ -311,7 +311,7 @@ var MenuGraphr;
          *
          * @remarks This is the real force behind addMenuDialog and addMenuText.
          */
-        MenuGraphr.prototype.addMenuWord = function (name, words, i, x, y, onCompletion) {
+        MenuGraphr.prototype.addMenuWords = function (name, words, i, x, y, onCompletion) {
             var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textHeight, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, title, character, j;
             // Command objects must be parsed here in case they modify the x/y position
             if (words[i].command) {
@@ -348,15 +348,20 @@ var MenuGraphr;
                     x += textWidth * textWidthMultiplier;
                 }
             }
+            // Only create a new progress object if one doesn't exist (slight performance boost)
+            if (!menu.progress) {
+                menu.progress = {};
+            }
             // If this is the last word in the the line (words), mark progress as done
             if (i === words.length - 1) {
-                menu.progress = {
-                    "complete": true,
-                    "onCompletion": onCompletion
-                };
+                menu.progress.complete = true;
+                menu.progress.onCompletion = onCompletion;
                 if (menu.finishAutomatically) {
                     this.GameStarter.TimeHandler.addEvent(onCompletion, (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed);
                 }
+                this.GameStarter.TimeHandler.addEvent(function () {
+                    menu.progress.working = false;
+                }, (j + 1) * textSpeed);
                 return things;
             }
             // If the next word would pass the edge of the menu, move down a line
@@ -364,22 +369,26 @@ var MenuGraphr;
                 x = menu.textX;
                 y += textPaddingY;
             }
-            // If the bottom of the menu has been reached, pause its progress
+            // Mark the menu's progress as working and incomplete
+            menu.progress.working = true;
+            menu.progress.complete = false;
+            menu.progress.onCompletion = onCompletion;
+            menu.progress.words = words;
+            menu.progress.i = i + 1;
+            menu.progress.x = x;
+            menu.progress.y = y - textPaddingY;
+            // If the bottom of the menu has been reached, pause the progress
             if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                menu.progress = {
-                    "words": words,
-                    "i": i + 1,
-                    "x": x,
-                    "y": y - (textPaddingY),
-                    "onCompletion": onCompletion
-                };
+                this.GameStarter.TimeHandler.addEvent(function () {
+                    menu.progress.working = false;
+                }, (j + 1) * textSpeed);
                 return things;
             }
             if (textSpeed) {
-                this.GameStarter.TimeHandler.addEvent(this.addMenuWord.bind(this), (j + 1) * textSpeed, name, words, i + 1, x, y, onCompletion);
+                this.GameStarter.TimeHandler.addEvent(this.addMenuWords.bind(this), (j + 1) * textSpeed, name, words, i + 1, x, y, onCompletion);
             }
             else {
-                this.addMenuWord(name, words, i + 1, x, y, onCompletion);
+                this.addMenuWords(name, words, i + 1, x, y, onCompletion);
             }
             return things;
         };
@@ -407,18 +416,18 @@ var MenuGraphr;
             if (!progress || progress.working) {
                 return;
             }
+            progress.working = true;
             if (progress.complete) {
                 if (!progress.onCompletion || progress.onCompletion(this.GameStarter, menu)) {
                     this.deleteMenu(name);
                 }
                 return;
             }
-            progress.working = true;
             for (i = 0; i < children.length; i += 1) {
                 character = children[i];
                 this.GameStarter.TimeHandler.addEventInterval(this.scrollCharacterUp.bind(this), 1, character.paddingY, character, menu, -1);
             }
-            this.GameStarter.TimeHandler.addEvent(this.addMenuWord.bind(this), character.paddingY + 1, name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+            this.GameStarter.TimeHandler.addEvent(this.addMenuWords.bind(this), character.paddingY + 1, name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
         };
         /* Lists
         */
@@ -471,7 +480,7 @@ var MenuGraphr;
                 if (option.textsFloating) {
                     for (j = 0; j < option.textsFloating.length; j += 1) {
                         schema = option.textsFloating[j];
-                        optionChild.things = optionChild.things.concat(this.addMenuWord(name, [schema.text], 0, x + schema.x * this.GameStarter.unitsize, y + schema.y * this.GameStarter.unitsize));
+                        optionChild.things = optionChild.things.concat(this.addMenuWords(name, [schema.text], 0, x + schema.x * this.GameStarter.unitsize, y + schema.y * this.GameStarter.unitsize));
                     }
                 }
                 option.schema = schema = this.filterText(option.text);

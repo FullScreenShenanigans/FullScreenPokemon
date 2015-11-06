@@ -1577,7 +1577,8 @@ FullScreenPokemon.FullScreenPokemon.settings.math = {
                 "label": "Seed",
                 "sprite": "Water",
                 "info": [
-                    "A strange seed was planted on its back at birth. The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%."
+                    "A strange seed was planted on its back at birth.",
+                    "The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%."
                 ],
                 "evolvesInto": "Ivysaur",
                 "evolvesVia": "Level 16",
@@ -13563,7 +13564,8 @@ FullScreenPokemon.FullScreenPokemon.settings.math = {
                 "label": "TinyTurtle",
                 "sprite": "Water",
                 "info": [
-                    "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth."
+                    "After birth, its back swells and hardens into a shell.",
+                    "Powerfully sprays foam from its mouth."
                 ],
                 "evolvesInto": "Wartortle",
                 "evolvesVia": "Level 16",
