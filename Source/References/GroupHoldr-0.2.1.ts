@@ -1,20 +1,4 @@
 declare module GroupHoldr {
-    export interface IGroupHoldrSettings {
-        /**
-         * The names of groups to be creaed.
-         */
-        groupNames: string[];
-
-        /**
-         * The mapping of group types. This can be a single String ("Array" or
-         * "Object") to set each one, or an Object mapping each groupName to 
-         * a different String (type).
-         */
-        groupTypes: string | {
-            [i: string]: string;
-        };
-    }
-
     export interface IGroupHoldrGroups {
         [i: string]: { [i: string]: any } | any[];
     }
@@ -58,17 +42,19 @@ declare module GroupHoldr {
     }
 
     export interface IGroupHoldrDeleteFunction extends IGroupHoldrFunction {
-        (key: any): void;
+        (arg1: any, arg2?: any): void;
     }
 
-    export interface IGroupHoldrArrayDeleteFunction extends IGroupHoldrDeleteFunction { }
+    export interface IGroupHoldrArrayDeleteFunction extends IGroupHoldrDeleteFunction {
+        (value: any, index?: number): void;
+    }
 
     export interface IGroupHoldrObjectDeleteFunction extends IGroupHoldrDeleteFunction {
         (key: string): void;
     }
 
-    export interface IGroupHoldrFunctionGroup<t extends IGroupHoldrFunction> {
-        [i: string]: t;
+    export interface IGroupHoldrFunctionGroup<T extends IGroupHoldrFunction> {
+        [i: string]: T;
     }
 
     export interface IGroupHoldrFunctionGroups {
@@ -80,14 +66,28 @@ declare module GroupHoldr {
         "delete": IGroupHoldrFunctionGroup<IGroupHoldrDeleteFunction>;
     }
 
+    export interface IGroupHoldrSettings {
+        /**
+         * The names of groups to be creaed.
+         */
+        groupNames: string[];
+
+        /**
+         * The mapping of group types. This can be a single String ("Array" or
+         * "Object") to set each one, or an Object mapping each groupName to 
+         * a different String (type).
+         */
+        groupTypes: string | {
+            [i: string]: string;
+        };
+    }
+
     export interface IGroupHoldr {
         getFunctions(): IGroupHoldrFunctionGroups;
         getGroups(): IGroupHoldrGroups;
         getGroup(name: string): { [i: string]: any } | any[];
         getGroupNames(): string[];
-        deleteObject(groupName: string, value: any): void;
-        deleteIndex(groupName: string, index: number, max?: number): void;
-        switchObjectGroup(value: any, groupOld: string, groupNew: string, keyNew?: string): void;
+        switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void;
         applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
         applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
         callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
@@ -200,47 +200,26 @@ module GroupHoldr {
         */
 
         /**
-         * Deletes a given object from a group by calling Array.splice on
-         * the result of Array.indexOf
+         * Switches a value from one group to another, regardless of group types.
          * 
-         * @param {String} groupName   The string name of the group to delete an
-         *                              object from.
-         * @param {Mixed} value   The object to be deleted from the group.
+         * @param {Mixed} value   The value being moved from one group to another.
+         * @param {String} groupNameOld   The name of the group to move out of.
+         * @param {String} groupNameNew   The name of the group to move into.
+         * @param {Mixed} [keyOld]   What key the value used to be under (required if
+         *                           the old group is an Object).
+         * @param {Mixed} [keyNew]   Optionally, what key the value will now be under
+         *                           (required if the new group is an Object).
          */
-        deleteObject(groupName: string, value: any): void {
-            var group: any[] = <any[]>this.groups[groupName];
-            group.splice(group.indexOf(value), 1);
-        }
+        switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void {
+            var groupOld: any = this.groups[groupNameOld];
 
-        /**
-         * Deletes a given index from a group by calling Array.splice. 
-         * 
-         * @param {String} groupName   The string name of the group to delete an
-         *                              object from.
-         * @param {Number} index   The index to be deleted from the group.
-         * @param {Number} [max]   How many elements to delete after that index (by
-         *                         default or if falsy, just the first 1).
-         */
-        deleteIndex(groupName: string, index: number, max: number = 1): void {
-            var group: any[] = <any[]>this.groups[groupName];
-            group.splice(index, max);
-        }
+            if (groupOld.constructor === Array) {
+                this.functions.delete[groupNameOld](value, keyOld);
+            } else {
+                this.functions.delete[groupNameOld](keyOld);
+            }
 
-        /**
-         * Switches an object from groupOld to groupNew by removing it from the
-         * old group and adding it to the new. If the new group uses an associative
-         * array, a key should be passed in (which defaults to undefined).
-         * 
-         * @param {Mixed} value   The value to be moved from one group to another.
-         * @param {String} groupOld   The string name of the value's old group.
-         * @param {String} groupNew   The string name of the value's new group.
-         * @param {String} [keyNew]   A key for the value to be placed in the new
-         *                           group, required only if the group contains an
-         *                           associative array.
-         */
-        switchObjectGroup(value: any, groupOld: string, groupNew: string, keyNew: string = undefined): void {
-            this.deleteObject(groupOld, value);
-            this.functions.add[groupNew](value, keyNew);
+            this.functions.add[groupNameNew](value, keyNew);
         }
 
         /**
@@ -641,11 +620,12 @@ module GroupHoldr {
                 /**
                  * Deletes a value from the group, referenced by the given key.
                  * 
-                 * @param {Number} key   The String key to reference the value to be
-                 *                       deleted.
+                 * @param {Mixed} value The value to be deleted.
                  */
-                this.functions.delete[name] = this["delete" + name] = function (key: any): void {
-                    group.splice(group.indexOf(key), 1);
+                this.functions.delete[name] = this["delete" + name] = function (value: any, index: number = group.indexOf(value)): void {
+                    if (index !== -1) {
+                        group.splice(index, 1);
+                    }
                 };
             }
         }

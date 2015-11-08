@@ -319,10 +319,19 @@ module BattleMovr {
                 return;
             }
 
+            var i: string;
+
             this.inBattle = true;
 
             this.battleInfo = this.GameStarter.proliferate({}, this.defaults);
-            this.battleInfo = this.GameStarter.proliferate(this.battleInfo, settings);
+
+            // A shallow copy is used here for performance, and so Things in .keptThings
+            // don't cause an infinite loop proliferating
+            for (i in settings) {
+                if (settings.hasOwnProperty(i)) {
+                    this.battleInfo[i] = settings[i];
+                }
+            }
 
             this.battleInfo.player.selectedActor = this.battleInfo.player.actors[0];
             this.battleInfo.opponent.selectedActor = this.battleInfo.opponent.actors[0];
@@ -397,10 +406,11 @@ module BattleMovr {
             });
 
             this.MenuGrapher.addMenuList("BattleOptions", {
-                "options": [{
-                    "text": this.battleOptionNames.moves,
-                    "callback": this.openMovesMenu.bind(this)
-                }, {
+                "options": [
+                    {
+                        "text": this.battleOptionNames.moves,
+                        "callback": this.openMovesMenu.bind(this)
+                    }, {
                         "text": this.battleOptionNames.items,
                         "callback": this.openItemsMenu.bind(this)
                     }, {
@@ -434,7 +444,7 @@ module BattleMovr {
                 battleMenu.left + (position.left || 0) * this.GameStarter.unitsize,
                 battleMenu.top + (position.top || 0) * this.GameStarter.unitsize);
 
-            this.GameStarter.GroupHolder.switchObjectGroup(
+            this.GameStarter.GroupHolder.switchMemberGroup(
                 thing,
                 thing.groupType,
                 "Text");
@@ -609,7 +619,7 @@ module BattleMovr {
                 this.backgroundThing,
                 this.GameStarter.MapScreener.height / 4);
 
-            this.GameStarter.GroupHolder.switchObjectGroup(
+            this.GameStarter.GroupHolder.switchMemberGroup(
                 this.backgroundThing,
                 this.backgroundThing.groupType,
                 "Text");

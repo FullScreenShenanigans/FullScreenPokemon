@@ -152,7 +152,7 @@ declare module FullScreenPokemon {
         badge?: string;
         giftAfterBattle?: string;
         giftAfterBattleAmount?: number;
-        keptThings?: (string | IPlayer)[];
+        keptThings?: IThing[];
         noBlackout?: boolean;
         opponent?: IBattleThingInfo;
         player?: IBattleThingInfo;

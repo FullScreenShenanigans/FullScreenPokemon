@@ -446,7 +446,7 @@ module MenuGraphr {
 
             this.positionItem(thing, schema.size, schema.position, menu);
 
-            this.GameStarter.GroupHolder.switchObjectGroup(
+            this.GameStarter.GroupHolder.switchMemberGroup(
                 thing,
                 thing.groupType,
                 "Text");

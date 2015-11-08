@@ -674,7 +674,7 @@ module FullScreenPokemon {
             }
 
             if (thing.player) {
-                (<IPlayer>thing).keys[3] = true;
+                (<IPlayer>thing).keys[Direction.Left] = true;
             }
 
             thing.FSP.TimeHandler.addEvent(
@@ -697,7 +697,7 @@ module FullScreenPokemon {
             }
 
             if (thing.player) {
-                (<IPlayer>thing).keys[1] = true;
+                (<IPlayer>thing).keys[Direction.Right] = true;
             }
 
             thing.FSP.TimeHandler.addEvent(
@@ -721,7 +721,7 @@ module FullScreenPokemon {
             }
 
             if (thing.player) {
-                (<IPlayer>thing).keys[0] = true;
+                (<IPlayer>thing).keys[Direction.Top] = true;
             }
 
             thing.FSP.TimeHandler.addEvent(
@@ -747,7 +747,7 @@ module FullScreenPokemon {
             }
 
             if (thing.player) {
-                (<IPlayer>thing).keys[2] = true;
+                (<IPlayer>thing).keys[Direction.Bottom] = true;
             }
 
             thing.FSP.TimeHandler.addEvent(
@@ -1396,7 +1396,7 @@ module FullScreenPokemon {
 
             if (groupType) {
                 for (i = 0; i < things.length; i += 1) {
-                    things[0].FSP.GroupHolder.switchObjectGroup(
+                    things[0].FSP.GroupHolder.switchMemberGroup(
                         things[i],
                         things[i].groupType,
                         groupType);
@@ -2603,9 +2603,10 @@ module FullScreenPokemon {
             delete thing.shadow.id;
             thing.FSP.addThing(thing.shadow, thing.left, thing.top);
 
-            thing.FSP.GroupHolder.switchObjectGroup(
-                thing.shadow, thing.shadow.groupType, "Terrain"
-            );
+            thing.FSP.GroupHolder.switchMemberGroup(
+                thing.shadow,
+                thing.shadow.groupType,
+                "Terrain");
 
             thing.FSP.arrayToEnd(
                 thing.shadow, <IThing[]>thing.FSP.GroupHolder.getGroup("Terrain"));
@@ -3854,10 +3855,72 @@ module FullScreenPokemon {
 
             FSP.AudioPlayer.play(battleInfo.theme || "Battle Trainer");
 
-            FSP["cutsceneBattleTransition" + animation](FSP, {
-                "callback": FSP.BattleMover.startBattle.bind(
-                    FSP.BattleMover, battleInfo)
-            });
+            FSP["cutsceneBattleTransition" + animation](
+                FSP,
+                {
+                    "battleInfo": battleInfo,
+                    "callback": FSP.BattleMover.startBattle.bind(FSP.BattleMover, battleInfo)
+                }
+            );
+
+            FSP.moveBattleKeptThingsToText(FSP, battleInfo);
+        }
+
+        /**
+         * 
+         */
+        collectBattleKeptThings(FSP: FullScreenPokemon, thingsRaw: (string | IThing)[]): IThing[] {
+            var things: IThing[] = [FSP.player],
+                used: { [i: string]: IThing } = {
+                    [FSP.player.title]: FSP.player
+                },
+                thing: IThing,
+                i: number;
+
+            for (i = 0; i < thingsRaw.length; i += 1) {
+                thing = thingsRaw[i].constructor === String
+                    ? FSP.getThingById(<string>thingsRaw[i])
+                    : <IThing>thingsRaw[i];
+
+                if (!used[thing.title]) {
+                    used[thing.title] = thing;
+                    things.push(thing);
+                }
+            }
+
+            return things;
+        }
+
+        /**
+         *
+         */
+        moveBattleKeptThingsToText(FSP: FullScreenPokemon, battleInfo: IBattleInfo): void {
+            var keptThings: IThing[] = battleInfo.keptThings,
+                i: number;
+
+            if (!keptThings) {
+                return;
+            }
+
+            for (i = 0; i < keptThings.length; i += 1) {
+                FSP.GroupHolder.switchMemberGroup(keptThings[i], keptThings[i].groupType, "Text");
+            }
+        }
+
+        /**
+         *
+         */
+        moveBattleKeptThingsBack(FSP: FullScreenPokemon, battleInfo: IBattleInfo): void {
+            var keptThings: IThing[] = battleInfo.keptThings,
+                i: number;
+
+            if (!keptThings) {
+                return;
+            }
+
+            for (i = 0; i < keptThings.length; i += 1) {
+                FSP.GroupHolder.switchMemberGroup(keptThings[i], "Text", keptThings[i].groupType);
+            }
         }
 
         /**
@@ -3996,7 +4059,7 @@ module FullScreenPokemon {
                 menuNumbers: string = "Battle" + nameUpper + "HealthNumbers",
                 bar: IThing = FSP.getThingById("HPBarFill" + nameUpper),
                 barWidth: number = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal),
-                healthDialog: string = FSP.makeDigit(hp, 3, " ") + "/" + FSP.makeDigit(hpNormal, 3, " ");
+                healthDialog: string = FSP.makeDigit(hp, 3, "\t") + "/" + FSP.makeDigit(hpNormal, 3, "\t");
 
             if (FSP.MenuGrapher.getMenu(menuNumbers)) {
                 FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
@@ -4982,30 +5045,11 @@ module FullScreenPokemon {
          */
         cutsceneBattleComplete(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
-                keptThings: (string | IThing)[],
-                thing: string | IThing,
+                keptThings: IThing[],
                 i: number;
 
             FSP.MapScreener.blockInputs = false;
-
-            if (battleInfo.keptThings) {
-                keptThings = battleInfo.keptThings.slice();
-                keptThings.push(FSP.player);
-
-                for (i = 0; i < keptThings.length; i += 1) {
-                    thing = keptThings[i];
-
-                    if (thing.constructor === String) {
-                        thing = FSP.getThingById(<string>thing);
-                    }
-
-                    FSP.GroupHolder.switchObjectGroup(
-                        thing,
-                        "Text",
-                        (<IThing>thing).groupType);
-                }
-            }
-
+            FSP.moveBattleKeptThingsBack(FSP, battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", battleInfo.player.actors);
 
             if (settings.nextCutscene) {
@@ -5027,31 +5071,16 @@ module FullScreenPokemon {
                 numTimes: number = 0,
                 direction: number = 2,
                 things: IThing[] = [],
-                keptThings: (string | IThing)[] = settings.keptThings,
                 thing: IThing,
                 difference: number,
                 destination: number,
                 i: number;
 
-            if (keptThings) {
-                keptThings = keptThings.slice();
-
-                for (i = 0; i < keptThings.length; i += 1) {
-                    if (keptThings[i].constructor === String) {
-                        keptThings[i] = FSP.getThingById(<string>keptThings[i]);
-                    }
-                    FSP.GroupHolder.switchObjectGroup(
-                        keptThings[i],
-                        (<IThing>keptThings[i]).groupType,
-                        "Text");
-                }
-            }
-
             /**
              * Yes, an inline Function. It makes things easier by calling itself
              * a bunch of times.
              */
-            function addThing(): void {
+            function addLineSpiralThing(): void {
                 if (numTimes >= ((divisor / 2) | 0)) {
                     if (settings.callback) {
                         settings.callback();
@@ -5123,12 +5152,7 @@ module FullScreenPokemon {
 
                 things.push(thing);
 
-                if (keptThings) {
-                    for (i = 0; i < keptThings.length; i += 1) {
-                        FSP.arrayToEnd(
-                            <IThing>keptThings[i], <IThing[]>FSP.GroupHolder.getGroup("Text"));
-                    }
-                }
+                FSP.moveBattleKeptThingsToText(FSP, settings.battleInfo);
 
                 FSP.TimeHandler.addEventInterval(
                     function (): boolean {
@@ -5152,14 +5176,15 @@ module FullScreenPokemon {
                         if (direction === 2) {
                             numTimes += 1;
                         }
-                        addThing();
+                        addLineSpiralThing();
+                        FSP.moveBattleKeptThingsToText(FSP, settings);
                         return true;
                     },
                     1,
                     Infinity);
             }
 
-            addThing();
+            addLineSpiralThing();
         }
 
         /**
@@ -5190,16 +5215,19 @@ module FullScreenPokemon {
                         "color": color,
                         "change": change,
                         "speed": speed,
-                        "callback": FSP.animateFadeFromColor.bind(
-                            FSP,
-                            FSP,
-                            {
-                                "color": color,
-                                "change": change,
-                                "speed": speed,
-                                "callback": repeater
-                            })
+                        "callback": function () {
+                            FSP.animateFadeFromColor(
+                                FSP,
+                                {
+                                    "color": color,
+                                    "change": change,
+                                    "speed": speed,
+                                    "callback": repeater
+                                });
+                        }
                     });
+
+                    FSP.moveBattleKeptThingsToText(FSP, settings.battleInfo);
                 };
 
             repeater();
@@ -7015,8 +7043,8 @@ module FullScreenPokemon {
             FSP.AudioPlayer.play("Rival Appears");
 
             settings.rival = rival;
-            FSP.animateCharacterSetDirection(rival, 2);
-            FSP.animateCharacterSetDirection(settings.player, 0);
+            FSP.animateCharacterSetDirection(rival, Direction.Bottom);
+            FSP.animateCharacterSetDirection(settings.player, Direction.Top);
 
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
@@ -7038,13 +7066,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalLeavesAfterBattle(FSP: FullScreenPokemon, settings: any): void {
-            // var rivalblocker = EightBitter.getThingById("RivalBlocker");
-
-            // rivalblocker.nocollide = true;
-            // EightBitter.StateHolder.addChange(rivalblocker.id, "nocollide", true);
-
             FSP.ItemsHolder.getItem("PokemonInParty").forEach(FSP.healPokemon.bind(FSP));
-
             FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("Complaint"), 49);
         }
 
@@ -7090,7 +7112,7 @@ module FullScreenPokemon {
                 steps: any[] = [
                     1,
                     "bottom",
-                    6,
+                    7,
                     function (): void {
                         FSP.killNormal(rival);
                         FSP.StateHolder.addChange(rival.id, "alive", false);
@@ -7105,7 +7127,7 @@ module FullScreenPokemon {
             FSP.ScenePlayer.stopCutscene();
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
-            FSP.animateCharacterStartTurning(rival, isRight ? 3 : 1, steps);
+            FSP.animateCharacterStartTurning(rival, isRight ? Direction.Left : Direction.Right, steps);
         }
 
         /**
@@ -7138,7 +7160,7 @@ module FullScreenPokemon {
                     ],
                     // "animation": "LineSpiral",
                     "noBlackout": true,
-                    "keptThings": ["player", "Rival"],
+                    "keptThings": FSP.collectBattleKeptThings(FSP, ["player", "Rival"]),
                     "nextCutscene": "OakIntroRivalLeaves"
                 };
 
@@ -7511,7 +7533,7 @@ module FullScreenPokemon {
         cutsceneElderTrainingStartBattle(FSP: FullScreenPokemon, settings: any): void {
             FSP.MapScreener.blockInputs = true;
             FSP.startBattle(<IBattleInfo>{
-                "keptThings": [settings.player, settings.triggerer],
+                "keptThings": FSP.collectBattleKeptThings(FSP, [settings.player, settings.triggerer]),
                 "player": {
                     "name": "OLD MAN".split(""),
                     "sprite": "ElderBack",
@@ -7622,7 +7644,7 @@ module FullScreenPokemon {
                     "textVictory": [
                         "Awww! You just lucked out!".split("")
                     ],
-                    "keptThings": ["player", "Rival"]
+                    "keptThings": FSP.collectBattleKeptThings(FSP, ["player", "Rival"])
                 }));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }

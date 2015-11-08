@@ -63,47 +63,25 @@ var GroupHoldr;
         /* Group/ordering manipulators
         */
         /**
-         * Deletes a given object from a group by calling Array.splice on
-         * the result of Array.indexOf
+         * Switches a value from one group to another, regardless of group types.
          *
-         * @param {String} groupName   The string name of the group to delete an
-         *                              object from.
-         * @param {Mixed} value   The object to be deleted from the group.
+         * @param {Mixed} value   The value being moved from one group to another.
+         * @param {String} groupNameOld   The name of the group to move out of.
+         * @param {String} groupNameNew   The name of the group to move into.
+         * @param {Mixed} [keyOld]   What key the value used to be under (required if
+         *                           the old group is an Object).
+         * @param {Mixed} [keyNew]   Optionally, what key the value will now be under
+         *                           (required if the new group is an Object).
          */
-        GroupHoldr.prototype.deleteObject = function (groupName, value) {
-            var group = this.groups[groupName];
-            group.splice(group.indexOf(value), 1);
-        };
-        /**
-         * Deletes a given index from a group by calling Array.splice.
-         *
-         * @param {String} groupName   The string name of the group to delete an
-         *                              object from.
-         * @param {Number} index   The index to be deleted from the group.
-         * @param {Number} [max]   How many elements to delete after that index (by
-         *                         default or if falsy, just the first 1).
-         */
-        GroupHoldr.prototype.deleteIndex = function (groupName, index, max) {
-            if (max === void 0) { max = 1; }
-            var group = this.groups[groupName];
-            group.splice(index, max);
-        };
-        /**
-         * Switches an object from groupOld to groupNew by removing it from the
-         * old group and adding it to the new. If the new group uses an associative
-         * array, a key should be passed in (which defaults to undefined).
-         *
-         * @param {Mixed} value   The value to be moved from one group to another.
-         * @param {String} groupOld   The string name of the value's old group.
-         * @param {String} groupNew   The string name of the value's new group.
-         * @param {String} [keyNew]   A key for the value to be placed in the new
-         *                           group, required only if the group contains an
-         *                           associative array.
-         */
-        GroupHoldr.prototype.switchObjectGroup = function (value, groupOld, groupNew, keyNew) {
-            if (keyNew === void 0) { keyNew = undefined; }
-            this.deleteObject(groupOld, value);
-            this.functions.add[groupNew](value, keyNew);
+        GroupHoldr.prototype.switchMemberGroup = function (value, groupNameOld, groupNameNew, keyOld, keyNew) {
+            var groupOld = this.groups[groupNameOld];
+            if (groupOld.constructor === Array) {
+                this.functions.delete[groupNameOld](value, keyOld);
+            }
+            else {
+                this.functions.delete[groupNameOld](keyOld);
+            }
+            this.functions.add[groupNameNew](value, keyNew);
         };
         /**
          * Calls a function for each group, with that group as the first argument.
@@ -457,11 +435,13 @@ var GroupHoldr;
                 /**
                  * Deletes a value from the group, referenced by the given key.
                  *
-                 * @param {Number} key   The String key to reference the value to be
-                 *                       deleted.
+                 * @param {Mixed} value The value to be deleted.
                  */
-                this.functions.delete[name] = this["delete" + name] = function (key) {
-                    group.splice(group.indexOf(key), 1);
+                this.functions.delete[name] = this["delete" + name] = function (value, index) {
+                    if (index === void 0) { index = group.indexOf(value); }
+                    if (index !== -1) {
+                        group.splice(index, 1);
+                    }
                 };
             }
         };

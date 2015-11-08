@@ -126,7 +126,7 @@ var MenuGraphr;
         MenuGraphr.prototype.createMenuThing = function (name, schema) {
             var menu = this.getExistingMenu(name), thing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
             this.positionItem(thing, schema.size, schema.position, menu);
-            this.GameStarter.GroupHolder.switchObjectGroup(thing, thing.groupType, "Text");
+            this.GameStarter.GroupHolder.switchMemberGroup(thing, thing.groupType, "Text");
             menu.children.push(thing);
             return thing;
         };

@@ -92,9 +92,16 @@ var BattleMovr;
             if (this.inBattle) {
                 return;
             }
+            var i;
             this.inBattle = true;
             this.battleInfo = this.GameStarter.proliferate({}, this.defaults);
-            this.battleInfo = this.GameStarter.proliferate(this.battleInfo, settings);
+            // A shallow copy is used here for performance, and so Things in .keptThings
+            // don't cause an infinite loop proliferating
+            for (i in settings) {
+                if (settings.hasOwnProperty(i)) {
+                    this.battleInfo[i] = settings[i];
+                }
+            }
             this.battleInfo.player.selectedActor = this.battleInfo.player.actors[0];
             this.battleInfo.opponent.selectedActor = this.battleInfo.opponent.actors[0];
             this.createBackground();
@@ -153,7 +160,8 @@ var BattleMovr;
                 "ignoreB": true
             });
             this.MenuGrapher.addMenuList("BattleOptions", {
-                "options": [{
+                "options": [
+                    {
                         "text": this.battleOptionNames.moves,
                         "callback": this.openMovesMenu.bind(this)
                     }, {
@@ -179,7 +187,7 @@ var BattleMovr;
             }
             thing = this.things[name] = this.GameStarter.ObjectMaker.make(title, settings);
             this.GameStarter.addThing(thing, battleMenu.left + (position.left || 0) * this.GameStarter.unitsize, battleMenu.top + (position.top || 0) * this.GameStarter.unitsize);
-            this.GameStarter.GroupHolder.switchObjectGroup(thing, thing.groupType, "Text");
+            this.GameStarter.GroupHolder.switchMemberGroup(thing, thing.groupType, "Text");
             return thing;
         };
         /* In-battle menus
@@ -302,7 +310,7 @@ var BattleMovr;
             this.backgroundThing = this.GameStarter.addThing(this.backgroundType);
             this.GameStarter.setWidth(this.backgroundThing, this.GameStarter.MapScreener.width / 4);
             this.GameStarter.setHeight(this.backgroundThing, this.GameStarter.MapScreener.height / 4);
-            this.GameStarter.GroupHolder.switchObjectGroup(this.backgroundThing, this.backgroundThing.groupType, "Text");
+            this.GameStarter.GroupHolder.switchMemberGroup(this.backgroundThing, this.backgroundThing.groupType, "Text");
         };
         /**
          *
