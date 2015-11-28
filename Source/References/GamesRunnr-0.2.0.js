@@ -14,10 +14,13 @@ var GamesRunnr;
          * @param {IGamesRunnrSettings} settings
          */
         function GamesRunnr(settings) {
-            var i;
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given GamesRunnr.");
+            }
             if (typeof settings.games === "undefined") {
                 throw new Error("No games given to GamesRunnr.");
             }
+            var i;
             this.games = settings.games;
             this.interval = settings.interval || 1000 / 60;
             this.speed = settings.speed || 1;

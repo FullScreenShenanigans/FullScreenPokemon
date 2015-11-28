@@ -13,6 +13,18 @@ var ThingHittr;
          * @param {IThingHittrSettings} settings
          */
         function ThingHittr(settings) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ThingHittr.");
+            }
+            if (typeof settings.globalCheckGenerators === "undefined") {
+                throw new Error("No globalCheckGenerators given to ThingHittr.");
+            }
+            if (typeof settings.hitCheckGenerators === "undefined") {
+                throw new Error("No hitCheckGenerators given to ThingHittr.");
+            }
+            if (typeof settings.hitFunctionGenerators === "undefined") {
+                throw new Error("No hitFunctionGenerators given to ThingHittr.");
+            }
             this.globalCheckGenerators = settings.globalCheckGenerators;
             this.hitCheckGenerators = settings.hitCheckGenerators;
             this.hitFunctionGenerators = settings.hitFunctionGenerators;

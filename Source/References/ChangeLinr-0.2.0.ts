@@ -79,16 +79,20 @@ module ChangeLinr {
          * @param {IChangeLinrSettings} settings
          */
         constructor(settings: IChangeLinrSettings) {
-            var i: number;
-
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ChangeLinr.");
+            }
             if (typeof settings.pipeline === "undefined") {
                 throw new Error("No pipeline given to ChangeLinr.");
             }
-            this.pipeline = settings.pipeline || [];
-
             if (typeof settings.transforms === "undefined") {
                 throw new Error("No transforms given to ChangeLinr.");
             }
+
+            var i: number;
+
+            this.pipeline = settings.pipeline || [];
+
             this.transforms = settings.transforms || {};
 
             this.doMakeCache = typeof settings.doMakeCache === "undefined"

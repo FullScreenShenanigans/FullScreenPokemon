@@ -23,16 +23,35 @@ var LevelEditr;
          * @param {ILevelEditrSettings} settings
          */
         function LevelEditr(settings) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to LevelEditr.");
+            }
+            if (typeof settings.prethings === "undefined") {
+                throw new Error("No prethings given to LevelEditr.");
+            }
+            if (typeof settings.thingGroups === "undefined") {
+                throw new Error("No thingGroups given to LevelEditr.");
+            }
+            if (typeof settings.things === "undefined") {
+                throw new Error("No things given to LevelEditr.");
+            }
+            if (typeof settings.macros === "undefined") {
+                throw new Error("No macros given to LevelEditr.");
+            }
+            if (typeof settings.beautifier === "undefined") {
+                throw new Error("No beautifier given to LevelEditr.");
+            }
+            this.enabled = false;
             this.GameStarter = settings.GameStarter;
             this.prethings = settings.prethings;
             this.thingGroups = settings.thingGroups;
-            this.thingKeys = settings.thingKeys;
+            this.things = settings.things;
             this.macros = settings.macros;
             this.beautifier = settings.beautifier;
             this.mapNameDefault = settings.mapNameDefault || "New Map";
             this.mapTimeDefault = settings.mapTimeDefault || Infinity;
             this.mapSettingDefault = settings.mapSettingDefault || "";
-            this.mapEntryDefault = settings.mapEntryDefault || "";
+            this.mapEntrances = settings.mapEntrances || [];
             this.mapDefault = settings.mapDefault;
             this.blocksize = settings.blocksize || 1;
             this.keyUndefined = settings.keyUndefined || "-none-";
@@ -43,6 +62,9 @@ var LevelEditr;
         }
         /* Simple gets
         */
+        LevelEditr.prototype.getEnabled = function () {
+            return this.enabled;
+        };
         /**
          *
          */
@@ -70,8 +92,8 @@ var LevelEditr;
         /**
          *
          */
-        LevelEditr.prototype.getThingKeys = function () {
-            return this.thingKeys;
+        LevelEditr.prototype.getThings = function () {
+            return this.things;
         };
         /**
          *
@@ -90,12 +112,6 @@ var LevelEditr;
          */
         LevelEditr.prototype.getMapTimeDefault = function () {
             return this.mapTimeDefault;
-        };
-        /**
-         *
-         */
-        LevelEditr.prototype.getMapEntryDefault = function () {
-            return this.mapEntryDefault;
         };
         /**
          *
@@ -169,16 +185,21 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.enable = function () {
+            if (this.enabled) {
+                return;
+            }
+            this.enabled = true;
             this.oldInformation = {
                 "map": this.GameStarter.MapsHandler.getMapName()
             };
             this.clearAllThings();
             this.resetDisplay();
-            this.GameStarter.InputWriter.setCanTrigger(false);
             this.setCurrentMode("Build");
+            this.GameStarter.MapScreener.nokeys = true;
             this.setTextareaValue(this.stringifySmart(this.mapDefault), true);
             this.resetDisplayMap();
-            this.disableThing(this.GameStarter.player);
+            this.disableAllThings();
+            this.GameStarter.ItemsHolder.setItem("lives", Infinity);
             if (!this.pageStylesAdded) {
                 this.GameStarter.addPageStyles(this.createPageStyles());
                 this.pageStylesAdded = true;
@@ -189,13 +210,14 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.disable = function () {
-            if (!this.display) {
+            if (!this.display || !this.enabled) {
                 return;
             }
             this.GameStarter.container.removeChild(this.display.container);
             this.display = undefined;
-            this.GameStarter.InputWriter.setCanTrigger(true);
             this.GameStarter.setMap(this.oldInformation.map);
+            this.GameStarter.ItemsHolder.setItem("lives", this.GameStarter.settings.statistics.values.lives.valueDefault);
+            this.enabled = false;
         };
         /**
          *
@@ -204,6 +226,7 @@ var LevelEditr;
             this.display.minimizer.innerText = "+";
             this.display.minimizer.onclick = this.maximize.bind(this);
             this.display.container.className += " minimized";
+            this.display.scrollers.container.style.opacity = "0";
         };
         /**
          *
@@ -214,25 +237,30 @@ var LevelEditr;
             if (this.display.container.className.indexOf("minimized") !== -1) {
                 this.display.container.className = this.display.container.className.replace(/ minimized/g, "");
             }
+            if (this.currentClickMode === "Thing") {
+                this.setSectionClickToPlaceThings();
+            }
+            else if (this.currentClickMode === "Macro") {
+                this.setSectionClickToPlaceMacros();
+            }
+            this.display.scrollers.container.style.opacity = "1";
         };
         /**
          *
          */
         LevelEditr.prototype.startBuilding = function () {
+            this.setCurrentMode("Build");
             this.beautifyTextareaValue();
             this.setDisplayMap(true);
-            this.GameStarter.InputWriter.setCanTrigger(false);
-            this.setCurrentMode("Build");
             this.maximize();
         };
         /**
          *
          */
         LevelEditr.prototype.startPlaying = function () {
-            this.beautifyTextareaValue();
-            this.setDisplayMap(false);
-            this.GameStarter.InputWriter.setCanTrigger(true);
             this.setCurrentMode("Play");
+            this.beautifyTextareaValue();
+            this.setDisplayMap();
             this.minimize();
         };
         /**
@@ -288,44 +316,64 @@ var LevelEditr;
         /**
          *
          */
-        LevelEditr.prototype.setCurrentThing = function (title, args, x, y) {
+        LevelEditr.prototype.setCurrentThing = function (title, x, y) {
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
+            var args = this.generateCurrentArgs(), description = this.things[title];
+            this.clearCurrentThings();
             this.currentTitle = title;
             this.currentArgs = args;
             this.currentPreThings = [
                 {
                     "xloc": 0,
                     "yloc": 0,
+                    "left": description.offsetLeft || 0,
+                    "top": -description.offsetTop || 0,
                     "thing": this.GameStarter.ObjectMaker.make(this.currentTitle, this.GameStarter.proliferate({
-                        "onThingMake": undefined,
-                        "onThingAdd": undefined,
-                        "onThingAdded": undefined,
-                        "outerok": true
+                        "outerok": 2
                     }, this.getNormalizedThingArguments(args)))
                 }
             ];
-            this.disableThing(this.currentPreThings[0].thing);
-            this.GameStarter.addThing(this.currentPreThings[0].thing, x, y);
-        };
-        LevelEditr.prototype.setCurrentMacroThings = function () {
-            var currentThing, i;
-            for (i = 0; i < this.currentPreThings.length; i += 1) {
-                currentThing = this.currentPreThings[i];
-                currentThing.thing.outerok = true;
-                this.disableThing(currentThing.thing);
-                this.GameStarter.addThing(currentThing.thing, currentThing.xloc || 0, currentThing.yloc || 0);
-            }
+            this.addThingAndDisableEvents(this.currentPreThings[0].thing, x, y);
         };
         /**
          *
          */
-        LevelEditr.prototype.setCurrentArgs = function () {
-            if (this.currentClickMode === "Thing") {
-                this.setCurrentThing(this.currentTitle, this.generateCurrentArgs());
+        LevelEditr.prototype.resetCurrentThings = function (event) {
+            var currentThing, i;
+            for (i = 0; i < this.currentPreThings.length; i += 1) {
+                currentThing = this.currentPreThings[i];
+                currentThing.thing.outerok = 2;
+                this.GameStarter.addThing(currentThing.thing, currentThing.xloc || 0, currentThing.yloc || 0);
+                this.disableThing(currentThing.thing);
             }
-            else {
-                this.onMacroIconClick(this.currentTitle, undefined, this.generateCurrentArgs());
+            this.onMouseMoveEditing(event);
+            this.GameStarter.TimeHandler.cancelAllEvents();
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.clearCurrentThings = function () {
+            if (!this.currentPreThings) {
+                return;
+            }
+            for (var i = 0; i < this.currentPreThings.length; i += 1) {
+                this.GameStarter.killNormal(this.currentPreThings[i].thing);
+            }
+            this.currentPreThings = [];
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.setCurrentArgs = function (event) {
+            if (this.currentClickMode === "Thing") {
+                this.setCurrentThing(this.currentTitle);
+            }
+            else if (this.currentClickMode === "Macro") {
+                this.onMacroIconClick(this.currentTitle, undefined, this.generateCurrentArgs(), event);
+            }
+            if (event) {
+                event.stopPropagation();
             }
         };
         /* Mouse events
@@ -333,7 +381,7 @@ var LevelEditr;
         /**
          *
          */
-        LevelEditr.prototype.onMouseDownScroller = function (direction, event) {
+        LevelEditr.prototype.onMouseDownScrolling = function (direction, event) {
             var target = event.target, scope = this;
             target.setAttribute("scrolling", "1");
             this.GameStarter.TimeHandler.addEventInterval(function () {
@@ -341,8 +389,11 @@ var LevelEditr;
                     return true;
                 }
                 if (direction < 0 && scope.GameStarter.MapScreener.left <= 0) {
-                    (scope.display.scrollers.left).style.opacity = "0";
+                    (scope.display.scrollers.left).style.opacity = ".14";
                     return;
+                }
+                for (var i = 0; i < scope.currentPreThings.length; i += 1) {
+                    scope.GameStarter.shiftHoriz(scope.currentPreThings[i].thing, direction);
                 }
                 scope.GameStarter.scrollWindow(direction);
                 scope.display.scrollers.left.style.opacity = "1";
@@ -358,16 +409,19 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.onMouseMoveEditing = function (event) {
-            var x = event.x || event.clientX || 0, y = event.y || event.clientY || 0, prething, i;
+            var x = event.x || event.clientX || 0, y = event.y || event.clientY || 0, prething, left, top, i;
             for (i = 0; i < this.currentPreThings.length; i += 1) {
                 prething = this.currentPreThings[i];
-                if (!prething.thing) {
-                    continue;
+                left = this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize);
+                top = this.roundTo(y - this.GameStarter.container.offsetTop, this.blocksize);
+                if (prething.left) {
+                    left += prething.left * this.GameStarter.unitsize;
                 }
-                this.GameStarter.setLeft(prething.thing, this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize)
-                    + (prething.left || 0) * this.GameStarter.unitsize);
-                this.GameStarter.setTop(prething.thing, this.roundTo(y - this.GameStarter.container.offsetTop, this.blocksize)
-                    - (prething.top || 0) * this.GameStarter.unitsize);
+                if (prething.top) {
+                    top -= prething.top * this.GameStarter.unitsize;
+                }
+                this.GameStarter.setLeft(prething.thing, left);
+                this.GameStarter.setTop(prething.thing, top);
             }
         };
         /**
@@ -375,71 +429,73 @@ var LevelEditr;
          */
         LevelEditr.prototype.afterClick = function () {
             this.canClick = false;
-            setTimeout(function () {
+            setTimeout((function () {
                 this.canClick = true;
-            }, 70);
+            }).bind(this), 70);
         };
         /**
          *
          */
         LevelEditr.prototype.onClickEditingThing = function (event) {
-            if (!this.canClick || this.currentMode !== "Build") {
+            if (!this.canClick || this.currentMode !== "Build" || !this.currentPreThings.length) {
                 return;
             }
-            var x = this.roundTo(event.x || event.clientX || 0, this.blocksize), y = this.roundTo(event.y || event.clientY || 0, this.blocksize);
-            if (!this.currentPreThings.length || !this.addMapCreationThing(x, y)) {
+            var coordinates = this.getNormalizedMouseEventCoordinates(event, true), x = coordinates[0], y = coordinates[1];
+            if (!this.addMapCreationThing(x, y)) {
                 return;
             }
             this.onClickEditingGenericAdd(x, y, this.currentTitle, this.currentArgs);
+            this.afterClick();
         };
         /**
          *
          */
         LevelEditr.prototype.onClickEditingMacro = function (event) {
-            if (!this.canClick || this.currentMode !== "Build") {
+            if (!this.canClick || this.currentMode !== "Build" || !this.currentPreThings.length) {
                 return;
             }
-            var x = this.roundTo(event.x || event.clientX || 0, this.blocksize), y = this.roundTo(event.y || event.clientY || 0, this.blocksize), prething, i;
-            if (!this.currentPreThings.length || !this.addMapCreationMacro(x, y)) {
+            var coordinates = this.getNormalizedMouseEventCoordinates(event), x = coordinates[0], y = coordinates[1], prething, i;
+            if (!this.addMapCreationMacro(x, y)) {
                 return;
             }
             for (i = 0; i < this.currentPreThings.length; i += 1) {
                 prething = this.currentPreThings[i];
                 this.onClickEditingGenericAdd(x + (prething.left || 0) * this.GameStarter.unitsize, y - (prething.top || 0) * this.GameStarter.unitsize, prething.thing.title || prething.title, prething.reference);
             }
+            this.afterClick();
         };
         /**
          *
          */
         LevelEditr.prototype.onClickEditingGenericAdd = function (x, y, title, args) {
-            var thing = this.GameStarter.ObjectMaker.make(title, this.GameStarter.proliferate({
+            var description = this.things[title], thing = this.GameStarter.ObjectMaker.make(title, this.GameStarter.proliferate({
                 "onThingMake": undefined,
                 "onThingAdd": undefined,
                 "onThingAdded": undefined,
                 "movement": undefined
-            }, this.getNormalizedThingArguments(args)));
+            }, this.getNormalizedThingArguments(args))), left = x - this.GameStarter.container.offsetLeft, top = y - this.GameStarter.container.offsetTop;
             if (this.currentMode === "Build") {
-                this.disableThing(thing, .7);
+                this.disableThing(thing);
             }
-            this.GameStarter.addThing(thing, this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize), this.roundTo(y - this.GameStarter.container.offsetTop, this.blocksize));
+            this.addThingAndDisableEvents(thing, left, top);
         };
         /**
          *
          */
         LevelEditr.prototype.onThingIconClick = function (title, event) {
             var x = event.x || event.clientX || 0, y = event.y || event.clientY || 0, target = event.target.nodeName === "DIV"
-                ? event.target : event.target.parentNode, scope = this;
+                ? event.target
+                : event.target.parentNode;
             this.cancelEvent(event);
             this.killCurrentPreThings();
-            setTimeout(function () {
-                scope.setCurrentThing(title, scope.getCurrentArgs(), x, y);
-            });
             this.setVisualOptions(target.getAttribute("name"), undefined, target.options);
+            this.generateCurrentArgs();
+            this.setCurrentThing(title, x, y);
         };
         /**
          *
          */
-        LevelEditr.prototype.onMacroIconClick = function (title, description, options) {
+        LevelEditr.prototype.onMacroIconClick = function (title, description, options, event) {
             if (description) {
                 this.setVisualOptions(title, description, options);
             }
@@ -447,12 +503,14 @@ var LevelEditr;
             if (!map) {
                 return;
             }
-            this.currentPreThings = [];
+            this.clearCurrentThings();
             this.GameStarter.MapsCreator.analyzePreMacro(this.GameStarter.proliferate({
-                "macro": title
+                "macro": title,
+                "x": 0,
+                "y": 0
             }, this.generateCurrentArgs()), this.createPrethingsHolder(this.currentPreThings), this.getCurrentAreaObject(map), map);
             this.currentTitle = title;
-            this.setCurrentMacroThings();
+            this.resetCurrentThings(event);
         };
         /**
          *
@@ -469,6 +527,7 @@ var LevelEditr;
          */
         LevelEditr.prototype.generateCurrentArgs = function () {
             var args = {}, container = this.display.sections.ClickToPlace.VisualOptions, children = container.getElementsByClassName("VisualOptionsList"), child, labeler, valuer, value, i;
+            this.currentArgs = args;
             if (children.length === 0) {
                 return args;
             }
@@ -479,13 +538,18 @@ var LevelEditr;
                 valuer = child.querySelector(".VisualOptionValue");
                 switch ((valuer.getAttribute("data:type") || valuer.type).toLowerCase()) {
                     case "boolean":
-                        value = valuer.value === "true" ? true : false;
+                        value = valuer.value === "true";
                         break;
                     case "number":
                         value = (Number(valuer.value) || 0) * (Number(valuer.getAttribute("data:mod")) || 1);
                         break;
                     default:
-                        value = valuer.value;
+                        if (valuer.getAttribute("typeReal") === "Number") {
+                            value = Number(valuer.value);
+                        }
+                        else {
+                            value = valuer.value;
+                        }
                         break;
                 }
                 if (value !== this.keyUndefined) {
@@ -539,7 +603,7 @@ var LevelEditr;
          *                            of the GUI (true), or from the Raw JSON
          *                            section (false).
          */
-        LevelEditr.prototype.setMapSetting = function (fromGui) {
+        LevelEditr.prototype.setMapSetting = function (fromGui, event) {
             var map = this.getMapObject(), area, setting;
             if (!map) {
                 return;
@@ -563,6 +627,7 @@ var LevelEditr;
             }
             this.setTextareaValue(this.stringifySmart(map), true);
             this.setDisplayMap(true);
+            this.resetCurrentThings(event);
         };
         /**
          *
@@ -581,8 +646,8 @@ var LevelEditr;
          *
          *
          * @param {Boolean} fromGui   Whether this is from the MapSettings section
-         *                             of the GUI (true), or from the Raw JSON
-         *                             section (false).
+         *                            of the GUI (true), or from the Raw JSON
+         *                            section (false).
          */
         LevelEditr.prototype.setMapEntry = function (fromGui) {
             var map = this.getMapObject(), location, entry;
@@ -595,8 +660,6 @@ var LevelEditr;
                 location.entry = entry;
             }
             else {
-                console.warn("Was this code ever reached? area.location?");
-                // entry = area.location;
                 this.display.sections.MapSettings.Entry.value = entry;
             }
             this.setTextareaValue(this.stringifySmart(map), true);
@@ -604,24 +667,15 @@ var LevelEditr;
         };
         /**
          *
-         *
-         * @param {Boolean} fromGui   Whether this is from the MapSettings section
-         *                            of the GUI (true), or from the Raw JSON
-         *                            section (false).
          */
-        LevelEditr.prototype.setCurrentLocation = function (fromGui) {
+        LevelEditr.prototype.setCurrentLocation = function () {
             var map = this.getMapObject(), location;
             if (!map) {
                 return;
             }
             location = this.getCurrentLocationObject(map);
-            if (fromGui) {
-                this.display.sections.MapSettings.Area.value = location.area
-                    ? location.area.toString() : "0";
-            }
-            else {
-                console.warn("This code is never reached, right?");
-            }
+            this.display.sections.MapSettings.Area.value = location.area
+                ? location.area.toString() : "0";
             this.setTextareaValue(this.stringifySmart(map), true);
             this.setDisplayMap(true);
         };
@@ -634,7 +688,7 @@ var LevelEditr;
                 return;
             }
             map.locations[name] = {
-                "entry": this.mapEntryDefault
+                "entry": this.mapEntrances[0]
             };
             this.resetAllVisualOptionSelects("VisualOptionLocation", Object.keys(map.locations));
             this.setTextareaValue(this.stringifySmart(map), true);
@@ -689,10 +743,10 @@ var LevelEditr;
             }
             return map;
         };
-        LevelEditr.prototype.getMapObjectAndTry = function () {
+        LevelEditr.prototype.getMapObjectAndTry = function (event) {
             var mapName = this.getMapName() + "::Temporary", mapRaw = this.getMapObject();
             if (!mapRaw) {
-                return false;
+                return;
             }
             try {
                 this.GameStarter.MapsCreator.storeMap(mapName, mapRaw);
@@ -701,7 +755,9 @@ var LevelEditr;
             }
             catch (error) {
                 this.display.stringer.messenger.textContent = error.message;
-                return false;
+            }
+            if (event) {
+                event.stopPropagation();
             }
         };
         /**
@@ -788,11 +844,20 @@ var LevelEditr;
             this.resetDisplaySectionChoosers();
             this.resetDisplayOptionsList();
             this.resetDisplayMapSettings();
+            setTimeout(this.resetDisplayThinCheck.bind(this));
+        };
+        LevelEditr.prototype.resetDisplayThinCheck = function () {
+            var width = this.display.gui.clientWidth;
+            if (width <= 385) {
+                this.display.container.className += " thin";
+            }
+            else if (width >= 560) {
+                this.display.container.className += " thick";
+            }
         };
         LevelEditr.prototype.resetDisplayGui = function () {
             this.display.gui = this.GameStarter.createElement("div", {
-                "className": "EditorGui",
-                "onclick": this.afterClick.bind(this)
+                "className": "EditorGui"
             });
             this.display.container.appendChild(this.display.gui);
         };
@@ -800,28 +865,22 @@ var LevelEditr;
             this.display.scrollers = {
                 "left": this.GameStarter.createElement("div", {
                     "className": "EditorScroller EditorScrollerLeft",
-                    "onmousedown": this.onMouseDownScroller.bind(this, -this.GameStarter.unitsize * 2),
+                    "onmousedown": this.onMouseDownScrolling.bind(this, -this.GameStarter.unitsize * 2),
                     "onmouseup": this.onMouseUpScrolling.bind(this),
                     "onmouseout": this.onMouseUpScrolling.bind(this),
                     "onclick": this.cancelEvent.bind(this),
                     "innerText": "<",
                     "style": {
-                        "paddingTop": this.GameStarter.MapScreener.height / 2 - 35 + "px",
-                        "fontSize": "70px",
-                        "opacity": 0
+                        "opacity": .14
                     }
                 }),
                 "right": this.GameStarter.createElement("div", {
                     "className": "EditorScroller EditorScrollerRight",
-                    "onmousedown": this.onMouseDownScroller.bind(this, this.GameStarter.unitsize * 2),
+                    "onmousedown": this.onMouseDownScrolling.bind(this, this.GameStarter.unitsize * 2),
                     "onmouseup": this.onMouseUpScrolling.bind(this),
                     "onmouseout": this.onMouseUpScrolling.bind(this),
                     "onclick": this.cancelEvent.bind(this),
-                    "innerText": ">",
-                    "style": {
-                        "paddingTop": this.GameStarter.MapScreener.height / 2 - 35 + "px",
-                        "fontSize": "70px"
-                    }
+                    "innerText": ">"
                 }),
                 "container": this.GameStarter.createElement("div", {
                     "className": "EditorScrollers",
@@ -901,10 +960,7 @@ var LevelEditr;
         LevelEditr.prototype.resetDisplayOptionsList = function () {
             this.display.sections.ClickToPlace.container = this.GameStarter.createElement("div", {
                 "className": "EditorOptionsList EditorSectionMain",
-                "onclick": this.cancelEvent.bind(this),
-                "style": {
-                    "display": "block"
-                }
+                "onclick": this.cancelEvent.bind(this)
             });
             this.resetDisplayOptionsListSubOptionsMenu();
             this.resetDisplayOptionsListSubOptions();
@@ -956,6 +1012,7 @@ var LevelEditr;
             });
             this.resetDisplayMapSettingsCurrent();
             this.resetDisplayMapSettingsMap();
+            this.resetDisplayMapSettingsArea();
             this.resetDisplayMapSettingsLocation();
             this.resetDisplayJSON();
             this.resetDisplayVisualContainers();
@@ -971,7 +1028,7 @@ var LevelEditr;
                     }),
                     this.display.sections.MapSettings.Location = this.createSelect(["0"], {
                         "className": "VisualOptionLocation",
-                        "onchange": this.setCurrentLocation.bind(this, true)
+                        "onchange": this.setCurrentLocation.bind(this)
                     })
                 ]
             }));
@@ -1001,24 +1058,12 @@ var LevelEditr;
                 ]
             }));
         };
-        LevelEditr.prototype.resetDisplayMapSettingsLocation = function () {
+        LevelEditr.prototype.resetDisplayMapSettingsArea = function () {
             this.display.sections.MapSettings.container.appendChild(this.GameStarter.createElement("div", {
                 "className": "EditorMapSettingsGroup",
                 "children": [
                     this.GameStarter.createElement("h4", {
-                        "textContent": "Location"
-                    }),
-                    this.GameStarter.createElement("div", {
-                        "className": "EditorMapSettingsSubGroup",
-                        "children": [
-                            this.GameStarter.createElement("label", {
-                                "textContent": "Area"
-                            }),
-                            this.display.sections.MapSettings.Area = this.createSelect(["0"], {
-                                "className": "VisualOptionArea",
-                                "onchange": this.setLocationArea.bind(this, true)
-                            })
-                        ]
+                        "textContent": "Area"
                     }),
                     this.GameStarter.createElement("div", {
                         "className": "EditorMapSettingsSubGroup",
@@ -1042,6 +1087,28 @@ var LevelEditr;
                                 "onchange": this.setMapSetting.bind(this, true)
                             })
                         ]
+                    })
+                ]
+            }));
+        };
+        LevelEditr.prototype.resetDisplayMapSettingsLocation = function () {
+            this.display.sections.MapSettings.container.appendChild(this.GameStarter.createElement("div", {
+                "className": "EditorMapSettingsGroup",
+                "children": [
+                    this.GameStarter.createElement("h4", {
+                        "textContent": "Location"
+                    }),
+                    this.GameStarter.createElement("div", {
+                        "className": "EditorMapSettingsSubGroup",
+                        "children": [
+                            this.GameStarter.createElement("label", {
+                                "textContent": "Area"
+                            }),
+                            this.display.sections.MapSettings.Area = this.createSelect(["0"], {
+                                "className": "VisualOptionArea",
+                                "onchange": this.setLocationArea.bind(this, true)
+                            })
+                        ]
                     }),
                     this.GameStarter.createElement("div", {
                         "className": "EditorMapSettingsSubGroup",
@@ -1049,9 +1116,7 @@ var LevelEditr;
                             this.GameStarter.createElement("label", {
                                 "textContent": "Entrance"
                             }),
-                            this.display.sections.MapSettings.Entry = this.createSelect([
-                                "Plain", "Normal", "Castle", "PipeVertical", "PipeHorizontal"
-                            ], {
+                            this.display.sections.MapSettings.Entry = this.createSelect(this.mapEntrances, {
                                 "onchange": this.setMapEntry.bind(this, true)
                             })
                         ]
@@ -1071,7 +1136,10 @@ var LevelEditr;
                         "className": "EditorJSONInput",
                         "spellcheck": false,
                         "onkeyup": this.getMapObjectAndTry.bind(this),
-                        "onchange": this.getMapObjectAndTry.bind(this)
+                        "onchange": this.getMapObjectAndTry.bind(this),
+                        "onkeydown": function (event) {
+                            event.stopPropagation();
+                        }
                     }),
                     this.display.stringer.messenger = this.GameStarter.createElement("div", {
                         "className": "EditorJSONInfo"
@@ -1081,19 +1149,12 @@ var LevelEditr;
             this.display.gui.appendChild(this.display.sections.JSON);
         };
         LevelEditr.prototype.resetDisplayVisualContainers = function () {
-            this.display.sections.ClickToPlace.VisualSummary = this.GameStarter.createElement("div", {
-                "className": "EditorVisualSummary",
+            var scope = this;
+            this.display.sections.ClickToPlace.VisualOptions = this.GameStarter.createElement("div", {
+                "textContent": "Click an icon to view options.",
+                "className": "EditorVisualOptions",
                 "onclick": this.cancelEvent.bind(this)
             });
-            this.display.sections.ClickToPlace.VisualOptions = this.GameStarter.createElement("div", {
-                "className": "EditorVisualOptions",
-                "onclick": this.cancelEvent.bind(this),
-                "textContent": "Click an icon to view options.",
-                "style": {
-                    "display": "block"
-                }
-            });
-            this.display.gui.appendChild(this.display.sections.ClickToPlace.VisualSummary);
             this.display.gui.appendChild(this.display.sections.ClickToPlace.VisualOptions);
         };
         LevelEditr.prototype.resetDisplayButtons = function () {
@@ -1145,6 +1206,9 @@ var LevelEditr;
             var scope = this, 
             // Without clicker, tslint complaints onThingIconClick isn't used...
             clicker = this.onThingIconClick;
+            if (this.display.sections.ClickToPlace.Things) {
+                this.display.sections.ClickToPlace.container.removeChild(this.display.sections.ClickToPlace.Things);
+            }
             this.display.sections.ClickToPlace.Things = this.GameStarter.createElement("div", {
                 "className": "EditorSectionSecondary EditorOptions EditorOptions-Things",
                 "style": {
@@ -1152,14 +1216,14 @@ var LevelEditr;
                 },
                 "children": (function () {
                     var selectedIndex = 0, containers = Object.keys(scope.prethings).map(function (key) {
-                        var children = Object.keys(scope.prethings[key]).map(function (title) {
-                            var thing = scope.GameStarter.ObjectMaker.make(title), container = scope.GameStarter.createElement("div", {
+                        var prethings = scope.prethings[key], children = Object.keys(prethings).map(function (title) {
+                            var prething = prethings[title], thing = scope.GameStarter.ObjectMaker.make(title, scope.getPrethingSizeArguments(prething)), container = scope.GameStarter.createElement("div", {
                                 "className": "EditorListOption",
-                                "name": title,
-                                "options": scope.prethings[key][title],
+                                "options": scope.prethings[key][title].options,
                                 "children": [thing.canvas],
                                 "onclick": clicker.bind(scope, title)
                             }), sizeMax = 70, widthThing = thing.width * scope.GameStarter.unitsize, heightThing = thing.height * scope.GameStarter.unitsize, widthDiff = (sizeMax - widthThing) / 2, heightDiff = (sizeMax - heightThing) / 2;
+                            container.setAttribute("name", title);
                             thing.canvas.style.top = heightDiff + "px";
                             thing.canvas.style.right = widthDiff + "px";
                             thing.canvas.style.bottom = heightDiff + "px";
@@ -1195,6 +1259,9 @@ var LevelEditr;
          */
         LevelEditr.prototype.resetDisplayOptionsListSubOptionsMacros = function () {
             var scope = this;
+            if (this.display.sections.ClickToPlace.Macros) {
+                this.display.sections.ClickToPlace.container.removeChild(this.display.sections.ClickToPlace.Macros);
+            }
             scope.display.sections.ClickToPlace.Macros = scope.GameStarter.createElement("div", {
                 "className": "EditorSectionSecondary EditorOptions EditorOptions-Macros",
                 "style": {
@@ -1227,11 +1294,15 @@ var LevelEditr;
             this.display.sections.buttons.ClickToPlace.container.style.backgroundColor = "white";
             this.display.sections.buttons.MapSettings.style.background = "gray";
             this.display.sections.buttons.JSON.style.background = "gray";
+            if (this.currentClickMode !== "Thing" && this.currentClickMode !== "Macro") {
+                this.display.sections.buttons.ClickToPlace.Things.click();
+            }
         };
         /**
          *
          */
-        LevelEditr.prototype.setSectionMapSettings = function () {
+        LevelEditr.prototype.setSectionMapSettings = function (event) {
+            this.setCurrentClickMode("Map", event);
             this.display.sections.ClickToPlace.VisualOptions.style.display = "none";
             this.display.sections.ClickToPlace.container.style.display = "none";
             this.display.sections.MapSettings.container.style.display = "block";
@@ -1243,7 +1314,8 @@ var LevelEditr;
         /**
          *
          */
-        LevelEditr.prototype.setSectionJSON = function () {
+        LevelEditr.prototype.setSectionJSON = function (event) {
+            this.setCurrentClickMode("JSON", event);
             this.display.sections.ClickToPlace.VisualOptions.style.display = "none";
             this.display.sections.ClickToPlace.container.style.display = "none";
             this.display.sections.MapSettings.container.style.display = "none";
@@ -1306,7 +1378,7 @@ var LevelEditr;
             visual.textContent = "";
             visual.appendChild(this.GameStarter.createElement("h3", {
                 "className": "VisualOptionName",
-                "textContent": name
+                "textContent": name.replace(/([A-Z][a-z])/g, " $1")
             }));
             if (description) {
                 visual.appendChild(this.GameStarter.createElement("div", {
@@ -1331,7 +1403,6 @@ var LevelEditr;
                     })
                 }));
             }
-            this.display.sections.ClickToPlace.VisualSummary.textContent = name;
         };
         /**
          *
@@ -1354,13 +1425,12 @@ var LevelEditr;
                 case "Everything":
                     return this.createVisualOptionEverything(option);
                 default:
-                    return this.createVisualOptionDefault(option);
+                    throw new Error("Unknown type requested: '" + option.type + "'.");
             }
         };
         /**
          *
          */
-        // mergin this into createVisualOption
         LevelEditr.prototype.createVisualOptionObject = function (optionRaw) {
             var option;
             // If the option isn't already an Object, make it one
@@ -1391,13 +1461,15 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.createVisualOptionBoolean = function () {
-            return this.createSelect([
+            var select = this.createSelect([
                 "false", "true"
             ], {
                 "className": "VisualOptionValue",
-                "data:type": "Boolean",
+                "onkeyup": this.setCurrentArgs.bind(this),
                 "onchange": this.setCurrentArgs.bind(this)
             });
+            select.setAttribute("data:type", "Boolean");
+            return select;
         };
         /**
          *
@@ -1410,30 +1482,44 @@ var LevelEditr;
                     var modReal = option.mod || 1, input = scope.GameStarter.createElement("input", {
                         "type": "Number",
                         "data:type": "Number",
-                        "value": (option.value === undefined) ? 1 : option.value
-                    }, {
+                        "value": (option.value === undefined) ? 1 : option.value,
                         "className": "VisualOptionValue modReal" + modReal,
+                        "onkeyup": scope.setCurrentArgs.bind(scope),
                         "onchange": scope.setCurrentArgs.bind(scope)
-                    }), children = [input];
+                    }), recommendation = modReal > 1
+                        && scope.GameStarter.createElement("div", {
+                            "className": "VisualOptionRecommendation",
+                            "textContent": "x" + option.mod
+                        }), children = [input];
                     input.setAttribute("data:mod", modReal.toString());
+                    input.setAttribute("data:type", "Number");
+                    input.setAttribute("typeReal", "Number");
                     if (option.Infinite) {
                         var valueOld = undefined, infinite = scope.createSelect([
                             "Number", "Infinite"
                         ], {
                             "className": "VisualOptionInfiniter",
-                            "onchange": function () {
+                            "onchange": function (event) {
                                 if (infinite.value === "Number") {
                                     input.type = "Number";
                                     input.disabled = false;
+                                    input.style.display = "";
+                                    if (recommendation) {
+                                        recommendation.style.display = "";
+                                    }
                                     input.value = valueOld;
-                                    input.onchange(undefined);
+                                    input.onchange(event);
                                 }
                                 else {
                                     input.type = "Text";
                                     input.disabled = true;
+                                    input.style.display = "none";
+                                    if (recommendation) {
+                                        recommendation.style.display = "none";
+                                    }
                                     valueOld = input.value;
                                     input.value = "Infinity";
-                                    input.onchange(undefined);
+                                    input.onchange(event);
                                 }
                             }
                         });
@@ -1443,11 +1529,8 @@ var LevelEditr;
                         }
                         children.push(infinite);
                     }
-                    if (modReal > 1) {
-                        children.push(scope.GameStarter.createElement("div", {
-                            "className": "VisualOptionRecommendation",
-                            "textContent": "x" + option.mod
-                        }));
+                    if (recommendation) {
+                        children.push(recommendation);
                     }
                     return children;
                 })()
@@ -1457,27 +1540,33 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.createVisualOptionSelect = function (option) {
-            return this.createSelect(option.options, {
+            var select = this.createSelect(option.options, {
                 "className": "VisualOptionValue",
-                "data:type": "Boolean",
+                "data:type": "Select",
+                "onkeyup": this.setCurrentArgs.bind(this),
                 "onchange": this.setCurrentArgs.bind(this)
             });
+            select.setAttribute("data:type", "Select");
+            return select;
         };
         /**
          *
          */
         LevelEditr.prototype.createVisualOptionString = function (option) {
-            return this.createSelect(option.options, {
+            var select = this.createSelect(option.options, {
                 "className": "VisualOptionValue",
                 "data:type": "String",
+                "onkeyup": this.setCurrentArgs.bind(this),
                 "onchange": this.setCurrentArgs.bind(this)
             });
+            select.setAttribute("data:type", "String");
+            return select;
         };
         /**
          *
          */
         LevelEditr.prototype.createVisualOptionLocation = function (option) {
-            var map = this.getMapObject(), locations;
+            var map = this.getMapObject(), locations, select;
             if (!map) {
                 return this.GameStarter.createElement("div", {
                     "className": "VisualOptionValue VisualOptionLocation EditorComplaint",
@@ -1486,16 +1575,20 @@ var LevelEditr;
             }
             locations = Object.keys(map.locations);
             locations.unshift(this.keyUndefined);
-            return this.createSelect(locations, {
+            select = this.createSelect(locations, {
                 "className": "VisualOptionValue VisualOptionLocation",
-                "data-type": "Number"
+                "data-type": "String",
+                "onkeyup": this.setCurrentArgs.bind(this),
+                "onchange": this.setCurrentArgs.bind(this)
             });
+            select.setAttribute("data-type", "String");
+            return select;
         };
         /**
          *
          */
         LevelEditr.prototype.createVisualOptionArea = function (option) {
-            var map = this.getMapObject(), areas;
+            var map = this.getMapObject(), areas, select;
             if (!map) {
                 return this.GameStarter.createElement("div", {
                     "className": "VisualOptionValue VisualOptionArea EditorComplaint",
@@ -1504,30 +1597,27 @@ var LevelEditr;
             }
             areas = Object.keys(map.areas);
             areas.unshift(this.keyUndefined);
-            return this.createSelect(areas, {
+            select = this.createSelect(areas, {
                 "className": "VisualOptionValue VisualOptionArea",
-                "data-type": "Number",
+                "data-type": "String",
+                "onkeyup": this.setCurrentArgs.bind(this),
                 "onchange": this.setCurrentArgs.bind(this)
             });
+            select.setAttribute("data-type", "String");
+            return select;
         };
         /**
          *
          */
         LevelEditr.prototype.createVisualOptionEverything = function (option) {
-            return this.createSelect(this.thingKeys, {
+            var select = this.createSelect(Object.keys(this.things), {
                 "className": "VisualOptionValue VisualOptionEverything",
                 "data-type": "String",
+                "onkeyup": this.setCurrentArgs.bind(this),
                 "onchange": this.setCurrentArgs.bind(this)
             });
-        };
-        /**
-         *
-         */
-        LevelEditr.prototype.createVisualOptionDefault = function (option) {
-            return this.GameStarter.createElement("div", {
-                "className": "EditorComplaint",
-                "textContent": "Unknown type requested: " + option.type
-            });
+            select.setAttribute("data-type", "String");
+            return select;
         };
         /**
          *
@@ -1535,13 +1625,11 @@ var LevelEditr;
         LevelEditr.prototype.resetDisplayMap = function () {
             this.setTextareaValue(this.stringifySmart(this.mapDefault), true);
             this.setDisplayMap(true);
-            this.GameStarter.InputWriter.setCanTrigger(false);
         };
         /**
          *
          */
         LevelEditr.prototype.setDisplayMap = function (doDisableThings) {
-            if (doDisableThings === void 0) { doDisableThings = false; }
             var value = this.display.stringer.textarea.value, mapName = this.getMapName(), testObject, map;
             try {
                 testObject = this.parseSmart(value);
@@ -1564,6 +1652,7 @@ var LevelEditr;
             this.display.stringer.messenger.textContent = "";
             this.setTextareaValue(this.display.stringer.textarea.value);
             this.GameStarter.setMap(mapName, this.getCurrentLocation());
+            this.resetDisplayOptionsListSubOptionsThings();
             if (doDisableThings) {
                 this.disableAllThings();
             }
@@ -1591,9 +1680,19 @@ var LevelEditr;
         };
         /**
          *
+         *
+         * @remarks Settings .editor=true informs the area that the player
+         *          should respawn upon death without resetting gameplay.
          */
         LevelEditr.prototype.parseSmart = function (text) {
-            return JSON.parse(text, this.jsonReplacerSmart);
+            var map = JSON.parse(text, this.jsonReplacerSmart), areas = map.areas, i;
+            for (i in areas) {
+                if (!areas.hasOwnProperty(i)) {
+                    return;
+                }
+                areas[i].editor = true;
+            }
+            return map;
         };
         /**
          *
@@ -1616,16 +1715,14 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.disableThing = function (thing, opacity) {
-            if (opacity === void 0) { opacity = .49; }
+            if (opacity === void 0) { opacity = 1; }
             thing.movement = undefined;
-            thing.onThingMake = undefined;
-            thing.onThingAdd = undefined;
-            thing.onThingAdded = undefined;
             thing.nofall = true;
             thing.nocollide = true;
+            thing.outerok = 2;
             thing.xvel = 0;
             thing.yvel = 0;
-            thing.opacity = typeof opacity;
+            thing.opacity = opacity;
         };
         /**
          *
@@ -1639,9 +1736,20 @@ var LevelEditr;
                     });
                 }
             }
-            // Helps prevent triggers such as Bowser jumping
-            this.GameStarter.player.dead = true;
-            this.GameStarter.ItemsHolder.setItem("time", Infinity);
+            this.GameStarter.TimeHandler.cancelAllEvents();
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.addThingAndDisableEvents = function (thing, x, y) {
+            var left = this.roundTo(x, this.GameStarter.scale), top = this.roundTo(y, this.GameStarter.scale);
+            this.GameStarter.addThing(thing, left, top);
+            this.disableThing(thing);
+            this.GameStarter.TimeHandler.cancelAllEvents();
+            if ((thing.hasOwnProperty("hidden") && thing.hidden) || thing.opacity === 0) {
+                thing.hidden = false;
+                thing.opacity = .35;
+            }
         };
         /**
          *
@@ -1686,6 +1794,51 @@ var LevelEditr;
         /**
          *
          */
+        LevelEditr.prototype.getNormalizedMouseEventCoordinates = function (event, referenceThing) {
+            var x = this.roundTo(event.x || event.clientX || 0, this.blocksize), y = this.roundTo(event.y || event.clientY || 0, this.blocksize), prething;
+            if (referenceThing) {
+                prething = this.things[this.currentTitle];
+                if (prething.offsetLeft) {
+                    x += prething.offsetLeft * this.GameStarter.unitsize;
+                }
+                if (prething.offsetTop) {
+                    y += prething.offsetTop * this.GameStarter.unitsize;
+                }
+            }
+            return [x, y];
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.getPrethingSizeArguments = function (descriptor) {
+            var output = {}, width = this.getPrethingSizeArgument(descriptor.width), height = this.getPrethingSizeArgument(descriptor.height);
+            if (width) {
+                output.width = width;
+            }
+            if (height) {
+                output.height = height;
+            }
+            return output;
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.getPrethingSizeArgument = function (descriptor) {
+            if (!descriptor) {
+                return undefined;
+            }
+            if (descriptor.real) {
+                return descriptor.real;
+            }
+            var value = descriptor.value || 1, mod = descriptor.mod || 1;
+            if (!isFinite(value)) {
+                return mod || 8;
+            }
+            return value * mod;
+        };
+        /**
+         *
+         */
         LevelEditr.prototype.createSelect = function (options, attributes) {
             var select = this.GameStarter.createElement("select", attributes), i;
             for (i = 0; i < options.length; i += 1) {
@@ -1697,7 +1850,19 @@ var LevelEditr;
             if (typeof attributes.value !== "undefined") {
                 select.value = attributes.value;
             }
+            this.applyElementAttributes(select, attributes);
             return select;
+        };
+        /**
+         *
+         */
+        LevelEditr.prototype.applyElementAttributes = function (element, attributes) {
+            var i;
+            for (i in attributes) {
+                if (attributes.hasOwnProperty(i) && i.indexOf("data:") === 0) {
+                    element.setAttribute(i, attributes[i]);
+                }
+            }
         };
         /**
          *
@@ -1835,15 +2000,18 @@ var LevelEditr;
                 },
                 ".EditorScroller": {
                     "position": "absolute",
+                    "top": "50%",
+                    "margin-top": "-35px",
                     "width": "70px",
-                    "height": "101%",
                     "cursor": "pointer",
                     "box-sizing": "border-box",
+                    "font-size": "70px",
                     "text-align": "center",
-                    "transition": "280ms opacity"
+                    "transition": "280ms all"
                 },
                 ".EditorScrollerRight": {
-                    "right": "0"
+                    "right": "0",
+                    "padding-left": ".084em"
                 },
                 ".EditorScrollerLeft": {
                     "left": "0"
@@ -1919,17 +2087,22 @@ var LevelEditr;
                     "position": "absolute",
                     "top": "70px",
                     "right": "0",
-                    "bottom": "49px",
+                    "bottom": "35px",
                     "left": "0",
                     "overflow-y": "auto"
+                },
+                ".LevelEditor.minimized .EditorSectionMain": {
+                    "display": "none"
                 },
                 ".LevelEditor .EditorSectionSecondary": {
                     "position": "absolute",
                     "top": "35px",
-                    "right": "248px",
+                    "right": "203px",
                     "bottom": "0px",
                     "left": "0",
-                    "overflow-y": "auto"
+                    "min-width": "182px",
+                    "overflow-y": "auto",
+                    "overflow-x": "hidden"
                 },
                 // EditorJSON
                 ".LevelEditor .EditorJSON": {
@@ -1955,8 +2128,7 @@ var LevelEditr;
                 // EditorOptions
                 ".LevelEditor .EditorOptions, .LevelEditor .EditorOptionContainer": {
                     "padding-left": "3px",
-                    "clear": "both",
-                    "min-width": "98px"
+                    "clear": "both"
                 },
                 ".LevelEditor.minimized .EditorOptionsList": {
                     "opacity": "0"
@@ -1967,8 +2139,8 @@ var LevelEditr;
                     "margin": "0 7px 7px 0",
                     "width": "70px",
                     "height": "70px",
-                    "background": "black",
-                    "border": "white",
+                    "background": "rgba(77, 77, 77, .7)",
+                    "border": "2px solid black",
                     "overflow": "hidden",
                     "cursor": "pointer"
                 },
@@ -1976,28 +2148,36 @@ var LevelEditr;
                     "position": "absolute"
                 },
                 // EditorVisualOptions
-                ".LevelEditor .EditorVisualSummary": {
-                    "margin": "42px 7px",
-                    "opacity": "0",
-                    "transition": "117ms opacity"
-                },
-                ".LevelEditor.minimized .EditorVisualSummary": {
-                    "opacity": "0"
-                },
                 ".LevelEditor .EditorVisualOptions": {
                     "position": "absolute",
-                    "right": "21px",
-                    "top": "119px",
-                    "bottom": "42px",
+                    "top": "105px",
+                    "right": "0",
+                    "bottom": "35px",
                     "padding": "7px 11px",
-                    "width": "210px",
-                    "border": "1px solid silver",
-                    "border-width": "1px 0 0 1px",
+                    "width": "203px",
+                    "border-left": "1px solid silver",
+                    "background": "rgba(0, 7, 14, .84)",
                     "overflow-x": "visible",
                     "overflow-y": "auto",
+                    "line-height": "140%",
                     "opacity": "1",
                     "box-sizing": "border-box",
-                    "transition": "117ms opacity"
+                    "transition": "117ms opacity, 70ms left"
+                },
+                ".LevelEditor.thin .EditorVisualOptions": {
+                    "left": "185px"
+                },
+                ".LevelEditor.thin .EditorVisualOptions:hover": {
+                    "left": "70px",
+                    "right": "0",
+                    "width": "auto",
+                    "overflow-x": "hidden"
+                },
+                ".LevelEditor.thick .EditorVisualOptions": {
+                    "width": "350px"
+                },
+                ".LevelEditor.thick .EditorSectionSecondary": {
+                    "right": "350px"
                 },
                 ".LevelEditor.minimized .EditorVisualOptions": {
                     "left": "100%"
@@ -2013,6 +2193,9 @@ var LevelEditr;
                 },
                 ".LevelEditor .EditorVisualOptions .VisualOptionValue": {
                     "max-width": "117px"
+                },
+                ".LevelEditor .EditorVisualOptions select.VisualOptionValue": {
+                    "max-width": "156px"
                 },
                 ".LevelEditor .EditorVisualOptions .VisualOptionInfiniter, .LevelEditor .EditorVisualOptions .VisualOptionRecommendation": {
                     "display": "inline"

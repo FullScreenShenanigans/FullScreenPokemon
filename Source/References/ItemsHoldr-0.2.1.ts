@@ -403,7 +403,14 @@ declare module ItemsHoldr {
          * @param key
          */
         checkExistence(key: string): void;
-        
+
+        /**
+         * Manually saves an item's value to localStorage, ignoring the autoSave flag.
+         * 
+         * @param key   The key of the item to save.
+         */
+        saveItem(key: string): void;
+
         /**
          * Manually saves all values to localStorage, ignoring the autoSave flag. 
          */
@@ -1122,6 +1129,19 @@ module ItemsHoldr {
                     throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
                 }
             }
+        }
+
+        /**
+         * Manually saves an item's value to localStorage, ignoring the autoSave flag.
+         * 
+         * @param key   The key of the item to save.
+         */
+        saveItem(key: string): void {
+            if (!this.items.hasOwnProperty(key)) {
+                throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
+            }
+
+            this.items[key].updateLocalStorage(true);
         }
 
         /**

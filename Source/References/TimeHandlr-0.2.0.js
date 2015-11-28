@@ -14,6 +14,7 @@ var TimeHandlr;
          * @param {ITimeHandlrSettings} settings
          */
         function TimeHandlr(settings) {
+            if (settings === void 0) { settings = {}; }
             this.time = 0;
             this.events = {};
             this.timingDefault = settings.timingDefault || 1;

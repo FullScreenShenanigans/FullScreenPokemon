@@ -6,7 +6,8 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    __.prototype = b.prototype;
+    d.prototype = new __();
 };
 var UserWrappr;
 (function (UserWrappr_1) {
@@ -44,11 +45,32 @@ var UserWrappr;
                 || function () {
                     console.warn("Not able to cancel full screen...");
                 }).bind(document);
-            this.customs = settings.customs || {};
-            this.GameStartrConstructor = settings.GameStartrConstructor;
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to UserWrappr.");
+            }
+            if (typeof settings.GameStartrConstructor === "undefined") {
+                throw new Error("No GameStartrConstructor given to UserWrappr.");
+            }
+            if (typeof settings.helpSettings === "undefined") {
+                throw new Error("No helpSettings given to UserWrappr.");
+            }
+            if (typeof settings.globalName === "undefined") {
+                throw new Error("No globalName given to UserWrappr.");
+            }
+            if (typeof settings.sizes === "undefined") {
+                throw new Error("No sizes given to UserWrappr.");
+            }
+            if (typeof settings.sizeDefault === "undefined") {
+                throw new Error("No sizeDefault given to UserWrappr.");
+            }
+            if (typeof settings.schemas === "undefined") {
+                throw new Error("No schemas given to UserWrappr.");
+            }
             this.settings = settings;
-            this.helpSettings = this.settings.helpSettings;
+            this.GameStartrConstructor = settings.GameStartrConstructor;
             this.globalName = settings.globalName;
+            this.helpSettings = this.settings.helpSettings;
+            this.customs = settings.customs || {};
             this.importSizes(settings.sizes);
             this.gameNameAlias = this.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
             this.gameElementSelector = settings.gameElementSelector || "#game";
@@ -390,8 +412,8 @@ var UserWrappr;
                 else {
                     customs.height = window.innerHeight;
                 }
-                // 49px from header, 35px from menus
-                customs.height -= 84;
+                // 49px from header, 77px from menus
+                customs.height -= 126;
             }
             return customs;
         };
@@ -553,12 +575,28 @@ var UserWrappr;
                     return element;
                 }
                 else if (!element.parentNode) {
-                    return undefined;
+                    return element;
                 }
                 return this.getParentControlDiv(element.parentElement);
             };
             /**
-             * Ensures a child's required local storage value is being stored,
+             *
+             */
+            AbstractOptionsGenerator.prototype.ensureLocalStorageButtonValue = function (child, details, schema) {
+                var key = schema.title + "::" + details.title, valueDefault = details.source.call(this, this.GameStarter).toString(), value;
+                child.setAttribute("localStorageKey", key);
+                this.GameStarter.ItemsHolder.addItem(key, {
+                    "storeLocally": true,
+                    "valueDefault": valueDefault
+                });
+                value = this.GameStarter.ItemsHolder.getItem(key);
+                if (value.toString().toLowerCase() === "true") {
+                    details[schema.keyActive || "active"] = true;
+                    schema.callback.call(this, this.GameStarter, schema, child);
+                }
+            };
+            /**
+             * Ensures an input's required local storage value is being stored,
              * and adds it to the internal GameStarter.ItemsHolder if not. If it
              * is, and the child's value isn't equal to it, the value is set.
              *
@@ -568,7 +606,7 @@ var UserWrappr;
              *                           and the source Function to get its value.
              * @param {Object} schema   The container schema this child is within.
              */
-            AbstractOptionsGenerator.prototype.ensureLocalStorageValue = function (childRaw, details, schema) {
+            AbstractOptionsGenerator.prototype.ensureLocalStorageInputValue = function (childRaw, details, schema) {
                 if (childRaw.constructor === Array) {
                     this.ensureLocalStorageValues(childRaw, details, schema);
                     return;
@@ -635,6 +673,7 @@ var UserWrappr;
                 var key = child.getAttribute("localStorageKey");
                 if (key) {
                     this.GameStarter.ItemsHolder.setItem(key, value);
+                    this.GameStarter.ItemsHolder.saveItem(key);
                 }
             };
             return AbstractOptionsGenerator;
@@ -672,7 +711,8 @@ var UserWrappr;
                             element.setAttribute("option-enabled", "true");
                             element.className = classNameStart + " option-enabled";
                         }
-                    }.bind(undefined, schema, element);
+                    }.bind(this, schema, element);
+                    this.ensureLocalStorageButtonValue(element, option, schema);
                     if (option[keyActive]) {
                         element.className += " option-enabled";
                         element.setAttribute("option-enabled", "true");
@@ -722,7 +762,7 @@ var UserWrappr;
                         row.appendChild(input);
                         child = this.optionTypes[schema.options[i].type].call(this, input, option, schema);
                         if (option.storeLocally) {
-                            this.ensureLocalStorageValue(child, option, schema);
+                            this.ensureLocalStorageInputValue(child, option, schema);
                         }
                         table.appendChild(row);
                     }
@@ -859,27 +899,26 @@ var UserWrappr;
                 _super.apply(this, arguments);
             }
             LevelEditorGenerator.prototype.generate = function (schema) {
-                var output = document.createElement("div"), title = document.createElement("div"), button = document.createElement("div"), between = document.createElement("div"), uploader = this.createUploaderDiv(), scope = this;
+                var output = document.createElement("div"), starter = document.createElement("div"), betweenOne = document.createElement("div"), betweenTwo = document.createElement("div"), uploader = this.createUploaderDiv(), mapper = this.createMapSelectorDiv(schema), scope = this;
                 output.className = "select-options select-options-level-editor";
-                title.className = "select-option-title";
-                title.textContent = "Create your own custom levels:";
-                button.className = "select-option select-option-large options-button-option";
-                button.innerHTML = "Start the <br /> Level Editor!";
-                button.onclick = function () {
+                starter.className = "select-option select-option-large options-button-option";
+                starter.innerHTML = "Start the <br /> Level Editor!";
+                starter.onclick = function () {
                     scope.GameStarter.LevelEditor.enable();
                 };
-                between.className = "select-option-title";
-                between.innerHTML = "<em>- or -</em><br />";
-                output.appendChild(title);
-                output.appendChild(button);
-                output.appendChild(between);
+                betweenOne.className = betweenTwo.className = "select-option-title";
+                betweenOne.innerHTML = betweenTwo.innerHTML = "<em>- or -</em><br />";
+                output.appendChild(starter);
+                output.appendChild(betweenOne);
                 output.appendChild(uploader);
+                output.appendChild(betweenTwo);
+                output.appendChild(mapper);
                 return output;
             };
             LevelEditorGenerator.prototype.createUploaderDiv = function () {
                 var uploader = document.createElement("div"), input = document.createElement("input");
                 uploader.className = "select-option select-option-large options-button-option";
-                uploader.textContent = "Click to upload and continue your editor files!";
+                uploader.innerHTML = "Continue an<br />editor file!";
                 uploader.setAttribute("textOld", uploader.textContent);
                 input.type = "file";
                 input.className = "select-upload-input";
@@ -891,6 +930,44 @@ var UserWrappr;
                 uploader.onclick = input.click.bind(input);
                 uploader.appendChild(input);
                 return uploader;
+            };
+            LevelEditorGenerator.prototype.createMapSelectorDiv = function (schema) {
+                var expanded = true, container = this.GameStarter.createElement("div", {
+                    "className": "select-options-group select-options-editor-maps-selector"
+                }), toggler = this.GameStarter.createElement("div", {
+                    "className": "select-option select-option-large options-button-option"
+                }), mapsOut = this.GameStarter.createElement("div", {
+                    "className": "select-options-holder select-options-editor-maps-holder"
+                }), mapsIn = this.UserWrapper.getGenerators()["MapsGrid"].generate(this.GameStarter.proliferate({
+                    "callback": schema.callback
+                }, schema.maps));
+                toggler.onclick = function (event) {
+                    expanded = !expanded;
+                    if (expanded) {
+                        toggler.textContent = "(cancel)";
+                        mapsOut.style.position = "";
+                        mapsIn.style.height = "";
+                    }
+                    else {
+                        toggler.innerHTML = "Edit a <br />built-in map!";
+                        mapsOut.style.position = "absolute";
+                        mapsIn.style.height = "0";
+                    }
+                    if (!container.parentElement) {
+                        return;
+                    }
+                    [].slice.call(container.parentElement.children)
+                        .forEach(function (element) {
+                        if (element !== container) {
+                            element.style.display = (expanded ? "none" : "block");
+                        }
+                    });
+                };
+                toggler.onclick(null);
+                mapsOut.appendChild(mapsIn);
+                container.appendChild(toggler);
+                container.appendChild(mapsOut);
+                return container;
             };
             LevelEditorGenerator.prototype.handleFileDragEnter = function (uploader, event) {
                 if (event.dataTransfer) {

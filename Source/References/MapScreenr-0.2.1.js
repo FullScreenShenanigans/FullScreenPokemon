@@ -14,13 +14,16 @@ var MapScreenr;
          * @param {IMapScreenrSettings} settings
          */
         function MapScreenr(settings) {
-            var name;
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to MapScreenr.");
+            }
             if (typeof settings.width === "undefined") {
                 throw new Error("No width given to MapScreenr.");
             }
             if (typeof settings.height === "undefined") {
                 throw new Error("No height given to MapScreenr.");
             }
+            var name;
             for (name in settings) {
                 if (settings.hasOwnProperty(name)) {
                     this[name] = settings[name];

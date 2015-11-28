@@ -57,12 +57,11 @@ module StringFilr {
             if (!settings) {
                 throw new Error("No settings given to StringFilr.");
             }
-
             if (!settings.library) {
                 throw new Error("No library given to StringFilr.");
             }
-            this.library = settings.library;
 
+            this.library = settings.library;
             this.normal = settings.normal;
             this.requireNormalKey = settings.requireNormalKey;
 

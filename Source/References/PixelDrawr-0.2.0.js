@@ -18,6 +18,18 @@ var PixelDrawr;
          * @param {IPixelDrawrSettings} settings
          */
         function PixelDrawr(settings) {
+            if (!settings) {
+                throw new Error("No settings object given to PixelDrawr.");
+            }
+            if (typeof settings.PixelRender === "undefined") {
+                throw new Error("No PixelRender given to PixelDrawr.");
+            }
+            if (typeof settings.MapScreener === "undefined") {
+                throw new Error("No MapScreener given to PixelDrawr.");
+            }
+            if (typeof settings.createCanvas === "undefined") {
+                throw new Error("No createCanvas given to PixelDrawr.");
+            }
             this.PixelRender = settings.PixelRender;
             this.MapScreener = settings.MapScreener;
             this.createCanvas = settings.createCanvas;

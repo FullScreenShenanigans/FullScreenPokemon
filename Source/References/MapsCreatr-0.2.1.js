@@ -55,20 +55,18 @@ var MapsCreatr;
          */
         function MapsCreatr(settings) {
             if (!settings) {
-                throw new Error("No settings given to MapsCreatr.");
+                throw new Error("No settings object given to MapsCreatr.");
             }
-            // Maps and Things are created using an ObjectMaker factory
             if (!settings.ObjectMaker) {
                 throw new Error("No ObjectMakr given to MapsCreatr.");
             }
-            this.ObjectMaker = settings.ObjectMaker;
-            if (typeof this.ObjectMaker.getFullProperties() === "undefined") {
+            if (typeof settings.ObjectMaker.getFullProperties() === "undefined") {
                 throw new Error("MapsCreatr's ObjectMaker must store full properties.");
             }
-            // At least one group type name should be defined for PreThing output
             if (!settings.groupTypes) {
                 throw new Error("No groupTypes given to MapsCreatr.");
             }
+            this.ObjectMaker = settings.ObjectMaker;
             this.groupTypes = settings.groupTypes;
             this.keyGroupType = settings.keyGroupType || "groupType";
             this.keyEntrance = settings.keyEntrance || "entrance";
@@ -76,6 +74,7 @@ var MapsCreatr;
             this.scope = settings.scope || this;
             this.entrances = settings.entrances;
             this.requireEntrance = settings.requireEntrance;
+            this.mapsRaw = {};
             this.maps = {};
             if (settings.maps) {
                 this.storeMaps(settings.maps);
@@ -126,13 +125,31 @@ var MapsCreatr;
             return this.requireEntrance;
         };
         /**
+         * @return {Object}   The Object storing raw maps, keyed by name.
+         */
+        MapsCreatr.prototype.getMapsRaw = function () {
+            return this.mapsRaw;
+        };
+        /**
          * @return {Object}   The Object storing maps, keyed by name.
          */
         MapsCreatr.prototype.getMaps = function () {
             return this.maps;
         };
         /**
-         * Simple getter for a map under the maps container. If the map has not been
+         * @param {Mixed} name   A key to find the map under. This will typically be
+         *                       a String.
+         * @return {Map}   The raw map keyed by the given name.
+         */
+        MapsCreatr.prototype.getMapRaw = function (name) {
+            var mapRaw = this.mapsRaw[name];
+            if (!mapRaw) {
+                throw new Error("No map found under: " + name);
+            }
+            return mapRaw;
+        };
+        /**
+         * Getter for a map under the maps container. If the map has not yet been
          * initialized (had its areas and locations set), that is done here as lazy
          * loading.
          *
@@ -187,6 +204,7 @@ var MapsCreatr;
                 throw new Error("Maps cannot be created with no name.");
             }
             var map = this.ObjectMaker.make("Map", mapRaw);
+            this.mapsRaw[name] = mapRaw;
             if (!map.areas) {
                 throw new Error("Maps cannot be used with no areas: " + name);
             }

@@ -165,11 +165,14 @@ module GamesRunnr {
          * @param {IGamesRunnrSettings} settings
          */
         constructor(settings: IGamesRunnrSettings) {
-            var i: number;
-
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given GamesRunnr.");
+            }
             if (typeof settings.games === "undefined") {
                 throw new Error("No games given to GamesRunnr.");
             }
+
+            var i: number;
 
             this.games = settings.games;
             this.interval = settings.interval || 1000 / 60;

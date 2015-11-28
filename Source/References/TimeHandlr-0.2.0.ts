@@ -201,7 +201,7 @@ module TimeHandlr {
         /**
          * @param {ITimeHandlrSettings} settings
          */
-        constructor(settings: ITimeHandlrSettings) {
+        constructor(settings: ITimeHandlrSettings = {}) {
             this.time = 0;
             this.events = {};
 

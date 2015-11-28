@@ -11,14 +11,17 @@ var ChangeLinr;
          * @param {IChangeLinrSettings} settings
          */
         function ChangeLinr(settings) {
-            var i;
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ChangeLinr.");
+            }
             if (typeof settings.pipeline === "undefined") {
                 throw new Error("No pipeline given to ChangeLinr.");
             }
-            this.pipeline = settings.pipeline || [];
             if (typeof settings.transforms === "undefined") {
                 throw new Error("No transforms given to ChangeLinr.");
             }
+            var i;
+            this.pipeline = settings.pipeline || [];
             this.transforms = settings.transforms || {};
             this.doMakeCache = typeof settings.doMakeCache === "undefined"
                 ? true : settings.doMakeCache;

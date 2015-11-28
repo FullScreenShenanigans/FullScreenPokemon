@@ -12,8 +12,11 @@ var ObjectMakr;
          * @param {IObjectMakrSettings} settings
          */
         function ObjectMakr(settings) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ObjectMakr.");
+            }
             if (typeof settings.inheritance === "undefined") {
-                throw new Error("No inheritance mapping given to ObjectMakr.");
+                throw new Error("No inheritance given to ObjectMakr.");
             }
             this.inheritance = settings.inheritance;
             this.properties = settings.properties || {};

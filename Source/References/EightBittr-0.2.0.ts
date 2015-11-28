@@ -118,18 +118,13 @@ declare module EightBittr {
         resetTimed(EightBitter: IEightBittr, resets: string[], customs?: any): void;
 
         /**
-         * Creates and returns a new HTML <canvas> element, with an optional scaling
-         * multiplier. Image smoothing is disabled.
+         * Creates and returns a new HTML <canvas> element with no image smoothing.
          * 
          * @param width   How wide the canvas should be.
          * @param height   How tall the canvas should be.
-         * @param scaling   How much to scale the style of the canvas (by default, 1
-         *                  for not at all).
-         * @returns A canvas of the given width, height, and scaling.
-         * @remarks TypeScript does not recognize imageSmoothingEnabled unless
-         *          prefixed by "ms", so context is cast to any.
+         * @returns A canvas of the given width and height.
          */
-        createCanvas(width: number, height: number, scaling?: number): HTMLCanvasElement;
+        createCanvas(width: number, height: number): HTMLCanvasElement;
 
         /**
          * Shifts a Thing vertically by changing its top and bottom attributes.
@@ -550,30 +545,19 @@ module EightBittr {
         */
 
         /**
-         * Creates and returns a new HTML <canvas> element, with an optional scaling
-         * multiplier. Image smoothing is disabled.
+         * Creates and returns a new HTML <canvas> element with no image smoothing.
          * 
          * @param width   How wide the canvas should be.
          * @param height   How tall the canvas should be.
-         * @param scaling   How much to scale the style of the canvas (by default, 1
-         *                  for not at all).
-         * @returns A canvas of the given width, height, and scaling.
-         * @remarks TypeScript does not recognize imageSmoothingEnabled unless
-         *          prefixed by "ms", so context is cast to any.
+         * @returns A canvas of the given width and height height.
          */
-        createCanvas(width: number, height: number, scaling: number = 1): HTMLCanvasElement {
+        createCanvas(width: number, height: number): HTMLCanvasElement {
             var canvas: HTMLCanvasElement = document.createElement("canvas"),
                 // context: CanvasRenderingContext2D = canvas.getContext("2d");
                 context: any = canvas.getContext("2d");
 
             canvas.width = width;
             canvas.height = height;
-
-            scaling = scaling || 1;
-
-            // Scaling 1 by default, but may be different (e.g. unitsize)
-            canvas.style.width = (width * scaling) + "px";
-            canvas.style.height = (height * scaling) + "px";
 
             // For speed's sake, disable image smoothing in the first supported browsers
             if (typeof context.imageSmoothingEnabled !== "undefined") {

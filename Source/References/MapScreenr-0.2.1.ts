@@ -115,14 +115,17 @@ module MapScreenr {
          * @param {IMapScreenrSettings} settings
          */
         constructor(settings: IMapScreenrSettings) {
-            var name: string;
-
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to MapScreenr.");
+            }
             if (typeof settings.width === "undefined") {
                 throw new Error("No width given to MapScreenr.");
             }
             if (typeof settings.height === "undefined") {
                 throw new Error("No height given to MapScreenr.");
             }
+
+            var name: string;
 
             for (name in settings) {
                 if (settings.hasOwnProperty(name)) {

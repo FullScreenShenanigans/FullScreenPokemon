@@ -13,7 +13,10 @@ var InputWritr;
          * @param {IInputWritrSettings} settings
          */
         function InputWritr(settings) {
-            if (!settings.triggers) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to InputWritr.");
+            }
+            if (typeof settings.triggers === "undefined") {
                 throw new Error("No triggers given to InputWritr.");
             }
             this.triggers = settings.triggers;

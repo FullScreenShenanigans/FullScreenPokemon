@@ -293,7 +293,9 @@ declare module MapsCreatr {
         getMacros(): { [i: string]: IMapsCreatrMacro; };
         getScope(): any;
         getRequireEntrance(): boolean;
+        getMapsRaw(): any;
         getMaps(): any;
+        getMapRaw(name: string): IMapsCreatrMapRaw;
         getMap(name: string): IMapsCreatrMap;
         storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void;
         storeMap(name: string, mapRaw: IMapsCreatrMapRaw): IMapsCreatrMap;
@@ -425,6 +427,13 @@ module MapsCreatr {
         private ObjectMaker: ObjectMakr.IObjectMakr;
 
         /**
+         * Raw map objects passed to this.createMap, keyed by name.
+         */
+        private mapsRaw: {
+            [i: string]: IMapsCreatrMapRaw;
+        };
+
+        /**
          * Map objects created by this.createMap, keyed by name.
          */
         private maps: {
@@ -476,23 +485,19 @@ module MapsCreatr {
          */
         constructor(settings: IMapsCreatrSettings) {
             if (!settings) {
-                throw new Error("No settings given to MapsCreatr.");
+                throw new Error("No settings object given to MapsCreatr.");
             }
-
-            // Maps and Things are created using an ObjectMaker factory
             if (!settings.ObjectMaker) {
                 throw new Error("No ObjectMakr given to MapsCreatr.");
             }
-            this.ObjectMaker = settings.ObjectMaker;
-
-            if (typeof this.ObjectMaker.getFullProperties() === "undefined") {
+            if (typeof settings.ObjectMaker.getFullProperties() === "undefined") {
                 throw new Error("MapsCreatr's ObjectMaker must store full properties.");
             }
-
-            // At least one group type name should be defined for PreThing output
             if (!settings.groupTypes) {
                 throw new Error("No groupTypes given to MapsCreatr.");
             }
+
+            this.ObjectMaker = settings.ObjectMaker;
             this.groupTypes = settings.groupTypes;
 
             this.keyGroupType = settings.keyGroupType || "groupType";
@@ -504,6 +509,7 @@ module MapsCreatr {
             this.entrances = settings.entrances;
             this.requireEntrance = settings.requireEntrance;
 
+            this.mapsRaw = {};
             this.maps = {};
             if (settings.maps) {
                 this.storeMaps(settings.maps);
@@ -564,6 +570,13 @@ module MapsCreatr {
         }
 
         /**
+         * @return {Object}   The Object storing raw maps, keyed by name.
+         */
+        getMapsRaw(): any {
+            return this.mapsRaw;
+        }
+
+        /**
          * @return {Object}   The Object storing maps, keyed by name.
          */
         getMaps(): any {
@@ -571,7 +584,21 @@ module MapsCreatr {
         }
 
         /**
-         * Simple getter for a map under the maps container. If the map has not been
+         * @param {Mixed} name   A key to find the map under. This will typically be
+         *                       a String.
+         * @return {Map}   The raw map keyed by the given name.
+         */
+        getMapRaw(name?: string): IMapsCreatrMapRaw {
+            var mapRaw: IMapsCreatrMapRaw = this.mapsRaw[name];
+            if (!mapRaw) {
+                throw new Error("No map found under: " + name);
+            }
+
+            return mapRaw;
+        }
+
+        /**
+         * Getter for a map under the maps container. If the map has not yet been
          * initialized (had its areas and locations set), that is done here as lazy
          * loading.
          * 
@@ -634,6 +661,8 @@ module MapsCreatr {
             }
 
             var map: IMapsCreatrMap = this.ObjectMaker.make("Map", mapRaw);
+
+            this.mapsRaw[name] = mapRaw;
 
             if (!map.areas) {
                 throw new Error("Maps cannot be used with no areas: " + name);
