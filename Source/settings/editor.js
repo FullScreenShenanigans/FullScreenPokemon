@@ -1,4 +1,4 @@
-(function (things, macros) {
+(function (prethings, macros) {
     FullScreenPokemon.FullScreenPokemon.settings.editor = {
         "blocksize": FullScreenPokemon.FullScreenPokemon.unitsize * 4,
         "mapDefault": {
@@ -17,14 +17,23 @@
             ]
         },
         "mapSettingDefault": "Overworld",
-        "things": things,
+        "prethings": prethings,
         "thingGroups": ["Character", "Solid", "Scenery"],
-        "thingKeys": (function () {
-            var keys = [];
-            Object.keys(things).forEach(function (group) {
-                keys.push.apply(keys, Object.keys(things[group]));
-            });
-            return keys;
+        "things": (function () {
+            var things = {},
+                i, j;
+
+            for (i in prethings) {
+                if (prethings.hasOwnProperty(i)) {
+                    for (j in prethings[i]) {
+                        if (prethings[i].hasOwnProperty(j)) {
+                            things[j] = prethings[i][j];
+                        }
+                    }
+                }
+            }
+
+            return things;
         })(),
         "macros": macros
     };
