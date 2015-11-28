@@ -1,8 +1,6 @@
 declare module MathDecidr {
     export interface IEquation {
-        (constants: any,
-        equations: IEquationContainer,
-        ...args: any[]): any;
+        (constants: any, equations: IEquationContainer, ...args: any[]): any;
     }
 
     export interface IEquationContainer {

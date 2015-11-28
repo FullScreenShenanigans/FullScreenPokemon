@@ -33,6 +33,7 @@ declare module ObjectMakr {
     }
 }
 
+
 module ObjectMakr {
     "use strict";
 
@@ -211,11 +212,11 @@ module ObjectMakr {
                 if (this.doPropertiesFull) {
                     output[this.onMake](
                         output, name, this.properties[name], this.propertiesFull[name]
-                        );
+                    );
                 } else {
                     output[this.onMake](
                         output, name, this.properties[name], this.functions[name].prototype
-                        );
+                    );
                 }
             }
 

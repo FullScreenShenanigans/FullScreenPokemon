@@ -1052,7 +1052,10 @@ module UserWrappr {
             /**
              *
              */
-            protected ensureLocalStorageButtonValue(child: HTMLDivElement, details: IOptionsButtonSchema, schema: IOptionsButtonsSchema): void {
+            protected ensureLocalStorageButtonValue(
+                child: HTMLDivElement,
+                details: IOptionsButtonSchema,
+                schema: IOptionsButtonsSchema): void {
                 var key: string = schema.title + "::" + details.title,
                     valueDefault: string = details.source.call(this, this.GameStarter).toString(),
                     value: string;
@@ -1510,6 +1513,7 @@ module UserWrappr {
 
             protected createMapSelectorDiv(schema: IOptionsEditorSchema): HTMLDivElement {
                 var expanded: boolean = true,
+                    generatorName: string = "MapsGrid",
                     container: HTMLDivElement = <HTMLDivElement>this.GameStarter.createElement(
                         "div",
                         {
@@ -1525,7 +1529,7 @@ module UserWrappr {
                         {
                             "className": "select-options-holder select-options-editor-maps-holder"
                         }),
-                    mapsIn: HTMLDivElement = this.UserWrapper.getGenerators()["MapsGrid"].generate(
+                    mapsIn: HTMLDivElement = this.UserWrapper.getGenerators()[generatorName].generate(
                         this.GameStarter.proliferate(
                             {
                                 "callback": schema.callback

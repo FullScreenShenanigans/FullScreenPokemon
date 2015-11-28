@@ -210,7 +210,12 @@ module GroupHoldr {
          * @param {Mixed} [keyNew]   Optionally, what key the value will now be under
          *                           (required if the new group is an Object).
          */
-        switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void {
+        switchMemberGroup(
+            value: any,
+            groupNameOld: string,
+            groupNameNew: string,
+            keyOld?: string | number,
+            keyNew?: string | number): void {
             var groupOld: any = this.groups[groupNameOld];
 
             if (groupOld.constructor === Array) {

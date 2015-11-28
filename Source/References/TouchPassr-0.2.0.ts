@@ -391,8 +391,8 @@ module TouchPassr {
                 return "0px";
             }
 
-            amount = Number(amountRaw.replace(/[^\d]/g, '')) || 0;
-            units = amountRaw.replace(/[\d]/g, '') || "px";
+            amount = Number(amountRaw.replace(/[^\d]/g, "")) || 0;
+            units = amountRaw.replace(/[\d]/g, "") || "px";
 
             return Math.round(amount / -2) + units;
         }

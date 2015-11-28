@@ -468,7 +468,7 @@ var LevelEditr;
          *
          */
         LevelEditr.prototype.onClickEditingGenericAdd = function (x, y, title, args) {
-            var description = this.things[title], thing = this.GameStarter.ObjectMaker.make(title, this.GameStarter.proliferate({
+            var thing = this.GameStarter.ObjectMaker.make(title, this.GameStarter.proliferate({
                 "onThingMake": undefined,
                 "onThingAdd": undefined,
                 "onThingAdded": undefined,
@@ -1149,7 +1149,6 @@ var LevelEditr;
             this.display.gui.appendChild(this.display.sections.JSON);
         };
         LevelEditr.prototype.resetDisplayVisualContainers = function () {
-            var scope = this;
             this.display.sections.ClickToPlace.VisualOptions = this.GameStarter.createElement("div", {
                 "textContent": "Click an icon to view options.",
                 "className": "EditorVisualOptions",
@@ -1204,8 +1203,8 @@ var LevelEditr;
          */
         LevelEditr.prototype.resetDisplayOptionsListSubOptionsThings = function () {
             var scope = this, 
-            // Without clicker, tslint complaints onThingIconClick isn't used...
-            clicker = this.onThingIconClick;
+            // Without these references, tslint complaints the private functions aren't used
+            argumentGetter = this.getPrethingSizeArguments.bind(this), clicker = this.onThingIconClick;
             if (this.display.sections.ClickToPlace.Things) {
                 this.display.sections.ClickToPlace.container.removeChild(this.display.sections.ClickToPlace.Things);
             }
@@ -1217,7 +1216,7 @@ var LevelEditr;
                 "children": (function () {
                     var selectedIndex = 0, containers = Object.keys(scope.prethings).map(function (key) {
                         var prethings = scope.prethings[key], children = Object.keys(prethings).map(function (title) {
-                            var prething = prethings[title], thing = scope.GameStarter.ObjectMaker.make(title, scope.getPrethingSizeArguments(prething)), container = scope.GameStarter.createElement("div", {
+                            var prething = prethings[title], thing = scope.GameStarter.ObjectMaker.make(title, argumentGetter(prething)), container = scope.GameStarter.createElement("div", {
                                 "className": "EditorListOption",
                                 "options": scope.prethings[key][title].options,
                                 "children": [thing.canvas],
@@ -1687,10 +1686,9 @@ var LevelEditr;
         LevelEditr.prototype.parseSmart = function (text) {
             var map = JSON.parse(text, this.jsonReplacerSmart), areas = map.areas, i;
             for (i in areas) {
-                if (!areas.hasOwnProperty(i)) {
-                    return;
+                if (areas.hasOwnProperty(i)) {
+                    areas[i].editor = true;
                 }
-                areas[i].editor = true;
             }
             return map;
         };

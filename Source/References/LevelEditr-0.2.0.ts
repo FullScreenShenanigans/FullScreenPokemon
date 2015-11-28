@@ -741,7 +741,7 @@ module LevelEditr {
                 return;
             }
 
-            for (var i = 0; i < this.currentPreThings.length; i += 1) {
+            for (var i: number = 0; i < this.currentPreThings.length; i += 1) {
                 this.GameStarter.killNormal(this.currentPreThings[i].thing);
             }
 
@@ -819,7 +819,7 @@ module LevelEditr {
 
             for (i = 0; i < this.currentPreThings.length; i += 1) {
                 prething = this.currentPreThings[i];
-                left = this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize)
+                left = this.roundTo(x - this.GameStarter.container.offsetLeft, this.blocksize);
                 top = this.roundTo(y - this.GameStarter.container.offsetTop, this.blocksize);
 
                 if (prething.left) {
@@ -904,17 +904,16 @@ module LevelEditr {
          * 
          */
         private onClickEditingGenericAdd(x: number, y: number, title: string, args: any): void {
-            var description: IPreThingDescriptor = this.things[title],
-                thing: IThing = this.GameStarter.ObjectMaker.make(
-                    title,
-                    this.GameStarter.proliferate(
-                        {
-                            "onThingMake": undefined,
-                            "onThingAdd": undefined,
-                            "onThingAdded": undefined,
-                            "movement": undefined
-                        },
-                        this.getNormalizedThingArguments(args))),
+            var thing: IThing = this.GameStarter.ObjectMaker.make(
+                title,
+                this.GameStarter.proliferate(
+                    {
+                        "onThingMake": undefined,
+                        "onThingAdd": undefined,
+                        "onThingAdded": undefined,
+                        "movement": undefined
+                    },
+                    this.getNormalizedThingArguments(args))),
                 left: number = x - this.GameStarter.container.offsetLeft,
                 top: number = y - this.GameStarter.container.offsetTop;
 
@@ -1422,7 +1421,7 @@ module LevelEditr {
 
         private resetDisplayGui(): void {
             this.display.gui = this.GameStarter.createElement("div", {
-                "className": "EditorGui",
+                "className": "EditorGui"
             });
 
             this.display.container.appendChild(this.display.gui);
@@ -1750,8 +1749,6 @@ module LevelEditr {
         }
 
         private resetDisplayVisualContainers(): void {
-            var scope: LevelEditr = this;
-
             this.display.sections.ClickToPlace.VisualOptions = this.GameStarter.createElement("div", {
                 "textContent": "Click an icon to view options.",
                 "className": "EditorVisualOptions",
@@ -1811,7 +1808,8 @@ module LevelEditr {
          */
         private resetDisplayOptionsListSubOptionsThings(): void {
             var scope: LevelEditr = this,
-                // Without clicker, tslint complaints onThingIconClick isn't used...
+                // Without these references, tslint complaints the private functions aren't used
+                argumentGetter: any = this.getPrethingSizeArguments.bind(this),
                 clicker: any = this.onThingIconClick;
 
             if (this.display.sections.ClickToPlace.Things) {
@@ -1832,7 +1830,7 @@ module LevelEditr {
                                         var prething: IPreThing = prethings[title],
                                             thing: IThing = scope.GameStarter.ObjectMaker.make(
                                                 title,
-                                                scope.getPrethingSizeArguments(prething)),
+                                                argumentGetter(prething)),
                                             container: HTMLDivElement = <HTMLDivElement>scope.GameStarter.createElement("div", {
                                                 "className": "EditorListOption",
                                                 "options": scope.prethings[key][title].options,
@@ -2407,11 +2405,9 @@ module LevelEditr {
                 i: any;
 
             for (i in areas) {
-                if (!areas.hasOwnProperty(i)) {
-                    return;
+                if (areas.hasOwnProperty(i)) {
+                    areas[i].editor = true;
                 }
-
-                areas[i].editor = true;
             }
 
             return map;
@@ -2464,7 +2460,7 @@ module LevelEditr {
 
             this.GameStarter.TimeHandler.cancelAllEvents();
         }
-        
+
         /**
          *
          */
@@ -2916,7 +2912,7 @@ module LevelEditr {
                 // EditorOptions
                 ".LevelEditor .EditorOptions, .LevelEditor .EditorOptionContainer": {
                     "padding-left": "3px",
-                    "clear": "both",
+                    "clear": "both"
                 },
                 ".LevelEditor.minimized .EditorOptionsList": {
                     "opacity": "0"
@@ -2953,7 +2949,7 @@ module LevelEditr {
                     "transition": "117ms opacity, 70ms left"
                 },
                 ".LevelEditor.thin .EditorVisualOptions": {
-                    "left": "185px",
+                    "left": "185px"
                 },
                 ".LevelEditor.thin .EditorVisualOptions:hover": {
                     "left": "70px",

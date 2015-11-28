@@ -683,19 +683,23 @@ module MenuGraphr {
          * 
          * @remarks This is the real force behind addMenuDialog and addMenuText.
          */
-        addMenuWords(name: string, words: (string[] | IMenuWordCommand)[], i: number, x: number, y: number, onCompletion?: (...args: any[]) => void): IThing[] {
+        addMenuWords(
+            name: string,
+            words: (string[] | IMenuWordCommand)[],
+            i: number,
+            x: number,
+            y: number,
+            onCompletion?: (...args: any[]) => void): IThing[] {
             var menu: IMenu = this.getExistingMenu(name),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
                 command: IMenuWordFiltered,
                 word: string[],
                 things: IThing[] = [],
                 textWidth: number,
-                textHeight: number,
                 textPaddingX: number,
                 textPaddingY: number,
                 textSpeed: number,
                 textWidthMultiplier: number,
-                title: string | IMenuWordFiltered,
                 character: IText,
                 j: number;
 
@@ -770,7 +774,7 @@ module MenuGraphr {
 
             // Mark the menu's progress as working and incomplete
             menu.progress.working = true;
-            menu.progress.complete = false
+            menu.progress.complete = false;
             menu.progress.onCompletion = onCompletion;
             (<IListMenu>menu).progress.words = words;
             (<IListMenu>menu).progress.i = i + 1;
@@ -812,8 +816,8 @@ module MenuGraphr {
             var menu: IMenu = this.getExistingMenu(name),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
                 textPaddingY: number = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize,
-                title = "Char" + this.getCharacterEquivalent(character),
-                thing = this.GameStarter.ObjectMaker.make(title, {
+                title: string = "Char" + this.getCharacterEquivalent(character),
+                thing: IText = this.GameStarter.ObjectMaker.make(title, {
                     "textPaddingY": textPaddingY
                 });
 
@@ -1455,7 +1459,7 @@ module MenuGraphr {
             }
             return character;
         }
-        
+
         /**
          *
          */
@@ -1493,7 +1497,7 @@ module MenuGraphr {
                 i: number;
 
             word = [];
-            
+
             // For each character to be added...
             for (i = 0; i < characters.length; i += 1) {
                 // If it matches what's currently being added, keep going
@@ -1558,14 +1562,14 @@ module MenuGraphr {
          *
          */
         private filterMenuWords(words: (string | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
-            var output = [],
+            var output: (string[] | IMenuWordCommand)[] = [],
                 i: number;
 
             for (i = 0; i < words.length; i += 1) {
                 if (words[i].constructor === String) {
                     output.push(this.filterWord(<string>words[i]));
                 } else {
-                    output.push(words[i]);
+                    output.push(<IMenuWordCommand>words[i]);
                 }
             }
 
@@ -1605,8 +1609,6 @@ module MenuGraphr {
             var characters: string[] = [],
                 total: string = <string>word,
                 component: string = "",
-                start: number,
-                end: number,
                 i: number;
 
             for (i = 0; i < total.length; i += 1) {
@@ -1628,17 +1630,6 @@ module MenuGraphr {
             }
 
             return [characters];
-        }
-
-        /**
-         *
-         */
-        private filterTextArray(text: string[] | string[][]): string[][] {
-            var output: string[][] = [];
-
-
-
-            return output;
         }
 
         /**
@@ -1751,19 +1742,6 @@ module MenuGraphr {
         }
 
         /**
-         *
-         */
-        private isWordWhitespace(word: string[]): boolean {
-            for (var i: number = 0; i < word.length; i += 1) {
-                if (/\S/.test(word[i])) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /**
          * 
          * 
          * @remarks This ignores commands under the assumption they shouldn't be
@@ -1772,7 +1750,6 @@ module MenuGraphr {
         private computeFutureWordLength(wordRaw: string[] | IMenuWordCommand, textWidth: number, textPaddingX: number): number {
             var total: number = 0,
                 word: string[],
-                letterRaw: string | IMenuWordFiltered,
                 i: number;
 
             if (wordRaw.constructor === Array) {
@@ -1796,7 +1773,7 @@ module MenuGraphr {
          *
          */
         private computeFutureLetterLength(letter: string, textPaddingX: number): number {
-            var title = "Char" + this.getCharacterEquivalent(letter),
+            var title: string = "Char" + this.getCharacterEquivalent(letter),
                 properties: any = this.GameStarter.ObjectMaker.getFullPropertiesOf(title);
 
             return properties.width * this.GameStarter.unitsize + textPaddingX;

@@ -932,13 +932,13 @@ var UserWrappr;
                 return uploader;
             };
             LevelEditorGenerator.prototype.createMapSelectorDiv = function (schema) {
-                var expanded = true, container = this.GameStarter.createElement("div", {
+                var expanded = true, generatorName = "MapsGrid", container = this.GameStarter.createElement("div", {
                     "className": "select-options-group select-options-editor-maps-selector"
                 }), toggler = this.GameStarter.createElement("div", {
                     "className": "select-option select-option-large options-button-option"
                 }), mapsOut = this.GameStarter.createElement("div", {
                     "className": "select-options-holder select-options-editor-maps-holder"
-                }), mapsIn = this.UserWrapper.getGenerators()["MapsGrid"].generate(this.GameStarter.proliferate({
+                }), mapsIn = this.UserWrapper.getGenerators()[generatorName].generate(this.GameStarter.proliferate({
                     "callback": schema.callback
                 }, schema.maps));
                 toggler.onclick = function (event) {

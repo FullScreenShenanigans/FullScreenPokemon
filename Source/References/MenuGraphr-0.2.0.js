@@ -312,7 +312,7 @@ var MenuGraphr;
          * @remarks This is the real force behind addMenuDialog and addMenuText.
          */
         MenuGraphr.prototype.addMenuWords = function (name, words, i, x, y, onCompletion) {
-            var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textHeight, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, title, character, j;
+            var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, character, j;
             // Command objects must be parsed here in case they modify the x/y position
             if (words[i].command) {
                 command = words[i];
@@ -973,7 +973,7 @@ var MenuGraphr;
                 }
                 return word;
             }
-            var characters = [], total = word, component = "", start, end, i;
+            var characters = [], total = word, component = "", i;
             for (i = 0; i < total.length; i += 1) {
                 if (/\s/.test(total[i])) {
                     if (component.length > 0) {
@@ -989,13 +989,6 @@ var MenuGraphr;
                 characters.push.apply(characters, this.filterWord(component));
             }
             return [characters];
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.filterTextArray = function (text) {
-            var output = [];
-            return output;
         };
         /**
          *
@@ -1089,23 +1082,12 @@ var MenuGraphr;
         };
         /**
          *
-         */
-        MenuGraphr.prototype.isWordWhitespace = function (word) {
-            for (var i = 0; i < word.length; i += 1) {
-                if (/\S/.test(word[i])) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        /**
-         *
          *
          * @remarks This ignores commands under the assumption they shouldn't be
          *          used in dialogs that react to box size. This may be wrong.
          */
         MenuGraphr.prototype.computeFutureWordLength = function (wordRaw, textWidth, textPaddingX) {
-            var total = 0, word, letterRaw, i;
+            var total = 0, word, i;
             if (wordRaw.constructor === Array) {
                 word = wordRaw;
             }
