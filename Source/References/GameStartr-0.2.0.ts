@@ -458,10 +458,10 @@ declare module GameStartr {
         addThing(thingRaw: string | IThing | any[], left?: number, top?: number): IThing;
         thingProcess(thing: IThing, title: string, settings: any, defaults: any): void;
         thingProcessAttributes(thing: IThing, attributes: any): void;
-        mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void;
-        onGamePlay(GameStarter: GameStartr): void;
-        onGamePause(GameStarter: GameStartr): void;
-        canInputsTrigger(GameStarter: GameStartr): boolean;
+        mapPlaceRandomCommands(GameStarter: IGameStartr, generatedCommands: WorldSeedr.ICommand[]): void;
+        onGamePlay(GameStarter: IGameStartr): void;
+        onGamePause(GameStarter: IGameStartr): void;
+        canInputsTrigger(GameStarter: IGameStartr): boolean;
         gameStart(): void;
         killNormal(thing: IThing): void;
         markChanged(thing: IThing): void;
@@ -499,7 +499,7 @@ declare module GameStartr {
         unflipHoriz(thing: IThing): void;
         unflipVert(thing: IThing): void;
         setOpacity(thing: IThing, opacity: number): void;
-        ensureCorrectCaller(current: any): GameStartr;
+        ensureCorrectCaller(current: any): IGameStartr;
         arrayDeleteThing(thing: IThing, array: any[], location?: number): void;
         takeScreenshot(name: string, format?: string): void;
         addPageStyles(styles: any): void;

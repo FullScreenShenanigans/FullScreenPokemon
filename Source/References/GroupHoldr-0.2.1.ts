@@ -140,7 +140,7 @@ module GroupHoldr {
          */
         constructor(settings: IGroupHoldrSettings) {
             if (typeof settings === "undefined") {
-                throw new Error("No settings given to GroupHoldr.");
+                throw new Error("No settings object given to GroupHoldr.");
             }
             if (typeof settings.groupNames === "undefined") {
                 throw new Error("No groupNames given to GroupHoldr.");
