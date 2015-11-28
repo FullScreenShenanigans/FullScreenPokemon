@@ -7,29 +7,38 @@ module.exports = function (grunt) {
                 "dist": "Distribution"
             }
         },
+        "clean": ["<%= meta.paths.dist %>"],
         "tslint": {
             "options": {
                 "configuration": grunt.file.readJSON("tslint.json")
             },
             "files": {
-                "src": ["<%= meta.paths.source %>/<%= pkg.name %>.ts"]
+                "src": [
+                    "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                    "<%= meta.paths.source %>/settings/*.ts",
+                ]
             }
         },
         "typescript": {
             "base": {
+                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts"
+            },
+            "distribution": {
                 "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
-                "dest": "<%= meta.paths.source %>/<%= pkg.name %>.js"
+                "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
             }
         },
-        "clean": ["<%= meta.paths.dist %>"],
         "copy": {
             "dist": {
                 "files": [{
-                    "src": "<%= meta.paths.source %>/<%= pkg.name %>.js",
-                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
-                }, {
                     "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
                     "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
+                }, {
+                    "src": "<%= meta.paths.source %>/<%= pkg.name %>.d.ts",
+                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.d.ts"
+                }, {
+                    "src": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js",
+                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/<%= pkg.name %>-<%= pkg.version %>.js"
                 }, {
                     "src": "<%= meta.paths.source %>/References/*.ts",
                     "dest": "<%= meta.paths.dist %>/",
@@ -62,11 +71,6 @@ module.exports = function (grunt) {
                     "src": "Theme/**",
                     "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/",
                     "expand": true
-                }, {
-                    "cwd": "<%= meta.paths.source %>/",
-                    "src": "settings/**",
-                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/",
-                    "expand": true
                 }]
             }
         },
@@ -77,16 +81,14 @@ module.exports = function (grunt) {
             },
             "dist": {
                 "files": {
-                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.min.js": ["<%= meta.paths.source %>/<%= pkg.name %>.js"],
-                }
-            },
-            "zip": {
-                "files": {
                     "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/<%= pkg.name %>-<%= pkg.version %>.min.js": [
-                        "<%= meta.paths.source %>/<%= pkg.name %>.js",
-                        "<%= meta.paths.source %>/settings/*.js"
+                        "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/<%= pkg.name %>-<%= pkg.version %>.js",
+                        "<%= meta.paths.source %>/settings/*.js",
+                        "<%= meta.paths.source %>/settings/maps/*.js"
                     ],
-                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/index.min.js": ["<%= meta.paths.source %>/index.js"]
+                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/index.min.js": [
+                        "<%= meta.paths.source %>/index.js"
+                    ]
                 }
             }
         },
@@ -94,7 +96,7 @@ module.exports = function (grunt) {
             "options": {
                 "sourceMap": true
             },
-            "zip": {
+            "dist": {
                 "files": {
                     "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/index.min.css": ["<%= meta.paths.source %>/index.css"]
                 }
@@ -107,7 +109,7 @@ module.exports = function (grunt) {
             }
         },
         "processhtml": {
-            "zip": {
+            "dist": {
                 "options": {
                     "process": true,
                     "data": {
@@ -119,11 +121,22 @@ module.exports = function (grunt) {
                 }
             }
         },
+        "htmlmin": {
+            "dist": {
+                "options": {
+                    "removeComments": true,
+                    "collapseWhitespace": true
+                },
+                "files": {
+                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/index.html": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/index.html"
+                }
+            },
+        },
         "zip": {
-            "zip": {
-                "cwd": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/",
-                "src": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>/**",
-                "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.zip"
+            "dist": {
+                "cwd": "<%= meta.paths.dist %>/FullScreenMario-<%= pkg.version %>/",
+                "src": "<%= meta.paths.dist %>/FullScreenMario-<%= pkg.version %>/**",
+                "dest": "<%= meta.paths.dist %>/FullScreenMario-<%= pkg.version %>.zip"
             }
         },
         "mocha_phantomjs": {
@@ -134,6 +147,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
+    grunt.loadNpmTasks("grunt-contrib-htmlmin");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-mocha-phantomjs");
     grunt.loadNpmTasks("grunt-preprocess");
@@ -142,6 +156,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks("grunt-zip");
     grunt.registerTask("default", [
-        "tslint", "typescript", "clean", "copy", "uglify", "cssmin", "preprocess", "processhtml", "mocha_phantomjs", "zip"
+        "clean", "tslint", "typescript", "copy", "uglify", "cssmin", "preprocess", "processhtml", "htmlmin", "mocha_phantomjs", "zip"
     ]);
 };

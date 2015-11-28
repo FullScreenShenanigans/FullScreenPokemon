@@ -1,8 +1,5 @@
 Distribution
 Distribution/**
-Source/**/*.js
-!Source/index.js
-!Source/References/*.js
 Source/**/*.md
 Source/**/*.txt
 node_modules/

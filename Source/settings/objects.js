@@ -847,7 +847,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "hidden": true
         },
         "CutsceneTriggerer": {
-            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCutsceneTriggerer
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCutsceneTriggerer,
+            "requireOverlap": true
         },
         "MenuTriggerer": {
             "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateMenuTriggerer

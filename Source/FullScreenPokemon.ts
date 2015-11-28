@@ -5044,13 +5044,9 @@ module FullScreenPokemon {
          * 
          */
         cutsceneBattleComplete(FSP: FullScreenPokemon, settings: any): void {
-            var battleInfo: IBattleInfo = settings.battleInfo,
-                keptThings: IThing[],
-                i: number;
-
             FSP.MapScreener.blockInputs = false;
-            FSP.moveBattleKeptThingsBack(FSP, battleInfo);
-            FSP.ItemsHolder.setItem("PokemonInParty", battleInfo.player.actors);
+            FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
+            FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
 
             if (settings.nextCutscene) {
                 FSP.ScenePlayer.startCutscene(
@@ -5073,8 +5069,7 @@ module FullScreenPokemon {
                 things: IThing[] = [],
                 thing: IThing,
                 difference: number,
-                destination: number,
-                i: number;
+                destination: number;
 
             /**
              * Yes, an inline Function. It makes things easier by calling itself
@@ -5215,16 +5210,14 @@ module FullScreenPokemon {
                         "color": color,
                         "change": change,
                         "speed": speed,
-                        "callback": function () {
-                            FSP.animateFadeFromColor(
-                                FSP,
-                                {
-                                    "color": color,
-                                    "change": change,
-                                    "speed": speed,
-                                    "callback": repeater
-                                });
-                        }
+                        "callback": FSP.animateFadeFromColor.bind(
+                            FSP,
+                            {
+                                "color": color,
+                                "change": change,
+                                "speed": speed,
+                                "callback": repeater
+                            })
                     });
 
                     FSP.moveBattleKeptThingsToText(FSP, settings.battleInfo);
@@ -7066,6 +7059,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakIntroRivalLeavesAfterBattle(FSP: FullScreenPokemon, settings: any): void {
+            FSP.MapScreener.blockInputs = true;
             FSP.ItemsHolder.getItem("PokemonInParty").forEach(FSP.healPokemon.bind(FSP));
             FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("Complaint"), 49);
         }
@@ -7081,6 +7075,7 @@ module FullScreenPokemon {
                     "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!"
                 ],
                 function (): void {
+                    console.log("is now", FSP.MapScreener.blockInputs);
                     FSP.MenuGrapher.deleteActiveMenu();
                     FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("Goodbye"), 21);
                 }
@@ -7116,6 +7111,7 @@ module FullScreenPokemon {
                     function (): void {
                         FSP.killNormal(rival);
                         FSP.StateHolder.addChange(rival.id, "alive", false);
+                        FSP.MapScreener.blockInputs = false;
                     }
                 ],
                 dialog: string[] = [
