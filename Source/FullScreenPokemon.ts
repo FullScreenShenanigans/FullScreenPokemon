@@ -627,7 +627,11 @@ module FullScreenPokemon {
         /**
          * 
          */
-        canInputsTrigger(FSP: FullScreenPokemon): boolean {
+        canInputsTrigger(FSP: FullScreenPokemon, player?: IPlayer, code?: any, event?: Event): boolean {
+            if (event) {
+                event.preventDefault();
+            }
+
             return true;
         }
 
@@ -5211,6 +5215,7 @@ module FullScreenPokemon {
                         "change": change,
                         "speed": speed,
                         "callback": FSP.animateFadeFromColor.bind(
+                            FSP,
                             FSP,
                             {
                                 "color": color,

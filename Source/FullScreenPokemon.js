@@ -406,7 +406,10 @@ var FullScreenPokemon;
         /**
          *
          */
-        FullScreenPokemon.prototype.canInputsTrigger = function (FSP) {
+        FullScreenPokemon.prototype.canInputsTrigger = function (FSP, player, code, event) {
+            if (event) {
+                event.preventDefault();
+            }
             return true;
         };
         /**
@@ -3741,7 +3744,7 @@ var FullScreenPokemon;
                     "color": color,
                     "change": change,
                     "speed": speed,
-                    "callback": FSP.animateFadeFromColor.bind(FSP, {
+                    "callback": FSP.animateFadeFromColor.bind(FSP, FSP, {
                         "color": color,
                         "change": change,
                         "speed": speed,

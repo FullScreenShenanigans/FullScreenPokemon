@@ -407,7 +407,7 @@ var InputWritr;
          * @return {Mixed}
          */
         InputWritr.prototype.callEvent = function (event, keyCode, sourceEvent) {
-            if (!this.canTrigger(event, keyCode)) {
+            if (!this.canTrigger(event, keyCode, sourceEvent)) {
                 return;
             }
             if (!event) {

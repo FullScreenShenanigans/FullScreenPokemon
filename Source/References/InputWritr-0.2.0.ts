@@ -615,7 +615,7 @@ module InputWritr {
          * @return {Mixed}
          */
         callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
-            if (!this.canTrigger(event, keyCode)) {
+            if (!this.canTrigger(event, keyCode, sourceEvent)) {
                 return;
             }
 
