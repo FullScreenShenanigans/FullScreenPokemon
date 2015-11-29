@@ -22,9 +22,11 @@ declare module FullScreenPokemon {
         playerDirection: Direction;
         scrollability: string;
         theme?: string;
-        thingsById: {
-            [i: string]: IThing;
-        }
+        thingsById: IThingsById;
+    }
+
+    export interface IThingsById {
+        [i: string]: IThing;
     }
 
     export interface IFullScreenPokemonStoredSettings extends GameStartr.IGameStartrStoredSettings {

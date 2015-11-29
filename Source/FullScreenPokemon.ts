@@ -2597,14 +2597,14 @@ module FullScreenPokemon {
             thing.FSP.PixelDrawer.setThingSprite(thing);
 
             thing.shadow = thing.FSP.ObjectMaker.make(thing.title, {
-                "nocollide": true
+                "nocollide": true,
+                "id": thing.id + " shadow"
             });
 
             if (thing.shadow.className !== thing.className) {
                 thing.FSP.setClass(thing.shadow, thing.className);
             }
 
-            delete thing.shadow.id;
             thing.FSP.addThing(thing.shadow, thing.left, thing.top);
 
             thing.FSP.GroupHolder.switchMemberGroup(
@@ -7790,7 +7790,7 @@ module FullScreenPokemon {
             FSP.AudioPlayer.clearAll();
             FSP.GroupHolder.clearArrays();
             FSP.MapScreener.clearScreen();
-            FSP.MapScreener.thingsById = {};
+            FSP.MapScreener.thingsById = FSP.generateThingsByIdContainer();
             FSP.MenuGrapher.setActiveMenu(undefined);
             FSP.TimeHandler.cancelAllEvents();
 
@@ -7893,7 +7893,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        generateThingsByIdContainer(): {} {
+        generateThingsByIdContainer(): IThingsById {
             return {};
         }
 

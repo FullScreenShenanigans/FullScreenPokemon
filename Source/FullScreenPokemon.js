@@ -5,8 +5,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/BattleMovr-0.2.0.ts" />
@@ -1895,12 +1894,12 @@ var FullScreenPokemon;
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
             thing.FSP.PixelDrawer.setThingSprite(thing);
             thing.shadow = thing.FSP.ObjectMaker.make(thing.title, {
-                "nocollide": true
+                "nocollide": true,
+                "id": thing.id + " shadow"
             });
             if (thing.shadow.className !== thing.className) {
                 thing.FSP.setClass(thing.shadow, thing.className);
             }
-            delete thing.shadow.id;
             thing.FSP.addThing(thing.shadow, thing.left, thing.top);
             thing.FSP.GroupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
             thing.FSP.arrayToEnd(thing.shadow, thing.FSP.GroupHolder.getGroup("Terrain"));
@@ -5440,7 +5439,7 @@ var FullScreenPokemon;
             FSP.AudioPlayer.clearAll();
             FSP.GroupHolder.clearArrays();
             FSP.MapScreener.clearScreen();
-            FSP.MapScreener.thingsById = {};
+            FSP.MapScreener.thingsById = FSP.generateThingsByIdContainer();
             FSP.MenuGrapher.setActiveMenu(undefined);
             FSP.TimeHandler.cancelAllEvents();
             FSP.MapsHandler.setLocation(name);
