@@ -64,10 +64,29 @@ module FullScreenPokemon {
                     .split("");
             },
             "TIME": function (FSP: FullScreenPokemon): string[] {
-                return FSP.ItemsHolder.getItem("time");
+                var ticksRecorded: number = FSP.ItemsHolder.getItem("time"),
+                    ticksUnrecorded: number = FSP.FPSAnalyzer.getNumRecorded() - FSP.ticksElapsed,
+                    ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded),
+                    secondsTotal: number = Math.floor(ticksTotal / FSP.settings.runner.interval),
+                    hours: string = Math.floor(secondsTotal / 3600).toString(),
+                    minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
+
+                if (hours.length < 2) {
+                    hours = " " + hours;
+                } else if (hours.length > 2) {
+                    hours = "99";
+                }
+
+                if (minutes.length < 2) {
+                    minutes = "0" + minutes;
+                } else if (minutes.length > 2) {
+                    minutes = "99";
+                }
+
+                return (hours + ":" + minutes).split("");
             },
             "MONEY": function (FSP: FullScreenPokemon): string[] {
-                return FSP.ItemsHolder.getItem("money");
+                return FSP.ItemsHolder.getItem("money").toString().split("");
             }
         },
         "replacementStatistics": {

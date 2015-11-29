@@ -789,6 +789,7 @@ module GameStartr {
                         "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
                     },
                     GameStarter.settings.runner));
+            GameStarter.FPSAnalyzer = GameStarter.GamesRunner.getFPSAnalyzer();
         }
 
         /**

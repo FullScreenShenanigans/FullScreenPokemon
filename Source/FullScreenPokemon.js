@@ -57,6 +57,7 @@ var FullScreenPokemon;
          */
         function FullScreenPokemon(settings) {
             this.settings = FullScreenPokemon.settings;
+            this.ticksElapsed = 0;
             _super.call(this, this.proliferate({
                 "constantsSource": FullScreenPokemon,
                 "constants": [
@@ -5380,10 +5381,12 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.saveGame = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), ticksRecorded = FSP.FPSAnalyzer.getNumRecorded();
             FSP.ItemsHolder.setItem("map", FSP.MapsHandler.getMapName());
             FSP.ItemsHolder.setItem("area", FSP.MapsHandler.getAreaName());
             FSP.ItemsHolder.setItem("location", FSP.MapsHandler.getLocationEntered().name);
+            FSP.ItemsHolder.increase("time", ticksRecorded - FSP.ticksElapsed);
+            FSP.ticksElapsed = ticksRecorded;
             FSP.saveCharacterPositions(FSP);
             FSP.ItemsHolder.saveAll();
             FSP.StateHolder.saveCollection();

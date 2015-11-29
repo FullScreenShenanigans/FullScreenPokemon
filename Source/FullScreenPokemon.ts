@@ -170,6 +170,11 @@ module FullScreenPokemon {
         public player: IPlayer;
 
         /**
+         * The total FPSAnalyzr ticks that have elapsed since the constructor or saving.
+         */
+        public ticksElapsed: number;
+
+        /**
          * Constructor for a new FullScreenPokemon game object.
          * Static game settings are stored in the appropriate settings/*.js object
          * as members of the FullScreenPokemon.prototype object.
@@ -177,6 +182,7 @@ module FullScreenPokemon {
          */
         constructor(settings: GameStartr.IGameStartrSettings) {
             this.settings = FullScreenPokemon.settings;
+            this.ticksElapsed = 0;
 
             super(
                 this.proliferate(
@@ -7706,11 +7712,15 @@ module FullScreenPokemon {
          * 
          */
         saveGame(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                ticksRecorded: number = FSP.FPSAnalyzer.getNumRecorded();
 
             FSP.ItemsHolder.setItem("map", FSP.MapsHandler.getMapName());
             FSP.ItemsHolder.setItem("area", FSP.MapsHandler.getAreaName());
             FSP.ItemsHolder.setItem("location", FSP.MapsHandler.getLocationEntered().name);
+
+            FSP.ItemsHolder.increase("time", ticksRecorded - FSP.ticksElapsed);
+            FSP.ticksElapsed = ticksRecorded;
 
             FSP.saveCharacterPositions(FSP);
             FSP.ItemsHolder.saveAll();

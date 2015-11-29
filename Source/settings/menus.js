@@ -57,10 +57,23 @@ var FullScreenPokemon;
                     .split("");
             },
             "TIME": function (FSP) {
-                return FSP.ItemsHolder.getItem("time");
+                var ticksRecorded = FSP.ItemsHolder.getItem("time"), ticksUnrecorded = FSP.FPSAnalyzer.getNumRecorded() - FSP.ticksElapsed, ticksTotal = Math.floor(ticksRecorded + ticksUnrecorded), secondsTotal = Math.floor(ticksTotal / FSP.settings.runner.interval), hours = Math.floor(secondsTotal / 3600).toString(), minutes = Math.floor((secondsTotal - Number(hours)) / 60).toString();
+                if (hours.length < 2) {
+                    hours = " " + hours;
+                }
+                else if (hours.length > 2) {
+                    hours = "99";
+                }
+                if (minutes.length < 2) {
+                    minutes = "0" + minutes;
+                }
+                else if (minutes.length > 2) {
+                    minutes = "99";
+                }
+                return (hours + ":" + minutes).split("");
             },
             "MONEY": function (FSP) {
-                return FSP.ItemsHolder.getItem("money");
+                return FSP.ItemsHolder.getItem("money").toString().split("");
             }
         },
         "replacementStatistics": {

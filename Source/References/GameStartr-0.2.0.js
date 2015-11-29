@@ -228,6 +228,7 @@ var GameStartr;
                 "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
                 "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
             }, GameStarter.settings.runner));
+            GameStarter.FPSAnalyzer = GameStarter.GamesRunner.getFPSAnalyzer();
         };
         /**
          * Sets this.ItemsHolder.

@@ -42,7 +42,7 @@ FullScreenPokemon.FullScreenPokemon.settings.statistics = {
             "minimum": 0
         },
         "time": {
-            "valueDefault": "00:00"
+            "valueDefault": 0
         },
         "name": {},
         "nameRival": {},
