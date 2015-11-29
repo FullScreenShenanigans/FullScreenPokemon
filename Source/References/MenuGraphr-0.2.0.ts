@@ -1554,7 +1554,7 @@ module MenuGraphr {
                 }
 
                 output.push(...word.substring(0, start).split(""));
-                output.push(...inside);
+                output.push(...(<string[]>inside));
                 output.push(...this.filterWord(word.substring(end + "%%%%%%%".length)));
 
                 return output;
