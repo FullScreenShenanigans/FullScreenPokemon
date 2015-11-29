@@ -33,10 +33,29 @@ var FullScreenPokemon;
             "POKEMON": "POKéMON".split(""),
             "POKEDEX": "POKéDEX".split(""),
             "BADGES.LENGTH": function (FSP) {
-                return ["!", "?"];
+                var badges = FSP.ItemsHolder.getItem("badges"), total = 0, i;
+                for (i in badges) {
+                    if (badges.hasOwnProperty(i)) {
+                        total += Number(badges[i]);
+                    }
+                }
+                return total.toString().split("");
             },
             "POKEDEX.LENGTH": function (FSP) {
-                return ["!", "?"];
+                var pokedex = FSP.ItemsHolder.getItem("Pokedex");
+                if (!pokedex || !pokedex.length) {
+                    return ["0"];
+                }
+                ;
+                return pokedex
+                    .map(function (listing) {
+                    return Number(listing.seen);
+                })
+                    .reduce(function (a, b) {
+                    return a + b;
+                })
+                    .toString()
+                    .split("");
             },
             "TIME": function (FSP) {
                 return FSP.ItemsHolder.getItem("time");

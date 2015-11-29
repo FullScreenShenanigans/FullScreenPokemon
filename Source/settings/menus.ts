@@ -34,10 +34,34 @@ module FullScreenPokemon {
             "POKEMON": "POKÈMON".split(""),
             "POKEDEX": "POKÈDEX".split(""),
             "BADGES.LENGTH": function (FSP: FullScreenPokemon): string[] {
-                return ["!", "?"];
+                var badges: { [i: string]: boolean } = FSP.ItemsHolder.getItem("badges"),
+                    total: number = 0,
+                    i: string;
+
+                for (i in badges) {
+                    if (badges.hasOwnProperty(i)) {
+                        total += Number(badges[i]);
+                    }
+                }
+
+                return total.toString().split("");
             },
             "POKEDEX.LENGTH": function (FSP: FullScreenPokemon): string[] {
-                return ["!", "?"];
+                var pokedex: IPokedexListing[] = FSP.ItemsHolder.getItem("Pokedex");
+
+                if (!pokedex || !pokedex.length) {
+                    return ["0"];
+                };
+
+                return pokedex
+                    .map(function (listing: IPokedexListing): number {
+                        return Number(listing.seen);
+                    })
+                    .reduce(function (a: number, b: number): number {
+                        return a + b;
+                    })
+                    .toString()
+                    .split("");
             },
             "TIME": function (FSP: FullScreenPokemon): string[] {
                 return FSP.ItemsHolder.getItem("time");

@@ -9549,7 +9549,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "NIDORANFEMALESYMBOL": {
+                "NIDORANFemaleSymbol": {
                     "label": "Poison Pin",
                     "sprite": "Water",
                     "info": [
@@ -9710,7 +9710,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "NIDORANMALESYMBOL": {
+                "NIDORANMaleSymbol": {
                     "label": "Poison Pin",
                     "sprite": "Water",
                     "info": [

@@ -5274,7 +5274,7 @@ var FullScreenPokemon;
                     "sprite": "WeedleFront",
                     "category": "Wild",
                     "actors": [
-                        FSP.MathDecider.compute("newPokemon", "Weedle".split(""), 5)
+                        FSP.MathDecider.compute("newPokemon", "WEEDLE".split(""), 5)
                     ]
                 },
                 "items": [{
@@ -5338,7 +5338,7 @@ var FullScreenPokemon;
                     "reward": 280,
                     "actors": [
                         FSP.MathDecider.compute("newPokemon", rivalTitle, rivalNickname, 8),
-                        FSP.MathDecider.compute("newPokemon", "Pidgey".split(""), 9)
+                        FSP.MathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
                     ]
                 },
                 "textStart": [
