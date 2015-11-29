@@ -294,16 +294,27 @@ declare module GameStartr {
         "screenAttributes"?: string[];
         "screenVariables": { [i: string]: Function };
         "onSpawn": (prething: MapsCreatr.IPreThing) => void;
-        "onUnspawn": (prething: MapsCreatr.IPreThing) => void;
+        "onUnspawn"?: (prething: MapsCreatr.IPreThing) => void;
         "stretchAdd"?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
         "afterAdd"?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
         "macros": { [i: string]: MapsCreatr.IMapsCreatrMacro };
         "entrances": { [i: string]: MapsCreatr.IMapsCreatrEntrance };
         "patterns"?: any;
-        "library": { [i: string]: MapsCreatr.IMapsCreatrMapRaw };
+        "library": { [i: string]: IMapsCreatrMapRaw };
     }
 
-    export interface IMathDecidrCustoms extends IGameStartrSettingsObject, MathDecidr.IMathDecidrSettings{ }
+    export interface IMapsCreatrMapRaw extends MapsCreatr.IMapsCreatrMapRaw {
+        locationDefault: string;
+        areas: {
+            [i: string]: IMapsCreatrAreaRaw;
+        };
+    }
+
+    export interface IMapsCreatrAreaRaw extends MapsCreatr.IMapsCreatrAreaRaw {
+        background?: string;
+    }
+
+    export interface IMathDecidrCustoms extends IGameStartrSettingsObject, MathDecidr.IMathDecidrSettings { }
 
     export interface IModAttachrCustoms extends IGameStartrSettingsObject {
         "storeLocally"?: boolean;

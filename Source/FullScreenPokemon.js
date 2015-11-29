@@ -58,7 +58,7 @@ var FullScreenPokemon;
         "Bottom": "Top",
         "bottom": "top",
         "Left": "Right",
-        "left": "right",
+        "left": "right"
     };
     var FullScreenPokemon = (function (_super) {
         __extends(FullScreenPokemon, _super);

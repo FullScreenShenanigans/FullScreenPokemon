@@ -57,7 +57,7 @@ module FullScreenPokemon {
         "Bottom": "Top",
         "bottom": "top",
         "Left": "Right",
-        "left": "right",
+        "left": "right"
     };
 
     export class FullScreenPokemon extends GameStartr.GameStartr implements IFullScreenPokemon {
@@ -5036,7 +5036,7 @@ module FullScreenPokemon {
                     FSP.ScenePlayer.playRoutine("Complete");
                     FSP.BattleMover.closeBattle(function (): void {
                         FSP.animateFadeFromColor(FSP, animationSettings);
-                    })
+                    });
                 };
 
             if (battleInfo.giftAfterBattle) {
@@ -5089,11 +5089,11 @@ module FullScreenPokemon {
                     var transport: ITransportSchema = FSP.ItemsHolder.getItem("lastPokecenter");
                     FSP.setMap(transport.map, transport.location);
                     FSP.MapScreener.blockInputs = false;
-                }
+                };
             } else {
                 callback = function (): void {
                     FSP.BattleMover.closeBattle();
-                }
+                };
             }
 
             if (FSP.MapScreener.theme) {
@@ -5106,7 +5106,7 @@ module FullScreenPokemon {
                 message,
                 FSP.animateFadeToColor.bind(FSP, FSP, {
                     "color": "Black",
-                    "callback": function () {
+                    "callback": function (): void {
                         FSP.ScenePlayer.playRoutine("Complete");
                         callback();
                     }
