@@ -1,7 +1,7 @@
 /// <reference path="../FullScreenPokemon.ts" />
-var FullScreenPokemon;
-(function (FullScreenPokemon) {
-    FullScreenPokemon.FullScreenPokemon.settings.menus = {
+
+module FullScreenPokemon {
+    FullScreenPokemon.settings.menus = {
         "aliases": {
             " ": "Space",
             "(": "LeftParenthesis",
@@ -19,18 +19,18 @@ var FullScreenPokemon;
             ".": "Period",
             ",": "Comma",
             "'": "Apostrophe",
-            "√©": "eFancy"
+            "È": "eFancy"
         },
         "replacements": {
             "PLAYER": "name",
             "RIVAL": "nameRival",
-            "POKE": "POK√©",
-            "POKEMON": "POK√©MON",
-            "POKEDEX": "POK√©DEX",
-            "BADGES.LENGTH": function (FSP) {
+            "POKE": "POKÈ",
+            "POKEMON": "POKÈMON",
+            "POKEDEX": "POKÈDEX",
+            "BADGES.LENGTH": function (FSP: FullScreenPokemon): string {
                 return "!?";
             },
-            "POKEDEX.LENGTH": function (FSP) {
+            "POKEDEX.LENGTH": function (FSP: FullScreenPokemon): string {
                 return "!?";
             },
             "TIME": "time",
@@ -81,7 +81,7 @@ var FullScreenPokemon;
                         "left": 60
                     }
                 },
-                "onMenuDelete": FullScreenPokemon.FullScreenPokemon.prototype.closePauseMenu,
+                "onMenuDelete": FullScreenPokemon.prototype.closePauseMenu,
                 "textXOffset": 8,
                 "textYOffset": 8,
                 "textPaddingY": 7.75
@@ -98,7 +98,7 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [
-                    {
+                    <MenuGraphr.IMenuChildSchema>{
                         "type": "thing",
                         "thing": "LineDecoratorVertical",
                         "position": {
@@ -110,7 +110,7 @@ var FullScreenPokemon;
                             }
                         }
                     },
-                    {
+                    <MenuGraphr.IMenuChildSchema>{
                         "type": "thing",
                         "thing": "LineSeparatorHorizontal",
                         "size": {
@@ -124,7 +124,7 @@ var FullScreenPokemon;
                             }
                         }
                     },
-                    {
+                    <MenuGraphr.IMenuChildSchema>{
                         "type": "text",
                         "words": ["CONTENTS"],
                         "position": {
@@ -134,7 +134,7 @@ var FullScreenPokemon;
                             }
                         }
                     },
-                    {
+                    <MenuGraphr.IMenuChildSchema>{
                         "type": "text",
                         "words": ["SEEN"],
                         "position": {
@@ -146,7 +146,7 @@ var FullScreenPokemon;
                             }
                         }
                     },
-                    {
+                    <MenuGraphr.IMenuChildSchema>{
                         "type": "text",
                         "words": ["OWN"],
                         "position": {
@@ -217,7 +217,7 @@ var FullScreenPokemon;
                         "type": "menu",
                         "name": "PokedexListingInfo"
                     },
-                    {
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalLeft",
                         "position": {
@@ -304,7 +304,7 @@ var FullScreenPokemon;
                         "type": "menu",
                         "name": "PokedexListingHeightInches"
                     },
-                    {
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "CharFeet",
                         "position": {
@@ -393,9 +393,9 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [["No", "."]],
-                    }],
+                    "type": "text",
+                    "words": [["No", "."]],
+                }],
                 "container": "PokedexListing",
                 "hidden": true,
                 "textSpeed": 0,
@@ -431,9 +431,9 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "menu",
-                        "name": "PokemonDialog"
-                    }],
+                    "type": "menu",
+                    "name": "PokemonDialog"
+                }],
                 "backMenu": "Pause",
                 "arrowXOffset": 8,
                 "arrowYOffset": 3,
@@ -451,17 +451,17 @@ var FullScreenPokemon;
                     "vertical": "bottom"
                 },
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [
-                            "Choose a %%%%%%%POKEMON%%%%%%%"
-                        ],
-                        "position": {
-                            "offset": {
-                                "left": 4,
-                                "top": 7.5
-                            }
+                    "type": "text",
+                    "words": [
+                        "Choose a %%%%%%%POKEMON%%%%%%%"
+                    ],
+                    "position": {
+                        "offset": {
+                            "left": 4,
+                            "top": 7.5
                         }
-                    }],
+                    }
+                }],
                 "container": "Pokemon",
                 "textSpeed": 0
             },
@@ -495,7 +495,7 @@ var FullScreenPokemon;
                         "type": "menu",
                         "name": "PokemonMenuStatsLevel"
                     },
-                    {
+                    <MenuGraphr.IMenuChildMenuSchema>{
                         "type": "menu",
                         "name": "BattlePlayerHealthAmount",
                         "attributes": {
@@ -526,7 +526,7 @@ var FullScreenPokemon;
                         "type": "menu",
                         "name": "PokemonMenuStatsOT"
                     },
-                    {
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -638,14 +638,14 @@ var FullScreenPokemon;
                 "textYOffset": 0,
                 "textSpeed": 0,
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [["Level"]],
-                        "position": {
-                            "offset": {
-                                "top": 1.5
-                            }
+                    "type": "text",
+                    "words": [["Level"]],
+                    "position": {
+                        "offset": {
+                            "top": 1.5
                         }
-                    }]
+                    }
+                }]
             },
             "PokemonMenuStatsHP": {
                 "size": {
@@ -681,9 +681,9 @@ var FullScreenPokemon;
                 "textYOffset": 0,
                 "textSpeed": 0,
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [[["No"], "."]],
-                    }]
+                    "type": "text",
+                    "words": [[["No"], "."]],
+                }]
             },
             "PokemonMenuStatsStatus": {
                 "size": {
@@ -702,9 +702,9 @@ var FullScreenPokemon;
                 "textYOffset": 0,
                 "textSpeed": 0,
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": ["STATUS/"],
-                    }]
+                    "type": "text",
+                    "words": ["STATUS/"],
+                }]
             },
             "PokemonMenuStatsType": {
                 "size": {
@@ -722,9 +722,9 @@ var FullScreenPokemon;
                 "textYOffset": 4,
                 "textSpeed": 0,
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": ["TYPE /"]
-                    }]
+                    "type": "text",
+                    "words": ["TYPE /"]
+                }]
             },
             "PokemonMenuStatsID": {
                 "size": {
@@ -743,9 +743,9 @@ var FullScreenPokemon;
                 "textYOffset": 0,
                 "textSpeed": 0,
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [[["ID"], ["No"], "/"]]
-                    }]
+                    "type": "text",
+                    "words": [[["ID"], ["No"], "/"]]
+                }]
             },
             "PokemonMenuStatsOT": {
                 "size": {
@@ -764,9 +764,9 @@ var FullScreenPokemon;
                 "textYOffset": 0,
                 "textSpeed": 0,
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": ["OT/"]
-                    }]
+                    "type": "text",
+                    "words": ["OT/"]
+                }]
             },
             "Items": {
                 "size": {
@@ -849,21 +849,21 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [
-                            "NAME/%%%%%%%PLAYER%%%%%%%",
-                            "\n",
-                            "MONEY/%%%%%%%MONEY%%%%%%%",
-                            "\n",
-                            "TIME/%%%%%%%TIME%%%%%%%",
-                        ],
-                        "position": {
-                            "offset": {
-                                "left": 6.5,
-                                "top": 6
-                            }
+                    "type": "text",
+                    "words": [
+                        "NAME/%%%%%%%PLAYER%%%%%%%",
+                        "\n",
+                        "MONEY/%%%%%%%MONEY%%%%%%%",
+                        "\n",
+                        "TIME/%%%%%%%TIME%%%%%%%",
+                    ],
+                    "position": {
+                        "offset": {
+                            "left": 6.5,
+                            "top": 6
                         }
-                    }, {
+                    }
+                }, {
                         "type": "thing",
                         "thing": "PlayerPortrait",
                         "position": {
@@ -891,18 +891,18 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "text",
-                        "words": [
-                            ["1Shadow"], ["2Shadow"], ["3Shadow"], ["4Shadow"],
-                            ["5Shadow"], ["6Shadow"], ["7Shadow"], ["8Shadow"],
-                        ],
-                        "position": {
-                            "offset": {
-                                "left": 2.5,
-                                "top": 3
-                            }
+                    "type": "text",
+                    "words": [
+                        ["1Shadow"], ["2Shadow"], ["3Shadow"], ["4Shadow"],
+                        ["5Shadow"], ["6Shadow"], ["7Shadow"], ["8Shadow"],
+                    ],
+                    "position": {
+                        "offset": {
+                            "left": 2.5,
+                            "top": 3
                         }
-                    }, {
+                    }
+                }, {
                         "type": "thing",
                         "thing": "BrockPortrait",
                         "position": {
@@ -1105,20 +1105,20 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "thing",
-                        "thing": "WhiteSquare",
-                        "size": {
-                            "width": 20,
-                            "height": 3.5
-                        },
-                        "position": {
-                            "vertical": "top",
-                            "horizontal": "right",
-                            "offset": {
-                                "left": -8
-                            }
+                    "type": "thing",
+                    "thing": "WhiteSquare",
+                    "size": {
+                        "width": 20,
+                        "height": 3.5
+                    },
+                    "position": {
+                        "vertical": "top",
+                        "horizontal": "right",
+                        "offset": {
+                            "left": -8
                         }
-                    }, {
+                    }
+                }, {
                         "type": "text",
                         "words": ["MONEY"],
                         "position": {
@@ -1130,10 +1130,10 @@ var FullScreenPokemon;
                     }, {
                         "type": "text",
                         "words": [{
-                                "command": "padLeft",
-                                "length": "%%%%%%%MONEY%%%%%%%",
-                                "word": "$"
-                            }],
+                            "command": "padLeft",
+                            "length": "%%%%%%%MONEY%%%%%%%",
+                            "word": "$"
+                        }],
                         "position": {
                             "offset": {
                                 "top": 4
@@ -1142,10 +1142,10 @@ var FullScreenPokemon;
                     }, {
                         "type": "text",
                         "words": [{
-                                "command": "padLeft",
-                                "length": 8,
-                                "word": "%%%%%%%MONEY%%%%%%%"
-                            }],
+                            "command": "padLeft",
+                            "length": 8,
+                            "word": "%%%%%%%MONEY%%%%%%%"
+                        }],
                         "position": {
                             "offset": {
                                 "top": 4
@@ -1196,9 +1196,9 @@ var FullScreenPokemon;
                     "vertical": "center",
                 },
                 "childrenSchemas": [{
-                        "type": "menu",
-                        "name": "GeneralText"
-                    }],
+                    "type": "menu",
+                    "name": "GeneralText"
+                }],
                 "hidden": true
             },
             "BattlePlayerHealth": {
@@ -1274,15 +1274,15 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "thing",
-                        "thing": "CharLevel",
-                        "position": {
-                            "offset": {
-                                "top": 1.5,
-                                "left": .5
-                            }
+                    "type": "thing",
+                    "thing": "CharLevel",
+                    "position": {
+                        "offset": {
+                            "top": 1.5,
+                            "left": .5
                         }
-                    }],
+                    }
+                }],
                 "container": "BattlePlayerHealth",
                 "hidden": true,
                 "textXOffset": 4,
@@ -1361,12 +1361,12 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "thing",
-                        "thing": "BlackSquare",
-                        "args": {
-                            "height": 5.75
-                        },
-                    }, {
+                    "type": "thing",
+                    "thing": "BlackSquare",
+                    "args": {
+                        "height": 5.75
+                    },
+                }, {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -1414,15 +1414,15 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "thing",
-                        "thing": "CharLevel",
-                        "position": {
-                            "offset": {
-                                "top": 1.5,
-                                "left": .5
-                            }
+                    "type": "thing",
+                    "thing": "CharLevel",
+                    "position": {
+                        "offset": {
+                            "top": 1.5,
+                            "left": .5
                         }
-                    }],
+                    }
+                }],
                 "container": "BattleOpponentHealth",
                 "hidden": true,
                 "textXOffset": 4,
@@ -1437,9 +1437,9 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "thing",
-                        "thing": "CharHP"
-                    }, {
+                    "type": "thing",
+                    "thing": "CharHP"
+                }, {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1507,15 +1507,15 @@ var FullScreenPokemon;
                     }
                 },
                 "childrenSchemas": [{
-                        "type": "thing",
-                        "thing": "CharLevel",
-                        "position": {
-                            "offset": {
-                                "left": 21,
-                                "top": 6
-                            }
+                    "type": "thing",
+                    "thing": "CharLevel",
+                    "position": {
+                        "offset": {
+                            "left": 21,
+                            "top": 6
                         }
-                    }, {
+                    }
+                }, {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1592,7 +1592,9 @@ var FullScreenPokemon;
                         "left": 3
                     }
                 },
-                "childrenSchemas": [{}],
+                "childrenSchemas": [{
+
+                }],
                 "container": "Battle",
                 "plain": true,
                 "textSpeed": 0,
@@ -1649,9 +1651,9 @@ var FullScreenPokemon;
                     "horizontal": "center"
                 },
                 "childrenSchemas": [{
-                        "type": "menu",
-                        "name": "KeyboardKeys"
-                    }, {
+                    "type": "menu",
+                    "name": "KeyboardKeys"
+                }, {
                         "type": "menu",
                         "name": "KeyboardTitle"
                     }, {
@@ -1709,4 +1711,4 @@ var FullScreenPokemon;
             }
         }
     };
-})(FullScreenPokemon || (FullScreenPokemon = {}));
+}

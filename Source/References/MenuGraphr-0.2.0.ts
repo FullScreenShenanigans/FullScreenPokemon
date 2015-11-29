@@ -8,7 +8,6 @@
 declare module MenuGraphr {
     export interface IGameStartr extends EightBittr.IEightBittr {
         GroupHolder: GroupHoldr.IGroupHoldr;
-        ItemsHolder: ItemsHoldr.IItemsHoldr;
         MapScreener: MapScreenr.IMapScreenr;
         ObjectMaker: ObjectMakr.IObjectMakr;
         TimeHandler: TimeHandlr.ITimeHandlr;
@@ -134,6 +133,7 @@ declare module MenuGraphr {
     }
 
     export interface IMenuChildSchema extends IMenuSchema {
+        name?: string;
         type: string;
         words?: (string | IMenuWordCommand)[];
     }
@@ -150,7 +150,7 @@ declare module MenuGraphr {
     }
 
     export interface IMenuThingSchema extends IMenuChildSchema {
-        args: any;
+        args?: any;
         position?: IMenuSchemaPosition;
         size?: IMenuSchemaSize;
         thing: string;
@@ -189,6 +189,14 @@ declare module MenuGraphr {
         paddingY: number;
     }
 
+    export interface IReplacements {
+        [i: string]: string[] | IReplacerFunction;
+    }
+
+    export interface IReplacerFunction {
+        (GameStarter: IGameStartr): string[];
+    }
+
     export interface IMenuGraphrSettings {
         GameStarter: IGameStartr;
         schemas?: {
@@ -197,14 +205,8 @@ declare module MenuGraphr {
         aliases?: {
             [i: string]: string;
         };
-        replacements?: {
-            [i: string]: string;
-        };
+        replacements?: IReplacements;
         replacerKey?: string;
-        replaceFromItemsHolder?: boolean;
-        replacementStatistics?: {
-            [i: string]: boolean;
-        };
     }
 
     export interface IMenuGraphr {
@@ -212,7 +214,7 @@ declare module MenuGraphr {
         getMenu(name: string): IMenu;
         getExistingMenu(name: string): IMenu;
         getAliases(): { [i: string]: string };
-        getReplacements(): { [i: string]: string };
+        getReplacements(): IReplacements;
         createMenu(name: string, attributes?: IMenuSchema): IMenu;
         createChild(name: string, schema: IMenuChildSchema): void;
         createMenuWord(name: string, schema: IMenuWordSchema): void;
@@ -280,20 +282,12 @@ module MenuGraphr {
         };
 
         private aliases: {
-            [i: string]: string
+            [i: string]: string;
         };
 
-        private replacements: {
-            [i: string]: string
-        };
+        private replacements: IReplacements;
 
         private replacerKey: string;
-
-        private replaceFromItemsHolder: boolean;
-
-        private replacementStatistics: {
-            [i: string]: boolean
-        };
 
         /**
          * 
@@ -305,9 +299,6 @@ module MenuGraphr {
             this.aliases = settings.aliases || {};
             this.replacements = settings.replacements || {};
             this.replacerKey = settings.replacerKey || "%%%%%%%";
-
-            this.replaceFromItemsHolder = settings.replaceFromItemsHolder;
-            this.replacementStatistics = settings.replacementStatistics;
 
             this.menus = {};
         }
@@ -351,7 +342,7 @@ module MenuGraphr {
         /**
          * 
          */
-        getReplacements(): { [i: string]: string } {
+        getReplacements(): IReplacements {
             return this.replacements;
         }
 
@@ -1709,29 +1700,14 @@ module MenuGraphr {
          * 
          */
         private getReplacement(key: string): string[] {
-            var replacement: string = this.replacements[key],
-                value: string | string[];
+            var replacement: string[] | IReplacerFunction = this.replacements[key];
 
             if (typeof replacement === "undefined") {
                 return [""];
-            }
-
-            // if (this.replacementStatistics && this.replacementStatistics[value]) {
-            //     return this.replacements[value](this.GameStarter);
-            // }
-
-            if (this.replaceFromItemsHolder) {
-                if (this.GameStarter.ItemsHolder.hasKey(replacement)) {
-                    value = this.GameStarter.ItemsHolder.getItem(replacement);
-                }
-            }
-
-            if (!value) {
-                return replacement.split("");
-            } else if (value.constructor === String) {
-                return (<string>value).split("");
+            } else if (typeof replacement === "function") {
+                return (<IReplacerFunction>replacement).call(this, this.GameStarter);
             } else {
-                return <string[]>value;
+                return <string[]>replacement;
             }
         }
 
