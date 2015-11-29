@@ -1,6 +1,8 @@
 /// <reference path="../FullScreenPokemon.ts" />
 
 module FullScreenPokemon {
+    "use strict";
+
     FullScreenPokemon.settings.menus = {
         "aliases": {
             " ": "Space",
@@ -22,19 +24,27 @@ module FullScreenPokemon {
             "È": "eFancy"
         },
         "replacements": {
-            "PLAYER": "name",
-            "RIVAL": "nameRival",
-            "POKE": "POKÈ",
-            "POKEMON": "POKÈMON",
-            "POKEDEX": "POKÈDEX",
-            "BADGES.LENGTH": function (FSP: FullScreenPokemon): string {
-                return "!?";
+            "PLAYER": function (FSP: FullScreenPokemon): string[] {
+                return FSP.ItemsHolder.getItem("name");
             },
-            "POKEDEX.LENGTH": function (FSP: FullScreenPokemon): string {
-                return "!?";
+            "RIVAL": function (FSP: FullScreenPokemon): string[] {
+                return FSP.ItemsHolder.getItem("nameRival");
             },
-            "TIME": "time",
-            "MONEY": "money"
+            "POKE": "POKÈ".split(""),
+            "POKEMON": "POKÈMON".split(""),
+            "POKEDEX": "POKÈDEX".split(""),
+            "BADGES.LENGTH": function (FSP: FullScreenPokemon): string[] {
+                return ["!", "?"];
+            },
+            "POKEDEX.LENGTH": function (FSP: FullScreenPokemon): string[] {
+                return ["!", "?"];
+            },
+            "TIME": function (FSP: FullScreenPokemon): string[] {
+                return FSP.ItemsHolder.getItem("time");
+            },
+            "MONEY": function (FSP: FullScreenPokemon): string[] {
+                return FSP.ItemsHolder.getItem("money");
+            }
         },
         "replacementStatistics": {
             "PLAYER": true,
@@ -51,7 +61,7 @@ module FullScreenPokemon {
                 },
                 "position": {
                     "horizontal": "center",
-                    "vertical": "center",
+                    "vertical": "center"
                 },
                 "textXOffset": 8,
                 "ignoreB": true
@@ -73,7 +83,7 @@ module FullScreenPokemon {
             "Pause": {
                 "size": {
                     "width": 40,
-                    "height": 64,
+                    "height": 64
                 },
                 "position": {
                     "horizontal": "center",
@@ -88,7 +98,7 @@ module FullScreenPokemon {
             },
             "Pokedex": {
                 "size": {
-                    "width": 88,
+                    "width": 88
                 },
                 "position": {
                     "horizontal": "center",
@@ -114,13 +124,13 @@ module FullScreenPokemon {
                         "type": "thing",
                         "thing": "LineSeparatorHorizontal",
                         "size": {
-                            "width": 21.5,
+                            "width": 21.5
                         },
                         "position": {
                             "horizontal": "right",
                             "offset": {
                                 "left": -3,
-                                "top": 35,
+                                "top": 35
                             }
                         }
                     },
@@ -228,7 +238,7 @@ module FullScreenPokemon {
                         },
                         "size": {
                             "width": 38
-                        },
+                        }
                     }, {
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalRight",
@@ -394,7 +404,7 @@ module FullScreenPokemon {
                 },
                 "childrenSchemas": [{
                     "type": "text",
-                    "words": [["No", "."]],
+                    "words": [["No", "."]]
                 }],
                 "container": "PokedexListing",
                 "hidden": true,
@@ -476,7 +486,7 @@ module FullScreenPokemon {
                 },
                 "container": "PokemonDialog",
                 "textXOffset": 8,
-                "textYOffset": 4,
+                "textYOffset": 4
             },
             "PokemonMenuStats": {
                 "size": {
@@ -682,7 +692,7 @@ module FullScreenPokemon {
                 "textSpeed": 0,
                 "childrenSchemas": [{
                     "type": "text",
-                    "words": [[["No"], "."]],
+                    "words": [[["No"], "."]]
                 }]
             },
             "PokemonMenuStatsStatus": {
@@ -703,7 +713,7 @@ module FullScreenPokemon {
                 "textSpeed": 0,
                 "childrenSchemas": [{
                     "type": "text",
-                    "words": ["STATUS/"],
+                    "words": ["STATUS/"]
                 }]
             },
             "PokemonMenuStatsType": {
@@ -770,7 +780,7 @@ module FullScreenPokemon {
             },
             "Items": {
                 "size": {
-                    "width": 64,
+                    "width": 64
                 },
                 "position": {
                     "horizontal": "center",
@@ -780,7 +790,7 @@ module FullScreenPokemon {
                     }
                 },
                 "backMenu": "Pause",
-                "textXOffset": 8,
+                "textXOffset": 8
             },
             "Player": {
                 "size": {
@@ -788,13 +798,14 @@ module FullScreenPokemon {
                     "height": 72
                 },
                 "position": {
-                    "horizontal": "center",
+                    "horizontal": "center"
                 },
                 "childrenSchemas": [
                     {
                         "type": "menu",
-                        "name": "PlayerTop",
-                    }, {
+                        "name": "PlayerTop"
+                    },
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "DirtWhite",
                         "position": {
@@ -840,7 +851,7 @@ module FullScreenPokemon {
             "PlayerTop": {
                 "size": {
                     "width": 77,
-                    "height": 29,
+                    "height": 29
                 },
                 "position": {
                     "horizontal": "center",
@@ -848,22 +859,24 @@ module FullScreenPokemon {
                         "top": 1.5
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "text",
-                    "words": [
-                        "NAME/%%%%%%%PLAYER%%%%%%%",
-                        "\n",
-                        "MONEY/%%%%%%%MONEY%%%%%%%",
-                        "\n",
-                        "TIME/%%%%%%%TIME%%%%%%%",
-                    ],
-                    "position": {
-                        "offset": {
-                            "left": 6.5,
-                            "top": 6
+                "childrenSchemas": [
+                    {
+                        "type": "text",
+                        "words": [
+                            "NAME/%%%%%%%PLAYER%%%%%%%",
+                            "\n",
+                            "MONEY/%%%%%%%MONEY%%%%%%%",
+                            "\n",
+                            "TIME/%%%%%%%TIME%%%%%%%",
+                        ],
+                        "position": {
+                            "offset": {
+                                "left": 6.5,
+                                "top": 6
+                            }
                         }
-                    }
-                }, {
+                    },
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "PlayerPortrait",
                         "position": {
@@ -890,19 +903,21 @@ module FullScreenPokemon {
                         "top": 41.5
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "text",
-                    "words": [
-                        ["1Shadow"], ["2Shadow"], ["3Shadow"], ["4Shadow"],
-                        ["5Shadow"], ["6Shadow"], ["7Shadow"], ["8Shadow"],
-                    ],
-                    "position": {
-                        "offset": {
-                            "left": 2.5,
-                            "top": 3
+                "childrenSchemas": [
+                    {
+                        "type": "text",
+                        "words": [
+                            ["1Shadow"], ["2Shadow"], ["3Shadow"], ["4Shadow"],
+                            ["5Shadow"], ["6Shadow"], ["7Shadow"], ["8Shadow"],
+                        ],
+                        "position": {
+                            "offset": {
+                                "left": 2.5,
+                                "top": 3
+                            }
                         }
-                    }
-                }, {
+                    },
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "BrockPortrait",
                         "position": {
@@ -1013,22 +1028,25 @@ module FullScreenPokemon {
                     }, {
                         "type": "text",
                         "words": [
-                            {
+                            <MenuGraphr.IMenuWordPadLeftCommand>{
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%PLAYER%%%%%%%",
                                 "alignRight": true
-                            }, {
+                            },
+                            <MenuGraphr.IMenuWordPadLeftCommand>{
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
                                 "alignRight": true
-                            }, {
+                            },
+                            <MenuGraphr.IMenuWordPadLeftCommand>{
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
                                 "alignRight": true
-                            }, {
+                            },
+                            <MenuGraphr.IMenuWordPadLeftCommand>{
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%TIME%%%%%%%",
@@ -1073,7 +1091,7 @@ module FullScreenPokemon {
                     }
                 },
                 "arrowXOffset": 1,
-                "textXOffset": 8,
+                "textXOffset": 8
             },
             "Buy/Sell": {
                 "size": {
@@ -1104,21 +1122,22 @@ module FullScreenPokemon {
                         "top": -18
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "thing",
-                    "thing": "WhiteSquare",
-                    "size": {
-                        "width": 20,
-                        "height": 3.5
-                    },
-                    "position": {
-                        "vertical": "top",
-                        "horizontal": "right",
-                        "offset": {
-                            "left": -8
+                "childrenSchemas": [
+                    <MenuGraphr.IMenuThingSchema>{
+                        "type": "thing",
+                        "thing": "WhiteSquare",
+                        "size": {
+                            "width": 20,
+                            "height": 3.5
+                        },
+                        "position": {
+                            "vertical": "top",
+                            "horizontal": "right",
+                            "offset": {
+                                "left": -8
+                            }
                         }
-                    }
-                }, {
+                    }, {
                         "type": "text",
                         "words": ["MONEY"],
                         "position": {
@@ -1154,7 +1173,7 @@ module FullScreenPokemon {
                     }],
                 "textSpeed": 0
             },
-            "ShopItems": {
+            "ShopItems": <MenuGraphr.IListMenuSchema>{
                 "size": {
                     "width": 64,
                     "height": 44
@@ -1193,7 +1212,7 @@ module FullScreenPokemon {
                 },
                 "position": {
                     "horizontal": "center",
-                    "vertical": "center",
+                    "vertical": "center"
                 },
                 "childrenSchemas": [{
                     "type": "menu",
@@ -1215,7 +1234,7 @@ module FullScreenPokemon {
                     }
                 },
                 "childrenSchemas": [
-                    {
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "BlackSquare",
                         "position": {
@@ -1223,7 +1242,7 @@ module FullScreenPokemon {
                         },
                         "args": {
                             "height": 5.75
-                        },
+                        }
                     }, {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -1240,7 +1259,7 @@ module FullScreenPokemon {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "position": {
-                            "vertical": "bottom",
+                            "vertical": "bottom"
                         },
                         "args": {
                             "flipHoriz": true
@@ -1273,16 +1292,17 @@ module FullScreenPokemon {
                         "left": 20
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "thing",
-                    "thing": "CharLevel",
-                    "position": {
-                        "offset": {
-                            "top": 1.5,
-                            "left": .5
+                "childrenSchemas": [
+                    <MenuGraphr.IMenuThingSchema>{
+                        "type": "thing",
+                        "thing": "CharLevel",
+                        "position": {
+                            "offset": {
+                                "top": 1.5,
+                                "left": .5
+                            }
                         }
-                    }
-                }],
+                    }],
                 "container": "BattlePlayerHealth",
                 "hidden": true,
                 "textXOffset": 4,
@@ -1291,7 +1311,7 @@ module FullScreenPokemon {
             },
             "BattlePlayerHealthAmount": {
                 "size": {
-                    "height": 4,
+                    "height": 4
                 },
                 "position": {
                     "offset": {
@@ -1300,7 +1320,7 @@ module FullScreenPokemon {
                     }
                 },
                 "childrenSchemas": [
-                    {
+                    <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
                         "thing": "CharHP"
                     }, {
@@ -1311,7 +1331,7 @@ module FullScreenPokemon {
                         },
                         "position": {
                             "offset": {
-                                "left": 7,
+                                "left": 7
                             }
                         }
                     }, {
@@ -1341,7 +1361,7 @@ module FullScreenPokemon {
                     "offset": {
                         "top": -1,
                         "left": 4
-                    },
+                    }
                 },
                 "container": "BattlePlayerHealth",
                 "hidden": true,
@@ -1360,13 +1380,14 @@ module FullScreenPokemon {
                         "left": 5.5
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "thing",
-                    "thing": "BlackSquare",
-                    "args": {
-                        "height": 5.75
-                    },
-                }, {
+                "childrenSchemas": [
+                    <MenuGraphr.IMenuThingSchema>{
+                        "type": "thing",
+                        "thing": "BlackSquare",
+                        "args": {
+                            "height": 5.75
+                        }
+                    }, {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -1436,10 +1457,11 @@ module FullScreenPokemon {
                         "top": 1
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "thing",
-                    "thing": "CharHP"
-                }, {
+                "childrenSchemas": [
+                    <MenuGraphr.IMenuThingSchema>{
+                        "type": "thing",
+                        "thing": "CharHP"
+                    }, {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1447,7 +1469,7 @@ module FullScreenPokemon {
                         },
                         "position": {
                             "offset": {
-                                "left": 7,
+                                "left": 7
                             }
                         }
                     }, {
@@ -1480,7 +1502,7 @@ module FullScreenPokemon {
                 "container": "Battle",
                 "hidden": true
             },
-            "BattleOptions": {
+            "BattleOptions": <MenuGraphr.IListMenuSchema>{
                 "size": {
                     "width": 48,
                     "height": 24
@@ -1506,16 +1528,17 @@ module FullScreenPokemon {
                         "left": 8.5
                     }
                 },
-                "childrenSchemas": [{
-                    "type": "thing",
-                    "thing": "CharLevel",
-                    "position": {
-                        "offset": {
-                            "left": 21,
-                            "top": 6
+                "childrenSchemas": [
+                    <MenuGraphr.IMenuThingSchema>{
+                        "type": "thing",
+                        "thing": "CharLevel",
+                        "position": {
+                            "offset": {
+                                "left": 21,
+                                "top": 6
+                            }
                         }
-                    }
-                }, {
+                    }, {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1592,9 +1615,9 @@ module FullScreenPokemon {
                         "left": 3
                     }
                 },
-                "childrenSchemas": [{
+                // "childrenSchemas": [{
 
-                }],
+                // }],
                 "container": "Battle",
                 "plain": true,
                 "textSpeed": 0,
@@ -1603,7 +1626,7 @@ module FullScreenPokemon {
             },
             "BattleFightList": {
                 "size": {
-                    "width": 64,
+                    "width": 64
                 },
                 "position": {
                     "horizontal": "right",
@@ -1624,7 +1647,7 @@ module FullScreenPokemon {
                 "textSpeed": 0,
                 "textXOffset": 8,
                 "textYOffset": 4,
-                "textPaddingY": 4,
+                "textPaddingY": 4
             },
             "NameOptions": {
                 "size": {
@@ -1662,7 +1685,7 @@ module FullScreenPokemon {
                     }],
                 "plain": true
             },
-            "KeyboardKeys": {
+            "KeyboardKeys": <MenuGraphr.IListMenuSchema>{
                 "size": {
                     "width": 80,
                     "height": 44

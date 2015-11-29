@@ -29,8 +29,10 @@ declare module MenuGraphr {
 
     export interface IMenu extends IThing, IMenuSchema {
         children: IThing[];
+        height: number;
         progress?: IMenuProgress;
         textX?: number;
+        width: number;
     }
 
     export interface IMenuProgress {
@@ -39,21 +41,22 @@ declare module MenuGraphr {
         working?: boolean;
     }
 
-    export interface IListMenu extends IMenu {
+    export interface IListMenu extends IListMenuSchema, IMenu {
         arrow: IThing;
         arrowXOffset?: number;
         arrowYOffset?: number;
         grid: any[][];
         gridColumns: number;
         gridRows: number;
+        height: number;
         options: any[];
         optionChildren: any;
         progress: IListMenuProgress;
         scrollingAmount?: number;
         scrollingAmountReal?: number;
-        scrollingItems?: number;
         selectedIndex: number[];
         textColumnWidth: number;
+        width: number;
     }
 
     export interface IListMenuOptions {
@@ -80,6 +83,7 @@ declare module MenuGraphr {
         deleteOnFinish?: boolean;
         finishAutomatically?: boolean;
         finishAutomaticSpeed?: number;
+        height?: number;
         ignoreA?: boolean;
         ignoreB?: boolean;
         ignoreProgressB?: boolean;
@@ -107,10 +111,15 @@ declare module MenuGraphr {
         textWidthMultiplier?: number;
         textXOffset?: number;
         textYOffset?: number;
+        width?: number;
     }
 
     export interface IMenuSchema extends IMenuBase {
         position?: IMenuSchemaPosition;
+    }
+
+    export interface IListMenuSchema extends IMenuSchema {
+        scrollingItems?: number;
     }
 
     export interface IMenuSchemaSize {
@@ -135,7 +144,7 @@ declare module MenuGraphr {
     export interface IMenuChildSchema extends IMenuSchema {
         name?: string;
         type: string;
-        words?: (string | IMenuWordCommand)[];
+        words?: MenuDialogRaw;
     }
 
     export interface IMenuChildMenuSchema extends IMenuChildSchema {
@@ -161,7 +170,7 @@ declare module MenuGraphr {
         word?: string;
     }
 
-    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommand)[]
+    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordFiltered)[]
 
     export interface IMenuWordCommand extends IMenuWordFiltered {
         applyUnitsize?: boolean;
@@ -170,7 +179,7 @@ declare module MenuGraphr {
         value: any;
     }
 
-    export interface IMenuWordPadLeftCommand extends IMenuWordCommand {
+    export interface IMenuWordPadLeftCommand extends IMenuWordFiltered {
         alignRight?: boolean;
     }
 
@@ -1461,7 +1470,7 @@ module MenuGraphr {
             }
 
             var output: (string[] | IMenuWordCommand)[][] = [],
-                component: string | string[] | (string | string[])[] | IMenuWordCommand,
+                component: any,
                 i: number;
 
             for (i = 0; i < dialogRaw.length; i += 1) {

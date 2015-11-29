@@ -117,9 +117,7 @@ declare module FullScreenPokemon {
         aliases?: {
             [i: string]: string;
         };
-        replacements?: {
-            [i: string]: string;
-        };
+        replacements?: MenuGraphr.IReplacements;
         replacerKey?: string;
         replaceFromItemsHolder?: boolean;
         replacementStatistics?: {
@@ -508,6 +506,7 @@ declare module FullScreenPokemon {
         arrowXOffset?: number;
         arrowYOffset?: number;
         dirty?: boolean;
+        light?: boolean;
         lined?: boolean;
         plain?: boolean;
     }
@@ -519,7 +518,9 @@ declare module FullScreenPokemon {
 
     export interface IMenu extends IMenuBase, IThing {
         children: IThing[];
+        height: number;
         settings?: any;
+        width: number;
     }
 
     export interface IKeyboardKeysMenu extends IMenu {
