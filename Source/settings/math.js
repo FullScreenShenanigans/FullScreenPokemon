@@ -9386,7 +9386,7 @@ var FullScreenPokemon;
                             }]
                     }
                 },
-                "NIDORANFEMALESYMBOL": {
+                "NIDORANFemaleSymbol": {
                     "label": "Poison Pin",
                     "sprite": "Water",
                     "info": [
@@ -9547,7 +9547,7 @@ var FullScreenPokemon;
                             }]
                     }
                 },
-                "NIDORANMALESYMBOL": {
+                "NIDORANMaleSymbol": {
                     "label": "Poison Pin",
                     "sprite": "Water",
                     "info": [

@@ -20,8 +20,6 @@ var MenuGraphr;
             this.aliases = settings.aliases || {};
             this.replacements = settings.replacements || {};
             this.replacerKey = settings.replacerKey || "%%%%%%%";
-            this.replaceFromItemsHolder = settings.replaceFromItemsHolder;
-            this.replacementStatistics = settings.replacementStatistics;
             this.menus = {};
         }
         /* Simple gets
@@ -1053,26 +1051,15 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.getReplacement = function (key) {
-            var replacement = this.replacements[key], value;
+            var replacement = this.replacements[key];
             if (typeof replacement === "undefined") {
                 return [""];
             }
-            // if (this.replacementStatistics && this.replacementStatistics[value]) {
-            //     return this.replacements[value](this.GameStarter);
-            // }
-            if (this.replaceFromItemsHolder) {
-                if (this.GameStarter.ItemsHolder.hasKey(replacement)) {
-                    value = this.GameStarter.ItemsHolder.getItem(replacement);
-                }
-            }
-            if (!value) {
-                return replacement.split("");
-            }
-            else if (value.constructor === String) {
-                return value.split("");
+            else if (typeof replacement === "function") {
+                return replacement.call(this, this.GameStarter);
             }
             else {
-                return value;
+                return replacement;
             }
         };
         /**

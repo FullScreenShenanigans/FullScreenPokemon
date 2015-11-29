@@ -8,7 +8,6 @@
 declare module MenuGraphr {
     export interface IGameStartr extends EightBittr.IEightBittr {
         GroupHolder: GroupHoldr.IGroupHoldr;
-        ItemsHolder: ItemsHoldr.IItemsHoldr;
         MapScreener: MapScreenr.IMapScreenr;
         ObjectMaker: ObjectMakr.IObjectMakr;
         TimeHandler: TimeHandlr.ITimeHandlr;
@@ -30,8 +29,10 @@ declare module MenuGraphr {
 
     export interface IMenu extends IThing, IMenuSchema {
         children: IThing[];
+        height: number;
         progress?: IMenuProgress;
         textX?: number;
+        width: number;
     }
 
     export interface IMenuProgress {
@@ -40,21 +41,22 @@ declare module MenuGraphr {
         working?: boolean;
     }
 
-    export interface IListMenu extends IMenu {
+    export interface IListMenu extends IListMenuSchema, IMenu {
         arrow: IThing;
         arrowXOffset?: number;
         arrowYOffset?: number;
         grid: any[][];
         gridColumns: number;
         gridRows: number;
+        height: number;
         options: any[];
         optionChildren: any;
         progress: IListMenuProgress;
         scrollingAmount?: number;
         scrollingAmountReal?: number;
-        scrollingItems?: number;
         selectedIndex: number[];
         textColumnWidth: number;
+        width: number;
     }
 
     export interface IListMenuOptions {
@@ -81,6 +83,7 @@ declare module MenuGraphr {
         deleteOnFinish?: boolean;
         finishAutomatically?: boolean;
         finishAutomaticSpeed?: number;
+        height?: number;
         ignoreA?: boolean;
         ignoreB?: boolean;
         ignoreProgressB?: boolean;
@@ -108,10 +111,15 @@ declare module MenuGraphr {
         textWidthMultiplier?: number;
         textXOffset?: number;
         textYOffset?: number;
+        width?: number;
     }
 
     export interface IMenuSchema extends IMenuBase {
         position?: IMenuSchemaPosition;
+    }
+
+    export interface IListMenuSchema extends IMenuSchema {
+        scrollingItems?: number;
     }
 
     export interface IMenuSchemaSize {
@@ -134,8 +142,9 @@ declare module MenuGraphr {
     }
 
     export interface IMenuChildSchema extends IMenuSchema {
+        name?: string;
         type: string;
-        words?: (string | IMenuWordCommand)[];
+        words?: MenuDialogRaw;
     }
 
     export interface IMenuChildMenuSchema extends IMenuChildSchema {
@@ -150,7 +159,7 @@ declare module MenuGraphr {
     }
 
     export interface IMenuThingSchema extends IMenuChildSchema {
-        args: any;
+        args?: any;
         position?: IMenuSchemaPosition;
         size?: IMenuSchemaSize;
         thing: string;
@@ -161,7 +170,7 @@ declare module MenuGraphr {
         word?: string;
     }
 
-    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommand)[]
+    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordFiltered)[]
 
     export interface IMenuWordCommand extends IMenuWordFiltered {
         applyUnitsize?: boolean;
@@ -170,7 +179,7 @@ declare module MenuGraphr {
         value: any;
     }
 
-    export interface IMenuWordPadLeftCommand extends IMenuWordCommand {
+    export interface IMenuWordPadLeftCommand extends IMenuWordFiltered {
         alignRight?: boolean;
     }
 
@@ -189,6 +198,14 @@ declare module MenuGraphr {
         paddingY: number;
     }
 
+    export interface IReplacements {
+        [i: string]: string[] | IReplacerFunction;
+    }
+
+    export interface IReplacerFunction {
+        (GameStarter: IGameStartr): string[];
+    }
+
     export interface IMenuGraphrSettings {
         GameStarter: IGameStartr;
         schemas?: {
@@ -197,14 +214,8 @@ declare module MenuGraphr {
         aliases?: {
             [i: string]: string;
         };
-        replacements?: {
-            [i: string]: string;
-        };
+        replacements?: IReplacements;
         replacerKey?: string;
-        replaceFromItemsHolder?: boolean;
-        replacementStatistics?: {
-            [i: string]: boolean;
-        };
     }
 
     export interface IMenuGraphr {
@@ -212,7 +223,7 @@ declare module MenuGraphr {
         getMenu(name: string): IMenu;
         getExistingMenu(name: string): IMenu;
         getAliases(): { [i: string]: string };
-        getReplacements(): { [i: string]: string };
+        getReplacements(): IReplacements;
         createMenu(name: string, attributes?: IMenuSchema): IMenu;
         createChild(name: string, schema: IMenuChildSchema): void;
         createMenuWord(name: string, schema: IMenuWordSchema): void;
@@ -280,20 +291,12 @@ module MenuGraphr {
         };
 
         private aliases: {
-            [i: string]: string
+            [i: string]: string;
         };
 
-        private replacements: {
-            [i: string]: string
-        };
+        private replacements: IReplacements;
 
         private replacerKey: string;
-
-        private replaceFromItemsHolder: boolean;
-
-        private replacementStatistics: {
-            [i: string]: boolean
-        };
 
         /**
          * 
@@ -305,9 +308,6 @@ module MenuGraphr {
             this.aliases = settings.aliases || {};
             this.replacements = settings.replacements || {};
             this.replacerKey = settings.replacerKey || "%%%%%%%";
-
-            this.replaceFromItemsHolder = settings.replaceFromItemsHolder;
-            this.replacementStatistics = settings.replacementStatistics;
 
             this.menus = {};
         }
@@ -351,7 +351,7 @@ module MenuGraphr {
         /**
          * 
          */
-        getReplacements(): { [i: string]: string } {
+        getReplacements(): IReplacements {
             return this.replacements;
         }
 
@@ -1470,7 +1470,7 @@ module MenuGraphr {
             }
 
             var output: (string[] | IMenuWordCommand)[][] = [],
-                component: string | string[] | (string | string[])[] | IMenuWordCommand,
+                component: any,
                 i: number;
 
             for (i = 0; i < dialogRaw.length; i += 1) {
@@ -1709,29 +1709,14 @@ module MenuGraphr {
          * 
          */
         private getReplacement(key: string): string[] {
-            var replacement: string = this.replacements[key],
-                value: string | string[];
+            var replacement: string[] | IReplacerFunction = this.replacements[key];
 
             if (typeof replacement === "undefined") {
                 return [""];
-            }
-
-            // if (this.replacementStatistics && this.replacementStatistics[value]) {
-            //     return this.replacements[value](this.GameStarter);
-            // }
-
-            if (this.replaceFromItemsHolder) {
-                if (this.GameStarter.ItemsHolder.hasKey(replacement)) {
-                    value = this.GameStarter.ItemsHolder.getItem(replacement);
-                }
-            }
-
-            if (!value) {
-                return replacement.split("");
-            } else if (value.constructor === String) {
-                return (<string>value).split("");
+            } else if (typeof replacement === "function") {
+                return (<IReplacerFunction>replacement).call(this, this.GameStarter);
             } else {
-                return <string[]>value;
+                return <string[]>replacement;
             }
         }
 

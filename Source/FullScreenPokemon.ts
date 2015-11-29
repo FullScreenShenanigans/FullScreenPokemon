@@ -7553,7 +7553,7 @@ module FullScreenPokemon {
                     "sprite": "WeedleFront",
                     "category": "Wild",
                     "actors": [
-                        FSP.MathDecider.compute("newPokemon", "Weedle".split(""), 5)
+                        FSP.MathDecider.compute("newPokemon", "WEEDLE".split(""), 5)
                     ]
                 },
                 "items": [{
@@ -7645,7 +7645,7 @@ module FullScreenPokemon {
                                 rivalTitle,
                                 rivalNickname,
                                 8),
-                            FSP.MathDecider.compute("newPokemon", "Pidgey".split(""), 9)
+                            FSP.MathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
                         ]
                     },
                     "textStart": [

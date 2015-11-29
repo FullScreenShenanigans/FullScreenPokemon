@@ -110,7 +110,19 @@ declare module FullScreenPokemon {
     }
 
     export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject {
-        GameStarter: GameStartr.IGameStartr;
+        GameStarter?: GameStartr.IGameStartr;
+        schemas?: {
+            [i: string]: IMenuSchema;
+        };
+        aliases?: {
+            [i: string]: string;
+        };
+        replacements?: MenuGraphr.IReplacements;
+        replacerKey?: string;
+        replaceFromItemsHolder?: boolean;
+        replacementStatistics?: {
+            [i: string]: boolean;
+        };
     }
 
     export interface IStateHoldrCustoms extends GameStartr.IGameStartrSettingsObject {
@@ -490,9 +502,25 @@ declare module FullScreenPokemon {
         routine?: string;
     }
 
-    export interface IMenu extends MenuGraphr.IMenuBase, IThing {
+    export interface IMenuBase extends MenuGraphr.IMenuBase {
+        arrowXOffset?: number;
+        arrowYOffset?: number;
+        dirty?: boolean;
+        light?: boolean;
+        lined?: boolean;
+        plain?: boolean;
+    }
+
+    export interface IMenuSchema extends IMenuBase {
+        hidden?: boolean;
+        position?: MenuGraphr.IMenuSchemaPosition;
+    }
+
+    export interface IMenu extends IMenuBase, IThing {
         children: IThing[];
+        height: number;
         settings?: any;
+        width: number;
     }
 
     export interface IKeyboardKeysMenu extends IMenu {
