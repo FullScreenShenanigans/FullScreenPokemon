@@ -125,13 +125,13 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian Forest"] = {
                     "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
                     "dialogNext": "Ssh! You'll scare the bugs away!",
                     "actors": [{
-                        "title": "Weedle",
+                        "title": ["W", "E", "E", "D", "L", "E"],
                         "level": 7
                     }, {
-                        "title": "Kakuna",
+                        "title": ["K", "A", "K", "U", "N", "A"],
                         "level": 7
                     }, {
-                        "title": "Weedle",
+                        "title": ["W", "E", "E", "D", "L", "E"],
                         "level": 7
                     }]
                 },
@@ -178,10 +178,10 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian Forest"] = {
                     "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
                     "dialogNext": "Ssh! You'll scare the bugs away!",
                     "actors": [{
-                        "title": "Weedle",
+                        "title": ["W", "E", "E", "D", "L", "E"],
                         "level": 6
                     }, {
-                        "title": "Caterpie",
+                        "title": ["C", "A", "T", "E", "R", "P", "I", "E"],
                         "level": 6
                     }]
                 },

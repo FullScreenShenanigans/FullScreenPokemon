@@ -47,6 +47,19 @@ var FullScreenPokemon;
         bottom: Direction.Bottom,
         left: Direction.Left
     };
+    /**
+     * Direction names, mapped to their opposites.
+     */
+    FullScreenPokemon_1.DirectionOpposites = {
+        "Top": "Bottom",
+        "top": "bottom",
+        "Right": "Left",
+        "right": "left",
+        "Bottom": "Top",
+        "bottom": "top",
+        "Left": "Right",
+        "left": "right",
+    };
     var FullScreenPokemon = (function (_super) {
         __extends(FullScreenPokemon, _super);
         /**
@@ -1502,6 +1515,12 @@ var FullScreenPokemon;
                 thing.FSP.StateHolder.addChange(other.id, "dialog", other.dialog);
                 thing.FSP.StateHolder.addChange(other.id, "dialogNext", undefined);
             }
+            if (other.dialogOptions) {
+                thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
+            }
+            else if (other.trainer) {
+                thing.FSP.animateTrainerBattleStart(thing, other);
+            }
             if (other.trainer) {
                 other.trainer = false;
                 thing.FSP.StateHolder.addChange(other.id, "trainer", false);
@@ -1509,12 +1528,6 @@ var FullScreenPokemon;
                     other.sight = undefined;
                     thing.FSP.StateHolder.addChange(other.id, "sight", undefined);
                 }
-            }
-            if (other.dialogOptions) {
-                thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
-            }
-            else if (other.trainer) {
-                thing.FSP.animateTrainerBattleStart(thing, other);
             }
         };
         /**
@@ -3912,7 +3925,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneTrainerSpottedApproach = function (FSP, settings) {
-            var player = settings.player, triggerer = settings.triggerer, direction = triggerer.direction, directionName = Direction[direction], distance = Math.abs(triggerer[directionName] - player[directionName]), blocks = Math.max(0, distance / FSP.unitsize / 8 - 1);
+            var player = settings.player, triggerer = settings.triggerer, direction = triggerer.direction, directionName = Direction[direction].toLowerCase(), locationTriggerer = triggerer[directionName], locationPlayer = player[FullScreenPokemon_1.DirectionOpposites[directionName]], distance = Math.abs(locationTriggerer - locationPlayer), blocks = Math.max(0, distance / FSP.unitsize / 8);
             if (blocks) {
                 FSP.animateCharacterStartWalking(triggerer, direction, [
                     blocks,

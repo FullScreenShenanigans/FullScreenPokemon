@@ -46,6 +46,20 @@ module FullScreenPokemon {
         left: Direction.Left
     };
 
+    /**
+     * Direction names, mapped to their opposites.
+     */
+    export var DirectionOpposites: IDirectionOpposites = {
+        "Top": "Bottom",
+        "top": "bottom",
+        "Right": "Left",
+        "right": "left",
+        "Bottom": "Top",
+        "bottom": "top",
+        "Left": "Right",
+        "left": "right",
+    };
+
     export class FullScreenPokemon extends GameStartr.GameStartr implements IFullScreenPokemon {
         // For the sake of reset functions, constants are stored as members of the 
         // FullScreenPokemon Function itself - this allows prototype setters to use 
@@ -2087,6 +2101,12 @@ module FullScreenPokemon {
                 thing.FSP.StateHolder.addChange(other.id, "dialogNext", undefined);
             }
 
+            if (other.dialogOptions) {
+                thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
+            } else if (other.trainer) {
+                thing.FSP.animateTrainerBattleStart(thing, <IEnemy>other);
+            }
+
             if (other.trainer) {
                 other.trainer = false;
                 thing.FSP.StateHolder.addChange(other.id, "trainer", false);
@@ -2095,12 +2115,6 @@ module FullScreenPokemon {
                     other.sight = undefined;
                     thing.FSP.StateHolder.addChange(other.id, "sight", undefined);
                 }
-            }
-
-            if (other.dialogOptions) {
-                thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
-            } else if (other.trainer) {
-                thing.FSP.animateTrainerBattleStart(thing, <IEnemy>other);
             }
         }
 
@@ -2929,7 +2943,7 @@ module FullScreenPokemon {
          */
         getDirectionBetween(thing: IThing, other: IThing): Direction {
             var directionAttempt: Direction = thing.FSP.getDirectionBordering(thing, other);
-            
+
             if (typeof directionAttempt !== "undefined") {
                 return directionAttempt;
             }
@@ -5510,9 +5524,11 @@ module FullScreenPokemon {
             var player: IPlayer = settings.player,
                 triggerer: ICharacter = settings.triggerer,
                 direction: Direction = triggerer.direction,
-                directionName: string = Direction[direction],
-                distance: number = Math.abs(triggerer[directionName] - player[directionName]),
-                blocks: number = Math.max(0, distance / FSP.unitsize / 8 - 1);
+                directionName: string = Direction[direction].toLowerCase(),
+                locationTriggerer: number = triggerer[directionName],
+                locationPlayer: number = player[DirectionOpposites[directionName]],
+                distance: number = Math.abs(locationTriggerer - locationPlayer),
+                blocks: number = Math.max(0, distance / FSP.unitsize / 8);
 
             if (blocks) {
                 FSP.animateCharacterStartWalking(

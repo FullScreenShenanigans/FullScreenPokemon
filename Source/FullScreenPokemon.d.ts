@@ -15,6 +15,10 @@ declare module FullScreenPokemon {
         [i: string]: Direction;
     }
 
+    export interface IDirectionOpposites {
+        [i: string]: string;
+    }
+
     export interface IMapScreenr extends MapScreenr.IMapScreenr {
         blockInputs: boolean;
         boundaries: IAreaBoundaries;

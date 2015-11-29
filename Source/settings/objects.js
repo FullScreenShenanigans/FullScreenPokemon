@@ -267,7 +267,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                             "MEWFront": {}
                         },
                         "BattleSpriteFrontMedium": {
-                            "BUGCATCHERFront": {},
+                            "BugCatcherFront": {},
                             "IVYSAURFront": {},
                             "CHARMELEONFront": {},
                             "WARTORTLEFront": {},
