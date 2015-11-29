@@ -284,7 +284,9 @@ module FullScreenPokemon {
                 FSP.proliferate(
                     {
                         "GameStarter": FSP,
-                        "MenuGrapher": FSP.MenuGrapher
+                        "MenuGrapher": FSP.MenuGrapher,
+                        "openItemsMenuCallback": FSP.openItemsMenu.bind(FSP),
+                        "openActorsMenuCallback": FSP.openPokemonMenu.bind(FSP)
                     },
                     FSP.settings.battles));
         }
@@ -1308,9 +1310,9 @@ module FullScreenPokemon {
         animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
             var grassMap: IMap = <IMap>thing.FSP.MapsHandler.getMap(grass.mapName),
                 grassArea: IArea = <IArea>grassMap.areas[grass.areaName],
-                options: IPokemonSchema[] = grassArea.wildPokemon.grass,
-                chosen: IPokemonSchema = thing.FSP.chooseRandomWildPokemon(thing.FSP, options),
-                chosenPokemon: BattleMovr.IActor = thing.FSP.createPokemon(chosen);
+                options: IWildPokemonSchema[] = grassArea.wildPokemon.grass,
+                chosen: IWildPokemonSchema = thing.FSP.chooseRandomWildPokemon(thing.FSP, options),
+                chosenPokemon: IPokemon = thing.FSP.createPokemon(chosen);
 
             thing.FSP.removeClass(thing, "walking");
             if (thing.shadow) {
@@ -1321,10 +1323,10 @@ module FullScreenPokemon {
 
             thing.FSP.startBattle({
                 "opponent": {
-                    "name": chosen.title.split(""),
+                    "name": chosen.title,
                     "actors": [chosenPokemon],
                     "category": "Wild",
-                    "sprite": chosen.title + "Front"
+                    "sprite": chosen.title.join("") + "Front"
                 }
             });
         }
@@ -1343,7 +1345,7 @@ module FullScreenPokemon {
                     "category": "Trainer",
                     "hasActors": true,
                     "reward": other.reward,
-                    "actors": <BattleMovr.IActor[]>other.actors.map(thing.FSP.createPokemon.bind(thing.FSP))
+                    "actors": <IPokemon[]>other.actors.map(thing.FSP.createPokemon.bind(thing.FSP))
                 },
                 "textStart": ["", " wants to fight!"],
                 "textDefeat": other.textDefeat,
@@ -3346,7 +3348,7 @@ module FullScreenPokemon {
          */
         openPokemonMenuStats(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                pokemon: BattleMovr.IActor = settings.pokemon,
+                pokemon: IPokemon = settings.pokemon,
                 schemas: any = FSP.MathDecider.getConstant("pokemon"),
                 schema: any = schemas[pokemon.title.join("")];
 
@@ -3411,7 +3413,7 @@ module FullScreenPokemon {
          */
         openPokemonStats(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                pokemon: IPokemonSchema = settings.pokemon,
+                pokemon: IWildPokemonSchema = settings.pokemon,
                 statistics: string[] = FSP.MathDecider.getConstant("statisticNames")
                     .filter(function (statistic: string): boolean {
                         return statistic !== "HP";
@@ -3465,22 +3467,22 @@ module FullScreenPokemon {
         /**
          * 
          */
-        openPokedexListing(title: string, callback?: (...args: any[]) => void, settings?: any): void {
+        openPokedexListing(title: string[], callback?: (...args: any[]) => void, settings?: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                pokemon: IPokedexListing = FSP.MathDecider.getConstant("pokemon")[title],
+                pokemon: IPokedexListing = FSP.MathDecider.getConstant("pokemon")[title.join("")],
                 height: string[] = pokemon.height,
                 feet: string = [].slice.call(height[0]).reverse().join(""),
                 inches: string = [].slice.call(height[1]).reverse().join("");
 
             FSP.MenuGrapher.createMenu("PokedexListing", settings);
             FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
-                "thing": title + "Front",
+                "thing": title.join("") + "Front",
                 "type": "thing",
                 "args": {
                     "flipHoriz": true
                 }
             });
-            FSP.MenuGrapher.addMenuDialog("PokedexListingName", title.toUpperCase());
+            FSP.MenuGrapher.addMenuDialog("PokedexListingName", title);
             FSP.MenuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
             FSP.MenuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
             FSP.MenuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
@@ -3930,16 +3932,16 @@ module FullScreenPokemon {
         /**
          * 
          */
-        createPokemon(schema: any): BattleMovr.IActor {
+        createPokemon(schema: IWildPokemonSchema): IPokemon {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 level: number = typeof schema.levels !== "undefined"
                     ? FSP.NumberMaker.randomArrayMember(schema.levels)
                     : schema.level,
-                pokemon: BattleMovr.IActor = FSP.MathDecider.compute("newPokemon", schema.title, level);
-
-            if (schema.moves) {
-                pokemon.moves = schema.moves;
-            }
+                pokemon: IPokemon = FSP.MathDecider.compute(
+                    "newPokemon",
+                    schema.title,
+                    schema.title,
+                    level);
 
             return pokemon;
         }
@@ -3947,7 +3949,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        healPokemon(pokemon: BattleMovr.IActor): void {
+        healPokemon(pokemon: IPokemon): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 moves: BattleMovr.IMove[] = FSP.MathDecider.getConstant("moves"),
                 statisticNames: string[] = FSP.MathDecider.getConstant("statisticNames"),
@@ -3989,7 +3991,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        chooseRandomWildPokemon(FSP: FullScreenPokemon, options: IPokemonSchema[]): IPokemonSchema {
+        chooseRandomWildPokemon(FSP: FullScreenPokemon, options: IWildPokemonSchema[]): IWildPokemonSchema {
             var choice: number = FSP.NumberMaker.random(),
                 sum: number = 0,
                 i: number;
@@ -4029,7 +4031,7 @@ module FullScreenPokemon {
          */
         addBattleDisplayPokemonHealth(FSP: FullScreenPokemon, battlerName: string): void {
             var battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
-                pokemon: BattleMovr.IActor = battleInfo[battlerName].selectedActor,
+                pokemon: IPokemon = battleInfo[battlerName].selectedActor,
                 menu: string = [
                     "Battle",
                     battlerName[0].toUpperCase(),
@@ -4380,7 +4382,8 @@ module FullScreenPokemon {
             var opponentInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.opponent,
                 pokemonInfo: BattleMovr.IActor = opponentInfo.actors[opponentInfo.selectedIndex],
                 pokemon: BattleMovr.IThing = FSP.BattleMover.setThing(
-                    "opponent", pokemonInfo.title + "Front");
+                    "opponent",
+                    pokemonInfo.title.join("") + "Front");
 
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
@@ -4417,7 +4420,9 @@ module FullScreenPokemon {
         cutsceneBattlePlayerSendOutAppear(FSP: FullScreenPokemon, settings: any, args: any): void {
             var playerInfo: BattleMovr.IBattleThingInfo = settings.battleInfo.player,
                 pokemonInfo: BattleMovr.IActor = playerInfo.selectedActor,
-                pokemon: BattleMovr.IThing = FSP.BattleMover.setThing("player", pokemonInfo.title + "Back");
+                pokemon: BattleMovr.IThing = FSP.BattleMover.setThing(
+                    "player",
+                    pokemonInfo.title.join("") + "Back");
 
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
@@ -6906,7 +6911,7 @@ module FullScreenPokemon {
 
             FSP.ItemsHolder.setItem("starter", settings.chosen);
             FSP.ItemsHolder.setItem("PokemonInParty", [
-                FSP.MathDecider.compute("newPokemon", settings.chosen, 5)
+                FSP.MathDecider.compute("newPokemon", settings.chosen.split(""), 5)
             ]);
         }
 
@@ -7146,7 +7151,7 @@ module FullScreenPokemon {
                         "actors": [
                             FSP.MathDecider.compute(
                                 "newPokemon",
-                                FSP.ItemsHolder.getItem("starterRival"),
+                                FSP.ItemsHolder.getItem("starterRival").split(""),
                                 5)
                         ]
                     },
@@ -7546,7 +7551,7 @@ module FullScreenPokemon {
                     "sprite": "WeedleFront",
                     "category": "Wild",
                     "actors": [
-                        FSP.MathDecider.compute("newPokemon", "Weedle", 5)
+                        FSP.MathDecider.compute("newPokemon", "Weedle".split(""), 5)
                     ]
                 },
                 "items": [{
@@ -7606,6 +7611,11 @@ module FullScreenPokemon {
          * 
          */
         cutsceneRivalRoute22RivalTalks(FSP: FullScreenPokemon, settings: any): void {
+            var rivalTitle: string[] = FSP.ItemsHolder.getItem("starterRival").split(""),
+                rivalNickname: string[] = rivalTitle.map(function (character: string): string {
+                    return character.toUpperCase();
+                });
+
             FSP.animateCharacterSetDirection(
                 settings.player,
                 FSP.getDirectionBordering(settings.player, settings.rival));
@@ -7630,9 +7640,10 @@ module FullScreenPokemon {
                         "actors": [
                             FSP.MathDecider.compute(
                                 "newPokemon",
-                                FSP.ItemsHolder.getItem("starterRival"),
+                                rivalTitle,
+                                rivalNickname,
                                 8),
-                            FSP.MathDecider.compute("newPokemon", "Pidgey", 9)
+                            FSP.MathDecider.compute("newPokemon", "Pidgey".split(""), 9)
                         ]
                     },
                     "textStart": [

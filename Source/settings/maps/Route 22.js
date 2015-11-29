@@ -13,19 +13,19 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 22"] = {
             "height": 144,
             "wildPokemon": {
                 "grass": [{
-                    "title": "Rattata",
+                    "title": "RATTATA".split(""),
                     "levels": [2, 3, 4],
                     "rate": .5
                 }, {
-                    "title": "Spearow",
+                    "title": "SPEAROW".split(""),
                     "levels": [3, 5],
                     "rate": .1
                 }, {
-                    "title": "NidoranF",
+                    "title": ["N", "I", "D", "O", "R", "A", "N", "FemaleSymbol"],
                     "levels": [2, 3, 4],
                     "rate": .35
                 }, {
-                    "title": "NidoranM",
+                    "title": ["N", "I", "D", "O", "R", "A", "N", "MaleSymbol"],
                     "levels": [3, 4],
                     "rate": .05
                 }]

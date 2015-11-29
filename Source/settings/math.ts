@@ -1,61 +1,85 @@
 /// <reference path="../FullScreenPokemon.ts" />
 /* tslint:disable:max-line-length */
-var FullScreenPokemon;
-(function (FullScreenPokemon) {
+
+module FullScreenPokemon {
     "use strict";
-    FullScreenPokemon.FullScreenPokemon.settings.math = {
+
+    FullScreenPokemon.settings.math = {
         "equations": {
-            "newPokemon": function (constants, equations, title, nickname, level, moves, iv, ev) {
-                var statisticNames = constants.statisticNames, pokemon = {
-                    "title": title,
-                    "nickname": nickname,
-                    "level": level,
-                    "moves": moves || this.compute("newPokemonMoves", title, level),
-                    "types": constants.pokemon[title.join("")].types,
-                    "status": "",
-                    "IV": iv || this.compute("newPokemonIVs"),
-                    "EV": ev || this.compute("newPokemonEVs"),
-                    "experience": this.compute("newPokemonExperience", title, level)
-                }, i;
+            "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], nickname: string[], level: number, moves: BattleMovr.IMove[], iv: number, ev: number): IPokemon {
+                var statisticNames: string[] = constants.statisticNames,
+                    pokemon: any = {
+                        "title": title,
+                        "nickname": nickname,
+                        "level": level,
+                        "moves": moves || this.compute("newPokemonMoves", title, level),
+                        "types": constants.pokemon[title.join("")].types,
+                        "status": "",
+                        "IV": iv || this.compute("newPokemonIVs"),
+                        "EV": ev || this.compute("newPokemonEVs"),
+                        "experience": this.compute("newPokemonExperience", title, level)
+                    },
+                    i: number;
+
                 for (i = 0; i < statisticNames.length; i += 1) {
-                    pokemon[statisticNames[i]] = this.compute("pokemonStatistic", pokemon, statisticNames[i]);
+                    pokemon[statisticNames[i]] = this.compute(
+                        "pokemonStatistic", pokemon, statisticNames[i]
+                    );
                     pokemon[statisticNames[i] + "Normal"] = pokemon[statisticNames[i]];
                 }
+
                 return pokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
-            "newPokemonMoves": function (constants, equations, title, level) {
-                var possibilities = constants.pokemon[title.join("")].moves.natural, output = [], move, newMove, end, i;
+            "newPokemonMoves": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): BattleMovr.IMove[] {
+                var possibilities: IMoveLearnedSchema[] = constants.pokemon[title.join("")].moves.natural,
+                    output: BattleMovr.IMove[] = [],
+                    move: IMoveLearnedSchema,
+                    newMove: BattleMovr.IMove,
+                    end: number,
+                    i: number;
+
                 for (end = 0; end < possibilities.length; end += 1) {
                     if (possibilities[end].level > level) {
                         break;
                     }
                 }
+
                 for (i = Math.max(end - 4, 0); i < end; i += 1) {
                     move = possibilities[i];
                     newMove = {
                         "title": move.move,
                         "remaining": constants.moves[move.move].PP
                     };
+
                     output.push(newMove);
                 }
+
                 return output;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
-            "newPokemonIVs": function (constants, equations) {
-                var attack = constants.NumberMaker.randomIntWithin(0, 15), defense = constants.NumberMaker.randomIntWithin(0, 15), speed = constants.NumberMaker.randomIntWithin(0, 15), special = constants.NumberMaker.randomIntWithin(0, 15), output = {
-                    "Attack": attack,
-                    "Defense": defense,
-                    "Speed": speed,
-                    "Special": special
-                };
-                output.HP = (8 * (attack % 2)
+            "newPokemonIVs": function (constants: IMathConstants, equations: IMathEquations): { [i: string]: number } {
+                var attack: number = constants.NumberMaker.randomIntWithin(0, 15),
+                    defense: number = constants.NumberMaker.randomIntWithin(0, 15),
+                    speed: number = constants.NumberMaker.randomIntWithin(0, 15),
+                    special: number = constants.NumberMaker.randomIntWithin(0, 15),
+                    output: any = {
+                        "Attack": attack,
+                        "Defense": defense,
+                        "Speed": speed,
+                        "Special": special
+                    };
+
+                output.HP = (
+                    8 * (attack % 2)
                     + 4 * (defense % 2)
                     + 2 * (speed % 2)
-                    + (special % 2));
+                    + (special % 2)
+                );
+
                 return output;
             },
-            "newPokemonEVs": function (constants, equations) {
+            "newPokemonEVs": function (constants: IMathConstants, equations: IMathEquations): { [i: string]: number } {
                 return {
                     "Attack": 0,
                     "Defense": 0,
@@ -63,8 +87,10 @@ var FullScreenPokemon;
                     "Special": 0
                 };
             },
-            "newPokemonExperience": function (constants, equations, title, level) {
-                var current = this.compute("experienceStarting", title, level), next = this.compute("experienceStarting", title, level + 1);
+            "newPokemonExperience": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): IExperience {
+                var current: number = this.compute("experienceStarting", title, level),
+                    next: number = this.compute("experienceStarting", title, level + 1);
+
                 return {
                     "current": current,
                     "next": next,
@@ -73,98 +99,137 @@ var FullScreenPokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             // Note: the page mentions rounding errors... 
-            "pokemonStatistic": function (constants, equations, pokemon, statistic) {
-                var topExtra = 0, added = 5, base = constants.pokemon[pokemon.title.join("")][statistic], iv = pokemon.IV[statistic] || 0, ev = pokemon.EV[statistic] || 0, level = pokemon.level, numerator;
+            "pokemonStatistic": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, statistic: string): number {
+                var topExtra: number = 0,
+                    added: number = 5,
+                    base: number = constants.pokemon[pokemon.title.join("")][statistic],
+                    iv: number = pokemon.IV[statistic] || 0,
+                    ev: number = pokemon.EV[statistic] || 0,
+                    level: number = pokemon.level,
+                    numerator: number;
+
                 if (statistic === "HP") {
                     topExtra = 50;
                     added = 10;
                 }
+
                 numerator = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
+
                 return (numerator / 50 + added) | 0;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
-            "doesGrassEncounterHappen": function (constants, equations, grass) {
+            "doesGrassEncounterHappen": function (constants: IMathConstants, equations: IMathEquations, grass: IGrass): boolean {
                 return constants.NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
-            "canCatchPokemon": function (constants, equations, pokemon, ball) {
-                var n, m, f;
+            "canCatchPokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall): boolean {
+                var n: number,
+                    m: number,
+                    f: number;
+
                 // 1. If a Master Ball is used, the Pokemon is caught.
                 if (ball.type === "Master") {
                     return true;
                 }
+
                 // 2. Generate a random number, N, depending on the type of ball used.
                 n = constants.NumberMaker.randomInt(ball.probabilityMax);
+
                 // 3. The Pokemon is caught if...
-                if (pokemon.status) {
+                if (pokemon.status) { // ... it is asleep or frozen and N is less than 25.
                     if (n < 25) {
                         if (constants.statuses.probability25[pokemon.status]) {
                             return true;
                         }
-                    }
-                    else if (n < 12) {
+                    } else if (n < 12) { // ... it is paralyzed, burned, or poisoned and N is less than 12.
                         if (constants.statuses.probability12[pokemon.status]) {
                             return true;
                         }
                     }
                 }
+
                 // 4. Otherwise, if N minus the status value is greater than the Pokemon's catch rate, the Pokemon breaks free.
                 if (n - constants.statuses.levels[pokemon.status] > pokemon.catchRate) {
                     return false;
                 }
+
                 // 5. If not, generate a random value, M, between 0 and 255.
                 m = constants.NumberMaker.randomInt(255);
+
                 // 6. Calculate f.
-                f = Math.max(Math.min((pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0, 255), 1);
+                f = Math.max(
+                    Math.min(
+                        (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
+                        255
+                    ),
+                    1
+                );
+
                 // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
                 return f > m;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
-            "canEscapePokemon": function (constants, equations, pokemon, enemy, battleInfo) {
-                var a = pokemon.Speed, b = (enemy.Speed / 4) % 256, c = battleInfo.currentEscapeAttempts, f = (a * 32) / b + 30 * c;
+            "canEscapePokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
+                var a: number = pokemon.Speed,
+                    b: number = (enemy.Speed / 4) % 256,
+                    c: number = battleInfo.currentEscapeAttempts,
+                    f: number = (a * 32) / b + 30 * c;
+
                 if (f > 255 || b === 0) {
                     return true;
                 }
+
                 return constants.NumberMaker.randomInt(256) < f;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
-            "numBallShakes": function (constants, equations, pokemon, ball) {
+            "numBallShakes": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall): number {
                 // 1. Calculate d.
-                var d = pokemon.catchRate * 100 / ball.rate, f, x;
+                var d: number = pokemon.catchRate * 100 / ball.rate,
+                    f: number,
+                    x: number;
+
                 // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
                 if (d >= 256) {
                     return 3;
                 }
+
                 // 3. If not, calculate x = d * f / 255 + s, where s is 10 if the Pokemon is asleep or frozen or 5 if it is paralyzed, poisoned, or burned.
-                f = Math.max(Math.min((pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0, 255), 1);
+                f = Math.max(
+                    Math.min(
+                        (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
+                        255),
+                    1);
                 x = d * f / 255 + constants.statuses.shaking[pokemon.status];
+
                 // 4. If... 
-                if (x < 10) {
+                if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
                     return 0;
-                }
-                else if (x < 30) {
+                } else if (x < 30) { // x < 30: the Ball shakes once before the Pokemon breaks free.
                     return 1;
-                }
-                else if (x < 70) {
+                } else if (x < 70) { // x < 70: the Ball shakes twice before the Pokemon breaks free.
                     return 2;
-                }
-                else {
+                } else { // Otherwise, the Ball shakes three times before the Pokemon breaks free.
                     return 3;
                 }
             },
             // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
             // TO DO: Also filter for moves with > 0 remaining remaining...
-            "opponentMove": function (constants, equations, player, opponent) {
-                var possibilities = opponent.selectedActor.moves.map(function (move) {
-                    return {
-                        "move": move.title,
-                        "priority": 10
-                    };
-                }), lowest, i;
+            "opponentMove": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, opponent: IBattleThingInfo): string {
+                var possibilities: IMovePossibility[] = opponent.selectedActor.moves.map(
+                    function (move: BattleMovr.IMove): IMovePossibility {
+                        return {
+                            "move": move.title,
+                            "priority": 10
+                        };
+                    }),
+                    lowest: number,
+                    i: number;
+
                 // Wild Pokemon just choose randomly
                 if (opponent.category === "Wild") {
                     return constants.NumberMaker.randomArrayMember(possibilities).move;
                 }
+
                 // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
                 if (player.selectedActor.status && !opponent.dumb) {
                     for (i = 0; i < possibilities.length; i += 1) {
@@ -173,18 +238,31 @@ var FullScreenPokemon;
                         }
                     }
                 }
+
                 // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
                 if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
-                        this.compute("applyMoveEffectPrority", possibilities[i], constants.battleModifications["Turn 2"], player.selectedActor, 1);
+                        this.compute(
+                            "applyMoveEffectPrority",
+                            possibilities[i],
+                            constants.battleModifications["Turn 2"],
+                            player.selectedActor,
+                            1);
                     }
                 }
+
                 // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
                 if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
-                        this.compute("applyMoveEffectPrority", possibilities[i], constants.battleModifications["Good AI"], player.selectedActor, 1);
+                        this.compute(
+                            "applyMoveEffectPrority",
+                            possibilities[i],
+                            constants.battleModifications["Good AI"],
+                            player.selectedActor,
+                            1);
                     }
                 }
+
                 // The AI uses rejection sampling on the four moves with ratio 63:64:63:66, with only the moves that are most favored after applying the modifications being acceptable.
                 lowest = possibilities[0].priority;
                 if (possibilities.length > 1) {
@@ -193,27 +271,34 @@ var FullScreenPokemon;
                             lowest = possibilities[i].priority;
                         }
                     }
-                    possibilities = possibilities.filter(function (possibility) {
+                    possibilities = possibilities.filter(function (possibility: IMovePossibility): boolean {
                         return possibility.priority === lowest;
                     });
                 }
+
                 return constants.NumberMaker.randomArrayMember(possibilities).move;
             },
-            "opponentMatchesTypes": function (constants, equations, opponent, types) {
-                for (var i = 0; i < types.length; i += 1) {
+            "opponentMatchesTypes": function (constants: IMathConstants, equations: IMathEquations, opponent: IPokemon, types: string[]): boolean {
+                for (var i: number = 0; i < types.length; i += 1) {
                     if (opponent.types.indexOf(types[i]) !== -1) {
                         return true;
                     }
                 }
+
                 return false;
             },
-            "moveOnlyStatuses": function (constants, equations, move) {
+            "moveOnlyStatuses": function (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema): boolean {
                 return move.damage === "Non-Damaging" && move.effect === "Status";
             },
-            "applyMoveEffectPrority": function (constants, equations, possibility, modification, target, amount) {
-                var preferences = modification.preferences, move = constants.moves[possibility.move], preference, i;
+            "applyMoveEffectPrority": function (constants: IMathConstants, equations: IMathEquations, possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number): void {
+                var preferences: ([string, string, number] | [string, string])[] = modification.preferences,
+                    move: IMoveSchema = constants.moves[possibility.move],
+                    preference: [string, string, number] | [string, string],
+                    i: number;
+
                 for (i = 0; i < preferences.length; i += 1) {
                     preference = preferences[i];
+
                     switch (preference[0]) {
                         // ["Move", String]
                         // Favorable match
@@ -223,46 +308,59 @@ var FullScreenPokemon;
                                 return;
                             }
                             break;
+
                         // ["Raise", String, Number]
                         // Favorable match
                         case "Raise":
-                            if (move.effect === "Raise"
+                            if (
+                                move.effect === "Raise"
                                 && move.raise === preference[1]
-                                && move.amount === preference[2]) {
+                                && move.amount === preference[2]
+                            ) {
                                 possibility.priority -= amount;
                                 return;
                             }
                             break;
+
                         // ["Lower", String, Number]
                         // Favorable match
                         case "Lower":
-                            if (move.effect === "Lower"
+                            if (
+                                move.effect === "Lower"
                                 && move.lower === preference[1]
-                                && move.amount === preference[2]) {
+                                && move.amount === preference[2]
+                            ) {
                                 possibility.priority -= amount;
                                 return;
                             }
                             break;
+
                         // ["Super", String, String]
                         // Favorable match
                         case "Super":
-                            if (move.damage !== "Non-Damaging"
+                            if (
+                                move.damage !== "Non-Damaging"
                                 && move.type === preference[0]
-                                && target.types.indexOf(preference[1]) !== -1) {
+                                && target.types.indexOf(preference[1]) !== -1
+                            ) {
                                 possibility.priority -= amount;
                                 return;
                             }
                             break;
+
                         // ["Weak", String, String]
                         // Unfavorable match
                         case "Weak":
-                            if (move.damage !== "Non-Damaging"
+                            if (
+                                move.damage !== "Non-Damaging"
                                 && move.type === preference[0]
-                                && target.types.indexOf(preference[1]) !== -1) {
+                                && target.types.indexOf(preference[1]) !== -1
+                            ) {
                                 possibility.priority += amount;
                                 return;
                             }
                             break;
+
                         // By default, do nothing
                         default:
                             break;
@@ -272,42 +370,64 @@ var FullScreenPokemon;
             // http://bulbapedia.bulbagarden.net/wiki/Priority
             // TO DO: Account for items, switching, etc.
             // TO DO: Factor in spec differences from paralyze, etc.
-            "playerMovesFirst": function (constants, equations, player, choicePlayer, opponent, choiceOpponent) {
-                var movePlayer = constants.moves[choicePlayer], moveOpponent = constants.moves[choiceOpponent];
+            "playerMovesFirst": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, choicePlayer: string, opponent: IBattleThingInfo, choiceOpponent: string): boolean {
+                var movePlayer: IMoveSchema = constants.moves[choicePlayer],
+                    moveOpponent: IMoveSchema = constants.moves[choiceOpponent];
+
                 if (movePlayer.priority === moveOpponent.priority) {
                     return player.selectedActor.Speed > opponent.selectedActor.Speed;
                 }
+
                 return movePlayer.priority > moveOpponent.priority;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
             // TO DO: Factor in spec differences from burns, etc.
-            "damage": function (constants, equations, move, attacker, defender) {
-                var base = constants.moves[move].power;
+            "damage": function (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon, defender: IPokemon): number {
+                var base: string | number = constants.moves[move].power;
+
                 // A base attack that's not numeric means no damage, no matter what
-                if (!base || isNaN(base)) {
+                if (!base || isNaN(<number>base)) {
                     return 0;
                 }
+
                 // Don't bother calculating infinite damage: it's going to be infinite
                 if (base === Infinity) {
                     return Infinity;
                 }
-                var critical = this.compute("criticalHit", move, attacker), level = attacker.level * Number(critical), attack = attacker.Attack, defense = defender.Defense, modifier = this.compute("damageModifier", move, critical, attacker, defender);
-                return Math.round(Math.max(((((2 * level + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier, 1));
+
+                var critical: boolean = this.compute("criticalHit", move, attacker),
+                    level: number = attacker.level * Number(critical),
+                    attack: number = attacker.Attack,
+                    defense: number = defender.Defense,
+                    modifier: number = this.compute("damageModifier", move, critical, attacker, defender);
+
+                return Math.round(
+                    Math.max(
+                        ((((2 * level + 10) / 250) * (attack / defense) * <number>base + 2) | 0) * modifier,
+                        1
+                    )
+                );
             },
             // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-            "damageModifier": function (constants, equations, move, critical, attacker, defender) {
-                var stab = attacker.types.indexOf(move.type) !== -1 ? 1.5 : 1, type = this.compute("typeEffectiveness", move, defender);
+            "damageModifier": function (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema, critical: boolean, attacker: IPokemon, defender: IPokemon): number {
+                var stab: number = attacker.types.indexOf(move.type) !== -1 ? 1.5 : 1,
+                    type: number = this.compute("typeEffectiveness", move, defender);
+
                 return stab * type * constants.NumberMaker.randomWithin(.85, 1);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-            "criticalHit": function (constants, equations, move, attacker) {
-                var moveInfo = constants.moves[move], baseSpeed = constants.pokemon[attacker.title.join("")].Speed, denominator = 512;
+            "criticalHit": function (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon): boolean {
+                var moveInfo: IMoveSchema = constants.moves[move],
+                    baseSpeed: number = constants.pokemon[attacker.title.join("")].Speed,
+                    denominator: number = 512;
+
                 // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit, resulting in a probability of BaseSpeed / 64.
                 if (moveInfo.criticalRaised) {
                     denominator /= 8;
                 }
+
                 // "Focus Energy and Dire Hit were intended to increase the critical hit rate, ..."
                 // In FullScreenPokemon, they work as intended! Fans who prefer the
                 // original behavior are free to fork the repo. As the original
@@ -316,21 +436,28 @@ var FullScreenPokemon;
                 if (attacker.criticalHitProbability) {
                     denominator /= 4;
                 }
+
                 // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%, it instead becomes 255/256 or about 99.6%.
                 return constants.NumberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
             },
             // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-            "typeEffectiveness": function (constants, equations, move, defender) {
-                var defenderTypes = constants.pokemon[defender.title.join("")].types, moveIndex = constants.types.indices[constants.moves[move].type], total = 1, i;
+            "typeEffectiveness": function (constants: IMathConstants, equations: IMathEquations, move: string, defender: IPokemon): number {
+                var defenderTypes: string[] = constants.pokemon[defender.title.join("")].types,
+                    moveIndex: number = constants.types.indices[constants.moves[move].type],
+                    total: number = 1,
+                    i: number;
+
                 for (i = 0; i < defenderTypes.length; i += 1) {
                     total *= constants.types.table[moveIndex][constants.types.indices[defenderTypes[i]]];
                 }
+
                 return total;
             },
             // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
             // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
-            "experienceStarting": function (constants, equations, title, level) {
-                var reference = constants.pokemon[title.join("")];
+            "experienceStarting": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): number {
+                var reference: IPokemonSchema = constants.pokemon[title.join("")];
+
                 // TODO: remove defaulting to mediumFast
                 switch (reference.experienceType) {
                     case "fast":
@@ -338,7 +465,8 @@ var FullScreenPokemon;
                     case "mediumFast":
                         return Math.pow(level, 3);
                     case "mediumSlow":
-                        return ((6 / 5) * Math.pow(level, 3)
+                        return (
+                            (6 / 5) * Math.pow(level, 3)
                             - (15 * Math.pow(level, 2))
                             + (100 * level)
                             - 140);
@@ -349,27 +477,36 @@ var FullScreenPokemon;
                 }
             },
             // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
-            "experienceGained": function (constants, equations, player, opponent) {
-                var a, b, lf, s, t;
+            "experienceGained": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, opponent: IBattleThingInfo): number {
+                var a: number,
+                    b: number,
+                    lf: number,
+                    s: number,
+                    t: number;
+
                 // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
                 a = opponent.category === "Trainer" ? 1.5 : 1;
+
                 // b is the base experience yield of the fainted Pokemon's species
                 b = 64; // (Bulbasaur) TO DO: add this in
+
                 // lf is the level of the fainted Pokemon
                 lf = opponent.selectedActor.level;
+
                 // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
                 // TO DO: Account for modifies like Exp. All
                 s = 1;
+
                 // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
                 if (player.selectedActor.traded) {
                     t = 1.5;
-                }
-                else {
+                } else {
                     t = 1;
                 }
+
                 return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
             },
-            "widthHealthBar": function (constants, equations, widthFullBar, hp, hpNormal) {
+            "widthHealthBar": function (constants: IMathConstants, equations: IMathEquations, widthFullBar: number, hp: number, hpNormal: number): number {
                 return (widthFullBar - 1) * hp / hpNormal;
             }
         },
@@ -405,14 +542,14 @@ var FullScreenPokemon;
             },
             /**
              * Run on http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-             *
+             * 
              * console.clear();
-             *
+             * 
              * var table = $($("table")[2]),
              *     names = table.find("tr:nth-of-type(2) a")
              *         .toArray()
              *         .map(function (a) {
-             *             return a.getAttribute("title");
+             *             return a.getAttribute("title"); 
              *         }),
              *     chart = table.find("tr:nth-of-type(2) ~ tr"),
              *     table = [],
@@ -423,16 +560,16 @@ var FullScreenPokemon;
              *         "1×": 1.0,
              *         "2×": 2.0
              *     },
-             *     output = {
-             *         "names": names,
+             *     output = { 
+             *         "names": names, 
              *         "table": table
              *     },
              *     row, i, j;
-             *
+             * 
              * for (i = 0; i < names.length; i += 1) {
              *     indices[names[i]] = i;
              * }
-             *
+             * 
              * for (i = 0; i < chart.length - 1; i += 1) {
              *     row = chart[i];
              *     table.push([]);
@@ -440,9 +577,9 @@ var FullScreenPokemon;
              *         table[i].push(values[row.cells[j + 1].innerText])
              *     }
              * }
-             *
+             * 
              * table[0].shift();
-             *
+             * 
              * JSON.stringify(output);
              */
             "types": {
@@ -484,17 +621,17 @@ var FullScreenPokemon;
             },
             /**
              * Run on http://www.smogon.com/dex/rb/pokemon/
-             *
+             * 
              * var output = {};
-             *
+             * 
              * Array.prototype.slice.call(document.querySelectorAll("tr")).forEach(function (row) {
              *     output[row.children[0].innerText.trim().toUpperCase()] = {
              *         "types": row.children[1].innerText
              *             .split(/\s+/g)
-             *             .filter(function (str) {
-             *                 return str;
+             *             .filter(function (str) { 
+             *                 return str; 
              *             })
-             *             .map(function (str) {
+             *             .map(function (str) { 
              *                 return str.trim();
              *             }),
              *         "HP": Number(row.children[5].innerText.split(/\s+/g)[1]),
@@ -504,7 +641,7 @@ var FullScreenPokemon;
              *         "Speed": Number(row.children[10].innerText.split(/\s+/g)[1]),
              *     };
              * });
-             *
+             * 
              * JSON.stringify(output);
              */
             "pokemon": {
@@ -527,13 +664,13 @@ var FullScreenPokemon;
                     "Speed": 90,
                     "moves": {
                         "natural": [{
-                                "move": "Teleport",
-                                "level": 1
-                            }],
+                            "move": "Teleport",
+                            "level": 1
+                        }],
                         "hm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }],
+                            "move": "Flash",
+                            "level": 5
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -613,6 +750,8 @@ var FullScreenPokemon;
                     "info": [
                         "A ferocious, prehistoric %%%%%%%POKEMON%%%%%%% that goes for the enemy's throat with its serrated saw-like fangs."
                     ],
+
+
                     "number": 142,
                     "height": ["5", "11"],
                     "weight": 130.1,
@@ -624,9 +763,9 @@ var FullScreenPokemon;
                     "Speed": 130,
                     "moves": {
                         "natural": [{
-                                "move": "Agility",
-                                "level": 1
-                            }, {
+                            "move": "Agility",
+                            "level": 1
+                        }, {
                                 "move": "Wing Attack",
                                 "level": 1
                             }, {
@@ -643,13 +782,13 @@ var FullScreenPokemon;
                                 "level": 54
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }],
+                            "move": "Fly",
+                            "level": 2
+                        }],
                         "tm": [{
-                                "move": "Razor Wind",
-                                "level": 2
-                            }, {
+                            "move": "Razor Wind",
+                            "level": 2
+                        }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -706,6 +845,8 @@ var FullScreenPokemon;
                     "info": [
                         "Its brain can outperform a supercomputer. Its intelligence quotient is said to be 5,000."
                     ],
+
+
                     "number": 65,
                     "height": ["4", "11"],
                     "weight": 105.8,
@@ -746,9 +887,9 @@ var FullScreenPokemon;
                                 "level": 42
                             }],
                         "hm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }],
+                            "move": "Flash",
+                            "level": 5
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -834,6 +975,8 @@ var FullScreenPokemon;
                     "info": [
                         "It is rumored that the ferocious warning markings on its belly differ from area to area."
                     ],
+
+
                     "number": 24,
                     "height": ["11", "6"],
                     "weight": 143.3,
@@ -871,9 +1014,9 @@ var FullScreenPokemon;
                                 "level": 47
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Toxic",
@@ -935,6 +1078,8 @@ var FullScreenPokemon;
                     "info": [
                         "A %%%%%%%POKEMON%%%%%%% that has been admired since the past for its beauty. It runs agilely as if on wings."
                     ],
+
+
                     "number": 59,
                     "height": ["6", "3"],
                     "weight": 341.7,
@@ -1079,6 +1224,8 @@ var FullScreenPokemon;
                     "info": [
                         "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear to doomed people who are lost in icy mountains."
                     ],
+
+
                     "number": 144,
                     "height": ["5", "7"],
                     "weight": 122.1,
@@ -1107,9 +1254,9 @@ var FullScreenPokemon;
                                 "level": 60
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }],
+                            "move": "Fly",
+                            "level": 2
+                        }],
                         "tm": [
                             {
                                 "move": "Razor Wind",
@@ -1177,6 +1324,8 @@ var FullScreenPokemon;
                     "info": [
                         "Flies at high speed and attacks using its large venomous stingers on its forelegs and tail."
                     ],
+
+
                     "number": 15,
                     "height": ["3", "3"],
                     "weight": 65,
@@ -1211,13 +1360,13 @@ var FullScreenPokemon;
                                 "level": 35
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }]
+                            "move": "Cut",
+                            "level": 1
+                        }]
                     }
                 },
                 "BELLSPROUT": {
@@ -1268,9 +1417,9 @@ var FullScreenPokemon;
                                 "level": 42
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [
                             {
                                 "move": "Swords Dance",
@@ -1320,6 +1469,8 @@ var FullScreenPokemon;
                     "info": [
                         "A brutal %%%%%%%POKEMON%%%%%%% with pressurized water jets on its shell. They are used for high speed tackles."
                     ],
+
+
                     "number": 9,
                     "height": ["5", "3"],
                     "weight": 188.5,
@@ -1498,9 +1649,9 @@ var FullScreenPokemon;
                                 "level": 48
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [
                             {
                                 "move": "Swords Dance",
@@ -1553,6 +1704,8 @@ var FullScreenPokemon;
                     "info": [
                         "In battle, it flaps its wings at high speed to release highly toxic dust into the air."
                     ],
+
+
                     "number": 12,
                     "height": ["3", "7"],
                     "weight": 70.5,
@@ -1670,9 +1823,9 @@ var FullScreenPokemon;
                     "Speed": 45,
                     "moves": {
                         "natural": [{
-                                "move": "String Shot",
-                                "level": 1
-                            }, {
+                            "move": "String Shot",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }],
@@ -1844,6 +1997,8 @@ var FullScreenPokemon;
                     "info": [
                         "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally."
                     ],
+
+
                     "number": 6,
                     "height": ["5", "7"],
                     "weight": 199.5,
@@ -2220,6 +2375,8 @@ var FullScreenPokemon;
                     "info": [
                         "A timid fairy %%%%%%%POKEMON%%%%%%% that is rarely seen. It will run and hide the moment it senses people."
                     ],
+
+
                     "number": 36,
                     "height": ["4", "3"],
                     "weight": 88.2,
@@ -2417,6 +2574,8 @@ var FullScreenPokemon;
                     "info": [
                         "When attacked, it launches its horns in quick volleys. Its innards have never been seen."
                     ],
+
+
                     "number": 91,
                     "height": ["4", "11"],
                     "weight": 292.1,
@@ -2446,9 +2605,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }]
+                            "move": "Surf",
+                            "level": 3
+                        }]
                     }
                 },
                 "CUBONE": {
@@ -2493,9 +2652,9 @@ var FullScreenPokemon;
                                 "level": 46
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -2578,6 +2737,8 @@ var FullScreenPokemon;
                     "info": [
                         "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters."
                     ],
+
+
                     "number": 87,
                     "height": ["5", "7"],
                     "weight": 264.6,
@@ -2794,9 +2955,9 @@ var FullScreenPokemon;
                     "Speed": 48,
                     "moves": {
                         "natural": [{
-                                "move": "Transform",
-                                "level": 1
-                            }],
+                            "move": "Transform",
+                            "level": 1
+                        }],
                         "hm": [],
                         "tm": []
                     }
@@ -2807,6 +2968,8 @@ var FullScreenPokemon;
                     "info": [
                         "Uses its three brains to execute complex plans. While two heads sleep, one head stays awake."
                     ],
+
+
                     "number": 85,
                     "height": ["5", "11"],
                     "weight": 187.8,
@@ -2941,9 +3104,9 @@ var FullScreenPokemon;
                                 "level": 44
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }],
+                            "move": "Fly",
+                            "level": 2
+                        }],
                         "tm": [
                             {
                                 "move": "Whirlwind",
@@ -3117,6 +3280,8 @@ var FullScreenPokemon;
                     "info": [
                         "An extremely rarely seen marine %%%%%%%POKEMON%%%%%%%. Its intelligence is said to match that of humans."
                     ],
+
+
                     "number": 149,
                     "height": ["7", "3"],
                     "weight": 463,
@@ -3285,9 +3450,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [
                             {
                                 "move": "Toxic",
@@ -3926,9 +4091,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -4083,13 +4248,13 @@ var FullScreenPokemon;
                                 "level": 28
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }]
+                            "move": "Strength",
+                            "level": 4
+                        }]
                     }
                 },
                 "FARFETCHD": {
@@ -4227,9 +4392,9 @@ var FullScreenPokemon;
                                 "level": 43
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }],
+                            "move": "Fly",
+                            "level": 2
+                        }],
                         "tm": [
                             {
                                 "move": "Razor Wind",
@@ -4517,9 +4682,9 @@ var FullScreenPokemon;
                                 "level": 38
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -4966,9 +5131,9 @@ var FullScreenPokemon;
                                 "level": 54
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [
                             {
                                 "move": "Toxic",
@@ -5183,9 +5348,9 @@ var FullScreenPokemon;
                                 "level": 43
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -5720,9 +5885,9 @@ var FullScreenPokemon;
                                 "level": 53
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -5920,9 +6085,9 @@ var FullScreenPokemon;
                                 "level": 45
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [
                             {
                                 "move": "Toxic",
@@ -6151,9 +6316,9 @@ var FullScreenPokemon;
                                 "level": 54
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [
                             {
                                 "move": "Swords Dance",
@@ -6404,9 +6569,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }]
+                            "move": "Flash",
+                            "level": 5
+                        }]
                     }
                 },
                 "JYNX": {
@@ -6598,9 +6763,9 @@ var FullScreenPokemon;
                                 "level": 49
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [
                             {
                                 "move": "Toxic",
@@ -6808,9 +6973,9 @@ var FullScreenPokemon;
                                 "level": 42
                             }],
                         "hm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }],
+                            "move": "Flash",
+                            "level": 5
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -6906,14 +7071,14 @@ var FullScreenPokemon;
                     "Speed": 35,
                     "moves": {
                         "natural": [{
-                                "move": "Harden",
-                                "level": 1
-                            }],
+                            "move": "Harden",
+                            "level": 1
+                        }],
                         "hm": [],
                         "tm": [{
-                                "move": "Harden",
-                                "level": 1
-                            }]
+                            "move": "Harden",
+                            "level": 1
+                        }]
                     }
                 },
                 "KANGASKHAN": {
@@ -7637,9 +7802,9 @@ var FullScreenPokemon;
                                 "level": 52
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -7867,9 +8032,9 @@ var FullScreenPokemon;
                                 "level": 46
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -8124,9 +8289,9 @@ var FullScreenPokemon;
                                 "level": 47
                             }],
                         "hm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }],
+                            "move": "Flash",
+                            "level": 5
+                        }],
                         "tm": [
                             {
                                 "move": "Toxic",
@@ -8318,9 +8483,9 @@ var FullScreenPokemon;
                                 "level": 39
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -8440,9 +8605,9 @@ var FullScreenPokemon;
                                 "level": 55
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -8608,9 +8773,9 @@ var FullScreenPokemon;
                     "Speed": 30,
                     "moves": {
                         "natural": [{
-                                "move": "Harden",
-                                "level": 1
-                            }],
+                            "move": "Harden",
+                            "level": 1
+                        }],
                         "hm": [],
                         "tm": [
                             {
@@ -9111,9 +9276,9 @@ var FullScreenPokemon;
                                 "level": 47
                             }],
                         "hm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }],
+                            "move": "Flash",
+                            "level": 5
+                        }],
                         "tm": [
                             {
                                 "move": "Mega Punch",
@@ -10112,9 +10277,9 @@ var FullScreenPokemon;
                     "Speed": 35,
                     "moves": {
                         "natural": [{
-                                "move": "Water Gun",
-                                "level": 1
-                            }, {
+                            "move": "Water Gun",
+                            "level": 1
+                        }, {
                                 "move": "Withdraw",
                                 "level": 1
                             }, {
@@ -10132,9 +10297,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -10185,6 +10350,8 @@ var FullScreenPokemon;
                     "info": [
                         "A prehistoric %%%%%%%POKEMON%%%%%%% that died out when its heavy shell made it impossible to catch prey."
                     ],
+
+
                     "number": 139,
                     "height": ["3", "3"],
                     "weight": 77.2,
@@ -10196,9 +10363,9 @@ var FullScreenPokemon;
                     "Speed": 55,
                     "moves": {
                         "natural": [{
-                                "move": "Horn Attack",
-                                "level": 1
-                            }, {
+                            "move": "Horn Attack",
+                            "level": 1
+                        }, {
                                 "move": "Water Gun",
                                 "level": 1
                             }, {
@@ -10218,13 +10385,13 @@ var FullScreenPokemon;
                                 "level": 49
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -10303,9 +10470,9 @@ var FullScreenPokemon;
                     "Speed": 70,
                     "moves": {
                         "natural": [{
-                                "move": "Screech",
-                                "level": 1
-                            }, {
+                            "move": "Screech",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -10326,9 +10493,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -10398,9 +10565,9 @@ var FullScreenPokemon;
                     "Speed": 25,
                     "moves": {
                         "natural": [{
-                                "move": "Scratch",
-                                "level": 1
-                            }, {
+                            "move": "Scratch",
+                            "level": 1
+                        }, {
                                 "move": "Stun Spore",
                                 "level": 13
                             }, {
@@ -10417,13 +10584,13 @@ var FullScreenPokemon;
                                 "level": 41
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -10477,6 +10644,8 @@ var FullScreenPokemon;
                     "info": [
                         "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places."
                     ],
+
+
                     "number": 47,
                     "height": ["3", "3"],
                     "weight": 65,
@@ -10488,9 +10657,9 @@ var FullScreenPokemon;
                     "Speed": 30,
                     "moves": {
                         "natural": [{
-                                "move": "Leech Life",
-                                "level": 1
-                            }, {
+                            "move": "Leech Life",
+                            "level": 1
+                        }, {
                                 "move": "Scratch",
                                 "level": 1
                             }, {
@@ -10514,9 +10683,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -10573,6 +10742,8 @@ var FullScreenPokemon;
                     "info": [
                         "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness."
                     ],
+
+
                     "number": 53,
                     "height": ["3", "3"],
                     "weight": 70.5,
@@ -10584,9 +10755,9 @@ var FullScreenPokemon;
                     "Speed": 115,
                     "moves": {
                         "natural": [{
-                                "move": "Bite",
-                                "level": 1
-                            }, {
+                            "move": "Bite",
+                            "level": 1
+                        }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -10612,9 +10783,9 @@ var FullScreenPokemon;
                                 "level": 51
                             }],
                         "hm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -10667,9 +10838,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "tm": [{
-                                "move": "Bite",
-                                "level": 1
-                            }, {
+                            "move": "Bite",
+                            "level": 1
+                        }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -10702,6 +10873,8 @@ var FullScreenPokemon;
                     "info": [
                         "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP."
                     ],
+
+
                     "number": 18,
                     "height": ["4", "11"],
                     "weight": 87.1,
@@ -10713,9 +10886,9 @@ var FullScreenPokemon;
                     "Speed": 101,
                     "moves": {
                         "natural": [{
-                                "move": "Gust",
-                                "level": 1
-                            }, {
+                            "move": "Gust",
+                            "level": 1
+                        }, {
                                 "move": "Quick Attack",
                                 "level": 1
                             }, {
@@ -10742,9 +10915,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Razor Wind",
-                                "level": 2
-                            }, {
+                            "move": "Razor Wind",
+                            "level": 2
+                        }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -10808,9 +10981,9 @@ var FullScreenPokemon;
                     "Speed": 71,
                     "moves": {
                         "natural": [{
-                                "move": "Gust",
-                                "level": 1
-                            }, {
+                            "move": "Gust",
+                            "level": 1
+                        }, {
                                 "move": "Sand Attack",
                                 "level": 1
                             }, {
@@ -10833,13 +11006,13 @@ var FullScreenPokemon;
                                 "level": 49
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }],
+                            "move": "Fly",
+                            "level": 2
+                        }],
                         "tm": [{
-                                "move": "Razor Wind",
-                                "level": 2
-                            }, {
+                            "move": "Razor Wind",
+                            "level": 2
+                        }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -10900,9 +11073,9 @@ var FullScreenPokemon;
                     "Speed": 56,
                     "moves": {
                         "natural": [{
-                                "move": "Gust",
-                                "level": 1
-                            }, {
+                            "move": "Gust",
+                            "level": 1
+                        }, {
                                 "move": "Sand Attack",
                                 "level": 5
                             }, {
@@ -10922,13 +11095,13 @@ var FullScreenPokemon;
                                 "level": 44
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }],
+                            "move": "Fly",
+                            "level": 2
+                        }],
                         "tm": [{
-                                "move": "Razor Wind",
-                                "level": 2
-                            }, {
+                            "move": "Razor Wind",
+                            "level": 2
+                        }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -10989,9 +11162,9 @@ var FullScreenPokemon;
                     "Speed": 90,
                     "moves": {
                         "natural": [{
-                                "move": "Growl",
-                                "level": 1
-                            }, {
+                            "move": "Growl",
+                            "level": 1
+                        }, {
                                 "move": "Thunder Shock",
                                 "level": 1
                             }, {
@@ -11012,9 +11185,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11083,6 +11256,8 @@ var FullScreenPokemon;
                     "info": [
                         "If it fails to crush the victim in its pincers, it will swing it around and toss it hard."
                     ],
+
+
                     "number": 127,
                     "height": ["4", "11"],
                     "weight": 121.3,
@@ -11094,9 +11269,9 @@ var FullScreenPokemon;
                     "Speed": 85,
                     "moves": {
                         "natural": [{
-                                "move": "Vice Grip",
-                                "level": 1
-                            }, {
+                            "move": "Vice Grip",
+                            "level": 1
+                        }, {
                                 "move": "Seismic Toss",
                                 "level": 25
                             }, {
@@ -11116,16 +11291,16 @@ var FullScreenPokemon;
                                 "level": 54
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }, {
+                            "move": "Cut",
+                            "level": 1
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -11186,9 +11361,9 @@ var FullScreenPokemon;
                     "Speed": 90,
                     "moves": {
                         "natural": [{
-                                "move": "Bubble",
-                                "level": 1
-                            }, {
+                            "move": "Bubble",
+                            "level": 1
+                        }, {
                                 "move": "Hypnosis",
                                 "level": 16
                             }, {
@@ -11209,9 +11384,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -11281,9 +11456,9 @@ var FullScreenPokemon;
                     "Speed": 90,
                     "moves": {
                         "natural": [{
-                                "move": "Bubble",
-                                "level": 1
-                            }, {
+                            "move": "Bubble",
+                            "level": 1
+                        }, {
                                 "move": "Hypnosis",
                                 "level": 1
                             }, {
@@ -11309,16 +11484,16 @@ var FullScreenPokemon;
                                 "level": 49
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11412,9 +11587,9 @@ var FullScreenPokemon;
                     "Speed": 70,
                     "moves": {
                         "natural": [{
-                                "move": "Body Slam",
-                                "level": 1
-                            }, {
+                            "move": "Body Slam",
+                            "level": 1
+                        }, {
                                 "move": "Double Slap",
                                 "level": 1
                             }, {
@@ -11432,9 +11607,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }]
@@ -11459,9 +11634,9 @@ var FullScreenPokemon;
                     "Speed": 90,
                     "moves": {
                         "natural": [{
-                                "move": "Ember",
-                                "level": 1
-                            }, {
+                            "move": "Ember",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 30
                             }, {
@@ -11481,9 +11656,9 @@ var FullScreenPokemon;
                                 "level": 48
                             }],
                         "hm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -11527,9 +11702,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "tm": [{
-                                "move": "Ember",
-                                "level": 1
-                            }, {
+                            "move": "Ember",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 30
                             }, {
@@ -11569,9 +11744,9 @@ var FullScreenPokemon;
                     "Speed": 40,
                     "moves": {
                         "natural": [{
-                                "move": "Conversion",
-                                "level": 1
-                            }, {
+                            "move": "Conversion",
+                            "level": 1
+                        }, {
                                 "move": "Sharpen",
                                 "level": 1
                             }, {
@@ -11592,9 +11767,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -11666,6 +11841,8 @@ var FullScreenPokemon;
                     "info": [
                         "Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught."
                     ],
+
+
                     "number": 57,
                     "height": ["3", "3"],
                     "weight": 70.5,
@@ -11677,9 +11854,9 @@ var FullScreenPokemon;
                     "Speed": 95,
                     "moves": {
                         "natural": [{
-                                "move": "Fury Swipes",
-                                "level": 1
-                            }, {
+                            "move": "Fury Swipes",
+                            "level": 1
+                        }, {
                                 "move": "Karate Chop",
                                 "level": 1
                             }, {
@@ -11705,13 +11882,13 @@ var FullScreenPokemon;
                                 "level": 46
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11802,9 +11979,9 @@ var FullScreenPokemon;
                     "Speed": 55,
                     "moves": {
                         "natural": [{
-                                "move": "Scratch",
-                                "level": 1
-                            }, {
+                            "move": "Scratch",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 28
                             }, {
@@ -11822,9 +11999,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11899,6 +12076,8 @@ var FullScreenPokemon;
                     "info": [
                         "Its long tail serves as a ground to protect itself from its own high voltage power."
                     ],
+
+
                     "number": 26,
                     "height": ["2", "7"],
                     "weight": 66.1,
@@ -11910,9 +12089,9 @@ var FullScreenPokemon;
                     "Speed": 110,
                     "moves": {
                         "natural": [{
-                                "move": "Growl",
-                                "level": 1
-                            }, {
+                            "move": "Growl",
+                            "level": 1
+                        }, {
                                 "move": "Thunder Shock",
                                 "level": 1
                             }, {
@@ -11920,13 +12099,13 @@ var FullScreenPokemon;
                                 "level": 1
                             }],
                         "hm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }],
+                            "move": "Flash",
+                            "level": 5
+                        }],
                         "tm": [{
-                                "move": "Flash",
-                                "level": 5
-                            }]
+                            "move": "Flash",
+                            "level": 5
+                        }]
                     }
                 },
                 "Rapidash": {
@@ -11935,6 +12114,8 @@ var FullScreenPokemon;
                     "info": [
                         "Very competitive, this %%%%%%%POKEMON%%%%%%% will chase anything that moves fast in the hopes of racing it."
                     ],
+
+
                     "number": 78,
                     "height": ["5", "7"],
                     "weight": 209.4,
@@ -11946,9 +12127,9 @@ var FullScreenPokemon;
                     "Speed": 105,
                     "moves": {
                         "natural": [{
-                                "move": "Ember",
-                                "level": 1
-                            }, {
+                            "move": "Ember",
+                            "level": 1
+                        }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -11978,9 +12159,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Ember",
-                                "level": 1
-                            }, {
+                            "move": "Ember",
+                            "level": 1
+                        }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -12016,6 +12197,8 @@ var FullScreenPokemon;
                     "info": [
                         "It uses its whiskers to maintain its balance. It apparently slows down if they are cut off."
                     ],
+
+
                     "number": 20,
                     "height": ["2", "4"],
                     "weight": 40.8,
@@ -12027,9 +12210,9 @@ var FullScreenPokemon;
                     "Speed": 97,
                     "moves": {
                         "natural": [{
-                                "move": "Quick Attack",
-                                "level": 1
-                            }, {
+                            "move": "Quick Attack",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -12049,9 +12232,9 @@ var FullScreenPokemon;
                                 "level": 41
                             }],
                         "hm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -12110,9 +12293,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "tm": [{
-                                "move": "Quick Attack",
-                                "level": 1
-                            }, {
+                            "move": "Quick Attack",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -12152,9 +12335,9 @@ var FullScreenPokemon;
                     "Speed": 72,
                     "moves": {
                         "natural": [{
-                                "move": "Tackle",
-                                "level": 1
-                            }, {
+                            "move": "Tackle",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -12172,9 +12355,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Tackle",
-                                "level": 1
-                            }, {
+                            "move": "Tackle",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -12211,9 +12394,9 @@ var FullScreenPokemon;
                     "Speed": 40,
                     "moves": {
                         "natural": [{
-                                "move": "Fury Attack",
-                                "level": 1
-                            }, {
+                            "move": "Fury Attack",
+                            "level": 1
+                        }, {
                                 "move": "Horn Attack",
                                 "level": 1
                             }, {
@@ -12242,16 +12425,16 @@ var FullScreenPokemon;
                                 "level": 64
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -12360,9 +12543,9 @@ var FullScreenPokemon;
                     "Speed": 25,
                     "moves": {
                         "natural": [{
-                                "move": "Horn Attack",
-                                "level": 1
-                            }, {
+                            "move": "Horn Attack",
+                            "level": 1
+                        }, {
                                 "move": "Stomp",
                                 "level": 30
                             }, {
@@ -12382,13 +12565,13 @@ var FullScreenPokemon;
                                 "level": 55
                             }],
                         "hm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }],
+                            "move": "Strength",
+                            "level": 4
+                        }],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -12464,9 +12647,9 @@ var FullScreenPokemon;
                     "Speed": 40,
                     "moves": {
                         "natural": [{
-                                "move": "Scratch",
-                                "level": 1
-                            }, {
+                            "move": "Scratch",
+                            "level": 1
+                        }, {
                                 "move": "Sand Attack",
                                 "level": 10
                             }, {
@@ -12483,16 +12666,16 @@ var FullScreenPokemon;
                                 "level": 38
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }, {
+                            "move": "Cut",
+                            "level": 1
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -12555,6 +12738,8 @@ var FullScreenPokemon;
                     "info": [
                         "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape."
                     ],
+
+
                     "number": 28,
                     "height": ["3", "3"],
                     "weight": 65,
@@ -12566,9 +12751,9 @@ var FullScreenPokemon;
                     "Speed": 65,
                     "moves": {
                         "natural": [{
-                                "move": "Sand Attack",
-                                "level": 1
-                            }, {
+                            "move": "Sand Attack",
+                            "level": 1
+                        }, {
                                 "move": "Scratch",
                                 "level": 1
                             }, {
@@ -12588,16 +12773,16 @@ var FullScreenPokemon;
                                 "level": 47
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }, {
+                            "move": "Cut",
+                            "level": 1
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -12676,9 +12861,9 @@ var FullScreenPokemon;
                     "Speed": 105,
                     "moves": {
                         "natural": [{
-                                "move": "Quick Attack",
-                                "level": 1
-                            }, {
+                            "move": "Quick Attack",
+                            "level": 1
+                        }, {
                                 "move": "Leer",
                                 "level": 17
                             }, {
@@ -12699,9 +12884,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -12759,9 +12944,9 @@ var FullScreenPokemon;
                     "Speed": 85,
                     "moves": {
                         "natural": [{
-                                "move": "Bubble",
-                                "level": 1
-                            }, {
+                            "move": "Bubble",
+                            "level": 1
+                        }, {
                                 "move": "Smokescreen",
                                 "level": 1
                             }, {
@@ -12782,9 +12967,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -12838,6 +13023,8 @@ var FullScreenPokemon;
                     "info": [
                         "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks."
                     ],
+
+
                     "number": 119,
                     "height": ["4", "3"],
                     "weight": 86,
@@ -12849,9 +13036,9 @@ var FullScreenPokemon;
                     "Speed": 68,
                     "moves": {
                         "natural": [{
-                                "move": "Peck",
-                                "level": 1
-                            }, {
+                            "move": "Peck",
+                            "level": 1
+                        }, {
                                 "move": "Supersonic",
                                 "level": 1
                             }, {
@@ -12877,13 +13064,13 @@ var FullScreenPokemon;
                                 "level": 54
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -12953,9 +13140,9 @@ var FullScreenPokemon;
                     "Speed": 45,
                     "moves": {
                         "natural": [{
-                                "move": "Headbutt",
-                                "level": 1
-                            }, {
+                            "move": "Headbutt",
+                            "level": 1
+                        }, {
                                 "move": "Growl",
                                 "level": 30
                             }, {
@@ -12973,9 +13160,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -13045,9 +13232,9 @@ var FullScreenPokemon;
                     "Speed": 40,
                     "moves": {
                         "natural": [{
-                                "move": "Tackle",
-                                "level": 1
-                            }, {
+                            "move": "Tackle",
+                            "level": 1
+                        }, {
                                 "move": "Withdraw",
                                 "level": 1
                             }, {
@@ -13067,13 +13254,13 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -13149,9 +13336,9 @@ var FullScreenPokemon;
                     "Speed": 30,
                     "moves": {
                         "natural": [{
-                                "move": "Confusion",
-                                "level": 1
-                            }, {
+                            "move": "Confusion",
+                            "level": 1
+                        }, {
                                 "move": "Disable",
                                 "level": 1
                             }, {
@@ -13181,9 +13368,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -13301,9 +13488,9 @@ var FullScreenPokemon;
                     "Speed": 15,
                     "moves": {
                         "natural": [{
-                                "move": "Confusion",
-                                "level": 1
-                            }, {
+                            "move": "Confusion",
+                            "level": 1
+                        }, {
                                 "move": "Disable",
                                 "level": 18
                             }, {
@@ -13323,9 +13510,9 @@ var FullScreenPokemon;
                                 "level": 48
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }, {
@@ -13333,9 +13520,9 @@ var FullScreenPokemon;
                                 "level": 5
                             }],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -13422,6 +13609,8 @@ var FullScreenPokemon;
                     "info": [
                         "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful."
                     ],
+
+
                     "number": 143,
                     "height": ["6", "11"],
                     "weight": 1014.1,
@@ -13433,9 +13622,9 @@ var FullScreenPokemon;
                     "Speed": 30,
                     "moves": {
                         "natural": [{
-                                "move": "Amnesia",
-                                "level": 1
-                            }, {
+                            "move": "Amnesia",
+                            "level": 1
+                        }, {
                                 "move": "Headbutt",
                                 "level": 1
                             }, {
@@ -13455,16 +13644,16 @@ var FullScreenPokemon;
                                 "level": 56
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -13585,9 +13774,9 @@ var FullScreenPokemon;
                     "Speed": 70,
                     "moves": {
                         "natural": [{
-                                "move": "Growl",
-                                "level": 1
-                            }, {
+                            "move": "Growl",
+                            "level": 1
+                        }, {
                                 "move": "Peck",
                                 "level": 1
                             }, {
@@ -13608,9 +13797,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Razor Wind",
-                                "level": 2
-                            }, {
+                            "move": "Razor Wind",
+                            "level": 2
+                        }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -13669,9 +13858,9 @@ var FullScreenPokemon;
                     "Speed": 43,
                     "moves": {
                         "natural": [{
-                                "move": "Tackle",
-                                "level": 1
-                            }, {
+                            "move": "Tackle",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -13695,9 +13884,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -13769,6 +13958,8 @@ var FullScreenPokemon;
                     "info": [
                         "Its central core glows with the seven colors of the rainbow. Some people value the core as a gem."
                     ],
+
+
                     "number": 121,
                     "height": ["3", "7"],
                     "weight": 176.4,
@@ -13780,9 +13971,9 @@ var FullScreenPokemon;
                     "Speed": 115,
                     "moves": {
                         "natural": [{
-                                "move": "Harden",
-                                "level": 1
-                            }, {
+                            "move": "Harden",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -13790,16 +13981,16 @@ var FullScreenPokemon;
                                 "level": 1
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Flash",
                                 "level": 5
                             }],
                         "tm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }, {
+                            "move": "Surf",
+                            "level": 3
+                        }, {
                                 "move": "Flash",
                                 "level": 5
                             }]
@@ -13824,9 +14015,9 @@ var FullScreenPokemon;
                     "Speed": 85,
                     "moves": {
                         "natural": [{
-                                "move": "Tackle",
-                                "level": 1
-                            }, {
+                            "move": "Tackle",
+                            "level": 1
+                        }, {
                                 "move": "Water Gun",
                                 "level": 17
                             }, {
@@ -13850,9 +14041,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -13940,9 +14131,9 @@ var FullScreenPokemon;
                     "Speed": 60,
                     "moves": {
                         "natural": [{
-                                "move": "Bind",
-                                "level": 1
-                            }, {
+                            "move": "Bind",
+                            "level": 1
+                        }, {
                                 "move": "Constrict",
                                 "level": 1
                             }, {
@@ -13965,13 +14156,13 @@ var FullScreenPokemon;
                                 "level": 49
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14022,6 +14213,8 @@ var FullScreenPokemon;
                     "info": [
                         "When it targets an enemy, it charges furiously while whipping its body with its long tails."
                     ],
+
+
                     "number": 128,
                     "height": ["4", "7"],
                     "weight": 194.9,
@@ -14033,9 +14226,9 @@ var FullScreenPokemon;
                     "Speed": 110,
                     "moves": {
                         "natural": [{
-                                "move": "Tackle",
-                                "level": 1
-                            }, {
+                            "move": "Tackle",
+                            "level": 1
+                        }, {
                                 "move": "Stomp",
                                 "level": 21
                             }, {
@@ -14053,9 +14246,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -14134,9 +14327,9 @@ var FullScreenPokemon;
                     "Speed": 70,
                     "moves": {
                         "natural": [{
-                                "move": "Acid",
-                                "level": 1
-                            }, {
+                            "move": "Acid",
+                            "level": 1
+                        }, {
                                 "move": "Supersonic",
                                 "level": 7
                             }, {
@@ -14162,16 +14355,16 @@ var FullScreenPokemon;
                                 "level": 48
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }, {
+                            "move": "Cut",
+                            "level": 1
+                        }, {
                                 "move": "Surf",
                                 "level": 3
                             }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14228,6 +14421,8 @@ var FullScreenPokemon;
                     "info": [
                         "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey."
                     ],
+
+
                     "number": 73,
                     "height": ["5", "3"],
                     "weight": 121.3,
@@ -14239,9 +14434,9 @@ var FullScreenPokemon;
                     "Speed": 100,
                     "moves": {
                         "natural": [{
-                                "move": "Acid",
-                                "level": 1
-                            }, {
+                            "move": "Acid",
+                            "level": 1
+                        }, {
                                 "move": "Supersonic",
                                 "level": 1
                             }, {
@@ -14273,16 +14468,16 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }, {
+                            "move": "Cut",
+                            "level": 1
+                        }, {
                                 "move": "Surf",
                                 "level": 3
                             }],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14355,9 +14550,9 @@ var FullScreenPokemon;
                     "Speed": 65,
                     "moves": {
                         "natural": [{
-                                "move": "Quick Attack",
-                                "level": 1
-                            }, {
+                            "move": "Quick Attack",
+                            "level": 1
+                        }, {
                                 "move": "Sand Attack",
                                 "level": 1
                             }, {
@@ -14392,13 +14587,13 @@ var FullScreenPokemon;
                                 "level": 54
                             }],
                         "hm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }],
+                            "move": "Surf",
+                            "level": 3
+                        }],
                         "tm": [{
-                                "move": "Surf",
-                                "level": 3
-                            }]
+                            "move": "Surf",
+                            "level": 3
+                        }]
                     }
                 },
                 "Venomoth": {
@@ -14407,6 +14602,8 @@ var FullScreenPokemon;
                     "info": [
                         "The dust-like scales covering its wings are color coded to indicate the kinds of poison it has."
                     ],
+
+
                     "number": 49,
                     "height": ["4", "11"],
                     "weight": 27.6,
@@ -14418,9 +14615,9 @@ var FullScreenPokemon;
                     "Speed": 90,
                     "moves": {
                         "natural": [{
-                                "move": "Disable",
-                                "level": 1
-                            }, {
+                            "move": "Disable",
+                            "level": 1
+                        }, {
                                 "move": "Leech Life",
                                 "level": 1
                             }, {
@@ -14450,9 +14647,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Confusion",
-                                "level": 1
-                            }, {
+                            "move": "Confusion",
+                            "level": 1
+                        }, {
                                 "move": "Disable",
                                 "level": 1
                             }, {
@@ -14501,9 +14698,9 @@ var FullScreenPokemon;
                     "Speed": 45,
                     "moves": {
                         "natural": [{
-                                "move": "Disable",
-                                "level": 1
-                            }, {
+                            "move": "Disable",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -14526,9 +14723,9 @@ var FullScreenPokemon;
                                 "level": 43
                             }],
                         "hm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -14569,9 +14766,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "tm": [{
-                                "move": "Disable",
-                                "level": 1
-                            }, {
+                            "move": "Disable",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -14607,6 +14804,8 @@ var FullScreenPokemon;
                     "info": [
                         "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
                     ],
+
+
                     "number": 3,
                     "height": ["6", "7"],
                     "weight": 220.5,
@@ -14618,9 +14817,9 @@ var FullScreenPokemon;
                     "Speed": 80,
                     "moves": {
                         "natural": [{
-                                "move": "Growl",
-                                "level": 1
-                            }, {
+                            "move": "Growl",
+                            "level": 1
+                        }, {
                                 "move": "Leech Seed",
                                 "level": 1
                             }, {
@@ -14653,9 +14852,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14706,6 +14905,8 @@ var FullScreenPokemon;
                     "info": [
                         "Said to live in huge colonies deep in jungles, although no one has ever returned from there."
                     ],
+
+
                     "number": 71,
                     "height": ["5", "7"],
                     "weight": 34.2,
@@ -14717,9 +14918,9 @@ var FullScreenPokemon;
                     "Speed": 70,
                     "moves": {
                         "natural": [{
-                                "move": "Acid",
-                                "level": 1
-                            }, {
+                            "move": "Acid",
+                            "level": 1
+                        }, {
                                 "move": "Razor Leaf",
                                 "level": 1
                             }, {
@@ -14739,13 +14940,13 @@ var FullScreenPokemon;
                                 "level": 18
                             }],
                         "hm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }],
+                            "move": "Cut",
+                            "level": 1
+                        }],
                         "tm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }]
+                            "move": "Cut",
+                            "level": 1
+                        }]
                     }
                 },
                 "Vileplume": {
@@ -14767,9 +14968,9 @@ var FullScreenPokemon;
                     "Speed": 50,
                     "moves": {
                         "natural": [{
-                                "move": "Acid",
-                                "level": 1
-                            }, {
+                            "move": "Acid",
+                            "level": 1
+                        }, {
                                 "move": "Petal Dance",
                                 "level": 1
                             }, {
@@ -14790,9 +14991,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Cut",
-                                "level": 1
-                            }]
+                            "move": "Cut",
+                            "level": 1
+                        }]
                     }
                 },
                 "Voltorb": {
@@ -14814,9 +15015,9 @@ var FullScreenPokemon;
                     "Speed": 100,
                     "moves": {
                         "natural": [{
-                                "move": "Screech",
-                                "level": 1
-                            }, {
+                            "move": "Screech",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -14837,9 +15038,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -14906,9 +15107,9 @@ var FullScreenPokemon;
                     "Speed": 65,
                     "moves": {
                         "natural": [{
-                                "move": "Ember",
-                                "level": 1
-                            }, {
+                            "move": "Ember",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -14928,9 +15129,9 @@ var FullScreenPokemon;
                                 "level": 42
                             }],
                         "hm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -14974,9 +15175,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "tm": [{
-                                "move": "Ember",
-                                "level": 1
-                            }, {
+                            "move": "Ember",
+                            "level": 1
+                        }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -15016,9 +15217,9 @@ var FullScreenPokemon;
                     "Speed": 58,
                     "moves": {
                         "natural": [{
-                                "move": "Bubble",
-                                "level": 1
-                            }, {
+                            "move": "Bubble",
+                            "level": 1
+                        }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -15045,9 +15246,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Mega Punch",
-                                "level": 1
-                            }, {
+                            "move": "Mega Punch",
+                            "level": 1
+                        }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -15132,9 +15333,9 @@ var FullScreenPokemon;
                     "Speed": 50,
                     "moves": {
                         "natural": [{
-                                "move": "Poison Sting",
-                                "level": 1
-                            }, {
+                            "move": "Poison Sting",
+                            "level": 1
+                        }, {
                                 "move": "String Shot",
                                 "level": 1
                             }],
@@ -15161,9 +15362,9 @@ var FullScreenPokemon;
                     "Speed": 55,
                     "moves": {
                         "natural": [{
-                                "move": "Growth",
-                                "level": 1
-                            }, {
+                            "move": "Growth",
+                            "level": 1
+                        }, {
                                 "move": "Vine Whip",
                                 "level": 1
                             }, {
@@ -15193,9 +15394,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Swords Dance",
-                                "level": 3
-                            }, {
+                            "move": "Swords Dance",
+                            "level": 3
+                        }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -15240,6 +15441,8 @@ var FullScreenPokemon;
                     "info": [
                         "Where two kinds of poison gases meet, 2 KOFFINGs can fuse into a WEEZING over many years."
                     ],
+
+
                     "number": 110,
                     "height": ["3", "11"],
                     "weight": 20.9,
@@ -15251,9 +15454,9 @@ var FullScreenPokemon;
                     "Speed": 60,
                     "moves": {
                         "natural": [{
-                                "move": "Sludge",
-                                "level": 1
-                            }, {
+                            "move": "Sludge",
+                            "level": 1
+                        }, {
                                 "move": "Smog",
                                 "level": 1
                             }, {
@@ -15276,9 +15479,9 @@ var FullScreenPokemon;
                                 "level": 53
                             }],
                         "hm": [{
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
+                            "move": "Toxic",
+                            "level": 6
+                        }, {
                                 "move": "Hyper Beam",
                                 "level": 15
                             }, {
@@ -15316,9 +15519,9 @@ var FullScreenPokemon;
                                 "level": 50
                             }],
                         "tm": [{
-                                "move": "Sludge",
-                                "level": 1
-                            }, {
+                            "move": "Sludge",
+                            "level": 1
+                        }, {
                                 "move": "Smog",
                                 "level": 1
                             }, {
@@ -15348,6 +15551,8 @@ var FullScreenPokemon;
                     "info": [
                         "The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size."
                     ],
+
+
                     "number": 40,
                     "height": ["3", "3"],
                     "weight": 26.5,
@@ -15359,9 +15564,9 @@ var FullScreenPokemon;
                     "Speed": 45,
                     "moves": {
                         "natural": [{
-                                "move": "Defense Curl",
-                                "level": 1
-                            }, {
+                            "move": "Defense Curl",
+                            "level": 1
+                        }, {
                                 "move": "Disable",
                                 "level": 1
                             }, {
@@ -15373,9 +15578,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Strength",
-                                "level": 4
-                            }, {
+                            "move": "Strength",
+                            "level": 4
+                        }, {
                                 "move": "Flash",
                                 "level": 5
                             }]
@@ -15387,6 +15592,8 @@ var FullScreenPokemon;
                     "info": [
                         "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear from clouds while dropping enormous lightning bolts."
                     ],
+
+
                     "number": 145,
                     "height": ["5", "3"],
                     "weight": 116,
@@ -15398,9 +15605,9 @@ var FullScreenPokemon;
                     "Speed": 100,
                     "moves": {
                         "natural": [{
-                                "move": "Drill Peck",
-                                "level": 1
-                            }, {
+                            "move": "Drill Peck",
+                            "level": 1
+                        }, {
                                 "move": "Thunder Shock",
                                 "level": 1
                             }, {
@@ -15414,16 +15621,16 @@ var FullScreenPokemon;
                                 "level": 60
                             }],
                         "hm": [{
-                                "move": "Fly",
-                                "level": 2
-                            }, {
+                            "move": "Fly",
+                            "level": 2
+                        }, {
                                 "move": "Flash",
                                 "level": 5
                             }],
                         "tm": [{
-                                "move": "Razor Wind",
-                                "level": 2
-                            }, {
+                            "move": "Razor Wind",
+                            "level": 2
+                        }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -15496,9 +15703,9 @@ var FullScreenPokemon;
                     "Speed": 55,
                     "moves": {
                         "natural": [{
-                                "move": "Leech Life",
-                                "level": 1
-                            }, {
+                            "move": "Leech Life",
+                            "level": 1
+                        }, {
                                 "move": "Supersonic",
                                 "level": 10
                             }, {
@@ -15516,9 +15723,9 @@ var FullScreenPokemon;
                             }],
                         "hm": [],
                         "tm": [{
-                                "move": "Leech Life",
-                                "level": 1
-                            }, {
+                            "move": "Leech Life",
+                            "level": 1
+                        }, {
                                 "move": "Supersonic",
                                 "level": 10
                             }, {
@@ -15541,13 +15748,13 @@ var FullScreenPokemon;
              * Run on http://www.smogon.com/dex/rb/moves/
              * NOTE: Effects added in manually
              * * Swords Dance, Sleep Powder
-             *
+             * 
              * var output = {};
-             *
+             * 
              * function tryNumber(string) {
              *     return isNaN(Number(string)) ? string : Number(string);
              * }
-             *
+             * 
              * Array.prototype.slice.call(document.querySelectorAll("tr")).map(function (row) {
              *     output[row.children[0].innerText.trim()] = {
              *         "type": row.children[1].innerText.trim(),
@@ -15558,7 +15765,7 @@ var FullScreenPokemon;
              *         "description": row.children[6].innerText
              *     };
              * });
-             *
+             * 
              * JSON.stringify(output);
              */
             "moves": {
@@ -17275,7 +17482,7 @@ var FullScreenPokemon;
                     ],
                     /*
                      * Run on http://www.smogon.com/dex/rb/pokemon/
-                     *
+                     * 
                      * $($("ul")[3]).find("li")
                      *    .toArray()
                      *    .map(function (element) {
@@ -17377,4 +17584,4 @@ var FullScreenPokemon;
             }
         }
     };
-})(FullScreenPokemon || (FullScreenPokemon = {}));
+}

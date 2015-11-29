@@ -1,6 +1,10 @@
 declare module MathDecidr {
+    export interface IConstants {
+        [i: string]: any;
+    }
+
     export interface IEquation {
-        (constants: any, equations: IEquationContainer, ...args: any[]): any;
+        (constants: IConstants, equations: IEquationContainer, ...args: any[]): any;
     }
 
     export interface IEquationContainer {
@@ -9,9 +13,7 @@ declare module MathDecidr {
 
     export interface IMathDecidrSettings {
         constants?: any;
-        equations?: {
-            [i: string]: IEquation;
-        };
+        equations?: IEquationContainer;
     }
 
     export interface IMathDecidr {

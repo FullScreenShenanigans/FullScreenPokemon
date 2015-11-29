@@ -63,23 +63,23 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian Forest"] = {
             "height": 384,
             "wildPokemon": {
                 "grass": [{
-                    "title": "Caterpie",
+                    "title": "Caterpie".split(""),
                     "levels": [3, 5],
                     "rate": .5
                 }, {
-                    "title": "Metapod",
+                    "title": "Metapod".split(""),
                     "levels": [4, 5, 6],
                     "rate": .35
                 }, {
-                    "title": "Weedle",
+                    "title": "Weedle".split(""),
                     "level": 3,
                     "rate": .05
                 }, {
-                    "title": "Kakuna",
+                    "title": "Kakuna".split(""),
                     "level": 4,
                     "rate": .05
                 }, {
-                    "title": "Pikachu",
+                    "title": "Pikachu".split(""),
                     "levels": [3, 5],
                     "rate": .05
                 }]

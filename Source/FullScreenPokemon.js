@@ -139,7 +139,9 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.resetBattleMover = function (FSP, settings) {
             FSP.BattleMover = new BattleMovr.BattleMovr(FSP.proliferate({
                 "GameStarter": FSP,
-                "MenuGrapher": FSP.MenuGrapher
+                "MenuGrapher": FSP.MenuGrapher,
+                "openItemsMenuCallback": FSP.openItemsMenu.bind(FSP),
+                "openActorsMenuCallback": FSP.openPokemonMenu.bind(FSP)
             }, FSP.settings.battles));
         };
         /**
@@ -934,10 +936,10 @@ var FullScreenPokemon;
             thing.FSP.animateCharacterPreventWalking(thing);
             thing.FSP.startBattle({
                 "opponent": {
-                    "name": chosen.title.split(""),
+                    "name": chosen.title,
                     "actors": [chosenPokemon],
                     "category": "Wild",
-                    "sprite": chosen.title + "Front"
+                    "sprite": chosen.title.join("") + "Front"
                 }
             });
         };
@@ -2575,16 +2577,16 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.openPokedexListing = function (title, callback, settings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = FSP.MathDecider.getConstant("pokemon")[title], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join("");
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = FSP.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join("");
             FSP.MenuGrapher.createMenu("PokedexListing", settings);
             FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
-                "thing": title + "Front",
+                "thing": title.join("") + "Front",
                 "type": "thing",
                 "args": {
                     "flipHoriz": true
                 }
             });
-            FSP.MenuGrapher.addMenuDialog("PokedexListingName", title.toUpperCase());
+            FSP.MenuGrapher.addMenuDialog("PokedexListingName", title);
             FSP.MenuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
             FSP.MenuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
             FSP.MenuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
@@ -2931,10 +2933,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.createPokemon = function (schema) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), level = typeof schema.levels !== "undefined"
                 ? FSP.NumberMaker.randomArrayMember(schema.levels)
-                : schema.level, pokemon = FSP.MathDecider.compute("newPokemon", schema.title, level);
-            if (schema.moves) {
-                pokemon.moves = schema.moves;
-            }
+                : schema.level, pokemon = FSP.MathDecider.compute("newPokemon", schema.title, schema.title, level);
             return pokemon;
         };
         /**
@@ -3185,7 +3184,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneBattleOpponentSendOutAppear = function (FSP, settings, args) {
-            var opponentInfo = settings.battleInfo.opponent, pokemonInfo = opponentInfo.actors[opponentInfo.selectedIndex], pokemon = FSP.BattleMover.setThing("opponent", pokemonInfo.title + "Front");
+            var opponentInfo = settings.battleInfo.opponent, pokemonInfo = opponentInfo.actors[opponentInfo.selectedIndex], pokemon = FSP.BattleMover.setThing("opponent", pokemonInfo.title.join("") + "Front");
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
             FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
             FSP.ScenePlayer.playRoutine(args.nextRoutine);
@@ -3205,7 +3204,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneBattlePlayerSendOutAppear = function (FSP, settings, args) {
-            var playerInfo = settings.battleInfo.player, pokemonInfo = playerInfo.selectedActor, pokemon = FSP.BattleMover.setThing("player", pokemonInfo.title + "Back");
+            var playerInfo = settings.battleInfo.player, pokemonInfo = playerInfo.selectedActor, pokemon = FSP.BattleMover.setThing("player", pokemonInfo.title.join("") + "Back");
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
             FSP.addBattleDisplayPokemonHealth(FSP, "player");
             FSP.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
@@ -4829,7 +4828,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.setActiveMenu("GeneralText");
             FSP.ItemsHolder.setItem("starter", settings.chosen);
             FSP.ItemsHolder.setItem("PokemonInParty", [
-                FSP.MathDecider.compute("newPokemon", settings.chosen, 5)
+                FSP.MathDecider.compute("newPokemon", settings.chosen.split(""), 5)
             ]);
         };
         /**
@@ -5007,7 +5006,7 @@ var FullScreenPokemon;
                     "hasActors": true,
                     "reward": 175,
                     "actors": [
-                        FSP.MathDecider.compute("newPokemon", FSP.ItemsHolder.getItem("starterRival"), 5)
+                        FSP.MathDecider.compute("newPokemon", FSP.ItemsHolder.getItem("starterRival").split(""), 5)
                     ]
                 },
                 "textStart": ["", " wants to fight!"],
@@ -5276,7 +5275,7 @@ var FullScreenPokemon;
                     "sprite": "WeedleFront",
                     "category": "Wild",
                     "actors": [
-                        FSP.MathDecider.compute("newPokemon", "Weedle", 5)
+                        FSP.MathDecider.compute("newPokemon", "Weedle".split(""), 5)
                     ]
                 },
                 "items": [{
@@ -5320,6 +5319,9 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneRivalRoute22RivalTalks = function (FSP, settings) {
+            var rivalTitle = FSP.ItemsHolder.getItem("starterRival").split(""), rivalNickname = rivalTitle.map(function (character) {
+                return character.toUpperCase();
+            });
             FSP.animateCharacterSetDirection(settings.player, FSP.getDirectionBordering(settings.player, settings.rival));
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", [
@@ -5336,8 +5338,8 @@ var FullScreenPokemon;
                     "hasActors": true,
                     "reward": 280,
                     "actors": [
-                        FSP.MathDecider.compute("newPokemon", FSP.ItemsHolder.getItem("starterRival"), 8),
-                        FSP.MathDecider.compute("newPokemon", "Pidgey", 9)
+                        FSP.MathDecider.compute("newPokemon", rivalTitle, rivalNickname, 8),
+                        FSP.MathDecider.compute("newPokemon", "Pidgey".split(""), 9)
                     ]
                 },
                 "textStart": [

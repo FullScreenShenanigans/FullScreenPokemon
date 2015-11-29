@@ -51,11 +51,11 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
             "height": 136,
             "wildPokemon": {
                 "grass": [{
-                    "title": "Pidgey",
+                    "title": "PIDGEY".split(""),
                     "levels": [2, 3, 4, 5],
                     "rate": .55
                 }, {
-                    "title": "Rattata",
+                    "title": "RATTATA".split(""),
                     "levels": [2, 3, 4],
                     "rate": .45
                 }]

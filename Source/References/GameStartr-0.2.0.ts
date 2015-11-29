@@ -303,7 +303,7 @@ declare module GameStartr {
         "library": { [i: string]: MapsCreatr.IMapsCreatrMapRaw };
     }
 
-    export interface IMathDecidrCustoms extends IGameStartrSettingsObject { }
+    export interface IMathDecidrCustoms extends IGameStartrSettingsObject, MathDecidr.IMathDecidrSettings{ }
 
     export interface IModAttachrCustoms extends IGameStartrSettingsObject {
         "storeLocally"?: boolean;

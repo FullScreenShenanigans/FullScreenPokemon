@@ -27,7 +27,7 @@
         "grunt-processhtml": "~0.3.X",
         "grunt-preprocess": "~5.X",
         "grunt-tslint": "~2.4.X",
-        "grunt-typescript": "~0.7.X",
+        "grunt-typescript": "~0.8.X",
         "grunt-zip": "~0.17.X",
         "mocha": "~2.X",
         "tslint": "~2.4.X",
