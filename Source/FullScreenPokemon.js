@@ -2619,7 +2619,7 @@ var FullScreenPokemon;
                     return {
                         "text": listing.title,
                         "callback": FSP.openPokemonMenuContext.bind(FSP, {
-                            "pokemon": listing,
+                            "pokemon": listing
                         }),
                         "things": [
                             {

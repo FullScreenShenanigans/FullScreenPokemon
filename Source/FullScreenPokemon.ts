@@ -3190,7 +3190,7 @@ module FullScreenPokemon {
                     {
                         "text": "%%%%%%%POKEMON%%%%%%%",
                         "callback": FSP.openPokemonMenu.bind(FSP, {
-                            //"onSwitch": ...
+                            // "onSwitch": ...
                         })
                     }, {
                         "text": "ITEM",
@@ -3538,8 +3538,8 @@ module FullScreenPokemon {
                         "text": listing.title,
                         "callback": FSP.openPokemonMenuContext.bind(
                             FSP, {
-                                "pokemon": listing,
-                                //"onSwitch": settings.onSwitch.bind(FSP, "player", i)
+                                "pokemon": listing
+                                // "onSwitch": settings.onSwitch.bind(FSP, "player", i)
                             }),
                         "things": [
                             {

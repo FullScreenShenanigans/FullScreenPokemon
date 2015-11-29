@@ -342,7 +342,7 @@ var FullScreenPokemon;
                             - 140);
                     case "slow":
                         return (5 * Math.pow(level, 3)) / 4;
-                    //case "mediumFast":
+                    // case "mediumFast":
                     default:
                         return Math.pow(level, 3);
                 }
