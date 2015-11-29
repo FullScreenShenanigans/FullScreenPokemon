@@ -4916,12 +4916,14 @@ module FullScreenPokemon {
             }
 
             if (!opponent.hasActors) {
-                FSP.BattleMover.closeBattle(
-                    FSP.animateFadeFromColor.bind(
-                        FSP, FSP, {
-                            "color": "White"
-                        })
-                );
+                FSP.BattleMover.closeBattle(function (): void {
+                    FSP.animateFadeFromColor(FSP, {
+                        "color": "White",
+                        "callback": function (): void {
+                            FSP.ScenePlayer.playRoutine("Complete");
+                        }
+                    });
+                });
                 return;
             }
 
@@ -4983,9 +4985,12 @@ module FullScreenPokemon {
                 animationSettings: any = {
                     "color": "White"
                 },
-                callback: () => void = FSP.BattleMover.closeBattle.bind(
-                    FSP.BattleMover,
-                    FSP.animateFadeFromColor.bind(FSP, FSP, animationSettings));
+                callback: () => void = function (): void {
+                    FSP.ScenePlayer.playRoutine("Complete");
+                    FSP.BattleMover.closeBattle(function (): void {
+                        FSP.animateFadeFromColor(FSP, animationSettings);
+                    })
+                };
 
             if (battleInfo.giftAfterBattle) {
                 FSP.addItemToBag(FSP, battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
@@ -5029,15 +5034,19 @@ module FullScreenPokemon {
                 message: string[] = [
                     "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!"
                 ],
-                transport: ITransportSchema,
                 callback: Function;
 
             if (!battleInfo.noBlackout) {
                 message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
-                transport = FSP.ItemsHolder.getItem("lastPokecenter");
-                callback = FSP.setMap.bind(FSP, transport.map, transport.location);
+                callback = function (): void {
+                    var transport: ITransportSchema = FSP.ItemsHolder.getItem("lastPokecenter");
+                    FSP.setMap(transport.map, transport.location);
+                    FSP.MapScreener.blockInputs = false;
+                }
             } else {
-                callback = FSP.BattleMover.closeBattle;
+                callback = function (): void {
+                    FSP.BattleMover.closeBattle();
+                }
             }
 
             if (FSP.MapScreener.theme) {
@@ -5050,11 +5059,12 @@ module FullScreenPokemon {
                 message,
                 FSP.animateFadeToColor.bind(FSP, FSP, {
                     "color": "Black",
-                    "callback": callback
+                    "callback": function () {
+                        FSP.ScenePlayer.playRoutine("Complete");
+                        callback();
+                    }
                 }));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
-
-            FSP.ScenePlayer.stopCutscene();
         }
 
         /**

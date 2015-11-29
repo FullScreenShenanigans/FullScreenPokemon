@@ -3536,9 +3536,14 @@ var FullScreenPokemon;
                 FSP.AudioPlayer.play(FSP.MapScreener.theme);
             }
             if (!opponent.hasActors) {
-                FSP.BattleMover.closeBattle(FSP.animateFadeFromColor.bind(FSP, FSP, {
-                    "color": "White"
-                }));
+                FSP.BattleMover.closeBattle(function () {
+                    FSP.animateFadeFromColor(FSP, {
+                        "color": "White",
+                        "callback": function () {
+                            FSP.ScenePlayer.playRoutine("Complete");
+                        }
+                    });
+                });
                 return;
             }
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -3574,7 +3579,12 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneBattleVictoryWinnings = function (FSP, settings) {
             var battleInfo = settings.battleInfo, reward = settings.battleInfo.opponent.reward, animationSettings = {
                 "color": "White"
-            }, callback = FSP.BattleMover.closeBattle.bind(FSP.BattleMover, FSP.animateFadeFromColor.bind(FSP, FSP, animationSettings));
+            }, callback = function () {
+                FSP.ScenePlayer.playRoutine("Complete");
+                FSP.BattleMover.closeBattle(function () {
+                    FSP.animateFadeFromColor(FSP, animationSettings);
+                });
+            };
             if (battleInfo.giftAfterBattle) {
                 FSP.addItemToBag(FSP, battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
             }
@@ -3605,14 +3615,19 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneBattleDefeat = function (FSP, settings) {
             var battleInfo = settings.battleInfo, message = [
                 "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!"
-            ], transport, callback;
+            ], callback;
             if (!battleInfo.noBlackout) {
                 message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
-                transport = FSP.ItemsHolder.getItem("lastPokecenter");
-                callback = FSP.setMap.bind(FSP, transport.map, transport.location);
+                callback = function () {
+                    var transport = FSP.ItemsHolder.getItem("lastPokecenter");
+                    FSP.setMap(transport.map, transport.location);
+                    FSP.MapScreener.blockInputs = false;
+                };
             }
             else {
-                callback = FSP.BattleMover.closeBattle;
+                callback = function () {
+                    FSP.BattleMover.closeBattle();
+                };
             }
             if (FSP.MapScreener.theme) {
                 FSP.AudioPlayer.play(FSP.MapScreener.theme);
@@ -3620,10 +3635,12 @@ var FullScreenPokemon;
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", message, FSP.animateFadeToColor.bind(FSP, FSP, {
                 "color": "Black",
-                "callback": callback
+                "callback": function () {
+                    FSP.ScenePlayer.playRoutine("Complete");
+                    callback();
+                }
             }));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
-            FSP.ScenePlayer.stopCutscene();
         };
         /**
          *
