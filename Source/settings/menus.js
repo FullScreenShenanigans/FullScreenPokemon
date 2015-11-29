@@ -46,7 +46,6 @@ var FullScreenPokemon;
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }
-                ;
                 return pokedex
                     .map(function (listing) {
                     return Number(listing.seen);
