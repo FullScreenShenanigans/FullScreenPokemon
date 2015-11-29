@@ -397,6 +397,18 @@ var FullScreenPokemon;
         /**
          *
          */
+        FullScreenPokemon.prototype.removePreThing = function (prething) {
+            var thing = prething.thing;
+            if (!thing.spawned) {
+                return;
+            }
+            thing.spawned = false;
+            thing.FSP.killNormal(thing);
+            thing.FSP.ModAttacher.fireEvent("onRemovePreThing", prething);
+        };
+        /**
+         *
+         */
         FullScreenPokemon.prototype.addPlayer = function (left, top, useSavedInfo) {
             if (left === void 0) { left = 0; }
             if (top === void 0) { top = 0; }

@@ -582,8 +582,8 @@ module FullScreenPokemon {
             if (thing.spawned) {
                 return;
             }
-            thing.spawned = true;
 
+            thing.spawned = true;
             thing.areaName = thing.areaName || thing.FSP.MapsHandler.getAreaName();
             thing.mapName = thing.mapName || thing.FSP.MapsHandler.getMapName();
 
@@ -611,6 +611,22 @@ module FullScreenPokemon {
             }
 
             thing.FSP.ModAttacher.fireEvent("onAddPreThing", prething);
+        }
+
+        /**
+         * 
+         */
+        removePreThing(prething: IPreThing): void {
+            var thing: IThing = prething.thing;
+
+            if (!thing.spawned) {
+                return;
+            }
+
+            thing.spawned = false;
+            thing.FSP.killNormal(thing);
+
+            thing.FSP.ModAttacher.fireEvent("onRemovePreThing", prething);
         }
 
         /**

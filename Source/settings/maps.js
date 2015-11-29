@@ -14,6 +14,7 @@ var FullScreenPokemon;
             "thingsById": FullScreenPokemon.FullScreenPokemon.prototype.generateThingsByIdContainer
         },
         "onSpawn": FullScreenPokemon.FullScreenPokemon.prototype.addPreThing,
+        "onUnspawn": FullScreenPokemon.FullScreenPokemon.prototype.removePreThing,
         "afterAdd": FullScreenPokemon.FullScreenPokemon.prototype.mapAddAfter,
         "macros": {
             "Checkered": FullScreenPokemon.FullScreenPokemon.prototype.macroCheckered,
