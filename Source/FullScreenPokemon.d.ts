@@ -405,7 +405,7 @@ declare module FullScreenPokemon {
         pushSteps?: any[];
         roaming?: boolean;
         roamingDirections?: Direction[];
-        sight?: boolean;
+        sight?: number;
         sightDetector?: ISightDetector;
         shadow?: IThing;
         shouldWalk: boolean;

@@ -2491,7 +2491,7 @@ module FullScreenPokemon {
                 return;
             }
 
-            direction = thing.FSP.getDirectionBordering(other, thing);
+            direction = thing.FSP.getDirectionBetween(other, thing);
 
             if (other.dialogDirections) {
                 dialog = dialog[direction];
@@ -2901,21 +2901,53 @@ module FullScreenPokemon {
          * 
          * @todo I would like this to be more elegant. 
          */
-        getDirectionBordering(thing: IThing, other: IThing): number {
+        getDirectionBordering(thing: IThing, other: IThing): Direction {
             if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < thing.FSP.unitsize) {
-                return 0;
+                return Direction.Top;
             }
 
             if (Math.abs(thing.right - other.left) < thing.FSP.unitsize) {
-                return 1;
+                return Direction.Right;
             }
 
             if (Math.abs(thing.bottom - other.top) < thing.FSP.unitsize) {
-                return 2;
+                return Direction.Bottom;
             }
 
             if (Math.abs(thing.left - other.right) < thing.FSP.unitsize) {
-                return 3;
+                return Direction.Left;
+            }
+
+            return undefined;
+        }
+
+        /**
+         * 
+         * 
+         * @remarks Like getDirectionBordering, but for cases where the two Things
+         *          aren't necessarily touching.
+         */
+        getDirectionBetween(thing: IThing, other: IThing): Direction {
+            var directionAttempt: Direction = thing.FSP.getDirectionBordering(thing, other);
+            
+            if (typeof directionAttempt !== "undefined") {
+                return directionAttempt;
+            }
+
+            if (thing.top > other.bottom + thing.FSP.unitsize) {
+                return Direction.Top;
+            }
+
+            if (thing.right < other.left - thing.FSP.unitsize) {
+                return Direction.Right;
+            }
+
+            if (thing.bottom < other.top - thing.FSP.unitsize) {
+                return Direction.Bottom;
+            }
+
+            if (thing.left > other.right + thing.FSP.unitsize) {
+                return Direction.Left;
             }
 
             return undefined;
@@ -2996,7 +3028,8 @@ module FullScreenPokemon {
                     [
                         "SightDetector",
                         {
-                            "direction": thing.direction
+                            "direction": thing.direction,
+                            "width": thing.sight * 8
                         }
                     ]);
                 thing.sightDetector.viewer = thing;
