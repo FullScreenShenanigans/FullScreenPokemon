@@ -462,8 +462,6 @@ module FullScreenPokemon {
                 switch (reference.experienceType) {
                     case "fast":
                         return (4 * Math.pow(level, 3)) / 5;
-                    case "mediumFast":
-                        return Math.pow(level, 3);
                     case "mediumSlow":
                         return (
                             (6 / 5) * Math.pow(level, 3)
@@ -472,8 +470,9 @@ module FullScreenPokemon {
                             - 140);
                     case "slow":
                         return (5 * Math.pow(level, 3)) / 4;
+                    //case "mediumFast":
                     default:
-                        throw new Error("Unknown experienceType: '" + reference.experienceType + "'.");
+                        return Math.pow(level, 3);
                 }
             },
             // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
@@ -1469,8 +1468,6 @@ module FullScreenPokemon {
                     "info": [
                         "A brutal %%%%%%%POKEMON%%%%%%% with pressurized water jets on its shell. They are used for high speed tackles."
                     ],
-
-
                     "number": 9,
                     "height": ["5", "3"],
                     "weight": 188.5,
@@ -9552,7 +9549,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "NidoranFemaleSymbol": {
+                "NIDORANFEMALESYMBOL": {
                     "label": "Poison Pin",
                     "sprite": "Water",
                     "info": [
@@ -10276,10 +10273,11 @@ module FullScreenPokemon {
                     "Special": 90,
                     "Speed": 35,
                     "moves": {
-                        "natural": [{
-                            "move": "Water Gun",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Water Gun",
+                                "level": 1
+                            }, {
                                 "move": "Withdraw",
                                 "level": 1
                             }, {
@@ -10296,10 +10294,11 @@ module FullScreenPokemon {
                                 "level": 53
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -10344,14 +10343,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Omastar": {
+                "OMASTAR": {
                     "label": "Spiral",
                     "sprite": "Water",
                     "info": [
                         "A prehistoric %%%%%%%POKEMON%%%%%%% that died out when its heavy shell made it impossible to catch prey."
                     ],
-
-
                     "number": 139,
                     "height": ["3", "3"],
                     "weight": 77.2,
@@ -10362,10 +10359,11 @@ module FullScreenPokemon {
                     "Special": 115,
                     "Speed": 55,
                     "moves": {
-                        "natural": [{
-                            "move": "Horn Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Horn Attack",
+                                "level": 1
+                            }, {
                                 "move": "Water Gun",
                                 "level": 1
                             }, {
@@ -10388,10 +10386,11 @@ module FullScreenPokemon {
                             "move": "Surf",
                             "level": 3
                         }],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -10451,7 +10450,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Onix": {
+                "ONIX": {
                     "label": "Rock Snake",
                     "sprite": "Water",
                     "info": [
@@ -10469,10 +10468,11 @@ module FullScreenPokemon {
                     "Special": 30,
                     "Speed": 70,
                     "moves": {
-                        "natural": [{
-                            "move": "Screech",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Screech",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -10492,10 +10492,11 @@ module FullScreenPokemon {
                                 "level": 43
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -10546,7 +10547,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Paras": {
+                "PARAS": {
                     "label": "Mushroom",
                     "sprite": "Water",
                     "info": [
@@ -10564,10 +10565,11 @@ module FullScreenPokemon {
                     "Special": 45,
                     "Speed": 25,
                     "moves": {
-                        "natural": [{
-                            "move": "Scratch",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Scratch",
+                                "level": 1
+                            }, {
                                 "move": "Stun Spore",
                                 "level": 13
                             }, {
@@ -10587,10 +10589,11 @@ module FullScreenPokemon {
                             "move": "Cut",
                             "level": 1
                         }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -10638,14 +10641,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Parasect": {
+                "PARASECT": {
                     "label": "Mushroom",
                     "sprite": "Water",
                     "info": [
                         "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places."
                     ],
-
-
                     "number": 47,
                     "height": ["3", "3"],
                     "weight": 65,
@@ -10656,10 +10657,11 @@ module FullScreenPokemon {
                     "Special": 60,
                     "Speed": 30,
                     "moves": {
-                        "natural": [{
-                            "move": "Leech Life",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Leech Life",
+                                "level": 1
+                            }, {
                                 "move": "Scratch",
                                 "level": 1
                             }, {
@@ -10682,10 +10684,11 @@ module FullScreenPokemon {
                                 "level": 48
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -10736,14 +10739,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Persian": {
+                "PERSIAN": {
                     "label": "Classy Cat",
                     "sprite": "Water",
                     "info": [
                         "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness."
                     ],
-
-
                     "number": 53,
                     "height": ["3", "3"],
                     "weight": 70.5,
@@ -10754,10 +10755,11 @@ module FullScreenPokemon {
                     "Special": 65,
                     "Speed": 115,
                     "moves": {
-                        "natural": [{
-                            "move": "Bite",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Bite",
+                                "level": 1
+                            }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -10782,10 +10784,11 @@ module FullScreenPokemon {
                                 "move": "Slash",
                                 "level": 51
                             }],
-                        "hm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -10837,10 +10840,11 @@ module FullScreenPokemon {
                                 "move": "Substitute",
                                 "level": 50
                             }],
-                        "tm": [{
-                            "move": "Bite",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Bite",
+                                "level": 1
+                            }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -10867,14 +10871,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Pidgeot": {
+                "PIDGEOT": {
                     "label": "Bird",
                     "sprite": "Water",
                     "info": [
                         "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP."
                     ],
-
-
                     "number": 18,
                     "height": ["4", "11"],
                     "weight": 87.1,
@@ -10885,10 +10887,11 @@ module FullScreenPokemon {
                     "Special": 70,
                     "Speed": 101,
                     "moves": {
-                        "natural": [{
-                            "move": "Gust",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Gust",
+                                "level": 1
+                            }, {
                                 "move": "Quick Attack",
                                 "level": 1
                             }, {
@@ -10914,10 +10917,11 @@ module FullScreenPokemon {
                                 "level": 54
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Razor Wind",
-                            "level": 2
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Razor Wind",
+                                "level": 2
+                            }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -10962,7 +10966,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Pidgeotto": {
+                "PIDGEOTTO": {
                     "label": "Bird",
                     "sprite": "Water",
                     "info": [
@@ -10980,10 +10984,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 71,
                     "moves": {
-                        "natural": [{
-                            "move": "Gust",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Gust",
+                                "level": 1
+                            }, {
                                 "move": "Sand Attack",
                                 "level": 1
                             }, {
@@ -11009,10 +11014,11 @@ module FullScreenPokemon {
                             "move": "Fly",
                             "level": 2
                         }],
-                        "tm": [{
-                            "move": "Razor Wind",
-                            "level": 2
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Razor Wind",
+                                "level": 2
+                            }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -11054,7 +11060,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Pidgey": {
+                "PIDGEY": {
                     "label": "Tiny Bird",
                     "sprite": "Water",
                     "info": [
@@ -11072,10 +11078,11 @@ module FullScreenPokemon {
                     "Special": 35,
                     "Speed": 56,
                     "moves": {
-                        "natural": [{
-                            "move": "Gust",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Gust",
+                                "level": 1
+                            }, {
                                 "move": "Sand Attack",
                                 "level": 5
                             }, {
@@ -11098,10 +11105,11 @@ module FullScreenPokemon {
                             "move": "Fly",
                             "level": 2
                         }],
-                        "tm": [{
-                            "move": "Razor Wind",
-                            "level": 2
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Razor Wind",
+                                "level": 2
+                            }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -11143,7 +11151,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Pikachu": {
+                "PIKACHU": {
                     "label": "Mouse",
                     "sprite": "Water",
                     "info": [
@@ -11161,10 +11169,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 90,
                     "moves": {
-                        "natural": [{
-                            "move": "Growl",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Growl",
+                                "level": 1
+                            }, {
                                 "move": "Thunder Shock",
                                 "level": 1
                             }, {
@@ -11184,10 +11193,11 @@ module FullScreenPokemon {
                                 "level": 43
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11250,14 +11260,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Pinsir": {
+                "PINSIR": {
                     "label": "Stag Beetle",
                     "sprite": "Water",
                     "info": [
                         "If it fails to crush the victim in its pincers, it will swing it around and toss it hard."
                     ],
-
-
                     "number": 127,
                     "height": ["4", "11"],
                     "weight": 121.3,
@@ -11268,10 +11276,11 @@ module FullScreenPokemon {
                     "Special": 55,
                     "Speed": 85,
                     "moves": {
-                        "natural": [{
-                            "move": "Vice Grip",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Vice Grip",
+                                "level": 1
+                            }, {
                                 "move": "Seismic Toss",
                                 "level": 25
                             }, {
@@ -11290,17 +11299,19 @@ module FullScreenPokemon {
                                 "move": "Swords Dance",
                                 "level": 54
                             }],
-                        "hm": [{
-                            "move": "Cut",
-                            "level": 1
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Cut",
+                                "level": 1
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -11342,7 +11353,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Poliwag": {
+                "POLIWAG": {
                     "label": "Tadpole",
                     "sprite": "Water",
                     "info": [
@@ -11360,10 +11371,11 @@ module FullScreenPokemon {
                     "Special": 40,
                     "Speed": 90,
                     "moves": {
-                        "natural": [{
-                            "move": "Bubble",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Bubble",
+                                "level": 1
+                            }, {
                                 "move": "Hypnosis",
                                 "level": 16
                             }, {
@@ -11383,10 +11395,11 @@ module FullScreenPokemon {
                                 "level": 45
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -11437,7 +11450,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Poliwhirl": {
+                "POLIWHIRL": {
                     "label": "Tadpole",
                     "sprite": "Water",
                     "info": [
@@ -11455,10 +11468,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 90,
                     "moves": {
-                        "natural": [{
-                            "move": "Bubble",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Bubble",
+                                "level": 1
+                            }, {
                                 "move": "Hypnosis",
                                 "level": 1
                             }, {
@@ -11483,17 +11497,19 @@ module FullScreenPokemon {
                                 "move": "Hydro Pump",
                                 "level": 49
                             }],
-                        "hm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11568,7 +11584,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Poliwrath": {
+                "POLIWRATH": {
                     "label": "Tadpole",
                     "sprite": "Water",
                     "info": [
@@ -11586,10 +11602,11 @@ module FullScreenPokemon {
                     "Special": 70,
                     "Speed": 70,
                     "moves": {
-                        "natural": [{
-                            "move": "Body Slam",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Body Slam",
+                                "level": 1
+                            }, {
                                 "move": "Double Slap",
                                 "level": 1
                             }, {
@@ -11606,16 +11623,17 @@ module FullScreenPokemon {
                                 "level": 19
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }]
                     }
                 },
-                "Ponyta": {
+                "PONYTA": {
                     "label": "Fire Horse",
                     "sprite": "Water",
                     "info": [
@@ -11633,10 +11651,11 @@ module FullScreenPokemon {
                     "Special": 65,
                     "Speed": 90,
                     "moves": {
-                        "natural": [{
-                            "move": "Ember",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Ember",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 30
                             }, {
@@ -11655,10 +11674,11 @@ module FullScreenPokemon {
                                 "move": "Agility",
                                 "level": 48
                             }],
-                        "hm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -11701,10 +11721,11 @@ module FullScreenPokemon {
                                 "move": "Substitute",
                                 "level": 50
                             }],
-                        "tm": [{
-                            "move": "Ember",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Ember",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 30
                             }, {
@@ -11725,14 +11746,14 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Porygon": {
+                "PORYGON": {
                     "label": "Virtual",
                     "sprite": "Water",
                     "info": [
                         "A %%%%%%%POKEMON%%%%%%% that consists entirely of programming code. Capable of moving freely in cyberspace."
                     ],
                     "evolvesInto": "Porygon2",
-                    "evolvesVia": "trade holdingUp-Grade",
+                    "evolvesVia": "trade holding Up-Grade",
                     "number": 137,
                     "height": ["2", "7"],
                     "weight": 80.5,
@@ -11743,10 +11764,11 @@ module FullScreenPokemon {
                     "Special": 85,
                     "Speed": 40,
                     "moves": {
-                        "natural": [{
-                            "move": "Conversion",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Conversion",
+                                "level": 1
+                            }, {
                                 "move": "Sharpen",
                                 "level": 1
                             }, {
@@ -11766,10 +11788,11 @@ module FullScreenPokemon {
                                 "level": 42
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -11835,14 +11858,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Primeape": {
+                "PRIMEAPE": {
                     "label": "Pig Monkey",
                     "sprite": "Water",
                     "info": [
                         "Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught."
                     ],
-
-
                     "number": 57,
                     "height": ["3", "3"],
                     "weight": 70.5,
@@ -11853,10 +11874,11 @@ module FullScreenPokemon {
                     "Special": 60,
                     "Speed": 95,
                     "moves": {
-                        "natural": [{
-                            "move": "Fury Swipes",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Fury Swipes",
+                                "level": 1
+                            }, {
                                 "move": "Karate Chop",
                                 "level": 1
                             }, {
@@ -11885,10 +11907,11 @@ module FullScreenPokemon {
                             "move": "Strength",
                             "level": 4
                         }],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -11960,7 +11983,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Psyduck": {
+                "PSYDUCK": {
                     "label": "Duck",
                     "sprite": "Water",
                     "info": [
@@ -11978,10 +12001,11 @@ module FullScreenPokemon {
                     "Special": 65,
                     "Speed": 55,
                     "moves": {
-                        "natural": [{
-                            "move": "Scratch",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Scratch",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 28
                             }, {
@@ -11998,10 +12022,11 @@ module FullScreenPokemon {
                                 "level": 52
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -12070,14 +12095,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Raichu": {
+                "RAICHU": {
                     "label": "Mouse",
                     "sprite": "Water",
                     "info": [
                         "Its long tail serves as a ground to protect itself from its own high voltage power."
                     ],
-
-
                     "number": 26,
                     "height": ["2", "7"],
                     "weight": 66.1,
@@ -12088,10 +12111,11 @@ module FullScreenPokemon {
                     "Special": 90,
                     "Speed": 110,
                     "moves": {
-                        "natural": [{
-                            "move": "Growl",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Growl",
+                                "level": 1
+                            }, {
                                 "move": "Thunder Shock",
                                 "level": 1
                             }, {
@@ -12108,14 +12132,12 @@ module FullScreenPokemon {
                         }]
                     }
                 },
-                "Rapidash": {
+                "RAPIDASH": {
                     "label": "Fire Horse",
                     "sprite": "Water",
                     "info": [
                         "Very competitive, this %%%%%%%POKEMON%%%%%%% will chase anything that moves fast in the hopes of racing it."
                     ],
-
-
                     "number": 78,
                     "height": ["5", "7"],
                     "weight": 209.4,
@@ -12126,10 +12148,11 @@ module FullScreenPokemon {
                     "Special": 80,
                     "Speed": 105,
                     "moves": {
-                        "natural": [{
-                            "move": "Ember",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Ember",
+                                "level": 1
+                            }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -12158,10 +12181,11 @@ module FullScreenPokemon {
                                 "level": 55
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Ember",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Ember",
+                                "level": 1
+                            }, {
                                 "move": "Growl",
                                 "level": 1
                             }, {
@@ -12191,14 +12215,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Raticate": {
+                "RATICATE": {
                     "label": "Mouse",
                     "sprite": "Water",
                     "info": [
                         "It uses its whiskers to maintain its balance. It apparently slows down if they are cut off."
                     ],
-
-
                     "number": 20,
                     "height": ["2", "4"],
                     "weight": 40.8,
@@ -12209,10 +12231,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 97,
                     "moves": {
-                        "natural": [{
-                            "move": "Quick Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Quick Attack",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -12231,10 +12254,11 @@ module FullScreenPokemon {
                                 "move": "Super Fang",
                                 "level": 41
                             }],
-                        "hm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -12292,10 +12316,11 @@ module FullScreenPokemon {
                                 "move": "Substitute",
                                 "level": 50
                             }],
-                        "tm": [{
-                            "move": "Quick Attack",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Quick Attack",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -12316,7 +12341,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Rattata": {
+                "RATTATA": {
                     "label": "Mouse",
                     "sprite": "Water",
                     "info": [
@@ -12334,10 +12359,11 @@ module FullScreenPokemon {
                     "Special": 25,
                     "Speed": 72,
                     "moves": {
-                        "natural": [{
-                            "move": "Tackle",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -12354,10 +12380,11 @@ module FullScreenPokemon {
                                 "level": 34
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Tackle",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -12375,7 +12402,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Rhydon": {
+                "RHYDON": {
                     "label": "Drill",
                     "sprite": "Water",
                     "info": [
@@ -12393,10 +12420,11 @@ module FullScreenPokemon {
                     "Special": 45,
                     "Speed": 40,
                     "moves": {
-                        "natural": [{
-                            "move": "Fury Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Fury Attack",
+                                "level": 1
+                            }, {
                                 "move": "Horn Attack",
                                 "level": 1
                             }, {
@@ -12424,17 +12452,19 @@ module FullScreenPokemon {
                                 "move": "Take Down",
                                 "level": 64
                             }],
-                        "hm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -12524,7 +12554,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Rhyhorn": {
+                "RHYHORN": {
                     "label": "Spikes",
                     "sprite": "Water",
                     "info": [
@@ -12542,10 +12572,11 @@ module FullScreenPokemon {
                     "Special": 30,
                     "Speed": 25,
                     "moves": {
-                        "natural": [{
-                            "move": "Horn Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Horn Attack",
+                                "level": 1
+                            }, {
                                 "move": "Stomp",
                                 "level": 30
                             }, {
@@ -12568,10 +12599,11 @@ module FullScreenPokemon {
                             "move": "Strength",
                             "level": 4
                         }],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -12628,7 +12660,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Sandshrew": {
+                "SANDSHREW": {
                     "label": "Mouse",
                     "sprite": "Water",
                     "info": [
@@ -12646,10 +12678,11 @@ module FullScreenPokemon {
                     "Special": 20,
                     "Speed": 40,
                     "moves": {
-                        "natural": [{
-                            "move": "Scratch",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Scratch",
+                                "level": 1
+                            }, {
                                 "move": "Sand Attack",
                                 "level": 10
                             }, {
@@ -12665,17 +12698,19 @@ module FullScreenPokemon {
                                 "move": "Fury Swipes",
                                 "level": 38
                             }],
-                        "hm": [{
-                            "move": "Cut",
-                            "level": 1
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Cut",
+                                "level": 1
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -12732,14 +12767,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Sandslash": {
+                "SANDSLASH": {
                     "label": "Mouse",
                     "sprite": "Water",
                     "info": [
                         "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape."
                     ],
-
-
                     "number": 28,
                     "height": ["3", "3"],
                     "weight": 65,
@@ -12750,10 +12783,11 @@ module FullScreenPokemon {
                     "Special": 45,
                     "Speed": 65,
                     "moves": {
-                        "natural": [{
-                            "move": "Sand Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Sand Attack",
+                                "level": 1
+                            }, {
                                 "move": "Scratch",
                                 "level": 1
                             }, {
@@ -12772,17 +12806,19 @@ module FullScreenPokemon {
                                 "move": "Fury Swipes",
                                 "level": 47
                             }],
-                        "hm": [{
-                            "move": "Cut",
-                            "level": 1
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Cut",
+                                "level": 1
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -12842,7 +12878,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Scyther": {
+                "SCYTHER": {
                     "label": "Mantis",
                     "sprite": "Water",
                     "info": [
@@ -12860,10 +12896,11 @@ module FullScreenPokemon {
                     "Special": 55,
                     "Speed": 105,
                     "moves": {
-                        "natural": [{
-                            "move": "Quick Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Quick Attack",
+                                "level": 1
+                            }, {
                                 "move": "Leer",
                                 "level": 17
                             }, {
@@ -12883,10 +12920,11 @@ module FullScreenPokemon {
                                 "level": 42
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -12925,7 +12963,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Seadra": {
+                "SEADRA": {
                     "label": "Dragon",
                     "sprite": "Water",
                     "info": [
@@ -12943,10 +12981,11 @@ module FullScreenPokemon {
                     "Special": 95,
                     "Speed": 85,
                     "moves": {
-                        "natural": [{
-                            "move": "Bubble",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Bubble",
+                                "level": 1
+                            }, {
                                 "move": "Smokescreen",
                                 "level": 1
                             }, {
@@ -12966,10 +13005,11 @@ module FullScreenPokemon {
                                 "level": 52
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -13017,14 +13057,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Seaking": {
+                "SEAKING": {
                     "label": "Goldfish",
                     "sprite": "Water",
                     "info": [
                         "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks."
                     ],
-
-
                     "number": 119,
                     "height": ["4", "3"],
                     "weight": 86,
@@ -13035,10 +13073,11 @@ module FullScreenPokemon {
                     "Special": 65,
                     "Speed": 68,
                     "moves": {
-                        "natural": [{
-                            "move": "Peck",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Peck",
+                                "level": 1
+                            }, {
                                 "move": "Supersonic",
                                 "level": 1
                             }, {
@@ -13067,10 +13106,11 @@ module FullScreenPokemon {
                             "move": "Surf",
                             "level": 3
                         }],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -13121,7 +13161,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Seel": {
+                "SEEL": {
                     "label": "Sea Lion",
                     "sprite": "Water",
                     "info": [
@@ -13139,10 +13179,11 @@ module FullScreenPokemon {
                     "Special": 45,
                     "Speed": 45,
                     "moves": {
-                        "natural": [{
-                            "move": "Headbutt",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Headbutt",
+                                "level": 1
+                            }, {
                                 "move": "Growl",
                                 "level": 30
                             }, {
@@ -13159,10 +13200,11 @@ module FullScreenPokemon {
                                 "level": 50
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -13213,7 +13255,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Shellder": {
+                "SHELLDER": {
                     "label": "Bivalve",
                     "sprite": "Water",
                     "info": [
@@ -13231,10 +13273,11 @@ module FullScreenPokemon {
                     "Special": 45,
                     "Speed": 40,
                     "moves": {
-                        "natural": [{
-                            "move": "Tackle",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            }, {
                                 "move": "Withdraw",
                                 "level": 1
                             }, {
@@ -13257,10 +13300,11 @@ module FullScreenPokemon {
                             "move": "Surf",
                             "level": 3
                         }],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -13317,7 +13361,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Slowbro": {
+                "SLOWBRO": {
                     "label": "Hermit Crab",
                     "sprite": "Water",
                     "info": [
@@ -13335,10 +13379,11 @@ module FullScreenPokemon {
                     "Special": 100,
                     "Speed": 30,
                     "moves": {
-                        "natural": [{
-                            "move": "Confusion",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Confusion",
+                                "level": 1
+                            }, {
                                 "move": "Disable",
                                 "level": 1
                             }, {
@@ -13367,10 +13412,11 @@ module FullScreenPokemon {
                                 "level": 55
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -13487,10 +13533,11 @@ module FullScreenPokemon {
                     "Special": 40,
                     "Speed": 15,
                     "moves": {
-                        "natural": [{
-                            "move": "Confusion",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Confusion",
+                                "level": 1
+                            }, {
                                 "move": "Disable",
                                 "level": 18
                             }, {
@@ -13509,20 +13556,22 @@ module FullScreenPokemon {
                                 "move": "Psychic",
                                 "level": 48
                             }],
-                        "hm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }, {
                                 "move": "Flash",
                                 "level": 5
                             }],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -13603,14 +13652,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Snorlax": {
+                "SNORLAX": {
                     "label": "Sleeping",
                     "sprite": "Water",
                     "info": [
                         "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful."
                     ],
-
-
                     "number": 143,
                     "height": ["6", "11"],
                     "weight": 1014.1,
@@ -13621,10 +13668,11 @@ module FullScreenPokemon {
                     "Special": 65,
                     "Speed": 30,
                     "moves": {
-                        "natural": [{
-                            "move": "Amnesia",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Amnesia",
+                                "level": 1
+                            }, {
                                 "move": "Headbutt",
                                 "level": 1
                             }, {
@@ -13643,17 +13691,19 @@ module FullScreenPokemon {
                                 "move": "Hyper Beam",
                                 "level": 56
                             }],
-                        "hm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Strength",
                                 "level": 4
                             }],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -13755,7 +13805,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Spearow": {
+                "SPEAROW": {
                     "label": "Tiny Bird",
                     "sprite": "Water",
                     "info": [
@@ -13773,10 +13823,11 @@ module FullScreenPokemon {
                     "Special": 31,
                     "Speed": 70,
                     "moves": {
-                        "natural": [{
-                            "move": "Growl",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Growl",
+                                "level": 1
+                            }, {
                                 "move": "Peck",
                                 "level": 1
                             }, {
@@ -13796,10 +13847,11 @@ module FullScreenPokemon {
                                 "level": 36
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Razor Wind",
-                            "level": 2
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Razor Wind",
+                                "level": 2
+                            }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -13838,7 +13890,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Squirtle": {
+                "SQUIRTLE": {
                     "label": "TinyTurtle",
                     "sprite": "Water",
                     "info": [
@@ -13857,10 +13909,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 43,
                     "moves": {
-                        "natural": [{
-                            "move": "Tackle",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -13883,10 +13936,11 @@ module FullScreenPokemon {
                                 "level": 42
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -13952,14 +14006,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Starmie": {
+                "STARMIE": {
                     "label": "Mysterious",
                     "sprite": "Water",
                     "info": [
                         "Its central core glows with the seven colors of the rainbow. Some people value the core as a gem."
                     ],
-
-
                     "number": 121,
                     "height": ["3", "7"],
                     "weight": 176.4,
@@ -13970,33 +14022,36 @@ module FullScreenPokemon {
                     "Special": 100,
                     "Speed": 115,
                     "moves": {
-                        "natural": [{
-                            "move": "Harden",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Harden",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
                                 "move": "Water Gun",
                                 "level": 1
                             }],
-                        "hm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Flash",
                                 "level": 5
                             }],
-                        "tm": [{
-                            "move": "Surf",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Surf",
+                                "level": 3
+                            }, {
                                 "move": "Flash",
                                 "level": 5
                             }]
                     }
                 },
-                "Staryu": {
+                "STARYU": {
                     "label": "Star Shape",
                     "sprite": "Water",
                     "info": [
@@ -14014,10 +14069,11 @@ module FullScreenPokemon {
                     "Special": 70,
                     "Speed": 85,
                     "moves": {
-                        "natural": [{
-                            "move": "Tackle",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            }, {
                                 "move": "Water Gun",
                                 "level": 17
                             }, {
@@ -14040,10 +14096,11 @@ module FullScreenPokemon {
                                 "level": 47
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -14112,7 +14169,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Tangela": {
+                "TANGELA": {
                     "label": "Vine",
                     "sprite": "Water",
                     "info": [
@@ -14130,10 +14187,11 @@ module FullScreenPokemon {
                     "Special": 100,
                     "Speed": 60,
                     "moves": {
-                        "natural": [{
-                            "move": "Bind",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Bind",
+                                "level": 1
+                            }, {
                                 "move": "Constrict",
                                 "level": 1
                             }, {
@@ -14159,10 +14217,11 @@ module FullScreenPokemon {
                             "move": "Cut",
                             "level": 1
                         }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14207,14 +14266,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Tauros": {
+                "TAUROS": {
                     "label": "Wild Bull",
                     "sprite": "Water",
                     "info": [
                         "When it targets an enemy, it charges furiously while whipping its body with its long tails."
                     ],
-
-
                     "number": 128,
                     "height": ["4", "7"],
                     "weight": 194.9,
@@ -14225,10 +14282,11 @@ module FullScreenPokemon {
                     "Special": 40,
                     "Speed": 110,
                     "moves": {
-                        "natural": [{
-                            "move": "Tackle",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            }, {
                                 "move": "Stomp",
                                 "level": 21
                             }, {
@@ -14245,10 +14303,11 @@ module FullScreenPokemon {
                                 "level": 51
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Horn Drill",
                                 "level": 7
                             }, {
@@ -14308,7 +14367,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Tentacool": {
+                "TENTACOOL": {
                     "label": "Jellyfish",
                     "sprite": "Water",
                     "info": [
@@ -14326,10 +14385,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 70,
                     "moves": {
-                        "natural": [{
-                            "move": "Acid",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Acid",
+                                "level": 1
+                            }, {
                                 "move": "Supersonic",
                                 "level": 7
                             }, {
@@ -14354,17 +14414,19 @@ module FullScreenPokemon {
                                 "move": "Hydro Pump",
                                 "level": 48
                             }],
-                        "hm": [{
-                            "move": "Cut",
-                            "level": 1
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Cut",
+                                "level": 1
+                            }, {
                                 "move": "Surf",
                                 "level": 3
                             }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14415,14 +14477,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Tentacruel": {
+                "TENTACRUEL": {
                     "label": "Jellyfish",
                     "sprite": "Water",
                     "info": [
                         "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey."
                     ],
-
-
                     "number": 73,
                     "height": ["5", "3"],
                     "weight": 121.3,
@@ -14433,10 +14493,11 @@ module FullScreenPokemon {
                     "Special": 80,
                     "Speed": 100,
                     "moves": {
-                        "natural": [{
-                            "move": "Acid",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Acid",
+                                "level": 1
+                            }, {
                                 "move": "Supersonic",
                                 "level": 1
                             }, {
@@ -14467,17 +14528,19 @@ module FullScreenPokemon {
                                 "move": "Hydro Pump",
                                 "level": 50
                             }],
-                        "hm": [{
-                            "move": "Cut",
-                            "level": 1
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Cut",
+                                "level": 1
+                            }, {
                                 "move": "Surf",
                                 "level": 3
                             }],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14531,7 +14594,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Vaporeon": {
+                "VAPOREON": {
                     "label": "Bubble Jet",
                     "sprite": "Water",
                     "info": [
@@ -14549,10 +14612,11 @@ module FullScreenPokemon {
                     "Special": 110,
                     "Speed": 65,
                     "moves": {
-                        "natural": [{
-                            "move": "Quick Attack",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Quick Attack",
+                                "level": 1
+                            }, {
                                 "move": "Sand Attack",
                                 "level": 1
                             }, {
@@ -14596,14 +14660,12 @@ module FullScreenPokemon {
                         }]
                     }
                 },
-                "Venomoth": {
+                "VENOMOTH": {
                     "label": "Poison Moth",
                     "sprite": "Water",
                     "info": [
                         "The dust-like scales covering its wings are color coded to indicate the kinds of poison it has."
                     ],
-
-
                     "number": 49,
                     "height": ["4", "11"],
                     "weight": 27.6,
@@ -14614,10 +14676,11 @@ module FullScreenPokemon {
                     "Special": 90,
                     "Speed": 90,
                     "moves": {
-                        "natural": [{
-                            "move": "Disable",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Disable",
+                                "level": 1
+                            }, {
                                 "move": "Leech Life",
                                 "level": 1
                             }, {
@@ -14646,10 +14709,11 @@ module FullScreenPokemon {
                                 "level": 50
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Confusion",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Confusion",
+                                "level": 1
+                            }, {
                                 "move": "Disable",
                                 "level": 1
                             }, {
@@ -14679,7 +14743,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Venonat": {
+                "VENONAT": {
                     "label": "Insect",
                     "sprite": "Water",
                     "info": [
@@ -14697,10 +14761,11 @@ module FullScreenPokemon {
                     "Special": 40,
                     "Speed": 45,
                     "moves": {
-                        "natural": [{
-                            "move": "Disable",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Disable",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -14722,10 +14787,11 @@ module FullScreenPokemon {
                                 "move": "Psychic",
                                 "level": 43
                             }],
-                        "hm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -14765,10 +14831,11 @@ module FullScreenPokemon {
                                 "move": "Substitute",
                                 "level": 50
                             }],
-                        "tm": [{
-                            "move": "Disable",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Disable",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -14798,14 +14865,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Venusaur": {
+                "VENUSAUR": {
                     "label": "Seed",
                     "sprite": "Water",
                     "info": [
                         "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
                     ],
-
-
                     "number": 3,
                     "height": ["6", "7"],
                     "weight": 220.5,
@@ -14816,10 +14881,11 @@ module FullScreenPokemon {
                     "Special": 100,
                     "Speed": 80,
                     "moves": {
-                        "natural": [{
-                            "move": "Growl",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Growl",
+                                "level": 1
+                            }, {
                                 "move": "Leech Seed",
                                 "level": 1
                             }, {
@@ -14851,10 +14917,11 @@ module FullScreenPokemon {
                                 "level": 65
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -14899,14 +14966,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Victreebel": {
+                "VICTREEBEL": {
                     "label": "Flycatcher",
                     "sprite": "Water",
                     "info": [
                         "Said to live in huge colonies deep in jungles, although no one has ever returned from there."
                     ],
-
-
                     "number": 71,
                     "height": ["5", "7"],
                     "weight": 34.2,
@@ -14917,10 +14982,11 @@ module FullScreenPokemon {
                     "Special": 100,
                     "Speed": 70,
                     "moves": {
-                        "natural": [{
-                            "move": "Acid",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Acid",
+                                "level": 1
+                            }, {
                                 "move": "Razor Leaf",
                                 "level": 1
                             }, {
@@ -14949,7 +15015,7 @@ module FullScreenPokemon {
                         }]
                     }
                 },
-                "Vileplume": {
+                "VILEPLUME": {
                     "label": "Flower",
                     "sprite": "Water",
                     "info": [
@@ -14967,10 +15033,11 @@ module FullScreenPokemon {
                     "Special": 110,
                     "Speed": 50,
                     "moves": {
-                        "natural": [{
-                            "move": "Acid",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Acid",
+                                "level": 1
+                            }, {
                                 "move": "Petal Dance",
                                 "level": 1
                             }, {
@@ -14996,7 +15063,7 @@ module FullScreenPokemon {
                         }]
                     }
                 },
-                "Voltorb": {
+                "VOLTORB": {
                     "label": "Ball",
                     "sprite": "Water",
                     "info": [
@@ -15014,10 +15081,11 @@ module FullScreenPokemon {
                     "Special": 55,
                     "Speed": 100,
                     "moves": {
-                        "natural": [{
-                            "move": "Screech",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Screech",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -15037,10 +15105,11 @@ module FullScreenPokemon {
                                 "level": 43
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Take Down",
                                 "level": 9
                             }, {
@@ -15088,7 +15157,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Vulpix": {
+                "VULPIX": {
                     "label": "Fox",
                     "sprite": "Water",
                     "info": [
@@ -15106,10 +15175,11 @@ module FullScreenPokemon {
                     "Special": 50,
                     "Speed": 65,
                     "moves": {
-                        "natural": [{
-                            "move": "Ember",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Ember",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -15128,10 +15198,11 @@ module FullScreenPokemon {
                                 "move": "Fire Spin",
                                 "level": 42
                             }],
-                        "hm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Body Slam",
                                 "level": 8
                             }, {
@@ -15174,10 +15245,11 @@ module FullScreenPokemon {
                                 "move": "Substitute",
                                 "level": 50
                             }],
-                        "tm": [{
-                            "move": "Ember",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Ember",
+                                "level": 1
+                            }, {
                                 "move": "Tail Whip",
                                 "level": 1
                             }, {
@@ -15198,7 +15270,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Wartortle": {
+                "WARTORTLE": {
                     "label": "Turtle",
                     "sprite": "Water",
                     "info": [
@@ -15216,10 +15288,11 @@ module FullScreenPokemon {
                     "Special": 65,
                     "Speed": 58,
                     "moves": {
-                        "natural": [{
-                            "move": "Bubble",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Bubble",
+                                "level": 1
+                            }, {
                                 "move": "Tackle",
                                 "level": 1
                             }, {
@@ -15245,10 +15318,11 @@ module FullScreenPokemon {
                                 "level": 47
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Mega Punch",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Mega Punch",
+                                "level": 1
+                            }, {
                                 "move": "Mega Kick",
                                 "level": 5
                             }, {
@@ -15314,7 +15388,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Weedle": {
+                "WEEDLE": {
                     "label": "Hairy Bug",
                     "sprite": "Water",
                     "info": [
@@ -15332,10 +15406,11 @@ module FullScreenPokemon {
                     "Special": 20,
                     "Speed": 50,
                     "moves": {
-                        "natural": [{
-                            "move": "Poison Sting",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Poison Sting",
+                                "level": 1
+                            }, {
                                 "move": "String Shot",
                                 "level": 1
                             }],
@@ -15343,7 +15418,7 @@ module FullScreenPokemon {
                         "tm": []
                     }
                 },
-                "Weepinbell": {
+                "WEEPINBELL": {
                     "label": "Flycatcher",
                     "sprite": "Water",
                     "info": [
@@ -15361,10 +15436,11 @@ module FullScreenPokemon {
                     "Special": 85,
                     "Speed": 55,
                     "moves": {
-                        "natural": [{
-                            "move": "Growth",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Growth",
+                                "level": 1
+                            }, {
                                 "move": "Vine Whip",
                                 "level": 1
                             }, {
@@ -15393,10 +15469,11 @@ module FullScreenPokemon {
                                 "level": 49
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Swords Dance",
-                            "level": 3
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Swords Dance",
+                                "level": 3
+                            }, {
                                 "move": "Toxic",
                                 "level": 6
                             }, {
@@ -15435,14 +15512,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Weezing": {
+                "WEEZING": {
                     "label": "Poison Gas",
                     "sprite": "Water",
                     "info": [
                         "Where two kinds of poison gases meet, 2 KOFFINGs can fuse into a WEEZING over many years."
                     ],
-
-
                     "number": 110,
                     "height": ["3", "11"],
                     "weight": 20.9,
@@ -15453,10 +15528,11 @@ module FullScreenPokemon {
                     "Special": 85,
                     "Speed": 60,
                     "moves": {
-                        "natural": [{
-                            "move": "Sludge",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Sludge",
+                                "level": 1
+                            }, {
                                 "move": "Smog",
                                 "level": 1
                             }, {
@@ -15478,10 +15554,11 @@ module FullScreenPokemon {
                                 "move": "Explosion",
                                 "level": 53
                             }],
-                        "hm": [{
-                            "move": "Toxic",
-                            "level": 6
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Toxic",
+                                "level": 6
+                            }, {
                                 "move": "Hyper Beam",
                                 "level": 15
                             }, {
@@ -15518,10 +15595,11 @@ module FullScreenPokemon {
                                 "move": "Substitute",
                                 "level": 50
                             }],
-                        "tm": [{
-                            "move": "Sludge",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Sludge",
+                                "level": 1
+                            }, {
                                 "move": "Smog",
                                 "level": 1
                             }, {
@@ -15545,14 +15623,12 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Wigglytuff": {
+                "WIGGLYTUFF": {
                     "label": "Balloon",
                     "sprite": "Water",
                     "info": [
                         "The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size."
                     ],
-
-
                     "number": 40,
                     "height": ["3", "3"],
                     "weight": 26.5,
@@ -15563,10 +15639,11 @@ module FullScreenPokemon {
                     "Special": 85,
                     "Speed": 45,
                     "moves": {
-                        "natural": [{
-                            "move": "Defense Curl",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Defense Curl",
+                                "level": 1
+                            }, {
                                 "move": "Disable",
                                 "level": 1
                             }, {
@@ -15577,23 +15654,22 @@ module FullScreenPokemon {
                                 "level": 1
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Strength",
-                            "level": 4
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Strength",
+                                "level": 4
+                            }, {
                                 "move": "Flash",
                                 "level": 5
                             }]
                     }
                 },
-                "Zapdos": {
+                "ZAPDOS": {
                     "label": "Electric",
                     "sprite": "Water",
                     "info": [
                         "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear from clouds while dropping enormous lightning bolts."
                     ],
-
-
                     "number": 145,
                     "height": ["5", "3"],
                     "weight": 116,
@@ -15604,10 +15680,11 @@ module FullScreenPokemon {
                     "Special": 125,
                     "Speed": 100,
                     "moves": {
-                        "natural": [{
-                            "move": "Drill Peck",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Drill Peck",
+                                "level": 1
+                            }, {
                                 "move": "Thunder Shock",
                                 "level": 1
                             }, {
@@ -15620,17 +15697,19 @@ module FullScreenPokemon {
                                 "move": "Light Screen",
                                 "level": 60
                             }],
-                        "hm": [{
-                            "move": "Fly",
-                            "level": 2
-                        }, {
+                        "hm": [
+                            {
+                                "move": "Fly",
+                                "level": 2
+                            }, {
                                 "move": "Flash",
                                 "level": 5
                             }],
-                        "tm": [{
-                            "move": "Razor Wind",
-                            "level": 2
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Razor Wind",
+                                "level": 2
+                            }, {
                                 "move": "Whirlwind",
                                 "level": 4
                             }, {
@@ -15684,7 +15763,7 @@ module FullScreenPokemon {
                             }]
                     }
                 },
-                "Zubat": {
+                "ZUBAT": {
                     "label": "Bat",
                     "sprite": "Water",
                     "info": [
@@ -15702,10 +15781,11 @@ module FullScreenPokemon {
                     "Special": 30,
                     "Speed": 55,
                     "moves": {
-                        "natural": [{
-                            "move": "Leech Life",
-                            "level": 1
-                        }, {
+                        "natural": [
+                            {
+                                "move": "Leech Life",
+                                "level": 1
+                            }, {
                                 "move": "Supersonic",
                                 "level": 10
                             }, {
@@ -15722,10 +15802,11 @@ module FullScreenPokemon {
                                 "level": 36
                             }],
                         "hm": [],
-                        "tm": [{
-                            "move": "Leech Life",
-                            "level": 1
-                        }, {
+                        "tm": [
+                            {
+                                "move": "Leech Life",
+                                "level": 1
+                            }, {
                                 "move": "Supersonic",
                                 "level": 10
                             }, {

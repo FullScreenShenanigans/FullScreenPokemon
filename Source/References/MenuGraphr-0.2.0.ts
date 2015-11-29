@@ -1547,9 +1547,14 @@ module MenuGraphr {
 
             if (start !== -1 && end !== -1) {
                 inside = this.getReplacement(word.substring(start + "%%%%%%%".length, end));
+                if (inside.constructor === Number) {
+                    inside = inside.toString().split("");
+                } else if (inside.constructor === String) {
+                    inside = (<string>inside).split("");
+                }
 
                 output.push(...word.substring(0, start).split(""));
-                output.push(...(inside.constructor === String ? (<string>inside).split("") : (<string[]>inside)));
+                output.push(...inside);
                 output.push(...this.filterWord(word.substring(end + "%%%%%%%".length)));
 
                 return output;

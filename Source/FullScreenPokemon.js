@@ -2345,7 +2345,7 @@ var FullScreenPokemon;
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), options = [
                 {
                     "text": "%%%%%%%POKEMON%%%%%%%",
-                    "callback": FSP.openPokemonMenu.bind(FSP)
+                    "callback": FSP.openPokemonMenu.bind(FSP, {})
                 }, {
                     "text": "ITEM",
                     "callback": FSP.openItemsMenu.bind(FSP)
@@ -2620,7 +2620,6 @@ var FullScreenPokemon;
                         "text": listing.title,
                         "callback": FSP.openPokemonMenuContext.bind(FSP, {
                             "pokemon": listing,
-                            "onSwitch": settings.onSwitch.bind(FSP, "player", i)
                         }),
                         "things": [
                             {
@@ -3219,7 +3218,7 @@ var FullScreenPokemon;
                 "backMenu": "PokemonMenuContext"
             });
             FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                settings.battleInfo.player.selectedActor.nickname + " is already out!"
+                settings.battleInfo.player.selectedActor.nickname, " is already out!"
             ]);
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
@@ -3799,7 +3798,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", [
                 [
-                    defenderLabel + defender.nickname + "'s",
+                    defenderLabel, defender.nickname, "'s",
                     statistic.toUpperCase(),
                     amountLabel + "!"
                 ].join(" ")
@@ -4877,17 +4876,17 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.MenuGrapher.deleteMenu("Yes/No");
             switch (settings.chosen) {
-                case "Squirtle":
+                case "SQUIRTLE":
                     steps = 4;
-                    other = "Bulbasaur";
+                    other = "BULBASAUR";
                     break;
-                case "Charmander":
+                case "CHARMANDER":
                     steps = 3;
-                    other = "Squirtle";
+                    other = "SQUIRTLE";
                     break;
-                case "Bulbasaur":
+                case "BULBASAUR":
                     steps = 5;
-                    other = "Charmander";
+                    other = "CHARMANDER";
                     break;
                 default:
                     throw new Error("Unknown first Pokemon.");

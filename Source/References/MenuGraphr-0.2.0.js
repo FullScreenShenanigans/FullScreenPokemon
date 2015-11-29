@@ -928,8 +928,14 @@ var MenuGraphr;
             end = word.indexOf("%%%%%%%", start + 1);
             if (start !== -1 && end !== -1) {
                 inside = this.getReplacement(word.substring(start + "%%%%%%%".length, end));
+                if (inside.constructor === Number) {
+                    inside = inside.toString().split("");
+                }
+                else if (inside.constructor === String) {
+                    inside = inside.split("");
+                }
                 output.push.apply(output, word.substring(0, start).split(""));
-                output.push.apply(output, (inside.constructor === String ? inside.split("") : inside));
+                output.push.apply(output, inside);
                 output.push.apply(output, this.filterWord(word.substring(end + "%%%%%%%".length)));
                 return output;
             }
