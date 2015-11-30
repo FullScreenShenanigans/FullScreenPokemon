@@ -4327,7 +4327,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneIntroPokemonExpo = function (FSP, settings) {
-            var pokemon = FSP.ObjectMaker.make("NidorinoFront", {
+            var pokemon = FSP.ObjectMaker.make("NIDORINOFront", {
                 "flipHoriz": true,
                 "opacity": .01
             });

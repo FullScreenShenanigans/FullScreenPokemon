@@ -6103,7 +6103,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneIntroPokemonExpo(FSP: FullScreenPokemon, settings: any): void {
-            var pokemon: IThing = FSP.ObjectMaker.make("NidorinoFront", {
+            var pokemon: IThing = FSP.ObjectMaker.make("NIDORINOFront", {
                 "flipHoriz": true,
                 "opacity": .01
             });
