@@ -395,10 +395,13 @@ var FullScreenPokemon;
             thing.FSP.ModAttacher.fireEvent("onAddPreThing", prething);
         };
         /**
-         *
+         * https://github.com/FullScreenShenanigans/FullScreenPokemon/issues/96
          */
         FullScreenPokemon.prototype.removePreThing = function (prething) {
             var thing = prething.thing;
+            if (!thing.FSP.MapScreener.hasOwnProperty("TestMapsHandlr")) {
+                return;
+            }
             if (!thing.spawned) {
                 return;
             }
