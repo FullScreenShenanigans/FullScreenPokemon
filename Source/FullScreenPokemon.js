@@ -530,7 +530,7 @@ var FullScreenPokemon;
             if (thing.FSP.MenuGrapher.getActiveMenu()) {
                 thing.FSP.MenuGrapher.registerDirection(direction);
             }
-            else if (!thing.FSP.MenuGrapher.getActiveMenu()) {
+            else {
                 if (thing.direction !== direction) {
                     thing.turning = direction;
                 }
@@ -1389,7 +1389,7 @@ var FullScreenPokemon;
             }
             else {
                 if (typeof thing.nextDirection !== "undefined") {
-                    if (thing.nextDirection !== thing.direction) {
+                    if (thing.nextDirection !== thing.direction && !thing.ledge) {
                         thing.FSP.setPlayerDirection(thing, thing.nextDirection);
                     }
                     delete thing.nextDirection;
