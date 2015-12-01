@@ -76,7 +76,7 @@ declare module FullScreenPokemon {
             table: number[][];
         };
         pokemon: {
-            [i: string]: IPokemonSchema;
+            [i: string]: IPokemonListing;
         };
         moves: {
             [i: string]: IMoveSchema;
@@ -133,17 +133,15 @@ declare module FullScreenPokemon {
         ItemsHolder: ItemsHoldr.IItemsHoldr;
     }
 
-    export interface IPokedexListing {
-        caught: boolean;
+    export interface IPokemonListing {
         height: string[]; // ["feet", "inches"] (e.x. ["1", "8"])
-        seen: boolean;
-        title: string;
         label: string;
         number: number;
         sprite: string;
         info: string[];
-        evolvesInto: string;
-        evolvesVia: number;
+        evolvesInto?: string;
+        evolvesVia?: string;
+        experienceType?: string; // Todo: once all are known, make non-optional
         weight: number;
         types: string[];
         HP: number;
@@ -151,16 +149,22 @@ declare module FullScreenPokemon {
         Defense: number;
         Special: number;
         Speed: number;
-        moves: IPokedexMovesListing;
+        moves: IPokemonMovesListing;
     }
 
-    export interface IPokedexMovesListing {
-        natural: IPokedexMove[];
-        hm: IPokedexMove;
-        tm: IPokedexMove;
+    export interface IPokedexListing extends IPokemonListing {
+        caught?: boolean;
+        seen?: boolean;
+        title: string;
     }
 
-    export interface IPokedexMove {
+    export interface IPokemonMovesListing {
+        natural: IPokemonMoveListing[];
+        hm: IPokemonMoveListing[];
+        tm: IPokemonMoveListing[];
+    }
+
+    export interface IPokemonMoveListing {
         move: string;
         level?: number;
     }
@@ -231,34 +235,6 @@ declare module FullScreenPokemon {
         levels?: number[];
         moves?: string[];
         rate?: number;
-    }
-
-    export interface IPokemonSchema {
-        label: string;
-        sprite: string;
-        info: string[];
-        experienceType?: string;
-        evolvesInto?: string;
-        evolvesVia?: string;
-        number: number;
-        height: [string, string];
-        weight: number;
-        types: string[];
-        HP: number;
-        Attack: number;
-        Defense: number;
-        Special: number;
-        Speed: number;
-        moves: {
-            natural: IMoveLearnedSchema[];
-            hm: IMoveLearnedSchema[];
-            tm: IMoveLearnedSchema[];
-        };
-    }
-
-    export interface IMoveLearnedSchema {
-        move: string;
-        level: number;
     }
 
     export interface IMoveSchema {

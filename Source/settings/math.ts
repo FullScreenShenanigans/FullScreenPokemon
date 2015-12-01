@@ -32,9 +32,9 @@ module FullScreenPokemon {
             },
             // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
             "newPokemonMoves": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): BattleMovr.IMove[] {
-                var possibilities: IMoveLearnedSchema[] = constants.pokemon[title.join("")].moves.natural,
+                var possibilities: IPokemonMoveListing[] = constants.pokemon[title.join("")].moves.natural,
                     output: BattleMovr.IMove[] = [],
-                    move: IMoveLearnedSchema,
+                    move: IPokemonMoveListing,
                     newMove: BattleMovr.IMove,
                     end: number,
                     i: number;
@@ -456,7 +456,7 @@ module FullScreenPokemon {
             // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
             // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
             "experienceStarting": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): number {
-                var reference: IPokemonSchema = constants.pokemon[title.join("")];
+                var reference: IPokemonListing = constants.pokemon[title.join("")];
 
                 // TODO: remove defaulting to mediumFast
                 switch (reference.experienceType) {

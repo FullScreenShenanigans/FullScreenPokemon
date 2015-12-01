@@ -4534,7 +4534,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleMovePlayerAnimate(FPS: FullScreenPokemon, settings: any, args: any): void {
             var choice: string = args.choicePlayer,
-                move: IPokedexMove = FPS.MathDecider.getConstant("moves")[choice];
+                move: IPokemonMoveListing = FPS.MathDecider.getConstant("moves")[choice];
 
             console.log("Should do something with", move);
 
