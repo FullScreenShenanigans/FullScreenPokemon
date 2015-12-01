@@ -5,17 +5,17 @@ var FullScreenPokemon;
     "use strict";
     FullScreenPokemon.FullScreenPokemon.settings.math = {
         "equations": {
-            "newPokemon": function (constants, equations, title, nickname, level, moves, iv, ev) {
+            "newPokemon": function (constants, equations, title, level, moves, iv, ev) {
                 var statisticNames = constants.statisticNames, pokemon = {
                     "title": title,
-                    "nickname": nickname,
-                    "level": level,
-                    "moves": moves || this.compute("newPokemonMoves", title, level),
+                    "nickname": title,
+                    "level": level || 1,
+                    "moves": moves || this.compute("newPokemonMoves", title, level || 1),
                     "types": constants.pokemon[title.join("")].types,
                     "status": "",
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
-                    "experience": this.compute("newPokemonExperience", title, level)
+                    "experience": this.compute("newPokemonExperience", title, level || 1)
                 }, i;
                 for (i = 0; i < statisticNames.length; i += 1) {
                     pokemon[statisticNames[i]] = this.compute("pokemonStatistic", pokemon, statisticNames[i]);

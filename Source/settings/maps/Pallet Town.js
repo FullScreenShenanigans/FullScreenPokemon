@@ -1,66 +1,66 @@
 FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
-    "name": "Pallet Town",
-    "theme": "Pallet Town",
-    "locationDefault": "Player's House Door",
-    "locations": {
-        "Player's House Door": {
-            "area": "Land",
-            "direction": 2,
-            "push": true
-        },
-        "Player's House Floor 1 Door": {
-            "area": "Player's House",
-            "direction": 0
-        },
-        "Player's House Floor 1 Stairs": {
-            "area": "Player's House",
-            "direction": 3
-        },
-        "Player's House Floor 2 Stairs": {
-            "area": "Player's House Floor 2",
-            "direction": 3
-        },
-        "Start Game": {
-            "area": "Player's House Floor 2",
-            "xloc": 24,
-            "yloc": 40,
-            "direction": 0
-        },
-        "Rival's House Door": {
-            "area": "Land",
-            "direction": 2,
-            "push": true
-        },
-        "Rival's House Floor 1 Door": {
-            "area": "Rival's House",
-            "direction": 0
-        },
-        "Oak's Lab Door": {
-            "area": "Land",
-            "direction": 2,
-            "push": true
-        },
-        "Oak's Lab Floor 1 Door": {
-            "area": "Oak's Lab",
-            "direction": 0
-        }
-    },
-    "areas": {
-        "Land": {
-            "width": 152,
-            "height": 136,
-            "wildPokemon": {
-                "grass": [{
-                    "title": "PIDGEY".split(""),
-                    "levels": [2, 3, 4, 5],
-                    "rate": .55
-                }, {
-                    "title": "RATTATA".split(""),
-                    "levels": [2, 3, 4],
-                    "rate": .45
-                }]
-            },
-            "creation": [
+	"name": "Pallet Town",
+	"theme": "Pallet Town",
+	"locationDefault": "Player's House Door",
+	"locations": {
+		"Player's House Door": {
+			"area": "Land",
+			"direction": 2,
+			"push": true
+		},
+		"Player's House Floor 1 Door": {
+			"area": "Player's House",
+			"direction": 0
+		},
+		"Player's House Floor 1 Stairs": {
+			"area": "Player's House",
+			"direction": 3
+		},
+		"Player's House Floor 2 Stairs": {
+			"area": "Player's House Floor 2",
+			"direction": 3
+		},
+		"Start Game": {
+			"area": "Player's House Floor 2",
+			"xloc": 24,
+			"yloc": 40,
+			"direction": 0
+		},
+		"Rival's House Door": {
+			"area": "Land",
+			"direction": 2,
+			"push": true
+		},
+		"Rival's House Floor 1 Door": {
+			"area": "Rival's House",
+			"direction": 0
+		},
+		"Oak's Lab Door": {
+			"area": "Land",
+			"direction": 2,
+			"push": true
+		},
+		"Oak's Lab Floor 1 Door": {
+			"area": "Oak's Lab",
+			"direction": 0
+		}
+	},
+	"areas": {
+		"Land": {
+			"width": 152,
+			"height": 136,
+			"wildPokemon": {
+				"grass": [{
+					"title": "PIDGEY".split(""),
+					"levels": [2, 3, 4, 5],
+					"rate": .55
+				}, {
+					"title": "RATTATA".split(""),
+					"levels": [2, 3, 4],
+					"rate": .45
+				}]
+			},
+			"creation": [
                 { "thing": "AreaSpawner", "width": 152, "height": 136, "map": "Route 1", "area": "Land", "direction": 0 },
                 { "thing": "FenceWide", "width": 80 },
                 { "thing": "Grass", "x": 80, "width": 16 },
@@ -72,8 +72,8 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 8, "xnum": 16, "ynum": 2, "offset": 1 },
                 { "thing": "DirtMedium", "x": 144, "y": 8, "height": 128, "width": 16 },
                 { "thing": "FenceWide", "x": 152, "y": 8, "height": 128 },
-                { "macro": "House", "x": 32, "y": 16, "stories": 2, "door": true, "entrance": "Player's House Door", "transport": { "location": "Player's House Floor 1 Door" } },
-                { "macro": "House", "x": 96, "y": 16, "stories": 2, "door": true, "entrance": "Rival's House Door", "transport": { "location": "Rival's House Floor 1 Door" } },
+                { "macro": "House", "x": 32, "y": 16, "stories": 2, "door": true, "entrance": "Player's House Door", "transport": { "map": "Pallet Town", "location": "Player's House Floor 1 Door" } },
+                { "macro": "House", "x": 96, "y": 16, "stories": 2, "door": true, "entrance": "Rival's House Door", "transport": { "map": "Pallet Town", "location": "Rival's House Floor 1 Door" } },
                 { "thing": "DirtLight", "x": 16, "y": 24, "width": 16, "height": 16 },
                 { "thing": "DirtLight", "x": 80, "y": 24, "width": 16, "height": 16 },
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 32, "y": 24, "xnum": 6, "ynum": 2 },
@@ -85,7 +85,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "Lady", "x": 24, "y": 56, "roaming": true, "dialog": ["I'm raising %%%%%%%POKEMON%%%%%%% too!", "When they get strong, they can protect me!"] },
                 { "thing": "DirtLight", "x": 32, "y": 56, "width": 32, "height": 16 },
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 56, "xnum": 2, "ynum": 6 },
-                { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "door": true, "stories": 2, "white": { "start": 84, "end": 96 }, "id": "Oak's Lab Door", "entrance": "Oak's Lab Door", "transport": { "location": "Oak's Lab Floor 1 Door" } },
+                { "macro": "HouseLarge", "x": 80, "y": 56, "width": 48, "height": 32, "door": true, "stories": 2, "white": { "start": 84, "end": 96 }, "id": "Oak's Lab Door", "entrance": "Oak's Lab Door", "transport": { "map": "Pallet Town", "location": "Oak's Lab Floor 1 Door" } },
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 80, "y": 56, "xnum": 8, "ynum": 4 },
                 { "thing": "FenceVertical", "x": 32, "y": 64, "width": 24 },
                 { "thing": "Sign", "x": 56, "y": 64, "dialog": "PALLET TOWN \n Shades of your journey await!" },
@@ -107,11 +107,11 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "FenceWide", "x": 64, "y": 128, "width": 88 },
                 { "thing": "FenceWide", "x": 8, "y": 128 },
                 { "thing": "AreaSpawner", "y": 128, "map": "Route 21", "area": "Land", "direction": 2 }
-            ]
-        },
-        "Player's House": {
-            "invisibleWallBorders": true,
-            "creation": [
+			]
+		},
+		"Player's House": {
+			"invisibleWallBorders": true,
+			"creation": [
                 { "thing": "WallIndoorHorizontalBands", "width": 64 },
                 { "thing": "InvisibleWall", "width": 64 },
                 { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
@@ -120,7 +120,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "WindowBlinds", "x": 56 },
                 { "thing": "Bookshelf", "width": 16 },
                 { "thing": "TelevisionMonitor", "x": 24, "y": 8, "dialogDirections": true, "dialog": ["Oops, wrong side.", "Oops, wrong side.", ["There's a movie on TV. Four boys are walking on railroad tracks.", "I better go too."], "Oops, wrong side."] },
-                { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Player's House Floor 1 Stairs", "transport": "Player's House Floor 2 Stairs" },
+                { "thing": "StairsUp", "x": 56, "y": 8, "entrance": "Player's House Floor 1 Stairs", "transport": { "map": "Pallet Town", "location": "Player's House Floor 2 Stairs" } },
                 { "thing": "Table2x3", "x": 24, "y": 32 },
                 { "thing": "Stool", "x": 16, "y": 32 },
                 { "thing": "Stool", "x": 16, "y": 40 },
@@ -129,17 +129,17 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "FlowerVase", "x": 29, "y": 34 },
                 { "thing": "Mother", "x": 40, "y": 32, "direction": 3, "directionPreferred": 3, "dialog": ["MOM: Right. All boys leave home some day. It said so on TV.", "PROF.OAK, next door, is looking for you."] },
                 { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Player's House Floor 1 Door" },
-                { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Player's House Door" }, "requireDirection": 2 }
-            ]
-        },
-        "Player's House Floor 2": {
-            "invisibleWallBorders": true,
-            "creation": [
+                { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Player's House Door" }, "requireDirection": 2 }
+			]
+		},
+		"Player's House Floor 2": {
+			"invisibleWallBorders": true,
+			"creation": [
                 { "thing": "WallIndoorHorizontalBands", "width": 64 },
                 { "thing": "InvisibleWall", "width": 64 },
                 { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
                 {
-                    "thing": "ComputerDesk", "dialog":
+                	"thing": "ComputerDesk", "dialog":
                     [
                         "We've watched while the stars burned out, and creation played in reverse.",
                         "The universe freezing in half light.",
@@ -165,18 +165,18 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                     ]
                 },
                 { "thing": "Table2x2", "x": 8, "tolBottom": 0 },
-                { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Player's House Floor 2 Stairs", "transport": "Player's House Floor 1 Stairs" },
+                { "thing": "StairsDown", "x": 56, "y": 8, "entrance": "Player's House Floor 2 Stairs", "transport": { "map": "Pallet Town", "location": "Player's House Floor 1 Stairs" } },
                 { "thing": "WindowBlinds", "x": 40 },
                 { "thing": "WindowBlinds", "x": 56 },
                 { "thing": "ConsoleAndController", "x": 24, "y": 32, "dialog": "%%%%%%%PLAYER%%%%%%% is playing the SNES! ...Okay! It's time to go!" },
                 { "thing": "TelevisionMonitor", "x": 24, "y": 24 },
                 { "thing": "BedSingle", "y": 48 },
                 { "thing": "PottedPalmTree", "x": 48, "y": 48 }
-            ]
-        },
-        "Rival's House": {
-            "invisibleWallBorders": true,
-            "creation": [
+			]
+		},
+		"Rival's House": {
+			"invisibleWallBorders": true,
+			"creation": [
                 { "thing": "WallIndoorHorizontalBands", "width": 64 },
                 { "thing": "InvisibleWall", "width": 64 },
                 { "thing": "FloorTiledDiagonal", "y": 8, "width": 64, "height": 56 },
@@ -194,13 +194,13 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "PottedPalmTree", "y": 48 },
                 { "thing": "PottedPalmTree", "x": 56, "y": 48 },
                 { "thing": "DoormatDotted", "x": 16, "y": 56, "width": 16, "entrance": "Rival's House Floor 1 Door" },
-                { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "location": "Rival's House Door" }, "requireDirection": 2 }
-            ]
-        },
-        "Oak's Lab": {
-            "theme": "Oak's Lab",
-            "invisibleWallBorders": true,
-            "creation": [
+                { "thing": "HiddenTransporter", "x": 16, "y": 56, "width": 16, "transport": { "map": "Pallet Town", "location": "Rival's House Door" }, "requireDirection": 2 }
+			]
+		},
+		"Oak's Lab": {
+			"theme": "Oak's Lab",
+			"invisibleWallBorders": true,
+			"creation": [
                 { "thing": "WallIndoorLightWithDarkBottom", "width": 64 },
                 { "thing": "InvisibleWall", "width": 64 },
                 { "thing": "Table2x2", "y": 4, "width": 32 },
@@ -213,9 +213,9 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "Oak", "x": 40, "y": 16, "id": "Oak", "hidden": true, "nocollide": true },
                 { "thing": "Rival", "x": 32, "y": 24, "id": "Rival", "dialog": "Yo %%%%%%%PLAYER%%%%%%%! Gramps isn't around!" },
                 { "thing": "Table3x1", "x": 48, "y": 24 },
-                { "thing": "Pokeball", "x": 48, "y": 24, "id": "PokeballCharmander", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": "CHARMANDER", "description": "fire" },
-                { "thing": "Pokeball", "x": 56, "y": 24, "id": "PokeballSquirtle", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": "SQUIRTLE", "description": "water" },
-                { "thing": "Pokeball", "x": 64, "y": 24, "id": "PokeballBulbasaur", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": "BULBASAUR", "description": "plant" },
+                { "thing": "Pokeball", "x": 48, "y": 24, "id": "PokeballCHARMANDER", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"], "description": "fire" },
+                { "thing": "Pokeball", "x": 56, "y": 24, "id": "PokeballSQUIRTLE", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["S", "Q", "U", "I", "R", "T", "L", "E"], "description": "water" },
+                { "thing": "Pokeball", "x": 64, "y": 24, "id": "PokeballBULBASAUR", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["B", "U", "L", "B", "A", "S", "A", "U", "R"], "description": "plant" },
                 { "thing": "Bookshelf", "x": 48, "width": 32 },
                 { "thing": "Bookshelf", "y": 48, "width": 32 },
                 { "thing": "Bookshelf", "x": 48, "y": 48, "width": 32 },
@@ -227,7 +227,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "Doormat", "x": 32, "y": 88, "id": "DoormatLeft" },
                 { "thing": "Doormat", "x": 40, "y": 88, "id": "DoormatRight", "entrance": "Oak's Lab Floor 1 Door" },
                 { "thing": "HiddenTransporter", "x": 32, "y": 88, "width": 16, "transport": { "map": "Pallet Town", "location": "Oak's Lab Door" }, "requireDirection": 2 },
-            ]
-        }
-    }
+			]
+		}
+	}
 };

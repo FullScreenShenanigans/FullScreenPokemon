@@ -6,18 +6,18 @@ module FullScreenPokemon {
 
     FullScreenPokemon.settings.math = {
         "equations": {
-            "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], nickname: string[], level: number, moves: BattleMovr.IMove[], iv: number, ev: number): IPokemon {
+            "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
                 var statisticNames: string[] = constants.statisticNames,
                     pokemon: any = {
                         "title": title,
-                        "nickname": nickname,
-                        "level": level,
-                        "moves": moves || this.compute("newPokemonMoves", title, level),
+                        "nickname": title,
+                        "level": level || 1,
+                        "moves": moves || this.compute("newPokemonMoves", title, level || 1),
                         "types": constants.pokemon[title.join("")].types,
                         "status": "",
                         "IV": iv || this.compute("newPokemonIVs"),
                         "EV": ev || this.compute("newPokemonEVs"),
-                        "experience": this.compute("newPokemonExperience", title, level)
+                        "experience": this.compute("newPokemonExperience", title, level || 1)
                     },
                     i: number;
 

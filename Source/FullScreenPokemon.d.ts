@@ -90,7 +90,7 @@ declare module FullScreenPokemon {
     }
 
     export interface IMathEquations extends MathDecidr.IEquationContainer {
-        newPokemon: (constants: IMathConstants, equations: IMathEquations, title: string[], nickname: string[], level: number, moves: BattleMovr.IMove[], iv: number, ev: number) => IPokemon;
+        newPokemon: (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number) => IPokemon;
         newPokemonMoves: (constants: IMathConstants, equations: IMathEquations, title: string[], level: number) => BattleMovr.IMove[];
         newPokemonIVs: (constants: IMathConstants, equations: IMathEquations) => { [i: string]: number };
         newPokemonEVs: (constants: IMathConstants, equations: IMathEquations) => { [i: string]: number };

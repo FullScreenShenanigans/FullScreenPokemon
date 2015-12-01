@@ -3537,7 +3537,7 @@ module FullScreenPokemon {
                     "flipHoriz": true
                 }
             });
-            FSP.MenuGrapher.addMenuDialog("PokedexListingName", title);
+            FSP.MenuGrapher.addMenuDialog("PokedexListingName", [[title]]);
             FSP.MenuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
             FSP.MenuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
             FSP.MenuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
@@ -3992,11 +3992,7 @@ module FullScreenPokemon {
                 level: number = typeof schema.levels !== "undefined"
                     ? FSP.NumberMaker.randomArrayMember(schema.levels)
                     : schema.level,
-                pokemon: IPokemon = FSP.MathDecider.compute(
-                    "newPokemon",
-                    schema.title,
-                    schema.title,
-                    level);
+                pokemon: IPokemon = FSP.MathDecider.compute("newPokemon", schema.title, level);
 
             return pokemon;
         }
@@ -4965,10 +4961,7 @@ module FullScreenPokemon {
             if (!opponent.hasActors) {
                 FSP.BattleMover.closeBattle(function (): void {
                     FSP.animateFadeFromColor(FSP, {
-                        "color": "White",
-                        "callback": function (): void {
-                            FSP.ScenePlayer.playRoutine("Complete");
-                        }
+                        "color": "White"
                     });
                 });
                 return;
@@ -5033,7 +5026,6 @@ module FullScreenPokemon {
                     "color": "White"
                 },
                 callback: () => void = function (): void {
-                    FSP.ScenePlayer.playRoutine("Complete");
                     FSP.BattleMover.closeBattle(function (): void {
                         FSP.animateFadeFromColor(FSP, animationSettings);
                     });
@@ -5087,8 +5079,9 @@ module FullScreenPokemon {
                 message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
                 callback = function (): void {
                     var transport: ITransportSchema = FSP.ItemsHolder.getItem("lastPokecenter");
+
+                    FSP.BattleMover.closeBattle();
                     FSP.setMap(transport.map, transport.location);
-                    FSP.MapScreener.blockInputs = false;
                 };
             } else {
                 callback = function (): void {
@@ -5107,7 +5100,6 @@ module FullScreenPokemon {
                 FSP.animateFadeToColor.bind(FSP, FSP, {
                     "color": "Black",
                     "callback": function (): void {
-                        FSP.ScenePlayer.playRoutine("Complete");
                         callback();
                     }
                 }));
@@ -5121,11 +5113,6 @@ module FullScreenPokemon {
             FSP.MapScreener.blockInputs = false;
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
-
-            if (settings.nextCutscene) {
-                FSP.ScenePlayer.startCutscene(
-                    settings.nextCutscene, settings.nextCutsceneSettings);
-            }
         }
 
         /**
@@ -5362,10 +5349,12 @@ module FullScreenPokemon {
                 "GeneralText",
                 [
                     [
-                        defenderLabel, defender.nickname, "'s",
+                        defenderLabel,
+						defender.nickname,
+						"'s ",
                         statistic.toUpperCase(),
-                        amountLabel + "!"
-                    ].join(" ")
+                        " " + amountLabel + "!"
+                    ]
                 ],
                 args.callback
             );
@@ -6921,7 +6910,9 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, " + settings.chosen.toUpperCase() + "?"
+                    [
+                        "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, ", settings.chosen, "?"
+                    ]
                 ],
                 function (): void {
                     FSP.MenuGrapher.createMenu("Yes/No", {
@@ -6959,7 +6950,7 @@ module FullScreenPokemon {
             rival.dialog = dialogRival;
             FSP.StateHolder.addChange(rival.id, "dialog", dialogRival);
 
-            FSP.ItemsHolder.setItem("starter", settings.chosen);
+            FSP.ItemsHolder.setItem("starter", settings.chosen.join(""));
             settings.triggerer.hidden = true;
             FSP.StateHolder.addChange(settings.triggerer.id, "hidden", true);
             FSP.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
@@ -6969,16 +6960,20 @@ module FullScreenPokemon {
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "%%%%%%%PLAYER%%%%%%% received a " + settings.chosen.toUpperCase() + "!",
+                    [
+                        "%%%%%%%PLAYER%%%%%%% received a ", settings.chosen, "!"
+                    ],
                     "This %%%%%%%POKEMON%%%%%%% is really energetic!",
-                    "Do you want to give a nickname to " + settings.chosen.toUpperCase() + "?"
+                    [
+                        "Do you want to give a nickname to ", settings.chosen, "?"
+                    ]
                 ],
                 FSP.ScenePlayer.bindRoutine("PlayerChoosesNickname"));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
 
             FSP.ItemsHolder.setItem("starter", settings.chosen);
             FSP.ItemsHolder.setItem("PokemonInParty", [
-                FSP.MathDecider.compute("newPokemon", settings.chosen.split(""), 5)
+                FSP.MathDecider.compute("newPokemon", settings.chosen, 5)
             ]);
         }
 
@@ -7001,7 +6996,7 @@ module FullScreenPokemon {
                                     "top": -12
                                 }
                             },
-                            "title": settings.chosen.toUpperCase(),
+                            "title": settings.chosen,
                             "callback": FSP.ScenePlayer.bindRoutine("PlayerSetsNickname")
                         })
                     }, {
@@ -7030,7 +7025,7 @@ module FullScreenPokemon {
          */
         cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(FSP: FullScreenPokemon, settings: any): void {
             var rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
-                other: string,
+                other: string[],
                 steps: number,
                 pokeball: IPokeball;
 
@@ -7038,18 +7033,18 @@ module FullScreenPokemon {
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.MenuGrapher.deleteMenu("Yes/No");
 
-            switch (settings.chosen) {
+            switch (settings.chosen.join("")) {
                 case "SQUIRTLE":
                     steps = 4;
-                    other = "BULBASAUR";
+                    other = "BULBASAUR".split("");
                     break;
                 case "CHARMANDER":
                     steps = 3;
-                    other = "SQUIRTLE";
+                    other = "SQUIRTLE".split("");
                     break;
                 case "BULBASAUR":
-                    steps = 5;
-                    other = "CHARMANDER";
+                    steps = 2;
+                    other = "CHARMANDER".split("");
                     break;
                 default:
                     throw new Error("Unknown first Pokemon.");
@@ -7059,7 +7054,7 @@ module FullScreenPokemon {
             settings.rivalSteps = steps;
             FSP.ItemsHolder.setItem("starterRival", other);
 
-            pokeball = <IPokeball>FSP.getThingById("Pokeball" + other);
+            pokeball = <IPokeball>FSP.getThingById("Pokeball" + other.join(""));
             settings.rivalPokeball = pokeball;
 
             FSP.animateCharacterStartTurning(
@@ -7091,7 +7086,9 @@ module FullScreenPokemon {
                 "GeneralText",
                 [
                     "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
-                    "%%%%%%%RIVAL%%%%%%% received a " + settings.rivalPokemon.toUpperCase() + "!"
+                    [
+                        "%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!"
+                    ]
                 ],
                 function (): void {
                     settings.rivalPokeball.hidden = true;
@@ -7152,7 +7149,6 @@ module FullScreenPokemon {
                     "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!"
                 ],
                 function (): void {
-                    console.log("is now", FSP.MapScreener.blockInputs);
                     FSP.MenuGrapher.deleteActiveMenu();
                     FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("Goodbye"), 21);
                 }
@@ -7184,7 +7180,7 @@ module FullScreenPokemon {
                 steps: any[] = [
                     1,
                     "bottom",
-                    7,
+                    6,
                     function (): void {
                         FSP.killNormal(rival);
                         FSP.StateHolder.addChange(rival.id, "alive", false);
@@ -7200,6 +7196,7 @@ module FullScreenPokemon {
             FSP.ScenePlayer.stopCutscene();
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
+			rival.nocollide = true;
             FSP.animateCharacterStartTurning(rival, isRight ? Direction.Left : Direction.Right, steps);
         }
 
@@ -7208,6 +7205,7 @@ module FullScreenPokemon {
          */
         cutsceneOakIntroRivalBattleChallenge(FSP: FullScreenPokemon, settings: any, args: any): void {
             var steps: number,
+                starterRival: string[] = FSP.ItemsHolder.getItem("starterRival"),
                 battleInfo: IBattleInfo = {
                     "opponent": {
                         "sprite": "RivalPortrait",
@@ -7216,10 +7214,7 @@ module FullScreenPokemon {
                         "hasActors": true,
                         "reward": 175,
                         "actors": [
-                            FSP.MathDecider.compute(
-                                "newPokemon",
-                                FSP.ItemsHolder.getItem("starterRival").split(""),
-                                5)
+                            FSP.MathDecider.compute("newPokemon", starterRival, 5)
                         ]
                     },
                     "textStart": ["", " wants to fight!"],
@@ -7237,14 +7232,14 @@ module FullScreenPokemon {
                     "nextCutscene": "OakIntroRivalLeaves"
                 };
 
-            switch (FSP.ItemsHolder.getItem("starterRival")) {
-                case "Squirtle":
+            switch (FSP.ItemsHolder.getItem("starterRival").join("")) {
+                case "SQUIRTLE":
                     steps = 2;
                     break;
-                case "Bulbasaur":
+                case "BULBASAUR":
                     steps = 3;
                     break;
-                case "Charmander":
+                case "CHARMANDER":
                     steps = 1;
                     break;
                 default:
@@ -7678,10 +7673,7 @@ module FullScreenPokemon {
          * 
          */
         cutsceneRivalRoute22RivalTalks(FSP: FullScreenPokemon, settings: any): void {
-            var rivalTitle: string[] = FSP.ItemsHolder.getItem("starterRival").split(""),
-                rivalNickname: string[] = rivalTitle.map(function (character: string): string {
-                    return character.toUpperCase();
-                });
+            var rivalTitle: string[] = FSP.ItemsHolder.getItem("starterRival");
 
             FSP.animateCharacterSetDirection(
                 settings.player,
@@ -7705,11 +7697,7 @@ module FullScreenPokemon {
                         "hasActors": true,
                         "reward": 280,
                         "actors": [
-                            FSP.MathDecider.compute(
-                                "newPokemon",
-                                rivalTitle,
-                                rivalNickname,
-                                8),
+                            FSP.MathDecider.compute("newPokemon", rivalTitle, 8),
                             FSP.MathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
                         ]
                     },
