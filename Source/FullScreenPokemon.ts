@@ -5350,8 +5350,8 @@ module FullScreenPokemon {
                 [
                     [
                         defenderLabel,
-						defender.nickname,
-						"'s ",
+                        defender.nickname,
+                        "'s ",
                         statistic.toUpperCase(),
                         " " + amountLabel + "!"
                     ]
@@ -7196,7 +7196,7 @@ module FullScreenPokemon {
             FSP.ScenePlayer.stopCutscene();
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
-			rival.nocollide = true;
+            rival.nocollide = true;
             FSP.animateCharacterStartTurning(rival, isRight ? Direction.Left : Direction.Right, steps);
         }
 
@@ -7321,7 +7321,10 @@ module FullScreenPokemon {
          * 
          */
         cutsceneOakParcelDeliveryGreeting(FSP: FullScreenPokemon, settings: any): void {
+            settings.rival = FSP.getThingById("Rival");
             settings.oak = settings.triggerer;
+            delete settings.oak.cutscene;
+            delete settings.oak.dialog;
 
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
@@ -7380,6 +7383,7 @@ module FullScreenPokemon {
             var doormat: IThing = FSP.getThingById("DoormatLeft"),
                 rival: ICharacter = <ICharacter>FSP.addThing("Rival", doormat.left, doormat.top);
 
+            rival.alive = true;
             settings.rival = rival;
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
@@ -7394,7 +7398,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * pause, oh right i have a request
+         * 
          */
         cutsceneOakParcelDeliveryRivalInquires(FSP: FullScreenPokemon, settings: any): void {
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -7522,14 +7526,18 @@ module FullScreenPokemon {
                 function (): void {
                     FSP.ScenePlayer.stopCutscene();
                     FSP.MenuGrapher.deleteMenu("GeneralText");
+
+                    delete settings.oak.activate;
+                    settings.rival.nocollide = true;
                     FSP.animateCharacterStartTurning(
                         settings.rival,
                         2,
                         [
                             8,
-                            FSP.killNormal.bind(
-                                FSP, settings.rival
-                            )
+                            function (): void {
+                                FSP.killNormal(settings.rival);
+                                FSP.player.canKeyWalking = true;
+                            }
                         ]);
 
                     delete settings.oak.cutscene;

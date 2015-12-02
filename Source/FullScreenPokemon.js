@@ -5148,7 +5148,10 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneOakParcelDeliveryGreeting = function (FSP, settings) {
+            settings.rival = FSP.getThingById("Rival");
             settings.oak = settings.triggerer;
+            delete settings.oak.cutscene;
+            delete settings.oak.dialog;
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", [
                 "OAK: Oh, %%%%%%%PLAYER%%%%%%%!",
@@ -5182,6 +5185,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalWalksUp = function (FSP, settings) {
             var doormat = FSP.getThingById("DoormatLeft"), rival = FSP.addThing("Rival", doormat.left, doormat.top);
+            rival.alive = true;
             settings.rival = rival;
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.animateCharacterStartTurning(rival, 0, [
@@ -5190,7 +5194,7 @@ var FullScreenPokemon;
             ]);
         };
         /**
-         * pause, oh right i have a request
+         *
          */
         FullScreenPokemon.prototype.cutsceneOakParcelDeliveryRivalInquires = function (FSP, settings) {
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -5269,9 +5273,14 @@ var FullScreenPokemon;
             ], function () {
                 FSP.ScenePlayer.stopCutscene();
                 FSP.MenuGrapher.deleteMenu("GeneralText");
+                delete settings.oak.activate;
+                settings.rival.nocollide = true;
                 FSP.animateCharacterStartTurning(settings.rival, 2, [
                     8,
-                    FSP.killNormal.bind(FSP, settings.rival)
+                    function () {
+                        FSP.killNormal(settings.rival);
+                        FSP.player.canKeyWalking = true;
+                    }
                 ]);
                 delete settings.oak.cutscene;
                 settings.oak.dialog = [
