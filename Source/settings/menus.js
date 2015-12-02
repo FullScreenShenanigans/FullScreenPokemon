@@ -200,6 +200,7 @@ var FullScreenPokemon;
                     }],
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
+                "scrollingItemsComputed": true,
                 "startMenu": "PokedexOptions",
                 "textSpeed": 0,
                 "textXOffset": 7,
@@ -820,6 +821,7 @@ var FullScreenPokemon;
                     }
                 },
                 "backMenu": "Pause",
+                "scrollingItemsComputed": true,
                 "textXOffset": 8
             },
             "Player": {

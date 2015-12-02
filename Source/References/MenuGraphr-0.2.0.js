@@ -558,6 +558,9 @@ var MenuGraphr;
                     menu.grid[j].push(option);
                 }
             }
+            if (menu.scrollingItemsComputed) {
+                menu.scrollingItems = this.computeMenuScrollingItems(menu);
+            }
             if (menu.scrollingItems) {
                 menu.scrollingAmount = 0;
                 menu.scrollingAmountReal = 0;
@@ -841,6 +844,23 @@ var MenuGraphr;
         };
         /* Utilities
         */
+        /**
+         *
+         *
+         * @remarks This could be made into a binary search...
+         * @remarks This equation is rought, and could be re-checked...
+         */
+        MenuGraphr.prototype.computeMenuScrollingItems = function (menu) {
+            var bottom = menu.bottom
+                - (menu.textPaddingY * this.GameStarter.unitsize || 0)
+                - (menu.textYOffset * this.GameStarter.unitsize || 0), i;
+            for (i = 0; i < menu.gridRows; i += 1) {
+                if (menu.grid[0][i].y >= bottom) {
+                    return i;
+                }
+            }
+            return Infinity;
+        };
         /**
          *
          */

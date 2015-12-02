@@ -45,7 +45,7 @@ declare module MenuGraphr {
         arrow: IThing;
         arrowXOffset?: number;
         arrowYOffset?: number;
-        grid: any[][];
+        grid: IGridCell[][];
         gridColumns: number;
         gridRows: number;
         height: number;
@@ -57,6 +57,19 @@ declare module MenuGraphr {
         selectedIndex: number[];
         textColumnWidth: number;
         width: number;
+    }
+
+    export interface IGridCell {
+        column: IGridCell[];
+        columnNumber: number;
+        index: number;
+        rowNumber: number;
+        // These two will likely need to be confirmed...
+        schema: (string | IMenuWordCommand)[];
+        text: (string | IMenuWordCommand)[];
+        title: string;
+        x: number;
+        y: number;
     }
 
     export interface IListMenuOptions {
@@ -120,6 +133,7 @@ declare module MenuGraphr {
 
     export interface IListMenuSchema extends IMenuSchema {
         scrollingItems?: number;
+        scrollingItemsComputed?: boolean | number;
     }
 
     export interface IMenuSchemaSize {
@@ -911,7 +925,7 @@ module MenuGraphr {
                 schema: any,
                 title: string,
                 character: IThing,
-                column: IThing[],
+                column: IGridCell[],
                 x: number,
                 i: number,
                 j: number,
@@ -1068,6 +1082,10 @@ module MenuGraphr {
                 for (j = 0; j < menu.grid.length; j += 1) {
                     menu.grid[j].push(option);
                 }
+            }
+
+            if (menu.scrollingItemsComputed) {
+                menu.scrollingItems = this.computeMenuScrollingItems(menu);
             }
 
             if (menu.scrollingItems) {
@@ -1435,6 +1453,27 @@ module MenuGraphr {
 
         /* Utilities
         */
+
+        /**
+         * 
+         * 
+         * @remarks This could be made into a binary search...
+         * @remarks This equation is rought, and could be re-checked...
+         */
+        private computeMenuScrollingItems(menu: IListMenu): number {
+            var bottom: number = menu.bottom
+                - (menu.textPaddingY * this.GameStarter.unitsize || 0)
+                - (menu.textYOffset * this.GameStarter.unitsize || 0),
+                i: number;
+
+            for (i = 0; i < menu.gridRows; i += 1) {
+                if (menu.grid[0][i].y >= bottom) {
+                    return i;
+                }
+            }
+
+            return Infinity;
+        }
 
         /**
          * 
