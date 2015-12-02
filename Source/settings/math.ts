@@ -749,8 +749,6 @@ module FullScreenPokemon {
                     "info": [
                         "A ferocious, prehistoric %%%%%%%POKEMON%%%%%%% that goes for the enemy's throat with its serrated saw-like fangs."
                     ],
-
-
                     "number": 142,
                     "height": ["5", "11"],
                     "weight": 130.1,
@@ -1994,8 +1992,6 @@ module FullScreenPokemon {
                     "info": [
                         "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally."
                     ],
-
-
                     "number": 6,
                     "height": ["5", "7"],
                     "weight": 199.5,

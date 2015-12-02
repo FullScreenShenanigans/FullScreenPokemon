@@ -19,6 +19,16 @@ var FullScreenPokemon;
 (function (FullScreenPokemon_1) {
     "use strict";
     /**
+     * Whether a Pokemon is unknown, has been caught, or has been seen.
+     */
+    (function (PokedexListingStatus) {
+        PokedexListingStatus[PokedexListingStatus["Unknown"] = 0] = "Unknown";
+        PokedexListingStatus[PokedexListingStatus["Caught"] = 1] = "Caught";
+        PokedexListingStatus[PokedexListingStatus["Seen"] = 2] = "Seen";
+    })(FullScreenPokemon_1.PokedexListingStatus || (FullScreenPokemon_1.PokedexListingStatus = {}));
+    var PokedexListingStatus = FullScreenPokemon_1.PokedexListingStatus;
+    ;
+    /**
      * Cardinal directions a Thing may face in-game.
      */
     (function (Direction) {
@@ -2376,6 +2386,49 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.expandMapBoundaries = function (FSP, area, x, y) {
             FSP.MapScreener.scrollability = "both";
         };
+        /* Pokedex storage
+        */
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.addPokemonToPokedex = function (FSP, titleRaw, status) {
+            var pokedex = FSP.ItemsHolder.getItem("Pokedex"), title = titleRaw.join(""), information = pokedex[title];
+            if (!information) {
+                pokedex[title] = information = {
+                    caught: status >= PokedexListingStatus.Caught,
+                    seen: status >= PokedexListingStatus.Seen,
+                    title: titleRaw
+                };
+            }
+            else {
+                information.caught = information.caught || (status >= PokedexListingStatus.Caught);
+                information.seen = information.seen || (status >= PokedexListingStatus.Seen);
+            }
+            FSP.ItemsHolder.setItem("Pokedex", pokedex);
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.getPokedexListingsOrdered = function (FSP) {
+            var pokedex = FSP.ItemsHolder.getItem("Pokedex"), pokemon = FSP.MathDecider.getConstant("pokemon"), titlesSorted = Object.keys(pokedex)
+                .sort(function (a, b) {
+                return pokemon[a].number - pokemon[b].number;
+            }), ordered = [], i, j;
+            if (!titlesSorted.length) {
+                return [];
+            }
+            for (i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
+                ordered.push(null);
+            }
+            for (i = 0; i < titlesSorted.length - 1; i += 1) {
+                ordered.push(pokedex[titlesSorted[i]]);
+                for (j = pokemon[titlesSorted[i]].number - 1; j < pokemon[titlesSorted[i + 1]].number - 2; j += 1) {
+                    ordered.push(null);
+                }
+            }
+            ordered.push(pokedex[titlesSorted[i]]);
+            return ordered;
+        };
         /* Menus
         */
         /**
@@ -2441,7 +2494,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.openPokedexMenu = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.ItemsHolder.getItem("Pokedex");
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP);
             FSP.MenuGrapher.createMenu("Pokedex");
             FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.addMenuList("Pokedex", {
@@ -2451,7 +2504,7 @@ var FullScreenPokemon;
                         "command": true,
                         "y": 4
                     });
-                    if (listing.caught) {
+                    if (listing) {
                         characters.push({
                             "command": true,
                             "x": -4,
@@ -2462,9 +2515,9 @@ var FullScreenPokemon;
                             "command": true,
                             "y": -1
                         });
-                    }
-                    if (listing.seen) {
-                        characters.push.apply(characters, listing.title.split(""));
+                        if (listing.seen) {
+                            characters.push.apply(characters, listing.title);
+                        }
                     }
                     else {
                         characters.push.apply(characters, "----------".split(""));

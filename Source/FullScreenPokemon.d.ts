@@ -158,6 +158,16 @@ declare module FullScreenPokemon {
         title: string;
     }
 
+    export interface IPokedexInformation {
+        caught: boolean;
+        seen: boolean;
+        title: string[];
+    }
+
+    export interface IPokedex {
+        [i: string]: IPokedexInformation;
+    }
+
     export interface IPokemonMovesListing {
         natural: IPokemonMoveListing[];
         hm: IPokemonMoveListing[];

@@ -17,6 +17,15 @@ module FullScreenPokemon {
     "use strict";
 
     /**
+     * Whether a Pokemon is unknown, has been caught, or has been seen.
+     */
+    export enum PokedexListingStatus {
+        Unknown = 0,
+        Caught = 1,
+        Seen = 2
+    };
+
+    /**
      * Cardinal directions a Thing may face in-game.
      */
     export enum Direction {
@@ -3231,6 +3240,67 @@ module FullScreenPokemon {
         }
 
 
+        /* Pokedex storage
+        */
+
+        /**
+         *
+         */
+        addPokemonToPokedex(FSP: FullScreenPokemon, titleRaw: string[], status: PokedexListingStatus): void {
+            var pokedex: IPokedex = FSP.ItemsHolder.getItem("Pokedex"),
+                title: string = titleRaw.join(""),
+                information: IPokedexInformation = pokedex[title];
+
+            if (!information) {
+                pokedex[title] = information = {
+                    caught: status >= PokedexListingStatus.Caught,
+                    seen: status >= PokedexListingStatus.Seen,
+                    title: titleRaw
+                };
+            } else {
+                information.caught = information.caught || (status >= PokedexListingStatus.Caught);
+                information.seen = information.seen || (status >= PokedexListingStatus.Seen);
+            }
+
+            FSP.ItemsHolder.setItem("Pokedex", pokedex);
+        }
+
+        /**
+         *
+         */
+        getPokedexListingsOrdered(FSP: FullScreenPokemon): IPokedexInformation[] {
+            var pokedex: IPokedex = FSP.ItemsHolder.getItem("Pokedex"),
+                pokemon: { [i: string]: IPokemonListing } = FSP.MathDecider.getConstant("pokemon"),
+                titlesSorted: string[] = Object.keys(pokedex)
+                    .sort(function (a: string, b: string): number {
+                        return pokemon[a].number - pokemon[b].number;
+                    }),
+                ordered: IPokedexInformation[] = [],
+                i: number,
+                j: number;
+
+            if (!titlesSorted.length) {
+                return [];
+            }
+
+            for (i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
+                ordered.push(null);
+            }
+
+            for (i = 0; i < titlesSorted.length - 1; i += 1) {
+                ordered.push(pokedex[titlesSorted[i]]);
+
+                for (j = pokemon[titlesSorted[i]].number - 1; j < pokemon[titlesSorted[i + 1]].number - 2; j += 1) {
+                    ordered.push(null);
+                }
+            }
+
+            ordered.push(pokedex[titlesSorted[i]]);
+
+            return ordered;
+        }
+
+
         /* Menus
         */
 
@@ -3309,12 +3379,12 @@ module FullScreenPokemon {
          */
         openPokedexMenu(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                listings: IPokedexListing[] = FSP.ItemsHolder.getItem("Pokedex");
+                listings: IPokedexInformation[] = FSP.getPokedexListingsOrdered(FSP);
 
             FSP.MenuGrapher.createMenu("Pokedex");
             FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.addMenuList("Pokedex", {
-                "options": listings.map(function (listing: IPokedexListing, i: number): any {
+                "options": listings.map(function (listing: IPokedexInformation, i: number): any {
                     var characters: any[] = FSP.makeDigit(i + 1, 3, 0).split("");
 
                     characters.push({
@@ -3322,7 +3392,7 @@ module FullScreenPokemon {
                         "y": 4
                     });
 
-                    if (listing.caught) {
+                    if (listing) {
                         characters.push({
                             "command": true,
                             "x": -4,
@@ -3333,10 +3403,10 @@ module FullScreenPokemon {
                             "command": true,
                             "y": -1
                         });
-                    }
 
-                    if (listing.seen) {
-                        characters.push.apply(characters, listing.title.split(""));
+                        if (listing.seen) {
+                            characters.push.apply(characters, listing.title);
+                        }
                     } else {
                         characters.push.apply(characters, "----------".split(""));
                     }
