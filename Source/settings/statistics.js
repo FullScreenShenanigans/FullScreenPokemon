@@ -52,7 +52,7 @@ FullScreenPokemon.FullScreenPokemon.settings.statistics = {
             "valueDefault": false
         },
         "Pokedex": {
-            "valueDefault": []
+            "valueDefault": {}
         },
         "PokemonInParty": {
             "valueDefault": []
