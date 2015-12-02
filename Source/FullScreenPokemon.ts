@@ -3244,22 +3244,29 @@ module FullScreenPokemon {
         */
 
         /**
-         *
+         * 
          */
         addPokemonToPokedex(FSP: FullScreenPokemon, titleRaw: string[], status: PokedexListingStatus): void {
             var pokedex: IPokedex = FSP.ItemsHolder.getItem("Pokedex"),
                 title: string = titleRaw.join(""),
                 information: IPokedexInformation = pokedex[title];
+            console.log(title, information);
 
-            if (!information) {
+            if (information) {
+                // Skip potentially expensive storage operations if they're unnecessary
+                if (information.caught || (information.seen && status >= PokedexListingStatus.Seen)) {
+                    console.log("bai");
+                    return;
+                }
+
+                information.caught = information.caught || (status >= PokedexListingStatus.Caught);
+                information.seen = information.seen || (status >= PokedexListingStatus.Seen);
+            } else {
                 pokedex[title] = information = {
                     caught: status >= PokedexListingStatus.Caught,
                     seen: status >= PokedexListingStatus.Seen,
                     title: titleRaw
                 };
-            } else {
-                information.caught = information.caught || (status >= PokedexListingStatus.Caught);
-                information.seen = information.seen || (status >= PokedexListingStatus.Seen);
             }
 
             FSP.ItemsHolder.setItem("Pokedex", pokedex);
@@ -4282,6 +4289,8 @@ module FullScreenPokemon {
                 opponentGoal,
                 1);
 
+            FSP.addPokemonToPokedex(FSP, battleInfo.opponent.actors[0].title, PokedexListingStatus.Seen);
+
             FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("OpeningText"), timeout);
 
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -4509,7 +4518,7 @@ module FullScreenPokemon {
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
             FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
-
+            FSP.addPokemonToPokedex(FSP, pokemonInfo.title, PokedexListingStatus.Seen);
             FSP.ScenePlayer.playRoutine(args.nextRoutine);
         }
 
@@ -5152,6 +5161,8 @@ module FullScreenPokemon {
 
                     FSP.BattleMover.closeBattle();
                     FSP.setMap(transport.map, transport.location);
+
+                    FSP.ItemsHolder.getItem("PokemonInParty").forEach(FSP.healPokemon.bind(FSP));
                 };
             } else {
                 callback = function (): void {
@@ -5755,9 +5766,7 @@ module FullScreenPokemon {
             var balls: IThing[] = args.balls,
                 party: BattleMovr.IActor[] = FSP.ItemsHolder.getItem("PokemonInParty");
 
-            // rekt
-            balls.forEach(FSP.killNormal);
-
+            balls.forEach(FSP.killNormal.bind(FSP));
             party.forEach(FSP.healPokemon.bind(FSP));
 
             FSP.animateCharacterSetDirection(settings.nurse, 2);
@@ -7045,6 +7054,7 @@ module FullScreenPokemon {
             FSP.ItemsHolder.setItem("PokemonInParty", [
                 FSP.MathDecider.compute("newPokemon", settings.chosen, 5)
             ]);
+            FSP.addPokemonToPokedex(FSP, settings.chosen, PokedexListingStatus.Caught);
         }
 
         /**
@@ -7095,7 +7105,7 @@ module FullScreenPokemon {
          */
         cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(FSP: FullScreenPokemon, settings: any): void {
             var rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
-                other: string[],
+                starterRival: string[],
                 steps: number,
                 pokeball: IPokeball;
 
@@ -7106,25 +7116,26 @@ module FullScreenPokemon {
             switch (settings.chosen.join("")) {
                 case "SQUIRTLE":
                     steps = 4;
-                    other = "BULBASAUR".split("");
+                    starterRival = "BULBASAUR".split("");
                     break;
                 case "CHARMANDER":
                     steps = 3;
-                    other = "SQUIRTLE".split("");
+                    starterRival = "SQUIRTLE".split("");
                     break;
                 case "BULBASAUR":
                     steps = 2;
-                    other = "CHARMANDER".split("");
+                    starterRival = "CHARMANDER".split("");
                     break;
                 default:
                     throw new Error("Unknown first Pokemon.");
             }
 
-            settings.rivalPokemon = other;
+            settings.rivalPokemon = starterRival;
             settings.rivalSteps = steps;
-            FSP.ItemsHolder.setItem("starterRival", other);
+            FSP.ItemsHolder.setItem("starterRival", starterRival);
+            FSP.addPokemonToPokedex(FSP, starterRival, PokedexListingStatus.Caught);
 
-            pokeball = <IPokeball>FSP.getThingById("Pokeball" + other.join(""));
+            pokeball = <IPokeball>FSP.getThingById("Pokeball" + starterRival.join(""));
             settings.rivalPokeball = pokeball;
 
             FSP.animateCharacterStartTurning(
