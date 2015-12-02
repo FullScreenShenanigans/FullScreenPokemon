@@ -3393,22 +3393,22 @@ module FullScreenPokemon {
                     });
 
                     if (listing) {
-                        characters.push({
-                            "command": true,
-                            "x": -4,
-                            "y": 1
-                        });
-                        characters.push("Ball");
-                        characters.push({
-                            "command": true,
-                            "y": -1
-                        });
-
-                        if (listing.seen) {
-                            characters.push.apply(characters, listing.title);
+                        if (listing.caught) {
+                            characters.push({
+                                "command": true,
+                                "x": -4,
+                                "y": 1
+                            });
+                            characters.push("Ball");
+                            characters.push({
+                                "command": true,
+                                "y": -1
+                            });
                         }
+
+                        characters.push(...listing.title);
                     } else {
-                        characters.push.apply(characters, "----------".split(""));
+                        characters.push(..."----------".split(""));
                     }
 
                     characters.push({
