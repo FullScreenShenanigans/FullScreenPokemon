@@ -499,6 +499,7 @@ declare module FullScreenPokemon {
         light?: boolean;
         lined?: boolean;
         plain?: boolean;
+        watery?: boolean;
     }
 
     export interface IMenuSchema extends IMenuBase {

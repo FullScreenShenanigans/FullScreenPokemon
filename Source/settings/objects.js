@@ -703,9 +703,11 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                     },
                     "LineDecoratorVertical": {},
                     "LineSeparatorHorizontal": {},
-                }
+                },
+                "MapGreyDiagonal": {},
+                "TownMapNoWater": {}
             },
-            "Menu": {}
+            "Menu": {},
         }
     },
     "properties": {
@@ -1203,6 +1205,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "LineDecoratorHorizontal": [8, 3],
         "LineDecoratorVertical": [3, 8],
         "LineSeparatorHorizontal": [4, 4],
+        "MapGreyDiagonal": [4, 4],
+        "TownMapNoWater": [76, 128],
         "Menu": {
             "groupType": "Text",
             "spritewidth": 4,
@@ -1227,8 +1231,12 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                     "spritewidth": 2,
                     "spriteheight": 2
                 },
-                "dirty": {}
+                "dirty": {},
+                "watery": {
+                    "spritewidth": 4,
+                    "spriteheight": 4
+                },
             }
-        },
+        }
     }
 };

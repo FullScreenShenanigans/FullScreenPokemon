@@ -1237,6 +1237,37 @@ var FullScreenPokemon;
                 "backMenu": "ShopItems",
                 "textSpeed": 0
             },
+            "Town Map": {
+                "size": {
+                    "width": 88,
+                    "height": 76
+                },
+                "position": {
+                    "horizontal": "center",
+                    "vertical": "center"
+                },
+                "childrenSchemas": [
+                    {
+                        "type": "menu",
+                        "name": "Town Map Inside"
+                    }]
+            },
+            "Town Map Inside": {
+                "size": {
+                    "width": 80,
+                    "height": 68
+                },
+                "position": {
+                    "horizontal": "center",
+                    "vertical": "center"
+                },
+                "childrenSchemas": [
+                    {
+                        "type": "thing",
+                        "thing": "TownMapNoWater",
+                    }],
+                "watery": true
+            },
             "Battle": {
                 "size": {
                     "width": 80,
@@ -1704,7 +1735,8 @@ var FullScreenPokemon;
                     "vertical": "center",
                     "horizontal": "center"
                 },
-                "childrenSchemas": [{
+                "childrenSchemas": [
+                    {
                         "type": "menu",
                         "name": "KeyboardKeys"
                     }, {
