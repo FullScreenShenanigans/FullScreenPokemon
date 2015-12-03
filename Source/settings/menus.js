@@ -201,6 +201,7 @@ var FullScreenPokemon;
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
                 "scrollingItemsComputed": true,
+                "singleColumnList": true,
                 "startMenu": "PokedexOptions",
                 "textSpeed": 0,
                 "textXOffset": 7,

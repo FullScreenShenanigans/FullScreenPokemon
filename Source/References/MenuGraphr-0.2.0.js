@@ -505,7 +505,7 @@ var MenuGraphr;
                     }
                 }
                 y += textPaddingY;
-                if (y > menu.bottom - textHeight + 1) {
+                if (!menu.singleColumnList && y > menu.bottom - textHeight + 1) {
                     y = top;
                     left += menu.textColumnWidth * this.GameStarter.unitsize;
                     column = [];
@@ -562,8 +562,7 @@ var MenuGraphr;
                 menu.scrollingItems = this.computeMenuScrollingItems(menu);
             }
             if (menu.scrollingItems) {
-                menu.scrollingAmount = 0;
-                menu.scrollingAmountReal = 0;
+                menu.scrollingVisualOffset = 0;
                 for (i = menu.scrollingItems; i < menu.gridRows; i += 1) {
                     optionChild = optionChildren[i];
                     for (j = 0; j < optionChild.things.length; j += 1) {
@@ -633,7 +632,6 @@ var MenuGraphr;
             if (x === menu.selectedIndex[0] && y === menu.selectedIndex[1]) {
                 return;
             }
-            // y = Math.min(menu.grid[x].length - 1, y);
             menu.selectedIndex[0] = x;
             menu.selectedIndex[1] = y;
             option = this.getMenuSelectedOption(name);
@@ -654,25 +652,24 @@ var MenuGraphr;
          *
          */
         MenuGraphr.prototype.adjustVerticalScrollingListThings = function (name, dy, textPaddingY) {
-            var menu = this.getExistingMenu(name), scrollingOld = menu.scrollingAmount, offset = -dy * textPaddingY, option, optionChild, i, j;
-            menu.scrollingAmount += dy;
+            var menu = this.getExistingMenu(name), scrollingOld = menu.selectedIndex[1] - dy, offset = -dy * textPaddingY, option, optionChild, i, j;
             if (dy > 0) {
-                if (scrollingOld < menu.scrollingItems - 2) {
+                if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
                     return;
                 }
             }
-            else if (menu.scrollingAmount < menu.scrollingItems - 2) {
+            else if (scrollingOld - menu.scrollingVisualOffset > 0) {
                 return;
             }
-            menu.scrollingAmountReal += dy;
+            menu.scrollingVisualOffset += dy;
             for (i = 0; i < menu.optionChildren.length; i += 1) {
                 option = menu.options[i];
                 optionChild = menu.optionChildren[i];
                 option.y += offset;
                 for (j = 0; j < optionChild.things.length; j += 1) {
                     this.GameStarter.shiftVert(optionChild.things[j], offset);
-                    if (i < menu.scrollingAmountReal
-                        || i >= menu.scrollingItems + menu.scrollingAmountReal) {
+                    if (i < menu.scrollingVisualOffset
+                        || i >= menu.scrollingItems + menu.scrollingVisualOffset) {
                         optionChild.things[j].hidden = true;
                     }
                     else {

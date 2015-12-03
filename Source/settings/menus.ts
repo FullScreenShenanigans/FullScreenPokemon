@@ -139,7 +139,7 @@ module FullScreenPokemon {
                 "textYOffset": 8,
                 "textPaddingY": 7.75
             },
-            "Pokedex": {
+            "Pokedex": <MenuGraphr.IListMenuSchema>{
                 "size": {
                     "width": 88
                 },
@@ -214,6 +214,7 @@ module FullScreenPokemon {
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
                 "scrollingItemsComputed": true,
+                "singleColumnList": true,
                 "startMenu": "PokedexOptions",
                 "textSpeed": 0,
                 "textXOffset": 7,

@@ -52,8 +52,17 @@ declare module MenuGraphr {
         options: any[];
         optionChildren: any;
         progress: IListMenuProgress;
-        scrollingAmount?: number;
-        scrollingAmountReal?: number;
+        
+        /**
+         * How many rows the menu has visually scrolled.
+         */
+        scrollingVisualOffset?: number;
+
+        /**
+         * Whether the list should be a single column, rather than auto-flow.
+         */
+        singleColumnList: boolean;
+
         selectedIndex: number[];
         textColumnWidth: number;
         width: number;
@@ -1023,7 +1032,7 @@ module MenuGraphr {
 
                 y += textPaddingY;
 
-                if (y > menu.bottom - textHeight + 1) {
+                if (!menu.singleColumnList && y > menu.bottom - textHeight + 1) {
                     y = top;
                     left += menu.textColumnWidth * this.GameStarter.unitsize;
                     column = [];
@@ -1089,8 +1098,7 @@ module MenuGraphr {
             }
 
             if (menu.scrollingItems) {
-                menu.scrollingAmount = 0;
-                menu.scrollingAmountReal = 0;
+                menu.scrollingVisualOffset = 0;
 
                 for (i = menu.scrollingItems; i < menu.gridRows; i += 1) {
                     optionChild = optionChildren[i];
@@ -1180,8 +1188,6 @@ module MenuGraphr {
                 return;
             }
 
-            // y = Math.min(menu.grid[x].length - 1, y);
-
             menu.selectedIndex[0] = x;
             menu.selectedIndex[1] = y;
             option = this.getMenuSelectedOption(name);
@@ -1211,24 +1217,22 @@ module MenuGraphr {
          */
         adjustVerticalScrollingListThings(name: string, dy: number, textPaddingY: number): void {
             var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
-                scrollingOld: number = menu.scrollingAmount,
+                scrollingOld: number = menu.selectedIndex[1] - dy,
                 offset: number = -dy * textPaddingY,
                 option: any,
                 optionChild: any,
                 i: number,
                 j: number;
 
-            menu.scrollingAmount += dy;
-
             if (dy > 0) {
-                if (scrollingOld < menu.scrollingItems - 2) {
+                if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
                     return;
                 }
-            } else if (menu.scrollingAmount < menu.scrollingItems - 2) {
+            } else if (scrollingOld - menu.scrollingVisualOffset > 0) {
                 return;
             }
 
-            menu.scrollingAmountReal += dy;
+            menu.scrollingVisualOffset += dy;
 
             for (i = 0; i < menu.optionChildren.length; i += 1) {
                 option = menu.options[i];
@@ -1239,8 +1243,8 @@ module MenuGraphr {
                 for (j = 0; j < optionChild.things.length; j += 1) {
                     this.GameStarter.shiftVert(optionChild.things[j], offset);
                     if (
-                        i < menu.scrollingAmountReal
-                        || i >= menu.scrollingItems + menu.scrollingAmountReal
+                        i < menu.scrollingVisualOffset
+                        || i >= menu.scrollingItems + menu.scrollingVisualOffset
                     ) {
                         optionChild.things[j].hidden = true;
                     } else {
