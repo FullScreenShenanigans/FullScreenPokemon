@@ -539,6 +539,12 @@ module FullScreenPokemon {
                     "Poison": 5
                 }
             },
+            "townMapLocations": {
+                "Pallet Town": [18, 48],
+                "Pewter City": [18, 16],
+                "Serebii Islands": [18, 64],
+                "Viridian City": [18, 36]
+            },
             /**
              * Run on http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
              * 

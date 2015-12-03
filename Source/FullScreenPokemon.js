@@ -2500,9 +2500,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.openPokedexMenu = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP), optionsMenuActivator = function () {
-                FSP.MenuGrapher.setActiveMenu("PokedexOptions");
-            };
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP), currentListing;
             FSP.MenuGrapher.createMenu("Pokedex");
             FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.addMenuList("Pokedex", {
@@ -2528,7 +2526,10 @@ var FullScreenPokemon;
                             });
                         }
                         characters.push.apply(characters, listing.title);
-                        output.callback = optionsMenuActivator;
+                        output.callback = function () {
+                            currentListing = listing;
+                            FSP.MenuGrapher.setActiveMenu("PokedexOptions");
+                        };
                     }
                     else {
                         characters.push.apply(characters, "----------".split(""));
@@ -2548,7 +2549,11 @@ var FullScreenPokemon;
                     }, {
                         "text": "CRY"
                     }, {
-                        "text": "AREA"
+                        "text": "AREA",
+                        "callback": function () {
+                            FSP.openTownMapMenu();
+                            FSP.showTownMapPokemonLocations(currentListing.title);
+                        }
                     }, {
                         "text": "QUIT",
                         "callback": FSP.MenuGrapher.registerB
@@ -2957,6 +2962,41 @@ var FullScreenPokemon;
             settings.completeValue = keyboardResult.completeValue;
             settings.selectedIndex = keyboardKeys.selectedIndex;
             FSP.openKeyboardMenu(settings);
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.openTownMapMenu = function () {
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), playerPosition = FSP.MathDecider.getConstant("townMapLocations")["Pallet Town"], playerSize = FSP.ObjectMaker.getFullPropertiesOf("Player");
+            FSP.MenuGrapher.createMenu("Town Map");
+            FSP.MenuGrapher.createMenuThing("Town Map Inside", {
+                "type": "thing",
+                "thing": "Player",
+                "args": {
+                    "nocollide": true
+                },
+                "position": {
+                    "offset": {
+                        "left": playerPosition[0] - (playerSize.width / 2),
+                        "top": playerPosition[1] - (playerSize.height / 2)
+                    }
+                }
+            });
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.showTownMapFlyLocations = function () {
+            console.warn("Map fly locations not implemented.");
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.showTownMapPokemonLocations = function (title) {
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), dialog = [].slice.call(title);
+            dialog.push.apply(dialog, "'s NEST".split(""));
+            FSP.MenuGrapher.addMenuDialog("Town Map", [dialog]);
+            console.warn("Pokemon map locations not implemented.");
         };
         /* Battles
         */

@@ -68,6 +68,12 @@ declare module FullScreenPokemon {
                 [i: string]: number;
             }
         };
+        /**
+         * [X, Y] coordinates for spots on the Town Map to display Thing icons.
+         */
+        townMapLocations: {
+            [i: string]: [number, number];
+        };
         types: {
             names: string[];
             indices: {

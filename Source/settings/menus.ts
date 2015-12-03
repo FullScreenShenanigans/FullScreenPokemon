@@ -1253,17 +1253,23 @@ module FullScreenPokemon {
             "Town Map": {
                 "size": {
                     "width": 88,
-                    "height": 76
+                    "height": 81
                 },
                 "position": {
                     "horizontal": "center",
-                    "vertical": "center"
+                    "vertical": "center",
+                    "offset": {
+                        "left": -4
+                    }
                 },
                 "childrenSchemas": [
                     {
                         "type": "menu",
                         "name": "Town Map Inside"
-                    }]
+                    }],
+                "textSpeed": 0,
+                "textXOffset": 8,
+                "textYOffset": 3.5
             },
             "Town Map Inside": {
                 "size": {
@@ -1272,13 +1278,16 @@ module FullScreenPokemon {
                 },
                 "position": {
                     "horizontal": "center",
-                    "vertical": "center"
+                    "offset": {
+                        "top": 8
+                    }
                 },
                 "childrenSchemas": [
                     <MenuGraphr.IMenuThingSchema>{
                         "type": "thing",
-                        "thing": "TownMapNoWater",
+                        "thing": "TownMapNoWater"
                     }],
+                "container": "Town Map",
                 "watery": true
             },
             "Battle": {

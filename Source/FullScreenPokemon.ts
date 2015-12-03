@@ -3387,9 +3387,7 @@ module FullScreenPokemon {
         openPokedexMenu(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 listings: IPokedexInformation[] = FSP.getPokedexListingsOrdered(FSP),
-                optionsMenuActivator: () => void = function (): void {
-                    FSP.MenuGrapher.setActiveMenu("PokedexOptions");
-                };
+                currentListing: IPokedexInformation;
 
             FSP.MenuGrapher.createMenu("Pokedex");
             FSP.MenuGrapher.setActiveMenu("Pokedex");
@@ -3420,7 +3418,11 @@ module FullScreenPokemon {
                         }
 
                         characters.push(...listing.title);
-                        output.callback = optionsMenuActivator;
+
+                        output.callback = function (): void {
+                            currentListing = listing;
+                            FSP.MenuGrapher.setActiveMenu("PokedexOptions");
+                        };
                     } else {
                         characters.push(..."----------".split(""));
                     }
@@ -3442,7 +3444,11 @@ module FullScreenPokemon {
                     }, {
                         "text": "CRY"
                     }, {
-                        "text": "AREA"
+                        "text": "AREA",
+                        "callback": function (): void {
+                            FSP.openTownMapMenu();
+                            FSP.showTownMapPokemonLocations(currentListing.title);
+                        }
                     }, {
                         "text": "QUIT",
                         "callback": FSP.MenuGrapher.registerB
@@ -3967,6 +3973,51 @@ module FullScreenPokemon {
             settings.selectedIndex = keyboardKeys.selectedIndex;
 
             FSP.openKeyboardMenu(settings);
+        }
+
+        /**
+         * 
+         */
+        openTownMapMenu(): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                playerPosition: number[] = FSP.MathDecider.getConstant("townMapLocations")["Pallet Town"],
+                playerSize: any = FSP.ObjectMaker.getFullPropertiesOf("Player");
+
+            FSP.MenuGrapher.createMenu("Town Map");
+            FSP.MenuGrapher.createMenuThing("Town Map Inside", {
+                "type": "thing",
+                "thing": "Player",
+                "args": {
+                    "nocollide": true
+                },
+                "position": {
+                    "offset": {
+                        "left": playerPosition[0] - (playerSize.width / 2),
+                        "top": playerPosition[1] - (playerSize.height / 2)
+                    }
+                }
+            });
+        }
+
+        /**
+         * 
+         */
+        showTownMapFlyLocations(): void {
+            console.warn("Map fly locations not implemented.");
+        }
+
+        /**
+         *
+         */
+        showTownMapPokemonLocations(title: string[]): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                dialog: string[] = [].slice.call(title);
+
+            dialog.push(..."'s NEST".split(""));
+
+            FSP.MenuGrapher.addMenuDialog("Town Map", [dialog]);
+
+            console.warn("Pokemon map locations not implemented.");
         }
 
 
