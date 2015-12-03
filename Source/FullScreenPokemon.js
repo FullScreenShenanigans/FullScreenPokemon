@@ -2500,12 +2500,16 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.openPokedexMenu = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP);
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP), optionsMenuActivator = function () {
+                FSP.MenuGrapher.setActiveMenu("PokedexOptions");
+            };
             FSP.MenuGrapher.createMenu("Pokedex");
             FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.addMenuList("Pokedex", {
                 "options": listings.map(function (listing, i) {
-                    var characters = FSP.makeDigit(i + 1, 3, 0).split("");
+                    var characters = FSP.makeDigit(i + 1, 3, 0).split(""), output = {
+                        "text": characters
+                    };
                     characters.push({
                         "command": true,
                         "y": 4
@@ -2524,6 +2528,7 @@ var FullScreenPokemon;
                             });
                         }
                         characters.push.apply(characters, listing.title);
+                        output.callback = optionsMenuActivator;
                     }
                     else {
                         characters.push.apply(characters, "----------".split(""));
@@ -2532,9 +2537,7 @@ var FullScreenPokemon;
                         "command": true,
                         "y": -4
                     });
-                    return {
-                        "text": characters
-                    };
+                    return output;
                 })
             });
             FSP.MenuGrapher.createMenu("PokedexOptions");

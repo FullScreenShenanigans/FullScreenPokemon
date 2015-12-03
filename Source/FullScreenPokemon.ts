@@ -3386,13 +3386,19 @@ module FullScreenPokemon {
          */
         openPokedexMenu(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                listings: IPokedexInformation[] = FSP.getPokedexListingsOrdered(FSP);
+                listings: IPokedexInformation[] = FSP.getPokedexListingsOrdered(FSP),
+                optionsMenuActivator: () => void = function (): void {
+                    FSP.MenuGrapher.setActiveMenu("PokedexOptions");
+                };
 
             FSP.MenuGrapher.createMenu("Pokedex");
             FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.addMenuList("Pokedex", {
                 "options": listings.map(function (listing: IPokedexInformation, i: number): any {
-                    var characters: any[] = FSP.makeDigit(i + 1, 3, 0).split("");
+                    var characters: any[] = FSP.makeDigit(i + 1, 3, 0).split(""),
+                        output: any = {
+                            "text": characters
+                        };
 
                     characters.push({
                         "command": true,
@@ -3414,6 +3420,7 @@ module FullScreenPokemon {
                         }
 
                         characters.push(...listing.title);
+                        output.callback = optionsMenuActivator;
                     } else {
                         characters.push(..."----------".split(""));
                     }
@@ -3423,9 +3430,7 @@ module FullScreenPokemon {
                         "y": -4
                     });
 
-                    return {
-                        "text": characters
-                    };
+                    return output;
                 })
             });
 
