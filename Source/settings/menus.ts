@@ -988,8 +988,8 @@ module FullScreenPokemon {
                     {
                         "type": "text",
                         "words": [
-                            ["1Shadow"], ["2Shadow"], ["3Shadow"], ["4Shadow"],
-                            ["5Shadow"], ["6Shadow"], ["7Shadow"], ["8Shadow"],
+                            ["1Shadow"], " ", ["2Shadow"], " ", ["3Shadow"], " ", ["4Shadow"],
+                            ["5Shadow"], " ", ["6Shadow"], " ", ["7Shadow"], " ", ["8Shadow"],
                         ],
                         "position": {
                             "offset": {
