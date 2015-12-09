@@ -32,6 +32,22 @@ var FullScreenPokemon;
             "POKE": "POKé".split(""),
             "POKEMON": "POKéMON".split(""),
             "POKEDEX": "POKéDEX".split(""),
+            "POKEDEX.SEEN": function (FSP) {
+                return FSP.makeDigit(FSP.getPokedexListingsOrdered(FSP)
+                    .filter(function (listing) {
+                    return listing && listing.seen;
+                })
+                    .length, 3, "\t")
+                    .split("");
+            },
+            "POKEDEX.OWN": function (FSP) {
+                return FSP.makeDigit(FSP.getPokedexListingsOrdered(FSP)
+                    .filter(function (listing) {
+                    return listing && listing.caught;
+                })
+                    .length, 3, "\t")
+                    .split("");
+            },
             "BADGES.LENGTH": function (FSP) {
                 var badges = FSP.ItemsHolder.getItem("badges"), total = 0, i;
                 for (i in badges) {
@@ -175,28 +191,8 @@ var FullScreenPokemon;
                         }
                     },
                     {
-                        "type": "text",
-                        "words": ["SEEN"],
-                        "position": {
-                            "horizontal": "right",
-                            "vertical": "top",
-                            "offset": {
-                                "left": -13,
-                                "top": 11
-                            }
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "words": ["OWN"],
-                        "position": {
-                            "horizontal": "right",
-                            "vertical": "top",
-                            "offset": {
-                                "left": -13,
-                                "top": 23
-                            }
-                        }
+                        "type": "menu",
+                        "name": "PokedexNumbers"
                     }],
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
@@ -205,6 +201,40 @@ var FullScreenPokemon;
                 "textSpeed": 0,
                 "textXOffset": 7,
                 "textYOffset": 11
+            },
+            "PokedexNumbers": {
+                "size": {
+                    "width": 16,
+                    "height": 20
+                },
+                "position": {
+                    "horizontal": "right",
+                    "offset": {
+                        "left": -4,
+                        "top": 12
+                    }
+                },
+                "childrenSchemas": [
+                    {
+                        "type": "text",
+                        "words": ["SEEN \r\n %%%%%%%POKEDEX.SEEN%%%%%%%"],
+                        "position": {
+                            "vertical": "top",
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "words": ["OWN \r\n %%%%%%%POKEDEX.OWN%%%%%%%"],
+                        "position": {
+                            "offset": {
+                                "top": 12
+                            }
+                        }
+                    }],
+                "container": "Pokedex",
+                "hidden": true,
+                "textSpeed": 0,
+                "textPaddingY": 4
             },
             "PokedexOptions": {
                 "size": {
@@ -221,7 +251,7 @@ var FullScreenPokemon;
                 "container": "Pokedex",
                 "backMenu": "Pokedex",
                 "keepOnBack": true,
-                "plain": true,
+                "hidden": true,
                 "arrowXOffset": 1,
                 "textSpeed": 0,
                 "textXOffset": 4,
@@ -1254,6 +1284,7 @@ var FullScreenPokemon;
                         "type": "menu",
                         "name": "Town Map Inside"
                     }],
+                "ignoreProgressB": true,
                 "textSpeed": 0,
                 "textXOffset": 8,
                 "textYOffset": 3.5

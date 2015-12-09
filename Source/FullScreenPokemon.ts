@@ -3249,13 +3249,13 @@ module FullScreenPokemon {
         addPokemonToPokedex(FSP: FullScreenPokemon, titleRaw: string[], status: PokedexListingStatus): void {
             var pokedex: IPokedex = FSP.ItemsHolder.getItem("Pokedex"),
                 title: string = titleRaw.join(""),
-                information: IPokedexInformation = pokedex[title];
-            console.log(title, information);
+                information: IPokedexInformation = pokedex[title],
+                caught: boolean = status === PokedexListingStatus.Caught,
+                seen: boolean = caught || (status === PokedexListingStatus.Seen);
 
             if (information) {
                 // Skip potentially expensive storage operations if they're unnecessary
                 if (information.caught || (information.seen && status >= PokedexListingStatus.Seen)) {
-                    console.log("bai");
                     return;
                 }
 
@@ -3263,8 +3263,8 @@ module FullScreenPokemon {
                 information.seen = information.seen || (status >= PokedexListingStatus.Seen);
             } else {
                 pokedex[title] = information = {
-                    caught: status >= PokedexListingStatus.Caught,
-                    seen: status >= PokedexListingStatus.Seen,
+                    caught: caught,
+                    seen: seen,
                     title: titleRaw
                 };
             }
@@ -3446,7 +3446,9 @@ module FullScreenPokemon {
                     }, {
                         "text": "AREA",
                         "callback": function (): void {
-                            FSP.openTownMapMenu();
+                            FSP.openTownMapMenu({
+                                "backMenu": "PokedexOptions"
+                            });
                             FSP.showTownMapPokemonLocations(currentListing.title);
                         }
                     }, {
@@ -3978,12 +3980,12 @@ module FullScreenPokemon {
         /**
          * 
          */
-        openTownMapMenu(): void {
+        openTownMapMenu(settings?: MenuGraphr.IMenuSchema): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 playerPosition: number[] = FSP.MathDecider.getConstant("townMapLocations")["Pallet Town"],
                 playerSize: any = FSP.ObjectMaker.getFullPropertiesOf("Player");
 
-            FSP.MenuGrapher.createMenu("Town Map");
+            FSP.MenuGrapher.createMenu("Town Map", settings);
             FSP.MenuGrapher.createMenuThing("Town Map Inside", {
                 "type": "thing",
                 "thing": "Player",
@@ -3997,6 +3999,7 @@ module FullScreenPokemon {
                     }
                 }
             });
+            FSP.MenuGrapher.setActiveMenu("Town Map");
         }
 
         /**

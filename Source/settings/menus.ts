@@ -33,6 +33,28 @@ module FullScreenPokemon {
             "POKE": "POKÈ".split(""),
             "POKEMON": "POKÈMON".split(""),
             "POKEDEX": "POKÈDEX".split(""),
+            "POKEDEX.SEEN": function (FSP: FullScreenPokemon): string[] {
+                return FSP.makeDigit(
+                    FSP.getPokedexListingsOrdered(FSP)
+                        .filter(function (listing: IPokedexInformation): boolean {
+                            return listing && listing.seen;
+                        })
+                        .length,
+                    3,
+                    "\t")
+                    .split("");
+            },
+            "POKEDEX.OWN": function (FSP: FullScreenPokemon): string[] {
+                return FSP.makeDigit(
+                    FSP.getPokedexListingsOrdered(FSP)
+                        .filter(function (listing: IPokedexInformation): boolean {
+                            return listing && listing.caught;
+                        })
+                        .length,
+                    3,
+                    "\t")
+                    .split("");
+            },
             "BADGES.LENGTH": function (FSP: FullScreenPokemon): string[] {
                 var badges: { [i: string]: boolean } = FSP.ItemsHolder.getItem("badges"),
                     total: number = 0,
@@ -187,29 +209,9 @@ module FullScreenPokemon {
                             }
                         }
                     },
-                    <MenuGraphr.IMenuChildSchema>{
-                        "type": "text",
-                        "words": ["SEEN"],
-                        "position": {
-                            "horizontal": "right",
-                            "vertical": "top",
-                            "offset": {
-                                "left": -13,
-                                "top": 11
-                            }
-                        }
-                    },
-                    <MenuGraphr.IMenuChildSchema>{
-                        "type": "text",
-                        "words": ["OWN"],
-                        "position": {
-                            "horizontal": "right",
-                            "vertical": "top",
-                            "offset": {
-                                "left": -13,
-                                "top": 23
-                            }
-                        }
+                    {
+                        "type": "menu",
+                        "name": "PokedexNumbers"
                     }],
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
@@ -218,6 +220,40 @@ module FullScreenPokemon {
                 "textSpeed": 0,
                 "textXOffset": 7,
                 "textYOffset": 11
+            },
+            "PokedexNumbers": {
+                "size": {
+                    "width": 16,
+                    "height": 20
+                },
+                "position": {
+                    "horizontal": "right",
+                    "offset": {
+                        "left": -4,
+                        "top": 12
+                    }
+                },
+                "childrenSchemas": [
+                    <MenuGraphr.IMenuChildSchema>{
+                        "type": "text",
+                        "words": ["SEEN \r\n %%%%%%%POKEDEX.SEEN%%%%%%%"],
+                        "position": {
+                            "vertical": "top",
+                        }
+                    },
+                    <MenuGraphr.IMenuChildSchema>{
+                        "type": "text",
+                        "words": ["OWN \r\n %%%%%%%POKEDEX.OWN%%%%%%%"],
+                        "position": {
+                            "offset": {
+                                "top": 12
+                            }
+                        }
+                    }],
+                "container": "Pokedex",
+                "hidden": true,
+                "textSpeed": 0,
+                "textPaddingY": 4
             },
             "PokedexOptions": {
                 "size": {
@@ -234,7 +270,7 @@ module FullScreenPokemon {
                 "container": "Pokedex",
                 "backMenu": "Pokedex",
                 "keepOnBack": true,
-                "plain": true,
+                "hidden": true,
                 "arrowXOffset": 1,
                 "textSpeed": 0,
                 "textXOffset": 4,
@@ -1267,6 +1303,7 @@ module FullScreenPokemon {
                         "type": "menu",
                         "name": "Town Map Inside"
                     }],
+                "ignoreProgressB": true,
                 "textSpeed": 0,
                 "textXOffset": 8,
                 "textYOffset": 3.5

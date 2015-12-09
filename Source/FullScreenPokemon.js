@@ -2392,12 +2392,10 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.addPokemonToPokedex = function (FSP, titleRaw, status) {
-            var pokedex = FSP.ItemsHolder.getItem("Pokedex"), title = titleRaw.join(""), information = pokedex[title];
-            console.log(title, information);
+            var pokedex = FSP.ItemsHolder.getItem("Pokedex"), title = titleRaw.join(""), information = pokedex[title], caught = status === PokedexListingStatus.Caught, seen = caught || (status === PokedexListingStatus.Seen);
             if (information) {
                 // Skip potentially expensive storage operations if they're unnecessary
                 if (information.caught || (information.seen && status >= PokedexListingStatus.Seen)) {
-                    console.log("bai");
                     return;
                 }
                 information.caught = information.caught || (status >= PokedexListingStatus.Caught);
@@ -2405,8 +2403,8 @@ var FullScreenPokemon;
             }
             else {
                 pokedex[title] = information = {
-                    caught: status >= PokedexListingStatus.Caught,
-                    seen: status >= PokedexListingStatus.Seen,
+                    caught: caught,
+                    seen: seen,
                     title: titleRaw
                 };
             }
@@ -2551,7 +2549,9 @@ var FullScreenPokemon;
                     }, {
                         "text": "AREA",
                         "callback": function () {
-                            FSP.openTownMapMenu();
+                            FSP.openTownMapMenu({
+                                "backMenu": "PokedexOptions"
+                            });
                             FSP.showTownMapPokemonLocations(currentListing.title);
                         }
                     }, {
@@ -2966,9 +2966,9 @@ var FullScreenPokemon;
         /**
          *
          */
-        FullScreenPokemon.prototype.openTownMapMenu = function () {
+        FullScreenPokemon.prototype.openTownMapMenu = function (settings) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), playerPosition = FSP.MathDecider.getConstant("townMapLocations")["Pallet Town"], playerSize = FSP.ObjectMaker.getFullPropertiesOf("Player");
-            FSP.MenuGrapher.createMenu("Town Map");
+            FSP.MenuGrapher.createMenu("Town Map", settings);
             FSP.MenuGrapher.createMenuThing("Town Map Inside", {
                 "type": "thing",
                 "thing": "Player",
@@ -2982,6 +2982,7 @@ var FullScreenPokemon;
                     }
                 }
             });
+            FSP.MenuGrapher.setActiveMenu("Town Map");
         };
         /**
          *
