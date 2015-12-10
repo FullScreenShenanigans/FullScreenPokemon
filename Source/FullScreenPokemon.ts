@@ -116,13 +116,6 @@ module FullScreenPokemon {
         public static scale: number = 2;
 
         /**
-         * General statistics each Pokemon actor should have.
-         */
-        public static statisticNames: string[] = [
-            "HP", "Attack", "Defense", "Speed", "Special"
-        ];
-
-        /**
          * Quickly tapping direction keys means to look in a direction, not walk.
          */
         public static inputTimeTolerance: number = 4;
@@ -266,7 +259,6 @@ module FullScreenPokemon {
                     {
                         "constants": {
                             "NumberMaker": FSP.NumberMaker,
-                            "statisticNames": FullScreenPokemon.statisticNames
                         }
                     },
                     FSP.settings.math));
@@ -3506,28 +3498,31 @@ module FullScreenPokemon {
                 "pokemon": pokemon,
                 "container": "PokemonMenuStats",
                 "size": {
-                    "width": 36,
+                    "width": 40,
                     "height": 40
                 },
                 "position": {
                     "vertical": "bottom",
-                    "horizontal": "left"
+                    "horizontal": "left",
+                    "offset": {
+                        "left": 3,
+                        "top": -3
+                    }
                 },
                 "textXOffset": 4
             });
 
-            FSP.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsTitle", pokemon.nickname);
-            FSP.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsLevel", pokemon.level.toString());
-            FSP.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
-            FSP.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsNumber", FSP.makeDigit(schema.number, 3, 0));
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsNumber", FSP.makeDigit(schema.number, 3, 0));
             FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
-            FSP.MenuGrapher.addMenuDialog(
-                "PokemonMenuStatsType", pokemon.types.join(" \n "));
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "H819");
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
+            if (pokemon.types.length >= 2) {
+                FSP.MenuGrapher.createMenu("PokemonMenuStatsType2");
+                FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
+            }
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
             FSP.MenuGrapher.addMenuDialog(
                 "PokemonMenuStatsOT",
                 [
@@ -3537,7 +3532,7 @@ module FullScreenPokemon {
 
             FSP.MenuGrapher.createMenuThing("PokemonMenuStats", {
                 "type": "thing",
-                "thing": "SquirtleFront", // pokemon.title + "Front",
+                "thing": pokemon.title.join("") + "Front",
                 "args": {
                     "flipHoriz": true
                 },
@@ -3545,7 +3540,7 @@ module FullScreenPokemon {
                     "vertical": "bottom",
                     "offset": {
                         "left": 8,
-                        "top": -44
+                        "top": -48
                     }
                 }
             });
@@ -3559,27 +3554,23 @@ module FullScreenPokemon {
         openPokemonStats(settings: any): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon: IWildPokemonSchema = settings.pokemon,
-                statistics: string[] = FSP.MathDecider.getConstant("statisticNames")
-                    .filter(function (statistic: string): boolean {
-                        return statistic !== "HP";
-                    }),
+                statistics: string[] = FSP.MathDecider.getConstant("statisticNamesDisplayed"),
                 numStatistics: number = statistics.length,
                 textXOffset: number = settings.textXOffset || 8,
                 top: number,
                 left: number,
                 i: number;
 
+            // A copy of statistics is used to not modify the original constant
+            statistics = [].slice.call(statistics);
             for (i = 0; i < numStatistics; i += 1) {
-                statistics.push(FSP.makeDigit(pokemon[statistics[i] + "Normal"], 3, " "));
+                statistics.push(FSP.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
                 statistics[i] = statistics[i].toUpperCase();
             }
 
             FSP.MenuGrapher.createMenu("LevelUpStats", {
                 "container": settings.container,
-                "size": settings.size || {
-                    "width": 44,
-                    "height": 40
-                },
+                "size": settings.size,
                 "position": settings.position || {
                     "horizontal": "center",
                     "vertical": "center"
@@ -3592,7 +3583,7 @@ module FullScreenPokemon {
                         left = textXOffset;
                     } else {
                         top = (i - numStatistics + 1) * 8;
-                        left = textXOffset + 16;
+                        left = textXOffset + 20;
                     }
 
                     return {
@@ -4033,7 +4024,7 @@ module FullScreenPokemon {
         startBattle(battleInfo: IBattleInfo): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 animations: string[] = battleInfo.animations || [
-                // "LineSpiral", "Flash"
+                    // "LineSpiral", "Flash"
                     "Flash"
                 ],
                 animation: string = FSP.NumberMaker.randomArrayMember(animations),

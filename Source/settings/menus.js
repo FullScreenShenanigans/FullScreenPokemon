@@ -551,8 +551,8 @@ var FullScreenPokemon;
             },
             "PokemonMenuStats": {
                 "size": {
-                    "width": 80,
-                    "height": 72
+                    "width": 88,
+                    "height": 75
                 },
                 "position": {
                     "horizontal": "center",
@@ -574,7 +574,7 @@ var FullScreenPokemon;
                             "position": {
                                 "offset": {
                                     "top": 16,
-                                    "left": 40
+                                    "left": 48
                                 }
                             }
                         }
@@ -589,7 +589,7 @@ var FullScreenPokemon;
                         "name": "PokemonMenuStatsStatus"
                     }, {
                         "type": "menu",
-                        "name": "PokemonMenuStatsType"
+                        "name": "PokemonMenuStatsType1"
                     }, {
                         "type": "menu",
                         "name": "PokemonMenuStatsID"
@@ -605,50 +605,58 @@ var FullScreenPokemon;
                             "height": 24.5
                         },
                         "position": {
+                            "horizontal": "right",
                             "offset": {
                                 "top": 6,
-                                "left": 73
+                                "left": -5
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
-                            "width": 42,
+                            "width": 44,
                             "height": 1
                         },
                         "position": {
+                            "horizontal": "right",
                             "offset": {
                                 "top": 30,
-                                "left": 31.5
+                                "left": -5
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "args": {
                             "flipHoriz": true
                         },
                         "position": {
+                            "horizontal": "right",
                             "offset": {
                                 "top": 29,
-                                "left": 28
+                                "left": -49
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
                             "width": 1,
-                            "height": 31.5
+                            "height": 34
                         },
                         "position": {
+                            "horizontal": "right",
                             "offset": {
                                 "top": 36,
-                                "left": 73
+                                "left": -5
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -656,33 +664,36 @@ var FullScreenPokemon;
                             "height": 1
                         },
                         "position": {
+                            "horizontal": "right",
                             "offset": {
-                                "top": 67,
-                                "left": 48
+                                "top": 69.5,
+                                "left": -5
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "args": {
                             "flipHoriz": true
                         },
                         "position": {
+                            "horizontal": "right",
                             "offset": {
-                                "top": 66,
-                                "left": 44
+                                "top": 68.5,
+                                "left": -30.5
                             }
                         }
                     }]
             },
             "PokemonMenuStatsTitle": {
                 "size": {
-                    "width": 36,
+                    "width": 44,
                     "height": 4
                 },
                 "position": {
                     "offset": {
-                        "left": 32,
+                        "left": 41,
                         "top": 6
                     }
                 },
@@ -699,7 +710,7 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 48,
+                        "left": 61,
                         "top": 10
                     }
                 },
@@ -725,7 +736,7 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 52,
+                        "left": 60,
                         "top": 18
                     }
                 },
@@ -742,7 +753,7 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 4,
+                        "left": 6,
                         "top": 28
                     }
                 },
@@ -763,7 +774,7 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 32,
+                        "left": 39,
                         "top": 24
                     }
                 },
@@ -777,15 +788,15 @@ var FullScreenPokemon;
                         "words": ["STATUS/"]
                     }]
             },
-            "PokemonMenuStatsType": {
+            "PokemonMenuStatsType1": {
                 "size": {
                     "width": 40,
                     "height": 8
                 },
                 "position": {
                     "offset": {
-                        "left": 36,
-                        "top": 36
+                        "left": 45,
+                        "top": 35.5
                     }
                 },
                 "container": "PokemonMenuStats",
@@ -794,7 +805,27 @@ var FullScreenPokemon;
                 "textSpeed": 0,
                 "childrenSchemas": [{
                         "type": "text",
-                        "words": ["TYPE /"]
+                        "words": ["TYPE1/"]
+                    }]
+            },
+            "PokemonMenuStatsType2": {
+                "size": {
+                    "width": 40,
+                    "height": 8
+                },
+                "position": {
+                    "offset": {
+                        "left": 45,
+                        "top": 43.5
+                    }
+                },
+                "container": "PokemonMenuStats",
+                "hidden": true,
+                "textYOffset": 4,
+                "textSpeed": 0,
+                "childrenSchemas": [{
+                        "type": "text",
+                        "words": ["TYPE2/"]
                     }]
             },
             "PokemonMenuStatsID": {
@@ -804,14 +835,13 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 36,
-                        "top": 52
+                        "left": 45,
+                        "top": 51.5
                     }
                 },
                 "container": "PokemonMenuStats",
                 "hidden": true,
-                "textXOffset": 12,
-                "textYOffset": 0,
+                "textYOffset": 4,
                 "textSpeed": 0,
                 "childrenSchemas": [{
                         "type": "text",
@@ -825,14 +855,13 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 36,
-                        "top": 60
+                        "left": 45,
+                        "top": 59.5
                     }
                 },
                 "container": "PokemonMenuStats",
                 "hidden": true,
-                "textXOffset": 12,
-                "textYOffset": 0,
+                "textYOffset": 4,
                 "textSpeed": 0,
                 "childrenSchemas": [{
                         "type": "text",
@@ -1418,7 +1447,7 @@ var FullScreenPokemon;
                 },
                 "position": {
                     "offset": {
-                        "left": 4.5,
+                        "left": 4,
                         "top": -3
                     }
                 },
@@ -1743,7 +1772,7 @@ var FullScreenPokemon;
             },
             "LevelUpStats": {
                 "size": {
-                    "width": 44,
+                    "width": 48,
                     "height": 40
                 },
                 "textSpeed": 0,

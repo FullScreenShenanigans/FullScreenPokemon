@@ -128,7 +128,6 @@ var FullScreenPokemon;
             FSP.MathDecider = new MathDecidr.MathDecidr(FSP.proliferate({
                 "constants": {
                     "NumberMaker": FSP.NumberMaker,
-                    "statisticNames": FullScreenPokemon.statisticNames
                 }
             }, FSP.settings.math));
         };
@@ -2599,28 +2598,36 @@ var FullScreenPokemon;
                 "pokemon": pokemon,
                 "container": "PokemonMenuStats",
                 "size": {
-                    "width": 36,
+                    "width": 40,
                     "height": 40
                 },
                 "position": {
                     "vertical": "bottom",
-                    "horizontal": "left"
+                    "horizontal": "left",
+                    "offset": {
+                        "left": 3,
+                        "top": -3
+                    }
                 },
                 "textXOffset": 4
             });
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsTitle", pokemon.nickname);
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
             FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
             FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
             FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsNumber", FSP.makeDigit(schema.number, 3, 0));
             FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType", pokemon.types.join(" \n "));
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "H819");
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
+            if (pokemon.types.length >= 2) {
+                FSP.MenuGrapher.createMenu("PokemonMenuStatsType2");
+                FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
+            }
+            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
             FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsOT", [
                 "%%%%%%%PLAYER%%%%%%%"
             ]);
             FSP.MenuGrapher.createMenuThing("PokemonMenuStats", {
                 "type": "thing",
-                "thing": "SquirtleFront",
+                "thing": pokemon.title.join("") + "Front",
                 "args": {
                     "flipHoriz": true
                 },
@@ -2628,7 +2635,7 @@ var FullScreenPokemon;
                     "vertical": "bottom",
                     "offset": {
                         "left": 8,
-                        "top": -44
+                        "top": -48
                     }
                 }
             });
@@ -2638,20 +2645,16 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.openPokemonStats = function (settings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = settings.pokemon, statistics = FSP.MathDecider.getConstant("statisticNames")
-                .filter(function (statistic) {
-                return statistic !== "HP";
-            }), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, top, left, i;
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = settings.pokemon, statistics = FSP.MathDecider.getConstant("statisticNamesDisplayed"), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, top, left, i;
+            // A copy of statistics is used to not modify the original constant
+            statistics = [].slice.call(statistics);
             for (i = 0; i < numStatistics; i += 1) {
-                statistics.push(FSP.makeDigit(pokemon[statistics[i] + "Normal"], 3, " "));
+                statistics.push(FSP.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
                 statistics[i] = statistics[i].toUpperCase();
             }
             FSP.MenuGrapher.createMenu("LevelUpStats", {
                 "container": settings.container,
-                "size": settings.size || {
-                    "width": 44,
-                    "height": 40
-                },
+                "size": settings.size,
                 "position": settings.position || {
                     "horizontal": "center",
                     "vertical": "center"
@@ -2665,7 +2668,7 @@ var FullScreenPokemon;
                     }
                     else {
                         top = (i - numStatistics + 1) * 8;
-                        left = textXOffset + 16;
+                        left = textXOffset + 20;
                     }
                     return {
                         "type": "text",
@@ -6862,12 +6865,6 @@ var FullScreenPokemon;
          * Static scale of 2, to exand to two pixels per one game pixel.
          */
         FullScreenPokemon.scale = 2;
-        /**
-         * General statistics each Pokemon actor should have.
-         */
-        FullScreenPokemon.statisticNames = [
-            "HP", "Attack", "Defense", "Speed", "Special"
-        ];
         /**
          * Quickly tapping direction keys means to look in a direction, not walk.
          */

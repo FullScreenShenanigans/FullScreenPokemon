@@ -53,6 +53,7 @@ declare module FullScreenPokemon {
     export interface IMathConstants {
         NumberMaker?: NumberMakr.INumberMakr;
         statisticNames?: string[];
+        statisticNamesDisplayed?: string[];
         statuses: {
             names: string[];
             probability25: {

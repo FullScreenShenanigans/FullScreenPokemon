@@ -373,6 +373,8 @@ var FullScreenPokemon;
             }
         },
         "constants": {
+            "statisticNames": ["HP", "Attack", "Defense", "Speed", "Special"],
+            "statisticNamesDisplayed": ["Attack", "Defense", "Speed", "Special"],
             "statuses": {
                 "names": ["Sleep", "Freeze", "Paralyze", "Burn", "Poison"],
                 "probability25": {
