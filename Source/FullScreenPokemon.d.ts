@@ -53,6 +53,7 @@ declare module FullScreenPokemon {
     export interface IMathConstants {
         NumberMaker?: NumberMakr.INumberMakr;
         statisticNames?: string[];
+        statisticNamesDisplayed?: string[];
         statuses: {
             names: string[];
             probability25: {
@@ -67,6 +68,12 @@ declare module FullScreenPokemon {
             shaking: {
                 [i: string]: number;
             }
+        };
+        /**
+         * [X, Y] coordinates for spots on the Town Map to display Thing icons.
+         */
+        townMapLocations: {
+            [i: string]: [number, number];
         };
         types: {
             names: string[];
@@ -499,6 +506,7 @@ declare module FullScreenPokemon {
         light?: boolean;
         lined?: boolean;
         plain?: boolean;
+        watery?: boolean;
     }
 
     export interface IMenuSchema extends IMenuBase {
