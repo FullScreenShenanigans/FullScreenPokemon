@@ -13,7 +13,6 @@ var AudioPlayr;
          * @param settings   Settings to use for initialization.
          */
         function AudioPlayr(settings) {
-            var volumeInitial;
             if (typeof settings.library === "undefined") {
                 throw new Error("No library given to AudioPlayr.");
             }
@@ -26,6 +25,7 @@ var AudioPlayr;
             if (!settings.ItemsHolder) {
                 throw new Error("No ItemsHoldr given to AudioPlayr.");
             }
+            var volumeInitial;
             this.ItemsHolder = settings.ItemsHolder;
             this.directory = settings.directory;
             this.fileTypes = settings.fileTypes;
@@ -41,7 +41,7 @@ var AudioPlayr;
                 this.setVolume(1);
             }
             else {
-                this.setVolume(this.ItemsHolder.getItem("volume"));
+                this.setVolume(volumeInitial);
             }
             this.setMuted(this.ItemsHolder.getItem("muted") || false);
         }
@@ -295,7 +295,6 @@ var AudioPlayr;
          * @returns The sound's <audio> element, now playing.
          */
         AudioPlayr.prototype.playLocal = function (name, location) {
-            if (location === void 0) { location = undefined; }
             var sound = this.play(name), volumeReal;
             switch (this.getVolumeLocal.constructor) {
                 case Function:
@@ -331,13 +330,11 @@ var AudioPlayr;
          *          when it ends.
          */
         AudioPlayr.prototype.playTheme = function (name, loop) {
-            if (name === void 0) { name = undefined; }
-            if (loop === void 0) { loop = undefined; }
             this.pauseTheme();
             // Loop defaults to true
             loop = typeof loop !== "undefined" ? loop : true;
             // If name isn't given, use the default getter
-            if (typeof (name) === "undefined") {
+            if (typeof name === "undefined") {
                 switch (this.getThemeDefault.constructor) {
                     case Function:
                         name = this.getThemeDefault();
@@ -375,7 +372,7 @@ var AudioPlayr;
             var sound = this.play(prefix);
             this.pauseTheme();
             // If name isn't given, use the default getter
-            if (typeof (name) === "undefined") {
+            if (typeof name === "undefined") {
                 switch (this.getThemeDefault.constructor) {
                     case Function:
                         name = this.getThemeDefault();

@@ -2745,7 +2745,7 @@ module FullScreenPokemon {
                 return;
             }
 
-            thing.FSP.AudioPlayer.play(other.theme);
+            thing.FSP.AudioPlayer.playTheme(other.theme);
         }
 
         /**
@@ -4149,7 +4149,7 @@ module FullScreenPokemon {
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
 
-            FSP.AudioPlayer.play(battleInfo.theme || "Battle Trainer");
+            FSP.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 
             FSP["cutsceneBattleTransition" + animation](
                 FSP,
@@ -5192,7 +5192,7 @@ module FullScreenPokemon {
                 opponent: BattleMovr.IBattleThingInfo = battleInfo.opponent;
 
             if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.play(FSP.MapScreener.theme);
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
             }
 
             if (!opponent.hasActors) {
@@ -5329,7 +5329,7 @@ module FullScreenPokemon {
             }
 
             if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.play(FSP.MapScreener.theme);
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
             }
 
             FSP.MenuGrapher.createMenu("GeneralText");
@@ -6265,7 +6265,7 @@ module FullScreenPokemon {
             settings.oak = oak;
 
             console.warn("Cannot find Introduction audio theme!");
-            // FSP.AudioPlayer.play("Introduction");
+            // FSP.AudioPlayer.playTheme("Introduction");
             FSP.ModAttacher.fireEvent("onIntroFadeIn", oak);
 
             FSP.setMap("Blank", "White");
@@ -6822,7 +6822,7 @@ module FullScreenPokemon {
             FSP.animatePlayerDialogFreeze(settings.player);
             FSP.animateCharacterSetDirection(settings.player, 2);
 
-            FSP.AudioPlayer.play("Professor Oak");
+            FSP.AudioPlayer.playTheme("Professor Oak");
             FSP.MapScreener.blockInputs = true;
 
             FSP.MenuGrapher.createMenu("GeneralText", {
@@ -7346,7 +7346,7 @@ module FullScreenPokemon {
                 dx: number = Math.abs(settings.triggerer.left - settings.player.left),
                 further: boolean = dx < FSP.unitsize;
 
-            FSP.AudioPlayer.play("Rival Appears");
+            FSP.AudioPlayer.playTheme("Rival Appears");
 
             settings.rival = rival;
             FSP.animateCharacterSetDirection(rival, Direction.Bottom);
@@ -8130,7 +8130,7 @@ module FullScreenPokemon {
             theme = location.theme || location.area.theme || location.area.map.theme;
             FSP.MapScreener.theme = theme;
             if (theme && FSP.AudioPlayer.getThemeName() !== theme) {
-                FSP.AudioPlayer.play(theme);
+                FSP.AudioPlayer.playTheme(theme);
             }
 
             if (!noEntrance) {

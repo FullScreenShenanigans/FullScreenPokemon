@@ -343,8 +343,6 @@ module AudioPlayr {
          * @param settings   Settings to use for initialization.
          */
         constructor(settings: IAudioPlayrSettings) {
-            var volumeInitial: number;
-
             if (typeof settings.library === "undefined") {
                 throw new Error("No library given to AudioPlayr.");
             }
@@ -360,6 +358,8 @@ module AudioPlayr {
             if (!settings.ItemsHolder) {
                 throw new Error("No ItemsHoldr given to AudioPlayr.");
             }
+
+            var volumeInitial: number;
 
             this.ItemsHolder = settings.ItemsHolder;
 
@@ -379,7 +379,7 @@ module AudioPlayr {
             if (volumeInitial === undefined) {
                 this.setVolume(1);
             } else {
-                this.setVolume(this.ItemsHolder.getItem("volume"));
+                this.setVolume(volumeInitial);
             }
 
             this.setMuted(this.ItemsHolder.getItem("muted") || false);
@@ -682,7 +682,7 @@ module AudioPlayr {
          * @param location   An argument for getVolumeLocal, if that's a Function.
          * @returns The sound's <audio> element, now playing.
          */
-        playLocal(name: string, location: any = undefined): HTMLAudioElement {
+        playLocal(name: string, location?: any): HTMLAudioElement {
             var sound: HTMLAudioElement = this.play(name),
                 volumeReal: number;
 
@@ -722,14 +722,14 @@ module AudioPlayr {
          *          sound wasn't already playing, an event listener is added for 
          *          when it ends.
          */
-        playTheme(name: string = undefined, loop: boolean = undefined): HTMLAudioElement {
+        playTheme(name?: string, loop?: boolean): HTMLAudioElement {
             this.pauseTheme();
 
             // Loop defaults to true
             loop = typeof loop !== "undefined" ? loop : true;
 
             // If name isn't given, use the default getter
-            if (typeof (name) === "undefined") {
+            if (typeof name === "undefined") {
                 switch (this.getThemeDefault.constructor) {
                     case Function:
                         name = this.getThemeDefault();
@@ -774,7 +774,7 @@ module AudioPlayr {
             this.pauseTheme();
 
             // If name isn't given, use the default getter
-            if (typeof (name) === "undefined") {
+            if (typeof name === "undefined") {
                 switch (this.getThemeDefault.constructor) {
                     case Function:
                         name = this.getThemeDefault();
@@ -983,6 +983,7 @@ module AudioPlayr {
                 sound.play();
                 return true;
             }
+
             return false;
         }
 
@@ -998,6 +999,7 @@ module AudioPlayr {
                 sound.pause();
                 return true;
             }
+
             return false;
         }
     }

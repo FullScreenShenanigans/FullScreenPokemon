@@ -2014,7 +2014,7 @@ var FullScreenPokemon;
             if (thing.FSP.AudioPlayer.getThemeName() === other.theme) {
                 return;
             }
-            thing.FSP.AudioPlayer.play(other.theme);
+            thing.FSP.AudioPlayer.playTheme(other.theme);
         };
         /**
          *
@@ -3104,7 +3104,7 @@ var FullScreenPokemon;
             player.actors = player.actors || FSP.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
-            FSP.AudioPlayer.play(battleInfo.theme || "Battle Trainer");
+            FSP.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
             FSP["cutsceneBattleTransition" + animation](FSP, {
                 "battleInfo": battleInfo,
                 "callback": FSP.BattleMover.startBattle.bind(FSP.BattleMover, battleInfo)
@@ -3763,7 +3763,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneBattleVictory = function (FSP, settings) {
             var battleInfo = FSP.BattleMover.getBattleInfo(), opponent = battleInfo.opponent;
             if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.play(FSP.MapScreener.theme);
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
             }
             if (!opponent.hasActors) {
                 FSP.BattleMover.closeBattle(function () {
@@ -3857,7 +3857,7 @@ var FullScreenPokemon;
                 };
             }
             if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.play(FSP.MapScreener.theme);
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
             }
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", message, FSP.animateFadeToColor.bind(FSP, FSP, {
@@ -4476,7 +4476,7 @@ var FullScreenPokemon;
             });
             settings.oak = oak;
             console.warn("Cannot find Introduction audio theme!");
-            // FSP.AudioPlayer.play("Introduction");
+            // FSP.AudioPlayer.playTheme("Introduction");
             FSP.ModAttacher.fireEvent("onIntroFadeIn", oak);
             FSP.setMap("Blank", "White");
             FSP.MenuGrapher.deleteActiveMenu();
@@ -4816,7 +4816,7 @@ var FullScreenPokemon;
             }
             FSP.animatePlayerDialogFreeze(settings.player);
             FSP.animateCharacterSetDirection(settings.player, 2);
-            FSP.AudioPlayer.play("Professor Oak");
+            FSP.AudioPlayer.playTheme("Professor Oak");
             FSP.MapScreener.blockInputs = true;
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true,
@@ -5179,7 +5179,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.cutsceneOakIntroRivalBattleApproach = function (FSP, settings) {
             var rival = FSP.getThingById("Rival"), dx = Math.abs(settings.triggerer.left - settings.player.left), further = dx < FSP.unitsize;
-            FSP.AudioPlayer.play("Rival Appears");
+            FSP.AudioPlayer.playTheme("Rival Appears");
             settings.rival = rival;
             FSP.animateCharacterSetDirection(rival, Direction.Bottom);
             FSP.animateCharacterSetDirection(settings.player, Direction.Top);
@@ -5718,7 +5718,7 @@ var FullScreenPokemon;
             theme = location.theme || location.area.theme || location.area.map.theme;
             FSP.MapScreener.theme = theme;
             if (theme && FSP.AudioPlayer.getThemeName() !== theme) {
-                FSP.AudioPlayer.play(theme);
+                FSP.AudioPlayer.playTheme(theme);
             }
             if (!noEntrance) {
                 location.entry(FSP, location);
