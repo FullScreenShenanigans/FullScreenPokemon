@@ -3714,7 +3714,13 @@ module FullScreenPokemon {
                 pokemon: IPokedexListing = FSP.MathDecider.getConstant("pokemon")[title.join("")],
                 height: string[] = pokemon.height,
                 feet: string = [].slice.call(height[0]).reverse().join(""),
-                inches: string = [].slice.call(height[1]).reverse().join("");
+                inches: string = [].slice.call(height[1]).reverse().join(""),
+                onCompletion: () => void = function (): void {
+                    FSP.MenuGrapher.deleteMenu("PokedexListing");
+                    if (callback) {
+                        callback();
+                    }
+                };
 
             FSP.MenuGrapher.createMenu("PokedexListing", menuSettings);
             FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
@@ -3737,17 +3743,13 @@ module FullScreenPokemon {
                 "PokedexListingInfo",
                 pokemon.info[0],
                 function (): void {
+                    if (pokemon.info.length < 2) {
+                        onCompletion();
+                        return;
+                    }
+
                     FSP.MenuGrapher.createMenu("PokedexListingInfo");
-                    FSP.MenuGrapher.addMenuDialog(
-                        "PokedexListingInfo",
-                        pokemon.info[1],
-                        function (): void {
-                            FSP.MenuGrapher.deleteMenu("PokedexListing");
-                            if (callback) {
-                                callback();
-                            }
-                        }
-                    );
+                    FSP.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
                     FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
                 });
 

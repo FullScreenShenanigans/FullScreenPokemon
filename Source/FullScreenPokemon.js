@@ -2766,7 +2766,12 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.openPokedexListing = function (title, callback, menuSettings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = FSP.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join("");
+            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = FSP.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function () {
+                FSP.MenuGrapher.deleteMenu("PokedexListing");
+                if (callback) {
+                    callback();
+                }
+            };
             FSP.MenuGrapher.createMenu("PokedexListing", menuSettings);
             FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
                 "thing": title.join("") + "Front",
@@ -2782,13 +2787,12 @@ var FullScreenPokemon;
             FSP.MenuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
             FSP.MenuGrapher.addMenuDialog("PokedexListingNumber", FSP.makeDigit(pokemon.number, 3, "0"));
             FSP.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[0], function () {
+                if (pokemon.info.length < 2) {
+                    onCompletion();
+                    return;
+                }
                 FSP.MenuGrapher.createMenu("PokedexListingInfo");
-                FSP.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], function () {
-                    FSP.MenuGrapher.deleteMenu("PokedexListing");
-                    if (callback) {
-                        callback();
-                    }
-                });
+                FSP.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
                 FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
             });
             FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
