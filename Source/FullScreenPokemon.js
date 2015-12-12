@@ -2499,11 +2499,14 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.openPokedexMenu = function () {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP), currentListing;
             FSP.MenuGrapher.createMenu("Pokedex");
-            FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.addMenuList("Pokedex", {
                 "options": listings.map(function (listing, i) {
                     var characters = FSP.makeDigit(i + 1, 3, 0).split(""), output = {
-                        "text": characters
+                        "text": characters,
+                        "callback": function () {
+                            currentListing = listing;
+                            FSP.MenuGrapher.setActiveMenu("PokedexOptions");
+                        }
                     };
                     characters.push({
                         "command": true,
@@ -2523,10 +2526,6 @@ var FullScreenPokemon;
                             });
                         }
                         characters.push.apply(characters, listing.title);
-                        output.callback = function () {
-                            currentListing = listing;
-                            FSP.MenuGrapher.setActiveMenu("PokedexOptions");
-                        };
                     }
                     else {
                         characters.push.apply(characters, "----------".split(""));
@@ -2538,11 +2537,15 @@ var FullScreenPokemon;
                     return output;
                 })
             });
+            FSP.MenuGrapher.setActiveMenu("Pokedex");
             FSP.MenuGrapher.createMenu("PokedexOptions");
             FSP.MenuGrapher.addMenuList("PokedexOptions", {
                 "options": [
                     {
-                        "text": "DATA"
+                        "text": "DATA",
+                        "callback": function () {
+                            FSP.openPokedexListing(currentListing.title, FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher, "PokedexOptions"));
+                        }
                     }, {
                         "text": "CRY"
                     }, {
@@ -2762,9 +2765,9 @@ var FullScreenPokemon;
         /**
          *
          */
-        FullScreenPokemon.prototype.openPokedexListing = function (title, callback, settings) {
+        FullScreenPokemon.prototype.openPokedexListing = function (title, callback, menuSettings) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = FSP.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join("");
-            FSP.MenuGrapher.createMenu("PokedexListing", settings);
+            FSP.MenuGrapher.createMenu("PokedexListing", menuSettings);
             FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
                 "thing": title.join("") + "Front",
                 "type": "thing",
