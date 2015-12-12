@@ -258,7 +258,7 @@ module FullScreenPokemon {
                 FSP.proliferate(
                     {
                         "constants": {
-                            "NumberMaker": FSP.NumberMaker,
+                            "NumberMaker": FSP.NumberMaker
                         }
                     },
                     FSP.settings.math));
@@ -3552,7 +3552,7 @@ module FullScreenPokemon {
                     "width": Math.max(health, 1),
                     "height": 1,
                     "hidden": health === 0
-                },
+                }
             });
 
             FSP.MenuGrapher.createMenuThing("PokemonMenuStats", {

@@ -238,7 +238,7 @@ module FullScreenPokemon {
                         "type": "text",
                         "words": ["SEEN \r\n %%%%%%%POKEDEX.SEEN%%%%%%%"],
                         "position": {
-                            "vertical": "top",
+                            "vertical": "top"
                         }
                     },
                     <MenuGraphr.IMenuChildSchema>{

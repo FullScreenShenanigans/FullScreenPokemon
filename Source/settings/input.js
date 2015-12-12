@@ -8,7 +8,7 @@ FullScreenPokemon.FullScreenPokemon.settings.input = {
             "down":   [83, 40],     // s,     down
             "a":      [90, 13],     // z,     enter
             "b":      [88, 8],      // x,     backspace
-            "pause": [80, 17],      // p, ctrl
+            "pause":  [80, 17],      // p, ctrl
             // Mouse aliases
             "rightclick": [3],
         },
