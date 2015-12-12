@@ -248,7 +248,7 @@ declare module MenuGraphr {
         getAliases(): { [i: string]: string };
         getReplacements(): IReplacements;
         createMenu(name: string, attributes?: IMenuSchema): IMenu;
-        createChild(name: string, schema: IMenuChildSchema): void;
+        createMenuChild(name: string, schema: IMenuChildSchema): void;
         createMenuWord(name: string, schema: IMenuWordSchema): void;
         createMenuThing(name: string, schema: IMenuThingSchema): IThing;
         hideMenu(name: string): void;
@@ -264,13 +264,6 @@ declare module MenuGraphr {
             skipAdd?: boolean): void;
         addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
-        addMenuWords(
-            name: string,
-            words: (string[] | IMenuWordCommand)[],
-            i: number,
-            x: number,
-            y: number,
-            onCompletion?: (...args: any[]) => void): IThing[];
         continueMenu(name: string): void;
         addMenuList(name: string, settings: IListMenuOptions): void;
         activateMenuList(name: string): void;
@@ -413,7 +406,7 @@ module MenuGraphr {
             menu.textAreaWidth = (menu.width - menu.textXOffset * 2) * this.GameStarter.unitsize;
 
             if (menu.childrenSchemas) {
-                menu.childrenSchemas.forEach(this.createChild.bind(this, name));
+                menu.childrenSchemas.forEach(this.createMenuChild.bind(this, name));
             }
 
             if (container.children) {
@@ -428,7 +421,7 @@ module MenuGraphr {
         /**
          * 
          */
-        createChild(name: string, schema: IMenuChildSchema): void {
+        createMenuChild(name: string, schema: IMenuChildSchema): void {
             switch (schema.type) {
                 case "menu":
                     this.createMenu(
@@ -699,165 +692,6 @@ module MenuGraphr {
             } else {
                 onCompletion();
             }
-        }
-
-        /**
-         * 
-         * 
-         * @remarks This is the real force behind addMenuDialog and addMenuText.
-         */
-        addMenuWords(
-            name: string,
-            words: (string[] | IMenuWordCommand)[],
-            i: number,
-            x: number,
-            y: number,
-            onCompletion?: (...args: any[]) => void): IThing[] {
-            var menu: IMenu = this.getExistingMenu(name),
-                textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
-                command: IMenuWordFiltered,
-                word: string[],
-                things: IThing[] = [],
-                textWidth: number,
-                textPaddingX: number,
-                textPaddingY: number,
-                textSpeed: number,
-                textWidthMultiplier: number,
-                character: IText,
-                j: number;
-
-            // Command objects must be parsed here in case they modify the x/y position
-            if ((<IMenuWordCommand>words[i]).command) {
-                command = <IMenuWordCommand>words[i];
-                word = this.parseWordCommand(<IMenuWordCommand>command, menu);
-
-                if ((<IMenuWordCommand>command).command === "position") {
-                    x += (<IMenuWordPosition>command).x || 0;
-                    y += (<IMenuWordPosition>command).y || 0;
-                }
-            } else {
-                word = <string[]>words[i];
-            }
-
-            textSpeed = menu.textSpeed;
-            textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize;
-            textPaddingX = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize;
-            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize;
-            textWidthMultiplier = menu.textWidthMultiplier || 1;
-
-            // For each character in the word, schedule it appearing in the menu
-            for (j = 0; j < word.length; j += 1) {
-                // For non-whitespace characters, add them and move to the right
-                if (/\S/.test(word[j])) {
-                    character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
-                    x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
-                    continue;
-                }
-
-                // Endlines skip a line; general whitespace moves to the right
-                // (" " spaces at the start do not move to the right)
-                if (word[j] === "\n") {
-                    x = menu.textX;
-                    y += textPaddingY;
-                } else if (word[j] !== " " || x !== menu.textX) {
-                    x += textWidth * textWidthMultiplier;
-                }
-            }
-
-            // Only create a new progress object if one doesn't exist (slight performance boost)
-            if (!menu.progress) {
-                menu.progress = {};
-            }
-
-            // If this is the last word in the the line (words), mark progress as done
-            if (i === words.length - 1) {
-                menu.progress.complete = true;
-                menu.progress.onCompletion = onCompletion;
-
-                if (menu.finishAutomatically) {
-                    this.GameStarter.TimeHandler.addEvent(
-                        onCompletion,
-                        (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed);
-                }
-
-                this.GameStarter.TimeHandler.addEvent(
-                    function (): void {
-                        menu.progress.working = false;
-                    },
-                    (j + 1) * textSpeed);
-
-                return things;
-            }
-
-            // If the next word would pass the edge of the menu, move down a line
-            if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset) {
-                x = menu.textX;
-                y += textPaddingY;
-            }
-
-            // Mark the menu's progress as working and incomplete
-            menu.progress.working = true;
-            menu.progress.complete = false;
-            menu.progress.onCompletion = onCompletion;
-            (<IListMenu>menu).progress.words = words;
-            (<IListMenu>menu).progress.i = i + 1;
-            (<IListMenu>menu).progress.x = x;
-            (<IListMenu>menu).progress.y = y - textPaddingY;
-
-            // If the bottom of the menu has been reached, pause the progress
-            if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                this.GameStarter.TimeHandler.addEvent(
-                    function (): void {
-                        menu.progress.working = false;
-                    },
-                    (j + 1) * textSpeed);
-
-                return things;
-            }
-
-            if (textSpeed) {
-                this.GameStarter.TimeHandler.addEvent(
-                    this.addMenuWords.bind(this),
-                    (j + 1) * textSpeed,
-                    name,
-                    words,
-                    i + 1,
-                    x,
-                    y,
-                    onCompletion);
-            } else {
-                this.addMenuWords(name, words, i + 1, x, y, onCompletion);
-            }
-
-            return things;
-        }
-
-        /**
-         * 
-         */
-        addMenuCharacter(name: string, character: string, x: number, y: number, delay?: number): IText {
-            var menu: IMenu = this.getExistingMenu(name),
-                textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
-                textPaddingY: number = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize,
-                title: string = "Char" + this.getCharacterEquivalent(character),
-                thing: IText = this.GameStarter.ObjectMaker.make(title, {
-                    "textPaddingY": textPaddingY
-                });
-
-            menu.children.push(thing);
-
-            if (delay) {
-                this.GameStarter.TimeHandler.addEvent(
-                    this.GameStarter.addThing.bind(this.GameStarter),
-                    delay,
-                    thing,
-                    x,
-                    y);
-            } else {
-                this.GameStarter.addThing(thing, x, y);
-            }
-
-            return thing;
         }
 
         /**
@@ -1457,6 +1291,165 @@ module MenuGraphr {
 
         /* Utilities
         */
+
+        /**
+         * 
+         * 
+         * @remarks This is the real force behind addMenuDialog and addMenuText.
+         */
+        private addMenuWords(
+            name: string,
+            words: (string[] | IMenuWordCommand)[],
+            i: number,
+            x: number,
+            y: number,
+            onCompletion?: (...args: any[]) => void): IThing[] {
+            var menu: IMenu = this.getExistingMenu(name),
+                textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
+                command: IMenuWordFiltered,
+                word: string[],
+                things: IThing[] = [],
+                textWidth: number,
+                textPaddingX: number,
+                textPaddingY: number,
+                textSpeed: number,
+                textWidthMultiplier: number,
+                character: IText,
+                j: number;
+
+            // Command objects must be parsed here in case they modify the x/y position
+            if ((<IMenuWordCommand>words[i]).command) {
+                command = <IMenuWordCommand>words[i];
+                word = this.parseWordCommand(<IMenuWordCommand>command, menu);
+
+                if ((<IMenuWordCommand>command).command === "position") {
+                    x += (<IMenuWordPosition>command).x || 0;
+                    y += (<IMenuWordPosition>command).y || 0;
+                }
+            } else {
+                word = <string[]>words[i];
+            }
+
+            textSpeed = menu.textSpeed;
+            textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize;
+            textPaddingX = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize;
+            textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize;
+            textWidthMultiplier = menu.textWidthMultiplier || 1;
+
+            // For each character in the word, schedule it appearing in the menu
+            for (j = 0; j < word.length; j += 1) {
+                // For non-whitespace characters, add them and move to the right
+                if (/\S/.test(word[j])) {
+                    character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
+                    x += textWidthMultiplier * (character.width * this.GameStarter.unitsize + textPaddingX);
+                    continue;
+                }
+
+                // Endlines skip a line; general whitespace moves to the right
+                // (" " spaces at the start do not move to the right)
+                if (word[j] === "\n") {
+                    x = menu.textX;
+                    y += textPaddingY;
+                } else if (word[j] !== " " || x !== menu.textX) {
+                    x += textWidth * textWidthMultiplier;
+                }
+            }
+
+            // Only create a new progress object if one doesn't exist (slight performance boost)
+            if (!menu.progress) {
+                menu.progress = {};
+            }
+
+            // If this is the last word in the the line (words), mark progress as done
+            if (i === words.length - 1) {
+                menu.progress.complete = true;
+                menu.progress.onCompletion = onCompletion;
+
+                if (menu.finishAutomatically) {
+                    this.GameStarter.TimeHandler.addEvent(
+                        onCompletion,
+                        (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed);
+                }
+
+                this.GameStarter.TimeHandler.addEvent(
+                    function (): void {
+                        menu.progress.working = false;
+                    },
+                    (j + 1) * textSpeed);
+
+                return things;
+            }
+
+            // If the next word would pass the edge of the menu, move down a line
+            if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset) {
+                x = menu.textX;
+                y += textPaddingY;
+            }
+
+            // Mark the menu's progress as working and incomplete
+            menu.progress.working = true;
+            menu.progress.complete = false;
+            menu.progress.onCompletion = onCompletion;
+            (<IListMenu>menu).progress.words = words;
+            (<IListMenu>menu).progress.i = i + 1;
+            (<IListMenu>menu).progress.x = x;
+            (<IListMenu>menu).progress.y = y - textPaddingY;
+
+            // If the bottom of the menu has been reached, pause the progress
+            if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
+                this.GameStarter.TimeHandler.addEvent(
+                    function (): void {
+                        menu.progress.working = false;
+                    },
+                    (j + 1) * textSpeed);
+
+                return things;
+            }
+
+            if (textSpeed) {
+                this.GameStarter.TimeHandler.addEvent(
+                    this.addMenuWords.bind(this),
+                    (j + 1) * textSpeed,
+                    name,
+                    words,
+                    i + 1,
+                    x,
+                    y,
+                    onCompletion);
+            } else {
+                this.addMenuWords(name, words, i + 1, x, y, onCompletion);
+            }
+
+            return things;
+        }
+
+        /**
+         * 
+         */
+        private addMenuCharacter(name: string, character: string, x: number, y: number, delay?: number): IText {
+            var menu: IMenu = this.getExistingMenu(name),
+                textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
+                textPaddingY: number = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize,
+                title: string = "Char" + this.getCharacterEquivalent(character),
+                thing: IText = this.GameStarter.ObjectMaker.make(title, {
+                    "textPaddingY": textPaddingY
+                });
+
+            menu.children.push(thing);
+
+            if (delay) {
+                this.GameStarter.TimeHandler.addEvent(
+                    this.GameStarter.addThing.bind(this.GameStarter),
+                    delay,
+                    thing,
+                    x,
+                    y);
+            } else {
+                this.GameStarter.addThing(thing, x, y);
+            }
+
+            return thing;
+        }
 
         /**
          * 

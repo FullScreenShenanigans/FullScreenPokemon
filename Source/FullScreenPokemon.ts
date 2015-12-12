@@ -3487,10 +3487,14 @@ module FullScreenPokemon {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 pokemon: IPokemon = settings.pokemon,
                 schemas: any = FSP.MathDecider.getConstant("pokemon"),
-                schema: any = schemas[pokemon.title.join("")];
+                schema: any = schemas[pokemon.title.join("")],
+                barWidth: number = 25,
+                health: number = FSP.MathDecider.compute(
+                    "widthHealthBar", barWidth, pokemon.HP, pokemon.HPNormal);
 
             FSP.MenuGrapher.createMenu("PokemonMenuStats", {
                 "backMenu": "PokemonMenuContext",
+                "callback": FSP.openPokemonMenuStatsSecondary.bind(FSP, pokemon),
                 "container": "Pokemon"
             });
 
@@ -3530,6 +3534,23 @@ module FullScreenPokemon {
                 ]
             );
 
+            FSP.MenuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
+                "type": "thing",
+                "thing": "LightGraySquare",
+                "position": {
+                    "horizontal": "left",
+                    "offset": {
+                        "top": 0.5,
+                        "left": 8.5
+                    }
+                },
+                "args": {
+                    "width": Math.max(health, 1),
+                    "height": 1,
+                    "hidden": health === 0
+                },
+            });
+
             FSP.MenuGrapher.createMenuThing("PokemonMenuStats", {
                 "type": "thing",
                 "thing": pokemon.title.join("") + "Front",
@@ -3539,7 +3560,7 @@ module FullScreenPokemon {
                 "position": {
                     "vertical": "bottom",
                     "offset": {
-                        "left": 8,
+                        "left": 9,
                         "top": -48
                     }
                 }
@@ -3598,6 +3619,87 @@ module FullScreenPokemon {
                     };
                 })
             });
+        }
+
+        /**
+         *
+         */
+        openPokemonMenuStatsSecondary(pokemon: IPokemon): void {
+            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
+                options: any[] = pokemon.moves.map(function (move: BattleMovr.IMove): any {
+                    var characters: any[] = [" "],
+                        output: any = {
+                            "text": characters
+                        };
+
+                    characters.push({
+                        "command": true,
+                        "x": 40,
+                        "y": 4
+                    });
+
+                    characters.push({
+                        "command": true,
+                        "y": .5
+                    });
+                    characters.push("PP", " ");
+                    characters.push({
+                        "command": true,
+                        "y": -.5
+                    });
+                    characters.push(...FSP.makeDigit(move.remaining, 2, " ").split(""));
+                    characters.push("/");
+                    characters.push(...FSP.makeDigit(FSP.MathDecider.getConstant("moves")[move.title].PP, 2, " ").split(""));
+
+                    characters.push({
+                        "command": true,
+                        "x": -75,
+                        "y": -4
+                    });
+
+                    // TODO: Moves should always be uppercase...
+                    characters.push(...move.title.toUpperCase().split(""));
+
+                    return output;
+                }),
+                i: number;
+
+            // Fill any remaining options with "-" and "--" for move and PP, respectively
+            for (i = options.length; i < 4; i += 1) {
+                options.push({
+                    "text": [
+                        "-",
+                        {
+                            "command": true,
+                            "x": 40,
+                            "y": 4
+                        },
+                        "-",
+                        "-"
+                    ]
+                });
+            }
+
+            FSP.MenuGrapher.createMenu("PokemonMenuStatsExperience");
+
+            FSP.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsExperience",
+                FSP.makeDigit(pokemon.experience.current, 10, "\t"));
+
+            FSP.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsExperienceFrom",
+                FSP.makeDigit(pokemon.experience.remaining, 3, "\t"));
+
+            FSP.MenuGrapher.addMenuDialog(
+                "PokemonMenuStatsExperienceNext",
+                pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
+
+            FSP.MenuGrapher.createMenu("PokemonMenuStatsMoves");
+            FSP.MenuGrapher.addMenuList("PokemonMenuStatsMoves", {
+                "options": options
+            });
+
+            FSP.MenuGrapher.getMenu("PokemonMenuStats").callback = FSP.MenuGrapher.deleteMenu.bind(FSP.MenuGrapher);
         }
 
         /**

@@ -683,6 +683,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                     "CharBallEmpty": {},
                     "CharCircle": {},
                     "CharHP": {},
+                    "CharPP": {},
+                    "CharTo": {},
                     "CharLevel": {},
                     "Char$": {}
                 },
@@ -1184,6 +1186,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "CharBallEmpty": [3.5, 3.5],
         "CharCircle": [2.5, 2.5],
         "CharHP": [5.5, 2],
+        "CharPP": [7.5, 3.5],
+        "CharTo": [3.5, 3],
         "CharLevel": [3, 2.5],
         "Char$": {
             "width": 4,
