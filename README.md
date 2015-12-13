@@ -9,7 +9,7 @@ Although you may no longer play on [fullscreenpokemon.com](http://www.fullscreen
 
 #### Newcomers (non-coders)
 
-[Download the latest release .zip](https://github.com/FullScreenShenanigans/FullScreenPokemon/releases) of this project, extract that onto your computer, and open **index.html** in a browser (preferably Google Chrome). That's it!
+[Download the latest release .zip](https://github.com/FullScreenShenanigans/FullScreenPokemon/archive/master.zip) of this project, extract that onto your computer, and open **index.html** in a browser (preferably Google Chrome). That's it!
 
 #### In your own site
 
