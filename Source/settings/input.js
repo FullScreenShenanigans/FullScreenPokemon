@@ -4,11 +4,11 @@ FullScreenPokemon.FullScreenPokemon.settings.input = {
             // Keyboard aliases
             "left":   [65, 37],     // a,     left
             "right":  [68, 39],     // d,     right
-            "up":     [87, 38, 32], // w,     up,    space
+            "up":     [87, 38],     // w,     up
             "down":   [83, 40],     // s,     down
-            "a":      [90, 13],     // z,     enter
+            "a":      [90, 13],     // z
             "b":      [88, 8],      // x,     backspace
-            "pause":  [80, 17],      // p, ctrl
+            "pause":  [13, 17],     // enter, ctrl
             // Mouse aliases
             "rightclick": [3],
         },
