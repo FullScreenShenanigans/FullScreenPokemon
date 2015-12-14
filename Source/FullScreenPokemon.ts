@@ -4805,8 +4805,7 @@ module FullScreenPokemon {
                 console.warn(choice + " attack animation not implemented...");
                 args.callback();
             } else {
-                FPS.ScenePlayer.playRoutine(
-                    "Attack" + choice.replace(" ", ""), args);
+                FPS.ScenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
             }
         }
 

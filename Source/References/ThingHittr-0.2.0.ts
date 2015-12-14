@@ -422,7 +422,7 @@ module ThingHittr {
                             if (
                                 typeof this.globalChecks[other[this.keyGroupName]] !== "undefined"
                                 && !this.globalChecks[other[this.keyGroupName]](other)
-                                ) {
+                            ) {
                                 continue;
                             }
 
@@ -485,7 +485,7 @@ module ThingHittr {
          * @return {Object<Function>}
          */
         private cacheFunctionGroup(
-            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer  {
+            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer {
             var output: IThingHitCheckContainer | IThingHitFunctionContainer = {},
                 i: string;
 

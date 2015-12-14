@@ -313,7 +313,7 @@ declare module PixelDrawr {
             thing: IThing,
             left: number,
             top: number
-            ): void;
+        ): void;
     }
 }
 

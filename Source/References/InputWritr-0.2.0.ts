@@ -180,7 +180,7 @@ module InputWritr {
                         || (<any>performance).mozNow
                         || (<any>performance).msNow
                         || (<any>performance).oNow
-                        ).bind(performance);
+                    ).bind(performance);
                 }
             } else {
                 this.getTimestamp = settings.getTimestamp;

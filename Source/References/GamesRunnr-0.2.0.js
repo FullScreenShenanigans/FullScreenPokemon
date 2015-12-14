@@ -11,7 +11,9 @@ var GamesRunnr;
      */
     var GamesRunnr = (function () {
         /**
-         * @param {IGamesRunnrSettings} settings
+         * Initializes a new instance of the GamesRunnr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function GamesRunnr(settings) {
             if (typeof settings === "undefined") {
@@ -46,61 +48,61 @@ var GamesRunnr;
         /* Gets
         */
         /**
-         * @return {FPSAnalyzer} The FPSAnalyzer used in the GamesRunnr.
+         * @returns The FPSAnalyzer used in the GamesRunnr.
          */
         GamesRunnr.prototype.getFPSAnalyzer = function () {
             return this.FPSAnalyzer;
         };
         /**
-         * @return {Boolean} Whether this is paused.
+         * @returns Whether this is paused.
          */
         GamesRunnr.prototype.getPaused = function () {
             return this.paused;
         };
         /**
-         * @return {Function[]} The Array of game Functions.
+         * @returns The Array of game Functions.
          */
         GamesRunnr.prototype.getGames = function () {
             return this.games;
         };
         /**
-         * @return {Number} The interval between upkeeps.
+         * @returns The interval between upkeeps.
          */
         GamesRunnr.prototype.getInterval = function () {
             return this.interval;
         };
         /**
-         * @return {Number} The speed multiplier being applied to the interval.
+         * @returns The speed multiplier being applied to the interval.
          */
         GamesRunnr.prototype.getSpeed = function () {
             return this.speed;
         };
         /**
-         * @return {Function} The optional trigger to be called on pause.
+         * @returns The optional trigger to be called on pause.
          */
         GamesRunnr.prototype.getOnPause = function () {
             return this.onPause;
         };
         /**
-         * @return {Function} The optional trigger to be called on play.
+         * @returns The optional trigger to be called on play.
          */
         GamesRunnr.prototype.getOnPlay = function () {
             return this.onPlay;
         };
         /**
-         * @return {Array} Arguments to be given to the optional trigger Functions.
+         * @returns Arguments to be given to the optional trigger Functions.
          */
         GamesRunnr.prototype.getCallbackArguments = function () {
             return this.callbackArguments;
         };
         /**
-         * @return {Function} Function used to schedule the next upkeep.
+         * @returns Function used to schedule the next upkeep.
          */
         GamesRunnr.prototype.getUpkeepScheduler = function () {
             return this.upkeepScheduler;
         };
         /**
-         * @return {Function} Function used to cancel the next upkeep.
+         * @returns {Function} Function used to cancel the next upkeep.
          */
         GamesRunnr.prototype.getUpkeepCanceller = function () {
             return this.upkeepCanceller;
@@ -122,7 +124,7 @@ var GamesRunnr;
             }
             else {
                 this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal);
-                this.games.forEach(this.run);
+                this.runAllGames();
             }
             if (this.FPSAnalyzer) {
                 this.FPSAnalyzer.measure();
@@ -132,14 +134,14 @@ var GamesRunnr;
          * A utility for this.upkeep that calls the same games.forEach(run), timing
          * the total execution time.
          *
-         * @return {Number} The total time spent, in milliseconds.
+         * @returns The total time spent, in milliseconds.
          */
         GamesRunnr.prototype.upkeepTimed = function () {
             if (!this.FPSAnalyzer) {
                 throw new Error("An internal FPSAnalyzr is required for upkeepTimed.");
             }
             var now = this.FPSAnalyzer.getTimestamp();
-            this.games.forEach(this.run);
+            this.runAllGames();
             return this.FPSAnalyzer.getTimestamp() - now;
         };
         /**
@@ -173,7 +175,7 @@ var GamesRunnr;
         /**
          * Calls upkeep a <num or 1> number of times, immediately.
          *
-         * @param {Number} [num]   How many times to upkeep, if not 1.
+         * @param [num]   How many times to upkeep (by default, 1).
          */
         GamesRunnr.prototype.step = function (times) {
             if (times === void 0) { times = 1; }
@@ -194,7 +196,7 @@ var GamesRunnr;
         /**
          * Sets the interval between between upkeeps.
          *
-         * @param {Number} The new time interval in milliseconds.
+         * @param interval   The new time interval in milliseconds.
          */
         GamesRunnr.prototype.setInterval = function (interval) {
             var intervalReal = Number(interval);
@@ -207,8 +209,8 @@ var GamesRunnr;
         /**
          * Sets the speed multiplier for the interval.
          *
-         * @param {Number} The new speed multiplier. 2 will cause interval to be
-         *                 twice as fast, and 0.5 will be half as fast.
+         * @param speed   The new speed multiplier. 2 will cause interval to be
+         *                twice as fast, and 0.5 will be half as fast.
          */
         GamesRunnr.prototype.setSpeed = function (speed) {
             var speedReal = Number(speed);
@@ -227,12 +229,12 @@ var GamesRunnr;
             this.intervalReal = (1 / this.speed) * this.interval;
         };
         /**
-         * Curry function to fun a given function. Used in games.forEach(game).
-         *
-         * @param {Function} game
+         * Runs all games in this.games.
          */
-        GamesRunnr.prototype.run = function (game) {
-            game();
+        GamesRunnr.prototype.runAllGames = function () {
+            for (var i = 0; i < this.games.length; i += 1) {
+                this.games[i]();
+            }
         };
         return GamesRunnr;
     })();

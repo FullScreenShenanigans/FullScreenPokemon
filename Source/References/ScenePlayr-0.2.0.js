@@ -2,11 +2,13 @@ var ScenePlayr;
 (function (ScenePlayr_1) {
     "use strict";
     /**
-     *
+     * A cutscene runner for jumping between scenes and their routines.
      */
     var ScenePlayr = (function () {
         /**
-         * @param {IScenePlayrSettings} [settings]
+         * Initializes a new instance of the ScenePlayr class.
+         *
+         * @param [settings]   Settings to be used for initialization.
          */
         function ScenePlayr(settings) {
             if (settings === void 0) { settings = {}; }
@@ -28,12 +30,6 @@ var ScenePlayr;
             return this.cutscene;
         };
         /**
-         * @returns {String} The name of the currently playing cutscene.
-         */
-        ScenePlayr.prototype.getCutsceneName = function () {
-            return this.cutsceneName;
-        };
-        /**
          * @returns The cutscene referred to by the given name.
          */
         ScenePlayr.prototype.getOtherCutscene = function (name) {
@@ -46,11 +42,18 @@ var ScenePlayr;
             return this.routine;
         };
         /**
+         * @param name   The name of a routine to return.
          * @returns The routine within the current cutscene referred to
          *          by the given name.
          */
         ScenePlayr.prototype.getOtherRoutine = function (name) {
             return this.cutscene.routines[name];
+        };
+        /**
+         * @returns The name of the currently playing cutscene.
+         */
+        ScenePlayr.prototype.getCutsceneName = function () {
+            return this.cutsceneName;
         };
         /**
          * @returns The settings used by the current cutscene.
@@ -75,9 +78,8 @@ var ScenePlayr;
          * cutscene specifies a firstRoutine, it's started.
          *
          * @param name   The name of the cutscene to play.
-         * @param settings   Additional settings to be kept as a persistent Object
-         *                   throughout the cutscene.
-         * @param args   Arguments for the firstRoutine, if it exists.
+         * @param [settings]   Additional settings to be kept persistently
+         *                     throughout the cutscene.
          */
         ScenePlayr.prototype.startCutscene = function (name, settings, args) {
             if (settings === void 0) { settings = {}; }
@@ -113,11 +115,11 @@ var ScenePlayr;
          * Stops the currently playing cutscene and clears the internal data.
          */
         ScenePlayr.prototype.stopCutscene = function () {
+            this.routine = undefined;
             this.cutscene = undefined;
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.cutsceneArguments.pop();
-            this.routine = undefined;
         };
         /**
          * Plays a particular routine within the current cutscene, passing
@@ -150,8 +152,8 @@ var ScenePlayr;
         /**
          * Returns this.startCutscene bound to the given name and arguments.
          *
-         * @param {String} name   The name of the cutscene to play.
-         * @param {Mixed} [...args]   Any additional arguments to pass to the routine.
+         * @param name   The name of the cutscene to play.
+         * @param args   Any additional arguments to pass to the routine.
          */
         ScenePlayr.prototype.bindRoutine = function (name) {
             var args = [];

@@ -391,11 +391,11 @@ module MapsCreatr {
             this.right = this.left + (
                 reference.width
                 || ObjectMaker.getFullPropertiesOf(this.title).width
-                );
+            );
             this.bottom = this.top + (
                 reference.height
                 || ObjectMaker.getFullPropertiesOf(this.title).height
-                );
+            );
 
             if (reference.position) {
                 this.position = reference.position;
@@ -734,7 +734,7 @@ module MapsCreatr {
             reference: any,
             prethings: any,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             // Case: macro (unless it's undefined)
             if (reference.macro) {
                 return this.analyzePreMacro(reference, prethings, area, map);
@@ -759,16 +759,16 @@ module MapsCreatr {
             reference: any,
             prethings: any,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             var macro: any = this.macros[reference.macro],
-                outputs: any[]| any,
+                outputs: any[] | any,
                 i: number;
 
             if (!macro) {
                 console.warn(
                     "A non-existent macro is referenced. It will be ignored:",
                     macro, reference, prethings, area, map
-                    );
+                );
                 return;
             }
 
@@ -805,7 +805,7 @@ module MapsCreatr {
             reference: any,
             prethings: any,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             var title: string = reference.thing,
                 thing: IThing,
                 prething: PreThing;
@@ -822,7 +822,7 @@ module MapsCreatr {
                 console.warn(
                     "A Thing does not contain a " + this.keyGroupType + ". It will be ignored:",
                     prething, "\n", arguments
-                    );
+                );
                 return;
             }
 
@@ -830,7 +830,7 @@ module MapsCreatr {
                 console.warn(
                     "A Thing contains an unknown " + this.keyGroupType + ". It will be ignored:",
                     thing[this.keyGroupType], prething, reference, prethings, area, map
-                    );
+                );
                 return;
             }
 
@@ -860,7 +860,7 @@ module MapsCreatr {
                     reference.collectionName,
                     reference.collectionKey,
                     <IMapsCreatrArea>area
-                    );
+                );
             }
 
             return prething;

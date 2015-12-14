@@ -510,7 +510,7 @@ module TimeHandlr {
                 thing,
                 settings,
                 isTimingFunction ? 0 : timing
-                );
+            );
 
             // If there is a timing function, make it the count changer
             if (cycle.event && isTimingFunction) {

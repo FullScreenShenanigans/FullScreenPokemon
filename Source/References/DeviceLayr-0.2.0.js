@@ -22,11 +22,13 @@ var DeviceLayr;
     })(DeviceLayr_1.AxisStatus || (DeviceLayr_1.AxisStatus = {}));
     var AxisStatus = DeviceLayr_1.AxisStatus;
     /**
-     *
+     * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
     var DeviceLayr = (function () {
         /**
-         * @param {IDeviceLayerSettings} settings
+         * Initializes a new instance of the DeviceLayr class.
+         *
+         * @param settings   Settings to use for initialization.
          */
         function DeviceLayr(settings) {
             if (typeof settings === "undefined") {
@@ -46,28 +48,27 @@ var DeviceLayr;
         /* Simple gets
         */
         /**
-         * @return {InputWritr} The internal InputWritr button and joystick triggers
-         *                      are piped to.
+         * @returns The InputWritr being piped button and joystick triggers.
          */
         DeviceLayr.prototype.getInputWritr = function () {
             return this.InputWritr;
         };
         /**
-         * @return {Object} Mapping of which device controls should cause what triggers,
-         *                  along with their current statuses.
+         * @returns Mapping of which device controls should cause what triggers,
+         *          along with their current statuses.
          */
         DeviceLayr.prototype.getTriggers = function () {
             return this.triggers;
         };
         /**
-         * @return {Object} For "on" and "off" activations, the equivalent event keys
-         *                  to pass to the internal InputWritr.
+         * @returns For "on" and "off" activations, the equivalent event keys
+         *          to pass to the internal InputWritr.
          */
         DeviceLayr.prototype.getAliases = function () {
             return this.aliases;
         };
         /**
-         * @return {Gamepad[]} Any added gamepads (devices), in order of activation.
+         * @returns Any added gamepads (devices), in order of activation.
          */
         DeviceLayr.prototype.getGamepads = function () {
             return this.gamepads;
@@ -77,7 +78,7 @@ var DeviceLayr;
         /**
          * If possible, checks the navigator for new gamepads, and adds them if found.
          *
-         * @return {Number} How many gamepads were added.
+         * @returns How many gamepads were added.
          */
         DeviceLayr.prototype.checkNavigatorGamepads = function () {
             if (typeof navigator.getGamepads === "undefined" || !navigator.getGamepads()[this.gamepads.length]) {
@@ -89,7 +90,7 @@ var DeviceLayr;
         /**
          * Registers a new gamepad.
          *
-         * @param {Gamepad} gamepad
+         * @param gamepad   The gamepad to register.
          */
         DeviceLayr.prototype.registerGamepad = function (gamepad) {
             this.gamepads.push(gamepad);
@@ -109,7 +110,7 @@ var DeviceLayr;
          * Checks the trigger status of a gamepad, calling the equivalent InputWritr
          * events if any triggers have occurred.
          *
-         * @param {Gamepad} gamepad
+         * @param gamepad   The gamepad whose status is to be checked.
          */
         DeviceLayr.prototype.activateGamepadTriggers = function (gamepad) {
             var mapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"], i;
@@ -124,10 +125,10 @@ var DeviceLayr;
          * Checks for triggered changes to an axis, and calls the equivalent InputWritr
          * event if one is found.
          *
-         * @param {Gamepad} gamepad
-         * @param {String} name   The name of the axis, typically "x" or "y".
-         * @param {Number} magnitude   The current value of the axis, in [1, -1].
-         * @return {Boolean} Whether the trigger was activated.
+         * @param gamepad   The gamepad whose triggers are to be checked.
+         * @param name   The name of the axis, typically "x" or "y".
+         * @param magnitude   The current value of the axis, in [1, -1].
+         * @returns Whether the trigger was activated.
          */
         DeviceLayr.prototype.activateAxisTrigger = function (gamepad, name, axis, magnitude) {
             var listing = this.triggers[name][axis], status;
@@ -155,10 +156,10 @@ var DeviceLayr;
          * Checks for triggered changes to a button, and calls the equivalent InputWritr
          * event if one is found.
          *
-         * @param {Gamepad} gamepad
+         * @param gamepad   The gamepad whose triggers are to be checked.
          * @param {String} name   The name of the button, such as "a" or "left".
          * @param {Boolean} status   Whether the button is activated (pressed).
-         * @return {Boolean} Whether the trigger was activated.
+         * @returns {Boolean} Whether the trigger was activated.
          */
         DeviceLayr.prototype.activateButtonTrigger = function (gamepad, name, status) {
             var listing = this.triggers[name];
@@ -182,7 +183,7 @@ var DeviceLayr;
         /**
          * Clears the status of all axes and buttons on a gamepad.
          *
-         * @param {Gamepad} gamepad
+         * @param gamepad   The gamepad whose triggers are to be cleared.
          */
         DeviceLayr.prototype.clearGamepadTriggers = function (gamepad) {
             var mapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"], i;
@@ -196,8 +197,8 @@ var DeviceLayr;
         /**
          * Sets the status of an axis to neutral.
          *
-         * @param {Gamepad} gamepad
-         * @param {String} name   The name of the axis, typically "x" or "y".
+         * @param gamepad   The gamepad whose axis is to be cleared.
+         * @param name   The name of the axis, typically "x" or "y".
          */
         DeviceLayr.prototype.clearAxisTrigger = function (gamepad, name, axis) {
             var listing = this.triggers[name][axis];
@@ -206,8 +207,8 @@ var DeviceLayr;
         /**
          * Sets the status of a button to off.
          *
-         * @param {Gamepad} gamepad
-         * @param {String} name   The name of the button, such as "a" or "left".
+         * @param gamepad   The gamepad whose button is to be checked.
+         * @param name   The name of the button, such as "a" or "left".
          */
         DeviceLayr.prototype.clearButtonTrigger = function (gamepad, name) {
             var listing = this.triggers[name];
@@ -219,11 +220,10 @@ var DeviceLayr;
          * Puts the default values for all buttons and joystick axes that don't already
          * have statuses. This is useful so activation checks don't glitch out.
          *
-         * @param {Gamepad} gamepad
-         * @param {Object} [triggers]
+         * @param gamepad   The gamepad whose triggers are to be defaulted.
+         * @param triggers   The triggers to default, as listings keyed by name.
          */
         DeviceLayr.prototype.setDefaultTriggerStatuses = function (gamepad, triggers) {
-            if (triggers === void 0) { triggers = this.triggers; }
             var mapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"], button, joystick, i, j;
             for (i = 0; i < mapping.buttons.length; i += 1) {
                 button = triggers[mapping.buttons[i]];
@@ -244,10 +244,9 @@ var DeviceLayr;
             }
         };
         /**
-         * @param {Gamepad} gamepad
-         * @param {Number} magnitude   The direction an axis is measured at, in [-1, 1].
-         * @return {AxisStatus} What direction a magnitude is relative to 0 (namely
-         *                      positive, negative, or neutral).
+         * @param gamepad   The gamepad whose axis is being looked up.
+         * @param magnitude   The direction an axis is measured at, in [-1, 1].
+         * @returns What direction a magnitude is relative to 0.
          */
         DeviceLayr.prototype.getAxisStatus = function (gamepad, magnitude) {
             var joystickThreshold = DeviceLayr.controllerMappings[gamepad.mapping || "standard"].joystickThreshold;

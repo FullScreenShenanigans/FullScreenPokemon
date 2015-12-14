@@ -9,15 +9,17 @@ var FPSAnalyzr;
      */
     var FPSAnalyzr = (function () {
         /**
-         * @param {IFPSAnalyzrSettings} [settings]
+         * Initializes a new instance of the FPSAnalyzr class.
+         *
+         * @param [settings]
          */
         function FPSAnalyzr(settings) {
             if (settings === void 0) { settings = {}; }
             this.maxKept = settings.maxKept || 35;
             this.numRecorded = 0;
             this.ticker = -1;
-            // If maxKept is a Number, make the measurements array that long
-            // If it's infinite, make measurements an {} (infinite array)
+            // If maxKept is a Number, make the measurements array that long.
+            // If it's infinite, make measurements an {} (infinite Array).
             this.measurements = isFinite(this.maxKept) ? new Array(this.maxKept) : {};
             // Headless browsers like PhantomJS won't know performance, so Date.now
             // is used as a backup
@@ -46,8 +48,7 @@ var FPSAnalyzr;
          * Marks the current timestamp as timeCurrent, and adds an FPS measurement
          * if there was a previous timeCurrent.
          *
-         * @param {DOMHighResTimeStamp} time   An optional timestamp, without which
-         *                                     getTimestamp() is used instead.
+         * @param [time]   An optional timestamp (by default, getTimestamp() is used).
          */
         FPSAnalyzr.prototype.measure = function (time) {
             if (time === void 0) { time = this.getTimestamp(); }
@@ -60,8 +61,7 @@ var FPSAnalyzr;
          * Adds an FPS measurement to measurements, and increments the associated
          * count variables.
          *
-         * @param {Number} fps   An FPS calculated as the difference between two
-         *                       timestamps.
+         * @param fps   An FPS calculated as the difference between two timestamps.
          */
         FPSAnalyzr.prototype.addFPS = function (fps) {
             this.ticker = (this.ticker += 1) % this.maxKept;
@@ -71,25 +71,25 @@ var FPSAnalyzr;
         /* Gets
         */
         /**
-         * @return {Number} The number of FPS measurements to keep.
+         * @returns The number of FPS measurements to keep.
          */
         FPSAnalyzr.prototype.getMaxKept = function () {
             return this.maxKept;
         };
         /**
-         * @return {Number} The actual number of FPS measurements currently known.
+         * @returns The actual number of FPS measurements currently known.
          */
         FPSAnalyzr.prototype.getNumRecorded = function () {
             return this.numRecorded;
         };
         /**
-         * @return {Number} The most recent performance.now timestamp.
+         * @returns The most recent performance.now timestamp.
          */
         FPSAnalyzr.prototype.getTimeCurrent = function () {
             return this.timeCurrent;
         };
         /**
-         * @return {Number} The current position in measurements.
+         * @returns The current position in measurements.
          */
         FPSAnalyzr.prototype.getTicker = function () {
             return this.ticker;
@@ -98,8 +98,7 @@ var FPSAnalyzr;
          * Get function for a copy of the measurements listing (if the number of
          * measurements is less than the max, that size is used)
          *
-         * @return {Object}   An object (normally an Array) of the most recent FPS
-         *                    measurements
+         * @returns A Number[] of the most recent FPS measurements.
          */
         FPSAnalyzr.prototype.getMeasurements = function () {
             var fpsKeptReal = Math.min(this.maxKept, this.numRecorded), copy, i;
@@ -119,8 +118,7 @@ var FPSAnalyzr;
          * Get function for a copy of the measurements listing, but with the FPS
          * measurements transformed back into time differences
          *
-         * @return {Object}   An object (normally an Array) of the most recent FPS
-         *                    time differences
+         * @returns A container of the most recent FPS time differences.
          */
         FPSAnalyzr.prototype.getDifferences = function () {
             var copy = this.getMeasurements(), i;
@@ -130,7 +128,7 @@ var FPSAnalyzr;
             return copy;
         };
         /**
-         * @return {Number} The average recorded FPS measurement.
+         * @returns The average recorded FPS measurement.
          */
         FPSAnalyzr.prototype.getAverage = function () {
             var total = 0, max = Math.min(this.maxKept, this.numRecorded), i;
@@ -140,7 +138,7 @@ var FPSAnalyzr;
             return total / max;
         };
         /**
-         * @return {Number} The median recorded FPS measurement.
+         * @returns The median recorded FPS measurement.
          * @remarks This is O(n*log(n)), where n is the size of the history,
          *          as it creates a copy of the history and sorts it.
          */
@@ -154,8 +152,8 @@ var FPSAnalyzr;
             }
         };
         /**
-         * @return {Number[]} An Array containing the lowest and highest recorded
-         *                    FPS measurements, in that order.
+         * @returns Array containing the lowest and highest recorded FPS
+         *          measurements, in that order.
          */
         FPSAnalyzr.prototype.getExtremes = function () {
             var lowest = this.measurements[0], highest = lowest, max = Math.min(this.maxKept, this.numRecorded), fps, i;
@@ -171,28 +169,30 @@ var FPSAnalyzr;
             return [lowest, highest];
         };
         /**
-         * @return {Number} The range of recorded FPS measurements
+         * @returns The range of recorded FPS measurements.
          */
         FPSAnalyzr.prototype.getRange = function () {
             var extremes = this.getExtremes();
             return extremes[1] - extremes[0];
         };
         /**
+         * Converts all measurements to a Number[] in sorted order, regardless
+         * of whether they're initially stored in an Array or Object.
          *
+         * @returns All measurements, sorted.
          */
         FPSAnalyzr.prototype.getMeasurementsSorted = function () {
             var copy, i;
             if (this.measurements.constructor === Array) {
-                copy = this.measurements.sort();
+                copy = [].slice.call(this.measurements).sort();
             }
             else {
                 copy = [];
                 for (i in this.measurements) {
                     if (this.measurements.hasOwnProperty(i)) {
-                        if (this.measurements[i] === undefined) {
-                            break;
+                        if (typeof this.measurements[i] !== "undefined") {
+                            copy[i] = this.measurements[i];
                         }
-                        copy[i] = this.measurements[i];
                     }
                 }
                 copy.sort();

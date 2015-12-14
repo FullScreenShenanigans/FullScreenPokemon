@@ -28,6 +28,7 @@ declare module StringFilr {
     }
 }
 
+
 module StringFilr {
     "use strict";
 

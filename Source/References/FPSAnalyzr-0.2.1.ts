@@ -1,22 +1,119 @@
 declare module FPSAnalyzr {
+    /**
+     * A Function to generate a current timestamp, such as performance.now.
+     */
+    export interface ITimestampGetter {
+        (): number;
+    }
+
+    /**
+     * Storage for internal FPS measurements, as either a Number[] or Object.
+     */
+    export type IMeasurementsContainer = number[] | {
+        [i: number]: number;
+    }
+
+    /**
+     * Settings to initialize a new IFPSAnalyzr.
+     */
     export interface IFPSAnalyzrSettings {
+        /**
+         * How many FPS measurements to keep at any given time, at most.
+         */
         maxKept?: number;
+
+        /**
+         * A Function to generate a current timestamp, such as performance.now.
+         */
         getTimestamp?: any;
     }
 
+    /**
+     * A general utility for obtaining and analyzing framerate measurements. The 
+     * most recent measurements are kept up to a certain point (either an infinite
+     * number or a set amount). Options for analyzing the data such as getting the
+     * mean, median, extremes, etc. are available.
+     */
     export interface IFPSAnalyzr {
-        getTimestamp: () => number;
+        /**
+         * Function to generate a current timestamp, commonly performance.now.
+         */
+        getTimestamp: ITimestampGetter;
+
+        /**
+         * Standard public measurement function.
+         * Marks the current timestamp as timeCurrent, and adds an FPS measurement
+         * if there was a previous timeCurrent.
+         * 
+         * @param [time]   An optional timestamp (by default, getTimestamp() is used).
+         */
         measure(time?: number): void;
+
+        /**
+         * Adds an FPS measurement to measurements, and increments the associated
+         * count variables.
+         * 
+         * @param fps   An FPS calculated as the difference between two timestamps.
+         */
         addFPS(fps: number): void;
+
+        /**
+         * @returns The number of FPS measurements to keep.
+         */
         getMaxKept(): number;
+
+        /**
+         * @returns The actual number of FPS measurements currently known.
+         */
         getNumRecorded(): number;
+
+        /**
+         * @returns The most recent performance.now timestamp.
+         */
         getTimeCurrent(): number;
+
+        /**
+         * @returns The current position in measurements.
+         */
         getTicker(): number;
-        getMeasurements(): any;
-        getDifferences(): any;
+
+        /**
+         * Get function for a copy of the measurements listing (if the number of
+         * measurements is less than the max, that size is used)
+         * 
+         * @returns A Number[] of the most recent FPS measurements.
+         */
+        getMeasurements(): number[];
+
+        /**
+         * Get function for a copy of the measurements listing, but with the FPS
+         * measurements transformed back into time differences
+         * 
+         * @returns A container of the most recent FPS time differences.
+         */
+        getDifferences(): number[];
+
+        /**
+         * @returns The average recorded FPS measurement.
+         */
         getAverage(): number;
+
+        /**
+         * @returns The median recorded FPS measurement.
+         * @remarks This is O(n*log(n)), where n is the size of the history,
+         *          as it creates a copy of the history and sorts it.
+         */
         getMedian(): number;
+
+        /**
+         * @returns Array containing the lowest and highest recorded FPS 
+         *          measurements, in that order.
+         */
         getExtremes(): number[];
+
+        /**
+         * @returns The range of recorded FPS measurements.
+         */
         getRange(): number;
     }
 }
@@ -35,7 +132,7 @@ module FPSAnalyzr {
         /**
          * Function to generate a current timestamp, commonly performance.now.
          */
-        public getTimestamp: () => number;
+        public getTimestamp: ITimestampGetter;
 
         /**
          * How many FPS measurements to keep at any given time, at most.
@@ -46,7 +143,7 @@ module FPSAnalyzr {
          * A recent history of FPS measurements (normally an Array). These are
          * stored as changes in millisecond timestamps.
          */
-        private measurements: Array<number> | { [i: number]: number };
+        private measurements: IMeasurementsContainer;
 
         /**
          * The actual number of FPS measurements currently known.
@@ -64,15 +161,17 @@ module FPSAnalyzr {
         private timeCurrent: number;
 
         /**
-         * @param {IFPSAnalyzrSettings} [settings]
+         * Initializes a new instance of the FPSAnalyzr class.
+         * 
+         * @param [settings]
          */
         constructor(settings: IFPSAnalyzrSettings = {}) {
             this.maxKept = settings.maxKept || 35;
             this.numRecorded = 0;
             this.ticker = -1;
 
-            // If maxKept is a Number, make the measurements array that long
-            // If it's infinite, make measurements an {} (infinite array)
+            // If maxKept is a Number, make the measurements array that long.
+            // If it's infinite, make measurements an {} (infinite Array).
             this.measurements = isFinite(this.maxKept) ? new Array(this.maxKept) : {};
 
             // Headless browsers like PhantomJS won't know performance, so Date.now
@@ -89,7 +188,7 @@ module FPSAnalyzr {
                         || (<any>performance).mozNow
                         || (<any>performance).msNow
                         || (<any>performance).oNow
-                        ).bind(performance);
+                    ).bind(performance);
                 }
             } else {
                 this.getTimestamp = settings.getTimestamp;
@@ -105,8 +204,7 @@ module FPSAnalyzr {
          * Marks the current timestamp as timeCurrent, and adds an FPS measurement
          * if there was a previous timeCurrent.
          * 
-         * @param {DOMHighResTimeStamp} time   An optional timestamp, without which
-         *                                     getTimestamp() is used instead.
+         * @param [time]   An optional timestamp (by default, getTimestamp() is used).
          */
         measure(time: number = this.getTimestamp()): void {
             if (this.timeCurrent) {
@@ -120,8 +218,7 @@ module FPSAnalyzr {
          * Adds an FPS measurement to measurements, and increments the associated
          * count variables.
          * 
-         * @param {Number} fps   An FPS calculated as the difference between two
-         *                       timestamps.
+         * @param fps   An FPS calculated as the difference between two timestamps.
          */
         addFPS(fps: number): void {
             this.ticker = (this.ticker += 1) % this.maxKept;
@@ -134,28 +231,28 @@ module FPSAnalyzr {
         */
 
         /**
-         * @return {Number} The number of FPS measurements to keep.
+         * @returns The number of FPS measurements to keep.
          */
         getMaxKept(): number {
             return this.maxKept;
         }
 
         /**
-         * @return {Number} The actual number of FPS measurements currently known.
+         * @returns The actual number of FPS measurements currently known.
          */
         getNumRecorded(): number {
             return this.numRecorded;
         }
 
         /**
-         * @return {Number} The most recent performance.now timestamp.
+         * @returns The most recent performance.now timestamp.
          */
         getTimeCurrent(): number {
             return this.timeCurrent;
         }
 
         /**
-         * @return {Number} The current position in measurements.
+         * @returns The current position in measurements.
          */
         getTicker(): number {
             return this.ticker;
@@ -165,10 +262,9 @@ module FPSAnalyzr {
          * Get function for a copy of the measurements listing (if the number of
          * measurements is less than the max, that size is used)
          * 
-         * @return {Object}   An object (normally an Array) of the most recent FPS
-         *                    measurements
+         * @returns A Number[] of the most recent FPS measurements.
          */
-        getMeasurements(): Array<number> | { [i: number]: number } {
+        getMeasurements(): number[] {
             var fpsKeptReal: number = Math.min(this.maxKept, this.numRecorded),
                 copy: any,
                 i: number;
@@ -191,11 +287,10 @@ module FPSAnalyzr {
          * Get function for a copy of the measurements listing, but with the FPS
          * measurements transformed back into time differences
          * 
-         * @return {Object}   An object (normally an Array) of the most recent FPS
-         *                    time differences
+         * @returns A container of the most recent FPS time differences.
          */
-        getDifferences(): any {
-            var copy: any = this.getMeasurements(),
+        getDifferences(): number[] {
+            var copy: number[] = this.getMeasurements(),
                 i: number;
 
             for (i = copy.length - 1; i >= 0; --i) {
@@ -206,7 +301,7 @@ module FPSAnalyzr {
         }
 
         /**
-         * @return {Number} The average recorded FPS measurement.
+         * @returns The average recorded FPS measurement.
          */
         getAverage(): number {
             var total: number = 0,
@@ -221,7 +316,7 @@ module FPSAnalyzr {
         }
 
         /**
-         * @return {Number} The median recorded FPS measurement.
+         * @returns The median recorded FPS measurement.
          * @remarks This is O(n*log(n)), where n is the size of the history,
          *          as it creates a copy of the history and sorts it.
          */
@@ -238,8 +333,8 @@ module FPSAnalyzr {
         }
 
         /**
-         * @return {Number[]} An Array containing the lowest and highest recorded
-         *                    FPS measurements, in that order.
+         * @returns Array containing the lowest and highest recorded FPS 
+         *          measurements, in that order.
          */
         getExtremes(): number[] {
             var lowest: number = this.measurements[0],
@@ -261,7 +356,7 @@ module FPSAnalyzr {
         }
 
         /**
-         * @return {Number} The range of recorded FPS measurements
+         * @returns The range of recorded FPS measurements.
          */
         getRange(): number {
             var extremes: number[] = this.getExtremes();
@@ -269,23 +364,25 @@ module FPSAnalyzr {
         }
 
         /**
+         * Converts all measurements to a Number[] in sorted order, regardless
+         * of whether they're initially stored in an Array or Object.
          * 
+         * @returns All measurements, sorted.
          */
         private getMeasurementsSorted(): number[] {
             var copy: number[],
                 i: string;
 
             if (this.measurements.constructor === Array) {
-                copy = (<number[]>this.measurements).sort();
+                copy = [].slice.call((<number[]>this.measurements)).sort();
             } else {
                 copy = [];
 
                 for (i in this.measurements) {
                     if (this.measurements.hasOwnProperty(i)) {
-                        if (this.measurements[i] === undefined) {
-                            break;
+                        if (typeof this.measurements[i] !== "undefined") {
+                            copy[i] = this.measurements[i];
                         }
-                        copy[i] = this.measurements[i];
                     }
                 }
 
