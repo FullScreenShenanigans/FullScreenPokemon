@@ -4,11 +4,13 @@ var ModAttachr;
     "use strict";
     /**
      * An addon for for extensible modding functionality. "Mods" register triggers
-     * such as "onModEnable" or "onReset" that can be triggered.
+     * such as "onModEnable" or "onReset" that can be triggered during gameplay.
      */
     var ModAttachr = (function () {
         /**
-         * @param {IModAttachrSettings} [settings]
+         * Initializes a new instance of the ModAttachr class.
+         *
+         * @param [settings]   Settings to be used for initialization.
          */
         function ModAttachr(settings) {
             this.mods = {};
@@ -26,42 +28,47 @@ var ModAttachr;
                 this.ItemsHolder = new ItemsHoldr.ItemsHoldr();
             }
             if (settings.mods) {
-                this.addMods(settings.mods);
+                this.addMods.apply(this, settings.mods);
             }
         }
         /* Simple gets
         */
         /**
-         * @return {Object} An Object keying each mod by their name.
+         * @returns An Object keying each mod by their name.
          */
         ModAttachr.prototype.getMods = function () {
             return this.mods;
         };
         /**
-         * @param {String} name   The name of the mod to return.
-         * @return {Object} The mod keyed by the name.
+         * @param name   The name of the mod to return.
+         * @returns The mod keyed by the name.
          */
         ModAttachr.prototype.getMod = function (name) {
             return this.mods[name];
         };
         /**
-         * @return {Object} An Object keying each event by their name.
+         * @returns An Object keying each event by their name.
          */
         ModAttachr.prototype.getEvents = function () {
             return this.events;
         };
         /**
-         * @return {Object[]} The mods associated with a particular event.
+         * @returns The mods associated with a particular event.
          */
         ModAttachr.prototype.getEvent = function (name) {
             return this.events[name];
         };
         /**
-         * @return {ItemsHoldr} The ItemsHoldr if storeLocally is true, or undefined
-         *                      otherwise.
+         * @returns The ItemsHoldr if storeLocally is true (by default, undefined).
          */
         ModAttachr.prototype.getItemsHolder = function () {
             return this.ItemsHolder;
+        };
+        /**
+         * @returns The default scope used to apply mods from, if not this ModAttachr.
+         */
+        ModAttachr.prototype.getScopeDefault = function () {
+            return this.scopeDefault;
         };
         /* Alterations
         */
@@ -69,8 +76,8 @@ var ModAttachr;
          * Adds a mod to the pool of mods, listing it under all the relevant events.
          * If the event is enabled, the "onModEnable" event for it is triggered.
          *
-         * @param {Object} mod   A summary Object for a mod, containing at the very
-         *                       least a name and Object of events.
+         * @param mod   A summary Object for a mod, containing at the very
+         *              least a name and listing of events.
          */
         ModAttachr.prototype.addMod = function (mod) {
             var modEvents = mod.events, name;
@@ -101,34 +108,49 @@ var ModAttachr;
                 });
                 // If there was already a (true) value, immediately enable the mod
                 if (this.ItemsHolder.getItem(mod.name)) {
-                    this.enableMod(mod.name);
+                    return this.enableMod(mod.name);
                 }
             }
         };
         /**
-         * Adds each mod in a given Array.
+         * Adds multiple mods via this.addMod.
          *
-         * @param {Array} mods
+         * @param mods   The mods to add.
+         * @returns The return values of the mods' onModEnable events, in order.
          */
-        ModAttachr.prototype.addMods = function (mods) {
-            for (var i = 0; i < mods.length; i += 1) {
-                this.addMod(mods[i]);
+        ModAttachr.prototype.addMods = function () {
+            var mods = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                mods[_i - 0] = arguments[_i];
             }
+            var results = [], i;
+            for (i = 0; i < mods.length; i += 1) {
+                results.push(this.addMod(mods[i]));
+            }
+            return results;
         };
         /**
          * Enables a mod of the given name, if it exists. The onModEnable event is
          * called for the mod.
          *
-         * @param {String} name   The name of the mod to enable.
+         * @param name   The name of the mod to enable.
+         * @param args   Any additional arguments to pass. This will have `mod`
+         *               and `name` unshifted in front, in that order.
+         * @returns   The return value of the mod's onModEnable event.
          */
         ModAttachr.prototype.enableMod = function (name) {
-            var mod = this.mods[name], args;
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            var mod = this.mods[name];
             if (!mod) {
                 throw new Error("No mod of name: '" + name + "'");
             }
+            // The args are manually sliced to prevent external state changes
+            args = [].slice.call(args);
+            args.unshift(mod, name);
             mod.enabled = true;
-            args = Array.prototype.slice.call(arguments);
-            args[0] = mod;
             if (this.ItemsHolder) {
                 this.ItemsHolder.setItem(name, true);
             }
@@ -137,23 +159,28 @@ var ModAttachr;
             }
         };
         /**
-         * Enables any number of mods, given as any number of Strings or Arrays of
-         * Strings.
+         * Enables any number of mods.
          *
-         * @param {...String} names
+         * @param names   Names of the mods to enable.
+         * @returns The return values of the mods' onModEnable events, in order.
          */
         ModAttachr.prototype.enableMods = function () {
             var names = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 names[_i - 0] = arguments[_i];
             }
-            names.forEach(this.enableMod.bind(this));
+            var results = [], i;
+            for (i = 0; i < names.length; i += 1) {
+                results.push(this.enableMod(names[i]));
+            }
+            return results;
         };
         /**
          * Disables a mod of the given name, if it exists. The onModDisable event is
          * called for the mod.
          *
-         * @param {String} name   The name of the mod to disable.
+         * @param name   The name of the mod to disable.
+         * @returns The return value of the mod's onModDisable event.
          */
         ModAttachr.prototype.disableMod = function (name) {
             var mod = this.mods[name], args;
@@ -171,22 +198,27 @@ var ModAttachr;
             }
         };
         /**
-         * Disables any number of mods, given as any number of Strings or Arrays of
-         * Strings.
+         * Disables any number of mods.
          *
-         * @param {...String} names
+         * @param names   Names of the mods to disable.
+         * @returns The return values of the mods' onModEnable events, in order.
          */
         ModAttachr.prototype.disableMods = function () {
             var names = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 names[_i - 0] = arguments[_i];
             }
-            names.forEach(this.disableMod.bind(this));
+            var results = [], i;
+            for (i = 0; i < names.length; i += 1) {
+                results.push(this.disableMod(names[i]));
+            }
+            return results;
         };
         /**
          * Toggles a mod via enableMod/disableMod of the given name, if it exists.
          *
-         * @param {String} name   The name of the mod to toggle.
+         * @param name   The name of the mod to toggle.
+         * @returns The result of the mod's onModEnable or onModDisable event.
          */
         ModAttachr.prototype.toggleMod = function (name) {
             var mod = this.mods[name];
@@ -201,40 +233,48 @@ var ModAttachr;
             }
         };
         /**
-         * Toggles any number of mods, given as any number of Strings or Arrays of
-         * Strings.
+         * Toggles any number of mods.
          *
-         * @param {...String} names
+         * @param names   Names of the mods to toggle.
+         * @returns The result of the mods' onModEnable or onModDisable events, in order.
          */
         ModAttachr.prototype.toggleMods = function () {
             var names = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 names[_i - 0] = arguments[_i];
             }
-            names.forEach(this.toggleMod.bind(this));
+            var result = [], i;
+            for (var i = 0; i < names.length; i += 1) {
+                result.push(this.toggleMod(names[i]));
+            }
+            return result;
         };
         /* Actions
         */
         /**
-         * Fires an event, which calls all functions listed undder mods for that
-         * event. Any number of arguments may be given.
+         * Fires an event, which calls all mods listed for that event.
          *
-         * @param {String} event   The name of the event to fire.
+         * @param event   The name of the event to fire.
+         * @param args   Any additional arguments to pass. This will have `mod`
+         *               and `event` unshifted in front, in that order.
          */
         ModAttachr.prototype.fireEvent = function (event) {
-            var extraArgs = [];
+            var args = [];
             for (var _i = 1; _i < arguments.length; _i++) {
-                extraArgs[_i - 1] = arguments[_i];
+                args[_i - 1] = arguments[_i];
             }
-            var fires = this.events[event], args = Array.prototype.splice.call(arguments, 0), mod, i;
+            var mods = this.events[event], mod, i;
             // If no triggers were defined for this event, that's ok: just stop.
-            if (!fires) {
+            if (!mods) {
                 return;
             }
-            for (i = 0; i < fires.length; i += 1) {
-                mod = fires[i];
-                args[0] = mod;
+            // The args are manually sliced to prevent external state changes
+            args = [].slice.call(args);
+            args.unshift(undefined, event);
+            for (i = 0; i < mods.length; i += 1) {
+                mod = mods[i];
                 if (mod.enabled) {
+                    args[0] = mod;
                     mod.events[event].apply(mod.scope, args);
                 }
             }
@@ -243,22 +283,27 @@ var ModAttachr;
          * Fires an event specifically for one mod, rather than all mods containing
          * that event.
          *
-         * @param {String} eventName   The name of the event to fire.
-         * @param {String} modName   The name of the mod to fire the event.
+         * @param event   The name of the event to fire.
+         * @param modName   The name of the mod to fire the event.
+         * @param args   Any additional arguments to pass. This will have `mod`
+         *               and `event` unshifted in front, in that order.
+         * @returns The result of the fired mod event.
          */
-        ModAttachr.prototype.fireModEvent = function (eventName, modName) {
-            var extraArgs = [];
+        ModAttachr.prototype.fireModEvent = function (event, modName) {
+            var args = [];
             for (var _i = 2; _i < arguments.length; _i++) {
-                extraArgs[_i - 2] = arguments[_i];
+                args[_i - 2] = arguments[_i];
             }
-            var mod = this.mods[modName], args = Array.prototype.slice.call(arguments, 2), fires;
+            var mod = this.mods[modName], fires;
             if (!mod) {
                 throw new Error("Unknown mod requested: '" + modName + "'");
             }
-            args[0] = mod;
-            fires = mod.events[eventName];
+            // The args are manually sliced to prevent external state changes
+            args = [].slice.call(args);
+            args.unshift(mod, event);
+            fires = mod.events[event];
             if (!fires) {
-                throw new Error("Mod does not contain event: '" + eventName + "'");
+                throw new Error("Mod does not contain event: '" + event + "'");
             }
             return fires.apply(mod.scope, args);
         };

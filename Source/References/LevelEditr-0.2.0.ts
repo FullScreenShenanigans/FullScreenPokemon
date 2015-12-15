@@ -2447,7 +2447,7 @@ module LevelEditr {
          */
         private disableAllThings(): void {
             var scope: LevelEditr = this,
-                groups: GroupHoldr.IGroupHoldrGroups = this.GameStarter.GroupHolder.getGroups(),
+                groups: GroupHoldr.IGroupHoldrGroups<IThing> = this.GameStarter.GroupHolder.getGroups(),
                 i: string;
 
             for (i in groups) {
@@ -2483,7 +2483,7 @@ module LevelEditr {
          */
         private clearAllThings(): void {
             var scope: LevelEditr = this,
-                groups: GroupHoldr.IGroupHoldrGroups = this.GameStarter.GroupHolder.getGroups(),
+                groups: GroupHoldr.IGroupHoldrGroups<IThing> = this.GameStarter.GroupHolder.getGroups(),
                 i: string;
 
             for (i in groups) {

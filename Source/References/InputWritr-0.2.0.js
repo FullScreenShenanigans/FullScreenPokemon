@@ -4,13 +4,14 @@ var InputWritr;
     /**
      * A general utility for automating interactions with user-called events linked
      * with callbacks. Pipe functions are available that take in user input, switch
-     * on the event code, and call the appropriate callback. These Pipe functions
-     * can be made during runtime; further utilities allow for saving and playback
-     * of input histories in JSON format.
+     * on the event code, and call the appropriate callback. Further utilities allow
+     * for saving and playback of input histories in JSON format.
      */
     var InputWritr = (function () {
         /**
-         * @param {IInputWritrSettings} settings
+         * Initializes a new instance of the InputWritr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function InputWritr(settings) {
             if (typeof settings === "undefined") {
@@ -50,10 +51,8 @@ var InputWritr;
                 : function () {
                     return true;
                 };
-            this.history = {};
-            this.histories = {
-                "length": 0
-            };
+            this.currentHistory = {};
+            this.histories = {};
             this.aliases = {};
             this.addAliases(settings.aliases || {});
             this.keyAliasesToCodes = settings.keyAliasesToCodes || {
@@ -75,33 +74,17 @@ var InputWritr;
                 "40": "down"
             };
         }
-        /**
-         * Clears the currently tracked inputs history and resets the starting time,
-         * and (optionally) saves the current history.
-         *
-         * @param {Boolean} [keepHistory]   Whether the currently tracked history
-         *                                  of inputs should be added to the master
-         *                                  Array of histories (defaults to true).
-         */
-        InputWritr.prototype.restartHistory = function (keepHistory) {
-            if (keepHistory === void 0) { keepHistory = true; }
-            if (keepHistory) {
-                this.saveHistory(this.history);
-            }
-            this.history = {};
-            this.startingTime = this.getTimestamp();
-        };
         /* Simple gets
         */
         /**
-         * @return {Object} The stored mapping of aliases to values.
+         * @returns The stored mapping of aliases to values.
          */
         InputWritr.prototype.getAliases = function () {
             return this.aliases;
         };
         /**
-         * @return {Object} The stored mapping of aliases to values, with values
-         *                  mapped to their equivalent key Strings.
+         * @returns The stored mapping of aliases to values, with values
+         *          mapped to their equivalent key Strings.
          */
         InputWritr.prototype.getAliasesAsKeyStrings = function () {
             var output = {}, alias;
@@ -113,20 +96,21 @@ var InputWritr;
             return output;
         };
         /**
-         * @param {Mixed} alias   An alias allowed to be passed in, typically a
-         *                        character code.
-         * @return {String[]}   The mapped key Strings corresponding to that alias,
-         *                      typically the human-readable Strings representing
-         *                      input names, such as "a" or "left".
+         * Determines the allowed key strings for a given alias.
+         *
+         * @param alias   An alias allowed to be passed in, typically a
+         *                character code.
+         * @returns The mapped key Strings corresponding to that alias,
+         *          typically the human-readable Strings representing
+         *          input names, such as "a" or "left".
          */
         InputWritr.prototype.getAliasAsKeyStrings = function (alias) {
             return this.aliases[alias].map(this.convertAliasToKeyString.bind(this));
         };
         /**
-         * @param {Mixed} alias   The alias of an input, typically a character
-         *                        code.
-         * @return {String} The human-readable String representing the input name,
-         *                  such as "a" or "left".
+         * @param alias   The alias of an input, typically a character code.
+         * @returns The human-readable String representing the input name,
+         *          such as "a" or "left".
          */
         InputWritr.prototype.convertAliasToKeyString = function (alias) {
             if (alias.constructor === String) {
@@ -139,12 +123,12 @@ var InputWritr;
                 return String.fromCharCode(alias);
             }
             return typeof this.keyCodesToAliases[alias] !== "undefined"
-                ? this.keyCodesToAliases[alias] : "?";
+                ? this.keyCodesToAliases[alias]
+                : "?";
         };
         /**
-         * @param {Mixed} key   The number code of an input.
-         * @return {Number} The machine-usable character code of the input.
-         *
+         * @param key   The number code of an input.
+         * @returns The machine-usable character code of the input.
          */
         InputWritr.prototype.convertKeyStringToAlias = function (key) {
             if (key.constructor === Number) {
@@ -153,33 +137,41 @@ var InputWritr;
             if (key.length === 1) {
                 return key.charCodeAt(0) - 32;
             }
-            return typeof this.keyAliasesToCodes[key] !== "undefined" ? this.keyAliasesToCodes[key] : -1;
+            return typeof this.keyAliasesToCodes[key] !== "undefined"
+                ? this.keyAliasesToCodes[key]
+                : -1;
         };
         /**
-         * Get function for a single history, either the current or a past one.
+         * Getter for the currently recording history.
          *
-         * @param {String} [name]   The identifier for the old history to return. If
-         *                          none is provided, the current history is used.
-         * @return {Object}   A history of inputs in JSON-friendly form.
+         * @returns The currently recording history of inputs in JSON-friendly form.
+         */
+        InputWritr.prototype.getCurrentHistory = function () {
+            return this.currentHistory;
+        };
+        /**
+         * Getter for a single saved history.
+         *
+         * @param name   The identifier for the old history to return.
+         * @returns A history of inputs in JSON-friendly form.
          */
         InputWritr.prototype.getHistory = function (name) {
-            if (name === void 0) { name = undefined; }
-            return arguments.length ? this.histories[name] : history;
+            return this.histories[name];
         };
         /**
-         * @return {Object} All previously stored histories.
+         * @returns All previously stored histories.
          */
         InputWritr.prototype.getHistories = function () {
             return this.histories;
         };
         /**
-         * @return {Boolean} Whether this is currently allowing inputs.
+         * @returns Whether this is currently allowing inputs.
          */
         InputWritr.prototype.getCanTrigger = function () {
             return this.canTrigger;
         };
         /**
-         * @return {Boolean} Whether this is currently recording allowed inputs.
+         * @returns Whether this is currently recording allowed inputs.
          */
         InputWritr.prototype.getIsRecording = function () {
             return this.isRecording;
@@ -187,9 +179,11 @@ var InputWritr;
         /* Simple sets
         */
         /**
-         * @param {Mixed} canTriggerNew   Whether this is now allowing inputs. This
-         *                                may be either a Function (to be evaluated
-         *                                on each input) or a general Boolean.
+         * Sets whether this is to allow inputs.
+         *
+         * @param canTriggerNew   Whether this is now allowing inputs. This
+         *                        may be either a Function (to be evaluated
+         *                        on each input) or a general Boolean.
          */
         InputWritr.prototype.setCanTrigger = function (canTriggerNew) {
             if (canTriggerNew.constructor === Boolean) {
@@ -202,8 +196,9 @@ var InputWritr;
             }
         };
         /**
-         * @param {Boolean} isRecordingNew   Whether this is now recording allowed
-         *                                   inputs.
+         * Sets whether this is recording.
+         *
+         * @param isRecordingNew   Whether this is now recording inputs.
          */
         InputWritr.prototype.setIsRecording = function (isRecordingNew) {
             if (isRecordingNew.constructor === Boolean) {
@@ -216,8 +211,9 @@ var InputWritr;
             }
         };
         /**
-         * @param {Mixed} eventInformationNew   A new first argument for event
-         *                                      callbacks.
+         * Sets the first argument for event callbacks.
+         *
+         * @param eventInformationNew   A new first argument for event callbacks.
          */
         InputWritr.prototype.setEventInformation = function (eventInformationNew) {
             this.eventInformation = eventInformationNew;
@@ -227,10 +223,10 @@ var InputWritr;
         /**
          * Adds a list of values by which an event may be triggered.
          *
-         * @param {String} name   The name of the event that is being given
-         *                        aliases, such as "left".
-         * @param {Array} values   An array of aliases by which the event will also
-         *                         be callable.
+         * @param name   The name of the event that is being given aliases,
+         *               such as "left".
+         * @param values   An array of aliases by which the event will also
+         *                 be callable.
          */
         InputWritr.prototype.addAliasValues = function (name, values) {
             var triggerName, triggerGroup, i;
@@ -257,10 +253,9 @@ var InputWritr;
         /**
          * Removes a list of values by which an event may be triggered.
          *
-         * @param {String} name   The name of the event that is having aliases
-         *                        removed, such as "left".
-         * @param {Array} values   An array of aliases by which the event will no
-         *                         longer be callable.
+         * @param name   The name of the event that is having aliases removed,
+         *               such as "left".
+         * @param values   Aliases by which the event will no longer be callable.
          */
         InputWritr.prototype.removeAliasValues = function (name, values) {
             var triggerName, triggerGroup, i;
@@ -290,12 +285,12 @@ var InputWritr;
          * Shortcut to remove old alias values and add new ones in.
          *
          *
-         * @param {String} name   The name of the event that is having aliases
-         *                        added and removed, such as "left".
-         * @param {Array} valuesOld   An array of aliases by which the event will no
-         *                            longer be callable.
-         * @param {Array} valuesNew   An array of aliases by which the event will
-         *                            now be callable.
+         * @param name   The name of the event that is having aliases
+         *               added and removed, such as "left".
+         * @param valuesOld   An array of aliases by which the event will no
+         *                    longer be callable.
+         * @param valuesNew   An array of aliases by which the event will
+         *                    now be callable.
          */
         InputWritr.prototype.switchAliasValues = function (name, valuesOld, valuesNew) {
             this.removeAliasValues(name, valuesOld);
@@ -304,7 +299,7 @@ var InputWritr;
         /**
          * Adds a set of alises from an Object containing "name" => [values] pairs.
          *
-         * @param {Object} aliasesRaw
+         * @param aliasesRaw   Aliases to be added via this.addAliasvalues.
          */
         InputWritr.prototype.addAliases = function (aliasesRaw) {
             var aliasName;
@@ -320,10 +315,10 @@ var InputWritr;
          * Adds a triggerable event by marking a new callback under the trigger's
          * triggers. Any aliases for the label are also given the callback.
          *
-         * @param {String} trigger   The name of the triggered event.
-         * @param {Mixed} label   The code within the trigger to call within,
-         *                        typically either a character code or an alias.
-         * @param {Function} callback   The callback Function to be triggered.
+         * @param trigger   The name of the triggered event.
+         * @param label   The code within the trigger to call within,
+         *                typically either a character code or an alias.
+         * @param callback   The callback Function to be triggered.
          */
         InputWritr.prototype.addEvent = function (trigger, label, callback) {
             var i;
@@ -341,9 +336,9 @@ var InputWritr;
          * Removes a triggerable event by deleting any callbacks under the trigger's
          * triggers. Any aliases for the label are also given the callback.
          *
-         * @param {String} trigger   The name of the triggered event.
-         * @param {Mixed} label   The code within the trigger to call within,
-         *                        typically either a character code or an alias.
+         * @param trigger   The name of the triggered event.
+         * @param label   The code within the trigger to call within,
+         *                typically either a character code or an alias.
          */
         InputWritr.prototype.removeEvent = function (trigger, label) {
             var i;
@@ -362,35 +357,43 @@ var InputWritr;
         /**
          * Stores the current history in the histories listing. this.restartHistory
          * is typically called directly after.
+         *
+         * @param name   A key to store the history under (by default, one greater than
+         *               the length of Object.keys(this.histories)).
          */
         InputWritr.prototype.saveHistory = function (name) {
-            if (name === void 0) { name = undefined; }
-            this.histories[this.histories.length] = history;
-            this.histories.length += 1;
-            if (arguments.length) {
-                this.histories[name] = history;
-            }
+            if (name === void 0) { name = Object.keys(this.histories).length.toString(); }
+            this.histories[name] = this.currentHistory;
         };
         /**
-         * Plays back the current history using this.playEvents.
+         * Clears the currently tracked inputs history and resets the starting time,
+         * and (optionally) saves the current history.
+         *
+         * @param keepHistory   Whether the currently tracked history of inputs should
+         *                      be added to the master listing (by default, true).
          */
-        InputWritr.prototype.playHistory = function () {
-            this.playEvents(this.history);
+        InputWritr.prototype.restartHistory = function (keepHistory) {
+            if (keepHistory === void 0) { keepHistory = true; }
+            if (keepHistory) {
+                this.saveHistory();
+            }
+            this.currentHistory = {};
+            this.startingTime = this.getTimestamp();
         };
         /**
-         * "Plays" back an Array of event information by simulating each keystroke
+         * "Plays" back a history of event information by simulating each keystroke
          * in a new call, timed by setTimeout.
          *
-         * @param {Object} events   The events history to play back.
+         * @param history   The events history to play back.
          * @remarks This will execute the same actions in the same order as before,
          *          but the arguments object may be different.
+         * @remarks Events will be added to history again, as duplicates.
          */
-        InputWritr.prototype.playEvents = function (events) {
-            var timeouts = {}, time, call;
-            for (time in events) {
-                if (events.hasOwnProperty(time)) {
-                    call = this.makeEventCall(events[time]);
-                    timeouts[time] = setTimeout(call, (Number(time) - this.startingTime) | 0);
+        InputWritr.prototype.playHistory = function (history) {
+            var time;
+            for (time in history) {
+                if (history.hasOwnProperty(time)) {
+                    setTimeout(this.makeEventCall(history[time]), (Number(time) - this.startingTime) | 0);
                 }
             }
         };
@@ -398,20 +401,19 @@ var InputWritr;
          * Primary driver function to run an event. The event is chosen from the
          * triggers object, and called with eventInformation as the input.
          *
-         * @param {Function, String} event   The event function (or string alias of
-         *                                   it) that will be called.
-         * @param {Mixed} [keyCode]   The alias of the event function under
-         *                            triggers[event], if event is a String.
-         * @param {Event} [sourceEvent]   The raw event that caused the calling Pipe
-         *                                to be triggered, such as a MouseEvent.
-         * @return {Mixed}
+         * @param event   The event Function (or String alias thereof) to call.
+         * @param [keyCode]   The alias of the event Function under triggers[event],
+         *                    if event is a String.
+         * @param [sourceEvent]   The raw event that caused the calling Pipe
+         *                        to be triggered, such as a MouseEvent.
+         * @returns The result of calling the triggered event.
          */
         InputWritr.prototype.callEvent = function (event, keyCode, sourceEvent) {
+            if (!event) {
+                throw new Error("Blank event given to InputWritr.");
+            }
             if (!this.canTrigger(event, keyCode, sourceEvent)) {
                 return;
-            }
-            if (!event) {
-                throw new Error("Blank event given, ignoring it.");
             }
             if (event.constructor === String) {
                 event = this.triggers[event][keyCode];
@@ -419,49 +421,61 @@ var InputWritr;
             return event(this.eventInformation, sourceEvent);
         };
         /**
-         * Creates and returns a function to run a trigger.
+         * Creates and returns a Function to run a trigger.
          *
-         * @param {String} trigger   The label for the Array of functions that the
-         *                           pipe function should choose from.
-         * @param {String} codeLabel   A mapping String for the alias to get the
-         *                             alias from the event.
-         * @param {Boolean} [preventDefaults]   Whether the input to the pipe
-         *                                       function will be an HTML-style
-         *                                       event, where .preventDefault()
-         *                                       should be clicked.
-         * @return {Function}
+         * @param trigger   The label for the Array of functions that the
+         *                  pipe function should choose from.
+         * @param codeLabel   A mapping String for the alias to get the
+         *                    alias from the event.
+         * @param [preventDefaults]   Whether the input to the pipe Function
+         *                            will be an DOM-style event, where
+         *                            .preventDefault() should be called.
+         * @returns A Function that, when called on an event, runs this.callEvent
+         *          on the appropriate trigger event.
          */
         InputWritr.prototype.makePipe = function (trigger, codeLabel, preventDefaults) {
-            var functions = this.triggers[trigger], InputWriter = this;
+            var _this = this;
+            var functions = this.triggers[trigger];
             if (!functions) {
                 throw new Error("No trigger of label '" + trigger + "' defined.");
             }
-            return function Pipe(event) {
+            return function (event) {
                 var alias = event[codeLabel];
                 // Typical usage means alias will be an event from a key/mouse input
                 if (preventDefaults && event.preventDefault instanceof Function) {
                     event.preventDefault();
                 }
-                // If there's a function under that alias, run it
+                // If there's a Function under that alias, run it
                 if (functions.hasOwnProperty(alias)) {
-                    if (InputWriter.isRecording()) {
-                        InputWriter.history[InputWriter.getTimestamp() | 0] = [trigger, alias];
+                    if (_this.isRecording()) {
+                        _this.saveEventInformation([trigger, alias]);
                     }
-                    InputWriter.callEvent(functions[alias], alias, event);
+                    _this.callEvent(functions[alias], alias, event);
                 }
             };
         };
         /**
-         * Curry utility to create a closure that runs call() when called.
+         * Curry utility to create a closure that runs callEvent when called.
          *
-         * @param {Array} info   An array containing [alias, keyCode].
-         * @return {Function} A closure Function that activates a trigger
-         *                    when called.
+         * @param info   An array containing [trigger, alias].
+         * @returns A closure that activates a trigger when called.
          */
         InputWritr.prototype.makeEventCall = function (info) {
+            var _this = this;
             return function () {
-                this.callEvent(info[0], info[1]);
+                _this.callEvent(info[0], info[1]);
+                if (_this.isRecording()) {
+                    _this.saveEventInformation(info);
+                }
             };
+        };
+        /**
+         * Records event information in this.currentHistory.
+         *
+         * @param info   Information on the event, as [trigger, alias].
+         */
+        InputWritr.prototype.saveEventInformation = function (info) {
+            this.currentHistory[this.getTimestamp() | 0] = info;
         };
         return InputWritr;
     })();

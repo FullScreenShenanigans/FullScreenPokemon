@@ -134,9 +134,9 @@ module.exports = function (grunt) {
         },
         "zip": {
             "dist": {
-                "cwd": "<%= meta.paths.dist %>/FullScreenMario-<%= pkg.version %>/",
-                "src": "<%= meta.paths.dist %>/FullScreenMario-<%= pkg.version %>/**",
-                "dest": "<%= meta.paths.dist %>/FullScreenMario-<%= pkg.version %>.zip"
+                "cwd": "<%= meta.paths.dist %>/FullScreenPokemon-<%= pkg.version %>/",
+                "src": "<%= meta.paths.dist %>/FullScreenPokemon-<%= pkg.version %>/**",
+                "dest": "<%= meta.paths.dist %>/FullScreenPokemon-<%= pkg.version %>.zip"
             }
         },
         "mocha_phantomjs": {
