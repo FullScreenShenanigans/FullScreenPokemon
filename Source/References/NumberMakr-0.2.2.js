@@ -1,92 +1,86 @@
+/**
+ * An updated version of the traditional MersenneTwister JavaScript class by
+ * Sean McCullough (2010), based on code by Takuji Nishimura and Makoto
+ * Matsumoto (1997 - 2002).
+ *
+ * For the 2010 code, see https://gist.github.com/banksean/300494.
+ */
+/*
+    I've wrapped Makoto Matsumoto and Takuji Nishimura's code in a namespace
+    so it's better encapsulated. Now you can have multiple random number generators
+    and they won't stomp all over each other's state.
+      
+    If you want to use this as a substitute for Math.random(), use the random()
+    method like so:
+      
+    var statePeriod = new MersenneTwister();
+    var randomNumber = statePeriod.random();
+      
+    You can also call the other genrand_{foo}() methods on the instance.
+    
+    If you want to use a specific seed in order to get a repeatable random
+    sequence, pass an integer into the constructor:
+    
+    var statePeriod = new MersenneTwister(123);
+    
+    and that will always produce the same random sequence.
+    
+    Sean McCullough (banksean@gmail.com)
+*/
+/*
+    A C-program for MT19937, with initialization improved 2002/1/26.
+    Coded by Takuji Nishimura and Makoto Matsumoto.
+     
+    Before using, initialize the state by using init_genrand(seed)
+    or init_by_array(keyInitial, keyLength).
+     
+    Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+    All rights reserved.
+     
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+     
+        1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+     
+        2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+     
+        3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
+        permission.
+     
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER
+    OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+     
+    Any feedback is very welcome.
+    http://www.math.sci.hiroshima-u.ac.jp/~statePeriod-mat/stateVector/emt.html
+    email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
+*/
 var NumberMakr;
 (function (NumberMakr_1) {
     "use strict";
     /**
-     * An updated version of the traditional MersenneTwister JavaScript class by
-     * Sean McCullough (2010), based on code by Takuji Nishimura and Makoto
-     * Matsumoto (1997 - 2002).
-     *
-     * For the 2010 code, see https://gist.github.com/banksean/300494.
+     * A typed MersenneTwister, which is a state-based random number generator.
+     * Options exist for changing or randomizing state and producing random
+     * booleans, integers, and real numbers.
      */
-    /*
-      I've wrapped Makoto Matsumoto and Takuji Nishimura's code in a namespace
-      so it's better encapsulated. Now you can have multiple random number generators
-      and they won't stomp all over each other's state.
-      
-      If you want to use this as a substitute for Math.random(), use the random()
-      method like so:
-      
-      var statePeriod = new MersenneTwister();
-      var randomNumber = statePeriod.random();
-      
-      You can also call the other genrand_{foo}() methods on the instance.
-    
-      If you want to use a specific seed in order to get a repeatable random
-      sequence, pass an integer into the constructor:
-    
-      var statePeriod = new MersenneTwister(123);
-    
-      and that will always produce the same random sequence.
-    
-      Sean McCullough (banksean@gmail.com)
-    */
-    /*
-       A C-program for MT19937, with initialization improved 2002/1/26.
-       Coded by Takuji Nishimura and Makoto Matsumoto.
-     
-       Before using, initialize the state by using init_genrand(seed)
-       or init_by_array(keyInitial, keyLength).
-     
-       Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-       All rights reserved.
-     
-       Redistribution and use in source and binary forms, with or without
-       modification, are permitted provided that the following conditions
-       are met:
-     
-         1. Redistributions of source code must retain the above copyright
-            notice, this list of conditions and the following disclaimer.
-     
-         2. Redistributions in binary form must reproduce the above copyright
-            notice, this list of conditions and the following disclaimer in the
-            documentation and/or other materials provided with the distribution.
-     
-         3. The names of its contributors may not be used to endorse or promote
-            products derived from this software without specific prior written
-            permission.
-     
-       THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-       "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-       LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-       A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER
-       OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-       EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-       PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-       PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-       LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-       NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-       SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-     
-       Any feedback is very welcome.
-       http://www.math.sci.hiroshima-u.ac.jp/~statePeriod-mat/stateVector/emt.html
-       email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
-    */
     var NumberMakr = (function () {
         /**
-         * Resets the NumberMakr.
+         * Initializes a new instance of the NumberMakr class.
          *
-         * @constructor
-         * @param {Number/Array} [seed]   A starting seed used to initialize. This
-         *                                can be a Number or Array; the appropriate
-         *                                resetFrom Function will be called.
-         * @param {Number} [stateLength]   How long the state vector will be.
-         * @param {Number} [statePeriod]   How long the state period will be.
-         * @param {Number} [matrixA]   A constant mask to generate the matrixAMagic
-         *                             Array of [0, some number]
-         * @param {Number} [maskUpper]   An upper mask to binary-and on (the most
-         *                               significant w-r bits).
-         * @param {Number} [maskLower]   A lower mask to binary-and on (the least
-         *                               significant r bits).
+         * @param settings   Settings to be used for initialization.
          */
         function NumberMakr(settings) {
             if (settings === void 0) { settings = {}; }
@@ -103,37 +97,37 @@ var NumberMakr;
         /* Simple gets
         */
         /**
-         * @return {Mixed} The starting seed used to initialize.
+         * @returns The starting seed used to initialize.
          */
         NumberMakr.prototype.getSeed = function () {
             return this.seed;
         };
         /**
-         * @return {Number} THe length of the state vector.
+         * @returns The length of the state vector.
          */
         NumberMakr.prototype.getStateLength = function () {
             return this.stateLength;
         };
         /**
-         * @return {Number} THe length of the state vector.
+         * @returns The length of the state vector.
          */
         NumberMakr.prototype.getStatePeriod = function () {
             return this.statePeriod;
         };
         /**
-         * @return {Number} THe length of the state vector.
+         * @returns The length of the state vector.
          */
         NumberMakr.prototype.getMatrixA = function () {
             return this.matrixA;
         };
         /**
-         * @return {Number} THe length of the state vector.
+         * @returns The length of the state vector.
          */
         NumberMakr.prototype.getMaskUpper = function () {
             return this.maskUpper;
         };
         /**
-         * @return {Number} THe length of the state vector.
+         * @returns The length of the state vector.
          */
         NumberMakr.prototype.getMaskLower = function () {
             return this.maskLower;
@@ -141,12 +135,11 @@ var NumberMakr;
         /* Resets
         */
         /**
-         * Initializes state from a Number.
+         * Initializes state from a new seed.
          *
-         * @param {Number} [seedNew]   Defaults to the previously set seed.
+         * @param seedNew   A new seed to reset from.
          */
         NumberMakr.prototype.resetFromSeed = function (seedNew) {
-            if (seedNew === void 0) { seedNew = 0; }
             var s;
             this.stateVector[0] = seedNew >>> 0;
             for (this.stateIndex = 1; this.stateIndex < this.stateLength; this.stateIndex += 1) {
@@ -159,9 +152,8 @@ var NumberMakr;
         /**
          * Initializes state from an Array.
          *
-         * @param {Number[]} keyInitial
-         * @param {Number} [keyLength]   The length of keyInitial (defaults to the
-         *                                actual keyInitial.length).
+         * @param keyInitial   An initial state to reset from.
+         * @param [keyLength]   The length of keyInitial (by default, keyInitial.length).
          * @remarks   There was a slight change for C++, 2004/2/26.
          */
         NumberMakr.prototype.resetFromArray = function (keyInitial, keyLength) {
@@ -202,7 +194,7 @@ var NumberMakr;
         /* Random number generation
         */
         /**
-         * @return {Number} Random Number in [0,0xffffffff].
+         * @returns A random Number in [0,0xffffffff].
          */
         NumberMakr.prototype.randomInt32 = function () {
             var y, kk;
@@ -239,14 +231,14 @@ var NumberMakr;
             return y >>> 0;
         };
         /**
-         * @return {Number} Random number in [0,1).
+         * @returns A random number in [0,1).
          * @remarks Divided by 2^32.
          */
         NumberMakr.prototype.random = function () {
             return this.randomInt32() * (1.0 / 4294967296.0);
         };
         /**
-         * @return {Number} Random Number in [0,0x7fffffff].
+         * @returns A random number in [0,0x7fffffff].
          */
         NumberMakr.prototype.randomInt31 = function () {
             return this.randomInt32() >>> 1;
@@ -254,21 +246,21 @@ var NumberMakr;
         /* Real number generators (due to Isaku Wada, 2002/01/09)
         */
         /**
-         * @return {Number} Random real Number in [0,1].
+         * @returns A random real Number in [0,1].
          * @remarks Divided by 2 ^ 32 - 1.
          */
         NumberMakr.prototype.randomReal1 = function () {
             return this.randomInt32() * (1.0 / 4294967295.0);
         };
         /**
-         * @return {Number} Random real Number in (0,1).
+         * @returns A random real Number in (0,1).
          * @remarks Divided by 2 ^ 32.
          */
         NumberMakr.prototype.randomReal3 = function () {
             return (this.randomInt32() + 0.5) * (1.0 / 4294967296.0);
         };
         /**
-         * @return {Number} Random real Number in [0,1) with 53-bit resolution.
+         * @returns A random real Number in [0,1) with 53-bit resolution.
          */
         NumberMakr.prototype.randomReal53Bit = function () {
             var a = this.randomInt32() >>> 5, b = this.randomInt32() >>> 6;
@@ -277,16 +269,16 @@ var NumberMakr;
         /* Ranged Number generators
         */
         /**
-         * @param {Number} max
-         * @return {Number} Random Number in [0,max).
+         * @param max   A maximum value to return under.
+         * @returns A random number in [0,max).
          */
         NumberMakr.prototype.randomUnder = function (max) {
             return this.random() * max;
         };
         /**
-         * @param {Number} min
-         * @param {Number} max
-         * @return {Number} Random Number in [min,max).
+         * @param min   A minimum value to return.
+         * @param max   A maximum value  to return under.
+         * @returns A random number in [min,max).
          */
         NumberMakr.prototype.randomWithin = function (min, max) {
             return this.randomUnder(max - min) + min;
@@ -294,56 +286,54 @@ var NumberMakr;
         /* Ranged integer generators
         */
         /**
-         * @param {Number} max
-         * @return {Number} Random integer in [0,max).
+         * @param max   A maximum value to return under.
+         * @returns a random integer in [0,max).
          */
         NumberMakr.prototype.randomInt = function (max) {
             return this.randomUnder(max) | 0;
         };
         /**
-         * @param {Number} min
-         * @param {Number} max
-         * @return {Number} Random integer in [min,max).
+         * @param min   A minimum value to return.
+         * @param max   A maximum value to return under.
+         * @returns a random integer in [min,max).
          */
         NumberMakr.prototype.randomIntWithin = function (min, max) {
             return (this.randomUnder(max - min) + min) | 0;
         };
         /**
-         * @return {Boolean} Either true or false, with 50% probability of each.
+         * @returns Either true or false, with 50% probability each.
          */
         NumberMakr.prototype.randomBoolean = function () {
             return this.randomInt(2) === 1;
         };
         /**
-         * @param {Number} probability   How likely the returned Boolean will be
-         *                               true, in [0, 1]. Greater than 1 is counted
-         *                               as 1.
-         *
-         * @return {Boolean} Either true or false, with the probability of true
-         *                   equal to the given probability.
+         * @param probability   How likely the returned Boolean will be
+         *                      true, in [0, 1]. If >= 1, always true.
+         * @returns Either true or false, with the probability of true
+         *          equal to the given probability.
          */
         NumberMakr.prototype.randomBooleanProbability = function (probability) {
             return this.random() < probability;
         };
         /**
-         * @param {Number} numerator   The numerator of a fraction.
-         * @param {Number} denominator   The denominator of a fraction.
-         * @return {Boolean} Either true or false, with a probability equal to the
-         *                   given fraction.
+         * @param numerator   The numerator of a fraction.
+         * @param denominator   The denominator of a fraction.
+         * @returns   Either true or false, with a probability equal to the
+         *            given fraction.
          */
         NumberMakr.prototype.randomBooleanFraction = function (numerator, denominator) {
             return this.random() <= (numerator / denominator);
         };
         /**
-         * @param {Array} array
-         * @return {Number} A random index, from 0 to the given Array's length
+         * @param array   Any Array of values.
+         * @returns A random index, from 0 to the given Array's length.
          */
         NumberMakr.prototype.randomArrayIndex = function (array) {
             return this.randomIntWithin(0, array.length);
         };
         /**
-         * @param {Array} array
-         * @return {Mixed} A random element from within the given Array.
+         * @param array   Any Array of values.
+         * @returns A random element from within the given Array.
          */
         NumberMakr.prototype.randomArrayMember = function (array) {
             return array[this.randomArrayIndex(array)];

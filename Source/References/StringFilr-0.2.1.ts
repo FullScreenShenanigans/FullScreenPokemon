@@ -1,9 +1,26 @@
 declare module StringFilr {
+    /**
+     * The core stored library in a StringFilr, as a tree of data.
+     */
+    export interface ILibrary {
+        [i: string]: ILibrary | any;
+    }
+
+    /**
+     * A cache of previously completed lookups.
+     */
+    export interface ICache {
+        [i: string]: any;
+    }
+
+    /**
+     * Settings to initialize a new IStringFilr.
+     */
     export interface IStringFilrSettings {
         /**
          * An Object containing data stored as children of sub-Objects.
          */
-        library: any;
+        library: ILibrary;
 
         /**
          * A String to use as a default key to rescue on, if provided.
@@ -11,19 +28,55 @@ declare module StringFilr {
         normal?: string;
 
         /**
-         * Whether it's ok for the library to have Objects that don't contain the
-         * normal key (by default, false).
+         * Whether the library is required to contain the normal key in every
+         * descendent (by default, false).
          */
         requireNormalKey?: boolean;
     }
-
+    
+    /**
+     * A general utility for retrieving data from an Object based on nested class
+     * names. Class names may be given in any order ro retrieve nested data. 
+     */
     export interface IStringFilr {
-        getLibrary(): any;
+        /**
+         * @returns The base library of stored information.
+         */
+        getLibrary(): ILibrary;
+
+        /**
+         * @returns The optional normal class String.
+         */
         getNormal(): string;
+
+        /**
+         * @returns The complete cache of previously completed lookups.
+         */
         getCache(): any;
+
+        /**
+         * @returns A cached value, if it exists.
+         */
         getCached(key: string): any;
+
+        /**
+         * Completely clears the lookup cache.  
+         */
         clearCache(): void;
+
+        /**
+         * Clears the cached entry for a key.
+         * 
+         * @param keyRaw   The raw key whose lookup is to be cleared.
+         */
         clearCached(key: string): void;
+
+        /**
+         * Retrieves the deepest matching data in the library for a key. 
+         * 
+         * @param keyRaw   The raw key for data to look up, in String form.
+         * @returns The deepest matching data in the library.
+         */
         get(keyRaw: string): any;
     }
 }
@@ -34,25 +87,33 @@ module StringFilr {
 
     /**
      * A general utility for retrieving data from an Object based on nested class
-     * names. You can think of the internal "library" Object as a tree structure,
-     * such that you can pass in a listing (in any order) of the path to data for 
-     * retrieval.
+     * names. Class names may be given in any order ro retrieve nested data. 
      */
     export class StringFilr implements IStringFilr {
-        // The library of data.
-        private library: any;
+        /**
+         * The library of data.
+         */
+        private library: ILibrary;
 
-        // Listing of previously found lookups, for speed's sake.
-        private cache: any;
+        /**
+         * A cache of previously completed lookups.
+         */
+        private cache: ICache;
 
-        // Optional default class to use when no suitable option is found.
+        /**
+         * Optional default index to check when no suitable option is found.
+         */
         private normal: string;
 
-        // Whether to crash when a sub-object in reset has no normal child.
+        /**
+         * Whether to crash when a sub-object in reset has no normal child.
+         */
         private requireNormalKey: boolean;
 
         /**
-         * @param {IStringFilrSettings} settings
+         * Initializes a new instance of the StringFilr class.
+         * 
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IStringFilrSettings) {
             if (!settings) {
@@ -78,35 +139,35 @@ module StringFilr {
         }
 
         /**
-         * @return {Object} The base library of stored information.
+         * @returns The base library of stored information.
          */
-        getLibrary(): any {
+        getLibrary(): ILibrary {
             return this.library;
         }
 
         /**
-         * @return {String} The optional normal class String.
+         * @returns The optional normal class String.
          */
         getNormal(): string {
             return this.normal;
         }
 
         /**
-         * @return {Object} The complete cache of cached output.
+         * @returns The complete cache of previously completed lookups.
          */
-        getCache(): any {
+        getCache(): ICache {
             return this.cache;
         }
 
         /**
-         * @return {Mixed} A cached value, if it exists/
+         * @returns A cached value, if it exists.
          */
         getCached(key: string): any {
             return this.cache[key];
         }
 
         /**
-         * Completely clears the cache Object.  
+         * Completely clears the lookup cache.  
          */
         clearCache(): void {
             this.cache = {};
@@ -115,21 +176,21 @@ module StringFilr {
         /**
          * Clears the cached entry for a key.
          * 
-         * @param {String} key
+         * @param keyRaw   The raw key whose lookup is to be cleared.
          */
-        clearCached(key: string): void {
-            delete this.cache[key];
+        clearCached(keyRaw: string): void {
+            delete this.cache[keyRaw];
 
             if (this.normal) {
-                delete this.cache[key.replace(this.normal, "")];
+                delete this.cache[keyRaw.replace(this.normal, "")];
             }
         }
 
         /**
          * Retrieves the deepest matching data in the library for a key. 
          * 
-         * @param {String} keyRaw
-         * @return {Mixed}
+         * @param keyRaw   The raw key for data to look up, in String form.
+         * @returns The deepest matching data in the library.
          */
         get(keyRaw: string): any {
             var key: string,
@@ -146,7 +207,7 @@ module StringFilr {
                 return this.cache[key];
             }
 
-            // Since no existed, it must be found deep within the library
+            // Since a cache didn't exist, it must be found within the library
             result = this.followClass(key.split(/\s+/g), this.library);
 
             this.cache[key] = this.cache[keyRaw] = result;
@@ -154,45 +215,14 @@ module StringFilr {
         }
 
         /**
-         * Utility helper to recursively check for tree branches in the library 
-         * that don't have a key equal to the normal. For each sub-directory that
-         * is caught, the path to it is added to output.
-         * 
-         * @param {Object} current   The current location being searched within
-         *                           the library.
-         * @param {String} path   The current path within the library.
-         * @param {String[]} output   An Array of the String paths to parts that
-         *                           don't have a matching key.
-         * @return {String[]} output
-         */
-        private findLackingNormal(current: any, path: string, output: string[]): string[] {
-            var i: string;
-
-            if (!current.hasOwnProperty(this.normal)) {
-                output.push(path);
-            }
-
-            if (typeof current[i] === "object") {
-                for (i in current) {
-                    if (current.hasOwnProperty(i)) {
-                        this.findLackingNormal(current[i], path + " " + i, output);
-                    }
-                }
-            }
-
-            return output;
-        }
-
-        /**
-         * Utility function to follow a path into the library (this is the driver 
+         * Utility Function to follow a path into the library (this is the driver 
          * for searching into the library). For each available key, if it matches
          * a key in current, it is removed from keys and recursion happens on the
          * sub-directory in current.
          * 
-         * @param {String[]} keys   The currently available keys to search within.
-         * @param {Object} current   The current location being searched within
-         *                           the library.
-         * @return {Mixed} The most deeply matched part of the library.
+         * @param keys   The currently available keys to search within.
+         * @param current   The current location being searched within the library.
+         * @returns The most deeply matched part of the library.
          */
         private followClass(keys: string[], current: any): any {
             var key: string,
@@ -221,6 +251,34 @@ module StringFilr {
 
             // Nothing matches anything; we're done.
             return current;
+        }
+
+        /**
+         * Utility helper to recursively check for tree branches in the library 
+         * that don't have a key equal to the normal. For each sub-directory that
+         * is caught, the path to it is added to output.
+         * 
+         * @param current   The current location being searched within the library.
+         * @param path   The current path within the library.
+         * @param output   Paths to parts that don't have a matching key.
+         * @returns output
+         */
+        private findLackingNormal(current: any, path: string, output: string[]): string[] {
+            var i: string;
+
+            if (!current.hasOwnProperty(this.normal)) {
+                output.push(path);
+            }
+
+            if (typeof current[i] === "object") {
+                for (i in current) {
+                    if (current.hasOwnProperty(i)) {
+                        this.findLackingNormal(current[i], path + " " + i, output);
+                    }
+                }
+            }
+
+            return output;
         }
 
         /**

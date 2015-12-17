@@ -3,13 +3,13 @@ var StringFilr;
     "use strict";
     /**
      * A general utility for retrieving data from an Object based on nested class
-     * names. You can think of the internal "library" Object as a tree structure,
-     * such that you can pass in a listing (in any order) of the path to data for
-     * retrieval.
+     * names. Class names may be given in any order ro retrieve nested data.
      */
     var StringFilr = (function () {
         /**
-         * @param {IStringFilrSettings} settings
+         * Initializes a new instance of the StringFilr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function StringFilr(settings) {
             if (!settings) {
@@ -30,31 +30,31 @@ var StringFilr;
             }
         }
         /**
-         * @return {Object} The base library of stored information.
+         * @returns The base library of stored information.
          */
         StringFilr.prototype.getLibrary = function () {
             return this.library;
         };
         /**
-         * @return {String} The optional normal class String.
+         * @returns The optional normal class String.
          */
         StringFilr.prototype.getNormal = function () {
             return this.normal;
         };
         /**
-         * @return {Object} The complete cache of cached output.
+         * @returns The complete cache of previously completed lookups.
          */
         StringFilr.prototype.getCache = function () {
             return this.cache;
         };
         /**
-         * @return {Mixed} A cached value, if it exists/
+         * @returns A cached value, if it exists.
          */
         StringFilr.prototype.getCached = function (key) {
             return this.cache[key];
         };
         /**
-         * Completely clears the cache Object.
+         * Completely clears the lookup cache.
          */
         StringFilr.prototype.clearCache = function () {
             this.cache = {};
@@ -62,19 +62,19 @@ var StringFilr;
         /**
          * Clears the cached entry for a key.
          *
-         * @param {String} key
+         * @param keyRaw   The raw key whose lookup is to be cleared.
          */
-        StringFilr.prototype.clearCached = function (key) {
-            delete this.cache[key];
+        StringFilr.prototype.clearCached = function (keyRaw) {
+            delete this.cache[keyRaw];
             if (this.normal) {
-                delete this.cache[key.replace(this.normal, "")];
+                delete this.cache[keyRaw.replace(this.normal, "")];
             }
         };
         /**
          * Retrieves the deepest matching data in the library for a key.
          *
-         * @param {String} keyRaw
-         * @return {Mixed}
+         * @param keyRaw   The raw key for data to look up, in String form.
+         * @returns The deepest matching data in the library.
          */
         StringFilr.prototype.get = function (keyRaw) {
             var key, result;
@@ -88,47 +88,20 @@ var StringFilr;
             if (this.cache.hasOwnProperty(key)) {
                 return this.cache[key];
             }
-            // Since no existed, it must be found deep within the library
+            // Since a cache didn't exist, it must be found within the library
             result = this.followClass(key.split(/\s+/g), this.library);
             this.cache[key] = this.cache[keyRaw] = result;
             return result;
         };
         /**
-         * Utility helper to recursively check for tree branches in the library
-         * that don't have a key equal to the normal. For each sub-directory that
-         * is caught, the path to it is added to output.
-         *
-         * @param {Object} current   The current location being searched within
-         *                           the library.
-         * @param {String} path   The current path within the library.
-         * @param {String[]} output   An Array of the String paths to parts that
-         *                           don't have a matching key.
-         * @return {String[]} output
-         */
-        StringFilr.prototype.findLackingNormal = function (current, path, output) {
-            var i;
-            if (!current.hasOwnProperty(this.normal)) {
-                output.push(path);
-            }
-            if (typeof current[i] === "object") {
-                for (i in current) {
-                    if (current.hasOwnProperty(i)) {
-                        this.findLackingNormal(current[i], path + " " + i, output);
-                    }
-                }
-            }
-            return output;
-        };
-        /**
-         * Utility function to follow a path into the library (this is the driver
+         * Utility Function to follow a path into the library (this is the driver
          * for searching into the library). For each available key, if it matches
          * a key in current, it is removed from keys and recursion happens on the
          * sub-directory in current.
          *
-         * @param {String[]} keys   The currently available keys to search within.
-         * @param {Object} current   The current location being searched within
-         *                           the library.
-         * @return {Mixed} The most deeply matched part of the library.
+         * @param keys   The currently available keys to search within.
+         * @param current   The current location being searched within the library.
+         * @returns The most deeply matched part of the library.
          */
         StringFilr.prototype.followClass = function (keys, current) {
             var key, i;
@@ -151,6 +124,30 @@ var StringFilr;
             }
             // Nothing matches anything; we're done.
             return current;
+        };
+        /**
+         * Utility helper to recursively check for tree branches in the library
+         * that don't have a key equal to the normal. For each sub-directory that
+         * is caught, the path to it is added to output.
+         *
+         * @param current   The current location being searched within the library.
+         * @param path   The current path within the library.
+         * @param output   Paths to parts that don't have a matching key.
+         * @returns output
+         */
+        StringFilr.prototype.findLackingNormal = function (current, path, output) {
+            var i;
+            if (!current.hasOwnProperty(this.normal)) {
+                output.push(path);
+            }
+            if (typeof current[i] === "object") {
+                for (i in current) {
+                    if (current.hasOwnProperty(i)) {
+                        this.findLackingNormal(current[i], path + " " + i, output);
+                    }
+                }
+            }
+            return output;
         };
         /**
          * Driver for this.findLackingNormal. If library directories are found to
