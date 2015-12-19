@@ -3,8 +3,8 @@ var MapScreenr;
     "use strict";
     /**
      * A simple container for Map attributes given by switching to an Area within
-     * that map. A bounding box of the current viewport is kept, along with any
-     * other information desired.
+     * that map. A bounding box of the current viewport is kept, along with a bag
+     * of assorted variable values.
      */
     var MapScreenr = (function () {
         /**
@@ -60,24 +60,35 @@ var MapScreenr;
             this.middleY = (this.top + this.bottom) / 2;
         };
         /**
-         * Runs all variable Functions with variableArgs to recalculate their
-         * values.
+         * Recalculates all variables by passing variableArgs to their Functions.
          */
         MapScreenr.prototype.setVariables = function () {
             var i;
             for (i in this.variables) {
                 if (this.variables.hasOwnProperty(i)) {
-                    this[i] = this.variables[i].apply(this, this.variableArgs);
+                    this.setVariable(i);
                 }
             }
+        };
+        /**
+         * Recalculates a variable by passing variableArgs to its Function.
+         *
+         * @param name   The name of the variable to recalculate.
+         * @param value   A new value for the variable instead of its Function's result.
+         * @returns The new value of the variable.
+         */
+        MapScreenr.prototype.setVariable = function (name, value) {
+            this[name] = arguments.length === 1
+                ? this.variables[name].apply(this, this.variableArgs)
+                : value;
         };
         /* Element shifting
         */
         /**
          * Shifts the MapScreenr horizontally and vertically via shiftX and shiftY.
          *
-         * @param {Number} dx
-         * @param {Number} dy
+         * @param dx   How far to scroll horizontally.
+         * @param dy   How far to scroll vertically.
          */
         MapScreenr.prototype.shift = function (dx, dy) {
             if (dx) {
@@ -90,7 +101,7 @@ var MapScreenr;
         /**
          * Shifts the MapScreenr horizontally by changing left and right by the dx.
          *
-         * @param {Number} dx
+         * @param dx   How far to scroll horizontally.
          */
         MapScreenr.prototype.shiftX = function (dx) {
             this.left += dx;
@@ -99,7 +110,7 @@ var MapScreenr;
         /**
          * Shifts the MapScreenr vertically by changing top and bottom by the dy.
          *
-         * @param {Number} dy
+         * @param dy   How far to scroll vertically.
          */
         MapScreenr.prototype.shiftY = function (dy) {
             this.top += dy;

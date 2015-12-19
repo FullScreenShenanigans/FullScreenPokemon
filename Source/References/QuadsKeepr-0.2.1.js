@@ -4,10 +4,8 @@ var QuadsKeepr;
     "use strict";
     /**
      * Quadrant-based collision detection. A grid structure of Quadrants is kept,
-     * with Things placed within quadrants they intersect. Each Quadrant knows which
-     * Things are in it, and each Thing knows its quadrants. Operations are
-     * available to shift quadrants horizontally or vertically and add/remove rows
-     * and columns.
+     * with Things placed within quadrants they intersect. Operations are available
+     * to shift quadrants horizontally or vertically and add/remove rows and columns.
      */
     var QuadsKeepr = (function () {
         /**
@@ -61,37 +59,37 @@ var QuadsKeepr;
         /* Simple gets
         */
         /**
-         * @return {Object} The listing of Quadrants grouped by row.
+         * @returns The listing of Quadrants grouped by row.
          */
         QuadsKeepr.prototype.getQuadrantRows = function () {
             return this.quadrantRows;
         };
         /**
-         * @return {Object} The listing of Quadrants grouped by column.
+         * @returns The listing of Quadrants grouped by column.
          */
         QuadsKeepr.prototype.getQuadrantCols = function () {
             return this.quadrantCols;
         };
         /**
-         * @return {Number} How many Quadrant rows there are.
+         * @returns How many Quadrant rows there are.
          */
         QuadsKeepr.prototype.getNumRows = function () {
             return this.numRows;
         };
         /**
-         * @return {Number} How many Quadrant columns there are.
+         * @returns How many Quadrant columns there are.
          */
         QuadsKeepr.prototype.getNumCols = function () {
             return this.numCols;
         };
         /**
-         * @return {Number} How wide each Quadrant is.
+         * @returns How wide each Quadrant is.
          */
         QuadsKeepr.prototype.getQuadrantWidth = function () {
             return this.quadrantWidth;
         };
         /**
-         * @return {Number} How high each Quadrant is.
+         * @returns How high each Quadrant is.
          */
         QuadsKeepr.prototype.getQuadrantHeight = function () {
             return this.quadrantHeight;
@@ -100,8 +98,7 @@ var QuadsKeepr;
         */
         /**
          * Completely resets all Quadrants. The grid structure of rows and columns
-         * is remade according to startLeft and startTop, and newly created
-         * Quadrants pushed into it.
+         * is remade with new Quadrants according to startLeft and startTop.
          */
         QuadsKeepr.prototype.resetQuadrants = function () {
             var left = this.startLeft, top = this.startTop, quadrant, i, j;
@@ -149,8 +146,8 @@ var QuadsKeepr;
          * column containers. Offsets are adjusted to check for row or column
          * deletion and insertion.
          *
-         * @param {Number} dx   How much to shfit horizontally (will be rounded).
-         * @param {Number} dy   How much to shift vertically (will be rounded).
+         * @param dx   How much to shift horizontally (will be rounded).
+         * @param dy   How much to shift vertically (will be rounded).
          */
         QuadsKeepr.prototype.shiftQuadrants = function (dx, dy) {
             if (dx === void 0) { dx = 0; }
@@ -182,11 +179,11 @@ var QuadsKeepr;
         /**
          * Adds a QuadrantRow to the end of the quadrantRows Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onAdd
-         *                                 trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onAdd trigger
+         *                     with the new row's bounding box.
+         * @returns The newly created QuadrantRow.
          */
         QuadsKeepr.prototype.pushQuadrantRow = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             var row = this.createQuadrantRow(this.left, this.bottom), i;
             this.numRows += 1;
             this.quadrantRows.push(row);
@@ -202,11 +199,11 @@ var QuadsKeepr;
         /**
          * Adds a QuadrantCol to the end of the quadrantCols Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onAdd
-         *                                 trigger with the new col's bounding box.
+         * @param callUpdate   Whether this should call the onAdd trigger
+         *                     with the new col's bounding box.
+         * @returns The newly created QuadrantCol.
          */
         QuadsKeepr.prototype.pushQuadrantCol = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             var col = this.createQuadrantCol(this.right, this.top), i;
             this.numCols += 1;
             this.quadrantCols.push(col);
@@ -222,11 +219,11 @@ var QuadsKeepr;
         /**
          * Removes the last QuadrantRow from the end of the quadrantRows Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onRemove
-         *                                 trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onRemove trigger
+         *                     with the new row's bounding box.
+         * @returns The newly created QuadrantRow.
          */
         QuadsKeepr.prototype.popQuadrantRow = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             for (var i = 0; i < this.quadrantCols.length; i += 1) {
                 this.quadrantCols[i].quadrants.pop();
             }
@@ -240,11 +237,10 @@ var QuadsKeepr;
         /**
          * Removes the last QuadrantCol from the end of the quadrantCols Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onRemove
-         *                                 trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onRemove trigger
+         *                     with the new row's bounding box.
          */
         QuadsKeepr.prototype.popQuadrantCol = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             for (var i = 0; i < this.quadrantRows.length; i += 1) {
                 this.quadrantRows[i].quadrants.pop();
             }
@@ -258,11 +254,11 @@ var QuadsKeepr;
         /**
          * Adds a QuadrantRow to the beginning of the quadrantRows Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onAdd
-         *                                 trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onAdd trigger
+         *                     with the new row's bounding box.
+         * @returns The newly created QuadrantRow.
          */
         QuadsKeepr.prototype.unshiftQuadrantRow = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             var row = this.createQuadrantRow(this.left, this.top - this.quadrantHeight), i;
             this.numRows += 1;
             this.quadrantRows.unshift(row);
@@ -278,11 +274,11 @@ var QuadsKeepr;
         /**
          * Adds a QuadrantCol to the beginning of the quadrantCols Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onAdd
-         *                                 trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onAdd trigger
+         *                     with the new row's bounding box.
+         * @returns The newly created QuadrantCol.
          */
         QuadsKeepr.prototype.unshiftQuadrantCol = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             var col = this.createQuadrantCol(this.left - this.quadrantWidth, this.top), i;
             this.numCols += 1;
             this.quadrantCols.unshift(col);
@@ -298,11 +294,10 @@ var QuadsKeepr;
         /**
          * Removes a QuadrantRow from the beginning of the quadrantRows Array.
          *
-         * @param {Boolean} [callUpdate]   Whether this should call the onAdd
-         *                                 trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onAdd trigger
+         *                     with the new row's bounding box.
          */
         QuadsKeepr.prototype.shiftQuadrantRow = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             for (var i = 0; i < this.quadrantCols.length; i += 1) {
                 this.quadrantCols[i].quadrants.shift();
             }
@@ -316,11 +311,10 @@ var QuadsKeepr;
         /**
          * Removes a QuadrantCol from the beginning of the quadrantCols Array.
          *
-         * @param {Boolean} callUpdate   Whether this should call the onAdd
-         *                               trigger with the new row's bounding box.
+         * @param callUpdate   Whether this should call the onAdd trigger
+         *                     with the new row's bounding box.
          */
         QuadsKeepr.prototype.shiftQuadrantCol = function (callUpdate) {
-            if (callUpdate === void 0) { callUpdate = false; }
             for (var i = 0; i < this.quadrantRows.length; i += 1) {
                 this.quadrantRows[i].quadrants.shift();
             }
@@ -338,8 +332,8 @@ var QuadsKeepr;
          * wiping each quadrant's memory of that Array's group type and determining
          * each Thing's quadrants.
          *
-         * @param {String} group   The name of the group to have Quadrants determined.
-         * @param {Thing[]} things   The listing of Things in that group.
+         * @param group   The name of the group to have Quadrants determined.
+         * @param things   The listing of Things in that group.
          */
         QuadsKeepr.prototype.determineAllQuadrants = function (group, things) {
             var row, col;
@@ -356,7 +350,7 @@ var QuadsKeepr;
          * Thing. In the process, its old Quadrants and new Quadrants are marked as
          * changed if it was.
          *
-         * @param {Thing} thing
+         * @param thing   A Thing whose Quadrants are to be determined.
          */
         QuadsKeepr.prototype.determineThingQuadrants = function (thing) {
             var group = thing[this.keyGroupName], rowStart = this.findQuadrantRowStart(thing), colStart = this.findQuadrantColStart(thing), rowEnd = this.findQuadrantRowEnd(thing), colEnd = this.findQuadrantColEnd(thing), row, col;
@@ -379,10 +373,10 @@ var QuadsKeepr;
          * Sets a Thing to be inside a Quadrant. The two are marked so they can
          * recognize each other's existence later.
          *
-         * @param {Thing} thing
-         * @param {Quadrant} quadrant
-         * @param {String} group   The grouping under which the Quadrant should
-         *                         store the Thing.
+         * @param thing   A Thing to be placed in the Quadrant.
+         * @param quadrant   A Quadrant that now contains the Thing.
+         * @param group   The grouping under which the Quadrant should store the
+         *                Thing.
          */
         QuadsKeepr.prototype.setThingInQuadrant = function (thing, quadrant, group) {
             // Mark the Quadrant in the Thing
@@ -393,7 +387,7 @@ var QuadsKeepr;
             quadrant.numthings[group] += 1;
             // If necessary, mark the Quadrant as changed
             if (thing[this.keyChanged]) {
-                quadrant.changed = true;
+                quadrant[this.keyChanged] = true;
             }
         };
         /* Internal rearranging
@@ -432,29 +426,28 @@ var QuadsKeepr;
         /**
          * Shifts a Quadrant horizontally and vertically.
          *
-         * @param {Number} dx
-         * @param {Number} dy
+         * @param dx   How much to shift horizontally.
+         * @param dy   How much to shift vertically.
          */
         QuadsKeepr.prototype.shiftQuadrant = function (quadrant, dx, dy) {
             quadrant.top += dy;
             quadrant.right += dx;
             quadrant.bottom += dy;
             quadrant.left += dx;
-            quadrant.changed = true;
+            quadrant[this.keyChanged] = true;
         };
         /* Quadrant placements
         */
         /**
-         * Creates a new Quadrant using the internal ObjectMaker. The Quadrant's
-         * sizing and position are set, along with a canvas element for rendering.
+         * Creates a new Quadrant using the internal ObjectMaker and sets its position.
          *
-         * @param {Number} left   The horizontal displacement of the Quadrant.
-         * @param {Number} top   The vertical displacement of the Quadrant.
-         * @return {Quadrant}
+         * @param left   The horizontal displacement of the Quadrant.
+         * @param top   The vertical displacement of the Quadrant.
+         * @returns The newly created Quadrant.
          */
         QuadsKeepr.prototype.createQuadrant = function (left, top) {
             var quadrant = this.ObjectMaker.make("Quadrant"), i;
-            quadrant.changed = true;
+            quadrant[this.keyChanged] = true;
             quadrant.things = {};
             quadrant.numthings = {};
             for (i = 0; i < this.groupNames.length; i += 1) {
@@ -465,18 +458,14 @@ var QuadsKeepr;
             quadrant.top = top;
             quadrant.right = left + this.quadrantWidth;
             quadrant.bottom = top + this.quadrantHeight;
-            quadrant.canvas = this.createCanvas(this.quadrantWidth, this.quadrantHeight);
-            // A cast here is needed because older versions of TypeScript / tslint
-            // may still see canvas.getContext("2d") as returning a WebGLRenderingContext
-            quadrant.context = quadrant.canvas.getContext("2d");
             return quadrant;
         };
         /**
          * Creates a QuadrantRow, with length determined by numCols.
          *
-         * @param {Number} left   The initial horizontal displacement of the col.
-         * @param {Number} top   The vertical displacement of the col.
-         * @return {QuadrantRow[]}
+         * @param left   The initial horizontal displacement of the col.
+         * @param top   The vertical displacement of the col.
+         * @returns The newly created QuadrantRow.
          */
         QuadsKeepr.prototype.createQuadrantRow = function (left, top) {
             if (left === void 0) { left = 0; }
@@ -493,11 +482,11 @@ var QuadsKeepr;
             return row;
         };
         /**
-         * Creates a QuadrantCol, with length determined by numRow.
+         * Creates a QuadrantCol, with length determined by numRows.
          *
-         * @param {Number} left   The horizontal displacement of the col.
-         * @param {Number} top   The initial vertical displacement of the col.
-         * @return {QuadrantRow[]}
+         * @param left   The horizontal displacement of the col.
+         * @param top   The initial vertical displacement of the col.
+         * @returns The newly created QuadrantCol.
          */
         QuadsKeepr.prototype.createQuadrantCol = function (left, top) {
             var col = {
@@ -514,9 +503,9 @@ var QuadsKeepr;
         /* Position utilities
         */
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's top position, accounting for vertical
-         *                  offset if needed.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The Thing's top position, accounting for vertical offset
+         *          if needed.
          */
         QuadsKeepr.prototype.getTop = function (thing) {
             if (this.keyOffsetY) {
@@ -527,9 +516,9 @@ var QuadsKeepr;
             }
         };
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's right position, accounting for horizontal
-         *                  offset if needed.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The Thing's right position, accounting for horizontal offset
+         *          if needed.
          */
         QuadsKeepr.prototype.getRight = function (thing) {
             if (this.keyOffsetX) {
@@ -540,9 +529,9 @@ var QuadsKeepr;
             }
         };
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's bottom position, accounting for vertical
-         *                  offset if needed.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The Thing's bottom position, accounting for vertical
+         *          offset if needed.
          */
         QuadsKeepr.prototype.getBottom = function (thing) {
             if (this.keyOffsetX) {
@@ -553,9 +542,9 @@ var QuadsKeepr;
             }
         };
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's left position, accounting for horizontal
-         *                  offset if needed.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The Thing's left position, accounting for horizontal offset
+         *          if needed.
          */
         QuadsKeepr.prototype.getLeft = function (thing) {
             if (this.keyOffsetX) {
@@ -570,49 +559,36 @@ var QuadsKeepr;
          */
         QuadsKeepr.prototype.markThingQuadrantsChanged = function (thing) {
             for (var i = 0; i < thing[this.keyNumQuads]; i += 1) {
-                thing[this.keyQuadrants][i].changed = true;
+                thing[this.keyQuadrants][i][this.keyChanged] = true;
             }
         };
         /**
-         * @param {Thing} thing
-         * @param {Number} The index of the first row the Thing is inside.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The index of the first row the Thing is inside.
          */
         QuadsKeepr.prototype.findQuadrantRowStart = function (thing) {
             return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight), 0);
         };
         /**
-         * @param {Thing} thing
-         * @param {Number} The index of the last row the Thing is inside.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The index of the last row the Thing is inside.
          */
         QuadsKeepr.prototype.findQuadrantRowEnd = function (thing) {
             return Math.min(Math.floor((this.getBottom(thing) - this.top) / this.quadrantHeight), this.numRows - 1);
         };
         /**
-         * @param {Thing} thing
-         * @param {Number} The index of the first column the Thing is inside.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The index of the first column the Thing is inside.
          */
         QuadsKeepr.prototype.findQuadrantColStart = function (thing) {
             return Math.max(Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth), 0);
         };
         /**
-         * @param {Thing} thing
-         * @param {Number} The index of the last column the Thing is inside.
+         * @param thing   A Thing to check the bounding box of.
+         * @returns The index of the last column the Thing is inside.
          */
         QuadsKeepr.prototype.findQuadrantColEnd = function (thing) {
             return Math.min(Math.floor((this.getRight(thing) - this.left) / this.quadrantWidth), this.numCols - 1);
-        };
-        /**
-         * Creates a new canvas element of the given size.
-         *
-         * @param {Number} width   How wide the canvas should be.
-         * @param {Number} height   How tall the canvas should be.
-         * @return {HTMLCanvasElement}
-         */
-        QuadsKeepr.prototype.createCanvas = function (width, height) {
-            var canvas = document.createElement("canvas");
-            canvas.width = width;
-            canvas.height = height;
-            return canvas;
         };
         return QuadsKeepr;
     })();

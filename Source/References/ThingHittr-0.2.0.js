@@ -10,7 +10,9 @@ var ThingHittr;
      */
     var ThingHittr = (function () {
         /**
-         * @param {IThingHittrSettings} settings
+         * Initializes a new instance of the ThingHittr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function ThingHittr(settings) {
             if (typeof settings === "undefined") {
@@ -45,7 +47,7 @@ var ThingHittr;
          * Caches the hit checks for a group name. The global check for that group
          * is cached on the name for later use.
          *
-         * @param {String} groupName   The name of the container group.
+         * @param groupName   The name of the container group.
          */
         ThingHittr.prototype.cacheHitCheckGroup = function (groupName) {
             if (this.cachedGroupNames[groupName]) {
@@ -53,7 +55,7 @@ var ThingHittr;
             }
             this.cachedGroupNames[groupName] = true;
             if (typeof this.globalCheckGenerators[groupName] !== "undefined") {
-                this.globalChecks[groupName] = this.cacheGlobalCheck(groupName);
+                this.globalChecks[groupName] = this.globalCheckGenerators[groupName]();
             }
         };
         /**
@@ -64,15 +66,15 @@ var ThingHittr;
          * The result is that you can call this.checkHitsOf[typeName] later on, and
          * expect it to work as anything in groupName.
          *
-         * @param {String} typeName   The type of the Things to cache for.
-         * @param {String} groupName   The name of the container group.
+         * @param typeName   The type of the Things to cache for.
+         * @param groupName   The name of the container group.
          */
         ThingHittr.prototype.cacheHitCheckType = function (typeName, groupName) {
             if (this.cachedTypeNames[typeName]) {
                 return;
             }
             if (typeof this.globalCheckGenerators[groupName] !== "undefined") {
-                this.globalChecks[typeName] = this.cacheGlobalCheck(groupName);
+                this.globalChecks[typeName] = this.globalCheckGenerators[groupName]();
             }
             if (typeof this.hitCheckGenerators[groupName] !== "undefined") {
                 this.hitChecks[typeName] = this.cacheFunctionGroup(this.hitCheckGenerators[groupName]);
@@ -86,8 +88,8 @@ var ThingHittr;
         /**
          * Function generator for a checkHitsOf tailored to a specific Thing type.
          *
-         * @param {String} typeName   The type of the Things to generate for.
-         * @return {Function}
+         * @param typeName   The type of the Things to generate for.
+         * @returns A Function that can check all hits for a Thing of the given type.
          */
         ThingHittr.prototype.generateHitsCheck = function (typeName) {
             /**
@@ -97,14 +99,14 @@ var ThingHittr;
              * in that group. For each Thing it does collide with, the appropriate
              * hit Function is called.
              *
-             * @param {Thing} thing
+             * @param thing   A Thing to check collision detection for.
              */
             return function checkHitsOf(thing) {
-                var others, other, hitCheck, i, j, k;
                 // Don't do anything if the thing shouldn't be checking
-                if (typeof this.globalChecks[this.typeName] !== "undefined" && !this.globalChecks[this.typeName](thing)) {
+                if (typeof this.globalChecks[typeName] !== "undefined" && !this.globalChecks[typeName](thing)) {
                     return;
                 }
+                var others, other, hitCheck, i, j, k;
                 // For each quadrant this is in, look at that quadrant's groups
                 for (i = 0; i < thing[this.keyNumQuads]; i += 1) {
                     for (j = 0; j < this.groupNames.length; j += 1) {
@@ -138,13 +140,12 @@ var ThingHittr;
         /**
          * Manually checks whether two Things are touching.
          *
-         * @param {Thing} thing
-         * @param {Thing} other
-         * @param {String} thingType   The individual type of thing.
-         * @param {Thing} otherGroup   The individual group of other.
-         * @return {Boolean} The result of the hit function defined for thing's
-         *                   type and other's group, which should be whether they're
-         *                   touching.
+         * @param thing   A Thing to check collision with.
+         * @param other   A Thing to check collision with.
+         * @param thingType   The individual type of thing.
+         * @param otherGroup   The individual group of other.
+         * @returns The result of the hit Function defined for thing's type and
+         *          other's group, which should be whether they're touching.
          */
         ThingHittr.prototype.checkHit = function (thing, other, thingType, otherGroup) {
             var checks = this.hitChecks[thingType], check;
@@ -158,22 +159,11 @@ var ThingHittr;
             return check(thing, other);
         };
         /**
-         * Caches a global check for a group by returning a result Function from the
-         * global check generator.
-         *
-         * @param {String} groupName
-         * @return {Function}
-         */
-        ThingHittr.prototype.cacheGlobalCheck = function (groupName) {
-            return this.globalCheckGenerators[groupName]();
-        };
-        /**
          * Creates a set of cached Objects for when a group of Functions must be
          * generated, rather than a single one.
          *
-         * @param {Object<Function>} functions   The container for the Functions
-         *                                       to be cached.
-         * @return {Object<Function>}
+         * @param functions   The container holding the Functions to be cached.
+         * @returns A container of the cached Functions.
          */
         ThingHittr.prototype.cacheFunctionGroup = function (functions) {
             var output = {}, i;

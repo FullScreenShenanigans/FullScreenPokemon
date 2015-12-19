@@ -15,7 +15,9 @@ var PixelDrawr;
      */
     var PixelDrawr = (function () {
         /**
-         * @param {IPixelDrawrSettings} settings
+         * Initializes a new instance of the PixelDrawr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function PixelDrawr(settings) {
             if (!settings) {
@@ -56,52 +58,49 @@ var PixelDrawr;
         /* Simple gets
         */
         /**
-         * @return {Number} How often refill calls should be skipped.
+         * @returns {Number} How often refill calls should be skipped.
          */
         PixelDrawr.prototype.getFramerateSkip = function () {
             return this.framerateSkip;
         };
         /**
-         * @return {Array[]} The Arrays to be redrawn during refill calls.
+         * @returns The Arrays to be redrawn during refill calls.
          */
         PixelDrawr.prototype.getThingArray = function () {
             return this.thingArrays;
         };
         /**
-         * @return {HTMLCanvasElement} The canvas element each Thing is to drawn on.
+         * @returns The canvas element each Thing is to drawn on.
          */
         PixelDrawr.prototype.getCanvas = function () {
             return this.canvas;
         };
         /**
-         * @return {CanvasRenderingContext2D} The 2D canvas context associated with
-         *                                    the canvas.
+         * @returns The 2D canvas context associated with the canvas.
          */
         PixelDrawr.prototype.getContext = function () {
             return this.context;
         };
         /**
-         * @return {HTMLCanvasElement} The canvas element used for the background.
+         * @returns The canvas element used for the background.
          */
         PixelDrawr.prototype.getBackgroundCanvas = function () {
             return this.backgroundCanvas;
         };
         /**
-         * @return {CanvasRenderingContext2D} The 2D canvas context associated with
-         *                                    the background canvas.
+         * @returns The 2D canvas context associated with the background canvas.
          */
         PixelDrawr.prototype.getBackgroundContext = function () {
             return this.backgroundContext;
         };
         /**
-         * @return {Boolean} Whether refills should skip redrawing the background
-         *                   each time.
+         * @returns Whether refills should skip redrawing the background each time.
          */
         PixelDrawr.prototype.getNoRefill = function () {
             return this.noRefill;
         };
         /**
-         * @return {Number} The minimum opacity that will be drawn.
+         * @returns The minimum opacity that will be drawn.
          */
         PixelDrawr.prototype.getEpsilon = function () {
             return this.epsilon;
@@ -109,13 +108,13 @@ var PixelDrawr;
         /* Simple sets
         */
         /**
-         * @param {Number} framerateSkip   How often refill calls should be skipped.
+         * @param framerateSkip   How often refill calls should be skipped.
          */
         PixelDrawr.prototype.setFramerateSkip = function (framerateSkip) {
             this.framerateSkip = framerateSkip;
         };
         /**
-         * @param {Array[]} thingArrays   The Arrays to be redrawn during refill calls.
+         * @param thingArrays   The Arrays to be redrawn during refill calls.
          */
         PixelDrawr.prototype.setThingArrays = function (thingArrays) {
             this.thingArrays = thingArrays;
@@ -124,21 +123,21 @@ var PixelDrawr;
          * Sets the currently drawn canvas and context, and recreates
          * drawThingOnContextBound.
          *
-         * @param {HTMLCanvasElement} canvas   The new primary canvas to be used.
+         * @param canvas   The new primary canvas to be used.
          */
         PixelDrawr.prototype.setCanvas = function (canvas) {
             this.canvas = canvas;
             this.context = canvas.getContext("2d");
         };
         /**
-         * @param {Boolean} noRefill   Whether refills should now skip redrawing the
-         *                             background each time.
+         * @param noRefill   Whether refills should now skip redrawing the
+         *                   background each time.
          */
         PixelDrawr.prototype.setNoRefill = function (noRefill) {
             this.noRefill = noRefill;
         };
         /**
-         * @param {Number} The minimum opacity that will be drawn.
+         * @param epsilon   The minimum opacity that will be drawn.
          */
         PixelDrawr.prototype.setEpsilon = function (epsilon) {
             this.epsilon = epsilon;
@@ -156,7 +155,7 @@ var PixelDrawr;
         /**
          * Refills the background canvas with a new fillStyle.
          *
-         * @param {Mixed} fillStyle   The new fillStyle for the background context.
+         * @param fillStyle   The new fillStyle for the background context.
          */
         PixelDrawr.prototype.setBackground = function (fillStyle) {
             this.backgroundContext.fillStyle = fillStyle;
@@ -174,8 +173,7 @@ var PixelDrawr;
          * Goes through all the motions of finding and parsing a Thing's sprite.
          * This should be called whenever the sprite's appearance changes.
          *
-         * @param {Thing} thing   A Thing whose sprite must be updated.
-         * @return {Self}
+         * @param thing   A Thing whose sprite must be updated.
          */
         PixelDrawr.prototype.setThingSprite = function (thing) {
             // If it's set as hidden, don't bother updating it
@@ -196,11 +194,73 @@ var PixelDrawr;
                 this.refillThingCanvasSingle(thing);
             }
         };
+        /* Core drawing APIs
+        */
+        /**
+         * Called every upkeep to refill the entire main canvas. All Thing arrays
+         * are made to call this.refillThingArray in order.
+         */
+        PixelDrawr.prototype.refillGlobalCanvas = function () {
+            this.framesDrawn += 1;
+            if (this.framesDrawn % this.framerateSkip !== 0) {
+                return;
+            }
+            if (!this.noRefill) {
+                this.drawBackground();
+            }
+            for (var i = 0; i < this.thingArrays.length; i += 1) {
+                this.refillThingArray(this.thingArrays[i]);
+            }
+        };
+        /**
+         * Calls drawThingOnContext on each Thing in the Array.
+         *
+         * @param array   A listing of Things to be drawn onto the canvas.
+         */
+        PixelDrawr.prototype.refillThingArray = function (array) {
+            for (var i = 0; i < array.length; i += 1) {
+                this.drawThingOnContext(this.context, array[i]);
+            }
+        };
+        /**
+         * General Function to draw a Thing onto a context. This will call
+         * drawThingOnContext[Single/Multiple] with more arguments
+         *
+         * @param context   The context to have the Thing drawn on it.
+         * @param thing   The Thing to be drawn onto the context.
+         */
+        PixelDrawr.prototype.drawThingOnContext = function (context, thing) {
+            if (thing.hidden
+                || thing.opacity < this.epsilon
+                || thing[this.keyHeight] < 1
+                || thing[this.keyWidth] < 1
+                || this.getTop(thing) > this.MapScreener[this.keyHeight]
+                || this.getRight(thing) < 0
+                || this.getBottom(thing) < 0
+                || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
+                return;
+            }
+            // If Thing hasn't had a sprite yet (previously hidden), do that first
+            if (typeof thing.numSprites === "undefined") {
+                this.setThingSprite(thing);
+            }
+            // Whether or not the thing has a regular sprite or a SpriteMultiple, 
+            // that sprite has already been drawn to the thing's canvas, unless it's
+            // above the cutoff, in which case that logic happens now.
+            if (thing.canvas[this.keyWidth] > 0) {
+                this.drawThingOnContextSingle(context, thing.canvas, thing, this.getLeft(thing), this.getTop(thing));
+            }
+            else {
+                this.drawThingOnContextMultiple(context, thing.canvases, thing, this.getLeft(thing), this.getTop(thing));
+            }
+        };
+        /* Core drawing internals
+        */
         /**
          * Simply draws a thing's sprite to its canvas by getting and setting
          * a canvas::imageData object via context.getImageData(...).
          *
-         * @param {Thing} thing   A Thing whose canvas must be updated.
+         * @param thing   A Thing whose canvas must be updated.
          */
         PixelDrawr.prototype.refillThingCanvasSingle = function (thing) {
             // Don't draw small Things.
@@ -218,7 +278,7 @@ var PixelDrawr;
          * sub-sprite into its own canvas, sets thing.sprites, then draws the newly
          * rendered information onto the thing's canvas.
          *
-         * @param {Thing} thing   A Thing whose canvas and sprites must be updated.
+         * @param thing   A Thing whose canvas and sprites must be updated.
          */
         PixelDrawr.prototype.refillThingCanvasMultiple = function (thing) {
             if (thing[this.keyWidth] < 1 || thing[this.keyHeight] < 1) {
@@ -257,160 +317,15 @@ var PixelDrawr;
                 thing.canvas[this.keyWidth] = thing.canvas[this.keyHeight] = 0;
             }
         };
-        /* Core drawing
-        */
-        /**
-         * Called every upkeep to refill the entire main canvas. All Thing arrays
-         * are made to call this.refillThingArray in order.
-         */
-        PixelDrawr.prototype.refillGlobalCanvas = function () {
-            this.framesDrawn += 1;
-            if (this.framesDrawn % this.framerateSkip !== 0) {
-                return;
-            }
-            if (!this.noRefill) {
-                this.drawBackground();
-            }
-            for (var i = 0; i < this.thingArrays.length; i += 1) {
-                this.refillThingArray(this.thingArrays[i]);
-            }
-        };
-        /**
-         * Calls drawThingOnContext on each Thing in the Array.
-         *
-         * @param {Thing[]} array   A listing of Things to be drawn onto the canvas.
-         */
-        PixelDrawr.prototype.refillThingArray = function (array) {
-            for (var i = 0; i < array.length; i += 1) {
-                this.drawThingOnContext(this.context, array[i]);
-            }
-        };
-        /**
-         * Refills the main canvas by calling refillQuadrants on each Quadrant in
-         * the groups.
-         *
-         * @param {QuadrantRow[]} groups   QuadrantRows (or QuadrantCols) to be
-         *                                 redrawn to the canvas.
-         */
-        PixelDrawr.prototype.refillQuadrantGroups = function (groups) {
-            var i;
-            this.framesDrawn += 1;
-            if (this.framesDrawn % this.framerateSkip !== 0) {
-                return;
-            }
-            for (i = 0; i < groups.length; i += 1) {
-                this.refillQuadrants(groups[i].quadrants);
-            }
-        };
-        /**
-         * Refills (part of) the main canvas by drawing each Quadrant's canvas onto
-         * it.
-         *
-         * @param {Quadrant[]} quadrants   The Quadrants to have their canvases
-         *                                 refilled.
-         */
-        PixelDrawr.prototype.refillQuadrants = function (quadrants) {
-            var quadrant, i;
-            for (i = 0; i < quadrants.length; i += 1) {
-                quadrant = quadrants[i];
-                if (quadrant.changed
-                    && quadrant[this.keyTop] < this.MapScreener[this.keyHeight]
-                    && quadrant[this.keyRight] > 0
-                    && quadrant[this.keyBottom] > 0
-                    && quadrant[this.keyLeft] < this.MapScreener[this.keyWidth]) {
-                    this.refillQuadrant(quadrant);
-                    this.context.drawImage(quadrant.canvas, quadrant[this.keyLeft], quadrant[this.keyTop]);
-                }
-            }
-        };
-        /**
-         * Refills a Quadrants's canvas by resetting its background and drawing all
-         * its Things onto it.
-         *
-         * @param {Quadrant} quadrant   A quadrant whose Things must be drawn onto
-         *                              its canvas.
-         */
-        PixelDrawr.prototype.refillQuadrant = function (quadrant) {
-            var group, i, j;
-            // This may be what's causing such bad performance.
-            if (!this.noRefill) {
-                quadrant.context.drawImage(this.backgroundCanvas, quadrant[this.keyLeft], quadrant[this.keyTop], quadrant.canvas[this.keyWidth], quadrant.canvas[this.keyHeight], 0, 0, quadrant.canvas[this.keyWidth], quadrant.canvas[this.keyHeight]);
-            }
-            for (i = this.groupNames.length - 1; i >= 0; i -= 1) {
-                group = quadrant.things[this.groupNames[i]];
-                for (j = 0; j < group.length; j += 1) {
-                    this.drawThingOnQuadrant(group[j], quadrant);
-                }
-            }
-            quadrant.changed = false;
-        };
-        /**
-         * General Function to draw a Thing onto a context. This will call
-         * drawThingOnContext[Single/Multiple] with more arguments
-         *
-         * @param {CanvasRenderingContext2D} context   The context to have the Thing
-         *                                             drawn on it.
-         * @param {Thing} thing   The Thing to be drawn onto the context.
-         */
-        PixelDrawr.prototype.drawThingOnContext = function (context, thing) {
-            if (thing.hidden
-                || thing.opacity < this.epsilon
-                || thing[this.keyHeight] < 1
-                || thing[this.keyWidth] < 1
-                || this.getTop(thing) > this.MapScreener[this.keyHeight]
-                || this.getRight(thing) < 0
-                || this.getBottom(thing) < 0
-                || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
-                return;
-            }
-            // If Thing hasn't had a sprite yet (previously hidden), do that first
-            if (typeof thing.numSprites === "undefined") {
-                this.setThingSprite(thing);
-            }
-            // Whether or not the thing has a regular sprite or a SpriteMultiple, 
-            // that sprite has already been drawn to the thing's canvas, unless it's
-            // above the cutoff, in which case that logic happens now.
-            if (thing.canvas[this.keyWidth] > 0) {
-                this.drawThingOnContextSingle(context, thing.canvas, thing, this.getLeft(thing), this.getTop(thing));
-            }
-            else {
-                this.drawThingOnContextMultiple(context, thing.canvases, thing, this.getLeft(thing), this.getTop(thing));
-            }
-        };
-        /**
-         * Draws a Thing onto a quadrant's canvas. This is a simple wrapper around
-         * drawThingOnContextSingle/Multiple that also bounds checks.
-         *
-         * @param {Thing} thing
-         * @param {Quadrant} quadrant
-         */
-        PixelDrawr.prototype.drawThingOnQuadrant = function (thing, quadrant) {
-            if (thing.hidden
-                || this.getTop(thing) > quadrant[this.keyBottom]
-                || this.getRight(thing) < quadrant[this.keyLeft]
-                || this.getBottom(thing) < quadrant[this.keyTop]
-                || this.getLeft(thing) > quadrant[this.keyRight]
-                || thing.opacity < this.epsilon) {
-                return;
-            }
-            // If there's just one sprite, it's pretty simple
-            if (thing.numSprites === 1) {
-                return this.drawThingOnContextSingle(quadrant.context, thing.canvas, thing, this.getLeft(thing) - quadrant[this.keyLeft], this.getTop(thing) - quadrant[this.keyTop]);
-            }
-            else {
-                // For multiple sprites, some calculations will be needed
-                return this.drawThingOnContextMultiple(quadrant.context, thing.canvases, thing, this.getLeft(thing) - quadrant[this.keyLeft], this.getTop(thing) - quadrant[this.keyTop]);
-            }
-        };
         /**
          * Draws a Thing's single canvas onto a context, commonly called by
          * this.drawThingOnContext.
          *
-         * @param {CanvasRenderingContext2D} context    The context being drawn on.
-         * @param {Canvas} canvas   The Thing's canvas being drawn onto the context.
-         * @param {Thing} thing   The Thing whose canvas is being drawn.
-         * @param {Number} left   The x-position to draw the Thing from.
-         * @param {Number} top   The y-position to draw the Thing from.
+         * @param context    The context being drawn on.
+         * @param canvas   The Thing's canvas being drawn onto the context.
+         * @param thing   The Thing whose canvas is being drawn.
+         * @param left   The x-position to draw the Thing from.
+         * @param top   The y-position to draw the Thing from.
          */
         PixelDrawr.prototype.drawThingOnContextSingle = function (context, canvas, thing, left, top) {
             // If the sprite should repeat, use the pattern equivalent
@@ -432,11 +347,11 @@ var PixelDrawr;
          * drawThingOnContext. A variety of cases for canvases is allowed:
          * "vertical", "horizontal", and "corners".
          *
-         * @param {CanvasRenderingContext2D} context    The context being drawn on.
-         * @param {Canvas} canvases   The canvases being drawn onto the context.
-         * @param {Thing} thing   The Thing whose canvas is being drawn.
-         * @param {Number} left   The x-position to draw the Thing from.
-         * @param {Number} top   The y-position to draw the Thing from.
+         * @param context    The context being drawn on.
+         * @param canvases   The canvases being drawn onto the context.
+         * @param thing   The Thing whose canvas is being drawn.
+         * @param left   The x-position to draw the Thing from.
+         * @param top   The y-position to draw the Thing from.
          */
         PixelDrawr.prototype.drawThingOnContextMultiple = function (context, canvases, thing, left, top) {
             var sprite = thing.sprite, topreal = top, leftreal = left, rightreal = left + thing.unitwidth, bottomreal = top + thing.unitheight, widthreal = thing.unitwidth, heightreal = thing.unitheight, spritewidthpixels = thing.spritewidthpixels, spriteheightpixels = thing.spriteheightpixels, widthdrawn = Math.min(widthreal, spritewidthpixels), heightdrawn = Math.min(heightreal, spriteheightpixels), opacity = thing.opacity, diffhoriz, diffvert, canvasref;
@@ -520,9 +435,8 @@ var PixelDrawr;
         /* Position utilities (which should almost always be optimized)
         */
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's top position, accounting for vertical
-         *                  offset if needed.
+         * @param thing   Any Thing.
+         * @returns The Thing's top position, accounting for vertical offset if needed.
          */
         PixelDrawr.prototype.getTop = function (thing) {
             if (this.keyOffsetY) {
@@ -533,9 +447,8 @@ var PixelDrawr;
             }
         };
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's right position, accounting for horizontal
-         *                  offset if needed.
+         * @param thing   Any Thing.
+         * @returns The Thing's right position, accounting for horizontal offset if needed.
          */
         PixelDrawr.prototype.getRight = function (thing) {
             if (this.keyOffsetX) {
@@ -546,8 +459,8 @@ var PixelDrawr;
             }
         };
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's bottom position, accounting for vertical
+         * @param thing   Any Thing.
+         * @returns {Number} The Thing's bottom position, accounting for vertical
          *                  offset if needed.
          */
         PixelDrawr.prototype.getBottom = function (thing) {
@@ -559,9 +472,8 @@ var PixelDrawr;
             }
         };
         /**
-         * @param {Thing} thing
-         * @return {Number} The Thing's left position, accounting for horizontal
-         *                  offset if needed.
+         * @param thing   Any Thing.
+         * @returns The Thing's left position, accounting for horizontal offset if needed.
          */
         PixelDrawr.prototype.getLeft = function (thing) {
             if (this.keyOffsetX) {
@@ -577,15 +489,14 @@ var PixelDrawr;
          * Draws a source pattern onto a context. The pattern is clipped to the size
          * of MapScreener.
          *
-         * @param {CanvasRenderingContext2D} context   The context the pattern will
-         *                                             be drawn onto.
-         * @param {Mixed} source   The image being repeated as a pattern. This can
-         *                         be a canvas, an image, or similar.
-         * @param {Number} left   The x-location to draw from.
-         * @param {Number} top   The y-location to draw from.
-         * @param {Number} width   How many pixels wide the drawing area should be.
-         * @param {Number} left   How many pixels high the drawing area should be.
-         * @param {Number} opacity   How transparent the drawing is, in [0,1].
+         * @param context   The context the pattern will be drawn onto.
+         * @param source   The image being repeated as a pattern. This can be a canvas,
+         *                 an image, or similar.
+         * @param left   The x-location to draw from.
+         * @param top   The y-location to draw from.
+         * @param width   How many pixels wide the drawing area should be.
+         * @param left   How many pixels high the drawing area should be.
+         * @param opacity   How transparent the drawing is, in [0,1].
          */
         PixelDrawr.prototype.drawPatternOnContext = function (context, source, left, top, width, height, opacity) {
             context.globalAlpha = opacity;

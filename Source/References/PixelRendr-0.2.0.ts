@@ -2,71 +2,6 @@
 /// <reference path="StringFilr-0.2.1.ts" />
 
 declare module PixelRendr {
-    /**
-     * A typed array of 8-bit unsigned integer values. The contents are initialized 
-     * to 0. If the requested number of bytes could not be allocated an exception is
-     * raised.
-     * 
-     * @remarks This is kept here as a stand-in for the full Uint8ClampedArray, since
-     *          TypeScript doesn't always recognize it.
-     */
-    interface Uint8ClampedArray extends ArrayBufferView {
-        [index: number]: number;
-
-        /**
-          * The size in bytes of each element in the array. 
-          */
-        BYTES_PER_ELEMENT: number;
-
-        /**
-          * The length of the array.
-          */
-        length: number;
-
-        /**
-          * Gets the element at the specified index.
-          * 
-          * @param {Number} index The index at which to get the element of the array.
-          */
-        get(index: number): number;
-
-        /**
-          * Sets a value or an array of values.
-          * 
-          * @param {Number} index   The index of the location to set.
-          * @param {Number} value   The value to set.
-          */
-        set(index: number, value: number): void;
-
-        /**
-          * Sets a value or an array of values.
-          * 
-          * @param {Uint8ClampedArray} array   A typed or untyped array of values 
-          *                                    to set.
-          * @param {Number} [offset]   The index in the current array at which the 
-          *                            values are to be written.
-          */
-        set(array: Uint8ClampedArray, offset?: number): void;
-
-        /**
-          * Sets a value or an array of values.
-          * 
-          * @param {Number[]} array   A typed or untyped array of values to set.
-          * @param {Number} [offset]   The index in the current array at which the 
-          *                            values are to be written.
-          */
-        set(array: number[], offset?: number): void;
-
-        /**
-          * Gets a new Uint8ClampedArray view of the ArrayBuffer Object store for 
-          * this array, specifying the first and last members of the subarray. 
-          * 
-          * @param {Number} begin   The index of the beginning of the array.
-          * @param {Number} end   The index of the end of the array.
-          */
-        subarray(begin: number, end?: number): Uint8ClampedArray;
-    }
-
     export interface ILibrary {
         raws: any;
         sprites?: IRenderLibrary;
@@ -134,6 +69,9 @@ declare module PixelRendr {
         middleStretch: boolean;
     }
 
+    /**
+     * Settings to initialize a new IPixelRendr.
+     */
     export interface IPixelRendrSettings {
         /**
          * The palette of colors to use for sprites. This should be a number[][]
@@ -184,9 +122,15 @@ declare module PixelRendr {
         /**
          * A replacement for window.Uint8ClampedArray, if desired.
          */
-        Uint8ClampedArray?: any;
+        Uint8ClampedArray?: typeof Uint8ClampedArray;
     }
 
+    /**
+     * A moderately unusual graphics module designed to compress images as
+     * compressed text blobs and store the text blobs in a StringFilr. These tasks 
+     * are performed and cached quickly enough for use in real-time environments, 
+     * such as real-time video games.
+     */
     export interface IPixelRendr {
         getBaseLibrary(): any;
         getBaseFiler(): StringFilr.IStringFilr;
@@ -410,7 +354,7 @@ module PixelRendr {
          * A reference for window.Uint8ClampedArray, or replacements such as
          * Uint8Array if needed.
          */
-        private Uint8ClampedArray: any;
+        private Uint8ClampedArray: typeof Uint8ClampedArray;
 
         /**
          * @param {IPixelRendrSettings} settings
