@@ -15,6 +15,7 @@ module FullScreenPokemon {
             "thingsById": FullScreenPokemon.prototype.generateThingsByIdContainer
         },
         "onSpawn": FullScreenPokemon.prototype.addPreThing,
+        "onUnspawn": FullScreenPokemon.prototype.removePreThing,
         "afterAdd": FullScreenPokemon.prototype.mapAddAfter,
         "macros": {
             "Checkered": FullScreenPokemon.prototype.macroCheckered,
