@@ -100,7 +100,7 @@ declare module GameStartr {
         input: IInputWritrCustoms;
 
         /**
-         * Settings regarding map layouts, particularly for an IMapsCreatr and an IMapsHandlr.
+         * Settings regarding map layouts, particularly for an IMapsCreatr and an IAreaSpawnr.
          */
         maps: IMapsCreatrCustoms;
 
@@ -434,7 +434,7 @@ declare module GameStartr {
         NumberMaker: NumberMakr.INumberMakr;
         MapsCreator: MapsCreatr.IMapsCreatr;
         MapScreener: MapScreenr.IMapScreenr;
-        MapsHandler: MapsHandlr.IMapsHandlr;
+        AreaSpawner: AreaSpawnr.IAreaSpawnr;
         MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
         ObjectMaker: ObjectMakr.IObjectMakr;
@@ -459,7 +459,7 @@ declare module GameStartr {
         resetNumberMaker(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMapsCreator(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMapScreener(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
-        resetMapsHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetAreaSpawner(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetModAttacher(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetPixelRender(GameStarter: IGameStartr, settings: IGameStartrSettings): void;

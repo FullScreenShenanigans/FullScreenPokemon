@@ -27,20 +27,20 @@ FullScreenPokemon.FullScreenPokemon.settings.ui = {
         ],
         "options": {
             "Map": [{
-                "title": "{%%%%GAME%%%%}.MapsHandler.setMap",
+                "title": "{%%%%GAME%%%%}.AreaSpawner.setMap",
                 "description": "Go to a specified map and location.",
-                "usage": "{%%%%GAME%%%%}.MapsHandler.setMap(<map>[, <location>]);",
+                "usage": "{%%%%GAME%%%%}.AreaSpawner.setMap(<map>[, <location>]);",
                 "examples": [{
-                    "code": "{%%%%GAME%%%%}.MapsHandler.setMap('Lavender Town');",
+                    "code": "{%%%%GAME%%%%}.AreaSpawner.setMap('Lavender Town');",
                     "comment": "Starts map 'Lavender Town'."
                 }, {
-                    "code": "{%%%%GAME%%%%}.MapsHandler.setMap('Lavender Town', 'TopEntrance');",
+                    "code": "{%%%%GAME%%%%}.AreaSpawner.setMap('Lavender Town', 'TopEntrance');",
                     "comment": "Starts map 'Lavender Town', at the top entrance."
                 //}, {
-                //    "code": "{%%%%GAME%%%%}.MapsHandler.setMap('Random');",
+                //    "code": "{%%%%GAME%%%%}.AreaSpawner.setMap('Random');",
                 //    "comment": "Starts the random map."
                 //}, {
-                //    "code": "{%%%%GAME%%%%}.MapsHandler.setMap('Random', 'Underworld');",
+                //    "code": "{%%%%GAME%%%%}.AreaSpawner.setMap('Random', 'Underworld');",
                 //    "comment": "Starts the random map in the Underworld."
                 }]
             }],

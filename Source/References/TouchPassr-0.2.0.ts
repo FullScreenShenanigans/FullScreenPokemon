@@ -5,8 +5,19 @@ declare module TouchPassr {
      * Schema for where a control should lay on the screen. 
      */
     export interface IPosition {
+        /**
+         * Vertical position, as "top", "bottom", or "center".
+         */
         vertical: string;
+
+        /**
+         * Horizontal position, as "top", "right", "center".
+         */
         horizontal: string;
+
+        /**
+         * Offset measurements to shift from the vertical and horizontal position.
+         */
         offset?: IPositionOffset
     }
 
@@ -14,7 +25,14 @@ declare module TouchPassr {
      * Offset measurements for a schema's position.
      */
     export interface IPositionOffset {
+        /**
+         * How much to shift horizontally, as a number or CSS-ready String measurement.
+         */
         left?: number | string;
+        
+        /**
+         * How much to shift vertically, as a number or CSS-ready String measurement.
+         */
         top?: number | string;
     }
 
@@ -23,16 +41,29 @@ declare module TouchPassr {
      * TouchPassr to its generated controls.
      */
     export interface IRootControlStyles {
-        global: IControlStyles;
-        Button: IButtonStyles;
-        Joystick: IJoystickStyles;
+        /**
+         * Styles that apply to all controls.
+         */
+        global?: IControlStyles;
+
+        /**
+         * Specific controls, such as "Button", have styles keyed by control name.
+         */
+        [i: string]: IControlStyles;
+    }
+
+    /**
+     * Container for control classes, keyed by name.
+     */
+    export interface IControlClassesContainer {
+        [i: string]: typeof Control;
     }
 
     /**
      * Container for controls, keyed by name.
      */
     export interface IControlsContainer {
-        [i: string]: Control;
+        [i: string]: Control<IControlSchema>;
     }
 
     /**
@@ -47,7 +78,14 @@ declare module TouchPassr {
      * for more specific controls.
      */
     export interface IControlStyles {
+        /**
+         * Styles to apply to the primary (outer) control element.
+         */
         element?: CSSRuleList;
+
+        /**
+         * Styles to apply to the inner control element.
+         */
         elementInner?: CSSRuleList;
     }
 
@@ -56,10 +94,29 @@ declare module TouchPassr {
      * will extend this.
      */
     export interface IControlSchema {
+        /**
+         * What name this will be keyed under in the parent TouchPassr.
+         */
         name: string;
+
+        /**
+         * The type of control this should create, such as "Button".
+         */
         control: string;
+
+        /**
+         * Where the generated code should be on the screen.
+         */
         position: IPosition;
+
+        /**
+         * A label to display in the control.
+         */
         label?: string;
+
+        /**
+         * Additional styles to pass to the control.
+         */
         styles?: IControlStyles;
     }
 
@@ -69,84 +126,125 @@ declare module TouchPassr {
      * of which contains any number of key codes to send. 
      */
     export interface IPipes {
-        activated?: { [i: string]: (string | number)[] };
-        deactivated?: { [i: string]: (string | number)[] };
+        /**
+         * Event triggers to pass when a control is activated.
+         */
+        activated?: {
+            [i: string]: (string | number)[]
+        };
+
+        /**
+         * Event triggers to pass when a control is deactivated.
+         */
+        deactivated?: {
+            [i: string]: (string | number)[]
+        };
     }
 
     /**
-     * Control schema for a simple button. Pipes are activated on press and on release.
+     * Settings to initialize a new ITouchPassr.
      */
-    export interface IButtonSchema extends IControlSchema {
-        pipes?: IPipes;
-    }
-    
-    /**
-     * Styles schema for a button control, which doesn't change anything.
-     */
-    export interface IButtonStyles extends IControlStyles { }
-
-    /**
-     * Control schema for a joystick. It may have any number of directions that it
-     * will snap to, each of which will have its own pipes.
-     */
-    export interface IJoystickSchema extends IControlSchema {
-        directions: IJoystickDirection[];
-    }
-
-    /**
-     * Schema for a single direction for a joystick. It will be represented as a tick
-     * on the joystick that the control will snap its direction to.
-     */
-    export interface IJoystickDirection {
-        name: string;
-        degrees: number;
-        neighbors?: string[];
-        pipes?: IPipes;
-    }
-    
-    /**
-     * Styles schema for a joystick control, adding its ticks and indicator elements.
-     */
-    export interface IJoystickStyles extends IControlStyles {
-        circle?: IControlStyles;
-        tick?: IControlStyles;
-        dragLine?: IControlStyles;
-        dragShadow?: IControlStyles;
-    }
-
     export interface ITouchPassrSettings {
+        /**
+         * An InputWritr for controls to pipe event triggers to.
+         */
         InputWriter: InputWritr.IInputWritr;
-        prefix?: string;
+        
+        /**
+         * An HTMLElement all controls are placed within.
+         */
         container?: HTMLElement;
-        styles?: any;
-        controls?: { [i: string]: IControlSchema };
+        
+        /**
+         * Root container for styles to be added to control elements.
+         */
+        styles?: IRootControlStyles;
+
+        /**
+         * Container for generated controls, keyed by their name.
+         */
+        controls?: IControlSchemasContainer;
+        
+        /**
+         * Whether this is currently enabled and visually on the screen.
+         */
         enabled?: boolean;
     }
 
+    /**
+     * A GUI touch layer layer on top of InputWritr that provides an extensible
+     * API for adding touch-based control elements into an HTML element.
+     */
     export interface ITouchPassr {
+        /**
+         * @returns The InputWritr for controls to pipe event triggers to.
+         */
         getInputWriter(): InputWritr.IInputWritr;
+
+        /**
+         * @returns Whether this is currently enabled and visually on the screen.
+         */
         getEnabled(): boolean;
+
+        /**
+         * @returns The root container for styles to be added to control elements.
+         */
         getStyles(): IRootControlStyles;
+
+        /**
+         * @returns The container for generated controls, keyed by their name.
+         */
         getControls(): IControlsContainer;
+
+        /**
+         * @returns The HTMLElement all controls are placed within.
+         */
         getContainer(): HTMLElement;
+
+        /**
+         * @returns The HTMLElement containing the controls container.
+         */
         getParentContainer(): HTMLElement;
+
+        /**
+         * Enables the TouchPassr by showing the container.
+         */
         enable(): void;
+
+        /**
+         * Disables the TouchPassr by hiding the container.
+         */
         disable(): void;
+
+        /**
+         * Sets the parent container surrounding the controls container.
+         * 
+         * @param parentElement   A new parent container.
+         */
         setParentContainer(parentElement: HTMLElement): void;
+
+        /**
+         * Adds any number of controls to the internal listing and HTML container.
+         * 
+         * @param schemas   Schemas for new controls to be made, keyed by name.
+         */
         addControls(schemas: IControlSchemasContainer): void;
+
+        /**
+         * Adds a control to the internal listing and HTML container.
+         * 
+         * @param schema   The schema for the new control to be made.
+         */
         addControl(schema: IControlSchema): void;
     }
 }
 
-
 module TouchPassr {
-    "use strict";
-
     /**
      * Abstract class for on-screen controls. Element creation for .element
      * and .elementInner within the constrained position is provided.
      */
-    export class Control {
+    export class Control<T extends IControlSchema> {
         /**
          * The parent TouchPassr's InputWritr. Pipe events are sent through here.
          */
@@ -156,7 +254,7 @@ module TouchPassr {
          * The governing schema for this control. It should be overriden as a more
          * specific shema in child classes.
          */
-        protected schema: IControlSchema;
+        protected schema: T;
 
         /**
          * The outer container element. It should have width and height of 0, so
@@ -173,24 +271,25 @@ module TouchPassr {
         /**
          * Resets the control by setting member variables and calling resetElement.
          * 
-         * @param {InputWritr} InputWriter
-         * @param {Object} schema
+         * @param InputWriter   The parent TouchPassr's InputWritr.
+         * @param schema   The governing schema for this control.
+         * @param styles   Any styles to add to the element.
          */
-        constructor(InputWriter: InputWritr.IInputWritr, schema: IControlSchema, styles: IRootControlStyles) {
+        constructor(InputWriter: InputWritr.IInputWritr, schema: T, styles: IRootControlStyles) {
             this.InputWriter = InputWriter;
             this.schema = schema;
             this.resetElement(styles);
         }
 
         /**
-         * @return {HTMLElement} The outer container element.
+         * @returns The outer container element.
          */
         public getElement(): HTMLElement {
             return this.element;
         }
 
         /**
-         * @return {HTMLElement} The inner container element.
+         * @returns The inner container element.
          */
         public getElementInner(): HTMLElement {
             return this.elementInner;
@@ -201,17 +300,17 @@ module TouchPassr {
          * settings Objects may be given to be proliferated onto the Element via
          * proliferateElement.
          * 
-         * @param {String} type   The tag of the Element to be created.
-         * @param {Object} [settings]   Additional settings for the Element, such as
-         *                              className or style.
-         * @return {HTMLElement}
+         * @param type   The tag of the Element to be created.
+         * @param settings   Additional settings for the Element, such as className 
+         *                   or style.
+         * @returns A newly created HTMLElement of the specified type.
          */
         public createElement(tag: string, ...args: any[]): HTMLElement {
             var element: any = document.createElement(tag || "div"),
                 i: number;
 
             // For each provided object, add those settings to the element
-            for (i = 1; i < arguments.length; i += 1) {
+            for (i = 0; i < args.length; i += 1) {
                 this.proliferateElement(element, arguments[i]);
             }
 
@@ -223,12 +322,13 @@ module TouchPassr {
          * element attributes don't play nicely with JavaScript Array standards. 
          * Looking at you, HTMLCollection!
          * 
-         * @param {HTMLElement} recipient
-         * @param {Any} donor
-         * @param {Boolean} [noOverride]
-         * @return {HTMLElement}
+         * @param recipient   An HTMLElement to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should 
+         *                     be skipped (defaults to false).
+         * @returns recipient
          */
-        public proliferateElement(recipient: HTMLElement, donor: any, noOverride: boolean = false): HTMLElement {
+        proliferateElement(recipient: HTMLElement, donor: any, noOverride: boolean = false): HTMLElement {
             var setting: any,
                 i: string,
                 j: number;
@@ -245,7 +345,8 @@ module TouchPassr {
 
                     // Special cases for HTML elements
                     switch (i) {
-                        // Children: just append all of them directly
+                        // Children and options: just append all of them directly
+                        case "children":
                         case "children":
                             if (typeof (setting) !== "undefined") {
                                 for (j = 0; j < setting.length; j += 1) {
@@ -278,6 +379,7 @@ module TouchPassr {
                     }
                 }
             }
+
             return recipient;
         }
 
@@ -285,7 +387,7 @@ module TouchPassr {
          * Resets the container elements. In any inherited resetElement, this should
          * still be called, as it implements the schema's position.
          * 
-         * @param {Object} styles   Container styles for the contained elements.
+         * @param styles   Container styles for the contained elements.
          */
         protected resetElement(styles: IRootControlStyles, customType?: string): void {
             var position: IPosition = this.schema.position,
@@ -341,21 +443,21 @@ module TouchPassr {
             }
 
             // elementInner's center-based positioning must wait until its total width is done setting
-            setTimeout(function (): void {
+            setTimeout((): void => {
                 if (position.horizontal === "center") {
                     this.elementInner.style.left = this.createHalfSizeMeasurement(this.elementInner, "width", "offsetWidth");
                 }
                 if (position.vertical === "center") {
                     this.elementInner.style.top = this.createHalfSizeMeasurement(this.elementInner, "height", "offsetHeight");
                 }
-            }.bind(this));
+            });
         }
 
         /**
          * Converts a String or Number into a CSS-ready String measurement.
          * 
-         * @param {Mixed} raw   A raw measurement, such as "7" or "7px" or "7em".
-         * @return {String} The raw measurement as a CSS measurement.
+         * @param raw   A raw measurement, such as 7 or "7px" or "7em".
+         * @returns The raw measurement as a CSS measurement.
          */
         protected createPixelMeasurement(raw: string | number): string {
             if (!raw) {
@@ -373,13 +475,13 @@ module TouchPassr {
          * Determines a "half"-measurement that would center an element based on the
          * specified units.
          * 
-         * @param {HTMLElement} element   The element whose half-size should be computed.
-         * @param {String} styleTag   The initial CSS measurement to check for, as "width"
-         *                            or "height".
-         * @param {String} attributeBackup   A measurement to check for if the CSS size
-         *                                   is falsy, as "offsetWidth" or "offsetHeight".
-         * @returns {String}   A measurement equal to half the sytleTag/attributeBackup,
-         *                     such as "3.5em" or "10px".
+         * @param element   The element whose half-size should be computed.
+         * @param styleTag   The initial CSS measurement to check for, as "width" or 
+         *                   "height".
+         * @param attributeBackup   A measurement to check for if the CSS size is falsy,
+         *                          as "offsetWidth" or "offsetHeight".
+         * @returns A measurement equal to half the sytleTag/attributeBackup, such as 
+         *          "3.5em" or "10px".
          */
         protected createHalfSizeMeasurement(element: HTMLElement, styleTag: string, attributeBackup: string): string {
             var amountRaw: string,
@@ -400,7 +502,7 @@ module TouchPassr {
         /**
          * Passes a style schema to .element and .elementInner.
          * 
-         * @param {Object} styles   A container for styles to apply.  
+         * @param styles   A container for styles to apply.  
          */
         protected passElementStyles(styles: IControlStyles): void {
             if (!styles) {
@@ -419,8 +521,8 @@ module TouchPassr {
         /**
          * Sets the rotation of an HTML element via CSS.
          * 
-         * @param {HTMLElement} element
-         * @param {Number} rotation
+         * @param element   An HTML element to rotate.
+         * @param rotation   How many degrees to rotate the element.
          */
         protected setRotation(element: HTMLElement, rotation: number): void {
             element.style.transform = "rotate(" + rotation + "deg)";
@@ -430,11 +532,11 @@ module TouchPassr {
          * Finds the position offset of an element relative to the page, factoring in 
          * its parent elements' offsets recursively.
          * 
-         * @param {HTMLElement} element
-         * @return {Number[]} The left and top offset of the element, in px. 
+         * @param element   An HTML element.
+         * @returns The [left, top] offset of the element, in px. 
          */
-        protected getOffsets(element: HTMLElement): number[] {
-            var output: number[];
+        protected getOffsets(element: HTMLElement): [number, number] {
+            var output: [number, number];
 
             if (element.offsetParent && element !== element.offsetParent) {
                 output = this.getOffsets(<HTMLElement>element.offsetParent);
@@ -447,22 +549,45 @@ module TouchPassr {
             return output;
         }
     }
+}
+
+module TouchPassr {
+    /**
+     * Control schema for a simple button. Pipes are activated on press and on release.
+     */
+    export interface IButtonSchema extends IControlSchema {
+        /**
+         * Pipe descriptions for what should be sent to the InputWritr.
+         */
+        pipes?: IPipes;
+    }
+    
+    /**
+     * Styles schema for a button control.
+     */
+    export interface IButtonStyles extends IControlStyles { }
 
     /**
-     * Simple button control. It activates its triggers when the users presses
+     * Global declaration of styles for all controls, typically passed from a
+     * TouchPassr to its generated controls.
+     */
+    export interface IRootControlStyles {
+        /**
+         * Styles that apply to Button controls.
+         */
+        Button?: IButtonStyles;
+    }
+
+    /**
+     * Simple button control. It activates its triggers when the user presses
      * it or releases it, and contains a simple label.
      */
-    export class ButtonControl extends Control {
-        /**
-         * The governing schema for this button.
-         */
-        protected schema: IButtonSchema;
-
+    export class ButtonControl extends Control<IButtonSchema> {
         /**
          * Resets the elements by adding listeners for mouse and touch 
          * activation and deactivation events.
          * 
-         * @param {Object} styles   Container styles for the contained elements.
+         * @param styles   Container styles for the contained elements.
          */
         protected resetElement(styles: IRootControlStyles): void {
             var onActivated: any = this.onEvent.bind(this, "activated"),
@@ -478,11 +603,11 @@ module TouchPassr {
         }
 
         /**
-         * Reation callback for a triggered event.
+         * Reaction callback for a triggered event.
          * 
-         * @param {String} which   The pipe being activated, such as
-         *                         "activated" or "deactivated".
-         * @param {Event} event
+         * @param which   The pipe being activated, such as "activated"
+         *                or "deactivated".
+         * @param event   The triggered event.
          */
         protected onEvent(which: string, event: Event): void {
             var events: any = (<IButtonSchema>this.schema).pipes[which],
@@ -504,17 +629,82 @@ module TouchPassr {
             }
         }
     }
+}
+
+module TouchPassr {
+    /**
+     * Control schema for a joystick. It may have any number of directions that it
+     * will snap to, each of which will have its own pipes.
+     */
+    export interface IJoystickSchema extends IControlSchema {
+        /**
+         * Direction ticks to display on the control.
+         */
+        directions: IJoystickDirection[];
+    }
+
+    /**
+     * Schema for a single direction for a joystick. It will be represented as a tick
+     * on the joystick that the control will snap its direction to.
+     */
+    export interface IJoystickDirection {
+        /**
+         * The unique name of this direction, such as "Up".
+         */
+        name: string;
+
+        /**
+         * What degree measurement to place the tick at.
+         */
+        degrees: number;
+        
+        /**
+         * Pipe descriptions for what should be sent to the InputWritr.
+         */
+        pipes?: IPipes;
+    }
+    
+    /**
+     * Styles schema for a joystick control, adding its ticks and indicator elements.
+     */
+    export interface IJoystickStyles extends IControlStyles {
+        /**
+         * Styles for the round circle elements.
+         */
+        circle?: IControlStyles;
+
+        /**
+         * Styles for the individual "tick" elements.
+         */
+        tick?: IControlStyles;
+
+        /**
+         * Styles for the dragging line element.
+         */
+        dragLine?: IControlStyles;
+
+        /**
+         * Styles for the outer shadow element.
+         */
+        dragShadow?: IControlStyles;
+    }
+
+    /**
+     * Global declaration of styles for all controls, typically passed from a
+     * TouchPassr to its generated controls.
+     */
+    export interface IRootControlStyles {
+        /**
+         * Styles that apply to Joystick controls.
+         */
+        Joystick?: IJoystickStyles;
+    }
 
     /**
      * Joystick control. An inner circle can be dragged to one of a number
      * of directions to trigger pipes on and off.
      */
-    export class JoystickControl extends Control {
-        /**
-         * The governing schema for this joystick
-         */
-        protected schema: IJoystickSchema;
-
+    export class JoystickControl extends Control<IJoystickSchema> {
         /**
          * The large inner circle that visually surrounds the ticks and other
          * inner elements.
@@ -546,7 +736,7 @@ module TouchPassr {
          * Resets the element by creating a tick for each direction, along with
          * the multiple circular elements with their triggers.
          * 
-         * @param {Object} styles   Container styles for the contained elements.
+         * @param styles   Container styles for the contained elements.
          */
         protected resetElement(styles: IRootControlStyles): void {
             super.resetElement(styles, "Joystick");
@@ -684,7 +874,7 @@ module TouchPassr {
          * Triggers a movement point for the joystick, and snaps the stick to
          * the nearest direction (based on the angle from the center to the point).
          * 
-         * @param {Event} event
+         * @param event   A user-triggered event.
          */
         protected triggerDragger(event: DragEvent | MouseEvent): void {
             event.preventDefault();
@@ -709,24 +899,16 @@ module TouchPassr {
                 dx: number = components[0],
                 dy: number = -components[1];
 
-            this.proliferateElement(this.elementDragLine, {
-                "style": {
-                    "marginLeft": ((dx * 77) | 0) + "%",
-                    "marginTop": ((dy * 77) | 0) + "%"
-                }
-            });
-
-            this.proliferateElement(this.elementDragShadow, {
-                "style": {
-                    "top": ((14 + dy * 10) | 0) + "%",
-                    "right": ((14 - dx * 10) | 0) + "%",
-                    "bottom": ((14 - dy * 10) | 0) + "%",
-                    "left": ((14 + dx * 10) | 0) + "%"
-                }
-            });
-
             // Ensure theta is above 0, and offset it by 90 for visual rotation
             theta = (theta + 450) % 360;
+
+            this.elementDragLine.style.marginLeft = ((dx * 77) | 0) + "%";
+            this.elementDragLine.style.marginTop = ((dy * 77) | 0) + "%";
+
+            this.elementDragShadow.style.top = ((14 + dy * 10) | 0) + "%";
+            this.elementDragShadow.style.right = ((14 - dx * 10) | 0) + "%";
+            this.elementDragShadow.style.bottom = ((14 - dy * 10) | 0) + "%";
+            this.elementDragShadow.style.left = ((14 + dx * 10) | 0) + "%";
 
             this.setRotation(this.elementDragLine, theta);
             this.positionDraggerEnable();
@@ -738,7 +920,7 @@ module TouchPassr {
          * Finds the raw coordinates of an event, whether it's a drag (touch)
          * or mouse event.
          * 
-         * @return {Number[]} The x- and y- coordinates of the event.
+         * @returns The x- and y- coordinates of the event.
          */
         protected getEventCoordinates(event: DragEvent | MouseEvent): number[] {
             if (event.type === "touchmove") {
@@ -754,7 +936,7 @@ module TouchPassr {
          * Finds the angle from a joystick center to an x and y. This assumes 
          * straight up is 0, to the right is 90, down is 180, and left is 270.
          * 
-         * @return {Number} The degrees to the given point.
+         * @returns The degrees to the given point.
          */
         protected getThetaRaw(dxRaw: number, dyRaw: number): number {
             // Based on the quadrant, theta changes...
@@ -780,10 +962,10 @@ module TouchPassr {
         /**
          * Converts an angle to its relative dx and dy coordinates.
          * 
-         * @param {Number} thetaRaw
-         * @return {Number[]} The x- and y- parts of an angle.
+         * @param thetaRaw   The raw degrees of an anle.
+         * @returns The x- and y- parts of an angle.
          */
-        protected getThetaComponents(thetaRaw: number): number[] {
+        protected getThetaComponents(thetaRaw: number): [number, number] {
             var theta: number = thetaRaw * Math.PI / 180;
             return [Math.sin(theta), Math.cos(theta)];
         }
@@ -791,8 +973,8 @@ module TouchPassr {
         /**
          * Finds the index of the closest direction to an angle. 
          * 
-         * @param {Number} degrees
-         * @return {Number}
+         * @param degrees   The degrees of an angle.
+         * @returns The index of the closest known direction to the degrees.a
          */
         protected findClosestDirection(degrees: number): number {
             var directions: IJoystickDirection[] = (<IJoystickSchema>this.schema).directions,
@@ -830,18 +1012,16 @@ module TouchPassr {
          * Sets the current direction of the joystick, calling the relevant 
          * InputWriter pipes if necessary.
          * 
-         * @param {Object} direction
-         * @param {Event} [event]
+         * @param direction   A new direction to face.
+         * @param event   A user-triggered event.
          */
         protected setCurrentDirection(direction: IJoystickDirection, event?: Event): void {
             if (this.currentDirection === direction) {
                 return;
             }
 
-            if (this.currentDirection && this.currentDirection.pipes) {
-                if (this.currentDirection.pipes.deactivated) {
-                    this.onEvent(this.currentDirection.pipes.deactivated, event);
-                }
+            if (this.currentDirection && this.currentDirection.pipes && this.currentDirection.pipes.deactivated) {
+                this.onEvent(this.currentDirection.pipes.deactivated, event);
             }
 
             if (direction.pipes && direction.pipes.activated) {
@@ -855,8 +1035,8 @@ module TouchPassr {
          * Trigger for calling pipes when a new direction is set. All children
          * of the pipe has each of its keys triggered.
          * 
-         * @param {Object} pipes
-         * @param {Event} [event]
+         * @param pipes   Pipes to trigger.
+         * @param event   A user-triggered event.
          */
         protected onEvent(pipes: IPipes, event?: Event): void {
             var i: string,
@@ -873,11 +1053,25 @@ module TouchPassr {
             }
         }
     }
+}
+
+
+module TouchPassr {
+    "use strict";
 
     /**
-     * 
+     * A GUI touch layer layer on top of InputWritr that provides an extensible
+     * API for adding touch-based control elements into an HTML element.
      */
     export class TouchPassr implements ITouchPassr {
+        /**
+         * Known, allowed control classes, keyed by name.
+         */
+        private static controlClasses: IControlClassesContainer = {
+            "Button": ButtonControl,
+            "Joystick": JoystickControl
+        };
+
         /**
          * An InputWritr for controls to pipe event triggers to.
          */
@@ -899,7 +1093,7 @@ module TouchPassr {
         private controls: IControlsContainer;
 
         /**
-         * HTMLElement all controls are placed within.
+         * An HTMLElement all controls are placed within.
          */
         private container: HTMLElement;
 
@@ -909,7 +1103,9 @@ module TouchPassr {
         private parentContainer: HTMLElement;
 
         /**
-         * @param {ITouchPassrSettings} settings
+         * Initializes a new instance of the TouchPassr class.
+         * 
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: ITouchPassrSettings) {
             if (typeof settings === "undefined") {
@@ -943,42 +1139,42 @@ module TouchPassr {
         */
 
         /**
-         * @return {InputWritr} The InputWritr for controls to pipe event triggers to.
+         * @returns The InputWritr for controls to pipe event triggers to.
          */
         getInputWriter(): InputWritr.IInputWritr {
             return this.InputWriter;
         }
 
         /**
-         * @return {Boolean} Whether this is currently enabled and visually on the screen.
+         * @returns Whether this is currently enabled and visually on the screen.
          */
         getEnabled(): boolean {
             return this.enabled;
         }
 
         /**
-         * @return {Object} The root container for styles to be added to control elements.
+         * @returns The root container for styles to be added to control elements.
          */
         getStyles(): IRootControlStyles {
             return this.styles;
         }
 
         /**
-         * @return {Object} The container for generated controls, keyed by their name.
+         * @returns The container for generated controls, keyed by their name.
          */
         getControls(): IControlsContainer {
             return this.controls;
         }
 
         /**
-         * @return {HTMLElement} The HTMLElement all controls are placed within.
+         * @returns The HTMLElement all controls are placed within.
          */
         getContainer(): HTMLElement {
             return this.container;
         }
 
         /**
-         * @return {HTMLElement} The HTMLElement containing the controls container.
+         * @returns The HTMLElement containing the controls container.
          */
         getParentContainer(): HTMLElement {
             return this.parentContainer;
@@ -1007,7 +1203,7 @@ module TouchPassr {
         /**
          * Sets the parent container surrounding the controls container.
          * 
-         * @param {HTMLElement} parentElement
+         * @param parentElement   A new parent container.
          */
         setParentContainer(parentElement: HTMLElement): void {
             this.parentContainer = parentElement;
@@ -1017,7 +1213,7 @@ module TouchPassr {
         /**
          * Adds any number of controls to the internal listing and HTML container.
          * 
-         * @param {Object} schemas   Schemas for new controls to be made, keyed by name.
+         * @param schemas   Schemas for new controls to be made, keyed by name.
          */
         addControls(schemas: IControlSchemasContainer): void {
             var i: string;
@@ -1032,23 +1228,15 @@ module TouchPassr {
         /**
          * Adds a control to the internal listing and HTML container.
          * 
-         * @param {Object} schema   The schema for the new control to be made.
+         * @param schema   The schema for the new control to be made.
          */
-        addControl(schema: IControlSchema): void {
-            var control: Control;
-
-            switch (schema.control) {
-                case "Button":
-                    control = new ButtonControl(this.InputWriter, schema, this.styles);
-                    break;
-
-                case "Joystick":
-                    control = new JoystickControl(this.InputWriter, schema, this.styles);
-                    break;
-
-                default:
-                    break;
+        addControl<T extends IControlSchema>(schema: T): void {
+            if (!TouchPassr.controlClasses.hasOwnProperty(schema.control)) {
+                throw new Error("Unknown control schema: '" + schema.control + "'.");
             }
+
+            var control: Control<T> = new TouchPassr.controlClasses[schema.control](this.InputWriter, schema, this.styles);
+
 
             this.controls[schema.name] = control;
             this.container.appendChild(control.getElement());
@@ -1062,8 +1250,7 @@ module TouchPassr {
          * Resets the base controls container. If a parent element is provided,
          * the container is added to it.
          * 
-         * @param {HTMLElement} [parentContainer]   A container element, such as
-         *                                          from GameStartr.
+         * @param parentContainer   A container element, such as from GameStartr.
          */
         private resetContainer(parentContainer?: HTMLElement): void {
             this.container = Control.prototype.createElement("div", {

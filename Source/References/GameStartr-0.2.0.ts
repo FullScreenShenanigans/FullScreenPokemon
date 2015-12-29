@@ -1,3 +1,4 @@
+/// <reference path="AreaSpawnr-0.2.0.ts" />
 /// <reference path="AudioPlayr-0.2.1.ts" />
 /// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="DeviceLayr-0.2.0.ts" />
@@ -10,7 +11,6 @@
 /// <reference path="LevelEditr-0.2.0.ts" />
 /// <reference path="MapsCreatr-0.2.1.ts" />
 /// <reference path="MapScreenr-0.2.1.ts" />
-/// <reference path="MapsHandlr-0.2.0.ts" />
 /// <reference path="MathDecidr-0.2.0.ts" />
 /// <reference path="ModAttachr-0.2.2.ts" />
 /// <reference path="NumberMakr-0.2.2.ts" />
@@ -34,7 +34,7 @@ declare module GameStartr {
     export interface IPageStyles {
         [i: string]: {
             [j: string]: string | number;
-        }
+        };
     }
 
     /**
@@ -76,7 +76,7 @@ declare module GameStartr {
          */
         mods?: {
             [i: string]: boolean;
-        }
+        };
 
         /**
          * Any additional styles that should be added to the page immediately.
@@ -129,7 +129,7 @@ declare module GameStartr {
         input: IInputWritrCustoms;
 
         /**
-         * Settings regarding map layouts, particularly for an IMapsCreatr and an IMapsHandlr.
+         * Settings regarding map layouts, particularly for an IMapsCreatr and an IAreaSpawnr.
          */
         maps: IMapsCreatrCustoms;
 
@@ -203,7 +203,7 @@ declare module GameStartr {
     export interface IGameStartrSettingsObject {
         [i: string]: any;
     }
-    
+
     /**
      * Settings regarding audio playback, particularly for an IAudioPlayr.
      */
@@ -247,7 +247,7 @@ declare module GameStartr {
         /**
          * Functions to be run on every upkeep.
          */
-        games: Function[]
+        games: Function[];
     }
 
     /**
@@ -273,12 +273,12 @@ declare module GameStartr {
          * A prefix to add before IItemsValue keys.
          */
         prefix: string;
-        
+
         /**
          * Whether an HTML container should be created to house the IItemValue elements.
          */
         doMakeContainer?: boolean;
-        
+
         /**
          * Any hardcoded changes to element content, such as "INF" for Infinity.
          */
@@ -297,7 +297,7 @@ declare module GameStartr {
         defaults: {
             [i: string]: string;
         };
-        
+
         /**
          * Initial item values (defaults) to store.
          */
@@ -324,7 +324,7 @@ declare module GameStartr {
                 description: string;
                 options: any;
             }
-        }
+        };
     }
 
     export interface IMapsCreatrCustoms extends IGameStartrSettingsObject {
@@ -453,6 +453,7 @@ declare module GameStartr {
         container: HTMLDivElement;
         canvas: HTMLCanvasElement;
         scale: number;
+        AreaSpawner: AreaSpawnr.IAreaSpawnr;
         AudioPlayer: AudioPlayr.IAudioPlayr;
         DeviceLayer: DeviceLayr.IDeviceLayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
@@ -463,7 +464,6 @@ declare module GameStartr {
         NumberMaker: NumberMakr.INumberMakr;
         MapsCreator: MapsCreatr.IMapsCreatr;
         MapScreener: MapScreenr.IMapScreenr;
-        MapsHandler: MapsHandlr.IMapsHandlr;
         MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
         ObjectMaker: ObjectMakr.IObjectMakr;
@@ -488,7 +488,7 @@ declare module GameStartr {
         resetNumberMaker(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMapsCreator(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMapScreener(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
-        resetMapsHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetAreaSpawner(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetModAttacher(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetPixelRender(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
@@ -524,7 +524,7 @@ declare module GameStartr {
         setBottom(thing: IThing, bottom: number): void;
         setLeft(thing: IThing, left: number): void;
         shiftBoth(thing: IThing, dx: number, dy: number, notChanged?: boolean): void;
-        shiftThings(things: IThing[], dx: number, dy: number, notChanged): void;
+        shiftThings(things: IThing[], dx: number, dy: number, notChanged?: boolean): void;
         shiftAll(dx: number, dy: number): void;
         setWidth(thing: IThing, width: number, updateSprite?: boolean, updateSize?: boolean): void;
         setHeight(thing: IThing, height: number, updateSprite?: boolean, updateSize?: boolean): void;
@@ -572,6 +572,7 @@ module GameStartr {
      * A general-use game engine for 2D 8-bit games.
      */
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
+        public AreaSpawner: AreaSpawnr.IAreaSpawnr;
         public AudioPlayer: AudioPlayr.IAudioPlayr;
         public DeviceLayer: DeviceLayr.IDeviceLayr;
         public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
@@ -583,7 +584,6 @@ module GameStartr {
         public NumberMaker: NumberMakr.INumberMakr;
         public MapsCreator: MapsCreatr.IMapsCreatr;
         public MapScreener: MapScreenr.IMapScreenr;
-        public MapsHandler: MapsHandlr.IMapsHandlr;
         public MathDecider: MathDecidr.IMathDecidr;
         public ModAttacher: ModAttachr.IModAttachr;
         public ObjectMaker: ObjectMakr.IObjectMakr;
@@ -619,7 +619,7 @@ module GameStartr {
             "resetPixelDrawer",
             "resetNumberMaker",
             "resetMapsCreator",
-            "resetMapsHandler",
+            "resetAreaSpawner",
             "resetInputWriter",
             "resetDeviceLayer",
             "resetTouchPasser",
@@ -933,14 +933,14 @@ module GameStartr {
         }
 
         /**
-         * Sets this.MapsHandler.
+         * Sets this.AreaSpawner.
          * 
          * @param GameStarter
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
-        resetMapsHandler(GameStarter: GameStartr, settings: IGameStartrSettings): void {
-            GameStarter.MapsHandler = new MapsHandlr.MapsHandlr({
+        resetAreaSpawner(GameStarter: GameStartr, settings: IGameStartrSettings): void {
+            GameStarter.AreaSpawner = new AreaSpawnr.AreaSpawnr({
                 "MapsCreator": GameStarter.MapsCreator,
                 "MapScreener": GameStarter.MapScreener,
                 "screenAttributes": GameStarter.settings.maps.screenAttributes,
@@ -1184,7 +1184,7 @@ module GameStartr {
          * @remarks This is generally called by a QuadsKeepr during a screen update.
          */
         onAreaSpawn(GameStarter: GameStartr, direction: string, top: number, right: number, bottom: number, left: number): void {
-            GameStarter.MapsHandler.spawnMap(
+            GameStarter.AreaSpawner.spawnArea(
                 direction,
                 (top + GameStarter.MapScreener.top) / GameStarter.unitsize,
                 (right + GameStarter.MapScreener.left) / GameStarter.unitsize,
@@ -1206,7 +1206,7 @@ module GameStartr {
          * @remarks This is generally called by a QuadsKeepr during a screen update.
          */
         onAreaUnspawn(GameStarter: GameStartr, direction: string, top: number, right: number, bottom: number, left: number): void {
-            GameStarter.MapsHandler.unspawnMap(
+            GameStarter.AreaSpawner.unspawnArea(
                 direction,
                 (top + GameStarter.MapScreener.top) / GameStarter.unitsize,
                 (right + GameStarter.MapScreener.left) / GameStarter.unitsize,
@@ -1402,10 +1402,10 @@ module GameStartr {
          */
         mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void {
             var MapsCreator: MapsCreatr.IMapsCreatr = GameStarter.MapsCreator,
-                MapsHandler: MapsHandlr.IMapsHandlr = GameStarter.MapsHandler,
-                prethings: { [i: string]: MapsCreatr.IPreThing[] } = MapsHandler.getPreThings(),
-                area: MapsCreatr.IMapsCreatrArea = MapsHandler.getArea(),
-                map: MapsCreatr.IMapsCreatrMap = MapsHandler.getMap(),
+                AreaSpawner: AreaSpawnr.IAreaSpawnr = GameStarter.AreaSpawner,
+                prethings: MapsCreatr.IPreThingsContainers = AreaSpawner.getPreThings(),
+                area: MapsCreatr.IMapsCreatrArea = AreaSpawner.getArea(),
+                map: MapsCreatr.IMapsCreatrMap = AreaSpawner.getMap(),
                 command: WorldSeedr.ICommand,
                 output: any,
                 i: number;
@@ -1879,7 +1879,7 @@ module GameStartr {
          * @returns A key that to identify the Thing's sprite.
          */
         generateObjectKey(thing: IThing): string {
-            return thing.GameStarter.MapsHandler.getArea().setting
+            return thing.GameStarter.AreaSpawner.getArea().setting
                 + " " + thing.groupType + " "
                 + thing.title + " " + thing.className;
         }

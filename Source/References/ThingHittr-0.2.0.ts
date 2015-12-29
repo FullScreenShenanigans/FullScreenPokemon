@@ -2,12 +2,19 @@
 
 declare module ThingHittr {
     /**
-     * Determines whether a group of Things may all have hits checked.
-     * 
-     * @returns Whether the Things may all have hits checked.
+     * For group names, the names of other groups they are allowed to hit.
      */
-    export interface IThingGroupCheck {
-        (): boolean;
+    export interface IGroupHitList {
+        [i: string]: string[];
+    }
+
+    /**
+     * Determines whether a Thing may all have hits checked.
+     * 
+     * @returns Whether the Thing may all have hits checked.
+     */
+    export interface IGlobalCheck {
+        (thing: QuadsKeepr.IThing): boolean;
     }
 
     /**
@@ -16,7 +23,7 @@ declare module ThingHittr {
      * 
      * @param thing   A Thing whose hits are to be checked.
      */
-    export interface IThingHitsCheck {
+    export interface IHitsCheck {
         (thing: QuadsKeepr.IThing): void;
     }
 
@@ -27,7 +34,7 @@ declare module ThingHittr {
      * @param other   A Thing to check collision with.
      * @returns Whether the two Things have collided.
      */
-    export interface IThingHitCheck {
+    export interface IHitCheck {
         (thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing): boolean;
     }
 
@@ -38,171 +45,39 @@ declare module ThingHittr {
      * @param other   A Thing that has collided with another Thing.
      * 
      */
-    export interface IThingHitFunction {
+    export interface IHitCallback {
         (thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing): void;
     }
 
     /**
-     * Generator Function to create IThingGroupCheck Functions.
-     * 
-     * @returns A Function that may be used as a group checker.
+     * A generic Thing Function.
      */
-    export interface IThingGroupCheckGenerator {
-        (): IThingGroupCheck;
+    export type IThingFunction = IGlobalCheck | IHitsCheck | IHitCheck | IHitCallback;
+
+    export interface IThingFunctionGenerator<T extends IThingFunction> {
+        (): T;
     }
 
-    /**
-     * Generator Function to create IThingHitCheck Functions.
-     * 
-     * @returns a Function that may be used as a Thing hits checker.
-     */
-    export interface IThingHitsCheckGenerator {
-        (): IThingHitsCheck;
+    export interface IThingFunctionGeneratorContainer<T extends IThingFunction> {
+        [i: string]: IThingFunctionGenerator<T>;
     }
 
-    /**
-     * Generator Function to create IThingHitCheck Functions.
-     * 
-     * @returns a Function that may be used as a Thing hit checker.
-     */
-    export interface IThingHitCheckGenerator {
-        (): IThingHitCheck;
+    export interface IThingFunctionGeneratorContainerGroup<T extends IThingFunction> {
+        [i: string]: IThingFunctionGeneratorContainer<T>;
     }
 
-    /**
-     * Generator Function to generate IThingHitFunction Functions.
-     * 
-     * @returns a Function that may be used as a Thing hit callback.
-     */
-    export interface IThingHitFunctionGenerator {
-        (): IThingHitFunction;
+    export interface IThingFunctionContainer<T extends IThingFunction> {
+        [i: string]: T;
     }
 
-    /**
-     * Container to hold IThingGroupCheck Functions, keyed by their respective group.
-     */
-    export interface IThingGroupCheckContainer {
-        [i: string]: IThingGroupCheck;
-    }
-
-    /**
-     * Container to hold IThingHitsCheck Functions, keyed by their respective type.
-     */
-    export interface IThingHitsCheckContainer {
-        [i: string]: IThingHitsCheck;
-    }
-
-    /**
-     * A container for Thing hit Functions and/or other containers.
-     */
-    type IThingHitContainer = IThingHitCheckContainer | IThingHitFunctionContainer;
-
-    /**
-     * Container to hold IThingHitCheck Functions, keyed by their respective group.
-     */
-    export interface IThingHitCheckContainer {
-        [i: string]: IThingHitCheck;
-    }
-
-    /**
-     * Container to hold IThingHitFunction groups, keyed by their respective types.
-     */
-    export interface IThingHitFunctionContainer {
-        [i: string]: IThingHitFunction;
-    }
-
-    /**
-     * Container to hold IThingHitCheckContainer containers, keyed by their 
-     * respective types.
-     */
-    export interface IThingHitCheckGroupContainer {
-        [i: string]: IThingHitCheckContainer;
-    }
-
-    /**
-     * Container to hold IThingHitFunctionContainer containers, keyed by their 
-     * respective groups.
-     */
-    export interface IThingHitFunctionGroupContainer {
-        [i: string]: IThingHitFunctionContainer;
-    }
-
-    /**
-     * Container to hold IThingGroupCheckGenerator Functions, keyed by their
-     * respective groups.
-     */
-    export interface IThingGroupCheckGeneratorContainer {
-        [i: string]: IThingGroupCheckGenerator;
-    }
-
-    /**
-     * Container to hold IThingHitCheckGenerator Functions, keyed by their 
-     * respective groups.
-     */
-    export interface IThingHitCheckGeneratorContainer {
-        [i: string]: IThingHitCheckGenerator;
-    }
-
-    /**
-     * Container to hold IThingHitFunctionGenerator Functions, keyed by their
-     * respective types.
-     */
-    export interface IThingHitFunctionGeneratorContainer {
-        [i: string]: IThingHitFunctionGenerator;
-    }
-
-    /**
-     * Container to hold IThingHitCheckGeneratorContainer containers, keyed by their
-     * respective groups.
-     */
-    export interface IThingHitCheckGeneratorGroupContainer {
-        [i: string]: IThingHitCheckGeneratorContainer;
-    }
-
-    /**
-     * Container to hold IThingHitFunctionGeneratorContainer containers, keyed by
-     * their respective groups.
-     */
-    export interface IThingHitFunctionGeneratorGroupContainer {
-        [i: string]: IThingHitFunctionGeneratorContainer;
-    }
-
-    /**
-     * Cache lookup for whether a Thing has had its hit checks generated.
-     */
-    export interface IThingGeneratedListing {
-        [i: string]: boolean;
+    export interface IThingFunctionContainerGroup<T extends IThingFunction> {
+        [i: string]: IThingFunctionContainer<T>;
     }
 
     /**
      * Settings to initialize a new IThingHittr.
      */
     export interface IThingHittrSettings {
-        /**
-         * The Function generators used for each group to test if a contained
-         * Thing may collide, keyed by group name.
-         */
-        globalCheckGenerators: IThingGroupCheckGeneratorContainer;
-
-        /**
-         * The Function generators used for hitChecks, as an Object with sub-Objects
-         * for each group, which have sub-Objects for each group they may collide 
-         * with.
-         */
-        hitCheckGenerators: IThingHitCheckGeneratorGroupContainer;
-
-        /**
-         * The Function generators used for collisions, as an Object with 
-         * sub- Objects for each group, which have sub- Objects for each group they
-         * they may collide with.
-         */
-        hitFunctionGenerators: IThingHitFunctionGeneratorGroupContainer;
-
-        /**
-         * The listing of the names of groups that may collide with each other.
-         */
-        groupNames: string[];
-
         /**
          * The key under which Things store their number of quadrants (by default, "numquads").
          */
@@ -217,60 +92,66 @@ declare module ThingHittr {
          * The key under which Things store which group they fall under (by default, "group").
          */
         keyGroupName?: string;
+
+        /**
+         * The key under which Things store which type they fall under (by default, "type").
+         */
+        keyTypeName?: string;
+
+        /**
+         * The Function generators used globalChecks.
+         */
+        globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
+
+        /**
+         * The Function generators used for hitChecks.
+         */
+        hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
+
+        /**
+         * The Function generators used for hitCallbacks.
+         */
+        hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
     }
     
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
-     * Things contained in the GroupHoldr's groups have automated collision checking
-     * against configurable sets of other groups, along with performance  
-     * optimizations to help reduce over-reoptimization of Functions.
+     * Functions for checking whether a Thing may collide, checking whether it collides
+     * with another Thing, and reacting to a collision are generated and cached for
+     * each Thing type, based on the overarching Thing groups.
      */
     export interface IThingHittr {
         /**
-         * Functions used to completely check the hits of a single Thing.
-         */
-        checkHitsOf: IThingHitsCheckContainer;
-        
-        /**
-         * Caches the hit checks for a group name. The global check for that group
-         * is cached on the name for later use.
+         * Caches global and hits checks for the given type if they do not yet exist.
          * 
-         * @param groupName   The name of the container group.
+         * @param typeName   The type to cache hits for.
+         * @param groupName   The general group the type fall sunder.
          */
-        cacheHitCheckGroup(groupName: string): void;
+        cacheChecksForType(typeName: string, groupName: string): void;
 
         /**
-         * Caches the hit checks for a specific type within a group, which involves
-         * caching the group's global checker, the hit checkers for each of the 
-         * type's allowed collision groups, and the hit callbacks for each of those
-         * groups. 
-         * The result is that you can call this.checkHitsOf[typeName] later on, and
-         * expect it to work as anything in groupName.
+         * Checks all hits for a Thing using its generated hits check.
          * 
-         * @param typeName   The type of the Things to cache for.
-         * @param groupName   The name of the container group.
+         * @param thing   The Thing to have hits checked.
          */
-        cacheHitCheckType(typeName: string, groupName: string): void;
+        checkHitsForThing(thing: QuadsKeepr.IThing): void;
 
         /**
-         * Function generator for a checkHitsOf tailored to a specific Thing type.
+         * Checks whether two Things are hitting.
          * 
-         * @param typeName   The type of the Things to generate for.
-         * @returns A Function that can check all hits for a Thing of the given type.
+         * @param thing   The primary Thing that may be hitting other.
+         * @param other   The secondary Thing that may be being hit by thing.
+         * @returns Whether the two Things are hitting.
          */
-        generateHitsCheck(typeName: string): IThingHitsCheck;
-        
+        checkHitForThings(thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing): boolean;
+
         /**
-         * Manually checks whether two Things are touching.
+         * Reacts to two Things hitting.
          * 
-         * @param thing   A Thing to check collision with.
-         * @param other   A Thing to check collision with.
-         * @param thingType   The individual type of thing.
-         * @param otherGroup   The individual group of other.
-         * @returns The result of the hit Function defined for thing's type and
-         *          other's group, which should be whether they're touching.
+         * @param thing   The primary Thing that is hitting other.
+         * @param other   The secondary Thing that is being hit by thing.
          */
-        checkHit(thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing, thingType: string, otherGroup: string): boolean;
+        runHitCallbackForThings(thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing): void;
     }
 }
 
@@ -280,62 +161,11 @@ module ThingHittr {
 
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
-     * Things contained in the GroupHoldr's groups have automated collision checking
-     * against configurable sets of other groups, along with performance  
-     * optimizations to help reduce over-reoptimization of Functions.
+     * Functions for checking whether a Thing may collide, checking whether it collides
+     * with another Thing, and reacting to a collision are generated and cached for
+     * each Thing type, based on the overarching Thing groups.
      */
     export class ThingHittr implements IThingHittr {
-        /**
-         * Functions used to completely check the hits of a single Thing.
-         */
-        public checkHitsOf: IThingHitsCheckContainer;
-
-        /**
-         * Names of groups to check collisions within Quadrants.
-         */
-        private groupNames: string[];
-
-        /**
-         * Check Functions for Things within groups to see if they're able to
-         * collide in the first place.
-         */
-        private globalChecks: IThingGroupCheckContainer;
-
-        /**
-         * Collision detection Functions to check two Things for collision.
-         */
-        private hitChecks: IThingHitCheckGroupContainer;
-
-        /**
-         * Hit Function callbacks for when two Things do collide.
-         */
-        private hitFunctions: IThingHitFunctionGroupContainer;
-
-        /**
-         * Function generators for globalChecks.
-         */
-        private globalCheckGenerators: IThingGroupCheckGeneratorContainer;
-
-        /**
-         * Function generators for hitChecks.
-         */
-        private hitCheckGenerators: IThingHitCheckGeneratorGroupContainer;
-
-        /**
-         * Function generators for hitFunctions.
-         */
-        private hitFunctionGenerators: IThingHitFunctionGeneratorGroupContainer;
-
-        /**
-         * A listing of which groupNames have had their hitCheck cached.
-         */
-        private cachedGroupNames: IThingGeneratedListing;
-
-        /**
-         * A listing of which types have had their checkHitsOf cached.
-         */
-        private cachedTypeNames: IThingGeneratedListing;
-
         /**
          * The key under which Things store their number of quadrants.
          */
@@ -347,9 +177,55 @@ module ThingHittr {
         private keyQuadrants: string;
 
         /**
-         * THe key under which Things store which group they fall under.
+         * The key under which Things store which group they fall under.
          */
         private keyGroupName: string;
+
+        /**
+         * The key under which Things store which type they fall under.
+         */
+        private keyTypeName: string;
+
+        /**
+         * For each group name, the names of other groups it is allowed to hit.
+         */
+        private groupHitLists: IGroupHitList;
+
+        /**
+         * Function generators for globalChecks.
+         */
+        private globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
+
+        /**
+         * Function generators for hitChecks.
+         */
+        private hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
+
+        /**
+         * Function generators for HitCallbacks.
+         */
+        private hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
+
+        /**
+         * Check Functions for Things within groups to see if they're able to
+         * collide in the first place.
+         */
+        private generatedGlobalChecks: IThingFunctionContainer<IGlobalCheck>;
+
+        /**
+         * Collision detection Functions to check two Things for collision.
+         */
+        private generatedHitChecks: IThingFunctionContainerGroup<IHitCheck>;
+
+        /**
+         * Hit Function callbacks for when two Things do collide.
+         */
+        private generatedHitCallbacks: IThingFunctionContainerGroup<IHitCallback>;
+
+        /**
+         * Hits checkers for when a Thing should have its hits detected.
+         */
+        private generatedHitsChecks: IThingFunctionContainer<IHitsCheck>;
 
         /**
          * Initializes a new instance of the ThingHittr class.
@@ -366,124 +242,106 @@ module ThingHittr {
             if (typeof settings.hitCheckGenerators === "undefined") {
                 throw new Error("No hitCheckGenerators given to ThingHittr.");
             }
-            if (typeof settings.hitFunctionGenerators === "undefined") {
-                throw new Error("No hitFunctionGenerators given to ThingHittr.");
+            if (typeof settings.hitCallbackGenerators === "undefined") {
+                throw new Error("No hitCallbackGenerators given to ThingHittr.");
             }
-
-            this.globalCheckGenerators = settings.globalCheckGenerators;
-            this.hitCheckGenerators = settings.hitCheckGenerators;
-            this.hitFunctionGenerators = settings.hitFunctionGenerators;
-
-            this.groupNames = settings.groupNames;
 
             this.keyNumQuads = settings.keyNumQuads || "numquads";
             this.keyQuadrants = settings.keyQuadrants || "quadrants";
             this.keyGroupName = settings.keyGroupName || "group";
+            this.keyTypeName = settings.keyTypeName || "type";
 
-            this.hitChecks = {};
-            this.globalChecks = {};
-            this.hitFunctions = {};
+            this.globalCheckGenerators = settings.globalCheckGenerators;
+            this.hitCheckGenerators = settings.hitCheckGenerators;
+            this.hitCallbackGenerators = settings.hitCallbackGenerators;
 
-            this.cachedGroupNames = {};
-            this.cachedTypeNames = {};
+            this.generatedHitChecks = {};
+            this.generatedHitCallbacks = {};
+            this.generatedGlobalChecks = {};
+            this.generatedHitsChecks = {};
 
-            this.checkHitsOf = {};
+            this.groupHitLists = this.generateGroupHitLists(this.hitCheckGenerators);
         }
 
-
-        /* Runtime preparation
-        */
-
         /**
-         * Caches the hit checks for a group name. The global check for that group
-         * is cached on the name for later use.
+         * Caches global and hits checks for the given type if they do not yet exist
+         * and have their generators defined
          * 
-         * @param groupName   The name of the container group.
+         * @param typeName   The type to cache hits for.
+         * @param groupName   The general group the type fall sunder.
          */
-        cacheHitCheckGroup(groupName: string): void {
-            if (this.cachedGroupNames[groupName]) {
-                return;
-            }
-
-            this.cachedGroupNames[groupName] = true;
-
-            if (typeof this.globalCheckGenerators[groupName] !== "undefined") {
-                this.globalChecks[groupName] = this.globalCheckGenerators[groupName]();
+        cacheChecksForType(typeName: string, groupName: string): void {
+            if (!this.generatedGlobalChecks.hasOwnProperty(typeName) && this.globalCheckGenerators.hasOwnProperty(groupName)) {
+                this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
+                this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
             }
         }
 
         /**
-         * Caches the hit checks for a specific type within a group, which involves
-         * caching the group's global checker, the hit checkers for each of the 
-         * type's allowed collision groups, and the hit callbacks for each of those
-         * groups. 
-         * The result is that you can call this.checkHitsOf[typeName] later on, and
-         * expect it to work as anything in groupName.
+         * Checks all hits for a Thing using its generated hits check.
          * 
-         * @param typeName   The type of the Things to cache for.
-         * @param groupName   The name of the container group.
+         * @param thing   The Thing to have hits checked.
          */
-        cacheHitCheckType(typeName: string, groupName: string): void {
-            if (this.cachedTypeNames[typeName]) {
-                return;
-            }
-
-            if (typeof this.globalCheckGenerators[groupName] !== "undefined") {
-                this.globalChecks[typeName] = this.globalCheckGenerators[groupName]();
-            }
-
-            if (typeof this.hitCheckGenerators[groupName] !== "undefined") {
-                this.hitChecks[typeName] = <IThingHitCheckContainer>this.cacheFunctionGroup(this.hitCheckGenerators[groupName]);
-            }
-
-            if (typeof this.hitFunctionGenerators[groupName] !== "undefined") {
-                this.hitFunctions[typeName] = <IThingHitFunctionContainer>this.cacheFunctionGroup(this.hitFunctionGenerators[groupName]);
-            }
-
-            this.cachedTypeNames[typeName] = true;
-            this.checkHitsOf[typeName] = this.generateHitsCheck(typeName).bind(this);
+        checkHitsForThing(thing: QuadsKeepr.IThing): void {
+            this.generatedHitsChecks[thing[this.keyTypeName]](thing);
         }
 
         /**
-         * Function generator for a checkHitsOf tailored to a specific Thing type.
+         * Checks whether two Things are hitting.
+         * 
+         * @param thing   The primary Thing that may be hitting other.
+         * @param other   The secondary Thing that may be being hit by thing.
+         * @returns Whether the two Things are hitting.
+         */
+        checkHitForThings(thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing): boolean {
+            return this.runThingsFunctionSafely(this.generatedHitChecks, thing, other, this.hitCheckGenerators);
+        }
+
+        /**
+         * Reacts to two Things hitting.
+         * 
+         * @param thing   The primary Thing that is hitting other.
+         * @param other   The secondary Thing that is being hit by thing.
+         */
+        runHitCallbackForThings(thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing): void {
+            this.runThingsFunctionSafely(this.generatedHitCallbacks, thing, other, this.hitCallbackGenerators);
+        }
+
+        /**
+         * Function generator for a hits check for a specific Thing type.
          * 
          * @param typeName   The type of the Things to generate for.
          * @returns A Function that can check all hits for a Thing of the given type.
          */
-        generateHitsCheck(typeName: string): IThingHitsCheck {
+        private generateHitsCheck(typeName: string): IHitsCheck {
             /**
              * Collision detection Function for a Thing. For each Quadrant the Thing
-             * is in, for all groups within that Function that the Thing's type is 
+             * is in, for all groups within that Function that the Thing's group is 
              * allowed to collide with, it is checked for collision with the Things
              * in that group. For each Thing it does collide with, the appropriate
              * hit Function is called.
              * 
              * @param thing   A Thing to check collision detection for.
              */
-            return function checkHitsOf(thing: QuadsKeepr.IThing): void {
+            return (thing: QuadsKeepr.IThing): void => {
                 // Don't do anything if the thing shouldn't be checking
-                if (typeof this.globalChecks[typeName] !== "undefined" && !this.globalChecks[typeName](thing)) {
+                if (!this.generatedGlobalChecks[typeName](thing)) {
                     return;
                 }
 
-                var others: QuadsKeepr.IThing[],
+                var groupNames: string[] = this.groupHitLists[thing[this.keyGroupName]],
+                    groupName: string,
+                    others: QuadsKeepr.IThing[],
                     other: QuadsKeepr.IThing,
-                    hitCheck: IThingHitCheck,
                     i: number,
                     j: number,
                     k: number;
 
-                // For each quadrant this is in, look at that quadrant's groups
+                // For each quadrant thing is in, look at each of its groups that thing can check
                 for (i = 0; i < thing[this.keyNumQuads]; i += 1) {
-                    for (j = 0; j < this.groupNames.length; j += 1) {
-                        hitCheck = this.hitChecks[typeName][this.groupNames[j]];
-
-                        // If no hit check exists for this combo, don't bother
-                        if (!hitCheck) {
-                            continue;
-                        }
-
-                        others = thing[this.keyQuadrants][i].things[this.groupNames[j]];
+                    for (j = 0; j < groupNames.length; j += 1) {
+                        groupName = groupNames[j];
+                        others = thing[this.keyQuadrants][i].things[groupName];
 
                         // For each other Thing in this group that should be checked...
                         for (k = 0; k < others.length; k += 1) {
@@ -494,17 +352,14 @@ module ThingHittr {
                                 break;
                             }
 
-                            // Do nothing if these two shouldn't be colliding
-                            if (
-                                typeof this.globalChecks[other[this.keyGroupName]] !== "undefined"
-                                && !this.globalChecks[other[this.keyGroupName]](other)
-                            ) {
+                            // Do nothing if other can't collide in the first place
+                            if (!this.generatedGlobalChecks[other[this.keyTypeName]](other)) {
                                 continue;
                             }
 
-                            // If they do hit, call the corresponding hitFunction
-                            if (hitCheck(thing, other)) {
-                                this.hitFunctions[typeName][other[this.keyGroupName]](thing, other);
+                            // If they do hit (hitCheck), call the corresponding hitCallback
+                            if (this.checkHitForThings(thing, other)) {
+                                this.runHitCallbackForThings(thing, other);
                             }
                         }
                     }
@@ -513,46 +368,48 @@ module ThingHittr {
         }
 
         /**
-         * Manually checks whether two Things are touching.
+         * Runs the Function in the group that maps to the two Things' types. If it doesn't
+         * yet exist, it is created.
          * 
-         * @param thing   A Thing to check collision with.
-         * @param other   A Thing to check collision with.
-         * @param thingType   The individual type of thing.
-         * @param otherGroup   The individual group of other.
-         * @returns The result of the hit Function defined for thing's type and
-         *          other's group, which should be whether they're touching.
+         * @param group   The group of Functions to use.
+         * @param thing   The primary Thing reacting to other.
+         * @param other   The secondary Thing that thing is reacting to.
+         * @returns The result of the ThingFunction from the group.
          */
-        checkHit(thing: QuadsKeepr.IThing, other: QuadsKeepr.IThing, thingType: string, otherGroup: string): boolean {
-            var checks: IThingHitCheckContainer = this.hitChecks[thingType],
-                check: IThingHitCheck;
+        private runThingsFunctionSafely(
+            group: IThingFunctionContainerGroup<IThingFunction>,
+            thing: QuadsKeepr.IThing,
+            other: QuadsKeepr.IThing,
+            generators: IThingFunctionGeneratorContainerGroup<IThingFunction>): any {
+            var typeThing: string = thing[this.keyTypeName],
+                typeOther: string = other[this.keyTypeName],
+                container: IThingFunctionContainer<IThingFunction> = group[typeThing],
+                check: IThingFunction;
 
-            if (!checks) {
-                throw new Error("No hit checks defined for " + thingType + ".");
+            if (!container) {
+                container = group[typeThing] = {};
             }
 
-            check = checks[otherGroup];
-
+            check = container[typeOther];
             if (!check) {
-                throw new Error("No hit check defined for " + thingType + " and " + otherGroup + ".");
+                check = container[typeOther] = generators[thing[this.keyGroupName]][other[this.keyGroupName]]();
             }
 
-            return check(thing, other);
+            return (<Function>check)(thing, other);
         }
 
         /**
-         * Creates a set of cached Objects for when a group of Functions must be
-         * generated, rather than a single one.
+         * Generates the list of group names each group is allowd to hit.
          * 
-         * @param functions   The container holding the Functions to be cached.
-         * @returns A container of the cached Functions.
+         * @param group   A summary of group containers.
          */
-        private cacheFunctionGroup(functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer {
-            var output: IThingHitCheckContainer | IThingHitFunctionContainer = {},
+        private generateGroupHitLists(group: IThingFunctionGeneratorContainerGroup<IThingFunction>): IGroupHitList {
+            var output: IGroupHitList = {},
                 i: string;
 
-            for (i in functions) {
-                if (functions.hasOwnProperty(i)) {
-                    output[i] = functions[i]();
+            for (i in group) {
+                if (group.hasOwnProperty(i)) {
+                    output[i] = Object.keys(group[i]);
                 }
             }
 

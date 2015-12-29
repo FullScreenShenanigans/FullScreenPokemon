@@ -1,6 +1,7 @@
 FullScreenPokemon.FullScreenPokemon.settings.collisions = {
     "groupNames": ["Solid", "Character"],
     "keyGroupName": "groupType",
+    "keyTypeName": "title",
     "globalCheckGenerators": {
         "Character": FullScreenPokemon.FullScreenPokemon.prototype.generateCanThingCollide,
         "Solid": FullScreenPokemon.FullScreenPokemon.prototype.generateCanThingCollide
@@ -11,7 +12,7 @@ FullScreenPokemon.FullScreenPokemon.settings.collisions = {
             "Solid": FullScreenPokemon.FullScreenPokemon.prototype.generateIsCharacterTouchingSolid
         }
     },
-    "hitFunctionGenerators": {
+    "hitCallbackGenerators": {
         "Character": {
             "Solid": FullScreenPokemon.FullScreenPokemon.prototype.generateHitCharacterThing,
             "Character": FullScreenPokemon.FullScreenPokemon.prototype.generateHitCharacterThing

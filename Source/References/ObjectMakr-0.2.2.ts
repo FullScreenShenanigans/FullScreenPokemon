@@ -58,14 +58,14 @@ declare module ObjectMakr {
          * How propperties can be mapped from an Array to indices.
          */
         indexMap?: any[];
-        
+
         /**
          * Optionally, a String index for each generated Object's Function to
          * be run when made.
          */
         onMake?: string;
     }
-    
+
     /**
      * An factory for JavaScript classes that automates the process of 
      * setting constructors' prototypal inheritance. A sketch of class inheritance 

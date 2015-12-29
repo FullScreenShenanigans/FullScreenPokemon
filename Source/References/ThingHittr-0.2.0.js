@@ -4,9 +4,9 @@ var ThingHittr;
     "use strict";
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
-     * Things contained in the GroupHoldr's groups have automated collision checking
-     * against configurable sets of other groups, along with performance
-     * optimizations to help reduce over-reoptimization of Functions.
+     * Functions for checking whether a Thing may collide, checking whether it collides
+     * with another Thing, and reacting to a collision are generated and cached for
+     * each Thing type, based on the overarching Thing groups.
      */
     var ThingHittr = (function () {
         /**
@@ -24,98 +24,90 @@ var ThingHittr;
             if (typeof settings.hitCheckGenerators === "undefined") {
                 throw new Error("No hitCheckGenerators given to ThingHittr.");
             }
-            if (typeof settings.hitFunctionGenerators === "undefined") {
-                throw new Error("No hitFunctionGenerators given to ThingHittr.");
+            if (typeof settings.hitCallbackGenerators === "undefined") {
+                throw new Error("No hitCallbackGenerators given to ThingHittr.");
             }
-            this.globalCheckGenerators = settings.globalCheckGenerators;
-            this.hitCheckGenerators = settings.hitCheckGenerators;
-            this.hitFunctionGenerators = settings.hitFunctionGenerators;
-            this.groupNames = settings.groupNames;
             this.keyNumQuads = settings.keyNumQuads || "numquads";
             this.keyQuadrants = settings.keyQuadrants || "quadrants";
             this.keyGroupName = settings.keyGroupName || "group";
-            this.hitChecks = {};
-            this.globalChecks = {};
-            this.hitFunctions = {};
-            this.cachedGroupNames = {};
-            this.cachedTypeNames = {};
-            this.checkHitsOf = {};
+            this.keyTypeName = settings.keyTypeName || "type";
+            this.globalCheckGenerators = settings.globalCheckGenerators;
+            this.hitCheckGenerators = settings.hitCheckGenerators;
+            this.hitCallbackGenerators = settings.hitCallbackGenerators;
+            this.generatedHitChecks = {};
+            this.generatedHitCallbacks = {};
+            this.generatedGlobalChecks = {};
+            this.generatedHitsChecks = {};
+            this.groupHitLists = this.generateGroupHitLists(this.hitCheckGenerators);
         }
-        /* Runtime preparation
-        */
         /**
-         * Caches the hit checks for a group name. The global check for that group
-         * is cached on the name for later use.
+         * Caches global and hits checks for the given type if they do not yet exist
+         * and have their generators defined
          *
-         * @param groupName   The name of the container group.
+         * @param typeName   The type to cache hits for.
+         * @param groupName   The general group the type fall sunder.
          */
-        ThingHittr.prototype.cacheHitCheckGroup = function (groupName) {
-            if (this.cachedGroupNames[groupName]) {
-                return;
-            }
-            this.cachedGroupNames[groupName] = true;
-            if (typeof this.globalCheckGenerators[groupName] !== "undefined") {
-                this.globalChecks[groupName] = this.globalCheckGenerators[groupName]();
+        ThingHittr.prototype.cacheChecksForType = function (typeName, groupName) {
+            if (!this.generatedGlobalChecks.hasOwnProperty(typeName) && this.globalCheckGenerators.hasOwnProperty(groupName)) {
+                this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
+                this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
             }
         };
         /**
-         * Caches the hit checks for a specific type within a group, which involves
-         * caching the group's global checker, the hit checkers for each of the
-         * type's allowed collision groups, and the hit callbacks for each of those
-         * groups.
-         * The result is that you can call this.checkHitsOf[typeName] later on, and
-         * expect it to work as anything in groupName.
+         * Checks all hits for a Thing using its generated hits check.
          *
-         * @param typeName   The type of the Things to cache for.
-         * @param groupName   The name of the container group.
+         * @param thing   The Thing to have hits checked.
          */
-        ThingHittr.prototype.cacheHitCheckType = function (typeName, groupName) {
-            if (this.cachedTypeNames[typeName]) {
-                return;
-            }
-            if (typeof this.globalCheckGenerators[groupName] !== "undefined") {
-                this.globalChecks[typeName] = this.globalCheckGenerators[groupName]();
-            }
-            if (typeof this.hitCheckGenerators[groupName] !== "undefined") {
-                this.hitChecks[typeName] = this.cacheFunctionGroup(this.hitCheckGenerators[groupName]);
-            }
-            if (typeof this.hitFunctionGenerators[groupName] !== "undefined") {
-                this.hitFunctions[typeName] = this.cacheFunctionGroup(this.hitFunctionGenerators[groupName]);
-            }
-            this.cachedTypeNames[typeName] = true;
-            this.checkHitsOf[typeName] = this.generateHitsCheck(typeName).bind(this);
+        ThingHittr.prototype.checkHitsForThing = function (thing) {
+            this.generatedHitsChecks[thing[this.keyTypeName]](thing);
         };
         /**
-         * Function generator for a checkHitsOf tailored to a specific Thing type.
+         * Checks whether two Things are hitting.
+         *
+         * @param thing   The primary Thing that may be hitting other.
+         * @param other   The secondary Thing that may be being hit by thing.
+         * @returns Whether the two Things are hitting.
+         */
+        ThingHittr.prototype.checkHitForThings = function (thing, other) {
+            return this.runThingsFunctionSafely(this.generatedHitChecks, thing, other, this.hitCheckGenerators);
+        };
+        /**
+         * Reacts to two Things hitting.
+         *
+         * @param thing   The primary Thing that is hitting other.
+         * @param other   The secondary Thing that is being hit by thing.
+         */
+        ThingHittr.prototype.runHitCallbackForThings = function (thing, other) {
+            this.runThingsFunctionSafely(this.generatedHitCallbacks, thing, other, this.hitCallbackGenerators);
+        };
+        /**
+         * Function generator for a hits check for a specific Thing type.
          *
          * @param typeName   The type of the Things to generate for.
          * @returns A Function that can check all hits for a Thing of the given type.
          */
         ThingHittr.prototype.generateHitsCheck = function (typeName) {
+            var _this = this;
             /**
              * Collision detection Function for a Thing. For each Quadrant the Thing
-             * is in, for all groups within that Function that the Thing's type is
+             * is in, for all groups within that Function that the Thing's group is
              * allowed to collide with, it is checked for collision with the Things
              * in that group. For each Thing it does collide with, the appropriate
              * hit Function is called.
              *
              * @param thing   A Thing to check collision detection for.
              */
-            return function checkHitsOf(thing) {
+            return function (thing) {
                 // Don't do anything if the thing shouldn't be checking
-                if (typeof this.globalChecks[typeName] !== "undefined" && !this.globalChecks[typeName](thing)) {
+                if (!_this.generatedGlobalChecks[typeName](thing)) {
                     return;
                 }
-                var others, other, hitCheck, i, j, k;
-                // For each quadrant this is in, look at that quadrant's groups
-                for (i = 0; i < thing[this.keyNumQuads]; i += 1) {
-                    for (j = 0; j < this.groupNames.length; j += 1) {
-                        hitCheck = this.hitChecks[typeName][this.groupNames[j]];
-                        // If no hit check exists for this combo, don't bother
-                        if (!hitCheck) {
-                            continue;
-                        }
-                        others = thing[this.keyQuadrants][i].things[this.groupNames[j]];
+                var groupNames = _this.groupHitLists[thing[_this.keyGroupName]], groupName, others, other, i, j, k;
+                // For each quadrant thing is in, look at each of its groups that thing can check
+                for (i = 0; i < thing[_this.keyNumQuads]; i += 1) {
+                    for (j = 0; j < groupNames.length; j += 1) {
+                        groupName = groupNames[j];
+                        others = thing[_this.keyQuadrants][i].things[groupName];
                         // For each other Thing in this group that should be checked...
                         for (k = 0; k < others.length; k += 1) {
                             other = others[k];
@@ -123,14 +115,13 @@ var ThingHittr;
                             if (thing === other) {
                                 break;
                             }
-                            // Do nothing if these two shouldn't be colliding
-                            if (typeof this.globalChecks[other[this.keyGroupName]] !== "undefined"
-                                && !this.globalChecks[other[this.keyGroupName]](other)) {
+                            // Do nothing if other can't collide in the first place
+                            if (!_this.generatedGlobalChecks[other[_this.keyTypeName]](other)) {
                                 continue;
                             }
-                            // If they do hit, call the corresponding hitFunction
-                            if (hitCheck(thing, other)) {
-                                this.hitFunctions[typeName][other[this.keyGroupName]](thing, other);
+                            // If they do hit (hitCheck), call the corresponding hitCallback
+                            if (_this.checkHitForThings(thing, other)) {
+                                _this.runHitCallbackForThings(thing, other);
                             }
                         }
                     }
@@ -138,38 +129,35 @@ var ThingHittr;
             };
         };
         /**
-         * Manually checks whether two Things are touching.
+         * Runs the Function in the group that maps to the two Things' types. If it doesn't
+         * yet exist, it is created.
          *
-         * @param thing   A Thing to check collision with.
-         * @param other   A Thing to check collision with.
-         * @param thingType   The individual type of thing.
-         * @param otherGroup   The individual group of other.
-         * @returns The result of the hit Function defined for thing's type and
-         *          other's group, which should be whether they're touching.
+         * @param group   The group of Functions to use.
+         * @param thing   The primary Thing reacting to other.
+         * @param other   The secondary Thing that thing is reacting to.
+         * @returns The result of the ThingFunction from the group.
          */
-        ThingHittr.prototype.checkHit = function (thing, other, thingType, otherGroup) {
-            var checks = this.hitChecks[thingType], check;
-            if (!checks) {
-                throw new Error("No hit checks defined for " + thingType + ".");
+        ThingHittr.prototype.runThingsFunctionSafely = function (group, thing, other, generators) {
+            var typeThing = thing[this.keyTypeName], typeOther = other[this.keyTypeName], container = group[typeThing], check;
+            if (!container) {
+                container = group[typeThing] = {};
             }
-            check = checks[otherGroup];
+            check = container[typeOther];
             if (!check) {
-                throw new Error("No hit check defined for " + thingType + " and " + otherGroup + ".");
+                check = container[typeOther] = generators[thing[this.keyGroupName]][other[this.keyGroupName]]();
             }
             return check(thing, other);
         };
         /**
-         * Creates a set of cached Objects for when a group of Functions must be
-         * generated, rather than a single one.
+         * Generates the list of group names each group is allowd to hit.
          *
-         * @param functions   The container holding the Functions to be cached.
-         * @returns A container of the cached Functions.
+         * @param group   A summary of group containers.
          */
-        ThingHittr.prototype.cacheFunctionGroup = function (functions) {
+        ThingHittr.prototype.generateGroupHitLists = function (group) {
             var output = {}, i;
-            for (i in functions) {
-                if (functions.hasOwnProperty(i)) {
-                    output[i] = functions[i]();
+            for (i in group) {
+                if (group.hasOwnProperty(i)) {
+                    output[i] = Object.keys(group[i]);
                 }
             }
             return output;

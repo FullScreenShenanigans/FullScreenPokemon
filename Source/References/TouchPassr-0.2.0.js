@@ -5,8 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var TouchPassr;
-(function (TouchPassr_1) {
-    "use strict";
+(function (TouchPassr) {
     /**
      * Abstract class for on-screen controls. Element creation for .element
      * and .elementInner within the constrained position is provided.
@@ -15,8 +14,9 @@ var TouchPassr;
         /**
          * Resets the control by setting member variables and calling resetElement.
          *
-         * @param {InputWritr} InputWriter
-         * @param {Object} schema
+         * @param InputWriter   The parent TouchPassr's InputWritr.
+         * @param schema   The governing schema for this control.
+         * @param styles   Any styles to add to the element.
          */
         function Control(InputWriter, schema, styles) {
             this.InputWriter = InputWriter;
@@ -24,13 +24,13 @@ var TouchPassr;
             this.resetElement(styles);
         }
         /**
-         * @return {HTMLElement} The outer container element.
+         * @returns The outer container element.
          */
         Control.prototype.getElement = function () {
             return this.element;
         };
         /**
-         * @return {HTMLElement} The inner container element.
+         * @returns The inner container element.
          */
         Control.prototype.getElementInner = function () {
             return this.elementInner;
@@ -40,10 +40,10 @@ var TouchPassr;
          * settings Objects may be given to be proliferated onto the Element via
          * proliferateElement.
          *
-         * @param {String} type   The tag of the Element to be created.
-         * @param {Object} [settings]   Additional settings for the Element, such as
-         *                              className or style.
-         * @return {HTMLElement}
+         * @param type   The tag of the Element to be created.
+         * @param settings   Additional settings for the Element, such as className
+         *                   or style.
+         * @returns A newly created HTMLElement of the specified type.
          */
         Control.prototype.createElement = function (tag) {
             var args = [];
@@ -52,7 +52,7 @@ var TouchPassr;
             }
             var element = document.createElement(tag || "div"), i;
             // For each provided object, add those settings to the element
-            for (i = 1; i < arguments.length; i += 1) {
+            for (i = 0; i < args.length; i += 1) {
                 this.proliferateElement(element, arguments[i]);
             }
             return element;
@@ -62,10 +62,11 @@ var TouchPassr;
          * element attributes don't play nicely with JavaScript Array standards.
          * Looking at you, HTMLCollection!
          *
-         * @param {HTMLElement} recipient
-         * @param {Any} donor
-         * @param {Boolean} [noOverride]
-         * @return {HTMLElement}
+         * @param recipient   An HTMLElement to receive properties from the donor.
+         * @param donor   An object do donoate properties to the recipient.
+         * @param noOverride   Whether pre-existing properties of the recipient should
+         *                     be skipped (defaults to false).
+         * @returns recipient
          */
         Control.prototype.proliferateElement = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }
@@ -80,7 +81,8 @@ var TouchPassr;
                     setting = donor[i];
                     // Special cases for HTML elements
                     switch (i) {
-                        // Children: just append all of them directly
+                        // Children and options: just append all of them directly
+                        case "children":
                         case "children":
                             if (typeof (setting) !== "undefined") {
                                 for (j = 0; j < setting.length; j += 1) {
@@ -119,9 +121,10 @@ var TouchPassr;
          * Resets the container elements. In any inherited resetElement, this should
          * still be called, as it implements the schema's position.
          *
-         * @param {Object} styles   Container styles for the contained elements.
+         * @param styles   Container styles for the contained elements.
          */
         Control.prototype.resetElement = function (styles, customType) {
+            var _this = this;
             var position = this.schema.position, offset = position.offset;
             this.element = this.createElement("div", {
                 "className": "control",
@@ -173,18 +176,18 @@ var TouchPassr;
             // elementInner's center-based positioning must wait until its total width is done setting
             setTimeout(function () {
                 if (position.horizontal === "center") {
-                    this.elementInner.style.left = this.createHalfSizeMeasurement(this.elementInner, "width", "offsetWidth");
+                    _this.elementInner.style.left = _this.createHalfSizeMeasurement(_this.elementInner, "width", "offsetWidth");
                 }
                 if (position.vertical === "center") {
-                    this.elementInner.style.top = this.createHalfSizeMeasurement(this.elementInner, "height", "offsetHeight");
+                    _this.elementInner.style.top = _this.createHalfSizeMeasurement(_this.elementInner, "height", "offsetHeight");
                 }
-            }.bind(this));
+            });
         };
         /**
          * Converts a String or Number into a CSS-ready String measurement.
          *
-         * @param {Mixed} raw   A raw measurement, such as "7" or "7px" or "7em".
-         * @return {String} The raw measurement as a CSS measurement.
+         * @param raw   A raw measurement, such as 7 or "7px" or "7em".
+         * @returns The raw measurement as a CSS measurement.
          */
         Control.prototype.createPixelMeasurement = function (raw) {
             if (!raw) {
@@ -199,13 +202,13 @@ var TouchPassr;
          * Determines a "half"-measurement that would center an element based on the
          * specified units.
          *
-         * @param {HTMLElement} element   The element whose half-size should be computed.
-         * @param {String} styleTag   The initial CSS measurement to check for, as "width"
-         *                            or "height".
-         * @param {String} attributeBackup   A measurement to check for if the CSS size
-         *                                   is falsy, as "offsetWidth" or "offsetHeight".
-         * @returns {String}   A measurement equal to half the sytleTag/attributeBackup,
-         *                     such as "3.5em" or "10px".
+         * @param element   The element whose half-size should be computed.
+         * @param styleTag   The initial CSS measurement to check for, as "width" or
+         *                   "height".
+         * @param attributeBackup   A measurement to check for if the CSS size is falsy,
+         *                          as "offsetWidth" or "offsetHeight".
+         * @returns A measurement equal to half the sytleTag/attributeBackup, such as
+         *          "3.5em" or "10px".
          */
         Control.prototype.createHalfSizeMeasurement = function (element, styleTag, attributeBackup) {
             var amountRaw, amount, units;
@@ -220,7 +223,7 @@ var TouchPassr;
         /**
          * Passes a style schema to .element and .elementInner.
          *
-         * @param {Object} styles   A container for styles to apply.
+         * @param styles   A container for styles to apply.
          */
         Control.prototype.passElementStyles = function (styles) {
             if (!styles) {
@@ -236,8 +239,8 @@ var TouchPassr;
         /**
          * Sets the rotation of an HTML element via CSS.
          *
-         * @param {HTMLElement} element
-         * @param {Number} rotation
+         * @param element   An HTML element to rotate.
+         * @param rotation   How many degrees to rotate the element.
          */
         Control.prototype.setRotation = function (element, rotation) {
             element.style.transform = "rotate(" + rotation + "deg)";
@@ -246,8 +249,8 @@ var TouchPassr;
          * Finds the position offset of an element relative to the page, factoring in
          * its parent elements' offsets recursively.
          *
-         * @param {HTMLElement} element
-         * @return {Number[]} The left and top offset of the element, in px.
+         * @param element   An HTML element.
+         * @returns The [left, top] offset of the element, in px.
          */
         Control.prototype.getOffsets = function (element) {
             var output;
@@ -263,9 +266,12 @@ var TouchPassr;
         };
         return Control;
     })();
-    TouchPassr_1.Control = Control;
+    TouchPassr.Control = Control;
+})(TouchPassr || (TouchPassr = {}));
+var TouchPassr;
+(function (TouchPassr) {
     /**
-     * Simple button control. It activates its triggers when the users presses
+     * Simple button control. It activates its triggers when the user presses
      * it or releases it, and contains a simple label.
      */
     var ButtonControl = (function (_super) {
@@ -277,7 +283,7 @@ var TouchPassr;
          * Resets the elements by adding listeners for mouse and touch
          * activation and deactivation events.
          *
-         * @param {Object} styles   Container styles for the contained elements.
+         * @param styles   Container styles for the contained elements.
          */
         ButtonControl.prototype.resetElement = function (styles) {
             var onActivated = this.onEvent.bind(this, "activated"), onDeactivated = this.onEvent.bind(this, "deactivated");
@@ -288,11 +294,11 @@ var TouchPassr;
             this.element.addEventListener("touchend", onDeactivated);
         };
         /**
-         * Reation callback for a triggered event.
+         * Reaction callback for a triggered event.
          *
-         * @param {String} which   The pipe being activated, such as
-         *                         "activated" or "deactivated".
-         * @param {Event} event
+         * @param which   The pipe being activated, such as "activated"
+         *                or "deactivated".
+         * @param event   The triggered event.
          */
         ButtonControl.prototype.onEvent = function (which, event) {
             var events = this.schema.pipes[which], i, j;
@@ -309,8 +315,11 @@ var TouchPassr;
             }
         };
         return ButtonControl;
-    })(Control);
-    TouchPassr_1.ButtonControl = ButtonControl;
+    })(TouchPassr.Control);
+    TouchPassr.ButtonControl = ButtonControl;
+})(TouchPassr || (TouchPassr = {}));
+var TouchPassr;
+(function (TouchPassr) {
     /**
      * Joystick control. An inner circle can be dragged to one of a number
      * of directions to trigger pipes on and off.
@@ -324,7 +333,7 @@ var TouchPassr;
          * Resets the element by creating a tick for each direction, along with
          * the multiple circular elements with their triggers.
          *
-         * @param {Object} styles   Container styles for the contained elements.
+         * @param styles   Container styles for the contained elements.
          */
         JoystickControl.prototype.resetElement = function (styles) {
             _super.prototype.resetElement.call(this, styles, "Joystick");
@@ -434,7 +443,7 @@ var TouchPassr;
          * Triggers a movement point for the joystick, and snaps the stick to
          * the nearest direction (based on the angle from the center to the point).
          *
-         * @param {Event} event
+         * @param event   A user-triggered event.
          */
         JoystickControl.prototype.triggerDragger = function (event) {
             event.preventDefault();
@@ -442,22 +451,14 @@ var TouchPassr;
                 return;
             }
             var coordinates = this.getEventCoordinates(event), x = coordinates[0], y = coordinates[1], offsets = this.getOffsets(this.elementInner), midX = offsets[0] + this.elementInner.offsetWidth / 2, midY = offsets[1] + this.elementInner.offsetHeight / 2, dxRaw = (x - midX) | 0, dyRaw = (midY - y) | 0, thetaRaw = this.getThetaRaw(dxRaw, dyRaw), directionNumber = this.findClosestDirection(thetaRaw), direction = this.schema.directions[directionNumber], theta = direction.degrees, components = this.getThetaComponents(theta), dx = components[0], dy = -components[1];
-            this.proliferateElement(this.elementDragLine, {
-                "style": {
-                    "marginLeft": ((dx * 77) | 0) + "%",
-                    "marginTop": ((dy * 77) | 0) + "%"
-                }
-            });
-            this.proliferateElement(this.elementDragShadow, {
-                "style": {
-                    "top": ((14 + dy * 10) | 0) + "%",
-                    "right": ((14 - dx * 10) | 0) + "%",
-                    "bottom": ((14 - dy * 10) | 0) + "%",
-                    "left": ((14 + dx * 10) | 0) + "%"
-                }
-            });
             // Ensure theta is above 0, and offset it by 90 for visual rotation
             theta = (theta + 450) % 360;
+            this.elementDragLine.style.marginLeft = ((dx * 77) | 0) + "%";
+            this.elementDragLine.style.marginTop = ((dy * 77) | 0) + "%";
+            this.elementDragShadow.style.top = ((14 + dy * 10) | 0) + "%";
+            this.elementDragShadow.style.right = ((14 - dx * 10) | 0) + "%";
+            this.elementDragShadow.style.bottom = ((14 - dy * 10) | 0) + "%";
+            this.elementDragShadow.style.left = ((14 + dx * 10) | 0) + "%";
             this.setRotation(this.elementDragLine, theta);
             this.positionDraggerEnable();
             this.setCurrentDirection(direction, event);
@@ -466,7 +467,7 @@ var TouchPassr;
          * Finds the raw coordinates of an event, whether it's a drag (touch)
          * or mouse event.
          *
-         * @return {Number[]} The x- and y- coordinates of the event.
+         * @returns The x- and y- coordinates of the event.
          */
         JoystickControl.prototype.getEventCoordinates = function (event) {
             if (event.type === "touchmove") {
@@ -480,7 +481,7 @@ var TouchPassr;
          * Finds the angle from a joystick center to an x and y. This assumes
          * straight up is 0, to the right is 90, down is 180, and left is 270.
          *
-         * @return {Number} The degrees to the given point.
+         * @returns The degrees to the given point.
          */
         JoystickControl.prototype.getThetaRaw = function (dxRaw, dyRaw) {
             // Based on the quadrant, theta changes...
@@ -508,8 +509,8 @@ var TouchPassr;
         /**
          * Converts an angle to its relative dx and dy coordinates.
          *
-         * @param {Number} thetaRaw
-         * @return {Number[]} The x- and y- parts of an angle.
+         * @param thetaRaw   The raw degrees of an anle.
+         * @returns The x- and y- parts of an angle.
          */
         JoystickControl.prototype.getThetaComponents = function (thetaRaw) {
             var theta = thetaRaw * Math.PI / 180;
@@ -518,8 +519,8 @@ var TouchPassr;
         /**
          * Finds the index of the closest direction to an angle.
          *
-         * @param {Number} degrees
-         * @return {Number}
+         * @param degrees   The degrees of an angle.
+         * @returns The index of the closest known direction to the degrees.a
          */
         JoystickControl.prototype.findClosestDirection = function (degrees) {
             var directions = this.schema.directions, difference = Math.abs(directions[0].degrees - degrees), smallestDegrees = directions[0].degrees, smallestDegreesRecord = 0, record = 0, differenceTest, i;
@@ -547,17 +548,15 @@ var TouchPassr;
          * Sets the current direction of the joystick, calling the relevant
          * InputWriter pipes if necessary.
          *
-         * @param {Object} direction
-         * @param {Event} [event]
+         * @param direction   A new direction to face.
+         * @param event   A user-triggered event.
          */
         JoystickControl.prototype.setCurrentDirection = function (direction, event) {
             if (this.currentDirection === direction) {
                 return;
             }
-            if (this.currentDirection && this.currentDirection.pipes) {
-                if (this.currentDirection.pipes.deactivated) {
-                    this.onEvent(this.currentDirection.pipes.deactivated, event);
-                }
+            if (this.currentDirection && this.currentDirection.pipes && this.currentDirection.pipes.deactivated) {
+                this.onEvent(this.currentDirection.pipes.deactivated, event);
             }
             if (direction.pipes && direction.pipes.activated) {
                 this.onEvent(direction.pipes.activated, event);
@@ -568,8 +567,8 @@ var TouchPassr;
          * Trigger for calling pipes when a new direction is set. All children
          * of the pipe has each of its keys triggered.
          *
-         * @param {Object} pipes
-         * @param {Event} [event]
+         * @param pipes   Pipes to trigger.
+         * @param event   A user-triggered event.
          */
         JoystickControl.prototype.onEvent = function (pipes, event) {
             var i, j;
@@ -583,14 +582,21 @@ var TouchPassr;
             }
         };
         return JoystickControl;
-    })(Control);
-    TouchPassr_1.JoystickControl = JoystickControl;
+    })(TouchPassr.Control);
+    TouchPassr.JoystickControl = JoystickControl;
+})(TouchPassr || (TouchPassr = {}));
+var TouchPassr;
+(function (TouchPassr_1) {
+    "use strict";
     /**
-     *
+     * A GUI touch layer layer on top of InputWritr that provides an extensible
+     * API for adding touch-based control elements into an HTML element.
      */
     var TouchPassr = (function () {
         /**
-         * @param {ITouchPassrSettings} settings
+         * Initializes a new instance of the TouchPassr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function TouchPassr(settings) {
             if (typeof settings === "undefined") {
@@ -617,37 +623,37 @@ var TouchPassr;
         /* Simple gets
         */
         /**
-         * @return {InputWritr} The InputWritr for controls to pipe event triggers to.
+         * @returns The InputWritr for controls to pipe event triggers to.
          */
         TouchPassr.prototype.getInputWriter = function () {
             return this.InputWriter;
         };
         /**
-         * @return {Boolean} Whether this is currently enabled and visually on the screen.
+         * @returns Whether this is currently enabled and visually on the screen.
          */
         TouchPassr.prototype.getEnabled = function () {
             return this.enabled;
         };
         /**
-         * @return {Object} The root container for styles to be added to control elements.
+         * @returns The root container for styles to be added to control elements.
          */
         TouchPassr.prototype.getStyles = function () {
             return this.styles;
         };
         /**
-         * @return {Object} The container for generated controls, keyed by their name.
+         * @returns The container for generated controls, keyed by their name.
          */
         TouchPassr.prototype.getControls = function () {
             return this.controls;
         };
         /**
-         * @return {HTMLElement} The HTMLElement all controls are placed within.
+         * @returns The HTMLElement all controls are placed within.
          */
         TouchPassr.prototype.getContainer = function () {
             return this.container;
         };
         /**
-         * @return {HTMLElement} The HTMLElement containing the controls container.
+         * @returns The HTMLElement containing the controls container.
          */
         TouchPassr.prototype.getParentContainer = function () {
             return this.parentContainer;
@@ -671,7 +677,7 @@ var TouchPassr;
         /**
          * Sets the parent container surrounding the controls container.
          *
-         * @param {HTMLElement} parentElement
+         * @param parentElement   A new parent container.
          */
         TouchPassr.prototype.setParentContainer = function (parentElement) {
             this.parentContainer = parentElement;
@@ -680,7 +686,7 @@ var TouchPassr;
         /**
          * Adds any number of controls to the internal listing and HTML container.
          *
-         * @param {Object} schemas   Schemas for new controls to be made, keyed by name.
+         * @param schemas   Schemas for new controls to be made, keyed by name.
          */
         TouchPassr.prototype.addControls = function (schemas) {
             var i;
@@ -693,20 +699,13 @@ var TouchPassr;
         /**
          * Adds a control to the internal listing and HTML container.
          *
-         * @param {Object} schema   The schema for the new control to be made.
+         * @param schema   The schema for the new control to be made.
          */
         TouchPassr.prototype.addControl = function (schema) {
-            var control;
-            switch (schema.control) {
-                case "Button":
-                    control = new ButtonControl(this.InputWriter, schema, this.styles);
-                    break;
-                case "Joystick":
-                    control = new JoystickControl(this.InputWriter, schema, this.styles);
-                    break;
-                default:
-                    break;
+            if (!TouchPassr.controlClasses.hasOwnProperty(schema.control)) {
+                throw new Error("Unknown control schema: '" + schema.control + "'.");
             }
+            var control = new TouchPassr.controlClasses[schema.control](this.InputWriter, schema, this.styles);
             this.controls[schema.name] = control;
             this.container.appendChild(control.getElement());
         };
@@ -716,11 +715,10 @@ var TouchPassr;
          * Resets the base controls container. If a parent element is provided,
          * the container is added to it.
          *
-         * @param {HTMLElement} [parentContainer]   A container element, such as
-         *                                          from GameStartr.
+         * @param parentContainer   A container element, such as from GameStartr.
          */
         TouchPassr.prototype.resetContainer = function (parentContainer) {
-            this.container = Control.prototype.createElement("div", {
+            this.container = TouchPassr_1.Control.prototype.createElement("div", {
                 "className": "touch-passer-container",
                 "style": {
                     "position": "absolute",
@@ -733,6 +731,13 @@ var TouchPassr;
             if (parentContainer) {
                 this.setParentContainer(parentContainer);
             }
+        };
+        /**
+         * Known, allowed control classes, keyed by name.
+         */
+        TouchPassr.controlClasses = {
+            "Button": TouchPassr_1.ButtonControl,
+            "Joystick": TouchPassr_1.JoystickControl
         };
         return TouchPassr;
     })();

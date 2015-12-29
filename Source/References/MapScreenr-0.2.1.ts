@@ -33,7 +33,7 @@ declare module MapScreenr {
          */
         [i: string]: any;
     }
-    
+
     /**
      * A simple container for Map attributes given by switching to an Area within 
      * that map. A bounding box of the current viewport is kept, along with a bag

@@ -478,14 +478,14 @@ module FullScreenPokemon {
             // ThingHittr becomes very non-performant if functions aren't generated
             // for each Thing constructor (optimization does not respect prototypal 
             // inheritance, sadly).
-            thing.FSP.ThingHitter.cacheHitCheckType(thing.title, thing.groupType);
+            thing.FSP.ThingHitter.cacheChecksForType(thing.title, thing.groupType);
 
             thing.bordering = [undefined, undefined, undefined, undefined];
 
             if (typeof thing.id === "undefined") {
                 thing.id = [
-                    thing.FSP.MapsHandler.getMapName(),
-                    thing.FSP.MapsHandler.getAreaName(),
+                    thing.FSP.AreaSpawner.getMapName(),
+                    thing.FSP.AreaSpawner.getAreaName(),
                     thing.title,
                     (thing.name || "Anonymous")
                 ].join("::");
@@ -585,8 +585,8 @@ module FullScreenPokemon {
             }
             thing.spawned = true;
 
-            thing.areaName = thing.areaName || thing.FSP.MapsHandler.getAreaName();
-            thing.mapName = thing.mapName || thing.FSP.MapsHandler.getMapName();
+            thing.areaName = thing.areaName || thing.FSP.AreaSpawner.getAreaName();
+            thing.mapName = thing.mapName || thing.FSP.AreaSpawner.getMapName();
 
             thing.FSP.addThing(
                 thing,
@@ -1105,7 +1105,7 @@ module FullScreenPokemon {
                 }
 
                 FSP.QuadsKeeper.determineThingQuadrants(character);
-                FSP.ThingHitter.checkHitsOf[character.title](character);
+                FSP.ThingHitter.checkHitsForThing(character);
             }
         }
 
@@ -1329,7 +1329,7 @@ module FullScreenPokemon {
          * 
          */
         animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
-            var grassMap: IMap = <IMap>thing.FSP.MapsHandler.getMap(grass.mapName),
+            var grassMap: IMap = <IMap>thing.FSP.AreaSpawner.getMap(grass.mapName),
                 grassArea: IArea = <IArea>grassMap.areas[grass.areaName],
                 options: IWildPokemonSchema[] = grassArea.wildPokemon.grass,
                 chosen: IWildPokemonSchema = thing.FSP.chooseRandomWildPokemon(thing.FSP, options),
@@ -3117,23 +3117,23 @@ module FullScreenPokemon {
          * 
          */
         spawnAreaSpawner(thing: IAreaSpawner): void {
-            var map: IMap = <IMap>thing.FSP.MapsHandler.getMap(thing.map),
+            var map: IMap = <IMap>thing.FSP.AreaSpawner.getMap(thing.map),
                 area: IArea = <IArea>map.areas[thing.area];
 
-            if (area === thing.FSP.MapsHandler.getArea()) {
+            if (area === thing.FSP.AreaSpawner.getArea()) {
                 thing.FSP.killNormal(thing);
                 return;
             }
 
             if (
                 area.spawnedBy
-                && area.spawnedBy === (<IArea>thing.FSP.MapsHandler.getArea()).spawnedBy
+                && area.spawnedBy === (<IArea>thing.FSP.AreaSpawner.getArea()).spawnedBy
             ) {
                 thing.FSP.killNormal(thing);
                 return;
             }
 
-            area.spawnedBy = (<IArea>thing.FSP.MapsHandler.getArea()).spawnedBy;
+            area.spawnedBy = (<IArea>thing.FSP.AreaSpawner.getArea()).spawnedBy;
 
             thing.FSP.activateAreaSpawner(thing, area);
         }
@@ -3145,11 +3145,11 @@ module FullScreenPokemon {
             var creation: any[] = area.creation,
                 FSP: FullScreenPokemon = thing.FSP,
                 MapsCreator: MapsCreatr.IMapsCreatr = FSP.MapsCreator,
-                MapsHandler: MapsHandlr.IMapsHandlr = FSP.MapsHandler,
+                AreaSpawner: AreaSpawnr.IAreaSpawnr = FSP.AreaSpawner,
                 QuadsKeeper: QuadsKeepr.IQuadsKeepr = FSP.QuadsKeeper,
-                areaCurrent: IArea = <IArea>MapsHandler.getArea(),
-                mapCurrent: IMap = <IMap>MapsHandler.getMap(),
-                prethingsCurrent: any = MapsHandler.getPreThings(),
+                areaCurrent: IArea = <IArea>AreaSpawner.getArea(),
+                mapCurrent: IMap = <IMap>AreaSpawner.getMap(),
+                prethingsCurrent: any = AreaSpawner.getPreThings(),
                 left: number = thing.left + thing.FSP.MapScreener.left,
                 top: number = thing.top + thing.FSP.MapScreener.top,
                 x: number,
@@ -3208,7 +3208,7 @@ module FullScreenPokemon {
                 MapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
             }
 
-            MapsHandler.spawnMap(
+            AreaSpawner.spawnArea(
                 "xInc",
                 QuadsKeeper.top / FSP.unitsize,
                 QuadsKeeper.right / FSP.unitsize,
@@ -3217,8 +3217,6 @@ module FullScreenPokemon {
 
             area.spawned = true;
             FSP.killNormal(thing);
-
-            // MapScreener.setVariables();
         }
 
         /**
@@ -4260,8 +4258,7 @@ module FullScreenPokemon {
                 return;
             }
 
-            if (!thing.FSP.ThingHitter.checkHit(
-                thing, thing.grass, thing.title, thing.grass.groupType)) {
+            if (!thing.FSP.ThingHitter.checkHitForThings(thing, thing.grass)) {
                 delete thing.grass;
                 return;
             }
@@ -8008,9 +8005,9 @@ module FullScreenPokemon {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 ticksRecorded: number = FSP.FPSAnalyzer.getNumRecorded();
 
-            FSP.ItemsHolder.setItem("map", FSP.MapsHandler.getMapName());
-            FSP.ItemsHolder.setItem("area", FSP.MapsHandler.getAreaName());
-            FSP.ItemsHolder.setItem("location", FSP.MapsHandler.getLocationEntered().name);
+            FSP.ItemsHolder.setItem("map", FSP.AreaSpawner.getMapName());
+            FSP.ItemsHolder.setItem("area", FSP.AreaSpawner.getAreaName());
+            FSP.ItemsHolder.setItem("location", FSP.AreaSpawner.getLocationEntered().name);
 
             FSP.ItemsHolder.increase("time", ticksRecorded - FSP.ticksElapsed);
             FSP.ticksElapsed = ticksRecorded;
@@ -8074,10 +8071,10 @@ module FullScreenPokemon {
                 map: IMap;
 
             if (typeof name === "undefined" || name.constructor === FullScreenPokemon) {
-                name = FSP.MapsHandler.getMapName();
+                name = FSP.AreaSpawner.getMapName();
             }
 
-            map = <IMap>FSP.MapsHandler.setMap(name);
+            map = <IMap>FSP.AreaSpawner.setMap(name);
 
             FSP.ModAttacher.fireEvent("onPreSetMap", map);
 
@@ -8110,9 +8107,9 @@ module FullScreenPokemon {
             FSP.MenuGrapher.setActiveMenu(undefined);
             FSP.TimeHandler.cancelAllEvents();
 
-            FSP.MapsHandler.setLocation(name);
+            FSP.AreaSpawner.setLocation(name);
             FSP.MapScreener.setVariables();
-            location = <ILocation>FSP.MapsHandler.getLocation(name);
+            location = <ILocation>FSP.AreaSpawner.getLocation(name);
             location.area.spawnedBy = {
                 "name": name,
                 "timestamp": new Date().getTime()
@@ -8120,7 +8117,7 @@ module FullScreenPokemon {
 
             FSP.ModAttacher.fireEvent("onPreSetLocation", location);
 
-            FSP.PixelDrawer.setBackground((<IArea>FSP.MapsHandler.getArea()).background);
+            FSP.PixelDrawer.setBackground((<IArea>FSP.AreaSpawner.getArea()).background);
 
             FSP.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
@@ -8153,7 +8150,7 @@ module FullScreenPokemon {
          * 
          */
         getAreaBoundariesReal(FSP: FullScreenPokemon): IAreaBoundaries {
-            var area: IArea = <IArea>FSP.MapsHandler.getArea();
+            var area: IArea = <IArea>FSP.AreaSpawner.getArea();
 
             if (!area) {
                 return {
@@ -8180,7 +8177,7 @@ module FullScreenPokemon {
          * 
          */
         getScreenScrollability(FSP: FullScreenPokemon): string {
-            var area: IArea = <IArea>FSP.MapsHandler.getArea(),
+            var area: IArea = <IArea>FSP.AreaSpawner.getArea(),
                 boundaries: IAreaBoundaries,
                 width: number,
                 height: number;
@@ -8221,11 +8218,11 @@ module FullScreenPokemon {
         mapAddAfter(prething: IPreThing, direction: Direction): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 MapsCreator: MapsCreatr.IMapsCreatr = FSP.MapsCreator,
-                MapsHandler: MapsHandlr.IMapsHandlr = FSP.MapsHandler,
-                prethings: any = MapsHandler.getPreThings(),
-                area: IArea = <IArea>MapsHandler.getArea(),
-                map: IMap = <IMap>MapsHandler.getMap(),
-                boundaries: IAreaBoundaries = <IAreaBoundaries>FSP.MapsHandler.getArea().boundaries;
+                AreaSpawner: AreaSpawnr.IAreaSpawnr = FSP.AreaSpawner,
+                prethings: any = AreaSpawner.getPreThings(),
+                area: IArea = <IArea>AreaSpawner.getArea(),
+                map: IMap = <IMap>AreaSpawner.getMap(),
+                boundaries: IAreaBoundaries = <IAreaBoundaries>FSP.AreaSpawner.getArea().boundaries;
 
             prething.direction = direction;
             switch (direction) {

@@ -3,7 +3,7 @@
 /// <reference path="InputWritr-0.2.0.ts" />
 /// <reference path="MapsCreatr-0.2.1.ts" />
 /// <reference path="MapScreenr-0.2.1.ts" />
-/// <reference path="MapsHandlr-0.2.0.ts" />
+/// <reference path="AreaSpawnr-0.2.0.ts" />
 /// <reference path="ObjectMakr-0.2.2.ts" />
 /// <reference path="PixelDrawr-0.2.0.ts" />
 /// <reference path="PixelRendr-0.2.0.ts" />
@@ -190,7 +190,7 @@ var LevelEditr;
             }
             this.enabled = true;
             this.oldInformation = {
-                "map": this.GameStarter.MapsHandler.getMapName()
+                "map": this.GameStarter.AreaSpawner.getMapName()
             };
             this.clearAllThings();
             this.resetDisplay();
@@ -319,7 +319,9 @@ var LevelEditr;
         LevelEditr.prototype.setCurrentThing = function (title, x, y) {
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
-            var args = this.generateCurrentArgs(), description = this.things[title];
+            var args = this.generateCurrentArgs(), description = this.things[title], reference = this.GameStarter.proliferate({
+                "outerok": 2
+            }, this.getNormalizedThingArguments(args)), thing = this.GameStarter.ObjectMaker.make(this.currentTitle, reference);
             this.clearCurrentThings();
             this.currentTitle = title;
             this.currentArgs = args;
@@ -327,11 +329,14 @@ var LevelEditr;
                 {
                     "xloc": 0,
                     "yloc": 0,
-                    "left": description.offsetLeft || 0,
                     "top": -description.offsetTop || 0,
-                    "thing": this.GameStarter.ObjectMaker.make(this.currentTitle, this.GameStarter.proliferate({
-                        "outerok": 2
-                    }, this.getNormalizedThingArguments(args)))
+                    "right": (description.offsetLeft) + thing.width * this.GameStarter.unitsize,
+                    "bottom": (-description.offsetTop || 0) + thing.height * this.GameStarter.unitsize,
+                    "left": description.offsetLeft || 0,
+                    "title": this.currentTitle,
+                    "reference": reference,
+                    "thing": thing,
+                    "spawned": true
                 }
             ];
             this.addThingAndDisableEvents(this.currentPreThings[0].thing, x, y);

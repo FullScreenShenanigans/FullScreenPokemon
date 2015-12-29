@@ -367,7 +367,7 @@ declare module FullScreenPokemon {
         offsetX?: number;
         offsetY?: number;
         position: string;
-        spawned: boolean; // part of the big MapsHandlr expansion to be added back
+        spawned: boolean;
         tolBottom: number;
         tolLeft: number;
         tolRight: number;
