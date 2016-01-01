@@ -400,7 +400,7 @@ declare module MapsCreatr {
 
     /**
      * Storage container and lazy loader for GameStartr maps that is the back-end
-     * counterpart to AreaSpawnr. Maps are created with their custom Location and
+     * counterpart to MapsHandlr. Maps are created with their custom Location and
      * Area members, which are initialized the first time the map is retrieved. 
      */
     export interface IMapsCreatr {
@@ -550,7 +550,7 @@ module MapsCreatr {
     /**
      * Basic storage container for a single Thing to be stored in an Area's
      * PreThings member. A PreThing stores an actual Thing along with basic
-     * sizing and positioning information, so that a AreaSpawner may accurately
+     * sizing and positioning information, so that a MapsHandler may accurately
      * spawn or unspawn it as needed.
      */
     export class PreThing implements IPreThing {
@@ -629,7 +629,7 @@ module MapsCreatr {
 
     /**
      * Storage container and lazy loader for GameStartr maps that is the back-end
-     * counterpart to AreaSpawnr. Maps are created with their custom Location and
+     * counterpart to MapsHandlr. Maps are created with their custom Location and
      * Area members, which are initialized the first time the map is retrieved. 
      */
     export class MapsCreatr {

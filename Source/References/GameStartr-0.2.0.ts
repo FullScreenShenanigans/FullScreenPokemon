@@ -1347,10 +1347,10 @@ module GameStartr {
             // Sprite cycles
             if (thing.spriteCycle) {
                 cycle = thing.spriteCycle;
-                thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || null, cycle[2] || null);
+                thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
             }
             if (cycle = thing.spriteCycleSynched) {
-                thing.GameStarter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || null, cycle[2] || null);
+                thing.GameStarter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
             }
 
             // flipHoriz and flipVert initially 

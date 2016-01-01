@@ -7,11 +7,7 @@ var PixelDrawr;
 (function (PixelDrawr_1) {
     "use strict";
     /**
-     * A front-end to PixelRendr to automate drawing mass amounts of sprites to a
-     * primary canvas. A PixelRendr keeps track of sprite sources, while a
-     * MapScreenr maintains boundary information on the screen. Global screen
-     * refills may be done by drawing every Thing in the thingArrays, or by
-     * Quadrants as a form of dirty rectangles.
+     * A front-end to PixelRendr to automate drawing mass amounts of sprites.
      */
     var PixelDrawr = (function () {
         /**
@@ -58,7 +54,7 @@ var PixelDrawr;
         /* Simple gets
         */
         /**
-         * @returns {Number} How often refill calls should be skipped.
+         * @returns How often refill calls should be skipped.
          */
         PixelDrawr.prototype.getFramerateSkip = function () {
             return this.framerateSkip;
@@ -356,7 +352,7 @@ var PixelDrawr;
         PixelDrawr.prototype.drawThingOnContextMultiple = function (context, canvases, thing, left, top) {
             var sprite = thing.sprite, topreal = top, leftreal = left, rightreal = left + thing.unitwidth, bottomreal = top + thing.unitheight, widthreal = thing.unitwidth, heightreal = thing.unitheight, spritewidthpixels = thing.spritewidthpixels, spriteheightpixels = thing.spriteheightpixels, widthdrawn = Math.min(widthreal, spritewidthpixels), heightdrawn = Math.min(heightreal, spriteheightpixels), opacity = thing.opacity, diffhoriz, diffvert, canvasref;
             switch (canvases.direction) {
-                // Vertical sprites may have 'top', 'bottom', 'middle'
+                // Vertical sprites may have "top", "bottom", "middle"
                 case "vertical":
                     // If there's a bottom, draw that and push up bottomreal
                     if ((canvasref = canvases[this.keyBottom])) {
@@ -373,7 +369,7 @@ var PixelDrawr;
                         heightreal -= diffvert;
                     }
                     break;
-                // Horizontal sprites may have 'left', 'right', 'middle'
+                // Horizontal sprites may have "left", "right", "middle"
                 case "horizontal":
                     // If there's a left, draw that and push forward leftreal
                     if ((canvasref = canvases[this.keyLeft])) {
@@ -391,7 +387,7 @@ var PixelDrawr;
                     }
                     break;
                 // Corner (vertical + horizontal + corner) sprites must have corners
-                // in 'topRight', 'bottomRight', 'bottomLeft', and 'topLeft'.
+                // in "topRight", "bottomRight", "bottomLeft", and "topLeft".
                 case "corners":
                     // topLeft, left, bottomLeft
                     diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteheightpixels;
