@@ -387,7 +387,7 @@ declare module FullScreenPokemon {
         distance: number;
         follower?: ICharacter;
         following?: ICharacter;
-        followingLoop?: TimeHandlr.IEvent;
+        followingLoop?: TimeHandlr.ITimeEvent;
         gift?: string;
         grass?: IGrass;
         heightGrass?: number;
@@ -415,7 +415,7 @@ declare module FullScreenPokemon {
         turning?: Direction;
         walking?: boolean;
         walkingCommands?: Direction[];
-        walkingFlipping?: TimeHandlr.IEvent;
+        walkingFlipping?: TimeHandlr.ITimeEvent;
     }
 
     export interface IEnemy extends ICharacter {

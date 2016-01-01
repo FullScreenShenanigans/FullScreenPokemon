@@ -5639,7 +5639,7 @@ module FullScreenPokemon {
                 direction: number = attackerName === "player" ? 1 : -1,
                 xvel: number = 7 * direction,
                 dt: number = 7,
-                movement: TimeHandlr.IEvent = FSP.TimeHandler.addEventInterval(
+                movement: TimeHandlr.ITimeEvent = FSP.TimeHandler.addEventInterval(
                     function (): void {
                         FSP.shiftHoriz(attacker, xvel);
                     },
