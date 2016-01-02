@@ -23,6 +23,7 @@
 /// <reference path="ThingHittr-0.2.0.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
 /// <reference path="TouchPassr-0.2.0.ts" />
+/// <reference path="UsageHelpr-0.2.0.ts" />
 /// <reference path="UserWrappr-0.2.0.ts" />
 /// <reference path="WorldSeedr-0.2.0.ts" />
 /// <reference path="js_beautify.ts" />
@@ -122,6 +123,11 @@ declare module GameStartr {
          * Settings regarding timed events, particularly for an ITimeHandlr.
          */
         events: ITimeHandlrCustoms;
+
+        /**
+         * Settings regarding help text, particularly for an IUsageHelpr.
+         */
+        help: IUsageHelprCustoms;
 
         /**
          * Settings regarding key and mouse inputs, particularly for an IInputWritr.
@@ -408,6 +414,8 @@ declare module GameStartr {
 
     export interface ITouchPassrCustoms extends IGameStartrSettingsObject, TouchPassr.ITouchPassrSettings { }
 
+    export interface IUsageHelprCustoms extends IGameStartrSettingsObject, UsageHelpr.IUsageHelprSettings { }
+
     export interface IUserWrapprCustoms extends IGameStartrSettingsObject { }
 
     export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
@@ -498,6 +506,7 @@ declare module GameStartr {
         resetThingHitter(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetTimeHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetQuadsKeeper(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetUsageHelper(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetWorldSeeder(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetScenePlayer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
@@ -594,6 +603,7 @@ module GameStartr {
         public ThingHitter: ThingHittr.IThingHittr;
         public TimeHandler: TimeHandlr.ITimeHandlr;
         public TouchPasser: TouchPassr.ITouchPassr;
+        public UsageHelper: UsageHelpr.IUsageHelpr;
         public UserWrapper: UserWrappr.IUserWrappr;
         public WorldSeeder: WorldSeedr.IWorldSeedr;
 
@@ -606,6 +616,7 @@ module GameStartr {
          * Default list of reset Functions to call during this.reset or this.resetTimed, in order.
          */
         public resets: string[] = [
+            "resetUsageHelper",
             "resetObjectMaker",
             "resetPixelRender",
             "resetTimeHandler",
@@ -695,6 +706,16 @@ module GameStartr {
          */
         resetTimed(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             super.resetTimed(GameStarter, GameStarter.resets, settings);
+        }
+
+        /**
+         * Sets this.UsageHelper.
+         * 
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
+         */
+        resetUsageHelper(GameStarter: GameStartr, settings: IGameStartrSettings): void {
+            GameStarter.UsageHelper = new UsageHelpr.UsageHelpr(GameStarter.settings.help);
         }
 
         /**
@@ -1347,10 +1368,10 @@ module GameStartr {
             // Sprite cycles
             if (thing.spriteCycle) {
                 cycle = thing.spriteCycle;
-                thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
+                thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || null, cycle[2] || null);
             }
             if (cycle = thing.spriteCycleSynched) {
-                thing.GameStarter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
+                thing.GameStarter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || null, cycle[2] || null);
             }
 
             // flipHoriz and flipVert initially 

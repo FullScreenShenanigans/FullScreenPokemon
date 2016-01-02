@@ -18,6 +18,10 @@ interface HTMLElement {
 }
 
 declare module UserWrappr {
+    export interface IEvent {
+        target: HTMLElement;
+    }
+
     /**
      * The class of game being controlled by the UserWrappr. This will normally
      * be implemented by the GameStartr project itself.
@@ -66,68 +70,6 @@ declare module UserWrappr {
     }
 
     /**
-     * Descriptions of help settings to display in the console.
-     */
-    export interface IUIHelpSettings {
-        /**
-         * An alias to replace with the IGameStartr's globalName.
-         */
-        globalNameAlias: string;
-
-        /**
-         * Lines to display immediately upon starting.
-         */
-        openings: string[];
-
-        /**
-         * Descriptions of APIs users may use, along with sample code.
-         */
-        options: {
-            [i: string]: IHelpOption[];
-        };
-    }
-
-    /**
-     * Descriptions of APIs users may use, along with sample code.
-     */
-    export interface IHelpOption {
-        /**
-         * A label for the API to research it by.
-         */
-        title: string;
-
-        /**
-         * A common description of the API.
-         */
-        description: string;
-
-        /**
-         * Code sample for usage of the API.
-         */
-        usage?: string;
-
-        /**
-         * API code samples with explanations.
-         */
-        examples?: IHelpExample[];
-    }
-
-    /**
-     * Code sample for an API with an explanation.
-     */
-    export interface IHelpExample {
-        /**
-         * An API code sample.
-         */
-        code: string;
-
-        /**
-         * An explanation for the API code sample.
-         */
-        comment: string;
-    }
-
-    /**
      * How wide and tall an IUserWrappr's contained IGameStartr should be sized.
      */
     export interface ISizeSummary {
@@ -163,11 +105,6 @@ declare module UserWrappr {
      * Settings to initialize a new IUserWrappr.
      */
     export interface IUserWrapprSettings {
-        /**
-         * Descriptions of help settings to display in the console.
-         */
-        helpSettings: IUIHelpSettings;
-
         /**
          * What the global object is called, such as "window".
          */
@@ -206,7 +143,7 @@ declare module UserWrappr {
         /**
          * A utility Function to log messages, commonly console.log.
          */
-        log?: (...args: any[]) => void;
+        logger?: (...args: any[]) => void;
 
         /**
          * Custom arguments to be passed to the IGameStartr's modules.
@@ -262,21 +199,6 @@ declare module UserWrappr {
          * @returns The customs used to construct the IGameStartr.
          */
         getCustoms(): IGameStartrCustoms;
-
-        /**
-         * @returns The help settings from settings.helpSettings.
-         */
-        getHelpSettings(): IUIHelpSettings;
-
-        /**
-         * @returns What the global object is called, such as "window".
-         */
-        getGlobalName(): string;
-
-        /**
-         * @returns What to replace with the name of the game in help text.
-         */
-        getGameNameAlias(): string;
 
         /**
          * @returns All the keys the user is allowed to pick from in UI controls.
@@ -342,54 +264,6 @@ declare module UserWrappr {
          *             known info, or a container of settings.
          */
         setCurrentSize(size: string | ISizeSummary): void;
-
-        /**
-         * Displays the root help menu dialog, which contains all the openings
-         * for each help settings opening.
-         */
-        displayHelpMenu(): void;
-
-        /**
-         * Displays the texts of each help settings options, all surrounded by
-         * instructions on how to focus on a group.
-         */
-        displayHelpOptions(): void;
-
-        /**
-         * Displays the summary for a help group of the given optionName.
-         * 
-         * @param optionName   The help group to display the summary of.
-         */
-        displayHelpGroupSummary(optionName: string): void;
-
-        /**
-         * Displays the full information on a help group of the given optionName.
-         * 
-         * @param optionName   The help group to display the information of.
-         */
-        displayHelpOption(optionName: string): void;
-
-        /**
-         * Logs a bit of help text, filtered by this.filterHelpText.
-         * 
-         * @param text   The text to be filtered and logged.
-         */
-        logHelpText(text: string): void;
-
-        /**
-         * @param text The text to filter.
-         * @returns The text, with `this.gameNameAlias` replaced by globalName.
-         */
-        filterHelpText(text: string): string;
-
-        /**
-         * Ensures a bit of text is of least a certain length.
-         * 
-         * @param text   The text to pad.
-         * @param length   How wide the text must be, at minimum.
-         * @returns The text with spaces padded to the right.
-         */
-        padTextRight(text: string, length: number): string;
     }
 
     /**
@@ -554,7 +428,7 @@ module UserWrappr.UISchemas {
         /**
          * A general, default callback for when a button is clicked.
          */
-        callback: (GameStarter: IGameStartr) => void;
+        callback: (GameStarter: IGameStartr, ...args: any[]) => void;
 
         /**
          * A key to add to buttons when they're active.
@@ -574,7 +448,7 @@ module UserWrappr.UISchemas {
         /**
          * A callback for when this specific button is pressed.
          */
-        callback: (GameStarter: IGameStartr) => void;
+        callback?: (GameStarter: IGameStartr, ...args: any[]) => void;
 
         /**
          * A source for the button's initial value.
@@ -608,8 +482,6 @@ module UserWrappr.UISchemas {
                 options: IOptionsButtonSchema[] = schema.options instanceof Function
                     ? (<IOptionSource>schema.options).call(self, this.GameStarter)
                     : schema.options,
-                optionKeys: string[] = Object.keys(options),
-                keyActive: string = schema.keyActive || "active",
                 classNameStart: string = "select-option options-button-option",
                 scope: ButtonsGenerator = this,
                 option: IOptionsButtonSchema,
@@ -618,12 +490,12 @@ module UserWrappr.UISchemas {
 
             output.className = "select-options select-options-buttons";
 
-            for (i = 0; i < optionKeys.length; i += 1) {
-                option = options[optionKeys[i]];
+            for (i = 0; i < options.length; i += 1) {
+                option = options[i];
 
                 element = document.createElement("div");
                 element.className = classNameStart;
-                element.textContent = optionKeys[i];
+                element.textContent = option.title;
 
                 element.onclick = function (schema: IOptionsButtonSchema, element: HTMLDivElement): void {
                     if (scope.getParentControlElement(element).getAttribute("active") !== "on") {
@@ -642,7 +514,7 @@ module UserWrappr.UISchemas {
 
                 this.ensureLocalStorageButtonValue(element, option, schema);
 
-                if (option[keyActive]) {
+                if (option[schema.keyActive || "active"]) {
                     element.className += " option-enabled";
                     element.setAttribute("option-enabled", "true");
                 } else if (schema.assumeInactive) {
@@ -1700,21 +1572,10 @@ module UserWrappr {
         private customs: any;
 
         /**
-         * Help settings specifically for the user interface, obtained from
-         * settings.helpSettings.
-         */
-        private helpSettings: IUIHelpSettings;
-
-        /**
          * What the global object is called (typically "window" for browser 
          * environments and "global" for node-style environments).
          */
         private globalName: string;
-
-        /**
-         * What to replace with the name of the game in help text.
-         */
-        private gameNameAlias: string;
 
         /**
          * All the keys the user is allowed to pick from as key bindings.
@@ -1754,7 +1615,7 @@ module UserWrappr {
         /**
          * A utility Function to log messages, commonly console.log.
          */
-        private logger: (...args: any[]) => string;
+        private logger: (...args: any[]) => any;
 
         /**
          * Generators used to generate HTML controls for the user.
@@ -1809,9 +1670,6 @@ module UserWrappr {
             if (typeof settings.GameStartrConstructor === "undefined") {
                 throw new Error("No GameStartrConstructor given to UserWrappr.");
             }
-            if (typeof settings.helpSettings === "undefined") {
-                throw new Error("No helpSettings given to UserWrappr.");
-            }
             if (typeof settings.globalName === "undefined") {
                 throw new Error("No globalName given to UserWrappr.");
             }
@@ -1828,15 +1686,13 @@ module UserWrappr {
             this.settings = settings;
             this.GameStartrConstructor = settings.GameStartrConstructor;
             this.globalName = settings.globalName;
-            this.helpSettings = this.settings.helpSettings;
 
             this.sizes = this.importSizes(settings.sizes);
 
             this.customs = settings.customs || {};
-            this.gameNameAlias = settings.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
             this.gameElementSelector = settings.gameElementSelector || "#game";
             this.gameControlsSelector = settings.gameControlsSelector || "#controls";
-            this.logger = settings.log || console.log.bind(console);
+            this.logger = settings.logger || console.log.bind(console);
 
             this.isFullScreen = false;
             this.setCurrentSize(this.sizes[settings.sizeDefault]);
@@ -1914,27 +1770,6 @@ module UserWrappr {
          */
         getCustoms(): IGameStartrCustoms {
             return this.customs;
-        }
-
-        /**
-         * @returns The help settings from settings.helpSettings.
-         */
-        getHelpSettings(): IUIHelpSettings {
-            return this.helpSettings;
-        }
-
-        /**
-         * @returns What the global object is called, such as "window".
-         */
-        getGlobalName(): string {
-            return this.globalName;
-        }
-
-        /**
-         * @returns What to replace with the name of the game in help text.
-         */
-        getGameNameAlias(): string {
-            return this.gameNameAlias;
         }
 
         /**
@@ -2050,142 +1885,6 @@ module UserWrappr {
                 this.GameStarter.container.parentNode.removeChild(this.GameStarter.container);
                 this.resetGameStarter(this.settings, this.customs);
             }
-        }
-
-
-        /* Help dialog
-        */
-
-        /**
-         * Displays the root help menu dialog, which contains all the openings
-         * for each help settings opening.
-         */
-        displayHelpMenu(): void {
-            this.helpSettings.openings.forEach(this.logHelpText.bind(this));
-        }
-
-        /**
-         * Displays the texts of each help settings options, all surrounded by
-         * instructions on how to focus on a group.
-         */
-        displayHelpOptions(): void {
-            this.logHelpText(
-                "To focus on a group, enter `"
-                + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`"
-            );
-
-            Object.keys(this.helpSettings.options).forEach(this.displayHelpGroupSummary.bind(this));
-
-            this.logHelpText(
-                "\nTo focus on a group, enter `"
-                + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`"
-            );
-        }
-
-        /**
-         * Displays the summary for a help group of the given optionName.
-         * 
-         * @param optionName   The help group to display the summary of.
-         */
-        displayHelpGroupSummary(optionName: string): void {
-            var actions: IHelpOption[] = this.helpSettings.options[optionName],
-                action: IHelpOption,
-                maxTitleLength: number = 0,
-                i: number;
-
-            this.logger("\n" + optionName);
-
-            for (i = 0; i < actions.length; i += 1) {
-                maxTitleLength = Math.max(maxTitleLength, this.filterHelpText(actions[i].title).length);
-            }
-
-            for (i = 0; i < actions.length; i += 1) {
-                action = actions[i];
-                this.logger(this.padTextRight(this.filterHelpText(action.title), maxTitleLength) + " ... " + action.description);
-            }
-        }
-
-        /**
-         * Displays the full information on a help group of the given optionName.
-         * 
-         * @param optionName   The help group to display the information of.
-         */
-        displayHelpOption(optionName: string): void {
-            var actions: IHelpOption[] = this.helpSettings.options[optionName],
-                action: IHelpOption,
-                example: IHelpExample,
-                maxExampleLength: number,
-                i: number,
-                j: number;
-
-            for (i = 0; i < actions.length; i += 1) {
-                action = actions[i];
-                maxExampleLength = 0;
-                this.logHelpText(action.title + " -- " + action.description);
-
-                if (action.usage) {
-                    this.logHelpText(action.usage);
-                }
-
-                if (action.examples) {
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        maxExampleLength = Math.max(
-                            maxExampleLength,
-                            this.filterHelpText("    " + example.code).length
-                        );
-                    }
-
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        this.logHelpText(
-                            this.padTextRight(
-                                this.filterHelpText("    " + example.code),
-                                maxExampleLength
-                            )
-                            + "  // " + example.comment
-                        );
-                    }
-                }
-
-                this.logger("\n");
-            }
-        }
-
-        /**
-         * Logs a bit of help text, filtered by this.filterHelpText.
-         * 
-         * @param text   The text to be filtered and logged.
-         */
-        logHelpText(text: string): void {
-            this.logger(this.filterHelpText(text));
-        }
-
-        /**
-         * @param text The text to filter.
-         * @returns The text, with `this.gameNameAlias` replaced by globalName.
-         */
-        filterHelpText(text: string): string {
-            return text.replace(new RegExp(this.gameNameAlias, "g"), this.globalName);
-        }
-
-        /**
-         * Ensures a bit of text is of least a certain length.
-         * 
-         * @param text   The text to pad.
-         * @param length   How wide the text must be, at minimum.
-         * @returns The text with spaces padded to the right.
-         */
-        padTextRight(text: string, length: number): string {
-            var diff: number = 1 + length - text.length;
-
-            if (diff <= 0) {
-                return text;
-            }
-
-            return text + Array.call(Array, diff).join(" ");
         }
 
 

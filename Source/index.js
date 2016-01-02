@@ -10,5 +10,7 @@ document.onreadystatechange = function (event) {
             "GameStartrConstructor": FullScreenPokemon.FullScreenPokemon
         }, FullScreenPokemon.FullScreenPokemon.settings.ui, true));
 
-    console.log("It took " + (Date.now() - time) + " milliseconds to start."), UserWrapper.displayHelpMenu()
+    console.log("It took " + (Date.now() - time) + " milliseconds to start.");
+
+    UserWrapper.GameStarter.UsageHelper.displayHelpMenu();
 };
