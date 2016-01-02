@@ -88,6 +88,7 @@ module FullScreenPokemon {
             "generator": undefined,
             "groups": undefined,
             "events": undefined,
+            "help": undefined,
             "input": undefined,
             "maps": undefined,
             "math": undefined,
