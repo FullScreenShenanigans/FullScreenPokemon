@@ -53,7 +53,7 @@ var TouchPassr;
             var element = document.createElement(tag || "div"), i;
             // For each provided object, add those settings to the element
             for (i = 0; i < args.length; i += 1) {
-                this.proliferateElement(element, arguments[i]);
+                this.proliferateElement(element, args[i]);
             }
             return element;
         };

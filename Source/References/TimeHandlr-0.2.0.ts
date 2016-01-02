@@ -284,7 +284,7 @@ declare module TimeHandlr {
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
          * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeEvent;
+        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeCycle;
 
         /**
          * Increments time and handles all now-current events.
@@ -595,8 +595,6 @@ module TimeHandlr {
             var calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault),
                 entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
 
-            console.log("oh", calcTime, entryTime, this.time, timeDelay);
-
             if (entryTime === this.time) {
                 return this.addEventInterval(callback, timeDelay, numRepeats, ...args);
             } else {
@@ -643,15 +641,20 @@ module TimeHandlr {
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
          * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeEvent {
-            var calcTime: number = settings.length * TimeEvent.runCalculator(timing || this.timingDefault),
-                entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
-
-            if (entryTime === this.time) {
-                return this.addClassCycle(thing, settings, name, timing).event;
-            } else {
-                return this.addEvent(this.addClassCycle, entryTime - this.time, thing, settings, name, timing);
+        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeCycle {
+            // Make sure the object has a holder for keyCycles...
+            if (!thing[this.keyCycles]) {
+                thing[this.keyCycles] = {};
             }
+
+            // ...and nothing previously existing for that name
+            this.cancelClassCycle(thing, name);
+
+            settings = thing[this.keyCycles][name || "0"] = this.setClassCycle(thing, settings, timing, true);
+
+            // Immediately run the first class cycle, then return
+            this.cycleClass(thing, settings);
+            return settings;
         }
 
         /* General event handling
@@ -783,15 +786,11 @@ module TimeHandlr {
          * @param thing   The object whose class is to be cycled.
          * @param settings   A container for repetition settings, particularly .length.
          * @param timing   A way to determine how often to do the cycle.
-         * @param synched   Whether the cycle should be in time with all other cycles 
-         *                  of the same period.
+         * @param synched   Whether the animations should be synched to their period.
+         * @returns The cycle containing settings and the new event.
          */
-        private setClassCycle(
-            thing: IThing,
-            settings: ITimeCycle,
-            timing: number | INumericCalculator,
-            synched?: boolean): ITimeCycle {
-            var eventAdder: IEventCallback = (synched ? this.addEventIntervalSynched : this.addEventInterval).bind(this);
+        private setClassCycle(thing: IThing, settings: ITimeCycle, timing?: number | INumericCalculator, synched?: boolean): ITimeCycle {
+            timing = TimeEvent.runCalculator(timing || this.timingDefault);
 
             if (this.copyCycleSettings) {
                 settings = this.makeSettingsCopy(settings);
@@ -801,9 +800,25 @@ module TimeHandlr {
             settings.location = settings.oldclass = -1;
 
             // Let the object know to start the cycle when needed
-            thing[this.keyOnClassCycleStart] = (): void => {
-                settings.event = eventAdder(this.cycleClass, timing || this.timingDefault, Infinity, thing, settings);
-            };
+            if (synched) {
+                thing[this.keyOnClassCycleStart] = (): void => {
+                    var calcTime: number = settings.length * <number>timing,
+                        entryDelay: number = Math.ceil(this.time / calcTime) * calcTime - this.time,
+                        event: ITimeEvent;
+
+                    if (entryDelay === 0) {
+                        event = this.addEventInterval(this.cycleClass, timing, Infinity, thing, settings);
+                    } else {
+                        event = this.addEvent(this.addEventInterval, entryDelay, this.cycleClass, timing, Infinity, thing, settings);
+                    }
+
+                    settings.event = event;
+                };
+            } else {
+                thing[this.keyOnClassCycleStart] = (): void => {
+                    settings.event = this.addEventInterval(this.cycleClass, timing, Infinity, thing, settings);
+                };
+            }
 
             // If it should already start, do that
             if (thing[this.keyDoClassCycleStart]) {

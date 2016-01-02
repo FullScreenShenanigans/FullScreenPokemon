@@ -168,7 +168,6 @@ var TimeHandlr;
             timeDelay = timeDelay || 1;
             numRepeats = numRepeats || 1;
             var calcTime = TimeHandlr_1.TimeEvent.runCalculator(timeDelay || this.timingDefault), entryTime = Math.ceil(this.time / calcTime) * calcTime;
-            console.log("oh", calcTime, entryTime, this.time, timeDelay);
             if (entryTime === this.time) {
                 return this.addEventInterval.apply(this, [callback, timeDelay, numRepeats].concat(args));
             }
@@ -210,13 +209,16 @@ var TimeHandlr;
          * @param timing   A way to determine how long to wait between classes.
          */
         TimeHandlr.prototype.addClassCycleSynched = function (thing, settings, name, timing) {
-            var calcTime = settings.length * TimeHandlr_1.TimeEvent.runCalculator(timing || this.timingDefault), entryTime = Math.ceil(this.time / calcTime) * calcTime;
-            if (entryTime === this.time) {
-                return this.addClassCycle(thing, settings, name, timing).event;
+            // Make sure the object has a holder for keyCycles...
+            if (!thing[this.keyCycles]) {
+                thing[this.keyCycles] = {};
             }
-            else {
-                return this.addEvent(this.addClassCycle, entryTime - this.time, thing, settings, name, timing);
-            }
+            // ...and nothing previously existing for that name
+            this.cancelClassCycle(thing, name);
+            settings = thing[this.keyCycles][name || "0"] = this.setClassCycle(thing, settings, timing, true);
+            // Immediately run the first class cycle, then return
+            this.cycleClass(thing, settings);
+            return settings;
         };
         /* General event handling
         */
@@ -324,21 +326,35 @@ var TimeHandlr;
          * @param thing   The object whose class is to be cycled.
          * @param settings   A container for repetition settings, particularly .length.
          * @param timing   A way to determine how often to do the cycle.
-         * @param synched   Whether the cycle should be in time with all other cycles
-         *                  of the same period.
+         * @param synched   Whether the animations should be synched to their period.
+         * @returns The cycle containing settings and the new event.
          */
         TimeHandlr.prototype.setClassCycle = function (thing, settings, timing, synched) {
             var _this = this;
-            var eventAdder = (synched ? this.addEventIntervalSynched : this.addEventInterval).bind(this);
+            timing = TimeHandlr_1.TimeEvent.runCalculator(timing || this.timingDefault);
             if (this.copyCycleSettings) {
                 settings = this.makeSettingsCopy(settings);
             }
             // Start off before the beginning of the cycle
             settings.location = settings.oldclass = -1;
             // Let the object know to start the cycle when needed
-            thing[this.keyOnClassCycleStart] = function () {
-                settings.event = eventAdder(_this.cycleClass, timing || _this.timingDefault, Infinity, thing, settings);
-            };
+            if (synched) {
+                thing[this.keyOnClassCycleStart] = function () {
+                    var calcTime = settings.length * timing, entryDelay = Math.ceil(_this.time / calcTime) * calcTime - _this.time, event;
+                    if (entryDelay === 0) {
+                        event = _this.addEventInterval(_this.cycleClass, timing, Infinity, thing, settings);
+                    }
+                    else {
+                        event = _this.addEvent(_this.addEventInterval, entryDelay, _this.cycleClass, timing, Infinity, thing, settings);
+                    }
+                    settings.event = event;
+                };
+            }
+            else {
+                thing[this.keyOnClassCycleStart] = function () {
+                    settings.event = _this.addEventInterval(_this.cycleClass, timing, Infinity, thing, settings);
+                };
+            }
             // If it should already start, do that
             if (thing[this.keyDoClassCycleStart]) {
                 thing[this.keyOnClassCycleStart]();

@@ -69,13 +69,13 @@ var UserWrappr;
             ButtonsGenerator.prototype.generate = function (schema) {
                 var output = document.createElement("div"), options = schema.options instanceof Function
                     ? schema.options.call(self, this.GameStarter)
-                    : schema.options, optionKeys = Object.keys(options), keyActive = schema.keyActive || "active", classNameStart = "select-option options-button-option", scope = this, option, element, i;
+                    : schema.options, classNameStart = "select-option options-button-option", scope = this, option, element, i;
                 output.className = "select-options select-options-buttons";
-                for (i = 0; i < optionKeys.length; i += 1) {
-                    option = options[optionKeys[i]];
+                for (i = 0; i < options.length; i += 1) {
+                    option = options[i];
                     element = document.createElement("div");
                     element.className = classNameStart;
-                    element.textContent = optionKeys[i];
+                    element.textContent = option.title;
                     element.onclick = function (schema, element) {
                         if (scope.getParentControlElement(element).getAttribute("active") !== "on") {
                             return;
@@ -91,7 +91,7 @@ var UserWrappr;
                         }
                     }.bind(this, schema, element);
                     this.ensureLocalStorageButtonValue(element, option, schema);
-                    if (option[keyActive]) {
+                    if (option[schema.keyActive || "active"]) {
                         element.className += " option-enabled";
                         element.setAttribute("option-enabled", "true");
                     }
@@ -744,9 +744,6 @@ var UserWrappr;
             if (typeof settings.GameStartrConstructor === "undefined") {
                 throw new Error("No GameStartrConstructor given to UserWrappr.");
             }
-            if (typeof settings.helpSettings === "undefined") {
-                throw new Error("No helpSettings given to UserWrappr.");
-            }
             if (typeof settings.globalName === "undefined") {
                 throw new Error("No globalName given to UserWrappr.");
             }
@@ -762,13 +759,11 @@ var UserWrappr;
             this.settings = settings;
             this.GameStartrConstructor = settings.GameStartrConstructor;
             this.globalName = settings.globalName;
-            this.helpSettings = this.settings.helpSettings;
             this.sizes = this.importSizes(settings.sizes);
             this.customs = settings.customs || {};
-            this.gameNameAlias = settings.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
             this.gameElementSelector = settings.gameElementSelector || "#game";
             this.gameControlsSelector = settings.gameControlsSelector || "#controls";
-            this.logger = settings.log || console.log.bind(console);
+            this.logger = settings.logger || console.log.bind(console);
             this.isFullScreen = false;
             this.setCurrentSize(this.sizes[settings.sizeDefault]);
             this.allPossibleKeys = settings.allPossibleKeys || UserWrappr.allPossibleKeys;
@@ -829,24 +824,6 @@ var UserWrappr;
          */
         UserWrappr.prototype.getCustoms = function () {
             return this.customs;
-        };
-        /**
-         * @returns The help settings from settings.helpSettings.
-         */
-        UserWrappr.prototype.getHelpSettings = function () {
-            return this.helpSettings;
-        };
-        /**
-         * @returns What the global object is called, such as "window".
-         */
-        UserWrappr.prototype.getGlobalName = function () {
-            return this.globalName;
-        };
-        /**
-         * @returns What to replace with the name of the game in help text.
-         */
-        UserWrappr.prototype.getGameNameAlias = function () {
-            return this.gameNameAlias;
         };
         /**
          * @returns All the keys the user is allowed to pick from in UI controls.
@@ -945,101 +922,6 @@ var UserWrappr;
                 this.GameStarter.container.parentNode.removeChild(this.GameStarter.container);
                 this.resetGameStarter(this.settings, this.customs);
             }
-        };
-        /* Help dialog
-        */
-        /**
-         * Displays the root help menu dialog, which contains all the openings
-         * for each help settings opening.
-         */
-        UserWrappr.prototype.displayHelpMenu = function () {
-            this.helpSettings.openings.forEach(this.logHelpText.bind(this));
-        };
-        /**
-         * Displays the texts of each help settings options, all surrounded by
-         * instructions on how to focus on a group.
-         */
-        UserWrappr.prototype.displayHelpOptions = function () {
-            this.logHelpText("To focus on a group, enter `"
-                + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
-            Object.keys(this.helpSettings.options).forEach(this.displayHelpGroupSummary.bind(this));
-            this.logHelpText("\nTo focus on a group, enter `"
-                + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
-        };
-        /**
-         * Displays the summary for a help group of the given optionName.
-         *
-         * @param optionName   The help group to display the summary of.
-         */
-        UserWrappr.prototype.displayHelpGroupSummary = function (optionName) {
-            var actions = this.helpSettings.options[optionName], action, maxTitleLength = 0, i;
-            this.logger("\n" + optionName);
-            for (i = 0; i < actions.length; i += 1) {
-                maxTitleLength = Math.max(maxTitleLength, this.filterHelpText(actions[i].title).length);
-            }
-            for (i = 0; i < actions.length; i += 1) {
-                action = actions[i];
-                this.logger(this.padTextRight(this.filterHelpText(action.title), maxTitleLength) + " ... " + action.description);
-            }
-        };
-        /**
-         * Displays the full information on a help group of the given optionName.
-         *
-         * @param optionName   The help group to display the information of.
-         */
-        UserWrappr.prototype.displayHelpOption = function (optionName) {
-            var actions = this.helpSettings.options[optionName], action, example, maxExampleLength, i, j;
-            for (i = 0; i < actions.length; i += 1) {
-                action = actions[i];
-                maxExampleLength = 0;
-                this.logHelpText(action.title + " -- " + action.description);
-                if (action.usage) {
-                    this.logHelpText(action.usage);
-                }
-                if (action.examples) {
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        maxExampleLength = Math.max(maxExampleLength, this.filterHelpText("    " + example.code).length);
-                    }
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        this.logHelpText(this.padTextRight(this.filterHelpText("    " + example.code), maxExampleLength)
-                            + "  // " + example.comment);
-                    }
-                }
-                this.logger("\n");
-            }
-        };
-        /**
-         * Logs a bit of help text, filtered by this.filterHelpText.
-         *
-         * @param text   The text to be filtered and logged.
-         */
-        UserWrappr.prototype.logHelpText = function (text) {
-            this.logger(this.filterHelpText(text));
-        };
-        /**
-         * @param text The text to filter.
-         * @returns The text, with `this.gameNameAlias` replaced by globalName.
-         */
-        UserWrappr.prototype.filterHelpText = function (text) {
-            return text.replace(new RegExp(this.gameNameAlias, "g"), this.globalName);
-        };
-        /**
-         * Ensures a bit of text is of least a certain length.
-         *
-         * @param text   The text to pad.
-         * @param length   How wide the text must be, at minimum.
-         * @returns The text with spaces padded to the right.
-         */
-        UserWrappr.prototype.padTextRight = function (text, length) {
-            var diff = 1 + length - text.length;
-            if (diff <= 0) {
-                return text;
-            }
-            return text + Array.call(Array, diff).join(" ");
         };
         /* Devices
         */

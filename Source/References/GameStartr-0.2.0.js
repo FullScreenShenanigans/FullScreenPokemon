@@ -23,6 +23,7 @@
 /// <reference path="ThingHittr-0.2.0.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
 /// <reference path="TouchPassr-0.2.0.ts" />
+/// <reference path="UsageHelpr-0.2.0.ts" />
 /// <reference path="UserWrappr-0.2.0.ts" />
 /// <reference path="WorldSeedr-0.2.0.ts" />
 /// <reference path="js_beautify.ts" />
@@ -55,6 +56,7 @@ var GameStartr;
              * Default list of reset Functions to call during this.reset or this.resetTimed, in order.
              */
             this.resets = [
+                "resetUsageHelper",
                 "resetObjectMaker",
                 "resetPixelRender",
                 "resetTimeHandler",
@@ -112,6 +114,15 @@ var GameStartr;
          */
         GameStartr.prototype.resetTimed = function (GameStarter, settings) {
             _super.prototype.resetTimed.call(this, GameStarter, GameStarter.resets, settings);
+        };
+        /**
+         * Sets this.UsageHelper.
+         *
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
+         */
+        GameStartr.prototype.resetUsageHelper = function (GameStarter, settings) {
+            GameStarter.UsageHelper = new UsageHelpr.UsageHelpr(GameStarter.settings.help);
         };
         /**
          * Sets this.ObjectMaker.
@@ -634,10 +645,10 @@ var GameStartr;
             // Sprite cycles
             if (thing.spriteCycle) {
                 cycle = thing.spriteCycle;
-                thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
+                thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || null, cycle[2] || null);
             }
             if (cycle = thing.spriteCycleSynched) {
-                thing.GameStarter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
+                thing.GameStarter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || null, cycle[2] || null);
             }
             // flipHoriz and flipVert initially 
             if (thing.flipHoriz) {
