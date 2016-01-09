@@ -61,6 +61,12 @@ declare module AreaSpawnr {
         commandScope?: any;
     }
 
+    /**
+     * Area manipulator and spawner for GameStartr Maps that is the front-end
+     * counterpart to MapsCreatr. PreThing listings are loaded from Areas stored in a
+     * MapsCreatr and added or removed from user input. Area properties are given to
+     * a MapScreenr when a new Area is loaded.
+     */
     export interface IAreaSpawnr {
         /**
          * @returns The internal MapsCreator.
@@ -208,7 +214,7 @@ module AreaSpawnr {
         /**
          * Directional equivalents for converting from directions to keys.
          */
-        public static directionKeys: any = {
+        public static directionKeys: { [i: string]: string } = {
             "xInc": "left",
             "xDec": "right",
             "yInc": "top",
@@ -218,7 +224,7 @@ module AreaSpawnr {
         /**
          * Opposite directions for when finding descending order Arrays.
          */
-        public static directionOpposites: any = {
+        public static directionOpposites: { [i: string]: string } = {
             "xInc": "xDec",
             "xDec": "xInc",
             "yInc": "yDec",

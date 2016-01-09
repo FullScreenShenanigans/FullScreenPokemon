@@ -53,7 +53,8 @@ var GameStartr;
                 "constants": settings.constants
             });
             /**
-             * Default list of reset Functions to call during this.reset or this.resetTimed, in order.
+             * Default list of reset Functions to call during this.reset or this.resetTimed,
+             * in order of when they should be called.
              */
             this.resets = [
                 "resetUsageHelper",
@@ -109,8 +110,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @returns {Array} How long each reset Function took followed by the entire
-         *                 operation, in milliseconds.
          */
         GameStartr.prototype.resetTimed = function (GameStarter, settings) {
             _super.prototype.resetTimed.call(this, GameStarter, GameStarter.resets, settings);
@@ -132,7 +131,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): objects.js (settings/objects.js)
          */
         GameStartr.prototype.resetObjectMaker = function (GameStarter, settings) {
             GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(GameStarter.proliferate({
@@ -153,7 +151,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): quadrants.js (settings/quadrants.js)
          */
         GameStartr.prototype.resetQuadsKeeper = function (GameStarter, settings) {
             var quadrantWidth = settings.width / (GameStarter.settings.quadrants.numCols - 3), quadrantHeight = settings.height / (GameStarter.settings.quadrants.numRows - 2);
@@ -173,7 +170,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): sprites.js (settings/sprites.js)
          */
         GameStartr.prototype.resetPixelRender = function (GameStarter, settings) {
             GameStarter.PixelRender = new PixelRendr.PixelRendr(GameStarter.proliferate({
@@ -187,7 +183,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): renderer.js (settings/renderer.js)
          */
         GameStartr.prototype.resetPixelDrawer = function (GameStarter, settings) {
             GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(GameStarter.proliferate({
@@ -199,11 +194,10 @@ var GameStartr;
             }, GameStarter.settings.renderer));
         };
         /**
-         * Sets EightBitter.TimeHandler.
+         * Sets this.TimeHandler.
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): events.js (settings/events.js)
          */
         GameStartr.prototype.resetTimeHandler = function (GameStarter, settings) {
             GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(GameStarter.proliferate({
@@ -216,7 +210,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): audio.js (settings/audio.js)
          */
         GameStartr.prototype.resetAudioPlayer = function (GameStarter, settings) {
             GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(GameStarter.proliferate({
@@ -228,7 +221,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): runner.js (settings/runner.js)
          */
         GameStartr.prototype.resetGamesRunner = function (GameStarter, settings) {
             GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(GameStarter.proliferate({
@@ -245,19 +237,17 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): statistics.js (settings/statistics.js)
          */
         GameStartr.prototype.resetItemsHolder = function (GameStarter, settings) {
             GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(GameStarter.proliferate({
                 "callbackArgs": [GameStarter]
-            }, GameStarter.settings.statistics));
+            }, GameStarter.settings.items));
         };
         /**
          * Sets this.GroupHolder.
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): groups.js (settings/groups.js)
          */
         GameStartr.prototype.resetGroupHolder = function (GameStarter, settings) {
             GameStarter.GroupHolder = new GroupHoldr.GroupHoldr(GameStarter.settings.groups);
@@ -267,7 +257,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): collisions.js (settings/collisions.js)
          */
         GameStartr.prototype.resetThingHitter = function (GameStarter, settings) {
             GameStarter.ThingHitter = new ThingHittr.ThingHittr(GameStarter.proliferate({
@@ -279,7 +268,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         GameStartr.prototype.resetMapScreener = function (GameStarter, settings) {
             GameStarter.MapScreener = new MapScreenr.MapScreenr({
@@ -305,7 +293,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         GameStartr.prototype.resetMapsCreator = function (GameStarter, settings) {
             GameStarter.MapsCreator = new MapsCreatr.MapsCreatr({
@@ -322,7 +309,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         GameStartr.prototype.resetAreaSpawner = function (GameStarter, settings) {
             GameStarter.AreaSpawner = new AreaSpawnr.AreaSpawnr({
@@ -341,7 +327,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): input.js (settings/input.js)
          */
         GameStartr.prototype.resetInputWriter = function (GameStarter, settings) {
             GameStarter.InputWriter = new InputWritr.InputWritr(GameStarter.proliferate({
@@ -354,7 +339,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): devices.js (settings/devices.js)
          */
         GameStartr.prototype.resetDeviceLayer = function (GameStarter, settings) {
             GameStarter.DeviceLayer = new DeviceLayr.DeviceLayr(GameStarter.proliferate({
@@ -366,7 +350,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): touch.js (settings/touch.js)
          */
         GameStartr.prototype.resetTouchPasser = function (GameStarter, settings) {
             GameStarter.TouchPasser = new TouchPassr.TouchPassr(GameStarter.proliferate({
@@ -378,7 +361,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): editor.js (settings/editor.js)
          */
         GameStartr.prototype.resetLevelEditor = function (GameStarter, settings) {
             GameStarter.LevelEditor = new LevelEditr.LevelEditr(GameStarter.proliferate({
@@ -391,7 +373,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): generator.js (settings/generator.js)
          */
         GameStartr.prototype.resetWorldSeeder = function (GameStarter, settings) {
             GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(GameStarter.proliferate({
@@ -404,7 +385,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): scenes.js (settings/scenes.js)
          */
         GameStartr.prototype.resetScenePlayer = function (GameStarter, settings) {
             GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.proliferate({
@@ -416,7 +396,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): math.js (settings/math.js)
          */
         GameStartr.prototype.resetMathDecider = function (GameStarter, settings) {
             GameStarter.MathDecider = new MathDecidr.MathDecidr(GameStarter.settings.math);
@@ -426,7 +405,6 @@ var GameStartr;
          *
          * @param GameStarter
          * @param customs   Any optional custom settings.
-         * @remarks Requirement(s): mods.js (settings/mods.js)
          */
         GameStartr.prototype.resetModAttacher = function (GameStarter, settings) {
             GameStarter.ModAttacher = new ModAttachr.ModAttachr(GameStarter.proliferate({
@@ -479,7 +457,6 @@ var GameStartr;
          * Scrolls the game window by shifting all Things and checking for quadrant
          * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
          *
-         * @param GameStarter
          * @param customs   Any optional custom settings.
          * @param dx   How far to scroll horizontally.
          * @param dy   How far to scroll vertically.
@@ -542,8 +519,8 @@ var GameStartr;
          * left corner of the screen.
          *
          * @param thingRaw   What type of Thing to add. This may be a String of
-         *                           the class title, an Array containing the String
-         *                           and an Object of settings, or an actual Thing.
+         *                   the class title, an Array containing the String
+         *                   and an Object of settings, or an actual Thing.
          * @param left   The horizontal point to place the Thing's left at (by default, 0).
          * @param top   The vertical point to place the Thing's top at (by default, 0).
          */
@@ -624,10 +601,9 @@ var GameStartr;
             // Sprite sizing
             thing.spritewidthpixels = thing.spritewidth * thing.GameStarter.unitsize;
             thing.spriteheightpixels = thing.spriteheight * thing.GameStarter.unitsize;
-            // Canvas, context, imageData
+            // Canvas, context
             thing.canvas = thing.GameStarter.createCanvas(thing.spritewidthpixels, thing.spriteheightpixels);
             thing.context = thing.canvas.getContext("2d");
-            thing.imageData = thing.context.getImageData(0, 0, thing.spritewidthpixels, thing.spriteheightpixels);
             if (thing.opacity !== 1) {
                 thing.GameStarter.setOpacity(thing, thing.opacity);
             }
@@ -643,8 +619,7 @@ var GameStartr;
             thing.GameStarter.setSize(thing, thing.width, thing.height);
             thing.GameStarter.setClassInitial(thing, thing.name || thing.title);
             // Sprite cycles
-            if (thing.spriteCycle) {
-                cycle = thing.spriteCycle;
+            if (cycle = thing.spriteCycle) {
                 thing.GameStarter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || null, cycle[2] || null);
             }
             if (cycle = thing.spriteCycleSynched) {
@@ -732,6 +707,7 @@ var GameStartr;
          * Checks whether inputs can be fired, which by default is always true.
          *
          * @param GameStartr
+         * @returns Whether inputs can be fired, which is always true.
          */
         GameStartr.prototype.canInputsTrigger = function (GameStarter) {
             return true;
@@ -787,7 +763,7 @@ var GameStartr;
          * Thing as having a changed appearance.
          *
          * @param thing
-         * @param dx
+         * @param dx   How far to shift the Thing horizontally.
          * @param notChanged   Whether to skip marking the Thing as changed (by
          *                     default, false).
          */
@@ -802,7 +778,7 @@ var GameStartr;
          * having a changed appearance.
          *
          * @param thing
-         * @param top
+         * @param top   A new top border for the Thing.
          */
         GameStartr.prototype.setTop = function (thing, top) {
             EightBittr.EightBittr.prototype.setTop(thing, top);
@@ -813,7 +789,7 @@ var GameStartr;
          * having a changed appearance.
          *
          * @param thing
-         * @param right
+         * @param right   A new right border for the Thing.
          */
         GameStartr.prototype.setRight = function (thing, right) {
             EightBittr.EightBittr.prototype.setRight(thing, right);
@@ -824,7 +800,7 @@ var GameStartr;
          * as having a changed appearance.
          *
          * @param thing
-         * @param bottom
+         * @param bottom   A new bottom border for the Thing.
          */
         GameStartr.prototype.setBottom = function (thing, bottom) {
             EightBittr.EightBittr.prototype.setBottom(thing, bottom);
@@ -835,7 +811,7 @@ var GameStartr;
          * as having a changed appearance.
          *
          * @param thing
-         * @param left
+         * @param left   A new left border for the Thing.
          */
         GameStartr.prototype.setLeft = function (thing, left) {
             EightBittr.EightBittr.prototype.setLeft(thing, left);
@@ -847,8 +823,8 @@ var GameStartr;
          * proportion of movement is respected (.5 = half, etc.).
          *
          * @param thing
-         * @param dx
-         * @param dy
+         * @param dx   How far to shift the Thing horizontally.
+         * @param dy   How far to shift the Thing vertically.
          * @param notChanged   Whether to skip marking the Thing as changed (by
          *                     default, false).
          */
@@ -875,9 +851,9 @@ var GameStartr;
         /**
          * Calls shiftBoth on all members of an Array.
          *
-         * @param dx
-         * @param dy
-         * @param notChanged   Whether to skip marking the Thing as changed (by
+         * @param dx   How far to shift the Things horizontally.
+         * @param dy   How far to shift the Things vertically.
+         * @param notChanged   Whether to skip marking the Things as changed (by
          *                     default, false).
          */
         GameStartr.prototype.shiftThings = function (things, dx, dy, notChanged) {
@@ -888,9 +864,8 @@ var GameStartr;
         /**
          * Calls shiftBoth on all groups in the calling GameStartr's GroupHoldr.
          *
-         * @this {EightBittr}
-         * @param dx
-         * @param dy
+         * @param dx   How far to shift the Things horizontally.
+         * @param dy   How far to shift the Things vertically.
          */
         GameStartr.prototype.shiftAll = function (dx, dy) {
             var GameStarter = GameStartr.prototype.ensureCorrectCaller(this);
@@ -902,7 +877,7 @@ var GameStartr;
          * The thing is marked as having changed appearance.
          *
          * @param thing
-         * @param width
+         * @param width   A new width for the Thing.
          * @param updateSprite   Whether to update the Thing's spritewidth and
          *                       spritewidthpixels (by default, false).
          * @param updateSize   Whether to call updateSize on the Thing (by
@@ -926,7 +901,7 @@ var GameStartr;
          * The thing is marked as having changed appearance.
          *
          * @param thing
-         * @param height
+         * @param height   A new height for the Thing.
          * @param updateSprite   Whether to update the Thing's spriteheight and
          *                       spriteheightpixels (by default, false).
          * @param updateSize   Whether to call updateSize on the Thing (by
@@ -948,8 +923,8 @@ var GameStartr;
          * Utility to call both setWidth and setHeight on a Thing.
          *
          * @param thing
-         * @param width
-         * @param height
+         * @param width   A new width for the Thing.
+         * @param height   A new height for the Thing.
          * @param updateSprite   Whether to update the Thing's spritewidth,
          *                       spriteheight, spritewidthpixels, and
          *                       spritspriteheightpixels (by default, false).
@@ -993,7 +968,7 @@ var GameStartr;
          * width. It is marked as changed in appearance.
          *
          * @param thing
-         * @param dx
+         * @param dx   How much to reduce the Thing's width.
          * @param updateSize   Whether to also call updateSize on the Thing
          *                     (by default, false).
          */
@@ -1012,7 +987,7 @@ var GameStartr;
          * height. It is marked as changed in appearance.
          *
          * @param thing
-         * @param dy
+         * @param dy   How much to reduce the Thing's height.
          * @param updateSize   Whether to also call updateSize on the Thing
          *                     (by default, false).
          */
@@ -1027,31 +1002,11 @@ var GameStartr;
             }
         };
         /**
-         * Reduces a Thing's height by pushing down its top and decreasing its
-         * height. It is marked as changed in appearance.
-         *
-         * @param thing
-         * @param dy
-         * @param updateSize   Whether to also call updateSize on the Thing
-         *                     (by default, false).
-         */
-        GameStartr.prototype.increaseHeight = function (thing, dy, updateSize) {
-            thing.top -= dy;
-            thing.height += dy / thing.GameStarter.unitsize;
-            thing.unitheight = thing.height * thing.GameStarter.unitsize;
-            if (updateSize) {
-                thing.GameStarter.updateSize(thing);
-            }
-            else {
-                thing.GameStarter.markChanged(thing);
-            }
-        };
-        /**
          * Increases a Thing's width by pushing forward its right and decreasing its
          * width. It is marked as changed in appearance.
          *
          * @param thing
-         * @param dx
+         * @param dx   How much to increase the Thing's width.
          * @param updateSize   Whether to also call updateSize on the Thing
          *                     (by default, false).
          */
@@ -1067,42 +1022,24 @@ var GameStartr;
             }
         };
         /**
-         * Completely pauses a Thing by setting its velocities to zero and disabling
-         * it from falling, colliding, or moving. Its old attributes for those are
-         * saved so thingResumeVelocity may restore them.
+         * Reduces a Thing's height by pushing down its top and decreasing its
+         * height. It is marked as changed in appearance.
          *
          * @param thing
-         * @param keepMovement   Whether to keep movement instead of wiping it
-         *                      (by default, false).
-         */
-        GameStartr.prototype.thingPauseVelocity = function (thing, keepMovement) {
-            thing.xvelOld = thing.xvel || 0;
-            thing.yvelOld = thing.yvel || 0;
-            thing.nofallOld = thing.nofall || false;
-            thing.nocollideOld = thing.nocollide || false;
-            thing.movementOld = thing.movement || thing.movementOld;
-            thing.nofall = thing.nocollide = true;
-            thing.xvel = thing.yvel = 0;
-            if (!keepMovement) {
-                thing.movement = undefined;
-            }
-        };
-        /**
-         * Resumes a Thing's velocity and movements after they were paused by
-         * thingPauseVelocity.
-         *
-         * @param thing
-         * @param noVelocity   Whether to skip restoring the Thing's velocity
+         * @param dy   How much to increase the Thing's height.
+         * @param updateSize   Whether to also call updateSize on the Thing
          *                     (by default, false).
          */
-        GameStartr.prototype.thingResumeVelocity = function (thing, noVelocity) {
-            if (!noVelocity) {
-                thing.xvel = thing.xvelOld || 0;
-                thing.yvel = thing.yvelOld || 0;
+        GameStartr.prototype.increaseHeight = function (thing, dy, updateSize) {
+            thing.top -= dy;
+            thing.height += dy / thing.GameStarter.unitsize;
+            thing.unitheight = thing.height * thing.GameStarter.unitsize;
+            if (updateSize) {
+                thing.GameStarter.updateSize(thing);
             }
-            thing.movement = thing.movementOld || thing.movement;
-            thing.nofall = thing.nofallOld || false;
-            thing.nocollide = thing.nocollideOld || false;
+            else {
+                thing.GameStarter.markChanged(thing);
+            }
         };
         /* Appearance utilities
         */
@@ -1125,7 +1062,7 @@ var GameStartr;
          * .className attribute.
          *
          * @param thing
-         * @param className   The new internal .className for the Thing.
+         * @param className   A new .className for the Thing.
          */
         GameStartr.prototype.setClass = function (thing, className) {
             thing.className = className;
@@ -1137,13 +1074,13 @@ var GameStartr;
          * have been set. This just sets the internal .className.
          *
          * @param thing
-         * @param className   The new internal .className for the Thing.
+         * @param className   A new .className for the Thing.
          */
         GameStartr.prototype.setClassInitial = function (thing, className) {
             thing.className = className;
         };
         /**
-         * Adds a string to a Thing's class after a ' ', updates the Thing's
+         * Adds a string to a Thing's class after a " ", updates the Thing's
          * sprite, and marks it as having changed appearance.
          *
          * @param thing
@@ -1245,7 +1182,7 @@ var GameStartr;
          * Marks a Thing as being flipped horizontally by setting its .flipHoriz
          * attribute to true and giving it a "flipped" class.
          *
-         * @param
+         * @param thing
          */
         GameStartr.prototype.flipHoriz = function (thing) {
             thing.flipHoriz = true;
@@ -1255,7 +1192,7 @@ var GameStartr;
          * Marks a Thing as being flipped vertically by setting its .flipVert
          * attribute to true and giving it a "flipped" class.
          *
-         * @param
+         * @param thing
          */
         GameStartr.prototype.flipVert = function (thing) {
             thing.flipVert = true;
@@ -1265,7 +1202,7 @@ var GameStartr;
          * Marks a Thing as not being flipped horizontally by setting its .flipHoriz
          * attribute to false and giving it a "flipped" class.
          *
-         * @param
+         * @param thing
          */
         GameStartr.prototype.unflipHoriz = function (thing) {
             thing.flipHoriz = false;
@@ -1275,7 +1212,7 @@ var GameStartr;
          * Marks a Thing as not being flipped vertically by setting its .flipVert
          * attribute to true and giving it a "flipped" class.
          *
-         * @param
+         * @param thing
          */
         GameStartr.prototype.unflipVert = function (thing) {
             thing.flipVert = false;
@@ -1295,7 +1232,7 @@ var GameStartr;
         */
         /**
          * Ensures the current object is a GameStartr by throwing an error if it
-         * is not. This should be used for functions in any GameStartr descendants
+         * is not. This should be used for Functions in any GameStartr descendants
          * that have to call 'this' to ensure their caller is what the programmer
          * expected it to be.
          *
@@ -1314,7 +1251,7 @@ var GameStartr;
          * onDelete, that is called.
          *
          * @param thing
-         * @param array
+         * @param array   The grou pcontaining the thing.
          * @param location   The index of the Thing in the Array, for speed's
          *                   sake (by default, it is found using Array.indexOf).
          */
@@ -1324,7 +1261,7 @@ var GameStartr;
                 return;
             }
             array.splice(location, 1);
-            if (typeof (thing.onDelete) === "function") {
+            if (typeof thing.onDelete === "function") {
                 thing.onDelete(thing);
             }
         };

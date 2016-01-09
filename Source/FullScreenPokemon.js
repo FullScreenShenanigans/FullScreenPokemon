@@ -3247,7 +3247,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.setBattleDisplayPokemonHealthBar = function (FSP, battlerName, hp, hpNormal) {
             var nameUpper = battlerName[0].toUpperCase() + battlerName.slice(1), menuNumbers = "Battle" + nameUpper + "HealthNumbers", bar = FSP.getThingById("HPBarFill" + nameUpper), barWidth = FSP.MathDecider.compute("widthHealthBar", 25, hp, hpNormal), healthDialog = FSP.makeDigit(hp, 3, "\t") + "/" + FSP.makeDigit(hpNormal, 3, "\t");
             if (FSP.MenuGrapher.getMenu(menuNumbers)) {
-                FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
+                FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal.bind(FSP));
                 FSP.MenuGrapher.addMenuDialog(menuNumbers, healthDialog);
             }
             FSP.setWidth(bar, barWidth);
@@ -6924,6 +6924,7 @@ var FullScreenPokemon;
             "groups": undefined,
             "events": undefined,
             "help": undefined,
+            "items": undefined,
             "input": undefined,
             "maps": undefined,
             "math": undefined,
@@ -6936,7 +6937,6 @@ var FullScreenPokemon;
             "scenes": undefined,
             "sprites": undefined,
             "states": undefined,
-            "statistics": undefined,
             "touch": undefined,
             "ui": undefined
         };

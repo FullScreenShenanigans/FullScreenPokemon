@@ -363,6 +363,11 @@ declare module FullScreenPokemon {
         flickering?: boolean;
         id: string;
         mapName: string;
+
+        /**
+         * Whether this is barred from colliding with other Things.
+         */
+        nocollide?: boolean;
         numquads: number;
         offsetX?: number;
         offsetY?: number;

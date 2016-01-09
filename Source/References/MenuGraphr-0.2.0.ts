@@ -18,7 +18,7 @@ declare module MenuGraphr {
     }
 
     export interface IThing extends EightBittr.IThing {
-        name: string;
+        name?: string;
         groupType: string;
         hidden: boolean;
     }
