@@ -1751,35 +1751,31 @@ var FullScreenPokemon;
                 // If other is a large solid, this will be irreleveant, so it's ok
                 // that multiple borderings will be replaced by the most recent
                 switch (thing.FSP.getDirectionBordering(thing, other)) {
-                    case 0:
-                        if (thing.left !== other.right - other.tolRight
-                            && thing.right !== other.left + other.tolLeft) {
-                            thing.bordering[0] = other;
-                            other.bordering[2] = thing;
+                    case Direction.Top:
+                        if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
+                            thing.FSP.setThingBordering(thing, other, Direction.Top);
+                            thing.FSP.setThingBordering(other, thing, Direction.Bottom);
                             thing.FSP.setTop(thing, other.bottom - other.tolBottom);
                         }
                         break;
-                    case 1:
-                        if (thing.top !== other.bottom - other.tolBottom
-                            && thing.bottom !== other.top + other.tolTop) {
-                            thing.bordering[1] = other;
-                            other.bordering[3] = thing;
+                    case Direction.Right:
+                        if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
+                            thing.FSP.setThingBordering(thing, other, Direction.Right);
+                            thing.FSP.setThingBordering(other, thing, Direction.Left);
                             thing.FSP.setRight(thing, other.left + other.tolLeft);
                         }
                         break;
-                    case 2:
-                        if (thing.left !== other.right - other.tolRight
-                            && thing.right !== other.left + other.tolLeft) {
-                            thing.bordering[2] = other;
-                            other.bordering[0] = thing;
+                    case Direction.Bottom:
+                        if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
+                            thing.FSP.setThingBordering(thing, other, Direction.Bottom);
+                            thing.FSP.setThingBordering(other, thing, Direction.Top);
                             thing.FSP.setBottom(thing, other.top + other.tolTop);
                         }
                         break;
-                    case 3:
-                        if (thing.top !== other.bottom - other.tolBottom
-                            && thing.bottom !== other.top + other.tolTop) {
-                            thing.bordering[3] = other;
-                            other.bordering[1] = thing;
+                    case Direction.Left:
+                        if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
+                            thing.FSP.setThingBordering(thing, other, Direction.Left);
+                            thing.FSP.setThingBordering(other, thing, Direction.Right);
                             thing.FSP.setLeft(thing, other.right - other.tolRight);
                         }
                         break;
@@ -1787,6 +1783,19 @@ var FullScreenPokemon;
                         break;
                 }
             };
+        };
+        /**
+         * Marks other as being a border of thing in the given direction, respecting borderPrimary.
+         *
+         * @param thing   A Thing whose borders are being checked.
+         * @param other   A new border for thing.
+         * @param direction   The direction border being changed.
+         */
+        FullScreenPokemon.prototype.setThingBordering = function (thing, other, direction) {
+            if (thing.bordering[direction] && thing.bordering[direction].borderPrimary && !other.borderPrimary) {
+                return;
+            }
+            thing.bordering[direction] = other;
         };
         /**
          *

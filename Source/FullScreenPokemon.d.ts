@@ -356,6 +356,7 @@ declare module FullScreenPokemon {
         activate?: (activator: IThing, activated?: IThing) => void;
         areaName: string;
         bordering: IThing[];
+        borderPrimary?: boolean;
         collide(thing: IThing, other: IThing): boolean;
         cycles?: any;
         dead?: boolean;

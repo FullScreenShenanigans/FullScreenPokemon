@@ -815,7 +815,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "Pokeball": {
             "action": "item",
-            "activate": FullScreenPokemon.FullScreenPokemon.prototype.collidePokeball
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.collidePokeball,
+            "borderPrimary": true
         },
         "Rival": {
             "id": "Rival"
