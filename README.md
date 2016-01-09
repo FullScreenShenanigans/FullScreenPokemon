@@ -1,3 +1,7 @@
+#### *This project is __not__ stable enough to be played yet. If you're looking to play Pokemon, you're better off with an emulator.*
+
+---
+
 ## FullScreenPokemon [![Build Status](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon.svg?branch=typescript)](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon)
 
 #### A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
@@ -24,7 +28,7 @@ FullScreenPokemon uses [Grunt](http://gruntjs.com/) to automate building, which 
 
 #### Coding
 
-FullScreenPokemon is built on a modular framework called GameStartr. The [FullScreenShenanigans](https://github.com/FullScreenShenanigans/) organization contains GameStartr, its parent class EightBittr, and the 22 modules used by the GameStartr framework. These all (theoretically) have their own README files, which you should skim before developing for FullScreenPokemon itself.
+FullScreenPokemon is built on a modular framework called GameStartr. The [FullScreenShenanigans](https://github.com/FullScreenShenanigans/) organization contains GameStartr, its parent class EightBittr, and the ~2 dozen modules used by the GameStartr framework. These all have their own README files, which you should skim before developing for FullScreenPokemon itself.
 
 All source code is in the [Source](Source/) directory.
 
@@ -35,4 +39,4 @@ The FullScreenPokemon.ts class declaration contains class functions and some con
 
 This is released under the [MIT License](http://mit-license.org/) (see [License.txt](LICENSE.txt)). 
 
-The FullScreenMario project started October 21st, 2012. The initial beta release in October 2013 saw the [primary host website](http://www.fullscreenmario.com) receive approximately 2.68 million unique visitors within a month, after which Nintendo shut the site down with a DMCA complaint (no action was taken against the authors, GitHub, or other hosting websites). The coding project then underwent an extensive rewrite and architecture change to become a modular project centered on the GameStartr platform, followed by a complete conversion to TypeScript.
+The FullScreenMario project started October 21st, 2012. The initial beta release in October 2013 saw the [primary host website](http://www.fullscreenmario.com) receive approximately 2.68 million unique visitors within a month, after which Nintendo shut the site down with a DMCA complaint (no action was taken against the authors, GitHub, or other hosting websites). The coding project then underwent an extensive rewrite and architecture change to become a modular project centered on the GameStartr platform, followed by a complete conversion to TypeScript. FullScreenPokemon uses the same GameStartr engine.
