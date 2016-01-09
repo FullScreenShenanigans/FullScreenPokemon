@@ -89,6 +89,7 @@ module FullScreenPokemon {
             "groups": undefined,
             "events": undefined,
             "help": undefined,
+            "items": undefined,
             "input": undefined,
             "maps": undefined,
             "math": undefined,
@@ -101,7 +102,6 @@ module FullScreenPokemon {
             "scenes": undefined,
             "sprites": undefined,
             "states": undefined,
-            "statistics": undefined,
             "touch": undefined,
             "ui": undefined
         };
@@ -2411,7 +2411,6 @@ module FullScreenPokemon {
                             other.bordering[2] = thing;
                             thing.FSP.setTop(thing, other.bottom - other.tolBottom);
                         }
-
                         break;
 
                     case 1:
@@ -4352,7 +4351,7 @@ module FullScreenPokemon {
                 healthDialog: string = FSP.makeDigit(hp, 3, "\t") + "/" + FSP.makeDigit(hpNormal, 3, "\t");
 
             if (FSP.MenuGrapher.getMenu(menuNumbers)) {
-                FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal);
+                FSP.MenuGrapher.getMenu(menuNumbers).children.forEach(FSP.killNormal.bind(FSP));
                 FSP.MenuGrapher.addMenuDialog(menuNumbers, healthDialog);
             }
 
