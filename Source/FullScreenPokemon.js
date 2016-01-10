@@ -19,14 +19,27 @@ var FullScreenPokemon;
 (function (FullScreenPokemon_1) {
     "use strict";
     /**
-     * Whether a Pokemon is unknown, has been caught, or has been seen.
+     * What direction(s) the screen may scroll from player movement.
      */
-    (function (PokedexListingStatus) {
-        PokedexListingStatus[PokedexListingStatus["Unknown"] = 0] = "Unknown";
-        PokedexListingStatus[PokedexListingStatus["Caught"] = 1] = "Caught";
-        PokedexListingStatus[PokedexListingStatus["Seen"] = 2] = "Seen";
-    })(FullScreenPokemon_1.PokedexListingStatus || (FullScreenPokemon_1.PokedexListingStatus = {}));
-    var PokedexListingStatus = FullScreenPokemon_1.PokedexListingStatus;
+    (function (Scrollability) {
+        /**
+         * The screen may not scroll in either direction.
+         */
+        Scrollability[Scrollability["None"] = 0] = "None";
+        /**
+         * The screen may scroll vertically.
+         */
+        Scrollability[Scrollability["Vertical"] = 1] = "Vertical";
+        /**
+         * The screen may scroll horizontally.
+         */
+        Scrollability[Scrollability["Horizontal"] = 2] = "Horizontal";
+        /**
+         * The screen may scroll vertically and horizontally.
+         */
+        Scrollability[Scrollability["Both"] = 3] = "Both";
+    })(FullScreenPokemon_1.Scrollability || (FullScreenPokemon_1.Scrollability = {}));
+    var Scrollability = FullScreenPokemon_1.Scrollability;
     ;
     /**
      * Cardinal directions a Thing may face in-game.
@@ -40,22 +53,27 @@ var FullScreenPokemon;
     var Direction = FullScreenPokemon_1.Direction;
     ;
     /**
+     * Whether a Pokemon is unknown, has been caught, or has been seen.
+     */
+    (function (PokedexListingStatus) {
+        PokedexListingStatus[PokedexListingStatus["Unknown"] = 0] = "Unknown";
+        PokedexListingStatus[PokedexListingStatus["Caught"] = 1] = "Caught";
+        PokedexListingStatus[PokedexListingStatus["Seen"] = 2] = "Seen";
+    })(FullScreenPokemon_1.PokedexListingStatus || (FullScreenPokemon_1.PokedexListingStatus = {}));
+    var PokedexListingStatus = FullScreenPokemon_1.PokedexListingStatus;
+    ;
+    /**
      * String aliases of directions, keyed by the direction.
      */
-    FullScreenPokemon_1.DirectionsToAliases = [
-        "top",
-        "right",
-        "bottom",
-        "left"
-    ];
+    FullScreenPokemon_1.DirectionsToAliases = ["top", "right", "bottom", "left"];
     /**
      * Directions, keyed by their string aliases.
      */
     FullScreenPokemon_1.DirectionAliases = {
-        top: Direction.Top,
-        right: Direction.Right,
-        bottom: Direction.Bottom,
-        left: Direction.Left
+        "top": Direction.Top,
+        "right": Direction.Right,
+        "bottom": Direction.Bottom,
+        "left": Direction.Left
     };
     /**
      * Direction names, mapped to their opposites.
@@ -817,13 +835,13 @@ var FullScreenPokemon;
                 return;
             }
             switch (FSP.MapScreener.scrollability) {
-                case "horizontal":
+                case Scrollability.Horizontal:
                     FSP.scrollWindow(FSP.getHorizontalScrollAmount(FSP));
                     return;
-                case "vertical":
+                case Scrollability.Vertical:
                     FSP.scrollWindow(0, FSP.getVerticalScrollAmount(FSP));
                     return;
-                case "both":
+                case Scrollability.Both:
                     FSP.scrollWindow(FSP.getHorizontalScrollAmount(FSP), FSP.getVerticalScrollAmount(FSP));
                     return;
                 default:
@@ -1362,7 +1380,7 @@ var FullScreenPokemon;
                     return true;
                 case Array:
                     if (onStop[0] > 0) {
-                        onStop[0] -= 1;
+                        onStop[0] = onStop[0] - 1;
                         thing.FSP.animateCharacterStartTurning(thing, thing.direction, onStop);
                     }
                     else if (onStop.length === 0) {
@@ -1811,7 +1829,7 @@ var FullScreenPokemon;
                         && !thing.keys[other.requireDirection]
                         && !thing.allowDirectionAsKeys
                         && thing.direction !== other.requireDirection) {
-                        return;
+                        return false;
                     }
                     if (other.singleUse) {
                         other.active = false;
@@ -2391,7 +2409,7 @@ var FullScreenPokemon;
          *       this works and that doesn't (easily / yet / without bugs).
          */
         FullScreenPokemon.prototype.expandMapBoundaries = function (FSP, area, x, y) {
-            FSP.MapScreener.scrollability = "both";
+            FSP.MapScreener.scrollability = Scrollability.Both;
         };
         /* Pokedex storage
         */
@@ -5156,8 +5174,8 @@ var FullScreenPokemon;
             pokeball = FSP.getThingById("Pokeball" + starterRival.join(""));
             settings.rivalPokeball = pokeball;
             FSP.animateCharacterStartTurning(rival, 2, [
-                2, "right", steps, "top", 1,
-                FSP.ScenePlayer.bindRoutine("RivalTakesPokemon")
+                2, Direction.Right, steps, Direction.Top, 1,
+                function () { return FSP.ScenePlayer.playRoutine("RivalTakesPokemon"); }
             ]);
         };
         /**
@@ -5392,7 +5410,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.animateCharacterStartTurning(rival, 0, [
                 8,
-                FSP.ScenePlayer.bindRoutine("RivalInquires")
+                function () { return FSP.ScenePlayer.playRoutine("RivalInquires"); }
             ]);
         };
         /**
@@ -5838,25 +5856,24 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.centerMapScreen = function (FSP) {
             switch (FSP.MapScreener.scrollability) {
-                case "none":
+                case Scrollability.None:
                     FSP.centerMapScreenHorizontally(FSP);
                     FSP.centerMapScreenVertically(FSP);
                     return;
-                case "vertical":
+                case Scrollability.Vertical:
                     FSP.centerMapScreenHorizontally(FSP);
                     FSP.centerMapScreenVerticallyOnPlayer(FSP);
                     return;
-                case "horizontal":
+                case Scrollability.Horizontal:
                     FSP.centerMapScreenHorizontallyOnPlayer(FSP);
                     FSP.centerMapScreenVertically(FSP);
                     return;
-                case "both":
+                case Scrollability.Both:
                     FSP.centerMapScreenHorizontallyOnPlayer(FSP);
                     FSP.centerMapScreenVerticallyOnPlayer(FSP);
                     return;
                 default:
-                    throw new Error("Unknown MapScreenr scrollability: "
-                        + FSP.MapScreener.scrollability + ".");
+                    return;
             }
         };
         /**
@@ -5925,7 +5942,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.mapEntranceResume = function (FSP) {
             var savedInfo = FSP.StateHolder.getChanges("player") || {};
             FSP.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
-            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction || 0);
+            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction || Direction.Top);
             FSP.centerMapScreen(FSP);
         };
         /* Map macros

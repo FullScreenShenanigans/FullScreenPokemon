@@ -243,7 +243,7 @@ module FullScreenPokemon {
                 if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
                         this.compute(
-                            "applyMoveEffectPrority",
+                            "applyMoveEffectPriority",
                             possibilities[i],
                             constants.battleModifications["Turn 2"],
                             player.selectedActor,
@@ -255,7 +255,7 @@ module FullScreenPokemon {
                 if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
                         this.compute(
-                            "applyMoveEffectPrority",
+                            "applyMoveEffectPriority",
                             possibilities[i],
                             constants.battleModifications["Good AI"],
                             player.selectedActor,
@@ -278,9 +278,9 @@ module FullScreenPokemon {
 
                 return constants.NumberMaker.randomArrayMember(possibilities).move;
             },
-            "opponentMatchesTypes": function (constants: IMathConstants, equations: IMathEquations, opponent: IPokemon, types: string[]): boolean {
+            "pokemonMatchesTypes": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, types: string[]): boolean {
                 for (var i: number = 0; i < types.length; i += 1) {
-                    if (opponent.types.indexOf(types[i]) !== -1) {
+                    if (pokemon.types.indexOf(types[i]) !== -1) {
                         return true;
                     }
                 }
@@ -290,7 +290,7 @@ module FullScreenPokemon {
             "moveOnlyStatuses": function (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema): boolean {
                 return move.damage === "Non-Damaging" && move.effect === "Status";
             },
-            "applyMoveEffectPrority": function (constants: IMathConstants, equations: IMathEquations, possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number): void {
+            "applyMoveEffectPriority": function (constants: IMathConstants, equations: IMathEquations, possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number): void {
                 var preferences: ([string, string, number] | [string, string])[] = modification.preferences,
                     move: IMoveSchema = constants.moves[possibility.move],
                     preference: [string, string, number] | [string, string],
@@ -548,46 +548,7 @@ module FullScreenPokemon {
                 "Viridian City": [18, 36]
             },
             /**
-             * Run on http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-             * 
-             * console.clear();
-             * 
-             * var table = $($("table")[2]),
-             *     names = table.find("tr:nth-of-type(2) a")
-             *         .toArray()
-             *         .map(function (a) {
-             *             return a.getAttribute("title"); 
-             *         }),
-             *     chart = table.find("tr:nth-of-type(2) ~ tr"),
-             *     table = [],
-             *     indices = {},
-             *     values = {
-             *         "0×": 0.0,
-             *         "½×": .5,
-             *         "1×": 1.0,
-             *         "2×": 2.0
-             *     },
-             *     output = { 
-             *         "names": names, 
-             *         "table": table
-             *     },
-             *     row, i, j;
-             * 
-             * for (i = 0; i < names.length; i += 1) {
-             *     indices[names[i]] = i;
-             * }
-             * 
-             * for (i = 0; i < chart.length - 1; i += 1) {
-             *     row = chart[i];
-             *     table.push([]);
-             *     for (j = 0; j < row.cells.length - 1; j += 1) {
-             *         table[i].push(values[row.cells[j + 1].innerText])
-             *     }
-             * }
-             * 
-             * table[0].shift();
-             * 
-             * JSON.stringify(output);
+             * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
              */
             "types": {
                 "names": ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon"],
@@ -627,29 +588,7 @@ module FullScreenPokemon {
                 ]
             },
             /**
-             * Run on http://www.smogon.com/dex/rb/pokemon/
-             * 
-             * var output = {};
-             * 
-             * Array.prototype.slice.call(document.querySelectorAll("tr")).forEach(function (row) {
-             *     output[row.children[0].innerText.trim().toUpperCase()] = {
-             *         "types": row.children[1].innerText
-             *             .split(/\s+/g)
-             *             .filter(function (str) { 
-             *                 return str; 
-             *             })
-             *             .map(function (str) { 
-             *                 return str.trim();
-             *             }),
-             *         "HP": Number(row.children[5].innerText.split(/\s+/g)[1]),
-             *         "Attack": Number(row.children[6].innerText.split(/\s+/g)[1]),
-             *         "Defense": Number(row.children[7].innerText.split(/\s+/g)[1]),
-             *         "Special": Number(row.children[8].innerText.split(/\s+/g)[1]),
-             *         "Speed": Number(row.children[10].innerText.split(/\s+/g)[1]),
-             *     };
-             * });
-             * 
-             * JSON.stringify(output);
+             * @see http://www.smogon.com/dex/rb/pokemon/
              */
             "pokemon": {
                 "ABRA": {

@@ -495,24 +495,9 @@ declare module MenuGraphr {
     }
 
     /**
-     * A menu containing some number of options as cells in a grid.
+     * Base grid attributes for a list menu.
      */
-    export interface IListMenu extends IListMenuSchema, IMenu {
-        /**
-         * The arrow Thing indicating the current selection.
-         */
-        arrow: GameStartr.IThing;
-
-        /**
-         * A horizontal offset for the arrow Thing.
-         */
-        arrowXOffset?: number;
-
-        /**
-         * A vertical offset for the arrow Thing.
-         */
-        arrowYOffset?: number;
-
+    export interface IListMenuBase {
         /**
          * The grid of options, as columns containing rows.
          */
@@ -529,14 +514,39 @@ declare module MenuGraphr {
         gridRows: number;
 
         /**
-         * How tall this is.
-         */
-        height: number;
-
-        /**
          * All options available in the grid.
          */
         options: IGridCell[];
+
+        /**
+         * The currently selected [column, row] in the grid.
+         */
+        selectedIndex: [number, number];
+    }
+
+    /**
+     * A menu containing some number of options as cells in a grid.
+     */
+    export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
+        /**
+         * The arrow Thing indicating the current selection.
+         */
+        arrow: GameStartr.IThing;
+
+        /**
+         * A horizontal offset for the arrow Thing.
+         */
+        arrowXOffset?: number;
+
+        /**
+         * A vertical offset for the arrow Thing.
+         */
+        arrowYOffset?: number;
+
+        /**
+         * How tall this is.
+         */
+        height: number;
 
         /**
          * Descriptions of the options, with their grid cell and Things.
@@ -557,11 +567,6 @@ declare module MenuGraphr {
          * Whether the list should be a single column, rather than auto-flow.
          */
         singleColumnList: boolean;
-
-        /**
-         * The currently selected [column, row] in the grid.
-         */
-        selectedIndex: [number, number];
 
         /**
          * How wide each column of text should be in the grid.
@@ -687,7 +692,7 @@ declare module MenuGraphr {
     }
 
     /**
-     * Alternate Thing titles for characters, such as " " for "space".
+     * Alternate Thing titles for characters, such as " " to "space".
      */
     export interface IAliases {
         [i: string]: string;

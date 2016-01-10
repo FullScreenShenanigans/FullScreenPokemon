@@ -17,12 +17,28 @@ module FullScreenPokemon {
     "use strict";
 
     /**
-     * Whether a Pokemon is unknown, has been caught, or has been seen.
+     * What direction(s) the screen may scroll from player movement.
      */
-    export enum PokedexListingStatus {
-        Unknown = 0,
-        Caught = 1,
-        Seen = 2
+    export enum Scrollability {
+        /**
+         * The screen may not scroll in either direction.
+         */
+        None,
+
+        /**
+         * The screen may scroll vertically.
+         */
+        Vertical,
+
+        /**
+         * The screen may scroll horizontally.
+         */
+        Horizontal,
+
+        /**
+         * The screen may scroll vertically and horizontally.
+         */
+        Both,
     };
 
     /**
@@ -36,23 +52,27 @@ module FullScreenPokemon {
     };
 
     /**
+     * Whether a Pokemon is unknown, has been caught, or has been seen.
+     */
+    export enum PokedexListingStatus {
+        Unknown = 0,
+        Caught = 1,
+        Seen = 2
+    };
+
+    /**
      * String aliases of directions, keyed by the direction.
      */
-    export var DirectionsToAliases: IDirectionsToAliases = [
-        "top",
-        "right",
-        "bottom",
-        "left"
-    ];
+    export var DirectionsToAliases: IDirectionsToAliases = ["top", "right", "bottom", "left"];
 
     /**
      * Directions, keyed by their string aliases.
      */
     export var DirectionAliases: IDirectionAliases = {
-        top: Direction.Top,
-        right: Direction.Right,
-        bottom: Direction.Bottom,
-        left: Direction.Left
+        "top": Direction.Top,
+        "right": Direction.Right,
+        "bottom": Direction.Bottom,
+        "left": Direction.Left
     };
 
     /**
@@ -1138,17 +1158,20 @@ module FullScreenPokemon {
             }
 
             switch (FSP.MapScreener.scrollability) {
-                case "horizontal":
+                case Scrollability.Horizontal:
                     FSP.scrollWindow(FSP.getHorizontalScrollAmount(FSP));
                     return;
-                case "vertical":
+
+                case Scrollability.Vertical:
                     FSP.scrollWindow(0, FSP.getVerticalScrollAmount(FSP));
                     return;
-                case "both":
+
+                case Scrollability.Both:
                     FSP.scrollWindow(
                         FSP.getHorizontalScrollAmount(FSP),
                         FSP.getVerticalScrollAmount(FSP));
                     return;
+
                 default:
                     return;
             }
@@ -1718,7 +1741,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateCharacterStartTurning(thing: ICharacter, direction: Direction, onStop: any): void {
+        animateCharacterStartTurning(thing: ICharacter, direction: Direction, onStop: IWalkingOnStop): void {
             if (onStop.length === 0) {
                 return;
             }
@@ -1726,15 +1749,15 @@ module FullScreenPokemon {
             if (onStop[0] === 0) {
                 if (onStop.length > 1) {
                     if (typeof onStop[1] === "function") {
-                        onStop[1](thing);
+                        (<IWalkingOnStopCommandFunction>onStop[1])(thing);
                         return;
                     }
 
-                    thing.FSP.animateCharacterSetDirection(thing, DirectionAliases[onStop[1]]);
+                    thing.FSP.animateCharacterSetDirection(thing, DirectionAliases[<number>onStop[1]]);
 
                     thing.FSP.animateCharacterStartTurning(
                         thing,
-                        DirectionAliases[onStop[1]],
+                        DirectionAliases[<number>onStop[1]],
                         onStop.slice(2));
                 }
 
@@ -1762,7 +1785,7 @@ module FullScreenPokemon {
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
 
-            if (!thing.cycles || !thing.cycles.walking) {
+            if (!thing.cycles || !(<any>thing.cycles).walking) {
                 thing.FSP.TimeHandler.addClassCycle(
                     thing,
                     ["walking", "standing"],
@@ -1877,7 +1900,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animateCharacterStopWalking(thing: ICharacter, onStop?: any): boolean {
+        animateCharacterStopWalking(thing: ICharacter, onStop?: IWalkingOnStop): boolean {
             thing.xvel = 0;
             thing.yvel = 0;
             thing.walking = false;
@@ -1908,17 +1931,17 @@ module FullScreenPokemon {
                     return true;
                 case Array:
                     if (onStop[0] > 0) {
-                        onStop[0] -= 1;
+                        onStop[0] = <number>onStop[0] - 1;
                         thing.FSP.animateCharacterStartTurning(thing, thing.direction, onStop);
                     } else if (onStop.length === 0) {
                         return true;
                     } else {
                         if (onStop[1] instanceof Function) {
-                            return onStop[1](thing);
+                            return <boolean>(<IWalkingOnStopCommandFunction>onStop[1])(thing);
                         }
                         thing.FSP.animateCharacterStartTurning(
                             thing,
-                            DirectionAliases[onStop[1]],
+                            DirectionAliases[<number>onStop[1]],
                             onStop.slice(2));
                     }
                     return true;
@@ -1932,7 +1955,7 @@ module FullScreenPokemon {
         /**
          * 
          */
-        animatePlayerStopWalking(thing: IPlayer, onStop: any): boolean {
+        animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
                 return;
             }
@@ -2051,7 +2074,7 @@ module FullScreenPokemon {
          * 
          */
         animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
-            var onStop: any;
+            var onStop: IWalkingOnStop;
 
             if (other.pushSteps) {
                 onStop = other.pushSteps;
@@ -2127,7 +2150,7 @@ module FullScreenPokemon {
             var options: IDialogOptions = dialog.options,
                 generateCallback: any = function (dialog: string | IDialog): () => void {
                     var callback: (...args: any[]) => void,
-                        words: string;
+                        words: MenuGraphr.IMenuDialogRaw;
 
                     if (!dialog) {
                         return undefined;
@@ -2474,13 +2497,14 @@ module FullScreenPokemon {
                         && !thing.allowDirectionAsKeys
                         && thing.direction !== other.requireDirection
                     ) {
-                        return;
+                        return false;
                     }
                     if (other.singleUse) {
                         other.active = false;
                     }
                     other.activate(thing, other);
                 }
+
                 return true;
             }
 
@@ -2495,7 +2519,7 @@ module FullScreenPokemon {
          * 
          */
         collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
-            var dialog: string | string[] = other.dialog,
+            var dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog,
                 direction: Direction;
 
             if (other.cutscene) {
@@ -2512,7 +2536,7 @@ module FullScreenPokemon {
             direction = thing.FSP.getDirectionBetween(other, thing);
 
             if (other.dialogDirections) {
-                dialog = dialog[direction];
+                dialog = (<MenuGraphr.IMenuDialogRaw[]>dialog)[direction];
                 if (!dialog) {
                     return;
                 }
@@ -2779,7 +2803,7 @@ module FullScreenPokemon {
             }
 
             var name: string = other.menu || "GeneralText",
-                dialog: string | string[] = other.dialog;
+                dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog;
 
             thing.collidedTrigger = other;
             thing.FSP.animateCharacterPreventWalking(thing);
@@ -2798,7 +2822,7 @@ module FullScreenPokemon {
                     name,
                     dialog,
                     function (): void {
-                        var onStop: any;
+                        var onStop: IWalkingOnStop;
 
                         if (other.pushSteps) {
                             onStop = other.pushSteps.slice();
@@ -3229,7 +3253,7 @@ module FullScreenPokemon {
          *       this works and that doesn't (easily / yet / without bugs).
          */
         expandMapBoundaries(FSP: FullScreenPokemon, area: IArea, x: number, y: number): void {
-            FSP.MapScreener.scrollability = "both";
+            FSP.MapScreener.scrollability = Scrollability.Both;
         }
 
 
@@ -3997,7 +4021,7 @@ module FullScreenPokemon {
          */
         addKeyboardMenuValue(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                menuKeys: IKeyboardKeysMenu = <IKeyboardKeysMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
+                menuKeys: IListMenu = <IListMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
                 menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
                 child: IThing = menuResult.children[menuResult.selectedChild],
                 selected: MenuGraphr.IGridCell = FSP.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
@@ -4063,7 +4087,7 @@ module FullScreenPokemon {
         switchKeyboardCase(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
                 keyboard: IMenu = <IMenu>FSP.MenuGrapher.getMenu("Keyboard"),
-                keyboardKeys: IKeyboardKeysMenu = <IKeyboardKeysMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
+                keyboardKeys: IListMenu = <IListMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
                 keyboardResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
                 settings: any = keyboard.settings;
 
@@ -4459,7 +4483,7 @@ module FullScreenPokemon {
          */
         cutsceneBattleOpeningText(FSP: FullScreenPokemon, settings: any): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
-                textStart: string[] = battleInfo.textStart,
+                textStart: [string, string] = battleInfo.textStart,
                 nextRoutine: string,
                 callback: (...args: any[]) => void;
 
@@ -5278,8 +5302,7 @@ module FullScreenPokemon {
             if (battleInfo.textAfterBattle) {
                 animationSettings.callback = function (): void {
                     FSP.MenuGrapher.createMenu("GeneralText");
-                    FSP.MenuGrapher.addMenuDialog(
-                        "GeneralText", battleInfo.textAfterBattle);
+                    FSP.MenuGrapher.addMenuDialog("GeneralText", battleInfo.textAfterBattle);
                     FSP.MenuGrapher.setActiveMenu("GeneralText");
                 };
             }
@@ -7301,7 +7324,7 @@ module FullScreenPokemon {
                 2,
                 [
                     2, "right", steps, "top", 1,
-                    FSP.ScenePlayer.bindRoutine("RivalTakesPokemon")
+                    (): void => FSP.ScenePlayer.playRoutine("RivalTakesPokemon")
                 ]);
         }
 
@@ -7632,7 +7655,7 @@ module FullScreenPokemon {
                 0,
                 [
                     8,
-                    FSP.ScenePlayer.bindRoutine("RivalInquires")
+                    (): void => FSP.ScenePlayer.playRoutine("RivalInquires")
                 ]);
         }
 
@@ -8266,26 +8289,28 @@ module FullScreenPokemon {
          */
         centerMapScreen(FSP: FullScreenPokemon): void {
             switch (FSP.MapScreener.scrollability) {
-                case "none":
+                case Scrollability.None:
                     FSP.centerMapScreenHorizontally(FSP);
                     FSP.centerMapScreenVertically(FSP);
                     return;
-                case "vertical":
+
+                case Scrollability.Vertical:
                     FSP.centerMapScreenHorizontally(FSP);
                     FSP.centerMapScreenVerticallyOnPlayer(FSP);
                     return;
-                case "horizontal":
+
+                case Scrollability.Horizontal:
                     FSP.centerMapScreenHorizontallyOnPlayer(FSP);
                     FSP.centerMapScreenVertically(FSP);
                     return;
-                case "both":
+
+                case Scrollability.Both:
                     FSP.centerMapScreenHorizontallyOnPlayer(FSP);
                     FSP.centerMapScreenVerticallyOnPlayer(FSP);
                     return;
+
                 default:
-                    throw new Error(
-                        "Unknown MapScreenr scrollability: "
-                        + FSP.MapScreener.scrollability + ".");
+                    return;
             }
         }
 
@@ -8378,7 +8403,7 @@ module FullScreenPokemon {
 
             FSP.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
-            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction || 0);
+            FSP.animateCharacterSetDirection(FSP.player, savedInfo.direction || Direction.Top);
 
             FSP.centerMapScreen(FSP);
         }
