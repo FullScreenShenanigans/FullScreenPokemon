@@ -4,14 +4,49 @@ declare module EightBittr {
      * are stored, as well as a reference to the parent IEightBittr.
      */
     export interface IThing {
+        /**
+         * The parent IEightBittr controlling this Thing.
+         */
         EightBitter: IEightBittr;
+
+        /**
+         * The top border of this Thing's bounding box.
+         */
         top: number;
+
+        /**
+         * The top border of this Thing's bounding box.
+         */
         right: number;
+
+        /**
+         * The top border of this Thing's bounding box.
+         */
         bottom: number;
+
+        /**
+         * The top border of this Thing's bounding box.
+         */
         left: number;
+
+        /**
+         * How wide this Thing is.
+         */
         width: number;
+
+        /**
+         * How tall this Thing is.
+         */
         height: number;
+
+        /**
+         * How rapidly this is moving horizontally.
+         */
         xvel: number;
+
+        /**
+         * How rapidly this is moving vertically.
+         */
         yvel: number;
     }
 

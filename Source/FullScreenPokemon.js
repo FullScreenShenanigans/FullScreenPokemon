@@ -4346,7 +4346,8 @@ var FullScreenPokemon;
                                 "top": 4.25
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "text",
                         "words": [text],
                         "position": {

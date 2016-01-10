@@ -1,20 +1,34 @@
-/// <reference path="EightBittr-0.2.0.ts" />
-/// <reference path="GroupHoldr-0.2.1.ts" />
-/// <reference path="ItemsHoldr-0.2.1.ts" />
-/// <reference path="MapScreenr-0.2.1.ts" />
-/// <reference path="ObjectMakr-0.2.2.ts" />
-/// <reference path="TimeHandlr-0.2.0.ts" />
+/// <reference path="GameStartr-0.2.0.ts" />
 var MenuGraphr;
 (function (MenuGraphr_1) {
     "use strict";
     /**
-     *
+     * Cardinal directions as Numbers.
+     */
+    (function (Direction) {
+        Direction[Direction["Top"] = 0] = "Top";
+        Direction[Direction["Right"] = 1] = "Right";
+        Direction[Direction["Bottom"] = 2] = "Bottom";
+        Direction[Direction["Left"] = 3] = "Left";
+    })(MenuGraphr_1.Direction || (MenuGraphr_1.Direction = {}));
+    var Direction = MenuGraphr_1.Direction;
+    /**
+     * A menu management system for GameStartr. Menus can have dialog-style text, scrollable
+     * and unscrollable grids, and children menus or decorations added.
      */
     var MenuGraphr = (function () {
         /**
+         * Initializes a new instance of the MenuGraphr class.
          *
+         * @param settings   Settings to be used for initialization.
          */
         function MenuGraphr(settings) {
+            if (!settings) {
+                throw new Error("No settings object given to MenuGraphr.");
+            }
+            if (!settings.GameStarter) {
+                throw new Error("No GameStarter given to MenuGraphr.");
+            }
             this.GameStarter = settings.GameStarter;
             this.schemas = settings.schemas || {};
             this.aliases = settings.aliases || {};
@@ -25,19 +39,23 @@ var MenuGraphr;
         /* Simple gets
         */
         /**
-         *
+         * @returns All available menus, keyed by name.
          */
         MenuGraphr.prototype.getMenus = function () {
             return this.menus;
         };
         /**
-         *
+         * @param name   A name of a menu.
+         * @returns The menu under the given name.
          */
         MenuGraphr.prototype.getMenu = function (name) {
             return this.menus[name];
         };
         /**
+         * Returns a menu, throwing an error if it doesn't exist.
          *
+         * @param name   A name of a menu.
+         * @returns The menu under the given name.
          */
         MenuGraphr.prototype.getExistingMenu = function (name) {
             if (!this.menus[name]) {
@@ -46,40 +64,60 @@ var MenuGraphr;
             return this.menus[name];
         };
         /**
-         *
+         * @returns The currently active menu.
+         */
+        MenuGraphr.prototype.getActiveMenu = function () {
+            return this.activeMenu;
+        };
+        /**
+         * @returns The name of the currently active menu.
+         */
+        MenuGraphr.prototype.getActiveMenuName = function () {
+            return this.activeMenu.name;
+        };
+        /**
+         * @returns The alternate Thing titles for characters.
          */
         MenuGraphr.prototype.getAliases = function () {
             return this.aliases;
         };
         /**
-         *
+         * @returns The programmatic replacements for deliniated words.
          */
         MenuGraphr.prototype.getReplacements = function () {
             return this.replacements;
         };
-        /* Menu positioning
+        /* Creations
         */
         /**
+         * Creates a menu with the given name and attributes, and stores it under the name.
+         * Default information is used from the schema of that name, such as position and
+         * children, but may be override by attributes.
          *
+         * @param name   The name of the menu.
+         * @param attributes   Custom attributes to apply to the menu.
+         * @returns The newly created menu.
          */
         MenuGraphr.prototype.createMenu = function (name, attributes) {
-            var schemaRaw = this.GameStarter.proliferate({}, this.schemas[name]), schema = this.GameStarter.proliferate(schemaRaw, attributes), menu = this.GameStarter.ObjectMaker.make("Menu", schema), container = schema.container
+            var schemaRaw = this.GameStarter.proliferate({}, this.schemas[name]), schema = this.GameStarter.proliferate(schemaRaw, attributes), menu = this.GameStarter.ObjectMaker.make("Menu", schema), 
+            // If the container menu doesn't exist, a pseudo-menu the size of the screen is used
+            container = schema.container
                 ? this.menus[schema.container]
                 : {
-                    "top": 0,
-                    "left": 0,
-                    "right": this.GameStarter.MapScreener.width,
-                    "bottom": this.GameStarter.MapScreener.height,
-                    "width": Math.ceil(this.GameStarter.MapScreener.width / this.GameStarter.unitsize),
-                    "height": Math.ceil(this.GameStarter.MapScreener.height / this.GameStarter.unitsize),
-                    "EightBitter": this.GameStarter,
-                    "GameStarter": this.GameStarter,
-                    "children": []
+                    top: 0,
+                    right: this.GameStarter.MapScreener.width,
+                    bottom: this.GameStarter.MapScreener.height,
+                    left: 0,
+                    width: Math.ceil(this.GameStarter.MapScreener.width / this.GameStarter.unitsize),
+                    height: Math.ceil(this.GameStarter.MapScreener.height / this.GameStarter.unitsize),
+                    EightBitter: this.GameStarter,
+                    GameStarter: this.GameStarter,
+                    children: []
                 };
             this.deleteMenu(name);
             this.menus[name] = menu;
             menu.name = name;
-            this.positionItem(menu, schema.size, schema.position, container);
+            this.placeMenuThing(container, menu, schema.size, schema.position);
             menu.children = [];
             menu.textAreaWidth = (menu.width - menu.textXOffset * 2) * this.GameStarter.unitsize;
             if (menu.childrenSchemas) {
@@ -92,44 +130,59 @@ var MenuGraphr;
             return menu;
         };
         /**
+         * Adds a child object to an existing menu.
          *
+         * @param name   The name of the existing menu.
+         * @param schema   Settings for the child, including name and child type.
+         * @returns The newly created Thing or Things.
+         * @remarks Creating a menu is done using this.createMenu, so the created menu might
+         *          not mark itself as a child of the parent.
          */
         MenuGraphr.prototype.createMenuChild = function (name, schema) {
             switch (schema.type) {
                 case "menu":
-                    this.createMenu(schema.name, schema.attributes);
-                    break;
+                    return this.createMenu(schema.name, schema.attributes);
                 case "text":
-                    this.createMenuWord(name, schema);
-                    break;
+                    return this.createMenuWord(name, schema);
                 case "thing":
-                    this.createMenuThing(name, schema);
-                    break;
+                    return this.createMenuThing(name, schema);
                 default:
                     throw new Error("Unknown schema type: " + schema.type);
             }
         };
         /**
+         * Creates a series of words as a child of a menu.
          *
+         * @param name   The name of the menu.
+         * @param schema   Settings for the words.
+         * @returns The words' character Things.
          */
         MenuGraphr.prototype.createMenuWord = function (name, schema) {
             var menu = this.getExistingMenu(name), container = this.GameStarter.ObjectMaker.make("Menu"), words = this.filterMenuWords(schema.words);
-            this.positionItem(container, schema.size, schema.position, menu, true);
+            this.placeMenuThing(menu, container, schema.size, schema.position, true);
             menu.textX = container.left;
-            this.addMenuWords(name, words, 0, container.left, container.top);
+            return this.addMenuWords(name, words, 0, container.left, container.top);
         };
         /**
+         * Creates a Thing as a child of a menu.
          *
+         * @param name   The name of the menu.
+         * @param schema   Settings for the Thing.
+         * @returns The newly created Thing.
          */
         MenuGraphr.prototype.createMenuThing = function (name, schema) {
             var menu = this.getExistingMenu(name), thing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
-            this.positionItem(thing, schema.size, schema.position, menu);
+            this.placeMenuThing(menu, thing, schema.size, schema.position);
             this.GameStarter.GroupHolder.switchMemberGroup(thing, thing.groupType, "Text");
             menu.children.push(thing);
             return thing;
         };
+        /* Removals
+        */
         /**
+         * Hides a menu of the given name and deletes its children, if it exists.
          *
+         * @param name   The name of the menu to hide.
          */
         MenuGraphr.prototype.hideMenu = function (name) {
             var menu = this.menus[name];
@@ -139,7 +192,9 @@ var MenuGraphr;
             }
         };
         /**
+         * Deletes a menu of the given name, if it exists.
          *
+         * @param name   The name of the menu to delete.
          */
         MenuGraphr.prototype.deleteMenu = function (name) {
             var menu = this.menus[name];
@@ -148,121 +203,29 @@ var MenuGraphr;
             }
         };
         /**
-         *
+         * Deletes the active menu, if it exists.
          */
         MenuGraphr.prototype.deleteActiveMenu = function () {
             if (this.activeMenu) {
                 this.deleteMenu(this.activeMenu.name);
             }
         };
-        /**
-         *
-         */
-        MenuGraphr.prototype.deleteMenuChild = function (child) {
-            if (this.activeMenu === child) {
-                if (child.backMenu) {
-                    this.setActiveMenu(child.backMenu);
-                }
-                else {
-                    this.activeMenu = undefined;
-                }
-            }
-            if (child.killOnB) {
-                child.killOnB.forEach(this.deleteMenu.bind(this));
-            }
-            if (child.name) {
-                delete this.menus[child.name];
-            }
-            this.GameStarter.killNormal(child);
-            this.deleteMenuChildren(name);
-            if (child.onMenuDelete) {
-                child.onMenuDelete.call(this.GameStarter);
-            }
-            if (child.children) {
-                child.children.forEach(this.deleteMenuChild.bind(this));
-            }
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.deleteMenuChildren = function (name) {
-            var menu = this.menus[name];
-            if (menu && menu.children) {
-                menu.children.forEach(this.deleteMenuChild.bind(this));
-            }
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.positionItem = function (item, size, position, container, skipAdd) {
-            var offset;
-            if (!position) {
-                position = {};
-                offset = {};
-            }
-            else {
-                offset = position.offset || {};
-            }
-            if (!size) {
-                size = {};
-            }
-            if (size.width) {
-                this.GameStarter.setWidth(item, size.width);
-            }
-            else if (position.horizontal === "stretch") {
-                this.GameStarter.setLeft(item, 0);
-                this.GameStarter.setWidth(item, container.width - (offset.left || 0) - (offset.right || 0));
-            }
-            if (size.height) {
-                this.GameStarter.setHeight(item, size.height);
-            }
-            else if (position.vertical === "stretch") {
-                this.GameStarter.setTop(item, 0);
-                this.GameStarter.setHeight(item, container.height - (offset.top || 0) - (offset.bottom || 0));
-            }
-            switch (position.horizontal) {
-                case "center":
-                    this.GameStarter.setMidXObj(item, container);
-                    break;
-                case "right":
-                    this.GameStarter.setRight(item, container.right);
-                    break;
-                default:
-                    this.GameStarter.setLeft(item, container.left);
-                    break;
-            }
-            switch (position.vertical) {
-                case "center":
-                    this.GameStarter.setMidYObj(item, container);
-                    break;
-                case "bottom":
-                    this.GameStarter.setBottom(item, container.bottom);
-                    break;
-                default:
-                    this.GameStarter.setTop(item, container.top);
-                    break;
-            }
-            if (offset.top) {
-                this.GameStarter.shiftVert(item, position.offset.top * this.GameStarter.unitsize);
-            }
-            if (offset.left) {
-                this.GameStarter.shiftHoriz(item, position.offset.left * this.GameStarter.unitsize);
-            }
-            if (!skipAdd) {
-                this.GameStarter.addThing(item, item.left, item.top);
-            }
-        };
         /* Menu text
         */
         /**
+         * Adds dialog-style text to a menu. If the text overflows,
          *
+         * @param name   The name of the menu.
+         * @param dialog   Raw dialog to add to the menu.
+         * @param onCompletion   An optional callback for when the text is done.
          */
-        MenuGraphr.prototype.addMenuDialog = function (name, dialogRaw, onCompletion) {
-            var dialog = this.parseRawDialog(dialogRaw), currentLine = 1, callback = (function () {
+        MenuGraphr.prototype.addMenuDialog = function (name, dialog, onCompletion) {
+            var _this = this;
+            var dialogParsed = this.parseRawDialog(dialog), currentLine = 1, callback = function () {
                 // If all dialog has been exhausted, delete the menu and finish
-                if (currentLine >= dialog.length) {
-                    if (this.menus[name].deleteOnFinish) {
-                        this.deleteMenu(name);
+                if (currentLine >= dialogParsed.length) {
+                    if (_this.menus[name].deleteOnFinish) {
+                        _this.deleteMenu(name);
                     }
                     if (onCompletion) {
                         onCompletion();
@@ -272,42 +235,22 @@ var MenuGraphr;
                 currentLine += 1;
                 // Delete any previous texts. This is only done if continuing
                 // so that when the dialog is finished, the last text remains
-                this.deleteMenuChildren(name);
+                _this.deleteMenuChildren(name);
                 // This continues the dialog with the next iteration (word)
-                this.addMenuText(name, dialog[currentLine - 1], callback);
-            }.bind(this));
-            // This first call to addmenuText shouldn't be the callback, because if there
-            // bing called from a childrenSchema of type "text", it shouldn't delete any
-            // other menu children from childrenSchemas.
-            this.addMenuText(name, dialog[0], callback);
+                _this.addMenuText(name, dialogParsed[currentLine - 1], callback);
+            };
+            // This first call to addmenuText shouldn't be the callback, because if 
+            // being called from a childrenSchema of type "text", it shouldn't delete 
+            // any other menu children from childrenSchemas.
+            this.addMenuText(name, dialogParsed[0], callback);
         };
         /**
+         * Continues a menu from its current display words to the next line.
          *
-         */
-        MenuGraphr.prototype.addMenuText = function (name, words, onCompletion) {
-            var menu = this.getExistingMenu(name), x = this.GameStarter.getMidX(menu), y = menu.top + menu.textYOffset * this.GameStarter.unitsize;
-            switch (menu.textStartingX) {
-                case "right":
-                    x += menu.textAreaWidth / 2;
-                    break;
-                case "center":
-                    break;
-                default:
-                    x -= menu.textAreaWidth / 2;
-            }
-            menu.callback = this.continueMenu.bind(this);
-            menu.textX = x;
-            if (words.length) {
-                this.addMenuWords(name, words, 0, x, y, onCompletion);
-            }
-            else {
-                onCompletion();
-            }
-        };
-        /**
-         *
+         * @param name    The name of the menu.
          */
         MenuGraphr.prototype.continueMenu = function (name) {
+            var _this = this;
             var menu = this.getExistingMenu(name), children = menu.children, progress = menu.progress, character, i;
             if (!progress || progress.working) {
                 return;
@@ -323,12 +266,18 @@ var MenuGraphr;
                 character = children[i];
                 this.GameStarter.TimeHandler.addEventInterval(this.scrollCharacterUp.bind(this), 1, character.paddingY, character, menu, -1);
             }
-            this.GameStarter.TimeHandler.addEvent(this.addMenuWords.bind(this), character.paddingY + 1, name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+            this.GameStarter.TimeHandler.addEvent(function () {
+                _this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+            }, character.paddingY + 1);
         };
         /* Lists
         */
         /**
+         * Adds a list of text options to a menu.
          *
+         * @param name   The name of the menu.
+         * @param settings   Settings for the list, particularly its options, starting
+         *                   index, and optional floating bottom.
          */
         MenuGraphr.prototype.addMenuList = function (name, settings) {
             var menu = this.getExistingMenu(name), options = settings.options.constructor === Function
@@ -336,7 +285,7 @@ var MenuGraphr;
                 : settings.options, left = menu.left + menu.textXOffset * this.GameStarter.unitsize, top = menu.top + menu.textYOffset * this.GameStarter.unitsize, textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize, textHeight = (menu.textHeight || textProperties.height) * this.GameStarter.unitsize, textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, selectedIndex = settings.selectedIndex || [0, 0], optionChildren = [], index = 0, y = top, option, optionChild, schema, title, character, column, x, i, j, k;
             menu.options = options;
             menu.optionChildren = optionChildren;
-            menu.callback = this.selectMenuListOption.bind(this);
+            menu.callback = this.triggerMenuListOption.bind(this);
             menu.onActive = this.activateMenuList.bind(this);
             menu.onInactive = this.deactivateMenuList.bind(this);
             menu.grid = [];
@@ -427,7 +376,7 @@ var MenuGraphr;
                 option.x = x;
                 option.y = y;
                 // Copy & pasted from the above options loop
-                // To do: make this into its own helper function?
+                // Todo: make this into its own helper function?
                 for (j = 0; j < schema.length; j += 1) {
                     for (k = 0; k < schema[j].length; k += 1) {
                         if (schema[j][k].command) {
@@ -478,36 +427,24 @@ var MenuGraphr;
             this.GameStarter.setTop(character, option.y + menu.arrowYOffset * this.GameStarter.unitsize);
         };
         /**
+         * Retrives the currently selected grid cell of a menu.
          *
-         */
-        MenuGraphr.prototype.activateMenuList = function (name) {
-            if (this.menus[name] && this.menus[name].arrow) {
-                this.menus[name].arrow.hidden = false;
-            }
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.deactivateMenuList = function (name) {
-            if (this.menus[name] && this.menus[name].arrow) {
-                this.menus[name].arrow.hidden = true;
-            }
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.getMenuSelectedIndex = function (name) {
-            return this.menus[name].selectedIndex;
-        };
-        /**
-         *
+         * @param name   The name of the menu.
+         * @returns The currently selected grid cell of the menu.
          */
         MenuGraphr.prototype.getMenuSelectedOption = function (name) {
-            var menu = this.menus[name];
+            var menu = this.getExistingMenu(name);
+            if (!menu.grid || !menu.selectedIndex) {
+                throw new Error("The " + name + " menu does not behave like a list menu.");
+            }
             return menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
         };
         /**
+         * Shifts the selected index of a list menu, adjusting for scrolling if necessary.
          *
+         * @param name   The name of the menu.
+         * @param dx   How far along the menu's grid to shift horizontally.
+         * @param dy   How far along the menu's grid to shift vertically.
          */
         MenuGraphr.prototype.shiftSelectedIndex = function (name, dx, dy) {
             var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, option, x, y;
@@ -534,61 +471,28 @@ var MenuGraphr;
             menu.selectedIndex[1] = y;
             option = this.getMenuSelectedOption(name);
             if (menu.scrollingItems) {
-                this.adjustVerticalScrollingListThings(name, dy, textPaddingY);
+                this.scrollListThings(name, dy, textPaddingY);
             }
             this.GameStarter.setRight(menu.arrow, option.x - menu.arrowXOffset * this.GameStarter.unitsize);
             this.GameStarter.setTop(menu.arrow, option.y + menu.arrowYOffset * this.GameStarter.unitsize);
         };
         /**
+         * Sets the current selected index of a menu.
          *
+         * @param name   The name of the menu.
+         * @param x   The new horizontal value for the index.
+         * @param y   The new vertical value for the index.
          */
         MenuGraphr.prototype.setSelectedIndex = function (name, x, y) {
             var menu = this.getExistingMenu(name), selectedIndex = menu.selectedIndex;
             this.shiftSelectedIndex(name, x - selectedIndex[0], y - selectedIndex[1]);
         };
-        /**
-         *
-         */
-        MenuGraphr.prototype.adjustVerticalScrollingListThings = function (name, dy, textPaddingY) {
-            var menu = this.getExistingMenu(name), scrollingOld = menu.selectedIndex[1] - dy, offset = -dy * textPaddingY, option, optionChild, i, j;
-            if (dy > 0) {
-                if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
-                    return;
-                }
-            }
-            else if (scrollingOld - menu.scrollingVisualOffset > 0) {
-                return;
-            }
-            menu.scrollingVisualOffset += dy;
-            for (i = 0; i < menu.optionChildren.length; i += 1) {
-                option = menu.options[i];
-                optionChild = menu.optionChildren[i];
-                option.y += offset;
-                for (j = 0; j < optionChild.things.length; j += 1) {
-                    this.GameStarter.shiftVert(optionChild.things[j], offset);
-                    if (i < menu.scrollingVisualOffset
-                        || i >= menu.scrollingItems + menu.scrollingVisualOffset) {
-                        optionChild.things[j].hidden = true;
-                    }
-                    else {
-                        optionChild.things[j].hidden = false;
-                    }
-                }
-            }
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.selectMenuListOption = function (name) {
-            var selected = this.getMenuSelectedOption(name);
-            if (selected.callback) {
-                selected.callback.call(this, name);
-            }
-        };
         /* Interactivity
         */
         /**
+         * Sets the currently active menu.
          *
+         * @param name   The name of the menu to set as active.
          */
         MenuGraphr.prototype.setActiveMenu = function (name) {
             if (this.activeMenu && this.activeMenu.onInactive) {
@@ -600,66 +504,26 @@ var MenuGraphr;
             }
         };
         /**
+         * Reacts to a user event directing in the given direction.
          *
-         */
-        MenuGraphr.prototype.getActiveMenu = function () {
-            return this.activeMenu;
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.getActiveMenuName = function () {
-            return this.activeMenu.name;
-        };
-        /**
-         *
+         * @param direction   The direction of the interaction.
          */
         MenuGraphr.prototype.registerDirection = function (direction) {
             switch (direction) {
-                case 0:
+                case Direction.Top:
                     return this.registerUp();
-                case 1:
+                case Direction.Right:
                     return this.registerRight();
-                case 2:
+                case Direction.Bottom:
                     return this.registerDown();
-                case 3:
+                case Direction.Left:
                     return this.registerLeft();
                 default:
                     throw new Error("Unknown direction: " + direction);
             }
         };
         /**
-         *
-         */
-        MenuGraphr.prototype.registerLeft = function () {
-            var menu = this.activeMenu;
-            if (!menu) {
-                return;
-            }
-            if (menu.selectedIndex) {
-                this.shiftSelectedIndex(menu.name, -1, 0);
-            }
-            if (menu.onLeft) {
-                menu.onLeft(this.GameStarter);
-            }
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.registerRight = function () {
-            var menu = this.activeMenu;
-            if (!menu) {
-                return;
-            }
-            if (menu.selectedIndex) {
-                this.shiftSelectedIndex(menu.name, 1, 0);
-            }
-            if (menu.onRight) {
-                menu.onRight(this.GameStarter);
-            }
-        };
-        /**
-         *
+         * Reacts to a user event directing up.
          */
         MenuGraphr.prototype.registerUp = function () {
             var menu = this.activeMenu;
@@ -674,7 +538,22 @@ var MenuGraphr;
             }
         };
         /**
-         *
+         * Reacts to a user event directing to the right.
+         */
+        MenuGraphr.prototype.registerRight = function () {
+            var menu = this.activeMenu;
+            if (!menu) {
+                return;
+            }
+            if (menu.selectedIndex) {
+                this.shiftSelectedIndex(menu.name, 1, 0);
+            }
+            if (menu.onRight) {
+                menu.onRight(this.GameStarter);
+            }
+        };
+        /**
+         * Reacts to a user event directing down.
          */
         MenuGraphr.prototype.registerDown = function () {
             var menu = this.activeMenu;
@@ -689,7 +568,22 @@ var MenuGraphr;
             }
         };
         /**
-         *
+         * Reacts to a user event directing to the left.
+         */
+        MenuGraphr.prototype.registerLeft = function () {
+            var menu = this.activeMenu;
+            if (!menu) {
+                return;
+            }
+            if (menu.selectedIndex) {
+                this.shiftSelectedIndex(menu.name, -1, 0);
+            }
+            if (menu.onLeft) {
+                menu.onLeft(this.GameStarter);
+            }
+        };
+        /**
+         * Reacts to a user event from pressing a selection key.
          */
         MenuGraphr.prototype.registerA = function () {
             var menu = this.activeMenu;
@@ -701,7 +595,7 @@ var MenuGraphr;
             }
         };
         /**
-         *
+         * Reacts to a user event from pressing a deselection key.
          */
         MenuGraphr.prototype.registerB = function () {
             var menu = this.activeMenu;
@@ -726,7 +620,7 @@ var MenuGraphr;
             }
         };
         /**
-         *
+         * Reacts to a user event from pressing a start key.
          */
         MenuGraphr.prototype.registerStart = function () {
             var menu = this.activeMenu;
@@ -740,11 +634,46 @@ var MenuGraphr;
         /* Utilities
         */
         /**
+         * Adds a series of words to a menu.
          *
+         * @param name   The name of the menu.
+         * @param words   Words to add to the menu, as String[]s and/or commands.
+         * @param onCompletion   An optional event for when the words are added.
+         */
+        MenuGraphr.prototype.addMenuText = function (name, words, onCompletion) {
+            var menu = this.getExistingMenu(name), x = this.GameStarter.getMidX(menu), y = menu.top + menu.textYOffset * this.GameStarter.unitsize;
+            switch (menu.textStartingX) {
+                case "right":
+                    x += menu.textAreaWidth / 2;
+                    break;
+                case "center":
+                    break;
+                default:
+                    x -= menu.textAreaWidth / 2;
+            }
+            menu.callback = this.continueMenu.bind(this);
+            menu.textX = x;
+            if (words.length) {
+                this.addMenuWords(name, words, 0, x, y, onCompletion);
+            }
+            else {
+                onCompletion();
+            }
+        };
+        /**
+         * Adds a word within a series of words to a menu, then adds the next word,
+         * and so on. This is the real force behind addMenuDialog and addMenuText.
          *
-         * @remarks This is the real force behind addMenuDialog and addMenuText.
+         * @param name   The name of the menu.
+         * @param words   Words to add to the menu, as String[]s and/or commands.
+         * @param i   The index of the current word to add.
+         * @param x   The x-location to place the word at.
+         * @param y   The y-location to place the word at.
+         * @param onCompletion   An optional event for when the words are added.
+         * @returns The generated Things from the word's characters.
          */
         MenuGraphr.prototype.addMenuWords = function (name, words, i, x, y, onCompletion) {
+            var _this = this;
             var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), command, word, things = [], textWidth, textPaddingX, textPaddingY, textSpeed, textWidthMultiplier, character, j;
             // Command objects must be parsed here in case they modify the x/y position
             if (words[i].command) {
@@ -818,7 +747,9 @@ var MenuGraphr;
                 return things;
             }
             if (textSpeed) {
-                this.GameStarter.TimeHandler.addEvent(this.addMenuWords.bind(this), (j + 1) * textSpeed, name, words, i + 1, x, y, onCompletion);
+                this.GameStarter.TimeHandler.addEvent(function () {
+                    _this.addMenuWords(name, words, i + 1, x, y, onCompletion);
+                }, (j + 1) * textSpeed);
             }
             else {
                 this.addMenuWords(name, words, i + 1, x, y, onCompletion);
@@ -826,15 +757,83 @@ var MenuGraphr;
             return things;
         };
         /**
+         * Places and positions a Thing within a menu basd on its size and position schemas.
          *
+         * @param thing   The Thing to place and position.
+         * @param size   An optional description of the Thing's size.
+         * @param position   An optional description of the Thing's position.
+         * @param skipAdd   Whether to skip calling this.GameStarter.addThing on the Thing.
+         */
+        MenuGraphr.prototype.placeMenuThing = function (menu, thing, size, position, skipAdd) {
+            if (size === void 0) { size = {}; }
+            if (position === void 0) { position = {}; }
+            var offset = position.offset || {};
+            if (size.width) {
+                this.GameStarter.setWidth(thing, size.width);
+            }
+            else if (position.horizontal === "stretch") {
+                this.GameStarter.setLeft(thing, 0);
+                this.GameStarter.setWidth(thing, menu.width - (offset.left || 0) - (offset.right || 0));
+            }
+            if (size.height) {
+                this.GameStarter.setHeight(thing, size.height);
+            }
+            else if (position.vertical === "stretch") {
+                this.GameStarter.setTop(thing, 0);
+                this.GameStarter.setHeight(thing, menu.height - (offset.top || 0) - (offset.bottom || 0));
+            }
+            switch (position.horizontal) {
+                case "center":
+                    this.GameStarter.setMidXObj(thing, menu);
+                    break;
+                case "right":
+                    this.GameStarter.setRight(thing, menu.right);
+                    break;
+                default:
+                    this.GameStarter.setLeft(thing, menu.left);
+                    break;
+            }
+            switch (position.vertical) {
+                case "center":
+                    this.GameStarter.setMidYObj(thing, menu);
+                    break;
+                case "bottom":
+                    this.GameStarter.setBottom(thing, menu.bottom);
+                    break;
+                default:
+                    this.GameStarter.setTop(thing, menu.top);
+                    break;
+            }
+            if (offset.top) {
+                this.GameStarter.shiftVert(thing, position.offset.top * this.GameStarter.unitsize);
+            }
+            if (offset.left) {
+                this.GameStarter.shiftHoriz(thing, position.offset.left * this.GameStarter.unitsize);
+            }
+            if (!skipAdd) {
+                this.GameStarter.addThing(thing, thing.left, thing.top);
+            }
+        };
+        /**
+         * Adds a single character as an GameStartr.IThing to a menu, potentially with a time delay.
+         *
+         * @param name   The name of the menu.
+         * @param character   The character to add.
+         * @param x   The x-position of the character.
+         * @param y   The y-position of the character.
+         * @param delay   Optionally, how long to delay adding using TimeHandlr.
+         * @returns The character's new Thing representation.
          */
         MenuGraphr.prototype.addMenuCharacter = function (name, character, x, y, delay) {
+            var _this = this;
             var menu = this.getExistingMenu(name), textProperties = this.GameStarter.ObjectMaker.getPropertiesOf("Text"), textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize, title = "Char" + this.getCharacterEquivalent(character), thing = this.GameStarter.ObjectMaker.make(title, {
                 "textPaddingY": textPaddingY
             });
             menu.children.push(thing);
             if (delay) {
-                this.GameStarter.TimeHandler.addEvent(this.GameStarter.addThing.bind(this.GameStarter), delay, thing, x, y);
+                this.GameStarter.TimeHandler.addEvent(function () {
+                    _this.GameStarter.addThing(thing, x, y);
+                }, delay);
             }
             else {
                 this.GameStarter.addThing(thing, x, y);
@@ -842,10 +841,102 @@ var MenuGraphr;
             return thing;
         };
         /**
+         * Scrolls a menu's character up once. If it's above the menu's area, it's deleted.
          *
+         * @param character   The Thing to scroll up.
+         * @param menu
+         * @returns Whether the character was deleted.
+         */
+        MenuGraphr.prototype.scrollCharacterUp = function (character, menu) {
+            this.GameStarter.shiftVert(character, -this.GameStarter.unitsize);
+            if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {
+                this.GameStarter.killNormal(character);
+                return true;
+            }
+            return false;
+        };
+        /**
+         * Deletes all children of a menu.
          *
-         * @remarks This could be made into a binary search...
-         * @remarks This equation is rought, and could be re-checked...
+         * @param name   The name of the menu.
+         */
+        MenuGraphr.prototype.deleteMenuChildren = function (name) {
+            var _this = this;
+            var menu = this.menus[name];
+            if (menu && menu.children) {
+                menu.children.forEach(function (child) { return _this.deleteMenuChild(child); });
+            }
+        };
+        /**
+         * Deletes the child of a menu and any of its children.
+         *
+         * @param child   A menu child to delete.
+         */
+        MenuGraphr.prototype.deleteMenuChild = function (child) {
+            if (this.activeMenu === child) {
+                if (child.backMenu) {
+                    this.setActiveMenu(child.backMenu);
+                }
+                else {
+                    this.activeMenu = undefined;
+                }
+            }
+            if (child.killOnB) {
+                child.killOnB.forEach(this.deleteMenu.bind(this));
+            }
+            if (child.name) {
+                delete this.menus[child.name];
+            }
+            this.GameStarter.killNormal(child);
+            this.deleteMenuChildren(name);
+            if (child.onMenuDelete) {
+                child.onMenuDelete.call(this.GameStarter);
+            }
+            if (child.children) {
+                child.children.forEach(this.deleteMenuChild.bind(this));
+            }
+        };
+        /* List utilities
+        */
+        /**
+         * Un-hides a list menu's arrow Thing.
+         *
+         * @param name   The name of the menu.
+         */
+        MenuGraphr.prototype.activateMenuList = function (name) {
+            var menu = this.menus[name];
+            if (menu && menu.arrow) {
+                menu.arrow.hidden = false;
+            }
+        };
+        /**
+         * Hides a list menu's arrow Thing.
+         *
+         * @param name   The name of the menu.
+         */
+        MenuGraphr.prototype.deactivateMenuList = function (name) {
+            var menu = this.menus[name];
+            if (menu && menu.arrow) {
+                menu.arrow.hidden = true;
+            }
+        };
+        /**
+         * Runs the callback for a menu's selected list option.
+         *
+         * @param name   The name of the menu.
+         */
+        MenuGraphr.prototype.triggerMenuListOption = function (name) {
+            var selected = this.getMenuSelectedOption(name);
+            if (selected.callback) {
+                selected.callback.call(this, name);
+            }
+        };
+        /**
+         * Determines how many scrolling items are able to fit within a list menu, as
+         * the index of the first bottom not within the menu.
+         *
+         * @param menu   The list menu.
+         * @returns The number of scrolling items, or Infinity if they all fit.
          */
         MenuGraphr.prototype.computeMenuScrollingItems = function (menu) {
             var bottom = menu.bottom
@@ -859,18 +950,45 @@ var MenuGraphr;
             return Infinity;
         };
         /**
+         * Scrolls a list menu's Things vertically.
          *
+         * @param name   The name of the menu.
+         * @param dy   How far along the list menu's grid to scroll.
+         * @param textPaddingY   How much text is padded, to compute scrolling with dy.
          */
-        MenuGraphr.prototype.scrollCharacterUp = function (character, menu) {
-            this.GameStarter.shiftVert(character, -this.GameStarter.unitsize);
-            if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                this.GameStarter.killNormal(character);
-                return true;
+        MenuGraphr.prototype.scrollListThings = function (name, dy, textPaddingY) {
+            var menu = this.getExistingMenu(name), scrollingOld = menu.selectedIndex[1] - dy, offset = -dy * textPaddingY, option, optionChild, i, j;
+            if (dy > 0) {
+                if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
+                    return;
+                }
             }
-            return false;
+            else if (scrollingOld - menu.scrollingVisualOffset > 0) {
+                return;
+            }
+            menu.scrollingVisualOffset += dy;
+            for (i = 0; i < menu.optionChildren.length; i += 1) {
+                option = menu.options[i];
+                optionChild = menu.optionChildren[i];
+                option.y += offset;
+                for (j = 0; j < optionChild.things.length; j += 1) {
+                    this.GameStarter.shiftVert(optionChild.things[j], offset);
+                    if (i < menu.scrollingVisualOffset
+                        || i >= menu.scrollingItems + menu.scrollingVisualOffset) {
+                        optionChild.things[j].hidden = true;
+                    }
+                    else {
+                        optionChild.things[j].hidden = false;
+                    }
+                }
+            }
         };
+        /* Text parsing
+        */
         /**
-         *
+         * @param character   A String to retrieve an equivalent title of.
+         * @returns The character's title from this.aliases if it exists, or the
+         *          character itself otherwise.
          */
         MenuGraphr.prototype.getCharacterEquivalent = function (character) {
             if (this.aliases.hasOwnProperty(character)) {
@@ -879,7 +997,8 @@ var MenuGraphr;
             return character;
         };
         /**
-         *
+         * @param dialogRaw   Raw dialog of any type.
+         * @returns The dialog parsed into lines of words.
          */
         MenuGraphr.prototype.parseRawDialog = function (dialogRaw) {
             // A raw String becomes a single line of dialog
@@ -893,20 +1012,21 @@ var MenuGraphr;
                     output.push(this.parseRawDialogString(component));
                 }
                 else {
-                    output.push(this.filterArray(component));
+                    output.push(this.parseRawDialogStrings(component));
                 }
             }
             return output;
         };
         /**
-         *
+         * @param dialogRaw   A raw String or set of Strings.
+         * @returns The raw dialog as lines of words.
          */
         MenuGraphr.prototype.parseRawDialogString = function (dialogRaw) {
             var characters = this.filterWord(dialogRaw), words = [], word, currentlyWhitespace = undefined, i;
             word = [];
             // For each character to be added...
             for (i = 0; i < characters.length; i += 1) {
-                // If it matches what's currently being added, keep going
+                // If it matches what's currently being added (whitespace or not), keep going
                 if (currentlyWhitespace) {
                     if (/\s/.test(characters[i])) {
                         word.push(characters[i]);
@@ -931,8 +1051,19 @@ var MenuGraphr;
             return words;
         };
         /**
-         *
-         *
+         * @param words   Any number of raw dialog words.
+         * @returns The words filtered using this.parseRawDialogString.
+         */
+        MenuGraphr.prototype.parseRawDialogStrings = function (words) {
+            var output = [], i;
+            for (i = 0; i < words.length; i += 1) {
+                output.push.apply(output, this.parseRawDialogString(words[i]));
+            }
+            return output;
+        };
+        /**
+         * @param wordRaw   A word that may need to have replacements applied.
+         * @returns The same word as an Array of characters, and with replacements applied.
          */
         MenuGraphr.prototype.filterWord = function (wordRaw) {
             if (wordRaw.constructor === Array) {
@@ -957,7 +1088,10 @@ var MenuGraphr;
             return word.split("");
         };
         /**
+         * Filters all String words in a menu's text using this.filterWord.
          *
+         * @param words   The words to filter, as Strings or command Objects.
+         * @returns The words, with all Strings filtered.
          */
         MenuGraphr.prototype.filterMenuWords = function (words) {
             var output = [], i;
@@ -972,29 +1106,20 @@ var MenuGraphr;
             return output;
         };
         /**
-         *
+         * @param textRaw   Text that, if String(s), should be filtered using this.filterWord.
+         * @returns The words, filtered.
          */
-        MenuGraphr.prototype.filterArray = function (words) {
-            var output = [], i;
-            for (i = 0; i < words.length; i += 1) {
-                output.push.apply(output, this.parseRawDialogString(words[i]));
-            }
-            return output;
-        };
-        /**
-         *
-         */
-        MenuGraphr.prototype.filterText = function (word) {
-            if (word.constructor === Array) {
-                if (word.length === 0) {
+        MenuGraphr.prototype.filterText = function (textRaw) {
+            if (textRaw.constructor === Array) {
+                if (textRaw.length === 0) {
                     return [];
                 }
-                if (word[0].constructor === String) {
-                    return [word];
+                if (textRaw[0].constructor === String) {
+                    return [textRaw];
                 }
-                return word;
+                return textRaw;
             }
-            var characters = [], total = word, component = "", i;
+            var characters = [], total = textRaw, component = "", i;
             for (i = 0; i < total.length; i += 1) {
                 if (/\s/.test(total[i])) {
                     if (component.length > 0) {
@@ -1012,52 +1137,59 @@ var MenuGraphr;
             return [characters];
         };
         /**
+         * Converts a word command into its equivalent word text.
          *
+         * @param wordCommand   The word command.
+         * @param menu   The menu containing the word command.
+         * @returns The equivalent word text for the command.
          */
-        MenuGraphr.prototype.parseWordCommand = function (word, menu) {
+        MenuGraphr.prototype.parseWordCommand = function (wordCommand, menu) {
             // If no menu is provided, this is from a simulation; pretend there is a menu
             if (!menu) {
                 menu = {};
             }
-            switch (word.command) {
+            switch (wordCommand.command) {
                 case "attribute":
-                    menu[word.attribute + "Old"] = menu[word.attribute];
-                    menu[word.attribute] = word.value;
-                    if (word.applyUnitsize) {
-                        menu[word.attribute] *= this.GameStarter.unitsize;
+                    menu[wordCommand.attribute + "Old"] = menu[wordCommand.attribute];
+                    menu[wordCommand.attribute] = wordCommand.value;
+                    if (wordCommand.applyUnitsize) {
+                        menu[wordCommand.attribute] *= this.GameStarter.unitsize;
                     }
                     break;
                 case "attributeReset":
-                    menu[word.attribute] = menu[word.attribute + "Old"];
+                    menu[wordCommand.attribute] = menu[wordCommand.attribute + "Old"];
                     break;
                 case "padLeft":
-                    return this.parseWordCommandPadLeft(word);
+                    return this.parseWordCommandPadLeft(wordCommand);
                 // Position is handled directly in addMenuWord
                 case "position":
                     break;
                 default:
-                    throw new Error("Unknown word command: " + word.command);
+                    throw new Error("Unknown word command: " + wordCommand.command);
             }
-            return word.word.split("");
+            return wordCommand.word.split("");
         };
         /**
+         * Converts a word command to pad text from the left.
          *
+         * @param wordCommand   The word command.
+         * @returns   The word command's parsed text.
          */
-        MenuGraphr.prototype.parseWordCommandPadLeft = function (command) {
-            var filtered = this.filterWord(command.word), length;
+        MenuGraphr.prototype.parseWordCommandPadLeft = function (wordCommand) {
+            var filtered = this.filterWord(wordCommand.word), length;
             // Length may be a String (for its length) or a direct number
-            switch (command.length.constructor) {
+            switch (wordCommand.length.constructor) {
                 case String:
-                    length = this.filterText(command.length)[0].length;
+                    length = this.filterText(wordCommand.length)[0].length;
                     break;
                 case Number:
-                    length = command.length;
+                    length = wordCommand.length;
                     break;
                 default:
-                    throw new Error("Unknown padLeft command: " + command);
+                    throw new Error("Unknown padLeft command: " + wordCommand);
             }
             // Right-aligned commands reduce the amount of spacing by the length of the word
-            if (command.alignRight) {
+            if (wordCommand.alignRight) {
                 length = Math.max(0, length - filtered.length);
             }
             // Tabs are considered to be a single space, so they're added to the left
@@ -1065,7 +1197,10 @@ var MenuGraphr;
             return filtered;
         };
         /**
+         * Retrieves the value of a text replacement of the given key.
          *
+         * @param key   The key of the text replacement to retrieve.
+         * @returns The value of the text replacement, if it exists.
          */
         MenuGraphr.prototype.getReplacement = function (key) {
             var replacement = this.replacements[key];
@@ -1083,16 +1218,21 @@ var MenuGraphr;
          * Creates a new String equivalent to an old String repeated any number of
          * times. If times is 0, a blank String is returned.
          *
-         * @param {String} str The characters to repeat.
-         * @param {Number} [times]   How many times to repeat (by default, 1).
+         * @param string   The characters to repeat.
+         * @param times   How many times to repeat (by default, 1).
+         * @returns The original string, repeated.
          */
-        MenuGraphr.prototype.stringOf = function (str, times) {
+        MenuGraphr.prototype.stringOf = function (string, times) {
             if (times === void 0) { times = 1; }
-            return (times === 0) ? "" : new Array(1 + (times)).join(str);
+            return (times === 0) ? "" : new Array(1 + (times)).join(string);
         };
         /**
+         * Predicts how wide a word's area will be when displayed as dialog.
          *
-         *
+         * @param wordRaw   The word that will be displayed.
+         * @param textWidth   How wide each character should be.
+         * @param textPaddingX   How much space between each character.
+         * @returns The total predicted width of the word's area.
          * @remarks This ignores commands under the assumption they shouldn't be
          *          used in dialogs that react to box size. This may be wrong.
          */
@@ -1109,17 +1249,20 @@ var MenuGraphr;
                     total += textWidth + textPaddingX;
                 }
                 else {
-                    total += this.computeFutureLetterLength(word[i], textPaddingX);
+                    total += this.computeFutureLetterLength(word[i]) + textPaddingX;
                 }
             }
             return total;
         };
         /**
+         * Predicts how wide a letter will be, based on its equivalent Thing's width.
          *
+         * @param letter   The name of the letter to create.
+         * @returns How wide the letter will be on the screen.
          */
-        MenuGraphr.prototype.computeFutureLetterLength = function (letter, textPaddingX) {
+        MenuGraphr.prototype.computeFutureLetterLength = function (letter) {
             var title = "Char" + this.getCharacterEquivalent(letter), properties = this.GameStarter.ObjectMaker.getFullPropertiesOf(title);
-            return properties.width * this.GameStarter.unitsize + textPaddingX;
+            return properties.width * this.GameStarter.unitsize;
         };
         return MenuGraphr;
     })();

@@ -1,38 +1,18 @@
 /// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
-/**
- *
- */
 var PixelRendr;
-(function (PixelRendr_1) {
+(function (PixelRendr) {
     "use strict";
-    /**
-     * Summary container for a single PixelRendr sprite source. The original source
-     * is stored, along with any generated outputs, information on its container,
-     * and any filter.
-     */
-    var Render = (function () {
-        /**
-         * Resets the Render. No sprite computation is done here, so sprites is
-         * initialized to an empty container.
-         */
-        function Render(source, filter) {
-            this.source = source;
-            this.filter = filter;
-            this.sprites = {};
-            this.containers = [];
-        }
-        return Render;
-    })();
-    PixelRendr_1.Render = Render;
     /**
      * Container for a "multiple" sprite, which is a sprite that contains separate
      * Uint8ClampedArray pieces of data for different sections (such as top, middle, etc.)
      */
     var SpriteMultiple = (function () {
         /**
-         * Stores an already-computed container of sprites, and sets the direction
-         * sizes and middleStretch accordingly.
+         * Initializes a new instance of the SpriteMultiple class.
+         *
+         * @param sprites   Data for each sprite to import, keyed by container.
+         * @param render   The parsed sprite source.
          */
         function SpriteMultiple(sprites, render) {
             var sources = render.source[2];
@@ -50,7 +30,37 @@ var PixelRendr;
         }
         return SpriteMultiple;
     })();
-    PixelRendr_1.SpriteMultiple = SpriteMultiple;
+    PixelRendr.SpriteMultiple = SpriteMultiple;
+})(PixelRendr || (PixelRendr = {}));
+var PixelRendr;
+(function (PixelRendr) {
+    "use strict";
+    /**
+     * Summary container for a single PixelRendr sprite source. The original source
+     * is stored, along with any generated outputs, information on its container,
+     * and any filter.
+     */
+    var Render = (function () {
+        /**
+         * Initializes a new instance of the Render clsas.
+         *
+         * @param source   The original command to create this render.
+         * @param filter   An optional filter to change colors by, if source
+         *                 is a "filter" command.
+         */
+        function Render(source, filter) {
+            this.source = source;
+            this.filter = filter;
+            this.sprites = {};
+            this.containers = [];
+        }
+        return Render;
+    })();
+    PixelRendr.Render = Render;
+})(PixelRendr || (PixelRendr = {}));
+var PixelRendr;
+(function (PixelRendr_1) {
+    "use strict";
     /**
      * A moderately unusual graphics module designed to compress images as
      * compressed text blobs and store the text blobs in a StringFilr. These tasks
@@ -59,7 +69,9 @@ var PixelRendr;
      */
     var PixelRendr = (function () {
         /**
-         * @param {IPixelRendrSettings} settings
+         * Initializes a new instance of the PixelRendr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function PixelRendr(settings) {
             if (!settings) {
@@ -74,15 +86,13 @@ var PixelRendr;
             this.library = {
                 "raws": settings.library || {}
             };
-            this.filters = settings.filters || {};
             this.scale = settings.scale || 1;
+            this.filters = settings.filters || {};
             this.flipVert = settings.flipVert || "flip-vert";
             this.flipHoriz = settings.flipHoriz || "flip-horiz";
             this.spriteWidth = settings.spriteWidth || "spriteWidth";
             this.spriteHeight = settings.spriteHeight || "spriteHeight";
-            this.Uint8ClampedArray = (settings.Uint8ClampedArray
-                || window.Uint8ClampedArray
-                || window.Uint8Array);
+            this.Uint8ClampedArray = settings.Uint8ClampedArray || window.Uint8ClampedArray || window.Uint8Array;
             // The first ChangeLinr does the raw processing of Strings to sprites
             // This is used to load & parse sprites into memory on startup
             this.ProcessorBase = new ChangeLinr.ChangeLinr({
@@ -92,12 +102,7 @@ var PixelRendr;
                     "spriteExpand": this.spriteExpand.bind(this),
                     "spriteGetArray": this.spriteGetArray.bind(this)
                 },
-                "pipeline": [
-                    "spriteUnravel",
-                    "spriteApplyFilter",
-                    "spriteExpand",
-                    "spriteGetArray"
-                ]
+                "pipeline": ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"]
             });
             // The second ChangeLinr does row repeating and flipping
             // This is done on demand when given a sprite's settings Object
@@ -106,10 +111,7 @@ var PixelRendr;
                     "spriteRepeatRows": this.spriteRepeatRows.bind(this),
                     "spriteFlipDimensions": this.spriteFlipDimensions.bind(this)
                 },
-                "pipeline": [
-                    "spriteRepeatRows",
-                    "spriteFlipDimensions"
-                ]
+                "pipeline": ["spriteRepeatRows", "spriteFlipDimensions"]
             });
             // As a utility, a processor is included to encode image data to sprites
             this.ProcessorEncode = new ChangeLinr.ChangeLinr({
@@ -119,12 +121,7 @@ var PixelRendr;
                     "imageMapPalette": this.imageMapPalette.bind(this),
                     "imageCombinePixels": this.imageCombinePixels.bind(this)
                 },
-                "pipeline": [
-                    "imageGetData",
-                    "imageGetPixels",
-                    "imageMapPalette",
-                    "imageCombinePixels"
-                ],
+                "pipeline": ["imageGetData", "imageGetPixels", "imageMapPalette", "imageCombinePixels"],
                 "doUseCache": false
             });
             this.library.sprites = this.libraryParse(this.library.raws);
@@ -142,43 +139,43 @@ var PixelRendr;
         /* Simple gets
         */
         /**
-         * @return {Object} The base container for storing sprite information.
+         * @returns The base container for storing sprite information.
          */
         PixelRendr.prototype.getBaseLibrary = function () {
             return this.BaseFiler.getLibrary();
         };
         /**
-         * @return {StringFilr} The StringFilr interface on top of the base library.
+         * @returns The StringFilr interface on top of the base library.
          */
         PixelRendr.prototype.getBaseFiler = function () {
             return this.BaseFiler;
         };
         /**
-         * @return {ChangeLinr} The processor that turns raw strings into partial
-         * sprites.
+         * @returns The processor that turns raw strings into partial sprites.
          */
         PixelRendr.prototype.getProcessorBase = function () {
             return this.ProcessorBase;
         };
         /**
-         * @return {ChangeLinr} The processor that turns partial sprites and repeats
-         *                      rows.
+         * @returns The processor that converts partial sprites and repeats rows.
          */
         PixelRendr.prototype.getProcessorDims = function () {
             return this.ProcessorDims;
         };
         /**
-         * @return {ChangeLinr} The processor that takes real images and compresses
-         *                      their data into sprite Strings.
+         * @returns The processor that takes real images and compresses their data
+         *          into sprite Strings.
          */
         PixelRendr.prototype.getProcessorEncode = function () {
             return this.ProcessorEncode;
         };
         /**
-         * @param {String} key
-         * @return {Mixed} Returns the base sprite for a key. This will either be a
-         *                 Uint8ClampedArrayor SpriteMultiple if a sprite is found,
-         *                 or the deepest matching Object in the library.
+         * Retrieves the base sprite under the given key.
+         *
+         * @param key   A key for a base sprite.
+         * @returns The base sprite for the key. This will be a Uint8ClampedArray
+         *          or SpriteMultiple if a sprite is found, or the deepest matching
+         *          Object in the library if not.
          */
         PixelRendr.prototype.getSpriteBase = function (key) {
             return this.BaseFiler.get(key);
@@ -190,11 +187,10 @@ var PixelRendr;
          * BaseFiler and processes it using ProcessorDims. Attributes are needed so
          * the ProcessorDims can stretch it on width and height.
          *
-         * @param {String} key   The general key for the sprite to be passed
-         *                       directly to BaseFiler.get.
-         * @param {Object} attributes   Additional attributes for the sprite; width
-         *                              and height Numbers are required.
-         * @return {Uint8ClampedArray}
+         * @param key   The general key for the sprite.
+         * @param attributes   Additional attributes for the sprite; width and height
+         *                     Numbers are required.
+         * @returns A sprite for the given key and attributes.
          */
         PixelRendr.prototype.decode = function (key, attributes) {
             var render = this.BaseFiler.get(key), sprite;
@@ -214,17 +210,18 @@ var PixelRendr;
         /**
          * Encodes an image into a sprite via ProcessorEncode.process.
          *
-         * @param {HTMLImageElement} image
-         * @param {Function} [callback]   An optional callback to call on the image
-         *                                with source as an extra argument.
-         * @param {Mixed} [source]   An optional extra argument for callback,
-         *                           commonly provided by this.encodeUri as the
-         *                           image source.
+         * @param image   An image to encode.
+         * @param callback   An optional callback to call with image and the result.
+         * @param args   Any additional arguments to pass to the callback.
          */
-        PixelRendr.prototype.encode = function (image, callback, source) {
+        PixelRendr.prototype.encode = function (image, callback) {
+            var args = [];
+            for (var _i = 2; _i < arguments.length; _i++) {
+                args[_i - 2] = arguments[_i];
+            }
             var result = this.ProcessorEncode.process(image);
             if (callback) {
-                callback(result, image, source);
+                callback.apply(void 0, [result, image].concat(args));
             }
             return result;
         };
@@ -233,9 +230,8 @@ var PixelRendr;
          * ProcessEncode.process. An HtmlImageElement is created and given an onload
          * of this.encode.
          *
-         * @param {String} uri
-         * @param {Function} callback   A callback for when this.encode finishes to
-         *                              call on the results.
+         * @param uri   The URI of an image to encode.
+         * @param callback   A callback to call on the results.
          */
         PixelRendr.prototype.encodeUri = function (uri, callback) {
             var image = document.createElement("img");
@@ -250,21 +246,16 @@ var PixelRendr;
          * in the palette. Grayscale colors come next in order of light to dark, and
          * general colors come next sorted by decreasing r, g, and b in order.
          *
-         * @param {Uint8ClampedArray} data   The equivalent data from a context's
-         *                                   getImageData(...).data.
-         * @param {Boolean} [forceZeroColor]   Whether the palette should have a
-         *                                     [0,0,0,0] color as the first element
-         *                                     even if data does not contain it (by
-         *                                     default, false).
-         * @param {Boolean} [giveArrays]   Whether the resulting palettes should be
-         *                                 converted to Arrays (by default, false).
-         * @return {Uint8ClampedArray[]} A working palette that may be used in
-         *                               sprite settings (Array[] if giveArrays is
-         *                               true).
+         * @param data   The equivalent data from a context's getImageData(...).data.
+         * @param forceZeroColor   Whether the palette should have a [0,0,0,0] color
+         *                         as the first element even if data does not contain
+         *                         it (by default, false).
+         * @param giveArrays   Whether the resulting palettes should be converted to
+         *                     Arrays (by default, false).
+         * @returns A working palette that may be used in sprite settings (Array[] if
+         *          giveArrays is true).
          */
         PixelRendr.prototype.generatePaletteFromRawData = function (data, forceZeroColor, giveArrays) {
-            if (forceZeroColor === void 0) { forceZeroColor = false; }
-            if (giveArrays === void 0) { giveArrays = false; }
             var tree = {}, colorsGeneral = [], colorsGrayscale = [], output, i;
             for (i = 0; i < data.length; i += 4) {
                 if (data[i + 3] === 0) {
@@ -331,11 +322,11 @@ var PixelRendr;
          * another. This is a useful utility Function for code that may use this
          * PixelRendr to draw its output sprites, such as PixelDrawr.
          *
-         * @param {Uint8ClampedArray} source
-         * @param {Uint8ClampedArray} destination
-         * @param {Number} readloc   Where to start reading from in the source.
-         * @param {Number} writeloc   Where to start writing to in the source.
-         * @param {Number} writelength   How many members to copy over.
+         * @param source   An Array-like source to copy from.
+         * @param destination   An Array-like destination to copy to.
+         * @param readloc   Where to start reading from in the source.
+         * @param writeloc   Where to start writing to in the source.
+         * @param writelength   How many members to copy over.
          * @see http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/
          * @see http://www.javascripture.com/Uint8ClampedArray
          */
@@ -352,12 +343,12 @@ var PixelRendr;
         /* Library parsing
          */
         /**
-         * Recursively travels through a library, turning all raw String sprites
-         * and any[] commands into Renders.
+         * Recursively travels through a library, turning all raw sprites and
+         * commands into Renders.
          *
-         * @param {Object} reference   The raw source structure to be parsed.
-         * @param {String} path   The path to the current place within the library.
-         * @return {Object} The parsed library Object.
+         * @param reference   The raw source structure to be parsed.
+         * @param path   The path to the current place within the library.
+         * @returns The parsed library Object.
          */
         PixelRendr.prototype.libraryParse = function (reference) {
             var setNew = {}, source, i;
@@ -370,12 +361,12 @@ var PixelRendr;
                 switch (source.constructor) {
                     case String:
                         // Strings directly become IRenders
-                        setNew[i] = new Render(source);
+                        setNew[i] = new PixelRendr_1.Render(source);
                         break;
                     case Array:
                         // Arrays contain a String filter, a String[] source, and any
                         // number of following arguments
-                        setNew[i] = new Render(source, source[1]);
+                        setNew[i] = new PixelRendr_1.Render(source, source[1]);
                         break;
                     default:
                         // If it's anything else, simply recurse
@@ -383,7 +374,7 @@ var PixelRendr;
                         break;
                 }
                 // If a Render was created, mark setNew as a container
-                if (setNew[i].constructor === Render) {
+                if (setNew[i].constructor === PixelRendr_1.Render) {
                     setNew[i].containers.push({
                         "container": setNew,
                         "key": i
@@ -397,10 +388,10 @@ var PixelRendr;
          * externally given String key and attributes Object. The sprite is stored
          * in the Render's sprites container under that key.
          *
-         * @param {Render} render   A render whose sprite is being generated.
-         * @param {String} key   The key under which the sprite is stored.
-         * @param {Object} attributes   Any additional information to pass to the
-         *                              sprite generation process.
+         * @param render   A render whose sprite is being generated.
+         * @param key   The key under which the sprite is stored.
+         * @param attributes   Any additional information to pass to the sprite
+         *                     generation process.
          */
         PixelRendr.prototype.generateRenderSprite = function (render, key, attributes) {
             var sprite;
@@ -415,11 +406,11 @@ var PixelRendr;
         /**
          * Generates the pixel data for a single sprite.
          *
-         * @param {Render} render   A render whose sprite is being generated.
-         * @param {String} key   The key under which the sprite is stored.
-         * @param {Object} attributes   Any additional information to pass to the
-         *                              sprite generation process.
-         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         * @param render   A render whose sprite is being generated.
+         * @param key   The key under which the sprite is stored.
+         * @param attributes   Any additional information to pass to the sprite generation
+         *                     process.
+         * @returns   The output sprite.
          */
         PixelRendr.prototype.generateSpriteSingleFromRender = function (render, key, attributes) {
             var base = this.ProcessorBase.process(render.source, key, render.filter), sprite = this.ProcessorDims.process(base, key, attributes);
@@ -430,14 +421,14 @@ var PixelRendr;
          * a container in a new SpriteMultiple and filing it with processed single
          * sprites.
          *
-         * @param {Render} render   A render whose sprite is being generated.
-         * @param {String} key   The key under which the sprite is stored.
-         * @param {Object} attributes   Any additional information to pass to the
-         *                              sprite generation process.
-         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         * @param render   A render whose sprite is being generated.
+         * @param key   The key under which the sprite is stored.
+         * @param attributes   Any additional information to pass to the sprite generation
+         *                     process.
+         * @returns The output sprite.
          */
         PixelRendr.prototype.generateSpriteCommandMultipleFromRender = function (render, key, attributes) {
-            var sources = render.source[2], sprites = {}, sprite, path, output = new SpriteMultiple(sprites, render), i;
+            var sources = render.source[2], sprites = {}, sprite, path, output = new PixelRendr_1.SpriteMultiple(sprites, render), i;
             for (i in sources) {
                 if (sources.hasOwnProperty(i)) {
                     path = key + " " + i;
@@ -452,11 +443,11 @@ var PixelRendr;
          * directory are found, assigned to the old Render's directory, and
          * this.decode is used to find the output.
          *
-         * @param {Render} render   A render whose sprite is being generated.
-         * @param {String} key   The key under which the sprite is stored.
-         * @param {Object} attributes   Any additional information to pass to the
+         * @param render   A render whose sprite is being generated.
+         * @param key   The key under which the sprite is stored.
+         * @param attributes   Any additional information to pass to the
          *                              sprite generation process.
-         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         * @returns The output sprite.
          */
         PixelRendr.prototype.generateSpriteCommandSameFromRender = function (render, key, attributes) {
             var replacement = this.followPath(this.library.sprites, render.source[1], 0);
@@ -473,11 +464,11 @@ var PixelRendr;
          * directory are found, converted into a filtered Render or directory, and
          * this.decode is used to find the output.
          *
-         * @param {Render} render   A render whose sprite is being generated.
-         * @param {String} key   The key under which the sprite is stored.
-         * @param {Object} attributes   Any additional information to pass to the
-         *                              sprite generation process.
-         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
+         * @param render   A render whose sprite is being generated.
+         * @param key   The key under which the sprite is stored.
+         * @param attributes   Any additional information to pass to the sprite generation
+         *                     process.
+         * @returns The output sprite.
          */
         PixelRendr.prototype.generateSpriteCommandFilterFromRender = function (render, key, attributes) {
             var filter = this.filters[render.source[2]], found = this.followPath(this.library.sprites, render.source[1], 0), filtered;
@@ -485,10 +476,8 @@ var PixelRendr;
                 console.warn("Invalid filter provided: " + render.source[2]);
             }
             // If found is a Render, create a new one as a filtered copy
-            if (found.constructor === Render) {
-                filtered = new Render(found.source, {
-                    "filter": filter
-                });
+            if (found.constructor === PixelRendr_1.Render) {
+                filtered = new PixelRendr_1.Render(found.source, { filter: filter });
                 this.generateRenderSprite(filtered, key, attributes);
             }
             else {
@@ -497,7 +486,7 @@ var PixelRendr;
             }
             // The (now unused) render gives the filtered Render or directory to its containers
             this.replaceRenderInContainers(render, filtered);
-            if (filtered.constructor === Render) {
+            if (filtered.constructor === PixelRendr_1.Render) {
                 return filtered.sprites[key];
             }
             else {
@@ -510,10 +499,10 @@ var PixelRendr;
          * similar to this.libraryParse, though the filter is added and references
          * aren't.
          *
-         * @param {Object} directory   The current directory of Renders to create
-         *                             filtered versions of.
-         * @param {Array} filter   The filter being applied.
-         * @return {Object} An output directory containing Renders with the filter.
+         * @param directory   The current directory of Renders to create filtered versions
+         *                    of.
+         * @param filter   The filter being applied.
+         * @returns An output directory containing Renders with the filter.
          */
         PixelRendr.prototype.generateRendersFromFilter = function (directory, filter) {
             var output = {}, child, i;
@@ -522,8 +511,8 @@ var PixelRendr;
                     continue;
                 }
                 child = directory[i];
-                if (child.constructor === Render) {
-                    output[i] = new Render(child.source, {
+                if (child.constructor === PixelRendr_1.Render) {
+                    output[i] = new PixelRendr_1.Render(child.source, {
                         "filter": filter
                     });
                 }
@@ -536,15 +525,15 @@ var PixelRendr;
         /**
          * Switches all of a given Render's containers to point to a replacement instead.
          *
-         * @param {Render} render
-         * @param {Mixed} replacement
+         * @param render   A Render being replaced.
+         * @param replacement   A replacement for render.
          */
         PixelRendr.prototype.replaceRenderInContainers = function (render, replacement) {
             var listing, i;
             for (i = 0; i < render.containers.length; i += 1) {
                 listing = render.containers[i];
                 listing.container[listing.key] = replacement;
-                if (replacement.constructor === Render) {
+                if (replacement.constructor === PixelRendr_1.Render) {
                     replacement.containers.push(listing);
                 }
             }
@@ -557,10 +546,8 @@ var PixelRendr;
          * Uint8ClampedArray immediately if given the area - deliberately does not
          * to simplify sprite library storage.
          *
-         * @param {String} colors   The raw sprite String, including commands like
-         *                          "p" and "x".
-         * @return {String} A version of the sprite with no fancy commands, just
-         *                  the numbers.
+         * @param colors   The raw sprite String, including commands like "p" and "x".
+         * @returns A version of the sprite with fancy commands replaced by numbers.
          */
         PixelRendr.prototype.spriteUnravel = function (colors) {
             var paletteref = this.getPaletteReferenceStarting(this.paletteDefault), digitsize = this.digitsizeDefault, clength = colors.length, current, rep, nixloc, output = "", loc = 0;
@@ -608,8 +595,8 @@ var PixelRendr;
          * Repeats each number in the given string a number of times equal to the
          * scale. This is the second Function called by the base processor.
          *
-         * @param {String} colors
-         * @return {String}
+         * @param colors   A series of sprite colors.
+         * @returns   The same series, with each character repeated.
          */
         PixelRendr.prototype.spriteExpand = function (colors) {
             var output = "", clength = colors.length, i = 0, j, current;
@@ -630,10 +617,10 @@ var PixelRendr;
          * Filters are applied here because the sprite is just the numbers repeated,
          * so it's easy to loop through and replace them.
          *
-         * @param {String} colors
-         * @param {String} key
-         * @param {Object} attributes
-         * @return {String}
+         * @param colors   A series of color characters.
+         * @param key   The unique key identifying this chain of transforms.
+         * @param attributes   Attributes describing the filter to use.
+         * @returns The original series of color characters, filtered.
          */
         PixelRendr.prototype.spriteApplyFilter = function (colors, key, attributes) {
             // If there isn't a filter (as is the norm), just return the sprite
@@ -667,8 +654,8 @@ var PixelRendr;
          * Uint8ClampedArray. Each colors number will be represented by four numbers
          * in the output. This is the fourth Function called in the base processor.
          *
-         * @param {String} colors
-         * @return {Uint8ClampedArray}
+         * @param colors   A series of color characters.
+         * @returns A series of pixels equivalent to the colors.
          */
         PixelRendr.prototype.spriteGetArray = function (colors) {
             var clength = colors.length, numcolors = clength / this.digitsizeDefault, split = colors.match(this.digitsplit), olength = numcolors * 4, output = new this.Uint8ClampedArray(olength), reference, i, j, k;
@@ -690,12 +677,11 @@ var PixelRendr;
          * should have been). This is the first Function called in the dimensions
          * processor.
          *
-         * @param {Uint8ClampedArray} sprite
-         * @param {String} key
-         * @param {Object} attributes   The container Object (commonly a Thing in
-         *                              GameStarter), which must contain width and
-         *                              height numbers.
-         * @return {Uint8ClampedArray}
+         * @param sprite   A series of sprite pixels.
+         * @param key   The unique key identifying this chain of transforms.
+         * @param attributes   The container Object (commonly a Thing in GameStarter),
+         *                     which must contain width and height numbers.
+         * @returns A version of the original sprite, with rows repeated.
          */
         PixelRendr.prototype.spriteRepeatRows = function (sprite, key, attributes) {
             var parsed = new this.Uint8ClampedArray(sprite.length * this.scale), rowsize = attributes[this.spriteWidth] * 4, height = attributes[this.spriteHeight] / this.scale, readloc = 0, writeloc = 0, i, j;
@@ -715,10 +701,11 @@ var PixelRendr;
          * is the second Function in the dimensions processor and the last step
          * before a sprite is deemed usable.
          *
-         * @param {Uint8ClampedArray} sprite
-         * @param {String} key
-         * @param {Object} attributes
-         * @return {Uint8ClampedArray}
+         * @param sprite   A series of sprite pixels.
+         * @param key   The unique key identifying this chain of transforms.
+         * @param attributes   The container Object (commonly a Thing in GameStarter),
+         *                     which must contain width and height numbers.
+         * @returns A version of the original sprite, with dimensions flipped.
          */
         PixelRendr.prototype.spriteFlipDimensions = function (sprite, key, attributes) {
             if (key.indexOf(this.flipHoriz) !== -1) {
@@ -738,9 +725,10 @@ var PixelRendr;
          * Flips a sprite horizontally by reversing the pixels within each row. Rows
          * are computing using the spriteWidth in attributes.
          *
-         * @param {Uint8ClampedArray} sprite
-         * @param {Object} attributes
-         * @return {Uint8ClampedArray}
+         * @param sprite   A series of sprite pixels.
+         * @param attributes   The container Object (commonly a Thing in GameStarter),
+         *                     which must contain width and height numbers.
+         * @returns A version of the original sprite, flipped horizontally.
          */
         PixelRendr.prototype.flipSpriteArrayHoriz = function (sprite, attributes) {
             var length = sprite.length + 0, width = attributes[this.spriteWidth] + 0, newsprite = new this.Uint8ClampedArray(length), rowsize = width * 4, newloc, oldloc, i, j, k;
@@ -764,9 +752,10 @@ var PixelRendr;
          * Flips a sprite horizontally by reversing the order of the rows. Rows are
          * computing using the spriteWidth in attributes.
          *
-         * @param {Uint8ClampedArray} sprite
-         * @param {Object} attributes
-         * @return {Uint8ClampedArray}
+         * @param sprite   A series of sprite pixels.
+         * @param attributes   The container Object (commonly a Thing in GameStarter),
+         *                     which must contain width and height numbers.
+         * @returns A version of the original sprite, flipped vertically.
          */
         PixelRendr.prototype.flipSpriteArrayVert = function (sprite, attributes) {
             var length = sprite.length, width = attributes[this.spriteWidth] + 0, newsprite = new this.Uint8ClampedArray(length), rowsize = width * 4, newloc = 0, oldloc = length - rowsize, i, j;
@@ -788,8 +777,10 @@ var PixelRendr;
          * Flips a sprite horizontally and vertically by reversing the order of the
          * pixels. This doesn't actually need attributes.
          *
-         * @param {Uint8ClampedArray} sprite
-         * @return {Uint8ClampedArray}
+         * @param sprite   A series of sprite pixels.
+         * @param attributes   The container Object (commonly a Thing in GameStarter),
+         *                     which must contain width and height numbers.
+         * @returns A version of the original sprite, flipped horizontally and vertically.
          */
         PixelRendr.prototype.flipSpriteArrayBoth = function (sprite) {
             var length = sprite.length, newsprite = new this.Uint8ClampedArray(length), oldloc = sprite.length - 4, newloc = 0, i;
@@ -809,7 +800,7 @@ var PixelRendr;
          * canvas, which as its context return the .getImageDate().data results.
          * This is the first Fiunction used in the encoding processor.
          *
-         * @param {HTMLImageElement} image
+         * @param image   An image whose data is to be retrieved.
          */
         PixelRendr.prototype.imageGetData = function (image) {
             var canvas = document.createElement("canvas"), context = canvas.getContext("2d");
@@ -822,11 +813,10 @@ var PixelRendr;
          * Determines which pixels occur in the data and at what frequency. This is
          * the second Function used in the encoding processor.
          *
-         * @param {Uint8ClampedArray} data   The raw pixel data obtained from the
-         *                                   imageData of a canvas.
-         * @return {Array} [pixels, occurences], where pixels is an array of [rgba]
-         *                 values and occurences is an Object mapping occurence
-         *                 frequencies of palette colors in pisels.
+         * @param data   The raw pixel data obtained from the imageData of a canvas.
+         * @returns [pixels, occurences], where pixels is an array of [rgba] values
+         *          and occurences is an Object mapping occurence frequencies of
+         *          palette colors in pisels.
          */
         PixelRendr.prototype.imageGetPixels = function (data) {
             var pixels = new Array(data.length / 4), occurences = {}, pixel, i, j;
@@ -847,14 +837,13 @@ var PixelRendr;
          * third Function used in the encoding processor, and creates a technically
          * usable (but uncompressed) sprite with information to compress it.
          *
-         * @param {Array} information   [pixels, occurences], a result directly from
-         *                              imageGetPixels.
-         * @return {Array} [palette, numbers, digitsize], where palette is a
-         *                 String[] of palette numbers, numbers is the actual sprite
-         *                 data, and digitsize is the sprite's digit size.
+         * @param information   [pixels, occurences], a result directly from imageGetPixels.
+         * @returns [palette, numbers, digitsize], where palette is a String[] of palette
+         *          numbers, numbers is the actual sprite data, and digitsize is the sprite's
+         *          digit size.
          */
         PixelRendr.prototype.imageMapPalette = function (information) {
-            var pixels = information[0], occurences = information[1], palette = Object.keys(occurences), digitsize = this.getDigitSizeFromArray(palette), paletteIndices = this.getValueIndices(palette), numbers = pixels.map(this.getKeyValue.bind(this, paletteIndices));
+            var pixels = information[0], occurences = information[1], palette = Object.keys(occurences), digitsize = this.getDigitSizeFromArray(palette), paletteIndices = this.getValueIndices(palette), numbers = pixels.map(function (pixel) { return paletteIndices[pixel]; });
             return [palette, numbers, digitsize];
         };
         /**
@@ -862,9 +851,9 @@ var PixelRendr;
          * compressed, storage-ready String. This is the last Function in the
          * encoding processor.
          *
-         * @param {Array} information   [palette, numbers, digitsize], a result
-         *                              directly from imageMapPalette.
-         * @return {String}
+         * @param information   [palette, numbers, digitsize], a result directly from
+         *                      imageMapPalette.
+         * @returns The pixels from information, combined.
          */
         PixelRendr.prototype.imageCombinePixels = function (information) {
             var palette = information[0], numbers = information[1], digitsize = information[2], threshold = Math.max(3, Math.round(4 / digitsize)), output, current, digit, i = 0, j;
@@ -892,10 +881,11 @@ var PixelRendr;
         /* Misc. utility functions
         */
         /**
-         * @param {Array} palette
-         * @return {Number} What the digitsize for a sprite that uses the palette
-         *                  should be (how many digits it would take to represent
-         *                  any index of the palettte).
+         * Determines how many digits will be required to represent a member of
+         * the palette.
+         *
+         * @param palette   A palette of colors.
+         * @returns The equivalent digitsize for the palette.
          */
         PixelRendr.prototype.getDigitSizeFromArray = function (palette) {
             var digitsize = 0, i;
@@ -905,25 +895,22 @@ var PixelRendr;
             return digitsize;
         };
         /**
-         * @param {Object} palette
-         * @return {Number} What the digitsize for a sprite that uses the palette
-         *                  should be (how many digits it would take to represent
-         *                  any index of the palettte).
+         * Determines how many digits will be required to represent a member of
+         * the palette.
+         *
+         * @param palette   A palette of colors.
+         * @returns The equivalent digitsize for the palette.
          */
         PixelRendr.prototype.getDigitSizeFromObject = function (palette) {
-            var digitsize = 0, i;
-            for (i = Object.keys(palette).length; i >= 1; i /= 10) {
-                digitsize += 1;
-            }
-            return digitsize;
+            return this.getDigitSizeFromArray(Object.keys(palette));
         };
         /**
          * Generates an actual palette Object for a given palette, using a digitsize
          * calculated from the palette.
          *
-         * @param {Array} palette
-         * @return {Object} The actual palette Object for the given palette, with
-         *                  an index for every palette member.
+         * @param palette   A palette of colors
+         * @returns The actual palette Object for the given palette, with an index
+         *          for every palette member.
          */
         PixelRendr.prototype.getPaletteReference = function (palette) {
             var output = {}, digitsize = this.getDigitSizeFromArray(palette), i;
@@ -936,14 +923,15 @@ var PixelRendr;
          * Generates an actual palette Object for a given palette, using the default
          * digitsize.
          *
-         * @param {Array} palette
-         * @return {Object} The actual palette Object for the given palette, with
-         *                  an index for every palette member.
+         * @param palette   A palette of colors.
+         * @returns The actual palette Object for the given palette, with an index
+         *          for every palette member.
          */
         PixelRendr.prototype.getPaletteReferenceStarting = function (palette) {
-            var output = {}, i;
+            var output = {}, digit, i;
             for (i = 0; i < palette.length; i += 1) {
-                output[this.makeDigit(i, this.digitsizeDefault)] = this.makeDigit(i, this.digitsizeDefault);
+                digit = this.makeDigit(i, this.digitsizeDefault);
+                output[digit] = digit;
             }
             return output;
         };
@@ -953,10 +941,9 @@ var PixelRendr;
          * with a raw image's pixel. This is determined by which palette color has
          * the lowest total difference in integer values between r, g, b, and a.
          *
-         * @param {Array} palette   The palette of pre-existing colors.
-         * @param {Array} rgba   The RGBA values being assigned a color, as Numbers
-         *                       in [0, 255].
-         * @return {Number} The closest matching color index.
+         * @param palette   The palette of pre-existing colors.
+         * @param rgba   The RGBA values being assigned, as Numbers in [0, 255].
+         * @returns The closest matching color index.
          */
         PixelRendr.prototype.getClosestInPalette = function (palette, rgba) {
             var bestDifference = Infinity, difference, bestIndex, i;
@@ -973,26 +960,23 @@ var PixelRendr;
          * Creates a new String equivalent to an old String repeated any number of
          * times. If times is 0, a blank String is returned.
          *
-         * @param {String} string   The characters to repeat.
-         * @param {Number} [times]   How many times to repeat (by default, 1).
-         * @return {String}
+         * @param string   The characters to repeat.
+         * @param times   How many times to repeat (by default, 1).
+         * @returns The original string, repeated.
          */
-        PixelRendr.prototype.stringOf = function (str, times) {
-            if (times === void 0) { times = 1; }
-            return (times === 0) ? "" : new Array(1 + (times || 1)).join(str);
+        PixelRendr.prototype.stringOf = function (string, times) {
+            return (times === 0) ? "" : new Array(1 + (times || 1)).join(string);
         };
         /**
          * Turns a Number into a String with a prefix added to pad it to a certain
          * number of digits.
          *
-         * @param {Number} number   The original Number being padded.
-         * @param {Number} size   How many digits the output must contain.
-         * @param {String} [prefix]   A prefix to repeat for padding (by default,
-         *                            "0").
-         * @return {String}
-         * @example
-         * makeDigit(7, 3); // '007'
-         * makeDigit(7, 3, 1); // '117'
+         * @param number   The original Number being padded.
+         * @param size   How many digits the output must contain.
+         * @param prefix   A prefix to repeat for padding (by default, "0").
+         * @returns A Stringified digit of the given length.
+         * @example makeDigit(7, 3); // '007'
+         * @example makeDigit(7, 3, 1); // '117'
          */
         PixelRendr.prototype.makeDigit = function (num, size, prefix) {
             if (prefix === void 0) { prefix = "0"; }
@@ -1002,22 +986,23 @@ var PixelRendr;
          * Curry wrapper around makeDigit that reverses size and number argument
          * order. Useful for binding makeDigit.
          *
-         * @param {Number} number   The original Number being padded.
-         * @param {Number} size   How many digits the output must contain.
-         * @return {String}
+         * @param number   The original Number being padded.
+         * @param size   How many digits the output must contain.
+         * @returns A stringified digit of the given length.
          */
-        PixelRendr.prototype.makeSizedDigit = function (size, num) {
-            return this.makeDigit(num, size, "0");
+        PixelRendr.prototype.makeSizedDigit = function (size, number) {
+            return this.makeDigit(number, size, "0");
         };
         /**
          * Replaces all instances of an element in an Array.
          *
-         * @param {Array}
-         * @param {Mixed} removed   The element to remove.
-         * @param {Mixed} inserted   The element to insert.
+         * @param array   The original elements.
+         * @param removed   The element to remove.
+         * @param inserted   The element to insert.
+         * @returns The original Array, with the element replaced.
          */
         PixelRendr.prototype.arrayReplace = function (array, removed, inserted) {
-            for (var i = array.length - 1; i >= 0; i -= 1) {
+            for (var i = 0; i < array.length; i += 1) {
                 if (array[i] === removed) {
                     array[i] = inserted;
                 }
@@ -1028,9 +1013,9 @@ var PixelRendr;
          * Computes the sum of the differences of elements between two Arrays of
          * equal length.
          *
-         * @param {Array} a
-         * @param {Array} b
-         * @return {Number}
+         * @param a   An Array of Numbers.
+         * @param b   An Array of Numbers.
+         * @returns The sum of differences between a and b.
          */
         PixelRendr.prototype.arrayDifference = function (a, b) {
             var sum = 0, i;
@@ -1040,9 +1025,10 @@ var PixelRendr;
             return sum;
         };
         /**
-         * @param {Array}
-         * @return {Object} An Object with an index equal to each element of the
-         *                  Array.
+         * Converts an Array to an Object mapping values to indices.
+         *
+         * @param array   An Array to convert.
+         * @returns An Object with an index equal to each element of the Array.
          */
         PixelRendr.prototype.getValueIndices = function (array) {
             var output = {}, i;
@@ -1052,28 +1038,18 @@ var PixelRendr;
             return output;
         };
         /**
-         * Curry Function to retrieve a member of an Object. Useful for binding.
-         *
-         * @param {Object} object
-         * @param {String} key
-         * @return {Mixed}
-         */
-        PixelRendr.prototype.getKeyValue = function (object, key) {
-            return object[key];
-        };
-        /**
          * Follows a path inside an Object recursively, based on a given path.
          *
-         * @param {Mixed} object
-         * @param {String[]} path   The ordered names of attributes to descend into.
-         * @param {Number} num   The starting index in path.
-         * @return {Mixed}
+         * @param object   An Object to delve within.
+         * @param path   The ordered names of attributes to descend into.
+         * @param index   The starting index in path.
+         * @returns A found element within object.
          */
-        PixelRendr.prototype.followPath = function (obj, path, num) {
-            if (num < path.length && obj.hasOwnProperty(path[num])) {
-                return this.followPath(obj[path[num]], path, num + 1);
+        PixelRendr.prototype.followPath = function (object, path, index) {
+            if (index < path.length && object.hasOwnProperty(path[index])) {
+                return this.followPath(object[path[index]], path, index + 1);
             }
-            return obj;
+            return object;
         };
         return PixelRendr;
     })();

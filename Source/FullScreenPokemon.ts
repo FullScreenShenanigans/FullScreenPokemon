@@ -800,7 +800,7 @@ module FullScreenPokemon {
             }
 
             if (thing.FSP.MenuGrapher.getActiveMenu()) {
-                thing.FSP.MenuGrapher.registerDirection(direction);
+                thing.FSP.MenuGrapher.registerDirection(<number>direction);
             } else {
                 if (thing.direction !== direction) {
                     thing.turning = direction;
@@ -4000,7 +4000,7 @@ module FullScreenPokemon {
                 menuKeys: IKeyboardKeysMenu = <IKeyboardKeysMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
                 menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
                 child: IThing = menuResult.children[menuResult.selectedChild],
-                selected: IKeyboardKey = FSP.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
+                selected: MenuGraphr.IGridCell = FSP.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
 
             if (!child) {
                 return;
@@ -4010,7 +4010,7 @@ module FullScreenPokemon {
             menuResult.children[menuResult.selectedChild] = FSP.addThing(
                 selected.title, child.left, child.top);
 
-            menuResult.displayedValue[menuResult.selectedChild] = selected.text[0];
+            menuResult.displayedValue[menuResult.selectedChild] = <string>selected.text[0];
             menuResult.completeValue.push(selected.value);
             menuResult.selectedChild += 1;
 
@@ -6071,7 +6071,7 @@ module FullScreenPokemon {
 
             FSP.MenuGrapher.createMenu("ShopItemsAmount", {
                 "childrenSchemas": [
-                    {
+                    <MenuGraphr.IMenuWordSchema>{
                         "type": "text",
                         "words": ["Times"],
                         "position": {
@@ -6080,7 +6080,8 @@ module FullScreenPokemon {
                                 "top": 4.25
                             }
                         }
-                    }, {
+                    },
+                    <MenuGraphr.IMenuWordSchema>{
                         "type": "text",
                         "words": [text],
                         "position": {

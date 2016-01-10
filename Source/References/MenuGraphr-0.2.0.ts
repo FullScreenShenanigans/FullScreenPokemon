@@ -1,58 +1,553 @@
-/// <reference path="EightBittr-0.2.0.ts" />
-/// <reference path="GroupHoldr-0.2.1.ts" />
-/// <reference path="ItemsHoldr-0.2.1.ts" />
-/// <reference path="MapScreenr-0.2.1.ts" />
-/// <reference path="ObjectMakr-0.2.2.ts" />
-/// <reference path="TimeHandlr-0.2.0.ts" />
+/// <reference path="GameStartr-0.2.0.ts" />
 
 declare module MenuGraphr {
-    export interface IGameStartr extends EightBittr.IEightBittr {
-        GroupHolder: GroupHoldr.IGroupHoldr;
-        MapScreener: MapScreenr.IMapScreenr;
-        ObjectMaker: ObjectMakr.IObjectMakr;
-        TimeHandler: TimeHandlr.ITimeHandlr;
-        addThing(thing: IThing | string | any[], left?: number, top?: number): IThing;
-        killNormal(thing: IThing): void;
-        setHeight(thing: IThing, height: number);
-        setWidth(thing: IThing, width: number);
+    /**
+     * General attributes for both Menus and MenuSchemas.
+     */
+    export interface IMenuBase {
+        /**
+         * A menu to set as active when this one is deleted.
+         */
+        backMenu?: string;
+
+        /**
+         * A callback for when this menu is set as active.
+         */
+        callback?: (...args: any[]) => void;
+
+        /**
+         * Schemas of children to add on creation.
+         */
+        childrenSchemas?: IMenuChildSchema[];
+
+        /**
+         * A containing menu to position within.
+         */
+        container?: string;
+
+        /**
+         * Whether this should be deleted when its dialog finishes.
+         */
+        deleteOnFinish?: boolean;
+
+        /**
+         * Whether the dialog should finish when the last word is displayed, instead
+         * of waiting for user input.
+         */
+        finishAutomatically?: boolean;
+
+        /**
+         * How long to delay completion when finishAutomatically is true.
+         */
+        finishAutomaticSpeed?: number;
+
+        /**
+         * How tall this should be.
+         */
+        height?: number;
+
+        /**
+         * Whether user selection events should be ignored.
+         */
+        ignoreA?: boolean;
+
+        /**
+         * Whether user deselection events should be ignored.
+         */
+        ignoreB?: boolean;
+
+        /**
+         * Whether deselection events should count as selection during dialogs.
+         */
+        ignoreProgressB?: boolean;
+
+        /**
+         * Whether this should be kept alive when deselected.
+         */
+        keepOnBack?: boolean;
+
+        /**
+         * Other menus to delete when this is deleted.
+         */
+        killOnB?: string[];
+
+        /**
+         * A callback for when this becomes active.
+         */
+        onActive?: (name: string) => void;
+
+        /**
+         * A callback for when this is deselected.
+         */
+        onBPress?: (name: string) => void;
+
+        /**
+         * A callback for a user event directing down.
+         */
+        onDown?: (GameStartr: GameStartr.IGameStartr) => void;
+
+        /**
+         * A callback for when this becomes inactive.
+         */
+        onInactive?: (name: string) => void;
+
+        /**
+         * A callback for a user event directing to the left.
+         */
+        onLeft?: (GameStartr: GameStartr.IGameStartr) => void;
+
+        /**
+         * A callback for when this is deleted.
+         */
+        onMenuDelete?: (GameStartr: GameStartr.IGameStartr) => void;
+
+        /**
+         * A callback for a user event directing to the right.
+         */
+        onRight?: (GameStartr: GameStartr.IGameStartr) => void;
+
+        /**
+         * A callback for a user event directing up.
+         */
+        onUp?: (GameStartr: GameStartr.IGameStartr) => void;
+
+        /**
+         * A sizing description for this, including width and height.
+         */
+        size?: IMenuSchemaSize;
+
+        /**
+         * A menu to set as active if the start button is pressed while this menu is active.
+         */
+        startMenu?: string;
+
+        /**
+         * A manual width for the area text may be placed in.
+         */
+        textAreaWidth?: number;
+
+        /**
+         * How tall text characters should be treated as.
+         */
+        textHeight?: number;
+
+        /**
+         * How much horizontal padding should be between characters.
+         */
+        textPaddingX?: number;
+
+        /**
+         * How much vertical padding should be between characters.
+         */
+        textPaddingY?: number;
+
+        /**
+         * How long to delay between placing words.
+         */
+        textSpeed?: number;
+
+        /**
+         * A manual starting x-location for dialog text.
+         */
+        textStartingX?: string;
+
+        /**
+         * How wide text characters should be treated as.
+         */
+        textWidth?: number;
+
+        /**
+         * A multiplier for textWidth. Commonly -1 for right-to-left text.
+         */
+        textWidthMultiplier?: number;
+
+        /**
+         * A horizontal offset for the text placement area.
+         */
+        textXOffset?: number;
+
+        /**
+         * A vertical offset for text placement area.
+         */
+        textYOffset?: number;
+
+        /**
+         * How wide this should be.
+         */
+        width?: number;
     }
 
-    export interface IThing extends EightBittr.IThing {
-        name?: string;
-        groupType: string;
-        hidden: boolean;
-    }
-
+    /**
+     * Existing menus, listed by name.
+     */
     export interface IMenusContainer {
         [i: string]: IMenu;
     }
 
-    export interface IMenu extends IThing, IMenuSchema {
-        children: IThing[];
+    /**
+     * A Menu Thing, with any number of children.
+     */
+    export interface IMenu extends GameStartr.IThing, IMenuSchema {
+        /**
+         * Child Things visible within the Menu.
+         */
+        children: GameStartr.IThing[];
+
+        /**
+         * How tall this is.
+         */
         height: number;
+
+        /**
+         * A summary of where this menu is in its dialog.
+         */
         progress?: IMenuProgress;
+
+        /**
+         * Where text should start displaying, horizontally.
+         */
         textX?: number;
+
+        /**
+         * How wide this is.
+         */
         width: number;
     }
 
+    /**
+     * A general Text THing.
+     */
+    export interface IText extends GameStartr.IThing {
+        /**
+         * How much vertical padding this Thing requires.
+         */
+        paddingY: number;
+    }
+
+    /**
+     * A summary of a menu's progress through its dialog.
+     */
     export interface IMenuProgress {
+        /**
+         * Whether the dialog has been completed.
+         */
         complete?: boolean;
+
+        /**
+         * A callback for when the dialog completes.
+         */
         onCompletion?: (...args: any[]) => void;
+
+        /**
+         * Whether the dialog is currently being added to the menu.
+         */
         working?: boolean;
     }
 
+    /**
+     * Known menu schemas, keyed by name.
+     */
+    export interface IMenuSchemas {
+        [i: string]: IMenuSchema;
+    }
+
+    /**
+     * A schema to specify creating a menu. 
+     */
+    export interface IMenuSchema extends IMenuBase {
+        /**
+         * How the menu should be positioned within its container.
+         */
+        position?: IMenuSchemaPosition;
+    }
+
+    /**
+     * A schema to specify creating a list menu.
+     */
+    export interface IListMenuSchema extends IMenuSchema {
+        /**
+         * How many scrolling items should be visible within the menu.
+         */
+        scrollingItems?: number;
+
+        /**
+         * Whether scrolling items should be computed on creation.
+         */
+        scrollingItemsComputed?: boolean;
+    }
+
+    /**
+     * A description of how wide and tall a menu should be.
+     */
+    export interface IMenuSchemaSize {
+        /**
+         * How wide the menu should be.
+         */
+        width?: number;
+
+        /**
+         * How tall the menu should be.
+         */
+        height?: number;
+    }
+
+    /**
+     * A description of how a meny should be positioned within its container.
+     */
+    export interface IMenuSchemaPosition {
+        /**
+         * An optional horizontal position modifier, as "center", "right", or "stretch".
+         */
+        horizontal?: string;
+
+        /**
+         * Horizontal and vertical offsets to shfit the menu by.
+         */
+        offset?: IMenuSchemaPositionOffset;
+
+        /**
+         * Whether this should have children not shifted vertically relative to the 
+         * menu top (used by list menus).
+         */
+        relative?: boolean;
+
+        /**
+         * An optional vertical position modifier, as "center", "bottom", or "stretch".
+         */
+        vertical?: string;
+    }
+
+    /**
+     * Horizontal and vertical offsets to shift the menu by.
+     */
+    export interface IMenuSchemaPositionOffset {
+        /**
+         * How far to shift the menu vertically from the top.
+         */
+        top?: number;
+
+        /**
+         * How far to shift the menu horizontally from the right.
+         */
+        right?: number;
+
+        /**
+         * How far to shift the menu vertically from the bottom.
+         */
+        bottom?: number;
+
+        /**
+         * How far to shift the menu horizontally from the left.
+         */
+        left?: number;
+    }
+
+    /**
+     * A description of a menu child to create, including name and child type.
+     */
+    export interface IMenuChildSchema extends IMenuSchema {
+        /**
+         * What type of child this is, as "menu", "text", or "thing".
+         */
+        type: string;
+    }
+
+    /**
+     * A description of a menu to create as a menu child.
+     */
+    export interface IMenuChildMenuSchema extends IMenuChildSchema {
+        /**
+         * Menu attributes to pass to the menu.
+         */
+        attributes: IMenuSchema;
+
+        /**
+         * The name of the menu.
+         */
+        name: string;
+    }
+
+    /**
+     * A descripion of a word to create as a menu child.
+     */
+    export interface IMenuWordSchema extends IMenuChildSchema {
+        /**
+         * How to position the word within the menu.
+         */
+        position?: IMenuSchemaPosition;
+
+        /**
+         * A description of the word area's size.
+         */
+        size?: IMenuSchemaSize;
+
+        /**
+         * Raw words to set as the text contents.
+         */
+        words: (string | IMenuWordCommand)[];
+    }
+
+    /**
+     * A description of a Thing to create as a menu child.
+     */
+    export interface IMenuThingSchema extends IMenuChildSchema {
+        /**
+         * Arguments to proliferate onto the Thing.
+         */
+        args?: any;
+
+        /**
+         * How to position the Thing within the menu.
+         */
+        position?: IMenuSchemaPosition;
+
+        /**
+         * A description of the Thing's size.
+         */
+        size?: IMenuSchemaSize;
+
+        /**
+         * What Thing title to create.
+         */
+        thing: string;
+    }
+
+    /**
+     * Various raw forms of dialog that may be used. A single String is common
+     * for short dialogs, and longer ones may use a String for each word or character,
+     * as well as filtered Objects.
+     */
+    export type IMenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommandBase)[]
+
+    /**
+     * A general word and/or command to use within a text dialog.
+     */
+    export interface IMenuWordCommandBase {
+        /**
+         * How many characters long the word is.
+         */
+        length?: number | string;
+
+        /**
+         * The actual word to place, if this is a text
+         */
+        word?: string;
+    }
+
+    /**
+     * A word command to modify dialog within its text.
+     */
+    export interface IMenuWordCommand extends IMenuWordCommandBase {
+        /**
+         * Whether the command's position changing should have unitsize applied.
+         */
+        applyUnitsize?: boolean;
+
+        /**
+         * An attribute to change, if this is an attribute change command.
+         */
+        attribute: string;
+
+        /**
+         * The command, as "attribute", "attributeReset", "padLeft", or "position".
+         */
+        command: string;
+
+        /**
+         * A value for the attribute to change, if this is an attribute change command.
+         */
+        value: any;
+    }
+
+    /**
+     * A pad left command to add a word with padding.
+     */
+    export interface IMenuWordPadLeftCommand extends IMenuWordCommandBase {
+        /**
+         * Whether the amount of padding should be reduced by the word length.
+         */
+        alignRight?: boolean;
+    }
+
+    /**
+     * A word command to reset an attribute after an attribute change command.
+     */
+    export interface IMenuWordReset extends IMenuWordCommandBase {
+        /**
+         * The name of the attribute to reset.
+         */
+        attribute: string;
+    }
+
+    /**
+     * A word command to shift the position to add subsequent words.
+     */
+    export interface IMenuWordPosition extends IMenuWordCommandBase {
+        /**
+         * How far to shift horizontally.
+         */
+        x?: number;
+
+        /**
+         * How far to shift vertically.
+         */
+        y?: number;
+    }
+
+    /**
+     * A menu containing some number of options as cells in a grid.
+     */
     export interface IListMenu extends IListMenuSchema, IMenu {
-        arrow: IThing;
+        /**
+         * The arrow Thing indicating the current selection.
+         */
+        arrow: GameStartr.IThing;
+
+        /**
+         * A horizontal offset for the arrow Thing.
+         */
         arrowXOffset?: number;
+
+        /**
+         * A vertical offset for the arrow Thing.
+         */
         arrowYOffset?: number;
+
+        /**
+         * The grid of options, as columns containing rows.
+         */
         grid: IGridCell[][];
+
+        /**
+         * How many columns are available in the grid.
+         */
         gridColumns: number;
+
+        /**
+         * How many rows are available in the grid.
+         */
         gridRows: number;
+
+        /**
+         * How tall this is.
+         */
         height: number;
-        options: any[];
-        optionChildren: any;
+
+        /**
+         * All options available in the grid.
+         */
+        options: IGridCell[];
+
+        /**
+         * Descriptions of the options, with their grid cell and Things.
+         */
+        optionChildren: any[];
+
+        /**
+         * A summary of the menu's progress through its list.
+         */
         progress: IListMenuProgress;
-        
+
         /**
          * How many rows the menu has visually scrolled.
          */
@@ -63,227 +558,386 @@ declare module MenuGraphr {
          */
         singleColumnList: boolean;
 
-        selectedIndex: number[];
+        /**
+         * The currently selected [column, row] in the grid.
+         */
+        selectedIndex: [number, number];
+
+        /**
+         * How wide each column of text should be in the grid.
+         */
         textColumnWidth: number;
+
+        /**
+         * How wide this is.
+         */
         width: number;
     }
 
+    /**
+     * A single option within a list menu's grid.
+     */
     export interface IGridCell {
+        /**
+         * A callback for selecting this cell with a user selection event.
+         */
+        callback?: (...args: any[]) => void;
+
+        /**
+         * The column containing this option.
+         */
         column: IGridCell[];
+
+        /**
+         * What number column contains this option.
+         */
         columnNumber: number;
+
+        /**
+         * This option's index within all grid options.
+         */
         index: number;
+
+        /**
+         * What number row contains this option.
+         */
         rowNumber: number;
-        // These two will likely need to be confirmed...
-        schema: (string | IMenuWordCommand)[];
+
+        /**
+         * Text to display to represent this option.
+         */
         text: (string | IMenuWordCommand)[];
-        title: string;
+
+        /**
+         * Optionally, an equivalent title that represents this option.
+         */
+        title?: string;
+
+        /**
+         * Floating texts that should be added with the option.
+         */
+        textsFloating?: any;
+
+        /**
+         * Things that visually represent this option.
+         */
+        things: GameStartr.IThing[];
+
+        /**
+         * Optionally, some value represented by this option.
+         */
+        value?: any;
+
+        /**
+         * A horizontal left edge for this option's area.
+         */
         x: number;
+
+        /**
+         * A vertical top edge for this option's area.
+         */
         y: number;
     }
 
+    /**
+     * Settings to create a new list menu.
+     */
     export interface IListMenuOptions {
+        /**
+         * A bottom option to place below all grid options.
+         */
         bottom?: any;
-        options: any[] | { (): any[]; };
-        selectedIndex?: number[];
+
+        /**
+         * Options within the menu, or a Function to generate them.
+         */
+        options: any[] | {
+            (): any[];
+        };
+
+        /**
+         * A default starting selected index.
+         */
+        selectedIndex?: [number, number];
     }
 
+    /**
+     * A summary of the menu's progress through its list.
+     */
     export interface IListMenuProgress extends IMenuProgress {
+        /**
+         * The current words in the list.
+         */
         words: any;
+
+        /**
+         * The index of the currently selected option.
+         */
         i: any;
+
+        /**
+         * The horizontal position of the currently selected option.
+         */
         x: any;
+
+        /**
+         * The vertical position of the currently selected option.
+         */
         y: any;
     }
 
     /**
-     * General attributes for both Menus and MenuSchemas.
+     * Alternate Thing titles for characters, such as " " for "space".
      */
-    export interface IMenuBase {
-        backMenu?: string;
-        callback?: (...args: any[]) => void;
-        childrenSchemas?: IMenuChildSchema[];
-        container?: string;
-        deleteOnFinish?: boolean;
-        finishAutomatically?: boolean;
-        finishAutomaticSpeed?: number;
-        height?: number;
-        ignoreA?: boolean;
-        ignoreB?: boolean;
-        ignoreProgressB?: boolean;
-        keepOnBack?: boolean;
-        killOnB?: string[];
-        onActive?: (name: string) => void;
-        onBPress?: (name: string) => void;
-        onDown?: (GameStartr: IGameStartr) => void;
-        onInactive?: (name: string) => void;
-        onLeft?: (GameStartr: IGameStartr) => void;
-        onMenuDelete?: (GameStartr: IGameStartr) => void;
-        onRight?: (GameStartr: IGameStartr) => void;
-        onUp?: (GameStartr: IGameStartr) => void;
-        size?: IMenuSchemaSize;
-        startMenu?: string;
-        textAreaWidth?: number;
-        textArrowXOffset?: number;
-        textArrowYOffset?: number;
-        textHeight?: number;
-        textPaddingX?: number;
-        textPaddingY?: number;
-        textSpeed?: number;
-        textStartingX?: string;
-        textWidth?: number;
-        textWidthMultiplier?: number;
-        textXOffset?: number;
-        textYOffset?: number;
-        width?: number;
+    export interface IAliases {
+        [i: string]: string;
     }
 
-    export interface IMenuSchema extends IMenuBase {
-        position?: IMenuSchemaPosition;
-    }
-
-    export interface IListMenuSchema extends IMenuSchema {
-        scrollingItems?: number;
-        scrollingItemsComputed?: boolean | number;
-    }
-
-    export interface IMenuSchemaSize {
-        width?: number;
-        height?: number;
-    }
-
-    export interface IMenuSchemaPosition {
-        horizontal?: string;
-        offset?: IMenuSchemaPositionOffset;
-        relative?: boolean;
-        vertical?: string;
-    }
-
-    export interface IMenuSchemaPositionOffset {
-        top?: number;
-        right?: number;
-        bottom?: number;
-        left?: number;
-    }
-
-    export interface IMenuChildSchema extends IMenuSchema {
-        name?: string;
-        type: string;
-        words?: MenuDialogRaw;
-    }
-
-    export interface IMenuChildMenuSchema extends IMenuChildSchema {
-        attributes: IMenuSchema;
-        name: string;
-    }
-
-    export interface IMenuWordSchema extends IMenuChildSchema {
-        position: IMenuSchemaPosition;
-        size: IMenuSchemaSize;
-        words: (string | IMenuWordCommand)[];
-    }
-
-    export interface IMenuThingSchema extends IMenuChildSchema {
-        args?: any;
-        position?: IMenuSchemaPosition;
-        size?: IMenuSchemaSize;
-        thing: string;
-    }
-
-    export interface IMenuWordFiltered {
-        length?: number | string;
-        word?: string;
-    }
-
-    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordFiltered)[]
-
-    export interface IMenuWordCommand extends IMenuWordFiltered {
-        applyUnitsize?: boolean;
-        attribute: string;
-        command: string;
-        value: any;
-    }
-
-    export interface IMenuWordPadLeftCommand extends IMenuWordFiltered {
-        alignRight?: boolean;
-    }
-
-    export interface IMenuWordReset extends IMenuWordFiltered {
-        attribute: string;
-    }
-
-    export interface IMenuWordPosition extends IMenuWordFiltered {
-        x?: number;
-        y?: number;
-    }
-
-    export interface IMenuWordLength extends IMenuWordFiltered { }
-
-    export interface IText extends IThing {
-        paddingY: number;
-    }
-
+    /**
+     * Programmatic replacements for deliniated words.
+     */
     export interface IReplacements {
         [i: string]: string[] | IReplacerFunction;
     }
 
+    /**
+     * A Function to generate a word replacement based on the GameStarter's state.
+     */
     export interface IReplacerFunction {
-        (GameStarter: IGameStartr): string[];
+        (GameStarter: GameStartr.IGameStartr): string[];
     }
 
+    /**
+     * Settings to initialize a new IMenuGraphr.
+     */
     export interface IMenuGraphrSettings {
-        GameStarter: IGameStartr;
-        schemas?: {
-            [i: string]: IMenuSchema;
-        };
-        aliases?: {
-            [i: string]: string;
-        };
+        /**
+         * The parent GameStartr.IGameStartr managing Things.
+         */
+        GameStarter: GameStartr.IGameStartr;
+
+        /**
+         * Known menu schemas, keyed by name.
+         */
+        schemas?: IMenuSchemas;
+
+        /**
+         * Alternate Thing titles for charactes, such as " " for "space".
+         */
+        aliases?: IAliases;
+
+        /**
+         * Programmatic replacements for deliniated words.
+         */
         replacements?: IReplacements;
+
+        /**
+         * The separator for words to replace using replacements.
+         */
         replacerKey?: string;
     }
 
+    /**
+     * A menu management system. Menus can have dialog-style text, scrollable
+     * and unscrollable grids, and children menus or decorations added.
+     */
     export interface IMenuGraphr {
+        /**
+         * @returns All available menus, keyed by name.
+         */
         getMenus(): IMenusContainer;
+
+        /**
+         * @param name   A name of a menu.
+         * @returns The menu under the given name.
+         */
         getMenu(name: string): IMenu;
+
+        /**
+         * Returns a menu, throwing an error if it doesn't exist.
+         * 
+         * @param name   A name of a menu.
+         * @returns The menu under the given name.
+         */
         getExistingMenu(name: string): IMenu;
-        getAliases(): { [i: string]: string };
-        getReplacements(): IReplacements;
-        createMenu(name: string, attributes?: IMenuSchema): IMenu;
-        createMenuChild(name: string, schema: IMenuChildSchema): void;
-        createMenuWord(name: string, schema: IMenuWordSchema): void;
-        createMenuThing(name: string, schema: IMenuThingSchema): IThing;
-        hideMenu(name: string): void;
-        deleteMenu(name: string): void;
-        deleteActiveMenu(): void;
-        deleteMenuChild(child: IMenu): void;
-        deleteMenuChildren(name: string): void;
-        positionItem(
-            item: IThing,
-            size: IMenuSchemaSize,
-            position: IMenuSchemaPosition,
-            container: IMenu,
-            skipAdd?: boolean): void;
-        addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
-        addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
-        continueMenu(name: string): void;
-        addMenuList(name: string, settings: IListMenuOptions): void;
-        activateMenuList(name: string): void;
-        deactivateMenuList(name: string): void;
-        getMenuSelectedIndex(name: string): number[];
-        getMenuSelectedOption(name: string): any;
-        shiftSelectedIndex(name: string, dx: number, dy: number): void;
-        setSelectedIndex(name: string, x: number, y: number): void;
-        adjustVerticalScrollingListThings(name: string, dy: number, textPaddingY: number): void;
-        selectMenuListOption(name: string): void;
-        setActiveMenu(name: string): void;
+
+        /**
+         * @returns The currently active menu.
+         */
         getActiveMenu(): IMenu;
+
+        /**
+         * @returns The name of the currently active menu.
+         */
         getActiveMenuName(): string;
-        registerDirection(direction: number): void;
-        registerLeft(): void;
-        registerRight(): void;
+
+        /**
+         * @returns The alternate Thing titles for characters.
+         */
+        getAliases(): IAliases;
+
+        /**
+         * @returns The programmatic replacements for deliniated words.
+         */
+        getReplacements(): IReplacements;
+
+        /**
+         * Creates a menu with the given name and attributes, and stores it under the name.
+         * Default information is used from the schema of that name, such as position and
+         * children, but may be override by attributes.
+         * 
+         * @param name   The name of the menu.
+         * @param attributes   Custom attributes to apply to the menu.
+         * @returns The newly created menu.
+         */
+        createMenu(name: string, attributes?: IMenuSchema): IMenu;
+
+        /**
+         * Adds a child object to an existing menu.
+         * 
+         * @param name   The name of the existing menu.
+         * @param schema   Settings for the child, including name and child type.
+         * @returns The newly created Thing or Things.
+         * @remarks Creating a menu is done using this.createMenu, so the created menu might
+         *          not mark itself as a child of the parent.
+         */
+        createMenuChild(name: string, schema: IMenuChildSchema): GameStartr.IThing | GameStartr.IThing[];
+
+        /**
+         * Creates a series of words as a child of a menu.
+         * 
+         * @param name   The name of the menu.
+         * @param schema   Settings for the words.
+         * @returns The words' character Things.
+         */
+        createMenuWord(name: string, schema: IMenuWordSchema): GameStartr.IThing[];
+
+        /**
+         * Creates a Thing as a child of a menu.
+         * 
+         * @param name   The name of the menu.
+         * @param schema   Settings for the Thing.
+         * @returns The newly created Thing.
+         */
+        createMenuThing(name: string, schema: IMenuThingSchema): GameStartr.IThing;
+
+        /**
+         * Hides a menu of the given name and deletes its children, if it exists.
+         * 
+         * @param name   The name of the menu to hide.
+         */
+        hideMenu(name: string): void;
+
+        /**
+         * Deletes a menu of the given name, if it exists.
+         * 
+         * @param name   The name of the menu to delete.
+         */
+        deleteMenu(name: string): void;
+
+        /**
+         * Deletes the active menu, if it exists.
+         */
+        deleteActiveMenu(): void;
+
+        /**
+         * Adds dialog-style text to a menu. If the text overflows, 
+         * 
+         * @param name   The name of the menu.
+         * @param dialog   Raw dialog to add to the menu.
+         * @param onCompletion   An optional callback for when the text is done.
+         */
+        addMenuDialog(name: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void;
+
+        /**
+         * Continues a menu from its current display words to the next line.
+         * 
+         * @param name    The name of the menu.
+         */
+        continueMenu(name: string): void;
+
+        /**
+         * Adds a list of text options to a menu.
+         * 
+         * @param name   The name of the menu.
+         * @param settings   Settings for the list, particularly its options, starting
+         *                   index, and optional floating bottom.
+         */
+        addMenuList(name: string, settings: IListMenuOptions): void;
+
+        /**
+         * Retrives the currently selected grid cell of a menu.
+         * 
+         * @param name   The name of the menu.
+         * @returns The currently selected grid cell of the menu.
+         */
+        getMenuSelectedOption(name: string): IGridCell;
+
+        /**
+         * Shifts the selected index of a list menu, adjusting for scrolling if necessary.
+         * 
+         * @param name   The name of the menu.
+         * @param dx   How far along the menu's grid to shift horizontally.
+         * @param dy   How far along the menu's grid to shift vertically.
+         */
+        shiftSelectedIndex(name: string, dx: number, dy: number): void;
+
+        /**
+         * Sets the current selected index of a menu.
+         * 
+         * @param name   The name of the menu.
+         * @param x   The new horizontal value for the index.
+         * @param y   The new vertical value for the index.
+         */
+        setSelectedIndex(name: string, x: number, y: number): void;
+
+        /**
+         * Sets the currently active menu.
+         * 
+         * @param name   The name of the menu to set as active.
+         */
+        setActiveMenu(name: string): void;
+
+        /**
+         * Reacts to a user event directing in the given direction.
+         * 
+         * @param direction   The direction of the interaction.
+         */
+        registerDirection(direction: Direction): void;
+
+        /**
+         * Reacts to a user event directing up.
+         */
         registerUp(): void;
+
+        /**
+         * Reacts to a user event directing to the right.
+         */
+        registerRight(): void;
+
+        /**
+         * Reacts to a user event directing down.
+         */
         registerDown(): void;
+
+        /**
+         * Reacts to a user event directing to the left.
+         */
+        registerLeft(): void;
+
+        /**
+         * Reacts to a user event from pressing a selection key.
+         */
         registerA(): void;
+
+        /**
+         * Reacts to a user event from pressing a deselection key.
+         */
         registerB(): void;
+
+        /**
+         * Reacts to a user event from pressing a start key.
+         */
         registerStart(): void;
     }
 }
@@ -293,31 +947,68 @@ module MenuGraphr {
     "use strict";
 
     /**
-     * 
+     * Cardinal directions as Numbers.
+     */
+    export enum Direction {
+        Top = 0,
+        Right = 1,
+        Bottom = 2,
+        Left = 3
+    }
+
+    /**
+     * A menu management system for GameStartr. Menus can have dialog-style text, scrollable
+     * and unscrollable grids, and children menus or decorations added.
      */
     export class MenuGraphr implements IMenuGraphr {
-        private GameStarter: IGameStartr;
+        /**
+         * The parent IGameStartr managing Things.
+         */
+        private GameStarter: GameStartr.IGameStartr;
 
+        /**
+         * All available menus, keyed by name.
+         */
         private menus: IMenusContainer;
 
+        /**
+         * The currently "active" (user-selected) menu.
+         */
         private activeMenu: IMenu;
 
-        private schemas: {
-            [i: string]: IMenuSchema;
-        };
+        /**
+         * Known menu schemas, keyed by name.
+         */
+        private schemas: IMenuSchemas;
 
-        private aliases: {
-            [i: string]: string;
-        };
+        /**
+         * Alternate Thing titles for charactes, such as " " for "space".
+         */
+        private aliases: IAliases;
 
+        /**
+         * Programmatic replacements for deliniated words.
+         */
         private replacements: IReplacements;
 
+        /**
+         * The separator for words to replace using replacements.
+         */
         private replacerKey: string;
 
         /**
+         * Initializes a new instance of the MenuGraphr class.
          * 
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IMenuGraphrSettings) {
+            if (!settings) {
+                throw new Error("No settings object given to MenuGraphr.");
+            }
+            if (!settings.GameStarter) {
+                throw new Error("No GameStarter given to MenuGraphr.");
+            }
+
             this.GameStarter = settings.GameStarter;
 
             this.schemas = settings.schemas || {};
@@ -333,21 +1024,25 @@ module MenuGraphr {
         */
 
         /**
-         * 
+         * @returns All available menus, keyed by name.
          */
         getMenus(): IMenusContainer {
             return this.menus;
         }
 
         /**
-         * 
+         * @param name   A name of a menu.
+         * @returns The menu under the given name.
          */
         getMenu(name: string): IMenu {
             return this.menus[name];
         }
 
         /**
+         * Returns a menu, throwing an error if it doesn't exist.
          * 
+         * @param name   A name of a menu.
+         * @returns The menu under the given name.
          */
         getExistingMenu(name: string): IMenu {
             if (!this.menus[name]) {
@@ -358,49 +1053,70 @@ module MenuGraphr {
         }
 
         /**
-         * 
+         * @returns The currently active menu.
          */
-        getAliases(): { [i: string]: string } {
+        getActiveMenu(): IMenu {
+            return this.activeMenu;
+        }
+
+        /**
+         * @returns The name of the currently active menu.
+         */
+        getActiveMenuName(): string {
+            return this.activeMenu.name;
+        }
+
+        /**
+         * @returns The alternate Thing titles for characters.
+         */
+        getAliases(): IAliases {
             return this.aliases;
         }
 
         /**
-         * 
+         * @returns The programmatic replacements for deliniated words.
          */
         getReplacements(): IReplacements {
             return this.replacements;
         }
 
 
-        /* Menu positioning
+        /* Creations
         */
 
         /**
+         * Creates a menu with the given name and attributes, and stores it under the name.
+         * Default information is used from the schema of that name, such as position and
+         * children, but may be override by attributes.
          * 
+         * @param name   The name of the menu.
+         * @param attributes   Custom attributes to apply to the menu.
+         * @returns The newly created menu.
          */
         createMenu(name: string, attributes?: IMenuSchema): IMenu {
             var schemaRaw: IMenuSchema = this.GameStarter.proliferate({}, this.schemas[name]),
                 schema: IMenuSchema = this.GameStarter.proliferate(schemaRaw, attributes),
                 menu: IMenu = this.GameStarter.ObjectMaker.make("Menu", schema),
-                container: any = schema.container
+                // If the container menu doesn't exist, a pseudo-menu the size of the screen is used
+                container: IMenu = schema.container
                     ? this.menus[schema.container]
-                    : {
-                        "top": 0,
-                        "left": 0,
-                        "right": this.GameStarter.MapScreener.width,
-                        "bottom": this.GameStarter.MapScreener.height,
-                        "width": Math.ceil(this.GameStarter.MapScreener.width / this.GameStarter.unitsize),
-                        "height": Math.ceil(this.GameStarter.MapScreener.height / this.GameStarter.unitsize),
-                        "EightBitter": this.GameStarter,
-                        "GameStarter": this.GameStarter,
-                        "children": []
+                    : <IMenu><any>{
+                        top: 0,
+                        right: this.GameStarter.MapScreener.width,
+                        bottom: this.GameStarter.MapScreener.height,
+                        left: 0,
+                        width: Math.ceil(this.GameStarter.MapScreener.width / this.GameStarter.unitsize),
+                        height: Math.ceil(this.GameStarter.MapScreener.height / this.GameStarter.unitsize),
+                        EightBitter: this.GameStarter,
+                        GameStarter: this.GameStarter,
+                        children: []
                     };
 
             this.deleteMenu(name);
 
             this.menus[name] = menu;
             menu.name = name;
-            this.positionItem(menu, schema.size, schema.position, container);
+            this.placeMenuThing(container, menu, schema.size, schema.position);
 
             menu.children = [];
             menu.textAreaWidth = (menu.width - menu.textXOffset * 2) * this.GameStarter.unitsize;
@@ -419,48 +1135,60 @@ module MenuGraphr {
         }
 
         /**
+         * Adds a child object to an existing menu.
          * 
+         * @param name   The name of the existing menu.
+         * @param schema   Settings for the child, including name and child type.
+         * @returns The newly created Thing or Things.
+         * @remarks Creating a menu is done using this.createMenu, so the created menu might
+         *          not mark itself as a child of the parent.
          */
-        createMenuChild(name: string, schema: IMenuChildSchema): void {
+        createMenuChild(name: string, schema: IMenuChildSchema): GameStartr.IThing | GameStartr.IThing[] {
             switch (schema.type) {
                 case "menu":
-                    this.createMenu(
-                        (<IMenuChildMenuSchema>schema).name,
-                        (<IMenuChildMenuSchema>schema).attributes);
-                    break;
+                    return this.createMenu((<IMenuChildMenuSchema>schema).name, (<IMenuChildMenuSchema>schema).attributes);
+
                 case "text":
-                    this.createMenuWord(name, <IMenuWordSchema>schema);
-                    break;
+                    return this.createMenuWord(name, <IMenuWordSchema>schema);
+
                 case "thing":
-                    this.createMenuThing(name, <IMenuThingSchema>schema);
-                    break;
+                    return this.createMenuThing(name, <IMenuThingSchema>schema);
+
                 default:
                     throw new Error("Unknown schema type: " + schema.type);
             }
         }
 
         /**
+         * Creates a series of words as a child of a menu.
          * 
+         * @param name   The name of the menu.
+         * @param schema   Settings for the words.
+         * @returns The words' character Things.
          */
-        createMenuWord(name: string, schema: IMenuWordSchema): void {
+        createMenuWord(name: string, schema: IMenuWordSchema): GameStartr.IThing[] {
             var menu: IMenu = this.getExistingMenu(name),
                 container: IMenu = this.GameStarter.ObjectMaker.make("Menu"),
                 words: (string[] | IMenuWordCommand)[] = this.filterMenuWords(schema.words);
 
-            this.positionItem(container, schema.size, schema.position, menu, true);
-
+            this.placeMenuThing(menu, container, schema.size, schema.position, true);
             menu.textX = container.left;
-            this.addMenuWords(name, words, 0, container.left, container.top);
+
+            return this.addMenuWords(name, words, 0, container.left, container.top);
         }
 
         /**
+         * Creates a Thing as a child of a menu.
          * 
+         * @param name   The name of the menu.
+         * @param schema   Settings for the Thing.
+         * @returns The newly created Thing.
          */
-        createMenuThing(name: string, schema: IMenuThingSchema): IThing {
+        createMenuThing(name: string, schema: IMenuThingSchema): GameStartr.IThing {
             var menu: IMenu = this.getExistingMenu(name),
-                thing: IThing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
+                thing: GameStartr.IThing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
 
-            this.positionItem(thing, schema.size, schema.position, menu);
+            this.placeMenuThing(menu, thing, schema.size, schema.position);
 
             this.GameStarter.GroupHolder.switchMemberGroup(
                 thing,
@@ -472,8 +1200,14 @@ module MenuGraphr {
             return thing;
         }
 
+
+        /* Removals
+        */
+
         /**
+         * Hides a menu of the given name and deletes its children, if it exists.
          * 
+         * @param name   The name of the menu to hide.
          */
         hideMenu(name: string): void {
             var menu: IMenu = this.menus[name];
@@ -485,7 +1219,9 @@ module MenuGraphr {
         }
 
         /**
+         * Deletes a menu of the given name, if it exists.
          * 
+         * @param name   The name of the menu to delete.
          */
         deleteMenu(name: string): void {
             var menu: IMenu = this.menus[name];
@@ -496,133 +1232,11 @@ module MenuGraphr {
         }
 
         /**
-         * 
+         * Deletes the active menu, if it exists.
          */
         deleteActiveMenu(): void {
             if (this.activeMenu) {
                 this.deleteMenu(this.activeMenu.name);
-            }
-        }
-
-        /**
-         * 
-         */
-        deleteMenuChild(child: IMenu): void {
-            if (this.activeMenu === child) {
-                if (child.backMenu) {
-                    this.setActiveMenu(child.backMenu);
-                } else {
-                    this.activeMenu = undefined;
-                }
-            }
-
-            if (child.killOnB) {
-                child.killOnB.forEach(this.deleteMenu.bind(this));
-            }
-
-            if (child.name) {
-                delete this.menus[child.name];
-            }
-
-            this.GameStarter.killNormal(child);
-            this.deleteMenuChildren(name);
-
-            if (child.onMenuDelete) {
-                child.onMenuDelete.call(this.GameStarter);
-            }
-
-            if (child.children) {
-                child.children.forEach(this.deleteMenuChild.bind(this));
-            }
-        }
-
-        /**
-         * 
-         */
-        deleteMenuChildren(name: string): void {
-            var menu: IMenu = this.menus[name];
-
-            if (menu && menu.children) {
-                menu.children.forEach(this.deleteMenuChild.bind(this));
-            }
-        }
-
-        /**
-         * 
-         */
-        positionItem(
-            item: IThing,
-            size: IMenuSchemaSize,
-            position: IMenuSchemaPosition,
-            container: IMenu,
-            skipAdd?: boolean): void {
-            var offset: IMenuSchemaPositionOffset;
-
-            if (!position) {
-                position = {};
-                offset = {};
-            } else {
-                offset = position.offset || {};
-            }
-
-            if (!size) {
-                size = {};
-            }
-
-            if (size.width) {
-                this.GameStarter.setWidth(item, size.width);
-            } else if (position.horizontal === "stretch") {
-                this.GameStarter.setLeft(item, 0);
-                this.GameStarter.setWidth(
-                    item,
-                    container.width - (offset.left || 0) - (offset.right || 0));
-            }
-
-            if (size.height) {
-                this.GameStarter.setHeight(item, size.height);
-            } else if (position.vertical === "stretch") {
-                this.GameStarter.setTop(item, 0);
-                this.GameStarter.setHeight(
-                    item,
-                    container.height - (offset.top || 0) - (offset.bottom || 0));
-            }
-
-            switch (position.horizontal) {
-                case "center":
-                    this.GameStarter.setMidXObj(item, container);
-                    break;
-                case "right":
-                    this.GameStarter.setRight(item, container.right);
-                    break;
-                default:
-                    this.GameStarter.setLeft(item, container.left);
-                    break;
-            }
-
-            switch (position.vertical) {
-                case "center":
-                    this.GameStarter.setMidYObj(item, container);
-                    break;
-                case "bottom":
-                    this.GameStarter.setBottom(item, container.bottom);
-                    break;
-                default:
-                    this.GameStarter.setTop(item, container.top);
-                    break;
-            }
-
-            if (offset.top) {
-                this.GameStarter.shiftVert(
-                    item, position.offset.top * this.GameStarter.unitsize);
-            }
-
-            if (offset.left) {
-                this.GameStarter.shiftHoriz(
-                    item, position.offset.left * this.GameStarter.unitsize);
-            }
-
-            if (!skipAdd) {
-                this.GameStarter.addThing(item, item.left, item.top);
             }
         }
 
@@ -631,14 +1245,18 @@ module MenuGraphr {
         */
 
         /**
+         * Adds dialog-style text to a menu. If the text overflows, 
          * 
+         * @param name   The name of the menu.
+         * @param dialog   Raw dialog to add to the menu.
+         * @param onCompletion   An optional callback for when the text is done.
          */
-        addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void {
-            var dialog: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialogRaw),
+        addMenuDialog(name: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void {
+            var dialogParsed: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialog),
                 currentLine: number = 1,
-                callback: any = (function (): void {
+                callback: () => void = (): void => {
                     // If all dialog has been exhausted, delete the menu and finish
-                    if (currentLine >= dialog.length) {
+                    if (currentLine >= dialogParsed.length) {
                         if (this.menus[name].deleteOnFinish) {
                             this.deleteMenu(name);
                         }
@@ -655,47 +1273,19 @@ module MenuGraphr {
                     this.deleteMenuChildren(name);
 
                     // This continues the dialog with the next iteration (word)
-                    this.addMenuText(name, dialog[currentLine - 1], callback);
-                }.bind(this));
+                    this.addMenuText(name, dialogParsed[currentLine - 1], callback);
+                };
 
-            // This first call to addmenuText shouldn't be the callback, because if there
-            // bing called from a childrenSchema of type "text", it shouldn't delete any
-            // other menu children from childrenSchemas.
-            this.addMenuText(name, dialog[0], callback);
+            // This first call to addmenuText shouldn't be the callback, because if 
+            // being called from a childrenSchema of type "text", it shouldn't delete 
+            // any other menu children from childrenSchemas.
+            this.addMenuText(name, dialogParsed[0], callback);
         }
 
         /**
+         * Continues a menu from its current display words to the next line.
          * 
-         */
-        addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void {
-            var menu: IMenu = this.getExistingMenu(name),
-                x: number = this.GameStarter.getMidX(menu),
-                y: number = menu.top + menu.textYOffset * this.GameStarter.unitsize;
-
-            switch (menu.textStartingX) {
-                case "right":
-                    x += menu.textAreaWidth / 2;
-                    break;
-
-                case "center":
-                    break;
-
-                default:
-                    x -= menu.textAreaWidth / 2;
-            }
-
-            menu.callback = this.continueMenu.bind(this);
-            menu.textX = x;
-
-            if (words.length) {
-                this.addMenuWords(name, words, 0, x, y, onCompletion);
-            } else {
-                onCompletion();
-            }
-        }
-
-        /**
-         * 
+         * @param name    The name of the menu.
          */
         continueMenu(name: string): void {
             var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
@@ -731,14 +1321,10 @@ module MenuGraphr {
             }
 
             this.GameStarter.TimeHandler.addEvent(
-                this.addMenuWords.bind(this),
-                character.paddingY + 1,
-                name,
-                progress.words,
-                progress.i,
-                progress.x,
-                progress.y,
-                progress.onCompletion);
+                (): void => {
+                    this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+                },
+                character.paddingY + 1);
         }
 
 
@@ -746,7 +1332,11 @@ module MenuGraphr {
         */
 
         /**
+         * Adds a list of text options to a menu.
          * 
+         * @param name   The name of the menu.
+         * @param settings   Settings for the list, particularly its options, starting
+         *                   index, and optional floating bottom.
          */
         addMenuList(name: string, settings: IListMenuOptions): void {
             var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
@@ -759,7 +1349,7 @@ module MenuGraphr {
                 textWidth: number = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize,
                 textHeight: number = (menu.textHeight || textProperties.height) * this.GameStarter.unitsize,
                 textPaddingY: number = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize,
-                selectedIndex: number[] = settings.selectedIndex || [0, 0],
+                selectedIndex: [number, number] = settings.selectedIndex || [0, 0],
                 optionChildren: any[] = [],
                 index: number = 0,
                 y: number = top,
@@ -767,7 +1357,7 @@ module MenuGraphr {
                 optionChild: any,
                 schema: any,
                 title: string,
-                character: IThing,
+                character: GameStartr.IThing,
                 column: IGridCell[],
                 x: number,
                 i: number,
@@ -777,7 +1367,7 @@ module MenuGraphr {
             menu.options = options;
             menu.optionChildren = optionChildren;
 
-            menu.callback = this.selectMenuListOption.bind(this);
+            menu.callback = this.triggerMenuListOption.bind(this);
             menu.onActive = this.activateMenuList.bind(this);
             menu.onInactive = this.deactivateMenuList.bind(this);
 
@@ -896,7 +1486,7 @@ module MenuGraphr {
                 option.y = y;
 
                 // Copy & pasted from the above options loop
-                // To do: make this into its own helper function?
+                // Todo: make this into its own helper function?
                 for (j = 0; j < schema.length; j += 1) {
                     for (k = 0; k < schema[j].length; k += 1) {
                         if (schema[j][k].command) {
@@ -955,47 +1545,33 @@ module MenuGraphr {
         }
 
         /**
+         * Retrives the currently selected grid cell of a menu.
          * 
+         * @param name   The name of the menu.
+         * @returns The currently selected grid cell of the menu.
          */
-        activateMenuList(name: string): void {
-            if (this.menus[name] && (<IListMenu>this.menus[name]).arrow) {
-                (<IListMenu>this.menus[name]).arrow.hidden = false;
+        getMenuSelectedOption(name: string): IGridCell {
+            var menu: IListMenu = <IListMenu>this.getExistingMenu(name);
+
+            if (!menu.grid || !menu.selectedIndex) {
+                throw new Error("The " + name + " menu does not behave like a list menu.");
             }
-        }
-
-        /**
-         * 
-         */
-        deactivateMenuList(name: string): void {
-            if (this.menus[name] && (<IListMenu>this.menus[name]).arrow) {
-                (<IListMenu>this.menus[name]).arrow.hidden = true;
-            }
-        }
-
-        /**
-         * 
-         */
-        getMenuSelectedIndex(name: string): number[] {
-            return (<IListMenu>this.menus[name]).selectedIndex;
-        }
-
-        /**
-         * 
-         */
-        getMenuSelectedOption(name: string): any {
-            var menu: IListMenu = <IListMenu>this.menus[name];
 
             return menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
         }
 
         /**
+         * Shifts the selected index of a list menu, adjusting for scrolling if necessary.
          * 
+         * @param name   The name of the menu.
+         * @param dx   How far along the menu's grid to shift horizontally.
+         * @param dy   How far along the menu's grid to shift vertically.
          */
         shiftSelectedIndex(name: string, dx: number, dy: number): void {
             var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
                 textPaddingY: number = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize,
-                option: any,
+                option: IGridCell,
                 x: number,
                 y: number;
 
@@ -1027,76 +1603,25 @@ module MenuGraphr {
             option = this.getMenuSelectedOption(name);
 
             if (menu.scrollingItems) {
-                this.adjustVerticalScrollingListThings(name, dy, textPaddingY);
+                this.scrollListThings(name, dy, textPaddingY);
             }
 
-            this.GameStarter.setRight(
-                menu.arrow, option.x - menu.arrowXOffset * this.GameStarter.unitsize);
-            this.GameStarter.setTop(
-                menu.arrow, option.y + menu.arrowYOffset * this.GameStarter.unitsize);
+            this.GameStarter.setRight(menu.arrow, option.x - menu.arrowXOffset * this.GameStarter.unitsize);
+            this.GameStarter.setTop(menu.arrow, option.y + menu.arrowYOffset * this.GameStarter.unitsize);
         }
 
         /**
+         * Sets the current selected index of a menu.
          * 
+         * @param name   The name of the menu.
+         * @param x   The new horizontal value for the index.
+         * @param y   The new vertical value for the index.
          */
         setSelectedIndex(name: string, x: number, y: number): void {
             var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
-                selectedIndex: number[] = menu.selectedIndex;
+                selectedIndex: [number, number] = menu.selectedIndex;
 
             this.shiftSelectedIndex(name, x - selectedIndex[0], y - selectedIndex[1]);
-        }
-
-        /**
-         * 
-         */
-        adjustVerticalScrollingListThings(name: string, dy: number, textPaddingY: number): void {
-            var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
-                scrollingOld: number = menu.selectedIndex[1] - dy,
-                offset: number = -dy * textPaddingY,
-                option: any,
-                optionChild: any,
-                i: number,
-                j: number;
-
-            if (dy > 0) {
-                if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
-                    return;
-                }
-            } else if (scrollingOld - menu.scrollingVisualOffset > 0) {
-                return;
-            }
-
-            menu.scrollingVisualOffset += dy;
-
-            for (i = 0; i < menu.optionChildren.length; i += 1) {
-                option = menu.options[i];
-                optionChild = menu.optionChildren[i];
-
-                option.y += offset;
-
-                for (j = 0; j < optionChild.things.length; j += 1) {
-                    this.GameStarter.shiftVert(optionChild.things[j], offset);
-                    if (
-                        i < menu.scrollingVisualOffset
-                        || i >= menu.scrollingItems + menu.scrollingVisualOffset
-                    ) {
-                        optionChild.things[j].hidden = true;
-                    } else {
-                        optionChild.things[j].hidden = false;
-                    }
-                }
-            }
-        }
-
-        /**
-         * 
-         */
-        selectMenuListOption(name: string): void {
-            var selected: any = this.getMenuSelectedOption(name);
-
-            if (selected.callback) {
-                selected.callback.call(this, name);
-            }
         }
 
 
@@ -1104,7 +1629,9 @@ module MenuGraphr {
         */
 
         /**
+         * Sets the currently active menu.
          * 
+         * @param name   The name of the menu to set as active.
          */
         setActiveMenu(name: string): void {
             if (this.activeMenu && this.activeMenu.onInactive) {
@@ -1119,31 +1646,19 @@ module MenuGraphr {
         }
 
         /**
+         * Reacts to a user event directing in the given direction.
          * 
-         */
-        getActiveMenu(): IMenu {
-            return this.activeMenu;
-        }
-
-        /**
-         * 
-         */
-        getActiveMenuName(): string {
-            return this.activeMenu.name;
-        }
-
-        /**
-         * 
+         * @param direction   The direction of the interaction.
          */
         registerDirection(direction: number): void {
             switch (direction) {
-                case 0:
+                case Direction.Top:
                     return this.registerUp();
-                case 1:
+                case Direction.Right:
                     return this.registerRight();
-                case 2:
+                case Direction.Bottom:
                     return this.registerDown();
-                case 3:
+                case Direction.Left:
                     return this.registerLeft();
                 default:
                     throw new Error("Unknown direction: " + direction);
@@ -1151,45 +1666,7 @@ module MenuGraphr {
         }
 
         /**
-         * 
-         */
-        registerLeft(): void {
-            var menu: IListMenu = <IListMenu>this.activeMenu;
-
-            if (!menu) {
-                return;
-            }
-
-            if (menu.selectedIndex) {
-                this.shiftSelectedIndex(menu.name, -1, 0);
-            }
-
-            if (menu.onLeft) {
-                menu.onLeft(this.GameStarter);
-            }
-        }
-
-        /**
-         * 
-         */
-        registerRight(): void {
-            var menu: IListMenu = <IListMenu>this.activeMenu;
-
-            if (!menu) {
-                return;
-            }
-
-            if (menu.selectedIndex) {
-                this.shiftSelectedIndex(menu.name, 1, 0);
-            }
-
-            if (menu.onRight) {
-                menu.onRight(this.GameStarter);
-            }
-        }
-
-        /**
-         * 
+         * Reacts to a user event directing up.
          */
         registerUp(): void {
             var menu: IListMenu = <IListMenu>this.activeMenu;
@@ -1208,7 +1685,26 @@ module MenuGraphr {
         }
 
         /**
-         * 
+         * Reacts to a user event directing to the right.
+         */
+        registerRight(): void {
+            var menu: IListMenu = <IListMenu>this.activeMenu;
+
+            if (!menu) {
+                return;
+            }
+
+            if (menu.selectedIndex) {
+                this.shiftSelectedIndex(menu.name, 1, 0);
+            }
+
+            if (menu.onRight) {
+                menu.onRight(this.GameStarter);
+            }
+        }
+
+        /**
+         * Reacts to a user event directing down.
          */
         registerDown(): void {
             var menu: IListMenu = <IListMenu>this.activeMenu;
@@ -1227,7 +1723,26 @@ module MenuGraphr {
         }
 
         /**
-         * 
+         * Reacts to a user event directing to the left.
+         */
+        registerLeft(): void {
+            var menu: IListMenu = <IListMenu>this.activeMenu;
+
+            if (!menu) {
+                return;
+            }
+
+            if (menu.selectedIndex) {
+                this.shiftSelectedIndex(menu.name, -1, 0);
+            }
+
+            if (menu.onLeft) {
+                menu.onLeft(this.GameStarter);
+            }
+        }
+
+        /**
+         * Reacts to a user event from pressing a selection key.
          */
         registerA(): void {
             var menu: IMenu = this.activeMenu;
@@ -1242,7 +1757,7 @@ module MenuGraphr {
         }
 
         /**
-         * 
+         * Reacts to a user event from pressing a deselection key.
          */
         registerB(): void {
             var menu: IMenu = this.activeMenu;
@@ -1272,7 +1787,7 @@ module MenuGraphr {
         }
 
         /**
-         * 
+         * Reacts to a user event from pressing a start key.
          */
         registerStart(): void {
             var menu: IListMenu = <IListMenu>this.activeMenu;
@@ -1283,8 +1798,6 @@ module MenuGraphr {
 
             if (menu.startMenu) {
                 this.setActiveMenu(menu.startMenu);
-                // } else if (activeMenu.callback) {
-                //     activeMenu.callback(activeMenu.name);
             }
         }
 
@@ -1293,9 +1806,50 @@ module MenuGraphr {
         */
 
         /**
+         * Adds a series of words to a menu.
          * 
+         * @param name   The name of the menu.
+         * @param words   Words to add to the menu, as String[]s and/or commands.
+         * @param onCompletion   An optional event for when the words are added.
+         */
+        private addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void {
+            var menu: IMenu = this.getExistingMenu(name),
+                x: number = this.GameStarter.getMidX(menu),
+                y: number = menu.top + menu.textYOffset * this.GameStarter.unitsize;
+
+            switch (menu.textStartingX) {
+                case "right":
+                    x += menu.textAreaWidth / 2;
+                    break;
+
+                case "center":
+                    break;
+
+                default:
+                    x -= menu.textAreaWidth / 2;
+            }
+
+            menu.callback = this.continueMenu.bind(this);
+            menu.textX = x;
+
+            if (words.length) {
+                this.addMenuWords(name, words, 0, x, y, onCompletion);
+            } else {
+                onCompletion();
+            }
+        }
+
+        /**
+         * Adds a word within a series of words to a menu, then adds the next word,
+         * and so on. This is the real force behind addMenuDialog and addMenuText.
          * 
-         * @remarks This is the real force behind addMenuDialog and addMenuText.
+         * @param name   The name of the menu.
+         * @param words   Words to add to the menu, as String[]s and/or commands.
+         * @param i   The index of the current word to add.
+         * @param x   The x-location to place the word at.
+         * @param y   The y-location to place the word at.
+         * @param onCompletion   An optional event for when the words are added.
+         * @returns The generated Things from the word's characters.
          */
         private addMenuWords(
             name: string,
@@ -1303,12 +1857,12 @@ module MenuGraphr {
             i: number,
             x: number,
             y: number,
-            onCompletion?: (...args: any[]) => void): IThing[] {
+            onCompletion?: (...args: any[]) => void): GameStartr.IThing[] {
             var menu: IMenu = this.getExistingMenu(name),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
-                command: IMenuWordFiltered,
+                command: IMenuWordCommandBase,
                 word: string[],
-                things: IThing[] = [],
+                things: GameStartr.IThing[] = [],
                 textWidth: number,
                 textPaddingX: number,
                 textPaddingY: number,
@@ -1408,14 +1962,10 @@ module MenuGraphr {
 
             if (textSpeed) {
                 this.GameStarter.TimeHandler.addEvent(
-                    this.addMenuWords.bind(this),
-                    (j + 1) * textSpeed,
-                    name,
-                    words,
-                    i + 1,
-                    x,
-                    y,
-                    onCompletion);
+                    (): void => {
+                        this.addMenuWords(name, words, i + 1, x, y, onCompletion);
+                    },
+                    (j + 1) * textSpeed);
             } else {
                 this.addMenuWords(name, words, i + 1, x, y, onCompletion);
             }
@@ -1424,7 +1974,81 @@ module MenuGraphr {
         }
 
         /**
+         * Places and positions a Thing within a menu basd on its size and position schemas.
          * 
+         * @param thing   The Thing to place and position.
+         * @param size   An optional description of the Thing's size.
+         * @param position   An optional description of the Thing's position.
+         * @param skipAdd   Whether to skip calling this.GameStarter.addThing on the Thing.
+         */
+        private placeMenuThing(
+            menu: IMenu,
+            thing: GameStartr.IThing,
+            size: IMenuSchemaSize = {},
+            position: IMenuSchemaPosition = {},
+            skipAdd?: boolean): void {
+            var offset: IMenuSchemaPositionOffset = position.offset || {};
+
+            if (size.width) {
+                this.GameStarter.setWidth(thing, size.width);
+            } else if (position.horizontal === "stretch") {
+                this.GameStarter.setLeft(thing, 0);
+                this.GameStarter.setWidth(thing, menu.width - (offset.left || 0) - (offset.right || 0));
+            }
+
+            if (size.height) {
+                this.GameStarter.setHeight(thing, size.height);
+            } else if (position.vertical === "stretch") {
+                this.GameStarter.setTop(thing, 0);
+                this.GameStarter.setHeight(thing, menu.height - (offset.top || 0) - (offset.bottom || 0));
+            }
+
+            switch (position.horizontal) {
+                case "center":
+                    this.GameStarter.setMidXObj(thing, menu);
+                    break;
+                case "right":
+                    this.GameStarter.setRight(thing, menu.right);
+                    break;
+                default:
+                    this.GameStarter.setLeft(thing, menu.left);
+                    break;
+            }
+
+            switch (position.vertical) {
+                case "center":
+                    this.GameStarter.setMidYObj(thing, menu);
+                    break;
+                case "bottom":
+                    this.GameStarter.setBottom(thing, menu.bottom);
+                    break;
+                default:
+                    this.GameStarter.setTop(thing, menu.top);
+                    break;
+            }
+
+            if (offset.top) {
+                this.GameStarter.shiftVert(thing, position.offset.top * this.GameStarter.unitsize);
+            }
+
+            if (offset.left) {
+                this.GameStarter.shiftHoriz(thing, position.offset.left * this.GameStarter.unitsize);
+            }
+
+            if (!skipAdd) {
+                this.GameStarter.addThing(thing, thing.left, thing.top);
+            }
+        }
+
+        /**
+         * Adds a single character as an GameStartr.IThing to a menu, potentially with a time delay.
+         * 
+         * @param name   The name of the menu.
+         * @param character   The character to add.
+         * @param x   The x-position of the character.
+         * @param y   The y-position of the character.
+         * @param delay   Optionally, how long to delay adding using TimeHandlr.
+         * @returns The character's new Thing representation.
          */
         private addMenuCharacter(name: string, character: string, x: number, y: number, delay?: number): IText {
             var menu: IMenu = this.getExistingMenu(name),
@@ -1439,11 +2063,10 @@ module MenuGraphr {
 
             if (delay) {
                 this.GameStarter.TimeHandler.addEvent(
-                    this.GameStarter.addThing.bind(this.GameStarter),
-                    delay,
-                    thing,
-                    x,
-                    y);
+                    (): void => {
+                        this.GameStarter.addThing(thing, x, y);
+                    },
+                    delay);
             } else {
                 this.GameStarter.addThing(thing, x, y);
             }
@@ -1452,10 +2075,119 @@ module MenuGraphr {
         }
 
         /**
+         * Scrolls a menu's character up once. If it's above the menu's area, it's deleted.
          * 
+         * @param character   The Thing to scroll up.
+         * @param menu 
+         * @returns Whether the character was deleted.
+         */
+        private scrollCharacterUp(character: GameStartr.IThing, menu: IMenu): boolean {
+            this.GameStarter.shiftVert(character, -this.GameStarter.unitsize);
+
+            if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {
+                this.GameStarter.killNormal(character);
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+         * Deletes all children of a menu.
          * 
-         * @remarks This could be made into a binary search...
-         * @remarks This equation is rought, and could be re-checked...
+         * @param name   The name of the menu.
+         */
+        private deleteMenuChildren(name: string): void {
+            var menu: IMenu = this.menus[name];
+
+            if (menu && menu.children) {
+                menu.children.forEach((child: IMenu) => this.deleteMenuChild(child));
+            }
+        }
+
+        /**
+         * Deletes the child of a menu and any of its children.
+         * 
+         * @param child   A menu child to delete.
+         */
+        private deleteMenuChild(child: IMenu): void {
+            if (this.activeMenu === child) {
+                if (child.backMenu) {
+                    this.setActiveMenu(child.backMenu);
+                } else {
+                    this.activeMenu = undefined;
+                }
+            }
+
+            if (child.killOnB) {
+                child.killOnB.forEach(this.deleteMenu.bind(this));
+            }
+
+            if (child.name) {
+                delete this.menus[child.name];
+            }
+
+            this.GameStarter.killNormal(child);
+            this.deleteMenuChildren(name);
+
+            if (child.onMenuDelete) {
+                child.onMenuDelete.call(this.GameStarter);
+            }
+
+            if (child.children) {
+                child.children.forEach(this.deleteMenuChild.bind(this));
+            }
+        }
+
+
+        /* List utilities
+        */
+
+        /**
+         * Un-hides a list menu's arrow Thing.
+         * 
+         * @param name   The name of the menu.
+         */
+        private activateMenuList(name: string): void {
+            var menu: IListMenu = <IListMenu>this.menus[name];
+
+            if (menu && menu.arrow) {
+                menu.arrow.hidden = false;
+            }
+        }
+
+        /**
+         * Hides a list menu's arrow Thing.
+         * 
+         * @param name   The name of the menu.
+         */
+        private deactivateMenuList(name: string): void {
+            var menu: IListMenu = <IListMenu>this.menus[name];
+
+            if (menu && menu.arrow) {
+                menu.arrow.hidden = true;
+            }
+        }
+
+        /**
+         * Runs the callback for a menu's selected list option.
+         * 
+         * @param name   The name of the menu.
+         */
+        private triggerMenuListOption(name: string): void {
+            var selected: IGridCell = this.getMenuSelectedOption(name);
+
+            if (selected.callback) {
+                selected.callback.call(this, name);
+            }
+        }
+
+        /**
+         * Determines how many scrolling items are able to fit within a list menu, as 
+         * the index of the first bottom not within the menu.
+         * 
+         * @param menu   The list menu.
+         * @returns The number of scrolling items, or Infinity if they all fit.
          */
         private computeMenuScrollingItems(menu: IListMenu): number {
             var bottom: number = menu.bottom
@@ -1473,33 +2205,73 @@ module MenuGraphr {
         }
 
         /**
+         * Scrolls a list menu's Things vertically.
          * 
+         * @param name   The name of the menu.
+         * @param dy   How far along the list menu's grid to scroll.
+         * @param textPaddingY   How much text is padded, to compute scrolling with dy.
          */
-        private scrollCharacterUp(character: IThing, menu: IMenu): boolean {
-            this.GameStarter.shiftVert(character, -this.GameStarter.unitsize);
+        private scrollListThings(name: string, dy: number, textPaddingY: number): void {
+            var menu: IListMenu = <IListMenu>this.getExistingMenu(name),
+                scrollingOld: number = menu.selectedIndex[1] - dy,
+                offset: number = -dy * textPaddingY,
+                option: IGridCell,
+                optionChild: any,
+                i: number,
+                j: number;
 
-            if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                this.GameStarter.killNormal(character);
-                return true;
+            if (dy > 0) {
+                if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
+                    return;
+                }
+            } else if (scrollingOld - menu.scrollingVisualOffset > 0) {
+                return;
             }
 
-            return false;
+            menu.scrollingVisualOffset += dy;
+
+            for (i = 0; i < menu.optionChildren.length; i += 1) {
+                option = menu.options[i];
+                optionChild = menu.optionChildren[i];
+
+                option.y += offset;
+
+                for (j = 0; j < optionChild.things.length; j += 1) {
+                    this.GameStarter.shiftVert(optionChild.things[j], offset);
+                    if (
+                        i < menu.scrollingVisualOffset
+                        || i >= menu.scrollingItems + menu.scrollingVisualOffset
+                    ) {
+                        optionChild.things[j].hidden = true;
+                    } else {
+                        optionChild.things[j].hidden = false;
+                    }
+                }
+            }
         }
 
+
+        /* Text parsing
+        */
+
         /**
-         * 
+         * @param character   A String to retrieve an equivalent title of.
+         * @returns The character's title from this.aliases if it exists, or the
+         *          character itself otherwise.
          */
         private getCharacterEquivalent(character: string): string {
             if (this.aliases.hasOwnProperty(character)) {
                 return this.aliases[character];
             }
+
             return character;
         }
 
         /**
-         *
+         * @param dialogRaw   Raw dialog of any type.
+         * @returns The dialog parsed into lines of words.
          */
-        private parseRawDialog(dialogRaw: MenuDialogRaw): (string[] | IMenuWordCommand)[][] {
+        private parseRawDialog(dialogRaw: IMenuDialogRaw): (string[] | IMenuWordCommand)[][] {
             // A raw String becomes a single line of dialog
             if (dialogRaw.constructor === String) {
                 return [this.parseRawDialogString(<string>dialogRaw)];
@@ -1515,7 +2287,7 @@ module MenuGraphr {
                 if (component.constructor === String) {
                     output.push(this.parseRawDialogString(<string>component));
                 } else {
-                    output.push(this.filterArray(<string[]>component));
+                    output.push(this.parseRawDialogStrings(<string[]>component));
                 }
             }
 
@@ -1523,7 +2295,8 @@ module MenuGraphr {
         }
 
         /**
-         *
+         * @param dialogRaw   A raw String or set of Strings.
+         * @returns The raw dialog as lines of words.
          */
         private parseRawDialogString(dialogRaw: string | string[]): string[][] {
             var characters: string[] = this.filterWord(dialogRaw),
@@ -1536,7 +2309,7 @@ module MenuGraphr {
 
             // For each character to be added...
             for (i = 0; i < characters.length; i += 1) {
-                // If it matches what's currently being added, keep going
+                // If it matches what's currently being added (whitespace or not), keep going
                 if (currentlyWhitespace) {
                     if (/\s/.test(characters[i])) {
                         word.push(characters[i]);
@@ -1564,8 +2337,23 @@ module MenuGraphr {
         }
 
         /**
-         * 
-         * 
+         * @param words   Any number of raw dialog words.
+         * @returns The words filtered using this.parseRawDialogString.
+         */
+        private parseRawDialogStrings(words: string[]): string[][] {
+            var output: string[][] = [],
+                i: number;
+
+            for (i = 0; i < words.length; i += 1) {
+                output.push(...this.parseRawDialogString(words[i]));
+            }
+
+            return output;
+        }
+
+        /**
+         * @param wordRaw   A word that may need to have replacements applied.
+         * @returns The same word as an Array of characters, and with replacements applied.
          */
         private filterWord(wordRaw: string | string[]): string[] {
             if (wordRaw.constructor === Array) {
@@ -1600,7 +2388,10 @@ module MenuGraphr {
         }
 
         /**
-         *
+         * Filters all String words in a menu's text using this.filterWord.
+         * 
+         * @param words   The words to filter, as Strings or command Objects.
+         * @returns The words, with all Strings filtered.
          */
         private filterMenuWords(words: (string | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
             var output: (string[] | IMenuWordCommand)[] = [],
@@ -1618,37 +2409,24 @@ module MenuGraphr {
         }
 
         /**
-         *
+         * @param textRaw   Text that, if String(s), should be filtered using this.filterWord.
+         * @returns The words, filtered.
          */
-        private filterArray(words: string[]): string[][] {
-            var output: string[][] = [],
-                i: number;
-
-            for (i = 0; i < words.length; i += 1) {
-                output.push(...this.parseRawDialogString(words[i]));
-            }
-
-            return output;
-        }
-
-        /**
-         * 
-         */
-        private filterText(word: string | string[] | string[][]): string[][] {
-            if (word.constructor === Array) {
-                if (word.length === 0) {
+        private filterText(textRaw: IMenuDialogRaw): string[][] {
+            if (textRaw.constructor === Array) {
+                if (textRaw.length === 0) {
                     return [];
                 }
 
-                if (word[0].constructor === String) {
-                    return [<string[]>word];
+                if (textRaw[0].constructor === String) {
+                    return [<string[]>textRaw];
                 }
 
-                return <string[][]>word;
+                return <string[][]>textRaw;
             }
 
             var characters: string[] = [],
-                total: string = <string>word,
+                total: string = <string>textRaw,
                 component: string = "",
                 i: number;
 
@@ -1674,64 +2452,71 @@ module MenuGraphr {
         }
 
         /**
+         * Converts a word command into its equivalent word text.
          * 
+         * @param wordCommand   The word command.
+         * @param menu   The menu containing the word command.
+         * @returns The equivalent word text for the command.
          */
-        private parseWordCommand(word: IMenuWordCommand, menu?: IMenu): string[] {
+        private parseWordCommand(wordCommand: IMenuWordCommand, menu?: IMenu): string[] {
             // If no menu is provided, this is from a simulation; pretend there is a menu
             if (!menu) {
                 menu = <any>{};
             }
 
-            switch (word.command) {
+            switch (wordCommand.command) {
                 case "attribute":
-                    menu[word.attribute + "Old"] = menu[word.attribute];
-                    menu[word.attribute] = word.value;
-                    if (word.applyUnitsize) {
-                        menu[word.attribute] *= this.GameStarter.unitsize;
+                    menu[wordCommand.attribute + "Old"] = menu[wordCommand.attribute];
+                    menu[wordCommand.attribute] = wordCommand.value;
+                    if (wordCommand.applyUnitsize) {
+                        menu[wordCommand.attribute] *= this.GameStarter.unitsize;
                     }
                     break;
 
                 case "attributeReset":
-                    menu[word.attribute] = menu[word.attribute + "Old"];
+                    menu[wordCommand.attribute] = menu[wordCommand.attribute + "Old"];
                     break;
 
                 case "padLeft":
-                    return this.parseWordCommandPadLeft(<IMenuWordPadLeftCommand>word);
+                    return this.parseWordCommandPadLeft(<IMenuWordPadLeftCommand>wordCommand);
 
                 // Position is handled directly in addMenuWord
                 case "position":
                     break;
 
                 default:
-                    throw new Error("Unknown word command: " + (<any>word).command);
+                    throw new Error("Unknown word command: " + (<any>wordCommand).command);
             }
 
-            return word.word.split("");
+            return wordCommand.word.split("");
         }
 
         /**
+         * Converts a word command to pad text from the left.
          * 
+         * @param wordCommand   The word command.
+         * @returns   The word command's parsed text.
          */
-        private parseWordCommandPadLeft(command: IMenuWordPadLeftCommand): string[] {
-            var filtered: string[] = this.filterWord(command.word),
+        private parseWordCommandPadLeft(wordCommand: IMenuWordPadLeftCommand): string[] {
+            var filtered: string[] = this.filterWord(wordCommand.word),
                 length: number;
 
             // Length may be a String (for its length) or a direct number
-            switch ((<any>command.length).constructor) {
+            switch ((<any>wordCommand.length).constructor) {
                 case String:
-                    length = this.filterText(<string>command.length)[0].length;
+                    length = this.filterText(<string>wordCommand.length)[0].length;
                     break;
 
                 case Number:
-                    length = <number>command.length;
+                    length = <number>wordCommand.length;
                     break;
 
                 default:
-                    throw new Error("Unknown padLeft command: " + command);
+                    throw new Error("Unknown padLeft command: " + wordCommand);
             }
 
             // Right-aligned commands reduce the amount of spacing by the length of the word
-            if (command.alignRight) {
+            if (wordCommand.alignRight) {
                 length = Math.max(0, length - filtered.length);
             }
 
@@ -1742,7 +2527,10 @@ module MenuGraphr {
         }
 
         /**
+         * Retrieves the value of a text replacement of the given key.
          * 
+         * @param key   The key of the text replacement to retrieve.
+         * @returns The value of the text replacement, if it exists.
          */
         private getReplacement(key: string): string[] {
             var replacement: string[] | IReplacerFunction = this.replacements[key];
@@ -1760,16 +2548,21 @@ module MenuGraphr {
          * Creates a new String equivalent to an old String repeated any number of
          * times. If times is 0, a blank String is returned.
          * 
-         * @param {String} str The characters to repeat.
-         * @param {Number} [times]   How many times to repeat (by default, 1).
+         * @param string   The characters to repeat.
+         * @param times   How many times to repeat (by default, 1).
+         * @returns The original string, repeated.
          */
-        private stringOf(str: string, times: number = 1): string {
-            return (times === 0) ? "" : new Array(1 + (times)).join(str);
+        private stringOf(string: string, times: number = 1): string {
+            return (times === 0) ? "" : new Array(1 + (times)).join(string);
         }
 
         /**
+         * Predicts how wide a word's area will be when displayed as dialog.
          * 
-         * 
+         * @param wordRaw   The word that will be displayed.
+         * @param textWidth   How wide each character should be.
+         * @param textPaddingX   How much space between each character.
+         * @returns The total predicted width of the word's area.
          * @remarks This ignores commands under the assumption they shouldn't be
          *          used in dialogs that react to box size. This may be wrong.
          */
@@ -1788,7 +2581,7 @@ module MenuGraphr {
                 if (/\s/.test(word[i])) {
                     total += textWidth + textPaddingX;
                 } else {
-                    total += this.computeFutureLetterLength(word[i], textPaddingX);
+                    total += this.computeFutureLetterLength(word[i]) + textPaddingX;
                 }
             }
 
@@ -1796,13 +2589,16 @@ module MenuGraphr {
         }
 
         /**
-         *
+         * Predicts how wide a letter will be, based on its equivalent Thing's width.
+         * 
+         * @param letter   The name of the letter to create.
+         * @returns How wide the letter will be on the screen.
          */
-        private computeFutureLetterLength(letter: string, textPaddingX: number): number {
+        private computeFutureLetterLength(letter: string): number {
             var title: string = "Char" + this.getCharacterEquivalent(letter),
                 properties: any = this.GameStarter.ObjectMaker.getFullPropertiesOf(title);
 
-            return properties.width * this.GameStarter.unitsize + textPaddingX;
+            return properties.width * this.GameStarter.unitsize;
         }
     }
 }
