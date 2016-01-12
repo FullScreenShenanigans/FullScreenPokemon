@@ -2,9 +2,15 @@
 var StateHoldr;
 (function (StateHoldr_1) {
     "use strict";
+    /**
+     * A utility to save collections of game state using an ItemsHoldr.
+     * Keyed changes to named collections can be saved temporarily or permanently.
+     */
     var StateHoldr = (function () {
         /**
-         * @param {IStateHoldrSettings} settings
+         * Initializes a new instance of the StateHoldr class.
+         *
+         * @param settings   Settings to be used for initialization.
          */
         function StateHoldr(settings) {
             if (!settings.ItemsHolder) {
@@ -16,38 +22,38 @@ var StateHoldr;
         /* Simple gets
         */
         /**
-         * @return {ItemsHoldr} The ItemsHoldr instance that stores data.
+         * @returns The ItemsHoldr instance that stores data.
          */
         StateHoldr.prototype.getItemsHolder = function () {
             return this.ItemsHolder;
         };
         /**
-         * @return {String} The prefix used for ItemsHoldr keys.
+         * @returns The prefix used for ItemsHoldr keys.
          */
         StateHoldr.prototype.getPrefix = function () {
             return this.prefix;
         };
         /**
-         * @return {String} The current key for the collection, with the prefix.
+         * @returns The current key for the collection, with the prefix.
          */
         StateHoldr.prototype.getCollectionKey = function () {
             return this.collectionKey;
         };
         /**
-         * @return {String} The current key for the collection, without the prefix.
+         * @returns The current key for the collection, without the prefix.
          */
         StateHoldr.prototype.getCollectionKeyRaw = function () {
             return this.collectionKeyRaw;
         };
         /**
-         * @reutrn {Object} The current Object with attributes saved within.
+         * @returns The current Object with attributes saved within.
          */
         StateHoldr.prototype.getCollection = function () {
             return this.collection;
         };
         /**
-         * @param {String} otherCollectionKeyRaw   A key for a collection to retrieve.
-         * @return {Object} The collection stored under the raw key, if it exists.
+         * @param otherCollectionKeyRaw   A key for a collection to retrieve.
+         * @returns The collection stored under the raw key, if it exists.
          */
         StateHoldr.prototype.getOtherCollection = function (otherCollectionKeyRaw) {
             var otherCollectionKey = this.prefix + otherCollectionKeyRaw;
@@ -55,31 +61,29 @@ var StateHoldr;
             return this.ItemsHolder.getItem(otherCollectionKey);
         };
         /**
-         * @param {String} itemKey   The item key whose changes are being retrieved.
-         * @return {Object} Any changes under the itemKey, if it exists.
+         * @param itemKey   The item key whose changes are being retrieved.
+         * @returns Any changes under the itemKey, if it exists.
          */
         StateHoldr.prototype.getChanges = function (itemKey) {
-            this.ensureCollectionItemExists(itemKey);
-            return this.collection[itemKey];
+            return this.getCollectionItemSafely(itemKey);
         };
         /**
-         * @param {String} itemKey   The item key whose changes are being retrieved.
-         * @param {String} valueKey   The specific change being requested.
-         * @return {Mixed} The changes for the specific item, if it exists.
+         * @param itemKey   The item key whose changes are being retrieved.
+         * @param valueKey   The specific change being requested.
+         * @returns The changes for the specific item, if it exists.
          */
         StateHoldr.prototype.getChange = function (itemKey, valueKey) {
-            this.ensureCollectionItemExists(itemKey);
-            return this.collection[itemKey][valueKey];
+            return this.getCollectionItemSafely(itemKey)[valueKey];
         };
         /* Storage
         */
         /**
          * Sets the currently tracked collection.
          *
-         * @param {String} collectionKeyRawNew   The raw key of the new collection
-         *                                       to switch to.
-         * @param {Object} [value]   An optional container of values to set the new
-         *                           collection equal to.
+         * @param collectionKeyRawNew   The raw key of the new collection
+         *                              to switch to.
+         * @param value   An optional container of values to set the new
+         *                collection equal to.
          */
         StateHoldr.prototype.setCollection = function (collectionKeyRawNew, value) {
             this.collectionKeyRaw = collectionKeyRawNew;
@@ -99,23 +103,22 @@ var StateHoldr;
         /**
          * Adds a change to the collection, stored as a key-value pair under an item.
          *
-         * @param {String} itemKey   The key for the item experiencing the change.
-         * @param {String} valueKey   The attribute of the item being changed.
-         * @param {Mixed} value   The actual value being stored.
+         * @param itemKey   The key for the item experiencing the change.
+         * @param valueKey   The attribute of the item being changed.
+         * @param value   The actual value being stored.
          */
         StateHoldr.prototype.addChange = function (itemKey, valueKey, value) {
-            this.ensureCollectionItemExists(itemKey);
-            this.collection[itemKey][valueKey] = value;
+            this.getCollectionItemSafely(itemKey)[valueKey] = value;
         };
         /**
          * Adds a change to any collection requested by the key, stored as a key-value
          * pair under an item.
          *
-         * @param {String} collectionKeyOtherRaw   The raw key for the other collection
-         *                                         to add the change under.
-         * @param {String} itemKey   The key for the item experiencing the change.
-         * @param {String} valueKey   The attribute of the item being changed.
-         * @param {Mixed} value   The actual value being stored.
+         * @param collectionKeyOtherRaw   The raw key for the other collection
+         *                                to add the change under.
+         * @param itemKey   The key for the item experiencing the change.
+         * @param valueKey   The attribute of the item being changed.
+         * @param value   The actual value being stored.
          */
         StateHoldr.prototype.addCollectionChange = function (collectionKeyOtherRaw, itemKey, valueKey, value) {
             var collectionKeyOther = this.prefix + collectionKeyOtherRaw, otherCollection;
@@ -130,8 +133,8 @@ var StateHoldr;
         /**
          * Copies all changes from a contained item into an output item.
          *
-         * @param {String} itemKey   The key for the contained item.
-         * @param {Mixed} output   The recipient for all the changes.
+         * @param itemKey   The key for the contained item.
+         * @param output   The recipient for all the changes.
          */
         StateHoldr.prototype.applyChanges = function (itemKey, output) {
             var changes = this.collection[itemKey], key;
@@ -150,8 +153,8 @@ var StateHoldr;
          * Ensures a collection exists by checking for it and creating it under
          * the internal ItemsHoldr if it doesn't.
          *
-         * @param {String} collectionKey   The key for the collection that must
-         *                                 exist, including the prefix.
+         * @param collectionKey   The key for the collection that must exist,
+         *                        including the prefix.
          */
         StateHoldr.prototype.ensureCollectionKeyExists = function (collectionKey) {
             if (!this.ItemsHolder.hasKey(collectionKey)) {
@@ -165,12 +168,14 @@ var StateHoldr;
          * Ensures an item in the current collection exists by checking for it and
          * creating it if it doesn't.
          *
-         * @param {String} itemKey   The item key that must exist.
+         * @param itemKey   The item key that must exist.
+         * @returns The item in the collection under the given key.
          */
-        StateHoldr.prototype.ensureCollectionItemExists = function (itemKey) {
+        StateHoldr.prototype.getCollectionItemSafely = function (itemKey) {
             if (typeof this.collection[itemKey] === "undefined") {
-                this.collection[itemKey] = {};
+                return this.collection[itemKey] = {};
             }
+            return this.collection[itemKey];
         };
         return StateHoldr;
     })();

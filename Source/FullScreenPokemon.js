@@ -88,13 +88,20 @@ var FullScreenPokemon;
         "Left": "Right",
         "left": "right"
     };
+    /**
+     * Classes to add to Things facing particular directions.
+     */
+    FullScreenPokemon_1.DirectionClasses = ["up", "right", "down", "left"];
+    /**
+     * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
+     */
     var FullScreenPokemon = (function (_super) {
         __extends(FullScreenPokemon, _super);
         /**
-         * Constructor for a new FullScreenPokemon game object.
-         * Static game settings are stored in the appropriate settings/*.js object
-         * as members of the FullScreenPokemon.prototype object.
-         * Dynamic game settings may be given as members of the "customs" argument.
+         * Initializes a new instance of the FullScreenPokemon class using the static
+         * settings stored in `FullScreenPokemon.settings`.
+         *
+         * @param settings   Extra settings such as screen size.
          */
         function FullScreenPokemon(settings) {
             this.settings = FullScreenPokemon.settings;
@@ -117,8 +124,11 @@ var FullScreenPokemon;
         /**
          * Sets this.ObjectMaker.
          *
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
+         * Because many Thing functions require access to other FSP modules, each is
+         * given a reference to this container FSP via properties.thing.FSP.
+         *
+         * @param FSP
+         * @param customs   Any optional custom settings.
          */
         FullScreenPokemon.prototype.resetObjectMaker = function (FSP, settings) {
             FSP.ObjectMaker = new ObjectMakr.ObjectMakr(FSP.proliferate({
@@ -137,10 +147,10 @@ var FullScreenPokemon;
             }, FSP.settings.objects));
         };
         /**
-         * Sets this.MathDecider.
+         * Sets this.MathDecider, adding its existing NumberMaker to the constants.
          *
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
+         * @param FSP
+         * @param customs   Any optional custom settings.
          */
         FullScreenPokemon.prototype.resetMathDecider = function (FSP, settings) {
             FSP.MathDecider = new MathDecidr.MathDecidr(FSP.proliferate({
@@ -152,8 +162,8 @@ var FullScreenPokemon;
         /**
          * Sets this.StateHolder.
          *
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
+         * @param FSP
+         * @param customs   Any optional custom settings.
          */
         FullScreenPokemon.prototype.resetStateHolder = function (FSP, settings) {
             FSP.StateHolder = new StateHoldr.StateHoldr(FSP.proliferate({
@@ -163,8 +173,8 @@ var FullScreenPokemon;
         /**
          * Sets this.MenuGrapher.
          *
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
+         * @param FSP
+         * @param customs   Any optional custom settings.
          */
         FullScreenPokemon.prototype.resetMenuGrapher = function (FSP, settings) {
             FSP.MenuGrapher = new MenuGraphr.MenuGraphr(FSP.proliferate({
@@ -174,8 +184,8 @@ var FullScreenPokemon;
         /**
          * Sets this.BattleMover.
          *
-         * @param {FullScreenPokemon} FSP
-         * @param {Object} customs
+         * @param FSP
+         * @param customs   Any optional custom settings.
          */
         FullScreenPokemon.prototype.resetBattleMover = function (FSP, settings) {
             FSP.BattleMover = new BattleMovr.BattleMovr(FSP.proliferate({
@@ -186,7 +196,13 @@ var FullScreenPokemon;
             }, FSP.settings.battles));
         };
         /**
+         * Sets this.container.
          *
+         * The container is given the "Press Start" font, and the PixelRender is told
+         * which groups to draw in order.
+         *
+         * @param FSM
+         * @param settings   Extra settings such as screen size.
          */
         FullScreenPokemon.prototype.resetContainer = function (FSP, settings) {
             _super.prototype.resetContainer.call(this, FSP, settings);
@@ -203,7 +219,7 @@ var FullScreenPokemon;
         /* Global manipulations
         */
         /**
-         *
+         * Completely restarts the game. The StartOptions menu is shown.
          */
         FullScreenPokemon.prototype.gameStart = function () {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
@@ -215,7 +231,9 @@ var FullScreenPokemon;
             FSP.ModAttacher.fireEvent("onGameStart");
         };
         /**
+         * Sets the map to Blank and displays the StartOptions menu.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.gameStartOptions = function (FSP) {
             var options = [
@@ -235,22 +253,25 @@ var FullScreenPokemon;
             FSP.setMap("Blank");
             FSP.MenuGrapher.createMenu("StartOptions");
             FSP.MenuGrapher.addMenuList("StartOptions", {
-                "options": options
+                options: options
             });
             FSP.MenuGrapher.setActiveMenu("StartOptions");
         };
         /**
+         * Starts the game in the saved map and location from ItemsHolder, and fires the
+         * onGameStartPlay mod trigger.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.gameStartPlay = function (FSP) {
-            FSP.MenuGrapher.deleteActiveMenu();
             FSP.setMap(FSP.ItemsHolder.getItem("map") || FSP.settings.maps.mapDefault, FSP.ItemsHolder.getItem("location"), true);
             FSP.mapEntranceResume(FSP);
             FSP.ModAttacher.fireEvent("onGameStartPlay");
         };
         /**
+         * Starts the game's intro, and fires the onGameStartIntro mod trigger.
          *
-         *
+         * @param FSP
          */
         FullScreenPokemon.prototype.gameStartIntro = function (FSP) {
             FSP.ItemsHolder.clear();
@@ -260,7 +281,10 @@ var FullScreenPokemon;
             FSP.ModAttacher.fireEvent("onGameStartIntro");
         };
         /**
+         * Loads a file using a dummy HTMLInputElement, then starts the game with it as
+         * game state. The onGameStartIntro mod event is triggered.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.gameLoadFile = function (FSP) {
             var dummy = FSP.createElement("input", {
@@ -283,7 +307,11 @@ var FullScreenPokemon;
             FSP.ModAttacher.fireEvent("onGameStartIntro");
         };
         /**
+         * Loads JSON game data from a data string and sets it as the game state,
+         * then starts gameplay.
          *
+         * @param FSP
+         * @param dataRaw   Raw data to be parsed as JSON.
          */
         FullScreenPokemon.prototype.gameLoadData = function (FSP, dataRaw) {
             var data = JSON.parse(dataRaw), key, keyStart = "StateHolder::", split;
@@ -294,9 +322,10 @@ var FullScreenPokemon;
                 if (key.slice(0, keyStart.length) === keyStart) {
                     split = key.split("::");
                     FSP.StateHolder.setCollection(split[1] + "::" + split[2], data[key]);
-                    continue;
                 }
-                FSP.ItemsHolder.setItem(key, data[key]);
+                else {
+                    FSP.ItemsHolder.setItem(key, data[key]);
+                }
             }
             FSP.MenuGrapher.deleteActiveMenu();
             FSP.gameStartPlay(FSP);
@@ -306,6 +335,12 @@ var FullScreenPokemon;
          * Slight addition to the parent thingProcess Function. The Thing's hit
          * check type is cached immediately, and a default id is assigned if an id
          * isn't already present.
+         *
+         * @param thing   The Thing being processed.
+         * @param title   What type Thing this is (the name of the class).
+         * @param settings   Additional settings to be given to the Thing.
+         * @param defaults   The default settings for the Thing's class.
+         * @remarks This is generally called as the onMake call in an ObjectMakr.
          */
         FullScreenPokemon.prototype.thingProcess = function (thing, title, settings, defaults) {
             _super.prototype.thingProcess.call(this, thing, title, settings, defaults);
@@ -328,7 +363,7 @@ var FullScreenPokemon;
          * class says it may have, if it has it, the attribute value proliferated
          * onto the Area.
          *
-         * @param area
+         * @param area The Area being processed.
          */
         FullScreenPokemon.prototype.areaProcess = function (area) {
             var attributes = area.attributes, attribute;
@@ -339,13 +374,17 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Starts the game (currently a no-op).
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.onGamePlay = function (FSP) {
             console.log("Playing!");
         };
         /**
+         * Pauses the game (currently a no-op).
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.onGamePause = function (FSP) {
             console.log("Paused.");
@@ -355,29 +394,23 @@ var FullScreenPokemon;
          * relative to the top left corner of the screen. The Thing is also
          * added to the MapScreener.thingsById container.
          *
-         * @param {Mixed} thingRaw   What type of Thing to add. This may be a String of
-         *                           the class title, an Array containing the String
-         *                           and an Object of settings, or an actual Thing.
-         * @param {Number} [left]   Defaults to 0.
-         * @param {Number} [top]   Defaults to 0.
-         * @param {Boolean} [useSavedInfo]   Whether an Area's saved info in
-         *                                   StateHolder should be applied to the
-         *                                   Thing's position (by default, false).
+         *
+         * @param thingRaw   What type of Thing to add. This may be a String of
+         *                   the class title, an Array containing the String
+         *                   and an Object of settings, or an actual Thing.
+         * @param left   The horizontal point to place the Thing's left at (by
+         *               default, 0).
+         * @param top   The vertical point to place the Thing's top at (by default,
+         *              0).
+         * @param useSavedInfo   Whether an Area's saved info in StateHolder should be
+         *                       applied to the Thing's position (by default, false).
          */
         FullScreenPokemon.prototype.addThing = function (thingRaw, left, top, useSavedInfo) {
             if (left === void 0) { left = 0; }
             if (top === void 0) { top = 0; }
             var thing = _super.prototype.addThing.call(this, thingRaw, left, top);
             if (useSavedInfo) {
-                var savedInfo = thing.FSP.StateHolder.getChanges(thing.id);
-                if (savedInfo) {
-                    if (savedInfo.xloc) {
-                        thing.FSP.setLeft(thing, thing.FSP.MapScreener.left + savedInfo.xloc * thing.FSP.unitsize);
-                    }
-                    if (savedInfo.yloc) {
-                        thing.FSP.setTop(thing, thing.FSP.MapScreener.top + savedInfo.yloc * thing.FSP.unitsize);
-                    }
-                }
+                thing.FSP.applyThingSavedPosition(thing);
             }
             if (thing.id) {
                 thing.FSP.StateHolder.applyChanges(thing.id, thing);
@@ -389,10 +422,27 @@ var FullScreenPokemon;
             return thing;
         };
         /**
+         * Applies a thing's stored xloc and yloc to its position.
+         *
+         * @param thing   A Thing being placed in the game.
+         */
+        FullScreenPokemon.prototype.applyThingSavedPosition = function (thing) {
+            var savedInfo = thing.FSP.StateHolder.getChanges(thing.id);
+            if (!savedInfo) {
+                return;
+            }
+            if (savedInfo.xloc) {
+                thing.FSP.setLeft(thing, thing.FSP.MapScreener.left + savedInfo.xloc * thing.FSP.unitsize);
+            }
+            if (savedInfo.yloc) {
+                thing.FSP.setTop(thing, thing.FSP.MapScreener.top + savedInfo.yloc * thing.FSP.unitsize);
+            }
+        };
+        /**
          * Adds a Thing via addPreThing based on the specifications in a PreThing.
          * This is done relative to MapScreener.left and MapScreener.top.
          *
-         * @param {PreThing} prething
+         * @param prething   A PreThing whose Thing is to be added to the game.
          */
         FullScreenPokemon.prototype.addPreThing = function (prething) {
             var thing = prething.thing, position = prething.position || thing.position;
@@ -422,23 +472,32 @@ var FullScreenPokemon;
             thing.FSP.ModAttacher.fireEvent("onAddPreThing", prething);
         };
         /**
+         * Adds a new Player Thing to the game and sets it as EightBitter.player. Any
+         * required additional settings (namely keys, power/size, and swimming) are
+         * applied here.
          *
+         * @param left   A left edge to place the Thing at (by default, 0).
+         * @param bottom   A top to place the Thing upon (by default, 0).
+         * @param useSavedInfo   Whether an Area's saved info in StateHolder should be
+         *                       applied to the Thing's position (by default, false).
+         * @returns A newly created Player in the game.
          */
         FullScreenPokemon.prototype.addPlayer = function (left, top, useSavedInfo) {
             if (left === void 0) { left = 0; }
             if (top === void 0) { top = 0; }
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), player;
-            left = left || 0;
-            top = top || 0;
             player = FSP.player = FSP.ObjectMaker.make("Player");
             player.keys = player.getKeys();
             FSP.InputWriter.setEventInformation(player);
-            FSP.addThing(player, left, top, useSavedInfo);
+            FSP.addThing(player, left || 0, top || 0, useSavedInfo);
             FSP.ModAttacher.fireEvent("onAddPlayer", player);
             return player;
         };
         /**
+         * Retrieves the Thing in MapScreener.thingById of the given id.
          *
+         * @param id   An id of a Thing to retrieve.
+         * @returns The Thing under the given id, if it exists.
          */
         FullScreenPokemon.prototype.getThingById = function (id) {
             return FullScreenPokemon.prototype.ensureCorrectCaller(this).MapScreener.thingsById[id];
@@ -446,7 +505,13 @@ var FullScreenPokemon;
         /* Inputs
         */
         /**
+         * Checks whether inputs may trigger, which is always true, and prevents the event.
          *
+         * @param FSP
+         * @param player   FSP's current user-controlled Player.
+         * @param code   An key/mouse code from the event.
+         * @param event   The original user-caused Event.
+         * @returns Whether inputs may trigger (true).
          */
         FullScreenPokemon.prototype.canInputsTrigger = function (FSP, player, code, event) {
             if (event) {
@@ -455,7 +520,12 @@ var FullScreenPokemon;
             return true;
         };
         /**
+         * Checks whether direction keys such as up may trigger, which is true if the
+         * game isn't paused, the isn't an active menu, and the MapScreener doesn't
+         * specify blockInputs = true.
          *
+         * @param FSP
+         * @returns Whether direction keys may trigger.
          */
         FullScreenPokemon.prototype.canDirectionsTrigger = function (FSP) {
             if (FSP.GamesRunner.getPaused()) {
@@ -468,54 +538,11 @@ var FullScreenPokemon;
         };
         /**
          *
-         */
-        FullScreenPokemon.prototype.keyDownGeneric = function (thing, direction, event) {
-            switch (direction) {
-                case 0:
-                    return thing.FSP.keyDownUp(thing, event);
-                case 1:
-                    return thing.FSP.keyDownRight(thing, event);
-                case 2:
-                    return thing.FSP.keyDownDown(thing, event);
-                case 3:
-                    return thing.FSP.keyDownLeft(thing, event);
-                default:
-                    throw new Error("Unknown direction: " + direction + ".");
-            }
-        };
-        /**
+         * Reacts to a Character simulating an up key press. If possible, this causes
+         * walking in the left direction. The onKeyDownUp mod trigger is fired.
          *
-         * @param {Player} player
-         */
-        FullScreenPokemon.prototype.keyDownLeft = function (thing, event) {
-            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
-                return;
-            }
-            if (thing.player) {
-                thing.keys[Direction.Left] = true;
-            }
-            thing.FSP.TimeHandler.addEvent(thing.FSP.keyDownDirectionReal, FullScreenPokemon.inputTimeTolerance, thing, 3);
-            thing.FSP.ModAttacher.fireEvent("onKeyDownLeft");
-        };
-        /**
-         *
-         * @param {Player} player
-         */
-        FullScreenPokemon.prototype.keyDownRight = function (thing, event) {
-            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
-                return;
-            }
-            if (thing.player) {
-                thing.keys[Direction.Right] = true;
-            }
-            thing.FSP.TimeHandler.addEvent(thing.FSP.keyDownDirectionReal, FullScreenPokemon.inputTimeTolerance, thing, 1);
-            if (event && event.preventDefault) {
-                event.preventDefault();
-            }
-        };
-        /**
-         *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownUp = function (thing, event) {
             if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
@@ -532,7 +559,31 @@ var FullScreenPokemon;
         };
         /**
          *
-         * @param {Player} player
+         * Reacts to a Character simulating a right key press. If possible, this causes
+         * walking in the left direction. The onKeyDownRight mod trigger is fired.
+         *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
+         */
+        FullScreenPokemon.prototype.keyDownRight = function (thing, event) {
+            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
+                return;
+            }
+            if (thing.player) {
+                thing.keys[Direction.Right] = true;
+            }
+            thing.FSP.TimeHandler.addEvent(thing.FSP.keyDownDirectionReal, FullScreenPokemon.inputTimeTolerance, thing, 1);
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
+        };
+        /**
+         *
+         * Reacts to a Character simulating a down key press. If possible, this causes
+         * walking in the left direction. The onKeyDownDown mod trigger is fired.
+         *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownDown = function (thing, event) {
             if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
@@ -548,7 +599,29 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to a Character simulating a left key press. If possible, this causes
+         * walking in the left direction. The onKeyDownLeft mod trigger is fired.
          *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
+         */
+        FullScreenPokemon.prototype.keyDownLeft = function (thing, event) {
+            if (!thing.FSP.canDirectionsTrigger(thing.FSP)) {
+                return;
+            }
+            if (thing.player) {
+                thing.keys[Direction.Left] = true;
+            }
+            thing.FSP.TimeHandler.addEvent(thing.FSP.keyDownDirectionReal, FullScreenPokemon.inputTimeTolerance, thing, 3);
+            thing.FSP.ModAttacher.fireEvent("onKeyDownLeft");
+        };
+        /**
+         * Driver for a direction key being pressed. The MenuGraphr's active menu reacts
+         * to the movement if it exists, or the triggering Character attempts to walk
+         * if not. The onKeyDownDirectionReal mod event is fired.
+         *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownDirectionReal = function (thing, direction) {
             if (!thing.player || !thing.keys[direction]) {
@@ -573,7 +646,11 @@ var FullScreenPokemon;
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
         };
         /**
+         * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
+         * the selection if it exists. The onKeyDownA mod event is fired.
          *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownA = function (thing, event) {
             if (thing.FSP.GamesRunner.getPaused()) {
@@ -596,7 +673,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
+         * the deselection if it exists. The onKeyDownB mod event is fired.
          *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownB = function (thing, event) {
             if (thing.FSP.GamesRunner.getPaused()) {
@@ -614,12 +695,15 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the pause key being pressed. The game is paused if it isn't
+         * already. The onKeyDownPause mod event is fired.
          *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownPause = function (thing, event) {
             if (!thing.FSP.GamesRunner.getPaused()) {
-                thing.FSP.TimeHandler.addEvent(thing.FSP.GamesRunner.pause, 7, true);
+                thing.FSP.GamesRunner.pause();
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownPause");
             if (event && event.preventDefault) {
@@ -627,13 +711,13 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the mute key being pressed. The game has mute toggled, and the
+         * onKeyDownMute mod event is fired.
          *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyDownMute = function (thing, event) {
-            if (thing.FSP.GamesRunner.getPaused()) {
-                return;
-            }
             thing.FSP.AudioPlayer.toggleMuted();
             thing.FSP.ModAttacher.fireEvent("onKeyDownMute");
             if (event && event.preventDefault) {
@@ -641,25 +725,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the left key being lifted. The onKeyUpLeft mod event is fired.
          *
-         */
-        FullScreenPokemon.prototype.keyUpGeneric = function (thing, direction, event) {
-            switch (direction) {
-                case 0:
-                    return thing.FSP.keyUpUp(thing, event);
-                case 1:
-                    return thing.FSP.keyUpRight(thing, event);
-                case 2:
-                    return thing.FSP.keyUpDown(thing, event);
-                case 3:
-                    return thing.FSP.keyUpLeft(thing, event);
-                default:
-                    throw new Error("Unknown direction: " + direction + ".");
-            }
-        };
-        /**
-         *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpLeft = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyUpLeft");
@@ -675,7 +744,10 @@ var FullScreenPokemon;
         };
         /**
          *
-         * @param {Player} player
+         * Reacts to the right key being lifted. The onKeyUpRight mod event is fired.
+         *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpRight = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyUpRight");
@@ -690,8 +762,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the up key being lifted. The onKeyUpUp mod event is fired.
          *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpUp = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyUpUp");
@@ -707,7 +781,10 @@ var FullScreenPokemon;
         };
         /**
          *
-         * @param {Player} player
+         * Reacts to the down key being lifted. The onKeyUpDown mod event is fired.
+         *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpDown = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyUpDown");
@@ -721,8 +798,11 @@ var FullScreenPokemon;
                 event.preventDefault();
             }
         };
-        /*
+        /**
+         * Reacts to the A key being lifted. The onKeyUpA mod event is fired.
          *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpA = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyUpA");
@@ -734,7 +814,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the B key being lifted. The onKeyUpB mod event is fired.
          *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpB = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyUpB");
@@ -746,8 +829,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the pause key being lifted. The onKeyUpLeft mod event is fired.
          *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.keyUpPause = function (thing, event) {
             if (thing.FSP.GamesRunner.getPaused()) {
@@ -759,8 +844,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the context menu being activated. The pause menu is opened,
+         * and the onMouseDownRight mod event is fired.
          *
-         * @param {Player} player
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.mouseDownRight = function (thing, event) {
             thing.FSP.togglePauseMenu(thing);
@@ -772,20 +860,26 @@ var FullScreenPokemon;
         /* Upkeep maintenance
         */
         /**
+         * Generic maintenance Function for a group of Things. For each Thing, if
+         * it isn't alive, it's removed from the group.
          *
+         * @param FSP
+         * @param things   A group of Things to maintain.
          */
         FullScreenPokemon.prototype.maintainGeneric = function (FSP, things) {
-            var thing, i;
-            for (i = 0; i < things.length; i += 1) {
-                thing = things[i];
-                if (!thing.alive) {
-                    FSP.arrayDeleteThing(thing, things, i);
+            for (var i = 0; i < things.length; i += 1) {
+                if (!things[i].alive) {
+                    FSP.arrayDeleteThing(things[i], things, i);
                     i -= 1;
                 }
             }
         };
         /**
+         * Maintenance for all active Characters. Walking, grass maintenance, alive
+         * checking, and quadrant maintenance are performed.
          *
+         * @param FSP
+         * @param characters   The Characters group of Things.
          */
         FullScreenPokemon.prototype.maintainCharacters = function (FSP, characters) {
             var character, i;
@@ -809,26 +903,36 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Maintenance for a Character visually in grass. The shadow is updated to
+         * move or be deleted as needed.
          *
+         * @param FSP
+         * @param thing   A Character in grass.
+         * @param other   Grass that thing is in.
          */
         FullScreenPokemon.prototype.maintainCharacterGrass = function (FSP, thing, other) {
-            if (thing.FSP.isThingWithinGrass(thing, other)) {
-                thing.FSP.setLeft(thing.shadow, thing.left);
-                thing.FSP.setTop(thing.shadow, thing.top);
-                if (thing.shadow.className !== thing.className) {
-                    thing.FSP.setClass(thing.shadow, thing.className);
-                }
-            }
-            else {
+            // If thing is no longer in grass, delete the shadow and stop
+            if (!thing.FSP.isThingWithinGrass(thing, other)) {
                 thing.FSP.killNormal(thing.shadow);
                 thing.canvas.height = thing.height * thing.FSP.unitsize;
                 thing.FSP.PixelDrawer.setThingSprite(thing);
                 delete thing.shadow;
                 delete thing.grass;
+                return;
+            }
+            // Keep the shadow in sync with thing in position and visuals.
+            thing.FSP.setLeft(thing.shadow, thing.left);
+            thing.FSP.setTop(thing.shadow, thing.top);
+            if (thing.shadow.className !== thing.className) {
+                thing.FSP.setClass(thing.shadow, thing.className);
             }
         };
         /**
+         * Maintenance for a Player. The screen is scrolled according to the global
+         * MapScreener.scrollability.
          *
+         * @param FSP
+         * @param player   An in-game Player Thing.
          */
         FullScreenPokemon.prototype.maintainPlayer = function (FSP, player) {
             if (!player || !player.alive) {
@@ -848,6 +952,13 @@ var FullScreenPokemon;
                     return;
             }
         };
+        /**
+         * Determines how much to scroll horizontally during upkeep based
+         * on player xvel and horizontal bordering.
+         *
+         * @param FSP
+         * @returns How far to scroll horizontally.
+         */
         FullScreenPokemon.prototype.getHorizontalScrollAmount = function (FSP) {
             if (!FSP.player.xvel) {
                 return 0;
@@ -859,6 +970,13 @@ var FullScreenPokemon;
                 return FSP.player.bordering[3] ? 0 : FSP.player.xvel;
             }
         };
+        /**
+         * Determines how much to scroll vertically during upkeep based
+         * on player yvel and vertical bordering.
+         *
+         * @param FSP
+         * @returns How far to scroll vertically.
+         */
         FullScreenPokemon.prototype.getVerticalScrollAmount = function (FSP) {
             if (!FSP.player.yvel) {
                 return 0;
@@ -873,7 +991,9 @@ var FullScreenPokemon;
         /* General animations
         */
         /**
+         * Snaps a moving Thing to a predictable grid position.
          *
+         * @param thing   A Thing to snap the position of.
          */
         FullScreenPokemon.prototype.animateSnapToGrid = function (thing) {
             var grid = thing.FSP.unitsize * 8, x = (thing.FSP.MapScreener.left + thing.left) / grid, y = (thing.FSP.MapScreener.top + thing.top) / grid;
@@ -881,7 +1001,9 @@ var FullScreenPokemon;
             thing.FSP.setTop(thing, Math.round(y) * grid - thing.FSP.MapScreener.top);
         };
         /**
+         * Freezes a Character to start a dialog.
          *
+         * @param thing   A Character to freeze.
          */
         FullScreenPokemon.prototype.animatePlayerDialogFreeze = function (thing) {
             thing.FSP.animateCharacterPreventWalking(thing);
@@ -891,7 +1013,15 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Gradually changes a numeric attribute over time.
          *
+         * @param thing   A Thing whose attribute is to change.
+         * @param attribute   The name of the attribute to change.
+         * @param change   How much to change the attribute each tick.
+         * @param goal   A final value for the attribute to stop at.
+         * @param speed   How many ticks between changes.
+         * @param onCompletion   A callback for when the attribute reaches the goal.
+         * @returns The in-progress TimeEvent.
          */
         FullScreenPokemon.prototype.animateFadeAttribute = function (thing, attribute, change, goal, speed, onCompletion) {
             thing[attribute] += change;
@@ -913,12 +1043,19 @@ var FullScreenPokemon;
                     return;
                 }
             }
-            thing.FSP.TimeHandler.addEvent(thing.FSP.animateFadeAttribute, speed, thing, attribute, change, goal, speed, onCompletion);
+            return thing.FSP.TimeHandler.addEvent(thing.FSP.animateFadeAttribute, speed, thing, attribute, change, goal, speed, onCompletion);
         };
         /**
+         * Slides a Thing across the screen horizontally over time.
          *
+         * @param thing   A Thing to slide across the screen.
+         * @param change   How far to move each tick.
+         * @param goal   A midX location to stop sliding at.
+         * @param speed   How many ticks between movements.
+         * @param onCompletion   A callback for when the Thing reaches the goal.
+         * @returns The in-progress TimeEvent.
          */
-        FullScreenPokemon.prototype.animateFadeHorizontal = function (thing, change, goal, speed, onCompletion) {
+        FullScreenPokemon.prototype.animateSlideHorizontal = function (thing, change, goal, speed, onCompletion) {
             thing.FSP.shiftHoriz(thing, change);
             if (change > 0) {
                 if (thing.FSP.getMidX(thing) >= goal) {
@@ -938,12 +1075,19 @@ var FullScreenPokemon;
                     return;
                 }
             }
-            thing.FSP.TimeHandler.addEvent(thing.FSP.animateFadeHorizontal, speed, thing, change, goal, speed, onCompletion);
+            thing.FSP.TimeHandler.addEvent(thing.FSP.animateSlideHorizontal, speed, thing, change, goal, speed, onCompletion);
         };
         /**
+         * Slides a Thing across the screen vertically over time.
          *
+         * @param thing   A Thing to slide across the screen.
+         * @param change   How far to move each tick.
+         * @param goal   A midY location to stop sliding at.
+         * @param speed   How many ticks between movements.
+         * @param onCompletion   A callback for when the Thing reaches the goal.
+         * @returns The in-progress TimeEvent.
          */
-        FullScreenPokemon.prototype.animateFadeVertical = function (thing, change, goal, speed, onCompletion) {
+        FullScreenPokemon.prototype.animateSlideVertical = function (thing, change, goal, speed, onCompletion) {
             thing.FSP.shiftVert(thing, change);
             if (change > 0) {
                 if (thing.FSP.getMidY(thing) >= goal) {
@@ -963,10 +1107,13 @@ var FullScreenPokemon;
                     return;
                 }
             }
-            thing.FSP.TimeHandler.addEvent(thing.FSP.animateFadeVertical, speed, thing, change, goal, speed, onCompletion);
+            thing.FSP.TimeHandler.addEvent(thing.FSP.animateSlideVertical, speed, thing, change, goal, speed, onCompletion);
         };
         /**
+         * Freezes a Character in grass and calls startBattle.
          *
+         * @param thing   A Character about to start a battle.
+         * @param grass   Grass the Character is walking in.
          */
         FullScreenPokemon.prototype.animateGrassBattleStart = function (thing, grass) {
             var grassMap = thing.FSP.AreaSpawner.getMap(grass.mapName), grassArea = grassMap.areas[grass.areaName], options = grassArea.wildPokemon.grass, chosen = thing.FSP.chooseRandomWildPokemon(thing.FSP, options), chosenPokemon = thing.FSP.createPokemon(chosen);
@@ -985,7 +1132,10 @@ var FullScreenPokemon;
             });
         };
         /**
+         * Freezes a Character and starts a battle with an enemy.
          *
+         * @param thing   A Character about to start a battle with other.
+         * @param other   An enemy about to battle thing.
          */
         FullScreenPokemon.prototype.animateTrainerBattleStart = function (thing, other) {
             var battleName = other.battleName || other.title, battleSprite = other.battleSprite || battleName;
@@ -1008,21 +1158,15 @@ var FullScreenPokemon;
             });
         };
         /**
+         * Creates and positions a set of four Things around a point.
          *
-         */
-        FullScreenPokemon.prototype.animatePlayerLeaveLeft = function (thing, callback) {
-            var width = thing.width, dt = 3, dx = -thing.FSP.unitsize * 4;
-            thing.FSP.TimeHandler.addEventInterval(thing.FSP.shiftHoriz, dt, width, thing, dx);
-            console.log("Should implement collapseLeft...");
-            // thing.FSP.TimeHandler.addEventInterval(
-            //     thing.FSP.collapseLeft, speed, width, thing, dx
-            // );
-            if (callback) {
-                thing.FSP.TimeHandler.addEvent(callback, (width * (dt + 2)), thing);
-            }
-        };
-        /**
-         *
+         * @param FSP
+         * @param x   The horizontal value of the point.
+         * @param y   The vertical value of the point.
+         * @param title   A title for each Thing to create.
+         * @param settings   Additional settings for each Thing.
+         * @param groupType   Which group to move the Things into, if any.
+         * @returns The four created Things.
          */
         FullScreenPokemon.prototype.animateThingCorners = function (FSP, x, y, title, settings, groupType) {
             var things = [], i;
@@ -1031,7 +1175,7 @@ var FullScreenPokemon;
             }
             if (groupType) {
                 for (i = 0; i < things.length; i += 1) {
-                    things[0].FSP.GroupHolder.switchMemberGroup(things[i], things[i].groupType, groupType);
+                    FSP.GroupHolder.switchMemberGroup(things[i], things[i].groupType, groupType);
                 }
             }
             FSP.setLeft(things[0], x);
@@ -1049,7 +1193,10 @@ var FullScreenPokemon;
             return things;
         };
         /**
+         * Moves a set of four Things away from a point.
          *
+         * @param things   The four Things to move.
+         * @param amount   How far to move each Thing horizontally and vertically.
          */
         FullScreenPokemon.prototype.animateExpandCorners = function (things, amount) {
             var FSP = things[0].FSP;
@@ -1063,7 +1210,12 @@ var FullScreenPokemon;
             FSP.shiftVert(things[3], -amount);
         };
         /**
+         * Creates a small smoke animation from a point.
          *
+         * @param FSP
+         * @param x   The horizontal location of the point.
+         * @param y   The vertical location of the point.
+         * @param callback   A callback for when the animation is done.
          */
         FullScreenPokemon.prototype.animateSmokeSmall = function (FSP, x, y, callback) {
             var things = FSP.animateThingCorners(FSP, x, y, "SmokeSmall", undefined, "Text");
@@ -1071,7 +1223,12 @@ var FullScreenPokemon;
             FSP.TimeHandler.addEvent(FSP.animateSmokeMedium, 7, FSP, x, y, callback);
         };
         /**
+         * Creates a medium-sized smoke animation from a point.
          *
+         * @param FSP
+         * @param x   The horizontal location of the point.
+         * @param y   The vertical location of the point.
+         * @param callback   A callback for when the animation is done.
          */
         FullScreenPokemon.prototype.animateSmokeMedium = function (FSP, x, y, callback) {
             var things = FSP.animateThingCorners(FSP, x, y, "SmokeMedium", undefined, "Text");
@@ -1080,7 +1237,12 @@ var FullScreenPokemon;
             FSP.TimeHandler.addEvent(FSP.animateSmokeLarge, 14, FSP, x, y, callback);
         };
         /**
+         * Creates a large smoke animation from a point.
          *
+         * @param FSP
+         * @param x   The horizontal location of the point.
+         * @param y   The vertical location of the point.
+         * @param callback   A callback for when the animation is done.
          */
         FullScreenPokemon.prototype.animateSmokeLarge = function (FSP, x, y, callback) {
             var things = FSP.animateThingCorners(FSP, x, y, "SmokeLarge", undefined, "Text");
@@ -1092,7 +1254,12 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Animates an exclamation mark above a Thing.
          *
+         * @param thing   A Thing to show the exclamation over.
+         * @param timeout   How long to keep the exclamation (by default, 140).
+         * @param callback   A callback for when the exclamation is removed.
+         * @returns The exclamation Thing.
          */
         FullScreenPokemon.prototype.animateExclamation = function (thing, timeout, callback) {
             if (timeout === void 0) { timeout = 140; }
@@ -1107,28 +1274,37 @@ var FullScreenPokemon;
             return exclamation;
         };
         /**
+         * Fades the screen out to a solid color.
          *
+         * @param FSP
+         * @param settings   Settings for the animation.
+         * @returns The solid color Thing.
          */
         FullScreenPokemon.prototype.animateFadeToColor = function (FSP, settings) {
             if (settings === void 0) { settings = {}; }
-            var color = settings.color || "White", callback = settings.callback, change = settings.change || .33, blank = FSP.ObjectMaker.make(color + "Square", {
+            var color = settings.color || "White", callback = settings.callback, change = settings.change || .33, speed = settings.speed || 4, blank = FSP.ObjectMaker.make(color + "Square", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
                 "opacity": 0
             }), args = arguments;
             FSP.addThing(blank);
-            FSP.animateFadeAttribute(blank, "opacity", change, 1, 4, function () {
+            FSP.animateFadeAttribute(blank, "opacity", change, 1, speed, function () {
                 FSP.killNormal(blank);
                 if (callback) {
-                    callback.apply(this, args);
+                    callback.call(FSP, FSP);
                 }
             });
             return blank;
         };
         /**
+         * Places a solid color over the screen and fades it out.
          *
+         * @param FSP
+         * @param settings   Settings for the animation.
+         * @returns The solid color Thing.
          */
         FullScreenPokemon.prototype.animateFadeFromColor = function (FSP, settings) {
+            if (settings === void 0) { settings = {}; }
             var color = settings.color || "White", callback = settings.callback, change = settings.change || .33, speed = settings.speed || 4, blank = FSP.ObjectMaker.make(color + "Square", {
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
@@ -1147,13 +1323,11 @@ var FullScreenPokemon;
          * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
          * flag for a little while.
          *
-         * @param {Thing} thing
-         * @param {Number} [cleartime]   How long to wait to stop the effect (by
-         *                               default, 49).
-         * @param {Number} [interval]   How many steps between hidden toggles (by
-         *                              default, 2).
-         * @param {Function} [callback]   A Function that may be called on the Thing
-         *                                when flickering is done.
+         * @param thing   A Thing to flicker.
+         * @param cleartime   How long to wait to stop the effect (by default, 49).
+         * @param interval   How many steps between hidden toggles (by default, 2).
+         * @param callback   A Function to called on the Thing when done flickering.
+         * @returns The flickering time event.
          */
         FullScreenPokemon.prototype.animateFlicker = function (thing, cleartime, interval, callback) {
             if (cleartime === void 0) { cleartime = 49; }
@@ -1166,7 +1340,7 @@ var FullScreenPokemon;
                     thing.FSP.PixelDrawer.setThingSprite(thing);
                 }
             }, interval | 0, cleartime | 0);
-            thing.FSP.TimeHandler.addEvent(function () {
+            return thing.FSP.TimeHandler.addEvent(function () {
                 thing.flickering = thing.hidden = false;
                 thing.FSP.PixelDrawer.setThingSprite(thing);
                 if (callback) {
@@ -1175,7 +1349,15 @@ var FullScreenPokemon;
             }, timeTotal);
         };
         /**
+         * Shakes all Things on the screen back and forth for a little bit.
          *
+         *
+         * @param FSP
+         * @param dx   How far to shift horizontally (by default, 0).
+         * @param dy   How far to shift horizontally (by default, 0).
+         * @param cleartime   How long until the screen is done shaking.
+         * @param interval   How many game upkeeps between movements.
+         * @returns The shaking time event.
          */
         FullScreenPokemon.prototype.animateScreenShake = function (FSP, dx, dy, cleartime, interval, callback) {
             if (dx === void 0) { dx = 0; }
@@ -1187,7 +1369,7 @@ var FullScreenPokemon;
                 FSP.GroupHolder.callOnAll(FSP, FSP.shiftHoriz, dx);
                 FSP.GroupHolder.callOnAll(FSP, FSP.shiftVert, dy);
             }, 1, cleartime * interval);
-            FSP.TimeHandler.addEvent(function () {
+            return FSP.TimeHandler.addEvent(function () {
                 dx *= -1;
                 dy *= -1;
                 FSP.TimeHandler.addEventInterval(function () {
@@ -1202,7 +1384,11 @@ var FullScreenPokemon;
         /* Character movement animations
         */
         /**
+         * Sets a Character's xvel and yvel based on its speed and direction, and marks
+         * its destination endpoint.
          *
+         * @param thing   A moving Character.
+         * @param distance   How far the Character is moving.
          */
         FullScreenPokemon.prototype.animateCharacterSetDistanceVelocity = function (thing, distance) {
             thing.distance = distance;
@@ -1232,20 +1418,26 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Starts a Character's walking cycle regardless of the direction.
          *
+         * @param thing   A Character to start walking.
+         * @param direction   What direction the Character should turn to face.
+         * @param onStop   A queue of commands as alternating directions and distances.
          */
-        FullScreenPokemon.prototype.animateCharacterStartTurning = function (thing, direction, onStop) {
+        FullScreenPokemon.prototype.animateCharacterStartWalkingCycle = function (thing, direction, onStop) {
             if (onStop.length === 0) {
                 return;
             }
+            // If the first queued command is a 0 distance, walking might be complete
             if (onStop[0] === 0) {
+                // More commands indicates walking isn't done, and to continue turning/walking
                 if (onStop.length > 1) {
                     if (typeof onStop[1] === "function") {
                         onStop[1](thing);
                         return;
                     }
                     thing.FSP.animateCharacterSetDirection(thing, FullScreenPokemon_1.DirectionAliases[onStop[1]]);
-                    thing.FSP.animateCharacterStartTurning(thing, FullScreenPokemon_1.DirectionAliases[onStop[1]], onStop.slice(2));
+                    thing.FSP.animateCharacterStartWalkingCycle(thing, FullScreenPokemon_1.DirectionAliases[onStop[1]], onStop.slice(2));
                 }
                 return;
             }
@@ -1256,11 +1448,15 @@ var FullScreenPokemon;
             thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
         };
         /**
+         * Starts a Character walking in the given direction as part of a walking cycle.
          *
+         * @param thing   The Character to start walking.
+         * @param direction   What direction to walk in (by default, up).
+         * @param onStop   A queue of commands as alternating directions and distances.
          */
         FullScreenPokemon.prototype.animateCharacterStartWalking = function (thing, direction, onStop) {
+            if (direction === void 0) { direction = Direction.Top; }
             var repeats = thing.FSP.getCharacterWalkingInterval(thing), distance = repeats * thing.speed;
-            direction = direction || 0;
             thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
@@ -1277,7 +1473,10 @@ var FullScreenPokemon;
             thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
         };
         /**
+         * Starts a roaming Character walking in a random direction, determined
+         * by the allowed directions it may use (that aren't blocked).
          *
+         * @param thing   A roaming Character.
          */
         FullScreenPokemon.prototype.animateCharacterStartWalkingRandom = function (thing) {
             var totalAllowed = 0, direction, i;
@@ -1303,57 +1502,33 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Continues a Character's walking cycle after taking a step. If .turning
+         * is provided, the Character turns. If a Player is provided, its keys
+         * and .canKeyWalking are respected.
          *
+         * @param thing   A Character mid-step.
          */
-        FullScreenPokemon.prototype.animatePlayerStartWalking = function (thing) {
+        FullScreenPokemon.prototype.animateCharacterRepeatWalking = function (thing) {
             if (typeof thing.turning !== "undefined") {
-                if (!thing.keys[thing.turning]) {
+                if (!thing.player || !thing.keys[thing.turning]) {
                     thing.FSP.animateCharacterSetDirection(thing, thing.turning);
                     thing.turning = undefined;
                     return;
                 }
                 thing.turning = undefined;
             }
-            thing.canKeyWalking = false;
+            if (thing.player) {
+                thing.canKeyWalking = false;
+            }
             thing.FSP.animateCharacterStartWalking(thing, thing.direction);
         };
         /**
+         * Reacts to a Character finishing a step and either stops all walking or moves to
+         * the next action in the onStop queue.
          *
-         */
-        FullScreenPokemon.prototype.animateCharacterSetDirection = function (thing, direction) {
-            thing.direction = direction;
-            if (direction !== 1) {
-                thing.FSP.unflipHoriz(thing);
-            }
-            else {
-                thing.FSP.flipHoriz(thing);
-            }
-            thing.FSP.removeClasses(thing, "up left down");
-            switch (direction) {
-                case 0:
-                    thing.FSP.addClass(thing, "up");
-                    break;
-                case 1:
-                    thing.FSP.addClass(thing, "left");
-                    break;
-                case 2:
-                    thing.FSP.addClass(thing, "down");
-                    break;
-                case 3:
-                    thing.FSP.addClass(thing, "left");
-                    break;
-                default:
-                    throw new Error("Unknown direction: " + direction + ".");
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.animateCharacterSetDirectionRandom = function (thing) {
-            thing.FSP.animateCharacterSetDirection(thing, thing.FSP.NumberMaker.randomIntWithin(0, 3));
-        };
-        /**
-         *
+         * @param thing   A Character finishing a walking step.
+         * @param onStop   A queue of commands as alternating directions and distances.
+         * @returns True, unless the next onStop is a Function to return the result of.
          */
         FullScreenPokemon.prototype.animateCharacterStopWalking = function (thing, onStop) {
             thing.xvel = 0;
@@ -1375,36 +1550,41 @@ var FullScreenPokemon;
             }
             switch (onStop.constructor) {
                 case Number:
-                    console.warn("Should this be animateCharacterStartWalking?");
-                    thing.FSP.animatePlayerStartWalking(thing);
-                    return true;
+                    thing.FSP.animateCharacterRepeatWalking(thing);
+                    break;
                 case Array:
                     if (onStop[0] > 0) {
                         onStop[0] = onStop[0] - 1;
-                        thing.FSP.animateCharacterStartTurning(thing, thing.direction, onStop);
+                        thing.FSP.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
                     }
                     else if (onStop.length === 0) {
-                        return true;
+                        break;
                     }
                     else {
                         if (onStop[1] instanceof Function) {
                             return onStop[1](thing);
                         }
-                        thing.FSP.animateCharacterStartTurning(thing, FullScreenPokemon_1.DirectionAliases[onStop[1]], onStop.slice(2));
+                        thing.FSP.animateCharacterStartWalkingCycle(thing, FullScreenPokemon_1.DirectionAliases[onStop[1]], onStop.slice(2));
                     }
-                    return true;
+                    break;
                 case Function:
                     return onStop(thing);
                 default:
                     throw new Error("Unknown onStop: " + onStop + ".");
             }
+            return true;
         };
         /**
+         * Animates a Player to stop walking, which is the same logic for a normal
+         * Character as well as MenuGrapher and following checks.
          *
+         * @param thing   A Player to stop walking.
+         * @param onStop   A queue of commands as alternating directions and distances.
+         * @returns True, unless the next onStop is a Function to return the result of.
          */
         FullScreenPokemon.prototype.animatePlayerStopWalking = function (thing, onStop) {
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
-                return;
+                return false;
             }
             if (thing.following) {
                 return thing.FSP.animateCharacterStopWalking(thing, onStop);
@@ -1426,7 +1606,9 @@ var FullScreenPokemon;
             return thing.FSP.animateCharacterStopWalking(thing, onStop);
         };
         /**
+         * Animates a Character to no longer be able to walk.
          *
+         * @param thing   A Character that shouldn't be able to walk.
          */
         FullScreenPokemon.prototype.animateCharacterPreventWalking = function (thing) {
             thing.shouldWalk = false;
@@ -1437,23 +1619,34 @@ var FullScreenPokemon;
             thing.FSP.MapScreener.blockInputs = true;
         };
         /**
+         * Sets a Thing facing a particular direction.
          *
+         * @param thing   An in-game Thing.
+         * @param direction   A direction for thing to face.
          */
-        FullScreenPokemon.prototype.animateFlipOnDirection = function (thing) {
-            if (thing.direction % 2 === 0) {
-                thing.FSP.flipHoriz(thing);
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.animateUnflipOnDirection = function (thing) {
-            if (thing.direction % 2 === 0) {
+        FullScreenPokemon.prototype.animateCharacterSetDirection = function (thing, direction) {
+            thing.direction = direction;
+            if (direction !== 1) {
                 thing.FSP.unflipHoriz(thing);
             }
+            else {
+                thing.FSP.flipHoriz(thing);
+            }
+            thing.FSP.removeClasses(thing, "up left down");
+            thing.FSP.addClass(thing, FullScreenPokemon_1.DirectionClasses[direction]);
         };
         /**
+         * Sets a Thing facing a random direction.
          *
+         * @param thing   An in-game Thing.
+         */
+        FullScreenPokemon.prototype.animateCharacterSetDirectionRandom = function (thing) {
+            thing.FSP.animateCharacterSetDirection(thing, thing.FSP.NumberMaker.randomIntWithin(0, 3));
+        };
+        /**
+         * Flips or unflips a Character if its direction is vertical.
+         *
+         * @param thing   A Character to flip or unflip.
          */
         FullScreenPokemon.prototype.animateSwitchFlipOnDirection = function (thing) {
             if (thing.direction % 2 !== 0) {
@@ -1467,7 +1660,9 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Positions a Character's detector in front of it as its sight.
          *
+         * @param thing   A Character that should be able to see.
          */
         FullScreenPokemon.prototype.animatePositionSightDetector = function (thing) {
             var detector = thing.sightDetector, direction = thing.direction, sight = Number(thing.sight);
@@ -1504,7 +1699,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Animates the various logic pieces for finishing a dialog, such as pushes,
+         * gifts, options, and battle starting or disabling.
          *
+         * @param thing   A Player that's finished talking to other.
+         * @param other   A Character that thing has finished talking to.
          */
         FullScreenPokemon.prototype.animateCharacterDialogFinish = function (thing, other) {
             var onStop;
@@ -1523,7 +1722,7 @@ var FullScreenPokemon;
                 return;
             }
             if (typeof other.pushDirection !== "undefined") {
-                thing.FSP.animateCharacterStartTurning(thing, other.pushDirection, onStop);
+                thing.FSP.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
             }
             if (other.gift) {
                 thing.FSP.MenuGrapher.createMenu("GeneralText", {
@@ -1558,7 +1757,12 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Displays a yes/no options menu for after a dialog has completed.
          *
+         *
+         * @param thing   A Player that's finished talking to other.
+         * @param other   A Character that thing has finished talking to.
+         * @param dialog   The dialog settings that just finished.
          */
         FullScreenPokemon.prototype.animateCharacterDialogOptions = function (thing, other, dialog) {
             var options = dialog.options, generateCallback = function (dialog) {
@@ -1607,7 +1811,11 @@ var FullScreenPokemon;
             thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
         };
         /**
+         * Starts a Character walking behind another Character. The leader is given a
+         * .walkingCommands queue of recent steps that the follower will mimic.
          *
+         * @param thing   The following Character.
+         * @param other   The leading Character.
          */
         FullScreenPokemon.prototype.animateCharacterFollow = function (thing, other) {
             var direction = thing.FSP.getDirectionBordering(thing, other);
@@ -1644,7 +1852,11 @@ var FullScreenPokemon;
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(thing.FSP.animateCharacterFollowContinue, thing.FSP.getCharacterWalkingInterval(thing), Infinity, thing, other);
         };
         /**
+         * Continuation helper for a following cycle. The next walking command is
+         * played, if it exists.
          *
+         * @param thing   The following Character.
+         * @param other   The leading Character.
          */
         FullScreenPokemon.prototype.animateCharacterFollowContinue = function (thing, other) {
             if (other.walkingCommands.length === 0) {
@@ -1654,7 +1866,10 @@ var FullScreenPokemon;
             thing.FSP.animateCharacterStartWalking(thing, direction, 0);
         };
         /**
+         * Animates a Character to stop having a follower.
          *
+         * @param thing   The leading Character.
+         * @returns True, to stop TimeHandlr cycles.
          */
         FullScreenPokemon.prototype.animateCharacterFollowStop = function (thing) {
             var other = thing.following;
@@ -1669,13 +1884,20 @@ var FullScreenPokemon;
             return true;
         };
         /**
+         * Determines how rapidly a Character should walk, as a function of
+         * unitsize and its speed.
          *
+         * @param thing   A walking Character.
+         * @returns How rapidly thing should walk.
          */
         FullScreenPokemon.prototype.getCharacterWalkingInterval = function (thing) {
             return Math.round(8 * thing.FSP.unitsize / thing.speed);
         };
         /**
+         * Animates a Character to hop over a ledge.
          *
+         * @param thing   A walking Character.
+         * @param other   A ledge for thing to hop over.
          */
         FullScreenPokemon.prototype.animateCharacterHopLedge = function (thing, other) {
             var shadow = thing.FSP.addThing("Shadow"), dy = -thing.FSP.unitsize, speed = 2, steps = 14, changed = 0;
@@ -1716,17 +1938,40 @@ var FullScreenPokemon;
         /* Collision detection
         */
         /**
+         * Function generator for the generic canThingCollide checker. This is used
+         * repeatedly by ThingHittr to generate separately optimized Functions for
+         * different Thing types.
          *
+         * @returns A Function that generates a canThingCollide checker.
          */
         FullScreenPokemon.prototype.generateCanThingCollide = function () {
-            return function (thing) {
+            /**
+             * Generic checker for canCollide. This just returns if the Thing is alive.
+             *
+             * @param thing
+             * @returns Whether the thing can collide.
+             */
+            return function canThingCollide(thing) {
                 return thing.alive;
             };
         };
         /**
+         * Function generator for the generic isCharacterTouchingCharacter checker.
+         * This is used repeatedly by ThingHittr to generate separately optimized
+         * Functions for different Thing types.
          *
+         * @returns A Function that generates isCharacterTouchingCharacter.
          */
         FullScreenPokemon.prototype.generateIsCharacterTouchingCharacter = function () {
+            /**
+             * Generic checker for whether two characters are touching each other.
+             * This checks to see if either has the nocollide flag, or if they're
+             * overlapping, respecting tolerances.
+             *
+             * @param thing
+             * @param other
+             * @returns Whether thing is touching other.
+             */
             return function isCharacterTouchingCharacter(thing, other) {
                 // if (other.xvel || other.yvel) {
                 //     // check destination...
@@ -1739,9 +1984,21 @@ var FullScreenPokemon;
             };
         };
         /**
+         * Function generator for the generic isCharacterTouchingSolid checker. This
+         * is used repeatedly by ThingHittr to generate separately optimized
+         * Functions for different Thing types.
          *
+         * @returns A Function that generates isCharacterTouchingSolid.
          */
         FullScreenPokemon.prototype.generateIsCharacterTouchingSolid = function () {
+            /**
+             * Generic checker for whether a character is touching a solid. The
+             * hidden, collideHidden, and nocollidesolid flags are most relevant.
+             *
+             * @param thing
+             * @param other
+             * @returns Whether thing is touching other.
+             */
             return function isCharacterTouchingSolid(thing, other) {
                 return (!thing.nocollide && !other.nocollide
                     && thing.right >= (other.left + other.tolLeft)
@@ -1751,15 +2008,25 @@ var FullScreenPokemon;
             };
         };
         /**
+         * Function generator for the generic hitCharacterThing callback. This is
+         * used repeatedly by ThingHittr to generate separately optimized Functions
+         * for different Thing types.
          *
+         * @returns A Function that generates hitCharacterThing.
          */
         FullScreenPokemon.prototype.generateHitCharacterThing = function () {
-            return function hitCharacterSolid(thing, other) {
+            /**
+             * Generic callback for when a Character touches a Thing. Other may have a
+             * .collide to override with, but normally this just sets thing's position.
+             *
+             * @param thing
+             * @param other
+             * @returns Whether thing is hitting other.
+             */
+            return function hitCharacterThing(thing, other) {
                 // If either Thing is the player, it should be the first
                 if (other.player && !thing.player) {
-                    var temp = other;
-                    other = thing;
-                    thing = temp;
+                    _a = [other, thing], thing = _a[0], other = _a[1];
                 }
                 // The other's collide may return true to cancel overlapping checks
                 if (other.collide && other.collide(thing, other)) {
@@ -1800,6 +2067,7 @@ var FullScreenPokemon;
                     default:
                         break;
                 }
+                var _a;
             };
         };
         /**
@@ -1816,11 +2084,16 @@ var FullScreenPokemon;
             thing.bordering[direction] = other;
         };
         /**
+         * Collision callback for a Character and a CollisionDetector. Only Players may
+         * trigger the detector, which has to be active to do anything.
          *
+         * @param thing   A Character triggering other.
+         * @param other   A Detector triggered by thing.
+         * @returns Whether to override normal positioning logic in hitCharacterThing.
          */
         FullScreenPokemon.prototype.collideCollisionDetector = function (thing, other) {
             if (!thing.player) {
-                return;
+                return false;
             }
             if (other.active) {
                 if ((!other.requireOverlap && !thing.walking)
@@ -1845,7 +2118,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Collision callback for a Player and a dialog-containing Character. The
+         * dialog is started if it exists, as with a cutscene from other.
          *
+         * @param thing   A Player triggering other.
+         * @param other   A Character with dialog triggered by thing.
          */
         FullScreenPokemon.prototype.collideCharacterDialog = function (thing, other) {
             var dialog = other.dialog, direction;
@@ -1880,7 +2157,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Collision callback for a Player and a Pokeball it's interacting with.
          *
+         * @param thing   A Player interacting with other.
+         * @param other   A Pokeball being interacted with by thing.
          */
         FullScreenPokemon.prototype.collidePokeball = function (thing, other) {
             switch (other.action) {
@@ -1934,15 +2214,18 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Marks a Character as being visually within grass.
          *
+         * @param thing   A Character within grass.
+         * @param other   The specific Grass that thing is within.
          */
         FullScreenPokemon.prototype.collideCharacterGrass = function (thing, other) {
-            if (thing.grass
-                || !thing.FSP.isThingWithinGrass(thing, other)) {
+            if (thing.grass || !thing.FSP.isThingWithinGrass(thing, other)) {
                 return true;
             }
             thing.grass = other;
             thing.heightOld = thing.height;
+            // Todo: Find a better way than manually setting canvas height?
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
             thing.FSP.PixelDrawer.setThingSprite(thing);
             thing.shadow = thing.FSP.ObjectMaker.make(thing.title, {
@@ -1953,12 +2236,17 @@ var FullScreenPokemon;
                 thing.FSP.setClass(thing.shadow, thing.className);
             }
             thing.FSP.addThing(thing.shadow, thing.left, thing.top);
+            // Todo: is the arrayToEnd call necessary?
             thing.FSP.GroupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
             thing.FSP.arrayToEnd(thing.shadow, thing.FSP.GroupHolder.getGroup("Terrain"));
             return true;
         };
         /**
+         * Collision callback for a Character and a Ledge. If possible, the Character
+         * is animated to start hopping over the Ledge.
          *
+         * @param thing   A Character walking to other.
+         * @param other   A Ledge walked to by thing.
          */
         FullScreenPokemon.prototype.collideLedge = function (thing, other) {
             if (thing.ledge || !thing.walking) {
@@ -1987,7 +2275,7 @@ var FullScreenPokemon;
          * clearing its numquads, resting, movement, and cycles. It will later be
          * removed by its maintain* Function.
          *
-         * @param {Thing} thing
+         * @param thing   A Thing to kill.
          */
         FullScreenPokemon.prototype.killNormal = function (thing) {
             if (!thing) {
@@ -2008,7 +2296,10 @@ var FullScreenPokemon;
         /* Activations
         */
         /**
+         * Activates a Detector to trigger a cutscene and/or routine.
          *
+         * @param thing   A Player triggering other.
+         * @param other   A Detector triggered by thing.
          */
         FullScreenPokemon.prototype.activateCutsceneTriggerer = function (thing, other) {
             if (!other.alive || thing.collidedTrigger === other) {
@@ -2035,16 +2326,22 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Activates a Detector to play an audio theme.
          *
+         * @param thing   A Player triggering other.
+         * @param other   A Detector triggered by thing.
          */
         FullScreenPokemon.prototype.activateThemePlayer = function (thing, other) {
-            if (thing.FSP.AudioPlayer.getThemeName() === other.theme) {
+            if (!thing.player || thing.FSP.AudioPlayer.getThemeName() === other.theme) {
                 return;
             }
             thing.FSP.AudioPlayer.playTheme(other.theme);
         };
         /**
+         * Activates a Detector to play a cutscene, and potentially a dialog.
          *
+         * @param thing   A Player triggering other.
+         * @param other   A Detector triggered by thing.
          */
         FullScreenPokemon.prototype.activateCutsceneResponder = function (thing, other) {
             if (!thing.player || !other.alive) {
@@ -2060,7 +2357,10 @@ var FullScreenPokemon;
             });
         };
         /**
+         * Activates a Detector to open a menu, and potentially a dialog.
          *
+         * @param thing   A Character triggering other.
+         * @param other   A Detector triggered by thing.
          */
         FullScreenPokemon.prototype.activateMenuTriggerer = function (thing, other) {
             if (!other.alive || thing.collidedTrigger === other) {
@@ -2070,7 +2370,6 @@ var FullScreenPokemon;
             thing.collidedTrigger = other;
             thing.FSP.animateCharacterPreventWalking(thing);
             if (!other.keepAlive) {
-                other.alive = false;
                 thing.FSP.killNormal(other);
             }
             if (!thing.FSP.MenuGrapher.getMenu(name)) {
@@ -2088,7 +2387,7 @@ var FullScreenPokemon;
                             thing.FSP.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
                         });
-                        thing.FSP.animateCharacterStartTurning(thing, other.pushDirection, onStop);
+                        thing.FSP.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
                     }
                     else {
                         thing.FSP.MapScreener.blockInputs = false;
@@ -2099,7 +2398,11 @@ var FullScreenPokemon;
             thing.FSP.MenuGrapher.setActiveMenu(name);
         };
         /**
+         * Activates a Character's sight detector for when another Character walks
+         * into it.
          *
+         * @param thing   A Character triggering other.
+         * @param other   A sight detector being triggered by thing.
          */
         FullScreenPokemon.prototype.activateSightDetector = function (thing, other) {
             if (other.viewer.talking) {
@@ -2119,8 +2422,8 @@ var FullScreenPokemon;
          * attribute). Depending on the transport, either the map or location are
          * shifted to it.
          *
-         * @param {Player} thing
-         * @param {Thing} other
+         * @param thing   A Character attempting to enter other.
+         * @param other   A transporter being entered by thing.
          */
         FullScreenPokemon.prototype.activateTransporter = function (thing, other) {
             if (!thing.player || !other.active) {
@@ -2152,7 +2455,11 @@ var FullScreenPokemon;
             });
         };
         /**
+         * Activation trigger for a gym statue. If the Player is looking up at it,
+         * it speaks the status of the gym leader.
          *
+         * @param thing   A Player activating other.
+         * @param other   A gym statue being activated by thing.
          */
         FullScreenPokemon.prototype.activateGymStatue = function (thing, other) {
             if (thing.direction !== 0) {
@@ -3317,8 +3624,8 @@ var FullScreenPokemon;
             opponentX = FSP.getMidX(opponent);
             playerGoal = menu.left + player.width * FSP.unitsize / 2;
             opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
-            FSP.animateFadeHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
-            FSP.animateFadeHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
+            FSP.animateSlideHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
+            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
             FSP.addPokemonToPokedex(FSP, battleInfo.opponent.actors[0].title, PokedexListingStatus.Seen);
             FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("OpeningText"), timeout);
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -3366,7 +3673,7 @@ var FullScreenPokemon;
             var things = settings.things, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("GeneralText"), opponentX = FSP.getMidX(opponent), opponentGoal = menu.right + opponent.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, callback = battleInfo.opponent.hasActors
                 ? "OpponentSendOut"
                 : "PlayerIntro", timeout = 49;
-            FSP.animateFadeHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
+            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
             FSP.TimeHandler.addEvent(FSP.animateFadeAttribute, (timeout / 2) | 0, opponent, "opacity", -2 / timeout, 0, 1);
             FSP.MenuGrapher.deleteMenu("BattleOpponentHealth");
             FSP.MenuGrapher.createMenu("GeneralText", {
@@ -3396,7 +3703,7 @@ var FullScreenPokemon;
                 FSP.ScenePlayer.playRoutine("ShowPlayerMenu");
                 return;
             }
-            FSP.animateFadeHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
+            FSP.animateSlideHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
             FSP.TimeHandler.addEvent(FSP.animateFadeAttribute, (timeout / 2) | 0, player, "opacity", -2 / timeout, 0, 1);
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "finishAutomatically": true
@@ -3610,7 +3917,7 @@ var FullScreenPokemon;
             FSP.addThing(blank, thing.left, thing.top + thing.height * thing.scale * thing.FSP.unitsize);
             FSP.arrayToIndex(blank, texts, backgroundIndex + 1);
             FSP.arrayToIndex(thing, texts, backgroundIndex + 1);
-            FSP.animateFadeVertical(thing, FSP.unitsize * 2, FSP.getMidY(thing) + thing.height * thing.scale * FSP.unitsize, 1, function () {
+            FSP.animateSlideVertical(thing, FSP.unitsize * 2, FSP.getMidY(thing) + thing.height * thing.scale * FSP.unitsize, 1, function () {
                 FSP.killNormal(thing);
                 FSP.killNormal(blank);
                 FSP.MenuGrapher.createMenu("GeneralText");
@@ -3820,7 +4127,7 @@ var FullScreenPokemon;
             opponentX = FSP.getMidX(opponent);
             opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
             FSP.animateFadeAttribute(opponent, "opacity", 4 / timeout, 1, 1);
-            FSP.animateFadeHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1, function () {
+            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1, function () {
                 FSP.MenuGrapher.createMenu("GeneralText");
                 FSP.MenuGrapher.addMenuDialog("GeneralText", battleInfo.textVictory, FSP.ScenePlayer.bindRoutine("VictoryWinnings"));
                 FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -4547,7 +4854,7 @@ var FullScreenPokemon;
             FSP.addThing(pokemon, (FSP.MapScreener.middleX + 24 * FSP.unitsize) | 0, 0);
             FSP.setMidY(pokemon, FSP.MapScreener.middleY);
             FSP.animateFadeAttribute(pokemon, "opacity", .15, 1, 3);
-            FSP.animateFadeHorizontal(pokemon, -FSP.unitsize * 2, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("PokemonExplanation"));
+            FSP.animateSlideHorizontal(pokemon, -FSP.unitsize * 2, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("PokemonExplanation"));
         };
         /**
          *
@@ -4575,7 +4882,7 @@ var FullScreenPokemon;
             FSP.addThing(player, FSP.MapScreener.middleX + 24 * FSP.unitsize, 0);
             FSP.setMidY(player, FSP.MapScreener.middleY);
             FSP.animateFadeAttribute(player, "opacity", .15, 1, 3);
-            FSP.animateFadeHorizontal(player, -FSP.unitsize * 2, middleX - player.width * FSP.unitsize / 2, 1, FSP.ScenePlayer.bindRoutine("PlayerName"));
+            FSP.animateSlideHorizontal(player, -FSP.unitsize * 2, middleX - player.width * FSP.unitsize / 2, 1, FSP.ScenePlayer.bindRoutine("PlayerName"));
         };
         /**
          *
@@ -4591,7 +4898,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneIntroPlayerSlide = function (FSP, settings) {
-            FSP.animateFadeHorizontal(settings.player, FSP.unitsize, (FSP.MapScreener.middleX + 16 * FSP.unitsize) | 0, 1, FSP.ScenePlayer.bindRoutine("PlayerNameOptions"));
+            FSP.animateSlideHorizontal(settings.player, FSP.unitsize, (FSP.MapScreener.middleX + 16 * FSP.unitsize) | 0, 1, FSP.ScenePlayer.bindRoutine("PlayerNameOptions"));
         };
         /**
          *
@@ -4626,7 +4933,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneIntroPlayerNameFromMenu = function (FSP, settings) {
             settings.name = FSP.MenuGrapher.getMenuSelectedOption("NameOptions").text;
             FSP.MenuGrapher.deleteMenu("NameOptions");
-            FSP.animateFadeHorizontal(settings.player, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("PlayerNameConfirm"));
+            FSP.animateSlideHorizontal(settings.player, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("PlayerNameConfirm"));
         };
         /**
          *
@@ -4635,7 +4942,7 @@ var FullScreenPokemon;
             settings.name = FSP.MenuGrapher.getMenu("KeyboardResult").completeValue;
             FSP.MenuGrapher.deleteMenu("Keyboard");
             FSP.MenuGrapher.deleteMenu("NameOptions");
-            FSP.animateFadeHorizontal(settings.player, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("PlayerNameConfirm"));
+            FSP.animateSlideHorizontal(settings.player, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("PlayerNameConfirm"));
         };
         /**
          *
@@ -4694,7 +5001,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneIntroRivalSlide = function (FSP, settings) {
-            FSP.animateFadeHorizontal(settings.rival, FSP.unitsize, (FSP.MapScreener.middleX + 16 * FSP.unitsize) | 0, 1, FSP.ScenePlayer.bindRoutine("RivalNameOptions"));
+            FSP.animateSlideHorizontal(settings.rival, FSP.unitsize, (FSP.MapScreener.middleX + 16 * FSP.unitsize) | 0, 1, FSP.ScenePlayer.bindRoutine("RivalNameOptions"));
         };
         /**
          *
@@ -4729,7 +5036,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneIntroRivalNameFromMenu = function (FSP, settings) {
             settings.name = FSP.MenuGrapher.getMenuSelectedOption("NameOptions").text;
             FSP.MenuGrapher.deleteMenu("NameOptions");
-            FSP.animateFadeHorizontal(settings.rival, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("RivalNameConfirm"));
+            FSP.animateSlideHorizontal(settings.rival, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("RivalNameConfirm"));
         };
         /**
          *
@@ -4738,7 +5045,7 @@ var FullScreenPokemon;
             settings.name = FSP.MenuGrapher.getMenu("KeyboardResult").completeValue;
             FSP.MenuGrapher.deleteMenu("Keyboard");
             FSP.MenuGrapher.deleteMenu("NameOptions");
-            FSP.animateFadeHorizontal(settings.rival, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("RivalNameConfirm"));
+            FSP.animateSlideHorizontal(settings.rival, -FSP.unitsize, FSP.MapScreener.middleX | 0, 1, FSP.ScenePlayer.bindRoutine("RivalNameConfirm"));
         };
         /**
          *
@@ -4883,7 +5190,7 @@ var FullScreenPokemon;
             settings.oak = oak;
             settings.isToLeft = isToLeft;
             FSP.addThing(oak, door.left, door.top);
-            FSP.animateCharacterStartTurning(oak, 2, walkingSteps);
+            FSP.animateCharacterStartWalkingCycle(oak, 2, walkingSteps);
         };
         /**
          *
@@ -4913,7 +5220,7 @@ var FullScreenPokemon;
             walkingSteps.push(FSP.ScenePlayer.bindRoutine("EnterLab"));
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.animateCharacterFollow(settings.player, settings.oak);
-            FSP.animateCharacterStartTurning(settings.oak, startingDirection, walkingSteps);
+            FSP.animateCharacterStartWalkingCycle(settings.oak, startingDirection, walkingSteps);
         };
         /**
          *
@@ -4921,7 +5228,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneOakIntroEnterLab = function (FSP, settings) {
             FSP.StateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
             settings.oak.hidden = true;
-            FSP.TimeHandler.addEvent(FSP.animateCharacterStartTurning, FSP.getCharacterWalkingInterval(FSP.player), FSP.player, 0, [
+            FSP.TimeHandler.addEvent(FSP.animateCharacterStartWalkingCycle, FSP.getCharacterWalkingInterval(FSP.player), FSP.player, 0, [
                 0,
                 function () {
                     FSP.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
@@ -5173,8 +5480,8 @@ var FullScreenPokemon;
             FSP.addPokemonToPokedex(FSP, starterRival, PokedexListingStatus.Caught);
             pokeball = FSP.getThingById("Pokeball" + starterRival.join(""));
             settings.rivalPokeball = pokeball;
-            FSP.animateCharacterStartTurning(rival, 2, [
-                2, Direction.Right, steps, Direction.Top, 1,
+            FSP.animateCharacterStartWalkingCycle(rival, 2, [
+                2, "right", steps, "top", 1,
                 function () { return FSP.ScenePlayer.playRoutine("RivalTakesPokemon"); }
             ]);
         };
@@ -5270,7 +5577,7 @@ var FullScreenPokemon;
             FSP.ScenePlayer.stopCutscene();
             FSP.MenuGrapher.deleteMenu("GeneralText");
             rival.nocollide = true;
-            FSP.animateCharacterStartTurning(rival, isRight ? Direction.Left : Direction.Right, steps);
+            FSP.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
         };
         /**
          *
@@ -5317,7 +5624,7 @@ var FullScreenPokemon;
             if (args.further) {
                 steps += 1;
             }
-            FSP.animateCharacterStartTurning(settings.rival, 3, [
+            FSP.animateCharacterStartWalkingCycle(settings.rival, 3, [
                 steps,
                 "bottom",
                 1,
@@ -5340,7 +5647,7 @@ var FullScreenPokemon;
          *
          */
         FullScreenPokemon.prototype.cutsceneOakParcelPickupWalkToCounter = function (FSP, settings) {
-            FSP.animateCharacterStartTurning(settings.player, 0, [
+            FSP.animateCharacterStartWalkingCycle(settings.player, 0, [
                 2,
                 "left",
                 1,
@@ -5408,7 +5715,7 @@ var FullScreenPokemon;
             rival.alive = true;
             settings.rival = rival;
             FSP.MenuGrapher.deleteMenu("GeneralText");
-            FSP.animateCharacterStartTurning(rival, 0, [
+            FSP.animateCharacterStartWalkingCycle(rival, 0, [
                 8,
                 function () { return FSP.ScenePlayer.playRoutine("RivalInquires"); }
             ]);
@@ -5495,7 +5802,7 @@ var FullScreenPokemon;
                 FSP.MenuGrapher.deleteMenu("GeneralText");
                 delete settings.oak.activate;
                 settings.rival.nocollide = true;
-                FSP.animateCharacterStartTurning(settings.rival, 2, [
+                FSP.animateCharacterStartWalkingCycle(settings.rival, 2, [
                     8,
                     function () {
                         FSP.killNormal(settings.rival);
@@ -5600,7 +5907,7 @@ var FullScreenPokemon;
             // thing, attribute, change, goal, speed, onCompletion
             FSP.animateFadeAttribute(rival, "opacity", .2, 1, 3);
             FSP.addThing(rival, triggerer.left - FSP.unitsize * 28, triggerer.top + FSP.unitsize * 24);
-            FSP.animateCharacterStartTurning(rival, 0, steps);
+            FSP.animateCharacterStartWalkingCycle(rival, 0, steps);
         };
         /**
          *
@@ -5729,7 +6036,7 @@ var FullScreenPokemon;
             FSP.GroupHolder.clearArrays();
             FSP.MapScreener.clearScreen();
             FSP.MapScreener.thingsById = FSP.generateThingsByIdContainer();
-            FSP.MenuGrapher.setActiveMenu(undefined);
+            FSP.MenuGrapher.setActiveMenu();
             FSP.TimeHandler.cancelAllEvents();
             FSP.AreaSpawner.setLocation(name);
             FSP.MapScreener.setVariables();
@@ -6879,7 +7186,7 @@ var FullScreenPokemon;
          * @param {Mixed} number   The original Number being padded.
          * @param {Number} size   How many digits the output must contain.
          * @param {Mixed} [prefix]   A prefix to repeat for padding (by default, "0").
-         * @return {String}
+         * @returns {String}
          * @example
          * makeDigit(7, 3); // '007'
          * makeDigit(7, 3, 1); // '117'
@@ -6937,9 +7244,7 @@ var FullScreenPokemon;
         // FullScreenPokemon Function itself - this allows prototype setters to use 
         // them regardless of whether the prototype has been instantiated yet.
         /**
-         * Static settings passed to individual reset Functions. Each of these
-         * should be filled out separately, after the FullScreenPokemon class
-         * has been declared but before an instance has been instantiated.
+         * Static settings passed to individual reset Functions.
          */
         FullScreenPokemon.settings = {
             "audio": undefined,
@@ -6968,7 +7273,7 @@ var FullScreenPokemon;
             "ui": undefined
         };
         /**
-         * Static unitsize of 4, as that's how Pokemon. is.
+         * How much to expand each pixel from raw sizing measurements to in-game.
          */
         FullScreenPokemon.unitsize = 4;
         /**

@@ -2124,12 +2124,40 @@ declare module FullScreenPokemon {
      * managing TimeHandlr to stop the walking cycle.
      * 
      * @param thing   The Character mid-step.
-     * @returns Either nothing, or whether the walking cycle should stop.
+     * @returns Either nothing or whether the walking cycle should stop.
      */
     export interface IWalkingOnStopCommandFunction {
         (thing: ICharacter): void | boolean;
     }
 
+    /**
+     * Settings for a color fade animation.
+     */
+    export interface IColorFadeSettings {
+        /**
+         * What color to fade to/from (by default, "White").
+         */
+        color?: string;
+
+        /**
+         * How much to change the color's opacity each tick (by default, .33).
+         */
+        change?: number;
+
+        /**
+         * How many game upkeeps are between each tick (by default, 4).
+         */
+        speed?: number;
+
+        /**
+         * A callback for when the animation completes.
+         */
+        callback?: (FSP: FullScreenPokemon) => void;
+    }
+
+    /**
+     * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
+     */
     export interface IFullScreenPokemon {
 
     }
