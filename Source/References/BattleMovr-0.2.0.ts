@@ -47,15 +47,15 @@ declare module BattleMovr {
         nextCutsceneSettings?: any;
         nextRoutine?: string;
         nextRoutineSettings?: any;
-        opponent?: IBattleThingInfo;
-        player?: IBattleThingInfo;
+        opponent?: IBattleThingsInfo;
+        player?: IBattleThingsInfo;
     }
 
     export interface IBattleInfoDefaults {
         exitDialog: string;
     }
 
-    export interface IBattleThingInfo {
+    export interface IBattleThingsInfo {
         actors: IActor[];
         category: string;
         hasActors?: boolean;
@@ -566,7 +566,7 @@ module BattleMovr {
          * 
          */
         switchActor(battlerName: string, i: number): void {
-            var battler: IBattleThingInfo = this.battleInfo[battlerName];
+            var battler: IBattleThingsInfo = this.battleInfo[battlerName];
 
             if (battler.selectedIndex === i) {
                 this.GameStarter.ScenePlayer.playRoutine("PlayerSwitchesSamePokemon");
