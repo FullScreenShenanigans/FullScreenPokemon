@@ -1216,7 +1216,7 @@ declare module FullScreenPokemon {
     /**
      * A trainer in battle, namely either the player or opponent.
      */
-    export interface IBattleThingInfo extends BattleMovr.IBattleThingInfo {
+    export interface IBattleThingInfo extends BattleMovr.IBattleThingsInfo {
         /**
          * The trainer's available Pokemon.
          */
@@ -2153,6 +2153,93 @@ declare module FullScreenPokemon {
          * A callback for when the animation completes.
          */
         callback?: (FSP: FullScreenPokemon) => void;
+    }
+
+    /**
+     * Settings to open the LevelUpStats menu for a Pokemon.
+     */
+    export interface ILevelUpStatsMenuSettings {
+        /**
+         * The Pokemon to display the statistics for.
+         */
+        pokemon: IPokemon;
+
+        /**
+         * A menu container for LevelUpStats.
+         */
+        container?: string;
+
+        /**
+         * A callback for when the menu is deleted.
+         */
+        onMenuDelete?: (FSP: FullScreenPokemon) => void;
+
+        /**
+         * How to position the menu within its container.
+         */
+        position?: MenuGraphr.IMenuSchemaPosition;
+
+        /**
+         * How to size the menu.
+         */
+        size?: MenuGraphr.IMenuSchemaSize;
+
+        /**
+         * A horizontal offset for the menu.
+         */
+        textXOffset?: number;
+    }
+
+    /**
+     * Settings to open the Items menu.
+     * 
+     * @todo Refactor this interface's usage to contain IMenuSchema instead of inheritance.
+     */
+    export interface IItemsMenuSettings extends MenuGraphr.IMenuSchema {
+        /**
+         * Items to override the player's inventory.
+         */
+        items?: IItemSchema[];
+    }
+
+    /**
+     * Settings to open a keyboard menu.
+     */
+    export interface IKeyboardMenuSettings {
+        /**
+         * A callback to replace key presses.
+         */
+        callback?: (...args: any[]) => void;
+
+        /**
+         * An initial complete value for the result (by default, []).
+         */
+        completeValue?: string[];
+
+        /**
+         * Whether the menu should start in lowercase (by default, false).
+         */
+        lowercase?: boolean;
+
+        /**
+         * Which blank space should initially be available (by default, 0).
+         */
+        selectedChild?: number;
+
+        /**
+         * The initial selected index (by default, [0, 0]).
+         */
+        selectedIndex?: [number, number];
+
+        /**
+         * A starting result value (by default, "").
+         */
+        title?: string;
+
+        /**
+         * A starting value to replace the initial underscores.
+         */
+        value?: string[];
     }
 
     /**

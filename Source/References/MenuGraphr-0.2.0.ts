@@ -307,7 +307,7 @@ declare module MenuGraphr {
 
         /**
          * Whether this should have children not shifted vertically relative to the 
-         * menu top (used by list menus).
+         * menu top (used exclusively by list menus).
          */
         relative?: boolean;
 
