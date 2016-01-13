@@ -1166,6 +1166,11 @@ declare module FullScreenPokemon {
         noBlackout?: boolean;
 
         /**
+         * A callback for after showing the player menu.
+         */
+        onShowPlayerMenu?: (FSP: FullScreenPokemon) => void;
+
+        /**
          * The opponent, including its actors (Pokemon) and settings.
          */
         opponent?: IBattleThingInfo;
@@ -2240,6 +2245,26 @@ declare module FullScreenPokemon {
          * A starting value to replace the initial underscores.
          */
         value?: string[];
+    }
+
+    /**
+     * Things used in battle, stored by id.
+     */
+    export interface IBattleThingsById extends IThingsById {
+        /**
+         * A container menu for a current battler, if applicable.
+         */
+        menu: IMenu;
+
+        /**
+         * The player's Character.
+         */
+        player: IPlayer;
+
+        /**
+         * The opponent's Character.
+         */
+        opponent: ICharacter;
     }
 
     /**

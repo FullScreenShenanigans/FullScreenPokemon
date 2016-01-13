@@ -13,8 +13,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 /// <reference path="References/MenuGraphr-0.2.0.ts" />
 /// <reference path="References/StateHoldr-0.2.0.ts" />
 /// <reference path="FullScreenPokemon.d.ts" />
+/// <reference path="FullScreenPokemon.Cutscenes.d.ts" />
 // @endif
 // @include ../Source/FullScreenPokemon.d.ts
+// @include ../Source/FullScreenPokemon.Cutscenes.d.ts
 var FullScreenPokemon;
 (function (FullScreenPokemon_1) {
     "use strict";
@@ -1290,7 +1292,7 @@ var FullScreenPokemon;
                 "width": FSP.MapScreener.width,
                 "height": FSP.MapScreener.height,
                 "opacity": 0
-            }), args = arguments;
+            });
             FSP.addThing(blank);
             FSP.animateFadeAttribute(blank, "opacity", change, 1, speed, function () {
                 FSP.killNormal(blank);
@@ -3719,620 +3721,13 @@ var FullScreenPokemon;
         /* Cutscenes
         */
         /**
+         * Cutscene for starting a battle with a spiral.
          *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleEntrance = function (FSP, settings) {
-            var things = settings.things, battleInfo = settings.battleInfo, player = things.player, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial"), playerX, opponentX, playerGoal, opponentGoal, timeout = 70;
-            battleInfo.player.selectedIndex = 0;
-            battleInfo.player.selectedActor = battleInfo.player.actors[0];
-            battleInfo.opponent.selectedIndex = 0;
-            battleInfo.opponent.selectedActor = battleInfo.opponent.actors[0];
-            player.opacity = 0;
-            opponent.opacity = 0;
-            FSP.setLeft(player, menu.right + player.width * FSP.unitsize);
-            FSP.setRight(opponent, menu.left);
-            FSP.setTop(opponent, menu.top);
-            // They should be visible halfway through (2 * (1 / timeout))
-            FSP.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
-            FSP.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
-            playerX = FSP.getMidX(player);
-            opponentX = FSP.getMidX(opponent);
-            playerGoal = menu.left + player.width * FSP.unitsize / 2;
-            opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
-            FSP.animateSlideHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
-            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
-            FSP.addPokemonToPokedex(FSP, battleInfo.opponent.actors[0].title, PokedexListingStatus.Seen);
-            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("OpeningText"), timeout);
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleOpeningText = function (FSP, settings) {
-            var battleInfo = settings.battleInfo, textStart = battleInfo.textStart, nextRoutine, callback;
-            if (settings.battleInfo.opponent.hasActors) {
-                nextRoutine = "EnemyIntro";
-            }
-            else {
-                nextRoutine = "PlayerIntro";
-            }
-            if (battleInfo.automaticMenus) {
-                callback = FSP.TimeHandler.addEvent.bind(FSP.TimeHandler, FSP.ScenePlayer.playRoutine.bind(FSP.ScenePlayer), 70, nextRoutine);
-            }
-            else {
-                callback = FSP.ScenePlayer.bindRoutine(nextRoutine);
-            }
-            FSP.MenuGrapher.createMenu("BattlePlayerHealth");
-            FSP.addBattleDisplayPokeballs(FSP, FSP.MenuGrapher.getMenu("BattlePlayerHealth"), battleInfo.player);
-            if (battleInfo.opponent.hasActors) {
-                FSP.MenuGrapher.createMenu("BattleOpponentHealth");
-                FSP.addBattleDisplayPokeballs(FSP, FSP.MenuGrapher.getMenu("BattleOpponentHealth"), battleInfo.player, true);
-            }
-            else {
-                FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
-            }
-            FSP.MenuGrapher.createMenu("GeneralText", {
-                "finishAutomatically": battleInfo.automaticMenus
-            });
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    textStart[0], battleInfo.opponent.name, textStart[1]
-                ]
-            ], callback);
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleEnemyIntro = function (FSP, settings) {
-            var things = settings.things, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("GeneralText"), opponentX = FSP.getMidX(opponent), opponentGoal = menu.right + opponent.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, callback = battleInfo.opponent.hasActors
-                ? "OpponentSendOut"
-                : "PlayerIntro", timeout = 49;
-            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
-            FSP.TimeHandler.addEvent(FSP.animateFadeAttribute, (timeout / 2) | 0, opponent, "opacity", -2 / timeout, 0, 1);
-            FSP.MenuGrapher.deleteMenu("BattleOpponentHealth");
-            FSP.MenuGrapher.createMenu("GeneralText", {
-                "finishAutomatically": true
-            });
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    battleInfo.textOpponentSendOut[0],
-                    battleInfo.opponent.name,
-                    battleInfo.textOpponentSendOut[1],
-                    battleInfo.opponent.actors[0].nickname,
-                    battleInfo.textOpponentSendOut[2]
-                ]
-            ]);
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine(callback, {
-                "nextRoutine": "PlayerIntro"
-            }), timeout);
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattlePlayerIntro = function (FSP, settings) {
-            var things = settings.things, player = things.player, menu = FSP.MenuGrapher.getMenu("GeneralText"), playerX = FSP.getMidX(player), playerGoal = menu.left - player.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, timeout = 24;
-            FSP.MenuGrapher.deleteMenu("BattlePlayerHealth");
-            if (!battleInfo.player.hasActors) {
-                FSP.ScenePlayer.playRoutine("ShowPlayerMenu");
-                return;
-            }
-            FSP.animateSlideHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
-            FSP.TimeHandler.addEvent(FSP.animateFadeAttribute, (timeout / 2) | 0, player, "opacity", -2 / timeout, 0, 1);
-            FSP.MenuGrapher.createMenu("GeneralText", {
-                "finishAutomatically": true
-            });
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    battleInfo.textPlayerSendOut[0],
-                    battleInfo.player.actors[0].nickname,
-                    battleInfo.textPlayerSendOut[1]
-                ]
-            ]);
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("PlayerSendOut", {
-                "nextRoutine": "ShowPlayerMenu"
-            }), timeout);
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleShowPlayerMenu = function (FSP, settings) {
-            FSP.MenuGrapher.deleteMenu("Yes/No");
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.BattleMover.showPlayerMenu();
-            if (settings.battleInfo.onShowPlayerMenu) {
-                settings.battleInfo.onShowPlayerMenu(FSP);
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleOpponentSendOut = function (FSP, settings, args) {
-            var menu = settings.things.menu, left = menu.right - FSP.unitsize * 8, top = menu.top + FSP.unitsize * 32;
-            console.warn("Should reset *Normal statistics for opponent Pokemon.");
-            settings.opponentLeft = left;
-            settings.opponentTop = top;
-            FSP.MenuGrapher.setActiveMenu(undefined);
-            FSP.animateSmokeSmall(FSP, left, top, FSP.ScenePlayer.bindRoutine("OpponentSendOutAppear", args));
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleOpponentSendOutAppear = function (FSP, settings, args) {
-            var opponentInfo = settings.battleInfo.opponent, pokemonInfo = opponentInfo.actors[opponentInfo.selectedIndex], pokemon = FSP.BattleMover.setThing("opponent", pokemonInfo.title.join("") + "Front");
-            console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
-            FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
-            FSP.addPokemonToPokedex(FSP, pokemonInfo.title, PokedexListingStatus.Seen);
-            FSP.ScenePlayer.playRoutine(args.nextRoutine);
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattlePlayerSendOut = function (FSP, settings, args) {
-            var menu = settings.things.menu, left = menu.left + FSP.unitsize * 8, top = menu.bottom - FSP.unitsize * 8;
-            console.warn("Should reset *Normal statistics for player Pokemon.");
-            settings.playerLeft = left;
-            settings.playerTop = top;
-            FSP.MenuGrapher.setActiveMenu(undefined);
-            FSP.animateSmokeSmall(FSP, left, top, FSP.ScenePlayer.bindRoutine("PlayerSendOutAppear", args));
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattlePlayerSendOutAppear = function (FSP, settings, args) {
-            var playerInfo = settings.battleInfo.player, pokemonInfo = playerInfo.selectedActor, pokemon = FSP.BattleMover.setThing("player", pokemonInfo.title.join("") + "Back");
-            console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
-            FSP.addBattleDisplayPokemonHealth(FSP, "player");
-            FSP.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
-            FSP.setBattleDisplayPokemonHealthBar(FSP, "Player", pokemonInfo.HP, pokemonInfo.HPNormal);
-            FSP.ScenePlayer.playRoutine(args.nextRoutine);
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattlePlayerSwitchesSamePokemon = function (FSP, settings) {
-            FSP.MenuGrapher.createMenu("GeneralText", {
-                "backMenu": "PokemonMenuContext"
-            });
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                settings.battleInfo.player.selectedActor.nickname, " is already out!"
-            ]);
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleMovePlayer = function (FSP, settings, args) {
-            var player = settings.battleInfo.player, playerActor = player.selectedActor, opponent = settings.battleInfo.opponent, opponentActor = opponent.selectedActor, choice = args.choicePlayer;
-            args.damage = FSP.MathDecider.compute("damage", choice, playerActor, opponentActor);
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    playerActor.nickname, " used ", choice + "!"
-                ]
-            ], FSP.ScenePlayer.bindRoutine("MovePlayerAnimate", args));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleMovePlayerAnimate = function (FPS, settings, args) {
-            var choice = args.choicePlayer, move = FPS.MathDecider.getConstant("moves")[choice];
-            console.log("Should do something with", move);
-            args.attackerName = "player";
-            args.defenderName = "opponent";
-            args.callback = function () {
-                var callback;
-                args.movePlayerDone = true;
-                if (args.moveOpponentDone) {
-                    callback = function () {
-                        args.movePlayerDone = false;
-                        args.moveOpponentDone = false;
-                        FPS.MenuGrapher.createMenu("GeneralText");
-                        FPS.BattleMover.showPlayerMenu();
-                    };
-                }
-                else {
-                    callback = FPS.TimeHandler.addEvent.bind(FPS.TimeHandler, FPS.ScenePlayer.bindRoutine("MoveOpponent", args), 7);
-                }
-                FPS.ScenePlayer.playRoutine("Damage", {
-                    "battlerName": "opponent",
-                    "damage": args.damage,
-                    "callback": callback
-                });
-            };
-            // @todo: When all moves have been implemented, this will be simplified.
-            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice)) {
-                console.warn(choice + " attack animation not implemented...");
-                args.callback();
-            }
-            else {
-                FPS.ScenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleMoveOpponent = function (FSP, settings, args) {
-            var opponent = settings.battleInfo.opponent, opponentActor = opponent.selectedActor, player = settings.battleInfo.player, playerActor = player.selectedActor, choice = args.choiceOpponent;
-            args.damage = FSP.MathDecider.compute("damage", choice, opponentActor, playerActor);
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    opponent.selectedActor.nickname, " used ", choice + "!"
-                ]
-            ], FSP.ScenePlayer.bindRoutine("MoveOpponentAnimate", args));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleMoveOpponentAnimate = function (FSP, settings, args) {
-            var choice = args.choiceOpponent, move = FSP.MathDecider.getConstant("moves")[choice];
-            console.log("Should do something with", move);
-            args.attackerName = "opponent";
-            args.defenderName = "player";
-            args.callback = function () {
-                var callback;
-                args.moveOpponentDone = true;
-                if (args.movePlayerDone) {
-                    callback = function () {
-                        args.movePlayerDone = false;
-                        args.moveOpponentDone = false;
-                        FSP.MenuGrapher.createMenu("GeneralText");
-                        FSP.BattleMover.showPlayerMenu();
-                    };
-                }
-                else {
-                    callback = FSP.TimeHandler.addEvent.bind(FSP.TimeHandler, FSP.ScenePlayer.bindRoutine("MovePlayer", args), 7);
-                }
-                FSP.ScenePlayer.playRoutine("Damage", {
-                    "battlerName": "player",
-                    "damage": args.damage,
-                    "callback": callback
-                });
-            };
-            // @todo: When all moves have been implemented, this will be simplified.
-            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice)) {
-                console.warn(choice + " attack animation not implemented...");
-                args.callback();
-            }
-            else {
-                FSP.ScenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleDamage = function (FSP, settings, args) {
-            var battlerName = args.battlerName, damage = args.damage, battleInfo = FSP.BattleMover.getBattleInfo(), battler = battleInfo[battlerName], actor = battler.selectedActor, hpStart = actor.HP, hpEnd = Math.max(hpStart - damage, 0), callback = hpEnd === 0
-                ? FSP.TimeHandler.addEvent.bind(FSP.TimeHandler, FSP.ScenePlayer.bindRoutine("PokemonFaints", {
-                    "battlerName": battlerName
-                }), 49)
-                : args.callback;
-            if (damage !== 0) {
-                FSP.animateBattleDisplayPokemonHealthBar(FSP, battlerName, hpStart, hpEnd, actor.HPNormal, callback);
-                actor.HP = hpEnd;
-            }
-            else {
-                callback(FSP);
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattlePokemonFaints = function (FSP, settings, args) {
-            var battlerName = args.battlerName, battleInfo = FSP.BattleMover.getBattleInfo(), actor = battleInfo[battlerName].selectedActor, thing = settings.things[battlerName], blank = FSP.ObjectMaker.make("WhiteSquare", {
-                "width": thing.width * thing.scale,
-                "height": thing.height * thing.scale
-            }), texts = FSP.GroupHolder.getGroup("Text"), background = FSP.BattleMover.getBackgroundThing(), backgroundIndex = texts.indexOf(background), nextRoutine = battlerName === "player"
-                ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints";
-            FSP.addThing(blank, thing.left, thing.top + thing.height * thing.scale * thing.FSP.unitsize);
-            FSP.arrayToIndex(blank, texts, backgroundIndex + 1);
-            FSP.arrayToIndex(thing, texts, backgroundIndex + 1);
-            FSP.animateSlideVertical(thing, FSP.unitsize * 2, FSP.getMidY(thing) + thing.height * thing.scale * FSP.unitsize, 1, function () {
-                FSP.killNormal(thing);
-                FSP.killNormal(blank);
-                FSP.MenuGrapher.createMenu("GeneralText");
-                FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                    [
-                        actor.nickname, " fainted!"
-                    ]
-                ], FSP.ScenePlayer.bindRoutine(nextRoutine, args));
-                FSP.MenuGrapher.setActiveMenu("GeneralText");
-            });
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleAfterPlayerPokemonFaints = function (FSP, settings) {
-            var battleInfo = FSP.BattleMover.getBattleInfo(), actorAvailable = FSP.checkArrayMembersIndex(battleInfo.player.actors, "HP");
-            if (actorAvailable) {
-                FSP.ScenePlayer.playRoutine("PlayerChoosesPokemon");
-            }
-            else {
-                FSP.ScenePlayer.playRoutine("Defeat");
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleAfterOpponentPokemonFaints = function (FSP, settings) {
-            var battleInfo = settings.battleInfo, opponent = battleInfo.opponent, actorAvailable = FSP.checkArrayMembersIndex(opponent.actors, "HP"), experienceGained = FSP.MathDecider.compute("experienceGained", battleInfo.player, battleInfo.opponent), callback;
-            if (actorAvailable) {
-                callback = FSP.ScenePlayer.bindRoutine("OpponentSwitchesPokemon");
-            }
-            else {
-                callback = FSP.ScenePlayer.bindRoutine("Victory");
-            }
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    battleInfo.player.selectedActor.nickname,
-                    " gained ",
-                    experienceGained.toString(),
-                    " EXP. points!"
-                ]
-            ], FSP.ScenePlayer.bindRoutine("ExperienceGain", {
-                "experienceGained": experienceGained,
-                "callback": callback
-            }));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleOpponentSwitchesPokemon = function (FSP, settings) {
-            var battleInfo = settings.battleInfo, opponent = battleInfo.opponent, nicknameExclaim = opponent.selectedActor.nickname.slice();
-            nicknameExclaim.push("!");
-            FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
-            opponent.selectedIndex += 1;
-            opponent.selectedActor = opponent.actors[opponent.selectedIndex];
-            FSP.MenuGrapher.createMenu("GeneralText", {
-                "deleteOnFinish": false
-            });
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                opponent.name,
-                "is about to use",
-                nicknameExclaim,
-                "Will %%%%%%%PLAYER%%%%%%% change %%%%%%%POKEMON%%%%%%%?"
-            ], function () {
-                FSP.MenuGrapher.createMenu("Yes/No");
-                FSP.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [
-                        {
-                            "text": "Yes",
-                            "callback": FSP.ScenePlayer.bindRoutine("PlayerSwitchesPokemon", {
-                                "nextRoutine": "OpponentSendOut"
-                            })
-                        }, {
-                            "text": "No",
-                            "callback": FSP.ScenePlayer.bindRoutine("OpponentSendOut", {
-                                "nextRoutine": "ShowPlayerMenu"
-                            })
-                        }]
-                });
-                FSP.MenuGrapher.setActiveMenu("Yes/No");
-            });
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleExperienceGain = function (FSP, settings, args) {
-            var battleInfo = settings.battleInfo, gains = args.experienceGained, actor = battleInfo.player.selectedActor, experience = actor.experience;
-            console.warn("Experience gain is hardcoded to the current actor...");
-            experience.current += gains;
-            experience.remaining -= gains;
-            if (experience.remaining < 0) {
-                gains -= experience.remaining;
-                FSP.ScenePlayer.playRoutine("LevelUp", {
-                    "experienceGained": gains,
-                    "callback": args.callback
-                });
-            }
-            else {
-                args.callback();
-            }
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleLevelUp = function (FSP, settings, args) {
-            var battleInfo = settings.battleInfo, 
-            // gains: number = args.experienceGained,
-            actor = battleInfo.player.selectedActor;
-            actor.level += 1;
-            actor.experience = FSP.MathDecider.compute("newPokemonExperience", actor.title, actor.level);
-            console.warn("Leveling up does not yet increase stats...");
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    actor.nickname,
-                    " grew to level ",
-                    actor.level.toString(),
-                    "!"
-                ]
-            ], FSP.ScenePlayer.bindRoutine("LevelUpStats", args));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleLevelUpStats = function (FSP, settings, args) {
-            FSP.openPokemonLevelUpStats({
-                "container": "BattleDisplayInitial",
-                "position": {
-                    "horizontal": "right",
-                    "vertical": "bottom",
-                    "offset": {
-                        "left": 4
-                    }
-                },
-                "pokemon": settings.battleInfo.player.selectedActor,
-                "onMenuDelete": args.callback
-            });
-            FSP.MenuGrapher.setActiveMenu("LevelUpStats");
-            console.warn("For stones, LevelUpStats should be taken out of battles.");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattlePlayerChoosesPokemon = function (FSP, settings) {
-            FSP.MenuGrapher.createMenu("Pokemon", {
-                "position": {
-                    "vertical": "center",
-                    "offset": {
-                        "left": 0
-                    }
-                }
-            });
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleExitFail = function (FSP, settings) {
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", "No! There's no running from a trainer battle!", FSP.ScenePlayer.bindRoutine("BattleExitFailReturn"));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleExitFailReturn = function (FSP, settings) {
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.BattleMover.showPlayerMenu();
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleVictory = function (FSP, settings) {
-            var battleInfo = FSP.BattleMover.getBattleInfo(), opponent = battleInfo.opponent;
-            if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }
-            if (!opponent.hasActors) {
-                FSP.BattleMover.closeBattle(function () {
-                    FSP.animateFadeFromColor(FSP, {
-                        "color": "White"
-                    });
-                });
-                return;
-            }
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                [
-                    "%%%%%%%PLAYER%%%%%%% defeated ",
-                    opponent.name,
-                    "!"
-                ]
-            ], FSP.ScenePlayer.bindRoutine("VictorySpeech"));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleVictorySpeech = function (FSP, settings) {
-            var battleInfo = settings.battleInfo, menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial"), opponent = FSP.BattleMover.setThing("opponent", battleInfo.opponent.sprite), timeout = 35, opponentX, opponentGoal;
-            opponent.opacity = 0;
-            FSP.setTop(opponent, menu.top);
-            FSP.setLeft(opponent, menu.right);
-            opponentX = FSP.getMidX(opponent);
-            opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
-            FSP.animateFadeAttribute(opponent, "opacity", 4 / timeout, 1, 1);
-            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1, function () {
-                FSP.MenuGrapher.createMenu("GeneralText");
-                FSP.MenuGrapher.addMenuDialog("GeneralText", battleInfo.textVictory, FSP.ScenePlayer.bindRoutine("VictoryWinnings"));
-                FSP.MenuGrapher.setActiveMenu("GeneralText");
-            });
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleVictoryWinnings = function (FSP, settings) {
-            var battleInfo = settings.battleInfo, reward = settings.battleInfo.opponent.reward, animationSettings = {
-                "color": "White"
-            }, callback = function () {
-                FSP.BattleMover.closeBattle(function () {
-                    FSP.animateFadeFromColor(FSP, animationSettings);
-                });
-            };
-            if (battleInfo.giftAfterBattle) {
-                FSP.addItemToBag(FSP, battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
-            }
-            if (battleInfo.badge) {
-                FSP.ItemsHolder.getItem("badges")[battleInfo.badge] = true;
-            }
-            if (battleInfo.textAfterBattle) {
-                animationSettings.callback = function () {
-                    FSP.MenuGrapher.createMenu("GeneralText");
-                    FSP.MenuGrapher.addMenuDialog("GeneralText", battleInfo.textAfterBattle);
-                    FSP.MenuGrapher.setActiveMenu("GeneralText");
-                };
-            }
-            if (!reward) {
-                callback();
-                return;
-            }
-            FSP.ItemsHolder.increase("money", reward);
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", [
-                "%%%%%%%PLAYER%%%%%%% got $" + reward + " for winning!"
-            ], callback);
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleDefeat = function (FSP, settings) {
-            var battleInfo = settings.battleInfo, message = [
-                "%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!"
-            ], callback;
-            if (!battleInfo.noBlackout) {
-                message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
-                callback = function () {
-                    var transport = FSP.ItemsHolder.getItem("lastPokecenter");
-                    FSP.BattleMover.closeBattle();
-                    FSP.setMap(transport.map, transport.location);
-                    FSP.ItemsHolder.getItem("PokemonInParty").forEach(FSP.healPokemon.bind(FSP));
-                };
-            }
-            else {
-                callback = function () {
-                    FSP.BattleMover.closeBattle();
-                };
-            }
-            if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", message, FSP.animateFadeToColor.bind(FSP, FSP, {
-                "color": "Black",
-                "callback": function () {
-                    callback();
-                }
-            }));
-            FSP.MenuGrapher.setActiveMenu("GeneralText");
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.cutsceneBattleComplete = function (FSP, settings) {
-            FSP.MapScreener.blockInputs = false;
-            FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
-            FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
-        };
-        /**
-         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneBattleTransitionLineSpiral = function (FSP, settings) {
             var unitsize = FSP.unitsize, divisor = settings.divisor || 15, screenWidth = FSP.MapScreener.width, screenHeight = FSP.MapScreener.height, width = Math.ceil(screenWidth / divisor), height = Math.ceil(screenHeight / divisor), numTimes = 0, direction = 2, things = [], thing, difference, destination;
-            /**
-             * Yes, an inline Function. It makes things easier by calling itself
-             * a bunch of times.
-             */
             function addLineSpiralThing() {
                 if (numTimes >= ((divisor / 2) | 0)) {
                     if (settings.callback) {
@@ -4412,8 +3807,10 @@ var FullScreenPokemon;
             addLineSpiralThing();
         };
         /**
+         * Cutscene for starting a battle with a series of flashes.
          *
-         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          * @remarks Three [black, white] flashes, then the spiral
          */
         FullScreenPokemon.prototype.cutsceneBattleTransitionFlash = function (FSP, settings) {
@@ -4442,7 +3839,10 @@ var FullScreenPokemon;
             repeater();
         };
         /**
+         * Cutscene for starting a battle with a twist.
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          *
          * I think the way to do this would be to treat each quarter of the screen
          * as one section. Divide each section into 10 parts. On each interval
@@ -4454,7 +3854,10 @@ var FullScreenPokemon;
             throw new Error("Not yet implemented.");
         };
         /**
+         * Cutscene for starting a battle with a flash, then a twist..
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneBattleTransitionFlashTwist = function (FSP, settings) {
             FSP.cutsceneBattleTransitionFlash(FSP, {
@@ -4462,7 +3865,724 @@ var FullScreenPokemon;
             });
         };
         /**
+         * Cutscene for starting a battle. Players slide in, then the openingText
+         * cutscene is called.
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         */
+        FullScreenPokemon.prototype.cutsceneBattleEntrance = function (FSP, settings) {
+            var things = settings.things, battleInfo = settings.battleInfo, player = things.player, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial"), playerX, opponentX, playerGoal, opponentGoal, timeout = 70;
+            battleInfo.player.selectedIndex = 0;
+            battleInfo.player.selectedActor = battleInfo.player.actors[0];
+            battleInfo.opponent.selectedIndex = 0;
+            battleInfo.opponent.selectedActor = battleInfo.opponent.actors[0];
+            player.opacity = 0;
+            opponent.opacity = 0;
+            FSP.setLeft(player, menu.right + player.width * FSP.unitsize);
+            FSP.setRight(opponent, menu.left);
+            FSP.setTop(opponent, menu.top);
+            // They should be visible halfway through (2 * (1 / timeout))
+            FSP.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
+            FSP.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
+            playerX = FSP.getMidX(player);
+            opponentX = FSP.getMidX(opponent);
+            playerGoal = menu.left + player.width * FSP.unitsize / 2;
+            opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
+            FSP.animateSlideHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
+            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
+            FSP.addPokemonToPokedex(FSP, battleInfo.opponent.actors[0].title, PokedexListingStatus.Seen);
+            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("OpeningText"), timeout);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for the opening text and base menus in a battle. Afer this,
+         * the EnemyIntro or PlayerIntro cutscene is triggered.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         */
+        FullScreenPokemon.prototype.cutsceneBattleOpeningText = function (FSP, settings) {
+            var battleInfo = settings.battleInfo, textStart = battleInfo.textStart, nextRoutine, callback;
+            if (settings.battleInfo.opponent.hasActors) {
+                nextRoutine = "EnemyIntro";
+            }
+            else {
+                nextRoutine = "PlayerIntro";
+            }
+            if (battleInfo.automaticMenus) {
+                callback = FSP.TimeHandler.addEvent.bind(FSP.TimeHandler, FSP.ScenePlayer.playRoutine.bind(FSP.ScenePlayer), 70, nextRoutine);
+            }
+            else {
+                callback = FSP.ScenePlayer.bindRoutine(nextRoutine);
+            }
+            FSP.MenuGrapher.createMenu("BattlePlayerHealth");
+            FSP.addBattleDisplayPokeballs(FSP, FSP.MenuGrapher.getMenu("BattlePlayerHealth"), battleInfo.player);
+            if (battleInfo.opponent.hasActors) {
+                FSP.MenuGrapher.createMenu("BattleOpponentHealth");
+                FSP.addBattleDisplayPokeballs(FSP, FSP.MenuGrapher.getMenu("BattleOpponentHealth"), battleInfo.player, true);
+            }
+            else {
+                FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
+            }
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "finishAutomatically": battleInfo.automaticMenus
+            });
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    textStart[0], battleInfo.opponent.name, textStart[1]
+                ]
+            ], callback);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for an enemy's intro in a battle. They enter, and either send
+         * out a Pokemon or let the player intro.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         */
+        FullScreenPokemon.prototype.cutsceneBattleEnemyIntro = function (FSP, settings) {
+            var things = settings.things, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("GeneralText"), opponentX = FSP.getMidX(opponent), opponentGoal = menu.right + opponent.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, callback = battleInfo.opponent.hasActors
+                ? "OpponentSendOut"
+                : "PlayerIntro", timeout = 49;
+            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1);
+            FSP.TimeHandler.addEvent(FSP.animateFadeAttribute, (timeout / 2) | 0, opponent, "opacity", -2 / timeout, 0, 1);
+            FSP.MenuGrapher.deleteMenu("BattleOpponentHealth");
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "finishAutomatically": true
+            });
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    battleInfo.textOpponentSendOut[0],
+                    battleInfo.opponent.name,
+                    battleInfo.textOpponentSendOut[1],
+                    battleInfo.opponent.actors[0].nickname,
+                    battleInfo.textOpponentSendOut[2]
+                ]
+            ]);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine(callback, {
+                "nextRoutine": "PlayerIntro"
+            }), timeout);
+        };
+        /**
+         * Cutscene for a player's intro into battle. Afterwards, the ShowPlayerMenu
+         * cutscene is triggered.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         */
+        FullScreenPokemon.prototype.cutsceneBattlePlayerIntro = function (FSP, settings) {
+            var things = settings.things, player = things.player, menu = FSP.MenuGrapher.getMenu("GeneralText"), playerX = FSP.getMidX(player), playerGoal = menu.left - player.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, timeout = 24;
+            FSP.MenuGrapher.deleteMenu("BattlePlayerHealth");
+            if (!battleInfo.player.hasActors) {
+                FSP.ScenePlayer.playRoutine("ShowPlayerMenu");
+                return;
+            }
+            FSP.animateSlideHorizontal(player, (playerGoal - playerX) / timeout, playerGoal, 1);
+            FSP.TimeHandler.addEvent(FSP.animateFadeAttribute, (timeout / 2) | 0, player, "opacity", -2 / timeout, 0, 1);
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "finishAutomatically": true
+            });
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    battleInfo.textPlayerSendOut[0],
+                    battleInfo.player.actors[0].nickname,
+                    battleInfo.textPlayerSendOut[1]
+                ]
+            ]);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+            FSP.TimeHandler.addEvent(FSP.ScenePlayer.bindRoutine("PlayerSendOut", {
+                "nextRoutine": "ShowPlayerMenu"
+            }), timeout);
+        };
+        /**
+         * Cutscene for showing the player menu. The user may now interact with
+         * the menu for controlling their side of the battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         */
+        FullScreenPokemon.prototype.cutsceneBattleShowPlayerMenu = function (FSP, settings) {
+            FSP.MenuGrapher.deleteMenu("Yes/No");
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.BattleMover.showPlayerMenu();
+            if (settings.battleInfo.onShowPlayerMenu) {
+                settings.battleInfo.onShowPlayerMenu(FSP);
+            }
+        };
+        /**
+         * Cutscene for the opponent starting to send out a Pokemon. A smoke effect
+         * plays, then the OpponentSendOutAppear cutscene triggers.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         * @param args   Settings to pass to the OpponentSendOut cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleOpponentSendOut = function (FSP, settings, args) {
+            var menu = settings.things.menu, left = menu.right - FSP.unitsize * 8, top = menu.top + FSP.unitsize * 32;
+            console.warn("Should reset *Normal statistics for opponent Pokemon.");
+            settings.opponentLeft = left;
+            settings.opponentTop = top;
+            FSP.MenuGrapher.setActiveMenu(undefined);
+            FSP.animateSmokeSmall(FSP, left, top, FSP.ScenePlayer.bindRoutine("OpponentSendOutAppear", args));
+        };
+        /**
+         * Cutscene for the opponent's Pokemon appearing. The .nextRoutine from args
+         * is played.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         * @param args   Settings to pass to the next routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleOpponentSendOutAppear = function (FSP, settings, args) {
+            var opponentInfo = settings.battleInfo.opponent, pokemonInfo = opponentInfo.actors[opponentInfo.selectedIndex], pokemon = FSP.BattleMover.setThing("opponent", pokemonInfo.title.join("") + "Front");
+            console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
+            FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
+            FSP.addPokemonToPokedex(FSP, pokemonInfo.title, PokedexListingStatus.Seen);
+            FSP.ScenePlayer.playRoutine(args.nextRoutine);
+        };
+        /**
+         * Cutscene for the player starting to send out a Pokemon. A smoke effect
+         * plays, then the PlayerSendOutAppear cutscene triggers.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         * @param args   Settings to pass to the PlayerSendOut cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattlePlayerSendOut = function (FSP, settings, args) {
+            var menu = settings.things.menu, left = menu.left + FSP.unitsize * 8, top = menu.bottom - FSP.unitsize * 8;
+            console.warn("Should reset *Normal statistics for player Pokemon.");
+            settings.playerLeft = left;
+            settings.playerTop = top;
+            FSP.MenuGrapher.setActiveMenu(undefined);
+            FSP.animateSmokeSmall(FSP, left, top, FSP.ScenePlayer.bindRoutine("PlayerSendOutAppear", args));
+        };
+        /**
+         * Cutscene for the player's Pokemon appearing. The .nextRoutine from args
+         * is played.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         * @param args   Settings to pass to the next routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattlePlayerSendOutAppear = function (FSP, settings, args) {
+            var playerInfo = settings.battleInfo.player, pokemonInfo = playerInfo.selectedActor, pokemon = FSP.BattleMover.setThing("player", pokemonInfo.title.join("") + "Back");
+            console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
+            FSP.addBattleDisplayPokemonHealth(FSP, "player");
+            FSP.MenuGrapher.createMenu("BattlePlayerHealthNumbers");
+            FSP.setBattleDisplayPokemonHealthBar(FSP, "Player", pokemonInfo.HP, pokemonInfo.HPNormal);
+            FSP.ScenePlayer.playRoutine(args.nextRoutine);
+        };
+        /**
+         * Cutscene for the player attempting to switch a Pokemon with itself.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattlePlayerSwitchesSamePokemon = function (FSP, settings) {
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "backMenu": "PokemonMenuContext"
+            });
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                settings.battleInfo.player.selectedActor.nickname, " is already out!"
+            ]);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for the player to start a Pokemon move. After the announcement text,
+         * the MovePlayerAnimate cutscene is played.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleMovePlayer = function (FSP, settings, args) {
+            var player = settings.battleInfo.player, playerActor = player.selectedActor, opponent = settings.battleInfo.opponent, opponentActor = opponent.selectedActor, choice = args.choicePlayer;
+            args.damage = FSP.MathDecider.compute("damage", choice, playerActor, opponentActor);
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    playerActor.nickname, " used ", choice + "!"
+                ]
+            ], FSP.ScenePlayer.bindRoutine("MovePlayerAnimate", args));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for animating the player's chosen move.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleMovePlayerAnimate = function (FPS, settings, args) {
+            var choice = args.choicePlayer, move = FPS.MathDecider.getConstant("moves")[choice];
+            console.log("Should do something with", move);
+            args.attackerName = "player";
+            args.defenderName = "opponent";
+            args.callback = function () {
+                var callback;
+                args.movePlayerDone = true;
+                if (args.moveOpponentDone) {
+                    callback = function () {
+                        args.movePlayerDone = false;
+                        args.moveOpponentDone = false;
+                        FPS.MenuGrapher.createMenu("GeneralText");
+                        FPS.BattleMover.showPlayerMenu();
+                    };
+                }
+                else {
+                    callback = FPS.TimeHandler.addEvent.bind(FPS.TimeHandler, FPS.ScenePlayer.bindRoutine("MoveOpponent", args), 7);
+                }
+                FPS.ScenePlayer.playRoutine("Damage", {
+                    "battlerName": "opponent",
+                    "damage": args.damage,
+                    "callback": callback
+                });
+            };
+            // @todo: When all moves have been implemented, this will be simplified.
+            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+                console.warn(choice + " attack animation not implemented...");
+                args.callback();
+            }
+            else {
+                FPS.ScenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
+            }
+        };
+        /**
+         * Cutscene for the opponent to start a Pokemon move. After the announcement text,
+         * the MoveOpponentAnimate cutscene is played.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleMoveOpponent = function (FSP, settings, args) {
+            var opponent = settings.battleInfo.opponent, opponentActor = opponent.selectedActor, player = settings.battleInfo.player, playerActor = player.selectedActor, choice = args.choiceOpponent;
+            args.damage = FSP.MathDecider.compute("damage", choice, opponentActor, playerActor);
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    opponent.selectedActor.nickname, " used ", choice + "!"
+                ]
+            ], FSP.ScenePlayer.bindRoutine("MoveOpponentAnimate", args));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for animating an opponent's chosen move.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleMoveOpponentAnimate = function (FSP, settings, args) {
+            var choice = args.choiceOpponent, move = FSP.MathDecider.getConstant("moves")[choice];
+            console.log("Should do something with", move);
+            args.attackerName = "opponent";
+            args.defenderName = "player";
+            args.callback = function () {
+                var callback;
+                args.moveOpponentDone = true;
+                if (args.movePlayerDone) {
+                    callback = function () {
+                        args.movePlayerDone = false;
+                        args.moveOpponentDone = false;
+                        FSP.MenuGrapher.createMenu("GeneralText");
+                        FSP.BattleMover.showPlayerMenu();
+                    };
+                }
+                else {
+                    callback = FSP.TimeHandler.addEvent.bind(FSP.TimeHandler, FSP.ScenePlayer.bindRoutine("MovePlayer", args), 7);
+                }
+                FSP.ScenePlayer.playRoutine("Damage", {
+                    "battlerName": "player",
+                    "damage": args.damage,
+                    "callback": callback
+                });
+            };
+            // @todo: When all moves have been implemented, this will be simplified.
+            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+                console.warn(choice + " attack animation not implemented...");
+                args.callback();
+            }
+            else {
+                FSP.ScenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
+            }
+        };
+        /**
+         * Cutscene for applying and animating damage in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleDamage = function (FSP, settings, args) {
+            var battlerName = args.battlerName, damage = args.damage, battleInfo = FSP.BattleMover.getBattleInfo(), battler = battleInfo[battlerName], actor = battler.selectedActor, hpStart = actor.HP, hpEnd = Math.max(hpStart - damage, 0), callback = hpEnd === 0
+                ? FSP.TimeHandler.addEvent.bind(FSP.TimeHandler, FSP.ScenePlayer.bindRoutine("PokemonFaints", {
+                    "battlerName": battlerName
+                }), 49)
+                : args.callback;
+            if (damage !== 0) {
+                FSP.animateBattleDisplayPokemonHealthBar(FSP, battlerName, hpStart, hpEnd, actor.HPNormal, callback);
+                actor.HP = hpEnd;
+            }
+            else {
+                callback(FSP);
+            }
+        };
+        /**
+         * Cutscene for a Pokemon fainting in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattlePokemonFaints = function (FSP, settings, args) {
+            var battlerName = args.battlerName, battleInfo = FSP.BattleMover.getBattleInfo(), actor = battleInfo[battlerName].selectedActor, thing = settings.things[battlerName], blank = FSP.ObjectMaker.make("WhiteSquare", {
+                "width": thing.width * thing.scale,
+                "height": thing.height * thing.scale
+            }), texts = FSP.GroupHolder.getGroup("Text"), background = FSP.BattleMover.getBackgroundThing(), backgroundIndex = texts.indexOf(background), nextRoutine = battlerName === "player"
+                ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints";
+            FSP.addThing(blank, thing.left, thing.top + thing.height * thing.scale * thing.FSP.unitsize);
+            FSP.arrayToIndex(blank, texts, backgroundIndex + 1);
+            FSP.arrayToIndex(thing, texts, backgroundIndex + 1);
+            FSP.animateSlideVertical(thing, FSP.unitsize * 2, FSP.getMidY(thing) + thing.height * thing.scale * FSP.unitsize, 1, function () {
+                FSP.killNormal(thing);
+                FSP.killNormal(blank);
+                FSP.MenuGrapher.createMenu("GeneralText");
+                FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                    [
+                        actor.nickname, " fainted!"
+                    ]
+                ], FSP.ScenePlayer.bindRoutine(nextRoutine, args));
+                FSP.MenuGrapher.setActiveMenu("GeneralText");
+            });
+        };
+        /**
+         * Cutscene for choosing what to do after a Pokemon faints in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleAfterPlayerPokemonFaints = function (FSP, settings) {
+            var battleInfo = FSP.BattleMover.getBattleInfo(), actorAvailable = FSP.checkArrayMembersIndex(battleInfo.player.actors, "HP");
+            if (actorAvailable) {
+                FSP.ScenePlayer.playRoutine("PlayerChoosesPokemon");
+            }
+            else {
+                FSP.ScenePlayer.playRoutine("Defeat");
+            }
+        };
+        /**
+         * Cutscene for after an opponent's Pokemon faints in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleAfterOpponentPokemonFaints = function (FSP, settings) {
+            var battleInfo = settings.battleInfo, opponent = battleInfo.opponent, actorAvailable = FSP.checkArrayMembersIndex(opponent.actors, "HP"), experienceGained = FSP.MathDecider.compute("experienceGained", battleInfo.player, battleInfo.opponent), callback;
+            if (actorAvailable) {
+                callback = FSP.ScenePlayer.bindRoutine("OpponentSwitchesPokemon");
+            }
+            else {
+                callback = FSP.ScenePlayer.bindRoutine("Victory");
+            }
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    battleInfo.player.selectedActor.nickname,
+                    " gained ",
+                    experienceGained.toString(),
+                    " EXP. points!"
+                ]
+            ], FSP.ScenePlayer.bindRoutine("ExperienceGain", {
+                "experienceGained": experienceGained,
+                "callback": callback
+            }));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for an opponent switching Pokemon in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleOpponentSwitchesPokemon = function (FSP, settings) {
+            var battleInfo = settings.battleInfo, opponent = battleInfo.opponent, nicknameExclaim = opponent.selectedActor.nickname.slice();
+            nicknameExclaim.push("!");
+            FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
+            opponent.selectedIndex += 1;
+            opponent.selectedActor = opponent.actors[opponent.selectedIndex];
+            FSP.MenuGrapher.createMenu("GeneralText", {
+                "deleteOnFinish": false
+            });
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                opponent.name,
+                "is about to use",
+                nicknameExclaim,
+                "Will %%%%%%%PLAYER%%%%%%% change %%%%%%%POKEMON%%%%%%%?"
+            ], function () {
+                FSP.MenuGrapher.createMenu("Yes/No");
+                FSP.MenuGrapher.addMenuList("Yes/No", {
+                    "options": [
+                        {
+                            "text": "Yes",
+                            "callback": FSP.ScenePlayer.bindRoutine("PlayerSwitchesPokemon", {
+                                "nextRoutine": "OpponentSendOut"
+                            })
+                        }, {
+                            "text": "No",
+                            "callback": FSP.ScenePlayer.bindRoutine("OpponentSendOut", {
+                                "nextRoutine": "ShowPlayerMenu"
+                            })
+                        }]
+                });
+                FSP.MenuGrapher.setActiveMenu("Yes/No");
+            });
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for a player's Pokemon gaining experience in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleExperienceGain = function (FSP, settings, args) {
+            var battleInfo = settings.battleInfo, gains = args.experienceGained, actor = battleInfo.player.selectedActor, experience = actor.experience;
+            console.warn("Experience gain is hardcoded to the current actor...");
+            experience.current += gains;
+            experience.remaining -= gains;
+            if (experience.remaining < 0) {
+                gains -= experience.remaining;
+                FSP.ScenePlayer.playRoutine("LevelUp", {
+                    "experienceGained": gains,
+                    "callback": args.callback
+                });
+            }
+            else {
+                args.callback();
+            }
+        };
+        /**
+         * Cutscene for a player's Pokemon leveling up in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleLevelUp = function (FSP, settings, args) {
+            var battleInfo = settings.battleInfo, 
+            // gains: number = args.experienceGained,
+            actor = battleInfo.player.selectedActor;
+            actor.level += 1;
+            actor.experience = FSP.MathDecider.compute("newPokemonExperience", actor.title, actor.level);
+            console.warn("Leveling up does not yet increase stats...");
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    actor.nickname,
+                    " grew to level ",
+                    actor.level.toString(),
+                    "!"
+                ]
+            ], FSP.ScenePlayer.bindRoutine("LevelUpStats", args));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for displaying a Pokemon's statistics in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleLevelUpStats = function (FSP, settings, args) {
+            FSP.openPokemonLevelUpStats({
+                "container": "BattleDisplayInitial",
+                "position": {
+                    "horizontal": "right",
+                    "vertical": "bottom",
+                    "offset": {
+                        "left": 4
+                    }
+                },
+                "pokemon": settings.battleInfo.player.selectedActor,
+                "onMenuDelete": args.callback
+            });
+            FSP.MenuGrapher.setActiveMenu("LevelUpStats");
+            console.warn("For stones, LevelUpStats should be taken out of battles.");
+        };
+        /**
+         * Cutscene for a player choosing a Pokemon (creating the menu for it).
+         *
+         * @param FSP
+         */
+        FullScreenPokemon.prototype.cutsceneBattlePlayerChoosesPokemon = function (FSP) {
+            FSP.MenuGrapher.createMenu("Pokemon", {
+                "position": {
+                    "vertical": "center",
+                    "offset": {
+                        "left": 0
+                    }
+                }
+            });
+        };
+        /**
+         * Cutscene for failing to run from a trainer battle.
+         *
+         * @param FSP
+         */
+        FullScreenPokemon.prototype.cutsceneBattleExitFail = function (FSP) {
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", "No! There's no running from a trainer battle!", FSP.ScenePlayer.bindRoutine("BattleExitFailReturn"));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for returning to a battle after failing to exit.
+         *
+         * @param FSP
+         */
+        FullScreenPokemon.prototype.cutsceneBattleExitFailReturn = function (FSP) {
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.BattleMover.showPlayerMenu();
+        };
+        /**
+         * Cutscene for becoming victorious in battle.
+         *
+         * @param FSP
+         */
+        FullScreenPokemon.prototype.cutsceneBattleVictory = function (FSP) {
+            var battleInfo = FSP.BattleMover.getBattleInfo(), opponent = battleInfo.opponent;
+            if (FSP.MapScreener.theme) {
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
+            }
+            if (!opponent.hasActors) {
+                FSP.BattleMover.closeBattle(function () {
+                    FSP.animateFadeFromColor(FSP, {
+                        "color": "White"
+                    });
+                });
+                return;
+            }
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                [
+                    "%%%%%%%PLAYER%%%%%%% defeated ",
+                    opponent.name,
+                    "!"
+                ]
+            ], FSP.ScenePlayer.bindRoutine("VictorySpeech"));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for the opponent responding to the player's victory.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleVictorySpeech = function (FSP, settings) {
+            var battleInfo = settings.battleInfo, menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial"), opponent = FSP.BattleMover.setThing("opponent", battleInfo.opponent.sprite), timeout = 35, opponentX, opponentGoal;
+            opponent.opacity = 0;
+            FSP.setTop(opponent, menu.top);
+            FSP.setLeft(opponent, menu.right);
+            opponentX = FSP.getMidX(opponent);
+            opponentGoal = menu.right - opponent.width * FSP.unitsize / 2;
+            FSP.animateFadeAttribute(opponent, "opacity", 4 / timeout, 1, 1);
+            FSP.animateSlideHorizontal(opponent, (opponentGoal - opponentX) / timeout, opponentGoal, 1, function () {
+                FSP.MenuGrapher.createMenu("GeneralText");
+                FSP.MenuGrapher.addMenuDialog("GeneralText", battleInfo.textVictory, FSP.ScenePlayer.bindRoutine("VictoryWinnings"));
+                FSP.MenuGrapher.setActiveMenu("GeneralText");
+            });
+        };
+        /**
+         * Cutscene for receiving cash for defeating an opponent.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
+         */
+        FullScreenPokemon.prototype.cutsceneBattleVictoryWinnings = function (FSP, settings) {
+            var battleInfo = settings.battleInfo, reward = battleInfo.opponent.reward, animationSettings = {
+                "color": "White"
+            }, callback = function () {
+                FSP.BattleMover.closeBattle(function () {
+                    FSP.animateFadeFromColor(FSP, animationSettings);
+                });
+            };
+            if (battleInfo.giftAfterBattle) {
+                FSP.addItemToBag(FSP, battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
+            }
+            if (battleInfo.badge) {
+                FSP.ItemsHolder.getItem("badges")[battleInfo.badge] = true;
+            }
+            if (battleInfo.textAfterBattle) {
+                animationSettings.callback = function () {
+                    FSP.MenuGrapher.createMenu("GeneralText");
+                    FSP.MenuGrapher.addMenuDialog("GeneralText", battleInfo.textAfterBattle);
+                    FSP.MenuGrapher.setActiveMenu("GeneralText");
+                };
+            }
+            if (!reward) {
+                callback();
+                return;
+            }
+            FSP.ItemsHolder.increase("money", reward);
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                "%%%%%%%PLAYER%%%%%%% got $" + reward + " for winning!"
+            ], callback);
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene for the player being defeated in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleDefeat = function (FSP, settings) {
+            var battleInfo = settings.battleInfo, message = ["%%%%%%%PLAYER%%%%%%% is out of useable %%%%%%%POKEMON%%%%%%%!"], callback;
+            if (!battleInfo.noBlackout) {
+                message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
+                callback = function () {
+                    var transport = FSP.ItemsHolder.getItem("lastPokecenter");
+                    FSP.BattleMover.closeBattle();
+                    FSP.setMap(transport.map, transport.location);
+                    FSP.ItemsHolder.getItem("PokemonInParty").forEach(FSP.healPokemon.bind(FSP));
+                };
+            }
+            else {
+                callback = function () {
+                    FSP.BattleMover.closeBattle();
+                };
+            }
+            if (FSP.MapScreener.theme) {
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
+            }
+            FSP.MenuGrapher.createMenu("GeneralText");
+            FSP.MenuGrapher.addMenuDialog("GeneralText", message, FSP.animateFadeToColor.bind(FSP, FSP, {
+                "color": "Black",
+                "callback": function () {
+                    callback();
+                }
+            }));
+            FSP.MenuGrapher.setActiveMenu("GeneralText");
+        };
+        /**
+         * Cutscene a battle completely finishing.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleComplete = function (FSP, settings) {
+            FSP.MapScreener.blockInputs = false;
+            FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
+            FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
+        };
+        /**
+         * Cutscene for .
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
          */
         FullScreenPokemon.prototype.cutsceneBattleChangeStatistic = function (FSP, settings, args) {
             var battleInfo = settings.battleInfo, defenderName = args.defenderName, defender = battleInfo[defenderName].selectedActor, defenderLabel = defenderName === "opponent"
@@ -4499,7 +4619,10 @@ var FullScreenPokemon;
         /* Battle attack animations
         */
         /**
+         * Cutscene for .
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackGrowl = function (FSP, settings, args) {
             var battleInfo = settings.battleInfo, attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, notes = [
@@ -4515,7 +4638,10 @@ var FullScreenPokemon;
             }, args));
         };
         /**
+         * Cutscene for .
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackTackle = function (FSP, settings, args) {
             var attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, xvel = 7 * direction, dt = 7, movement = FSP.TimeHandler.addEventInterval(function () {
@@ -4533,7 +4659,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Cutscene for .
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackTailWhip = function (FSP, settings, args) {
             var attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), direction = attackerName === "player" ? 1 : -1, dt = 11, dx = FSP.unitsize * 4;
@@ -4548,6 +4677,8 @@ var FullScreenPokemon;
                 "amount": -1
             }));
         };
+        /* Outdoor cutscenes
+        */
         /**
          *
          */
