@@ -2626,7 +2626,7 @@ var FullScreenPokemon;
          * Starts a Character roaming in random directions.
          *
          * @param thing   A Character to start roaming.
-         * @returns Whether the time cycle should stop (thing is dead).
+         * @returns {boolean} Whether the time cycle should stop (thing is dead).
          */
         FullScreenPokemon.prototype.activateCharacterRoaming = function (thing) {
             if (!thing.alive) {
@@ -4579,10 +4579,10 @@ var FullScreenPokemon;
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
         };
         /**
-         * Cutscene for .
+         * Cutscene for changing a statistic in battle.
          *
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneBattleChangeStatistic = function (FSP, settings, args) {
             var battleInfo = settings.battleInfo, defenderName = args.defenderName, defender = battleInfo[defenderName].selectedActor, defenderLabel = defenderName === "opponent"
@@ -4619,10 +4619,11 @@ var FullScreenPokemon;
         /* Battle attack animations
         */
         /**
-         * Cutscene for .
+         * Cutscene for a Growl attack in battle.
          *
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackGrowl = function (FSP, settings, args) {
             var battleInfo = settings.battleInfo, attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, notes = [
@@ -4638,10 +4639,11 @@ var FullScreenPokemon;
             }, args));
         };
         /**
-         * Cutscene for .
+         * Cutscene for a Tackle attack in battle.
          *
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackTackle = function (FSP, settings, args) {
             var attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, xvel = 7 * direction, dt = 7, movement = FSP.TimeHandler.addEventInterval(function () {
@@ -4659,10 +4661,11 @@ var FullScreenPokemon;
             }
         };
         /**
-         * Cutscene for .
+         * Cutscene for a Tail Whip attack in battle.
          *
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackTailWhip = function (FSP, settings, args) {
             var attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), direction = attackerName === "player" ? 1 : -1, dt = 11, dx = FSP.unitsize * 4;

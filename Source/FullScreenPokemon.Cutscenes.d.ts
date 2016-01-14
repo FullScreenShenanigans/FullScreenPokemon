@@ -155,4 +155,34 @@ declare module FullScreenPokemon {
          */
         experienceGained?: number;
     }
+
+    /**
+     * Settings for an attacking move in battle.
+     */
+    export interface IBattleAttackRoutineSettings extends IBattleRoutineSettings {
+        /**
+         * The attacking battler's name, as "player" or "opponent".
+         */
+        attackerName?: string;
+
+        /**
+         * The defending battler's name, as "player" or "opponent".
+         */
+        defenderName?: string;
+    }
+
+    /**
+     * Settings for changing a defender's statistic in battle.
+     */
+    export interface IBattleStatisticRoutineSettings extends IBattleAttackRoutineSettings {
+        /**
+         * How much to change the statistic.
+         */
+        amount?: number;
+
+        /**
+         * The name of the targeted statistic.
+         */
+        statistic?: string;
+    }
 }

@@ -6097,12 +6097,12 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for .
+         * Cutscene for changing a statistic in battle.
          * 
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
          */
-        cutsceneBattleChangeStatistic(FSP: FullScreenPokemon, settings: any, args: any): void {
+        cutsceneBattleChangeStatistic(FSP: FullScreenPokemon, settings: any, args: IBattleStatisticRoutineSettings): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 defenderName: string = args.defenderName,
                 defender: BattleMovr.IActor = battleInfo[defenderName].selectedActor,
@@ -6148,16 +6148,18 @@ module FullScreenPokemon {
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
+
         /* Battle attack animations
         */
 
         /**
-         * Cutscene for .
+         * Cutscene for a Growl attack in battle.
          * 
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
          */
-        cutsceneBattleAttackGrowl(FSP: FullScreenPokemon, settings: any, args: any): void {
+        cutsceneBattleAttackGrowl(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
             var battleInfo: IBattleInfo = settings.battleInfo,
                 attackerName: string = args.attackerName,
                 defenderName: string = args.defenderName,
@@ -6184,12 +6186,13 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for .
+         * Cutscene for a Tackle attack in battle.
          * 
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
          */
-        cutsceneBattleAttackTackle(FSP: FullScreenPokemon, settings: any, args: any): void {
+        cutsceneBattleAttackTackle(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
             var attackerName: string = args.attackerName,
                 defenderName: string = args.defenderName,
                 attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
@@ -6240,12 +6243,13 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for .
+         * Cutscene for a Tail Whip attack in battle.
          * 
          * @param FSP
-         * @param settings   Settings used for the cutscene
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
          */
-        cutsceneBattleAttackTailWhip(FSP: FullScreenPokemon, settings: any, args: any): void {
+        cutsceneBattleAttackTailWhip(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
             var attackerName: string = args.attackerName,
                 defenderName: string = args.defenderName,
                 attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
@@ -6255,23 +6259,9 @@ module FullScreenPokemon {
 
             FSP.shiftHoriz(attacker, dx * direction);
 
-            FSP.TimeHandler.addEvent(
-                FSP.shiftHoriz,
-                dt,
-                attacker,
-                -dx * direction);
-
-            FSP.TimeHandler.addEvent(
-                FSP.shiftHoriz,
-                dt * 2,
-                attacker,
-                dx * direction);
-
-            FSP.TimeHandler.addEvent(
-                FSP.shiftHoriz,
-                dt * 3,
-                attacker,
-                -dx * direction);
+            FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, attacker, -dx * direction);
+            FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt * 2, attacker, dx * direction);
+            FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt * 3, attacker, -dx * direction);
 
             FSP.TimeHandler.addEvent(
                 FSP.animateScreenShake,
