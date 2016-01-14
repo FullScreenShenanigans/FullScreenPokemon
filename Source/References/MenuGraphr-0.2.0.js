@@ -492,15 +492,18 @@ var MenuGraphr;
         /**
          * Sets the currently active menu.
          *
-         * @param name   The name of the menu to set as active.
+         * @param name   The name of the menu to set as active. If not given, no menu
+         *               is set as active.
          */
         MenuGraphr.prototype.setActiveMenu = function (name) {
             if (this.activeMenu && this.activeMenu.onInactive) {
                 this.activeMenu.onInactive(this.activeMenu.name);
             }
-            this.activeMenu = this.menus[name];
-            if (this.activeMenu && this.activeMenu.onActive) {
-                this.activeMenu.onActive(name);
+            if (typeof name !== "undefined") {
+                this.activeMenu = this.menus[name];
+                if (this.activeMenu && this.activeMenu.onActive) {
+                    this.activeMenu.onActive(name);
+                }
             }
         };
         /**

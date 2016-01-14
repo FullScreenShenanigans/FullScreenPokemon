@@ -176,13 +176,13 @@ var FullScreenPokemon;
                 // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
                 if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
-                        this.compute("applyMoveEffectPrority", possibilities[i], constants.battleModifications["Turn 2"], player.selectedActor, 1);
+                        this.compute("applyMoveEffectPriority", possibilities[i], constants.battleModifications["Turn 2"], player.selectedActor, 1);
                     }
                 }
                 // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
                 if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
-                        this.compute("applyMoveEffectPrority", possibilities[i], constants.battleModifications["Good AI"], player.selectedActor, 1);
+                        this.compute("applyMoveEffectPriority", possibilities[i], constants.battleModifications["Good AI"], player.selectedActor, 1);
                     }
                 }
                 // The AI uses rejection sampling on the four moves with ratio 63:64:63:66, with only the moves that are most favored after applying the modifications being acceptable.
@@ -199,9 +199,9 @@ var FullScreenPokemon;
                 }
                 return constants.NumberMaker.randomArrayMember(possibilities).move;
             },
-            "opponentMatchesTypes": function (constants, equations, opponent, types) {
+            "pokemonMatchesTypes": function (constants, equations, pokemon, types) {
                 for (var i = 0; i < types.length; i += 1) {
-                    if (opponent.types.indexOf(types[i]) !== -1) {
+                    if (pokemon.types.indexOf(types[i]) !== -1) {
                         return true;
                     }
                 }
@@ -210,7 +210,7 @@ var FullScreenPokemon;
             "moveOnlyStatuses": function (constants, equations, move) {
                 return move.damage === "Non-Damaging" && move.effect === "Status";
             },
-            "applyMoveEffectPrority": function (constants, equations, possibility, modification, target, amount) {
+            "applyMoveEffectPriority": function (constants, equations, possibility, modification, target, amount) {
                 var preferences = modification.preferences, move = constants.moves[possibility.move], preference, i;
                 for (i = 0; i < preferences.length; i += 1) {
                     preference = preferences[i];
@@ -411,46 +411,7 @@ var FullScreenPokemon;
                 "Viridian City": [18, 36]
             },
             /**
-             * Run on http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-             *
-             * console.clear();
-             *
-             * var table = $($("table")[2]),
-             *     names = table.find("tr:nth-of-type(2) a")
-             *         .toArray()
-             *         .map(function (a) {
-             *             return a.getAttribute("title");
-             *         }),
-             *     chart = table.find("tr:nth-of-type(2) ~ tr"),
-             *     table = [],
-             *     indices = {},
-             *     values = {
-             *         "0×": 0.0,
-             *         "½×": .5,
-             *         "1×": 1.0,
-             *         "2×": 2.0
-             *     },
-             *     output = {
-             *         "names": names,
-             *         "table": table
-             *     },
-             *     row, i, j;
-             *
-             * for (i = 0; i < names.length; i += 1) {
-             *     indices[names[i]] = i;
-             * }
-             *
-             * for (i = 0; i < chart.length - 1; i += 1) {
-             *     row = chart[i];
-             *     table.push([]);
-             *     for (j = 0; j < row.cells.length - 1; j += 1) {
-             *         table[i].push(values[row.cells[j + 1].innerText])
-             *     }
-             * }
-             *
-             * table[0].shift();
-             *
-             * JSON.stringify(output);
+             * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
              */
             "types": {
                 "names": ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon"],
@@ -490,29 +451,7 @@ var FullScreenPokemon;
                 ]
             },
             /**
-             * Run on http://www.smogon.com/dex/rb/pokemon/
-             *
-             * var output = {};
-             *
-             * Array.prototype.slice.call(document.querySelectorAll("tr")).forEach(function (row) {
-             *     output[row.children[0].innerText.trim().toUpperCase()] = {
-             *         "types": row.children[1].innerText
-             *             .split(/\s+/g)
-             *             .filter(function (str) {
-             *                 return str;
-             *             })
-             *             .map(function (str) {
-             *                 return str.trim();
-             *             }),
-             *         "HP": Number(row.children[5].innerText.split(/\s+/g)[1]),
-             *         "Attack": Number(row.children[6].innerText.split(/\s+/g)[1]),
-             *         "Defense": Number(row.children[7].innerText.split(/\s+/g)[1]),
-             *         "Special": Number(row.children[8].innerText.split(/\s+/g)[1]),
-             *         "Speed": Number(row.children[10].innerText.split(/\s+/g)[1]),
-             *     };
-             * });
-             *
-             * JSON.stringify(output);
+             * @see http://www.smogon.com/dex/rb/pokemon/
              */
             "pokemon": {
                 "ABRA": {
