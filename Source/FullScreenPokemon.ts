@@ -6288,7 +6288,7 @@ module FullScreenPokemon {
         /**
          * Cutscene for when a trainer is encountered for battle.
          * 
-         * @param FSP.
+         * @param FSP
          * @param settings   Settings used for the cutscene.
          */
         cutsceneTrainerSpottedExclamation(FSP: FullScreenPokemon, settings: any): void {
