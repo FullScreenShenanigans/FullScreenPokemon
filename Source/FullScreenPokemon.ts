@@ -8523,7 +8523,9 @@ module FullScreenPokemon {
         */
 
         /**
-         * 
+         * Saves the positions of all Characters in the game.
+         *
+         * @param FSP
          */
         saveCharacterPositions(FSP: FullScreenPokemon): void {
             var characters: ICharacter[] = <ICharacter[]>FSP.GroupHolder.getGroup("Character"),
@@ -8540,7 +8542,11 @@ module FullScreenPokemon {
         }
 
         /**
+         * Saves the position of a certain Character.
          * 
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
          */
         saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
             FSP.StateHolder.addChange(
@@ -8558,7 +8564,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * 
+         * Saves all persistant information about the
+         * current game state.
          */
         saveGame(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8585,7 +8592,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * 
+         * Saves current game state and downloads
+         * it onto the client's computer as a JSON file.
          */
         downloadSaveGame(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8607,7 +8615,11 @@ module FullScreenPokemon {
         }
 
         /**
+         * Adds an in-game item to the character's bag.
          * 
+         * @param FSP
+         * @param item    The item being stored.
+         * @param amount   The quantity of this item being stored.
          */
         addItemToBag(FSP: FullScreenPokemon, item: string, amount: number = 1): void {
             FSP.combineArrayMembers(
