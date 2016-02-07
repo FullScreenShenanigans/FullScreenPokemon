@@ -6274,7 +6274,14 @@ var FullScreenPokemon;
         /* Map sets
         */
         /**
+         * Sets the game state to a new Map, resetting all Things and inputs in the
+         * process. The mod events are fired.
          *
+         * @param name   The name of the Map.
+         * @param location   The name of the Location within the Map.
+         * @param noEntrance    Whether or not an entry Function should
+         *                      be skipped (by default, false).
+         * @remarks Most of the work here is done by setLocation.
          */
         FullScreenPokemon.prototype.setMap = function (name, location, noEntrance) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), map;
@@ -6291,7 +6298,14 @@ var FullScreenPokemon;
                 || FSP.settings.maps.locationDefault, noEntrance);
         };
         /**
+         * Sets the game state to a Location within the current map, resetting all
+         * Things, inputs, the current Area, PixelRender, and MapScreener in the
+         * process. The Location's entry Function is called to bring a new Player
+         * into the game if specified. The mod events are fired.
          *
+         * @param name   The name of the Location within the Map.
+         * @param noEntrance   Whether or not an entry Function should
+         *                     be skipped (by default, false).
          */
         FullScreenPokemon.prototype.setLocation = function (name, noEntrance) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), location, theme;
@@ -6331,7 +6345,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Determines the in-game measurements of the
+         * boundaries of the current Area.
          *
+         * @param FSP
+         * @returns The boundaries of the current Area.
          */
         FullScreenPokemon.prototype.getAreaBoundariesReal = function (FSP) {
             var area = FSP.AreaSpawner.getArea();
@@ -6355,7 +6373,14 @@ var FullScreenPokemon;
             };
         };
         /**
+         * Determines the scrollable directions.
          *
+         * @param FSP
+         * @returns The direction(s) that are scrollable.
+         * @todo Strict type the returned string to a new IScrollability.
+         *       When TypeScript 1.8 is out of beta, we'll be able to use
+         *       string literals as types. This would be
+         *       "both" | "horizontal" | "vertical" | "none".
          */
         FullScreenPokemon.prototype.getScreenScrollability = function (FSP) {
             var area = FSP.AreaSpawner.getArea(), boundaries, width, height;
@@ -6387,9 +6412,13 @@ var FullScreenPokemon;
             return {};
         };
         /**
+         * Analyzes a PreThing to be placed in one of the
+         * cardinal directions of the current Map's boundaries
+         * (just outside of the current Area).
          *
-         *
-         * @remarks Direction is taken in by the .forEach call as the index. Clever.
+         * @param prething   A PreThing whose Thing is to be added to the game.
+         * @param direction   The cardinal direction the Character is facing.
+         * @remarks Direction is taken in by the .forEach call as the index.
          */
         FullScreenPokemon.prototype.mapAddAfter = function (prething, direction) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), MapsCreator = FSP.MapsCreator, AreaSpawner = FSP.AreaSpawner, prethings = AreaSpawner.getPreThings(), area = AreaSpawner.getArea(), map = AreaSpawner.getMap(), boundaries = FSP.AreaSpawner.getArea().boundaries;

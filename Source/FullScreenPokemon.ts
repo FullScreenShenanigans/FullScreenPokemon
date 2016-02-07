@@ -8635,7 +8635,14 @@ module FullScreenPokemon {
         */
 
         /**
+         * Sets the game state to a new Map, resetting all Things and inputs in the
+         * process. The mod events are fired.
          * 
+         * @param name   The name of the Map.
+         * @param location   The name of the Location within the Map.
+         * @param noEntrance    Whether or not an entry Function should
+         *                      be skipped (by default, false).
+         * @remarks Most of the work here is done by setLocation.
          */
         setMap(name: string, location?: string, noEntrance?: boolean): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8662,7 +8669,14 @@ module FullScreenPokemon {
         }
 
         /**
+         * Sets the game state to a Location within the current map, resetting all
+         * Things, inputs, the current Area, PixelRender, and MapScreener in the
+         * process. The Location's entry Function is called to bring a new Player
+         * into the game if specified. The mod events are fired.
          * 
+         * @param name   The name of the Location within the Map.
+         * @param noEntrance   Whether or not an entry Function should
+         *                     be skipped (by default, false).
          */
         setLocation(name: string, noEntrance?: boolean): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8718,7 +8732,11 @@ module FullScreenPokemon {
         }
 
         /**
+         * Determines the in-game measurements of the
+         * boundaries of the current Area.
          * 
+         * @param FSP
+         * @returns The boundaries of the current Area.
          */
         getAreaBoundariesReal(FSP: FullScreenPokemon): IAreaBoundaries {
             var area: IArea = <IArea>FSP.AreaSpawner.getArea();
@@ -8745,7 +8763,14 @@ module FullScreenPokemon {
         }
 
         /**
+         * Determines the scrollable directions.
          * 
+         * @param FSP
+         * @returns The direction(s) that are scrollable.
+         * @todo Strict type the returned string to a new IScrollability.
+         *       When TypeScript 1.8 is out of beta, we'll be able to use 
+         *       string literals as types. This would be 
+         *       "both" | "horizontal" | "vertical" | "none".
          */
         getScreenScrollability(FSP: FullScreenPokemon): string {
             var area: IArea = <IArea>FSP.AreaSpawner.getArea(),
@@ -8782,9 +8807,13 @@ module FullScreenPokemon {
         }
 
         /**
+         * Analyzes a PreThing to be placed in one of the
+         * cardinal directions of the current Map's boundaries
+         * (just outside of the current Area).
          * 
-         * 
-         * @remarks Direction is taken in by the .forEach call as the index. Clever.
+         * @param prething   A PreThing whose Thing is to be added to the game.
+         * @param direction   The cardinal direction the Character is facing.
+         * @remarks Direction is taken in by the .forEach call as the index.
          */
         mapAddAfter(prething: IPreThing, direction: Direction): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
