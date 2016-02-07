@@ -2626,7 +2626,7 @@ var FullScreenPokemon;
          * Starts a Character roaming in random directions.
          *
          * @param thing   A Character to start roaming.
-         * @returns {boolean} Whether the time cycle should stop (thing is dead).
+         * @returns Whether the time cycle should stop (thing is dead).
          */
         FullScreenPokemon.prototype.activateCharacterRoaming = function (thing) {
             if (!thing.alive) {
@@ -4683,7 +4683,10 @@ var FullScreenPokemon;
         /* Outdoor cutscenes
         */
         /**
+         * Cutscene for when a trainer is encountered for battle.
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneTrainerSpottedExclamation = function (FSP, settings) {
             FSP.animateCharacterPreventWalking(FSP.player);
@@ -6200,7 +6203,9 @@ var FullScreenPokemon;
         /* Memory
         */
         /**
+         * Saves the positions of all Characters in the game.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.saveCharacterPositions = function (FSP) {
             var characters = FSP.GroupHolder.getGroup("Character"), character, id, i;
@@ -6211,7 +6216,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Saves the position of a certain Character.
          *
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
          */
         FullScreenPokemon.prototype.saveCharacterPosition = function (FSP, character, id) {
             FSP.StateHolder.addChange(id, "xloc", (character.left + FSP.MapScreener.left) / FSP.unitsize);
@@ -6219,7 +6228,8 @@ var FullScreenPokemon;
             FSP.StateHolder.addChange(id, "direction", character.direction);
         };
         /**
-         *
+         * Saves all persistant information about the
+         * current game state.
          */
         FullScreenPokemon.prototype.saveGame = function () {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), ticksRecorded = FSP.FPSAnalyzer.getNumRecorded();
@@ -6238,7 +6248,8 @@ var FullScreenPokemon;
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher), 49);
         };
         /**
-         *
+         * Saves current game state and downloads
+         * it onto the client's computer as a JSON file.
          */
         FullScreenPokemon.prototype.downloadSaveGame = function () {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), link = document.createElement("a");
@@ -6250,7 +6261,11 @@ var FullScreenPokemon;
             FSP.container.removeChild(link);
         };
         /**
+         * Adds an in-game item to the character's bag.
          *
+         * @param FSP
+         * @param item    The item being stored.
+         * @param amount   The quantity of this item being stored.
          */
         FullScreenPokemon.prototype.addItemToBag = function (FSP, item, amount) {
             if (amount === void 0) { amount = 1; }
