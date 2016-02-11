@@ -8858,7 +8858,9 @@ module FullScreenPokemon {
         */
 
         /**
+         * Centers the current view of the Map based on scrollability.
          * 
+         * @param FSP
          */
         centerMapScreen(FSP: FullScreenPokemon): void {
             switch (FSP.MapScreener.scrollability) {
@@ -8888,7 +8890,10 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window horizontally until the Map is centered based on
+         * the Area.
          * 
+         * @param FSP
          */
         centerMapScreenHorizontally(FSP: FullScreenPokemon): void {
             var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
@@ -8900,7 +8905,10 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window vertically until the Map is centered based on
+         * the Area.
          * 
+         * @param FSP
          */
         centerMapScreenVertically(FSP: FullScreenPokemon): void {
             var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
@@ -8910,7 +8918,9 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window horizontally until the Map is centered on the player.
          * 
+         * @param FSP
          */
         centerMapScreenHorizontallyOnPlayer(FSP: FullScreenPokemon): void {
             var difference: number = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
@@ -8921,7 +8931,9 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window vertically until the Map is centered on the player.
          * 
+         * @param FSP
          */
         centerMapScreenVerticallyOnPlayer(FSP: FullScreenPokemon): void {
             var difference: number = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
@@ -8932,16 +8944,21 @@ module FullScreenPokemon {
         }
 
         /**
+         * A blank Map entrance Function where no Character is placed.
          * 
+         * @param FSP
          */
-        mapEntranceBlank(FSP: FullScreenPokemon, location: ILocation): void {
+        mapEntranceBlank(FSP: FullScreenPokemon): void {
             FSP.addPlayer(0, 0);
             FSP.player.hidden = true;
         }
 
 
         /**
+         * Standard Map entrance Function. Character is placed based on specified Location. 
          * 
+         * @param FSP
+         * @param location   The name of the Location within the Map.
          */
         mapEntranceNormal(FSP: FullScreenPokemon, location: ILocation): void {
             FSP.addPlayer(
@@ -8969,7 +8986,10 @@ module FullScreenPokemon {
         }
 
         /**
+         * Map entrace Function used when player is added to the Map at the beginning 
+         * of play. Retrieves Character position from the previous save state.
          * 
+         * @param FSP
          */
         mapEntranceResume(FSP: FullScreenPokemon): void {
             var savedInfo: any = FSP.StateHolder.getChanges("player") || {};
@@ -10029,13 +10049,17 @@ module FullScreenPokemon {
         }
 
         /**
+         * Checks all members of an Array to see if a specified key exists within one of them.
          * 
+         * @param array   The Array being checked.
+         * @param key   The key being searched for.
+         * @returns Whether the key exists within the Array members.
          */
-        checkArrayMembersIndex(array: any[], index: string): boolean {
+        checkArrayMembersIndex(array: any[], key: string): boolean {
             var i: number;
 
             for (i = 0; i < array.length; i += 1) {
-                if (array[i][index]) {
+                if (array[i][key]) {
                     return true;
                 }
             }
@@ -10044,7 +10068,18 @@ module FullScreenPokemon {
         }
 
         /**
+         * Function to add a stackable item to an Array. If it already exists,
+         * the Function increases its value by count. Otherwise, it adds a new item
+         * to the Array.
          * 
+         * @param array   The Array containing the stackable items.
+         * @param title   The name of the stackable item to be added.
+         * @param count   The number of these stackable items.
+         * @param keyTitle   The key associated with the item's name.
+         *                   i.e "item"
+         * @param keyCount   The key associated with the item's count.
+         *                   i.e. "amount"
+         * @returns Whether the stackable item was newly added.
          */
         combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
             var object: any,

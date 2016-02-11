@@ -6452,7 +6452,9 @@ var FullScreenPokemon;
         /* Map entrances
         */
         /**
+         * Centers the current view of the Map based on scrollability.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreen = function (FSP) {
             switch (FSP.MapScreener.scrollability) {
@@ -6477,7 +6479,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Scrolls the game window horizontally until the Map is centered based on
+         * the Area.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenHorizontally = function (FSP) {
             var boundaries = FSP.MapScreener.boundaries, difference = FSP.MapScreener.width - boundaries.width;
@@ -6486,14 +6491,19 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Scrolls the game window vertically until the Map is centered based on
+         * the Area.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenVertically = function (FSP) {
             var boundaries = FSP.MapScreener.boundaries, difference = FSP.MapScreener.height - boundaries.height;
             FSP.scrollWindow(0, difference / -2);
         };
         /**
+         * Scrolls the game window horizontally until the Map is centered on the player.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenHorizontallyOnPlayer = function (FSP) {
             var difference = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
@@ -6502,7 +6512,9 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Scrolls the game window vertically until the Map is centered on the player.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenVerticallyOnPlayer = function (FSP) {
             var difference = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
@@ -6511,14 +6523,19 @@ var FullScreenPokemon;
             }
         };
         /**
+         * A blank Map entrance Function where no Character is placed.
          *
+         * @param FSP
          */
-        FullScreenPokemon.prototype.mapEntranceBlank = function (FSP, location) {
+        FullScreenPokemon.prototype.mapEntranceBlank = function (FSP) {
             FSP.addPlayer(0, 0);
             FSP.player.hidden = true;
         };
         /**
+         * Standard Map entrance Function. Character is placed based on specified Location.
          *
+         * @param FSP
+         * @param location   The name of the Location within the Map.
          */
         FullScreenPokemon.prototype.mapEntranceNormal = function (FSP, location) {
             FSP.addPlayer(location.xloc ? location.xloc * FSP.unitsize : 0, location.yloc ? location.yloc * FSP.unitsize : 0);
@@ -6537,7 +6554,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Map entrace Function used when player is added to the Map at the beginning
+         * of play. Retrieves Character position from the previous save state.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.mapEntranceResume = function (FSP) {
             var savedInfo = FSP.StateHolder.getChanges("player") || {};
@@ -7488,19 +7508,34 @@ var FullScreenPokemon;
             return FullScreenPokemon.prototype.stringOf(prefix ? prefix.toString() : "0", Math.max(0, size - String(num).length)) + num;
         };
         /**
+         * Checks all members of an Array to see if a specified key exists within one of them.
          *
+         * @param array   The Array being checked.
+         * @param key   The key being searched for.
+         * @returns Whether the key exists within the Array members.
          */
-        FullScreenPokemon.prototype.checkArrayMembersIndex = function (array, index) {
+        FullScreenPokemon.prototype.checkArrayMembersIndex = function (array, key) {
             var i;
             for (i = 0; i < array.length; i += 1) {
-                if (array[i][index]) {
+                if (array[i][key]) {
                     return true;
                 }
             }
             return false;
         };
         /**
+         * Function to add a stackable item to an Array. If it already exists,
+         * the Function increases its value by count. Otherwise, it adds a new item
+         * to the Array.
          *
+         * @param array   The Array containing the stackable items.
+         * @param title   The name of the stackable item to be added.
+         * @param count   The number of these stackable items.
+         * @param keyTitle   The key associated with the item's name.
+         *                   i.e "item"
+         * @param keyCount   The key associated with the item's count.
+         *                   i.e. "amount"
+         * @returns Whether the stackable item was newly added.
          */
         FullScreenPokemon.prototype.combineArrayMembers = function (array, title, count, keyTitle, keyCount) {
             var object, i;
