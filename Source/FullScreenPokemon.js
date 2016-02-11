@@ -2626,7 +2626,7 @@ var FullScreenPokemon;
          * Starts a Character roaming in random directions.
          *
          * @param thing   A Character to start roaming.
-         * @returns {boolean} Whether the time cycle should stop (thing is dead).
+         * @returns Whether the time cycle should stop (thing is dead).
          */
         FullScreenPokemon.prototype.activateCharacterRoaming = function (thing) {
             if (!thing.alive) {
@@ -4683,7 +4683,10 @@ var FullScreenPokemon;
         /* Outdoor cutscenes
         */
         /**
+         * Cutscene for when a trainer is encountered for battle.
          *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneTrainerSpottedExclamation = function (FSP, settings) {
             FSP.animateCharacterPreventWalking(FSP.player);
@@ -6200,7 +6203,9 @@ var FullScreenPokemon;
         /* Memory
         */
         /**
+         * Saves the positions of all Characters in the game.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.saveCharacterPositions = function (FSP) {
             var characters = FSP.GroupHolder.getGroup("Character"), character, id, i;
@@ -6211,7 +6216,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Saves the position of a certain Character.
          *
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
          */
         FullScreenPokemon.prototype.saveCharacterPosition = function (FSP, character, id) {
             FSP.StateHolder.addChange(id, "xloc", (character.left + FSP.MapScreener.left) / FSP.unitsize);
@@ -6219,7 +6228,8 @@ var FullScreenPokemon;
             FSP.StateHolder.addChange(id, "direction", character.direction);
         };
         /**
-         *
+         * Saves all persistant information about the
+         * current game state.
          */
         FullScreenPokemon.prototype.saveGame = function () {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), ticksRecorded = FSP.FPSAnalyzer.getNumRecorded();
@@ -6238,7 +6248,8 @@ var FullScreenPokemon;
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher), 49);
         };
         /**
-         *
+         * Saves current game state and downloads
+         * it onto the client's computer as a JSON file.
          */
         FullScreenPokemon.prototype.downloadSaveGame = function () {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), link = document.createElement("a");
@@ -6250,7 +6261,11 @@ var FullScreenPokemon;
             FSP.container.removeChild(link);
         };
         /**
+         * Adds an in-game item to the character's bag.
          *
+         * @param FSP
+         * @param item    The item being stored.
+         * @param amount   The quantity of this item being stored.
          */
         FullScreenPokemon.prototype.addItemToBag = function (FSP, item, amount) {
             if (amount === void 0) { amount = 1; }
@@ -6259,7 +6274,14 @@ var FullScreenPokemon;
         /* Map sets
         */
         /**
+         * Sets the game state to a new Map, resetting all Things and inputs in the
+         * process. The mod events are fired.
          *
+         * @param name   The name of the Map.
+         * @param location   The name of the Location within the Map.
+         * @param noEntrance    Whether or not an entry Function should
+         *                      be skipped (by default, false).
+         * @remarks Most of the work here is done by setLocation.
          */
         FullScreenPokemon.prototype.setMap = function (name, location, noEntrance) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), map;
@@ -6276,7 +6298,14 @@ var FullScreenPokemon;
                 || FSP.settings.maps.locationDefault, noEntrance);
         };
         /**
+         * Sets the game state to a Location within the current map, resetting all
+         * Things, inputs, the current Area, PixelRender, and MapScreener in the
+         * process. The Location's entry Function is called to bring a new Player
+         * into the game if specified. The mod events are fired.
          *
+         * @param name   The name of the Location within the Map.
+         * @param noEntrance   Whether or not an entry Function should
+         *                     be skipped (by default, false).
          */
         FullScreenPokemon.prototype.setLocation = function (name, noEntrance) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), location, theme;
@@ -6316,7 +6345,11 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Determines the in-game measurements of the
+         * boundaries of the current Area.
          *
+         * @param FSP
+         * @returns The boundaries of the current Area.
          */
         FullScreenPokemon.prototype.getAreaBoundariesReal = function (FSP) {
             var area = FSP.AreaSpawner.getArea();
@@ -6340,7 +6373,14 @@ var FullScreenPokemon;
             };
         };
         /**
+         * Determines the scrollable directions.
          *
+         * @param FSP
+         * @returns The direction(s) that are scrollable.
+         * @todo Strict type the returned string to a new IScrollability.
+         *       When TypeScript 1.8 is out of beta, we'll be able to use
+         *       string literals as types. This would be
+         *       "both" | "horizontal" | "vertical" | "none".
          */
         FullScreenPokemon.prototype.getScreenScrollability = function (FSP) {
             var area = FSP.AreaSpawner.getArea(), boundaries, width, height;
@@ -6372,9 +6412,13 @@ var FullScreenPokemon;
             return {};
         };
         /**
+         * Analyzes a PreThing to be placed in one of the
+         * cardinal directions of the current Map's boundaries
+         * (just outside of the current Area).
          *
-         *
-         * @remarks Direction is taken in by the .forEach call as the index. Clever.
+         * @param prething   A PreThing whose Thing is to be added to the game.
+         * @param direction   The cardinal direction the Character is facing.
+         * @remarks Direction is taken in by the .forEach call as the index.
          */
         FullScreenPokemon.prototype.mapAddAfter = function (prething, direction) {
             var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), MapsCreator = FSP.MapsCreator, AreaSpawner = FSP.AreaSpawner, prethings = AreaSpawner.getPreThings(), area = AreaSpawner.getArea(), map = AreaSpawner.getMap(), boundaries = FSP.AreaSpawner.getArea().boundaries;
@@ -6408,7 +6452,9 @@ var FullScreenPokemon;
         /* Map entrances
         */
         /**
+         * Centers the current view of the Map based on scrollability.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreen = function (FSP) {
             switch (FSP.MapScreener.scrollability) {
@@ -6433,7 +6479,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Scrolls the game window horizontally until the Map is centered based on
+         * the Area.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenHorizontally = function (FSP) {
             var boundaries = FSP.MapScreener.boundaries, difference = FSP.MapScreener.width - boundaries.width;
@@ -6442,14 +6491,19 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Scrolls the game window vertically until the Map is centered based on
+         * the Area.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenVertically = function (FSP) {
             var boundaries = FSP.MapScreener.boundaries, difference = FSP.MapScreener.height - boundaries.height;
             FSP.scrollWindow(0, difference / -2);
         };
         /**
+         * Scrolls the game window horizontally until the Map is centered on the player.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenHorizontallyOnPlayer = function (FSP) {
             var difference = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
@@ -6458,7 +6512,9 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Scrolls the game window vertically until the Map is centered on the player.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.centerMapScreenVerticallyOnPlayer = function (FSP) {
             var difference = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
@@ -6467,14 +6523,19 @@ var FullScreenPokemon;
             }
         };
         /**
+         * A blank Map entrance Function where no Character is placed.
          *
+         * @param FSP
          */
-        FullScreenPokemon.prototype.mapEntranceBlank = function (FSP, location) {
+        FullScreenPokemon.prototype.mapEntranceBlank = function (FSP) {
             FSP.addPlayer(0, 0);
             FSP.player.hidden = true;
         };
         /**
+         * Standard Map entrance Function. Character is placed based on specified Location.
          *
+         * @param FSP
+         * @param location   The name of the Location within the Map.
          */
         FullScreenPokemon.prototype.mapEntranceNormal = function (FSP, location) {
             FSP.addPlayer(location.xloc ? location.xloc * FSP.unitsize : 0, location.yloc ? location.yloc * FSP.unitsize : 0);
@@ -6493,7 +6554,10 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Map entrace Function used when player is added to the Map at the beginning
+         * of play. Retrieves Character position from the previous save state.
          *
+         * @param FSP
          */
         FullScreenPokemon.prototype.mapEntranceResume = function (FSP) {
             var savedInfo = FSP.StateHolder.getChanges("player") || {};
@@ -7444,19 +7508,34 @@ var FullScreenPokemon;
             return FullScreenPokemon.prototype.stringOf(prefix ? prefix.toString() : "0", Math.max(0, size - String(num).length)) + num;
         };
         /**
+         * Checks all members of an Array to see if a specified key exists within one of them.
          *
+         * @param array   The Array being checked.
+         * @param key   The key being searched for.
+         * @returns Whether the key exists within the Array members.
          */
-        FullScreenPokemon.prototype.checkArrayMembersIndex = function (array, index) {
+        FullScreenPokemon.prototype.checkArrayMembersIndex = function (array, key) {
             var i;
             for (i = 0; i < array.length; i += 1) {
-                if (array[i][index]) {
+                if (array[i][key]) {
                     return true;
                 }
             }
             return false;
         };
         /**
+         * Function to add a stackable item to an Array. If it already exists,
+         * the Function increases its value by count. Otherwise, it adds a new item
+         * to the Array.
          *
+         * @param array   The Array containing the stackable items.
+         * @param title   The name of the stackable item to be added.
+         * @param count   The number of these stackable items.
+         * @param keyTitle   The key associated with the item's name.
+         *                   i.e "item"
+         * @param keyCount   The key associated with the item's count.
+         *                   i.e. "amount"
+         * @returns Whether the stackable item was newly added.
          */
         FullScreenPokemon.prototype.combineArrayMembers = function (array, title, count, keyTitle, keyCount) {
             var object, i;

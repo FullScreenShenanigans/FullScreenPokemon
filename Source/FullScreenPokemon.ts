@@ -6286,7 +6286,10 @@ module FullScreenPokemon {
         */
 
         /**
+         * Cutscene for when a trainer is encountered for battle.
          * 
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
          */
         cutsceneTrainerSpottedExclamation(FSP: FullScreenPokemon, settings: any): void {
             FSP.animateCharacterPreventWalking(FSP.player);
@@ -8520,7 +8523,9 @@ module FullScreenPokemon {
         */
 
         /**
-         * 
+         * Saves the positions of all Characters in the game.
+         *
+         * @param FSP
          */
         saveCharacterPositions(FSP: FullScreenPokemon): void {
             var characters: ICharacter[] = <ICharacter[]>FSP.GroupHolder.getGroup("Character"),
@@ -8537,7 +8542,11 @@ module FullScreenPokemon {
         }
 
         /**
+         * Saves the position of a certain Character.
          * 
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
          */
         saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
             FSP.StateHolder.addChange(
@@ -8555,7 +8564,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * 
+         * Saves all persistant information about the
+         * current game state.
          */
         saveGame(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8582,7 +8592,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * 
+         * Saves current game state and downloads
+         * it onto the client's computer as a JSON file.
          */
         downloadSaveGame(): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8604,7 +8615,11 @@ module FullScreenPokemon {
         }
 
         /**
+         * Adds an in-game item to the character's bag.
          * 
+         * @param FSP
+         * @param item    The item being stored.
+         * @param amount   The quantity of this item being stored.
          */
         addItemToBag(FSP: FullScreenPokemon, item: string, amount: number = 1): void {
             FSP.combineArrayMembers(
@@ -8620,7 +8635,14 @@ module FullScreenPokemon {
         */
 
         /**
+         * Sets the game state to a new Map, resetting all Things and inputs in the
+         * process. The mod events are fired.
          * 
+         * @param name   The name of the Map.
+         * @param location   The name of the Location within the Map.
+         * @param noEntrance    Whether or not an entry Function should
+         *                      be skipped (by default, false).
+         * @remarks Most of the work here is done by setLocation.
          */
         setMap(name: string, location?: string, noEntrance?: boolean): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8647,7 +8669,14 @@ module FullScreenPokemon {
         }
 
         /**
+         * Sets the game state to a Location within the current map, resetting all
+         * Things, inputs, the current Area, PixelRender, and MapScreener in the
+         * process. The Location's entry Function is called to bring a new Player
+         * into the game if specified. The mod events are fired.
          * 
+         * @param name   The name of the Location within the Map.
+         * @param noEntrance   Whether or not an entry Function should
+         *                     be skipped (by default, false).
          */
         setLocation(name: string, noEntrance?: boolean): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8703,7 +8732,11 @@ module FullScreenPokemon {
         }
 
         /**
+         * Determines the in-game measurements of the
+         * boundaries of the current Area.
          * 
+         * @param FSP
+         * @returns The boundaries of the current Area.
          */
         getAreaBoundariesReal(FSP: FullScreenPokemon): IAreaBoundaries {
             var area: IArea = <IArea>FSP.AreaSpawner.getArea();
@@ -8730,7 +8763,14 @@ module FullScreenPokemon {
         }
 
         /**
+         * Determines the scrollable directions.
          * 
+         * @param FSP
+         * @returns The direction(s) that are scrollable.
+         * @todo Strict type the returned string to a new IScrollability.
+         *       When TypeScript 1.8 is out of beta, we'll be able to use 
+         *       string literals as types. This would be 
+         *       "both" | "horizontal" | "vertical" | "none".
          */
         getScreenScrollability(FSP: FullScreenPokemon): string {
             var area: IArea = <IArea>FSP.AreaSpawner.getArea(),
@@ -8767,9 +8807,13 @@ module FullScreenPokemon {
         }
 
         /**
+         * Analyzes a PreThing to be placed in one of the
+         * cardinal directions of the current Map's boundaries
+         * (just outside of the current Area).
          * 
-         * 
-         * @remarks Direction is taken in by the .forEach call as the index. Clever.
+         * @param prething   A PreThing whose Thing is to be added to the game.
+         * @param direction   The cardinal direction the Character is facing.
+         * @remarks Direction is taken in by the .forEach call as the index.
          */
         mapAddAfter(prething: IPreThing, direction: Direction): void {
             var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
@@ -8814,7 +8858,9 @@ module FullScreenPokemon {
         */
 
         /**
+         * Centers the current view of the Map based on scrollability.
          * 
+         * @param FSP
          */
         centerMapScreen(FSP: FullScreenPokemon): void {
             switch (FSP.MapScreener.scrollability) {
@@ -8844,7 +8890,10 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window horizontally until the Map is centered based on
+         * the Area.
          * 
+         * @param FSP
          */
         centerMapScreenHorizontally(FSP: FullScreenPokemon): void {
             var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
@@ -8856,7 +8905,10 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window vertically until the Map is centered based on
+         * the Area.
          * 
+         * @param FSP
          */
         centerMapScreenVertically(FSP: FullScreenPokemon): void {
             var boundaries: IAreaBoundaries = FSP.MapScreener.boundaries,
@@ -8866,7 +8918,9 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window horizontally until the Map is centered on the player.
          * 
+         * @param FSP
          */
         centerMapScreenHorizontallyOnPlayer(FSP: FullScreenPokemon): void {
             var difference: number = (FSP.getMidX(FSP.player) - FSP.MapScreener.middleX) | 0;
@@ -8877,7 +8931,9 @@ module FullScreenPokemon {
         }
 
         /**
+         * Scrolls the game window vertically until the Map is centered on the player.
          * 
+         * @param FSP
          */
         centerMapScreenVerticallyOnPlayer(FSP: FullScreenPokemon): void {
             var difference: number = (FSP.getMidY(FSP.player) - FSP.MapScreener.middleY) | 0;
@@ -8888,16 +8944,21 @@ module FullScreenPokemon {
         }
 
         /**
+         * A blank Map entrance Function where no Character is placed.
          * 
+         * @param FSP
          */
-        mapEntranceBlank(FSP: FullScreenPokemon, location: ILocation): void {
+        mapEntranceBlank(FSP: FullScreenPokemon): void {
             FSP.addPlayer(0, 0);
             FSP.player.hidden = true;
         }
 
 
         /**
+         * Standard Map entrance Function. Character is placed based on specified Location. 
          * 
+         * @param FSP
+         * @param location   The name of the Location within the Map.
          */
         mapEntranceNormal(FSP: FullScreenPokemon, location: ILocation): void {
             FSP.addPlayer(
@@ -8925,7 +8986,10 @@ module FullScreenPokemon {
         }
 
         /**
+         * Map entrace Function used when player is added to the Map at the beginning 
+         * of play. Retrieves Character position from the previous save state.
          * 
+         * @param FSP
          */
         mapEntranceResume(FSP: FullScreenPokemon): void {
             var savedInfo: any = FSP.StateHolder.getChanges("player") || {};
@@ -9985,13 +10049,17 @@ module FullScreenPokemon {
         }
 
         /**
+         * Checks all members of an Array to see if a specified key exists within one of them.
          * 
+         * @param array   The Array being checked.
+         * @param key   The key being searched for.
+         * @returns Whether the key exists within the Array members.
          */
-        checkArrayMembersIndex(array: any[], index: string): boolean {
+        checkArrayMembersIndex(array: any[], key: string): boolean {
             var i: number;
 
             for (i = 0; i < array.length; i += 1) {
-                if (array[i][index]) {
+                if (array[i][key]) {
                     return true;
                 }
             }
@@ -10000,7 +10068,18 @@ module FullScreenPokemon {
         }
 
         /**
+         * Function to add a stackable item to an Array. If it already exists,
+         * the Function increases its value by count. Otherwise, it adds a new item
+         * to the Array.
          * 
+         * @param array   The Array containing the stackable items.
+         * @param title   The name of the stackable item to be added.
+         * @param count   The number of these stackable items.
+         * @param keyTitle   The key associated with the item's name.
+         *                   i.e "item"
+         * @param keyCount   The key associated with the item's count.
+         *                   i.e. "amount"
+         * @returns Whether the stackable item was newly added.
          */
         combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
             var object: any,
