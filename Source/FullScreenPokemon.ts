@@ -6300,7 +6300,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for when trainer approaches player after being encountered. 
+         * Cutscene for when a trainer approaches the player after being encountered. 
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6330,7 +6330,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for trainer introduction after player approached.
+         * Cutscene for a trainer introduction after the player is approached.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6341,7 +6341,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for nurse's welcome at Pokemon Center.
+         * Cutscene for a nurse's welcome at the Pokemon Center.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene. 
@@ -6413,7 +6413,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for placing pokeballs into healing machine.
+         * Cutscene for placing Pokeballs into the healing machine.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene. 
@@ -6453,7 +6453,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Pokemon being healed in healing machine.
+         * Cutscene for Pokemon being healed in the healing machine.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6494,7 +6494,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for when Pokemon have finished healing.
+         * Cutscene for when the Pokemon have finished healing.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6546,7 +6546,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for speaking to PokeMart cashier.
+         * Cutscene for speaking to a PokeMart cashier.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6567,7 +6567,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene showing PokeMart action options.
+         * Cutscene showing the PokeMart action options.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6595,7 +6595,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for PokeMart item menu.
+         * Cutscene for the PokeMart item menu.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6773,8 +6773,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for carrying out PokeMart transaction. Can either confirm or deny
-         * purchase based on player's total money. 
+         * Cutscene for carrying out a PokeMart transaction. Can either confirm or deny
+         * the purchase based on the player's total money. 
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6807,8 +6807,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for when the player does not have enough money for PokeMart
-         * purchase.
+         * Cutscene for when the player does not have enough money for the 
+         * PokeMart purchase.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6851,7 +6851,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player choosing to stop shopping.
+         * Cutscene for the player choosing to stop shopping.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6874,7 +6874,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for beginning of game introduction.
+         * Cutscene for the beginning of the game introduction.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6909,7 +6909,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Oak introduction.
+         * Cutscene for Oak's introduction.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6928,7 +6928,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Oak introduction exit.
+         * Cutscene for Oak's introduction exit.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6954,7 +6954,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for transitioning to picture of Nidorino.
+         * Cutscene for transitioning Nidorino onto the screen.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -6990,7 +6990,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for showing the explanation of the Pokemon world.
+         * Cutscene for showing an explanation of the Pokemon world.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7042,7 +7042,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene asking player to enter his/her name.
+         * Cutscene asking the player to enter his/her name.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7059,7 +7059,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for sliding player over to show name options.
+         * Cutscene for sliding the player over to show the naming options.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7074,7 +7074,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for showing player name option menu.
+         * Cutscene for showing the player naming option menu.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7107,7 +7107,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player selecting Blue, Gary, or John.
+         * Cutscene for the player selecting Blue, Gary, or John.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7126,7 +7126,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player choosing to customize a new name.
+         * Cutscene for the player choosing to customize a new name.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7170,7 +7170,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene fading out player.
+         * Cutscene fading the player out.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7242,7 +7242,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for sliding the rival over to show rival name options.
+         * Cutscene for sliding the rival over to show the rival naming options.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7257,7 +7257,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for showing rival name option menu.
+         * Cutscene for showing the rival naming option menu.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7290,7 +7290,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for choosing to name rival Red, Ash, or Jack.
+         * Cutscene for choosing to name the rival Red, Ash, or Jack.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7350,7 +7350,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene fading out the rival.
+         * Cutscene fading the rival out.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7376,7 +7376,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for fading in the player.
+         * Cutscene for fading the player in.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7405,7 +7405,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for last part of introduction.
+         * Cutscene for the last part of the introduction.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene. 
@@ -7461,7 +7461,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for completing the introduction and fading out.
+         * Cutscene for completing the introduction and fading it out.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7503,7 +7503,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for walking into grass before receiving Pokemon.
+         * Cutscene for walking into the grass before receiving a Pokemon.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7542,7 +7542,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene showing player exclamation.
+         * Cutscene showing the exclamation point over the player's head.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7593,7 +7593,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Oak telling player to keep out of the grass.
+         * Cutscene for Oak telling the player to keep out of the grass.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7612,7 +7612,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player following Oak to the Professor's lab.
+         * Cutscene for the player following Oak to the Professor's lab.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7666,7 +7666,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Oak offering Pokemon to player.
+         * Cutscene for Oak offering a Pokemon to the player.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7715,7 +7715,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival complaining to Oak.
+         * Cutscene for the rival complaining to Oak.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7734,7 +7734,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Oak offering player to pick a Pokemon.
+         * Cutscene for Oak telling the player to pick a Pokemon.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7758,7 +7758,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival protesting to Oak.
+         * Cutscene for the rival protesting to Oak.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7789,7 +7789,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for Oak responding to rival's protest.
+         * Cutscene for Oak responding to the rival's protest.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7829,7 +7829,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player checking pokeball.
+         * Cutscene for the player checking a Pokeball.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7873,7 +7873,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for confirming if player wants to keep chosen Pokemon.
+         * Cutscene for confirming the player wants to keep the chosen Pokemon.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7907,7 +7907,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player receiving his Pokemon.
+         * Cutscene for the player receiving his Pokemon.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene. 
@@ -7955,7 +7955,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for allowing player to choose Pokemon's nickname. 
+         * Cutscene for allowing the player to choose his Pokemon's nickname. 
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -7988,7 +7988,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player finishing naming process.
+         * Cutscene forthe player finishing the naming process.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8004,7 +8004,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival selecting his Pokemon.
+         * Cutscene for the rival selecting his Pokemon.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8054,7 +8054,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival receiving his Pokemon.
+         * Cutscene for the rival receiving his Pokemon.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8090,7 +8090,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival challenging player to Pokemon battle.
+         * Cutscene for the rival challenging the player to a Pokemon battle.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8123,7 +8123,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for showing lab after battle ends.
+         * Cutscene for showing the lab after the battle ends.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8135,7 +8135,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival's comment after losing the battle.
+         * Cutscene for the rival's comment after losing the battle.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8156,7 +8156,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival telling Oak he is leaving.
+         * Cutscene for the rival telling Oak he is leaving.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8173,7 +8173,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival leaving lab and Oak giving player advice.
+         * Cutscene for the rival leaving the lab and Oak giving the player advice.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8206,7 +8206,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for the battle between player and rival.
+         * Cutscene for the battle between the player and the rival.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8271,7 +8271,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for the PokeMart clerk calling player to pick up parcel.
+         * Cutscene for the PokeMart clerk callingthe player to pick up Oak's parcel.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8291,7 +8291,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player walking to the counter when picking up the parcel.
+         * Cutscene for the player walking to the counter when picking up the parcel.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8309,7 +8309,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player receiving the parcel from the PokeMart clerk.
+         * Cutscene for the player receiving the parcel from the PokeMart clerk.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8383,7 +8383,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for when rival interrupts Oak and the player.
+         * Cutscene for when the rival interrupts Oak and the player.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8401,7 +8401,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival walking up to Oak and the player.
+         * Cutscene for the rival walking up to Oak and the player.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8425,7 +8425,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival asking Oak why he was called.
+         * Cutscene for the rival asking Oak why he was called.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8551,7 +8551,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival accepting the Pokedex and challenge to complete Oak's goal. 
+         * Cutscene for the rival accepting the Pokedex and challenge to complete Oak's goal. 
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8619,7 +8619,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for player receiving the Town Map. 
+         * Cutscene for the player receiving the Town Map. 
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8655,7 +8655,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for old man battling Weedle.
+         * Cutscene for the old man battling a Weedle.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene. 
@@ -8694,7 +8694,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for encountering rival on Route 22.
+         * Cutscene for encountering the rival on Route 22.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -8735,7 +8735,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Cutscene for rival talking to player before battle.
+         * Cutscene for the rival talking to the player before the battle.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene.
@@ -9272,7 +9272,10 @@ module FullScreenPokemon {
         */
 
         /**
-         * 
+         * Macro Function used to create a ________.
+         *
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a __________.
          */
         macroCheckered(reference: any): any[] {
             var xStart: number = reference.x || 0,
@@ -9312,10 +9315,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a body of water.
+         * Macro Function used to create a body of water.
          *
-         * @param reference
-         * @returns The dimensions of the body of water.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a body of water.
          */
         macroWater(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -9371,10 +9374,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a house.
+         * Macro Function used to create a house.
          *
-         * @param reference
-         * @returns The size and height of the house as well as the door position.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a house.
          */
         macroHouse(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -9472,10 +9475,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a large house.
+         * Macro Function used to create a large house.
          *
-         * @param reference
-         * @returns The size and height of the house as well as the door position.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a large house.
          */
         macroHouseLarge(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -9594,10 +9597,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a gym.
+         * Macro Function used to create a gym.
          *
-         * @param reference
-         * @returns The gym as a HouseLarge modified to be a gym.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a gym.
          */
         macroGym(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -9630,10 +9633,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a building.
+         * Macro Function used to create a building.
          *
-         * @param reference
-         * @returns The size and height of the building as well as the door position.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a building.
          */
         macroBuilding(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -9772,10 +9775,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a mountain.
+         * Macro Function used to create a mountain.
          *
-         * @param reference
-         * @returns The size and height of the mountain as well as the cave position.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a mountain.
          */
         macroMountain(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -9992,10 +9995,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a Pokemon Center.
+         * Macro Function used to create a Pokemon Center.
          *
-         * @param reference
-         * @returns A pokemon center with a customized interior and possible trainer.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object with specifications to create a Pokemon Center.
          */
         macroPokeCenter(reference: any): any[] {
             var x: number = reference.x || 0,
@@ -10174,10 +10177,10 @@ module FullScreenPokemon {
         }
 
         /**
-         * Macro function used to create a PokeMart.
+         * Macro Function used to create a PokeMart.
          *
-         * @param reference
-         * @returns A PokeMart.
+         * @param reference   The direct JSON object from the map creation array.
+         * @returns A JSON object containing specifications for a PokeMart.
          */
         macroPokeMart(reference: any): any[] {
             var x: number = reference.x || 0,
