@@ -9272,10 +9272,10 @@ module FullScreenPokemon {
         */
 
         /**
-         * Macro Function used to create a ________.
+         * Macro Function used to create an alternating pattern of Things.
          *
          * @param reference   The direct JSON object from the map creation array.
-         * @returns A JSON object with specifications to create a __________.
+         * @returns A JSON object with specifications to create an alternating pattern of Things.
          */
         macroCheckered(reference: any): any[] {
             var xStart: number = reference.x || 0,
