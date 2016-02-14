@@ -2853,8 +2853,7 @@ var FullScreenPokemon;
          * Closes the Pause menu.
          */
         FullScreenPokemon.prototype.closePauseMenu = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
-            FSP.MenuGrapher.deleteMenu("Pause");
+            this.MenuGrapher.deleteMenu("Pause");
         };
         /**
          * Toggles whether the Pause menu is open. If there is an active menu, A
@@ -2879,15 +2878,16 @@ var FullScreenPokemon;
          * Opens the Pokedex menu.
          */
         FullScreenPokemon.prototype.openPokedexMenu = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.getPokedexListingsOrdered(FSP), currentListing;
-            FSP.MenuGrapher.createMenu("Pokedex");
-            FSP.MenuGrapher.addMenuList("Pokedex", {
+            var _this = this;
+            var listings = this.getPokedexListingsOrdered(this), currentListing;
+            this.MenuGrapher.createMenu("Pokedex");
+            this.MenuGrapher.addMenuList("Pokedex", {
                 "options": listings.map(function (listing, i) {
-                    var characters = FSP.makeDigit(i + 1, 3, 0).split(""), output = {
+                    var characters = _this.makeDigit(i + 1, 3, 0).split(""), output = {
                         "text": characters,
                         "callback": function () {
                             currentListing = listing;
-                            FSP.MenuGrapher.setActiveMenu("PokedexOptions");
+                            _this.MenuGrapher.setActiveMenu("PokedexOptions");
                         }
                     };
                     characters.push({
@@ -2919,28 +2919,28 @@ var FullScreenPokemon;
                     return output;
                 })
             });
-            FSP.MenuGrapher.setActiveMenu("Pokedex");
-            FSP.MenuGrapher.createMenu("PokedexOptions");
-            FSP.MenuGrapher.addMenuList("PokedexOptions", {
+            this.MenuGrapher.setActiveMenu("Pokedex");
+            this.MenuGrapher.createMenu("PokedexOptions");
+            this.MenuGrapher.addMenuList("PokedexOptions", {
                 "options": [
                     {
                         "text": "DATA",
                         "callback": function () {
-                            FSP.openPokedexListing(currentListing.title, FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher, "PokedexOptions"));
+                            _this.openPokedexListing(currentListing.title, _this.MenuGrapher.setActiveMenu.bind(_this.MenuGrapher, "PokedexOptions"));
                         }
                     }, {
                         "text": "CRY"
                     }, {
                         "text": "AREA",
                         "callback": function () {
-                            FSP.openTownMapMenu({
+                            _this.openTownMapMenu({
                                 "backMenu": "PokedexOptions"
                             });
-                            FSP.showTownMapPokemonLocations(currentListing.title);
+                            _this.showTownMapPokemonLocations(currentListing.title);
                         }
                     }, {
                         "text": "QUIT",
-                        "callback": FSP.MenuGrapher.registerB
+                        "callback": this.MenuGrapher.registerB
                     }
                 ]
             });
@@ -2949,24 +2949,23 @@ var FullScreenPokemon;
          * Opens the context menu within the Pokedex menu for the selected Pokemon.
          */
         FullScreenPokemon.prototype.openPokemonMenuContext = function (settings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
-            FSP.MenuGrapher.createMenu("PokemonMenuContext", {
+            this.MenuGrapher.createMenu("PokemonMenuContext", {
                 "backMenu": "Pokemon"
             });
-            FSP.MenuGrapher.addMenuList("PokemonMenuContext", {
+            this.MenuGrapher.addMenuList("PokemonMenuContext", {
                 "options": [
                     {
                         "text": "STATS",
-                        "callback": FSP.openPokemonMenuStats.bind(FSP, settings.pokemon)
+                        "callback": this.openPokemonMenuStats.bind(this, settings.pokemon)
                     }, {
                         "text": "SWITCH",
                         "callback": settings.onSwitch
                     }, {
                         "text": "CANCEL",
-                        "callback": FSP.MenuGrapher.registerB
+                        "callback": this.MenuGrapher.registerB
                     }]
             });
-            FSP.MenuGrapher.setActiveMenu("PokemonMenuContext");
+            this.MenuGrapher.setActiveMenu("PokemonMenuContext");
         };
         /**
          * Opens a statistics menu for a Pokemon.
@@ -2974,13 +2973,13 @@ var FullScreenPokemon;
          * @param pokemon   A Pokemon to show statistics of.
          */
         FullScreenPokemon.prototype.openPokemonMenuStats = function (pokemon) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), schemas = FSP.MathDecider.getConstant("pokemon"), schema = schemas[pokemon.title.join("")], barWidth = 25, health = FSP.MathDecider.compute("widthHealthBar", barWidth, pokemon.HP, pokemon.HPNormal);
-            FSP.MenuGrapher.createMenu("PokemonMenuStats", {
+            var schemas = this.MathDecider.getConstant("pokemon"), schema = schemas[pokemon.title.join("")], barWidth = 25, health = this.MathDecider.compute("widthHealthBar", barWidth, pokemon.HP, pokemon.HPNormal);
+            this.MenuGrapher.createMenu("PokemonMenuStats", {
                 "backMenu": "PokemonMenuContext",
-                "callback": FSP.openPokemonMenuStatsSecondary.bind(FSP, pokemon),
+                "callback": this.openPokemonMenuStatsSecondary.bind(this, pokemon),
                 "container": "Pokemon"
             });
-            FSP.openPokemonLevelUpStats({
+            this.openPokemonLevelUpStats({
                 "pokemon": pokemon,
                 "container": "PokemonMenuStats",
                 "size": {
@@ -2997,21 +2996,21 @@ var FullScreenPokemon;
                 },
                 "textXOffset": 4
             });
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsNumber", FSP.makeDigit(schema.number, 3, 0));
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.makeDigit(schema.number, 3, 0));
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
             if (pokemon.types.length >= 2) {
-                FSP.MenuGrapher.createMenu("PokemonMenuStatsType2");
-                FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
+                this.MenuGrapher.createMenu("PokemonMenuStatsType2");
+                this.MenuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
             }
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsOT", [
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsOT", [
                 "%%%%%%%PLAYER%%%%%%%"
             ]);
-            FSP.MenuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
+            this.MenuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
                 "type": "thing",
                 "thing": "LightGraySquare",
                 "position": {
@@ -3027,7 +3026,7 @@ var FullScreenPokemon;
                     "hidden": health === 0
                 }
             });
-            FSP.MenuGrapher.createMenuThing("PokemonMenuStats", {
+            this.MenuGrapher.createMenuThing("PokemonMenuStats", {
                 "type": "thing",
                 "thing": pokemon.title.join("") + "Front",
                 "args": {
@@ -3041,7 +3040,7 @@ var FullScreenPokemon;
                     }
                 }
             });
-            FSP.MenuGrapher.setActiveMenu("PokemonMenuStats");
+            this.MenuGrapher.setActiveMenu("PokemonMenuStats");
         };
         /**
          * Opens the LevelUpStats menu for a Pokemon to view its statistics.
@@ -3049,21 +3048,21 @@ var FullScreenPokemon;
          * @param settings   Settings to open the menu.
          */
         FullScreenPokemon.prototype.openPokemonLevelUpStats = function (settings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = settings.pokemon, statistics = FSP.MathDecider.getConstant("statisticNamesDisplayed"), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, top, left, i;
+            var pokemon = settings.pokemon, statistics = this.MathDecider.getConstant("statisticNamesDisplayed"), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, top, left, i;
             // A copy of statistics is used to not modify the original constant
             statistics = [].slice.call(statistics);
             for (i = 0; i < numStatistics; i += 1) {
-                statistics.push(FSP.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
+                statistics.push(this.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
                 statistics[i] = statistics[i].toUpperCase();
             }
-            FSP.MenuGrapher.createMenu("LevelUpStats", {
+            this.MenuGrapher.createMenu("LevelUpStats", {
                 "container": settings.container,
                 "size": settings.size,
                 "position": settings.position || {
                     "horizontal": "center",
                     "vertical": "center"
                 },
-                "callback": FSP.MenuGrapher.deleteMenu.bind(FSP.MenuGrapher, "LevelUpStats"),
+                "callback": this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "LevelUpStats"),
                 "onMenuDelete": settings.onMenuDelete,
                 "childrenSchemas": statistics.map(function (text, i) {
                     if (i < numStatistics) {
@@ -3093,7 +3092,8 @@ var FullScreenPokemon;
          * @param pokemon   The Pokemon to open the menu for.
          */
         FullScreenPokemon.prototype.openPokemonMenuStatsSecondary = function (pokemon) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), options = pokemon.moves.map(function (move) {
+            var _this = this;
+            var options = pokemon.moves.map(function (move) {
                 var characters = [" "], output = {
                     "text": characters
                 };
@@ -3111,9 +3111,9 @@ var FullScreenPokemon;
                     "command": true,
                     "y": -.5
                 });
-                characters.push.apply(characters, FSP.makeDigit(move.remaining, 2, " ").split(""));
+                characters.push.apply(characters, _this.makeDigit(move.remaining, 2, " ").split(""));
                 characters.push("/");
-                characters.push.apply(characters, FSP.makeDigit(FSP.MathDecider.getConstant("moves")[move.title].PP, 2, " ").split(""));
+                characters.push.apply(characters, _this.makeDigit(_this.MathDecider.getConstant("moves")[move.title].PP, 2, " ").split(""));
                 characters.push({
                     "command": true,
                     "x": -75,
@@ -3138,15 +3138,15 @@ var FullScreenPokemon;
                     ]
                 });
             }
-            FSP.MenuGrapher.createMenu("PokemonMenuStatsExperience");
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsExperience", FSP.makeDigit(pokemon.experience.current, 10, "\t"));
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsExperienceFrom", FSP.makeDigit(pokemon.experience.remaining, 3, "\t"));
-            FSP.MenuGrapher.addMenuDialog("PokemonMenuStatsExperienceNext", pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
-            FSP.MenuGrapher.createMenu("PokemonMenuStatsMoves");
-            FSP.MenuGrapher.addMenuList("PokemonMenuStatsMoves", {
+            this.MenuGrapher.createMenu("PokemonMenuStatsExperience");
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsExperience", this.makeDigit(pokemon.experience.current, 10, "\t"));
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsExperienceFrom", this.makeDigit(pokemon.experience.remaining, 3, "\t"));
+            this.MenuGrapher.addMenuDialog("PokemonMenuStatsExperienceNext", pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
+            this.MenuGrapher.createMenu("PokemonMenuStatsMoves");
+            this.MenuGrapher.addMenuList("PokemonMenuStatsMoves", {
                 "options": options
             });
-            FSP.MenuGrapher.getMenu("PokemonMenuStats").callback = FSP.MenuGrapher.deleteMenu.bind(FSP.MenuGrapher);
+            this.MenuGrapher.getMenu("PokemonMenuStats").callback = this.MenuGrapher.deleteMenu.bind(this.MenuGrapher);
         };
         /**
          * Opens a Pokedex listing for a Pokemon.
@@ -3155,36 +3155,37 @@ var FullScreenPokemon;
          * @param callback   A callback for when the menu is closed.
          */
         FullScreenPokemon.prototype.openPokedexListing = function (title, callback, menuSettings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), pokemon = FSP.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function () {
+            var _this = this;
+            var pokemon = this.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function (FSP) {
                 FSP.MenuGrapher.deleteMenu("PokedexListing");
                 if (callback) {
                     callback();
                 }
             };
-            FSP.MenuGrapher.createMenu("PokedexListing", menuSettings);
-            FSP.MenuGrapher.createMenuThing("PokedexListingSprite", {
+            this.MenuGrapher.createMenu("PokedexListing", menuSettings);
+            this.MenuGrapher.createMenuThing("PokedexListingSprite", {
                 "thing": title.join("") + "Front",
                 "type": "thing",
                 "args": {
                     "flipHoriz": true
                 }
             });
-            FSP.MenuGrapher.addMenuDialog("PokedexListingName", [[title]]);
-            FSP.MenuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
-            FSP.MenuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
-            FSP.MenuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
-            FSP.MenuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
-            FSP.MenuGrapher.addMenuDialog("PokedexListingNumber", FSP.makeDigit(pokemon.number, 3, "0"));
-            FSP.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[0], function () {
+            this.MenuGrapher.addMenuDialog("PokedexListingName", [[title]]);
+            this.MenuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
+            this.MenuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
+            this.MenuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
+            this.MenuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
+            this.MenuGrapher.addMenuDialog("PokedexListingNumber", this.makeDigit(pokemon.number, 3, "0"));
+            this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[0], function () {
                 if (pokemon.info.length < 2) {
-                    onCompletion();
+                    onCompletion(_this);
                     return;
                 }
-                FSP.MenuGrapher.createMenu("PokedexListingInfo");
-                FSP.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
-                FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
+                _this.MenuGrapher.createMenu("PokedexListingInfo");
+                _this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion(_this));
+                _this.MenuGrapher.setActiveMenu("PokedexListingInfo");
             });
-            FSP.MenuGrapher.setActiveMenu("PokedexListingInfo");
+            this.MenuGrapher.setActiveMenu("PokedexListingInfo");
         };
         /**
          * Opens a Pokemon menu for the Pokemon in the player's party.
@@ -3192,17 +3193,18 @@ var FullScreenPokemon;
          * @param settings   Custom attributes to apply to the menu.
          */
         FullScreenPokemon.prototype.openPokemonMenu = function (settings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), listings = FSP.ItemsHolder.getItem("PokemonInParty"), references = FSP.MathDecider.getConstant("pokemon");
+            var _this = this;
+            var listings = this.ItemsHolder.getItem("PokemonInParty"), references = this.MathDecider.getConstant("pokemon");
             if (!listings || !listings.length) {
                 return;
             }
-            FSP.MenuGrapher.createMenu("Pokemon", settings);
-            FSP.MenuGrapher.addMenuList("Pokemon", {
+            this.MenuGrapher.createMenu("Pokemon", settings);
+            this.MenuGrapher.addMenuList("Pokemon", {
                 "options": listings.map(function (listing, i) {
-                    var sprite = references[listing.title.join("")].sprite + "Pokemon", barWidth = 25, health = FSP.MathDecider.compute("widthHealthBar", barWidth, listing.HP, listing.HPNormal);
+                    var sprite = references[listing.title.join("")].sprite + "Pokemon", barWidth = 25, health = _this.MathDecider.compute("widthHealthBar", barWidth, listing.HP, listing.HPNormal);
                     return {
                         "text": listing.title,
-                        "callback": FSP.openPokemonMenuContext.bind(FSP, {
+                        "callback": _this.openPokemonMenuContext.bind(_this, {
                             "pokemon": listing
                         }),
                         "things": [
@@ -3273,7 +3275,7 @@ var FullScreenPokemon;
                     };
                 })
             });
-            FSP.MenuGrapher.setActiveMenu("Pokemon");
+            this.MenuGrapher.setActiveMenu("Pokemon");
         };
         /**
          * Opens the Items menu for the items in the player's inventory.
@@ -3282,9 +3284,10 @@ var FullScreenPokemon;
          *                   to optionally override the player's inventory.
          */
         FullScreenPokemon.prototype.openItemsMenu = function (settings) {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this), items = settings.items || FSP.ItemsHolder.getItem("items");
-            FSP.MenuGrapher.createMenu("Items", settings);
-            FSP.MenuGrapher.addMenuList("Items", {
+            var _this = this;
+            var items = settings.items || this.ItemsHolder.getItem("items");
+            this.MenuGrapher.createMenu("Items", settings);
+            this.MenuGrapher.addMenuList("Items", {
                 "options": items.map(function (schema) {
                     return {
                         "text": schema.item,
@@ -3294,7 +3297,7 @@ var FullScreenPokemon;
                                 "x": 32,
                                 "y": 4.5
                             }, {
-                                "text": FSP.makeDigit(schema.amount, 2, " "),
+                                "text": _this.makeDigit(schema.amount, 2, " "),
                                 "x": 36.5,
                                 "y": 4
                             }
@@ -3302,18 +3305,17 @@ var FullScreenPokemon;
                     };
                 })
             });
-            FSP.MenuGrapher.setActiveMenu("Items");
+            this.MenuGrapher.setActiveMenu("Items");
             console.warn("Once math.js contains item info, react to non-stackable items...");
         };
         /**
          * Opens the Player menu.
          */
         FullScreenPokemon.prototype.openPlayerMenu = function () {
-            var FSP = FullScreenPokemon.prototype.ensureCorrectCaller(this);
-            FSP.MenuGrapher.createMenu("Player", {
-                "callback": FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher)
+            this.MenuGrapher.createMenu("Player", {
+                "callback": this.MenuGrapher.registerB.bind(this.MenuGrapher)
             });
-            FSP.MenuGrapher.setActiveMenu("Player");
+            this.MenuGrapher.setActiveMenu("Player");
         };
         /**
          * Opens the Save menu.
