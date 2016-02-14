@@ -22,7 +22,7 @@ The base GameStartr engine includes a large number of modules, all of which are 
 
 Everything you see in the game (trees, bushes, the player, etc.) is a Thing. The Thing class is subclassed by a new class for everything (Tree class, Bush class, Player class, etc.). When added to the game, a Thing has a number of properties filled out. These include velocities (xvel and yvel), positioning (top, right, bottom, left), and so on.
 
-Coordinates are relative to the top-right part of the screen. If you have experience with CSS, this is the same as positioning HTML elements absolutely. To add a new Thing to the game, use `FSP.addThing("type", #left, #top)`:
+Coordinates are relative to the top-left part of the screen. If you have experience with CSS, this is the same as positioning HTML elements absolutely using left and/or top. To add a new Thing to the game, use `FSP.addThing("type", #left, #top)`:
 
 ```javascript
 FSP.addThing("Bush") // Creates a new Bush and adds it at x=0, y=0
