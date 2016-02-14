@@ -385,14 +385,8 @@ module FullScreenPokemon {
          * Completely restarts the game. The StartOptions menu is shown.
          */
         gameStart(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
-
-            // if (EightBitter.ItemsHolder.getItem("gameStarted")) {
-            //     EightBitter.gameStartPlay(EightBitter);
-            // } else {
-            FSP.gameStartOptions(FSP);
-            // }
-            FSP.ModAttacher.fireEvent("onGameStart");
+            this.gameStartOptions(this);
+            this.ModAttacher.fireEvent("onGameStart");
         }
 
         /**
@@ -704,17 +698,14 @@ module FullScreenPokemon {
          * @returns A newly created Player in the game.
          */
         addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                player: IPlayer;
-
-            player = FSP.player = FSP.ObjectMaker.make("Player");
+            var player: IPlayer = this.player = this.ObjectMaker.make("Player");
             player.keys = player.getKeys();
 
-            FSP.InputWriter.setEventInformation(player);
+            this.InputWriter.setEventInformation(player);
 
-            FSP.addThing(player, left || 0, top || 0, useSavedInfo);
+            this.addThing(player, left || 0, top || 0, useSavedInfo);
 
-            FSP.ModAttacher.fireEvent("onAddPlayer", player);
+            this.ModAttacher.fireEvent("onAddPlayer", player);
 
             return player;
         }
@@ -726,7 +717,7 @@ module FullScreenPokemon {
          * @returns The Thing under the given id, if it exists.
          */
         getThingById(id: string): IThing {
-            return FullScreenPokemon.prototype.ensureCorrectCaller(this).MapScreener.thingsById[id];
+            return this.MapScreener.thingsById[id];
         }
 
 
@@ -3677,42 +3668,41 @@ module FullScreenPokemon {
          * Opens the Pause menu.
          */
         openPauseMenu(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                options: any[] = [
+            var options: any[] = [
                     {
                         "text": "%%%%%%%POKEMON%%%%%%%",
-                        "callback": FSP.openPokemonMenu.bind(FSP, {
+                        "callback": this.openPokemonMenu.bind(this, {
                             // "onSwitch": ...
                         })
                     }, {
                         "text": "ITEM",
-                        "callback": FSP.openItemsMenu.bind(FSP)
+                        "callback": this.openItemsMenu.bind(this)
                     }, {
                         "text": "%%%%%%%PLAYER%%%%%%%",
-                        "callback": FSP.openPlayerMenu.bind(FSP)
+                        "callback": this.openPlayerMenu.bind(this)
                     }, {
                         "text": "SAVE",
-                        "callback": FSP.openSaveMenu.bind(FSP)
+                        "callback": this.openSaveMenu.bind(this)
                     }, {
                         "text": "OPTION"
                     }, {
                         "text": "Exit",
-                        "callback": FSP.closePauseMenu.bind(FSP)
+                        "callback": this.closePauseMenu.bind(this)
                     }];
 
             // The Pokedex option is only shown if the Player has one
-            if (FSP.ItemsHolder.getItem("hasPokedex") === true) {
+            if (this.ItemsHolder.getItem("hasPokedex") === true) {
                 options.unshift({
                     "text": "%%%%%%%POKEDEX%%%%%%%",
-                    "callback": FSP.openPokedexMenu.bind(FSP)
+                    "callback": this.openPokedexMenu.bind(this)
                 });
             }
 
-            FSP.MenuGrapher.createMenu("Pause");
-            FSP.MenuGrapher.addMenuList("Pause", {
+            this.MenuGrapher.createMenu("Pause");
+            this.MenuGrapher.addMenuList("Pause", {
                 "options": options
             });
-            FSP.MenuGrapher.setActiveMenu("Pause");
+            this.MenuGrapher.setActiveMenu("Pause");
         }
 
         /**
