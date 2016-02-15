@@ -1,36 +1,36 @@
 {
-    "name": "FullScreenPokemon",
-    "description": "An HTML5 remake of Nintendo's original Pokemon - expanded for the modern web.",
-    "version": "0.0.0",
-    "author": {
-        "name": "Josh Goldberg",
-        "email": "josh@fullscreenmario.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
-    },
-    "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "chai": "~2.X",
-        "grunt": "~0.4.X",
-        "grunt-cli": "~0.1.X",
-        "grunt-contrib-clean": "~0.6.X",
-        "grunt-contrib-copy": "~0.8.X",
-        "grunt-contrib-cssmin": "~0.13.X",
-        "grunt-contrib-htmlmin": "~0.4.X",
-        "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~2.X",
-        "grunt-processhtml": "~0.3.X",
-        "grunt-preprocess": "~5.X",
-        "grunt-tslint": "~2.4.X",
-        "grunt-typescript": "~0.8.X",
-        "grunt-zip": "~0.17.X",
-        "mocha": "~2.X",
-        "tslint": "~2.4.X",
-        "typescript": "~1.X"
-    }
+  "name": "FullScreenPokemon",
+  "description": "An HTML5 remake of Nintendo's original Pokemon - expanded for the modern web.",
+  "version": "0.0.0",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "josh@fullscreenmario.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "~2.X",
+    "grunt": "^0.4.5",
+    "grunt-cli": "~0.1.X",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-cssmin": "^0.14.0",
+    "grunt-contrib-htmlmin": "^0.6.0",
+    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-mocha-phantomjs": "^3.0.0",
+    "grunt-preprocess": "^5.0.1",
+    "grunt-processhtml": "^0.3.11",
+    "grunt-tslint": "^3.0.2",
+    "grunt-typescript": "^0.8.0",
+    "grunt-zip": "^0.17.1",
+    "mocha": "~2.X",
+    "tslint": "^3.3.0",
+    "typescript": "^1.7.5"
+  }
 }
