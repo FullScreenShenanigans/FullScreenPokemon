@@ -8122,7 +8122,7 @@ module FullScreenPokemon {
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
-         /**
+        /**
          * Cutscene for showing the lab after the battle ends.
          *
          * @param FSP
