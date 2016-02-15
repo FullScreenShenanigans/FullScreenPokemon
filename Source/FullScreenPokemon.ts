@@ -1151,7 +1151,7 @@ module FullScreenPokemon {
          * @param event   The original user-caused Event.
          */
         mouseDownRight(thing: ICharacter, event?: Event): void {
-            thing.FSP.togglePauseMenu(thing.FSP);
+            thing.FSP.togglePauseMenu(thing);
 
             thing.FSP.ModAttacher.fireEvent("onMouseDownRight");
 
@@ -3720,7 +3720,9 @@ module FullScreenPokemon {
          *  
          * @param FSP
          */
-        togglePauseMenu(FSP: FullScreenPokemon): void {
+        togglePauseMenu(thing: IThing): void {
+            var FSP: FullScreenPokemon = thing.FSP;
+
             if (FSP.MenuGrapher.getActiveMenu()) {
                 FSP.MenuGrapher.registerStart();
                 return;

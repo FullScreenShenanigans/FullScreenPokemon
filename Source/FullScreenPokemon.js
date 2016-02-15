@@ -851,7 +851,7 @@ var FullScreenPokemon;
          * @param event   The original user-caused Event.
          */
         FullScreenPokemon.prototype.mouseDownRight = function (thing, event) {
-            thing.FSP.togglePauseMenu(thing.FSP);
+            thing.FSP.togglePauseMenu(thing);
             thing.FSP.ModAttacher.fireEvent("onMouseDownRight");
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -2862,7 +2862,8 @@ var FullScreenPokemon;
          *
          * @param FSP
          */
-        FullScreenPokemon.prototype.togglePauseMenu = function (FSP) {
+        FullScreenPokemon.prototype.togglePauseMenu = function (thing) {
+            var FSP = thing.FSP;
             if (FSP.MenuGrapher.getActiveMenu()) {
                 FSP.MenuGrapher.registerStart();
                 return;

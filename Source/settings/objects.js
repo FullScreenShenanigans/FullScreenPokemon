@@ -800,7 +800,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "canKeyWalking": true,
             "direction": 2,
             "speed": FullScreenPokemon.FullScreenPokemon.unitsize / 2,
-            "onWalkingStart": FullScreenPokemon.FullScreenPokemon.prototype.animatePlayerStartWalking,
+            "onWalkingStart": FullScreenPokemon.FullScreenPokemon.prototype.animateCharacterStartWalking,
             "onWalkingStop": FullScreenPokemon.FullScreenPokemon.prototype.animatePlayerStopWalking,
             "getKeys": function () {
                 return {
