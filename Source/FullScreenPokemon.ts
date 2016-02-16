@@ -4259,28 +4259,26 @@ module FullScreenPokemon {
          * Opens the Save menu.
          */
         openSaveMenu(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this);
+            this.MenuGrapher.createMenu("Save");
 
-            FSP.MenuGrapher.createMenu("Save");
+            this.MenuGrapher.createMenu("GeneralText");
+            this.MenuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
-
-            FSP.MenuGrapher.createMenu("Yes/No", {
+            this.MenuGrapher.createMenu("Yes/No", {
                 "backMenu": "Pause",
                 "killOnB": ["GeneralText", "Save"]
             });
-            FSP.MenuGrapher.addMenuList("Yes/No", {
+            this.MenuGrapher.addMenuList("Yes/No", {
                 "options": [
                     {
                         "text": "YES",
-                        "callback": FSP.downloadSaveGame.bind(FSP)
+                        "callback": this.downloadSaveGame.bind(this)
                     }, {
                         "text": "NO",
-                        "callback": FSP.MenuGrapher.registerB
+                        "callback": this.MenuGrapher.registerB
                     }]
             });
-            FSP.MenuGrapher.setActiveMenu("Yes/No");
+            this.MenuGrapher.setActiveMenu("Yes/No");
         }
 
         /**
@@ -4289,18 +4287,17 @@ module FullScreenPokemon {
          * @param settings   Settings to apply to the menu and for callbacks.
          */
         openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                value: string[][] = [
+            var value: string[][] = [
                     settings.value || ["_", "_", "_", "_", "_", "_", "_"]
                 ],
-                onKeyPress: (...args: any[]) => void = FSP.addKeyboardMenuValue.bind(FSP),
-                onBPress: (...args: any[]) => void = FSP.removeKeyboardMenuValue.bind(FSP),
-                onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(FSP),
+                onKeyPress: (...args: any[]) => void = this.addKeyboardMenuValue.bind(this),
+                onBPress: (...args: any[]) => void = this.removeKeyboardMenuValue.bind(this),
+                onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this),
                 lowercase: boolean = settings.lowercase,
                 letters: string[] = lowercase
                     ? FullScreenPokemon.keysLowercase
                     : FullScreenPokemon.keysUppercase,
-                options: any[] = letters.map(function (letter: string): any {
+                options: any[] = letters.map((letter: string): any => {
                     return {
                         "text": [letter],
                         "value": letter,
@@ -4311,39 +4308,39 @@ module FullScreenPokemon {
                 }),
                 menuResults: IKeyboardResultsMenu;
 
-            FSP.MenuGrapher.createMenu("Keyboard", <MenuGraphr.IMenuSchema>{
+            this.MenuGrapher.createMenu("Keyboard", <MenuGraphr.IMenuSchema>{
                 "settings": settings,
                 "onKeyPress": onKeyPress,
                 "onComplete": onComplete,
                 "ignoreB": false
             });
-            menuResults = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult");
+            menuResults = <IKeyboardResultsMenu>this.MenuGrapher.getMenu("KeyboardResult");
 
-            FSP.MenuGrapher.addMenuDialog("KeyboardTitle", [[
+            this.MenuGrapher.addMenuDialog("KeyboardTitle", [[
                 settings.title || "",
             ]]);
 
-            FSP.MenuGrapher.addMenuDialog("KeyboardResult", value);
+            this.MenuGrapher.addMenuDialog("KeyboardResult", value);
 
-            FSP.MenuGrapher.addMenuList("KeyboardKeys", {
+            this.MenuGrapher.addMenuList("KeyboardKeys", {
                 "options": options,
                 "selectedIndex": settings.selectedIndex,
                 "bottom": {
                     "text": lowercase ? "UPPER CASE" : "lower case",
-                    "callback": FSP.switchKeyboardCase.bind(FSP),
+                    "callback": this.switchKeyboardCase.bind(this),
                     "position": {
                         "top": 40,
                         "left": 0
                     }
                 }
             });
-            FSP.MenuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
-            FSP.MenuGrapher.setActiveMenu("KeyboardKeys");
+            this.MenuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
+            this.MenuGrapher.setActiveMenu("KeyboardKeys");
 
             menuResults.displayedValue = value.slice()[0];
             menuResults.completeValue = settings.completeValue || [];
             menuResults.selectedChild = settings.selectedChild || 0;
-            menuResults.blinker = FSP.addThing(
+            menuResults.blinker = this.addThing(
                 "CharMDash",
                 menuResults.children[menuResults.selectedChild].left,
                 menuResults.children[menuResults.selectedChild].top);
@@ -4355,18 +4352,17 @@ module FullScreenPokemon {
          * Adds a value to the keyboard menu from the currently selected item.
          */
         addKeyboardMenuValue(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                menuKeys: IListMenu = <IListMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
-                menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+            var menuKeys: IListMenu = <IListMenu>this.MenuGrapher.getMenu("KeyboardKeys"),
+                menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.MenuGrapher.getMenu("KeyboardResult"),
                 child: IThing = menuResult.children[menuResult.selectedChild],
-                selected: MenuGraphr.IGridCell = FSP.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
+                selected: MenuGraphr.IGridCell = this.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
 
             if (!child) {
                 return;
             }
 
-            FSP.killNormal(child);
-            menuResult.children[menuResult.selectedChild] = FSP.addThing(
+            this.killNormal(child);
+            menuResult.children[menuResult.selectedChild] = this.addThing(
                 selected.title, child.left, child.top);
 
             menuResult.displayedValue[menuResult.selectedChild] = <string>selected.text[0];
@@ -4378,22 +4374,21 @@ module FullScreenPokemon {
                 child.hidden = true;
             } else {
                 menuResult.blinker.hidden = true;
-                FSP.MenuGrapher.setSelectedIndex(
+                this.MenuGrapher.setSelectedIndex(
                     "KeyboardKeys",
                     menuKeys.gridColumns - 1,
                     menuKeys.gridRows - 2); // assume there's a bottom option
             }
 
-            FSP.setLeft(menuResult.blinker, child.left);
-            FSP.setTop(menuResult.blinker, child.top);
+            this.setLeft(menuResult.blinker, child.left);
+            this.setTop(menuResult.blinker, child.top);
         }
 
         /**
          * Removes the rightmost keyboard menu value.
          */
         removeKeyboardMenuValue(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+            var menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.MenuGrapher.getMenu("KeyboardResult"),
                 child: IThing = menuResult.children[menuResult.selectedChild - 1];
 
             if (menuResult.selectedChild <= 0) {
@@ -4405,25 +4400,24 @@ module FullScreenPokemon {
                 0, menuResult.completeValue.length - 1);
             menuResult.displayedValue[menuResult.selectedChild] = "_";
 
-            FSP.killNormal(child);
+            this.killNormal(child);
 
             child = menuResult.children[menuResult.selectedChild];
 
-            menuResult.children[menuResult.selectedChild + 1] = FSP.addThing(
+            menuResult.children[menuResult.selectedChild + 1] = this.addThing(
                 "CharUnderscore", child.right, child.top);
 
-            FSP.setLeft(menuResult.blinker, child.left);
-            FSP.setTop(menuResult.blinker, child.top);
+            this.setLeft(menuResult.blinker, child.left);
+            this.setTop(menuResult.blinker, child.top);
         }
 
         /**
          * Switches the keyboard menu's case.
          */
         switchKeyboardCase(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                keyboard: IMenu = <IMenu>FSP.MenuGrapher.getMenu("Keyboard"),
-                keyboardKeys: IListMenu = <IListMenu>FSP.MenuGrapher.getMenu("KeyboardKeys"),
-                keyboardResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>FSP.MenuGrapher.getMenu("KeyboardResult"),
+            var keyboard: IMenu = <IMenu>this.MenuGrapher.getMenu("Keyboard"),
+                keyboardKeys: IListMenu = <IListMenu>this.MenuGrapher.getMenu("KeyboardKeys"),
+                keyboardResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.MenuGrapher.getMenu("KeyboardResult"),
                 settings: any = keyboard.settings;
 
             settings.lowercase = !settings.lowercase;
@@ -4433,7 +4427,7 @@ module FullScreenPokemon {
             settings.completeValue = keyboardResult.completeValue;
             settings.selectedIndex = keyboardKeys.selectedIndex;
 
-            FSP.openKeyboardMenu(settings);
+            this.openKeyboardMenu(settings);
         }
 
         /**
@@ -4442,12 +4436,11 @@ module FullScreenPokemon {
          * @param settings   Custom attributes to apply to the menu.
          */
         openTownMapMenu(settings?: MenuGraphr.IMenuSchema): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                playerPosition: number[] = FSP.MathDecider.getConstant("townMapLocations")["Pallet Town"],
-                playerSize: any = FSP.ObjectMaker.getFullPropertiesOf("Player");
+            var playerPosition: number[] = this.MathDecider.getConstant("townMapLocations")["Pallet Town"],
+                playerSize: any = this.ObjectMaker.getFullPropertiesOf("Player");
 
-            FSP.MenuGrapher.createMenu("Town Map", settings);
-            FSP.MenuGrapher.createMenuThing("Town Map Inside", {
+            this.MenuGrapher.createMenu("Town Map", settings);
+            this.MenuGrapher.createMenuThing("Town Map Inside", {
                 "type": "thing",
                 "thing": "Player",
                 "args": {
@@ -4460,7 +4453,7 @@ module FullScreenPokemon {
                     }
                 }
             });
-            FSP.MenuGrapher.setActiveMenu("Town Map");
+            this.MenuGrapher.setActiveMenu("Town Map");
         }
 
         /**
@@ -4476,12 +4469,11 @@ module FullScreenPokemon {
          * @param title   The title of the Pokemon to show nest locations of.
          */
         showTownMapPokemonLocations(title: string[]): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                dialog: string[] = [].slice.call(title);
+            var dialog: string[] = [].slice.call(title);
 
             dialog.push(..."'s NEST".split(""));
 
-            FSP.MenuGrapher.addMenuDialog("Town Map", [dialog]);
+            this.MenuGrapher.addMenuDialog("Town Map", [dialog]);
 
             console.warn("Pokemon map locations not implemented.");
         }
@@ -4496,12 +4488,11 @@ module FullScreenPokemon {
          * @param battleInfo   Settings for the battle.
          */
         startBattle(battleInfo: IBattleInfo): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                animations: string[] = battleInfo.animations || [
+            var animations: string[] = battleInfo.animations || [
                     // "LineSpiral", "Flash"
                     "Flash"
                 ],
-                animation: string = FSP.NumberMaker.randomArrayMember(animations),
+                animation: string = this.NumberMaker.randomArrayMember(animations),
                 player: any = battleInfo.player;
 
             if (!player) {
@@ -4511,21 +4502,21 @@ module FullScreenPokemon {
             player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
             player.sprite = player.sprite || "PlayerBack";
             player.category = player.category || "Trainer";
-            player.actors = player.actors || FSP.ItemsHolder.getItem("PokemonInParty");
+            player.actors = player.actors || this.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
 
-            FSP.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
+            this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 
-            FSP["cutsceneBattleTransition" + animation](
-                FSP,
+            this["cutsceneBattleTransition" + animation](
+                this,
                 {
                     "battleInfo": battleInfo,
-                    "callback": FSP.BattleMover.startBattle.bind(FSP.BattleMover, battleInfo)
+                    "callback": this.BattleMover.startBattle.bind(this.BattleMover, battleInfo)
                 }
             );
 
-            FSP.moveBattleKeptThingsToText(FSP, battleInfo);
+            this.moveBattleKeptThingsToText(this, battleInfo);
         }
 
         /**
@@ -4602,11 +4593,10 @@ module FullScreenPokemon {
          * @returns A newly created Pokemon.
          */
         createPokemon(schema: IWildPokemonSchema): IPokemon {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                level: number = typeof schema.levels !== "undefined"
-                    ? FSP.NumberMaker.randomArrayMember(schema.levels)
+            var level: number = typeof schema.levels !== "undefined"
+                    ? this.NumberMaker.randomArrayMember(schema.levels)
                     : schema.level,
-                pokemon: IPokemon = FSP.MathDecider.compute("newPokemon", schema.title, level);
+                pokemon: IPokemon = this.MathDecider.compute("newPokemon", schema.title, level);
 
             return pokemon;
         }
@@ -4617,9 +4607,8 @@ module FullScreenPokemon {
          * @param pokemon   An in-game Pokemon to heal.
          */
         healPokemon(pokemon: IPokemon): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                moves: BattleMovr.IMove[] = FSP.MathDecider.getConstant("moves"),
-                statisticNames: string[] = FSP.MathDecider.getConstant("statisticNames"),
+            var moves: BattleMovr.IMove[] = this.MathDecider.getConstant("moves"),
+                statisticNames: string[] = this.MathDecider.getConstant("statisticNames"),
                 i: number;
 
             for (i = 0; i < statisticNames.length; i += 1) {
@@ -8544,27 +8533,26 @@ module FullScreenPokemon {
          * current game state.
          */
         saveGame(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                ticksRecorded: number = FSP.FPSAnalyzer.getNumRecorded();
+            var ticksRecorded: number = this.FPSAnalyzer.getNumRecorded();
 
-            FSP.ItemsHolder.setItem("map", FSP.AreaSpawner.getMapName());
-            FSP.ItemsHolder.setItem("area", FSP.AreaSpawner.getAreaName());
-            FSP.ItemsHolder.setItem("location", FSP.AreaSpawner.getLocationEntered().name);
+            this.ItemsHolder.setItem("map", this.AreaSpawner.getMapName());
+            this.ItemsHolder.setItem("area", this.AreaSpawner.getAreaName());
+            this.ItemsHolder.setItem("location", this.AreaSpawner.getLocationEntered().name);
 
-            FSP.ItemsHolder.increase("time", ticksRecorded - FSP.ticksElapsed);
-            FSP.ticksElapsed = ticksRecorded;
+            this.ItemsHolder.increase("time", ticksRecorded - this.ticksElapsed);
+            this.ticksElapsed = ticksRecorded;
 
-            FSP.saveCharacterPositions(FSP);
-            FSP.ItemsHolder.saveAll();
-            FSP.StateHolder.saveCollection();
+            this.saveCharacterPositions(this);
+            this.ItemsHolder.saveAll();
+            this.StateHolder.saveCollection();
 
-            FSP.MenuGrapher.createMenu("GeneralText");
-            FSP.MenuGrapher.addMenuDialog(
+            this.MenuGrapher.createMenu("GeneralText");
+            this.MenuGrapher.addMenuDialog(
                 "GeneralText", [
                     "Now saving..."
                 ]);
 
-            FSP.TimeHandler.addEvent(FSP.MenuGrapher.registerB.bind(FSP.MenuGrapher), 49);
+            this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
         }
 
         /**
@@ -8572,10 +8560,9 @@ module FullScreenPokemon {
          * it onto the client's computer as a JSON file.
          */
         downloadSaveGame(): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                link: HTMLAnchorElement = document.createElement("a");
+            var link: HTMLAnchorElement = document.createElement("a");
 
-            FSP.saveGame();
+            this.saveGame();
 
             link.setAttribute(
                 "download",
@@ -8583,11 +8570,11 @@ module FullScreenPokemon {
             link.setAttribute(
                 "href",
                 "data:text/json;charset=utf-8," + encodeURIComponent(
-                    FSP.LevelEditor.beautify(JSON.stringify(FSP.ItemsHolder.exportItems()))));
+                    this.LevelEditor.beautify(JSON.stringify(this.ItemsHolder.exportItems()))));
 
-            FSP.container.appendChild(link);
+            this.container.appendChild(link);
             link.click();
-            FSP.container.removeChild(link);
+            this.container.removeChild(link);
         }
 
         /**
@@ -8621,26 +8608,25 @@ module FullScreenPokemon {
          * @remarks Most of the work here is done by setLocation.
          */
         setMap(name: string, location?: string, noEntrance?: boolean): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                map: IMap;
+            var map: IMap;
 
             if (typeof name === "undefined" || name.constructor === FullScreenPokemon) {
-                name = FSP.AreaSpawner.getMapName();
+                name = this.AreaSpawner.getMapName();
             }
 
-            map = <IMap>FSP.AreaSpawner.setMap(name);
+            map = <IMap>this.AreaSpawner.setMap(name);
 
-            FSP.ModAttacher.fireEvent("onPreSetMap", map);
+            this.ModAttacher.fireEvent("onPreSetMap", map);
 
-            FSP.NumberMaker.resetFromSeed(map.seed);
-            FSP.InputWriter.restartHistory();
+            this.NumberMaker.resetFromSeed(map.seed);
+            this.InputWriter.restartHistory();
 
-            FSP.ModAttacher.fireEvent("onSetMap", map);
+            this.ModAttacher.fireEvent("onSetMap", map);
 
-            FSP.setLocation(
+            this.setLocation(
                 location
                 || map.locationDefault
-                || FSP.settings.maps.locationDefault,
+                || this.settings.maps.locationDefault,
                 noEntrance);
         }
 
@@ -8655,55 +8641,54 @@ module FullScreenPokemon {
          *                     be skipped (by default, false).
          */
         setLocation(name: string, noEntrance?: boolean): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                location: ILocation,
+            var location: ILocation,
                 theme: string;
 
             name = name || "0";
 
-            FSP.AudioPlayer.clearAll();
-            FSP.GroupHolder.clearArrays();
-            FSP.MapScreener.clearScreen();
-            FSP.MapScreener.thingsById = FSP.generateThingsByIdContainer();
-            FSP.MenuGrapher.setActiveMenu();
-            FSP.TimeHandler.cancelAllEvents();
+            this.AudioPlayer.clearAll();
+            this.GroupHolder.clearArrays();
+            this.MapScreener.clearScreen();
+            this.MapScreener.thingsById = this.generateThingsByIdContainer();
+            this.MenuGrapher.setActiveMenu();
+            this.TimeHandler.cancelAllEvents();
 
-            FSP.AreaSpawner.setLocation(name);
-            FSP.MapScreener.setVariables();
-            location = <ILocation>FSP.AreaSpawner.getLocation(name);
+            this.AreaSpawner.setLocation(name);
+            this.MapScreener.setVariables();
+            location = <ILocation>this.AreaSpawner.getLocation(name);
             location.area.spawnedBy = {
                 "name": name,
                 "timestamp": new Date().getTime()
             };
 
-            FSP.ModAttacher.fireEvent("onPreSetLocation", location);
+            this.ModAttacher.fireEvent("onPreSetLocation", location);
 
-            FSP.PixelDrawer.setBackground((<IArea>FSP.AreaSpawner.getArea()).background);
+            this.PixelDrawer.setBackground((<IArea>this.AreaSpawner.getArea()).background);
 
-            FSP.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
+            this.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
-            FSP.QuadsKeeper.resetQuadrants();
+            this.QuadsKeeper.resetQuadrants();
 
             theme = location.theme || location.area.theme || location.area.map.theme;
-            FSP.MapScreener.theme = theme;
-            if (theme && FSP.AudioPlayer.getThemeName() !== theme) {
-                FSP.AudioPlayer.playTheme(theme);
+            this.MapScreener.theme = theme;
+            if (theme && this.AudioPlayer.getThemeName() !== theme) {
+                this.AudioPlayer.playTheme(theme);
             }
 
             if (!noEntrance) {
-                location.entry(FSP, location);
+                location.entry(this, location);
             }
 
-            FSP.ModAttacher.fireEvent("onSetLocation", location);
+            this.ModAttacher.fireEvent("onSetLocation", location);
 
-            FSP.GamesRunner.play();
+            this.GamesRunner.play();
 
-            FSP.animateFadeFromColor(FSP, {
+            this.animateFadeFromColor(this, {
                 "color": "Black"
             });
 
             if (location.push) {
-                FSP.animateCharacterStartWalking(FSP.player, FSP.player.direction);
+                this.animateCharacterStartWalking(this.player, this.player.direction);
             }
         }
 
@@ -8792,13 +8777,12 @@ module FullScreenPokemon {
          * @remarks Direction is taken in by the .forEach call as the index.
          */
         mapAddAfter(prething: IPreThing, direction: Direction): void {
-            var FSP: FullScreenPokemon = FullScreenPokemon.prototype.ensureCorrectCaller(this),
-                MapsCreator: MapsCreatr.IMapsCreatr = FSP.MapsCreator,
-                AreaSpawner: AreaSpawnr.IAreaSpawnr = FSP.AreaSpawner,
+            var MapsCreator: MapsCreatr.IMapsCreatr = this.MapsCreator,
+                AreaSpawner: AreaSpawnr.IAreaSpawnr = this.AreaSpawner,
                 prethings: any = AreaSpawner.getPreThings(),
                 area: IArea = <IArea>AreaSpawner.getArea(),
                 map: IMap = <IMap>AreaSpawner.getMap(),
-                boundaries: IAreaBoundaries = <IAreaBoundaries>FSP.AreaSpawner.getArea().boundaries;
+                boundaries: IAreaBoundaries = <IAreaBoundaries>this.AreaSpawner.getArea().boundaries;
 
             prething.direction = direction;
             switch (direction) {
@@ -10075,23 +10059,6 @@ module FullScreenPokemon {
             array.push(object);
 
             return true;
-        }
-
-        /**
-         * Ensures the current object is a GameStartr by throwing an error if it 
-         * is not. This should be used for functions in any GameStartr descendants
-         * that have to call 'this' to ensure their caller is what the programmer
-         * expected it to be.
-         * 
-         * @param {Mixed} current   
-         */
-        ensureCorrectCaller(current: any): FullScreenPokemon {
-            if (!(current instanceof FullScreenPokemon)) {
-                throw new Error("A function requires the scope ('this') to be the "
-                    + "manipulated FullScreenPokemon object. Unfortunately, 'this' is a "
-                    + typeof (this) + ".");
-            }
-            return current;
         }
     }
 }
