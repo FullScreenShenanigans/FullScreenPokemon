@@ -64,6 +64,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
     },
     "areas": {
         "Land": {
+            "allowCycling": true,
             "width": 320,
             "height": 288,
             "creation": [
@@ -205,6 +206,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
             ]
         },
         "Museum of Science": {
+            "allowCycling": false,
             "width": 8,
             "height": 16,
             "invisibleWallBorders": true,
@@ -214,6 +216,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
             ]
         },
         "Pewter Gym": {
+            "allowCycling": false,
             "width": 80,
             "height": 112,
             "theme": "Gym",
@@ -277,6 +280,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
             ]
         },
         "PokeCenter": {
+            "allowCycling": false,
             "width": 112,
             "height": 64,
             "invisibleWallBorders": true,
@@ -285,6 +289,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
             ]
         },
         "PokeMart": {
+            "allowCycling": false,
             "width": 64,
             "height": 64,
             "invisibleWallBorders": true,
@@ -294,6 +299,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
             ]
         },
         "Outsider House": {
+            "allowCycling": false,
             "width": 64,
             "height": 64,
             "invisibleWallBorders": true,
@@ -320,6 +326,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pewter City"] = {
             ]
         },
         "Info House": {
+            "allowCycling": false,
             "width": 64,
             "height": 64,
             "invisibleWallBorders": true,
