@@ -38,6 +38,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
     },
     "areas": {
         "Land": {
+            "allowCycling": true,
             "width": 320,
             "height": 288,
             "creation": [
@@ -182,6 +183,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
             ]
         },
         "Nicknamer House": {
+            "allowCycling": false,
             "width": 64,
             "height": 64,
             "invisibleWallBorders": true,
@@ -209,6 +211,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
             ]
         },
         "School": {
+            "allowCycling": false,
             "width": 64,
             "height": 64,
             "invisibleWallBorders": true,
@@ -251,6 +254,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
             ]
         },
         "PokeCenter": {
+            "allowCycling": false,
             "width": 112,
             "height": 64,
             "invisibleWallBorders": true,
@@ -261,6 +265,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
             ]
         },
         "PokeMart": {
+            "allowCycling": false,
             "width": 64,
             "height": 64,
             "invisibleWallBorders": true,

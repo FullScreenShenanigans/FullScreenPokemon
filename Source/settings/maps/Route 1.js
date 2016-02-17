@@ -15,6 +15,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 1"] = {
     },
     "areas": {
         "Land": {
+            "allowCycling": true,
             "width": 160,
             "height": 296,
             "wildPokemon": {

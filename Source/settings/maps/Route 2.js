@@ -13,6 +13,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 2"] = {
     },
     "areas": {
         "Land": {
+            "allowCycling": true,
             "width": 224,
             "height": 592,
             "creation": [
