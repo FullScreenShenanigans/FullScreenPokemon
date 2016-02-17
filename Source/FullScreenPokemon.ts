@@ -2170,18 +2170,26 @@ module FullScreenPokemon {
          * 
          * @param thing   An in-game Thing.
          * @param direction   A direction for thing to face.
+         * @todo Add more logic here for better performance.
          */
         animateCharacterSetDirection(thing: IThing, direction: Direction): void {
             thing.direction = direction;
 
-            if (direction !== 1) {
-                thing.FSP.unflipHoriz(thing);
-            } else {
-                thing.FSP.flipHoriz(thing);
-            }
+            thing.FSP.unflipHoriz(thing);
 
-            thing.FSP.removeClasses(thing, "up left down");
+            thing.FSP.removeClasses(
+                thing,
+                DirectionClasses[Direction.Top],
+                DirectionClasses[Direction.Right],
+                DirectionClasses[Direction.Bottom],
+                DirectionClasses[Direction.Left]);
+
             thing.FSP.addClass(thing, DirectionClasses[direction]);
+
+            if (direction === Direction.Right) {
+                thing.FSP.flipHoriz(thing);
+                thing.FSP.addClass(thing, DirectionClasses[Direction.Left]);
+            }
         }
 
         /**
