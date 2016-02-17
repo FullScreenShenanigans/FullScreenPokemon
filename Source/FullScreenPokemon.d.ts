@@ -788,6 +788,11 @@ declare module FullScreenPokemon {
      */
     export interface IArea extends MapsCreatr.IMapsCreatrArea {
         /**
+         * Whether the Area allows bicycling.
+         */
+        allowCycling: boolean;
+
+        /**
          * Any additional attributes that should add extra properties to this Area.
          */
         attributes?: {
@@ -1766,6 +1771,11 @@ declare module FullScreenPokemon {
          * Whether this is allowed to start walking via user input.
          */
         canKeyWalking: boolean;
+
+        /**
+         * Whether the player is currently bicycling.
+         */
+        cycling: boolean;
 
         /**
          * @returns A new descriptor container for key statuses.
