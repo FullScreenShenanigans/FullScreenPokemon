@@ -7,7 +7,9 @@ var FullScreenPokemon;
         "locationDefault": "Black",
         "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
         "requireEntrance": true,
-        "screenAttributes": [],
+        "screenAttributes": [
+            "allowCycling"
+        ],
         "screenVariables": {
             "boundaries": FullScreenPokemon.FullScreenPokemon.prototype.getAreaBoundariesReal,
             "scrollability": FullScreenPokemon.FullScreenPokemon.prototype.getScreenScrollability,
