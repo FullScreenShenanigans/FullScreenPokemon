@@ -1052,6 +1052,11 @@ declare module FullScreenPokemon {
          * Which status to give, such as "Sleep", if applicable.
          */
         status?: string;
+
+        /**
+         * Activates a Function to perform an HM move outside of battle.
+         */
+        partyActivate?: (player: IPlayer, pokemon: IPokemonListing) => boolean;
     }
 
     /**
