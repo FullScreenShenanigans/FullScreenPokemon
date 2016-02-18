@@ -635,15 +635,19 @@ var FullScreenPokemon;
                     thing.turning = direction;
                 }
                 if (thing.player) {
-                    if (thing.canKeyWalking) {
-                        thing.FSP.setPlayerDirection(thing, direction);
-                    }
-                    else {
-                        thing.nextDirection = direction;
-                    }
+                    thing.FSP.keyDownDirectionRealPlayer(thing, direction);
                 }
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
+        };
+        FullScreenPokemon.prototype.keyDownDirectionRealPlayer = function (player, direction) {
+            if (player.canKeyWalking && !player.shouldWalk) {
+                player.FSP.setPlayerDirection(player, direction);
+                player.canKeyWalking = false;
+            }
+            else {
+                player.nextDirection = direction;
+            }
         };
         /**
          * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
@@ -6647,25 +6651,21 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.getScreenScrollability = function (FSP) {
             var area = FSP.AreaSpawner.getArea(), boundaries, width, height;
             if (!area) {
-                return "none";
+                return Scrollability.None;
             }
             boundaries = area.boundaries;
             width = (boundaries.right - boundaries.left) * FSP.unitsize;
             height = (boundaries.bottom - boundaries.top) * FSP.unitsize;
             if (width > FSP.MapScreener.width) {
                 if (height > FSP.MapScreener.height) {
-                    return "both";
+                    return Scrollability.Both;
                 }
-                else {
-                    return "horizontal";
-                }
+                return Scrollability.Horizontal;
             }
-            else if (height > FSP.MapScreener.height) {
-                return "vertical";
+            if (height > FSP.MapScreener.height) {
+                return Scrollability.Vertical;
             }
-            else {
-                return "none";
-            }
+            return Scrollability.None;
         };
         /**
          *
