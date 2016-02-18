@@ -896,15 +896,20 @@ module FullScreenPokemon {
                 }
 
                 if (thing.player) {
-                    if ((<IPlayer>thing).canKeyWalking) {
-                        thing.FSP.setPlayerDirection(<IPlayer>thing, direction);
-                    } else {
-                        (<IPlayer>thing).nextDirection = direction;
-                    }
+                    thing.FSP.keyDownDirectionRealPlayer(<IPlayer>thing, direction);
                 }
             }
 
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
+        }
+
+        keyDownDirectionRealPlayer(player: IPlayer, direction: Direction): void {
+            if (player.canKeyWalking && !player.shouldWalk) {
+                player.FSP.setPlayerDirection(player, direction);
+                player.canKeyWalking = false;
+            } else {
+                player.nextDirection = direction;
+            }
         }
 
         /**

@@ -635,15 +635,19 @@ var FullScreenPokemon;
                     thing.turning = direction;
                 }
                 if (thing.player) {
-                    if (thing.canKeyWalking) {
-                        thing.FSP.setPlayerDirection(thing, direction);
-                    }
-                    else {
-                        thing.nextDirection = direction;
-                    }
+                    thing.FSP.keyDownDirectionRealPlayer(thing, direction);
                 }
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
+        };
+        FullScreenPokemon.prototype.keyDownDirectionRealPlayer = function (player, direction) {
+            if (player.canKeyWalking && !player.shouldWalk) {
+                player.FSP.setPlayerDirection(player, direction);
+                player.canKeyWalking = false;
+            }
+            else {
+                player.nextDirection = direction;
+            }
         };
         /**
          * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
