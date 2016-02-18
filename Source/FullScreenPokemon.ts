@@ -9009,14 +9009,14 @@ module FullScreenPokemon {
          *       string literals as types. This would be 
          *       "both" | "horizontal" | "vertical" | "none".
          */
-        getScreenScrollability(FSP: FullScreenPokemon): string {
+        getScreenScrollability(FSP: FullScreenPokemon): Scrollability {
             var area: IArea = <IArea>FSP.AreaSpawner.getArea(),
                 boundaries: IAreaBoundaries,
                 width: number,
                 height: number;
 
             if (!area) {
-                return "none";
+                return Scrollability.None;
             }
 
             boundaries = area.boundaries;
@@ -9025,15 +9025,17 @@ module FullScreenPokemon {
 
             if (width > FSP.MapScreener.width) {
                 if (height > FSP.MapScreener.height) {
-                    return "both";
-                } else {
-                    return "horizontal";
+                    return Scrollability.Both;
                 }
-            } else if (height > FSP.MapScreener.height) {
-                return "vertical";
-            } else {
-                return "none";
+
+                return Scrollability.Horizontal;
             }
+
+            if (height > FSP.MapScreener.height) {
+                return Scrollability.Vertical;
+            }
+
+            return Scrollability.None;
         }
 
         /**
