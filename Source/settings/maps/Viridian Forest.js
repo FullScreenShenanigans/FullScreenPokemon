@@ -35,6 +35,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian Forest"] = {
     },
     "areas": {
         "Gate North": {
+            "allowCycling": false,
             "width": 80,
             "height": 64,
             "theme": "Pewter City",
@@ -59,6 +60,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian Forest"] = {
             ],
         },
         "Forest": {
+            "allowCycling": true,
             "width": 272,
             "height": 384,
             "wildPokemon": {
@@ -213,6 +215,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian Forest"] = {
             ]
         },
         "Gate South": {
+            "allowCycling": false,
             "width": 80,
             "height": 64,
             "theme": "Pewter City",

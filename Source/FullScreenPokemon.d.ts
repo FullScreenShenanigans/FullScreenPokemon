@@ -788,6 +788,11 @@ declare module FullScreenPokemon {
      */
     export interface IArea extends MapsCreatr.IMapsCreatrArea {
         /**
+         * Whether the Area allows bicycling.
+         */
+        allowCycling: boolean;
+
+        /**
          * Any additional attributes that should add extra properties to this Area.
          */
         attributes?: {
@@ -1047,6 +1052,11 @@ declare module FullScreenPokemon {
          * Which status to give, such as "Sleep", if applicable.
          */
         status?: string;
+
+        /**
+         * Activates a Function to perform an HM move outside of battle.
+         */
+        partyActivate?: (player: IPlayer, pokemon: IPokemon) => boolean;
     }
 
     /**
@@ -1766,6 +1776,11 @@ declare module FullScreenPokemon {
          * Whether this is allowed to start walking via user input.
          */
         canKeyWalking: boolean;
+
+        /**
+         * Whether the player is currently bicycling.
+         */
+        cycling: boolean;
 
         /**
          * @returns A new descriptor container for key statuses.

@@ -8,6 +8,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 21"] = {
     },
     "areas": {
         "Land": {
+            "allowCycling": true,
             "width": 160,
             "height": 720,
             "creation": [

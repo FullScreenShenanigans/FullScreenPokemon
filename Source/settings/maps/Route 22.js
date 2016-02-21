@@ -9,6 +9,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 22"] = {
     },
     "areas": {
         "Land": {
+            "allowCycling": true,
             "width": 320,
             "height": 144,
             "wildPokemon": {
