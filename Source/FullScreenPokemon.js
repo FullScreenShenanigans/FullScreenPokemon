@@ -2952,23 +2952,38 @@ var FullScreenPokemon;
         };
         /**
          * Opens the context menu within the Pokedex menu for the selected Pokemon.
+         *
+         * @param settings   Settings for the selected Pokemon, including its HM moves.
          */
         FullScreenPokemon.prototype.openPokemonMenuContext = function (settings) {
+            var _this = this;
+            var moves = settings.pokemon.moves, options = [], move, i;
+            for (i = 0; i < moves.length; i += 1) {
+                move = this.MathDecider.getConstant("moves")[moves[i].title];
+                if (move.partyActivate) {
+                    options.push({
+                        "text": moves[i].title.toUpperCase(),
+                        "callback": function () {
+                            move.partyActivate(_this.player, settings.pokemon);
+                        }
+                    });
+                }
+            }
+            options.push({
+                "text": "STATS",
+                "callback": this.openPokemonMenuStats.bind(this, settings.pokemon)
+            }, {
+                "text": "SWITCH",
+                "callback": settings.onSwitch
+            }, {
+                "text": "CANCEL",
+                "callback": this.MenuGrapher.registerB
+            });
             this.MenuGrapher.createMenu("PokemonMenuContext", {
                 "backMenu": "Pokemon"
             });
             this.MenuGrapher.addMenuList("PokemonMenuContext", {
-                "options": [
-                    {
-                        "text": "STATS",
-                        "callback": this.openPokemonMenuStats.bind(this, settings.pokemon)
-                    }, {
-                        "text": "SWITCH",
-                        "callback": settings.onSwitch
-                    }, {
-                        "text": "CANCEL",
-                        "callback": this.MenuGrapher.registerB
-                    }]
+                "options": options
             });
             this.MenuGrapher.setActiveMenu("PokemonMenuContext");
         };

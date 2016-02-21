@@ -1056,7 +1056,7 @@ declare module FullScreenPokemon {
         /**
          * Activates a Function to perform an HM move outside of battle.
          */
-        partyActivate?: (player: IPlayer, pokemon: IPokemonListing) => boolean;
+        partyActivate?: (player: IPlayer, pokemon: IPokemon) => boolean;
     }
 
     /**
