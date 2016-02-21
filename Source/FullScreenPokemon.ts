@@ -1319,6 +1319,36 @@ module FullScreenPokemon {
             }
         }
 
+        /**
+         * Starts the Player cycling if the current Area allows it.
+         *
+         * @param thing   A Player to start cycling.
+         * @param area   The current Area.
+         * @returns Whether the properties were changed.
+         */
+        startCycling(thing: IPlayer): boolean {
+            var area: IArea = <IArea>this.AreaSpawner.getArea();
+
+            if (!area.allowCycling) {
+                return false;
+            }
+
+            thing.cycling = true;
+            thing.speedOld = thing.speed;
+            thing.speed = this.MathDecider.compute("cycleSpeed", thing);
+            return true;
+        }
+
+        /**
+         * Stops the Player cycling.
+         *
+         * @param thing   A Player to stop cycling.
+         */
+        stopCycling(thing: IPlayer): void {
+            thing.cycling = false;
+            thing.speed = thing.speedOld;
+        }
+
 
         /* General animations
         */

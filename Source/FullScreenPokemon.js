@@ -992,6 +992,32 @@ var FullScreenPokemon;
                 return FSP.player.bordering[0] ? 0 : FSP.player.yvel;
             }
         };
+        /**
+         * Starts the Player cycling if the current Area allows it.
+         *
+         * @param thing   A Player to start cycling.
+         * @param area   The current Area.
+         * @returns Whether the properties were changed.
+         */
+        FullScreenPokemon.prototype.startCycling = function (thing) {
+            var area = this.AreaSpawner.getArea();
+            if (!area.allowCycling) {
+                return false;
+            }
+            thing.cycling = true;
+            thing.speedOld = thing.speed;
+            thing.speed = this.MathDecider.compute("cycleSpeed", thing);
+            return true;
+        };
+        /**
+         * Stops the Player cycling.
+         *
+         * @param thing   A Player to stop cycling.
+         */
+        FullScreenPokemon.prototype.stopCycling = function (thing) {
+            thing.cycling = false;
+            thing.speed = thing.speedOld;
+        };
         /* General animations
         */
         /**
