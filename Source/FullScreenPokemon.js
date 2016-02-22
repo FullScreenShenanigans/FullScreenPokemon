@@ -729,6 +729,21 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Reacts to the select key being pressed. Toggles the use of the registered item
+         *
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
+         * @todo Extend the use for any registered item, not just the bicycle.
+         * @todo If the item isn't able to be used in this area, display so in the game.
+         */
+        FullScreenPokemon.prototype.keyDownSelect = function (thing, event) {
+            thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
+            thing.FSP.toggleCycling(thing);
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
+        };
+        /**
          * Reacts to the left key being lifted. The onKeyUpLeft mod event is fired.
          *
          * @param thing   The triggering Character.
@@ -1017,6 +1032,21 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.stopCycling = function (thing) {
             thing.cycling = false;
             thing.speed = thing.speedOld;
+        };
+        /**
+         * Toggles the Player's cycling status.
+         *
+         * @param thing   A Player to start or stop cycling.
+         * @returns Whether the Player started cycling.
+         */
+        FullScreenPokemon.prototype.toggleCycling = function (thing) {
+            if (thing.cycling) {
+                thing.FSP.stopCycling(thing);
+                return false;
+            }
+            else {
+                return thing.FSP.startCycling(thing);
+            }
         };
         /* General animations
         */
