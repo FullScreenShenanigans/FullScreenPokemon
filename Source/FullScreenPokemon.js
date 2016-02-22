@@ -677,7 +677,7 @@ var FullScreenPokemon;
             }
         };
         /**
-         * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
+         * Reacts to the B key being pressed. The MenuGraphr's active menu reacts to
          * the deselection if it exists. The onKeyDownB mod event is fired.
          *
          * @param thing   The triggering Character.
