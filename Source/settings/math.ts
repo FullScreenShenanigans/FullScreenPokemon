@@ -6,6 +6,9 @@ module FullScreenPokemon {
 
     FullScreenPokemon.settings.math = {
         "equations": {
+            "cycleSpeed": function (thing: IPlayer): number {
+                return thing.speed * 8 / 3;
+            },
             "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
                 var statisticNames: string[] = constants.statisticNames,
                     pokemon: any = {
