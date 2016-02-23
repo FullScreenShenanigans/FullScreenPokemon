@@ -6,8 +6,8 @@ module FullScreenPokemon {
 
     FullScreenPokemon.settings.math = {
         "equations": {
-            "cycleSpeed": function (thing: IPlayer): number {
-                return thing.speed * 8 / 3;
+            "cycleSpeed": function (constants: IMathConstants, equations: IMathEquations, thing: IPlayer): number {
+                return thing.speed * 2;
             },
             "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
                 var statisticNames: string[] = constants.statisticNames,
@@ -17364,7 +17364,8 @@ module FullScreenPokemon {
                 },
                 "Bicycle": {
                     "effect": "Allows travel at double speed",
-                    "category": "Key"
+                    "category": "Key",
+                    "error": "No cycling allowed here."
                 },
                 "Bike Voucher": {
                     "effect": "Redeem at Cerulean Bike Shop for a free Bicycle",
