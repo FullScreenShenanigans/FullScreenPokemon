@@ -83,6 +83,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "Computer": {},
                 "ComputerDesk": {},
                 "ConsoleAndController": {},
+                "CuttableTree": {},
                 "DialogResponder": {
                     "CutsceneResponder": {}
                 },
