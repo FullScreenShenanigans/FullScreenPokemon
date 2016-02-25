@@ -729,16 +729,17 @@ var FullScreenPokemon;
             }
         };
         /**
-         * Reacts to the select key being pressed. Toggles the use of the registered item
+         * Reacts to the select key being pressed. Toggles the use of the registered item.
          *
          * @param thing   The triggering Character.
          * @param event   The original user-caused Event.
          * @todo Extend the use for any registered item, not just the bicycle.
-         * @todo If the item isn't able to be used in this area, display so in the game.
          */
         FullScreenPokemon.prototype.keyDownSelect = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
-            thing.FSP.toggleCycling(thing);
+            if (!thing.FSP.toggleCycling(thing)) {
+                thing.FSP.errorMessage(thing, thing.FSP.MathDecider.getConstant("items").Bicycle.error);
+            }
             if (event && event.preventDefault) {
                 event.preventDefault();
             }
@@ -1042,7 +1043,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.toggleCycling = function (thing) {
             if (thing.cycling) {
                 thing.FSP.stopCycling(thing);
-                return false;
+                return true;
             }
             else {
                 return thing.FSP.startCycling(thing);
@@ -7911,6 +7912,24 @@ var FullScreenPokemon;
             object[keyCount] = count;
             array.push(object);
             return true;
+        };
+        /**
+         * Displays an error message to the user.
+         *
+         * @param thing   The Thing that triggered the error.
+         * @param message   The message to be displayed.
+         */
+        FullScreenPokemon.prototype.errorMessage = function (thing, message) {
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                return;
+            }
+            thing.FSP.MenuGrapher.createMenu("GeneralText", {
+                "deleteOnFinish": true
+            });
+            thing.FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                message
+            ]);
+            thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
         // For the sake of reset functions, constants are stored as members of the 
         // FullScreenPokemon Function itself - this allows prototype setters to use 

@@ -1078,6 +1078,11 @@ declare module FullScreenPokemon {
          * How much the item costs in a store.
          */
         price?: number;
+
+        /**
+         * An error message displayed when you try to use an item at a time when you're not allowed.
+         */
+        error?: string;
     }
 
     /**
