@@ -1016,7 +1016,7 @@ module FullScreenPokemon {
             thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
 
             if (!thing.FSP.toggleCycling(<IPlayer>thing)) {
-                thing.FSP.errorMessage(thing, thing.FSP.MathDecider.getConstant("items").Bicycle.error);
+                thing.FSP.displayMessage(thing, thing.FSP.MathDecider.getConstant("items").Bicycle.error);
             }
 
             if (event && event.preventDefault) {
@@ -10459,12 +10459,12 @@ module FullScreenPokemon {
         }
 
         /**
-         * Displays an error message to the user.
+         * Displays a message to the user.
          *
          * @param thing   The Thing that triggered the error.
          * @param message   The message to be displayed.
          */
-        errorMessage(thing: IThing, message: string): void {
+        displayMessage(thing: IThing, message: string): void {
             if (thing.FSP.MenuGrapher.getActiveMenu()) {
                 return;
             }
