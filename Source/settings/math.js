@@ -15840,7 +15840,9 @@ var FullScreenPokemon;
                     "power": 50,
                     "accuracy": "95%",
                     "PP": 30,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut,
+                    "solidName": "CuttableTree"
                 },
                 "Defense Curl": {
                     "type": "Normal",

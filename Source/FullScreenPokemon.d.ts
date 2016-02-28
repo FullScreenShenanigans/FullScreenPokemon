@@ -1056,7 +1056,12 @@ declare module FullScreenPokemon {
         /**
          * Activates a Function to perform an HM move outside of battle.
          */
-        partyActivate?: (player: IPlayer, pokemon: IPokemon) => boolean;
+        partyActivate?: (player: IPlayer, pokemon: IPokemon) => void;
+
+        /**
+         * The HMSolid that the move affects.
+         */
+        solidName?: string;
     }
 
     /**
@@ -1896,6 +1901,21 @@ declare module FullScreenPokemon {
          * Whether this should deactivate itself after a first use (by default, false).
          */
         singleUse?: boolean;
+    }
+
+    /**
+     * A Solid with a partyActivate callback Function.
+     */
+    export interface IHMSolid extends IDetector {
+        /**
+         * The name of the move needed to interact with this HMSolid.
+         */
+        moveName: string;
+
+        /**
+         * The partyActivate Function used to interact with this HMSolid.
+         */
+        moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
     }
 
     /**

@@ -3236,6 +3236,29 @@ module FullScreenPokemon {
             thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
 
+        /**
+         * Activates an HMSolid when the Player activates it.
+         * 
+         * @param player   The Player.
+         * @param thing   The Solid to be affected.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         */
+        activateHMSolid(player: IPlayer, thing: IHMSolid): void {
+            var partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty"),
+                moves: BattleMovr.IMove[],
+                i: number,
+                j: number;
+
+            for (i = 0; i < partyPokemon.length; i += 1) {
+                moves = partyPokemon[i].moves;
+
+                for (j = 0; j < moves.length; j += 1) {
+                    if (moves[j].title === thing.moveName) {
+                        thing.moveCallback(player, partyPokemon[i]);
+                    }
+                }
+            }
+        }
 
         /* Physics
         */
@@ -3847,7 +3870,7 @@ module FullScreenPokemon {
                     options.push({
                         "text": moves[i].title.toUpperCase(),
                         "callback": (): void => {
-                            move.partyActivate(this.player, settings.pokemon);
+                            this.partyActivateCheckThing(this.player, settings.pokemon, move);
                         }
                     });
                 }
@@ -4827,6 +4850,42 @@ module FullScreenPokemon {
                 hpEnd,
                 hpNormal,
                 callback);
+        }
+
+
+        /* partyActivate functions
+        */
+
+        /**
+         * Makes sure that Player is facing the correct HMSolid
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using the move.
+         * @param move   The move being used.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         * @todo Add context for what happens if player is not bordering the correct HMSolid.
+         */
+        partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IMoveSchema): void {
+            var borderedThing: IThing = player.bordering[player.direction];
+
+            if (borderedThing && borderedThing.title === move.solidName) {
+                move.partyActivate(player, pokemon);
+            }
+        }
+
+        /**
+         * Cuts a CuttableTree.
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using Cut.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         * @todo Add an animation for what happens when the CuttableTree is cut.
+         */
+        partyActivateCut(player: IPlayer, pokemon: IPokemon): void {
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.closePauseMenu();
+            player.FSP.killNormal(player.bordering[player.direction]);
         }
 
 
