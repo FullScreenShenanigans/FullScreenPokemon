@@ -209,7 +209,7 @@ module FullScreenPokemon {
                             }
                         }
                     },
-                    {
+                    <MenuGraphr.IMenuChildSchema>{
                         "type": "menu",
                         "name": "PokedexNumbers"
                     }],
@@ -255,7 +255,7 @@ module FullScreenPokemon {
                 "textSpeed": 0,
                 "textPaddingY": 4
             },
-            "PokedexOptions": {
+            "PokedexOptions": <MenuGraphr.IListMenuSchema>{
                 "size": {
                     "width": 21.5,
                     "height": 37
@@ -276,7 +276,7 @@ module FullScreenPokemon {
                 "textXOffset": 4,
                 "textYOffset": 5
             },
-            "PokedexListing": {
+            "PokedexListing": <any>{
                 "size": {
                     "width": 80,
                     "height": 72

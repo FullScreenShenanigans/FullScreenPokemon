@@ -21,10 +21,16 @@ module.exports = function (grunt) {
         },
         "typescript": {
             "base": {
-                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts"
+                "src": [
+                    "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                    "<%= meta.paths.source %>/settings/**/*.ts"
+                ]
             },
             "distribution": {
-                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                "src": [
+                    "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                    "<%= meta.paths.source %>/settings/**/*.ts"
+                ],
                 "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
             }
         },
