@@ -94,6 +94,9 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "GymStatue": {},
                 "HealingMachine": {},
                 "HealingMachineBall": {},
+                "HMSolid": {
+                    "CuttableTree": {}
+                },
                 "HouseBase": {
                     "HouseSide": {
                         "HouseLeft": {},
@@ -909,6 +912,13 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "HealingMachine": [16, 16],
         "HealingMachineBall": [3, 3],
+        "HMSolid": {
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMSolid
+        },
+        "CuttableTree": {
+            "moveName": "Cut",
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut
+        },
         "HouseBase": {
             "width": 32,
             "height": 8,
