@@ -737,6 +737,9 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.keyDownSelect = function (thing, event) {
             thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                return;
+            }
             if (!thing.FSP.toggleCycling(thing)) {
                 thing.FSP.displayMessage(thing, thing.FSP.MathDecider.getConstant("items").Bicycle.error);
             }
@@ -1023,6 +1026,8 @@ var FullScreenPokemon;
             thing.cycling = true;
             thing.speedOld = thing.speed;
             thing.speed = this.MathDecider.compute("cycleSpeed", thing);
+            thing.FSP.addClass(thing, "cycling");
+            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
             return true;
         };
         /**
@@ -1033,6 +1038,9 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.stopCycling = function (thing) {
             thing.cycling = false;
             thing.speed = thing.speedOld;
+            thing.FSP.removeClass(thing, "cycling");
+            thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
+            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
         };
         /**
          * Toggles the Player's cycling status.
