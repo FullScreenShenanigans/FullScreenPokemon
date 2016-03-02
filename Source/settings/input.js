@@ -8,7 +8,8 @@ FullScreenPokemon.FullScreenPokemon.settings.input = {
             "down":   [83, 40],     // s,     down
             "a":      [90, 13],     // z
             "b":      [88, 8],      // x,     backspace
-            "pause":  [13, 17],     // enter, ctrl
+            "pause":  [13, 80],     // enter, p
+            "select": [17, 16],     // ctrl,  shift
             // Mouse aliases
             "rightclick": [3],
         },
@@ -22,6 +23,7 @@ FullScreenPokemon.FullScreenPokemon.settings.input = {
                 "b": FullScreenPokemon.FullScreenPokemon.prototype.keyDownB,
                 "pause": FullScreenPokemon.FullScreenPokemon.prototype.togglePauseMenu,
                 "mute": FullScreenPokemon.FullScreenPokemon.prototype.keyDownMute,
+                "select": FullScreenPokemon.FullScreenPokemon.prototype.keyDownSelect
             },
             "onkeyup": {
                 "left": FullScreenPokemon.FullScreenPokemon.prototype.keyUpLeft,
