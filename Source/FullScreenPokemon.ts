@@ -1013,14 +1013,22 @@ module FullScreenPokemon {
          * @todo Extend the use for any registered item, not just the bicycle.
          */
         keyDownSelect(thing: ICharacter, event?: Event): void {
-            thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
-
             if (thing.FSP.MenuGrapher.getActiveMenu()) {
                 return;
             }
 
-            if (!thing.FSP.toggleCycling(<IPlayer>thing)) {
-                thing.FSP.displayMessage(thing, thing.FSP.MathDecider.getConstant("items").Bicycle.error);
+            thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
+
+            var selectItem: string = thing.FSP.ItemsHolder.getItem("SelectItem");
+
+            if (!selectItem) {
+                return;
+            }
+
+            var itemSchema: IItemSchema = thing.FSP.MathDecider.getConstant("items")[selectItem];
+
+            if (!itemSchema.bagActivate(thing)) {
+                thing.FSP.displayMessage(thing, itemSchema.error);
             }
 
             if (event && event.preventDefault) {
