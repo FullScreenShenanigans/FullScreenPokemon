@@ -2483,7 +2483,7 @@ var FullScreenPokemon;
             thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
         /**
-         * Activates an HMSolid when the Player activates it.
+         * Calls an HMSolid's partyActivate Function when the Player activates the HMSolid.
          *
          * @param player   The Player.
          * @param thing   The Solid to be affected.
@@ -3775,12 +3775,47 @@ var FullScreenPokemon;
          * @param pokemon   The Pokemon using Cut.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add an animation for what happens when the CuttableTree is cut.
+         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         FullScreenPokemon.prototype.partyActivateCut = function (player, pokemon) {
             player.FSP.MenuGrapher.registerB();
             player.FSP.MenuGrapher.registerB();
             player.FSP.closePauseMenu();
             player.FSP.killNormal(player.bordering[player.direction]);
+        };
+        /**
+         * Makes a StrengthBoulder move.
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using Strength.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         * @todo Verify the exact speed, sound, and distance.
+         * @todo Replace the two RegisterB calls with a closeAllMenus call.
+         */
+        FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {
+            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0;
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.closePauseMenu();
+            switch (player.direction) {
+                case 0:
+                    yvel = -boulder.FSP.unitsize;
+                    break;
+                case 1:
+                    xvel = boulder.FSP.unitsize;
+                    break;
+                case 2:
+                    yvel = boulder.FSP.unitsize;
+                    break;
+                case 3:
+                    xvel = -boulder.FSP.unitsize;
+                    break;
+                default:
+                    throw new Error("Unknown direction: " + player.direction + ".");
+            }
+            player.FSP.TimeHandler.addEventInterval(function () {
+                boulder.FSP.shiftBoth(boulder, xvel, yvel);
+            }, 1, 8);
         };
         /* Cutscenes
         */

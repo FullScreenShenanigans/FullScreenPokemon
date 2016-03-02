@@ -16859,7 +16859,9 @@ module FullScreenPokemon {
                     "power": 80,
                     "accuracy": "100%",
                     "PP": 15,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.prototype.partyActivateStrength,
+                    "solidName": "StrengthBoulder"
                 },
                 "String Shot": {
                     "type": "Bug",
