@@ -1859,7 +1859,7 @@ declare module FullScreenPokemon {
         active?: boolean;
 
         /**
-         * A callback for when a Player collides with this.
+         * A callback for when a Player activates this.
          * 
          * @param thing   The Player activating other, or other if a self-activation.
          * @param other   The Detector being activated by thing.
