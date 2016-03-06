@@ -626,7 +626,7 @@ module EightBittr {
         }
 
         /**
-         * Shifts a Thing horizontally by changing its top and bottom attributes.
+         * Shifts a Thing horizontally by changing its left and right attributes.
          * 
          * @param thing   The Thing to shift horizontally.
          * @param dy   How far to shift the Thing.
