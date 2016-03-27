@@ -2496,6 +2496,7 @@ var FullScreenPokemon;
                 for (j = 0; j < moves.length; j += 1) {
                     if (moves[j].title === thing.moveName) {
                         thing.moveCallback(player, partyPokemon[i]);
+                        return;
                     }
                 }
             }
@@ -3793,10 +3794,13 @@ var FullScreenPokemon;
          * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {
-            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0;
+            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0, i = 0;
             player.FSP.MenuGrapher.registerB();
             player.FSP.MenuGrapher.registerB();
             player.FSP.closePauseMenu();
+            if (!player.FSP.generateIsCharacterTouchingSolid()(player, boulder) || boulder.bordering[player.direction] !== undefined) {
+                return;
+            }
             switch (player.direction) {
                 case 0:
                     yvel = -boulder.FSP.unitsize;
@@ -3816,6 +3820,9 @@ var FullScreenPokemon;
             player.FSP.TimeHandler.addEventInterval(function () {
                 boulder.FSP.shiftBoth(boulder, xvel, yvel);
             }, 1, 8);
+            for (i = 0; i < 4; i++) {
+                boulder.bordering[i] = undefined;
+            }
         };
         /* Cutscenes
         */

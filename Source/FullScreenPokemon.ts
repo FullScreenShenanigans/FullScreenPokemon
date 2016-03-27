@@ -3255,6 +3255,7 @@ module FullScreenPokemon {
                 for (j = 0; j < moves.length; j += 1) {
                     if (moves[j].title === thing.moveName) {
                         thing.moveCallback(player, partyPokemon[i]);
+                        return;
                     }
                 }
             }
@@ -4899,13 +4900,18 @@ module FullScreenPokemon {
          * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {
-            var boulder: IHMSolid = <IHMSolid>player.bordering[player.direction],
+            var boulder: ICharacter = <ICharacter>player.bordering[player.direction],
                 xvel: number = 0,
-                yvel: number = 0;
+                yvel: number = 0,
+                i: number = 0;
 
             player.FSP.MenuGrapher.registerB();
             player.FSP.MenuGrapher.registerB();
             player.FSP.closePauseMenu();
+
+            if (!player.FSP.generateIsCharacterTouchingSolid()(player, boulder) || boulder.bordering[player.direction] !== undefined) {
+                return;
+            }
 
             switch (player.direction) {
                 case 0:
@@ -4934,6 +4940,10 @@ module FullScreenPokemon {
                 },
                 1,
                 8);
+
+            for (i = 0; i < 4; i++) {
+                boulder.bordering[i] = undefined;
+            }
         }
 
 

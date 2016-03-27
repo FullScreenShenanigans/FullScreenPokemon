@@ -1906,7 +1906,7 @@ declare module FullScreenPokemon {
     /**
      * A Solid with a partyActivate callback Function.
      */
-    export interface IHMSolid extends IDetector {
+    export interface IHMSolid extends ICharacter {
         /**
          * The name of the move needed to interact with this HMSolid.
          */
