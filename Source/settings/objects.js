@@ -27,6 +27,10 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "GlassesOldGuy": {},
                 "Guy": {},
                 "GymGuide": {},
+                "HMCharacter": {
+                    "CuttableTree": {},
+                    "StrengthBoulder": {}
+                },
                 "Lady": {},
                 "Lass": {},
                 "LandPokemon": {},
@@ -83,7 +87,6 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "Computer": {},
                 "ComputerDesk": {},
                 "ConsoleAndController": {},
-                "CuttableTree": {},
                 "DialogResponder": {
                     "CutsceneResponder": {}
                 },
@@ -94,10 +97,6 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "GymStatue": {},
                 "HealingMachine": {},
                 "HealingMachineBall": {},
-                "HMSolid": {
-                    "CuttableTree": {},
-                    "StrengthBoulder": {}
-                },
                 "HouseBase": {
                     "HouseSide": {
                         "HouseLeft": {},
@@ -913,8 +912,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "HealingMachine": [16, 16],
         "HealingMachineBall": [3, 3],
-        "HMSolid": {
-            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMSolid
+        "HMCharacter": {
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMCharacter
         },
         "CuttableTree": {
             "moveName": "Cut",

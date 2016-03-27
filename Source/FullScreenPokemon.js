@@ -2483,19 +2483,20 @@ var FullScreenPokemon;
             thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
         /**
-         * Calls an HMSolid's partyActivate Function when the Player activates the HMSolid.
+         * Calls an HMCharacter's partyActivate Function when the Player activates the HMCharacter.
          *
          * @param player   The Player.
          * @param thing   The Solid to be affected.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          */
-        FullScreenPokemon.prototype.activateHMSolid = function (player, thing) {
+        FullScreenPokemon.prototype.activateHMCharacter = function (player, thing) {
             var partyPokemon = player.FSP.ItemsHolder.getItem("PokemonInParty"), moves, i, j;
             for (i = 0; i < partyPokemon.length; i += 1) {
                 moves = partyPokemon[i].moves;
                 for (j = 0; j < moves.length; j += 1) {
                     if (moves[j].title === thing.moveName) {
                         thing.moveCallback(player, partyPokemon[i]);
+                        return;
                     }
                 }
             }
@@ -3754,17 +3755,17 @@ var FullScreenPokemon;
         /* partyActivate functions
         */
         /**
-         * Makes sure that Player is facing the correct HMSolid
+         * Makes sure that Player is facing the correct HMCharacter
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using the move.
          * @param move   The move being used.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
-         * @todo Add context for what happens if player is not bordering the correct HMSolid.
+         * @todo Add context for what happens if player is not bordering the correct HMCharacter.
          */
         FullScreenPokemon.prototype.partyActivateCheckThing = function (player, pokemon, move) {
             var borderedThing = player.bordering[player.direction];
-            if (borderedThing && borderedThing.title === move.solidName) {
+            if (borderedThing && borderedThing.title === move.characterName) {
                 move.partyActivate(player, pokemon);
             }
         };
@@ -3793,10 +3794,13 @@ var FullScreenPokemon;
          * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {
-            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0;
+            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0, i = 0;
             player.FSP.MenuGrapher.registerB();
             player.FSP.MenuGrapher.registerB();
             player.FSP.closePauseMenu();
+            if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
+                return;
+            }
             switch (player.direction) {
                 case 0:
                     yvel = -boulder.FSP.unitsize;
@@ -3816,6 +3820,9 @@ var FullScreenPokemon;
             player.FSP.TimeHandler.addEventInterval(function () {
                 boulder.FSP.shiftBoth(boulder, xvel, yvel);
             }, 1, 8);
+            for (i = 0; i < 4; i += 1) {
+                boulder.bordering[i] = undefined;
+            }
         };
         /* Cutscenes
         */

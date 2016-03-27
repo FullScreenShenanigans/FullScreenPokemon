@@ -1059,9 +1059,9 @@ declare module FullScreenPokemon {
         partyActivate?: (player: IPlayer, pokemon: IPokemon) => void;
 
         /**
-         * The HMSolid that the move affects.
+         * The HMCharacter that the move affects.
          */
-        solidName?: string;
+        characterName?: string;
     }
 
     /**
@@ -1906,14 +1906,14 @@ declare module FullScreenPokemon {
     /**
      * A Solid with a partyActivate callback Function.
      */
-    export interface IHMSolid extends IDetector {
+    export interface IHMCharacter extends ICharacter {
         /**
-         * The name of the move needed to interact with this HMSolid.
+         * The name of the move needed to interact with this HMCharacter.
          */
         moveName: string;
 
         /**
-         * The partyActivate Function used to interact with this HMSolid.
+         * The partyActivate Function used to interact with this HMCharacter.
          */
         moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
     }
