@@ -27,7 +27,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "GlassesOldGuy": {},
                 "Guy": {},
                 "GymGuide": {},
-                "HMSolid": {
+                "HMCharacter": {
                     "CuttableTree": {},
                     "StrengthBoulder": {}
                 },
@@ -912,8 +912,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "HealingMachine": [16, 16],
         "HealingMachineBall": [3, 3],
-        "HMSolid": {
-            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMSolid
+        "HMCharacter": {
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMCharacter
         },
         "CuttableTree": {
             "moveName": "Cut",

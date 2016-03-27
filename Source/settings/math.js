@@ -15842,7 +15842,7 @@ var FullScreenPokemon;
                     "PP": 30,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut,
-                    "solidName": "CuttableTree"
+                    "characterName": "CuttableTree"
                 },
                 "Defense Curl": {
                     "type": "Normal",
@@ -16702,7 +16702,7 @@ var FullScreenPokemon;
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateStrength,
-                    "solidName": "StrengthBoulder"
+                    "characterName": "StrengthBoulder"
                 },
                 "String Shot": {
                     "type": "Bug",

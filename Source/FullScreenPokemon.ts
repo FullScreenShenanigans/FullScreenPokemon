@@ -3237,13 +3237,13 @@ module FullScreenPokemon {
         }
 
         /**
-         * Calls an HMSolid's partyActivate Function when the Player activates the HMSolid.
+         * Calls an HMCharacter's partyActivate Function when the Player activates the HMCharacter.
          * 
          * @param player   The Player.
          * @param thing   The Solid to be affected.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          */
-        activateHMSolid(player: IPlayer, thing: IHMSolid): void {
+        activateHMCharacter(player: IPlayer, thing: IHMCharacter): void {
             var partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty"),
                 moves: BattleMovr.IMove[],
                 i: number,
@@ -4858,18 +4858,18 @@ module FullScreenPokemon {
         */
 
         /**
-         * Makes sure that Player is facing the correct HMSolid
+         * Makes sure that Player is facing the correct HMCharacter
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using the move.
          * @param move   The move being used.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
-         * @todo Add context for what happens if player is not bordering the correct HMSolid.
+         * @todo Add context for what happens if player is not bordering the correct HMCharacter.
          */
         partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IMoveSchema): void {
             var borderedThing: IThing = player.bordering[player.direction];
 
-            if (borderedThing && borderedThing.title === move.solidName) {
+            if (borderedThing && borderedThing.title === move.characterName) {
                 move.partyActivate(player, pokemon);
             }
         }
@@ -4900,7 +4900,7 @@ module FullScreenPokemon {
          * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {
-            var boulder: ICharacter = <ICharacter>player.bordering[player.direction],
+            var boulder: IHMCharacter = <IHMCharacter>player.bordering[player.direction],
                 xvel: number = 0,
                 yvel: number = 0,
                 i: number = 0;
@@ -4909,7 +4909,7 @@ module FullScreenPokemon {
             player.FSP.MenuGrapher.registerB();
             player.FSP.closePauseMenu();
 
-            if (!player.FSP.generateIsCharacterTouchingSolid()(player, boulder) || boulder.bordering[player.direction] !== undefined) {
+            if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
                 return;
             }
 
@@ -4941,7 +4941,7 @@ module FullScreenPokemon {
                 1,
                 8);
 
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i += 1) {
                 boulder.bordering[i] = undefined;
             }
         }
