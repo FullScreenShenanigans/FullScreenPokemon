@@ -946,7 +946,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
+         * Reacts to the B key being pressed. The MenuGraphr's active menu reacts to
          * the deselection if it exists. The onKeyDownB mod event is fired.
          * 
          * @param thing   The triggering Character.
@@ -999,6 +999,29 @@ module FullScreenPokemon {
         keyDownMute(thing: ICharacter, event?: Event): void {
             thing.FSP.AudioPlayer.toggleMuted();
             thing.FSP.ModAttacher.fireEvent("onKeyDownMute");
+
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
+        }
+
+        /**
+         * Reacts to the select key being pressed. Toggles the use of the registered item.
+         * 
+         * @param thing   The triggering Character.
+         * @param event   The original user-caused Event.
+         * @todo Extend the use for any registered item, not just the bicycle.
+         */
+        keyDownSelect(thing: ICharacter, event?: Event): void {
+            thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
+
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                return;
+            }
+
+            if (!thing.FSP.toggleCycling(<IPlayer>thing)) {
+                thing.FSP.displayMessage(thing, thing.FSP.MathDecider.getConstant("items").Bicycle.error);
+            }
 
             if (event && event.preventDefault) {
                 event.preventDefault();
@@ -1316,6 +1339,60 @@ module FullScreenPokemon {
                 return FSP.player.bordering[2] ? 0 : FSP.player.yvel;
             } else {
                 return FSP.player.bordering[0] ? 0 : FSP.player.yvel;
+            }
+        }
+
+        /**
+         * Starts the Player cycling if the current Area allows it.
+         *
+         * @param thing   A Player to start cycling.
+         * @param area   The current Area.
+         * @returns Whether the properties were changed.
+         */
+        startCycling(thing: IPlayer): boolean {
+            var area: IArea = <IArea>this.AreaSpawner.getArea();
+
+            if (!area.allowCycling) {
+                return false;
+            }
+
+            thing.cycling = true;
+            thing.speedOld = thing.speed;
+            thing.speed = this.MathDecider.compute("cycleSpeed", thing);
+
+            thing.FSP.addClass(thing, "cycling");
+
+            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            return true;
+        }
+
+        /**
+         * Stops the Player cycling.
+         *
+         * @param thing   A Player to stop cycling.
+         */
+        stopCycling(thing: IPlayer): void {
+            thing.cycling = false;
+            thing.speed = thing.speedOld;
+
+            thing.FSP.removeClass(thing, "cycling");
+            thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
+
+            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        }
+
+        /**
+         * Toggles the Player's cycling status.
+         *
+         * @param thing   A Player to start or stop cycling.
+         * @returns Whether the Player started cycling.
+         */
+        toggleCycling(thing: IPlayer): boolean {
+            if (thing.cycling) {
+                thing.FSP.stopCycling(thing);
+                return true;
+            } else {
+                return thing.FSP.startCycling(thing);
             }
         }
 
@@ -10509,6 +10586,29 @@ module FullScreenPokemon {
             array.push(object);
 
             return true;
+        }
+
+        /**
+         * Displays a message to the user.
+         *
+         * @param thing   The Thing that triggered the error.
+         * @param message   The message to be displayed.
+         */
+        displayMessage(thing: IThing, message: string): void {
+            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+                return;
+            }
+
+            thing.FSP.MenuGrapher.createMenu("GeneralText", {
+                "deleteOnFinish": true
+            });
+            thing.FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    message
+                ]
+            );
+            thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         }
     }
 }
