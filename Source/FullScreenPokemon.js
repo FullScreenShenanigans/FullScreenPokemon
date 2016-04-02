@@ -2547,6 +2547,25 @@ var FullScreenPokemon;
             thing.FSP.MenuGrapher.addMenuDialog("GeneralText", dialog);
             thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
+        /**
+         * Calls an HMCharacter's partyActivate Function when the Player activates the HMCharacter.
+         *
+         * @param player   The Player.
+         * @param thing   The Solid to be affected.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         */
+        FullScreenPokemon.prototype.activateHMCharacter = function (player, thing) {
+            var partyPokemon = player.FSP.ItemsHolder.getItem("PokemonInParty"), moves, i, j;
+            for (i = 0; i < partyPokemon.length; i += 1) {
+                moves = partyPokemon[i].moves;
+                for (j = 0; j < moves.length; j += 1) {
+                    if (moves[j].title === thing.moveName) {
+                        thing.moveCallback(player, partyPokemon[i]);
+                        return;
+                    }
+                }
+            }
+        };
         /* Physics
         */
         /**
@@ -3029,7 +3048,7 @@ var FullScreenPokemon;
                     options.push({
                         "text": moves[i].title.toUpperCase(),
                         "callback": function () {
-                            move.partyActivate(_this.player, settings.pokemon);
+                            _this.partyActivateCheckThing(_this.player, settings.pokemon, move);
                         }
                     });
                 }
@@ -3797,6 +3816,78 @@ var FullScreenPokemon;
                 return;
             }
             FSP.TimeHandler.addEvent(FSP.animateBattleDisplayPokemonHealthBar, 2, FSP, battlerName, hpNew, hpEnd, hpNormal, callback);
+        };
+        /* partyActivate functions
+        */
+        /**
+         * Makes sure that Player is facing the correct HMCharacter
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using the move.
+         * @param move   The move being used.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         * @todo Add context for what happens if player is not bordering the correct HMCharacter.
+         */
+        FullScreenPokemon.prototype.partyActivateCheckThing = function (player, pokemon, move) {
+            var borderedThing = player.bordering[player.direction];
+            if (borderedThing && borderedThing.title === move.characterName) {
+                move.partyActivate(player, pokemon);
+            }
+        };
+        /**
+         * Cuts a CuttableTree.
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using Cut.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         * @todo Add an animation for what happens when the CuttableTree is cut.
+         * @todo Replace the two RegisterB calls with a closeAllMenus call.
+         */
+        FullScreenPokemon.prototype.partyActivateCut = function (player, pokemon) {
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.closePauseMenu();
+            player.FSP.killNormal(player.bordering[player.direction]);
+        };
+        /**
+         * Makes a StrengthBoulder move.
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using Strength.
+         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
+         * @todo Verify the exact speed, sound, and distance.
+         * @todo Replace the two RegisterB calls with a closeAllMenus call.
+         */
+        FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {
+            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0, i = 0;
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.closePauseMenu();
+            if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
+                return;
+            }
+            switch (player.direction) {
+                case 0:
+                    yvel = -boulder.FSP.unitsize;
+                    break;
+                case 1:
+                    xvel = boulder.FSP.unitsize;
+                    break;
+                case 2:
+                    yvel = boulder.FSP.unitsize;
+                    break;
+                case 3:
+                    xvel = -boulder.FSP.unitsize;
+                    break;
+                default:
+                    throw new Error("Unknown direction: " + player.direction + ".");
+            }
+            player.FSP.TimeHandler.addEventInterval(function () {
+                boulder.FSP.shiftBoth(boulder, xvel, yvel);
+            }, 1, 8);
+            for (i = 0; i < 4; i += 1) {
+                boulder.bordering[i] = undefined;
+            }
         };
         /* Cutscenes
         */

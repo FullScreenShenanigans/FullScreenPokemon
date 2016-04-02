@@ -16002,7 +16002,9 @@ module FullScreenPokemon {
                     "power": 50,
                     "accuracy": "95%",
                     "PP": 30,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.prototype.partyActivateCut,
+                    "characterName": "CuttableTree"
                 },
                 "Defense Curl": {
                     "type": "Normal",
@@ -16860,7 +16862,9 @@ module FullScreenPokemon {
                     "power": 80,
                     "accuracy": "100%",
                     "PP": 15,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.prototype.partyActivateStrength,
+                    "characterName": "StrengthBoulder"
                 },
                 "String Shot": {
                     "type": "Bug",

@@ -1056,7 +1056,12 @@ declare module FullScreenPokemon {
         /**
          * Activates a Function to perform an HM move outside of battle.
          */
-        partyActivate?: (player: IPlayer, pokemon: IPokemon) => boolean;
+        partyActivate?: (player: IPlayer, pokemon: IPokemon) => void;
+
+        /**
+         * The HMCharacter that the move affects.
+         */
+        characterName?: string;
     }
 
     /**
@@ -1859,7 +1864,7 @@ declare module FullScreenPokemon {
         active?: boolean;
 
         /**
-         * A callback for when a Player collides with this.
+         * A callback for when a Player activates this.
          * 
          * @param thing   The Player activating other, or other if a self-activation.
          * @param other   The Detector being activated by thing.
@@ -1901,6 +1906,21 @@ declare module FullScreenPokemon {
          * Whether this should deactivate itself after a first use (by default, false).
          */
         singleUse?: boolean;
+    }
+
+    /**
+     * A Solid with a partyActivate callback Function.
+     */
+    export interface IHMCharacter extends ICharacter {
+        /**
+         * The name of the move needed to interact with this HMCharacter.
+         */
+        moveName: string;
+
+        /**
+         * The partyActivate Function used to interact with this HMCharacter.
+         */
+        moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
     }
 
     /**
