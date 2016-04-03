@@ -1671,6 +1671,11 @@ declare module FullScreenPokemon {
         speedOld?: number;
 
         /**
+         * Whether the player is currently surfing.
+         */
+        surfing?: boolean;
+
+        /**
          * Whether this should turn towards an activating Character when a dialog is triggered.
          */
         switchDirectionOnDialog?: boolean;
@@ -1916,6 +1921,16 @@ declare module FullScreenPokemon {
          * The partyActivate Function used to interact with this HMCharacter.
          */
         moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
+    }
+
+    /**
+     * A WaterEdge object.
+     */
+    export interface IWaterEdge extends IHMCharacter {
+        /**
+         * The direction the Player must go to leave the water.
+         */
+        exitDirection: number;
     }
 
     /**
