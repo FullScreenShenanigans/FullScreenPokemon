@@ -2337,6 +2337,23 @@ var FullScreenPokemon;
             thing.FSP.animateCharacterHopLedge(thing, other);
             return true;
         };
+        /**
+         * Collision callback for a Character and a WaterEdge. If possible, the Character
+         * is animated to move onto land.
+         *
+         * @param thing   A Character walking to other.
+         * @param other   A Ledge walked to by thing.
+         */
+        FullScreenPokemon.prototype.collideWaterEdge = function (thing, other) {
+            var edge = other;
+            if (!thing.surfing || edge.exitDirection !== thing.direction) {
+                return false;
+            }
+            thing.FSP.animateCharacterStartWalking(thing, thing.direction, [2]);
+            thing.surfing = false;
+            thing.FSP.removeClass(thing, "surfing");
+            return true;
+        };
         /* Death
         */
         /**
@@ -3827,10 +3844,11 @@ var FullScreenPokemon;
          * @param move   The move being used.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add context for what happens if player is not bordering the correct HMCharacter.
+         * @todo Refactor to give borderedThing a .hmActivate property.
          */
         FullScreenPokemon.prototype.partyActivateCheckThing = function (player, pokemon, move) {
             var borderedThing = player.bordering[player.direction];
-            if (borderedThing && borderedThing.title === move.characterName) {
+            if (borderedThing && borderedThing.title.indexOf(move.characterName) !== -1) {
                 move.partyActivate(player, pokemon);
             }
         };
@@ -3888,6 +3906,22 @@ var FullScreenPokemon;
             for (i = 0; i < 4; i += 1) {
                 boulder.bordering[i] = undefined;
             }
+        };
+        /**
+         * Starts the Player surfing.
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using Strength.
+         * @todo Add the dialogue for when the Player starts surfing.
+         * @todo Replace the two RegisterB calls with a closeAllMenus call.
+         */
+        FullScreenPokemon.prototype.partyActivateSurf = function (player, pokemon) {
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.closePauseMenu();
+            player.FSP.addClass(player, "surfing");
+            player.FSP.animateCharacterStartWalking(player, player.direction, [1]);
+            player.surfing = true;
         };
         /* Cutscenes
         */
