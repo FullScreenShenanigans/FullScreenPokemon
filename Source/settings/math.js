@@ -16769,7 +16769,9 @@ var FullScreenPokemon;
                     "power": 95,
                     "accuracy": "100%",
                     "PP": 15,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf,
+                    "characterName": "WaterEdge"
                 },
                 "Swift": {
                     "type": "Normal",

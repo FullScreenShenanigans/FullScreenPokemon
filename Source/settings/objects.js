@@ -1045,7 +1045,26 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "indoor": {}
             }
         },
-        "WaterEdge": [4, 4],
+        "WaterEdge": {
+            "height": 4,
+            "width": 4,
+            "collide": FullScreenPokemon.FullScreenPokemon.prototype.collideWaterEdge,
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMCharacter,
+            "moveName": "Surf",
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf
+        },
+        "WaterEdgeTop": {
+            "exitDirection": 0
+        },
+        "WaterEdgeRight": {
+            "exitDirection": 1
+        },
+        "WaterEdgeBottom": {
+            "exitDirection": 2
+        },
+        "WaterEdgeLeft": {
+            "exitDirection": 3
+        },
         "WindowDetector": {
             "hidden": true,
             "onThingAdd": FullScreenPokemon.FullScreenPokemon.prototype.spawnWindowDetector
