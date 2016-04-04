@@ -36,7 +36,7 @@ var MapsCreatr;
     "use strict";
     /**
      * Storage container and lazy loader for GameStartr maps that is the back-end
-     * counterpart to MapsHandlr. Maps are created with their custom Location and
+     * counterpart to AreaSpawnr. Maps are created with their custom Location and
      * Area members, which are initialized the first time the map is retrieved.
      */
     var MapsCreatr = (function () {
