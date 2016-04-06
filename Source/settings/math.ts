@@ -16180,7 +16180,8 @@ module FullScreenPokemon {
                     "power": 70,
                     "accuracy": "95%",
                     "PP": 15,
-                    "description": "User is made invulnerable for one turn, then hits the next turn."
+                    "description": "User is made invulnerable for one turn, then hits the next turn.",
+                    "partyActivate": FullScreenPokemon.prototype.partyActivateFly
                 },
                 "Focus Energy": {
                     "type": "Normal",

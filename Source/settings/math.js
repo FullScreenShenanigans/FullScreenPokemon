@@ -16021,7 +16021,8 @@ var FullScreenPokemon;
                     "power": 70,
                     "accuracy": "95%",
                     "PP": 15,
-                    "description": "User is made invulnerable for one turn, then hits the next turn."
+                    "description": "User is made invulnerable for one turn, then hits the next turn.",
+                    "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateFly
                 },
                 "Focus Energy": {
                     "type": "Normal",
@@ -17212,8 +17213,7 @@ var FullScreenPokemon;
                 "Bicycle": {
                     "effect": "Allows travel at double speed",
                     "category": "Key",
-                    "error": "No cycling allowed here.",
-                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.toggleCycling
+                    "error": "No cycling allowed here."
                 },
                 "Bike Voucher": {
                     "effect": "Redeem at Cerulean Bike Shop for a free Bicycle",

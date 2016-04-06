@@ -3850,8 +3850,12 @@ var FullScreenPokemon;
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add context for what happens if player is not bordering the correct HMCharacter.
          * @todo Refactor to give borderedThing a .hmActivate property.
+         * @todo Refactor to cover cases where a special move does not have a corresponding bordered Thing.
          */
         FullScreenPokemon.prototype.partyActivateCheckThing = function (player, pokemon, move) {
+            if (move.characterName === undefined) {
+                move.partyActivate(player, pokemon);
+            }
             var borderedThing = player.bordering[player.direction];
             if (borderedThing && borderedThing.title.indexOf(move.characterName) !== -1) {
                 move.partyActivate(player, pokemon);
@@ -3927,6 +3931,33 @@ var FullScreenPokemon;
             player.FSP.addClass(player, "surfing");
             player.FSP.animateCharacterStartWalking(player, player.direction, [1]);
             player.surfing = true;
+        };
+        /**
+         * Flies the Player to a new destination.
+         *
+         * @param player   The Player.
+         * @param pokemon   The Pokemon using Fly.
+         * @todo Add the flight animation.
+         * @todo Replace the two RegisterB calls with a closeAllMenus call.
+         * @todo Add dialog for when the Player cannot use Fly.
+         */
+        FullScreenPokemon.prototype.partyActivateFly = function (player, pokemon) {
+            var area = player.FSP.AreaSpawner.getArea();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.registerB();
+            player.FSP.closePauseMenu();
+            if (!area.allowFlying) {
+                return;
+            }
+            player.FSP.animateFadeToColor(player.FSP, {
+                "color": "White",
+                "callback": function () {
+                    player.FSP.animateFadeToColor(player.FSP, {
+                        "color": "White"
+                    });
+                    player.FSP.setMap("Pallet Town", "HM Transport");
+                }
+            });
         };
         /* Cutscenes
         */

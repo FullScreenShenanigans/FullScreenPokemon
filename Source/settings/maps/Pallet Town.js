@@ -8,6 +8,10 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
             "direction": 2,
             "push": true
         },
+        "HM Transport": {
+            "area": "Land",
+            "direction": 2
+        },
         "Player's House Floor 1 Door": {
             "area": "Player's House",
             "direction": 0
@@ -48,6 +52,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
     "areas": {
         "Land": {
             "allowCycling": true,
+            "allowFlying": true,
             "width": 152,
             "height": 136,
             "wildPokemon": {
@@ -107,11 +112,14 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
                 { "thing": "DirtLight", "x": 80, "y": 120, "width": 48, "height": 16 },
                 { "thing": "FenceWide", "x": 64, "y": 128, "width": 88 },
                 { "thing": "FenceWide", "x": 8, "y": 128 },
-                { "thing": "AreaSpawner", "y": 128, "map": "Route 21", "area": "Land", "direction": 2 }
+                { "thing": "AreaSpawner", "y": 128, "map": "Route 21", "area": "Land", "direction": 2 },
+                // @todo Create and use a Blank thing instead of DirtWhite.
+                { "thing": "DirtWhite", "x": 40, "y": 40, "width": 16, "entrance": "HM Transport" }
             ]
         },
         "Player's House": {
             "allowCycling": false,
+            "allowFlying": false,
             "invisibleWallBorders": true,
             "creation": [
                 { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -136,6 +144,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
         },
         "Player's House Floor 2": {
             "allowCycling": false,
+            "allowFlying": false,
             "invisibleWallBorders": true,
             "creation": [
                 { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -179,6 +188,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
         },
         "Rival's House": {
             "allowCycling": false,
+            "allowFlying": false,
             "invisibleWallBorders": true,
             "creation": [
                 { "thing": "WallIndoorHorizontalBands", "width": 64 },
@@ -203,6 +213,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
         },
         "Oak's Lab": {
             "allowCycling": false,
+            "allowFlying": false,
             "theme": "Oak's Lab",
             "invisibleWallBorders": true,
             "creation": [
