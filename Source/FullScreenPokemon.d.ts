@@ -793,6 +793,11 @@ declare module FullScreenPokemon {
         allowCycling: boolean;
 
         /**
+         * Whether the Area allows flying.
+         */
+        allowFlying: boolean;
+
+        /**
          * Any additional attributes that should add extra properties to this Area.
          */
         attributes?: {
