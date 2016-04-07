@@ -27,6 +27,10 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "GlassesOldGuy": {},
                 "Guy": {},
                 "GymGuide": {},
+                "HMCharacter": {
+                    "CuttableTree": {},
+                    "StrengthBoulder": {}
+                },
                 "Lady": {},
                 "Lass": {},
                 "LandPokemon": {},
@@ -908,6 +912,18 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "HealingMachine": [16, 16],
         "HealingMachineBall": [3, 3],
+        "HMCharacter": {
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMCharacter
+        },
+        "CuttableTree": {
+            "moveName": "Cut",
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut
+        },
+        "StrengthBoulder": {
+            "moveName": "Strength",
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateStrength,
+            "speed": FullScreenPokemon.FullScreenPokemon.unitsize
+        },
         "HouseBase": {
             "width": 32,
             "height": 8,
@@ -1029,7 +1045,26 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "indoor": {}
             }
         },
-        "WaterEdge": [4, 4],
+        "WaterEdge": {
+            "height": 4,
+            "width": 4,
+            "collide": FullScreenPokemon.FullScreenPokemon.prototype.collideWaterEdge,
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMCharacter,
+            "moveName": "Surf",
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf
+        },
+        "WaterEdgeTop": {
+            "exitDirection": 0
+        },
+        "WaterEdgeRight": {
+            "exitDirection": 1
+        },
+        "WaterEdgeBottom": {
+            "exitDirection": 2
+        },
+        "WaterEdgeLeft": {
+            "exitDirection": 3
+        },
         "WindowDetector": {
             "hidden": true,
             "onThingAdd": FullScreenPokemon.FullScreenPokemon.prototype.spawnWindowDetector

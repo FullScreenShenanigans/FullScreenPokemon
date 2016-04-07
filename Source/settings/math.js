@@ -15843,7 +15843,9 @@ var FullScreenPokemon;
                     "power": 50,
                     "accuracy": "95%",
                     "PP": 30,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut,
+                    "characterName": "CuttableTree"
                 },
                 "Defense Curl": {
                     "type": "Normal",
@@ -16701,7 +16703,9 @@ var FullScreenPokemon;
                     "power": 80,
                     "accuracy": "100%",
                     "PP": 15,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateStrength,
+                    "characterName": "StrengthBoulder"
                 },
                 "String Shot": {
                     "type": "Bug",
@@ -16765,7 +16769,9 @@ var FullScreenPokemon;
                     "power": 95,
                     "accuracy": "100%",
                     "PP": 15,
-                    "description": "No additional effect."
+                    "description": "No additional effect.",
+                    "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf,
+                    "characterName": "WaterEdge"
                 },
                 "Swift": {
                     "type": "Normal",
