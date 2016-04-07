@@ -17371,7 +17371,8 @@ module FullScreenPokemon {
                 "Bicycle": {
                     "effect": "Allows travel at double speed",
                     "category": "Key",
-                    "error": "No cycling allowed here."
+                    "error": "No cycling allowed here.",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.toggleCycling
                 },
                 "Bike Voucher": {
                     "effect": "Redeem at Cerulean Bike Shop for a free Bicycle",
