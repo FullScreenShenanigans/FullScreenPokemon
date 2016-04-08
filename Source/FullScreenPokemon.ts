@@ -4997,11 +4997,9 @@ module FullScreenPokemon {
          * @param pokemon   The Pokemon using Cut.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add an animation for what happens when the CuttableTree is cut.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         partyActivateCut(player: IPlayer, pokemon: IPokemon): void {
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
             player.FSP.killNormal(player.bordering[player.direction]);
         }
@@ -5013,7 +5011,6 @@ module FullScreenPokemon {
          * @param pokemon   The Pokemon using Strength.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Verify the exact speed, sound, and distance.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {
             var boulder: IHMCharacter = <IHMCharacter>player.bordering[player.direction],
@@ -5021,8 +5018,7 @@ module FullScreenPokemon {
                 yvel: number = 0,
                 i: number = 0;
 
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
 
             if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
@@ -9207,7 +9203,7 @@ module FullScreenPokemon {
             this.GroupHolder.clearArrays();
             this.MapScreener.clearScreen();
             this.MapScreener.thingsById = this.generateThingsByIdContainer();
-            this.MenuGrapher.setActiveMenu();
+            this.MenuGrapher.deleteAllMenus();
             this.TimeHandler.cancelAllEvents();
 
             this.AreaSpawner.setLocation(name);
