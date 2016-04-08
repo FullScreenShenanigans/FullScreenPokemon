@@ -89,7 +89,7 @@ var AudioPlayr;
          * @returns The current volume as a Number in [0,1], retrieved by the ItemsHoldr.
          */
         AudioPlayr.prototype.getVolume = function () {
-            return Number(this.ItemsHolder.getItem("volume") || 0);
+            return parseFloat(this.ItemsHolder.getItem("volume")) || 1;
         };
         /**
          * Sets the current volume. If not muted, all sounds will have their volume
