@@ -4341,7 +4341,7 @@ var FullScreenPokemon;
                 });
             };
             // @todo: When all moves have been implemented, this will be simplified.
-            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
                 console.warn(choice + " attack animation not implemented...");
                 args.callback();
             }
@@ -4401,7 +4401,7 @@ var FullScreenPokemon;
                 });
             };
             // @todo: When all moves have been implemented, this will be simplified.
-            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
                 console.warn(choice + " attack animation not implemented...");
                 args.callback();
             }
