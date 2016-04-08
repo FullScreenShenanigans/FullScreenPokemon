@@ -905,7 +905,7 @@ var FullScreenPokemon;
          * @param characters   The Characters group of Things.
          */
         FullScreenPokemon.prototype.maintainCharacters = function (FSP, characters) {
-            var character, i;
+            var character, i, j;
             for (i = 0; i < characters.length; i += 1) {
                 character = characters[i];
                 FSP.shiftCharacter(character);
@@ -920,6 +920,9 @@ var FullScreenPokemon;
                     FSP.arrayDeleteThing(character, characters, i);
                     i -= 1;
                     continue;
+                }
+                for (j = 0; j < 4; j += 1) {
+                    character.bordering[j] = undefined;
                 }
                 FSP.QuadsKeeper.determineThingQuadrants(character);
                 FSP.ThingHitter.checkHitsForThing(character);
@@ -1514,7 +1517,9 @@ var FullScreenPokemon;
                 thing.walkingCommands.push(direction);
             }
             thing.FSP.animateCharacterStartWalking(thing, direction, onStop);
-            thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            }
         };
         /**
          * Starts a Character walking in the given direction as part of a walking cycle.
@@ -1539,7 +1544,9 @@ var FullScreenPokemon;
                 thing.sightDetector.nocollide = true;
             }
             thing.FSP.TimeHandler.addEventInterval(thing.onWalkingStop, repeats, Infinity, thing, onStop);
-            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            }
         };
         /**
          * Starts a roaming Character walking in a random direction, determined
@@ -2676,14 +2683,17 @@ var FullScreenPokemon;
          * @param thing   A Character to shift.
          */
         FullScreenPokemon.prototype.shiftCharacter = function (thing) {
-            if (thing.xvel !== 0) {
-                thing.bordering[1] = thing.bordering[3] = undefined;
+            if (thing.bordering[Direction.Top] && thing.yvel < 0) {
+                thing.yvel = 0;
             }
-            else if (thing.yvel !== 0) {
-                thing.bordering[0] = thing.bordering[2] = undefined;
+            if (thing.bordering[Direction.Right] && thing.xvel > 0) {
+                thing.xvel = 0;
             }
-            else {
-                return;
+            if (thing.bordering[Direction.Bottom] && thing.yvel > 0) {
+                thing.yvel = 0;
+            }
+            if (thing.bordering[Direction.Left] && thing.xvel < 0) {
+                thing.xvel = 0;
             }
             thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
         };

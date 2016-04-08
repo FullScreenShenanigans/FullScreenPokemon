@@ -1219,7 +1219,8 @@ module FullScreenPokemon {
          */
         maintainCharacters(FSP: FullScreenPokemon, characters: ICharacter[]): void {
             var character: ICharacter,
-                i: number;
+                i: number,
+                j: number;
 
             for (i = 0; i < characters.length; i += 1) {
                 character = characters[i];
@@ -1238,6 +1239,10 @@ module FullScreenPokemon {
                     FSP.arrayDeleteThing(character, characters, i);
                     i -= 1;
                     continue;
+                }
+
+                for (j = 0; j < 4; j += 1) {
+                    character.bordering[j] = undefined;
                 }
 
                 FSP.QuadsKeeper.determineThingQuadrants(character);
@@ -2033,7 +2038,9 @@ module FullScreenPokemon {
 
             thing.FSP.animateCharacterStartWalking(thing, direction, onStop);
 
-            thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            }
         }
 
         /**
@@ -2071,7 +2078,9 @@ module FullScreenPokemon {
             thing.FSP.TimeHandler.addEventInterval(
                 thing.onWalkingStop, repeats, Infinity, thing, onStop);
 
-            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            }
         }
 
         /**
@@ -3478,12 +3487,20 @@ module FullScreenPokemon {
          * @param thing   A Character to shift.
          */
         shiftCharacter(thing: ICharacter): void {
-            if (thing.xvel !== 0) {
-                thing.bordering[1] = thing.bordering[3] = undefined;
-            } else if (thing.yvel !== 0) {
-                thing.bordering[0] = thing.bordering[2] = undefined;
-            } else {
-                return;
+            if (thing.bordering[Direction.Top] && thing.yvel < 0) {
+                thing.yvel = 0;
+            }
+
+            if (thing.bordering[Direction.Right] && thing.xvel > 0) {
+                thing.xvel = 0;
+            }
+
+            if (thing.bordering[Direction.Bottom] && thing.yvel > 0) {
+                thing.yvel = 0;
+            }
+
+            if (thing.bordering[Direction.Left] && thing.xvel < 0) {
+                thing.xvel = 0;
             }
 
             thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
