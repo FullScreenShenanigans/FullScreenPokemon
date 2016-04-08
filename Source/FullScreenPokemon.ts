@@ -2217,8 +2217,7 @@ module FullScreenPokemon {
 
             if (
                 !thing.FSP.MenuGrapher.getActiveMenu()
-                && thing.keys[thing.direction])
-            {
+                && thing.keys[thing.direction]) {
                 thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
                 return false;
             }
