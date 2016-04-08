@@ -1548,6 +1548,9 @@ module FullScreenPokemon {
                 "textSpeed": 0
             },
             "BattlePlayerHealthTitle": {
+                "size": {
+                    "width": 38
+                },
                 "position": {
                     "offset": {
                         "top": -12.5,
