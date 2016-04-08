@@ -3811,26 +3811,26 @@ module FullScreenPokemon {
          */
         openPauseMenu(): void {
             var options: any[] = [
-                    {
-                        "text": "%%%%%%%POKEMON%%%%%%%",
-                        "callback": this.openPokemonMenu.bind(this, {
-                            // "onSwitch": ...
-                        })
-                    }, {
-                        "text": "ITEM",
-                        "callback": this.openItemsMenu.bind(this)
-                    }, {
-                        "text": "%%%%%%%PLAYER%%%%%%%",
-                        "callback": this.openPlayerMenu.bind(this)
-                    }, {
-                        "text": "SAVE",
-                        "callback": this.openSaveMenu.bind(this)
-                    }, {
-                        "text": "OPTION"
-                    }, {
-                        "text": "Exit",
-                        "callback": this.closePauseMenu.bind(this)
-                    }];
+                {
+                    "text": "%%%%%%%POKEMON%%%%%%%",
+                    "callback": this.openPokemonMenu.bind(this, {
+                        // "onSwitch": ...
+                    })
+                }, {
+                    "text": "ITEM",
+                    "callback": this.openItemsMenu.bind(this)
+                }, {
+                    "text": "%%%%%%%PLAYER%%%%%%%",
+                    "callback": this.openPlayerMenu.bind(this)
+                }, {
+                    "text": "SAVE",
+                    "callback": this.openSaveMenu.bind(this)
+                }, {
+                    "text": "OPTION"
+                }, {
+                    "text": "Exit",
+                    "callback": this.closePauseMenu.bind(this)
+                }];
 
             // The Pokedex option is only shown if the Player has one
             if (this.ItemsHolder.getItem("hasPokedex") === true) {
@@ -4101,49 +4101,58 @@ module FullScreenPokemon {
          */
         openPokemonLevelUpStats(settings: ILevelUpStatsMenuSettings): void {
             var pokemon: IPokemon = settings.pokemon,
-                statistics: string[] = this.MathDecider.getConstant("statisticNamesDisplayed"),
+                statistics: string[] = this.MathDecider.getConstant("statisticNamesDisplayed").slice(),
                 numStatistics: number = statistics.length,
                 textXOffset: number = settings.textXOffset || 8,
+                menuSchema: MenuGraphr.IMenuSchema = {
+                    callback: (): void => this.MenuGrapher.deleteMenu("LevelUpStats"),
+                    onMenuDelete: settings.onMenuDelete,
+                    position: settings.position || {
+                        horizontal: "center",
+                        vertical: "center"
+                    },
+                },
                 top: number,
                 left: number,
                 i: number;
 
-            // A copy of statistics is used to not modify the original constant
-            statistics = [].slice.call(statistics);
             for (i = 0; i < numStatistics; i += 1) {
                 statistics.push(this.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
                 statistics[i] = statistics[i].toUpperCase();
             }
-            this.MenuGrapher.createMenu("LevelUpStats", {
-                "container": settings.container,
-                "size": settings.size,
-                "position": settings.position || {
-                    "horizontal": "center",
-                    "vertical": "center"
-                },
-                "callback": this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "LevelUpStats"),
-                "onMenuDelete": settings.onMenuDelete,
-                "childrenSchemas": statistics.map(function (text: string, i: number): any {
-                    if (i < numStatistics) {
-                        top = i * 8 + 4;
-                        left = textXOffset;
-                    } else {
-                        top = (i - numStatistics + 1) * 8;
-                        left = textXOffset + 20;
-                    }
 
-                    return {
-                        "type": "text",
-                        "words": [text],
-                        "position": {
-                            "offset": {
-                                "top": top - .5,
-                                "left": left
-                            }
+            menuSchema.childrenSchemas = statistics.map((text: string, i: number): MenuGraphr.IMenuWordSchema => {
+                if (i < numStatistics) {
+                    top = i * 8 + 4;
+                    left = textXOffset;
+                } else {
+                    top = (i - numStatistics + 1) * 8;
+                    left = textXOffset + 20;
+                }
+
+                return {
+                    type: "text",
+                    words: [text],
+                    position: {
+                        offset: {
+                            top: top - .5,
+                            left: left
                         }
-                    };
-                })
+                    }
+                };
             });
+
+            console.log("childrenSchemas", menuSchema.childrenSchemas);
+
+            if (settings.container) {
+                menuSchema.container = settings.container;
+            }
+
+            if (settings.size) {
+                menuSchema.size = settings.size;
+            }
+
+            this.MenuGrapher.createMenu("LevelUpStats", menuSchema);
         }
 
         /**
@@ -4152,7 +4161,8 @@ module FullScreenPokemon {
          * @param pokemon   The Pokemon to open the menu for.
          */
         openPokemonMenuStatsSecondary(pokemon: IPokemon): void {
-            var options: any[] = pokemon.moves.map((move: BattleMovr.IMove): any => {
+            var options: any[] = pokemon.moves.map(
+                (move: BattleMovr.IMove): any => {
                     var characters: any[] = [" "],
                         output: any = {
                             "text": characters
@@ -4455,8 +4465,8 @@ module FullScreenPokemon {
          */
         openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
             var value: string[][] = [
-                    settings.value || ["_", "_", "_", "_", "_", "_", "_"]
-                ],
+                settings.value || ["_", "_", "_", "_", "_", "_", "_"]
+            ],
                 onKeyPress: (...args: any[]) => void = this.addKeyboardMenuValue.bind(this),
                 onBPress: (...args: any[]) => void = this.removeKeyboardMenuValue.bind(this),
                 onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this),
@@ -4656,9 +4666,9 @@ module FullScreenPokemon {
          */
         startBattle(battleInfo: IBattleInfo): void {
             var animations: string[] = battleInfo.animations || [
-                    // "LineSpiral", "Flash"
-                    "Flash"
-                ],
+                // "LineSpiral", "Flash"
+                "Flash"
+            ],
                 animation: string = this.NumberMaker.randomArrayMember(animations),
                 player: any = battleInfo.player;
 
@@ -4761,8 +4771,8 @@ module FullScreenPokemon {
          */
         createPokemon(schema: IWildPokemonSchema): IPokemon {
             var level: number = typeof schema.levels !== "undefined"
-                    ? this.NumberMaker.randomArrayMember(schema.levels)
-                    : schema.level,
+                ? this.NumberMaker.randomArrayMember(schema.levels)
+                : schema.level,
                 pokemon: IPokemon = this.MathDecider.compute("newPokemon", schema.title, level);
 
             return pokemon;

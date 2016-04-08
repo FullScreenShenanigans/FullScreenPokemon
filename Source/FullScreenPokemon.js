@@ -3174,43 +3174,47 @@ var FullScreenPokemon;
          * @param settings   Settings to open the menu.
          */
         FullScreenPokemon.prototype.openPokemonLevelUpStats = function (settings) {
-            var pokemon = settings.pokemon, statistics = this.MathDecider.getConstant("statisticNamesDisplayed"), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, top, left, i;
-            // A copy of statistics is used to not modify the original constant
-            statistics = [].slice.call(statistics);
+            var _this = this;
+            var pokemon = settings.pokemon, statistics = this.MathDecider.getConstant("statisticNamesDisplayed").slice(), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, menuSchema = {
+                callback: function () { return _this.MenuGrapher.deleteMenu("LevelUpStats"); },
+                onMenuDelete: settings.onMenuDelete,
+                position: settings.position || {
+                    horizontal: "center",
+                    vertical: "center"
+                },
+            }, top, left, i;
             for (i = 0; i < numStatistics; i += 1) {
                 statistics.push(this.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
                 statistics[i] = statistics[i].toUpperCase();
             }
-            this.MenuGrapher.createMenu("LevelUpStats", {
-                "container": settings.container,
-                "size": settings.size,
-                "position": settings.position || {
-                    "horizontal": "center",
-                    "vertical": "center"
-                },
-                "callback": this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "LevelUpStats"),
-                "onMenuDelete": settings.onMenuDelete,
-                "childrenSchemas": statistics.map(function (text, i) {
-                    if (i < numStatistics) {
-                        top = i * 8 + 4;
-                        left = textXOffset;
-                    }
-                    else {
-                        top = (i - numStatistics + 1) * 8;
-                        left = textXOffset + 20;
-                    }
-                    return {
-                        "type": "text",
-                        "words": [text],
-                        "position": {
-                            "offset": {
-                                "top": top - .5,
-                                "left": left
-                            }
+            menuSchema.childrenSchemas = statistics.map(function (text, i) {
+                if (i < numStatistics) {
+                    top = i * 8 + 4;
+                    left = textXOffset;
+                }
+                else {
+                    top = (i - numStatistics + 1) * 8;
+                    left = textXOffset + 20;
+                }
+                return {
+                    type: "text",
+                    words: [text],
+                    position: {
+                        offset: {
+                            top: top - .5,
+                            left: left
                         }
-                    };
-                })
+                    }
+                };
             });
+            console.log("childrenSchemas", menuSchema.childrenSchemas);
+            if (settings.container) {
+                menuSchema.container = settings.container;
+            }
+            if (settings.size) {
+                menuSchema.size = settings.size;
+            }
+            this.MenuGrapher.createMenu("LevelUpStats", menuSchema);
         };
         /**
          * Open the secondary statistics menu from the LevelUpStats menu.
