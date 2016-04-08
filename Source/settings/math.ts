@@ -9515,51 +9515,38 @@ module FullScreenPokemon {
                     "moves": {
                         "natural": [
                             {
-                                "move": "Toxic",
-                                "level": 6
-                            }, {
-                                "move": "Body Slam",
+                                "move": "Growl",
+                                "level": 1
+                            },
+                            {
+                                "move": "Tackle",
+                                "level": 1
+                            },
+                            {
+                                "move": "Scratch",
                                 "level": 8
-                            }, {
-                                "move": "Take Down",
-                                "level": 9
-                            }, {
-                                "move": "Double-Edge",
-                                "level": 10
-                            }, {
-                                "move": "Blizzard",
-                                "level": 14
-                            }, {
-                                "move": "Rage",
-                                "level": 20
-                            }, {
-                                "move": "Thunderbolt",
-                                "level": 24
-                            }, {
-                                "move": "Thunder",
-                                "level": 25
-                            }, {
-                                "move": "Mimic",
-                                "level": 31
-                            }, {
-                                "move": "Double Team",
-                                "level": 32
-                            }, {
-                                "move": "Reflect",
-                                "level": 33
-                            }, {
-                                "move": "Bide",
-                                "level": 34
-                            }, {
-                                "move": "Skull Bash",
-                                "level": 40
-                            }, {
-                                "move": "Rest",
-                                "level": 44
-                            }, {
-                                "move": "Substitute",
-                                "level": 50
-                            }],
+                            },
+                            {
+                                "move": "Double Kick",
+                                "level": 12
+                            },
+                            {
+                                "move": "Poison Sting",
+                                "level": 17
+                            },
+                            {
+                                "move": "Tail Whip",
+                                "level": 23
+                            },
+                            {
+                                "move": "Bite",
+                                "level": 30
+                            },
+                            {
+                                "move": "Fury Swipes",
+                                "level": 38
+                            },
+                        ],
                         "hm": [
                             {
                                 "move": "Toxic",

@@ -726,12 +726,12 @@ var FullScreenPokemon;
         /**
          * Reacts to the select key being pressed. Toggles the use of the registered item.
          *
-         * @param thing   The triggering Character.
+         * @param thing   The triggering Player.
          * @param event   The original user-caused Event.
          * @todo Extend the use for any registered item, not just the bicycle.
          */
         FullScreenPokemon.prototype.keyDownSelect = function (thing, event) {
-            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+            if (thing.FSP.MenuGrapher.getActiveMenu() || thing.walking) {
                 return;
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
@@ -905,7 +905,7 @@ var FullScreenPokemon;
          * @param characters   The Characters group of Things.
          */
         FullScreenPokemon.prototype.maintainCharacters = function (FSP, characters) {
-            var character, i;
+            var character, i, j;
             for (i = 0; i < characters.length; i += 1) {
                 character = characters[i];
                 FSP.shiftCharacter(character);
@@ -920,6 +920,9 @@ var FullScreenPokemon;
                     FSP.arrayDeleteThing(character, characters, i);
                     i -= 1;
                     continue;
+                }
+                for (j = 0; j < 4; j += 1) {
+                    character.bordering[j] = undefined;
                 }
                 FSP.QuadsKeeper.determineThingQuadrants(character);
                 FSP.ThingHitter.checkHitsForThing(character);
@@ -1019,8 +1022,10 @@ var FullScreenPokemon;
          * @returns Whether the properties were changed.
          */
         FullScreenPokemon.prototype.startCycling = function (thing) {
-            var area = this.AreaSpawner.getArea();
-            if (!area.allowCycling) {
+            if (thing.surfing) {
+                return false;
+            }
+            if (!this.AreaSpawner.getArea().allowCycling) {
                 return false;
             }
             thing.cycling = true;
@@ -1514,7 +1519,9 @@ var FullScreenPokemon;
                 thing.walkingCommands.push(direction);
             }
             thing.FSP.animateCharacterStartWalking(thing, direction, onStop);
-            thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            }
         };
         /**
          * Starts a Character walking in the given direction as part of a walking cycle.
@@ -1539,7 +1546,9 @@ var FullScreenPokemon;
                 thing.sightDetector.nocollide = true;
             }
             thing.FSP.TimeHandler.addEventInterval(thing.onWalkingStop, repeats, Infinity, thing, onStop);
-            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            }
         };
         /**
          * Starts a roaming Character walking in a random direction, determined
@@ -2165,8 +2174,7 @@ var FullScreenPokemon;
                 return false;
             }
             if (other.active) {
-                if ((!other.requireOverlap && !thing.walking)
-                    || thing.FSP.isThingWithinOther(thing, other)) {
+                if (!other.requireOverlap || thing.FSP.isThingWithinOther(thing, other)) {
                     if (typeof other.requireDirection !== "undefined"
                         && !thing.keys[other.requireDirection]
                         && !thing.allowDirectionAsKeys
@@ -2643,10 +2651,10 @@ var FullScreenPokemon;
          * @returns Whether thing and other are overlapping.
          */
         FullScreenPokemon.prototype.isThingWithinOther = function (thing, other) {
-            return (thing.top >= other.top - thing.FSP.unitsize
-                && thing.right <= other.right + thing.FSP.unitsize
-                && thing.bottom <= other.bottom + thing.FSP.unitsize
-                && thing.left >= other.left - thing.FSP.unitsize);
+            return (thing.top >= other.top
+                && thing.right <= other.right
+                && thing.bottom <= other.bottom
+                && thing.left >= other.left);
         };
         /**
          * Determines whether a Character is visually within grass.
@@ -2676,14 +2684,17 @@ var FullScreenPokemon;
          * @param thing   A Character to shift.
          */
         FullScreenPokemon.prototype.shiftCharacter = function (thing) {
-            if (thing.xvel !== 0) {
-                thing.bordering[1] = thing.bordering[3] = undefined;
+            if (thing.bordering[Direction.Top] && thing.yvel < 0) {
+                thing.yvel = 0;
             }
-            else if (thing.yvel !== 0) {
-                thing.bordering[0] = thing.bordering[2] = undefined;
+            if (thing.bordering[Direction.Right] && thing.xvel > 0) {
+                thing.xvel = 0;
             }
-            else {
-                return;
+            if (thing.bordering[Direction.Bottom] && thing.yvel > 0) {
+                thing.yvel = 0;
+            }
+            if (thing.bordering[Direction.Left] && thing.xvel < 0) {
+                thing.xvel = 0;
             }
             thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
         };
@@ -3912,12 +3923,14 @@ var FullScreenPokemon;
          * @param player   The Player.
          * @param pokemon   The Pokemon using Strength.
          * @todo Add the dialogue for when the Player starts surfing.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         FullScreenPokemon.prototype.partyActivateSurf = function (player, pokemon) {
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
+            if (player.cycling) {
+                return;
+            }
+            player.bordering[player.direction] = undefined;
             player.FSP.addClass(player, "surfing");
             player.FSP.animateCharacterStartWalking(player, player.direction, [1]);
             player.surfing = true;

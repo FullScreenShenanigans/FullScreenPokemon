@@ -998,7 +998,11 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "nocollide": true
         },
         "MountainSolidBase": [4, 4],
-        "MountainTop": [4, 5],
+        "MountainTop": {
+            "width": 4,
+            "height": 5,
+            "tolBottom": FullScreenPokemon.FullScreenPokemon.unitsize * -3
+        },
         "PlantLarge": [16, 16],
         "PokeCenterDeskBlocker": {
             "width": 8,
