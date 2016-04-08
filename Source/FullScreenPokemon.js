@@ -3181,7 +3181,7 @@ var FullScreenPokemon;
                 position: settings.position || {
                     horizontal: "center",
                     vertical: "center"
-                },
+                }
             }, top, left, i;
             for (i = 0; i < numStatistics; i += 1) {
                 statistics.push(this.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
@@ -4111,7 +4111,7 @@ var FullScreenPokemon;
         };
         /**
          * Cutscene for the opening text and base menus in a battle. Afer this,
-         * the EnemyIntro or PlayerIntro cutscene is triggered.
+         * the OpponentIntro or PlayerIntro cutscene is triggered.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene
@@ -4119,7 +4119,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneBattleOpeningText = function (FSP, settings) {
             var battleInfo = settings.battleInfo, textStart = battleInfo.textStart, nextRoutine, callback;
             if (settings.battleInfo.opponent.hasActors) {
-                nextRoutine = "EnemyIntro";
+                nextRoutine = "OpponentIntro";
             }
             else {
                 nextRoutine = "PlayerIntro";
@@ -4156,7 +4156,7 @@ var FullScreenPokemon;
          * @param FSP
          * @param settings   Settings used for the cutscene
          */
-        FullScreenPokemon.prototype.cutsceneBattleEnemyIntro = function (FSP, settings) {
+        FullScreenPokemon.prototype.cutsceneBattleOpponentIntro = function (FSP, settings) {
             var things = settings.things, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("GeneralText"), opponentX = FSP.getMidX(opponent), opponentGoal = menu.right + opponent.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, callback = battleInfo.opponent.hasActors
                 ? "OpponentSendOut"
                 : "PlayerIntro", timeout = 49;
@@ -4255,7 +4255,9 @@ var FullScreenPokemon;
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
             FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
             FSP.addPokemonToPokedex(FSP, pokemonInfo.title, PokedexListingStatus.Seen);
-            FSP.ScenePlayer.playRoutine(args.nextRoutine);
+            if (args) {
+                FSP.ScenePlayer.playRoutine(args.nextRoutine);
+            }
         };
         /**
          * Cutscene for the player starting to send out a Pokemon. A smoke effect
@@ -4526,8 +4528,6 @@ var FullScreenPokemon;
             var battleInfo = settings.battleInfo, opponent = battleInfo.opponent, nicknameExclaim = opponent.selectedActor.nickname.slice();
             nicknameExclaim.push("!");
             FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
-            opponent.selectedIndex += 1;
-            opponent.selectedActor = opponent.actors[opponent.selectedIndex];
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": false
             });

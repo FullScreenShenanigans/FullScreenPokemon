@@ -4110,7 +4110,7 @@ module FullScreenPokemon {
                     position: settings.position || {
                         horizontal: "center",
                         vertical: "center"
-                    },
+                    }
                 },
                 top: number,
                 left: number,
@@ -5350,7 +5350,7 @@ module FullScreenPokemon {
 
         /**
          * Cutscene for the opening text and base menus in a battle. Afer this,
-         * the EnemyIntro or PlayerIntro cutscene is triggered.
+         * the OpponentIntro or PlayerIntro cutscene is triggered.
          * 
          * @param FSP
          * @param settings   Settings used for the cutscene
@@ -5362,7 +5362,7 @@ module FullScreenPokemon {
                 callback: (...args: any[]) => void;
 
             if (settings.battleInfo.opponent.hasActors) {
-                nextRoutine = "EnemyIntro";
+                nextRoutine = "OpponentIntro";
             } else {
                 nextRoutine = "PlayerIntro";
             }
@@ -5416,7 +5416,7 @@ module FullScreenPokemon {
          * @param FSP
          * @param settings   Settings used for the cutscene
          */
-        cutsceneBattleEnemyIntro(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings): void {
+        cutsceneBattleOpponentIntro(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings): void {
             var things: any = settings.things,
                 opponent: ICharacter = things.opponent,
                 menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("GeneralText"),
@@ -5597,7 +5597,10 @@ module FullScreenPokemon {
 
             FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
             FSP.addPokemonToPokedex(FSP, pokemonInfo.title, PokedexListingStatus.Seen);
-            FSP.ScenePlayer.playRoutine(args.nextRoutine);
+
+            if (args) {
+                FSP.ScenePlayer.playRoutine(args.nextRoutine);
+            }
         }
 
         /**
@@ -6001,8 +6004,6 @@ module FullScreenPokemon {
             nicknameExclaim.push("!");
 
             FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
-            opponent.selectedIndex += 1;
-            opponent.selectedActor = opponent.actors[opponent.selectedIndex];
 
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": false
