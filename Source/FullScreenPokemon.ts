@@ -1002,12 +1002,12 @@ module FullScreenPokemon {
         /**
          * Reacts to the select key being pressed. Toggles the use of the registered item.
          * 
-         * @param thing   The triggering Character.
+         * @param thing   The triggering Player.
          * @param event   The original user-caused Event.
          * @todo Extend the use for any registered item, not just the bicycle.
          */
-        keyDownSelect(thing: ICharacter, event?: Event): void {
-            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+        keyDownSelect(thing: IPlayer, event?: Event): void {
+            if (thing.FSP.MenuGrapher.getActiveMenu() || thing.walking) {
                 return;
             }
 
@@ -1219,7 +1219,8 @@ module FullScreenPokemon {
          */
         maintainCharacters(FSP: FullScreenPokemon, characters: ICharacter[]): void {
             var character: ICharacter,
-                i: number;
+                i: number,
+                j: number;
 
             for (i = 0; i < characters.length; i += 1) {
                 character = characters[i];
@@ -1238,6 +1239,10 @@ module FullScreenPokemon {
                     FSP.arrayDeleteThing(character, characters, i);
                     i -= 1;
                     continue;
+                }
+
+                for (j = 0; j < 4; j += 1) {
+                    character.bordering[j] = undefined;
                 }
 
                 FSP.QuadsKeeper.determineThingQuadrants(character);
@@ -1352,9 +1357,11 @@ module FullScreenPokemon {
          * @returns Whether the properties were changed.
          */
         startCycling(thing: IPlayer): boolean {
-            var area: IArea = <IArea>this.AreaSpawner.getArea();
+            if (thing.surfing) {
+                return false;
+            }
 
-            if (!area.allowCycling) {
+            if (!(<IArea>this.AreaSpawner.getArea()).allowCycling) {
                 return false;
             }
 
@@ -2033,7 +2040,9 @@ module FullScreenPokemon {
 
             thing.FSP.animateCharacterStartWalking(thing, direction, onStop);
 
-            thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            }
         }
 
         /**
@@ -2071,7 +2080,9 @@ module FullScreenPokemon {
             thing.FSP.TimeHandler.addEventInterval(
                 thing.onWalkingStop, repeats, Infinity, thing, onStop);
 
-            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            if (!thing.bordering[direction]) {
+                thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            }
         }
 
         /**
@@ -2842,10 +2853,7 @@ module FullScreenPokemon {
             }
 
             if (other.active) {
-                if (
-                    (!other.requireOverlap && !thing.walking)
-                    || thing.FSP.isThingWithinOther(thing, other)
-                ) {
+                if (!other.requireOverlap || thing.FSP.isThingWithinOther(thing, other)) {
                     if (
                         typeof other.requireDirection !== "undefined"
                         && !thing.keys[other.requireDirection]
@@ -2854,6 +2862,7 @@ module FullScreenPokemon {
                     ) {
                         return false;
                     }
+
                     if (other.singleUse) {
                         other.active = false;
                     }
@@ -3437,10 +3446,10 @@ module FullScreenPokemon {
          */
         isThingWithinOther(thing: IThing, other: IThing): boolean {
             return (
-                thing.top >= other.top - thing.FSP.unitsize
-                && thing.right <= other.right + thing.FSP.unitsize
-                && thing.bottom <= other.bottom + thing.FSP.unitsize
-                && thing.left >= other.left - thing.FSP.unitsize);
+                thing.top >= other.top
+                && thing.right <= other.right
+                && thing.bottom <= other.bottom
+                && thing.left >= other.left);
         }
 
         /**
@@ -3478,12 +3487,20 @@ module FullScreenPokemon {
          * @param thing   A Character to shift.
          */
         shiftCharacter(thing: ICharacter): void {
-            if (thing.xvel !== 0) {
-                thing.bordering[1] = thing.bordering[3] = undefined;
-            } else if (thing.yvel !== 0) {
-                thing.bordering[0] = thing.bordering[2] = undefined;
-            } else {
-                return;
+            if (thing.bordering[Direction.Top] && thing.yvel < 0) {
+                thing.yvel = 0;
+            }
+
+            if (thing.bordering[Direction.Right] && thing.xvel > 0) {
+                thing.xvel = 0;
+            }
+
+            if (thing.bordering[Direction.Bottom] && thing.yvel > 0) {
+                thing.yvel = 0;
+            }
+
+            if (thing.bordering[Direction.Left] && thing.xvel < 0) {
+                thing.xvel = 0;
             }
 
             thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
@@ -5060,13 +5077,16 @@ module FullScreenPokemon {
          * @param player   The Player.
          * @param pokemon   The Pokemon using Strength.
          * @todo Add the dialogue for when the Player starts surfing.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         partyActivateSurf(player: IPlayer, pokemon: IPokemon): void {
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
 
+            if (player.cycling) {
+                return;
+            }
+
+            player.bordering[player.direction] = undefined;
             player.FSP.addClass(player, "surfing");
             player.FSP.animateCharacterStartWalking(player, player.direction, [1]);
             player.surfing = true;

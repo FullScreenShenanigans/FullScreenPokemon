@@ -86,7 +86,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 22"] = {
                 { "thing": "Ledge", "x": 272, "y": 108, "width": 32 },
                 { "thing": "BrickRoad", "x": 16, "y": 112, "width": 288, "height": 16 },
                 { "thing": "Mountain", "y": 128, "width": 16, "height": 16 },
-                { "thing": "Mountain", "x": 16, "y": 128, "width": 288, "height": 16, "top": true },
+                { "macro": "Mountain", "x": 16, "y": 128, "width": 288, "height": 16, "top": true },
                 { "thing": "Mountain", "x": 304, "y": 128, "width": 16, "height": 16 }
             ]
         }
