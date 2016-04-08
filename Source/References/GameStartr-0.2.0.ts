@@ -297,7 +297,7 @@ declare module GameStartr {
         /**
          * A prefix to add before IItemsValue keys.
          */
-        prefix: string;
+        prefix?: string;
 
         /**
          * Whether an HTML container should be created to house the IItemValue elements.
@@ -314,19 +314,19 @@ declare module GameStartr {
         /**
          * An Array of elements as createElement arguments, outside-to-inside.
          */
-        containersArguments: any[][];
+        containersArguments?: any[][];
 
         /**
          * Default attributes for all ItemValues.
          */
-        defaults: {
-            [i: string]: string;
+        defaults?: {
+            [i: string]: any;
         };
 
         /**
          * Initial item values (defaults) to store.
          */
-        values: ItemsHoldr.IItemValueDefaults;
+        values?: ItemsHoldr.IItemValueDefaults;
     }
 
     /**

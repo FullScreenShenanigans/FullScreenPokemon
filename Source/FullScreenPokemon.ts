@@ -4239,8 +4239,8 @@ module FullScreenPokemon {
                 height: string[] = pokemon.height,
                 feet: string = [].slice.call(height[0]).reverse().join(""),
                 inches: string = [].slice.call(height[1]).reverse().join(""),
-                onCompletion: (FSP: FullScreenPokemon) => any = (FSP: FullScreenPokemon): void => {
-                    FSP.MenuGrapher.deleteMenu("PokedexListing");
+                onCompletion: () => any = (): void => {
+                    this.MenuGrapher.deleteMenu("PokedexListing");
                     if (callback) {
                         callback();
                     }
@@ -4268,12 +4268,12 @@ module FullScreenPokemon {
                 pokemon.info[0],
                 (): void => {
                     if (pokemon.info.length < 2) {
-                        onCompletion(this);
+                        onCompletion();
                         return;
                     }
 
                     this.MenuGrapher.createMenu("PokedexListingInfo");
-                    this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion(this));
+                    this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
                     this.MenuGrapher.setActiveMenu("PokedexListingInfo");
                 });
 

@@ -3282,8 +3282,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.openPokedexListing = function (title, callback, menuSettings) {
             var _this = this;
-            var pokemon = this.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function (FSP) {
-                FSP.MenuGrapher.deleteMenu("PokedexListing");
+            var pokemon = this.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function () {
+                _this.MenuGrapher.deleteMenu("PokedexListing");
                 if (callback) {
                     callback();
                 }
@@ -3304,11 +3304,11 @@ var FullScreenPokemon;
             this.MenuGrapher.addMenuDialog("PokedexListingNumber", this.makeDigit(pokemon.number, 3, "0"));
             this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[0], function () {
                 if (pokemon.info.length < 2) {
-                    onCompletion(_this);
+                    onCompletion();
                     return;
                 }
                 _this.MenuGrapher.createMenu("PokedexListingInfo");
-                _this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion(_this));
+                _this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
                 _this.MenuGrapher.setActiveMenu("PokedexListingInfo");
             });
             this.MenuGrapher.setActiveMenu("PokedexListingInfo");
