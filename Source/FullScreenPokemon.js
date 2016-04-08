@@ -1062,6 +1062,16 @@ var FullScreenPokemon;
         };
         /* General animations
         */
+        ///**
+        // * 
+        // */
+        //isThingSnappedToGrid(thing: IThing): boolean {
+        //    var grid: number = thing.FSP.unitsize * 8,
+        //        left: number = (thing.FSP.player.left + thing.FSP.MapScreener.left) / grid,
+        //        top: number = (thing.FSP.player.top + thing.FSP.MapScreener.top) / grid;
+        //    console.log(thing.title, (left | 0) === left && (top | 0) === top);
+        //    return (left | 0) === left && (top | 0) === top;
+        //}
         /**
          * Snaps a moving Thing to a predictable grid position.
          *
@@ -2172,8 +2182,7 @@ var FullScreenPokemon;
                 return false;
             }
             if (other.active) {
-                if ((!other.requireOverlap && !thing.walking)
-                    || thing.FSP.isThingWithinOther(thing, other)) {
+                if (!other.requireOverlap || thing.FSP.isThingWithinOther(thing, other)) {
                     if (typeof other.requireDirection !== "undefined"
                         && !thing.keys[other.requireDirection]
                         && !thing.allowDirectionAsKeys
@@ -2650,10 +2659,10 @@ var FullScreenPokemon;
          * @returns Whether thing and other are overlapping.
          */
         FullScreenPokemon.prototype.isThingWithinOther = function (thing, other) {
-            return (thing.top >= other.top - thing.FSP.unitsize
-                && thing.right <= other.right + thing.FSP.unitsize
-                && thing.bottom <= other.bottom + thing.FSP.unitsize
-                && thing.left >= other.left - thing.FSP.unitsize);
+            return (thing.top >= other.top
+                && thing.right <= other.right
+                && thing.bottom <= other.bottom
+                && thing.left >= other.left);
         };
         /**
          * Determines whether a Character is visually within grass.

@@ -1407,6 +1407,18 @@ module FullScreenPokemon {
         /* General animations
         */
 
+        ///**
+        // * 
+        // */
+        //isThingSnappedToGrid(thing: IThing): boolean {
+        //    var grid: number = thing.FSP.unitsize * 8,
+        //        left: number = (thing.FSP.player.left + thing.FSP.MapScreener.left) / grid,
+        //        top: number = (thing.FSP.player.top + thing.FSP.MapScreener.top) / grid;
+
+        //    console.log(thing.title, (left | 0) === left && (top | 0) === top);
+        //    return (left | 0) === left && (top | 0) === top;
+        //}
+
         /**
          * Snaps a moving Thing to a predictable grid position.
          * 
@@ -2851,10 +2863,7 @@ module FullScreenPokemon {
             }
 
             if (other.active) {
-                if (
-                    (!other.requireOverlap && !thing.walking)
-                    || thing.FSP.isThingWithinOther(thing, other)
-                ) {
+                if (!other.requireOverlap || thing.FSP.isThingWithinOther(thing, other)) {
                     if (
                         typeof other.requireDirection !== "undefined"
                         && !thing.keys[other.requireDirection]
@@ -2863,6 +2872,7 @@ module FullScreenPokemon {
                     ) {
                         return false;
                     }
+
                     if (other.singleUse) {
                         other.active = false;
                     }
@@ -3446,10 +3456,10 @@ module FullScreenPokemon {
          */
         isThingWithinOther(thing: IThing, other: IThing): boolean {
             return (
-                thing.top >= other.top - thing.FSP.unitsize
-                && thing.right <= other.right + thing.FSP.unitsize
-                && thing.bottom <= other.bottom + thing.FSP.unitsize
-                && thing.left >= other.left - thing.FSP.unitsize);
+                thing.top >= other.top
+                && thing.right <= other.right
+                && thing.bottom <= other.bottom
+                && thing.left >= other.left);
         }
 
         /**
