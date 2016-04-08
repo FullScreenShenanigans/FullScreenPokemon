@@ -726,12 +726,12 @@ var FullScreenPokemon;
         /**
          * Reacts to the select key being pressed. Toggles the use of the registered item.
          *
-         * @param thing   The triggering Character.
+         * @param thing   The triggering Player.
          * @param event   The original user-caused Event.
          * @todo Extend the use for any registered item, not just the bicycle.
          */
         FullScreenPokemon.prototype.keyDownSelect = function (thing, event) {
-            if (thing.FSP.MenuGrapher.getActiveMenu()) {
+            if (thing.FSP.MenuGrapher.getActiveMenu() || thing.walking) {
                 return;
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownSelect");
