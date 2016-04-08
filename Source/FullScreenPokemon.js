@@ -1022,8 +1022,10 @@ var FullScreenPokemon;
          * @returns Whether the properties were changed.
          */
         FullScreenPokemon.prototype.startCycling = function (thing) {
-            var area = this.AreaSpawner.getArea();
-            if (!area.allowCycling) {
+            if (thing.surfing) {
+                return false;
+            }
+            if (!this.AreaSpawner.getArea().allowCycling) {
                 return false;
             }
             thing.cycling = true;

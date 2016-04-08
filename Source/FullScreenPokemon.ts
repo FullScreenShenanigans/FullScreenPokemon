@@ -1357,9 +1357,11 @@ module FullScreenPokemon {
          * @returns Whether the properties were changed.
          */
         startCycling(thing: IPlayer): boolean {
-            var area: IArea = <IArea>this.AreaSpawner.getArea();
+            if (thing.surfing) {
+                return false;
+            }
 
-            if (!area.allowCycling) {
+            if (!(<IArea>this.AreaSpawner.getArea()).allowCycling) {
                 return false;
             }
 
