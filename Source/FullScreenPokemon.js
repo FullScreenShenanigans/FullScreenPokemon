@@ -7434,7 +7434,7 @@ var FullScreenPokemon;
                     "x": x + doorOffset + 8,
                     "y": y,
                     "height": 4,
-                    "width": width - doorOffset - 8
+                    "width": width - doorOffset - 12
                 });
                 output.push({
                     "thing": "BuildingBottomLeft",
