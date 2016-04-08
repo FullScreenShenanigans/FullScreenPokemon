@@ -883,7 +883,7 @@ module FullScreenPokemon {
          * @param thing   The triggering Character.
          * @param event   The original user-caused Event.
          */
-        keyDownDirectionReal(thing: ICharacter, direction: Direction): void {
+        keyDownDirectionReal(thing: IPlayer, direction: Direction): void {
             if (!thing.player || !(<IPlayer>thing).keys[direction]) {
                 return;
             }
@@ -895,21 +895,15 @@ module FullScreenPokemon {
                     thing.turning = direction;
                 }
 
-                if (thing.player) {
-                    thing.FSP.keyDownDirectionRealPlayer(<IPlayer>thing, direction);
+                if (thing.canKeyWalking && !thing.shouldWalk) {
+                    thing.FSP.setPlayerDirection(thing, direction);
+                    thing.canKeyWalking = false;
+                } else {
+                    thing.nextDirection = direction;
                 }
             }
 
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
-        }
-
-        keyDownDirectionRealPlayer(player: IPlayer, direction: Direction): void {
-            if (player.canKeyWalking && !player.shouldWalk) {
-                player.FSP.setPlayerDirection(player, direction);
-                player.canKeyWalking = false;
-            } else {
-                player.nextDirection = direction;
-            }
         }
 
         /**
@@ -2226,16 +2220,18 @@ module FullScreenPokemon {
                 && thing.keys[thing.direction]) {
                 thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
                 return false;
-            } else {
-                if (typeof thing.nextDirection !== "undefined") {
-                    if (thing.nextDirection !== thing.direction && !thing.ledge) {
-                        thing.FSP.setPlayerDirection(thing, thing.nextDirection);
-                    }
-                    delete thing.nextDirection;
-                }
             }
 
-            thing.canKeyWalking = true;
+            if (typeof thing.nextDirection !== "undefined") {
+                if (thing.nextDirection !== thing.direction && !thing.ledge) {
+                    thing.FSP.setPlayerDirection(thing, thing.nextDirection);
+                }
+
+                delete thing.nextDirection;
+            } else {
+                thing.canKeyWalking = true;
+            }
+
             return thing.FSP.animateCharacterStopWalking(thing, onStop);
         }
 
@@ -4141,8 +4137,6 @@ module FullScreenPokemon {
                     }
                 };
             });
-
-            console.log("childrenSchemas", menuSchema.childrenSchemas);
 
             if (settings.container) {
                 menuSchema.container = settings.container;
