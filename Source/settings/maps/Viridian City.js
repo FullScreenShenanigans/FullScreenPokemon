@@ -107,7 +107,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
                 { "thing": "ThemePlayer", "x": 8, "y": 112, "height": 32, "theme": "Pewter City" },
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 160, "y": 112, "xnum": 16, "ynum": 2 },
                 { "macro": "House", "x": 160, "y": 112, "door": true, "entrance": "School Front Door", "transport": "School Floor 1 Door" },
-                { "thing": "DirtLight", "y": 128, "width": 16, "height": 24 },
+                { "thing": "DirtLight", "y": 128, "width": 16, "height": 16 },
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 16, "y": 128, "xnum": 4, "ynum": 2 },
                 { "thing": "DirtLight", "x": 128, "y": 128, "width": 16, "height": 16 },
                 { "thing": "DirtLight", "x": 160, "y": 128, "width": 32, "height": 16 },
