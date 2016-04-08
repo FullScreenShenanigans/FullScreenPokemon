@@ -1025,7 +1025,7 @@ var FullScreenPokemon;
             }
             thing.cycling = true;
             thing.speedOld = thing.speed;
-            thing.speed = this.MathDecider.compute("cycleSpeed", thing);
+            thing.speed = this.MathDecider.compute("speedCycling", thing);
             thing.FSP.addClass(thing, "cycling");
             thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
             return true;
@@ -1079,6 +1079,7 @@ var FullScreenPokemon;
             thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
             if (thing.walkingFlipping) {
                 thing.FSP.TimeHandler.cancelEvent(thing.walkingFlipping);
+                thing.walkingFlipping = undefined;
             }
         };
         /**
@@ -1525,7 +1526,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.animateCharacterStartWalking = function (thing, direction, onStop) {
             if (direction === void 0) { direction = Direction.Top; }
-            var repeats = thing.FSP.getCharacterWalkingInterval(thing), distance = repeats * thing.speed;
+            var repeats = thing.FSP.MathDecider.compute("speedWalking", thing), distance = repeats * thing.speed;
             thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
@@ -1603,7 +1604,7 @@ var FullScreenPokemon;
             thing.xvel = 0;
             thing.yvel = 0;
             thing.walking = false;
-            thing.FSP.removeClass(thing, "walking");
+            thing.FSP.removeClasses(thing, "walking", "standing");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
             if (thing.walkingFlipping) {
                 thing.FSP.TimeHandler.cancelEvent(thing.walkingFlipping);
@@ -1696,7 +1697,9 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.animateCharacterSetDirection = function (thing, direction) {
             thing.direction = direction;
-            thing.FSP.unflipHoriz(thing);
+            if (direction % 2 === 1) {
+                thing.FSP.unflipHoriz(thing);
+            }
             thing.FSP.removeClasses(thing, FullScreenPokemon_1.DirectionClasses[Direction.Top], FullScreenPokemon_1.DirectionClasses[Direction.Right], FullScreenPokemon_1.DirectionClasses[Direction.Bottom], FullScreenPokemon_1.DirectionClasses[Direction.Left]);
             thing.FSP.addClass(thing, FullScreenPokemon_1.DirectionClasses[direction]);
             if (direction === Direction.Right) {
@@ -1918,7 +1921,7 @@ var FullScreenPokemon;
             // Manually start the walking process without giving a 0 onStop,
             // so that it continues smoothly in the walking interval
             thing.FSP.animateCharacterStartWalking(thing, direction);
-            thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(thing.FSP.animateCharacterFollowContinue, thing.FSP.getCharacterWalkingInterval(thing), Infinity, thing, other);
+            thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(thing.FSP.animateCharacterFollowContinue, thing.FSP.MathDecider.compute("speedWalking", thing), Infinity, thing, other);
         };
         /**
          * Continuation helper for a following cycle. The next walking command is
@@ -1951,16 +1954,6 @@ var FullScreenPokemon;
             thing.FSP.animateCharacterStopWalking(thing);
             thing.FSP.TimeHandler.cancelEvent(thing.followingLoop);
             return true;
-        };
-        /**
-         * Determines how rapidly a Character should walk, as a function of
-         * unitsize and its speed.
-         *
-         * @param thing   A walking Character.
-         * @returns How rapidly thing should walk.
-         */
-        FullScreenPokemon.prototype.getCharacterWalkingInterval = function (thing) {
-            return Math.round(8 * thing.FSP.unitsize / thing.speed);
         };
         /**
          * Animates a Character to hop over a ledge.
@@ -5844,7 +5837,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneOakIntroEnterLab = function (FSP, settings) {
             FSP.StateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
             settings.oak.hidden = true;
-            FSP.TimeHandler.addEvent(FSP.animateCharacterStartWalkingCycle, FSP.getCharacterWalkingInterval(FSP.player), FSP.player, 0, [
+            FSP.TimeHandler.addEvent(FSP.animateCharacterStartWalkingCycle, FSP.MathDecider.compute("speedWalking", FSP.player), FSP.player, 0, [
                 0,
                 function () {
                     FSP.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
@@ -5881,7 +5874,7 @@ var FullScreenPokemon;
             ]);
             FSP.TimeHandler.addEvent(function () {
                 FSP.player.hidden = false;
-            }, 112 - FSP.getCharacterWalkingInterval(settings.player));
+            }, 112 - FSP.MathDecider.compute("speedWalking", settings.player));
             FSP.TimeHandler.addEvent(function () {
                 FSP.animateCharacterStartWalking(settings.player, 0, [8, FSP.ScenePlayer.bindRoutine("RivalComplain")]);
             }, 112);

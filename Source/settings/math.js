@@ -5,8 +5,11 @@ var FullScreenPokemon;
     "use strict";
     FullScreenPokemon.FullScreenPokemon.settings.math = {
         "equations": {
-            "cycleSpeed": function (constants, equations, thing) {
+            "speedCycling": function (constants, equations, thing) {
                 return thing.speed * 2;
+            },
+            "speedWalking": function (constants, equations, thing) {
+                return Math.round(8 * thing.FSP.unitsize / thing.speed);
             },
             "newPokemon": function (constants, equations, title, level, moves, iv, ev) {
                 var statisticNames = constants.statisticNames, pokemon = {

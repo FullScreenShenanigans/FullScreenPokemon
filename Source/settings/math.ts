@@ -6,8 +6,11 @@ module FullScreenPokemon {
 
     FullScreenPokemon.settings.math = {
         "equations": {
-            "cycleSpeed": function (constants: IMathConstants, equations: IMathEquations, thing: IPlayer): number {
+            "speedCycling": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
                 return thing.speed * 2;
+            },
+            "speedWalking": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
+                return Math.round(8 * thing.FSP.unitsize / thing.speed);
             },
             "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
                 var statisticNames: string[] = constants.statisticNames,
