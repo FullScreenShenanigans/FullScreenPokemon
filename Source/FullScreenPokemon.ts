@@ -2191,6 +2191,7 @@ module FullScreenPokemon {
 
                 case Function:
                     return (<any>onStop)(thing);
+
                 default:
                     throw new Error("Unknown onStop: " + onStop + ".");
             }
@@ -2505,6 +2506,7 @@ module FullScreenPokemon {
 
             if (thing.player) {
                 (<IPlayer>thing).allowDirectionAsKeys = true;
+                (<IPlayer>thing).shouldWalk = false;
             }
 
             thing.following = other;
@@ -2513,7 +2515,7 @@ module FullScreenPokemon {
             thing.speedOld = thing.speed;
             thing.speed = other.speed;
 
-            other.walkingCommands = [direction];
+            other.walkingCommands = [];
 
             thing.FSP.animateCharacterSetDirection(thing, direction);
 
@@ -2537,7 +2539,6 @@ module FullScreenPokemon {
             // Manually start the walking process without giving a 0 onStop,
             // so that it continues smoothly in the walking interval
             thing.FSP.animateCharacterStartWalking(thing, direction);
-            other.walkingCommands.shift();
 
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
                 thing.FSP.animateCharacterFollowContinue,

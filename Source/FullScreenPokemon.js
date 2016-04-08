@@ -1891,12 +1891,13 @@ var FullScreenPokemon;
             thing.nocollide = true;
             if (thing.player) {
                 thing.allowDirectionAsKeys = true;
+                thing.shouldWalk = false;
             }
             thing.following = other;
             other.follower = thing;
             thing.speedOld = thing.speed;
             thing.speed = other.speed;
-            other.walkingCommands = [direction];
+            other.walkingCommands = [];
             thing.FSP.animateCharacterSetDirection(thing, direction);
             switch (direction) {
                 case 0:
@@ -1917,7 +1918,6 @@ var FullScreenPokemon;
             // Manually start the walking process without giving a 0 onStop,
             // so that it continues smoothly in the walking interval
             thing.FSP.animateCharacterStartWalking(thing, direction);
-            other.walkingCommands.shift();
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(thing.FSP.animateCharacterFollowContinue, thing.FSP.getCharacterWalkingInterval(thing), Infinity, thing, other);
         };
         /**
