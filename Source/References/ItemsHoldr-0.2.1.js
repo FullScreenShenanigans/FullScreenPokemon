@@ -181,7 +181,7 @@ var ItemsHoldr;
          */
         function ItemsHoldr(settings) {
             if (settings === void 0) { settings = {}; }
-            var key;
+            this.settings = settings;
             this.prefix = settings.prefix || "";
             this.autoSave = settings.autoSave;
             this.callbackArgs = settings.callbackArgs || [];
@@ -198,18 +198,7 @@ var ItemsHoldr;
             }
             this.defaults = settings.defaults || {};
             this.displayChanges = settings.displayChanges || {};
-            this.items = {};
-            if (settings.values) {
-                this.itemKeys = Object.keys(settings.values);
-                for (key in settings.values) {
-                    if (settings.values.hasOwnProperty(key)) {
-                        this.addItem(key, settings.values[key]);
-                    }
-                }
-            }
-            else {
-                this.itemKeys = [];
-            }
+            this.resetItemsToDefaults();
             if (settings.doMakeContainer) {
                 this.containersArguments = settings.containersArguments || [
                     ["div", {
@@ -367,8 +356,7 @@ var ItemsHoldr;
                     }
                 }
             }
-            this.items = {};
-            this.itemKeys = [];
+            this.resetItemsToDefaults();
         };
         /**
          * Sets the value for the ItemValue under the given key, then updates the ItemValue
@@ -664,6 +652,22 @@ var ItemsHoldr;
                 }
             });
             return output;
+        };
+        /**
+         * Resets this.items to their default values and resets this.itemKeys.
+         */
+        ItemsHoldr.prototype.resetItemsToDefaults = function () {
+            this.items = {};
+            if (!this.settings.values) {
+                this.itemKeys = [];
+                return;
+            }
+            this.itemKeys = Object.keys(this.settings.values);
+            for (var key in this.settings.values) {
+                if (this.settings.values.hasOwnProperty(key)) {
+                    this.addItem(key, this.settings.values[key]);
+                }
+            }
         };
         return ItemsHoldr;
     })();
