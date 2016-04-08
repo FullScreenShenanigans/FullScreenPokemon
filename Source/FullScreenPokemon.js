@@ -634,20 +634,15 @@ var FullScreenPokemon;
                 if (thing.direction !== direction) {
                     thing.turning = direction;
                 }
-                if (thing.player) {
-                    thing.FSP.keyDownDirectionRealPlayer(thing, direction);
+                if (thing.canKeyWalking && !thing.shouldWalk) {
+                    thing.FSP.setPlayerDirection(thing, direction);
+                    thing.canKeyWalking = false;
+                }
+                else {
+                    thing.nextDirection = direction;
                 }
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
-        };
-        FullScreenPokemon.prototype.keyDownDirectionRealPlayer = function (player, direction) {
-            if (player.canKeyWalking && !player.shouldWalk) {
-                player.FSP.setPlayerDirection(player, direction);
-                player.canKeyWalking = false;
-            }
-            else {
-                player.nextDirection = direction;
-            }
         };
         /**
          * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
@@ -1668,15 +1663,15 @@ var FullScreenPokemon;
                 thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
                 return false;
             }
-            else {
-                if (typeof thing.nextDirection !== "undefined") {
-                    if (thing.nextDirection !== thing.direction && !thing.ledge) {
-                        thing.FSP.setPlayerDirection(thing, thing.nextDirection);
-                    }
-                    delete thing.nextDirection;
+            if (typeof thing.nextDirection !== "undefined") {
+                if (thing.nextDirection !== thing.direction && !thing.ledge) {
+                    thing.FSP.setPlayerDirection(thing, thing.nextDirection);
                 }
+                delete thing.nextDirection;
             }
-            thing.canKeyWalking = true;
+            else {
+                thing.canKeyWalking = true;
+            }
             return thing.FSP.animateCharacterStopWalking(thing, onStop);
         };
         /**
@@ -3207,7 +3202,6 @@ var FullScreenPokemon;
                     }
                 };
             });
-            console.log("childrenSchemas", menuSchema.childrenSchemas);
             if (settings.container) {
                 menuSchema.container = settings.container;
             }
