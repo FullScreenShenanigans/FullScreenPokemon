@@ -846,6 +846,11 @@ declare module MenuGraphr {
         deleteActiveMenu(): void;
 
         /**
+         * Deletes all menus.
+         */
+        deleteAllMenus(): void;
+
+        /**
          * Adds dialog-style text to a menu. If the text overflows, 
          * 
          * @param name   The name of the menu.
@@ -1243,6 +1248,17 @@ module MenuGraphr {
         deleteActiveMenu(): void {
             if (this.activeMenu) {
                 this.deleteMenu(this.activeMenu.name);
+            }
+        }
+
+        /**
+         * Deletes all menus.
+         */
+        deleteAllMenus(): void {
+            for (var key in this.menus) {
+                if (this.menus.hasOwnProperty(key)) {
+                    this.deleteMenu(key);
+                }
             }
         }
 

@@ -634,20 +634,15 @@ var FullScreenPokemon;
                 if (thing.direction !== direction) {
                     thing.turning = direction;
                 }
-                if (thing.player) {
-                    thing.FSP.keyDownDirectionRealPlayer(thing, direction);
+                if (thing.canKeyWalking && !thing.shouldWalk) {
+                    thing.FSP.setPlayerDirection(thing, direction);
+                    thing.canKeyWalking = false;
+                }
+                else {
+                    thing.nextDirection = direction;
                 }
             }
             thing.FSP.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
-        };
-        FullScreenPokemon.prototype.keyDownDirectionRealPlayer = function (player, direction) {
-            if (player.canKeyWalking && !player.shouldWalk) {
-                player.FSP.setPlayerDirection(player, direction);
-                player.canKeyWalking = false;
-            }
-            else {
-                player.nextDirection = direction;
-            }
         };
         /**
          * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
@@ -1668,15 +1663,15 @@ var FullScreenPokemon;
                 thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
                 return false;
             }
-            else {
-                if (typeof thing.nextDirection !== "undefined") {
-                    if (thing.nextDirection !== thing.direction && !thing.ledge) {
-                        thing.FSP.setPlayerDirection(thing, thing.nextDirection);
-                    }
-                    delete thing.nextDirection;
+            if (typeof thing.nextDirection !== "undefined") {
+                if (thing.nextDirection !== thing.direction && !thing.ledge) {
+                    thing.FSP.setPlayerDirection(thing, thing.nextDirection);
                 }
+                delete thing.nextDirection;
             }
-            thing.canKeyWalking = true;
+            else {
+                thing.canKeyWalking = true;
+            }
             return thing.FSP.animateCharacterStopWalking(thing, onStop);
         };
         /**
@@ -1896,12 +1891,13 @@ var FullScreenPokemon;
             thing.nocollide = true;
             if (thing.player) {
                 thing.allowDirectionAsKeys = true;
+                thing.shouldWalk = false;
             }
             thing.following = other;
             other.follower = thing;
             thing.speedOld = thing.speed;
             thing.speed = other.speed;
-            other.walkingCommands = [direction];
+            other.walkingCommands = [];
             thing.FSP.animateCharacterSetDirection(thing, direction);
             switch (direction) {
                 case 0:
@@ -1922,7 +1918,6 @@ var FullScreenPokemon;
             // Manually start the walking process without giving a 0 onStop,
             // so that it continues smoothly in the walking interval
             thing.FSP.animateCharacterStartWalking(thing, direction);
-            other.walkingCommands.shift();
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(thing.FSP.animateCharacterFollowContinue, thing.FSP.getCharacterWalkingInterval(thing), Infinity, thing, other);
         };
         /**
@@ -3174,43 +3169,46 @@ var FullScreenPokemon;
          * @param settings   Settings to open the menu.
          */
         FullScreenPokemon.prototype.openPokemonLevelUpStats = function (settings) {
-            var pokemon = settings.pokemon, statistics = this.MathDecider.getConstant("statisticNamesDisplayed"), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, top, left, i;
-            // A copy of statistics is used to not modify the original constant
-            statistics = [].slice.call(statistics);
+            var _this = this;
+            var pokemon = settings.pokemon, statistics = this.MathDecider.getConstant("statisticNamesDisplayed").slice(), numStatistics = statistics.length, textXOffset = settings.textXOffset || 8, menuSchema = {
+                callback: function () { return _this.MenuGrapher.deleteMenu("LevelUpStats"); },
+                onMenuDelete: settings.onMenuDelete,
+                position: settings.position || {
+                    horizontal: "center",
+                    vertical: "center"
+                }
+            }, top, left, i;
             for (i = 0; i < numStatistics; i += 1) {
                 statistics.push(this.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
                 statistics[i] = statistics[i].toUpperCase();
             }
-            this.MenuGrapher.createMenu("LevelUpStats", {
-                "container": settings.container,
-                "size": settings.size,
-                "position": settings.position || {
-                    "horizontal": "center",
-                    "vertical": "center"
-                },
-                "callback": this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "LevelUpStats"),
-                "onMenuDelete": settings.onMenuDelete,
-                "childrenSchemas": statistics.map(function (text, i) {
-                    if (i < numStatistics) {
-                        top = i * 8 + 4;
-                        left = textXOffset;
-                    }
-                    else {
-                        top = (i - numStatistics + 1) * 8;
-                        left = textXOffset + 20;
-                    }
-                    return {
-                        "type": "text",
-                        "words": [text],
-                        "position": {
-                            "offset": {
-                                "top": top - .5,
-                                "left": left
-                            }
+            menuSchema.childrenSchemas = statistics.map(function (text, i) {
+                if (i < numStatistics) {
+                    top = i * 8 + 4;
+                    left = textXOffset;
+                }
+                else {
+                    top = (i - numStatistics + 1) * 8;
+                    left = textXOffset + 20;
+                }
+                return {
+                    type: "text",
+                    words: [text],
+                    position: {
+                        offset: {
+                            top: top - .5,
+                            left: left
                         }
-                    };
-                })
+                    }
+                };
             });
+            if (settings.container) {
+                menuSchema.container = settings.container;
+            }
+            if (settings.size) {
+                menuSchema.size = settings.size;
+            }
+            this.MenuGrapher.createMenu("LevelUpStats", menuSchema);
         };
         /**
          * Open the secondary statistics menu from the LevelUpStats menu.
@@ -3282,8 +3280,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.openPokedexListing = function (title, callback, menuSettings) {
             var _this = this;
-            var pokemon = this.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function (FSP) {
-                FSP.MenuGrapher.deleteMenu("PokedexListing");
+            var pokemon = this.MathDecider.getConstant("pokemon")[title.join("")], height = pokemon.height, feet = [].slice.call(height[0]).reverse().join(""), inches = [].slice.call(height[1]).reverse().join(""), onCompletion = function () {
+                _this.MenuGrapher.deleteMenu("PokedexListing");
                 if (callback) {
                     callback();
                 }
@@ -3304,11 +3302,11 @@ var FullScreenPokemon;
             this.MenuGrapher.addMenuDialog("PokedexListingNumber", this.makeDigit(pokemon.number, 3, "0"));
             this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[0], function () {
                 if (pokemon.info.length < 2) {
-                    onCompletion(_this);
+                    onCompletion();
                     return;
                 }
                 _this.MenuGrapher.createMenu("PokedexListingInfo");
-                _this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion(_this));
+                _this.MenuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
                 _this.MenuGrapher.setActiveMenu("PokedexListingInfo");
             });
             this.MenuGrapher.setActiveMenu("PokedexListingInfo");
@@ -3864,11 +3862,9 @@ var FullScreenPokemon;
          * @param pokemon   The Pokemon using Cut.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add an animation for what happens when the CuttableTree is cut.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         FullScreenPokemon.prototype.partyActivateCut = function (player, pokemon) {
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
             player.FSP.killNormal(player.bordering[player.direction]);
         };
@@ -3879,12 +3875,10 @@ var FullScreenPokemon;
          * @param pokemon   The Pokemon using Strength.
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Verify the exact speed, sound, and distance.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {
             var boulder = player.bordering[player.direction], xvel = 0, yvel = 0, i = 0;
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
             if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
                 return;
@@ -4107,7 +4101,7 @@ var FullScreenPokemon;
         };
         /**
          * Cutscene for the opening text and base menus in a battle. Afer this,
-         * the EnemyIntro or PlayerIntro cutscene is triggered.
+         * the OpponentIntro or PlayerIntro cutscene is triggered.
          *
          * @param FSP
          * @param settings   Settings used for the cutscene
@@ -4115,7 +4109,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneBattleOpeningText = function (FSP, settings) {
             var battleInfo = settings.battleInfo, textStart = battleInfo.textStart, nextRoutine, callback;
             if (settings.battleInfo.opponent.hasActors) {
-                nextRoutine = "EnemyIntro";
+                nextRoutine = "OpponentIntro";
             }
             else {
                 nextRoutine = "PlayerIntro";
@@ -4152,7 +4146,7 @@ var FullScreenPokemon;
          * @param FSP
          * @param settings   Settings used for the cutscene
          */
-        FullScreenPokemon.prototype.cutsceneBattleEnemyIntro = function (FSP, settings) {
+        FullScreenPokemon.prototype.cutsceneBattleOpponentIntro = function (FSP, settings) {
             var things = settings.things, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("GeneralText"), opponentX = FSP.getMidX(opponent), opponentGoal = menu.right + opponent.width * FSP.unitsize / 2, battleInfo = settings.battleInfo, callback = battleInfo.opponent.hasActors
                 ? "OpponentSendOut"
                 : "PlayerIntro", timeout = 49;
@@ -4251,7 +4245,9 @@ var FullScreenPokemon;
             console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
             FSP.addBattleDisplayPokemonHealth(FSP, "opponent");
             FSP.addPokemonToPokedex(FSP, pokemonInfo.title, PokedexListingStatus.Seen);
-            FSP.ScenePlayer.playRoutine(args.nextRoutine);
+            if (args) {
+                FSP.ScenePlayer.playRoutine(args.nextRoutine);
+            }
         };
         /**
          * Cutscene for the player starting to send out a Pokemon. A smoke effect
@@ -4522,8 +4518,6 @@ var FullScreenPokemon;
             var battleInfo = settings.battleInfo, opponent = battleInfo.opponent, nicknameExclaim = opponent.selectedActor.nickname.slice();
             nicknameExclaim.push("!");
             FSP.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
-            opponent.selectedIndex += 1;
-            opponent.selectedActor = opponent.actors[opponent.selectedIndex];
             FSP.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": false
             });
@@ -6790,7 +6784,7 @@ var FullScreenPokemon;
             this.GroupHolder.clearArrays();
             this.MapScreener.clearScreen();
             this.MapScreener.thingsById = this.generateThingsByIdContainer();
-            this.MenuGrapher.setActiveMenu();
+            this.MenuGrapher.deleteAllMenus();
             this.TimeHandler.cancelAllEvents();
             this.AreaSpawner.setLocation(name);
             this.MapScreener.setVariables();
@@ -7430,7 +7424,7 @@ var FullScreenPokemon;
                     "x": x + doorOffset + 8,
                     "y": y,
                     "height": 4,
-                    "width": width - doorOffset - 8
+                    "width": width - doorOffset - 12
                 });
                 output.push({
                     "thing": "BuildingBottomLeft",

@@ -210,6 +210,16 @@ var MenuGraphr;
                 this.deleteMenu(this.activeMenu.name);
             }
         };
+        /**
+         * Deletes all menus.
+         */
+        MenuGraphr.prototype.deleteAllMenus = function () {
+            for (var key in this.menus) {
+                if (this.menus.hasOwnProperty(key)) {
+                    this.deleteMenu(key);
+                }
+            }
+        };
         /* Menu text
         */
         /**

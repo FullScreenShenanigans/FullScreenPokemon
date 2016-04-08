@@ -768,6 +768,11 @@ module ItemsHoldr {
      */
     export class ItemsHoldr implements IItemsHoldr {
         /**
+         * Settings used to construct this ItemsHoldr.
+         */
+        private settings: IItemsHoldrSettings;
+
+        /**
          * The ItemValues being stored, keyed by name.
          */
         private items: { [i: string]: ItemValue };
@@ -828,8 +833,7 @@ module ItemsHoldr {
          * @param settings   Any optional custom settings.
          */
         constructor(settings: IItemsHoldrSettings = {}) {
-            var key: string;
-
+            this.settings = settings;
             this.prefix = settings.prefix || "";
             this.autoSave = settings.autoSave;
             this.callbackArgs = settings.callbackArgs || [];
@@ -848,18 +852,7 @@ module ItemsHoldr {
             this.defaults = settings.defaults || {};
             this.displayChanges = settings.displayChanges || {};
 
-            this.items = {};
-            if (settings.values) {
-                this.itemKeys = Object.keys(settings.values);
-
-                for (key in settings.values) {
-                    if (settings.values.hasOwnProperty(key)) {
-                        this.addItem(key, settings.values[key]);
-                    }
-                }
-            } else {
-                this.itemKeys = [];
-            }
+            this.resetItemsToDefaults();
 
             if (settings.doMakeContainer) {
                 this.containersArguments = settings.containersArguments || [
@@ -1049,9 +1042,8 @@ module ItemsHoldr {
                     }
                 }
             }
-
-            this.items = {};
-            this.itemKeys = [];
+            
+            this.resetItemsToDefaults();
         }
 
         /**
@@ -1393,6 +1385,26 @@ module ItemsHoldr {
             });
 
             return output;
+        }
+
+        /**
+         * Resets this.items to their default values and resets this.itemKeys.
+         */
+        private resetItemsToDefaults(): void {
+            this.items = {};
+
+            if (!this.settings.values) {
+                this.itemKeys = [];
+                return;
+            }
+
+            this.itemKeys = Object.keys(this.settings.values);
+
+            for (var key in this.settings.values) {
+                if (this.settings.values.hasOwnProperty(key)) {
+                    this.addItem(key, this.settings.values[key]);
+                }
+            }
         }
     }
 }
