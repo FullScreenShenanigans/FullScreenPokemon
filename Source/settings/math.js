@@ -177,13 +177,13 @@ var FullScreenPokemon;
                     }
                 }
                 // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
-                if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
+                if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
                         this.compute("applyMoveEffectPriority", possibilities[i], constants.battleModifications["Turn 2"], player.selectedActor, 1);
                     }
                 }
                 // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
-                if (this.compute("opponentMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
+                if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
                     for (i = 0; i < possibilities.length; i += 1) {
                         this.compute("applyMoveEffectPriority", possibilities[i], constants.battleModifications["Good AI"], player.selectedActor, 1);
                     }
