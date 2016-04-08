@@ -1407,18 +1407,6 @@ module FullScreenPokemon {
         /* General animations
         */
 
-        ///**
-        // * 
-        // */
-        //isThingSnappedToGrid(thing: IThing): boolean {
-        //    var grid: number = thing.FSP.unitsize * 8,
-        //        left: number = (thing.FSP.player.left + thing.FSP.MapScreener.left) / grid,
-        //        top: number = (thing.FSP.player.top + thing.FSP.MapScreener.top) / grid;
-
-        //    console.log(thing.title, (left | 0) === left && (top | 0) === top);
-        //    return (left | 0) === left && (top | 0) === top;
-        //}
-
         /**
          * Snaps a moving Thing to a predictable grid position.
          * 
@@ -5087,13 +5075,16 @@ module FullScreenPokemon {
          * @param player   The Player.
          * @param pokemon   The Pokemon using Strength.
          * @todo Add the dialogue for when the Player starts surfing.
-         * @todo Replace the two RegisterB calls with a closeAllMenus call.
          */
         partyActivateSurf(player: IPlayer, pokemon: IPokemon): void {
-            player.FSP.MenuGrapher.registerB();
-            player.FSP.MenuGrapher.registerB();
+            player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
 
+            if (player.cycling) {
+                return;
+            }
+
+            player.bordering[player.direction] = undefined;
             player.FSP.addClass(player, "surfing");
             player.FSP.animateCharacterStartWalking(player, player.direction, [1]);
             player.surfing = true;
