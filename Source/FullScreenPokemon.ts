@@ -1367,7 +1367,7 @@ module FullScreenPokemon {
 
             thing.cycling = true;
             thing.speedOld = thing.speed;
-            thing.speed = this.MathDecider.compute("cycleSpeed", thing);
+            thing.speed = this.MathDecider.compute("speedCycling", thing);
 
             thing.FSP.addClass(thing, "cycling");
 
@@ -1434,6 +1434,7 @@ module FullScreenPokemon {
 
             if (thing.walkingFlipping) {
                 thing.FSP.TimeHandler.cancelEvent(thing.walkingFlipping);
+                thing.walkingFlipping = undefined;
             }
         }
 
@@ -2053,7 +2054,7 @@ module FullScreenPokemon {
          * @param onStop   A queue of commands as alternating directions and distances.
          */
         animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
-            var repeats: number = thing.FSP.getCharacterWalkingInterval(thing),
+            var repeats: number = thing.FSP.MathDecider.compute("speedWalking", thing),
                 distance: number = repeats * thing.speed;
 
             thing.walking = true;
@@ -2159,7 +2160,7 @@ module FullScreenPokemon {
             thing.yvel = 0;
             thing.walking = false;
 
-            thing.FSP.removeClass(thing, "walking");
+            thing.FSP.removeClasses(thing, "walking", "standing");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
 
             if (thing.walkingFlipping) {
@@ -2273,7 +2274,9 @@ module FullScreenPokemon {
         animateCharacterSetDirection(thing: IThing, direction: Direction): void {
             thing.direction = direction;
 
-            thing.FSP.unflipHoriz(thing);
+            if (direction % 2 === 1) {
+                thing.FSP.unflipHoriz(thing);
+            }
 
             thing.FSP.removeClasses(
                 thing,
@@ -2553,7 +2556,7 @@ module FullScreenPokemon {
 
             thing.followingLoop = thing.FSP.TimeHandler.addEventInterval(
                 thing.FSP.animateCharacterFollowContinue,
-                thing.FSP.getCharacterWalkingInterval(thing),
+                thing.FSP.MathDecider.compute("speedWalking", thing),
                 Infinity,
                 thing,
                 other);
@@ -2596,17 +2599,6 @@ module FullScreenPokemon {
             thing.FSP.TimeHandler.cancelEvent(thing.followingLoop);
 
             return true;
-        }
-
-        /**
-         * Determines how rapidly a Character should walk, as a function of
-         * unitsize and its speed.
-         * 
-         * @param thing   A walking Character.
-         * @returns How rapidly thing should walk.
-         */
-        getCharacterWalkingInterval(thing: ICharacter): number {
-            return Math.round(8 * thing.FSP.unitsize / thing.speed);
         }
 
         /**
@@ -5756,7 +5748,7 @@ module FullScreenPokemon {
             };
 
             // @todo: When all moves have been implemented, this will be simplified.
-            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+            if (!FPS.ScenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
                 console.warn(choice + " attack animation not implemented...");
                 args.callback();
             } else {
@@ -5839,7 +5831,7 @@ module FullScreenPokemon {
             };
 
             // @todo: When all moves have been implemented, this will be simplified.
-            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice)) {
+            if (!FSP.ScenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
                 console.warn(choice + " attack animation not implemented...");
                 args.callback();
             } else {
@@ -7918,7 +7910,7 @@ module FullScreenPokemon {
 
             FSP.TimeHandler.addEvent(
                 FSP.animateCharacterStartWalkingCycle,
-                FSP.getCharacterWalkingInterval(FSP.player),
+                FSP.MathDecider.compute("speedWalking", FSP.player),
                 FSP.player,
                 0,
                 [
@@ -7969,7 +7961,7 @@ module FullScreenPokemon {
                 function (): void {
                     FSP.player.hidden = false;
                 },
-                112 - FSP.getCharacterWalkingInterval(settings.player));
+                112 - FSP.MathDecider.compute("speedWalking", settings.player));
 
             FSP.TimeHandler.addEvent(
                 function (): void {
