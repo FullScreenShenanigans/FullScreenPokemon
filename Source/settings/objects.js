@@ -1134,6 +1134,11 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "ElderBack": [14, 14],
         "PlayerBack": [14, 14],
+        "CyclingRoad": {
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCyclingRoad,
+            "requireOverlap": true,
+            "hidden": true
+        },
         "Terrain": {
             "groupType": "Terrain",
             "repeat": true,
