@@ -905,8 +905,8 @@ var FullScreenPokemon;
          * @param characters   The Characters group of Things.
          */
         FullScreenPokemon.prototype.maintainCharacters = function (FSP, characters) {
-            var character, i, j;
-            for (i = 0; i < characters.length; i += 1) {
+            var character;
+            for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
                 FSP.shiftCharacter(character);
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
@@ -921,7 +921,7 @@ var FullScreenPokemon;
                     i -= 1;
                     continue;
                 }
-                for (j = 0; j < 4; j += 1) {
+                for (var j = 0; j < 4; j += 1) {
                     character.bordering[j] = undefined;
                 }
                 FSP.QuadsKeeper.determineThingQuadrants(character);
@@ -1244,12 +1244,12 @@ var FullScreenPokemon;
          * @returns The four created Things.
          */
         FullScreenPokemon.prototype.animateThingCorners = function (FSP, x, y, title, settings, groupType) {
-            var things = [], i;
-            for (i = 0; i < 4; i += 1) {
+            var things = [];
+            for (var i = 0; i < 4; i += 1) {
                 things.push(FSP.addThing([title, settings]));
             }
             if (groupType) {
-                for (i = 0; i < things.length; i += 1) {
+                for (var i = 0; i < things.length; i += 1) {
                     FSP.GroupHolder.switchMemberGroup(things[i], things[i].groupType, groupType);
                 }
             }
@@ -1558,8 +1558,8 @@ var FullScreenPokemon;
          * @param thing   A roaming Character.
          */
         FullScreenPokemon.prototype.animateCharacterStartWalkingRandom = function (thing) {
-            var totalAllowed = 0, direction, i;
-            for (i = 0; i < 4; i += 1) {
+            var totalAllowed = 0, direction;
+            for (var i = 0; i < 4; i += 1) {
                 if (!thing.bordering[i]) {
                     totalAllowed += 1;
                 }
@@ -1568,7 +1568,7 @@ var FullScreenPokemon;
                 return;
             }
             direction = thing.FSP.NumberMaker.randomInt(totalAllowed);
-            for (i = 0; i <= direction; i += 1) {
+            for (var i = 0; i <= direction; i += 1) {
                 if (thing.bordering[i]) {
                     direction += 1;
                 }
@@ -2573,10 +2573,10 @@ var FullScreenPokemon;
          * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          */
         FullScreenPokemon.prototype.activateHMCharacter = function (player, thing) {
-            var partyPokemon = player.FSP.ItemsHolder.getItem("PokemonInParty"), moves, i, j;
-            for (i = 0; i < partyPokemon.length; i += 1) {
+            var partyPokemon = player.FSP.ItemsHolder.getItem("PokemonInParty"), moves;
+            for (var i = 0; i < partyPokemon.length; i += 1) {
                 moves = partyPokemon[i].moves;
-                for (j = 0; j < moves.length; j += 1) {
+                for (var j = 0; j < moves.length; j += 1) {
                     if (moves[j].title === thing.moveName) {
                         thing.moveCallback(player, partyPokemon[i]);
                         return;
@@ -2803,7 +2803,7 @@ var FullScreenPokemon;
          * @param area   The Area associated with thing.
          */
         FullScreenPokemon.prototype.activateAreaSpawner = function (thing, area) {
-            var direction = thing.direction, creation = area.creation, FSP = thing.FSP, MapsCreator = FSP.MapsCreator, AreaSpawner = FSP.AreaSpawner, QuadsKeeper = FSP.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + thing.FSP.MapScreener.left, top = thing.top + thing.FSP.MapScreener.top, x, y, command, i;
+            var direction = thing.direction, creation = area.creation, FSP = thing.FSP, MapsCreator = FSP.MapsCreator, AreaSpawner = FSP.AreaSpawner, QuadsKeeper = FSP.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + thing.FSP.MapScreener.left, top = thing.top + thing.FSP.MapScreener.top, x, y, command;
             switch (direction) {
                 case 0:
                     top -= area.height * thing.FSP.unitsize;
@@ -2823,7 +2823,7 @@ var FullScreenPokemon;
             x = left / FSP.unitsize + (thing.offsetX || 0);
             y = top / FSP.unitsize + (thing.offsetY || 0);
             FSP.expandMapBoundariesForArea(FSP, area, x, y);
-            for (i = 0; i < creation.length; i += 1) {
+            for (var i = 0; i < creation.length; i += 1) {
                 // A copy of the command must be used, so as to not modify the original 
                 command = FSP.proliferate({
                     "noBoundaryStretch": true,
@@ -2904,20 +2904,20 @@ var FullScreenPokemon;
             var pokedex = FSP.ItemsHolder.getItem("Pokedex"), pokemon = FSP.MathDecider.getConstant("pokemon"), titlesSorted = Object.keys(pokedex)
                 .sort(function (a, b) {
                 return pokemon[a].number - pokemon[b].number;
-            }), ordered = [], i, j;
+            }), ordered = [];
             if (!titlesSorted.length) {
                 return [];
             }
-            for (i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
+            for (var i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
                 ordered.push(null);
             }
-            for (i = 0; i < titlesSorted.length - 1; i += 1) {
+            for (var i = 0; i < titlesSorted.length - 1; i += 1) {
                 ordered.push(pokedex[titlesSorted[i]]);
-                for (j = pokemon[titlesSorted[i]].number - 1; j < pokemon[titlesSorted[i + 1]].number - 2; j += 1) {
+                for (var j = pokemon[titlesSorted[i]].number - 1; j < pokemon[titlesSorted[i + 1]].number - 2; j += 1) {
                     ordered.push(null);
                 }
             }
-            ordered.push(pokedex[titlesSorted[i]]);
+            ordered.push(pokedex[titlesSorted[titlesSorted.length - 1]]);
             return ordered;
         };
         /* Menus
@@ -3062,8 +3062,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.openPokemonMenuContext = function (settings) {
             var _this = this;
-            var moves = settings.pokemon.moves, options = [], move, i;
-            for (i = 0; i < moves.length; i += 1) {
+            var moves = settings.pokemon.moves, options = [], move;
+            for (var i = 0; i < moves.length; i += 1) {
                 move = this.MathDecider.getConstant("moves")[moves[i].title];
                 if (move.partyActivate) {
                     options.push({
@@ -3250,9 +3250,9 @@ var FullScreenPokemon;
                 // TODO: Moves should always be uppercase...
                 characters.push.apply(characters, move.title.toUpperCase().split(""));
                 return output;
-            }), i;
+            });
             // Fill any remaining options with "-" and "--" for move and PP, respectively
-            for (i = options.length; i < 4; i += 1) {
+            for (var i = options.length; i < 4; i += 1) {
                 options.push({
                     "text": [
                         "-",
@@ -3653,8 +3653,8 @@ var FullScreenPokemon;
             var things = [FSP.player], used = (_a = {},
                 _a[FSP.player.title] = FSP.player,
                 _a
-            ), thing, i;
-            for (i = 0; i < thingsRaw.length; i += 1) {
+            ), thing;
+            for (var i = 0; i < thingsRaw.length; i += 1) {
                 thing = thingsRaw[i].constructor === String
                     ? FSP.getThingById(thingsRaw[i])
                     : thingsRaw[i];
@@ -3673,11 +3673,11 @@ var FullScreenPokemon;
          * @param batleInfo    In-game state and settings for an ongoing battle.
          */
         FullScreenPokemon.prototype.moveBattleKeptThingsToText = function (FSP, battleInfo) {
-            var keptThings = battleInfo.keptThings, i;
+            var keptThings = battleInfo.keptThings;
             if (!keptThings) {
                 return;
             }
-            for (i = 0; i < keptThings.length; i += 1) {
+            for (var i = 0; i < keptThings.length; i += 1) {
                 FSP.GroupHolder.switchMemberGroup(keptThings[i], keptThings[i].groupType, "Text");
             }
         };
@@ -3688,11 +3688,11 @@ var FullScreenPokemon;
          * @param batleInfo    In-game state and settings for an ongoing battle.
          */
         FullScreenPokemon.prototype.moveBattleKeptThingsBack = function (FSP, battleInfo) {
-            var keptThings = battleInfo.keptThings, i;
+            var keptThings = battleInfo.keptThings;
             if (!keptThings) {
                 return;
             }
-            for (i = 0; i < keptThings.length; i += 1) {
+            for (var i = 0; i < keptThings.length; i += 1) {
                 FSP.GroupHolder.switchMemberGroup(keptThings[i], "Text", keptThings[i].groupType);
             }
         };
@@ -3714,11 +3714,11 @@ var FullScreenPokemon;
          * @param pokemon   An in-game Pokemon to heal.
          */
         FullScreenPokemon.prototype.healPokemon = function (pokemon) {
-            var moves = this.MathDecider.getConstant("moves"), statisticNames = this.MathDecider.getConstant("statisticNames"), i;
-            for (i = 0; i < statisticNames.length; i += 1) {
+            var moves = this.MathDecider.getConstant("moves"), statisticNames = this.MathDecider.getConstant("statisticNames");
+            for (var i = 0; i < statisticNames.length; i += 1) {
                 pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
             }
-            for (i = 0; i < pokemon.moves.length; i += 1) {
+            for (var i = 0; i < pokemon.moves.length; i += 1) {
                 pokemon.moves[i].remaining = moves[pokemon.moves[i].title].PP;
             }
             pokemon.status = "";
@@ -3751,8 +3751,8 @@ var FullScreenPokemon;
          * @returns One of the potential Pokemon schemas at random.
          */
         FullScreenPokemon.prototype.chooseRandomWildPokemon = function (FSP, options) {
-            var choice = FSP.NumberMaker.random(), sum = 0, i;
-            for (i = 0; i < options.length; i += 1) {
+            var choice = FSP.NumberMaker.random(), sum = 0;
+            for (var i = 0; i < options.length; i += 1) {
                 sum += options[i].rate;
                 if (sum >= choice) {
                     return options[i];
@@ -3881,7 +3881,7 @@ var FullScreenPokemon;
          * @todo Verify the exact speed, sound, and distance.
          */
         FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {
-            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0, i = 0;
+            var boulder = player.bordering[player.direction], xvel = 0, yvel = 0;
             player.FSP.MenuGrapher.deleteAllMenus();
             player.FSP.closePauseMenu();
             if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
@@ -3906,7 +3906,7 @@ var FullScreenPokemon;
             player.FSP.TimeHandler.addEventInterval(function () {
                 boulder.FSP.shiftBoth(boulder, xvel, yvel);
             }, 1, 8);
-            for (i = 0; i < 4; i += 1) {
+            for (var i = 0; i < 4; i += 1) {
                 boulder.bordering[i] = undefined;
             }
         };
@@ -4993,10 +4993,11 @@ var FullScreenPokemon;
          * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutscenePokeCenterHealing = function (FSP, settings) {
-            var party = FSP.ItemsHolder.getItem("PokemonInParty"), balls = [], dt = 35, left = settings.machine.left + 5 * FSP.unitsize, top = settings.machine.top + 7 * FSP.unitsize, i = 0;
+            var party = FSP.ItemsHolder.getItem("PokemonInParty"), balls = [], dt = 35, left = settings.machine.left + 5 * FSP.unitsize, top = settings.machine.top + 7 * FSP.unitsize;
             settings.balls = balls;
             FSP.animateCharacterSetDirection(settings.nurse, 3);
             FSP.TimeHandler.addEventInterval(function () {
+                var i = 0;
                 balls.push(FSP.addThing("HealingMachineBall", left + (i % 2) * 3 * FSP.unitsize, top + Math.floor(i / 2) * 2.5 * FSP.unitsize));
                 i += 1;
             }, dt, party.length);
@@ -5012,12 +5013,13 @@ var FullScreenPokemon;
          * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutscenePokeCenterHealingAction = function (FSP, settings, args) {
-            var balls = args.balls, numFlashes = 8, i = 0, changer, j;
+            var balls = args.balls, numFlashes = 8;
             FSP.TimeHandler.addEventInterval(function () {
+                var i = 0, changer;
                 changer = i % 2 === 0
                     ? FSP.addClass
                     : FSP.removeClass;
-                for (j = 0; j < balls.length; j += 1) {
+                for (var j = 0; j < balls.length; j += 1) {
                     changer(balls[j], "lit");
                 }
                 changer(settings.machine, "lit");
@@ -6684,8 +6686,8 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.saveCharacterPositions = function (FSP) {
-            var characters = FSP.GroupHolder.getGroup("Character"), character, id, i;
-            for (i = 0; i < characters.length; i += 1) {
+            var characters = FSP.GroupHolder.getGroup("Character"), character, id;
+            for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
                 id = character.id;
                 FSP.saveCharacterPosition(FSP, character, id);
@@ -7046,11 +7048,11 @@ var FullScreenPokemon;
          * @returns A checkered pattern of Things.
          */
         FullScreenPokemon.prototype.macroCheckered = function (reference) {
-            var xStart = reference.x || 0, yStart = reference.y || 0, xnum = reference.xnum || 1, ynum = reference.ynum || 1, xwidth = reference.xwidth || 8, yheight = reference.yheight || 8, offset = reference.offset || 0, things = reference.things, mod = things.length, output = [], thing, x, y, i, j;
+            var xStart = reference.x || 0, yStart = reference.y || 0, xnum = reference.xnum || 1, ynum = reference.ynum || 1, xwidth = reference.xwidth || 8, yheight = reference.yheight || 8, offset = reference.offset || 0, things = reference.things, mod = things.length, output = [], thing, x, y;
             y = yStart;
-            for (i = 0; i < ynum; i += 1) {
+            for (var i = 0; i < ynum; i += 1) {
                 x = xStart;
-                for (j = 0; j < xnum; j += 1) {
+                for (var j = 0; j < xnum; j += 1) {
                     thing = reference.things[(i + j + offset) % mod];
                     if (thing !== "") {
                         output.push({
@@ -7120,7 +7122,7 @@ var FullScreenPokemon;
          * @returns A House.
          */
         FullScreenPokemon.prototype.macroHouse = function (reference) {
-            var x = reference.x || 0, y = reference.y || 0, width = reference.width || 32, stories = reference.stories || 1, output = [], door, i;
+            var x = reference.x || 0, y = reference.y || 0, width = reference.width || 32, stories = reference.stories || 1, output = [], door;
             if (stories === 1) {
                 output.push({
                     "thing": "HouseTopRoofLeft",
@@ -7173,7 +7175,7 @@ var FullScreenPokemon;
                 });
             }
             y += 16;
-            for (i = 1; i < stories; i += 1) {
+            for (var i = 1; i < stories; i += 1) {
                 output.push({
                     "thing": "HouseCenterLeft",
                     "x": x,
@@ -7225,9 +7227,9 @@ var FullScreenPokemon;
                     "thing": "HouseLargeTopRight",
                     "x": x + width - 8,
                     "y": y
-                }], door, i;
+                }], door;
             y += 20;
-            for (i = 2; i < stories; i += 1) {
+            for (var i = 2; i < stories; i += 1) {
                 output.push({
                     "thing": "HouseLargeCenter",
                     "x": x,
@@ -7363,9 +7365,9 @@ var FullScreenPokemon;
                     "thing": "BuildingTopRight",
                     "x": x + width - 4,
                     "y": y
-                }], door, i;
+                }], door;
             y += 16;
-            for (i = 0; i < stories; i += 1) {
+            for (var i = 0; i < stories; i += 1) {
                 output.push({
                     "thing": "BuildingMiddleLeft",
                     "x": x,
@@ -8014,8 +8016,7 @@ var FullScreenPokemon;
          * @returns Whether the key exists within the Array members.
          */
         FullScreenPokemon.prototype.checkArrayMembersIndex = function (array, key) {
-            var i;
-            for (i = 0; i < array.length; i += 1) {
+            for (var i = 0; i < array.length; i += 1) {
                 if (array[i][key]) {
                     return true;
                 }
@@ -8037,8 +8038,8 @@ var FullScreenPokemon;
          * @returns Whether the stackable item was newly added.
          */
         FullScreenPokemon.prototype.combineArrayMembers = function (array, title, count, keyTitle, keyCount) {
-            var object, i;
-            for (i = 0; i < array.length; i += 1) {
+            var object;
+            for (var i = 0; i < array.length; i += 1) {
                 object = array[i];
                 if (array[i][keyTitle] === title) {
                     array[i][keyCount] += count;
