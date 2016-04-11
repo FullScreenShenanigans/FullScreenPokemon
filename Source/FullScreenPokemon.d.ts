@@ -1793,6 +1793,11 @@ declare module FullScreenPokemon {
         allowDirectionAsKeys?: boolean;
 
         /**
+         * Whether the player is allowed to dismount the bicycle.
+         */
+        canDismountBicycle: boolean;
+
+        /**
          * Whether this is allowed to start walking via user input.
          */
         canKeyWalking: boolean;
@@ -2073,6 +2078,16 @@ declare module FullScreenPokemon {
          * What routine to play, if action is "cutscene".
          */
         routine?: string;
+    }
+
+    /**
+     * A Detector that forces the Player onto his/her bicycle.
+     */
+    export interface ICyclingTriggerer extends IDetector {
+        /**
+         * Whether the Player should always be moving.
+         */
+        alwaysMoving?: boolean;
     }
 
     /**

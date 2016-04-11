@@ -72,6 +72,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "Cabinet": {},
                 "CollisionDetector": {
                     "CutsceneTriggerer": {},
+                    "CyclingTriggerer": {},
                     "MenuTriggerer": {},
                     "SightDetector": {},
                     "ThemePlayer": {},
@@ -801,6 +802,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "Player": {
             "id": "player",
             "player": true,
+            "canDismountBicycle": true,
             "canKeyWalking": true,
             "direction": 2,
             "speed": FullScreenPokemon.FullScreenPokemon.unitsize / 2,
@@ -1134,8 +1136,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "ElderBack": [14, 14],
         "PlayerBack": [14, 14],
-        "CyclingRoad": {
-            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCyclingRoad,
+        "CyclingTriggerer": {
+            "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateCyclingTriggerer,
             "requireOverlap": true,
             "hidden": true
         },
