@@ -1351,11 +1351,11 @@ module FullScreenPokemon {
          * Starts the Player cycling if the current Area allows it.
          *
          * @param thing   A Player to start cycling.
-         * @param area   The current Area.
+         * @param message   Whether to display a message box.
          * @returns Whether the properties were changed.
          */
-        startCycling(thing: IPlayer): boolean {
-            if (thing.surfing) {
+        startCycling(thing: IPlayer, message?: boolean): boolean {
+            if (thing.surfing || thing.cycling) {
                 return false;
             }
 
@@ -1369,7 +1369,9 @@ module FullScreenPokemon {
 
             thing.FSP.addClass(thing, "cycling");
 
-            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            if (message) {
+                thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            }
             return true;
         }
 
@@ -1379,6 +1381,11 @@ module FullScreenPokemon {
          * @param thing   A Player to stop cycling.
          */
         stopCycling(thing: IPlayer): void {
+            if (!thing.canDismountBicycle) {
+                thing.FSP.displayMessage(thing, "You can't get off here.");
+                return;
+            }
+
             thing.cycling = false;
             thing.speed = thing.speedOld;
 
@@ -1399,7 +1406,7 @@ module FullScreenPokemon {
                 thing.FSP.stopCycling(thing);
                 return true;
             } else {
-                return thing.FSP.startCycling(thing);
+                return thing.FSP.startCycling(thing, true);
             }
         }
 
@@ -3358,6 +3365,17 @@ module FullScreenPokemon {
             }
         }
 
+        /**
+         * Activates a Detector to force the Player onto the bike and optionally to keep moving.
+         * 
+         * @param player   The Player.
+         * @param thing   A Detector triggered by player.
+         */
+        activateCyclingTriggerer(player: IPlayer, thing: ICyclingTriggerer): void {
+            thing.FSP.startCycling(player);
+            player.canDismountBicycle = false;
+        }
+
         /* Physics
         */
 
@@ -3503,7 +3521,6 @@ module FullScreenPokemon {
             thing.FSP.MapScreener.playerDirection = direction;
             thing.shouldWalk = true;
         }
-
 
         /* Spawning
         */
