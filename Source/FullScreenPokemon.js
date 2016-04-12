@@ -1018,11 +1018,11 @@ var FullScreenPokemon;
          * Starts the Player cycling if the current Area allows it.
          *
          * @param thing   A Player to start cycling.
-         * @param area   The current Area.
+         * @param message   Whether to display a message box.
          * @returns Whether the properties were changed.
          */
-        FullScreenPokemon.prototype.startCycling = function (thing) {
-            if (thing.surfing) {
+        FullScreenPokemon.prototype.startCycling = function (thing, message) {
+            if (thing.surfing || thing.cycling) {
                 return false;
             }
             if (!this.AreaSpawner.getArea().allowCycling) {
@@ -1032,7 +1032,9 @@ var FullScreenPokemon;
             thing.speedOld = thing.speed;
             thing.speed = this.MathDecider.compute("speedCycling", thing);
             thing.FSP.addClass(thing, "cycling");
-            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            if (message) {
+                thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            }
             return true;
         };
         /**
@@ -1041,6 +1043,10 @@ var FullScreenPokemon;
          * @param thing   A Player to stop cycling.
          */
         FullScreenPokemon.prototype.stopCycling = function (thing) {
+            if (!thing.canDismountBicycle) {
+                thing.FSP.displayMessage(thing, "You can't get off here.");
+                return;
+            }
             thing.cycling = false;
             thing.speed = thing.speedOld;
             thing.FSP.removeClass(thing, "cycling");
@@ -1059,7 +1065,7 @@ var FullScreenPokemon;
                 return true;
             }
             else {
-                return thing.FSP.startCycling(thing);
+                return thing.FSP.startCycling(thing, true);
             }
         };
         /* General animations
@@ -2583,6 +2589,16 @@ var FullScreenPokemon;
                     }
                 }
             }
+        };
+        /**
+         * Activates a Detector to force the Player onto the bike and optionally to keep moving.
+         *
+         * @param player   The Player.
+         * @param thing   A Detector triggered by player.
+         */
+        FullScreenPokemon.prototype.activateCyclingTriggerer = function (player, thing) {
+            thing.FSP.startCycling(player);
+            player.canDismountBicycle = false;
         };
         /* Physics
         */
