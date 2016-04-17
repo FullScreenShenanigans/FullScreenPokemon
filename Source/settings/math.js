@@ -125,6 +125,17 @@ var FullScreenPokemon;
                 // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
                 return f > m;
             },
+            // @todo Add functionality.
+            "canCatchFish": function (constants, equations) {
+                return true;
+            },
+            // @todo Add functionality.
+            "whatFishToCatch": function (constants, equations, player) {
+                var schema = {
+                    "title": "PIDGEY".split("")
+                };
+                return player.FSP.createPokemon(schema);
+            },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
             "canEscapePokemon": function (constants, equations, pokemon, enemy, battleInfo) {
                 var a = pokemon.Speed, b = (enemy.Speed / 4) % 256, c = battleInfo.currentEscapeAttempts, f = (a * 32) / b + 30 * c;
@@ -17231,7 +17242,8 @@ var FullScreenPokemon;
                 },
                 "Good Rod": {
                     "effect": "Fish for medium-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing
                 },
                 "Helix Fossil": {
                     "effect": "Used to clone Omanyte at the Cinnabar Island Laboratory",
@@ -17255,7 +17267,8 @@ var FullScreenPokemon;
                 },
                 "Old Rod": {
                     "effect": "Fish for low-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing
                 },
                 "Pokeflute": {
                     "effect": "Awakens sleeping Pokemon",
@@ -17279,7 +17292,8 @@ var FullScreenPokemon;
                 },
                 "Super Rod": {
                     "effect": "Fish for high-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing
                 },
                 "Town Map": {
                     "effect": "Shows your position in the Pokemon World",

@@ -174,6 +174,18 @@ module FullScreenPokemon {
                 // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
                 return f > m;
             },
+            // @todo Add functionality.
+            "canCatchFish": function (constants: IMathConstants, equations: IMathEquations): boolean {
+                return true;
+            },
+            // @todo Add functionality.
+            "whatFishToCatch": function (constants: IMathConstants, equations: IMathEquations, player: IPlayer): IPokemon {
+                let schema: IWildPokemonSchema = {
+                    "title": "PIDGEY".split("")
+                };
+
+                return player.FSP.createPokemon(schema);
+            },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
             "canEscapePokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
                 var a: number = pokemon.Speed,
@@ -17390,7 +17402,8 @@ module FullScreenPokemon {
                 },
                 "Good Rod": {
                     "effect": "Fish for medium-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.prototype.startFishing
                 },
                 "Helix Fossil": {
                     "effect": "Used to clone Omanyte at the Cinnabar Island Laboratory",
@@ -17414,7 +17427,8 @@ module FullScreenPokemon {
                 },
                 "Old Rod": {
                     "effect": "Fish for low-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.prototype.startFishing
                 },
                 "Pokeflute": {
                     "effect": "Awakens sleeping Pokemon",
@@ -17438,7 +17452,8 @@ module FullScreenPokemon {
                 },
                 "Super Rod": {
                     "effect": "Fish for high-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.prototype.startFishing
                 },
                 "Town Map": {
                     "effect": "Shows your position in the Pokemon World",
