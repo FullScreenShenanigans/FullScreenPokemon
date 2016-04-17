@@ -1403,6 +1403,103 @@ module FullScreenPokemon {
             }
         }
 
+        /**
+         * Starts the Player fishing.
+         *
+         * @param player   A Player to start fishing.
+         * @todo Add a parameter and functionality to handle the different rods.
+         */
+        startFishing(player: IPlayer): void {
+            if (player.bordering[player.direction] === undefined ||
+                player.bordering[player.direction].title.indexOf("WaterEdge") === -1) {
+                player.FSP.cannotDoThat(player);
+                return;
+            }
+
+            player.FSP.MenuGrapher.createMenu("GeneralText", {
+                "deleteOnFinish": true,
+                "ignoreA": true,
+                "ignoreB": true
+            });
+            player.FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    "%%%%%%%PLAYER%%%%%%% used Old Rod!"
+                ]);
+            player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+
+            player.FSP.setWidth(player, 7, true, true);
+            player.FSP.addClass(player, "fishing");
+
+            player.FSP.TimeHandler.addEvent(
+                function (): void {
+                    if (!player.FSP.MathDecider.compute("canCatchFish", player)) {
+                        player.FSP.playerFailedCatchingFish(player);
+                        return;
+                    }
+
+                    let chosenPokemon: IPokemon = player.FSP.MathDecider.compute("whatFishToCatch", player);
+                    player.FSP.animateExclamation(player);
+                    player.FSP.playerCaughtFish(player, chosenPokemon);
+                },
+                180
+            );
+        }
+
+        /**
+         * Displays message and starts battle when player catches a fish.
+         *
+         * @param player   A Player who cannot use an item.
+         */
+        playerCaughtFish(player: IPlayer, chosenPokemon: IPokemon): void {
+            player.FSP.TimeHandler.addEvent(
+                function (): void {
+                    player.FSP.MenuGrapher.createMenu("GeneralText", {
+                        "deleteOnFinish": true
+                    });
+                    player.FSP.MenuGrapher.addMenuDialog(
+                        "GeneralText",
+                        [
+                            "Oh! \n It's a bite!"
+                        ],
+                        function (): void {
+                            player.FSP.startBattle({
+                                "opponent": {
+                                    "name": chosenPokemon.title,
+                                    "actors": [chosenPokemon],
+                                    "category": "Wild",
+                                    "sprite": chosenPokemon.title.join("") + "Front"
+                                }
+                            });
+                        });
+                    player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                    player.FSP.removeClass(player, "fishing");
+                    player.FSP.setWidth(player, 8, true, true);
+                },
+                140
+            );
+        }
+
+        /**
+         * Displays message when a Player does not catch a fish.
+         *
+         * @param player   A Player who cannot use an item.
+         */
+        playerFailedCatchingFish(player: IPlayer): void {
+            player.FSP.MenuGrapher.deleteActiveMenu();
+            player.FSP.displayMessage(player, "Ha u suck");
+            player.FSP.removeClass(player, "fishing");
+            player.FSP.setWidth(player, 8, true, true);
+        }
+
+        /**
+         * Displays message when a Player tries to use an item that cannot be used.
+         *
+         * @param player   A Player who cannot use an item.
+         */
+        cannotDoThat(player: IPlayer): void {
+            player.FSP.displayMessage(player, "OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
+        }
 
         /* General animations
         */
