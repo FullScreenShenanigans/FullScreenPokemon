@@ -20,7 +20,7 @@ var FullScreenPokemon;
             ".": "Period",
             ",": "Comma",
             "'": "Apostrophe",
-            "é": "eFancy"
+            "�": "eFancy"
         },
         "replacements": {
             "PLAYER": function (FSP) {
@@ -29,9 +29,9 @@ var FullScreenPokemon;
             "RIVAL": function (FSP) {
                 return FSP.ItemsHolder.getItem("nameRival");
             },
-            "POKE": "POKé".split(""),
-            "POKEMON": "POKéMON".split(""),
-            "POKEDEX": "POKéDEX".split(""),
+            "POKE": "POK�".split(""),
+            "POKEMON": "POK�MON".split(""),
+            "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": function (FSP) {
                 return FSP.makeDigit(FSP.getPokedexListingsOrdered(FSP)
                     .filter(function (listing) {

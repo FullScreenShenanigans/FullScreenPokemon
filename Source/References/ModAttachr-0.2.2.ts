@@ -25,6 +25,11 @@ declare module ModAttachr {
          * Whether the mod is currently enabled (by default, false).
          */
         enabled?: boolean;
+
+        /**
+         * An extra storage container for any mod-specific settings.
+         */
+        settings?: any;
     }
 
     /**
@@ -55,6 +60,16 @@ declare module ModAttachr {
      * Listing of events attached to a mod, keyed by trigger name.
      */
     export interface IModEvents {
+        /**
+         * Handler for enabling the mod.
+         */
+        onModEnable: IModEvent;
+
+        /**
+         * Handler for disabling the mod.
+         */
+        onModDisable: IModEvent;
+
         [i: string]: IModEvent;
     }
 
