@@ -2330,7 +2330,20 @@ declare module FullScreenPokemon {
     /**
      * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
      */
-    export interface IFullScreenPokemon {
+    export interface IFullScreenPokemon extends GameStartr.IGameStartr {
+        /**
+         * Overriden MapScreenr refers to the IMapScreenr defined in FullScreenPokemon.d.ts.
+         */
+        MapScreener: IMapScreenr;
 
+        /**
+         * Stored settings to be stored separately and kept within a GameStartr.
+         */
+        settings: IFullScreenPokemonStoredSettings;
+
+        /**
+         * The game's player, which (when defined) will always be a Player Thing.
+         */
+        player: IPlayer;
     }
 }
