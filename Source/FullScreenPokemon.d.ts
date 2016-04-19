@@ -1574,6 +1574,11 @@ declare module FullScreenPokemon {
         followingLoop?: TimeHandlr.ITimeEvent;
 
         /**
+         * The direction this is forced to walk in.
+         */
+        forceWalk?: Direction;
+
+        /**
          * An item to give after a dialog is first initiated.
          */
         gift?: string;
@@ -2087,7 +2092,7 @@ declare module FullScreenPokemon {
         /**
          * Whether the Player should always be moving.
          */
-        alwaysMoving?: boolean;
+        alwaysMoving?: Direction;
     }
 
     /**
