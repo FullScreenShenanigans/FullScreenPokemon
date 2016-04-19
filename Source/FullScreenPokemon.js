@@ -908,9 +908,14 @@ var FullScreenPokemon;
             var character;
             for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
+                /*
+                if (character.forceWalk !== undefined) {
+                    FSP.setSpeedAgainstGravity(<IPlayer> character);
+                }
+                */
                 FSP.shiftCharacter(character);
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
-                    character.onWalkingStart(character, character.direction);
+                    character.onWalkingStart(character, character.forceWalk === undefined ? character.direction : character.forceWalk);
                     character.shouldWalk = false;
                 }
                 if (character.grass) {
@@ -1540,6 +1545,9 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.animateCharacterStartWalking = function (thing, direction, onStop) {
             if (direction === void 0) { direction = Direction.Top; }
             var repeats = thing.FSP.MathDecider.compute("speedWalking", thing), distance = repeats * thing.speed;
+            if (thing.forceWalk !== undefined && thing.forceWalk !== thing.direction) {
+                direction = thing.direction;
+            }
             thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
@@ -1668,6 +1676,7 @@ var FullScreenPokemon;
          * @returns True, unless the next onStop is a Function to return the result of.
          */
         FullScreenPokemon.prototype.animatePlayerStopWalking = function (thing, onStop) {
+            thing.shouldWalk = thing.forceWalk !== undefined ? true : false;
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
                 return false;
             }
@@ -2599,6 +2608,9 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.activateCyclingTriggerer = function (player, thing) {
             thing.FSP.startCycling(player);
             player.canDismountBicycle = false;
+            if (thing.alwaysMoving) {
+                thing.FSP.forceMovement(player, thing);
+            }
         };
         /* Physics
         */
@@ -2717,6 +2729,25 @@ var FullScreenPokemon;
             thing.direction = direction;
             thing.FSP.MapScreener.playerDirection = direction;
             thing.shouldWalk = true;
+        };
+        /**
+         * Forces the Player to always be moving.
+         *
+         * @param player   An in-game Player.
+         */
+        FullScreenPokemon.prototype.forceMovement = function (player, thing) {
+            player.forceWalk = thing.alwaysMoving;
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.setSpeedAgainstGravity = function (player) {
+            if (player.forceWalk !== player.direction) {
+                player.speed = player.speedOld;
+            }
+            else if (player.speed === player.speedOld) {
+                player.speed = this.MathDecider.compute("speedCycling", player);
+            }
         };
         /* Spawning
         */

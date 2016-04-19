@@ -1222,10 +1222,17 @@ module FullScreenPokemon {
 
             for (let i: number = 0; i < characters.length; i += 1) {
                 character = characters[i];
+
+                /*
+                if (character.forceWalk !== undefined) {
+                    FSP.setSpeedAgainstGravity(<IPlayer> character);
+                }
+                */
+
                 FSP.shiftCharacter(character);
 
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
-                    character.onWalkingStart(character, character.direction);
+                    character.onWalkingStart(character, character.forceWalk === undefined ? character.direction : character.forceWalk);
                     character.shouldWalk = false;
                 }
 
@@ -2061,6 +2068,10 @@ module FullScreenPokemon {
             let repeats: number = thing.FSP.MathDecider.compute("speedWalking", thing),
                 distance: number = repeats * thing.speed;
 
+            if (thing.forceWalk !== undefined && thing.forceWalk !== thing.direction) {
+                direction = thing.direction;
+            }
+
             thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
@@ -2223,6 +2234,8 @@ module FullScreenPokemon {
          * @returns True, unless the next onStop is a Function to return the result of.
          */
         animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
+            thing.shouldWalk = thing.forceWalk !== undefined ? true : false;
+
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
                 return false;
             }
@@ -3374,6 +3387,10 @@ module FullScreenPokemon {
         activateCyclingTriggerer(player: IPlayer, thing: ICyclingTriggerer): void {
             thing.FSP.startCycling(player);
             player.canDismountBicycle = false;
+
+            if (thing.alwaysMoving) {
+                thing.FSP.forceMovement(player, thing);
+            }
         }
 
         /* Physics
@@ -3520,6 +3537,26 @@ module FullScreenPokemon {
             thing.direction = direction;
             thing.FSP.MapScreener.playerDirection = direction;
             thing.shouldWalk = true;
+        }
+
+        /**
+         * Forces the Player to always be moving.
+         * 
+         * @param player   An in-game Player.
+         */
+        forceMovement(player: IPlayer, thing: ICyclingTriggerer): void {
+            player.forceWalk = thing.alwaysMoving;
+        }
+
+        /**
+         * 
+         */
+        setSpeedAgainstGravity(player: IPlayer): void {
+            if (player.forceWalk !== player.direction) {
+                player.speed = player.speedOld;
+            } else if (player.speed === player.speedOld) {
+                player.speed = this.MathDecider.compute("speedCycling", player);
+            }
         }
 
         /* Spawning
