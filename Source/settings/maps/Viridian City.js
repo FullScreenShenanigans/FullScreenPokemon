@@ -179,8 +179,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
                 { "thing": "FenceWide", "x": 176, "y": 256, "height": 32 },
                 { "thing": "FenceWide", "x": 224, "y": 256, "height": 32 },
                 { "thing": "ThemePlayer", "x": 160, "y": 272, "width": 16, "theme": "Pewter City" },
-                { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 1", "area": "Land", "direction": 1, "offsetX": -240 },
-                { "thing": "CyclingTriggerer", "x": 160, "y": 80, "width": 48, "height": 176, "alwaysMoving": 2}
+                { "thing": "AreaSpawner", "y": 288, "width": 320, "map": "Route 1", "area": "Land", "direction": 1, "offsetX": -240 }
             ]
         },
         "Nicknamer House": {
