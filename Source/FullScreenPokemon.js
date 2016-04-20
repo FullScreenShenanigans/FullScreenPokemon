@@ -908,11 +908,9 @@ var FullScreenPokemon;
             var character;
             for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
-                /*
                 if (character.forceWalk !== undefined) {
-                    FSP.setSpeedAgainstGravity(<IPlayer> character);
+                    FSP.setSpeedAgainstGravity(character);
                 }
-                */
                 FSP.shiftCharacter(character);
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
                     character.onWalkingStart(character, character.forceWalk === undefined ? character.direction : character.forceWalk);
@@ -1676,7 +1674,7 @@ var FullScreenPokemon;
          * @returns True, unless the next onStop is a Function to return the result of.
          */
         FullScreenPokemon.prototype.animatePlayerStopWalking = function (thing, onStop) {
-            thing.shouldWalk = thing.forceWalk !== undefined ? true : false;
+            // thing.shouldWalk = thing.forceWalk !== undefined;
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
                 return false;
             }
@@ -1693,6 +1691,10 @@ var FullScreenPokemon;
                     thing.FSP.setPlayerDirection(thing, thing.nextDirection);
                 }
                 delete thing.nextDirection;
+            }
+            else if (thing.forceWalk) {
+                thing.FSP.setPlayerDirection(thing, thing.forceWalk);
+                thing.shouldWalk = true;
             }
             else {
                 thing.canKeyWalking = true;
@@ -2607,7 +2609,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.activateCyclingTriggerer = function (player, thing) {
             thing.FSP.startCycling(player);
-            player.canDismountBicycle = false;
+            player.canDismountBicycle = !player.canDismountBicycle || true;
             if (thing.alwaysMoving) {
                 thing.FSP.forceMovement(player, thing);
             }
@@ -2736,7 +2738,13 @@ var FullScreenPokemon;
          * @param player   An in-game Player.
          */
         FullScreenPokemon.prototype.forceMovement = function (player, thing) {
-            player.forceWalk = thing.alwaysMoving;
+            if (player.forceWalk === undefined) {
+                player.forceWalk = thing.alwaysMoving;
+            }
+            else {
+                player.forceWalk = undefined;
+                player.canKeyWalking = true;
+            }
         };
         /**
          *
@@ -2745,7 +2753,7 @@ var FullScreenPokemon;
             if (player.forceWalk !== player.direction) {
                 player.speed = player.speedOld;
             }
-            else if (player.speed === player.speedOld) {
+            else if (player.forceWalk === player.direction && player.speed === player.speedOld) {
                 player.speed = this.MathDecider.compute("speedCycling", player);
             }
         };
