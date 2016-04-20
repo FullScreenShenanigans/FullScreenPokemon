@@ -1224,7 +1224,7 @@ module FullScreenPokemon {
                 character = characters[i];
 
                 if (character.forceWalk !== undefined) {
-                    FSP.setSpeedAgainstGravity(<IPlayer> character);
+                    FSP.setSpeedAgainstForcedWalking(<IPlayer> character);
                 }
 
                 FSP.shiftCharacter(character);
@@ -3387,7 +3387,7 @@ module FullScreenPokemon {
          */
         activateCyclingTriggerer(player: IPlayer, thing: ICyclingTriggerer): void {
             thing.FSP.startCycling(player);
-            player.canDismountBicycle = !player.canDismountBicycle || true;
+            player.canDismountBicycle = player.canDismountBicycle === undefined ? false : !player.canDismountBicycle;
 
             if (thing.alwaysMoving) {
                 thing.FSP.forceMovement(player, thing);
@@ -3559,8 +3559,9 @@ module FullScreenPokemon {
          * Halves the player speed if they're moving against the forced direction.
          * 
          * @param player   An in-game Player.
+         * @remarks Seeting speed to speedOld may cause conflicts.
          */
-        setSpeedAgainstGravity(player: IPlayer): void {
+        setSpeedAgainstForcedWalking(player: IPlayer): void {
             if (player.forceWalk !== player.direction) {
                 player.speed = player.speedOld;
             } else if (player.forceWalk === player.direction && player.speed === player.speedOld) {

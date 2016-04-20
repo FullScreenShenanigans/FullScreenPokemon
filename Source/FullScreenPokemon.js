@@ -909,7 +909,7 @@ var FullScreenPokemon;
             for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
                 if (character.forceWalk !== undefined) {
-                    FSP.setSpeedAgainstGravity(character);
+                    FSP.setSpeedAgainstForcedWalking(character);
                 }
                 FSP.shiftCharacter(character);
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
@@ -2609,7 +2609,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.activateCyclingTriggerer = function (player, thing) {
             thing.FSP.startCycling(player);
-            player.canDismountBicycle = !player.canDismountBicycle || true;
+            player.canDismountBicycle = player.canDismountBicycle === undefined ? false : !player.canDismountBicycle;
             if (thing.alwaysMoving) {
                 thing.FSP.forceMovement(player, thing);
             }
@@ -2751,8 +2751,9 @@ var FullScreenPokemon;
          * Halves the player speed if they're moving against the forced direction.
          *
          * @param player   An in-game Player.
+         * @remarks Seeting speed to speedOld may cause conflicts.
          */
-        FullScreenPokemon.prototype.setSpeedAgainstGravity = function (player) {
+        FullScreenPokemon.prototype.setSpeedAgainstForcedWalking = function (player) {
             if (player.forceWalk !== player.direction) {
                 player.speed = player.speedOld;
             }
