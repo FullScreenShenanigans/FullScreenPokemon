@@ -2605,7 +2605,7 @@ var FullScreenPokemon;
          * Activates a Detector to force the Player onto the bike and optionally to keep moving.
          *
          * @param player   The Player.
-         * @param thing   A Detector triggered by player.
+         * @param thing   A Detector triggered by the player.
          */
         FullScreenPokemon.prototype.activateCyclingTriggerer = function (player, thing) {
             thing.FSP.startCycling(player);
@@ -2736,6 +2736,7 @@ var FullScreenPokemon;
          * Forces the Player to always be moving.
          *
          * @param player   An in-game Player.
+         * @param thing   A Detector triggered by the player.
          */
         FullScreenPokemon.prototype.forceMovement = function (player, thing) {
             if (player.forceWalk === undefined) {
@@ -2747,7 +2748,9 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Halves the player speed if they're moving against the forced direction.
          *
+         * @param player   An in-game Player.
          */
         FullScreenPokemon.prototype.setSpeedAgainstGravity = function (player) {
             if (player.forceWalk !== player.direction) {
