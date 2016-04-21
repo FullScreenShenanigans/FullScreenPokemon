@@ -1574,9 +1574,9 @@ declare module FullScreenPokemon {
         followingLoop?: TimeHandlr.ITimeEvent;
 
         /**
-         * The direction, if any, this character is forced to walk
+         * The direction, if any, this character is forced to move.
          */
-        forceWalk?: Direction;
+        forceMovement?: Direction;
 
         /**
          * An item to give after a dialog is first initiated.
@@ -2090,7 +2090,7 @@ declare module FullScreenPokemon {
      */
     export interface ICyclingTriggerer extends IDetector {
         /**
-         * Whether the Player should always be moving.
+         * The direction, if any, the Player is forced to move in.
          */
         alwaysMoving?: Direction;
     }

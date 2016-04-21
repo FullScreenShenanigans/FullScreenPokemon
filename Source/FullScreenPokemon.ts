@@ -1223,14 +1223,15 @@ module FullScreenPokemon {
             for (let i: number = 0; i < characters.length; i += 1) {
                 character = characters[i];
 
-                if (character.forceWalk !== undefined) {
+                if (character.forceMovement !== undefined) {
                     FSP.setSpeedAgainstForcedWalking(<IPlayer> character);
                 }
 
                 FSP.shiftCharacter(character);
 
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
-                    character.onWalkingStart(character, character.forceWalk === undefined ? character.direction : character.forceWalk);
+                    character.onWalkingStart(character, character.forceMovement === undefined ?
+                        character.direction : character.forceMovement);
                     character.shouldWalk = false;
                 }
 
@@ -2066,7 +2067,7 @@ module FullScreenPokemon {
             let repeats: number = thing.FSP.MathDecider.compute("speedWalking", thing),
                 distance: number = repeats * thing.speed;
 
-            if (thing.forceWalk !== undefined && thing.forceWalk !== thing.direction) {
+            if (thing.forceMovement !== undefined && thing.forceMovement !== thing.direction) {
                 direction = thing.direction;
             }
 
@@ -2253,8 +2254,8 @@ module FullScreenPokemon {
                 }
 
                 delete thing.nextDirection;
-            } else if (thing.forceWalk) {
-                thing.FSP.setPlayerDirection(thing, thing.forceWalk);
+            } else if (thing.forceMovement) {
+                thing.FSP.setPlayerDirection(thing, thing.forceMovement);
                 thing.shouldWalk = true;
             } else {
                 thing.canKeyWalking = true;
@@ -3545,10 +3546,10 @@ module FullScreenPokemon {
          * @param thing   A Detector triggered by the player.
          */
         forceMovement(player: IPlayer, thing: ICyclingTriggerer): void {
-            if (player.forceWalk === undefined) {
-                player.forceWalk = thing.alwaysMoving;
+            if (player.forceMovement === undefined) {
+                player.forceMovement = thing.alwaysMoving;
             } else {
-                player.forceWalk = undefined;
+                player.forceMovement = undefined;
                 player.canKeyWalking = true;
             }
         }
@@ -3560,9 +3561,9 @@ module FullScreenPokemon {
          * @remarks Seeting speed to speedOld may cause conflicts.
          */
         setSpeedAgainstForcedWalking(player: IPlayer): void {
-            if (player.forceWalk !== player.direction) {
+            if (player.forceMovement !== player.direction) {
                 player.speed = player.speedOld;
-            } else if (player.forceWalk === player.direction && player.speed === player.speedOld) {
+            } else if (player.forceMovement === player.direction && player.speed === player.speedOld) {
                 player.speed = this.MathDecider.compute("speedCycling", player);
             }
         }

@@ -908,12 +908,13 @@ var FullScreenPokemon;
             var character;
             for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
-                if (character.forceWalk !== undefined) {
+                if (character.forceMovement !== undefined) {
                     FSP.setSpeedAgainstForcedWalking(character);
                 }
                 FSP.shiftCharacter(character);
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
-                    character.onWalkingStart(character, character.forceWalk === undefined ? character.direction : character.forceWalk);
+                    character.onWalkingStart(character, character.forceMovement === undefined ?
+                        character.direction : character.forceMovement);
                     character.shouldWalk = false;
                 }
                 if (character.grass) {
@@ -1543,7 +1544,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.animateCharacterStartWalking = function (thing, direction, onStop) {
             if (direction === void 0) { direction = Direction.Top; }
             var repeats = thing.FSP.MathDecider.compute("speedWalking", thing), distance = repeats * thing.speed;
-            if (thing.forceWalk !== undefined && thing.forceWalk !== thing.direction) {
+            if (thing.forceMovement !== undefined && thing.forceMovement !== thing.direction) {
                 direction = thing.direction;
             }
             thing.walking = true;
@@ -1691,8 +1692,8 @@ var FullScreenPokemon;
                 }
                 delete thing.nextDirection;
             }
-            else if (thing.forceWalk) {
-                thing.FSP.setPlayerDirection(thing, thing.forceWalk);
+            else if (thing.forceMovement) {
+                thing.FSP.setPlayerDirection(thing, thing.forceMovement);
                 thing.shouldWalk = true;
             }
             else {
@@ -2738,11 +2739,11 @@ var FullScreenPokemon;
          * @param thing   A Detector triggered by the player.
          */
         FullScreenPokemon.prototype.forceMovement = function (player, thing) {
-            if (player.forceWalk === undefined) {
-                player.forceWalk = thing.alwaysMoving;
+            if (player.forceMovement === undefined) {
+                player.forceMovement = thing.alwaysMoving;
             }
             else {
-                player.forceWalk = undefined;
+                player.forceMovement = undefined;
                 player.canKeyWalking = true;
             }
         };
@@ -2753,10 +2754,10 @@ var FullScreenPokemon;
          * @remarks Seeting speed to speedOld may cause conflicts.
          */
         FullScreenPokemon.prototype.setSpeedAgainstForcedWalking = function (player) {
-            if (player.forceWalk !== player.direction) {
+            if (player.forceMovement !== player.direction) {
                 player.speed = player.speedOld;
             }
-            else if (player.forceWalk === player.direction && player.speed === player.speedOld) {
+            else if (player.forceMovement === player.direction && player.speed === player.speedOld) {
                 player.speed = this.MathDecider.compute("speedCycling", player);
             }
         };
