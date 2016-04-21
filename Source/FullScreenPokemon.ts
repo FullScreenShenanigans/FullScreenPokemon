@@ -1222,10 +1222,16 @@ module FullScreenPokemon {
 
             for (let i: number = 0; i < characters.length; i += 1) {
                 character = characters[i];
+
+                if (character.forceMovement !== undefined) {
+                    FSP.setSpeedAgainstForcedWalking(<IPlayer> character);
+                }
+
                 FSP.shiftCharacter(character);
 
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
-                    character.onWalkingStart(character, character.direction);
+                    character.onWalkingStart(character, character.forceMovement === undefined ?
+                        character.direction : character.forceMovement);
                     character.shouldWalk = false;
                 }
 
@@ -2061,6 +2067,10 @@ module FullScreenPokemon {
             let repeats: number = thing.FSP.MathDecider.compute("speedWalking", thing),
                 distance: number = repeats * thing.speed;
 
+            if (thing.forceMovement !== undefined && thing.forceMovement !== thing.direction) {
+                direction = thing.direction;
+            }
+
             thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
@@ -2244,6 +2254,9 @@ module FullScreenPokemon {
                 }
 
                 delete thing.nextDirection;
+            } else if (thing.forceMovement) {
+                thing.FSP.setPlayerDirection(thing, thing.forceMovement);
+                thing.shouldWalk = true;
             } else {
                 thing.canKeyWalking = true;
             }
@@ -3369,11 +3382,15 @@ module FullScreenPokemon {
          * Activates a Detector to force the Player onto the bike and optionally to keep moving.
          * 
          * @param player   The Player.
-         * @param thing   A Detector triggered by player.
+         * @param thing   A Detector triggered by the player.
          */
         activateCyclingTriggerer(player: IPlayer, thing: ICyclingTriggerer): void {
             thing.FSP.startCycling(player);
-            player.canDismountBicycle = false;
+            player.canDismountBicycle = player.canDismountBicycle === undefined ? false : !player.canDismountBicycle;
+
+            if (thing.alwaysMoving) {
+                thing.FSP.forceMovement(player, thing);
+            }
         }
 
         /* Physics
@@ -3520,6 +3537,35 @@ module FullScreenPokemon {
             thing.direction = direction;
             thing.FSP.MapScreener.playerDirection = direction;
             thing.shouldWalk = true;
+        }
+
+        /**
+         * Forces the Player to always be moving.
+         * 
+         * @param player   An in-game Player.
+         * @param thing   A Detector triggered by the player.
+         */
+        forceMovement(player: IPlayer, thing: ICyclingTriggerer): void {
+            if (player.forceMovement === undefined) {
+                player.forceMovement = thing.alwaysMoving;
+            } else {
+                player.forceMovement = undefined;
+                player.canKeyWalking = true;
+            }
+        }
+
+        /**
+         * Halves the player speed if they're moving against the forced direction.
+         * 
+         * @param player   An in-game Player.
+         * @remarks Seeting speed to speedOld may cause conflicts.
+         */
+        setSpeedAgainstForcedWalking(player: IPlayer): void {
+            if (player.forceMovement !== player.direction) {
+                player.speed = player.speedOld;
+            } else if (player.forceMovement === player.direction && player.speed === player.speedOld) {
+                player.speed = this.MathDecider.compute("speedCycling", player);
+            }
         }
 
         /* Spawning
