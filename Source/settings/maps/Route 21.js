@@ -11,6 +11,41 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Route 21"] = {
             "allowCycling": true,
             "width": 160,
             "height": 720,
+            "wildPokemon": {
+                "fishing": {
+                    "old": [{
+                        "title": "MAGIKARP".split(""),
+                        "levels": [5],
+                        "rate": 1
+                    }],
+                    "good": [{
+                        "title": "POLIWAG".split(""),
+                        "levels": [10],
+                        "rate": .5
+                    }, {
+                        "title": "GOLDEEN".split(""),
+                        "levels": [10],
+                        "rate": .5
+                    }],
+                    "super": [{
+                        "title": "SHELLDER".split(""),
+                        "levels": [15],
+                        "rate": .25
+                    }, {
+                        "title": "HORSEA".split(""),
+                        "levels": [15],
+                        "rate": .25
+                    }, {
+                        "title": "GOLDEEN".split(""),
+                        "levels": [15],
+                        "rate": .25
+                    }, {
+                        "title": "STARYU".split(""),
+                        "levels": [15],
+                        "rate": .25
+                    }]
+                }
+            },
             "creation": [
                 { "thing": "AreaSpawner", "map": "Pallet Town", "area": "Land", "direction": 0 },
                 { "thing": "DirtMedium", "width": 32, "height": 112 },

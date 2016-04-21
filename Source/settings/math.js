@@ -126,15 +126,8 @@ var FullScreenPokemon;
                 return f > m;
             },
             // @todo Add functionality.
-            "canCatchFish": function (constants, equations) {
+            "canLandFish": function (constants, equations) {
                 return true;
-            },
-            // @todo Add functionality.
-            "whatFishToCatch": function (constants, equations, player) {
-                var schema = {
-                    "title": "PIDGEY".split("")
-                };
-                return player.FSP.createPokemon(schema);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
             "canEscapePokemon": function (constants, equations, pokemon, enemy, battleInfo) {
@@ -17243,7 +17236,9 @@ var FullScreenPokemon;
                 "Good Rod": {
                     "effect": "Fish for medium-levelled water Pokemon",
                     "category": "Key",
-                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing,
+                    "title": "Good Rod",
+                    "type": "good"
                 },
                 "Helix Fossil": {
                     "effect": "Used to clone Omanyte at the Cinnabar Island Laboratory",
@@ -17268,7 +17263,9 @@ var FullScreenPokemon;
                 "Old Rod": {
                     "effect": "Fish for low-levelled water Pokemon",
                     "category": "Key",
-                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing,
+                    "title": "Old Rod",
+                    "type": "old"
                 },
                 "Pokeflute": {
                     "effect": "Awakens sleeping Pokemon",
@@ -17293,7 +17290,9 @@ var FullScreenPokemon;
                 "Super Rod": {
                     "effect": "Fish for high-levelled water Pokemon",
                     "category": "Key",
-                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing,
+                    "title": "Super Rod",
+                    "type": "super"
                 },
                 "Town Map": {
                     "effect": "Shows your position in the Pokemon World",
