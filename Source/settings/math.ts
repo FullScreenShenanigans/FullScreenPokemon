@@ -175,16 +175,8 @@ module FullScreenPokemon {
                 return f > m;
             },
             // @todo Add functionality.
-            "canCatchFish": function (constants: IMathConstants, equations: IMathEquations): boolean {
+            "canLandFish": function (constants: IMathConstants, equations: IMathEquations): boolean {
                 return true;
-            },
-            // @todo Add functionality.
-            "whatFishToCatch": function (constants: IMathConstants, equations: IMathEquations, player: IPlayer): IPokemon {
-                let schema: IWildPokemonSchema = {
-                    "title": "PIDGEY".split("")
-                };
-
-                return player.FSP.createPokemon(schema);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
             "canEscapePokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
@@ -17400,10 +17392,12 @@ module FullScreenPokemon {
                     "effect": "Return to Safari Zone Warden and receive HM04",
                     "category": "Key"
                 },
-                "Good Rod": {
+                "Good Rod": <IRod> {
                     "effect": "Fish for medium-levelled water Pokemon",
                     "category": "Key",
-                    "bagActivate": FullScreenPokemon.prototype.startFishing
+                    "bagActivate": FullScreenPokemon.prototype.startFishing,
+                    "title": "Good Rod",
+                    "type": "good"
                 },
                 "Helix Fossil": {
                     "effect": "Used to clone Omanyte at the Cinnabar Island Laboratory",
@@ -17425,10 +17419,12 @@ module FullScreenPokemon {
                     "effect": "Used to clone Aerodactyl at the Cinnabar Island Laboratoy",
                     "category": "Key"
                 },
-                "Old Rod": {
+                "Old Rod": <IRod>{
                     "effect": "Fish for low-levelled water Pokemon",
                     "category": "Key",
-                    "bagActivate": FullScreenPokemon.prototype.startFishing
+                    "bagActivate": FullScreenPokemon.prototype.startFishing,
+                    "title": "Old Rod",
+                    "type": "old"
                 },
                 "Pokeflute": {
                     "effect": "Awakens sleeping Pokemon",
@@ -17450,10 +17446,12 @@ module FullScreenPokemon {
                     "effect": "Allows Ghosts to be detected in the Pokemon Tower, Lavendar Town",
                     "category": "Key"
                 },
-                "Super Rod": {
+                "Super Rod": <IRod>{
                     "effect": "Fish for high-levelled water Pokemon",
                     "category": "Key",
-                    "bagActivate": FullScreenPokemon.prototype.startFishing
+                    "bagActivate": FullScreenPokemon.prototype.startFishing,
+                    "title": "Super Rod",
+                    "type": "super"
                 },
                 "Town Map": {
                     "effect": "Shows your position in the Pokemon World",

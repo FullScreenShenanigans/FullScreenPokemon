@@ -41,6 +41,33 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Viridian City"] = {
             "allowCycling": true,
             "width": 320,
             "height": 288,
+            "wildPokemon": {
+                "fishing": {
+                    "old": [{
+                        "title": "MAGIKARP".split(""),
+                        "levels": [5],
+                        "rate": 1
+                    }],
+                    "good": [{
+                        "title": "POLIWAG".split(""),
+                        "levels": [10],
+                        "rate": .5
+                    }, {
+                        "title": "GOLDEEN".split(""),
+                        "levels": [10],
+                        "rate": .5
+                    }],
+                    "super": [{
+                        "title": "POLIWAG".split(""),
+                        "levels": [15],
+                        "rate": .5
+                    }, {
+                        "title": "TENTACOOL".split(""),
+                        "levels": [15],
+                        "rate": .5
+                    }]
+                }
+            },
             "creation": [
                 { "thing": "AreaSpawner", "width": 320, "map": "Route 2", "area": "Land", "direction": 0, "offsetX": 48 },
                 { "thing": "AreaSpawner", "height": 288, "map": "Route 22", "area": "Land", "direction": 3, "offsetY": 64 },

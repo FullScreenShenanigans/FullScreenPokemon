@@ -1021,7 +1021,7 @@ module FullScreenPokemon {
 
             let itemSchema: IItemSchema = thing.FSP.MathDecider.getConstant("items")[selectItem];
 
-            if (!itemSchema.bagActivate(thing)) {
+            if (!itemSchema.bagActivate(thing, itemSchema)) {
                 thing.FSP.displayMessage(thing, itemSchema.error);
             }
 
@@ -1407,14 +1407,16 @@ module FullScreenPokemon {
          * Starts the Player fishing.
          *
          * @param player   A Player to start fishing.
-         * @todo Add a parameter and functionality to handle the different rods.
+         * @param rod   The rod that will be used to fish.
          */
-        startFishing(player: IPlayer): void {
+        startFishing(player: IPlayer, item: IItemSchema): void {
             if (player.bordering[player.direction] === undefined ||
                 player.bordering[player.direction].title.indexOf("WaterEdge") === -1) {
                 player.FSP.cannotDoThat(player);
                 return;
             }
+
+            let rod: IRod = <IRod>item;
 
             player.FSP.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": true,
@@ -1424,7 +1426,7 @@ module FullScreenPokemon {
             player.FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "%%%%%%%PLAYER%%%%%%% used Old Rod!"
+                    "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!"
                 ]);
             player.FSP.MenuGrapher.setActiveMenu("GeneralText");
 
@@ -1433,25 +1435,31 @@ module FullScreenPokemon {
 
             player.FSP.TimeHandler.addEvent(
                 function (): void {
-                    if (!player.FSP.MathDecider.compute("canCatchFish", player)) {
-                        player.FSP.playerFailedCatchingFish(player);
+                    if (!player.FSP.MathDecider.compute("canLandFish", player)) {
+                        player.FSP.playerFailedLandingFish(player);
                         return;
                     }
 
-                    let chosenPokemon: IPokemon = player.FSP.MathDecider.compute("whatFishToCatch", player);
                     player.FSP.animateExclamation(player);
-                    player.FSP.playerCaughtFish(player, chosenPokemon);
+                    player.FSP.playerLandedFish(player, rod);
                 },
                 180
             );
         }
 
         /**
-         * Displays message and starts battle when player catches a fish.
+         * Displays message and starts battle when player lands a fish.
          *
-         * @param player   A Player who cannot use an item.
+         * @param player   A Player who landed the fish.
+         * @param rod   The rod that will be used to fish.
          */
-        playerCaughtFish(player: IPlayer, chosenPokemon: IPokemon): void {
+        playerLandedFish(player: IPlayer, rod: IRod): void {
+            let currentMap: IMap = <IMap>player.FSP.AreaSpawner.getMap(player.mapName),
+                currentArea: IArea = <IArea>currentMap.areas[player.bordering[player.direction].areaName],
+                options: IWildPokemonSchema[] = currentArea.wildPokemon.fishing[rod.type],
+                chosen: IWildPokemonSchema = player.FSP.chooseRandomWildPokemon(player.FSP, options),
+                chosenPokemon: IPokemon = player.FSP.createPokemon(chosen);
+
             player.FSP.TimeHandler.addEvent(
                 function (): void {
                     player.FSP.MenuGrapher.createMenu("GeneralText", {
@@ -1481,11 +1489,11 @@ module FullScreenPokemon {
         }
 
         /**
-         * Displays message when a Player does not catch a fish.
+         * Displays message when a Player does not land a fish.
          *
-         * @param player   A Player who cannot use an item.
+         * @param player   A Player who does not land a fish.
          */
-        playerFailedCatchingFish(player: IPlayer): void {
+        playerFailedLandingFish(player: IPlayer): void {
             player.FSP.MenuGrapher.deleteActiveMenu();
             player.FSP.displayMessage(player, "Ha u suck");
             player.FSP.removeClass(player, "fishing");
