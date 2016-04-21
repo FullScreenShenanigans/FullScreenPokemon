@@ -2232,8 +2232,6 @@ module FullScreenPokemon {
          * @returns True, unless the next onStop is a Function to return the result of.
          */
         animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
-            // thing.shouldWalk = thing.forceWalk !== undefined;
-
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
                 return false;
             }

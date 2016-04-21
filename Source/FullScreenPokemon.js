@@ -1674,7 +1674,6 @@ var FullScreenPokemon;
          * @returns True, unless the next onStop is a Function to return the result of.
          */
         FullScreenPokemon.prototype.animatePlayerStopWalking = function (thing, onStop) {
-            // thing.shouldWalk = thing.forceWalk !== undefined;
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
                 return false;
             }
