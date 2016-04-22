@@ -3340,9 +3340,12 @@ module FullScreenPokemon {
          * 
          * @param player   The Player.
          * @param thing   The Solid to be affected.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          */
         activateHMCharacter(player: IPlayer, thing: IHMCharacter): void {
+            if (thing.requiredBadge && !player.FSP.ItemsHolder.getItem("badges")[thing.requiredBadge]) {
+                return;
+            }
+
             let partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty"),
                 moves: BattleMovr.IMove[];
 
@@ -3964,11 +3967,11 @@ module FullScreenPokemon {
         openPokemonMenuContext(settings: any): void {
             let moves: BattleMovr.IMove[] = settings.pokemon.moves,
                 options: any[] = [],
-                move: IMoveSchema;
+                move: IHMMoveSchema;
 
             for (let i: number = 0; i < moves.length; i += 1) {
-                move = this.MathDecider.getConstant("moves")[moves[i].title];
-                if (move.partyActivate) {
+                move = <IHMMoveSchema>this.MathDecider.getConstant("moves")[moves[i].title];
+                if (move.partyActivate && move.requiredBadge && this.ItemsHolder.getItem("badges")[move.requiredBadge]) {
                     options.push({
                         "text": moves[i].title.toUpperCase(),
                         "callback": (): void => {
@@ -4966,11 +4969,10 @@ module FullScreenPokemon {
          * @param player   The Player.
          * @param pokemon   The Pokemon using the move.
          * @param move   The move being used.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add context for what happens if player is not bordering the correct HMCharacter.
          * @todo Refactor to give borderedThing a .hmActivate property.
          */
-        partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IMoveSchema): void {
+        partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IHMMoveSchema): void {
             let borderedThing: IThing = player.bordering[player.direction];
 
             if (borderedThing && borderedThing.title.indexOf(move.characterName) !== -1) {
@@ -4983,7 +4985,6 @@ module FullScreenPokemon {
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using Cut.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add an animation for what happens when the CuttableTree is cut.
          */
         partyActivateCut(player: IPlayer, pokemon: IPokemon): void {
@@ -4997,7 +4998,6 @@ module FullScreenPokemon {
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using Strength.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Verify the exact speed, sound, and distance.
          */
         partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {
