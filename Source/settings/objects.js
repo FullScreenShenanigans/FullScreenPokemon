@@ -917,12 +917,14 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         },
         "CuttableTree": {
             "moveName": "Cut",
-            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut,
+            "requiredBadge": "Cascade"
         },
         "StrengthBoulder": {
             "moveName": "Strength",
             "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateStrength,
-            "speed": FullScreenPokemon.FullScreenPokemon.unitsize
+            "speed": FullScreenPokemon.FullScreenPokemon.unitsize,
+            "requiredBadge": "Rainbow"
         },
         "HouseBase": {
             "width": 32,
@@ -1055,7 +1057,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "collide": FullScreenPokemon.FullScreenPokemon.prototype.collideWaterEdge,
             "activate": FullScreenPokemon.FullScreenPokemon.prototype.activateHMCharacter,
             "moveName": "Surf",
-            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf
+            "moveCallback": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf,
+            "requiredBadge": "Soul"
         },
         "WaterEdgeTop": {
             "exitDirection": 0

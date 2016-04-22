@@ -2570,9 +2570,11 @@ var FullScreenPokemon;
          *
          * @param player   The Player.
          * @param thing   The Solid to be affected.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          */
         FullScreenPokemon.prototype.activateHMCharacter = function (player, thing) {
+            if (thing.requiredBadge && !player.FSP.ItemsHolder.getItem("badges")[thing.requiredBadge]) {
+                return;
+            }
             var partyPokemon = player.FSP.ItemsHolder.getItem("PokemonInParty"), moves;
             for (var i = 0; i < partyPokemon.length; i += 1) {
                 moves = partyPokemon[i].moves;
@@ -3065,7 +3067,7 @@ var FullScreenPokemon;
             var moves = settings.pokemon.moves, options = [], move;
             for (var i = 0; i < moves.length; i += 1) {
                 move = this.MathDecider.getConstant("moves")[moves[i].title];
-                if (move.partyActivate) {
+                if (move.partyActivate && move.requiredBadge && this.ItemsHolder.getItem("badges")[move.requiredBadge]) {
                     options.push({
                         "text": moves[i].title.toUpperCase(),
                         "callback": function () {
@@ -3849,7 +3851,6 @@ var FullScreenPokemon;
          * @param player   The Player.
          * @param pokemon   The Pokemon using the move.
          * @param move   The move being used.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add context for what happens if player is not bordering the correct HMCharacter.
          * @todo Refactor to give borderedThing a .hmActivate property.
          */
@@ -3864,7 +3865,6 @@ var FullScreenPokemon;
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using Cut.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add an animation for what happens when the CuttableTree is cut.
          */
         FullScreenPokemon.prototype.partyActivateCut = function (player, pokemon) {
@@ -3877,7 +3877,6 @@ var FullScreenPokemon;
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using Strength.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Verify the exact speed, sound, and distance.
          */
         FullScreenPokemon.prototype.partyActivateStrength = function (player, pokemon) {

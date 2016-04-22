@@ -1052,7 +1052,12 @@ declare module FullScreenPokemon {
          * Which status to give, such as "Sleep", if applicable.
          */
         status?: string;
+    }
 
+    /**
+     * An HM move or move that interacts with the environment.
+     */
+    export interface IHMMoveSchema extends IMoveSchema {
         /**
          * Activates a Function to perform an HM move outside of battle.
          */
@@ -1062,6 +1067,11 @@ declare module FullScreenPokemon {
          * The HMCharacter that the move affects.
          */
         characterName?: string;
+
+        /**
+         * The badge needed to use the HM move.
+         */
+        requiredBadge?: string;
     }
 
     /**
@@ -1931,6 +1941,11 @@ declare module FullScreenPokemon {
          * The partyActivate Function used to interact with this HMCharacter.
          */
         moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
+
+        /**
+         * The badge needed to activate this HMCharacter.
+         */
+        requiredBadge: string;
     }
 
     /**
