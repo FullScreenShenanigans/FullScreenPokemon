@@ -908,9 +908,13 @@ var FullScreenPokemon;
             var character;
             for (var i = 0; i < characters.length; i += 1) {
                 character = characters[i];
+                if (character.forceMovement !== undefined) {
+                    FSP.setSpeedAgainstForcedWalking(character);
+                }
                 FSP.shiftCharacter(character);
                 if (character.shouldWalk && !FSP.MenuGrapher.getActiveMenu()) {
-                    character.onWalkingStart(character, character.direction);
+                    character.onWalkingStart(character, character.forceMovement === undefined ?
+                        character.direction : character.forceMovement);
                     character.shouldWalk = false;
                 }
                 if (character.grass) {
@@ -1018,11 +1022,11 @@ var FullScreenPokemon;
          * Starts the Player cycling if the current Area allows it.
          *
          * @param thing   A Player to start cycling.
-         * @param area   The current Area.
+         * @param message   Whether to display a message box.
          * @returns Whether the properties were changed.
          */
-        FullScreenPokemon.prototype.startCycling = function (thing) {
-            if (thing.surfing) {
+        FullScreenPokemon.prototype.startCycling = function (thing, message) {
+            if (thing.surfing || thing.cycling) {
                 return false;
             }
             if (!this.AreaSpawner.getArea().allowCycling) {
@@ -1032,7 +1036,9 @@ var FullScreenPokemon;
             thing.speedOld = thing.speed;
             thing.speed = this.MathDecider.compute("speedCycling", thing);
             thing.FSP.addClass(thing, "cycling");
-            thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            if (message) {
+                thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+            }
             return true;
         };
         /**
@@ -1041,6 +1047,10 @@ var FullScreenPokemon;
          * @param thing   A Player to stop cycling.
          */
         FullScreenPokemon.prototype.stopCycling = function (thing) {
+            if (!thing.canDismountBicycle) {
+                thing.FSP.displayMessage(thing, "You can't get off here.");
+                return;
+            }
             thing.cycling = false;
             thing.speed = thing.speedOld;
             thing.FSP.removeClass(thing, "cycling");
@@ -1059,7 +1069,7 @@ var FullScreenPokemon;
                 return true;
             }
             else {
-                return thing.FSP.startCycling(thing);
+                return thing.FSP.startCycling(thing, true);
             }
         };
         /* General animations
@@ -1534,6 +1544,9 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.animateCharacterStartWalking = function (thing, direction, onStop) {
             if (direction === void 0) { direction = Direction.Top; }
             var repeats = thing.FSP.MathDecider.compute("speedWalking", thing), distance = repeats * thing.speed;
+            if (thing.forceMovement !== undefined && thing.forceMovement !== thing.direction) {
+                direction = thing.direction;
+            }
             thing.walking = true;
             thing.FSP.animateCharacterSetDirection(thing, direction);
             thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
@@ -1678,6 +1691,10 @@ var FullScreenPokemon;
                     thing.FSP.setPlayerDirection(thing, thing.nextDirection);
                 }
                 delete thing.nextDirection;
+            }
+            else if (thing.forceMovement) {
+                thing.FSP.setPlayerDirection(thing, thing.forceMovement);
+                thing.shouldWalk = true;
             }
             else {
                 thing.canKeyWalking = true;
@@ -2584,6 +2601,19 @@ var FullScreenPokemon;
                 }
             }
         };
+        /**
+         * Activates a Detector to force the Player onto the bike and optionally to keep moving.
+         *
+         * @param player   The Player.
+         * @param thing   A Detector triggered by the player.
+         */
+        FullScreenPokemon.prototype.activateCyclingTriggerer = function (player, thing) {
+            thing.FSP.startCycling(player);
+            player.canDismountBicycle = player.canDismountBicycle === undefined ? false : !player.canDismountBicycle;
+            if (thing.alwaysMoving) {
+                thing.FSP.forceMovement(player, thing);
+            }
+        };
         /* Physics
         */
         /**
@@ -2701,6 +2731,35 @@ var FullScreenPokemon;
             thing.direction = direction;
             thing.FSP.MapScreener.playerDirection = direction;
             thing.shouldWalk = true;
+        };
+        /**
+         * Forces the Player to always be moving.
+         *
+         * @param player   An in-game Player.
+         * @param thing   A Detector triggered by the player.
+         */
+        FullScreenPokemon.prototype.forceMovement = function (player, thing) {
+            if (player.forceMovement === undefined) {
+                player.forceMovement = thing.alwaysMoving;
+            }
+            else {
+                player.forceMovement = undefined;
+                player.canKeyWalking = true;
+            }
+        };
+        /**
+         * Halves the player speed if they're moving against the forced direction.
+         *
+         * @param player   An in-game Player.
+         * @remarks Seeting speed to speedOld may cause conflicts.
+         */
+        FullScreenPokemon.prototype.setSpeedAgainstForcedWalking = function (player) {
+            if (player.forceMovement !== player.direction) {
+                player.speed = player.speedOld;
+            }
+            else if (player.forceMovement === player.direction && player.speed === player.speedOld) {
+                player.speed = this.MathDecider.compute("speedCycling", player);
+            }
         };
         /* Spawning
         */

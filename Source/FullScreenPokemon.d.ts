@@ -1574,6 +1574,11 @@ declare module FullScreenPokemon {
         followingLoop?: TimeHandlr.ITimeEvent;
 
         /**
+         * The direction, if any, this character is forced to move.
+         */
+        forceMovement?: Direction;
+
+        /**
          * An item to give after a dialog is first initiated.
          */
         gift?: string;
@@ -1791,6 +1796,11 @@ declare module FullScreenPokemon {
          * a Detector anyway.
          */
         allowDirectionAsKeys?: boolean;
+
+        /**
+         * Whether the player is allowed to dismount the bicycle.
+         */
+        canDismountBicycle: boolean;
 
         /**
          * Whether this is allowed to start walking via user input.
@@ -2073,6 +2083,16 @@ declare module FullScreenPokemon {
          * What routine to play, if action is "cutscene".
          */
         routine?: string;
+    }
+
+    /**
+     * A Detector that forces the Player onto his/her bicycle.
+     */
+    export interface ICyclingTriggerer extends IDetector {
+        /**
+         * The direction, if any, the Player is forced to move in.
+         */
+        alwaysMoving?: Direction;
     }
 
     /**
