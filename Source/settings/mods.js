@@ -34,7 +34,7 @@ var FullScreenPokemon;
                 }
             },
             {
-                name: "The Flash",
+                name: "Speedrunner",
                 enabled: false,
                 events: {
                     onModEnable: function (mod) {
