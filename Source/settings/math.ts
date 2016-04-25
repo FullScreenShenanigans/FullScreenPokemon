@@ -15986,7 +15986,7 @@ module FullScreenPokemon {
                     "PP": 10,
                     "description": "High critical hit rate."
                 },
-                "Cut": {
+                "Cut": <IHMMoveSchema>{
                     "type": "Normal",
                     "damage": "Physical",
                     "power": 50,
@@ -15994,7 +15994,8 @@ module FullScreenPokemon {
                     "PP": 30,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.prototype.partyActivateCut,
-                    "characterName": "CuttableTree"
+                    "characterName": "CuttableTree",
+                    "requiredBadge": "Cascade"
                 },
                 "Defense Curl": {
                     "type": "Normal",
@@ -16156,21 +16157,23 @@ module FullScreenPokemon {
                     "PP": 15,
                     "description": "10% chance to burn the target."
                 },
-                "Flash": {
+                "Flash": <IHMMoveSchema>{
                     "type": "Normal",
                     "damage": "Non-Damaging",
                     "power": "-",
                     "accuracy": "70%",
                     "PP": 20,
-                    "description": "Lowers the target's accuracy by one stage."
+                    "description": "Lowers the target's accuracy by one stage.",
+                    "requiredBadge": "Boulder"
                 },
-                "Fly": {
+                "Fly": <IHMMoveSchema>{
                     "type": "Flying",
                     "damage": "Physical",
                     "power": 70,
                     "accuracy": "95%",
                     "PP": 15,
-                    "description": "User is made invulnerable for one turn, then hits the next turn."
+                    "description": "User is made invulnerable for one turn, then hits the next turn.",
+                    "requiredBadge": "Thunder"
                 },
                 "Focus Energy": {
                     "type": "Normal",
@@ -16846,7 +16849,7 @@ module FullScreenPokemon {
                     "PP": 20,
                     "description": "30% chance of causing the target to flinch."
                 },
-                "Strength": {
+                "Strength": <IHMMoveSchema>{
                     "type": "Normal",
                     "damage": "Physical",
                     "power": 80,
@@ -16854,7 +16857,8 @@ module FullScreenPokemon {
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.prototype.partyActivateStrength,
-                    "characterName": "StrengthBoulder"
+                    "characterName": "StrengthBoulder",
+                    "requiredBadge": "Rainbow"
                 },
                 "String Shot": {
                     "type": "Bug",
@@ -16912,7 +16916,7 @@ module FullScreenPokemon {
                     "PP": 20,
                     "description": "Confuses the target."
                 },
-                "Surf": {
+                "Surf": <IHMMoveSchema>{
                     "type": "Water",
                     "damage": "Special",
                     "power": 95,
@@ -16920,7 +16924,8 @@ module FullScreenPokemon {
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.prototype.partyActivateSurf,
-                    "characterName": "WaterEdge"
+                    "characterName": "WaterEdge",
+                    "requiredBadge": "Soul"
                 },
                 "Swift": {
                     "type": "Normal",

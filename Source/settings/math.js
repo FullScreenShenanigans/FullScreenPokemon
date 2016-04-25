@@ -15835,7 +15835,8 @@ var FullScreenPokemon;
                     "PP": 30,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut,
-                    "characterName": "CuttableTree"
+                    "characterName": "CuttableTree",
+                    "requiredBadge": "Cascade"
                 },
                 "Defense Curl": {
                     "type": "Normal",
@@ -16003,7 +16004,8 @@ var FullScreenPokemon;
                     "power": "-",
                     "accuracy": "70%",
                     "PP": 20,
-                    "description": "Lowers the target's accuracy by one stage."
+                    "description": "Lowers the target's accuracy by one stage.",
+                    "requiredBadge": "Boulder"
                 },
                 "Fly": {
                     "type": "Flying",
@@ -16011,7 +16013,8 @@ var FullScreenPokemon;
                     "power": 70,
                     "accuracy": "95%",
                     "PP": 15,
-                    "description": "User is made invulnerable for one turn, then hits the next turn."
+                    "description": "User is made invulnerable for one turn, then hits the next turn.",
+                    "requiredBadge": "Thunder"
                 },
                 "Focus Energy": {
                     "type": "Normal",
@@ -16695,7 +16698,8 @@ var FullScreenPokemon;
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateStrength,
-                    "characterName": "StrengthBoulder"
+                    "characterName": "StrengthBoulder",
+                    "requiredBadge": "Rainbow"
                 },
                 "String Shot": {
                     "type": "Bug",
@@ -16761,7 +16765,8 @@ var FullScreenPokemon;
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf,
-                    "characterName": "WaterEdge"
+                    "characterName": "WaterEdge",
+                    "requiredBadge": "Soul"
                 },
                 "Swift": {
                     "type": "Normal",
