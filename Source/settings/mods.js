@@ -32,6 +32,20 @@ var FullScreenPokemon;
                         mod.events.onModEnable.call(this, mod);
                     }
                 }
+            },
+            {
+                name: "The Flash",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        var stats = this.ObjectMaker.getFunction("Player").prototype;
+                        stats.speed = 10;
+                    },
+                    onModDisable: function (mod) {
+                        var stats = this.ObjectMaker.getFunction("Player").prototype;
+                        stats.speed = this.settings.objects.properties.Player.speed;
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));
