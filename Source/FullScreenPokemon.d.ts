@@ -906,7 +906,7 @@ declare module FullScreenPokemon {
          */
         grass?: IWildPokemonSchema[];
 
-        [i: string]: IWildPokemonSchema[];
+        fishing?: IFishing;
     }
 
     /**
@@ -1103,6 +1103,42 @@ declare module FullScreenPokemon {
          * A Function to be called when the item is used.
          */
         bagActivate?: Function;
+    }
+
+    /**
+     * The types of Pokemon that can be caught with different rods.
+     */
+    export interface IFishing extends IItemSchema {
+        /**
+         * The Pokemon that can be caught using an Old Rod.
+         */
+        old?: IWildPokemonSchema[];
+
+        /**
+         * The Pokemon that can be caught using a Good Rod.
+         */
+        good?: IWildPokemonSchema[];
+
+        /**
+         * The Pokemon that can be caught using a Super Rod.
+         */
+        super?: IWildPokemonSchema[];
+    }
+
+    /**
+     * The type of rod that is being used.
+     */
+    export interface IRod extends IItemSchema {
+        /**
+         * The type of rod used. Can be old, good, or super.
+         * @todo Make type explicitly "old" | "good" | "super".
+         */
+        type: string;
+
+        /**
+         * The name of the rod used.
+         */
+        title: string;
     }
 
     /**

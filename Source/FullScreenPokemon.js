@@ -740,7 +740,7 @@ var FullScreenPokemon;
                 return;
             }
             var itemSchema = thing.FSP.MathDecider.getConstant("items")[selectItem];
-            if (!itemSchema.bagActivate(thing)) {
+            if (!itemSchema.bagActivate(thing, itemSchema)) {
                 thing.FSP.displayMessage(thing, itemSchema.error);
             }
             if (event && event.preventDefault) {
@@ -1061,6 +1061,87 @@ var FullScreenPokemon;
             else {
                 return thing.FSP.startCycling(thing);
             }
+        };
+        /**
+         * Starts the Player fishing.
+         *
+         * @param player   A Player to start fishing.
+         * @param rod   The rod that will be used to fish.
+         */
+        FullScreenPokemon.prototype.startFishing = function (player, item) {
+            if (player.bordering[player.direction] === undefined ||
+                player.bordering[player.direction].title.indexOf("WaterEdge") === -1) {
+                player.FSP.cannotDoThat(player);
+                return;
+            }
+            var rod = item;
+            player.FSP.MenuGrapher.createMenu("GeneralText", {
+                "deleteOnFinish": true,
+                "ignoreA": true,
+                "ignoreB": true
+            });
+            player.FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!"
+            ]);
+            player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+            player.FSP.setWidth(player, 7, true, true);
+            player.FSP.addClass(player, "fishing");
+            player.FSP.TimeHandler.addEvent(function () {
+                if (!player.FSP.MathDecider.compute("canLandFish", player)) {
+                    player.FSP.playerFailedLandingFish(player);
+                    return;
+                }
+                player.FSP.animateExclamation(player);
+                player.FSP.playerLandedFish(player, rod);
+            }, 180);
+        };
+        /**
+         * Displays message and starts battle when player lands a fish.
+         *
+         * @param player   A Player who landed the fish.
+         * @param rod   The rod that will be used to fish.
+         */
+        FullScreenPokemon.prototype.playerLandedFish = function (player, rod) {
+            var currentMap = player.FSP.AreaSpawner.getMap(player.mapName), currentArea = currentMap.areas[player.bordering[player.direction].areaName], options = currentArea.wildPokemon.fishing[rod.type], chosen = player.FSP.chooseRandomWildPokemon(player.FSP, options), chosenPokemon = player.FSP.createPokemon(chosen);
+            player.FSP.TimeHandler.addEvent(function () {
+                player.FSP.MenuGrapher.createMenu("GeneralText", {
+                    "deleteOnFinish": true
+                });
+                player.FSP.MenuGrapher.addMenuDialog("GeneralText", [
+                    "Oh! \n It's a bite!"
+                ], function () {
+                    player.FSP.startBattle({
+                        "opponent": {
+                            "name": chosenPokemon.title,
+                            "actors": [chosenPokemon],
+                            "category": "Wild",
+                            "sprite": chosenPokemon.title.join("") + "Front"
+                        }
+                    });
+                });
+                player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                player.FSP.removeClass(player, "fishing");
+                player.FSP.setWidth(player, 8, true, true);
+            }, 140);
+        };
+        /**
+         * Displays message when a Player does not land a fish.
+         *
+         * @param player   A Player who does not land a fish.
+         */
+        FullScreenPokemon.prototype.playerFailedLandingFish = function (player) {
+            player.FSP.MenuGrapher.deleteActiveMenu();
+            player.FSP.displayMessage(player, "Ha u suck");
+            player.FSP.removeClass(player, "fishing");
+            player.FSP.setWidth(player, 8, true, true);
+        };
+        /**
+         * Displays message when a Player tries to use an item that cannot be used.
+         *
+         * @param player   A Player who cannot use an item.
+         */
+        FullScreenPokemon.prototype.cannotDoThat = function (player) {
+            player.FSP.displayMessage(player, "OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
         };
         /* General animations
         */
