@@ -49,6 +49,38 @@ module FullScreenPokemon {
                         stats.speed = this.settings.objects.properties.Player.speed;
                     }
                 }
+            },
+            {
+                name: "Level 100",
+                enabled: false,
+                events: {
+                    "onModEnable": function (mod: ModAttachr.IModAttachrMod): void {
+                        let partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty"),
+                            statistics: string[] = this.MathDecider.getConstant("statisticNames");
+
+                        for (let i: number = 0; i < partyPokemon.length; i += 1) {
+                            partyPokemon[i].previousLevel = partyPokemon[i].level;
+                            partyPokemon[i].level = 100;
+                            for (let j: number = 0; j < statistics.length; j += 1) {
+                                partyPokemon[i][statistics[j]] = this.MathDecider.compute(
+                                    "pokemonStatistic", partyPokemon[i], statistics[j]);
+                            }
+                        }
+                    },
+                    "onModDisable": function (mod: ModAttachr.IModAttachrMod): void {
+                        let partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty"),
+                            statistics: string[] = this.MathDecider.getConstant("statisticNames");
+
+                        for (let i: number = 0; i < partyPokemon.length; i += 1) {
+                            partyPokemon[i].level = partyPokemon[i].previousLevel;
+                            partyPokemon[i].previousLevel = undefined;
+                            for (let j: number = 0; j < statistics.length; j += 1) {
+                                partyPokemon[i][statistics[j]] = this.MathDecider.compute(
+                                    "pokemonStatistic", partyPokemon[i], statistics[j]);
+                            }
+                        }
+                    }
+                }
             }]
     };
 }
