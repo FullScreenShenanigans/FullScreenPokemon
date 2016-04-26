@@ -1286,6 +1286,11 @@ declare module FullScreenPokemon {
          * Whether the Pokemon was traded from another trainer.
          */
         traded?: boolean;
+
+        /**
+         * The level the Pokemon was before enabling the Level 100 mod.
+         */
+        previousLevel?: number;
     }
 
     /**
