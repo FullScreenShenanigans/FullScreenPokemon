@@ -51,6 +51,33 @@ module FullScreenPokemon {
                 }
             },
             {
+                name: "Joey's Rattata",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
+                        let characters: any = this.GroupHolder.groups.Character;
+
+                        for (let i: number = 0; i < characters.length; i++) {
+                            if (characters[i].trainer) {
+                                characters[i].title = characters[i].thing = "BugCatcher";
+                                characters[i].name = "Youngster Joey";
+
+                                for (let j: number = 0; j < characters[i].actors.length; j++) {
+                                    characters[i].actors[j].title = "RATTATA".split("");
+                                    characters[i].actors[j].nickname = "Joey's Rattata".split("");
+                                }
+                            }
+                        }
+                    },
+                    onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
+                        return;
+                    },
+                    onSetLocation: function (mod: ModAttachr.IModAttachrMod): void {
+                        mod.events.onModEnable.call(this, mod);
+                    }
+                }
+            },
+            {
                 name: "Level 100",
                 enabled: false,
                 events: {
