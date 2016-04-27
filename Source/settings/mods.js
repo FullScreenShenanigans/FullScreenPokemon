@@ -39,11 +39,11 @@ var FullScreenPokemon;
                 events: {
                     onModEnable: function (mod) {
                         var stats = this.ObjectMaker.getFunction("Player").prototype;
-                        stats.speed = 10;
+                        this.player.speed = stats.speed = 10;
                     },
                     onModDisable: function (mod) {
                         var stats = this.ObjectMaker.getFunction("Player").prototype;
-                        stats.speed = this.settings.objects.properties.Player.speed;
+                        this.player.speed = stats.speed = this.settings.objects.properties.Player.speed;
                     }
                 }
             },
