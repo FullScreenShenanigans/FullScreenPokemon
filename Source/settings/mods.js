@@ -48,6 +48,31 @@ var FullScreenPokemon;
                 }
             },
             {
+                name: "Joey's Rattata",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        var characters = this.GroupHolder.groups.Character;
+                        for (var i = 0; i < characters.length; i++) {
+                            if (characters[i].trainer) {
+                                characters[i].title = characters[i].thing = "BugCatcher";
+                                characters[i].name = "Youngster Joey";
+                                for (var j = 0; j < characters[i].actors.length; j++) {
+                                    characters[i].actors[j].title = "RATTATA".split("");
+                                    characters[i].actors[j].nickname = "Joey's Rattata".split("");
+                                }
+                            }
+                        }
+                    },
+                    onModDisable: function (mod) {
+                        return;
+                    },
+                    onSetLocation: function (mod) {
+                        mod.events.onModEnable.call(this, mod);
+                    }
+                }
+            },
+            {
                 name: "Level 100",
                 enabled: false,
                 events: {
