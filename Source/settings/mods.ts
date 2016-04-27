@@ -42,11 +42,11 @@ module FullScreenPokemon {
                 events: {
                     onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
                         let stats: any = this.ObjectMaker.getFunction("Player").prototype;
-                        stats.speed = 10;
+                        this.player.speed = stats.speed = 10;
                     },
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
                         let stats: any = this.ObjectMaker.getFunction("Player").prototype;
-                        stats.speed = this.settings.objects.properties.Player.speed;
+                        this.player.speed = stats.speed = this.settings.objects.properties.Player.speed;
                     }
                 }
             },
