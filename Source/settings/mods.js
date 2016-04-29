@@ -54,22 +54,22 @@ var FullScreenPokemon;
                     onModEnable: function (mod) {
                         var _this = this;
                         this.GroupHolder.groups.Character
-                            .filter(function (x) { return x.trainer; })
-                            .forEach(function (x) {
-                            x.previousTitle = x.title;
-                            x.title = x.thing = "BugCatcher";
-                            _this.ThingHitter.cacheChecksForType(x, "Character");
-                            _this.setClass(x, x.className);
+                            .filter(function (character) { return character.trainer; })
+                            .forEach(function (character) {
+                            character.previousTitle = character.title;
+                            character.title = character.thing = "BugCatcher";
+                            _this.ThingHitter.cacheChecksForType(character, "Character");
+                            _this.setClass(character, character.className);
                         });
                     },
                     onModDisable: function (mod) {
                         var _this = this;
                         this.GroupHolder.groups.Character
-                            .filter(function (x) { return x.trainer; })
-                            .forEach(function (x) {
-                            x.title = x.thing = x.previousTitle;
-                            _this.ThingHitter.cacheChecksForType(x, "Character");
-                            _this.setClass(x, x.className);
+                            .filter(function (character) { return character.trainer; })
+                            .forEach(function (character) {
+                            character.title = character.thing = character.previousTitle;
+                            _this.ThingHitter.cacheChecksForType(character, "Character");
+                            _this.setClass(character, character.className);
                         });
                     },
                     onBattleStart: function (mod, eventName, battleInfo) {

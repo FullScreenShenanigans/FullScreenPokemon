@@ -56,21 +56,21 @@ module FullScreenPokemon {
                 events: {
                     onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
                         this.GroupHolder.groups.Character
-                            .filter((x: ICharacter) => x.trainer)
-                            .forEach((x: IEnemy) => {
-                                x.previousTitle = x.title;
-                                x.title = (<any>x).thing = "BugCatcher";
-                                this.ThingHitter.cacheChecksForType(x, "Character");
-                                this.setClass(x, x.className);
+                            .filter((character: ICharacter): boolean => character.trainer)
+                            .forEach((character: IEnemy): void => {
+                                character.previousTitle = character.title;
+                                character.title = (<any>character).thing = "BugCatcher";
+                                this.ThingHitter.cacheChecksForType(character, "Character");
+                                this.setClass(character, character.className);
                             });
                     },
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
                         this.GroupHolder.groups.Character
-                            .filter((x: ICharacter) => x.trainer)
-                            .forEach((x: IEnemy) => {
-                                x.title = (<any>x).thing = x.previousTitle;
-                                this.ThingHitter.cacheChecksForType(x, "Character");
-                                this.setClass(x, x.className);
+                            .filter((character: ICharacter): boolean => character.trainer)
+                            .forEach((character: IEnemy): void => {
+                                character.title = (<any>character).thing = character.previousTitle;
+                                this.ThingHitter.cacheChecksForType(character, "Character");
+                                this.setClass(character, character.className);
                             });
                     },
                     onBattleStart: function (mod: ModAttachr.IModAttachrMod, eventName: string, battleInfo: IBattleInfo): void {
