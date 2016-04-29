@@ -52,25 +52,25 @@ var FullScreenPokemon;
                 enabled: false,
                 events: {
                     onModEnable: function (mod) {
-                        var characters = this.GroupHolder.groups.Character;
-                        for (var i = 0; i < characters.length; i += 1) {
-                            if (characters[i].trainer) {
-                                characters[i].previousTitle = characters[i].title;
-                                characters[i].title = characters[i].thing = "BugCatcher";
-                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
-                                this.setClass(characters[i], characters[i].className);
-                            }
-                        }
+                        var _this = this;
+                        this.GroupHolder.groups.Character
+                            .filter(function (x) { return x.trainer; })
+                            .forEach(function (x) {
+                            x.previousTitle = x.title;
+                            x.title = x.thing = "BugCatcher";
+                            _this.ThingHitter.cacheChecksForType(x, "Character");
+                            _this.setClass(x, x.className);
+                        });
                     },
                     onModDisable: function (mod) {
-                        var characters = this.GroupHolder.groups.Character;
-                        for (var i = 0; i < characters.length; i += 1) {
-                            if (characters[i].trainer) {
-                                characters[i].title = characters[i].thing = characters[i].previousTitle;
-                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
-                                this.setClass(characters[i], characters[i].className);
-                            }
-                        }
+                        var _this = this;
+                        this.GroupHolder.groups.Character
+                            .filter(function (x) { return x.trainer; })
+                            .forEach(function (x) {
+                            x.title = x.thing = x.previousTitle;
+                            _this.ThingHitter.cacheChecksForType(x, "Character");
+                            _this.setClass(x, x.className);
+                        });
                     },
                     onBattleStart: function (mod, eventName, battleInfo) {
                         var opponent = battleInfo.opponent;

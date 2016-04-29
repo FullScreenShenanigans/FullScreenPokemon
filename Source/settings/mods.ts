@@ -55,27 +55,23 @@ module FullScreenPokemon {
                 enabled: false,
                 events: {
                     onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
-                        let characters: any = this.GroupHolder.groups.Character;
-
-                        for (let i: number = 0; i < characters.length; i += 1) {
-                            if (characters[i].trainer) {
-                                characters[i].previousTitle = characters[i].title;
-                                characters[i].title = characters[i].thing = "BugCatcher";
-                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
-                                this.setClass(characters[i], characters[i].className);
-                            }
-                        }
+                        this.GroupHolder.groups.Character
+                            .filter((x: ICharacter) => x.trainer)
+                            .forEach((x: IEnemy) => {
+                                x.previousTitle = x.title;
+                                x.title = (<any>x).thing = "BugCatcher";
+                                this.ThingHitter.cacheChecksForType(x, "Character");
+                                this.setClass(x, x.className);
+                            });
                     },
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
-                        let characters: any = this.GroupHolder.groups.Character;
-
-                        for (let i: number = 0; i < characters.length; i += 1) {
-                            if (characters[i].trainer) {
-                                characters[i].title = characters[i].thing = characters[i].previousTitle;
-                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
-                                this.setClass(characters[i], characters[i].className);
-                            }
-                        }
+                        this.GroupHolder.groups.Character
+                            .filter((x: ICharacter) => x.trainer)
+                            .forEach((x: IEnemy) => {
+                                x.title = (<any>x).thing = x.previousTitle;
+                                this.ThingHitter.cacheChecksForType(x, "Character");
+                                this.setClass(x, x.className);
+                            });
                     },
                     onBattleStart: function (mod: ModAttachr.IModAttachrMod, eventName: string, battleInfo: IBattleInfo): void {
                         let opponent: IBattleThingInfo = battleInfo.opponent;
