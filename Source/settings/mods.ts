@@ -55,10 +55,25 @@ module FullScreenPokemon {
                 enabled: false,
                 events: {
                     onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
-                        return;
+                        let characters: any = this.GroupHolder.groups.Character;
+
+                        for (let i: number = 0; i < characters.length; i++) {
+                            if (characters[i].trainer) {
+                                characters[i].previousTitle = characters[i].title;
+                                characters[i].title = characters[i].thing = "Elder";
+                                this.setClass(characters[i], characters[i].className);
+                            }
+                        }
                     },
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
-                        return;
+                        let characters: any = this.GroupHolder.groups.Character;
+
+                        for (let i: number = 0; i < characters.length; i++) {
+                            if (characters[i].trainer) {
+                                characters[i].title = characters[i].thing = characters[i].previousTitle;
+                                this.setClass(characters[i], characters[i].className);
+                            }
+                        }
                     },
                     onBattleStart: function (mod: ModAttachr.IModAttachrMod, eventName: string, battleInfo: IBattleInfo): void {
                         let opponent: IBattleThingInfo = battleInfo.opponent;

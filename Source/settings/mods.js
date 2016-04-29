@@ -52,10 +52,23 @@ var FullScreenPokemon;
                 enabled: false,
                 events: {
                     onModEnable: function (mod) {
-                        return;
+                        var characters = this.GroupHolder.groups.Character;
+                        for (var i = 0; i < characters.length; i++) {
+                            if (characters[i].trainer) {
+                                characters[i].previousTitle = characters[i].title;
+                                characters[i].title = characters[i].thing = "Elder";
+                                this.setClass(characters[i], characters[i].className);
+                            }
+                        }
                     },
                     onModDisable: function (mod) {
-                        return;
+                        var characters = this.GroupHolder.groups.Character;
+                        for (var i = 0; i < characters.length; i++) {
+                            if (characters[i].trainer) {
+                                characters[i].title = characters[i].thing = characters[i].previousTitle;
+                                this.setClass(characters[i], characters[i].className);
+                            }
+                        }
                     },
                     onBattleStart: function (mod, eventName, battleInfo) {
                         var opponent = battleInfo.opponent;
