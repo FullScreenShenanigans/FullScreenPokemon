@@ -39,11 +39,37 @@ var FullScreenPokemon;
                 events: {
                     onModEnable: function (mod) {
                         var stats = this.ObjectMaker.getFunction("Player").prototype;
-                        stats.speed = 10;
+                        this.player.speed = stats.speed = 10;
                     },
                     onModDisable: function (mod) {
                         var stats = this.ObjectMaker.getFunction("Player").prototype;
-                        stats.speed = this.settings.objects.properties.Player.speed;
+                        this.player.speed = stats.speed = this.settings.objects.properties.Player.speed;
+                    }
+                }
+            },
+            {
+                name: "Level 100",
+                enabled: false,
+                events: {
+                    "onModEnable": function (mod) {
+                        var partyPokemon = this.ItemsHolder.getItem("PokemonInParty"), statistics = this.MathDecider.getConstant("statisticNames");
+                        for (var i = 0; i < partyPokemon.length; i += 1) {
+                            partyPokemon[i].previousLevel = partyPokemon[i].level;
+                            partyPokemon[i].level = 100;
+                            for (var j = 0; j < statistics.length; j += 1) {
+                                partyPokemon[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
+                            }
+                        }
+                    },
+                    "onModDisable": function (mod) {
+                        var partyPokemon = this.ItemsHolder.getItem("PokemonInParty"), statistics = this.MathDecider.getConstant("statisticNames");
+                        for (var i = 0; i < partyPokemon.length; i += 1) {
+                            partyPokemon[i].level = partyPokemon[i].previousLevel;
+                            partyPokemon[i].previousLevel = undefined;
+                            for (var j = 0; j < statistics.length; j += 1) {
+                                partyPokemon[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
+                            }
+                        }
                     }
                 }
             },
