@@ -4669,6 +4669,8 @@ module FullScreenPokemon {
          * @param battleInfo   Settings for the battle.
          */
         startBattle(battleInfo: IBattleInfo): void {
+            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+
             var animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"

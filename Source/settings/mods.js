@@ -52,23 +52,18 @@ var FullScreenPokemon;
                 enabled: false,
                 events: {
                     onModEnable: function (mod) {
-                        var characters = this.GroupHolder.groups.Character;
-                        for (var i = 0; i < characters.length; i++) {
-                            if (characters[i].trainer) {
-                                characters[i].title = characters[i].thing = "BugCatcher";
-                                characters[i].name = "Youngster Joey";
-                                for (var j = 0; j < characters[i].actors.length; j++) {
-                                    characters[i].actors[j].title = "RATTATA".split("");
-                                    characters[i].actors[j].nickname = "Joey's Rattata".split("");
-                                }
-                            }
-                        }
+                        return;
                     },
                     onModDisable: function (mod) {
                         return;
                     },
-                    onSetLocation: function (mod) {
-                        mod.events.onModEnable.call(this, mod);
+                    onBattleStart: function (mod, eventName, battleInfo) {
+                        var opponent = battleInfo.opponent;
+                        opponent.sprite = "BugCatcherFront";
+                        opponent.name = "Youngster Joey".split("");
+                        for (var i = 0; i < opponent.actors.length; i++) {
+                            opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
+                        }
                     }
                 }
             },

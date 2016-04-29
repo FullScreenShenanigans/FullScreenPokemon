@@ -55,25 +55,20 @@ module FullScreenPokemon {
                 enabled: false,
                 events: {
                     onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
-                        let characters: any = this.GroupHolder.groups.Character;
-
-                        for (let i: number = 0; i < characters.length; i++) {
-                            if (characters[i].trainer) {
-                                characters[i].title = characters[i].thing = "BugCatcher";
-                                characters[i].name = "Youngster Joey";
-
-                                for (let j: number = 0; j < characters[i].actors.length; j++) {
-                                    characters[i].actors[j].title = "RATTATA".split("");
-                                    characters[i].actors[j].nickname = "Joey's Rattata".split("");
-                                }
-                            }
-                        }
+                        return;
                     },
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
                         return;
                     },
-                    onSetLocation: function (mod: ModAttachr.IModAttachrMod): void {
-                        mod.events.onModEnable.call(this, mod);
+                    onBattleStart: function (mod: ModAttachr.IModAttachrMod, eventName: string, battleInfo: IBattleInfo): void {
+                        let opponent: IBattleThingInfo = battleInfo.opponent;
+
+                        opponent.sprite = "BugCatcherFront";
+                        opponent.name = "Youngster Joey".split("");
+
+                        for (let i: number = 0; i < opponent.actors.length; i++) {
+                            opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
+                        }
                     }
                 }
             },
