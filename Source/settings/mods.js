@@ -53,19 +53,21 @@ var FullScreenPokemon;
                 events: {
                     onModEnable: function (mod) {
                         var characters = this.GroupHolder.groups.Character;
-                        for (var i = 0; i < characters.length; i++) {
+                        for (var i = 0; i < characters.length; i += 1) {
                             if (characters[i].trainer) {
                                 characters[i].previousTitle = characters[i].title;
-                                characters[i].title = characters[i].thing = "Elder";
+                                characters[i].title = characters[i].thing = "BugCatcher";
+                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
                                 this.setClass(characters[i], characters[i].className);
                             }
                         }
                     },
                     onModDisable: function (mod) {
                         var characters = this.GroupHolder.groups.Character;
-                        for (var i = 0; i < characters.length; i++) {
+                        for (var i = 0; i < characters.length; i += 1) {
                             if (characters[i].trainer) {
                                 characters[i].title = characters[i].thing = characters[i].previousTitle;
+                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
                                 this.setClass(characters[i], characters[i].className);
                             }
                         }
@@ -74,9 +76,12 @@ var FullScreenPokemon;
                         var opponent = battleInfo.opponent;
                         opponent.sprite = "BugCatcherFront";
                         opponent.name = "Youngster Joey".split("");
-                        for (var i = 0; i < opponent.actors.length; i++) {
+                        for (var i = 0; i < opponent.actors.length; i += 1) {
                             opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
                         }
+                    },
+                    onSetLocation: function (mod) {
+                        mod.events.onModEnable.call(this, mod);
                     }
                 }
             },

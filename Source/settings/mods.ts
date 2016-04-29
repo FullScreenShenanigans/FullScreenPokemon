@@ -57,10 +57,11 @@ module FullScreenPokemon {
                     onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
                         let characters: any = this.GroupHolder.groups.Character;
 
-                        for (let i: number = 0; i < characters.length; i++) {
+                        for (let i: number = 0; i < characters.length; i += 1) {
                             if (characters[i].trainer) {
                                 characters[i].previousTitle = characters[i].title;
-                                characters[i].title = characters[i].thing = "Elder";
+                                characters[i].title = characters[i].thing = "BugCatcher";
+                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
                                 this.setClass(characters[i], characters[i].className);
                             }
                         }
@@ -68,9 +69,10 @@ module FullScreenPokemon {
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
                         let characters: any = this.GroupHolder.groups.Character;
 
-                        for (let i: number = 0; i < characters.length; i++) {
+                        for (let i: number = 0; i < characters.length; i += 1) {
                             if (characters[i].trainer) {
                                 characters[i].title = characters[i].thing = characters[i].previousTitle;
+                                this.ThingHitter.cacheChecksForType(characters[i].title, "Character");
                                 this.setClass(characters[i], characters[i].className);
                             }
                         }
@@ -81,9 +83,12 @@ module FullScreenPokemon {
                         opponent.sprite = "BugCatcherFront";
                         opponent.name = "Youngster Joey".split("");
 
-                        for (let i: number = 0; i < opponent.actors.length; i++) {
+                        for (let i: number = 0; i < opponent.actors.length; i += 1) {
                             opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
                         }
+                    },
+                    onSetLocation: function (mod: ModAttachr.IModAttachrMod): void {
+                        mod.events.onModEnable.call(this, mod);
                     }
                 }
             },
