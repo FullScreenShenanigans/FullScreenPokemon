@@ -75,7 +75,7 @@ var FullScreenPokemon;
                     onBattleStart: function (mod, eventName, battleInfo) {
                         var opponent = battleInfo.opponent;
                         opponent.sprite = "BugCatcherFront";
-                        opponent.name = "Youngster Joey".split("");
+                        opponent.name = "YOUNGSTER JOEY".split("");
                         for (var i = 0; i < opponent.actors.length; i += 1) {
                             opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
                         }
