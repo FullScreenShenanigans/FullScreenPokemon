@@ -119,6 +119,18 @@ module FullScreenPokemon {
                         }
                     }
                 }
+            },
+            {
+                name: "Walk Through Walls",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
+                        this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => true;
+                    },
+                    onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
+                        this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => false;
+                    }
+                }
             }]
     };
 }

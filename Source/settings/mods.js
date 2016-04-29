@@ -110,6 +110,18 @@ var FullScreenPokemon;
                         }
                     }
                 }
+            },
+            {
+                name: "Walk Through Walls",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        this.ObjectMaker.getFunction("Solid").prototype.collide = function () { return true; };
+                    },
+                    onModDisable: function (mod) {
+                        this.ObjectMaker.getFunction("Solid").prototype.collide = function () { return false; };
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));
