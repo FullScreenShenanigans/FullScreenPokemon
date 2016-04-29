@@ -1766,6 +1766,11 @@ declare module FullScreenPokemon {
         nextCutscene?: string;
 
         /**
+         * The title of the trainer before enabling the Joey's Rattata mod.
+         */
+        previousTitle?: string;
+
+        /**
          * A monetary reward to give after defeated in battle.
          */
         reward: number;

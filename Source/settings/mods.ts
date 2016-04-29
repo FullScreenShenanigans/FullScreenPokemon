@@ -51,6 +51,44 @@ module FullScreenPokemon {
                 }
             },
             {
+                name: "Joey's Rattata",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
+                        this.GroupHolder.groups.Character
+                            .filter((character: ICharacter): boolean => character.trainer)
+                            .forEach((character: IEnemy): void => {
+                                character.previousTitle = character.title;
+                                character.title = (<any>character).thing = "BugCatcher";
+                                this.ThingHitter.cacheChecksForType(character, "Character");
+                                this.setClass(character, character.className);
+                            });
+                    },
+                    onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
+                        this.GroupHolder.groups.Character
+                            .filter((character: ICharacter): boolean => character.trainer)
+                            .forEach((character: IEnemy): void => {
+                                character.title = (<any>character).thing = character.previousTitle;
+                                this.ThingHitter.cacheChecksForType(character, "Character");
+                                this.setClass(character, character.className);
+                            });
+                    },
+                    onBattleStart: function (mod: ModAttachr.IModAttachrMod, eventName: string, battleInfo: IBattleInfo): void {
+                        let opponent: IBattleThingInfo = battleInfo.opponent;
+
+                        opponent.sprite = "BugCatcherFront";
+                        opponent.name = "YOUNGSTER JOEY".split("");
+
+                        for (let i: number = 0; i < opponent.actors.length; i += 1) {
+                            opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
+                        }
+                    },
+                    onSetLocation: function (mod: ModAttachr.IModAttachrMod): void {
+                        mod.events.onModEnable.call(this, mod);
+                    }
+                }
+            },
+            {
                 name: "Level 100",
                 enabled: false,
                 events: {

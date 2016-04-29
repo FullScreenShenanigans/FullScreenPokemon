@@ -48,6 +48,44 @@ var FullScreenPokemon;
                 }
             },
             {
+                name: "Joey's Rattata",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        var _this = this;
+                        this.GroupHolder.groups.Character
+                            .filter(function (character) { return character.trainer; })
+                            .forEach(function (character) {
+                            character.previousTitle = character.title;
+                            character.title = character.thing = "BugCatcher";
+                            _this.ThingHitter.cacheChecksForType(character, "Character");
+                            _this.setClass(character, character.className);
+                        });
+                    },
+                    onModDisable: function (mod) {
+                        var _this = this;
+                        this.GroupHolder.groups.Character
+                            .filter(function (character) { return character.trainer; })
+                            .forEach(function (character) {
+                            character.title = character.thing = character.previousTitle;
+                            _this.ThingHitter.cacheChecksForType(character, "Character");
+                            _this.setClass(character, character.className);
+                        });
+                    },
+                    onBattleStart: function (mod, eventName, battleInfo) {
+                        var opponent = battleInfo.opponent;
+                        opponent.sprite = "BugCatcherFront";
+                        opponent.name = "YOUNGSTER JOEY".split("");
+                        for (var i = 0; i < opponent.actors.length; i += 1) {
+                            opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
+                        }
+                    },
+                    onSetLocation: function (mod) {
+                        mod.events.onModEnable.call(this, mod);
+                    }
+                }
+            },
+            {
                 name: "Level 100",
                 enabled: false,
                 events: {
