@@ -122,6 +122,18 @@ var FullScreenPokemon;
                         this.ObjectMaker.getFunction("Solid").prototype.collide = function () { return false; };
                     }
                 }
+            },
+            {
+                name: "Blind Trainers",
+                enabled: false,
+                events: {
+                    "onModEnable": function (mod) {
+                        this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = true;
+                    },
+                    "onModDisable": function (mod) {
+                        this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));

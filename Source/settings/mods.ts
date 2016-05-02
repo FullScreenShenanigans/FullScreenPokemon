@@ -131,6 +131,18 @@ module FullScreenPokemon {
                         this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => false;
                     }
                 }
+            },
+            {
+                name: "Blind Trainers",
+                enabled: false,
+                events: {
+                    "onModEnable": function (mod: ModAttachr.IModAttachrMod): void {
+                        this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = true;
+                    },
+                    "onModDisable": function (mod: ModAttachr.IModAttachrMod): void {
+                        this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
+                    }
+                }
             }]
     };
 }
