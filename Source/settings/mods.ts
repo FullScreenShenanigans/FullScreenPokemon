@@ -143,6 +143,79 @@ module FullScreenPokemon {
                         this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
                     }
                 }
+            },
+            {
+                name: "Nuzlocke Challenge",
+                enabled: false,
+                events: {
+                    "onModEnable": function (mod: ModAttachr.IModAttachrMod): void {
+                        return;
+                    },
+                    "onModDisable": function (mod: ModAttachr.IModAttachrMod): void {
+                        return;
+                    },
+                    /**
+                     * Sets the area's pokemonEncountered property to true if the encounter was with a wild Pokemon.
+                     *
+                     * @param mod   The triggered mod.
+                     * @param eventName   The name of the event that was fired.
+                     * @param settings   The battle information.
+                     */
+                    "onBattleComplete": function (mod: ModAttachr.IModAttachrMod, eventName: string, settings: IBattleInfo): void {
+                        let grass: IGrass = this.player.grass,
+                            grassMap: IMap = grass ? <IMap>this.AreaSpawner.getMap(grass.mapName) : undefined,
+                            grassArea: IArea = grassMap ? <IArea>grassMap.areas[grass.areaName] : undefined,
+                            opponent: String = settings.opponent.category;
+
+                        if (!grassArea || opponent !== "Wild") {
+                            return;
+                        }
+
+                        grassArea.pokemonEncountered = true;
+                    },
+                    /**
+                     * Hides all types of PokeBalls from the items menu in battle.
+                     *
+                     * @param mod   The triggered mod.
+                     * @param eventName   The name of the event that was fired.
+                     * @param items   The Player's items.
+                     */
+                    "onOpenItemsMenu": function (mod: ModAttachr.IModAttachrMod, eventName: string, items: any[]): void {
+                        let grassMap: IMap = this.player.grass && <IMap>this.AreaSpawner.getMap(this.player.grass.mapName),
+                            grassArea: IArea = grassMap && <IArea>grassMap.areas[this.player.grass.areaName];
+
+                        if (!this.BattleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
+                            return;
+                        }
+
+                        for (let i: number = items.length - 1; i > -1; i -= 1) {
+                            let currentItem: IItemSchema = this.MathDecider.getConstant("items")[items[i].item];
+                            if (currentItem.category === "PokeBall") {
+                                items.splice(i, 1);
+                            }
+                        }
+                    },
+                    /**
+                     * Removes the fainted Pokemon from the Player's party and adds it to the PC.
+                     *
+                     * @param mod   The triggered mod.
+                     * @param eventName   The name of the event that was fired.
+                     * @param thing   The fainted Pokemon.
+                     * @param actors   The Player's party Pokemon.
+                     */
+                    "onFaint": function (
+                        mod: ModAttachr.IModAttachrMod,
+                        eventName: string,
+                        thing: BattleMovr.IActor,
+                        actors: IPokemon[]): void {
+                        let partyPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInParty"),
+                            pcPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInPC");
+
+                        actors.splice(actors.indexOf(thing), 1);
+                        partyPokemon.splice(partyPokemon.indexOf(thing), 1);
+                        pcPokemon.push(thing);
+                    }
+                }
             }]
     };
 }

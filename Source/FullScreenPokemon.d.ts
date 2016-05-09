@@ -845,6 +845,11 @@ declare module FullScreenPokemon {
          * Wild Pokemon that may appear in this Area.
          */
         wildPokemon: IAreaWildPokemonOptionGroups;
+
+        /**
+         * Whether the Player has encountered a Pokemon in this area's grass.
+         */
+        pokemonEncountered?: boolean;
     }
 
     /**

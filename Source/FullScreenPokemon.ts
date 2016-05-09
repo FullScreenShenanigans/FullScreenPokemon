@@ -4400,7 +4400,9 @@ module FullScreenPokemon {
          *                   to optionally override the player's inventory.
          */
         openItemsMenu(settings: IItemsMenuSettings): void {
-            var items: IItemSchema[] = settings.items || this.ItemsHolder.getItem("items");
+            var items: IItemSchema[] = settings.items || this.ItemsHolder.getItem("items").slice();
+
+            this.ModAttacher.fireEvent("onOpenItemsMenu", items);
 
             this.MenuGrapher.createMenu("Items", settings);
             this.MenuGrapher.addMenuList("Items", {
@@ -5935,6 +5937,8 @@ module FullScreenPokemon {
                     );
                     FSP.MenuGrapher.setActiveMenu("GeneralText");
                 });
+
+            FSP.ModAttacher.fireEvent("onFaint", actor, battleInfo.player.actors);
         }
 
         /**
@@ -6355,6 +6359,7 @@ module FullScreenPokemon {
             FSP.MapScreener.blockInputs = false;
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
+            FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
         }
 
         /**

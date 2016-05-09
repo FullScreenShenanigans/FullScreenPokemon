@@ -134,6 +134,65 @@ var FullScreenPokemon;
                         this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
                     }
                 }
+            },
+            {
+                name: "Nuzlocke Challenge",
+                enabled: false,
+                events: {
+                    "onModEnable": function (mod) {
+                        return;
+                    },
+                    "onModDisable": function (mod) {
+                        return;
+                    },
+                    /**
+                     * Sets the area's pokemonEncountered property to true if the encounter was with a wild Pokemon.
+                     *
+                     * @param mod   The triggered mod.
+                     * @param eventName   The name of the event that was fired.
+                     * @param settings   The battle information.
+                     */
+                    "onBattleComplete": function (mod, eventName, settings) {
+                        var grass = this.player.grass, grassMap = grass ? this.AreaSpawner.getMap(grass.mapName) : undefined, grassArea = grassMap ? grassMap.areas[grass.areaName] : undefined, opponent = settings.opponent.category;
+                        if (!grassArea || opponent !== "Wild") {
+                            return;
+                        }
+                        grassArea.pokemonEncountered = true;
+                    },
+                    /**
+                     * Hides all types of PokeBalls from the items menu in battle.
+                     *
+                     * @param mod   The triggered mod.
+                     * @param eventName   The name of the event that was fired.
+                     * @param items   The Player's items.
+                     */
+                    "onOpenItemsMenu": function (mod, eventName, items) {
+                        var grassMap = this.player.grass && this.AreaSpawner.getMap(this.player.grass.mapName), grassArea = grassMap && grassMap.areas[this.player.grass.areaName];
+                        if (!this.BattleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
+                            return;
+                        }
+                        for (var i = items.length - 1; i > -1; i -= 1) {
+                            var currentItem = this.MathDecider.getConstant("items")[items[i].item];
+                            if (currentItem.category === "PokeBall") {
+                                items.splice(i, 1);
+                            }
+                        }
+                    },
+                    /**
+                     * Removes the fainted Pokemon from the Player's party and adds it to the PC.
+                     *
+                     * @param mod   The triggered mod.
+                     * @param eventName   The name of the event that was fired.
+                     * @param thing   The fainted Pokemon.
+                     * @param actors   The Player's party Pokemon.
+                     */
+                    "onFaint": function (mod, eventName, thing, actors) {
+                        var partyPokemon = this.ItemsHolder.getItem("PokemonInParty"), pcPokemon = this.ItemsHolder.getItem("PokemonInPC");
+                        actors.splice(actors.indexOf(thing), 1);
+                        partyPokemon.splice(partyPokemon.indexOf(thing), 1);
+                        pcPokemon.push(thing);
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));
