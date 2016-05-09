@@ -3413,7 +3413,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.openItemsMenu = function (settings) {
             var _this = this;
-            var items = settings.items || this.ItemsHolder.getItem("items");
+            var items = settings.items || this.ItemsHolder.getItem("items").slice();
+            this.ModAttacher.fireEvent("onOpenItemsMenu", items);
             this.MenuGrapher.createMenu("Items", settings);
             this.MenuGrapher.addMenuList("Items", {
                 "options": items.map(function (schema) {
@@ -4471,6 +4472,7 @@ var FullScreenPokemon;
                 ], FSP.ScenePlayer.bindRoutine(nextRoutine, args));
                 FSP.MenuGrapher.setActiveMenu("GeneralText");
             });
+            FSP.ModAttacher.fireEvent("onFaint", actor, battleInfo.player.actors);
         };
         /**
          * Cutscene for choosing what to do after a Pokemon faints in battle.
@@ -4788,6 +4790,7 @@ var FullScreenPokemon;
             FSP.MapScreener.blockInputs = false;
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
+            FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
         };
         /**
          * Cutscene for changing a statistic in battle.
