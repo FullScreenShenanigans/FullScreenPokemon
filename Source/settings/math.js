@@ -125,6 +125,10 @@ var FullScreenPokemon;
                 // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
                 return f > m;
             },
+            // @todo Add functionality.
+            "canLandFish": function (constants, equations) {
+                return true;
+            },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
             "canEscapePokemon": function (constants, equations, pokemon, enemy, battleInfo) {
                 var a = pokemon.Speed, b = (enemy.Speed / 4) % 256, c = battleInfo.currentEscapeAttempts, f = (a * 32) / b + 30 * c;
@@ -15835,7 +15839,8 @@ var FullScreenPokemon;
                     "PP": 30,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateCut,
-                    "characterName": "CuttableTree"
+                    "characterName": "CuttableTree",
+                    "requiredBadge": "Cascade"
                 },
                 "Defense Curl": {
                     "type": "Normal",
@@ -16003,7 +16008,8 @@ var FullScreenPokemon;
                     "power": "-",
                     "accuracy": "70%",
                     "PP": 20,
-                    "description": "Lowers the target's accuracy by one stage."
+                    "description": "Lowers the target's accuracy by one stage.",
+                    "requiredBadge": "Boulder"
                 },
                 "Fly": {
                     "type": "Flying",
@@ -16011,7 +16017,8 @@ var FullScreenPokemon;
                     "power": 70,
                     "accuracy": "95%",
                     "PP": 15,
-                    "description": "User is made invulnerable for one turn, then hits the next turn."
+                    "description": "User is made invulnerable for one turn, then hits the next turn.",
+                    "requiredBadge": "Thunder"
                 },
                 "Focus Energy": {
                     "type": "Normal",
@@ -16695,7 +16702,8 @@ var FullScreenPokemon;
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateStrength,
-                    "characterName": "StrengthBoulder"
+                    "characterName": "StrengthBoulder",
+                    "requiredBadge": "Rainbow"
                 },
                 "String Shot": {
                     "type": "Bug",
@@ -16761,7 +16769,8 @@ var FullScreenPokemon;
                     "PP": 15,
                     "description": "No additional effect.",
                     "partyActivate": FullScreenPokemon.FullScreenPokemon.prototype.partyActivateSurf,
-                    "characterName": "WaterEdge"
+                    "characterName": "WaterEdge",
+                    "requiredBadge": "Soul"
                 },
                 "Swift": {
                     "type": "Normal",
@@ -17231,7 +17240,10 @@ var FullScreenPokemon;
                 },
                 "Good Rod": {
                     "effect": "Fish for medium-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing,
+                    "title": "Good Rod",
+                    "type": "good"
                 },
                 "Helix Fossil": {
                     "effect": "Used to clone Omanyte at the Cinnabar Island Laboratory",
@@ -17255,7 +17267,10 @@ var FullScreenPokemon;
                 },
                 "Old Rod": {
                     "effect": "Fish for low-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing,
+                    "title": "Old Rod",
+                    "type": "old"
                 },
                 "Pokeflute": {
                     "effect": "Awakens sleeping Pokemon",
@@ -17279,7 +17294,10 @@ var FullScreenPokemon;
                 },
                 "Super Rod": {
                     "effect": "Fish for high-levelled water Pokemon",
-                    "category": "Key"
+                    "category": "Key",
+                    "bagActivate": FullScreenPokemon.FullScreenPokemon.prototype.startFishing,
+                    "title": "Super Rod",
+                    "type": "super"
                 },
                 "Town Map": {
                     "effect": "Shows your position in the Pokemon World",

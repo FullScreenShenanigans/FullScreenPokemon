@@ -27,14 +27,14 @@ module FullScreenPokemon {
             },
             "badges": {
                 "valueDefault": {
-                    "Brock": false,
-                    "Misty": false,
-                    "LtSurge": false,
-                    "Erika": false,
-                    "Koga": false,
-                    "Sabrina": false,
-                    "Blaine": false,
-                    "Giovanni": false
+                    "Boulder": false,
+                    "Cascade": false,
+                    "Thunder": false,
+                    "Rainbow": false,
+                    "Soul": false,
+                    "Marsh": false,
+                    "Volcano": false,
+                    "Earth": false
                 }
             },
             "items": {

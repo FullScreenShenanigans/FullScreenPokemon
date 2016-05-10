@@ -1021,7 +1021,7 @@ module FullScreenPokemon {
 
             var itemSchema: IItemSchema = thing.FSP.MathDecider.getConstant("items")[selectItem];
 
-            if (!itemSchema.bagActivate(thing)) {
+            if (!itemSchema.bagActivate(thing, itemSchema)) {
                 thing.FSP.displayMessage(thing, itemSchema.error);
             }
 
@@ -1405,6 +1405,111 @@ module FullScreenPokemon {
             }
         }
 
+        /**
+         * Starts the Player fishing.
+         *
+         * @param player   A Player to start fishing.
+         * @param rod   The rod that will be used to fish.
+         */
+        startFishing(player: IPlayer, item: IItemSchema): void {
+            if (player.bordering[player.direction] === undefined ||
+                player.bordering[player.direction].title.indexOf("WaterEdge") === -1) {
+                player.FSP.cannotDoThat(player);
+                return;
+            }
+
+            let rod: IRod = <IRod>item;
+
+            player.FSP.MenuGrapher.createMenu("GeneralText", {
+                "deleteOnFinish": true,
+                "ignoreA": true,
+                "ignoreB": true
+            });
+            player.FSP.MenuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!"
+                ]);
+            player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+
+            player.FSP.setWidth(player, 7, true, true);
+            player.FSP.addClass(player, "fishing");
+
+            player.FSP.TimeHandler.addEvent(
+                function (): void {
+                    if (!player.FSP.MathDecider.compute("canLandFish", player)) {
+                        player.FSP.playerFailedLandingFish(player);
+                        return;
+                    }
+
+                    player.FSP.animateExclamation(player);
+                    player.FSP.playerLandedFish(player, rod);
+                },
+                180
+            );
+        }
+
+        /**
+         * Displays message and starts battle when player lands a fish.
+         *
+         * @param player   A Player who landed the fish.
+         * @param rod   The rod that will be used to fish.
+         */
+        playerLandedFish(player: IPlayer, rod: IRod): void {
+            let currentMap: IMap = <IMap>player.FSP.AreaSpawner.getMap(player.mapName),
+                currentArea: IArea = <IArea>currentMap.areas[player.bordering[player.direction].areaName],
+                options: IWildPokemonSchema[] = currentArea.wildPokemon.fishing[rod.type],
+                chosen: IWildPokemonSchema = player.FSP.chooseRandomWildPokemon(player.FSP, options),
+                chosenPokemon: IPokemon = player.FSP.createPokemon(chosen);
+
+            player.FSP.TimeHandler.addEvent(
+                function (): void {
+                    player.FSP.MenuGrapher.createMenu("GeneralText", {
+                        "deleteOnFinish": true
+                    });
+                    player.FSP.MenuGrapher.addMenuDialog(
+                        "GeneralText",
+                        [
+                            "Oh! \n It's a bite!"
+                        ],
+                        function (): void {
+                            player.FSP.startBattle({
+                                "opponent": {
+                                    "name": chosenPokemon.title,
+                                    "actors": [chosenPokemon],
+                                    "category": "Wild",
+                                    "sprite": chosenPokemon.title.join("") + "Front"
+                                }
+                            });
+                        });
+                    player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                    player.FSP.removeClass(player, "fishing");
+                    player.FSP.setWidth(player, 8, true, true);
+                },
+                140
+            );
+        }
+
+        /**
+         * Displays message when a Player does not land a fish.
+         *
+         * @param player   A Player who does not land a fish.
+         */
+        playerFailedLandingFish(player: IPlayer): void {
+            player.FSP.MenuGrapher.deleteActiveMenu();
+            player.FSP.displayMessage(player, "Ha u suck");
+            player.FSP.removeClass(player, "fishing");
+            player.FSP.setWidth(player, 8, true, true);
+        }
+
+        /**
+         * Displays message when a Player tries to use an item that cannot be used.
+         *
+         * @param player   A Player who cannot use an item.
+         */
+        cannotDoThat(player: IPlayer): void {
+            player.FSP.displayMessage(player, "OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
+        }
 
         /* General animations
         */
@@ -3344,18 +3449,19 @@ module FullScreenPokemon {
          * 
          * @param player   The Player.
          * @param thing   The Solid to be affected.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          */
         activateHMCharacter(player: IPlayer, thing: IHMCharacter): void {
-            var partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty"),
-                moves: BattleMovr.IMove[],
-                i: number,
-                j: number;
+            if (thing.requiredBadge && !player.FSP.ItemsHolder.getItem("badges")[thing.requiredBadge]) {
+                return;
+            }
 
-            for (i = 0; i < partyPokemon.length; i += 1) {
+            let partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty"),
+                moves: BattleMovr.IMove[];
+
+            for (let i: number = 0; i < partyPokemon.length; i += 1) {
                 moves = partyPokemon[i].moves;
 
-                for (j = 0; j < moves.length; j += 1) {
+                for (let j: number = 0; j < moves.length; j += 1) {
                     if (moves[j].title === thing.moveName) {
                         thing.moveCallback(player, partyPokemon[i]);
                         return;
@@ -3973,12 +4079,11 @@ module FullScreenPokemon {
         openPokemonMenuContext(settings: any): void {
             var moves: BattleMovr.IMove[] = settings.pokemon.moves,
                 options: any[] = [],
-                move: IMoveSchema,
-                i: number;
+                move: IHMMoveSchema;
 
-            for (i = 0; i < moves.length; i += 1) {
-                move = this.MathDecider.getConstant("moves")[moves[i].title];
-                if (move.partyActivate) {
+            for (let i: number = 0; i < moves.length; i += 1) {
+                move = <IHMMoveSchema>this.MathDecider.getConstant("moves")[moves[i].title];
+                if (move.partyActivate && move.requiredBadge && this.ItemsHolder.getItem("badges")[move.requiredBadge]) {
                     options.push({
                         "text": moves[i].title.toUpperCase(),
                         "callback": (): void => {
@@ -4813,22 +4918,24 @@ module FullScreenPokemon {
          * 
          * @param thing   An in-game Player.
          */
-        checkPlayerGrassBattle(thing: IPlayer): void {
+        checkPlayerGrassBattle(thing: IPlayer): boolean {
             if (!thing.grass || thing.FSP.MenuGrapher.getActiveMenu()) {
-                return;
+                return false;
             }
 
             if (!thing.FSP.ThingHitter.checkHitForThings(thing, thing.grass)) {
                 delete thing.grass;
-                return;
+                return false;
             }
 
             if (!thing.FSP.MathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
-                return;
+                return false;
             }
 
             thing.keys = thing.getKeys();
             thing.FSP.animateGrassBattleStart(thing, thing.grass);
+
+            return true;
         }
 
         /**
@@ -4986,12 +5093,11 @@ module FullScreenPokemon {
          * @param player   The Player.
          * @param pokemon   The Pokemon using the move.
          * @param move   The move being used.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add context for what happens if player is not bordering the correct HMCharacter.
          * @todo Refactor to give borderedThing a .hmActivate property.
          */
-        partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IMoveSchema): void {
-            var borderedThing: IThing = player.bordering[player.direction];
+        partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IHMMoveSchema): void {
+            let borderedThing: IThing = player.bordering[player.direction];
 
             if (borderedThing && borderedThing.title.indexOf(move.characterName) !== -1) {
                 move.partyActivate(player, pokemon);
@@ -5003,7 +5109,6 @@ module FullScreenPokemon {
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using Cut.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Add an animation for what happens when the CuttableTree is cut.
          */
         partyActivateCut(player: IPlayer, pokemon: IPokemon): void {
@@ -5017,7 +5122,6 @@ module FullScreenPokemon {
          *
          * @param player   The Player.
          * @param pokemon   The Pokemon using Strength.
-         * @todo Eventually add check to make sure the Player beat the Gym leader needed to use the move.
          * @todo Verify the exact speed, sound, and distance.
          */
         partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {

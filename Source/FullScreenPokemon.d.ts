@@ -911,7 +911,7 @@ declare module FullScreenPokemon {
          */
         grass?: IWildPokemonSchema[];
 
-        [i: string]: IWildPokemonSchema[];
+        fishing?: IFishing;
     }
 
     /**
@@ -1057,7 +1057,12 @@ declare module FullScreenPokemon {
          * Which status to give, such as "Sleep", if applicable.
          */
         status?: string;
+    }
 
+    /**
+     * An HM move or move that interacts with the environment.
+     */
+    export interface IHMMoveSchema extends IMoveSchema {
         /**
          * Activates a Function to perform an HM move outside of battle.
          */
@@ -1067,6 +1072,11 @@ declare module FullScreenPokemon {
          * The HMCharacter that the move affects.
          */
         characterName?: string;
+
+        /**
+         * The badge needed to use the HM move.
+         */
+        requiredBadge?: string;
     }
 
     /**
@@ -1098,6 +1108,42 @@ declare module FullScreenPokemon {
          * A Function to be called when the item is used.
          */
         bagActivate?: Function;
+    }
+
+    /**
+     * The types of Pokemon that can be caught with different rods.
+     */
+    export interface IFishing extends IItemSchema {
+        /**
+         * The Pokemon that can be caught using an Old Rod.
+         */
+        old?: IWildPokemonSchema[];
+
+        /**
+         * The Pokemon that can be caught using a Good Rod.
+         */
+        good?: IWildPokemonSchema[];
+
+        /**
+         * The Pokemon that can be caught using a Super Rod.
+         */
+        super?: IWildPokemonSchema[];
+    }
+
+    /**
+     * The type of rod that is being used.
+     */
+    export interface IRod extends IItemSchema {
+        /**
+         * The type of rod used. Can be old, good, or super.
+         * @todo Make type explicitly "old" | "good" | "super".
+         */
+        type: string;
+
+        /**
+         * The name of the rod used.
+         */
+        title: string;
     }
 
     /**
@@ -1946,6 +1992,11 @@ declare module FullScreenPokemon {
          * The partyActivate Function used to interact with this HMCharacter.
          */
         moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
+
+        /**
+         * The badge needed to activate this HMCharacter.
+         */
+        requiredBadge: string;
     }
 
     /**
