@@ -216,6 +216,28 @@ module FullScreenPokemon {
                         pcPokemon.push(thing);
                     }
                 }
+            },
+            {
+                name: "Infinite Repel",
+                enabled: false,
+                events: {
+                    /**
+                     * Prevents the Player from encountering any wild Pokemon.
+                     *
+                     * @param mod   The triggered mod.
+                     */
+                    onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
+                        this.checkPlayerGrassBattle = (): boolean => false;
+                    },
+                    /**
+                     * Allows the Player to encounter wild Pokemon.
+                     *
+                     * @param mod   The triggered mod.
+                     */
+                    onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
+                        this.checkPlayerGrassBattle = FullScreenPokemon.prototype.checkPlayerGrassBattle;
+                    }
+                }
             }]
     };
 }
