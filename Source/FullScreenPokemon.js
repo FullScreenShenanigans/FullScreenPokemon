@@ -3814,17 +3814,18 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.checkPlayerGrassBattle = function (thing) {
             if (!thing.grass || thing.FSP.MenuGrapher.getActiveMenu()) {
-                return;
+                return false;
             }
             if (!thing.FSP.ThingHitter.checkHitForThings(thing, thing.grass)) {
                 delete thing.grass;
-                return;
+                return false;
             }
             if (!thing.FSP.MathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
-                return;
+                return false;
             }
             thing.keys = thing.getKeys();
             thing.FSP.animateGrassBattleStart(thing, thing.grass);
+            return true;
         };
         /**
          * Chooses a random wild Pokemon schema from the given ones.

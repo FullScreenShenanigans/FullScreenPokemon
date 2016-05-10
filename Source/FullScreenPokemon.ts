@@ -4914,22 +4914,24 @@ module FullScreenPokemon {
          * 
          * @param thing   An in-game Player.
          */
-        checkPlayerGrassBattle(thing: IPlayer): void {
+        checkPlayerGrassBattle(thing: IPlayer): boolean {
             if (!thing.grass || thing.FSP.MenuGrapher.getActiveMenu()) {
-                return;
+                return false;
             }
 
             if (!thing.FSP.ThingHitter.checkHitForThings(thing, thing.grass)) {
                 delete thing.grass;
-                return;
+                return false;
             }
 
             if (!thing.FSP.MathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
-                return;
+                return false;
             }
 
             thing.keys = thing.getKeys();
             thing.FSP.animateGrassBattleStart(thing, thing.grass);
+
+            return true;
         }
 
         /**
