@@ -193,6 +193,28 @@ var FullScreenPokemon;
                         pcPokemon.push(thing);
                     }
                 }
+            },
+            {
+                name: "Infinite Repel",
+                enabled: false,
+                events: {
+                    /**
+                     * Prevents the Player from encountering any wild Pokemon.
+                     *
+                     * @param mod   The triggered mod.
+                     */
+                    onModEnable: function (mod) {
+                        this.checkPlayerGrassBattle = function () { return false; };
+                    },
+                    /**
+                     * Allows the Player to encounter wild Pokemon.
+                     *
+                     * @param mod   The triggered mod.
+                     */
+                    onModDisable: function (mod) {
+                        this.checkPlayerGrassBattle = FullScreenPokemon.FullScreenPokemon.prototype.checkPlayerGrassBattle;
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));
