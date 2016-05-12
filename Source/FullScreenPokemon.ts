@@ -764,7 +764,7 @@ module FullScreenPokemon {
         /**
          * 
          * Reacts to a Character simulating an up key press. If possible, this causes
-         * walking in the left direction. The onKeyDownUp mod trigger is fired.
+         * walking in the up direction. The onKeyDownUp mod trigger is fired.
          * 
          * @param thing   The triggering Character.
          * @param event   The original user-caused Event.
@@ -794,7 +794,7 @@ module FullScreenPokemon {
         /**
          * 
          * Reacts to a Character simulating a right key press. If possible, this causes
-         * walking in the left direction. The onKeyDownRight mod trigger is fired.
+         * walking in the right direction. The onKeyDownRight mod trigger is fired.
          * 
          * @param thing   The triggering Character.
          * @param event   The original user-caused Event.
@@ -822,7 +822,7 @@ module FullScreenPokemon {
         /**
          * 
          * Reacts to a Character simulating a down key press. If possible, this causes
-         * walking in the left direction. The onKeyDownDown mod trigger is fired.
+         * walking in the down direction. The onKeyDownDown mod trigger is fired.
          * 
          * @param thing   The triggering Character.
          * @param event   The original user-caused Event.
