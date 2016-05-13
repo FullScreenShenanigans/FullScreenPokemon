@@ -2477,6 +2477,8 @@ module FullScreenPokemon {
         animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
             var onStop: IWalkingOnStop;
 
+            thing.FSP.ModAttacher.fireEvent("onDialogFinish", other);
+
             if (other.pushSteps) {
                 onStop = other.pushSteps;
             }
@@ -2529,8 +2531,10 @@ module FullScreenPokemon {
 
             if (other.dialogOptions) {
                 thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
-            } else if (other.trainer) {
+            } else if (other.trainer && !(<IEnemy>other).alreadyBattled) {
                 thing.FSP.animateTrainerBattleStart(thing, <IEnemy>other);
+                (<IEnemy>other).alreadyBattled = true;
+                thing.FSP.StateHolder.addChange(other.id, "alreadyBattled", true);
             }
 
             if (other.trainer) {

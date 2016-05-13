@@ -1869,6 +1869,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.animateCharacterDialogFinish = function (thing, other) {
             var onStop;
+            thing.FSP.ModAttacher.fireEvent("onDialogFinish", other);
             if (other.pushSteps) {
                 onStop = other.pushSteps;
             }
@@ -1906,8 +1907,10 @@ var FullScreenPokemon;
             if (other.dialogOptions) {
                 thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
             }
-            else if (other.trainer) {
+            else if (other.trainer && !other.alreadyBattled) {
                 thing.FSP.animateTrainerBattleStart(thing, other);
+                other.alreadyBattled = true;
+                thing.FSP.StateHolder.addChange(other.id, "alreadyBattled", true);
             }
             if (other.trainer) {
                 other.trainer = false;
