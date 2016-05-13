@@ -215,6 +215,23 @@ var FullScreenPokemon;
                         this.checkPlayerGrassBattle = FullScreenPokemon.FullScreenPokemon.prototype.checkPlayerGrassBattle;
                     }
                 }
+            },
+            {
+                name: "Repeat Trainers",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        return;
+                    },
+                    onModDisable: function (mod) {
+                        return;
+                    },
+                    onDialogFinish: function (mod, eventName, other) {
+                        if (other.trainer) {
+                            other.alreadyBattled = false;
+                        }
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));

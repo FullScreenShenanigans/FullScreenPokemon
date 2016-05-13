@@ -1792,6 +1792,11 @@ declare module FullScreenPokemon {
         actors: IWildPokemonSchema[];
 
         /**
+         * Whether this trainer has already battled and shouldn't again.
+         */
+        alreadyBattled?: boolean;
+
+        /**
          * A badge to gift when this Enemy is defeated.
          */
         badge?: string;
