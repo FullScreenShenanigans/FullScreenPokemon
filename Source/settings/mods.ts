@@ -266,6 +266,14 @@ module FullScreenPokemon {
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
                         return;
                     },
+                    /**
+                     * This method is called right before the battle starts. It scales the enemy
+                     * pokemon to be around the same level as those in the player's party.
+                     * 
+                     * @param mod   The mod being fired.
+                     * @param eventName   The name of the mod event being fired.
+                     * @param battleInfo   Settings for the current battle.
+                     */
                     onBattleReady: function (mod: ModAttachr.IModAttachr, eventName: string, battleInfo: IBattleInfo): void {
                         let opponent: IBattleThingInfo = battleInfo.opponent,
                             player: IBattleThingInfo = battleInfo.player,
@@ -274,7 +282,7 @@ module FullScreenPokemon {
                             playerPokemonAvg: number = this.MathDecider.compute("averageLevel", player.actors);
 
                         for (let i: number = 0; i < opponent.actors.length; i += 1) {
-                            opponent.actors[i].level = playerPokemonAvg + opponent.actors[i].level - enemyPokemonAvg;
+                            opponent.actors[i].level += playerPokemonAvg - enemyPokemonAvg;
 
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 opponent.actors[i][statistics[j]] = this.MathDecider.compute(
