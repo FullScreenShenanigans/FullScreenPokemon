@@ -4780,8 +4780,6 @@ module FullScreenPokemon {
          * @param battleInfo   Settings for the battle.
          */
         startBattle(battleInfo: IBattleInfo): void {
-            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
-
             var animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -4799,6 +4797,8 @@ module FullScreenPokemon {
             player.actors = player.actors || this.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
+
+            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
 
             this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 

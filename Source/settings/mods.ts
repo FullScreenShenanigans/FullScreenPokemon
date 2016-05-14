@@ -255,6 +255,35 @@ module FullScreenPokemon {
                         }
                     }
                 }
+            },
+            {
+                name: "Scaling Levels",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod: ModAttachr.IModAttachrMod): void {
+                        return;
+                    },
+                    onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
+                        return;
+                    },
+                    onBattleStart: function (mod: ModAttachr.IModAttachr, eventName: string, battleInfo: IBattleInfo): void {
+                        let opponent: IBattleThingInfo = battleInfo.opponent,
+                            player: IBattleThingInfo = battleInfo.player,
+                            statistics: string[] = this.MathDecider.getConstant("statisticNames"),
+                            enemyPokemonAvg: number = this.MathDecider.compute("averageLevels", opponent.actors),
+                            playerPokemonAvg: number = this.MathDecider.compute("averageLevels", player.actors);
+
+                        for (let i: number = 0; i < opponent.actors.length; i += 1) {
+                            let difference: number = opponent.actors[i].level - enemyPokemonAvg;
+
+                            opponent.actors[i].level = playerPokemonAvg + difference;
+                            for (let j: number = 0; j < statistics.length; j += 1) {
+                                opponent.actors[i][statistics[j]] = this.MathDecider.compute(
+                                    "pokemonStatistic", opponent.actors[i], statistics[j]);
+                            }
+                        }
+                    }
+                }
             }]
     };
 }

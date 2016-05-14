@@ -232,6 +232,28 @@ var FullScreenPokemon;
                         }
                     }
                 }
+            },
+            {
+                name: "Scaling Levels",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        return;
+                    },
+                    onModDisable: function (mod) {
+                        return;
+                    },
+                    onBattleStart: function (mod, eventName, battleInfo) {
+                        var opponent = battleInfo.opponent, player = battleInfo.player, statistics = this.MathDecider.getConstant("statisticNames"), enemyPokemonAvg = this.MathDecider.compute("averageLevels", opponent.actors), playerPokemonAvg = this.MathDecider.compute("averageLevels", player.actors);
+                        for (var i = 0; i < opponent.actors.length; i += 1) {
+                            var difference = opponent.actors[i].level - enemyPokemonAvg;
+                            opponent.actors[i].level = playerPokemonAvg + difference;
+                            for (var j = 0; j < statistics.length; j += 1) {
+                                opponent.actors[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", opponent.actors[i], statistics[j]);
+                            }
+                        }
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));
