@@ -3709,6 +3709,7 @@ var FullScreenPokemon;
          * @param battleInfo   Settings for the battle.
          */
         FullScreenPokemon.prototype.startBattle = function (battleInfo) {
+            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
             var animations = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -3722,7 +3723,7 @@ var FullScreenPokemon;
             player.actors = player.actors || this.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
-            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+            this.ModAttacher.fireEvent("onBattleReady", battleInfo);
             this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
             this["cutsceneBattleTransition" + animation](this, {
                 "battleInfo": battleInfo,

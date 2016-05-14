@@ -5,12 +5,12 @@ var FullScreenPokemon;
     "use strict";
     FullScreenPokemon.FullScreenPokemon.settings.math = {
         "equations": {
-            "averageLevels": function (constants, equations, actors) {
-                var avg = 0;
+            "averageLevel": function (constants, equations, actors) {
+                var average = 0;
                 for (var i = 0; i < actors.length; i += 1) {
-                    avg += actors[i].level;
+                    average += actors[i].level;
                 }
-                return Math.round(avg / actors.length);
+                return Math.round(average / actors.length);
             },
             "speedCycling": function (constants, equations, thing) {
                 return thing.speed * 2;
