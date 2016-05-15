@@ -102,6 +102,9 @@ module FullScreenPokemon {
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 partyPokemon[i][statistics[j]] = this.MathDecider.compute(
                                     "pokemonStatistic", partyPokemon[i], statistics[j]);
+                                if (statistics[j] === "HP") {
+                                    partyPokemon[i].HPNormal = partyPokemon[i][statistics[j]];
+                                }
                             }
                         }
                     },
@@ -115,6 +118,9 @@ module FullScreenPokemon {
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 partyPokemon[i][statistics[j]] = this.MathDecider.compute(
                                     "pokemonStatistic", partyPokemon[i], statistics[j]);
+                                if (statistics[j] === "HP") {
+                                    partyPokemon[i].HPNormal = partyPokemon[i][statistics[j]];
+                                }
                             }
                         }
                     }
@@ -287,6 +293,9 @@ module FullScreenPokemon {
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 opponent.actors[i][statistics[j]] = this.MathDecider.compute(
                                     "pokemonStatistic", opponent.actors[i], statistics[j]);
+                                if (statistics[j] === "HP") {
+                                    opponent.actors[i].HPNormal = opponent.actors[i][statistics[j]];
+                                }
                             }
                         }
                     }
