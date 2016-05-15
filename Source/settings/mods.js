@@ -244,7 +244,7 @@ var FullScreenPokemon;
                         return;
                     },
                     /**
-                     * This method is called right before the battle starts. It scales the enemy
+                     * This is called right before the battle starts. It scales the enemy
                      * pokemon to be around the same level as those in the player's party.
                      *
                      * @param mod   The mod being fired.
