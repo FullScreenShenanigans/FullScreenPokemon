@@ -3723,6 +3723,7 @@ var FullScreenPokemon;
             player.actors = player.actors || this.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
+            this.ModAttacher.fireEvent("onBattleReady", battleInfo);
             this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
             this["cutsceneBattleTransition" + animation](this, {
                 "battleInfo": battleInfo,

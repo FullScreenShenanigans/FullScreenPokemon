@@ -232,6 +232,35 @@ var FullScreenPokemon;
                         }
                     }
                 }
+            },
+            {
+                name: "Scaling Levels",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod) {
+                        return;
+                    },
+                    onModDisable: function (mod) {
+                        return;
+                    },
+                    /**
+                     * Right before the battle starts, scales the enemy Pokemon
+                     * to be around the same level as those in the player's party.
+                     *
+                     * @param mod   The mod being fired.
+                     * @param eventName   The name of the mod event being fired.
+                     * @param battleInfo   Settings for the current battle.
+                     */
+                    onBattleReady: function (mod, eventName, battleInfo) {
+                        var opponent = battleInfo.opponent, player = battleInfo.player, statistics = this.MathDecider.getConstant("statisticNames"), enemyPokemonAvg = this.MathDecider.compute("averageLevel", opponent.actors), playerPokemonAvg = this.MathDecider.compute("averageLevel", player.actors);
+                        for (var i = 0; i < opponent.actors.length; i += 1) {
+                            opponent.actors[i].level += playerPokemonAvg - enemyPokemonAvg;
+                            for (var j = 0; j < statistics.length; j += 1) {
+                                opponent.actors[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", opponent.actors[i], statistics[j]);
+                            }
+                        }
+                    }
+                }
             }]
     };
 })(FullScreenPokemon || (FullScreenPokemon = {}));
