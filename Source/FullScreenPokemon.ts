@@ -2477,6 +2477,8 @@ module FullScreenPokemon {
         animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
             var onStop: IWalkingOnStop;
 
+            thing.FSP.ModAttacher.fireEvent("onDialogFinish", other);
+
             if (other.pushSteps) {
                 onStop = other.pushSteps;
             }
@@ -2529,8 +2531,10 @@ module FullScreenPokemon {
 
             if (other.dialogOptions) {
                 thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
-            } else if (other.trainer) {
+            } else if (other.trainer && !(<IEnemy>other).alreadyBattled) {
                 thing.FSP.animateTrainerBattleStart(thing, <IEnemy>other);
+                (<IEnemy>other).alreadyBattled = true;
+                thing.FSP.StateHolder.addChange(other.id, "alreadyBattled", true);
             }
 
             if (other.trainer) {
@@ -4505,7 +4509,9 @@ module FullScreenPokemon {
          *                   to optionally override the player's inventory.
          */
         openItemsMenu(settings: IItemsMenuSettings): void {
-            var items: IItemSchema[] = settings.items || this.ItemsHolder.getItem("items");
+            var items: IItemSchema[] = settings.items || this.ItemsHolder.getItem("items").slice();
+
+            this.ModAttacher.fireEvent("onOpenItemsMenu", items);
 
             this.MenuGrapher.createMenu("Items", settings);
             this.MenuGrapher.addMenuList("Items", {
@@ -4774,6 +4780,8 @@ module FullScreenPokemon {
          * @param battleInfo   Settings for the battle.
          */
         startBattle(battleInfo: IBattleInfo): void {
+            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+
             var animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -4791,6 +4799,8 @@ module FullScreenPokemon {
             player.actors = player.actors || this.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
+
+            this.ModAttacher.fireEvent("onBattleReady", battleInfo);
 
             this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 
@@ -6037,6 +6047,8 @@ module FullScreenPokemon {
                     );
                     FSP.MenuGrapher.setActiveMenu("GeneralText");
                 });
+
+            FSP.ModAttacher.fireEvent("onFaint", actor, battleInfo.player.actors);
         }
 
         /**
@@ -6457,6 +6469,7 @@ module FullScreenPokemon {
             FSP.MapScreener.blockInputs = false;
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
+            FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
         }
 
         /**

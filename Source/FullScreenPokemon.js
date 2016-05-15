@@ -1869,6 +1869,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.animateCharacterDialogFinish = function (thing, other) {
             var onStop;
+            thing.FSP.ModAttacher.fireEvent("onDialogFinish", other);
             if (other.pushSteps) {
                 onStop = other.pushSteps;
             }
@@ -1906,8 +1907,10 @@ var FullScreenPokemon;
             if (other.dialogOptions) {
                 thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
             }
-            else if (other.trainer) {
+            else if (other.trainer && !other.alreadyBattled) {
                 thing.FSP.animateTrainerBattleStart(thing, other);
+                other.alreadyBattled = true;
+                thing.FSP.StateHolder.addChange(other.id, "alreadyBattled", true);
             }
             if (other.trainer) {
                 other.trainer = false;
@@ -3496,7 +3499,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.openItemsMenu = function (settings) {
             var _this = this;
-            var items = settings.items || this.ItemsHolder.getItem("items");
+            var items = settings.items || this.ItemsHolder.getItem("items").slice();
+            this.ModAttacher.fireEvent("onOpenItemsMenu", items);
             this.MenuGrapher.createMenu("Items", settings);
             this.MenuGrapher.addMenuList("Items", {
                 "options": items.map(function (schema) {
@@ -3705,6 +3709,7 @@ var FullScreenPokemon;
          * @param battleInfo   Settings for the battle.
          */
         FullScreenPokemon.prototype.startBattle = function (battleInfo) {
+            this.ModAttacher.fireEvent("onBattleStart", battleInfo);
             var animations = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -3718,6 +3723,7 @@ var FullScreenPokemon;
             player.actors = player.actors || this.ItemsHolder.getItem("PokemonInParty");
             player.hasActors = typeof player.hasActors === "undefined"
                 ? true : player.hasActors;
+            this.ModAttacher.fireEvent("onBattleReady", battleInfo);
             this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
             this["cutsceneBattleTransition" + animation](this, {
                 "battleInfo": battleInfo,
@@ -4551,6 +4557,7 @@ var FullScreenPokemon;
                 ], FSP.ScenePlayer.bindRoutine(nextRoutine, args));
                 FSP.MenuGrapher.setActiveMenu("GeneralText");
             });
+            FSP.ModAttacher.fireEvent("onFaint", actor, battleInfo.player.actors);
         };
         /**
          * Cutscene for choosing what to do after a Pokemon faints in battle.
@@ -4868,6 +4875,7 @@ var FullScreenPokemon;
             FSP.MapScreener.blockInputs = false;
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
+            FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
         };
         /**
          * Cutscene for changing a statistic in battle.

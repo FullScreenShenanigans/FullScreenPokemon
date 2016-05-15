@@ -6,6 +6,15 @@ module FullScreenPokemon {
 
     FullScreenPokemon.settings.math = {
         "equations": {
+            "averageLevel": function (constants: IMathConstants, equations: IMathEquations, actors: IPokemon[]): number {
+                let average: number = 0;
+
+                for (let i: number = 0; i < actors.length; i += 1) {
+                    average += actors[i].level;
+                }
+
+                return Math.round(average / actors.length);
+            },
             "speedCycling": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
                 return thing.speed * 2;
             },

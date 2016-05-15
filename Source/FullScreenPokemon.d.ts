@@ -845,6 +845,11 @@ declare module FullScreenPokemon {
          * Wild Pokemon that may appear in this Area.
          */
         wildPokemon: IAreaWildPokemonOptionGroups;
+
+        /**
+         * Whether the Player has encountered a Pokemon in this area's grass.
+         */
+        pokemonEncountered?: boolean;
     }
 
     /**
@@ -1332,6 +1337,11 @@ declare module FullScreenPokemon {
          * Whether the Pokemon was traded from another trainer.
          */
         traded?: boolean;
+
+        /**
+         * The level the Pokemon was before enabling the Level 100 mod.
+         */
+        previousLevel?: number;
     }
 
     /**
@@ -1782,6 +1792,11 @@ declare module FullScreenPokemon {
         actors: IWildPokemonSchema[];
 
         /**
+         * Whether this trainer has already battled and shouldn't again.
+         */
+        alreadyBattled?: boolean;
+
+        /**
          * A badge to gift when this Enemy is defeated.
          */
         badge?: string;
@@ -1805,6 +1820,11 @@ declare module FullScreenPokemon {
          * A cutscene to trigger after defeated in battle.
          */
         nextCutscene?: string;
+
+        /**
+         * The title of the trainer before enabling the Joey's Rattata mod.
+         */
+        previousTitle?: string;
 
         /**
          * A monetary reward to give after defeated in battle.
