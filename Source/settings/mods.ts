@@ -267,8 +267,8 @@ module FullScreenPokemon {
                         return;
                     },
                     /**
-                     * This is called right before the battle starts. It scales the enemy
-                     * pokemon to be around the same level as those in the player's party.
+                     * Right before the battle starts, scales the enemy Pokemon
+                     * to be around the same level as those in the player's party.
                      * 
                      * @param mod   The mod being fired.
                      * @param eventName   The name of the mod event being fired.
