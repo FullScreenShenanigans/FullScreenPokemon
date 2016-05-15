@@ -87,13 +87,17 @@ var FullScreenPokemon;
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             // Note: the page mentions rounding errors... 
             "pokemonStatistic": function (constants, equations, pokemon, statistic) {
-                var topExtra = 0, added = 5, base = constants.pokemon[pokemon.title.join("")][statistic], iv = pokemon.IV[statistic] || 0, ev = pokemon.EV[statistic] || 0, level = pokemon.level, numerator;
+                var topExtra = 0, added = 5, base = constants.pokemon[pokemon.title.join("")][statistic], iv = pokemon.IV[statistic] || 0, ev = pokemon.EV[statistic] || 0, level = pokemon.level, numerator, result;
                 if (statistic === "HP") {
                     topExtra = 50;
                     added = 10;
                 }
                 numerator = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
-                return (numerator / 50 + added) | 0;
+                result = (numerator / 50 + added) | 0;
+                if (statistic === "HP") {
+                    pokemon.HPNormal = result;
+                }
+                return result;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
             "doesGrassEncounterHappen": function (constants, equations, grass) {
