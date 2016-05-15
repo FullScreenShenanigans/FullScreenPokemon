@@ -121,8 +121,7 @@ module FullScreenPokemon {
                     iv: number = pokemon.IV[statistic] || 0,
                     ev: number = pokemon.EV[statistic] || 0,
                     level: number = pokemon.level,
-                    numerator: number,
-                    result: number;
+                    numerator: number;
 
                 if (statistic === "HP") {
                     topExtra = 50;
@@ -130,13 +129,8 @@ module FullScreenPokemon {
                 }
 
                 numerator = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
-                result = (numerator / 50 + added) | 0;
 
-                if (statistic === "HP") {
-                    pokemon.HPNormal = result;
-                }
-
-                return result;
+                return (numerator / 50 + added) | 0;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
             "doesGrassEncounterHappen": function (constants: IMathConstants, equations: IMathEquations, grass: IGrass): boolean {
