@@ -95,10 +95,8 @@ var FullScreenPokemon;
                             partyPokemon[i].previousLevel = partyPokemon[i].level;
                             partyPokemon[i].level = 100;
                             for (var j = 0; j < statistics.length; j += 1) {
-                                partyPokemon[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
-                                if (statistics[j] === "HP") {
-                                    partyPokemon[i].HPNormal = partyPokemon[i][statistics[j]];
-                                }
+                                partyPokemon[i][statistics[j]] = partyPokemon[i][statistics[j] + "Normal"] =
+                                    this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
                             }
                         }
                     },
@@ -108,10 +106,8 @@ var FullScreenPokemon;
                             partyPokemon[i].level = partyPokemon[i].previousLevel;
                             partyPokemon[i].previousLevel = undefined;
                             for (var j = 0; j < statistics.length; j += 1) {
-                                partyPokemon[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
-                                if (statistics[j] === "HP") {
-                                    partyPokemon[i].HPNormal = partyPokemon[i][statistics[j]];
-                                }
+                                partyPokemon[i][statistics[j]] = partyPokemon[i][statistics[j] + "Normal"] =
+                                    this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
                             }
                         }
                     }
@@ -262,10 +258,8 @@ var FullScreenPokemon;
                         for (var i = 0; i < opponent.actors.length; i += 1) {
                             opponent.actors[i].level += playerPokemonAvg - enemyPokemonAvg;
                             for (var j = 0; j < statistics.length; j += 1) {
-                                opponent.actors[i][statistics[j]] = this.MathDecider.compute("pokemonStatistic", opponent.actors[i], statistics[j]);
-                                if (statistics[j] === "HP") {
-                                    opponent.actors[i].HPNormal = opponent.actors[i][statistics[j]];
-                                }
+                                opponent.actors[i][statistics[j]] = opponent.actors[i][statistics[j] + "Normal"] =
+                                    this.MathDecider.compute("pokemonStatistic", opponent.actors[i], statistics[j]);
                             }
                         }
                     }
