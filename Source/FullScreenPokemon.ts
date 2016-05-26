@@ -2764,7 +2764,7 @@ module FullScreenPokemon {
                 },
                 speed * (steps / 2) | 0);
 
-            // Delete the shadow after the jump is done
+            // Delete the shadow after the jump is done and allow the Player to move
             thing.FSP.TimeHandler.addEvent(
                 function (): void {
                     delete thing.ledge;
@@ -2773,12 +2773,7 @@ module FullScreenPokemon {
                     if (!thing.walking) {
                         thing.FSP.animateCharacterStopWalking(thing);
                     }
-                },
-                steps * speed);
 
-            // allow the user to move the character after the jump 
-            thing.FSP.TimeHandler.addEvent(
-                function (): void {
                     if (thing.player) {
                         (<IPlayer>thing).canKeyWalking = true;
                         thing.FSP.MapScreener.blockInputs = false;

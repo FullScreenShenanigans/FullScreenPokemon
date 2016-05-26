@@ -2081,16 +2081,13 @@ var FullScreenPokemon;
             thing.FSP.TimeHandler.addEvent(function () {
                 dy *= -1;
             }, speed * (steps / 2) | 0);
-            // Delete the shadow after the jump is done
+            // Delete the shadow after the jump is done and allow the Player to move
             thing.FSP.TimeHandler.addEvent(function () {
                 delete thing.ledge;
                 thing.FSP.killNormal(shadow);
                 if (!thing.walking) {
                     thing.FSP.animateCharacterStopWalking(thing);
                 }
-            }, steps * speed);
-            // allow the user to move the character after the jump 
-            thing.FSP.TimeHandler.addEvent(function () {
                 if (thing.player) {
                     thing.canKeyWalking = true;
                     thing.FSP.MapScreener.blockInputs = false;
