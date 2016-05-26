@@ -8400,6 +8400,7 @@ module FullScreenPokemon {
          * @param settings   Settings used for the cutscene.
          */
         cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(FSP: FullScreenPokemon, settings: any): void {
+            FSP.MapScreener.blockInputs = true;
             var rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
                 starterRival: string[],
                 steps: number,
@@ -8474,6 +8475,7 @@ module FullScreenPokemon {
                     settings.rivalPokeball.hidden = true;
                     FSP.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                     FSP.MenuGrapher.deleteActiveMenu();
+                    FSP.MapScreener.blockInputs = false;
                 });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
 

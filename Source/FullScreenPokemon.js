@@ -6209,6 +6209,7 @@ var FullScreenPokemon;
          * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalWalksToPokemon = function (FSP, settings) {
+            FSP.MapScreener.blockInputs = true;
             var rival = FSP.getThingById("Rival"), starterRival, steps, pokeball;
             FSP.MenuGrapher.deleteMenu("Keyboard");
             FSP.MenuGrapher.deleteMenu("GeneralText");
@@ -6263,6 +6264,7 @@ var FullScreenPokemon;
                 settings.rivalPokeball.hidden = true;
                 FSP.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                 FSP.MenuGrapher.deleteActiveMenu();
+                FSP.MapScreener.blockInputs = false;
             });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
