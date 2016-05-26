@@ -2764,7 +2764,7 @@ module FullScreenPokemon {
                 },
                 speed * (steps / 2) | 0);
 
-            // Delete the shadow after the jump is done
+            // Delete the shadow after the jump is done and allow the Player to move
             thing.FSP.TimeHandler.addEvent(
                 function (): void {
                     delete thing.ledge;
@@ -2772,6 +2772,11 @@ module FullScreenPokemon {
 
                     if (!thing.walking) {
                         thing.FSP.animateCharacterStopWalking(thing);
+                    }
+
+                    if (thing.player) {
+                        (<IPlayer>thing).canKeyWalking = true;
+                        thing.FSP.MapScreener.blockInputs = false;
                     }
                 },
                 steps * speed);
@@ -3164,6 +3169,10 @@ module FullScreenPokemon {
                 }
             }
 
+            if (thing.player) {
+                (<IPlayer>thing).canKeyWalking = false;
+                thing.FSP.MapScreener.blockInputs = true;
+            }
             thing.FSP.animateCharacterHopLedge(thing, other);
 
             return true;
@@ -8386,6 +8395,7 @@ module FullScreenPokemon {
          * @param settings   Settings used for the cutscene.
          */
         cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(FSP: FullScreenPokemon, settings: any): void {
+            FSP.MapScreener.blockInputs = true;
             var rival: ICharacter = <ICharacter>FSP.getThingById("Rival"),
                 starterRival: string[],
                 steps: number,
@@ -8460,6 +8470,7 @@ module FullScreenPokemon {
                     settings.rivalPokeball.hidden = true;
                     FSP.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                     FSP.MenuGrapher.deleteActiveMenu();
+                    FSP.MapScreener.blockInputs = false;
                 });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
 

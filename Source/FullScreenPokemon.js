@@ -2081,12 +2081,16 @@ var FullScreenPokemon;
             thing.FSP.TimeHandler.addEvent(function () {
                 dy *= -1;
             }, speed * (steps / 2) | 0);
-            // Delete the shadow after the jump is done
+            // Delete the shadow after the jump is done and allow the Player to move
             thing.FSP.TimeHandler.addEvent(function () {
                 delete thing.ledge;
                 thing.FSP.killNormal(shadow);
                 if (!thing.walking) {
                     thing.FSP.animateCharacterStopWalking(thing);
+                }
+                if (thing.player) {
+                    thing.canKeyWalking = true;
+                    thing.FSP.MapScreener.blockInputs = false;
                 }
             }, steps * speed);
         };
@@ -2418,6 +2422,10 @@ var FullScreenPokemon;
                 if (thing.top === other.bottom || thing.bottom === other.top) {
                     return true;
                 }
+            }
+            if (thing.player) {
+                thing.canKeyWalking = false;
+                thing.FSP.MapScreener.blockInputs = true;
             }
             thing.FSP.animateCharacterHopLedge(thing, other);
             return true;
@@ -6198,6 +6206,7 @@ var FullScreenPokemon;
          * @param settings   Settings used for the cutscene.
          */
         FullScreenPokemon.prototype.cutsceneOakIntroPokemonChoiceRivalWalksToPokemon = function (FSP, settings) {
+            FSP.MapScreener.blockInputs = true;
             var rival = FSP.getThingById("Rival"), starterRival, steps, pokeball;
             FSP.MenuGrapher.deleteMenu("Keyboard");
             FSP.MenuGrapher.deleteMenu("GeneralText");
@@ -6252,6 +6261,7 @@ var FullScreenPokemon;
                 settings.rivalPokeball.hidden = true;
                 FSP.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                 FSP.MenuGrapher.deleteActiveMenu();
+                FSP.MapScreener.blockInputs = false;
             });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
