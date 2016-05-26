@@ -2089,6 +2089,13 @@ var FullScreenPokemon;
                     thing.FSP.animateCharacterStopWalking(thing);
                 }
             }, steps * speed);
+            // allow the user to move the character after the jump 
+            thing.FSP.TimeHandler.addEvent(function () {
+                if (thing.player) {
+                    thing.canKeyWalking = true;
+                    thing.FSP.MapScreener.blockInputs = false;
+                }
+            }, steps * speed);
         };
         /* Collision detection
         */
@@ -2418,6 +2425,10 @@ var FullScreenPokemon;
                 if (thing.top === other.bottom || thing.bottom === other.top) {
                     return true;
                 }
+            }
+            if (thing.player) {
+                thing.canKeyWalking = false;
+                thing.FSP.MapScreener.blockInputs = true;
             }
             thing.FSP.animateCharacterHopLedge(thing, other);
             return true;

@@ -2775,6 +2775,16 @@ module FullScreenPokemon {
                     }
                 },
                 steps * speed);
+
+            // allow the user to move the character after the jump 
+            thing.FSP.TimeHandler.addEvent(
+                function (): void {
+                    if (thing.player) {
+                        (<IPlayer>thing).canKeyWalking = true;
+                        thing.FSP.MapScreener.blockInputs = false;
+                    }
+                },
+                steps * speed);
         }
 
 
@@ -3164,6 +3174,10 @@ module FullScreenPokemon {
                 }
             }
 
+            if (thing.player) {
+                (<IPlayer>thing).canKeyWalking = false;
+                thing.FSP.MapScreener.blockInputs = true;
+            }
             thing.FSP.animateCharacterHopLedge(thing, other);
 
             return true;
