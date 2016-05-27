@@ -2088,6 +2088,10 @@ var FullScreenPokemon;
                 if (!thing.walking) {
                     thing.FSP.animateCharacterStopWalking(thing);
                 }
+                if (thing.player) {
+                    thing.canKeyWalking = true;
+                    thing.FSP.MapScreener.blockInputs = false;
+                }
             }, steps * speed);
         };
         /* Collision detection
@@ -2418,6 +2422,10 @@ var FullScreenPokemon;
                 if (thing.top === other.bottom || thing.bottom === other.top) {
                     return true;
                 }
+            }
+            if (thing.player) {
+                thing.canKeyWalking = false;
+                thing.FSP.MapScreener.blockInputs = true;
             }
             thing.FSP.animateCharacterHopLedge(thing, other);
             return true;
@@ -6202,6 +6210,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("Keyboard");
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.MenuGrapher.deleteMenu("Yes/No");
+            FSP.MapScreener.blockInputs = true;
             switch (settings.chosen.join("")) {
                 case "SQUIRTLE":
                     steps = 4;
@@ -6252,6 +6261,7 @@ var FullScreenPokemon;
                 settings.rivalPokeball.hidden = true;
                 FSP.StateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                 FSP.MenuGrapher.deleteActiveMenu();
+                FSP.MapScreener.blockInputs = false;
             });
             FSP.MenuGrapher.setActiveMenu("GeneralText");
         };
