@@ -1744,6 +1744,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.animatePlayerStopWalking = function (thing, onStop) {
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
+                thing.canKeyWalking = true;
                 return false;
             }
             if (thing.following) {

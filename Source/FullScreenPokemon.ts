@@ -2326,6 +2326,7 @@ module FullScreenPokemon {
          */
         animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
             if (thing.FSP.checkPlayerGrassBattle(thing)) {
+                thing.canKeyWalking = true;
                 return false;
             }
 
