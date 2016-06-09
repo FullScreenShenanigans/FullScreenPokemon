@@ -766,7 +766,11 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "tolBottom": 0,
             "tolLeft": 0,
             // Triggered Functions
-            "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess
+            "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess,
+            // State History
+            "stateHolder": {},
+            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
+            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
         },
         "Character": {
             "groupType": "Character",

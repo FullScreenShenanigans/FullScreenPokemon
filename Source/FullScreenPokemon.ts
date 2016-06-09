@@ -2636,7 +2636,10 @@ module FullScreenPokemon {
             thing.following = other;
             other.follower = thing;
 
-            thing.speedOld = thing.speed;
+            // thing.speedOld = thing.speed;
+            thing.saveState(thing, "follow", {
+                speed: thing.speed
+            });
             thing.speed = other.speed;
 
             other.walkingCommands = [];
@@ -9192,6 +9195,26 @@ module FullScreenPokemon {
                 id = character.id;
 
                 FSP.saveCharacterPosition(FSP, character, id);
+            }
+        }
+
+        /**
+         * 
+         */
+        saveState(thing: IThing, description: string, information: any): void {
+            thing.state[description] = information;
+        }
+
+        /**
+         * 
+         */
+        restoreState(thing: IThing, description: string): void {
+            var state: GameStartr.IStateHoldr = thing.state[description];
+            var x: string;
+            for (x in state) {
+                if (state.hasOwnProperty(x)) {
+                    thing[x] = state[x];
+                }
             }
         }
 

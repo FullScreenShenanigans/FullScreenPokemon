@@ -1992,7 +1992,10 @@ var FullScreenPokemon;
             }
             thing.following = other;
             other.follower = thing;
-            thing.speedOld = thing.speed;
+            // thing.speedOld = thing.speed;
+            thing.saveState(thing, "follow", {
+                speed: thing.speed
+            });
             thing.speed = other.speed;
             other.walkingCommands = [];
             thing.FSP.animateCharacterSetDirection(thing, direction);
@@ -6789,6 +6792,24 @@ var FullScreenPokemon;
                 character = characters[i];
                 id = character.id;
                 FSP.saveCharacterPosition(FSP, character, id);
+            }
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.saveState = function (thing, description, information) {
+            thing.state[description] = information;
+        };
+        /**
+         *
+         */
+        FullScreenPokemon.prototype.restoreState = function (thing, description) {
+            var state = thing.state[description];
+            var x;
+            for (x in state) {
+                if (state.hasOwnProperty(x)) {
+                    thing[x] = state[x];
+                }
             }
         };
         /**
