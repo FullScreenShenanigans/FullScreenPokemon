@@ -196,6 +196,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "Notepad": {},
                 "Painting": {},
                 "PokeCenterPoster": {},
+                "Scratch": {},
                 "Shadow": {},
                 "SmokeSmall": {},
                 "SmokeMedium": {},
@@ -1117,6 +1118,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "repeat": true
         },
         "Note": [6.5, 7],
+        "Scratch": [7, 7],
         "Shadow": [7, 4],
         "SmokeSmall": [5.5, 5.5],
         "SmokeMedium": [7.5, 7.5],

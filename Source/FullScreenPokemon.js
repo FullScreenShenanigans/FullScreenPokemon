@@ -4988,6 +4988,30 @@ var FullScreenPokemon;
                 "amount": -1
             }));
         };
+        /**
+         * Cutscene for a Scratch attack in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleAttackScratch = function (FSP, settings, args) {
+            console.log("begining of scratch function");
+            // var attackerName: string = args.attackerName;
+            var defenderName = args.defenderName;
+            // var attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
+            var defender = FSP.BattleMover.getThing(defenderName);
+            // var direction: number = attackerName === "player" ? 1 : -1;
+            var dt = 100;
+            var scratch = FSP.addThing("Scratch");
+            console.log("made scratch Thing");
+            // var timeout: number = dt;
+            /*FSP.setMidXObj(scratch, defender);
+            FSP.setTop(scratch, defender.top);*/
+            FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratch);
+            console.log("sent kill function");
+            FSP.TimeHandler.addEvent(FSP.animateFlicker, dt, defender, 14, 5, args.callback);
+        };
         /* Outdoor cutscenes
         */
         /**
