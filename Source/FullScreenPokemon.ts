@@ -6682,15 +6682,20 @@ module FullScreenPokemon {
             var defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
             // var direction: number = attackerName === "player" ? 1 : -1;
             var dt: number = 100;
-            var scratch: IThing = FSP.addThing("Scratch");
+            // var scratch: IThing = FSP.addThing("Scratch");
+            var exclamation: IThing = FSP.addThing("Exclamation");
+            /*var scratch: IThing = <IThing>FSP.BattleMover.setThing(
+                "scratch",
+                "Scratch"
+            );*/
             console.log("made scratch Thing");
             // var timeout: number = dt;
 
-            /*FSP.setMidXObj(scratch, defender);
-            FSP.setTop(scratch, defender.top);*/
+            FSP.setMidXObj(exclamation, defender);
+            FSP.setTop(exclamation, defender.top);
+            // FSP.setBottom(exclamation, defender.top);
 
-            FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratch);
-            console.log("sent kill function");
+            FSP.TimeHandler.addEvent(FSP.killNormal, dt, exclamation);
 
             FSP.TimeHandler.addEvent(
                     FSP.animateFlicker,
