@@ -768,7 +768,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             // Triggered Functions
             "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess,
             // State History
-            "stateHolder": {},
+            "state": {},
             "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
             "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
         },
