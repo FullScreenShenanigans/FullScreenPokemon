@@ -722,7 +722,11 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "toly": 0
         },
         "Map": {
-            "initialized": false
+            "initialized": false,
+            // State History
+            "state": {},
+            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
+            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
         },
         "Area": {
             "background": "black",
@@ -739,10 +743,18 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                         { "thing": "InvisibleWall", "noBoundaryStretch": true }
                     ]
                 }
-            }
+            },
+            // State History
+            "state": {},
+            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
+            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
         },
         "Location": {
             "entry": "Normal",
+            // State History
+            "state": {},
+            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
+            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
         },
         "Thing": {
             // Sizing

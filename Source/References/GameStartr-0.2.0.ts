@@ -596,11 +596,6 @@ declare module GameStartr {
     export interface IScenePlayrCustoms extends IGameStartrSettingsObject { }
 
     /**
-     * 
-     */
-    export interface IStateHoldr extends IGameStartrSettingsObject { }
-
-    /**
      * Settings regarding collision detection, particularily for an IThingHittr.
      */
     export interface IThingHittrCustoms extends IGameStartrSettingsObject, ThingHittr.IThingHittrSettings { }
@@ -806,21 +801,6 @@ declare module GameStartr {
          * What to call when this is deleted from its Things group.
          */
         onDelete?: Function;
-        
-        /**
-         * What holds the state of a Thing, including xvel/yvel, nofall, etc.
-         */
-        state: IStateHoldr;
-        
-        /**
-         * Saves the state of a Thing.
-         */
-        saveState: Function;
-        
-        /**
-         * Restores the old state of a Thing.
-         */
-        restoreState: Function;
     }
 
     /**

@@ -1029,7 +1029,10 @@ var FullScreenPokemon;
                 return false;
             }
             thing.cycling = true;
-            thing.speedOld = thing.speed;
+            // thing.speedOld = thing.speed;
+            thing.saveState(thing, "cycling", {
+                speed: thing.speed
+            });
             thing.speed = this.MathDecider.compute("speedCycling", thing);
             thing.FSP.addClass(thing, "cycling");
             thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
@@ -1042,7 +1045,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.stopCycling = function (thing) {
             thing.cycling = false;
-            thing.speed = thing.speedOld;
+            // thing.speed = thing.speedOld;
+            thing.restoreState(thing, "cycling");
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
             thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
@@ -1992,11 +1996,9 @@ var FullScreenPokemon;
             }
             thing.following = other;
             other.follower = thing;
-            // thing.speedOld = thing.speed;
             thing.saveState(thing, "follow", {
                 speed: thing.speed
             });
-            console.log("saved state");
             thing.speed = other.speed;
             other.walkingCommands = [];
             thing.FSP.animateCharacterSetDirection(thing, direction);
@@ -2387,7 +2389,10 @@ var FullScreenPokemon;
                 return true;
             }
             thing.grass = other;
-            thing.heightOld = thing.height;
+            // thing.heightOld = thing.height;
+            thing.saveState(thing, "collide", {
+                height: thing.height
+            });
             // Todo: Find a better way than manually setting canvas height?
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
             thing.FSP.PixelDrawer.setThingSprite(thing);
@@ -6806,9 +6811,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.restoreState = function (thing, description) {
             var state = thing.state[description];
-            var x;
-            for (x in state) {
-                if (state.hasOwnProperty(x)) {
+            for (var x in state) {
+                if (thing.hasOwnProperty(x)) {
                     thing[x] = state[x];
                 }
             }

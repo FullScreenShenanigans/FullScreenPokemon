@@ -1367,7 +1367,7 @@ module FullScreenPokemon {
 
             thing.cycling = true;
             // thing.speedOld = thing.speed;
-            thing.saveState("cycling", {
+            thing.saveState(thing, "cycling", {
                 speed: thing.speed
             });
             thing.speed = this.MathDecider.compute("speedCycling", thing);
@@ -1386,7 +1386,7 @@ module FullScreenPokemon {
         stopCycling(thing: IPlayer): void {
             thing.cycling = false;
             // thing.speed = thing.speedOld;
-            thing.restoreState("cycling");
+            thing.restoreState(thing, "cycling");
 
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
@@ -2640,7 +2640,7 @@ module FullScreenPokemon {
             thing.following = other;
             other.follower = thing;
 
-            thing.saveState("follow", {
+            thing.saveState(thing, "follow", {
                 speed: thing.speed
             });
             thing.speed = other.speed;
@@ -3127,7 +3127,7 @@ module FullScreenPokemon {
 
             thing.grass = other;
             // thing.heightOld = thing.height;
-            thing.saveState("collide", {
+            thing.saveState(thing, "collide", {
                 height: thing.height
             });
 
@@ -9207,18 +9207,17 @@ module FullScreenPokemon {
         /**
          * 
          */
-        saveState(description: string, information: any): void {
-            this.state[description] = information;
+        saveState(thing: IThing | IArea | IMap | ILocation, description: string, information: any): void {
+            thing.state[description] = information;
         }
 
         /**
          * 
          */
-        restoreState(description: string): void {
-            var state: GameStartr.IStateHoldr = this.state[description];
-            var x: string;
-            for (x in state) {
-                if (state.hasOwnProperty(x)) {
+        restoreState(thing: IThing | IArea | IMap | ILocation, description: string): void {
+            var state: IState = thing.state[description];
+            for (var x in state) {
+                if (thing.hasOwnProperty(x)) {
                     thing[x] = state[x];
                 }
             }
