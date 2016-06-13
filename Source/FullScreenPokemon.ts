@@ -1384,7 +1384,6 @@ module FullScreenPokemon {
          */
         stopCycling(thing: IPlayer): void {
             thing.cycling = false;
-            // thing.speed = thing.speedOld;
             thing.restoreState(thing, "cycling");
 
             thing.FSP.removeClass(thing, "cycling");

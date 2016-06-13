@@ -1044,7 +1044,6 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.stopCycling = function (thing) {
             thing.cycling = false;
-            // thing.speed = thing.speedOld;
             thing.restoreState(thing, "cycling");
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
