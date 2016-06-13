@@ -2395,7 +2395,7 @@ declare module FullScreenPokemon {
         /**
          * The opponent's Character.
          */
-        opponent: ICharacter;
+        opponent: IEnemy;
     }
 
     /**
