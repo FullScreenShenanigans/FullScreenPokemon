@@ -1366,7 +1366,10 @@ module FullScreenPokemon {
             }
 
             thing.cycling = true;
-            thing.speedOld = thing.speed;
+            // thing.speedOld = thing.speed;
+            thing.saveState("cycling", {
+                speed: thing.speed
+            });
             thing.speed = this.MathDecider.compute("speedCycling", thing);
 
             thing.FSP.addClass(thing, "cycling");
@@ -1382,7 +1385,8 @@ module FullScreenPokemon {
          */
         stopCycling(thing: IPlayer): void {
             thing.cycling = false;
-            thing.speed = thing.speedOld;
+            // thing.speed = thing.speedOld;
+            thing.restoreState("cycling");
 
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
@@ -2636,8 +2640,7 @@ module FullScreenPokemon {
             thing.following = other;
             other.follower = thing;
 
-            // thing.speedOld = thing.speed;
-            thing.saveState(thing, "follow", {
+            thing.saveState("follow", {
                 speed: thing.speed
             });
             thing.speed = other.speed;
@@ -3123,7 +3126,10 @@ module FullScreenPokemon {
             }
 
             thing.grass = other;
-            thing.heightOld = thing.height;
+            // thing.heightOld = thing.height;
+            thing.saveState("collide", {
+                height: thing.height
+            });
 
             // Todo: Find a better way than manually setting canvas height?
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
@@ -9201,15 +9207,15 @@ module FullScreenPokemon {
         /**
          * 
          */
-        saveState(thing: IThing, description: string, information: any): void {
-            thing.state[description] = information;
+        saveState(description: string, information: any): void {
+            this.state[description] = information;
         }
 
         /**
          * 
          */
-        restoreState(thing: IThing, description: string): void {
-            var state: GameStartr.IStateHoldr = thing.state[description];
+        restoreState(description: string): void {
+            var state: GameStartr.IStateHoldr = this.state[description];
             var x: string;
             for (x in state) {
                 if (state.hasOwnProperty(x)) {

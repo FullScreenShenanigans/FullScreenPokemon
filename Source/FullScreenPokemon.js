@@ -1996,6 +1996,7 @@ var FullScreenPokemon;
             thing.saveState(thing, "follow", {
                 speed: thing.speed
             });
+            console.log("saved state");
             thing.speed = other.speed;
             other.walkingCommands = [];
             thing.FSP.animateCharacterSetDirection(thing, direction);
