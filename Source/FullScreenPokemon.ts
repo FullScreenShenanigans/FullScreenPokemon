@@ -9220,10 +9220,13 @@ module FullScreenPokemon {
          */
         restoreState(thing: IThing | IArea | IMap | ILocation, title: string): void {
             var state: IState = thing.state[title];
-            for (var x in state) {
-                if (thing.hasOwnProperty(x)) {
-                    thing[x] = state[x];
+            if (state) {
+                for (var x in state) {
+                    if (thing.hasOwnProperty(x)) {
+                        thing[x] = state[x];
+                    }
                 }
+                delete state[title];
             }
         }
 

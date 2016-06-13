@@ -6815,10 +6815,13 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.restoreState = function (thing, title) {
             var state = thing.state[title];
-            for (var x in state) {
-                if (thing.hasOwnProperty(x)) {
-                    thing[x] = state[x];
+            if (state) {
+                for (var x in state) {
+                    if (thing.hasOwnProperty(x)) {
+                        thing[x] = state[x];
+                    }
                 }
+                delete state[title];
             }
         };
         /**
