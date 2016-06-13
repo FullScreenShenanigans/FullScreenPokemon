@@ -1366,7 +1366,6 @@ module FullScreenPokemon {
             }
 
             thing.cycling = true;
-            // thing.speedOld = thing.speed;
             thing.saveState(thing, "cycling", {
                 speed: thing.speed
             });
@@ -3126,7 +3125,6 @@ module FullScreenPokemon {
             }
 
             thing.grass = other;
-            // thing.heightOld = thing.height;
             thing.saveState(thing, "collide", {
                 height: thing.height
             });
