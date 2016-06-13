@@ -9205,17 +9205,24 @@ module FullScreenPokemon {
         }
 
         /**
+         * Saves the current state.
          * 
+         * @param thing   The Thing, Area, Map, or Location saving its state.
+         * @param title   Name for the state being saved.
+         * @param information   The values of the state to be saved.
          */
-        saveState(thing: IThing | IArea | IMap | ILocation, description: string, information: any): void {
-            thing.state[description] = information;
+        saveState(thing: IThing | IArea | IMap | ILocation, title: string, information: IState): void {
+            thing.state[title] = information;
         }
 
         /**
+         * Restores the specified state.
          * 
+         * @param thing   The Thing having its state restored.
+         * @param title   The name of the state to restore.
          */
-        restoreState(thing: IThing | IArea | IMap | ILocation, description: string): void {
-            var state: IState = thing.state[description];
+        restoreState(thing: IThing | IArea | IMap | ILocation, title: string): void {
+            var state: IState = thing.state[title];
             for (var x in state) {
                 if (thing.hasOwnProperty(x)) {
                     thing[x] = state[x];

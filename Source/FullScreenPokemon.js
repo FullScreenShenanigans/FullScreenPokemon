@@ -6801,16 +6801,23 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Saves the current state.
          *
+         * @param thing   The Thing, Area, Map, or Location saving its state.
+         * @param title   Name for the state being saved.
+         * @param information   The values of the state to be saved.
          */
-        FullScreenPokemon.prototype.saveState = function (thing, description, information) {
-            thing.state[description] = information;
+        FullScreenPokemon.prototype.saveState = function (thing, title, information) {
+            thing.state[title] = information;
         };
         /**
+         * Restores the specified state.
          *
+         * @param thing   The Thing having its state restored.
+         * @param title   The name of the state to restore.
          */
-        FullScreenPokemon.prototype.restoreState = function (thing, description) {
-            var state = thing.state[description];
+        FullScreenPokemon.prototype.restoreState = function (thing, title) {
+            var state = thing.state[title];
             for (var x in state) {
                 if (thing.hasOwnProperty(x)) {
                     thing[x] = state[x];
