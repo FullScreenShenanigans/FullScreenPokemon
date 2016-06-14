@@ -724,9 +724,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
         "Map": {
             "initialized": false,
             // State History
-            "state": {},
-            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
-            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
+            "state": {}
         },
         "Area": {
             "background": "black",
@@ -745,16 +743,12 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 }
             },
             // State History
-            "state": {},
-            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
-            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
+            "state": {}
         },
         "Location": {
             "entry": "Normal",
             // State History
-            "state": {},
-            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
-            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
+            "state": {}
         },
         "Thing": {
             // Sizing
@@ -780,9 +774,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             // Triggered Functions
             "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess,
             // State History
-            "state": {},
-            "saveState": FullScreenPokemon.FullScreenPokemon.prototype.saveState,
-            "restoreState": FullScreenPokemon.FullScreenPokemon.prototype.restoreState
+            "state": {}
         },
         "Character": {
             "groupType": "Character",

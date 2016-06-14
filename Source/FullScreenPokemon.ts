@@ -1366,9 +1366,7 @@ module FullScreenPokemon {
             }
 
             thing.cycling = true;
-            thing.saveState(thing, "cycling", {
-                speed: thing.speed
-            });
+            thing.FSP.addStateHistory(thing, "speed", thing.speed);
             thing.speed = this.MathDecider.compute("speedCycling", thing);
 
             thing.FSP.addClass(thing, "cycling");
@@ -1384,7 +1382,7 @@ module FullScreenPokemon {
          */
         stopCycling(thing: IPlayer): void {
             thing.cycling = false;
-            thing.restoreState(thing, "cycling");
+            thing.FSP.popStateHistory(thing, "speed");
 
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
@@ -2638,9 +2636,7 @@ module FullScreenPokemon {
             thing.following = other;
             other.follower = thing;
 
-            thing.saveState(thing, "follow", {
-                speed: thing.speed
-            });
+            thing.FSP.addStateHistory(thing, "speed", thing.speed);
             thing.speed = other.speed;
 
             other.walkingCommands = [];
@@ -3124,9 +3120,7 @@ module FullScreenPokemon {
             }
 
             thing.grass = other;
-            thing.saveState(thing, "collide", {
-                height: thing.height
-            });
+            thing.FSP.addStateHistory(thing, "height", thing.height);
 
             // Todo: Find a better way than manually setting canvas height?
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
@@ -9202,31 +9196,31 @@ module FullScreenPokemon {
         }
 
         /**
-         * Saves the current state.
+         * Pushes and saves the current state of a variable to a stack.
          * 
-         * @param thing   The Thing, Area, Map, or Location saving its state.
+         * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
          * @param title   Name for the state being saved.
          * @param information   The values of the state to be saved.
          */
-        saveState(thing: IThing | IArea | IMap | ILocation, title: string, information: IState): void {
-            thing.state[title] = information;
+        addStateHistory(thing: IThing | IArea | IMap | ILocation, title: string, information: any): void {
+            var stateHistory: [any] = thing.state[title];
+            if (stateHistory) {
+                stateHistory.push(information);
+            } else {
+                thing.state[title] = [information];
+            }
         }
 
         /**
-         * Restores the specified state.
+         * Updates to the most recently saved state for a variable.
          * 
          * @param thing   The Thing having its state restored.
          * @param title   The name of the state to restore.
          */
-        restoreState(thing: IThing | IArea | IMap | ILocation, title: string): void {
-            var state: IState = thing.state[title];
-            if (state) {
-                for (var x in state) {
-                    if (thing.hasOwnProperty(x)) {
-                        thing[x] = state[x];
-                    }
-                }
-                delete state[title];
+        popStateHistory(thing: IThing | IArea | IMap | ILocation, title: string): void {
+            var stateHistory: [any] = thing.state[title];
+            if (stateHistory && stateHistory.length > 0) {
+                thing[title] = stateHistory.pop();
             }
         }
 

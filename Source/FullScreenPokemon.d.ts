@@ -24,25 +24,15 @@ declare module FullScreenPokemon {
      * Container for holding the states of non-primitive objects in the game.
      */
     export interface IStateObject {
-        [i: string]: any;
+        [i: string]: [any];
     }
 
-    export interface IState {
+    export interface IStateHistorySaveable {
         /**
          * Holds states, values of a collection of variables, of non-primitive
          * objects in the game.
          */
         state: IStateObject;
-
-        /**
-         * Saves the state of an object.
-         */
-        saveState: Function;
-
-        /**
-         * Restores an old state of an object.
-         */
-        restoreState: Function;
     }
 
     /**
@@ -778,7 +768,7 @@ declare module FullScreenPokemon {
     /**
      * A Map parsed from its raw JSON-friendly description.
      */
-    export interface IMap extends MapsCreatr.IMapsCreatrMap, IState {
+    export interface IMap extends MapsCreatr.IMapsCreatrMap, IStateHistorySaveable {
         /**
          * A listing of areas in the Map, keyed by name.
          */
@@ -811,7 +801,7 @@ declare module FullScreenPokemon {
     /**
      * An Area parsed from a raw JSON-friendly Map description.
      */
-    export interface IArea extends MapsCreatr.IMapsCreatrArea, IState {
+    export interface IArea extends MapsCreatr.IMapsCreatrArea, IStateHistorySaveable {
         /**
          * Whether the Area allows bicycling.
          */
@@ -972,7 +962,7 @@ declare module FullScreenPokemon {
     /**
      * A Location parsed from a raw JSON-friendly Map description.
      */
-    export interface ILocation extends MapsCreatr.IMapsCreatrLocation, IState {
+    export interface ILocation extends MapsCreatr.IMapsCreatrLocation, IStateHistorySaveable {
         /**
          * The Area this Location is a part of.
          */
@@ -1462,7 +1452,7 @@ declare module FullScreenPokemon {
     /**
      * An in-game Thing with size, velocity, position, and other information.
      */
-    export interface IThing extends GameStartr.IThing, IState {
+    export interface IThing extends GameStartr.IThing, IStateHistorySaveable {
         /**
          * The parent IFullScreenPokemon controlling this Thing.
          */
