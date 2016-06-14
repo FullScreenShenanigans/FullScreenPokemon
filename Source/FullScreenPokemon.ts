@@ -9200,7 +9200,7 @@ module FullScreenPokemon {
          * 
          * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
          * @param title   Name for the state being saved.
-         * @param information   The values of the state to be saved.
+         * @param information   The values of the variable to be saved.
          */
         addStateHistory(thing: IThing | IArea | IMap | ILocation, title: string, information: any): void {
             var stateHistory: [any] = thing.state[title];

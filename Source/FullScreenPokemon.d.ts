@@ -23,7 +23,7 @@ declare module FullScreenPokemon {
     /**
      * Container for holding the states of non-primitive objects in the game.
      */
-    export interface IStateObject {
+    export interface IStateHistoryObject {
         [i: string]: [any];
     }
 
@@ -32,7 +32,7 @@ declare module FullScreenPokemon {
          * Holds states, values of a collection of variables, of non-primitive
          * objects in the game.
          */
-        state: IStateObject;
+        state: IStateHistoryObject;
     }
 
     /**
