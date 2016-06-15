@@ -6817,13 +6817,14 @@ var FullScreenPokemon;
          * @param title   The name of the state to restore.
          */
         FullScreenPokemon.prototype.popStateHistory = function (thing, title) {
+            if (!thing.state) {
+                throw new Error("State property is not defined for '" + thing + "'.");
+            }
             var stateHistory = thing.state[title];
-            if (stateHistory && stateHistory.length > 0) {
-                thing[title] = stateHistory.pop();
+            if (!stateHistory || stateHistory.length === 0) {
+                throw new Error("No state saved for '" + title + "'.");
             }
-            else {
-                throw new Error("No state saved for " + title + ".");
-            }
+            thing[title] = stateHistory.pop();
         };
         /**
          * Saves the position of a certain Character.

@@ -9222,12 +9222,16 @@ module FullScreenPokemon {
          * @param title   The name of the state to restore.
          */
         popStateHistory(thing: IStateSaveable, title: string): void {
-            let stateHistory: any[] = thing.state[title];
-            if (stateHistory && stateHistory.length > 0) {
-                thing[title] = stateHistory.pop();
-            } else {
-                throw new Error("No state saved for " + title + ".");
+            if (!thing.state) {
+                throw new Error(`State property is not defined for '${thing}'.`);
             }
+
+            let stateHistory: any[] = thing.state[title];
+            if (!stateHistory || stateHistory.length === 0) {
+                throw new Error(`No state saved for '${title}'.`);
+            }
+
+            thing[title] = stateHistory.pop();
         }
 
         /**
