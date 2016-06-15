@@ -9202,11 +9202,12 @@ module FullScreenPokemon {
          * @param title   Name for the state being saved.
          * @param value   The values of the variable to be saved.
          */
-        addStateHistory(thing: IThing | IArea | IMap | ILocation, title: string, value: any): void {
+        addStateHistory(thing: IStateSaveable, title: string, value: any): void {
             if (!thing.state) {
                 thing.state = {};
             }
-            var stateHistory: any[] = thing.state[title];
+
+            let stateHistory: any[] = thing.state[title];
             if (stateHistory) {
                 stateHistory.push(value);
             } else {
@@ -9220,10 +9221,12 @@ module FullScreenPokemon {
          * @param thing   The Thing having its state restored.
          * @param title   The name of the state to restore.
          */
-        popStateHistory(thing: IThing | IArea | IMap | ILocation, title: string): void {
-            var stateHistory: any[] = thing.state[title];
+        popStateHistory(thing: IStateSaveable, title: string): void {
+            let stateHistory: any[] = thing.state[title];
             if (stateHistory && stateHistory.length > 0) {
                 thing[title] = stateHistory.pop();
+            } else {
+                throw new Error("No state saved for " + title + ".");
             }
         }
 

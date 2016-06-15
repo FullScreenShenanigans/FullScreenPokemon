@@ -6821,6 +6821,9 @@ var FullScreenPokemon;
             if (stateHistory && stateHistory.length > 0) {
                 thing[title] = stateHistory.pop();
             }
+            else {
+                throw new Error("No state saved for " + title + ".");
+            }
         };
         /**
          * Saves the position of a certain Character.

@@ -23,18 +23,18 @@ declare module FullScreenPokemon {
     /**
      * Container for holding the states of objects in the game.
      */
-    export interface IStateHistoryObject {
+    export interface IStateHistory {
         [i: string]: [any];
     }
 
     /**
-     * An object whose state is saveable for future reference.
+     * An object for saving this object's state history.
      */
     export interface IStateSaveable {
         /**
          * Holds the states of an object in the game.
          */
-        state: IStateHistoryObject;
+        state: IStateHistory;
     }
 
     /**
