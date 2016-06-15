@@ -1184,9 +1184,9 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -2
         },
         "HalfArrowHorizontal": [4, 2],
-        "ScratchStart": [5, 5],
-        "ScratchMiddle": [8, 8],
-        "ScratchEnd": [17.5, 10],
+        "ScratchStart": [15, 12.5],
+        "ScratchMiddle": [15, 12.5],
+        "ScratchEnd": [15, 12.5],
         "Square": {
             "width": 1,
             "height": 1,

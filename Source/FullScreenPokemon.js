@@ -5002,10 +5002,14 @@ var FullScreenPokemon;
             // var attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
             var defender = FSP.BattleMover.getThing(defenderName);
             // var direction: number = attackerName === "player" ? 1 : -1;
-            var dt = 13;
+            var dt = 16;
+            // var defenderLeft: number = defender.left;
+            console.log("defender info " + defender.left + " " + defender.top);
             var scratchStart = FSP.addThing("ScratchStart");
             var scratchMiddle = FSP.addThing("ScratchMiddle");
             var scratchEnd = FSP.addThing("ScratchEnd");
+            scratchMiddle.offsetX = -20;
+            scratchEnd.offsetX = -50;
             // var exclamation: IThing = FSP.addThing("Exclamation");
             /*var scratch: IThing = <IThing>FSP.BattleMover.setThing(
                 "scratch",
@@ -5014,14 +5018,16 @@ var FullScreenPokemon;
             FSP.setMidXObj(scratchStart, defender);
             FSP.setTop(scratchStart, defender.top);
             FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratchStart);
+            // FSP.TimeHandler.addEvent(FSP.addThing, dt, "ScratchMiddle");
             FSP.TimeHandler.addEvent(FSP.setMidXObj, dt, scratchMiddle, defender);
+            // FSP.shiftHoriz(scratchMiddle, -10);
             FSP.TimeHandler.addEvent(FSP.setTop, dt, scratchMiddle, defender.top);
             FSP.TimeHandler.addEvent(FSP.killNormal, 2 * dt, scratchMiddle);
+            // FSP.TimeHandler.addEvent(FSP.addThing, dt, "ScratchEnd");
             FSP.TimeHandler.addEvent(FSP.setMidXObj, 2 * dt, scratchEnd, defender);
+            // FSP.shiftHoriz(scratchEnd, -20);
             FSP.TimeHandler.addEvent(FSP.setTop, 2 * dt, scratchEnd, defender.top);
             FSP.TimeHandler.addEvent(FSP.killNormal, 3 * dt, scratchEnd);
-            // FSP.TimeHandler.addEvent(FSP.killNormal, dt, exclamation);
-            // FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratch);
             FSP.TimeHandler.addEvent(FSP.animateFlicker, 3 * dt, defender, 14, 5, args.callback);
         };
         /* Outdoor cutscenes

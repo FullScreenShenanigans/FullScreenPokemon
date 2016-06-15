@@ -6676,20 +6676,13 @@ module FullScreenPokemon {
          */
         cutsceneBattleAttackScratch(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
             console.log("begining of scratch function");
-            // var attackerName: string = args.attackerName;
             var defenderName: string = args.defenderName;
-            // var attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
             var defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
-            // var direction: number = attackerName === "player" ? 1 : -1;
-            var dt: number = 13;
+            var dt: number = 16;
+            console.log("defender info " + defender.left + " " + defender.top);
             var scratchStart: IThing = FSP.addThing("ScratchStart");
             var scratchMiddle: IThing = FSP.addThing("ScratchMiddle");
             var scratchEnd: IThing = FSP.addThing("ScratchEnd");
-            // var exclamation: IThing = FSP.addThing("Exclamation");
-            /*var scratch: IThing = <IThing>FSP.BattleMover.setThing(
-                "scratch",
-                "Scratch"
-            );*/
             FSP.setMidXObj(scratchStart, defender);
             FSP.setTop(scratchStart, defender.top);
             FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratchStart);
