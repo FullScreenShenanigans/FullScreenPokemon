@@ -21,6 +21,23 @@ declare module FullScreenPokemon {
     }
 
     /**
+     * Container for holding the states of objects in the game.
+     */
+    export interface IStateHistory {
+        [i: string]: [any];
+    }
+
+    /**
+     * An object for saving this object's state history.
+     */
+    export interface IStateSaveable {
+        /**
+         * Holds the states of an object in the game.
+         */
+        state: IStateHistory;
+    }
+
+    /**
      * A simple container for Map attributes given by switching to an Area within 
      * that map. A bounding box of the current viewport is kept, along with a bag
      * of assorted variable values.
@@ -753,7 +770,7 @@ declare module FullScreenPokemon {
     /**
      * A Map parsed from its raw JSON-friendly description.
      */
-    export interface IMap extends MapsCreatr.IMapsCreatrMap {
+    export interface IMap extends MapsCreatr.IMapsCreatrMap, IStateSaveable {
         /**
          * A listing of areas in the Map, keyed by name.
          */
@@ -786,7 +803,7 @@ declare module FullScreenPokemon {
     /**
      * An Area parsed from a raw JSON-friendly Map description.
      */
-    export interface IArea extends MapsCreatr.IMapsCreatrArea {
+    export interface IArea extends MapsCreatr.IMapsCreatrArea, IStateSaveable {
         /**
          * Whether the Area allows bicycling.
          */
@@ -947,7 +964,7 @@ declare module FullScreenPokemon {
     /**
      * A Location parsed from a raw JSON-friendly Map description.
      */
-    export interface ILocation extends MapsCreatr.IMapsCreatrLocation {
+    export interface ILocation extends MapsCreatr.IMapsCreatrLocation, IStateSaveable {
         /**
          * The Area this Location is a part of.
          */
@@ -1437,7 +1454,7 @@ declare module FullScreenPokemon {
     /**
      * An in-game Thing with size, velocity, position, and other information.
      */
-    export interface IThing extends GameStartr.IThing {
+    export interface IThing extends GameStartr.IThing, IStateSaveable {
         /**
          * The parent IFullScreenPokemon controlling this Thing.
          */

@@ -1366,7 +1366,7 @@ module FullScreenPokemon {
             }
 
             thing.cycling = true;
-            thing.speedOld = thing.speed;
+            thing.FSP.addStateHistory(thing, "speed", thing.speed);
             thing.speed = this.MathDecider.compute("speedCycling", thing);
 
             thing.FSP.addClass(thing, "cycling");
@@ -1382,7 +1382,7 @@ module FullScreenPokemon {
          */
         stopCycling(thing: IPlayer): void {
             thing.cycling = false;
-            thing.speed = thing.speedOld;
+            thing.FSP.popStateHistory(thing, "speed");
 
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
@@ -2636,7 +2636,7 @@ module FullScreenPokemon {
             thing.following = other;
             other.follower = thing;
 
-            thing.speedOld = thing.speed;
+            thing.FSP.addStateHistory(thing, "speed", thing.speed);
             thing.speed = other.speed;
 
             other.walkingCommands = [];
@@ -3120,7 +3120,7 @@ module FullScreenPokemon {
             }
 
             thing.grass = other;
-            thing.heightOld = thing.height;
+            thing.FSP.addStateHistory(thing, "height", thing.height);
 
             // Todo: Find a better way than manually setting canvas height?
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
@@ -9193,6 +9193,45 @@ module FullScreenPokemon {
 
                 FSP.saveCharacterPosition(FSP, character, id);
             }
+        }
+
+        /**
+         * Pushes and saves the current state of a variable to a stack.
+         * 
+         * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
+         * @param title   Name for the state being saved.
+         * @param value   The values of the variable to be saved.
+         */
+        addStateHistory(thing: IStateSaveable, title: string, value: any): void {
+            if (!thing.state) {
+                thing.state = {};
+            }
+
+            let stateHistory: any[] = thing.state[title];
+            if (stateHistory) {
+                stateHistory.push(value);
+            } else {
+                thing.state[title] = [value];
+            }
+        }
+
+        /**
+         * Updates to the most recently saved state for a variable.
+         * 
+         * @param thing   The Thing having its state restored.
+         * @param title   The name of the state to restore.
+         */
+        popStateHistory(thing: IStateSaveable, title: string): void {
+            if (!thing.state) {
+                throw new Error(`State property is not defined for '${thing}'.`);
+            }
+
+            let stateHistory: any[] = thing.state[title];
+            if (!stateHistory || stateHistory.length === 0) {
+                throw new Error(`No state saved for '${title}'.`);
+            }
+
+            thing[title] = stateHistory.pop();
         }
 
         /**

@@ -1029,7 +1029,7 @@ var FullScreenPokemon;
                 return false;
             }
             thing.cycling = true;
-            thing.speedOld = thing.speed;
+            thing.FSP.addStateHistory(thing, "speed", thing.speed);
             thing.speed = this.MathDecider.compute("speedCycling", thing);
             thing.FSP.addClass(thing, "cycling");
             thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
@@ -1042,7 +1042,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.stopCycling = function (thing) {
             thing.cycling = false;
-            thing.speed = thing.speedOld;
+            thing.FSP.popStateHistory(thing, "speed");
             thing.FSP.removeClass(thing, "cycling");
             thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
             thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
@@ -1992,7 +1992,7 @@ var FullScreenPokemon;
             }
             thing.following = other;
             other.follower = thing;
-            thing.speedOld = thing.speed;
+            thing.FSP.addStateHistory(thing, "speed", thing.speed);
             thing.speed = other.speed;
             other.walkingCommands = [];
             thing.FSP.animateCharacterSetDirection(thing, direction);
@@ -2383,7 +2383,7 @@ var FullScreenPokemon;
                 return true;
             }
             thing.grass = other;
-            thing.heightOld = thing.height;
+            thing.FSP.addStateHistory(thing, "height", thing.height);
             // Todo: Find a better way than manually setting canvas height?
             thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
             thing.FSP.PixelDrawer.setThingSprite(thing);
@@ -6790,6 +6790,41 @@ var FullScreenPokemon;
                 id = character.id;
                 FSP.saveCharacterPosition(FSP, character, id);
             }
+        };
+        /**
+         * Pushes and saves the current state of a variable to a stack.
+         *
+         * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
+         * @param title   Name for the state being saved.
+         * @param value   The values of the variable to be saved.
+         */
+        FullScreenPokemon.prototype.addStateHistory = function (thing, title, value) {
+            if (!thing.state) {
+                thing.state = {};
+            }
+            var stateHistory = thing.state[title];
+            if (stateHistory) {
+                stateHistory.push(value);
+            }
+            else {
+                thing.state[title] = [value];
+            }
+        };
+        /**
+         * Updates to the most recently saved state for a variable.
+         *
+         * @param thing   The Thing having its state restored.
+         * @param title   The name of the state to restore.
+         */
+        FullScreenPokemon.prototype.popStateHistory = function (thing, title) {
+            if (!thing.state) {
+                throw new Error("State property is not defined for '" + thing + "'.");
+            }
+            var stateHistory = thing.state[title];
+            if (!stateHistory || stateHistory.length === 0) {
+                throw new Error("No state saved for '" + title + "'.");
+            }
+            thing[title] = stateHistory.pop();
         };
         /**
          * Saves the position of a certain Character.

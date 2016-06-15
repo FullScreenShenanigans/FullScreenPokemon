@@ -14,7 +14,7 @@ var FullScreenPokemon;
                         if (!area) {
                             return;
                         }
-                        area.allowCyclingOld = area.allowCycling;
+                        this.addStateHistory(area, "allowCycling", area.allowCycling);
                         area.allowCycling = true;
                     },
                     onModDisable: function (mod) {
@@ -22,8 +22,7 @@ var FullScreenPokemon;
                         if (!area) {
                             return;
                         }
-                        area.allowCycling = area.allowCyclingOld;
-                        delete area.allowCyclingOld;
+                        this.popStateHistory(area, "allowCycling");
                         if (!area.allowCycling && this.player.cycling) {
                             this.stopCycling(this.player);
                         }

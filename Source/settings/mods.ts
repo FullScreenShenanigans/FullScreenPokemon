@@ -15,7 +15,7 @@ module FullScreenPokemon {
                             return;
                         }
 
-                        (<any>area).allowCyclingOld = area.allowCycling;
+                        this.addStateHistory(area, "allowCycling", area.allowCycling);
                         area.allowCycling = true;
                     },
                     onModDisable: function (mod: ModAttachr.IModAttachrMod): void {
@@ -24,8 +24,7 @@ module FullScreenPokemon {
                             return;
                         }
 
-                        area.allowCycling = (<any>area).allowCyclingOld;
-                        delete (<any>area).allowCyclingOld;
+                        this.popStateHistory(area, "allowCycling");
 
                         if (!area.allowCycling && this.player.cycling) {
                             this.stopCycling(this.player);

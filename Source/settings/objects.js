@@ -742,7 +742,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             }
         },
         "Location": {
-            "entry": "Normal",
+            "entry": "Normal"
         },
         "Thing": {
             // Sizing
