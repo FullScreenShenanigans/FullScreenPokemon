@@ -6792,23 +6792,26 @@ var FullScreenPokemon;
             }
         };
         /**
-         * Pushes and saves the current state to a stack.
+         * Pushes and saves the current state of a variable to a stack.
          *
          * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
          * @param title   Name for the state being saved.
-         * @param information   The values of the state to be saved.
+         * @param value   The values of the variable to be saved.
          */
-        FullScreenPokemon.prototype.addStateHistory = function (thing, title, information) {
+        FullScreenPokemon.prototype.addStateHistory = function (thing, title, value) {
+            if (!thing.state) {
+                thing.state = {};
+            }
             var stateHistory = thing.state[title];
             if (stateHistory) {
-                stateHistory.push(information);
+                stateHistory.push(value);
             }
             else {
-                thing.state[title] = [information];
+                thing.state[title] = [value];
             }
         };
         /**
-         * Updates the most recently saved state for a variable and updates it.
+         * Updates to the most recently saved state for a variable.
          *
          * @param thing   The Thing having its state restored.
          * @param title   The name of the state to restore.

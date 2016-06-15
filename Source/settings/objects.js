@@ -722,9 +722,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "toly": 0
         },
         "Map": {
-            "initialized": false,
-            // State History
-            "state": {}
+            "initialized": false
         },
         "Area": {
             "background": "black",
@@ -741,14 +739,10 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                         { "thing": "InvisibleWall", "noBoundaryStretch": true }
                     ]
                 }
-            },
-            // State History
-            "state": {}
+            }
         },
         "Location": {
-            "entry": "Normal",
-            // State History
-            "state": {}
+            "entry": "Normal"
         },
         "Thing": {
             // Sizing
@@ -772,9 +766,7 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "tolBottom": 0,
             "tolLeft": 0,
             // Triggered Functions
-            "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess,
-            // State History
-            "state": {}
+            "onMake": FullScreenPokemon.FullScreenPokemon.prototype.thingProcess
         },
         "Character": {
             "groupType": "Character",

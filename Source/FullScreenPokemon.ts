@@ -9200,14 +9200,17 @@ module FullScreenPokemon {
          * 
          * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
          * @param title   Name for the state being saved.
-         * @param information   The values of the variable to be saved.
+         * @param value   The values of the variable to be saved.
          */
-        addStateHistory(thing: IThing | IArea | IMap | ILocation, title: string, information: any): void {
-            var stateHistory: [any] = thing.state[title];
+        addStateHistory(thing: IThing | IArea | IMap | ILocation, title: string, value: any): void {
+            if (!thing.state) {
+                thing.state = {};
+            }
+            var stateHistory: any[] = thing.state[title];
             if (stateHistory) {
-                stateHistory.push(information);
+                stateHistory.push(value);
             } else {
-                thing.state[title] = [information];
+                thing.state[title] = [value];
             }
         }
 
@@ -9218,7 +9221,7 @@ module FullScreenPokemon {
          * @param title   The name of the state to restore.
          */
         popStateHistory(thing: IThing | IArea | IMap | ILocation, title: string): void {
-            var stateHistory: [any] = thing.state[title];
+            var stateHistory: any[] = thing.state[title];
             if (stateHistory && stateHistory.length > 0) {
                 thing[title] = stateHistory.pop();
             }
