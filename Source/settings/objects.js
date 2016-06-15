@@ -196,7 +196,6 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "Notepad": {},
                 "Painting": {},
                 "PokeCenterPoster": {},
-                "Scratch": {},
                 "Shadow": {},
                 "SmokeSmall": {},
                 "SmokeMedium": {},
@@ -568,6 +567,9 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "HalfArrowHorizontal": {},
                 "HPBar": {},
                 "Note": {},
+                "ScratchStart": {},
+                "ScratchMiddle": {},
+                "ScratchEnd": {},
                 "Square": {
                     "BlackSquare": {},
                     "DarkGraySquare": {},
@@ -1118,7 +1120,6 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "repeat": true
         },
         "Note": [6.5, 7],
-        "Scratch": [20, 20],
         "Shadow": [7, 4],
         "SmokeSmall": [5.5, 5.5],
         "SmokeMedium": [7.5, 7.5],
@@ -1183,6 +1184,9 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -2
         },
         "HalfArrowHorizontal": [4, 2],
+        "ScratchStart": [5, 5],
+        "ScratchMiddle": [8, 8],
+        "ScratchEnd": [17.5, 10],
         "Square": {
             "width": 1,
             "height": 1,

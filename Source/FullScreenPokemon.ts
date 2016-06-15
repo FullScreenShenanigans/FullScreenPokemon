@@ -6681,25 +6681,30 @@ module FullScreenPokemon {
             // var attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
             var defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
             // var direction: number = attackerName === "player" ? 1 : -1;
-            var dt: number = 100;
-            // var scratch: IThing = FSP.addThing("Scratch");
-            var exclamation: IThing = FSP.addThing("Exclamation");
+            var dt: number = 13;
+            var scratchStart: IThing = FSP.addThing("ScratchStart");
+            var scratchMiddle: IThing = FSP.addThing("ScratchMiddle");
+            var scratchEnd: IThing = FSP.addThing("ScratchEnd");
+            // var exclamation: IThing = FSP.addThing("Exclamation");
             /*var scratch: IThing = <IThing>FSP.BattleMover.setThing(
                 "scratch",
                 "Scratch"
             );*/
-            console.log("made scratch Thing");
-            // var timeout: number = dt;
+            FSP.setMidXObj(scratchStart, defender);
+            FSP.setTop(scratchStart, defender.top);
+            FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratchStart);
 
-            FSP.setMidXObj(exclamation, defender);
-            FSP.setTop(exclamation, defender.top);
-            // FSP.setBottom(exclamation, defender.top);
+            FSP.TimeHandler.addEvent(FSP.setMidXObj, dt, scratchMiddle, defender);
+            FSP.TimeHandler.addEvent(FSP.setTop, dt, scratchMiddle, defender.top);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 2 * dt, scratchMiddle);
 
-            FSP.TimeHandler.addEvent(FSP.killNormal, dt, exclamation);
+            FSP.TimeHandler.addEvent(FSP.setMidXObj, 2 * dt, scratchEnd, defender);
+            FSP.TimeHandler.addEvent(FSP.setTop, 2 * dt, scratchEnd, defender.top);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 3 * dt, scratchEnd);
 
             FSP.TimeHandler.addEvent(
                     FSP.animateFlicker,
-                    dt,
+                    3 * dt,
                     defender,
                     14,
                     5,
