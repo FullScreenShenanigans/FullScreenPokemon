@@ -49,8 +49,8 @@ var FullScreenPokemon;
                     .split("");
             },
             "BADGES.LENGTH": function (FSP) {
-                var badges = FSP.ItemsHolder.getItem("badges"), total = 0, i;
-                for (i in badges) {
+                var badges = FSP.ItemsHolder.getItem("badges"), total = 0;
+                for (var i in badges) {
                     if (badges.hasOwnProperty(i)) {
                         total += Number(badges[i]);
                     }

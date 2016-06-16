@@ -29,8 +29,8 @@ var FullScreenPokemon;
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
                     "experience": this.compute("newPokemonExperience", title, level || 1)
-                }, i;
-                for (i = 0; i < statisticNames.length; i += 1) {
+                };
+                for (var i = 0; i < statisticNames.length; i += 1) {
                     pokemon[statisticNames[i]] = this.compute("pokemonStatistic", pokemon, statisticNames[i]);
                     pokemon[statisticNames[i] + "Normal"] = pokemon[statisticNames[i]];
                 }
@@ -38,13 +38,13 @@ var FullScreenPokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
             "newPokemonMoves": function (constants, equations, title, level) {
-                var possibilities = constants.pokemon[title.join("")].moves.natural, output = [], move, newMove, end, i;
+                var possibilities = constants.pokemon[title.join("")].moves.natural, output = [], move, newMove, end;
                 for (end = 0; end < possibilities.length; end += 1) {
                     if (possibilities[end].level > level) {
                         break;
                     }
                 }
-                for (i = Math.max(end - 4, 0); i < end; i += 1) {
+                for (var i = Math.max(end - 4, 0); i < end; i += 1) {
                     move = possibilities[i];
                     newMove = {
                         "title": move.move,
@@ -87,12 +87,12 @@ var FullScreenPokemon;
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             // Note: the page mentions rounding errors... 
             "pokemonStatistic": function (constants, equations, pokemon, statistic) {
-                var topExtra = 0, added = 5, base = constants.pokemon[pokemon.title.join("")][statistic], iv = pokemon.IV[statistic] || 0, ev = pokemon.EV[statistic] || 0, level = pokemon.level, numerator;
+                var topExtra = 0, added = 5, base = constants.pokemon[pokemon.title.join("")][statistic], iv = pokemon.IV[statistic] || 0, ev = pokemon.EV[statistic] || 0, level = pokemon.level;
                 if (statistic === "HP") {
                     topExtra = 50;
                     added = 10;
                 }
-                numerator = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
+                var numerator = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
                 return (numerator / 50 + added) | 0;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
@@ -101,13 +101,12 @@ var FullScreenPokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
             "canCatchPokemon": function (constants, equations, pokemon, ball) {
-                var n, m, f;
                 // 1. If a Master Ball is used, the Pokemon is caught.
                 if (ball.type === "Master") {
                     return true;
                 }
                 // 2. Generate a random number, N, depending on the type of ball used.
-                n = constants.NumberMaker.randomInt(ball.probabilityMax);
+                var n = constants.NumberMaker.randomInt(ball.probabilityMax);
                 // 3. The Pokemon is caught if...
                 if (pokemon.status) {
                     if (n < 25) {
@@ -126,9 +125,9 @@ var FullScreenPokemon;
                     return false;
                 }
                 // 5. If not, generate a random value, M, between 0 and 255.
-                m = constants.NumberMaker.randomInt(255);
+                var m = constants.NumberMaker.randomInt(255);
                 // 6. Calculate f.
-                f = Math.max(Math.min((pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0, 255), 1);
+                var f = Math.max(Math.min((pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0, 255), 1);
                 // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
                 return f > m;
             },
@@ -147,27 +146,28 @@ var FullScreenPokemon;
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
             "numBallShakes": function (constants, equations, pokemon, ball) {
                 // 1. Calculate d.
-                var d = pokemon.catchRate * 100 / ball.rate, f, x;
+                var d = pokemon.catchRate * 100 / ball.rate;
                 // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
                 if (d >= 256) {
                     return 3;
                 }
                 // 3. If not, calculate x = d * f / 255 + s, where s is 10 if the Pokemon is asleep or frozen or 5 if it is paralyzed, poisoned, or burned.
-                f = Math.max(Math.min((pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0, 255), 1);
-                x = d * f / 255 + constants.statuses.shaking[pokemon.status];
+                var f = Math.max(Math.min((pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0, 255), 1);
+                var x = d * f / 255 + constants.statuses.shaking[pokemon.status];
                 // 4. If... 
                 if (x < 10) {
                     return 0;
                 }
-                else if (x < 30) {
+                // x < 30: the Ball shakes once before the Pokemon breaks free.
+                if (x < 30) {
                     return 1;
                 }
-                else if (x < 70) {
+                // x < 70: the Ball shakes twice before the Pokemon breaks free.
+                if (x < 70) {
                     return 2;
                 }
-                else {
-                    return 3;
-                }
+                // Otherwise, the Ball shakes three times before the Pokemon breaks free.
+                return 3;
             },
             // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
             // TO DO: Also filter for moves with > 0 remaining remaining...
@@ -177,14 +177,14 @@ var FullScreenPokemon;
                         "move": move.title,
                         "priority": 10
                     };
-                }), lowest, i;
+                });
                 // Wild Pokemon just choose randomly
                 if (opponent.category === "Wild") {
                     return constants.NumberMaker.randomArrayMember(possibilities).move;
                 }
                 // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
                 if (player.selectedActor.status && !opponent.dumb) {
-                    for (i = 0; i < possibilities.length; i += 1) {
+                    for (var i = 0; i < possibilities.length; i += 1) {
                         if (this.compute("moveOnlyStatuses", possibilities[i].move)) {
                             possibilities[i].priority += 5;
                         }
@@ -192,20 +192,20 @@ var FullScreenPokemon;
                 }
                 // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
                 if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
-                    for (i = 0; i < possibilities.length; i += 1) {
+                    for (var i = 0; i < possibilities.length; i += 1) {
                         this.compute("applyMoveEffectPriority", possibilities[i], constants.battleModifications["Turn 2"], player.selectedActor, 1);
                     }
                 }
                 // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
                 if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
-                    for (i = 0; i < possibilities.length; i += 1) {
+                    for (var i = 0; i < possibilities.length; i += 1) {
                         this.compute("applyMoveEffectPriority", possibilities[i], constants.battleModifications["Good AI"], player.selectedActor, 1);
                     }
                 }
                 // The AI uses rejection sampling on the four moves with ratio 63:64:63:66, with only the moves that are most favored after applying the modifications being acceptable.
-                lowest = possibilities[0].priority;
+                var lowest = possibilities[0].priority;
                 if (possibilities.length > 1) {
-                    for (i = 1; i < possibilities.length; i += 1) {
+                    for (var i = 1; i < possibilities.length; i += 1) {
                         if (possibilities[i].priority < lowest) {
                             lowest = possibilities[i].priority;
                         }
@@ -228,9 +228,9 @@ var FullScreenPokemon;
                 return move.damage === "Non-Damaging" && move.effect === "Status";
             },
             "applyMoveEffectPriority": function (constants, equations, possibility, modification, target, amount) {
-                var preferences = modification.preferences, move = constants.moves[possibility.move], preference, i;
-                for (i = 0; i < preferences.length; i += 1) {
-                    preference = preferences[i];
+                var preferences = modification.preferences, move = constants.moves[possibility.move];
+                for (var i = 0; i < preferences.length; i += 1) {
+                    var preference = preferences[i];
                     switch (preference[0]) {
                         // ["Move", String]
                         // Favorable match
@@ -338,8 +338,8 @@ var FullScreenPokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
             "typeEffectiveness": function (constants, equations, move, defender) {
-                var defenderTypes = constants.pokemon[defender.title.join("")].types, moveIndex = constants.types.indices[constants.moves[move].type], total = 1, i;
-                for (i = 0; i < defenderTypes.length; i += 1) {
+                var defenderTypes = constants.pokemon[defender.title.join("")].types, moveIndex = constants.types.indices[constants.moves[move].type], total = 1;
+                for (var i = 0; i < defenderTypes.length; i += 1) {
                     total *= constants.types.table[moveIndex][constants.types.indices[defenderTypes[i]]];
                 }
                 return total;
@@ -366,23 +366,17 @@ var FullScreenPokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
             "experienceGained": function (constants, equations, player, opponent) {
-                var a, b, lf, s, t;
                 // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
-                a = opponent.category === "Trainer" ? 1.5 : 1;
+                var a = opponent.category === "Trainer" ? 1.5 : 1;
                 // b is the base experience yield of the fainted Pokemon's species
-                b = 64; // (Bulbasaur) TO DO: add this in
+                var b = 64; // (Bulbasaur) TO DO: add this in
                 // lf is the level of the fainted Pokemon
-                lf = opponent.selectedActor.level;
+                var lf = opponent.selectedActor.level;
                 // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
                 // TO DO: Account for modifies like Exp. All
-                s = 1;
+                var s = 1;
                 // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
-                if (player.selectedActor.traded) {
-                    t = 1.5;
-                }
-                else {
-                    t = 1;
-                }
+                var t = player.selectedActor.traded ? 1.5 : 1;
                 return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
             },
             "widthHealthBar": function (constants, equations, widthFullBar, hp, hpNormal) {

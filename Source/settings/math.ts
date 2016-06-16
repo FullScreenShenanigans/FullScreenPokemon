@@ -193,7 +193,7 @@ module FullScreenPokemon {
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
             "numBallShakes": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall): number {
                 // 1. Calculate d.
-                let d: number = pokemon.catchRate * 100 / ball.rate,
+                let d: number = pokemon.catchRate * 100 / ball.rate;
 
                 // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
                 if (d >= 256) {
