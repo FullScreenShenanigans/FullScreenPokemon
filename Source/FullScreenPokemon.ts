@@ -6675,29 +6675,47 @@ module FullScreenPokemon {
          * @param args   Settings for the routine.
          */
         cutsceneBattleAttackScratch(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
-            console.log("begining of scratch function");
             var defenderName: string = args.defenderName;
             var defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
-            var dt: number = 16;
+            var dt: number = 7;
             console.log("defender info " + defender.left + " " + defender.top);
+
+            /*var exclamation: IThing = FSP.addThing("Exclamation");
+            FSP.setMidObj(exclamation, defender);
+            FSP.setTop(exclamation, defender.top);
+            FSP.TimeHandler.addEvent(FSP.shiftBoth, 4 * dt, exclamation, -50, 10);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 8 * dt, exclamation);*/
             var scratchStart: IThing = FSP.addThing("ScratchStart");
-            var scratchMiddle: IThing = FSP.addThing("ScratchMiddle");
-            var scratchEnd: IThing = FSP.addThing("ScratchEnd");
-            FSP.setMidXObj(scratchStart, defender);
+            FSP.setMidObj(scratchStart, defender);
             FSP.setTop(scratchStart, defender.top);
-            FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratchStart);
+            var startX: number = scratchStart.left + 5;
+            var goalX: number = defender.left - 10;
+            var lineArray: IThing[] = [];
+            console.log("difference is " + (goalX - startX));
+            FSP.TimeHandler.addEventInterval(
+                function (lineArray: IThing[]): void {
+                    lineArray.push(FSP.addThing("ScratchLine", scratchStart.left, scratchStart.top));
+                    setTimeout(FSP.shiftHoriz, dt, scratchStart, (goalX - startX) / 4);
+                    setTimeout(FSP.shiftVert, dt, scratchStart, defender.height / 12 * FSP.unitsize);
+                },
+                dt,
+                4,
+                lineArray);
+            // FSP.shiftBoth(scratchStart, -40, 40);
 
-            FSP.TimeHandler.addEvent(FSP.setMidXObj, dt, scratchMiddle, defender);
-            FSP.TimeHandler.addEvent(FSP.setTop, dt, scratchMiddle, defender.top);
-            FSP.TimeHandler.addEvent(FSP.killNormal, 2 * dt, scratchMiddle);
-
-            FSP.TimeHandler.addEvent(FSP.setMidXObj, 2 * dt, scratchEnd, defender);
-            FSP.TimeHandler.addEvent(FSP.setTop, 2 * dt, scratchEnd, defender.top);
-            FSP.TimeHandler.addEvent(FSP.killNormal, 3 * dt, scratchEnd);
-
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, scratchStart);
+            FSP.TimeHandler.addEvent(
+                function (lineArray: IThing[]): void {
+                    let i: number;
+                    for (i = 0; i < lineArray.length; i += 1) {
+                        FSP.killNormal(lineArray[i]);
+                    }
+                },
+                5 * dt,
+                lineArray);
             FSP.TimeHandler.addEvent(
                     FSP.animateFlicker,
-                    3 * dt,
+                    5 * dt,
                     defender,
                     14,
                     5,

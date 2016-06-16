@@ -4996,39 +4996,36 @@ var FullScreenPokemon;
          * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackScratch = function (FSP, settings, args) {
-            console.log("begining of scratch function");
-            // var attackerName: string = args.attackerName;
             var defenderName = args.defenderName;
-            // var attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
             var defender = FSP.BattleMover.getThing(defenderName);
-            // var direction: number = attackerName === "player" ? 1 : -1;
-            var dt = 16;
-            // var defenderLeft: number = defender.left;
+            var dt = 7;
             console.log("defender info " + defender.left + " " + defender.top);
+            /*var exclamation: IThing = FSP.addThing("Exclamation");
+            FSP.setMidObj(exclamation, defender);
+            FSP.setTop(exclamation, defender.top);
+            FSP.TimeHandler.addEvent(FSP.shiftBoth, 4 * dt, exclamation, -50, 10);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 8 * dt, exclamation);*/
             var scratchStart = FSP.addThing("ScratchStart");
-            var scratchMiddle = FSP.addThing("ScratchMiddle");
-            var scratchEnd = FSP.addThing("ScratchEnd");
-            scratchMiddle.offsetX = -20;
-            scratchEnd.offsetX = -50;
-            // var exclamation: IThing = FSP.addThing("Exclamation");
-            /*var scratch: IThing = <IThing>FSP.BattleMover.setThing(
-                "scratch",
-                "Scratch"
-            );*/
-            FSP.setMidXObj(scratchStart, defender);
+            FSP.setMidObj(scratchStart, defender);
             FSP.setTop(scratchStart, defender.top);
-            FSP.TimeHandler.addEvent(FSP.killNormal, dt, scratchStart);
-            // FSP.TimeHandler.addEvent(FSP.addThing, dt, "ScratchMiddle");
-            FSP.TimeHandler.addEvent(FSP.setMidXObj, dt, scratchMiddle, defender);
-            // FSP.shiftHoriz(scratchMiddle, -10);
-            FSP.TimeHandler.addEvent(FSP.setTop, dt, scratchMiddle, defender.top);
-            FSP.TimeHandler.addEvent(FSP.killNormal, 2 * dt, scratchMiddle);
-            // FSP.TimeHandler.addEvent(FSP.addThing, dt, "ScratchEnd");
-            FSP.TimeHandler.addEvent(FSP.setMidXObj, 2 * dt, scratchEnd, defender);
-            // FSP.shiftHoriz(scratchEnd, -20);
-            FSP.TimeHandler.addEvent(FSP.setTop, 2 * dt, scratchEnd, defender.top);
-            FSP.TimeHandler.addEvent(FSP.killNormal, 3 * dt, scratchEnd);
-            FSP.TimeHandler.addEvent(FSP.animateFlicker, 3 * dt, defender, 14, 5, args.callback);
+            var startX = scratchStart.left + 5;
+            var goalX = defender.left - 10;
+            var lineArray = [];
+            console.log("difference is " + (goalX - startX));
+            FSP.TimeHandler.addEventInterval(function (lineArray) {
+                lineArray.push(FSP.addThing("ScratchLine", scratchStart.left, scratchStart.top));
+                setTimeout(FSP.shiftHoriz, dt, scratchStart, (goalX - startX) / 4);
+                setTimeout(FSP.shiftVert, dt, scratchStart, defender.height / 12 * FSP.unitsize);
+            }, dt, 4, lineArray);
+            // FSP.shiftBoth(scratchStart, -40, 40);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, scratchStart);
+            FSP.TimeHandler.addEvent(function (lineArray) {
+                var i;
+                for (i = 0; i < lineArray.length; i += 1) {
+                    FSP.killNormal(lineArray[i]);
+                }
+            }, 5 * dt, lineArray);
+            FSP.TimeHandler.addEvent(FSP.animateFlicker, 5 * dt, defender, 14, 5, args.callback);
         };
         /* Outdoor cutscenes
         */
