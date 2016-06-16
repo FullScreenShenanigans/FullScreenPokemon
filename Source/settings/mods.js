@@ -1,3 +1,4 @@
+/// <reference path="../FullScreenPokemon.ts" />
 var FullScreenPokemon;
 (function (FullScreenPokemon) {
     "use strict";
