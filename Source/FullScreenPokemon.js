@@ -4936,8 +4936,13 @@ var FullScreenPokemon;
                 FSP.ObjectMaker.make("Note"),
                 FSP.ObjectMaker.make("Note")
             ];
+            var dt = 8;
+            var note = FSP.BattleMover.setThing("note", "Note");
+            FSP.setTop(note, attacker.top + attacker.height / 2 * FSP.unitsize);
+            FSP.setMidXObj(note, attacker);
             console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
-            FSP.ScenePlayer.playRoutine("ChangeStatistic", FSP.proliferate({
+            FSP.TimeHandler.addEvent(FSP.killNormal, dt, note);
+            FSP.TimeHandler.addEvent(FSP.ScenePlayer.playRoutine, dt, "ChangeStatistic", FSP.proliferate({
                 "callback": args.callback,
                 "defenderName": defenderName,
                 "statistic": "Attack",

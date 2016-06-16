@@ -6527,10 +6527,17 @@ module FullScreenPokemon {
                     FSP.ObjectMaker.make("Note"),
                     FSP.ObjectMaker.make("Note")
                 ];
+            let dt: number = 8;
+            let note: IThing = <IThing>FSP.BattleMover.setThing("note", "Note");
+            FSP.setTop(note, attacker.top + attacker.height / 2 * FSP.unitsize);
+            FSP.setMidXObj(note, attacker);
 
             console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
 
-            FSP.ScenePlayer.playRoutine(
+            FSP.TimeHandler.addEvent(FSP.killNormal, dt, note);
+            FSP.TimeHandler.addEvent(
+                FSP.ScenePlayer.playRoutine,
+                dt,
                 "ChangeStatistic",
                 FSP.proliferate(
                     {
@@ -6540,6 +6547,7 @@ module FullScreenPokemon {
                         "amount": -1
                     },
                     args));
+
         }
 
         /**
