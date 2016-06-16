@@ -1,3 +1,5 @@
+/// <reference path="../FullScreenPokemon.ts" />
+
 module FullScreenPokemon {
     "use strict";
 
