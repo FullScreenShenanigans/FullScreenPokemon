@@ -5005,17 +5005,26 @@ var FullScreenPokemon;
             var startY;
             var differenceX = 43;
             var lineArray = [];
+            var menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            var scratch1 = FSP.addThing("ExplosionSmall", 0, 0);
             if (direction === -1) {
-                startX = 595;
-                startY = 231;
+                // startX = 595;
+                // startY = 231;
+                // startX = menu.right - defender.width * FSP.unitsize;
+                // startY = menu.top + defender.height / 2 * FSP.unitsize;
+                FSP.setMidObj(scratch1, defender);
+                console.log("the player has scratch");
             }
             else {
-                startX = 422;
-                startY = 318;
+                // startX = 422;
+                startX = menu.left + defender.width * FSP.unitsize;
+                // startY = 318;
+                startY = menu.bottom - defender.height * FSP.unitsize;
             }
-            var scratch1 = FSP.addThing("ScratchBlock", startX, startY);
-            var scratch2 = FSP.addThing("ScratchBlock", startX + 14 * direction * -1, startY + 14);
-            var scratch3 = FSP.addThing("ScratchBlock", startX + 14 * direction * -2, startY + 14 * 2);
+            startX = scratch1.left;
+            startY = scratch1.top;
+            var scratch2 = FSP.addThing("ExplosionSmall", startX + 14 * direction * -1, startY + 14);
+            var scratch3 = FSP.addThing("ExplosionSmall", startX + 14 * direction * -2, startY + 14 * 2);
             FSP.TimeHandler.addEventInterval(function () {
                 lineArray.push(FSP.addThing(scratchLine, scratch1.left, scratch1.bottom - 7 * FSP.unitsize));
                 setTimeout(FSP.shiftHoriz, dt, scratch1, differenceX * direction / 4);

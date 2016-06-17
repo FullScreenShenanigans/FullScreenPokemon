@@ -6684,18 +6684,27 @@ module FullScreenPokemon {
             let startY: number;
             let differenceX: number = 43;
             let lineArray: IThing[] = [];
+            let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
 
+            let scratch1: IThing = FSP.addThing("ExplosionSmall", 0, 0);
             if (direction === -1) {
-                startX = 595;
-                startY = 231;
+                // startX = 595;
+                // startY = 231;
+                // startX = menu.right - defender.width * FSP.unitsize;
+                // startY = menu.top + defender.height / 2 * FSP.unitsize;
+                FSP.setMidObj(scratch1, defender);
+                console.log("the player has scratch");
             } else {
-                startX = 422;
-                startY = 318;
+                // startX = 422;
+                startX = menu.left + defender.width * FSP.unitsize;
+                // startY = 318;
+                startY = menu.bottom - defender.height * FSP.unitsize;
             }
 
-            let scratch1: IThing = FSP.addThing("ScratchBlock", startX, startY);
-            let scratch2: IThing = FSP.addThing("ScratchBlock", startX + 14 * direction * -1, startY + 14);
-            let scratch3: IThing = FSP.addThing("ScratchBlock", startX + 14 * direction * -2, startY + 14 * 2);
+            startX = scratch1.left;
+            startY = scratch1.top;
+            let scratch2: IThing = FSP.addThing("ExplosionSmall", startX + 14 * direction * -1, startY + 14);
+            let scratch3: IThing = FSP.addThing("ExplosionSmall", startX + 14 * direction * -2, startY + 14 * 2);
 
             FSP.TimeHandler.addEventInterval(
                 function (): void {
