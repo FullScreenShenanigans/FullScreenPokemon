@@ -4998,33 +4998,44 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneBattleAttackScratch = function (FSP, settings, args) {
             var defenderName = args.defenderName;
             var defender = FSP.BattleMover.getThing(defenderName);
-            var dt = 7;
-            console.log("defender info " + defender.left + " " + defender.top);
-            /*var exclamation: IThing = FSP.addThing("Exclamation");
-            FSP.setMidObj(exclamation, defender);
-            FSP.setTop(exclamation, defender.top);
-            FSP.TimeHandler.addEvent(FSP.shiftBoth, 4 * dt, exclamation, -50, 10);
-            FSP.TimeHandler.addEvent(FSP.killNormal, 8 * dt, exclamation);*/
-            var scratchStart = FSP.addThing("ScratchStart");
-            FSP.setMidObj(scratchStart, defender);
-            FSP.setTop(scratchStart, defender.top);
-            var startX = scratchStart.left + 5;
-            var goalX = defender.left - 10;
+            var dt = 6;
+            var direction = defenderName === "opponent" ? -1 : 1;
+            var scratchLine = direction === -1 ? "ScratchLine" : "ScratchLineInverted";
+            var startX;
+            var startY;
+            var differenceX = 43;
             var lineArray = [];
-            console.log("difference is " + (goalX - startX));
-            FSP.TimeHandler.addEventInterval(function (lineArray) {
-                lineArray.push(FSP.addThing("ScratchLine", scratchStart.left, scratchStart.top));
-                setTimeout(FSP.shiftHoriz, dt, scratchStart, (goalX - startX) / 4);
-                setTimeout(FSP.shiftVert, dt, scratchStart, defender.height / 12 * FSP.unitsize);
-            }, dt, 4, lineArray);
-            // FSP.shiftBoth(scratchStart, -40, 40);
-            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, scratchStart);
-            FSP.TimeHandler.addEvent(function (lineArray) {
+            if (direction === -1) {
+                startX = 595;
+                startY = 231;
+            }
+            else {
+                startX = 422;
+                startY = 318;
+            }
+            var scratch1 = FSP.addThing("ScratchBlock", startX, startY);
+            var scratch2 = FSP.addThing("ScratchBlock", startX + 14 * direction * -1, startY + 14);
+            var scratch3 = FSP.addThing("ScratchBlock", startX + 14 * direction * -2, startY + 14 * 2);
+            FSP.TimeHandler.addEventInterval(function () {
+                lineArray.push(FSP.addThing(scratchLine, scratch1.left, scratch1.bottom - 7 * FSP.unitsize));
+                setTimeout(FSP.shiftHoriz, dt, scratch1, differenceX * direction / 4);
+                setTimeout(FSP.shiftVert, dt, scratch1, differenceX / 4);
+                lineArray.push(FSP.addThing(scratchLine, scratch2.left, scratch2.bottom - 7 * FSP.unitsize));
+                setTimeout(FSP.shiftHoriz, dt, scratch2, differenceX * direction / 4);
+                setTimeout(FSP.shiftVert, dt, scratch2, differenceX / 4);
+                lineArray.push(FSP.addThing(scratchLine, scratch3.left, scratch3.bottom - 7 * FSP.unitsize));
+                setTimeout(FSP.shiftHoriz, dt, scratch3, differenceX * direction / 4);
+                setTimeout(FSP.shiftVert, dt, scratch3, differenceX / 4);
+            }, dt, 4);
+            FSP.TimeHandler.addEvent(function () {
                 var i;
+                FSP.killNormal(scratch1);
+                FSP.killNormal(scratch2);
+                FSP.killNormal(scratch3);
                 for (i = 0; i < lineArray.length; i += 1) {
                     FSP.killNormal(lineArray[i]);
                 }
-            }, 5 * dt, lineArray);
+            }, 5 * dt);
             FSP.TimeHandler.addEvent(FSP.animateFlicker, 5 * dt, defender, 14, 5, args.callback);
         };
         /* Outdoor cutscenes

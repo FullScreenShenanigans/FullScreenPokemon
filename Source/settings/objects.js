@@ -567,10 +567,9 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "HalfArrowHorizontal": {},
                 "HPBar": {},
                 "Note": {},
-                "ScratchStart": {},
-                "ScratchMiddle": {},
-                "ScratchEnd": {},
+                "ScratchBlock": {},
                 "ScratchLine": {},
+                "ScratchLineInverted": {},
                 "Square": {
                     "BlackSquare": {},
                     "DarkGraySquare": {},
@@ -1185,25 +1184,9 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -2
         },
         "HalfArrowHorizontal": [4, 2],
-        "ScratchStart": {
-            "width": 6.5,
-            "height": 5,
-            "offsetX": 5
-        },
-        "ScratchMiddle": {
-            "width": 15,
-            "height": 12.5,
-            "offsetX": -3
-        },
-        "ScratchEnd": {
-            "width": 15,
-            "height": 12.5,
-            "offsetX": -6
-        },
-        "ScratchLine": {
-            "width": 10,
-            "height": 8.5
-        },
+        "ScratchBlock": [5.5, 5],
+        "ScratchLine": [6, 6],
+        "ScratchLineInverted": [6,6],
         "Square": {
             "width": 1,
             "height": 1,
