@@ -4932,7 +4932,8 @@ var FullScreenPokemon;
          * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackGrowl = function (FSP, settings, args) {
-            var battleInfo = settings.battleInfo, attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, notes = [
+            // let battleInfo: IBattleInfo = settings.battleInfo,
+            var attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, notes = [
                 FSP.ObjectMaker.make("Note"),
                 FSP.ObjectMaker.make("Note")
             ];
@@ -4956,7 +4957,6 @@ var FullScreenPokemon;
                 differenceX = menu.left - startX;
                 differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
             }
-            console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
             FSP.addThing(notes[0], startX, startY);
             FSP.TimeHandler.addEvent(FSP.addThing, 2, notes[1], startX + notes[1].width / 2 * FSP.unitsize, startY + FSP.unitsize * 3);
             FSP.TimeHandler.addEventInterval(function (note) {
@@ -4983,12 +4983,6 @@ var FullScreenPokemon;
                     flip2 = flip2 * -1;
                 }, dt);
             }, dt + 2, 4, notes[1]);
-            /*FSP.TimeHandler.addEvent(
-                function (): void {
-                    FSP.killNormal(notes[0]);
-                    FSP.killNormal(notes[1]);
-                },
-                5 * dt);*/
             FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
             FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
             FSP.TimeHandler.addEvent(function () {

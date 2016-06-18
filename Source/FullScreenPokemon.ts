@@ -6517,13 +6517,12 @@ module FullScreenPokemon {
          * @param args   Settings for the routine.
          */
         cutsceneBattleAttackGrowl(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
-            let battleInfo: IBattleInfo = settings.battleInfo,
-                attackerName: string = args.attackerName,
-                defenderName: string = args.defenderName,
-                attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
-                defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName),
-                direction: number = attackerName === "player" ? 1 : -1,
-                notes: IThing[] = [
+            let attackerName: string = args.attackerName;
+            let defenderName: string = args.defenderName;
+            let attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
+            let defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
+            let direction: number = attackerName === "player" ? 1 : -1;
+            let notes: IThing[] = [
                     FSP.ObjectMaker.make("Note"),
                     FSP.ObjectMaker.make("Note")
                 ];
@@ -6548,7 +6547,6 @@ module FullScreenPokemon {
                 differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
             }
 
-            console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
             FSP.addThing(notes[0], startX, startY);
             FSP.TimeHandler.addEvent(
                 FSP.addThing,
@@ -6591,12 +6589,6 @@ module FullScreenPokemon {
                 4,
                 notes[1]);
 
-            /*FSP.TimeHandler.addEvent(
-                function (): void {
-                    FSP.killNormal(notes[0]);
-                    FSP.killNormal(notes[1]);
-                },
-                5 * dt);*/
             FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
             FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
 
