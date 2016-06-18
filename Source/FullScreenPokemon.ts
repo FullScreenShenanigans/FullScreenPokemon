@@ -6527,26 +6527,93 @@ module FullScreenPokemon {
                     FSP.ObjectMaker.make("Note"),
                     FSP.ObjectMaker.make("Note")
                 ];
-            let dt: number = 8;
-            let note: IThing = <IThing>FSP.BattleMover.setThing("note", "Note");
-            FSP.setTop(note, attacker.top + attacker.height / 2 * FSP.unitsize);
-            FSP.setMidXObj(note, attacker);
+            let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            let dt: number = 10;
+            let flip1: number = 1;
+            let flip2: number = 1;
+            let startX: number;
+            let startY: number;
+            let differenceX: number;
+            let differenceY: number;
+
+            if (direction === 1) {
+                startX = menu.left + attacker.width / 2 * FSP.unitsize;
+                startY = menu.bottom - attacker.height * FSP.unitsize;
+                differenceX = menu.right - startX;
+                differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
+            } else {
+                startX = menu.right - attacker.width / 2 * FSP.unitsize;
+                startY = menu.top + attacker.height * FSP.unitsize;
+                differenceX = menu.left - startX;
+                differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
+            }
 
             console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
-
-            FSP.TimeHandler.addEvent(FSP.killNormal, dt, note);
+            FSP.addThing(notes[0], startX, startY);
             FSP.TimeHandler.addEvent(
-                FSP.ScenePlayer.playRoutine,
+                FSP.addThing,
+                2,
+                notes[1],
+                startX + notes[1].width / 2 * FSP.unitsize,
+                startY + FSP.unitsize * 3);
+            FSP.TimeHandler.addEventInterval(
+                function (note: IThing): void {
+                    setTimeout(
+                        function (): void {
+                            FSP.shiftHoriz(note, differenceX / 4);
+                            if (flip1 === 1) {
+                                FSP.shiftVert(note, differenceY / 10 * 6);
+                            } else {
+                                FSP.shiftVert(note, -1 * differenceY / 8);
+                            }
+                            flip1 = flip1 * -1;
+                        },
+                        dt);
+                },
                 dt,
-                "ChangeStatistic",
-                FSP.proliferate(
-                    {
-                        "callback": args.callback,
-                        "defenderName": defenderName,
-                        "statistic": "Attack",
-                        "amount": -1
-                    },
-                    args));
+                4,
+                notes[0]);
+            FSP.TimeHandler.addEventInterval(
+                function (note: IThing): void {
+                    setTimeout(
+                        function (): void {
+                            FSP.shiftHoriz(note, differenceX / 4);
+                            if (flip2 === 1) {
+                                FSP.shiftVert(note, differenceY / 10 * 6);
+                            } else {
+                                FSP.shiftVert(note, -1 * differenceY / 8);
+                            }
+                            flip2 = flip2 * -1;
+                        },
+                        dt);
+                },
+                dt + 2,
+                4,
+                notes[1]);
+
+            /*FSP.TimeHandler.addEvent(
+                function (): void {
+                    FSP.killNormal(notes[0]);
+                    FSP.killNormal(notes[1]);
+                },
+                5 * dt);*/
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
+
+            FSP.TimeHandler.addEvent(
+                function (): void {
+                    FSP.ScenePlayer.playRoutine(
+                    "ChangeStatistic",
+                    FSP.proliferate(
+                        {
+                            "callback": args.callback,
+                            "defenderName": defenderName,
+                            "statistic": "Attack",
+                            "amount": -1
+                        },
+                        args));
+                },
+                5 * dt);
 
         }
 

@@ -4936,18 +4936,69 @@ var FullScreenPokemon;
                 FSP.ObjectMaker.make("Note"),
                 FSP.ObjectMaker.make("Note")
             ];
-            var dt = 8;
-            var note = FSP.BattleMover.setThing("note", "Note");
-            FSP.setTop(note, attacker.top + attacker.height / 2 * FSP.unitsize);
-            FSP.setMidXObj(note, attacker);
+            var menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            var dt = 10;
+            var flip1 = 1;
+            var flip2 = 1;
+            var startX;
+            var startY;
+            var differenceX;
+            var differenceY;
+            if (direction === 1) {
+                startX = menu.left + attacker.width / 2 * FSP.unitsize;
+                startY = menu.bottom - attacker.height * FSP.unitsize;
+                differenceX = menu.right - startX;
+                differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
+            }
+            else {
+                startX = menu.right - attacker.width / 2 * FSP.unitsize;
+                startY = menu.top + attacker.height * FSP.unitsize;
+                differenceX = menu.left - startX;
+                differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
+            }
             console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
-            FSP.TimeHandler.addEvent(FSP.killNormal, dt, note);
-            FSP.TimeHandler.addEvent(FSP.ScenePlayer.playRoutine, dt, "ChangeStatistic", FSP.proliferate({
-                "callback": args.callback,
-                "defenderName": defenderName,
-                "statistic": "Attack",
-                "amount": -1
-            }, args));
+            FSP.addThing(notes[0], startX, startY);
+            FSP.TimeHandler.addEvent(FSP.addThing, 2, notes[1], startX + notes[1].width / 2 * FSP.unitsize, startY + FSP.unitsize * 3);
+            FSP.TimeHandler.addEventInterval(function (note) {
+                setTimeout(function () {
+                    FSP.shiftHoriz(note, differenceX / 4);
+                    if (flip1 === 1) {
+                        FSP.shiftVert(note, differenceY / 10 * 6);
+                    }
+                    else {
+                        FSP.shiftVert(note, -1 * differenceY / 8);
+                    }
+                    flip1 = flip1 * -1;
+                }, dt);
+            }, dt, 4, notes[0]);
+            FSP.TimeHandler.addEventInterval(function (note) {
+                setTimeout(function () {
+                    FSP.shiftHoriz(note, differenceX / 4);
+                    if (flip2 === 1) {
+                        FSP.shiftVert(note, differenceY / 10 * 6);
+                    }
+                    else {
+                        FSP.shiftVert(note, -1 * differenceY / 8);
+                    }
+                    flip2 = flip2 * -1;
+                }, dt);
+            }, dt + 2, 4, notes[1]);
+            /*FSP.TimeHandler.addEvent(
+                function (): void {
+                    FSP.killNormal(notes[0]);
+                    FSP.killNormal(notes[1]);
+                },
+                5 * dt);*/
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
+            FSP.TimeHandler.addEvent(function () {
+                FSP.ScenePlayer.playRoutine("ChangeStatistic", FSP.proliferate({
+                    "callback": args.callback,
+                    "defenderName": defenderName,
+                    "statistic": "Attack",
+                    "amount": -1
+                }, args));
+            }, 5 * dt);
         };
         /**
          * Cutscene for a Tackle attack in battle.
