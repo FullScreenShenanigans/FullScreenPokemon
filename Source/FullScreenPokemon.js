@@ -4932,17 +4932,66 @@ var FullScreenPokemon;
          * @param args   Settings for the routine.
          */
         FullScreenPokemon.prototype.cutsceneBattleAttackGrowl = function (FSP, settings, args) {
-            var battleInfo = settings.battleInfo, attackerName = args.attackerName, defenderName = args.defenderName, attacker = FSP.BattleMover.getThing(attackerName), defender = FSP.BattleMover.getThing(defenderName), direction = attackerName === "player" ? 1 : -1, notes = [
+            var attackerName = args.attackerName;
+            var defenderName = args.defenderName;
+            var attacker = FSP.BattleMover.getThing(attackerName);
+            var defender = FSP.BattleMover.getThing(defenderName);
+            var direction = attackerName === "player" ? 1 : -1;
+            var notes = [
                 FSP.ObjectMaker.make("Note"),
                 FSP.ObjectMaker.make("Note")
             ];
-            console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
-            FSP.ScenePlayer.playRoutine("ChangeStatistic", FSP.proliferate({
-                "callback": args.callback,
-                "defenderName": defenderName,
-                "statistic": "Attack",
-                "amount": -1
-            }, args));
+            var menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            var dt = 10;
+            var startX;
+            var startY;
+            var movement = function (note, dt) {
+                var flip = 1;
+                var differenceX;
+                var differenceY;
+                if (direction === 1) {
+                    differenceX = menu.right - startX;
+                    differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
+                }
+                else {
+                    differenceX = menu.left - startX;
+                    differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
+                }
+                for (var i = 1; i <= 4; i += 1) {
+                    FSP.TimeHandler.addEvent(function () {
+                        FSP.shiftHoriz(note, differenceX / 4);
+                        if (flip === 1) {
+                            FSP.shiftVert(note, differenceY / 10 * 6);
+                        }
+                        else {
+                            FSP.shiftVert(note, -1 * differenceY / 8);
+                        }
+                        flip *= -1;
+                    }, dt * i);
+                }
+            };
+            if (direction === 1) {
+                startX = menu.left + attacker.width / 2 * FSP.unitsize;
+                startY = menu.bottom - attacker.height * FSP.unitsize;
+            }
+            else {
+                startX = menu.right - attacker.width / 2 * FSP.unitsize;
+                startY = menu.top + attacker.height * FSP.unitsize;
+            }
+            FSP.addThing(notes[0], startX, startY);
+            FSP.TimeHandler.addEvent(FSP.addThing, 2, notes[1], startX + notes[1].width / 2 * FSP.unitsize, startY + FSP.unitsize * 3);
+            movement(notes[0], dt);
+            movement(notes[1], dt + 2);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
+            FSP.TimeHandler.addEvent(function () {
+                FSP.animateScreenShake(FSP, 3, 0, 6, undefined, FSP.ScenePlayer.bindRoutine("ChangeStatistic", FSP.proliferate({
+                    "callback": args.callback,
+                    "defenderName": defenderName,
+                    "statistic": "Attack",
+                    "amount": -1
+                }, args)));
+            }, 5 * dt);
         };
         /**
          * Cutscene for a Tackle attack in battle.

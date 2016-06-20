@@ -6517,29 +6517,90 @@ module FullScreenPokemon {
          * @param args   Settings for the routine.
          */
         cutsceneBattleAttackGrowl(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
-            let battleInfo: IBattleInfo = settings.battleInfo,
-                attackerName: string = args.attackerName,
-                defenderName: string = args.defenderName,
-                attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName),
-                defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName),
-                direction: number = attackerName === "player" ? 1 : -1,
-                notes: IThing[] = [
+            let attackerName: string = args.attackerName;
+            let defenderName: string = args.defenderName;
+            let attacker: IThing = <IThing>FSP.BattleMover.getThing(attackerName);
+            let defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
+            let direction: number = attackerName === "player" ? 1 : -1;
+            let notes: IThing[] = [
                     FSP.ObjectMaker.make("Note"),
                     FSP.ObjectMaker.make("Note")
                 ];
+            let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            let dt: number = 10;
+            let startX: number;
+            let startY: number;
+            let movement: (note: IThing, dt: number) => void = function (note: IThing, dt: number): void {
+                let flip: number = 1;
+                let differenceX: number;
+                let differenceY: number;
 
-            console.log("Should do something with", notes, direction, defender, attacker, battleInfo);
+                if (direction === 1) {
+                    differenceX = menu.right - startX;
+                    differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
+                } else {
+                    differenceX = menu.left - startX;
+                    differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
+                }
 
-            FSP.ScenePlayer.playRoutine(
-                "ChangeStatistic",
-                FSP.proliferate(
-                    {
-                        "callback": args.callback,
-                        "defenderName": defenderName,
-                        "statistic": "Attack",
-                        "amount": -1
-                    },
-                    args));
+                for (let i: number = 1; i <= 4; i += 1) {
+                    FSP.TimeHandler.addEvent(
+                        function (): void {
+                            FSP.shiftHoriz(note, differenceX / 4);
+                            if (flip === 1) {
+                                FSP.shiftVert(note, differenceY / 10 * 6);
+                            } else {
+                                FSP.shiftVert(note, -1 * differenceY / 8);
+                            }
+                            flip *= -1;
+                        },
+                        dt * i);
+                }
+            };
+
+            if (direction === 1) {
+                startX = menu.left + attacker.width / 2 * FSP.unitsize;
+                startY = menu.bottom - attacker.height * FSP.unitsize;
+            } else {
+                startX = menu.right - attacker.width / 2 * FSP.unitsize;
+                startY = menu.top + attacker.height * FSP.unitsize;
+            }
+
+            FSP.addThing(notes[0], startX, startY);
+            FSP.TimeHandler.addEvent(
+                FSP.addThing,
+                2,
+                notes[1],
+                startX + notes[1].width / 2 * FSP.unitsize,
+                startY + FSP.unitsize * 3);
+
+            movement(notes[0], dt);
+            movement(notes[1], dt + 2);
+
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
+            FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
+
+            FSP.TimeHandler.addEvent(
+                function (): void {
+                    FSP.animateScreenShake(
+                        FSP,
+                        3,
+                        0,
+                        6,
+                        undefined,
+                        FSP.ScenePlayer.bindRoutine(
+                            "ChangeStatistic",
+                            FSP.proliferate(
+                                {
+                                    "callback": args.callback,
+                                    "defenderName": defenderName,
+                                    "statistic": "Attack",
+                                    "amount": -1
+                                },
+                                args)));
+                },
+                5 * dt);
+
         }
 
         /**
