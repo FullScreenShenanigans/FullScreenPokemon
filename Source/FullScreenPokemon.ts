@@ -6679,9 +6679,6 @@ module FullScreenPokemon {
             let defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
             let dt: number = 1;
             let direction: number = defenderName === "opponent" ? -1 : 1;
-            let scratchLine: string = "ScratchLine";
-            let startX: number;
-            let startY: number;
             let differenceX: number = defender.width / 2 * FSP.unitsize;
             let lineArray: IThing[] = [];
             let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
@@ -6690,6 +6687,8 @@ module FullScreenPokemon {
                 FSP.ObjectMaker.make("ExplosionSmall"),
                 FSP.ObjectMaker.make("ExplosionSmall")
             ];
+            let startX: number;
+            let startY: number;
 
             if (direction === -1) {
                 startX = menu.right - defender.width / 2 * FSP.unitsize;
@@ -6706,14 +6705,14 @@ module FullScreenPokemon {
 
             FSP.TimeHandler.addEventInterval(
                 function (): void {
-                    for (let i: number = 0; i < 3; i += 1) {
-                        let line: IThing;
+                    for (let i: number = 0; i < scratches.length; i += 1) {
                         let left: number = direction === -1 ? scratches[i].left : scratches[i].right - 3 * FSP.unitsize;
                         let top: number =  scratches[i].bottom - 3 * FSP.unitsize;
 
                         FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratches[i], differenceX * direction / 16);
                         FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratches[i], differenceX / 16);
-                        line = FSP.addThing(scratchLine, left, top);
+
+                        let line: IThing = FSP.addThing("ScratchLine", left, top);
                         if (direction === 1) {
                             FSP.flipHoriz(line);
                         }
@@ -6725,19 +6724,15 @@ module FullScreenPokemon {
 
             FSP.TimeHandler.addEvent(
                 function (): void {
-                    FSP.killNormal(scratches[0]);
-                    FSP.killNormal(scratches[1]);
-                    FSP.killNormal(scratches[2]);
+                    for (let i: number = 0; i < scratches.length; i += 1) {
+                        FSP.killNormal(scratches[i]);
+                    }
 
                     for (let i: number = 0; i < lineArray.length; i += 1) {
                         FSP.killNormal(lineArray[i]);
                     }
 
-                    FSP.animateFlicker(
-                    defender,
-                    14,
-                    5,
-                    args.callback);
+                    FSP.animateFlicker(defender, 14, 5, args.callback);
                 },
                 17 * dt);
         }
