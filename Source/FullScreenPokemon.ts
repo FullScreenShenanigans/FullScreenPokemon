@@ -6685,6 +6685,11 @@ module FullScreenPokemon {
             let differenceX: number = defender.width / 2 * FSP.unitsize;
             let lineArray: IThing[] = [];
             let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            let scratches: IThing[] = [
+                FSP.ObjectMaker.make("ExplosionSmall"),
+                FSP.ObjectMaker.make("ExplosionSmall"),
+                FSP.ObjectMaker.make("ExplosionSmall")
+            ];
 
             if (direction === -1) {
                 startX = menu.right - defender.width / 2 * FSP.unitsize;
@@ -6694,59 +6699,40 @@ module FullScreenPokemon {
                 startY = menu.bottom - (defender.height + 8) * FSP.unitsize;
             }
 
-            let scratch1: IThing = FSP.addThing("ExplosionSmall", startX, startY);
-            let offset: number = scratch1.width * FSP.unitsize / 2;
-            let scratch2: IThing = FSP.addThing("ExplosionSmall", startX + offset * direction * -1, startY + offset);
-            let scratch3: IThing = FSP.addThing("ExplosionSmall", startX + offset * direction * -2, startY + offset * 2);
+            FSP.addThing(scratches[0], startX, startY);
+            let offset: number = scratches[0].width * FSP.unitsize / 2;
+            FSP.addThing(scratches[1], startX + offset * direction * -1, startY + offset);
+            FSP.addThing(scratches[2], startX + offset * direction * -2, startY + offset * 2);
 
             FSP.TimeHandler.addEventInterval(
                 function (): void {
-                    let line: IThing;
-                    let left: number = direction === -1 ? scratch1.left : scratch1.right - 3 * FSP.unitsize;
-                    let top: number =  scratch1.bottom - 3 * FSP.unitsize;
+                    for (let i: number = 0; i < 3; i += 1) {
+                        let line: IThing;
+                        let left: number = direction === -1 ? scratches[i].left : scratches[i].right - 3 * FSP.unitsize;
+                        let top: number =  scratches[i].bottom - 3 * FSP.unitsize;
 
-                    setTimeout(FSP.shiftHoriz, dt, scratch1, differenceX * direction / 16);
-                    setTimeout(FSP.shiftVert, dt, scratch1, differenceX / 16);
-                    line = FSP.addThing(scratchLine, left, top);
-                    if (direction === 1) {
-                        FSP.flipHoriz(line);
+                        FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratches[i], differenceX * direction / 16);
+                        FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratches[i], differenceX / 16);
+                        line = FSP.addThing(scratchLine, left, top);
+                        if (direction === 1) {
+                            FSP.flipHoriz(line);
+                        }
+                        lineArray.push(line);
                     }
-                    lineArray.push(line);
-
-                    left = direction === -1 ? scratch2.left : scratch2.right - 3 * FSP.unitsize;
-                    top =  scratch2.bottom - 3 * FSP.unitsize;
-                    setTimeout(FSP.shiftHoriz, dt, scratch2, differenceX * direction / 16);
-                    setTimeout(FSP.shiftVert, dt, scratch2, differenceX / 16);
-                    line = FSP.addThing(scratchLine, left, top);
-                    if (direction === 1) {
-                        FSP.flipHoriz(line);
-                    }
-                    lineArray.push(line);
-
-                    left = direction === -1 ? scratch3.left : scratch3.right - 3 * FSP.unitsize;
-                    top =  scratch3.bottom - 3 * FSP.unitsize;
-                    setTimeout(FSP.shiftHoriz, dt, scratch3, differenceX * direction / 16);
-                    setTimeout(FSP.shiftVert, dt, scratch3, differenceX / 16);
-                    line = FSP.addThing(scratchLine, left, top);
-                    if (direction === 1) {
-                        FSP.flipHoriz(line);
-                    }
-                    lineArray.push(line);
                 },
                 dt,
                 16);
 
             FSP.TimeHandler.addEvent(
                 function (): void {
-                    let i: number;
+                    FSP.killNormal(scratches[0]);
+                    FSP.killNormal(scratches[1]);
+                    FSP.killNormal(scratches[2]);
 
-                    FSP.killNormal(scratch1);
-                    FSP.killNormal(scratch2);
-                    FSP.killNormal(scratch3);
-
-                    for (i = 0; i < lineArray.length; i += 1) {
+                    for (let i: number = 0; i < lineArray.length; i += 1) {
                         FSP.killNormal(lineArray[i]);
                     }
+
                     FSP.animateFlicker(
                     defender,
                     14,
