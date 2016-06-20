@@ -6531,32 +6531,32 @@ module FullScreenPokemon {
             let startX: number;
             let startY: number;
             let movement: (note: IThing, dt: number) => void = function (note: IThing, dt: number): void {
-                    let flip: number = 1;
-                    let differenceX: number;
-                    let differenceY: number;
+                let flip: number = 1;
+                let differenceX: number;
+                let differenceY: number;
 
-                    if (direction === 1) {
-                        differenceX = menu.right - startX;
-                        differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
-                    } else {
-                        differenceX = menu.left - startX;
-                        differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
-                    }
+                if (direction === 1) {
+                    differenceX = menu.right - startX;
+                    differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
+                } else {
+                    differenceX = menu.left - startX;
+                    differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
+                }
 
-                    for (let i: number = 1; i <= 4; i++) {
-                        FSP.TimeHandler.addEvent(
-                            function (): void {
-                                FSP.shiftHoriz(note, differenceX / 4);
-                                if (flip === 1) {
-                                    FSP.shiftVert(note, differenceY / 10 * 6);
-                                } else {
-                                    FSP.shiftVert(note, -1 * differenceY / 8);
-                                }
-                                flip = flip * -1;
-                            },
-                            dt * i);
-                    }
-                };
+                for (let i: number = 1; i <= 4; i += 1) {
+                    FSP.TimeHandler.addEvent(
+                        function (): void {
+                            FSP.shiftHoriz(note, differenceX / 4);
+                            if (flip === 1) {
+                                FSP.shiftVert(note, differenceY / 10 * 6);
+                            } else {
+                                FSP.shiftVert(note, -1 * differenceY / 8);
+                            }
+                            flip *= -1;
+                        },
+                        dt * i);
+                }
+            };
 
             if (direction === 1) {
                 startX = menu.left + attacker.width / 2 * FSP.unitsize;
@@ -6583,21 +6583,21 @@ module FullScreenPokemon {
             FSP.TimeHandler.addEvent(
                 function (): void {
                     FSP.animateScreenShake(
-                    FSP,
-                    3,
-                    0,
-                    6,
-                    undefined,
-                    FSP.ScenePlayer.bindRoutine(
-                    "ChangeStatistic",
-                    FSP.proliferate(
-                        {
-                            "callback": args.callback,
-                            "defenderName": defenderName,
-                            "statistic": "Attack",
-                            "amount": -1
-                        },
-                        args)));
+                        FSP,
+                        3,
+                        0,
+                        6,
+                        undefined,
+                        FSP.ScenePlayer.bindRoutine(
+                            "ChangeStatistic",
+                            FSP.proliferate(
+                                {
+                                    "callback": args.callback,
+                                    "defenderName": defenderName,
+                                    "statistic": "Attack",
+                                    "amount": -1
+                                },
+                                args)));
                 },
                 5 * dt);
 

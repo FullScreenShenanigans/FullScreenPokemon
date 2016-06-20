@@ -4957,7 +4957,7 @@ var FullScreenPokemon;
                     differenceX = menu.left - startX;
                     differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
                 }
-                for (var i = 1; i <= 4; i++) {
+                for (var i = 1; i <= 4; i += 1) {
                     FSP.TimeHandler.addEvent(function () {
                         FSP.shiftHoriz(note, differenceX / 4);
                         if (flip === 1) {
@@ -4966,7 +4966,7 @@ var FullScreenPokemon;
                         else {
                             FSP.shiftVert(note, -1 * differenceY / 8);
                         }
-                        flip = flip * -1;
+                        flip *= -1;
                     }, dt * i);
                 }
             };
