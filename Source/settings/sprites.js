@@ -893,6 +893,8 @@ FullScreenPokemon.FullScreenPokemon.settings.sprites = {
             "DarkGraySquare": "x44,",
             "Exclamation": "p[0,1,2]00x210,0002x110,202x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x15,22x112,22x15,22x15,22x15,22x15,202x110,2000x210,x09,22x012,2x06,",
             "HalfArrowHorizontal": "p[0,2]11x06,11110000x16,00x18,",
+            "ExplosionSmall": "p[0,1,4]10100002200001010200110220110020102200222200220100x212,00010x210,010010x210,01000x212,00x232,00x212,00010x210,010010x210,01000x212,00102200222200220102001102201100201010000220000101",
+            "ScratchLine": "p[0,4]0x17,0",
             "HPBar": ["multiple", "horizontal", {
                 "left": "p[0,2]0110",
                 "middle": "p[0,2]1001",

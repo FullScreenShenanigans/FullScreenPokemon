@@ -6638,6 +6638,76 @@ module FullScreenPokemon {
                     }));
         }
 
+        /**
+         * Cutscene for a Scratch attack in battle.
+         * 
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        cutsceneBattleAttackScratch(FSP: FullScreenPokemon, settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+            let defenderName: string = args.defenderName;
+            let defender: IThing = <IThing>FSP.BattleMover.getThing(defenderName);
+            let dt: number = 1;
+            let direction: number = defenderName === "opponent" ? -1 : 1;
+            let differenceX: number = defender.width / 2 * FSP.unitsize;
+            let lineArray: IThing[] = [];
+            let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            let scratches: IThing[] = [
+                FSP.ObjectMaker.make("ExplosionSmall"),
+                FSP.ObjectMaker.make("ExplosionSmall"),
+                FSP.ObjectMaker.make("ExplosionSmall")
+            ];
+            let startX: number;
+            let startY: number;
+
+            if (direction === -1) {
+                startX = menu.right - defender.width / 2 * FSP.unitsize;
+                startY = menu.top;
+            } else {
+                startX = menu.left + defender.width * FSP.unitsize;
+                startY = menu.bottom - (defender.height + 8) * FSP.unitsize;
+            }
+
+            FSP.addThing(scratches[0], startX, startY);
+            let offset: number = scratches[0].width * FSP.unitsize / 2;
+            FSP.addThing(scratches[1], startX + offset * direction * -1, startY + offset);
+            FSP.addThing(scratches[2], startX + offset * direction * -2, startY + offset * 2);
+
+            FSP.TimeHandler.addEventInterval(
+                function (): void {
+                    for (let i: number = 0; i < scratches.length; i += 1) {
+                        let left: number = direction === -1 ? scratches[i].left : scratches[i].right - 3 * FSP.unitsize;
+                        let top: number =  scratches[i].bottom - 3 * FSP.unitsize;
+
+                        FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratches[i], differenceX * direction / 16);
+                        FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratches[i], differenceX / 16);
+
+                        let line: IThing = FSP.addThing("ScratchLine", left, top);
+                        if (direction === 1) {
+                            FSP.flipHoriz(line);
+                        }
+                        lineArray.push(line);
+                    }
+                },
+                dt,
+                16);
+
+            FSP.TimeHandler.addEvent(
+                function (): void {
+                    for (let i: number = 0; i < scratches.length; i += 1) {
+                        FSP.killNormal(scratches[i]);
+                    }
+
+                    for (let i: number = 0; i < lineArray.length; i += 1) {
+                        FSP.killNormal(lineArray[i]);
+                    }
+
+                    FSP.animateFlicker(defender, 14, 5, args.callback);
+                },
+                17 * dt);
+        }
+
 
         /* Outdoor cutscenes
         */

@@ -4986,6 +4986,63 @@ var FullScreenPokemon;
                 "amount": -1
             }));
         };
+        /**
+         * Cutscene for a Scratch attack in battle.
+         *
+         * @param FSP
+         * @param settings   Settings used for the cutscene.
+         * @param args   Settings for the routine.
+         */
+        FullScreenPokemon.prototype.cutsceneBattleAttackScratch = function (FSP, settings, args) {
+            var defenderName = args.defenderName;
+            var defender = FSP.BattleMover.getThing(defenderName);
+            var dt = 1;
+            var direction = defenderName === "opponent" ? -1 : 1;
+            var differenceX = defender.width / 2 * FSP.unitsize;
+            var lineArray = [];
+            var menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial");
+            var scratches = [
+                FSP.ObjectMaker.make("ExplosionSmall"),
+                FSP.ObjectMaker.make("ExplosionSmall"),
+                FSP.ObjectMaker.make("ExplosionSmall")
+            ];
+            var startX;
+            var startY;
+            if (direction === -1) {
+                startX = menu.right - defender.width / 2 * FSP.unitsize;
+                startY = menu.top;
+            }
+            else {
+                startX = menu.left + defender.width * FSP.unitsize;
+                startY = menu.bottom - (defender.height + 8) * FSP.unitsize;
+            }
+            FSP.addThing(scratches[0], startX, startY);
+            var offset = scratches[0].width * FSP.unitsize / 2;
+            FSP.addThing(scratches[1], startX + offset * direction * -1, startY + offset);
+            FSP.addThing(scratches[2], startX + offset * direction * -2, startY + offset * 2);
+            FSP.TimeHandler.addEventInterval(function () {
+                for (var i = 0; i < scratches.length; i += 1) {
+                    var left = direction === -1 ? scratches[i].left : scratches[i].right - 3 * FSP.unitsize;
+                    var top_1 = scratches[i].bottom - 3 * FSP.unitsize;
+                    FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratches[i], differenceX * direction / 16);
+                    FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratches[i], differenceX / 16);
+                    var line = FSP.addThing("ScratchLine", left, top_1);
+                    if (direction === 1) {
+                        FSP.flipHoriz(line);
+                    }
+                    lineArray.push(line);
+                }
+            }, dt, 16);
+            FSP.TimeHandler.addEvent(function () {
+                for (var i = 0; i < scratches.length; i += 1) {
+                    FSP.killNormal(scratches[i]);
+                }
+                for (var i = 0; i < lineArray.length; i += 1) {
+                    FSP.killNormal(lineArray[i]);
+                }
+                FSP.animateFlicker(defender, 14, 5, args.callback);
+            }, 17 * dt);
+        };
         /* Outdoor cutscenes
         */
         /**

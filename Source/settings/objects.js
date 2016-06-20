@@ -567,6 +567,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "HalfArrowHorizontal": {},
                 "HPBar": {},
                 "Note": {},
+                "ExplosionSmall": {},
+                "ScratchLine": {},
                 "Square": {
                     "BlackSquare": {},
                     "DarkGraySquare": {},
@@ -1181,6 +1183,8 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
             "offsetY": FullScreenPokemon.FullScreenPokemon.unitsize * -2
         },
         "HalfArrowHorizontal": [4, 2],
+        "ExplosionSmall": [8, 8],
+        "ScratchLine": [1.5, 1.5],
         "Square": {
             "width": 1,
             "height": 1,
