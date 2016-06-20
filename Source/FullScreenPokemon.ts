@@ -6528,23 +6528,42 @@ module FullScreenPokemon {
                 ];
             let menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial");
             let dt: number = 10;
-            let flip1: number = 1;
-            let flip2: number = 1;
             let startX: number;
             let startY: number;
-            let differenceX: number;
-            let differenceY: number;
+            let movement: (note: IThing, dt: number) => void = function (note: IThing, dt: number): void {
+                    let flip: number = 1;
+                    let differenceX: number;
+                    let differenceY: number;
+
+                    if (direction === 1) {
+                        differenceX = menu.right - startX;
+                        differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
+                    } else {
+                        differenceX = menu.left - startX;
+                        differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
+                    }
+
+                    for (let i: number = 1; i <= 4; i++) {
+                        FSP.TimeHandler.addEvent(
+                            function (): void {
+                                FSP.shiftHoriz(note, differenceX / 4);
+                                if (flip === 1) {
+                                    FSP.shiftVert(note, differenceY / 10 * 6);
+                                } else {
+                                    FSP.shiftVert(note, -1 * differenceY / 8);
+                                }
+                                flip = flip * -1;
+                            },
+                            dt * i);
+                    }
+                };
 
             if (direction === 1) {
                 startX = menu.left + attacker.width / 2 * FSP.unitsize;
                 startY = menu.bottom - attacker.height * FSP.unitsize;
-                differenceX = menu.right - startX;
-                differenceY = (menu.top + defender.height / 2 * FSP.unitsize) - startY;
             } else {
                 startX = menu.right - attacker.width / 2 * FSP.unitsize;
                 startY = menu.top + attacker.height * FSP.unitsize;
-                differenceX = menu.left - startX;
-                differenceY = (menu.bottom - defender.height * FSP.unitsize) - startY;
             }
 
             FSP.addThing(notes[0], startX, startY);
@@ -6554,47 +6573,22 @@ module FullScreenPokemon {
                 notes[1],
                 startX + notes[1].width / 2 * FSP.unitsize,
                 startY + FSP.unitsize * 3);
-            FSP.TimeHandler.addEventInterval(
-                function (note: IThing): void {
-                    setTimeout(
-                        function (): void {
-                            FSP.shiftHoriz(note, differenceX / 4);
-                            if (flip1 === 1) {
-                                FSP.shiftVert(note, differenceY / 10 * 6);
-                            } else {
-                                FSP.shiftVert(note, -1 * differenceY / 8);
-                            }
-                            flip1 = flip1 * -1;
-                        },
-                        dt);
-                },
-                dt,
-                4,
-                notes[0]);
-            FSP.TimeHandler.addEventInterval(
-                function (note: IThing): void {
-                    setTimeout(
-                        function (): void {
-                            FSP.shiftHoriz(note, differenceX / 4);
-                            if (flip2 === 1) {
-                                FSP.shiftVert(note, differenceY / 10 * 6);
-                            } else {
-                                FSP.shiftVert(note, -1 * differenceY / 8);
-                            }
-                            flip2 = flip2 * -1;
-                        },
-                        dt);
-                },
-                dt + 2,
-                4,
-                notes[1]);
+
+            movement(notes[0], dt);
+            movement(notes[1], dt + 2);
 
             FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt, notes[0]);
             FSP.TimeHandler.addEvent(FSP.killNormal, 5 * dt + 2, notes[1]);
 
             FSP.TimeHandler.addEvent(
                 function (): void {
-                    FSP.ScenePlayer.playRoutine(
+                    FSP.animateScreenShake(
+                    FSP,
+                    3,
+                    0,
+                    6,
+                    undefined,
+                    FSP.ScenePlayer.bindRoutine(
                     "ChangeStatistic",
                     FSP.proliferate(
                         {
@@ -6603,7 +6597,7 @@ module FullScreenPokemon {
                             "statistic": "Attack",
                             "amount": -1
                         },
-                        args));
+                        args)));
                 },
                 5 * dt);
 
