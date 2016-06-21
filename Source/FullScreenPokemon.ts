@@ -5399,7 +5399,7 @@ module FullScreenPokemon {
             let things: IBattleThingsById = settings.things,
                 battleInfo: IBattleInfo = settings.battleInfo,
                 player: IPlayer = things.player,
-                opponent: ICharacter = things.opponent,
+                opponent: IEnemy = things.opponent,
                 menu: IMenu = <IMenu>FSP.MenuGrapher.getMenu("BattleDisplayInitial"),
                 playerX: number,
                 opponentX: number,
