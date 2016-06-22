@@ -866,8 +866,11 @@ module FullScreenPokemon {
                 thing,
                 3);
 
-
             thing.FSP.ModAttacher.fireEvent("onKeyDownLeft");
+
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
         }
 
         /**
