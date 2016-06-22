@@ -614,6 +614,9 @@ var FullScreenPokemon;
             }
             thing.FSP.TimeHandler.addEvent(thing.FSP.keyDownDirectionReal, FullScreenPokemon.inputTimeTolerance, thing, 3);
             thing.FSP.ModAttacher.fireEvent("onKeyDownLeft");
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
         };
         /**
          * Driver for a direction key being pressed. The MenuGraphr's active menu reacts
