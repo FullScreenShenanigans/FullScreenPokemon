@@ -9362,7 +9362,8 @@ module FullScreenPokemon {
          * in localStorage.
          */
         clearSavedData(): void {
-            let oldLocalStorage: { [i: string]: ItemsHoldr.ItemValue } = this.ItemsHolder.exportItems();
+            let oldLocalStorage: any = this.ItemsHolder.exportItems();
+            console.log(oldLocalStorage);
             // let items: string[] = this.ItemsHolder.getKeys();
             /*for (let i: number = 0; i < items.length; i += 1) {
                 // if (items.hasOwnProperty(items[i])) {
@@ -9374,6 +9375,7 @@ module FullScreenPokemon {
             let prefix: string = this.ItemsHolder.getPrefix();
             for (let i in localStorage) {
                 if (localStorage.hasOwnProperty(i) && i.lastIndexOf(prefix, 0) === 0) {
+                    console.log("deleting: " + i);
                     delete localStorage[i];
                 }
             }
@@ -9388,16 +9390,24 @@ module FullScreenPokemon {
          */
         checkForOldStorageData(): void {
             if (this.ItemsHolder.getItem("oldLocalStorage") && !this.ItemsHolder.getItem("gameStarted")) {
-                console.log("doing it");
+                // console.log("doing it");
                 let oldLocalStorage: { [i: string]: ItemsHoldr.ItemValue } = this.ItemsHolder.getItem("oldLocalStorage");
-                console.log(oldLocalStorage);
+                // console.log(oldLocalStorage);
                 for (let i in oldLocalStorage) {
-                    if (oldLocalStorage.hasOwnProperty(i)) {
+                    if (!oldLocalStorage.hasOwnProperty(i)) {
+                        continue;
+                    }
+
+                    console.log("Here is i in oldLocalStorage: " + i);
+                    if (i.slice(0, "StateHolder::".length) === "StateHolder::") {
+                        let split: string[] = i.split("::");
+                        this.StateHolder.setCollection(split[1] + "::" + split[2], oldLocalStorage[i]);
+                    } else {
                         this.ItemsHolder.setItem(i, oldLocalStorage[i]);
                     }
                 }
             } else {
-                console.log("did not pass");
+                // console.log("did not pass");
             }
         }
 
