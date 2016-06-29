@@ -52,7 +52,6 @@
         "no-eval": true,
         "no-string-literal": true,
         "no-switch-case-fall-through": true,
-        "no-trailing-comma": true,
         "no-trailing-whitespace": true,
         "no-unused-expression": true,
         "no-unused-variable": true,
@@ -78,6 +77,7 @@
             true,
             "allow-null-check"
         ],
+        "trailing-comma": true,
         "typedef": [
             true,
             "call-signature",
