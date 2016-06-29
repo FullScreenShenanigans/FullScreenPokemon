@@ -245,6 +245,7 @@ var FullScreenPokemon;
                     "text": "LOAD FILE",
                     "callback": FSP.gameLoadFile.bind(FSP, FSP)
                 }];
+            FSP.checkForOldStorageData();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -275,7 +276,8 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.gameStartIntro = function (FSP) {
-            FSP.ItemsHolder.clear();
+            // FSP.ItemsHolder.clear();
+            FSP.clearSavedData();
             FSP.ScenePlayer.startCutscene("Intro", {
                 "disablePauseMenu": true
             });
@@ -6944,6 +6946,49 @@ var FullScreenPokemon;
             FSP.StateHolder.addChange(id, "xloc", (character.left + FSP.MapScreener.left) / FSP.unitsize);
             FSP.StateHolder.addChange(id, "yloc", (character.top + FSP.MapScreener.top) / FSP.unitsize);
             FSP.StateHolder.addChange(id, "direction", character.direction);
+        };
+        /**
+         * Clears the saved data in localStorage upon a new game being started and saves it
+         * in localStorage.
+         */
+        FullScreenPokemon.prototype.clearSavedData = function () {
+            var oldLocalStorage = this.ItemsHolder.exportItems();
+            // let items: string[] = this.ItemsHolder.getKeys();
+            /*for (let i: number = 0; i < items.length; i += 1) {
+                // if (items.hasOwnProperty(items[i])) {
+                    console.log("deleting " + this.ItemsHolder.getPrefix() + items[i]);
+                    delete this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + items[i]];
+                // }
+            }*/
+            var localStorage = this.ItemsHolder.getLocalStorage();
+            var prefix = this.ItemsHolder.getPrefix();
+            for (var i in localStorage) {
+                if (localStorage.hasOwnProperty(i) && i.lastIndexOf(prefix, 0) === 0) {
+                    delete localStorage[i];
+                }
+            }
+            this.ItemsHolder.clear();
+            this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
+            this.ItemsHolder.saveAll();
+        };
+        /**
+         * Checks to see if oldLocalStorage is defined in localStorage, if that is true and a prior game
+         * hasn't been saved, the data is restored under localStorage
+         */
+        FullScreenPokemon.prototype.checkForOldStorageData = function () {
+            if (this.ItemsHolder.getItem("oldLocalStorage") && !this.ItemsHolder.getItem("gameStarted")) {
+                console.log("doing it");
+                var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");
+                console.log(oldLocalStorage);
+                for (var i in oldLocalStorage) {
+                    if (oldLocalStorage.hasOwnProperty(i)) {
+                        this.ItemsHolder.setItem(i, oldLocalStorage[i]);
+                    }
+                }
+            }
+            else {
+                console.log("did not pass");
+            }
         };
         /**
          * Saves all persistant information about the

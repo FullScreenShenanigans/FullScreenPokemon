@@ -406,6 +406,7 @@ module FullScreenPokemon {
                     //     "text": "OPTION"
                 }];
 
+            FSP.checkForOldStorageData();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -443,7 +444,8 @@ module FullScreenPokemon {
          * @param FSP
          */
         gameStartIntro(FSP: FullScreenPokemon): void {
-            FSP.ItemsHolder.clear();
+            // FSP.ItemsHolder.clear();
+            FSP.clearSavedData();
             FSP.ScenePlayer.startCutscene("Intro", {
                 "disablePauseMenu": true
             });
@@ -9353,6 +9355,50 @@ module FullScreenPokemon {
                 id,
                 "direction",
                 character.direction);
+        }
+
+        /**
+         * Clears the saved data in localStorage upon a new game being started and saves it
+         * in localStorage.
+         */
+        clearSavedData(): void {
+            let oldLocalStorage: { [i: string]: ItemsHoldr.ItemValue } = this.ItemsHolder.exportItems();
+            // let items: string[] = this.ItemsHolder.getKeys();
+            /*for (let i: number = 0; i < items.length; i += 1) {
+                // if (items.hasOwnProperty(items[i])) {
+                    console.log("deleting " + this.ItemsHolder.getPrefix() + items[i]);
+                    delete this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + items[i]];
+                // }
+            }*/
+            let localStorage: Storage = this.ItemsHolder.getLocalStorage();
+            let prefix: string = this.ItemsHolder.getPrefix();
+            for (let i in localStorage) {
+                if (localStorage.hasOwnProperty(i) && i.lastIndexOf(prefix, 0) === 0) {
+                    delete localStorage[i];
+                }
+            }
+            this.ItemsHolder.clear();
+            this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
+            this.ItemsHolder.saveAll();
+        }
+
+        /**
+         * Checks to see if oldLocalStorage is defined in localStorage, if that is true and a prior game
+         * hasn't been saved, the data is restored under localStorage
+         */
+        checkForOldStorageData(): void {
+            if (this.ItemsHolder.getItem("oldLocalStorage") && !this.ItemsHolder.getItem("gameStarted")) {
+                console.log("doing it");
+                let oldLocalStorage: { [i: string]: ItemsHoldr.ItemValue } = this.ItemsHolder.getItem("oldLocalStorage");
+                console.log(oldLocalStorage);
+                for (let i in oldLocalStorage) {
+                    if (oldLocalStorage.hasOwnProperty(i)) {
+                        this.ItemsHolder.setItem(i, oldLocalStorage[i]);
+                    }
+                }
+            } else {
+                console.log("did not pass");
+            }
         }
 
         /**
