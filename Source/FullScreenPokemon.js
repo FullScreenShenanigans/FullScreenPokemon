@@ -6953,19 +6953,13 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
-            console.log(oldLocalStorage);
-            // let items: string[] = this.ItemsHolder.getKeys();
-            /*for (let i: number = 0; i < items.length; i += 1) {
-                // if (items.hasOwnProperty(items[i])) {
-                    console.log("deleting " + this.ItemsHolder.getPrefix() + items[i]);
-                    delete this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + items[i]];
-                // }
-            }*/
             var localStorage = this.ItemsHolder.getLocalStorage();
             var prefix = this.ItemsHolder.getPrefix();
             for (var i in localStorage) {
                 if (localStorage.hasOwnProperty(i) && i.lastIndexOf(prefix, 0) === 0) {
-                    console.log("deleting: " + i);
+                    if (i.lastIndexOf("FullScreenPokemon::StateHolder", 0) === 0) {
+                        oldLocalStorage[i.slice(19)] = this.ItemsHolder.getItem(i.slice(19));
+                    }
                     delete localStorage[i];
                 }
             }
@@ -6978,26 +6972,22 @@ var FullScreenPokemon;
          * hasn't been saved, the data is restored under localStorage
          */
         FullScreenPokemon.prototype.checkForOldStorageData = function () {
-            if (this.ItemsHolder.getItem("oldLocalStorage") && !this.ItemsHolder.getItem("gameStarted")) {
-                // console.log("doing it");
-                var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");
-                // console.log(oldLocalStorage);
-                for (var i in oldLocalStorage) {
-                    if (!oldLocalStorage.hasOwnProperty(i)) {
-                        continue;
-                    }
-                    console.log("Here is i in oldLocalStorage: " + i);
-                    if (i.slice(0, "StateHolder::".length) === "StateHolder::") {
-                        var split = i.split("::");
-                        this.StateHolder.setCollection(split[1] + "::" + split[2], oldLocalStorage[i]);
-                    }
-                    else {
-                        this.ItemsHolder.setItem(i, oldLocalStorage[i]);
-                    }
+            if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
+                return;
+            }
+            var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");
+            for (var i in oldLocalStorage) {
+                if (!oldLocalStorage.hasOwnProperty(i)) {
+                    continue;
+                }
+                if (i.slice(0, "StateHolder".length) === "StateHolder") {
+                    this.StateHolder.setCollection(i.slice(11), oldLocalStorage[i]);
+                }
+                else {
+                    this.ItemsHolder.setItem(i, oldLocalStorage[i]);
                 }
             }
-            else {
-            }
+            this.ItemsHolder.saveAll();
         };
         /**
          * Saves all persistant information about the
