@@ -9357,8 +9357,8 @@ module FullScreenPokemon {
         }
 
         /**
-         * Clears the saved data in localStorage upon a new game being started and saves it
-         * in localStorage.
+         * Clears the data saved in localStorage then saves it in a new object in localStorage
+         * upon a new game being started.
          */
         clearSavedData(): void {
             let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
@@ -9379,7 +9379,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Checks to see if oldLocalStorage is defined in localStorage, if that is true and a prior game
+         * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
          * hasn't been saved, the data is restored under localStorage
          */
         checkForOldStorageData(): void {
@@ -9388,17 +9388,18 @@ module FullScreenPokemon {
             }
 
             let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.getItem("oldLocalStorage");
-            for (let i in oldLocalStorage) {
-                if (!oldLocalStorage.hasOwnProperty(i)) {
+            for (let key in oldLocalStorage) {
+                if (!oldLocalStorage.hasOwnProperty(key)) {
                     continue;
                 }
 
-                if (i.slice(0, "StateHolder".length) === "StateHolder") {
-                    this.StateHolder.setCollection(i.slice(11), oldLocalStorage[i]);
+                if (key.slice(0, "StateHolder".length) === "StateHolder") {
+                    this.StateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
                 } else {
-                    this.ItemsHolder.setItem(i, oldLocalStorage[i]);
+                    this.ItemsHolder.setItem(key, oldLocalStorage[key]);
                 }
             }
+
             this.ItemsHolder.saveAll();
         }
 

@@ -171,6 +171,7 @@ var StateHoldr;
                     "storeLocally": true
                 });
                 this.collectionKeys.push(collectionKey);
+                this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
             }
         };
         /**

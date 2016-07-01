@@ -342,6 +342,7 @@ var ItemsHoldr;
             }
             this.itemKeys.splice(this.itemKeys.indexOf(key), 1);
             delete this.items[key];
+            delete this.localStorage[this.prefix + key];
         };
         /**
          * Completely clears all values from the ItemsHoldr, removing their

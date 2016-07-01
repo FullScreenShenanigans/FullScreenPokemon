@@ -6947,8 +6947,8 @@ var FullScreenPokemon;
             thing[title] = stateHistory.pop();
         };
         /**
-         * Clears the saved data in localStorage upon a new game being started and saves it
-         * in localStorage.
+         * Clears the data saved in localStorage upon a new game being started and saves it
+         * in in a new object in localStorage.
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
@@ -6965,7 +6965,7 @@ var FullScreenPokemon;
             this.ItemsHolder.saveAll();
         };
         /**
-         * Checks to see if oldLocalStorage is defined in localStorage, if that is true and a prior game
+         * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
          * hasn't been saved, the data is restored under localStorage
          */
         FullScreenPokemon.prototype.checkForOldStorageData = function () {
@@ -6973,15 +6973,15 @@ var FullScreenPokemon;
                 return;
             }
             var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");
-            for (var i in oldLocalStorage) {
-                if (!oldLocalStorage.hasOwnProperty(i)) {
+            for (var key in oldLocalStorage) {
+                if (!oldLocalStorage.hasOwnProperty(key)) {
                     continue;
                 }
-                if (i.slice(0, "StateHolder".length) === "StateHolder") {
-                    this.StateHolder.setCollection(i.slice(11), oldLocalStorage[i]);
+                if (key.slice(0, "StateHolder".length) === "StateHolder") {
+                    this.StateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
                 }
                 else {
-                    this.ItemsHolder.setItem(i, oldLocalStorage[i]);
+                    this.ItemsHolder.setItem(key, oldLocalStorage[key]);
                 }
             }
             this.ItemsHolder.saveAll();
