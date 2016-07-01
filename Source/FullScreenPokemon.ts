@@ -9403,6 +9403,12 @@ module FullScreenPokemon {
             this.container.removeChild(link);
         }
 
+        autoSave(): void {
+            if (this.ItemsHolder.getItem("autoSave")) {
+                this.saveGame();
+            }
+        }
+
         /**
          * Adds an in-game item to the character's bag.
          * 

@@ -10,6 +10,9 @@ var FullScreenPokemon;
             "gameStarted": {
                 "valueDefault": false
             },
+            "autoSave": {
+                "valueDefault": true
+            },
             "map": {
                 "valueDefault": ""
             },

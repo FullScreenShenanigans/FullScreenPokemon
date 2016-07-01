@@ -10,6 +10,9 @@ module FullScreenPokemon {
             "gameStarted": {
                 "valueDefault": false
             },
+            "autoSave": {
+                "valueDefault": true
+            },
             "map": {
                 "valueDefault": ""
             },

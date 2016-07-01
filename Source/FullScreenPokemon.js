@@ -6978,6 +6978,11 @@ var FullScreenPokemon;
             link.click();
             this.container.removeChild(link);
         };
+        FullScreenPokemon.prototype.autoSave = function () {
+            if (this.ItemsHolder.getItem("autoSave")) {
+                this.saveGame();
+            }
+        };
         /**
          * Adds an in-game item to the character's bag.
          *
