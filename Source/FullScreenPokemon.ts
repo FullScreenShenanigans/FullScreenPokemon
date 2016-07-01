@@ -9375,7 +9375,7 @@ module FullScreenPokemon {
 
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
-            this.ItemsHolder.saveAll();
+            this.ItemsHolder.saveItem("oldLocalStorage");
         }
 
         /**

@@ -6962,7 +6962,7 @@ var FullScreenPokemon;
             }
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
-            this.ItemsHolder.saveAll();
+            this.ItemsHolder.saveItem("oldLocalStorage");
         };
         /**
          * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
