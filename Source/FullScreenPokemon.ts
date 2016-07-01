@@ -9297,6 +9297,28 @@ module FullScreenPokemon {
         }
 
         /**
+         * Saves the position of a certain Character.
+         * 
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
+         */
+        saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
+            FSP.StateHolder.addChange(
+                id,
+                "xloc",
+                (character.left + FSP.MapScreener.left) / FSP.unitsize);
+            FSP.StateHolder.addChange(
+                id,
+                "yloc",
+                (character.top + FSP.MapScreener.top) / FSP.unitsize);
+            FSP.StateHolder.addChange(
+                id,
+                "direction",
+                character.direction);
+        }
+
+        /**
          * Pushes and saves the current state of a variable to a stack.
          * 
          * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
@@ -9336,43 +9358,20 @@ module FullScreenPokemon {
         }
 
         /**
-         * Saves the position of a certain Character.
-         * 
-         * @param FSP
-         * @param character   An in-game Character.
-         * @param id   The ID associated with the Character.
-         */
-        saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
-            FSP.StateHolder.addChange(
-                id,
-                "xloc",
-                (character.left + FSP.MapScreener.left) / FSP.unitsize);
-            FSP.StateHolder.addChange(
-                id,
-                "yloc",
-                (character.top + FSP.MapScreener.top) / FSP.unitsize);
-            FSP.StateHolder.addChange(
-                id,
-                "direction",
-                character.direction);
-        }
-
-        /**
          * Clears the saved data in localStorage upon a new game being started and saves it
          * in localStorage.
          */
         clearSavedData(): void {
             let oldLocalStorage: any = this.ItemsHolder.exportItems();
-            let localStorage: Storage = this.ItemsHolder.getLocalStorage();
-            let prefix: string = this.ItemsHolder.getPrefix();
 
-            for (let i in localStorage) {
-                if (localStorage.hasOwnProperty(i) && i.lastIndexOf(prefix, 0) === 0) {
-                    if (i.lastIndexOf("FullScreenPokemon::StateHolder", 0) === 0) {
-                        oldLocalStorage[i.slice(19)] = this.ItemsHolder.getItem(i.slice(19));
-                    }
-                    delete localStorage[i];
-                }
+            let collectionKeys: string[] = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            for (let i: number = 0; collectionKeys && i < collectionKeys.length; i += 1) {
+                oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
+            }
+
+            let keys: string[] = this.ItemsHolder.getKeys();
+            for (let i: number = 0; i < keys.length; i += 1) {
+                delete this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + keys[i]];
             }
 
             this.ItemsHolder.clear();
@@ -9419,8 +9418,8 @@ module FullScreenPokemon {
             this.ticksElapsed = ticksRecorded;
 
             this.saveCharacterPositions(this);
-            this.ItemsHolder.saveAll();
             this.StateHolder.saveCollection();
+            this.ItemsHolder.saveAll();
 
             this.MenuGrapher.createMenu("GeneralText");
             this.MenuGrapher.addMenuDialog(
