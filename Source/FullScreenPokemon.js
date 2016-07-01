@@ -6947,8 +6947,8 @@ var FullScreenPokemon;
             thing[title] = stateHistory.pop();
         };
         /**
-         * Clears the data saved in localStorage upon a new game being started and saves it
-         * in in a new object in localStorage.
+         * Clears the data saved in localStorage and saves it in a new object in localStorage
+         * upon a new game being started.
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
