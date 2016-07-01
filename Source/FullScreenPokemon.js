@@ -276,7 +276,6 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.gameStartIntro = function (FSP) {
-            // FSP.ItemsHolder.clear();
             FSP.clearSavedData();
             FSP.ScenePlayer.startCutscene("Intro", {
                 "disablePauseMenu": true
@@ -6959,7 +6958,7 @@ var FullScreenPokemon;
             }
             var keys = this.ItemsHolder.getKeys();
             for (var i = 0; i < keys.length; i += 1) {
-                delete this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + keys[i]];
+                this.ItemsHolder.removeItem(keys[i]);
             }
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);

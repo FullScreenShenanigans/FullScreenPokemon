@@ -444,7 +444,6 @@ module FullScreenPokemon {
          * @param FSP
          */
         gameStartIntro(FSP: FullScreenPokemon): void {
-            // FSP.ItemsHolder.clear();
             FSP.clearSavedData();
             FSP.ScenePlayer.startCutscene("Intro", {
                 "disablePauseMenu": true
@@ -9362,7 +9361,7 @@ module FullScreenPokemon {
          * in localStorage.
          */
         clearSavedData(): void {
-            let oldLocalStorage: any = this.ItemsHolder.exportItems();
+            let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
 
             let collectionKeys: string[] = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
             for (let i: number = 0; collectionKeys && i < collectionKeys.length; i += 1) {
@@ -9371,7 +9370,7 @@ module FullScreenPokemon {
 
             let keys: string[] = this.ItemsHolder.getKeys();
             for (let i: number = 0; i < keys.length; i += 1) {
-                delete this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + keys[i]];
+                this.ItemsHolder.removeItem(keys[i]);
             }
 
             this.ItemsHolder.clear();
@@ -9388,7 +9387,7 @@ module FullScreenPokemon {
                 return;
             }
 
-            let oldLocalStorage: { [i: string]: ItemsHoldr.ItemValue } = this.ItemsHolder.getItem("oldLocalStorage");
+            let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.getItem("oldLocalStorage");
             for (let i in oldLocalStorage) {
                 if (!oldLocalStorage.hasOwnProperty(i)) {
                     continue;

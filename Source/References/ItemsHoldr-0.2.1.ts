@@ -16,6 +16,13 @@ declare module ItemsHoldr {
     }
 
     /**
+     * A container to hold ItemValue objects, keyed by name.
+     */
+    export interface IItems {
+        [i: string]: ItemValue;
+    }
+
+    /**
      * Settings to initialize a new instance of the IItemValue interface.
      */
     export interface IItemValueSettings {
@@ -775,7 +782,7 @@ module ItemsHoldr {
         /**
          * The ItemValues being stored, keyed by name.
          */
-        private items: { [i: string]: ItemValue };
+        private items: IItems;
 
         /**
          * A listing of all the String keys for the stored items.
