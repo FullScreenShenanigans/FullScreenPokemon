@@ -245,6 +245,7 @@ var FullScreenPokemon;
                     "text": "LOAD FILE",
                     "callback": FSP.gameLoadFile.bind(FSP, FSP)
                 }];
+            FSP.checkForOldStorageData();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -275,7 +276,7 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.gameStartIntro = function (FSP) {
-            FSP.ItemsHolder.clear();
+            FSP.clearSavedData();
             FSP.ScenePlayer.startCutscene("Intro", {
                 "disablePauseMenu": true
             });
@@ -6899,6 +6900,18 @@ var FullScreenPokemon;
             }
         };
         /**
+         * Saves the position of a certain Character.
+         *
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
+         */
+        FullScreenPokemon.prototype.saveCharacterPosition = function (FSP, character, id) {
+            FSP.StateHolder.addChange(id, "xloc", (character.left + FSP.MapScreener.left) / FSP.unitsize);
+            FSP.StateHolder.addChange(id, "yloc", (character.top + FSP.MapScreener.top) / FSP.unitsize);
+            FSP.StateHolder.addChange(id, "direction", character.direction);
+        };
+        /**
          * Pushes and saves the current state of a variable to a stack.
          *
          * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
@@ -6934,16 +6947,44 @@ var FullScreenPokemon;
             thing[title] = stateHistory.pop();
         };
         /**
-         * Saves the position of a certain Character.
-         *
-         * @param FSP
-         * @param character   An in-game Character.
-         * @param id   The ID associated with the Character.
+         * Clears the data saved in localStorage and saves it in a new object in localStorage
+         * upon a new game being started.
          */
-        FullScreenPokemon.prototype.saveCharacterPosition = function (FSP, character, id) {
-            FSP.StateHolder.addChange(id, "xloc", (character.left + FSP.MapScreener.left) / FSP.unitsize);
-            FSP.StateHolder.addChange(id, "yloc", (character.top + FSP.MapScreener.top) / FSP.unitsize);
-            FSP.StateHolder.addChange(id, "direction", character.direction);
+        FullScreenPokemon.prototype.clearSavedData = function () {
+            var oldLocalStorage = this.ItemsHolder.exportItems();
+            var collectionKeys = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            for (var i = 0; collectionKeys && i < collectionKeys.length; i += 1) {
+                oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
+            }
+            var keys = this.ItemsHolder.getKeys();
+            for (var i = 0; i < keys.length; i += 1) {
+                this.ItemsHolder.removeItem(keys[i]);
+            }
+            this.ItemsHolder.clear();
+            this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
+            this.ItemsHolder.saveItem("oldLocalStorage");
+        };
+        /**
+         * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
+         * hasn't been saved, the data is restored under localStorage
+         */
+        FullScreenPokemon.prototype.checkForOldStorageData = function () {
+            if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
+                return;
+            }
+            var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");
+            for (var key in oldLocalStorage) {
+                if (!oldLocalStorage.hasOwnProperty(key)) {
+                    continue;
+                }
+                if (key.slice(0, "StateHolder".length) === "StateHolder") {
+                    this.StateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
+                }
+                else {
+                    this.ItemsHolder.setItem(key, oldLocalStorage[key]);
+                }
+            }
+            this.ItemsHolder.saveAll();
         };
         /**
          * Saves all persistant information about the
@@ -6957,8 +6998,8 @@ var FullScreenPokemon;
             this.ItemsHolder.increase("time", ticksRecorded - this.ticksElapsed);
             this.ticksElapsed = ticksRecorded;
             this.saveCharacterPositions(this);
-            this.ItemsHolder.saveAll();
             this.StateHolder.saveCollection();
+            this.ItemsHolder.saveAll();
             this.MenuGrapher.createMenu("GeneralText");
             this.MenuGrapher.addMenuDialog("GeneralText", [
                 "Now saving..."

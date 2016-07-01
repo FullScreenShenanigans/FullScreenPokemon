@@ -16,6 +16,13 @@ declare module ItemsHoldr {
     }
 
     /**
+     * A container to hold ItemValue objects, keyed by name.
+     */
+    export interface IItems {
+        [i: string]: ItemValue;
+    }
+
+    /**
      * Settings to initialize a new instance of the IItemValue interface.
      */
     export interface IItemValueSettings {
@@ -775,7 +782,7 @@ module ItemsHoldr {
         /**
          * The ItemValues being stored, keyed by name.
          */
-        private items: { [i: string]: ItemValue };
+        private items: IItems;
 
         /**
          * A listing of all the String keys for the stored items.
@@ -1026,6 +1033,7 @@ module ItemsHoldr {
             this.itemKeys.splice(this.itemKeys.indexOf(key), 1);
 
             delete this.items[key];
+            delete this.localStorage[this.prefix + key];
         }
 
         /**
@@ -1392,13 +1400,11 @@ module ItemsHoldr {
          */
         private resetItemsToDefaults(): void {
             this.items = {};
+            this.itemKeys = [];
 
             if (!this.settings.values) {
-                this.itemKeys = [];
                 return;
             }
-
-            this.itemKeys = Object.keys(this.settings.values);
 
             for (var key in this.settings.values) {
                 if (this.settings.values.hasOwnProperty(key)) {
