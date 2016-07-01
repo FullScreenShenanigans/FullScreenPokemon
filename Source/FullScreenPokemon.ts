@@ -9300,7 +9300,7 @@ module FullScreenPokemon {
         }
 
         /**
-         * Clears the data saved in localStorage and saves it in a new object in localStorages
+         * Clears the data saved in localStorage and saves it in a new object in localStorage
          * upon a new game being started.
          */
         clearSavedData(): void {
