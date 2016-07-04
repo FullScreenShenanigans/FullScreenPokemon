@@ -342,6 +342,7 @@ var ItemsHoldr;
             }
             this.itemKeys.splice(this.itemKeys.indexOf(key), 1);
             delete this.items[key];
+            delete this.localStorage[this.prefix + key];
         };
         /**
          * Completely clears all values from the ItemsHoldr, removing their
@@ -658,11 +659,10 @@ var ItemsHoldr;
          */
         ItemsHoldr.prototype.resetItemsToDefaults = function () {
             this.items = {};
+            this.itemKeys = [];
             if (!this.settings.values) {
-                this.itemKeys = [];
                 return;
             }
-            this.itemKeys = Object.keys(this.settings.values);
             for (var key in this.settings.values) {
                 if (this.settings.values.hasOwnProperty(key)) {
                     this.addItem(key, this.settings.values[key]);

@@ -37,6 +37,11 @@ declare module StateHoldr {
         getCollectionKey(): string;
 
         /**
+         * @returns The list of keys of collections, with the prefix.
+         */
+        getCollectionKeys(): string[];
+
+        /**
          * @returns The current key for the collection, without the prefix.
          */
         getCollectionKeyRaw(): string;
@@ -136,6 +141,11 @@ module StateHoldr {
         private collectionKey: string;
 
         /**
+         * The list of collection keys referenced, with the prefix.
+         */
+        private collectionKeys: string[];
+
+        /**
          * The current key for the collection, without the prefix.
          */
         private collectionKeyRaw: string;
@@ -157,6 +167,7 @@ module StateHoldr {
 
             this.ItemsHolder = settings.ItemsHolder;
             this.prefix = settings.prefix || "StateHolder";
+            this.collectionKeys = [];
         }
 
 
@@ -185,7 +196,14 @@ module StateHoldr {
         }
 
         /**
-         * @returns The current key for the collection, without the prefix.
+         * @returns The list of keys of collections, with the prefix.
+         */
+        getCollectionKeys(): string[] {
+            return this.collectionKeys;
+        }
+
+        /**
+         * @returns The current key for the collection, with the prefix.
          */
         getCollectionKeyRaw(): string {
             return this.collectionKeyRaw;
@@ -257,6 +275,7 @@ module StateHoldr {
          */
         saveCollection(): void {
             this.ItemsHolder.setItem(this.collectionKey, this.collection);
+            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
         }
 
         /**
@@ -334,6 +353,9 @@ module StateHoldr {
                     "valueDefault": {},
                     "storeLocally": true
                 });
+
+                this.collectionKeys.push(collectionKey);
+                this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
             }
         }
 

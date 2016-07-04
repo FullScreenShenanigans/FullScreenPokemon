@@ -18,6 +18,7 @@ var StateHoldr;
             }
             this.ItemsHolder = settings.ItemsHolder;
             this.prefix = settings.prefix || "StateHolder";
+            this.collectionKeys = [];
         }
         /* Simple gets
         */
@@ -40,7 +41,13 @@ var StateHoldr;
             return this.collectionKey;
         };
         /**
-         * @returns The current key for the collection, without the prefix.
+         * @returns The list of keys of collections, with the prefix.
+         */
+        StateHoldr.prototype.getCollectionKeys = function () {
+            return this.collectionKeys;
+        };
+        /**
+         * @returns The current key for the collection, with the prefix.
          */
         StateHoldr.prototype.getCollectionKeyRaw = function () {
             return this.collectionKeyRaw;
@@ -99,6 +106,7 @@ var StateHoldr;
          */
         StateHoldr.prototype.saveCollection = function () {
             this.ItemsHolder.setItem(this.collectionKey, this.collection);
+            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
         };
         /**
          * Adds a change to the collection, stored as a key-value pair under an item.
@@ -162,6 +170,8 @@ var StateHoldr;
                     "valueDefault": {},
                     "storeLocally": true
                 });
+                this.collectionKeys.push(collectionKey);
+                this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
             }
         };
         /**

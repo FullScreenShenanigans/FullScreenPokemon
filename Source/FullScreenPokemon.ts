@@ -406,6 +406,7 @@ module FullScreenPokemon {
                     //     "text": "OPTION"
                 }];
 
+            FSP.checkForOldStorageData();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -443,7 +444,7 @@ module FullScreenPokemon {
          * @param FSP
          */
         gameStartIntro(FSP: FullScreenPokemon): void {
-            FSP.ItemsHolder.clear();
+            FSP.clearSavedData();
             FSP.ScenePlayer.startCutscene("Intro", {
                 "disablePauseMenu": true
             });
@@ -9295,6 +9296,28 @@ module FullScreenPokemon {
         }
 
         /**
+         * Saves the position of a certain Character.
+         * 
+         * @param FSP
+         * @param character   An in-game Character.
+         * @param id   The ID associated with the Character.
+         */
+        saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
+            FSP.StateHolder.addChange(
+                id,
+                "xloc",
+                (character.left + FSP.MapScreener.left) / FSP.unitsize);
+            FSP.StateHolder.addChange(
+                id,
+                "yloc",
+                (character.top + FSP.MapScreener.top) / FSP.unitsize);
+            FSP.StateHolder.addChange(
+                id,
+                "direction",
+                character.direction);
+        }
+
+        /**
          * Pushes and saves the current state of a variable to a stack.
          * 
          * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
@@ -9334,25 +9357,50 @@ module FullScreenPokemon {
         }
 
         /**
-         * Saves the position of a certain Character.
-         * 
-         * @param FSP
-         * @param character   An in-game Character.
-         * @param id   The ID associated with the Character.
+         * Clears the data saved in localStorage and saves it in a new object in localStorage
+         * upon a new game being started.
          */
-        saveCharacterPosition(FSP: FullScreenPokemon, character: ICharacter, id: string): void {
-            FSP.StateHolder.addChange(
-                id,
-                "xloc",
-                (character.left + FSP.MapScreener.left) / FSP.unitsize);
-            FSP.StateHolder.addChange(
-                id,
-                "yloc",
-                (character.top + FSP.MapScreener.top) / FSP.unitsize);
-            FSP.StateHolder.addChange(
-                id,
-                "direction",
-                character.direction);
+        clearSavedData(): void {
+            let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
+
+            let collectionKeys: string[] = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            for (let i: number = 0; collectionKeys && i < collectionKeys.length; i += 1) {
+                oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
+            }
+
+            let keys: string[] = this.ItemsHolder.getKeys();
+            for (let i: number = 0; i < keys.length; i += 1) {
+                this.ItemsHolder.removeItem(keys[i]);
+            }
+
+            this.ItemsHolder.clear();
+            this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
+            this.ItemsHolder.saveItem("oldLocalStorage");
+        }
+
+        /**
+         * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
+         * hasn't been saved, the data is restored under localStorage
+         */
+        checkForOldStorageData(): void {
+            if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
+                return;
+            }
+
+            let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.getItem("oldLocalStorage");
+            for (let key in oldLocalStorage) {
+                if (!oldLocalStorage.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                if (key.slice(0, "StateHolder".length) === "StateHolder") {
+                    this.StateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
+                } else {
+                    this.ItemsHolder.setItem(key, oldLocalStorage[key]);
+                }
+            }
+
+            this.ItemsHolder.saveAll();
         }
 
         /**
@@ -9370,8 +9418,8 @@ module FullScreenPokemon {
             this.ticksElapsed = ticksRecorded;
 
             this.saveCharacterPositions(this);
-            this.ItemsHolder.saveAll();
             this.StateHolder.saveCollection();
+            this.ItemsHolder.saveAll();
 
             this.MenuGrapher.createMenu("GeneralText");
             this.MenuGrapher.addMenuDialog(
