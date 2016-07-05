@@ -19,7 +19,7 @@ declare module ItemsHoldr {
      * A container to hold ItemValue objects, keyed by name.
      */
     export interface IItems {
-        [i: string]: ItemValue;
+        [i: string]: IItemValue;
     }
 
     /**
@@ -754,7 +754,7 @@ module ItemsHoldr {
          * 
          * @returns {Mixed}
          */
-        private retrieveLocalStorage(): void {
+        private retrieveLocalStorage(): any {
             var value: any = localStorage.getItem(this.ItemsHolder.getPrefix() + this.key);
 
             if (value === "undefined") {
@@ -1009,7 +1009,7 @@ module ItemsHoldr {
          * @param settings   The settings for the new ItemValue.
          * @returns The newly created ItemValue.
          */
-        addItem(key: string, settings: any = {}): ItemValue {
+        addItem(key: string, settings: any = {}): IItemValue {
             this.items[key] = new ItemValue(this, key, settings);
             this.itemKeys.push(key);
             return this.items[key];
