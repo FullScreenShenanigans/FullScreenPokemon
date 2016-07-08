@@ -246,6 +246,7 @@ var FullScreenPokemon;
                     "callback": FSP.gameLoadFile.bind(FSP, FSP)
                 }];
             FSP.checkForOldStorageData();
+            FSP.StateHolder.retrieveCollectionKeys();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -6952,7 +6953,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
-            var collectionKeys = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            var collectionKeys = this.StateHolder.getCollectionKeys();
             for (var i = 0; collectionKeys && i < collectionKeys.length; i += 1) {
                 oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
             }
@@ -6961,6 +6962,7 @@ var FullScreenPokemon;
                 this.ItemsHolder.removeItem(keys[i]);
             }
             this.ItemsHolder.clear();
+            this.StateHolder.clearCollectionKeys();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
         };

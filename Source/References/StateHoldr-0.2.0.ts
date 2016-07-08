@@ -71,6 +71,16 @@ declare module StateHoldr {
         getChange(itemKey: string, valueKey: string): any;
 
         /**
+         * Clears the list of collectionKeys.
+         */
+        clearCollectionKeys(): void;
+
+        /**
+         * Retrieves and sets collectionKeys to the list saved in ItemHolder.
+         */
+        retrieveCollectionKeys(): void;
+
+        /**
          * Sets the currently tracked collection.
          * 
          * @param collectionKeyRawNew   The raw key of the new collection
@@ -250,6 +260,21 @@ module StateHoldr {
         */
 
         /**
+         * Clears the list of collectionKeys.
+         */
+        clearCollectionKeys(): void {
+            this.collectionKeys = [];
+        }
+
+        /**
+         * Retrieves and sets collectionKeys to the list saved in ItemHolder.
+         */
+        retrieveCollectionKeys(): void {
+            var keys: string[] = this.ItemsHolder.getItem("collectionKeys");
+            this.collectionKeys = typeof keys === "undefined" ? [] : keys;
+        }
+
+        /**
          * Sets the currently tracked collection.
          * 
          * @param collectionKeyRawNew   The raw key of the new collection
@@ -275,7 +300,7 @@ module StateHoldr {
          */
         saveCollection(): void {
             this.ItemsHolder.setItem(this.collectionKey, this.collection);
-            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+            this.ItemsHolder.setItem("collectionKeys", this.collectionKeys);
         }
 
         /**
@@ -355,7 +380,7 @@ module StateHoldr {
                 });
 
                 this.collectionKeys.push(collectionKey);
-                this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+                this.ItemsHolder.setItem("collectionKeys", this.collectionKeys);
             }
         }
 

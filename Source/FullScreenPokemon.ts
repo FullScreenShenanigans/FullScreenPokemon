@@ -407,6 +407,7 @@ module FullScreenPokemon {
                 }];
 
             FSP.checkForOldStorageData();
+            FSP.StateHolder.retrieveCollectionKeys();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -9363,7 +9364,7 @@ module FullScreenPokemon {
         clearSavedData(): void {
             let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
 
-            let collectionKeys: string[] = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            let collectionKeys: string[] = this.StateHolder.getCollectionKeys();
             for (let i: number = 0; collectionKeys && i < collectionKeys.length; i += 1) {
                 oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
             }
@@ -9374,6 +9375,7 @@ module FullScreenPokemon {
             }
 
             this.ItemsHolder.clear();
+            this.StateHolder.clearCollectionKeys();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
         }

@@ -85,6 +85,19 @@ var StateHoldr;
         /* Storage
         */
         /**
+         * Clears the list of collectionKeys.
+         */
+        StateHoldr.prototype.clearCollectionKeys = function () {
+            this.collectionKeys = [];
+        };
+        /**
+         * Retrieves and sets collectionKeys to the list saved in ItemHolder.
+         */
+        StateHoldr.prototype.retrieveCollectionKeys = function () {
+            var keys = this.ItemsHolder.getItem("collectionKeys");
+            this.collectionKeys = typeof keys === "undefined" ? [] : keys;
+        };
+        /**
          * Sets the currently tracked collection.
          *
          * @param collectionKeyRawNew   The raw key of the new collection
@@ -106,7 +119,7 @@ var StateHoldr;
          */
         StateHoldr.prototype.saveCollection = function () {
             this.ItemsHolder.setItem(this.collectionKey, this.collection);
-            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+            this.ItemsHolder.setItem("collectionKeys", this.collectionKeys);
         };
         /**
          * Adds a change to the collection, stored as a key-value pair under an item.
@@ -171,7 +184,7 @@ var StateHoldr;
                     "storeLocally": true
                 });
                 this.collectionKeys.push(collectionKey);
-                this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+                this.ItemsHolder.setItem("collectionKeys", this.collectionKeys);
             }
         };
         /**
