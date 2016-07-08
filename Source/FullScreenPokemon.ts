@@ -460,6 +460,7 @@ module FullScreenPokemon {
          * @param FSP
          */
         gameLoadFile(FSP: FullScreenPokemon): void {
+            this.clearSavedData();
             let dummy: HTMLInputElement = <HTMLInputElement>FSP.createElement(
                 "input",
                 {

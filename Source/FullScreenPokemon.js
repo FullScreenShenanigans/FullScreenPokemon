@@ -290,6 +290,7 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.gameLoadFile = function (FSP) {
+            this.clearSavedData();
             var dummy = FSP.createElement("input", {
                 "type": "file",
                 "onchange": function (event) {
