@@ -2,16 +2,14 @@ var FullScreenPokemon;
 (function (FullScreenPokemon) {
     "use strict";
     FullScreenPokemon.FullScreenPokemon.settings.items = {
-        "prefix": "FullScreenPokemon::",
         "defaults": {
             "storeLocally": true
         },
+        "prefix": "FullScreenPokemon::",
+        "autoSave": true,
         "values": {
             "gameStarted": {
                 "valueDefault": false
-            },
-            "autoSave": {
-                "valueDefault": true
             },
             "map": {
                 "valueDefault": ""

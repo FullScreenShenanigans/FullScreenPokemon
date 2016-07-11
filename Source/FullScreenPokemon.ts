@@ -1701,6 +1701,8 @@ module FullScreenPokemon {
 
             thing.FSP.animateCharacterPreventWalking(thing);
 
+            thing.FSP.autoSave();
+
             thing.FSP.startBattle({
                 "opponent": {
                     "name": chosen.title,
@@ -2524,6 +2526,7 @@ module FullScreenPokemon {
             if (other.dialogOptions) {
                 thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
             } else if (other.trainer && !(<IEnemy>other).alreadyBattled) {
+                this.autoSave();
                 thing.FSP.animateTrainerBattleStart(thing, <IEnemy>other);
                 (<IEnemy>other).alreadyBattled = true;
                 thing.FSP.StateHolder.addChange(other.id, "alreadyBattled", true);
@@ -2538,6 +2541,8 @@ module FullScreenPokemon {
                     thing.FSP.StateHolder.addChange(other.id, "sight", undefined);
                 }
             }
+
+            this.autoSave();
         }
 
         /**
@@ -6455,6 +6460,7 @@ module FullScreenPokemon {
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
             FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
+            FSP.autoSave();
         }
 
         /**
@@ -7331,6 +7337,8 @@ module FullScreenPokemon {
             FSP.MenuGrapher.deleteMenu("ShopItemsAmount");
             FSP.MenuGrapher.deleteMenu("Yes/No");
 
+            FSP.autoSave();
+
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -8123,6 +8131,7 @@ module FullScreenPokemon {
             walkingSteps.push(FSP.ScenePlayer.bindRoutine("EnterLab"));
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
+            FSP.ItemsHolder.setItem("autoSave", false);
             FSP.animateCharacterFollow(settings.player, settings.oak);
             FSP.animateCharacterStartWalkingCycle(
                 settings.oak,
@@ -8299,12 +8308,17 @@ module FullScreenPokemon {
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
+            if (FSP.ItemsHolder.getAutoSave()) {
+                FSP.ItemsHolder.setItem("autoSave", true);
+            }
+
             FSP.TimeHandler.addEvent(
                 FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText",
                 {
-                    "deleteOnFinish": true
+                    "deleteOnFinish": true,
+                    "onMenuDelete": FSP.autoSave
                 });
 
             FSP.TimeHandler.addEvent(
@@ -8681,6 +8695,10 @@ module FullScreenPokemon {
                         FSP.killNormal(rival);
                         FSP.StateHolder.addChange(rival.id, "alive", false);
                         FSP.MapScreener.blockInputs = false;
+                        if (FSP.ItemsHolder.getAutoSave()) {
+                            FSP.ItemsHolder.setItem("autoSave", true);
+                            FSP.autoSave();
+                        }
                     }
                 ],
                 dialog: string[] = [
@@ -8731,6 +8749,8 @@ module FullScreenPokemon {
                     "keptThings": FSP.collectBattleKeptThings(FSP, ["player", "Rival"]),
                     "nextCutscene": "OakIntroRivalLeaves"
                 };
+
+            FSP.ItemsHolder.setItem("autoSave", false);
 
             switch (FSP.ItemsHolder.getItem("starterRival").join("")) {
                 case "SQUIRTLE":
@@ -9421,13 +9441,20 @@ module FullScreenPokemon {
             this.StateHolder.saveCollection();
             this.ItemsHolder.saveAll();
 
-            this.MenuGrapher.createMenu("GeneralText");
+            this.MenuGrapher.createMenu("GeneralText", {
+                // "callback": this.MenuGrapher.registerA.bind(this.MenuGrapher),
+                "killOnB": ["Yes/No", "Save"]
+            });
             this.MenuGrapher.addMenuDialog(
                 "GeneralText", [
                     "Now saving..."
-                ]);
+                ]/*,
+                this.MenuGrapher.deleteActiveMenu.bind(this.MenuGrapher)*//*,
+                this.MenuGrapher.registerB.bind(this.MenuGrapher)*/);
+            this.MenuGrapher.setActiveMenu("GeneralText");
 
-            this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
+            // this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
+            this.TimeHandler.addEvent(this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "GeneralText"), 49);
         }
 
         /**
@@ -9452,8 +9479,9 @@ module FullScreenPokemon {
         }
 
         autoSave(): void {
-            if (this.ItemsHolder.getItem("autoSave")) {
+            if (this.ItemsHolder.getItem("autoSave") && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame();
+                console.log("saved");
             }
         }
 
@@ -9563,6 +9591,8 @@ module FullScreenPokemon {
             this.animateFadeFromColor(this, {
                 "color": "Black"
             });
+
+            this.autoSave();
 
             if (location.push) {
                 this.animateCharacterStartWalking(this.player, this.player.direction);

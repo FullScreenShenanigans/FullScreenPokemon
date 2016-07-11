@@ -644,7 +644,7 @@ var UserWrappr;
              * Ensures a collection of items all exist in localStorage. If their values
              * don't exist, their schema's .callback is used to provide them.
              *
-             * @param childRaw   An Array of input or select elements.
+             * @param children   An Array of input or select elements.
              * @param details   Details containing the title of the item and the source
              *                  Function to get its value.
              * @param schema   The container schema this child is within.

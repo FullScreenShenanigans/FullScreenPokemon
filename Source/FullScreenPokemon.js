@@ -1280,6 +1280,7 @@ var FullScreenPokemon;
                 thing.FSP.removeClass(thing.shadow, "walking");
             }
             thing.FSP.animateCharacterPreventWalking(thing);
+            thing.FSP.autoSave();
             thing.FSP.startBattle({
                 "opponent": {
                     "name": chosen.title,
@@ -1908,6 +1909,7 @@ var FullScreenPokemon;
                 thing.FSP.animateCharacterDialogOptions(thing, other, other.dialogOptions);
             }
             else if (other.trainer && !other.alreadyBattled) {
+                this.autoSave();
                 thing.FSP.animateTrainerBattleStart(thing, other);
                 other.alreadyBattled = true;
                 thing.FSP.StateHolder.addChange(other.id, "alreadyBattled", true);
@@ -1920,6 +1922,7 @@ var FullScreenPokemon;
                     thing.FSP.StateHolder.addChange(other.id, "sight", undefined);
                 }
             }
+            this.autoSave();
         };
         /**
          * Displays a yes/no options menu for after a dialog has completed.
@@ -4887,6 +4890,7 @@ var FullScreenPokemon;
             FSP.moveBattleKeptThingsBack(FSP, settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
             FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
+            FSP.autoSave();
         };
         /**
          * Cutscene for changing a statistic in battle.
@@ -5511,6 +5515,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("ShopItems");
             FSP.MenuGrapher.deleteMenu("ShopItemsAmount");
             FSP.MenuGrapher.deleteMenu("Yes/No");
+            FSP.autoSave();
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", [
                 "Is there anything else I can do?"
@@ -6044,6 +6049,7 @@ var FullScreenPokemon;
             }
             walkingSteps.push(FSP.ScenePlayer.bindRoutine("EnterLab"));
             FSP.MenuGrapher.deleteMenu("GeneralText");
+            FSP.ItemsHolder.setItem("autoSave", false);
             FSP.animateCharacterFollow(settings.player, settings.oak);
             FSP.animateCharacterStartWalkingCycle(settings.oak, startingDirection, walkingSteps);
         };
@@ -6161,8 +6167,12 @@ var FullScreenPokemon;
             FSP.StateHolder.addChange(blocker.id, "nocollide", false);
             FSP.MapScreener.blockInputs = false;
             FSP.MenuGrapher.deleteMenu("GeneralText");
+            if (FSP.ItemsHolder.getAutoSave()) {
+                FSP.ItemsHolder.setItem("autoSave", true);
+            }
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher), timeout, "GeneralText", {
-                "deleteOnFinish": true
+                "deleteOnFinish": true,
+                "onMenuDelete": FSP.autoSave
             });
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.addMenuDialog.bind(FSP.MenuGrapher), timeout, "GeneralText", "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!");
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher), timeout, "GeneralText");
@@ -6450,6 +6460,10 @@ var FullScreenPokemon;
                     FSP.killNormal(rival);
                     FSP.StateHolder.addChange(rival.id, "alive", false);
                     FSP.MapScreener.blockInputs = false;
+                    if (FSP.ItemsHolder.getAutoSave()) {
+                        FSP.ItemsHolder.setItem("autoSave", true);
+                        FSP.autoSave();
+                    }
                 }
             ], dialog = [
                 "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
@@ -6493,6 +6507,7 @@ var FullScreenPokemon;
                 "keptThings": FSP.collectBattleKeptThings(FSP, ["player", "Rival"]),
                 "nextCutscene": "OakIntroRivalLeaves"
             };
+            FSP.ItemsHolder.setItem("autoSave", false);
             switch (FSP.ItemsHolder.getItem("starterRival").join("")) {
                 case "SQUIRTLE":
                     steps = 2;
@@ -7000,11 +7015,18 @@ var FullScreenPokemon;
             this.saveCharacterPositions(this);
             this.StateHolder.saveCollection();
             this.ItemsHolder.saveAll();
-            this.MenuGrapher.createMenu("GeneralText");
+            this.MenuGrapher.createMenu("GeneralText", {
+                // "callback": this.MenuGrapher.registerA.bind(this.MenuGrapher),
+                "killOnB": ["Yes/No", "Save"]
+            });
             this.MenuGrapher.addMenuDialog("GeneralText", [
                 "Now saving..."
-            ]);
-            this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
+            ] /*,
+            this.MenuGrapher.deleteActiveMenu.bind(this.MenuGrapher)*/ /*,
+            this.MenuGrapher.registerB.bind(this.MenuGrapher)*/);
+            this.MenuGrapher.setActiveMenu("GeneralText");
+            // this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
+            this.TimeHandler.addEvent(this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "GeneralText"), 49);
         };
         /**
          * Saves current game state and downloads
@@ -7020,8 +7042,9 @@ var FullScreenPokemon;
             this.container.removeChild(link);
         };
         FullScreenPokemon.prototype.autoSave = function () {
-            if (this.ItemsHolder.getItem("autoSave")) {
+            if (this.ItemsHolder.getItem("autoSave") && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame();
+                console.log("saved");
             }
         };
         /**
@@ -7102,6 +7125,7 @@ var FullScreenPokemon;
             this.animateFadeFromColor(this, {
                 "color": "Black"
             });
+            this.autoSave();
             if (location.push) {
                 this.animateCharacterStartWalking(this.player, this.player.direction);
             }
