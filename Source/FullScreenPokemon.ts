@@ -407,7 +407,6 @@ module FullScreenPokemon {
                 }];
 
             FSP.checkForOldStorageData();
-            FSP.StateHolder.retrieveCollectionKeys();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -460,7 +459,6 @@ module FullScreenPokemon {
          * @param FSP
          */
         gameLoadFile(FSP: FullScreenPokemon): void {
-            this.clearSavedData();
             let dummy: HTMLInputElement = <HTMLInputElement>FSP.createElement(
                 "input",
                 {
@@ -495,6 +493,7 @@ module FullScreenPokemon {
          * @param dataRaw   Raw data to be parsed as JSON.
          */
         gameLoadData(FSP: FullScreenPokemon, dataRaw: string): void {
+            FSP.clearSavedData();
             let data: ISaveFile = JSON.parse(dataRaw),
                 keyStart: string = "StateHolder::";
 
@@ -9365,7 +9364,7 @@ module FullScreenPokemon {
         clearSavedData(): void {
             let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
 
-            let collectionKeys: string[] = this.StateHolder.getCollectionKeys();
+            let collectionKeys: string[] = this.ItemsHolder.getItem("collectionKeys");
             for (let i: number = 0; collectionKeys && i < collectionKeys.length; i += 1) {
                 oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
             }
@@ -9376,7 +9375,6 @@ module FullScreenPokemon {
             }
 
             this.ItemsHolder.clear();
-            this.StateHolder.clearCollectionKeys();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
         }
@@ -9387,6 +9385,7 @@ module FullScreenPokemon {
          */
         checkForOldStorageData(): void {
             if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
+                this.ItemsHolder.getItem("collectionKeys");
                 return;
             }
 
@@ -9404,6 +9403,8 @@ module FullScreenPokemon {
             }
 
             this.ItemsHolder.saveAll();
+
+            this.UserWrapper.resetGameStarter(this.UserWrapper.getSettings());
         }
 
         /**

@@ -37,11 +37,6 @@ declare module StateHoldr {
         getCollectionKey(): string;
 
         /**
-         * @returns The list of keys of collections, with the prefix.
-         */
-        getCollectionKeys(): string[];
-
-        /**
          * @returns The current key for the collection, without the prefix.
          */
         getCollectionKeyRaw(): string;
@@ -69,16 +64,6 @@ declare module StateHoldr {
          * @returns The changes for the specific item, if it exists.
          */
         getChange(itemKey: string, valueKey: string): any;
-
-        /**
-         * Clears the list of collectionKeys.
-         */
-        clearCollectionKeys(): void;
-
-        /**
-         * Retrieves and sets collectionKeys to the list saved in ItemHolder.
-         */
-        retrieveCollectionKeys(): void;
 
         /**
          * Sets the currently tracked collection.
@@ -151,11 +136,6 @@ module StateHoldr {
         private collectionKey: string;
 
         /**
-         * The list of collection keys referenced, with the prefix.
-         */
-        private collectionKeys: string[];
-
-        /**
          * The current key for the collection, without the prefix.
          */
         private collectionKeyRaw: string;
@@ -177,7 +157,6 @@ module StateHoldr {
 
             this.ItemsHolder = settings.ItemsHolder;
             this.prefix = settings.prefix || "StateHolder";
-            this.collectionKeys = [];
         }
 
 
@@ -203,13 +182,6 @@ module StateHoldr {
          */
         getCollectionKey(): string {
             return this.collectionKey;
-        }
-
-        /**
-         * @returns The list of keys of collections, with the prefix.
-         */
-        getCollectionKeys(): string[] {
-            return this.collectionKeys;
         }
 
         /**
@@ -260,21 +232,6 @@ module StateHoldr {
         */
 
         /**
-         * Clears the list of collectionKeys.
-         */
-        clearCollectionKeys(): void {
-            this.collectionKeys = [];
-        }
-
-        /**
-         * Retrieves and sets collectionKeys to the list saved in ItemHolder.
-         */
-        retrieveCollectionKeys(): void {
-            var keys: string[] = this.ItemsHolder.getItem("collectionKeys");
-            this.collectionKeys = typeof keys === "undefined" ? [] : keys;
-        }
-
-        /**
          * Sets the currently tracked collection.
          * 
          * @param collectionKeyRawNew   The raw key of the new collection
@@ -300,7 +257,6 @@ module StateHoldr {
          */
         saveCollection(): void {
             this.ItemsHolder.setItem(this.collectionKey, this.collection);
-            this.ItemsHolder.setItem("collectionKeys", this.collectionKeys);
         }
 
         /**
@@ -379,8 +335,9 @@ module StateHoldr {
                     "storeLocally": true
                 });
 
-                this.collectionKeys.push(collectionKey);
-                this.ItemsHolder.setItem("collectionKeys", this.collectionKeys);
+                var collectionKeys: string[] = this.ItemsHolder.getItem("collectionKeys");
+                collectionKeys.push(collectionKey);
+                this.ItemsHolder.setItem("collectionKeys", collectionKeys);
             }
         }
 

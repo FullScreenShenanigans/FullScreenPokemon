@@ -246,7 +246,6 @@ var FullScreenPokemon;
                     "callback": FSP.gameLoadFile.bind(FSP, FSP)
                 }];
             FSP.checkForOldStorageData();
-            FSP.StateHolder.retrieveCollectionKeys();
             if (FSP.ItemsHolder.getItem("gameStarted")) {
                 options.unshift({
                     "text": "CONTINUE",
@@ -290,7 +289,6 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.gameLoadFile = function (FSP) {
-            this.clearSavedData();
             var dummy = FSP.createElement("input", {
                 "type": "file",
                 "onchange": function (event) {
@@ -318,6 +316,7 @@ var FullScreenPokemon;
          * @param dataRaw   Raw data to be parsed as JSON.
          */
         FullScreenPokemon.prototype.gameLoadData = function (FSP, dataRaw) {
+            FSP.clearSavedData();
             var data = JSON.parse(dataRaw), keyStart = "StateHolder::";
             for (var key in data) {
                 if (!data.hasOwnProperty(key)) {
@@ -6954,7 +6953,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
-            var collectionKeys = this.StateHolder.getCollectionKeys();
+            var collectionKeys = this.ItemsHolder.getItem("collectionKeys");
             for (var i = 0; collectionKeys && i < collectionKeys.length; i += 1) {
                 oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
             }
@@ -6963,7 +6962,6 @@ var FullScreenPokemon;
                 this.ItemsHolder.removeItem(keys[i]);
             }
             this.ItemsHolder.clear();
-            this.StateHolder.clearCollectionKeys();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
         };
@@ -6973,6 +6971,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.checkForOldStorageData = function () {
             if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
+                this.ItemsHolder.getItem("collectionKeys");
                 return;
             }
             var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");
@@ -6988,6 +6987,7 @@ var FullScreenPokemon;
                 }
             }
             this.ItemsHolder.saveAll();
+            this.UserWrapper.resetGameStarter(this.UserWrapper.getSettings());
         };
         /**
          * Saves all persistant information about the
