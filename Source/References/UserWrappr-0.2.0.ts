@@ -177,6 +177,12 @@ declare module UserWrappr {
         resetGameStarter(settings: IUserWrapprSettings, customs?: IGameStartrCustoms): void;
 
         /**
+         * Resets the visual aspect of the controls so they are updated with the
+         * recently changed values in ItemsHolder.
+         */
+        resetControls(): void;
+
+        /**
          * @returns The GameStartr implementation this is wrapping around.
          */
         getGameStartrConstructor(): IGameStartrConstructor;
@@ -1732,6 +1738,14 @@ module UserWrappr {
             this.GameStarter.gameStart();
 
             this.startCheckingDevices();
+        }
+
+        /**
+         * Resets the visual aspect of the controls so they are updated with the
+         * recently changed values in ItemsHolder.
+         */
+        resetControls(): void {
+            this.loadControls(this.settings.schemas);
         }
 
 

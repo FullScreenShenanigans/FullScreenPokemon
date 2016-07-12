@@ -331,6 +331,7 @@ var FullScreenPokemon;
                 }
             }
             FSP.MenuGrapher.deleteActiveMenu();
+            FSP.UserWrapper.resetControls();
             FSP.gameStartPlay(FSP);
             FSP.ItemsHolder.setItem("gameStarted", true);
         };
@@ -6987,7 +6988,7 @@ var FullScreenPokemon;
                 }
             }
             this.ItemsHolder.saveAll();
-            this.UserWrapper.resetGameStarter(this.UserWrapper.getSettings());
+            this.UserWrapper.resetControls();
         };
         /**
          * Saves all persistant information about the
