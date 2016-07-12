@@ -2741,7 +2741,8 @@ module GameStartr {
          * @param GameStartr
          */
         onGameClose(GameStarter: GameStartr): void {
-            GameStarter.ItemsHolder.saveAll();
+            // GameStarter.ItemsHolder.saveAll();
+            FullScreenPokemon.FullScreenPokemon.prototype.autoSave();
             GameStarter.ModAttacher.fireEvent("onGameClose");
         }
 

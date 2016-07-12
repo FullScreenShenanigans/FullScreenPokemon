@@ -711,7 +711,8 @@ var GameStartr;
          * @param GameStartr
          */
         GameStartr.prototype.onGameClose = function (GameStarter) {
-            GameStarter.ItemsHolder.saveAll();
+            // GameStarter.ItemsHolder.saveAll();
+            FullScreenPokemon.FullScreenPokemon.prototype.autoSave();
             GameStarter.ModAttacher.fireEvent("onGameClose");
         };
         /**

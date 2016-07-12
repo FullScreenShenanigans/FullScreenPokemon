@@ -509,7 +509,9 @@ module GamesRunnr {
          * Saves the game regardless of whether upkeep is paused or not.
          */
         close(): void {
-            this.onClose();
+            if (this.onClose) {
+                this.onClose();
+            }
         }
 
         /**

@@ -586,7 +586,7 @@ module FullScreenPokemon {
          * @param FSP
          */
         onGameClose(FSP: FullScreenPokemon): void {
-            FSP.autoSave.bind(FSP);
+            FSP.autoSave();
             console.log("closed.");
         }
 

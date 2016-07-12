@@ -177,7 +177,9 @@ var GamesRunnr;
          * Saves the game regardless of whether upkeep is paused or not.
          */
         GamesRunnr.prototype.close = function () {
-            this.onClose();
+            if (this.onClose) {
+                this.onClose();
+            }
         };
         /**
          * Calls upkeep a <num or 1> number of times, immediately.

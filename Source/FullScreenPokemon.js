@@ -397,7 +397,7 @@ var FullScreenPokemon;
          * @param FSP
          */
         FullScreenPokemon.prototype.onGameClose = function (FSP) {
-            FSP.autoSave.bind(FSP);
+            FSP.autoSave();
             console.log("closed.");
         };
         /**
