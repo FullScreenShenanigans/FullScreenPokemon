@@ -3184,7 +3184,7 @@ module FullScreenPokemon {
             thing.numquads = 0;
             thing.movement = undefined;
 
-            if (this) {
+            if (thing.FSP) {
                 thing.FSP.TimeHandler.cancelAllCycles(thing);
                 thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
 
