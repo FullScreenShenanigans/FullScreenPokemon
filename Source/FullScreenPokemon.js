@@ -392,6 +392,15 @@ var FullScreenPokemon;
             console.log("Paused.");
         };
         /**
+         * Pauses the game (currently a no-op).
+         *
+         * @param FSP
+         */
+        FullScreenPokemon.prototype.onGameClose = function (FSP) {
+            FSP.autoSave.bind(FSP);
+            console.log("closed.");
+        };
+        /**
          * Overriden Function to adds a new Thing to the game at a given position,
          * relative to the top left corner of the screen. The Thing is also
          * added to the MapScreener.thingsById container.

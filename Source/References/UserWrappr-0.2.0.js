@@ -1009,6 +1009,9 @@ var UserWrappr;
                 case "visible":
                     this.onPageVisible();
                     return;
+                case "unloaded":
+                    this.onPageUnloaded();
+                    return;
                 default:
                     return;
             }
@@ -1030,6 +1033,13 @@ var UserWrappr;
                 this.isPageHidden = false;
                 this.GameStarter.GamesRunner.play();
             }
+        };
+        /**
+         * Reacts to the page becoming unloaded by saving the game.
+         */
+        UserWrappr.prototype.onPageUnloaded = function () {
+            this.GameStarter.GamesRunner.close();
+            FullScreenPokemon.FullScreenPokemon.prototype.autoSave();
         };
         /* Control section loaders
         */

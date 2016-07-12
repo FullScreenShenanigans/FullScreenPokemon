@@ -228,6 +228,7 @@ var GameStartr;
                 "scope": GameStarter,
                 "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
                 "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
+                "onClose": GameStarter.onGameClose.bind(GameStartr, GameStarter),
                 "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
             }, GameStarter.settings.runner));
             GameStarter.FPSAnalyzer = GameStarter.GamesRunner.getFPSAnalyzer();
@@ -702,6 +703,16 @@ var GameStartr;
         GameStartr.prototype.onGamePause = function (GameStarter) {
             GameStarter.AudioPlayer.pauseAll();
             GameStarter.ModAttacher.fireEvent("onGamePause");
+        };
+        /**
+         * Triggered Function for when the game is closed. The game is saved and the
+         * mod event is fired.
+         *
+         * @param GameStartr
+         */
+        GameStartr.prototype.onGameClose = function (GameStarter) {
+            GameStarter.ItemsHolder.saveAll();
+            GameStarter.ModAttacher.fireEvent("onGameClose");
         };
         /**
          * Checks whether inputs can be fired, which by default is always true.

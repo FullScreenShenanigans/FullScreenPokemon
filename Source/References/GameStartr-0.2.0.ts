@@ -1327,6 +1327,14 @@ declare module GameStartr {
         onGamePause(GameStarter: IGameStartr): void;
 
         /**
+         * Triggered Function for when the game is closed. The game is saved and the
+         * mod event is fired.
+         *
+         * @param GameStartr
+         */
+        onGameClose(GameStarter: IGameStartr): void;
+
+        /**
          * Checks whether inputs can be fired, which by default is always true.
          *
          * @param GameStartr
@@ -2130,6 +2138,7 @@ module GameStartr {
                         "scope": GameStarter,
                         "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
                         "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
+                        "onClose": GameStarter.onGameClose.bind(GameStartr, GameStarter),
                         "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
                     },
                     GameStarter.settings.runner));
@@ -2723,6 +2732,17 @@ module GameStartr {
         onGamePause(GameStarter: GameStartr): void {
             GameStarter.AudioPlayer.pauseAll();
             GameStarter.ModAttacher.fireEvent("onGamePause");
+        }
+
+        /**
+         * Triggered Function for when the game is closed. The game is saved and the
+         * mod event is fired.
+         * 
+         * @param GameStartr
+         */
+        onGameClose(GameStarter: GameStartr): void {
+            GameStarter.ItemsHolder.saveAll();
+            GameStarter.ModAttacher.fireEvent("onGameClose");
         }
 
         /**

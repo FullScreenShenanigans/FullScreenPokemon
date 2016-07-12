@@ -28,6 +28,7 @@ var GamesRunnr;
             this.speed = settings.speed || 1;
             this.onPause = settings.onPause;
             this.onPlay = settings.onPlay;
+            this.onClose = settings.onClose;
             this.callbackArguments = settings.callbackArguments || [this];
             this.adjustFramerate = settings.adjustFramerate;
             this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr.FPSAnalyzr(settings.FPSAnalyzerSettings);
@@ -171,6 +172,12 @@ var GamesRunnr;
                 this.onPause.apply(this, this.callbackArguments);
             }
             this.upkeepCanceller(this.upkeepNext);
+        };
+        /**
+         * Saves the game regardless of whether upkeep is paused or not.
+         */
+        GamesRunnr.prototype.close = function () {
+            this.onClose();
         };
         /**
          * Calls upkeep a <num or 1> number of times, immediately.
