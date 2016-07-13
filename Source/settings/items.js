@@ -2,28 +2,16 @@ var FullScreenPokemon;
 (function (FullScreenPokemon) {
     "use strict";
     FullScreenPokemon.FullScreenPokemon.settings.items = {
-        "prefix": "FullScreenPokemon::",
         "defaults": {
             "storeLocally": true
         },
+        "prefix": "FullScreenPokemon::",
         "values": {
-            "gameStarted": {
-                "valueDefault": false
-            },
-            "map": {
-                "valueDefault": ""
-            },
             "area": {
                 "valueDefault": ""
             },
-            "location": {
-                "valueDefault": ""
-            },
-            "lastPokecenter": {
-                "valueDefault": {
-                    "map": "Pallet Town",
-                    "location": "Player's House Door"
-                }
+            "autoSave": {
+                "valueDefault": true
             },
             "badges": {
                 "valueDefault": {
@@ -37,23 +25,33 @@ var FullScreenPokemon;
                     "Earth": false
                 }
             },
+            "gameStarted": {
+                "valueDefault": false
+            },
+            "hasPokedex": {
+                "valueDefault": false
+            },
             "items": {
                 "valueDefault": []
+            },
+            "lastPokecenter": {
+                "valueDefault": {
+                    "map": "Pallet Town",
+                    "location": "Player's House Door"
+                }
+            },
+            "location": {
+                "valueDefault": ""
+            },
+            "map": {
+                "valueDefault": ""
             },
             "money": {
                 "valueDefault": 0,
                 "minimum": 0
             },
-            "time": {
-                "valueDefault": 0
-            },
             "name": {},
             "nameRival": {},
-            "starter": {},
-            "starterRival": {},
-            "hasPokedex": {
-                "valueDefault": false
-            },
             "Pokedex": {
                 "valueDefault": {}
             },
@@ -62,6 +60,11 @@ var FullScreenPokemon;
             },
             "PokemonInPC": {
                 "valueDefault": []
+            },
+            "starter": {},
+            "starterRival": {},
+            "time": {
+                "valueDefault": 0
             }
         }
     };

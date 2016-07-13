@@ -124,6 +124,20 @@ module FullScreenPokemon {
                         "disable": (FSP: IFullScreenPokemon): void => {
                             window.ondevicemotion = undefined;
                         }
+                    },
+                    {
+                        "title": "Auto Save",
+                        "type": "Boolean",
+                        "storeLocally": true,
+                        "source": (FSP: IFullScreenPokemon): boolean => {
+                            return true;
+                        },
+                        "enable": (FSP: IFullScreenPokemon): void => {
+                            FSP.ItemsHolder.toggle("autoSave");
+                        },
+                        "disable": (FSP: IFullScreenPokemon): void => {
+                            FSP.ItemsHolder.toggle("autoSave");
+                        }
                     }
                 ],
                 "actions": [

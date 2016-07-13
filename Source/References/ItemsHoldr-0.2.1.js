@@ -183,7 +183,6 @@ var ItemsHoldr;
             if (settings === void 0) { settings = {}; }
             this.settings = settings;
             this.prefix = settings.prefix || "";
-            this.autoSave = settings.autoSave;
             this.callbackArgs = settings.callbackArgs || [];
             this.allowNewItems = settings.allowNewItems === undefined
                 ? true : settings.allowNewItems;
@@ -199,6 +198,7 @@ var ItemsHoldr;
             this.defaults = settings.defaults || {};
             this.displayChanges = settings.displayChanges || {};
             this.resetItemsToDefaults();
+            this.autoSave = this.getItem("autoSave");
             if (settings.doMakeContainer) {
                 this.containersArguments = settings.containersArguments || [
                     ["div", {

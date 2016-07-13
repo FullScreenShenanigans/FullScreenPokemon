@@ -58,6 +58,11 @@ declare module GamesRunnr {
         onPause?: ITriggerCallback;
 
         /**
+         * A callback to run when the page is unloaded.
+         */
+        onClose?: ITriggerCallback;
+
+        /**
          * A callback to run when upkeep is played.
          */
         onPlay?: ITriggerCallback;
@@ -179,6 +184,11 @@ declare module GamesRunnr {
         pause(): void;
 
         /**
+         * Saves the game regardless of whether upkeep is paused or not.
+         */
+        close(): void;
+
+        /**
          * Calls upkeep a <num or 1> number of times, immediately.
          * 
          * @param [num]   How many times to upkeep (by default, 1).
@@ -233,6 +243,11 @@ module GamesRunnr {
          * Optional trigger Function for this.play.
          */
         private onPlay: ITriggerCallback;
+
+        /**
+         * Optional trigger Function for this.close.
+         */
+        private onClose: ITriggerCallback;
 
         /**
          * Arguments to be passed to the optional trigger Functions.
@@ -314,6 +329,7 @@ module GamesRunnr {
             this.speed = settings.speed || 1;
             this.onPause = settings.onPause;
             this.onPlay = settings.onPlay;
+            this.onClose = settings.onClose;
             this.callbackArguments = settings.callbackArguments || [this];
             this.adjustFramerate = settings.adjustFramerate;
             this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr.FPSAnalyzr(settings.FPSAnalyzerSettings);
@@ -487,6 +503,15 @@ module GamesRunnr {
             }
 
             this.upkeepCanceller(this.upkeepNext);
+        }
+
+        /**
+         * Runs onClose regardless of whether upkeep is paused or not.
+         */
+        close(): void {
+            if (this.onClose) {
+                this.onClose();
+            }
         }
 
         /**
