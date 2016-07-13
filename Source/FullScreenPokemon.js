@@ -6983,7 +6983,7 @@ var FullScreenPokemon;
             this.StateHolder.saveCollection();
             this.ItemsHolder.saveAll();
             this.MenuGrapher.createMenu("GeneralText", {
-                "killOnB": ["Yes/No", "Save"]
+                "killOnB": ["Yes/No", "Save", "Pause"]
             });
             this.MenuGrapher.addMenuDialog("GeneralText", [
                 "Now saving..."

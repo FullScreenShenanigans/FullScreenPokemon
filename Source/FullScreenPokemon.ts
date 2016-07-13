@@ -9399,7 +9399,7 @@ module FullScreenPokemon {
             this.ItemsHolder.saveAll();
 
             this.MenuGrapher.createMenu("GeneralText", {
-                "killOnB": ["Yes/No", "Save"]
+                "killOnB": ["Yes/No", "Save", "Pause"]
             });
             this.MenuGrapher.addMenuDialog(
                 "GeneralText", [
