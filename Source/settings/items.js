@@ -2,6 +2,8 @@ var FullScreenPokemon;
 (function (FullScreenPokemon) {
     "use strict";
     FullScreenPokemon.FullScreenPokemon.settings.items = {
+        "allowAutoSave": true,
+        "autoSave": false,
         "defaults": {
             "storeLocally": true
         },
@@ -9,9 +11,6 @@ var FullScreenPokemon;
         "values": {
             "area": {
                 "valueDefault": ""
-            },
-            "autoSave": {
-                "valueDefault": true
             },
             "badges": {
                 "valueDefault": {

@@ -132,10 +132,10 @@ var FullScreenPokemon;
                             return true;
                         },
                         "enable": function (FSP) {
-                            FSP.ItemsHolder.toggle("autoSave");
+                            FSP.ItemsHolder.toggleAutoSave();
                         },
                         "disable": function (FSP) {
-                            FSP.ItemsHolder.toggle("autoSave");
+                            FSP.ItemsHolder.toggleAutoSave();
                         }
                     }
                 ],

@@ -7959,6 +7959,7 @@ module FullScreenPokemon {
             FSP.ItemsHolder.setItem("gameStarted", true);
 
             FSP.setMap("Pallet Town", "Start Game");
+            FSP.autoSave();
         }
 
         /**
@@ -7971,6 +7972,7 @@ module FullScreenPokemon {
             let triggered: boolean = false;
 
             settings.triggerer.alive = false;
+            FSP.ItemsHolder.setAllowAutoSave(false);
             FSP.StateHolder.addChange(settings.triggerer.id, "alive", false);
 
             if (FSP.ItemsHolder.getItem("starter")) {
@@ -8091,7 +8093,6 @@ module FullScreenPokemon {
             walkingSteps.push(FSP.ScenePlayer.bindRoutine("EnterLab"));
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
-            FSP.ItemsHolder.setItem("autoSave", false);
             FSP.animateCharacterFollow(settings.player, settings.oak);
             FSP.animateCharacterStartWalkingCycle(
                 settings.oak,
@@ -8268,17 +8269,12 @@ module FullScreenPokemon {
 
             FSP.MenuGrapher.deleteMenu("GeneralText");
 
-            if (FSP.ItemsHolder.getAutoSave()) {
-                FSP.ItemsHolder.setItem("autoSave", true);
-            }
-
             FSP.TimeHandler.addEvent(
                 FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher),
                 timeout,
                 "GeneralText",
                 {
                     "deleteOnFinish": true,
-                    "onMenuDelete": FSP.autoSave
                 });
 
             FSP.TimeHandler.addEvent(
@@ -8655,10 +8651,6 @@ module FullScreenPokemon {
                         FSP.killNormal(rival);
                         FSP.StateHolder.addChange(rival.id, "alive", false);
                         FSP.MapScreener.blockInputs = false;
-                        if (FSP.ItemsHolder.getAutoSave()) {
-                            FSP.ItemsHolder.setItem("autoSave", true);
-                            FSP.autoSave();
-                        }
                     }
                 ],
                 dialog: string[] = [
@@ -8672,6 +8664,7 @@ module FullScreenPokemon {
 
             rival.nocollide = true;
             FSP.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
+            FSP.ItemsHolder.setAllowAutoSave(true);
         }
 
         /**
@@ -8709,8 +8702,6 @@ module FullScreenPokemon {
                     "keptThings": FSP.collectBattleKeptThings(["player", "Rival"]),
                     "nextCutscene": "OakIntroRivalLeaves"
                 };
-
-            FSP.ItemsHolder.setItem("autoSave", false);
 
             switch (FSP.ItemsHolder.getItem("starterRival").join("")) {
                 case "SQUIRTLE":
@@ -9383,8 +9374,10 @@ module FullScreenPokemon {
         /**
          * Saves all persistant information about the
          * current game state.
+         * 
+         * @param showText    Determines whether the "Saving Now" text shows on screen.
          */
-        saveGame(): void {
+        saveGame(showText: boolean = true): void {
             let ticksRecorded: number = this.FPSAnalyzer.getNumRecorded();
 
             this.ItemsHolder.setItem("map", this.AreaSpawner.getMapName());
@@ -9397,6 +9390,10 @@ module FullScreenPokemon {
             this.saveCharacterPositions();
             this.StateHolder.saveCollection();
             this.ItemsHolder.saveAll();
+
+            if (!showText) {
+                return;
+            }
 
             this.MenuGrapher.createMenu("GeneralText", {
                 "killOnB": ["Yes/No", "Save", "Pause"]
@@ -9432,8 +9429,9 @@ module FullScreenPokemon {
         }
 
         autoSave(): void {
-            if (this.ItemsHolder.getItem("autoSave") && this.AreaSpawner.getMapName() !== "Blank") {
-                this.saveGame();
+            if (this.ItemsHolder.getAutoSave() && this.ItemsHolder.getAllowAutoSave()) {
+                this.saveGame(false);
+                console.log("saved");
             }
         }
 

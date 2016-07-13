@@ -5921,6 +5921,7 @@ var FullScreenPokemon;
             FSP.ScenePlayer.stopCutscene();
             FSP.ItemsHolder.setItem("gameStarted", true);
             FSP.setMap("Pallet Town", "Start Game");
+            FSP.autoSave();
         };
         /**
          * Cutscene for walking into the grass before receiving a Pokemon.
@@ -5931,6 +5932,7 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneOakIntroFirstDialog = function (FSP, settings) {
             var triggered = false;
             settings.triggerer.alive = false;
+            FSP.ItemsHolder.setAllowAutoSave(false);
             FSP.StateHolder.addChange(settings.triggerer.id, "alive", false);
             if (FSP.ItemsHolder.getItem("starter")) {
                 FSP.MapScreener.blockInputs = false;
@@ -6019,7 +6021,6 @@ var FullScreenPokemon;
             }
             walkingSteps.push(FSP.ScenePlayer.bindRoutine("EnterLab"));
             FSP.MenuGrapher.deleteMenu("GeneralText");
-            FSP.ItemsHolder.setItem("autoSave", false);
             FSP.animateCharacterFollow(settings.player, settings.oak);
             FSP.animateCharacterStartWalkingCycle(settings.oak, startingDirection, walkingSteps);
         };
@@ -6137,9 +6138,6 @@ var FullScreenPokemon;
             FSP.StateHolder.addChange(blocker.id, "nocollide", false);
             FSP.MapScreener.blockInputs = false;
             FSP.MenuGrapher.deleteMenu("GeneralText");
-            if (FSP.ItemsHolder.getAutoSave()) {
-                FSP.ItemsHolder.setItem("autoSave", true);
-            }
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher), timeout, "GeneralText", {
                 "deleteOnFinish": true,
                 "onMenuDelete": FSP.autoSave
@@ -6430,10 +6428,6 @@ var FullScreenPokemon;
                     FSP.killNormal(rival);
                     FSP.StateHolder.addChange(rival.id, "alive", false);
                     FSP.MapScreener.blockInputs = false;
-                    if (FSP.ItemsHolder.getAutoSave()) {
-                        FSP.ItemsHolder.setItem("autoSave", true);
-                        FSP.autoSave();
-                    }
                 }
             ], dialog = [
                 "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
@@ -6443,6 +6437,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("GeneralText");
             rival.nocollide = true;
             FSP.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
+            FSP.ItemsHolder.setAllowAutoSave(true);
         };
         /**
          * Cutscene for the battle between the player and the rival.
@@ -6477,7 +6472,6 @@ var FullScreenPokemon;
                 "keptThings": FSP.collectBattleKeptThings(["player", "Rival"]),
                 "nextCutscene": "OakIntroRivalLeaves"
             };
-            FSP.ItemsHolder.setItem("autoSave", false);
             switch (FSP.ItemsHolder.getItem("starterRival").join("")) {
                 case "SQUIRTLE":
                     steps = 2;
@@ -6971,8 +6965,11 @@ var FullScreenPokemon;
         /**
          * Saves all persistant information about the
          * current game state.
+         *
+         * @param showText    Determines whether the "Saving Now" text shows on screen.
          */
-        FullScreenPokemon.prototype.saveGame = function () {
+        FullScreenPokemon.prototype.saveGame = function (showText) {
+            if (showText === void 0) { showText = true; }
             var ticksRecorded = this.FPSAnalyzer.getNumRecorded();
             this.ItemsHolder.setItem("map", this.AreaSpawner.getMapName());
             this.ItemsHolder.setItem("area", this.AreaSpawner.getAreaName());
@@ -6982,6 +6979,9 @@ var FullScreenPokemon;
             this.saveCharacterPositions();
             this.StateHolder.saveCollection();
             this.ItemsHolder.saveAll();
+            if (!showText) {
+                return;
+            }
             this.MenuGrapher.createMenu("GeneralText", {
                 "killOnB": ["Yes/No", "Save", "Pause"]
             });
@@ -7005,8 +7005,9 @@ var FullScreenPokemon;
             this.container.removeChild(link);
         };
         FullScreenPokemon.prototype.autoSave = function () {
-            if (this.ItemsHolder.getItem("autoSave") && this.AreaSpawner.getMapName() !== "Blank") {
-                this.saveGame();
+            if (this.ItemsHolder.getAutoSave() && this.ItemsHolder.getAllowAutoSave()) {
+                this.saveGame(false);
+                console.log("saved");
             }
         };
         /**

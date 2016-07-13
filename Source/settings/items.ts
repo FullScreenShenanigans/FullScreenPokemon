@@ -2,6 +2,8 @@ module FullScreenPokemon {
     "use strict";
 
     FullScreenPokemon.settings.items = {
+        "allowAutoSave": true,
+        "autoSave": false,
         "defaults": {
             "storeLocally": true
         },
@@ -9,9 +11,6 @@ module FullScreenPokemon {
         "values": {
             "area": {
                 "valueDefault": ""
-            },
-            "autoSave": {
-                "valueDefault": true
             },
             "badges": {
                 "valueDefault": {
