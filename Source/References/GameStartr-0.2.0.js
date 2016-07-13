@@ -331,7 +331,7 @@ var GameStartr;
          */
         GameStartr.prototype.resetInputWriter = function (GameStarter, settings) {
             GameStarter.InputWriter = new InputWritr.InputWritr(GameStarter.proliferate({
-                "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter),
+                "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter),
                 "eventInformation": GameStarter
             }, GameStarter.settings.input.InputWritrArgs));
         };
@@ -715,10 +715,9 @@ var GameStartr;
         /**
          * Checks whether inputs can be fired, which by default is always true.
          *
-         * @param GameStartr
          * @returns Whether inputs can be fired, which is always true.
          */
-        GameStartr.prototype.canInputsTrigger = function (GameStarter) {
+        GameStartr.prototype.canInputsTrigger = function () {
             return true;
         };
         /**

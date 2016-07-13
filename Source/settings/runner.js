@@ -13,22 +13,22 @@ FullScreenPokemon.FullScreenPokemon.settings.runner = {
             this.QuadsKeeper.determineAllQuadrants("Solid", this.GroupHolder.getSolidGroup());
         },
         function () {
-            this.maintainGeneric(this, this.GroupHolder.getTextGroup());
+            this.maintainGeneric(this.GroupHolder.getTextGroup());
         },
         function () {
-            this.maintainGeneric(this, this.GroupHolder.getTerrainGroup());
+            this.maintainGeneric(this.GroupHolder.getTerrainGroup());
         },
         function () {
-            this.maintainGeneric(this, this.GroupHolder.getSceneryGroup());
+            this.maintainGeneric(this.GroupHolder.getSceneryGroup());
         },
         function () {
-            this.maintainGeneric(this, this.GroupHolder.getSolidGroup());
+            this.maintainGeneric(this.GroupHolder.getSolidGroup());
         },
         function () {
-            this.maintainCharacters(this, this.GroupHolder.getCharacterGroup());
+            this.maintainCharacters(this.GroupHolder.getCharacterGroup());
         },
         function () {
-            this.maintainPlayer(this, this.player)
+            this.maintainPlayer(this.player)
         },
         function () {
             this.TimeHandler.handleEvents();

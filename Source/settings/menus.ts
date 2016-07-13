@@ -35,7 +35,7 @@ module FullScreenPokemon {
             "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": function (FSP: FullScreenPokemon): string[] {
                 return FSP.makeDigit(
-                    FSP.getPokedexListingsOrdered(FSP)
+                    FSP.getPokedexListingsOrdered()
                         .filter(function (listing: IPokedexInformation): boolean {
                             return listing && listing.seen;
                         })
@@ -46,7 +46,7 @@ module FullScreenPokemon {
             },
             "POKEDEX.OWN": function (FSP: FullScreenPokemon): string[] {
                 return FSP.makeDigit(
-                    FSP.getPokedexListingsOrdered(FSP)
+                    FSP.getPokedexListingsOrdered()
                         .filter(function (listing: IPokedexInformation): boolean {
                             return listing && listing.caught;
                         })

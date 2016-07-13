@@ -133,10 +133,10 @@ module FullScreenPokemon {
                             return true;
                         },
                         "enable": (FSP: IFullScreenPokemon): void => {
-                            FSP.ItemsHolder.toggle("autoSave");
+                            FSP.ItemsHolder.toggleAutoSave();
                         },
                         "disable": (FSP: IFullScreenPokemon): void => {
-                            FSP.ItemsHolder.toggle("autoSave");
+                            FSP.ItemsHolder.toggleAutoSave();
                         }
                     }
                 ],
