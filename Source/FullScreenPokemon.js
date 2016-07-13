@@ -5932,7 +5932,6 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.cutsceneOakIntroFirstDialog = function (FSP, settings) {
             var triggered = false;
             settings.triggerer.alive = false;
-            FSP.ItemsHolder.setAllowAutoSave(false);
             FSP.StateHolder.addChange(settings.triggerer.id, "alive", false);
             if (FSP.ItemsHolder.getItem("starter")) {
                 FSP.MapScreener.blockInputs = false;
@@ -6139,8 +6138,7 @@ var FullScreenPokemon;
             FSP.MapScreener.blockInputs = false;
             FSP.MenuGrapher.deleteMenu("GeneralText");
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.createMenu.bind(FSP.MenuGrapher), timeout, "GeneralText", {
-                "deleteOnFinish": true,
-                "onMenuDelete": FSP.autoSave
+                "deleteOnFinish": true
             });
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.addMenuDialog.bind(FSP.MenuGrapher), timeout, "GeneralText", "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!");
             FSP.TimeHandler.addEvent(FSP.MenuGrapher.setActiveMenu.bind(FSP.MenuGrapher), timeout, "GeneralText");
@@ -6437,7 +6435,6 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("GeneralText");
             rival.nocollide = true;
             FSP.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
-            FSP.ItemsHolder.setAllowAutoSave(true);
         };
         /**
          * Cutscene for the battle between the player and the rival.
@@ -7005,7 +7002,7 @@ var FullScreenPokemon;
             this.container.removeChild(link);
         };
         FullScreenPokemon.prototype.autoSave = function () {
-            if (this.ItemsHolder.getAutoSave() && this.ItemsHolder.getAllowAutoSave()) {
+            if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene()) {
                 this.saveGame(false);
                 console.log("saved");
             }

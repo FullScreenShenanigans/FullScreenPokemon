@@ -7972,7 +7972,6 @@ module FullScreenPokemon {
             let triggered: boolean = false;
 
             settings.triggerer.alive = false;
-            FSP.ItemsHolder.setAllowAutoSave(false);
             FSP.StateHolder.addChange(settings.triggerer.id, "alive", false);
 
             if (FSP.ItemsHolder.getItem("starter")) {
@@ -8274,7 +8273,7 @@ module FullScreenPokemon {
                 timeout,
                 "GeneralText",
                 {
-                    "deleteOnFinish": true,
+                    "deleteOnFinish": true
                 });
 
             FSP.TimeHandler.addEvent(
@@ -8664,7 +8663,6 @@ module FullScreenPokemon {
 
             rival.nocollide = true;
             FSP.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
-            FSP.ItemsHolder.setAllowAutoSave(true);
         }
 
         /**
@@ -9429,7 +9427,7 @@ module FullScreenPokemon {
         }
 
         autoSave(): void {
-            if (this.ItemsHolder.getAutoSave() && this.ItemsHolder.getAllowAutoSave()) {
+            if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene()) {
                 this.saveGame(false);
                 console.log("saved");
             }

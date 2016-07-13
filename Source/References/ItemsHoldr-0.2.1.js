@@ -182,7 +182,6 @@ var ItemsHoldr;
         function ItemsHoldr(settings) {
             if (settings === void 0) { settings = {}; }
             this.settings = settings;
-            this.allowAutoSave = settings.allowAutoSave;
             this.autoSave = settings.autoSave;
             this.prefix = settings.prefix || "";
             this.callbackArgs = settings.callbackArgs || [];
@@ -240,12 +239,6 @@ var ItemsHoldr;
          */
         ItemsHoldr.prototype.getAutoSave = function () {
             return this.autoSave;
-        };
-        /**
-         * @returns Whether this should save changes to localStorage automatically.
-         */
-        ItemsHoldr.prototype.getAllowAutoSave = function () {
-            return this.allowAutoSave;
         };
         /**
          * @returns The prefix to store thigns under in localStorage.
@@ -421,14 +414,6 @@ var ItemsHoldr;
          */
         ItemsHoldr.prototype.toggleAutoSave = function () {
             this.autoSave = this.autoSave ? false : true;
-        };
-        /**
-         * Sets the value of allowAutoSave.
-         *
-         * @param value    The value being assigned to allowAutoSave.
-         */
-        ItemsHoldr.prototype.setAllowAutoSave = function (value) {
-            this.allowAutoSave = value;
         };
         /**
          * Ensures a key exists in values. If it doesn't, and new values are

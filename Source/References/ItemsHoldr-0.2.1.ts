@@ -231,11 +231,6 @@ declare module ItemsHoldr {
          * Whether values should be saved immediately upon being set.
          */
         autoSave?: boolean;
-
-        /**
-         * Whether auto saving is allowed.
-         */
-        allowAutoSave?: boolean;
         
         /**
          * Arguments to pass to triggered callback Functions.
@@ -297,11 +292,6 @@ declare module ItemsHoldr {
          * @returns Whether this should save changes to localStorage automatically.
          */
         getAutoSave(): boolean;
-
-        /**
-         * @returns Whether this should save changes to localStorage automatically.
-         */
-        getAllowAutoSave(): boolean;
         
         /**
          * @returns The prefix to store thigns under in localStorage.
@@ -417,13 +407,6 @@ declare module ItemsHoldr {
          * Toggles whether autoSave is true or false.
          */
         toggleAutoSave(): void;
-
-        /**
-         * Sets the value of allowAutoSave.
-         * 
-         * @param value    The value being assigned to allowAutoSave.
-         */
-        setAllowAutoSave(value: boolean): void;
         
         /**
          * Ensures a key exists in values. If it doesn't, and new values are
@@ -837,11 +820,6 @@ module ItemsHoldr {
         private autoSave: boolean;
 
         /**
-         * Whether auto saving is allowed.
-         */
-        private allowAutoSave: boolean;
-
-        /**
          * A container element containing children for each value's element.
          */
         private container: HTMLElement;
@@ -868,7 +846,6 @@ module ItemsHoldr {
          */
         constructor(settings: IItemsHoldrSettings = {}) {
             this.settings = settings;
-            this.allowAutoSave = settings.allowAutoSave;
             this.autoSave = settings.autoSave;
             this.prefix = settings.prefix || "";
             this.callbackArgs = settings.callbackArgs || [];
@@ -936,13 +913,6 @@ module ItemsHoldr {
          */
         getAutoSave(): boolean {
             return this.autoSave;
-        }
-
-        /**
-         * @returns Whether this should save changes to localStorage automatically.
-         */
-        getAllowAutoSave(): boolean {
-            return this.allowAutoSave;
         }
 
         /**
@@ -1156,15 +1126,6 @@ module ItemsHoldr {
          */
         toggleAutoSave(): void {
             this.autoSave = this.autoSave ? false : true;
-        }
-
-        /**
-         * Sets the value of allowAutoSave.
-         * 
-         * @param value    The value being assigned to allowAutoSave.
-         */
-        setAllowAutoSave(value: boolean): void {
-            this.allowAutoSave = value;
         }
 
         /**
