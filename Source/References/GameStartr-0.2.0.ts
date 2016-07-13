@@ -1329,10 +1329,9 @@ declare module GameStartr {
         /**
          * Checks whether inputs can be fired, which by default is always true.
          *
-         * @param GameStartr
          * @returns Whether inputs can be fired, which is always true.
          */
-        canInputsTrigger(GameStarter: IGameStartr): boolean;
+        canInputsTrigger(): boolean;
 
         /**
          * Generic Function to start the game. Nothing actually happens here.
@@ -2249,7 +2248,7 @@ module GameStartr {
             GameStarter.InputWriter = new InputWritr.InputWritr(
                 GameStarter.proliferate(
                     {
-                        "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter),
+                        "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter),
                         "eventInformation": GameStarter
                     },
                     GameStarter.settings.input.InputWritrArgs));
@@ -2728,10 +2727,9 @@ module GameStartr {
         /**
          * Checks whether inputs can be fired, which by default is always true.
          * 
-         * @param GameStartr
          * @returns Whether inputs can be fired, which is always true.
          */
-        canInputsTrigger(GameStarter: GameStartr): boolean {
+        canInputsTrigger(): boolean {
             return true;
         }
 
