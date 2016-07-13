@@ -705,14 +705,11 @@ var GameStartr;
             GameStarter.ModAttacher.fireEvent("onGamePause");
         };
         /**
-         * Triggered Function for when the game is closed. The game is saved and the
-         * mod event is fired.
+         * Triggered Function for when the game is closed.
          *
          * @param GameStartr
          */
         GameStartr.prototype.onGameClose = function (GameStarter) {
-            // GameStarter.ItemsHolder.saveAll();
-            FullScreenPokemon.FullScreenPokemon.prototype.autoSave();
             GameStarter.ModAttacher.fireEvent("onGameClose");
         };
         /**

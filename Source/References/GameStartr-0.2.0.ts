@@ -1327,8 +1327,7 @@ declare module GameStartr {
         onGamePause(GameStarter: IGameStartr): void;
 
         /**
-         * Triggered Function for when the game is closed. The game is saved and the
-         * mod event is fired.
+         * Triggered Function for when the game is closed.
          *
          * @param GameStartr
          */
@@ -2735,14 +2734,11 @@ module GameStartr {
         }
 
         /**
-         * Triggered Function for when the game is closed. The game is saved and the
-         * mod event is fired.
+         * Triggered Function for when the game is closed.
          * 
          * @param GameStartr
          */
         onGameClose(GameStarter: GameStartr): void {
-            // GameStarter.ItemsHolder.saveAll();
-            FullScreenPokemon.FullScreenPokemon.prototype.autoSave();
             GameStarter.ModAttacher.fireEvent("onGameClose");
         }
 

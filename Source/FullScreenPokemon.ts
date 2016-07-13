@@ -4566,8 +4566,7 @@ module FullScreenPokemon {
             this.MenuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
             this.MenuGrapher.createMenu("Yes/No", {
-                "backMenu": "Pause",
-                "killOnB": ["GeneralText", "Save"]
+                "backMenu": "Pause"
             });
             this.MenuGrapher.addMenuList("Yes/No", {
                 "options": [
@@ -9452,18 +9451,14 @@ module FullScreenPokemon {
             this.ItemsHolder.saveAll();
 
             this.MenuGrapher.createMenu("GeneralText", {
-                // "callback": this.MenuGrapher.registerA.bind(this.MenuGrapher),
                 "killOnB": ["Yes/No", "Save"]
             });
             this.MenuGrapher.addMenuDialog(
                 "GeneralText", [
                     "Now saving..."
-                ]/*,
-                this.MenuGrapher.deleteActiveMenu.bind(this.MenuGrapher)*//*,
-                this.MenuGrapher.registerB.bind(this.MenuGrapher)*/);
+                ]);
             this.MenuGrapher.setActiveMenu("GeneralText");
 
-            // this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
             this.TimeHandler.addEvent(this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "GeneralText"), 49);
         }
 
@@ -9491,7 +9486,6 @@ module FullScreenPokemon {
         autoSave(): void {
             if (this.ItemsHolder.getItem("autoSave") && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame();
-                console.log("saved");
             }
         }
 

@@ -174,7 +174,7 @@ var GamesRunnr;
             this.upkeepCanceller(this.upkeepNext);
         };
         /**
-         * Saves the game regardless of whether upkeep is paused or not.
+         * Runs onClose regardless of whether upkeep is paused or not.
          */
         GamesRunnr.prototype.close = function () {
             if (this.onClose) {

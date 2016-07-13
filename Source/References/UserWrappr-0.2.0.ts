@@ -1718,6 +1718,8 @@ module UserWrappr {
             this.loadGameStarter(this.fixCustoms(customs));
 
             window[settings.globalName] = this.GameStarter;
+            window.addEventListener("unload", this.GameStarter.GamesRunner.close.bind(this.GameStarter.GamesRunner));
+
             this.GameStarter.UserWrapper = this;
 
             this.loadGenerators();
@@ -1992,9 +1994,6 @@ module UserWrappr {
                 case "visible":
                     this.onPageVisible();
                     return;
-                case "unloaded":
-                    this.onPageUnloaded();
-                    return;
                 default:
                     return;
             }
@@ -2018,14 +2017,6 @@ module UserWrappr {
                 this.isPageHidden = false;
                 this.GameStarter.GamesRunner.play();
             }
-        }
-
-        /**
-         * Reacts to the page becoming unloaded by saving the game.
-         */
-        private onPageUnloaded(): void {
-            this.GameStarter.GamesRunner.close();
-            FullScreenPokemon.FullScreenPokemon.prototype.autoSave();
         }
 
 

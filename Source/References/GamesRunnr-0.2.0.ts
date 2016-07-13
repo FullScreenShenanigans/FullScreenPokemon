@@ -58,7 +58,7 @@ declare module GamesRunnr {
         onPause?: ITriggerCallback;
 
         /**
-         * A callback to run when upkeep is paused.
+         * A callback to run when the page is unloaded.
          */
         onClose?: ITriggerCallback;
 
@@ -245,7 +245,7 @@ module GamesRunnr {
         private onPlay: ITriggerCallback;
 
         /**
-         * Optional trigger Function for this.play.
+         * Optional trigger Function for this.close.
          */
         private onClose: ITriggerCallback;
 
@@ -506,7 +506,7 @@ module GamesRunnr {
         }
 
         /**
-         * Saves the game regardless of whether upkeep is paused or not.
+         * Runs onClose regardless of whether upkeep is paused or not.
          */
         close(): void {
             if (this.onClose) {
