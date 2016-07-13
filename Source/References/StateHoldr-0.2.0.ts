@@ -336,8 +336,12 @@ module StateHoldr {
                 });
 
                 var collectionKeys: string[] = this.ItemsHolder.getItem("collectionKeys");
-                collectionKeys.push(collectionKey);
-                this.ItemsHolder.setItem("collectionKeys", collectionKeys);
+                if (!collectionKeys) {
+                    this.ItemsHolder.setItem("collectionKeys", [collectionKey]);
+                } else if (collectionKeys.indexOf(collectionKey) === -1) {
+                    collectionKeys.push(collectionKey);
+                    this.ItemsHolder.setItem("collectionKeys", collectionKeys);
+                }
             }
         }
 

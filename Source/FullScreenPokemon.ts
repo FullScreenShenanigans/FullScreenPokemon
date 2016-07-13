@@ -9378,6 +9378,8 @@ module FullScreenPokemon {
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
+
+            this.UserWrapper.resetControls();
         }
 
         /**
@@ -9386,7 +9388,6 @@ module FullScreenPokemon {
          */
         checkForOldStorageData(): void {
             if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
-                this.ItemsHolder.getItem("collectionKeys");
                 return;
             }
 

@@ -6965,6 +6965,7 @@ var FullScreenPokemon;
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
+            this.UserWrapper.resetControls();
         };
         /**
          * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
@@ -6972,7 +6973,6 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.checkForOldStorageData = function () {
             if (!this.ItemsHolder.getItem("oldLocalStorage") || this.ItemsHolder.getItem("gameStarted")) {
-                this.ItemsHolder.getItem("collectionKeys");
                 return;
             }
             var oldLocalStorage = this.ItemsHolder.getItem("oldLocalStorage");

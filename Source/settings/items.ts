@@ -10,9 +10,6 @@ module FullScreenPokemon {
             "gameStarted": {
                 "valueDefault": false
             },
-            "collectionKeys": {
-                "valueDefault": []
-            },
             "map": {
                 "valueDefault": ""
             },
