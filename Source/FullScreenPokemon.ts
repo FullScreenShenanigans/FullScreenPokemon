@@ -9427,7 +9427,7 @@ module FullScreenPokemon {
         }
 
         autoSave(): void {
-            if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene()) {
+            if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene() && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame(false);
                 console.log("saved");
             }
