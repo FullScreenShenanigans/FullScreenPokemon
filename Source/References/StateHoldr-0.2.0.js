@@ -18,6 +18,7 @@ var StateHoldr;
             }
             this.ItemsHolder = settings.ItemsHolder;
             this.prefix = settings.prefix || "StateHolder";
+            this.ItemsHolder.addItem("stateCollectionKeys", { valueDefault: [] });
         }
         /* Simple gets
         */
@@ -163,10 +164,7 @@ var StateHoldr;
                     "storeLocally": true
                 });
                 var collectionKeys = this.ItemsHolder.getItem("stateCollectionKeys");
-                if (!collectionKeys) {
-                    this.ItemsHolder.setItem("stateCollectionKeys", [collectionKey]);
-                }
-                else if (collectionKeys.indexOf(collectionKey) === -1) {
+                if (collectionKeys.indexOf(collectionKey) === -1) {
                     collectionKeys.push(collectionKey);
                     this.ItemsHolder.setItem("stateCollectionKeys", collectionKeys);
                 }

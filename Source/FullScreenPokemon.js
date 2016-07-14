@@ -6924,6 +6924,7 @@ var FullScreenPokemon;
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
+            this.ItemsHolder.setItem("stateCollectionKeys", []);
             this.UserWrapper.resetControls();
         };
         /**
