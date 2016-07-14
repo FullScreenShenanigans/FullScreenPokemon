@@ -1306,13 +1306,14 @@ var FullScreenPokemon;
          * @returns The four created Things.
          */
         FullScreenPokemon.prototype.animateThingCorners = function (x, y, title, settings, groupType) {
-            var things = [], i;
-            for (i = 0; i < 4; i += 1) {
+            var things = [];
+            for (var i = 0; i < 4; i += 1) {
                 things.push(this.addThing([title, settings]));
             }
             if (groupType) {
-                for (i = 0; i < things.length; i += 1) {
-                    this.GroupHolder.switchMemberGroup(things[i], things[i].groupType, groupType);
+                for (var _i = 0; _i < things.length; _i++) {
+                    var thing = things[_i];
+                    this.GroupHolder.switchMemberGroup(thing, thing.groupType, groupType);
                 }
             }
             this.setLeft(things[0], x);
@@ -1614,8 +1615,9 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.animateCharacterStartWalkingRandom = function (thing) {
             var totalAllowed = 0, direction, i;
-            for (i = 0; i < 4; i += 1) {
-                if (!thing.bordering[i]) {
+            for (var _i = 0, _a = thing.bordering; _i < _a.length; _i++) {
+                var border = _a[_i];
+                if (!border) {
                     totalAllowed += 1;
                 }
             }
@@ -2643,11 +2645,13 @@ var FullScreenPokemon;
                 return;
             }
             var partyPokemon = player.FSP.ItemsHolder.getItem("PokemonInParty");
-            for (var i = 0; i < partyPokemon.length; i += 1) {
-                var moves = partyPokemon[i].moves;
-                for (var j = 0; j < moves.length; j += 1) {
-                    if (moves[j].title === thing.moveName) {
-                        thing.moveCallback(player, partyPokemon[i]);
+            for (var _i = 0; _i < partyPokemon.length; _i++) {
+                var pokemon = partyPokemon[_i];
+                var moves = pokemon.moves;
+                for (var _a = 0; _a < moves.length; _a++) {
+                    var move = moves[_a];
+                    if (move.title === thing.moveName) {
+                        thing.moveCallback(player, pokemon);
                         return;
                     }
                 }
@@ -2872,7 +2876,7 @@ var FullScreenPokemon;
          * @param area   The Area associated with thing.
          */
         FullScreenPokemon.prototype.activateAreaSpawner = function (thing, area) {
-            var direction = thing.direction, creation = area.creation, MapsCreator = this.MapsCreator, AreaSpawner = this.AreaSpawner, QuadsKeeper = this.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + this.MapScreener.left, top = thing.top + this.MapScreener.top;
+            var direction = thing.direction, MapsCreator = this.MapsCreator, AreaSpawner = this.AreaSpawner, QuadsKeeper = this.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + this.MapScreener.left, top = thing.top + this.MapScreener.top;
             switch (direction) {
                 case 0:
                     top -= area.height * this.unitsize;
@@ -2892,13 +2896,14 @@ var FullScreenPokemon;
             var x = left / this.unitsize + (thing.offsetX || 0);
             var y = top / this.unitsize + (thing.offsetY || 0);
             this.expandMapBoundariesForArea(area, x, y);
-            for (var i = 0; i < creation.length; i += 1) {
+            for (var _i = 0, _a = area.creation; _i < _a.length; _i++) {
+                var creation = _a[_i];
                 // A copy of the command must be used, so as to not modify the original 
                 var command = this.proliferate({
                     "noBoundaryStretch": true,
                     "areaName": area.name,
                     "mapName": area.map.name
-                }, creation[i]);
+                }, creation);
                 if (!command.x) {
                     command.x = x;
                 }
@@ -3128,11 +3133,12 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.openPokemonMenuContext = function (settings) {
             var _this = this;
             var moves = settings.pokemon.moves, options = [], move;
-            for (var i = 0; i < moves.length; i += 1) {
-                move = this.MathDecider.getConstant("moves")[moves[i].title];
+            for (var _i = 0; _i < moves.length; _i++) {
+                var action = moves[_i];
+                move = this.MathDecider.getConstant("moves")[action.title];
                 if (move.partyActivate && move.requiredBadge && this.ItemsHolder.getItem("badges")[move.requiredBadge]) {
                     options.push({
-                        "text": moves[i].title.toUpperCase(),
+                        "text": action.title.toUpperCase(),
                         "callback": function () {
                             _this.partyActivateCheckThing(_this.player, settings.pokemon, move);
                         }
@@ -3722,10 +3728,11 @@ var FullScreenPokemon;
                 _a[this.player.title] = this.player,
                 _a
             );
-            for (var i = 0; i < thingsRaw.length; i += 1) {
-                var thing = thingsRaw[i].constructor === String
-                    ? this.getThingById(thingsRaw[i])
-                    : thingsRaw[i];
+            for (var _i = 0; _i < thingsRaw.length; _i++) {
+                var thingRaw = thingsRaw[_i];
+                var thing = thingRaw.constructor === String
+                    ? this.getThingById(thingRaw)
+                    : thingRaw;
                 if (!used[thing.title]) {
                     used[thing.title] = thing;
                     things.push(thing);
@@ -3744,8 +3751,9 @@ var FullScreenPokemon;
             if (!keptThings) {
                 return;
             }
-            for (var i = 0; i < keptThings.length; i += 1) {
-                this.GroupHolder.switchMemberGroup(keptThings[i], keptThings[i].groupType, "Text");
+            for (var _i = 0; _i < keptThings.length; _i++) {
+                var keptThing = keptThings[_i];
+                this.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
             }
         };
         /**
@@ -3758,8 +3766,9 @@ var FullScreenPokemon;
             if (!keptThings) {
                 return;
             }
-            for (var i = 0; i < keptThings.length; i += 1) {
-                this.GroupHolder.switchMemberGroup(keptThings[i], "Text", keptThings[i].groupType);
+            for (var _i = 0; _i < keptThings.length; _i++) {
+                var keptThing = keptThings[_i];
+                this.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
             }
         };
         /**
@@ -3781,11 +3790,13 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.healPokemon = function (pokemon) {
             var moves = this.MathDecider.getConstant("moves"), statisticNames = this.MathDecider.getConstant("statisticNames");
-            for (var i = 0; i < statisticNames.length; i += 1) {
-                pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
+            for (var _i = 0; _i < statisticNames.length; _i++) {
+                var statisticName = statisticNames[_i];
+                pokemon[statisticName] = pokemon[statisticName + "Normal"];
             }
-            for (var i = 0; i < pokemon.moves.length; i += 1) {
-                pokemon.moves[i].remaining = moves[pokemon.moves[i].title].PP;
+            for (var _a = 0, _b = pokemon.moves; _a < _b.length; _a++) {
+                var move = _b[_a];
+                move.remaining = moves[move.title].PP;
             }
             pokemon.status = "";
         };
@@ -3818,10 +3829,11 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.chooseRandomWildPokemon = function (options) {
             var choice = this.NumberMaker.random(), sum = 0;
-            for (var i = 0; i < options.length; i += 1) {
-                sum += options[i].rate;
+            for (var _i = 0; _i < options.length; _i++) {
+                var option = options[_i];
+                sum += option.rate;
                 if (sum >= choice) {
-                    return options[i];
+                    return option;
                 }
             }
         };
@@ -3966,8 +3978,9 @@ var FullScreenPokemon;
             player.FSP.TimeHandler.addEventInterval(function () {
                 boulder.FSP.shiftBoth(boulder, xvel, yvel);
             }, 1, 8);
-            for (var i = 0; i < 4; i += 1) {
-                boulder.bordering[i] = undefined;
+            for (var _i = 0, _a = boulder.bordering; _i < _a.length; _i++) {
+                var border = _a[_i];
+                border = undefined;
             }
         };
         /**
@@ -5036,11 +5049,12 @@ var FullScreenPokemon;
             FSP.addThing(scratches[1], startX + offset * direction * -1, startY + offset);
             FSP.addThing(scratches[2], startX + offset * direction * -2, startY + offset * 2);
             FSP.TimeHandler.addEventInterval(function () {
-                for (var i = 0; i < scratches.length; i += 1) {
-                    var left = direction === -1 ? scratches[i].left : scratches[i].right - 3 * FSP.unitsize;
-                    var top_1 = scratches[i].bottom - 3 * FSP.unitsize;
-                    FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratches[i], differenceX * direction / 16);
-                    FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratches[i], differenceX / 16);
+                for (var _i = 0; _i < scratches.length; _i++) {
+                    var scratch = scratches[_i];
+                    var left = direction === -1 ? scratch.left : scratch.right - 3 * FSP.unitsize;
+                    var top_1 = scratch.bottom - 3 * FSP.unitsize;
+                    FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratch, differenceX * direction / 16);
+                    FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratch, differenceX / 16);
                     var line = FSP.addThing("ScratchLine", left, top_1);
                     if (direction === 1) {
                         FSP.flipHoriz(line);
@@ -5049,11 +5063,13 @@ var FullScreenPokemon;
                 }
             }, dt, 16);
             FSP.TimeHandler.addEvent(function () {
-                for (var i = 0; i < scratches.length; i += 1) {
-                    FSP.killNormal(scratches[i]);
+                for (var _i = 0; _i < scratches.length; _i++) {
+                    var scratch = scratches[_i];
+                    FSP.killNormal(scratch);
                 }
-                for (var i = 0; i < lineArray.length; i += 1) {
-                    FSP.killNormal(lineArray[i]);
+                for (var _a = 0; _a < lineArray.length; _a++) {
+                    var line = lineArray[_a];
+                    FSP.killNormal(line);
                 }
                 FSP.animateFlicker(defender, 14, 5, args.callback);
             }, 17 * dt);
@@ -5185,8 +5201,9 @@ var FullScreenPokemon;
                 changer = i % 2 === 0
                     ? FSP.addClass
                     : FSP.removeClass;
-                for (var j = 0; j < balls.length; j += 1) {
-                    changer(balls[j], "lit");
+                for (var _i = 0; _i < balls.length; _i++) {
+                    var ball = balls[_i];
+                    changer(ball, "lit");
                 }
                 changer(settings.machine, "lit");
                 i += 1;
@@ -6853,10 +6870,9 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.saveCharacterPositions = function () {
             var characters = this.GroupHolder.getGroup("Character");
-            for (var i = 0; i < characters.length; i += 1) {
-                var character = characters[i];
-                var id = character.id;
-                this.saveCharacterPosition(character, id);
+            for (var _i = 0; _i < characters.length; _i++) {
+                var character = characters[_i];
+                this.saveCharacterPosition(character, character.id);
             }
         };
         /**
@@ -6912,12 +6928,14 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
             var collectionKeys = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
-            for (var i = 0; collectionKeys && i < collectionKeys.length; i += 1) {
-                oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
+            for (var _i = 0; _i < collectionKeys.length; _i++) {
+                var collection = collectionKeys[_i];
+                oldLocalStorage[collection] = this.ItemsHolder.getItem(collection);
             }
             var keys = this.ItemsHolder.getKeys();
-            for (var i = 0; i < keys.length; i += 1) {
-                this.ItemsHolder.removeItem(keys[i]);
+            for (var _a = 0; _a < keys.length; _a++) {
+                var key = keys[_a];
+                this.ItemsHolder.removeItem(key);
             }
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
@@ -8239,8 +8257,9 @@ var FullScreenPokemon;
          * @returns Whether the key exists within the Array members.
          */
         FullScreenPokemon.prototype.checkArrayMembersIndex = function (array, key) {
-            for (var i = 0; i < array.length; i += 1) {
-                if (array[i][key]) {
+            for (var _i = 0; _i < array.length; _i++) {
+                var member = array[_i];
+                if (member[key]) {
                     return true;
                 }
             }
@@ -8259,9 +8278,10 @@ var FullScreenPokemon;
          * @returns Whether the stackable item was newly added.
          */
         FullScreenPokemon.prototype.combineArrayMembers = function (array, title, count, keyTitle, keyCount) {
-            for (var i = 0; i < array.length; i += 1) {
-                if (array[i][keyTitle] === title) {
-                    array[i][keyCount] += count;
+            for (var _i = 0; _i < array.length; _i++) {
+                var member = array[_i];
+                if (member[keyTitle] === title) {
+                    member[keyCount] += count;
                     return false;
                 }
             }

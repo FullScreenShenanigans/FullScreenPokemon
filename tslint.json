@@ -52,7 +52,6 @@
         "no-eval": true,
         "no-string-literal": true,
         "no-switch-case-fall-through": true,
-        "no-trailing-comma": true,
         "no-trailing-whitespace": true,
         "no-unused-expression": true,
         "no-unused-variable": true,
@@ -74,6 +73,7 @@
         "radix": true,
         "semicolon": true,
         "switch-default": true,
+        "trailing-comma": true,
         "triple-equals": [
             true,
             "allow-null-check"
