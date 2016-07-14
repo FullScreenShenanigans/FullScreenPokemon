@@ -26,11 +26,11 @@
     "grunt-mocha-phantomjs": "^2.0.1",
     "grunt-preprocess": "^5.1.0",
     "grunt-processhtml": "^0.3.13",
-    "grunt-tslint": "^2.4.0",
+    "grunt-tslint": "^2.5.0",
     "grunt-typescript": "^0.8.0",
     "grunt-zip": "^0.17.1",
     "mocha": "^2.4.5",
-    "tslint": "^2.4.5",
+    "tslint": "^3.13.0",
     "typescript": "^1.8.10"
   }
 }

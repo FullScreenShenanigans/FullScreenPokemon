@@ -1738,16 +1738,15 @@ module FullScreenPokemon {
             title: string,
             settings: any,
             groupType?: string): [IThing, IThing, IThing, IThing] {
-            let things: IThing[] = [],
-                i: number;
+            let things: IThing[] = [];
 
-            for (i = 0; i < 4; i += 1) {
+            for (let i: number = 0; i < 4; i += 1) {
                 things.push(this.addThing([title, settings]));
             }
 
             if (groupType) {
-                for (i = 0; i < things.length; i += 1) {
-                    this.GroupHolder.switchMemberGroup(things[i], things[i].groupType, groupType);
+                for (let thing of things) {
+                    this.GroupHolder.switchMemberGroup(thing, thing.groupType, groupType);
                 }
             }
 
@@ -2168,8 +2167,8 @@ module FullScreenPokemon {
                 direction: Direction,
                 i: number;
 
-            for (i = 0; i < 4; i += 1) {
-                if (!thing.bordering[i]) {
+            for (let border of thing.bordering) {
+                if (!border) {
                     totalAllowed += 1;
                 }
             }
@@ -3437,12 +3436,12 @@ module FullScreenPokemon {
 
             let partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty");
 
-            for (let i: number = 0; i < partyPokemon.length; i += 1) {
-                let moves: BattleMovr.IMove[] = partyPokemon[i].moves;
+            for (let pokemon of partyPokemon) {
+                let moves: BattleMovr.IMove[] = pokemon.moves;
 
-                for (let j: number = 0; j < moves.length; j += 1) {
-                    if (moves[j].title === thing.moveName) {
-                        thing.moveCallback(player, partyPokemon[i]);
+                for (let move of moves) {
+                    if (move.title === thing.moveName) {
+                        thing.moveCallback(player, pokemon);
                         return;
                     }
                 }
@@ -3726,7 +3725,6 @@ module FullScreenPokemon {
          */
         activateAreaSpawner(thing: IAreaSpawner, area: IArea): void {
             let direction: Direction = thing.direction,
-                creation: any[] = area.creation,
                 MapsCreator: MapsCreatr.IMapsCreatr = this.MapsCreator,
                 AreaSpawner: AreaSpawnr.IAreaSpawnr = this.AreaSpawner,
                 QuadsKeeper: QuadsKeepr.IQuadsKeepr = this.QuadsKeeper,
@@ -3758,7 +3756,7 @@ module FullScreenPokemon {
 
             this.expandMapBoundariesForArea(area, x, y);
 
-            for (let i: number = 0; i < creation.length; i += 1) {
+            for (let creation of area.creation) {
                 // A copy of the command must be used, so as to not modify the original 
                 let command: any = this.proliferate(
                     {
@@ -3766,7 +3764,7 @@ module FullScreenPokemon {
                         "areaName": area.name,
                         "mapName": area.map.name
                     },
-                    creation[i]);
+                    creation);
 
                 if (!command.x) {
                     command.x = x;
@@ -4050,11 +4048,11 @@ module FullScreenPokemon {
                 options: any[] = [],
                 move: IHMMoveSchema;
 
-            for (let i: number = 0; i < moves.length; i += 1) {
-                move = <IHMMoveSchema>this.MathDecider.getConstant("moves")[moves[i].title];
+            for (let action of moves) {
+                move = <IHMMoveSchema>this.MathDecider.getConstant("moves")[action.title];
                 if (move.partyActivate && move.requiredBadge && this.ItemsHolder.getItem("badges")[move.requiredBadge]) {
                     options.push({
-                        "text": moves[i].title.toUpperCase(),
+                        "text": action.title.toUpperCase(),
                         "callback": (): void => {
                             this.partyActivateCheckThing(this.player, settings.pokemon, move);
                         }
@@ -4789,10 +4787,10 @@ module FullScreenPokemon {
                     [this.player.title]: this.player
                 };
 
-            for (let i: number = 0; i < thingsRaw.length; i += 1) {
-                let thing: IThing = thingsRaw[i].constructor === String
-                    ? this.getThingById(<string>thingsRaw[i])
-                    : <IThing>thingsRaw[i];
+            for (let thingRaw of thingsRaw) {
+                let thing: IThing = thingRaw.constructor === String
+                    ? this.getThingById(<string>thingRaw)
+                    : <IThing>thingRaw;
 
                 if (!used[thing.title]) {
                     used[thing.title] = thing;
@@ -4815,8 +4813,8 @@ module FullScreenPokemon {
                 return;
             }
 
-            for (let i: number = 0; i < keptThings.length; i += 1) {
-                this.GroupHolder.switchMemberGroup(keptThings[i], keptThings[i].groupType, "Text");
+            for (let keptThing of keptThings) {
+                this.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
             }
         }
 
@@ -4832,8 +4830,8 @@ module FullScreenPokemon {
                 return;
             }
 
-            for (let i: number = 0; i < keptThings.length; i += 1) {
-                this.GroupHolder.switchMemberGroup(keptThings[i], "Text", keptThings[i].groupType);
+            for (let keptThing of keptThings) {
+                this.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
             }
         }
 
@@ -4860,12 +4858,12 @@ module FullScreenPokemon {
             let moves: BattleMovr.IMove[] = this.MathDecider.getConstant("moves"),
                 statisticNames: string[] = this.MathDecider.getConstant("statisticNames");
 
-            for (let i: number = 0; i < statisticNames.length; i += 1) {
-                pokemon[statisticNames[i]] = pokemon[statisticNames[i] + "Normal"];
+            for (let statisticName of statisticNames) {
+                pokemon[statisticName] = pokemon[statisticName + "Normal"];
             }
 
-            for (let i: number = 0; i < pokemon.moves.length; i += 1) {
-                pokemon.moves[i].remaining = moves[pokemon.moves[i].title].PP;
+            for (let move of pokemon.moves) {
+                move.remaining = moves[move.title].PP;
             }
 
             pokemon.status = "";
@@ -4907,10 +4905,10 @@ module FullScreenPokemon {
             let choice: number = this.NumberMaker.random(),
                 sum: number = 0;
 
-            for (let i: number = 0; i < options.length; i += 1) {
-                sum += options[i].rate;
+            for (let option of options) {
+                sum += option.rate;
                 if (sum >= choice) {
-                    return options[i];
+                    return option;
                 }
             }
         }
@@ -5115,8 +5113,8 @@ module FullScreenPokemon {
                 1,
                 8);
 
-            for (let i: number = 0; i < 4; i += 1) {
-                boulder.bordering[i] = undefined;
+            for (let border of boulder.bordering) {
+                border = undefined;
             }
         }
 
@@ -6694,12 +6692,12 @@ module FullScreenPokemon {
 
             FSP.TimeHandler.addEventInterval(
                 function (): void {
-                    for (let i: number = 0; i < scratches.length; i += 1) {
-                        let left: number = direction === -1 ? scratches[i].left : scratches[i].right - 3 * FSP.unitsize;
-                        let top: number =  scratches[i].bottom - 3 * FSP.unitsize;
+                    for (let scratch of scratches) {
+                        let left: number = direction === -1 ? scratch.left : scratch.right - 3 * FSP.unitsize;
+                        let top: number =  scratch.bottom - 3 * FSP.unitsize;
 
-                        FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratches[i], differenceX * direction / 16);
-                        FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratches[i], differenceX / 16);
+                        FSP.TimeHandler.addEvent(FSP.shiftHoriz, dt, scratch, differenceX * direction / 16);
+                        FSP.TimeHandler.addEvent(FSP.shiftVert, dt, scratch, differenceX / 16);
 
                         let line: IThing = FSP.addThing("ScratchLine", left, top);
                         if (direction === 1) {
@@ -6713,12 +6711,12 @@ module FullScreenPokemon {
 
             FSP.TimeHandler.addEvent(
                 function (): void {
-                    for (let i: number = 0; i < scratches.length; i += 1) {
-                        FSP.killNormal(scratches[i]);
+                    for (let scratch of scratches) {
+                        FSP.killNormal(scratch);
                     }
 
-                    for (let i: number = 0; i < lineArray.length; i += 1) {
-                        FSP.killNormal(lineArray[i]);
+                    for (let line of lineArray) {
+                        FSP.killNormal(line);
                     }
 
                     FSP.animateFlicker(defender, 14, 5, args.callback);
@@ -6916,8 +6914,8 @@ module FullScreenPokemon {
                         ? FSP.addClass
                         : FSP.removeClass;
 
-                    for (let j: number = 0; j < balls.length; j += 1) {
-                        changer(balls[j], "lit");
+                    for (let ball of balls) {
+                        changer(ball, "lit");
                     }
 
                     changer(settings.machine, "lit");
@@ -9238,11 +9236,8 @@ module FullScreenPokemon {
         saveCharacterPositions(): void {
             let characters: ICharacter[] = <ICharacter[]>this.GroupHolder.getGroup("Character");
 
-            for (let i: number = 0; i < characters.length; i += 1) {
-                let character: ICharacter = characters[i];
-                let id: string = character.id;
-
-                this.saveCharacterPosition(character, id);
+            for (let character of characters) {
+                this.saveCharacterPosition(character, character.id);
             }
         }
 
@@ -9319,8 +9314,8 @@ module FullScreenPokemon {
             }
 
             let keys: string[] = this.ItemsHolder.getKeys();
-            for (let i: number = 0; i < keys.length; i += 1) {
-                this.ItemsHolder.removeItem(keys[i]);
+            for (let key of keys) {
+                this.ItemsHolder.removeItem(key);
             }
 
             this.ItemsHolder.clear();
@@ -10844,8 +10839,8 @@ module FullScreenPokemon {
          * @returns Whether the key exists within the Array members.
          */
         checkArrayMembersIndex(array: any[], key: string): boolean {
-            for (let i: number = 0; i < array.length; i += 1) {
-                if (array[i][key]) {
+            for (let member of array) {
+                if (member[key]) {
                     return true;
                 }
             }
@@ -10866,9 +10861,9 @@ module FullScreenPokemon {
          * @returns Whether the stackable item was newly added.
          */
         combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
-            for (let i: number = 0; i < array.length; i += 1) {
-                if (array[i][keyTitle] === title) {
-                    array[i][keyCount] += count;
+            for (let member of array) {
+                if (member[keyTitle] === title) {
+                    member[keyCount] += count;
                     return false;
                 }
             }
