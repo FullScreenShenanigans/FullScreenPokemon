@@ -33,7 +33,7 @@ var FullScreenPokemon;
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": function (FSP) {
-                return FSP.makeDigit(FSP.getPokedexListingsOrdered(FSP)
+                return FSP.makeDigit(FSP.getPokedexListingsOrdered()
                     .filter(function (listing) {
                     return listing && listing.seen;
                 })
@@ -41,7 +41,7 @@ var FullScreenPokemon;
                     .split("");
             },
             "POKEDEX.OWN": function (FSP) {
-                return FSP.makeDigit(FSP.getPokedexListingsOrdered(FSP)
+                return FSP.makeDigit(FSP.getPokedexListingsOrdered()
                     .filter(function (listing) {
                     return listing && listing.caught;
                 })
