@@ -157,7 +157,9 @@ module StateHoldr {
 
             this.ItemsHolder = settings.ItemsHolder;
             this.prefix = settings.prefix || "StateHolder";
-            this.ItemsHolder.addItem("stateCollectionKeys", { valueDefault: [] })
+            this.ItemsHolder.addItem("stateCollectionKeys", {
+                valueDefault: []
+            });
         }
 
 
