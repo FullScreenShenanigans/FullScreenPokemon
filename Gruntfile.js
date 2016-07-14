@@ -164,4 +164,7 @@ module.exports = function (grunt) {
     grunt.registerTask("default", [
         "clean", "tslint", "typescript", "copy", "uglify", "cssmin", "preprocess", "processhtml", "htmlmin", "mocha_phantomjs", "zip"
     ]);
+    grunt.registerTask("quick", [
+        "clean", "tslint", "typescript"
+    ]);
 };
