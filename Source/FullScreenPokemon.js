@@ -2524,9 +2524,9 @@ var FullScreenPokemon;
             }
             var name = other.menu || "GeneralText", dialog = other.dialog;
             thing.collidedTrigger = other;
-            this.animateCharacterPreventWalking(thing);
+            thing.FSP.animateCharacterPreventWalking(thing);
             if (!other.keepAlive) {
-                this.killNormal(other);
+                thing.FSP.killNormal(other);
             }
             if (!thing.FSP.MenuGrapher.getMenu(name)) {
                 thing.FSP.MenuGrapher.createMenu(name, other.menuAttributes);

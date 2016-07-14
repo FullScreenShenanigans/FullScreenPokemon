@@ -3285,10 +3285,10 @@ module FullScreenPokemon {
                 dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog;
 
             thing.collidedTrigger = other;
-            this.animateCharacterPreventWalking(thing);
+            thing.FSP.animateCharacterPreventWalking(thing);
 
             if (!other.keepAlive) {
-                this.killNormal(other);
+                thing.FSP.killNormal(other);
             }
 
             if (!thing.FSP.MenuGrapher.getMenu(name)) {
