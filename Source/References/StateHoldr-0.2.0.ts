@@ -37,11 +37,6 @@ declare module StateHoldr {
         getCollectionKey(): string;
 
         /**
-         * @returns The list of keys of collections, with the prefix.
-         */
-        getCollectionKeys(): string[];
-
-        /**
          * @returns The current key for the collection, without the prefix.
          */
         getCollectionKeyRaw(): string;
@@ -141,11 +136,6 @@ module StateHoldr {
         private collectionKey: string;
 
         /**
-         * The list of collection keys referenced, with the prefix.
-         */
-        private collectionKeys: string[];
-
-        /**
          * The current key for the collection, without the prefix.
          */
         private collectionKeyRaw: string;
@@ -167,7 +157,9 @@ module StateHoldr {
 
             this.ItemsHolder = settings.ItemsHolder;
             this.prefix = settings.prefix || "StateHolder";
-            this.collectionKeys = [];
+            this.ItemsHolder.addItem("stateCollectionKeys", {
+                valueDefault: []
+            });
         }
 
 
@@ -193,13 +185,6 @@ module StateHoldr {
          */
         getCollectionKey(): string {
             return this.collectionKey;
-        }
-
-        /**
-         * @returns The list of keys of collections, with the prefix.
-         */
-        getCollectionKeys(): string[] {
-            return this.collectionKeys;
         }
 
         /**
@@ -275,7 +260,6 @@ module StateHoldr {
          */
         saveCollection(): void {
             this.ItemsHolder.setItem(this.collectionKey, this.collection);
-            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
         }
 
         /**
@@ -354,8 +338,11 @@ module StateHoldr {
                     "storeLocally": true
                 });
 
-                this.collectionKeys.push(collectionKey);
-                this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+                var collectionKeys: string[] = this.ItemsHolder.getItem("stateCollectionKeys");
+                if (collectionKeys.indexOf(collectionKey) === -1) {
+                    collectionKeys.push(collectionKey);
+                    this.ItemsHolder.setItem("stateCollectionKeys", collectionKeys);
+                }
             }
         }
 

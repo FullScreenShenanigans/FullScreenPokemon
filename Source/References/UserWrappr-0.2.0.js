@@ -793,6 +793,13 @@ var UserWrappr;
             this.GameStarter.gameStart();
             this.startCheckingDevices();
         };
+        /**
+         * Resets the visual aspect of the controls so they are updated with the
+         * recently changed values in ItemsHolder.
+         */
+        UserWrappr.prototype.resetControls = function () {
+            this.loadControls(this.settings.schemas);
+        };
         /* Simple gets
         */
         /**
