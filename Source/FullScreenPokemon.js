@@ -1305,15 +1305,15 @@ var FullScreenPokemon;
          * @param groupType   Which group to move the Things into, if any.
          * @returns The four created Things.
          */
-<<<<<<< HEAD
         FullScreenPokemon.prototype.animateThingCorners = function (x, y, title, settings, groupType) {
-            var things = [], i;
-            for (i = 0; i < 4; i += 1) {
+            var things = [];
+            for (var i = 0; i < 4; i += 1) {
                 things.push(this.addThing([title, settings]));
             }
             if (groupType) {
-                for (i = 0; i < things.length; i += 1) {
-                    this.GroupHolder.switchMemberGroup(things[i], things[i].groupType, groupType);
+                for (var _i = 0; _i < things.length; _i++) {
+                    var thing = things[_i];
+                    this.GroupHolder.switchMemberGroup(thing, thing.groupType, groupType);
                 }
             }
             this.setLeft(things[0], x);
@@ -1328,31 +1328,6 @@ var FullScreenPokemon;
             this.flipHoriz(things[1]);
             this.flipVert(things[1]);
             this.flipVert(things[2]);
-=======
-        FullScreenPokemon.prototype.animateThingCorners = function (FSP, x, y, title, settings, groupType) {
-            var things = [];
-            for (var i = 0; i < 4; i += 1) {
-                things.push(FSP.addThing([title, settings]));
-            }
-            if (groupType) {
-                for (var _i = 0; _i < things.length; _i++) {
-                    var thing = things[_i];
-                    FSP.GroupHolder.switchMemberGroup(thing, thing.groupType, groupType);
-                }
-            }
-            FSP.setLeft(things[0], x);
-            FSP.setLeft(things[1], x);
-            FSP.setRight(things[2], x);
-            FSP.setRight(things[3], x);
-            FSP.setBottom(things[0], y);
-            FSP.setBottom(things[3], y);
-            FSP.setTop(things[1], y);
-            FSP.setTop(things[2], y);
-            FSP.flipHoriz(things[0]);
-            FSP.flipHoriz(things[1]);
-            FSP.flipVert(things[1]);
-            FSP.flipVert(things[2]);
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
             return things;
         };
         /**
@@ -2901,11 +2876,7 @@ var FullScreenPokemon;
          * @param area   The Area associated with thing.
          */
         FullScreenPokemon.prototype.activateAreaSpawner = function (thing, area) {
-<<<<<<< HEAD
-            var direction = thing.direction, creation = area.creation, MapsCreator = this.MapsCreator, AreaSpawner = this.AreaSpawner, QuadsKeeper = this.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + this.MapScreener.left, top = thing.top + this.MapScreener.top;
-=======
-            var direction = thing.direction, FSP = thing.FSP, MapsCreator = FSP.MapsCreator, AreaSpawner = FSP.AreaSpawner, QuadsKeeper = FSP.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + thing.FSP.MapScreener.left, top = thing.top + thing.FSP.MapScreener.top;
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
+            var direction = thing.direction, MapsCreator = this.MapsCreator, AreaSpawner = this.AreaSpawner, QuadsKeeper = this.QuadsKeeper, areaCurrent = AreaSpawner.getArea(), mapCurrent = AreaSpawner.getMap(), prethingsCurrent = AreaSpawner.getPreThings(), left = thing.left + this.MapScreener.left, top = thing.top + this.MapScreener.top;
             switch (direction) {
                 case 0:
                     top -= area.height * this.unitsize;
@@ -2922,18 +2893,11 @@ var FullScreenPokemon;
                 default:
                     throw new Error("Unknown direction: " + direction + ".");
             }
-<<<<<<< HEAD
             var x = left / this.unitsize + (thing.offsetX || 0);
             var y = top / this.unitsize + (thing.offsetY || 0);
             this.expandMapBoundariesForArea(area, x, y);
-            for (var i = 0; i < creation.length; i += 1) {
-=======
-            var x = left / FSP.unitsize + (thing.offsetX || 0);
-            var y = top / FSP.unitsize + (thing.offsetY || 0);
-            FSP.expandMapBoundariesForArea(FSP, area, x, y);
             for (var _i = 0, _a = area.creation; _i < _a.length; _i++) {
                 var creation = _a[_i];
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
                 // A copy of the command must be used, so as to not modify the original 
                 var command = this.proliferate({
                     "noBoundaryStretch": true,
@@ -3764,18 +3728,11 @@ var FullScreenPokemon;
                 _a[this.player.title] = this.player,
                 _a
             );
-<<<<<<< HEAD
-            for (var i = 0; i < thingsRaw.length; i += 1) {
-                var thing = thingsRaw[i].constructor === String
-                    ? this.getThingById(thingsRaw[i])
-                    : thingsRaw[i];
-=======
             for (var _i = 0; _i < thingsRaw.length; _i++) {
                 var thingRaw = thingsRaw[_i];
                 var thing = thingRaw.constructor === String
-                    ? FSP.getThingById(thingRaw)
+                    ? this.getThingById(thingRaw)
                     : thingRaw;
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
                 if (!used[thing.title]) {
                     used[thing.title] = thing;
                     things.push(thing);
@@ -3794,14 +3751,9 @@ var FullScreenPokemon;
             if (!keptThings) {
                 return;
             }
-<<<<<<< HEAD
-            for (var i = 0; i < keptThings.length; i += 1) {
-                this.GroupHolder.switchMemberGroup(keptThings[i], keptThings[i].groupType, "Text");
-=======
             for (var _i = 0; _i < keptThings.length; _i++) {
                 var keptThing = keptThings[_i];
-                FSP.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
+                this.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
             }
         };
         /**
@@ -3814,14 +3766,9 @@ var FullScreenPokemon;
             if (!keptThings) {
                 return;
             }
-<<<<<<< HEAD
-            for (var i = 0; i < keptThings.length; i += 1) {
-                this.GroupHolder.switchMemberGroup(keptThings[i], "Text", keptThings[i].groupType);
-=======
             for (var _i = 0; _i < keptThings.length; _i++) {
                 var keptThing = keptThings[_i];
-                FSP.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
+                this.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
             }
         };
         /**
@@ -3880,18 +3827,11 @@ var FullScreenPokemon;
          * @param options   Potential Pokemon schemas to choose from.
          * @returns One of the potential Pokemon schemas at random.
          */
-<<<<<<< HEAD
         FullScreenPokemon.prototype.chooseRandomWildPokemon = function (options) {
             var choice = this.NumberMaker.random(), sum = 0;
-            for (var i = 0; i < options.length; i += 1) {
-                sum += options[i].rate;
-=======
-        FullScreenPokemon.prototype.chooseRandomWildPokemon = function (FSP, options) {
-            var choice = FSP.NumberMaker.random(), sum = 0;
             for (var _i = 0; _i < options.length; _i++) {
                 var option = options[_i];
                 sum += option.rate;
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
                 if (sum >= choice) {
                     return option;
                 }
@@ -6928,20 +6868,11 @@ var FullScreenPokemon;
         /**
          * Saves the positions of all Characters in the game.
          */
-<<<<<<< HEAD
         FullScreenPokemon.prototype.saveCharacterPositions = function () {
             var characters = this.GroupHolder.getGroup("Character");
-            for (var i = 0; i < characters.length; i += 1) {
-                var character = characters[i];
-                var id = character.id;
-                this.saveCharacterPosition(character, id);
-=======
-        FullScreenPokemon.prototype.saveCharacterPositions = function (FSP) {
-            var characters = FSP.GroupHolder.getGroup("Character");
             for (var _i = 0; _i < characters.length; _i++) {
                 var character = characters[_i];
-                FSP.saveCharacterPosition(FSP, character, character.id);
->>>>>>> c83e4124f282052f22bab120821e8160fd46ea07
+                this.saveCharacterPosition(character, character.id);
             }
         };
         /**
