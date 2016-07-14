@@ -6913,7 +6913,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
-            var collectionKeys = this.ItemsHolder.getItem("collectionKeys");
+            var collectionKeys = this.ItemsHolder.getItem("stateCollectionKeys");
             for (var i = 0; collectionKeys && i < collectionKeys.length; i += 1) {
                 oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
             }

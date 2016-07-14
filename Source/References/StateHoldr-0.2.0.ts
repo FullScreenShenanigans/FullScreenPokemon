@@ -335,12 +335,12 @@ module StateHoldr {
                     "storeLocally": true
                 });
 
-                var collectionKeys: string[] = this.ItemsHolder.getItem("collectionKeys");
+                var collectionKeys: string[] = this.ItemsHolder.getItem("stateCollectionKeys");
                 if (!collectionKeys) {
-                    this.ItemsHolder.setItem("collectionKeys", [collectionKey]);
+                    this.ItemsHolder.setItem("stateCollectionKeys", [collectionKey]);
                 } else if (collectionKeys.indexOf(collectionKey) === -1) {
                     collectionKeys.push(collectionKey);
-                    this.ItemsHolder.setItem("collectionKeys", collectionKeys);
+                    this.ItemsHolder.setItem("stateCollectionKeys", collectionKeys);
                 }
             }
         }

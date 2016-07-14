@@ -9313,7 +9313,7 @@ module FullScreenPokemon {
         clearSavedData(): void {
             let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
 
-            let collectionKeys: string[] = this.ItemsHolder.getItem("collectionKeys");
+            let collectionKeys: string[] = this.ItemsHolder.getItem("stateCollectionKeys");
             for (let i: number = 0; collectionKeys && i < collectionKeys.length; i += 1) {
                 oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
             }
