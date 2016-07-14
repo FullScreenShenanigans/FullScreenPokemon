@@ -580,7 +580,7 @@ module FullScreenPokemon {
          */
         onGameClose(FSP: FullScreenPokemon): void {
             FSP.autoSave();
-            console.log("closed.");
+            console.log("Closed.");
         }
 
         /**
@@ -1691,8 +1691,6 @@ module FullScreenPokemon {
 
             this.animateCharacterPreventWalking(thing);
 
-            this.autoSave();
-
             this.startBattle({
                 "opponent": {
                     "name": chosen.title,
@@ -2509,7 +2507,6 @@ module FullScreenPokemon {
             if (other.dialogOptions) {
                 this.animateCharacterDialogOptions(thing, other, other.dialogOptions);
             } else if (other.trainer && !(<IEnemy>other).alreadyBattled) {
-                this.autoSave();
                 this.animateTrainerBattleStart(thing, <IEnemy>other);
                 (<IEnemy>other).alreadyBattled = true;
                 this.StateHolder.addChange(other.id, "alreadyBattled", true);
@@ -4755,6 +4752,7 @@ module FullScreenPokemon {
          */
         startBattle(battleInfo: IBattleInfo): void {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+            this.autoSave();
 
             let animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
@@ -9426,6 +9424,10 @@ module FullScreenPokemon {
             this.container.removeChild(link);
         }
 
+        /**
+         * Saves the game if autoSave is enabled and the situation allows for it (i.e. not
+         * in a cutscene).
+         */
         autoSave(): void {
             if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene() && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame(false);

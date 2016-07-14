@@ -1125,7 +1125,7 @@ module ItemsHoldr {
          * Toggles whether autoSave is true or false.
          */
         toggleAutoSave(): void {
-            this.autoSave = this.autoSave ? false : true;
+            this.autoSave = !this.autoSave;
         }
 
         /**

@@ -413,7 +413,7 @@ var ItemsHoldr;
          * Toggles whether autoSave is true or false.
          */
         ItemsHoldr.prototype.toggleAutoSave = function () {
-            this.autoSave = this.autoSave ? false : true;
+            this.autoSave = !this.autoSave;
         };
         /**
          * Ensures a key exists in values. If it doesn't, and new values are

@@ -391,7 +391,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.onGameClose = function (FSP) {
             FSP.autoSave();
-            console.log("closed.");
+            console.log("Closed.");
         };
         /**
          * Overriden Function to adds a new Thing to the game at a given position,
@@ -1269,7 +1269,6 @@ var FullScreenPokemon;
                 this.removeClass(thing.shadow, "walking");
             }
             this.animateCharacterPreventWalking(thing);
-            this.autoSave();
             this.startBattle({
                 "opponent": {
                     "name": chosen.title,
@@ -1893,7 +1892,6 @@ var FullScreenPokemon;
                 this.animateCharacterDialogOptions(thing, other, other.dialogOptions);
             }
             else if (other.trainer && !other.alreadyBattled) {
-                this.autoSave();
                 this.animateTrainerBattleStart(thing, other);
                 other.alreadyBattled = true;
                 this.StateHolder.addChange(other.id, "alreadyBattled", true);
@@ -3701,6 +3699,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.startBattle = function (battleInfo) {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+            this.autoSave();
             var animations = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -7001,6 +7000,10 @@ var FullScreenPokemon;
             link.click();
             this.container.removeChild(link);
         };
+        /**
+         * Saves the game if autoSave is enabled and the situation allows for it (i.e. not
+         * in a cutscene).
+         */
         FullScreenPokemon.prototype.autoSave = function () {
             if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene() && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame(false);
