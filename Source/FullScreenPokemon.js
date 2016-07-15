@@ -387,7 +387,7 @@ var FullScreenPokemon;
         /**
          * Overriden Function to adds a new Thing to the game at a given position,
          * relative to the top left corner of the screen. The Thing is also
-         * added to the MapScreener.thingsById container.
+         * added to the Thing GroupHolder.group container.
          *
          *
          * @param thingRaw   What type of Thing to add. This may be a String of
@@ -409,7 +409,7 @@ var FullScreenPokemon;
             }
             if (thing.id) {
                 this.StateHolder.applyChanges(thing.id, thing);
-                this.MapScreener.thingsById[thing.id] = thing;
+                this.GroupHolder.getGroup("Thing")[thing.id] = thing;
             }
             if (typeof thing.direction !== "undefined") {
                 this.animateCharacterSetDirection(thing, thing.direction);
@@ -494,7 +494,7 @@ var FullScreenPokemon;
          * @returns The Thing under the given id, if it exists.
          */
         FullScreenPokemon.prototype.getThingById = function (id) {
-            return this.MapScreener.thingsById[id];
+            return this.GroupHolder.getGroup("Thing")[id];
         };
         /* Inputs
         */
@@ -2445,7 +2445,7 @@ var FullScreenPokemon;
                 thing.FSP.TimeHandler.cancelAllCycles(thing);
                 thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
                 if (thing.id) {
-                    delete thing.FSP.MapScreener.thingsById[thing.id];
+                    delete thing.FSP.GroupHolder.getGroup("Thing")[thing.id];
                 }
             }
         };
@@ -7046,7 +7046,6 @@ var FullScreenPokemon;
             this.AudioPlayer.clearAll();
             this.GroupHolder.clearArrays();
             this.MapScreener.clearScreen();
-            this.MapScreener.thingsById = this.generateThingsByIdContainer();
             this.MenuGrapher.deleteAllMenus();
             this.TimeHandler.cancelAllEvents();
             this.AreaSpawner.setLocation(name);
@@ -7131,12 +7130,6 @@ var FullScreenPokemon;
                 return Scrollability.Vertical;
             }
             return Scrollability.None;
-        };
-        /**
-         *
-         */
-        FullScreenPokemon.prototype.generateThingsByIdContainer = function () {
-            return {};
         };
         /**
          * Analyzes a PreThing to be placed in one of the

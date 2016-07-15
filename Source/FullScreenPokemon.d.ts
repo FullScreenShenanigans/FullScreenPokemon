@@ -72,11 +72,6 @@ declare module FullScreenPokemon {
          * What theme is currently playing.
          */
         theme?: string;
-
-        /**
-         * All Things in the game, keyed by their ids.
-         */
-        thingsById: IThingsById;
     }
 
     /**
