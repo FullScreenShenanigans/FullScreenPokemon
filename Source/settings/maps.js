@@ -5,15 +5,14 @@ var FullScreenPokemon;
     FullScreenPokemon.FullScreenPokemon.settings.maps = {
         "mapDefault": "Blank",
         "locationDefault": "Black",
-        "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain"],
+        "groupTypes": ["Text", "Character", "Solid", "Scenery", "Terrain", "Thing"],
         "requireEntrance": true,
         "screenAttributes": [
             "allowCycling"
         ],
         "screenVariables": {
             "boundaries": FullScreenPokemon.FullScreenPokemon.prototype.getAreaBoundariesReal,
-            "scrollability": FullScreenPokemon.FullScreenPokemon.prototype.getScreenScrollability,
-            "thingsById": FullScreenPokemon.FullScreenPokemon.prototype.generateThingsByIdContainer
+            "scrollability": FullScreenPokemon.FullScreenPokemon.prototype.getScreenScrollability
         },
         "onSpawn": FullScreenPokemon.FullScreenPokemon.prototype.addPreThing,
         "afterAdd": FullScreenPokemon.FullScreenPokemon.prototype.mapAddAfter,

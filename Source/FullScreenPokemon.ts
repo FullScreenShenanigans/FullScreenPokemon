@@ -576,7 +576,7 @@ module FullScreenPokemon {
         /**
          * Overriden Function to adds a new Thing to the game at a given position,
          * relative to the top left corner of the screen. The Thing is also 
-         * added to the MapScreener.thingsById container.
+         * added to the Thing GroupHolder.group container.
          * 
          * 
          * @param thingRaw   What type of Thing to add. This may be a String of
@@ -598,7 +598,7 @@ module FullScreenPokemon {
 
             if (thing.id) {
                 this.StateHolder.applyChanges(thing.id, thing);
-                this.MapScreener.thingsById[thing.id] = thing;
+                this.GroupHolder.getGroup("Thing")[thing.id] = thing;
             }
 
             if (typeof thing.direction !== "undefined") {
@@ -706,7 +706,7 @@ module FullScreenPokemon {
          * @returns The Thing under the given id, if it exists.
          */
         getThingById(id: string): IThing {
-            return this.MapScreener.thingsById[id];
+            return this.GroupHolder.getGroup("Thing")[id];
         }
 
 
@@ -3188,7 +3188,7 @@ module FullScreenPokemon {
                 thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
 
                 if (thing.id) {
-                    delete thing.FSP.MapScreener.thingsById[thing.id];
+                    delete thing.FSP.GroupHolder.getGroup("Thing")[thing.id];
                 }
             }
         }
@@ -9461,7 +9461,6 @@ module FullScreenPokemon {
             this.AudioPlayer.clearAll();
             this.GroupHolder.clearArrays();
             this.MapScreener.clearScreen();
-            this.MapScreener.thingsById = this.generateThingsByIdContainer();
             this.MenuGrapher.deleteAllMenus();
             this.TimeHandler.cancelAllEvents();
 
@@ -9569,13 +9568,6 @@ module FullScreenPokemon {
             }
 
             return Scrollability.None;
-        }
-
-        /**
-         * 
-         */
-        generateThingsByIdContainer(): IThingsById {
-            return {};
         }
 
         /**
