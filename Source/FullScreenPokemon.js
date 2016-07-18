@@ -309,6 +309,7 @@ var FullScreenPokemon;
          * @param dataRaw   Raw data to be parsed as JSON.
          */
         FullScreenPokemon.prototype.gameLoadData = function (dataRaw) {
+            this.clearSavedData();
             var data = JSON.parse(dataRaw), keyStart = "StateHolder::";
             for (var key in data) {
                 if (!data.hasOwnProperty(key)) {
@@ -323,6 +324,7 @@ var FullScreenPokemon;
                 }
             }
             this.MenuGrapher.deleteActiveMenu();
+            this.UserWrapper.resetControls();
             this.gameStartPlay();
             this.ItemsHolder.setItem("gameStarted", true);
         };
@@ -6927,7 +6929,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
-            var collectionKeys = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            var collectionKeys = this.ItemsHolder.getItem("stateCollectionKeys");
             for (var _i = 0; _i < collectionKeys.length; _i++) {
                 var collection = collectionKeys[_i];
                 oldLocalStorage[collection] = this.ItemsHolder.getItem(collection);
@@ -6940,6 +6942,8 @@ var FullScreenPokemon;
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
+            this.ItemsHolder.setItem("stateCollectionKeys", []);
+            this.UserWrapper.resetControls();
         };
         /**
          * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
@@ -6962,6 +6966,7 @@ var FullScreenPokemon;
                 }
             }
             this.ItemsHolder.saveAll();
+            this.UserWrapper.resetControls();
         };
         /**
          * Saves all persistant information about the

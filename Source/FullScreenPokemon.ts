@@ -486,6 +486,7 @@ module FullScreenPokemon {
          * @param dataRaw   Raw data to be parsed as JSON.
          */
         gameLoadData(dataRaw: string): void {
+            this.clearSavedData();
             let data: ISaveFile = JSON.parse(dataRaw),
                 keyStart: string = "StateHolder::";
 
@@ -503,6 +504,7 @@ module FullScreenPokemon {
             }
 
             this.MenuGrapher.deleteActiveMenu();
+            this.UserWrapper.resetControls();
             this.gameStartPlay();
             this.ItemsHolder.setItem("gameStarted", true);
         }
@@ -9306,7 +9308,7 @@ module FullScreenPokemon {
         clearSavedData(): void {
             let oldLocalStorage: ItemsHoldr.IItems = this.ItemsHolder.exportItems();
 
-            let collectionKeys: string[] = this.ItemsHolder.getItem(this.StateHolder.getPrefix() + "collectionKeys");
+            let collectionKeys: string[] = this.ItemsHolder.getItem("stateCollectionKeys");
             for (let collection of collectionKeys) {
                 oldLocalStorage[collection] = this.ItemsHolder.getItem(collection);
             }
@@ -9319,6 +9321,9 @@ module FullScreenPokemon {
             this.ItemsHolder.clear();
             this.ItemsHolder.setItem("oldLocalStorage", oldLocalStorage);
             this.ItemsHolder.saveItem("oldLocalStorage");
+            this.ItemsHolder.setItem("stateCollectionKeys", []);
+
+            this.UserWrapper.resetControls();
         }
 
         /**
@@ -9344,6 +9349,8 @@ module FullScreenPokemon {
             }
 
             this.ItemsHolder.saveAll();
+
+            this.UserWrapper.resetControls();
         }
 
         /**
