@@ -3296,28 +3296,27 @@ module FullScreenPokemon {
             }
 
             if (dialog) {
-                let scope: FullScreenPokemon = this;
                 this.MenuGrapher.addMenuDialog(
                     name,
                     dialog,
-                    function (): void {
+                    () => {
                         let onStop: IWalkingOnStop;
 
                         if (other.pushSteps) {
                             onStop = other.pushSteps.slice();
                         }
 
-                        scope.MenuGrapher.deleteMenu("GeneralText");
+                        this.MenuGrapher.deleteMenu("GeneralText");
 
                         if (typeof other.pushDirection !== "undefined") {
-                            onStop.push(function (): void {
-                                scope.MapScreener.blockInputs = false;
+                            onStop.push(() => {
+                                this.MapScreener.blockInputs = false;
                                 delete thing.collidedTrigger;
                             });
-                            scope.animateCharacterStartWalkingCycle(
+                            this.animateCharacterStartWalkingCycle(
                                 thing, other.pushDirection, onStop);
                         } else {
-                            scope.MapScreener.blockInputs = false;
+                            this.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
                         }
                     });

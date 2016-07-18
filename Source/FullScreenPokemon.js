@@ -2519,6 +2519,7 @@ var FullScreenPokemon;
          * @param other   A Detector triggered by thing.
          */
         FullScreenPokemon.prototype.activateMenuTriggerer = function (thing, other) {
+            var _this = this;
             if (!other.alive || thing.collidedTrigger === other) {
                 return;
             }
@@ -2532,22 +2533,21 @@ var FullScreenPokemon;
                 this.MenuGrapher.createMenu(name, other.menuAttributes);
             }
             if (dialog) {
-                var scope = this;
                 this.MenuGrapher.addMenuDialog(name, dialog, function () {
                     var onStop;
                     if (other.pushSteps) {
                         onStop = other.pushSteps.slice();
                     }
-                    scope.MenuGrapher.deleteMenu("GeneralText");
+                    _this.MenuGrapher.deleteMenu("GeneralText");
                     if (typeof other.pushDirection !== "undefined") {
                         onStop.push(function () {
-                            scope.MapScreener.blockInputs = false;
+                            _this.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
                         });
-                        scope.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
+                        _this.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
                     }
                     else {
-                        scope.MapScreener.blockInputs = false;
+                        _this.MapScreener.blockInputs = false;
                         delete thing.collidedTrigger;
                     }
                 });
