@@ -3299,7 +3299,7 @@ module FullScreenPokemon {
                 this.MenuGrapher.addMenuDialog(
                     name,
                     dialog,
-                    () => {
+                    (): void => {
                         let onStop: IWalkingOnStop;
 
                         if (other.pushSteps) {
@@ -3309,7 +3309,7 @@ module FullScreenPokemon {
                         this.MenuGrapher.deleteMenu("GeneralText");
 
                         if (typeof other.pushDirection !== "undefined") {
-                            onStop.push(() => {
+                            onStop.push((): void => {
                                 this.MapScreener.blockInputs = false;
                                 delete thing.collidedTrigger;
                             });
