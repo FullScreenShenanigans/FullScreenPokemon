@@ -2938,7 +2938,7 @@ module FullScreenPokemon {
                     if (other.singleUse) {
                         other.active = false;
                     }
-                    other.activate(thing, other);
+                    other.activate.call(thing.FSP, thing, other);
                 }
 
                 return true;
@@ -3293,38 +3293,38 @@ module FullScreenPokemon {
                 this.killNormal(other);
             }
 
-            if (!thing.FSP.MenuGrapher.getMenu(name)) {
-                thing.FSP.MenuGrapher.createMenu(name, other.menuAttributes);
+            if (!this.MenuGrapher.getMenu(name)) {
+                this.MenuGrapher.createMenu(name, other.menuAttributes);
             }
 
             if (dialog) {
-                thing.FSP.MenuGrapher.addMenuDialog(
+                this.MenuGrapher.addMenuDialog(
                     name,
                     dialog,
-                    function (): void {
+                    (): void => {
                         let onStop: IWalkingOnStop;
 
                         if (other.pushSteps) {
                             onStop = other.pushSteps.slice();
                         }
 
-                        thing.FSP.MenuGrapher.deleteMenu("GeneralText");
+                        this.MenuGrapher.deleteMenu("GeneralText");
 
                         if (typeof other.pushDirection !== "undefined") {
-                            onStop.push(function (): void {
-                                thing.FSP.MapScreener.blockInputs = false;
+                            onStop.push((): void => {
+                                this.MapScreener.blockInputs = false;
                                 delete thing.collidedTrigger;
                             });
-                            thing.FSP.animateCharacterStartWalkingCycle(
+                            this.animateCharacterStartWalkingCycle(
                                 thing, other.pushDirection, onStop);
                         } else {
-                            thing.FSP.MapScreener.blockInputs = false;
+                            this.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
                         }
                     });
             }
 
-            thing.FSP.MenuGrapher.setActiveMenu(name);
+            this.MenuGrapher.setActiveMenu(name);
         }
 
         /**

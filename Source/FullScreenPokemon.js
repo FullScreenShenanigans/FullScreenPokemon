@@ -2244,7 +2244,7 @@ var FullScreenPokemon;
                     if (other.singleUse) {
                         other.active = false;
                     }
-                    other.activate(thing, other);
+                    other.activate.call(thing.FSP, thing, other);
                 }
                 return true;
             }
@@ -2521,6 +2521,7 @@ var FullScreenPokemon;
          * @param other   A Detector triggered by thing.
          */
         FullScreenPokemon.prototype.activateMenuTriggerer = function (thing, other) {
+            var _this = this;
             if (!other.alive || thing.collidedTrigger === other) {
                 return;
             }
@@ -2530,30 +2531,30 @@ var FullScreenPokemon;
             if (!other.keepAlive) {
                 this.killNormal(other);
             }
-            if (!thing.FSP.MenuGrapher.getMenu(name)) {
-                thing.FSP.MenuGrapher.createMenu(name, other.menuAttributes);
+            if (!this.MenuGrapher.getMenu(name)) {
+                this.MenuGrapher.createMenu(name, other.menuAttributes);
             }
             if (dialog) {
-                thing.FSP.MenuGrapher.addMenuDialog(name, dialog, function () {
+                this.MenuGrapher.addMenuDialog(name, dialog, function () {
                     var onStop;
                     if (other.pushSteps) {
                         onStop = other.pushSteps.slice();
                     }
-                    thing.FSP.MenuGrapher.deleteMenu("GeneralText");
+                    _this.MenuGrapher.deleteMenu("GeneralText");
                     if (typeof other.pushDirection !== "undefined") {
                         onStop.push(function () {
-                            thing.FSP.MapScreener.blockInputs = false;
+                            _this.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
                         });
-                        thing.FSP.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
+                        _this.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
                     }
                     else {
-                        thing.FSP.MapScreener.blockInputs = false;
+                        _this.MapScreener.blockInputs = false;
                         delete thing.collidedTrigger;
                     }
                 });
             }
-            thing.FSP.MenuGrapher.setActiveMenu(name);
+            this.MenuGrapher.setActiveMenu(name);
         };
         /**
          * Activates a Character's sight detector for when another Character walks
