@@ -6930,12 +6930,13 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.clearSavedData = function () {
             var oldLocalStorage = this.ItemsHolder.exportItems();
             var collectionKeys = this.ItemsHolder.getItem("stateCollectionKeys");
-            for (var i = 0; collectionKeys && i < collectionKeys.length; i += 1) {
-                oldLocalStorage[collectionKeys[i]] = this.ItemsHolder.getItem(collectionKeys[i]);
+            for (var _i = 0; _i < collectionKeys.length; _i++) {
+                var collection = collectionKeys[_i];
+                oldLocalStorage[collection] = this.ItemsHolder.getItem(collection);
             }
             var keys = this.ItemsHolder.getKeys();
-            for (var _i = 0; _i < keys.length; _i++) {
-                var key = keys[_i];
+            for (var _a = 0; _a < keys.length; _a++) {
+                var key = keys[_a];
                 this.ItemsHolder.removeItem(key);
             }
             this.ItemsHolder.clear();

@@ -78,7 +78,6 @@
             true,
             "allow-null-check"
         ],
-        "trailing-comma": true,
         "typedef": [
             true,
             "call-signature",
