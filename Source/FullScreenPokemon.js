@@ -3699,7 +3699,6 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.startBattle = function (battleInfo) {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
-            this.autoSave();
             var animations = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -4789,6 +4788,7 @@ var FullScreenPokemon;
                 FSP.BattleMover.closeBattle(function () {
                     FSP.animateFadeFromColor(FSP, animationSettings);
                 });
+                FSP.autoSave();
             };
             if (battleInfo.giftAfterBattle) {
                 FSP.addItemToBag(battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
@@ -4844,6 +4844,7 @@ var FullScreenPokemon;
                 "color": "Black",
                 "callback": function () {
                     callback();
+                    FSP.autoSave();
                 }
             }));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -4859,7 +4860,6 @@ var FullScreenPokemon;
             FSP.moveBattleKeptThingsBack(settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
             FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
-            FSP.autoSave();
         };
         /**
          * Cutscene for changing a statistic in battle.
@@ -5920,7 +5920,6 @@ var FullScreenPokemon;
             FSP.ScenePlayer.stopCutscene();
             FSP.ItemsHolder.setItem("gameStarted", true);
             FSP.setMap("Pallet Town", "Start Game");
-            FSP.autoSave();
         };
         /**
          * Cutscene for walking into the grass before receiving a Pokemon.
@@ -7007,7 +7006,6 @@ var FullScreenPokemon;
         FullScreenPokemon.prototype.autoSave = function () {
             if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene() && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame(false);
-                console.log("saved");
             }
         };
         /**
@@ -7087,9 +7085,8 @@ var FullScreenPokemon;
             this.animateFadeFromColor(this, {
                 "color": "Black"
             });
-            this.autoSave();
             if (location.push) {
-                this.animateCharacterStartWalking(this.player, this.player.direction);
+                this.animateCharacterStartWalking(this.player, this.player.direction, this.autoSave.bind(this));
             }
         };
         /**

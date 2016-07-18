@@ -4752,7 +4752,6 @@ module FullScreenPokemon {
          */
         startBattle(battleInfo: IBattleInfo): void {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
-            this.autoSave();
 
             let animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
@@ -6328,6 +6327,7 @@ module FullScreenPokemon {
                     FSP.BattleMover.closeBattle(function (): void {
                         FSP.animateFadeFromColor(FSP, animationSettings);
                     });
+                    FSP.autoSave();
                 };
 
             if (battleInfo.giftAfterBattle) {
@@ -6402,6 +6402,7 @@ module FullScreenPokemon {
                     "color": "Black",
                     "callback": function (): void {
                         callback();
+                        FSP.autoSave();
                     }
                 }));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -6418,7 +6419,6 @@ module FullScreenPokemon {
             FSP.moveBattleKeptThingsBack(settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
             FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
-            FSP.autoSave();
         }
 
         /**
@@ -7957,7 +7957,6 @@ module FullScreenPokemon {
             FSP.ItemsHolder.setItem("gameStarted", true);
 
             FSP.setMap("Pallet Town", "Start Game");
-            FSP.autoSave();
         }
 
         /**
@@ -9431,7 +9430,6 @@ module FullScreenPokemon {
         autoSave(): void {
             if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene() && this.AreaSpawner.getMapName() !== "Blank") {
                 this.saveGame(false);
-                console.log("saved");
             }
         }
 
@@ -9541,10 +9539,8 @@ module FullScreenPokemon {
                 "color": "Black"
             });
 
-            this.autoSave();
-
             if (location.push) {
-                this.animateCharacterStartWalking(this.player, this.player.direction);
+                this.animateCharacterStartWalking(this.player, this.player.direction, this.autoSave.bind(this));
             }
         }
 
