@@ -4741,9 +4741,9 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.cutsceneBattleVictory = function (FSP) {
             var battleInfo = FSP.BattleMover.getBattleInfo(), opponent = battleInfo.opponent;
-            if (FSP.MapScreener.theme) {
+            /*if (FSP.MapScreener.theme) {
                 FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }
+            }*/
             if (!opponent.hasActors) {
                 FSP.BattleMover.closeBattle(function () {
                     FSP.animateFadeFromColor(FSP, {
@@ -4842,9 +4842,9 @@ var FullScreenPokemon;
                     FSP.BattleMover.closeBattle();
                 };
             }
-            if (FSP.MapScreener.theme) {
+            /*if (FSP.MapScreener.theme) {
                 FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }
+            }*/
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", message, FSP.animateFadeToColor.bind(FSP, FSP, {
                 "color": "Black",
@@ -4865,6 +4865,9 @@ var FullScreenPokemon;
             FSP.moveBattleKeptThingsBack(settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
             FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
+            if (FSP.MapScreener.theme) {
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
+            }
         };
         /**
          * Cutscene for changing a statistic in battle.

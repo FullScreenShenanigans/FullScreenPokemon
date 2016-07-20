@@ -332,6 +332,8 @@ module AudioPlayr {
          */
         private getThemeDefault: any;
 
+        private timeout: number;
+
         /**
          * Storage container for settings like volume and muted status.
          */
@@ -572,8 +574,11 @@ module AudioPlayr {
         play(name: string): HTMLAudioElement {
             var sound: HTMLAudioElement,
                 used: number;
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+            }
 
-            // If the sound isn't yet being played, see if it's in the library
+            // If the sound hasn't been played yet, see if it's in the library
             if (!this.sounds.hasOwnProperty(name)) {
                 // If the sound also isn't in the library, it's unknown
                 if (!this.library.hasOwnProperty(name)) {
@@ -593,7 +598,8 @@ module AudioPlayr {
                 sound.volume = this.getVolume();
             }
 
-            this.playSound(sound);
+            this.timeout = setTimeout(this.playSound.bind(this), 10, sound);
+            // this.playSound(sound);
             used = Number(sound.getAttribute("used"));
 
             // If this is the song's first play, let it know how to stop
