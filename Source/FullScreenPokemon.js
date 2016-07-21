@@ -3699,7 +3699,6 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.startBattle = function (battleInfo) {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
-            this.MapScreener.blockInputs = true;
             var animations = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"

@@ -4741,7 +4741,6 @@ module FullScreenPokemon {
          */
         startBattle(battleInfo: IBattleInfo): void {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
-            this.MapScreener.blockInputs = true;
 
             let animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
