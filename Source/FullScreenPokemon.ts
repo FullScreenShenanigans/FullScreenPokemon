@@ -4769,10 +4769,7 @@ module FullScreenPokemon {
                 this,
                 {
                     "battleInfo": battleInfo,
-                    "callback": (): void => {
-                        this.BattleMover.startBattle.call(this.BattleMover, battleInfo);
-                        // this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
-                    }
+                    "callback": this.BattleMover.startBattle.bind(this.BattleMover, battleInfo)
                 }
             );
 
@@ -5370,8 +5367,6 @@ module FullScreenPokemon {
                 playerGoal: number,
                 opponentGoal: number,
                 timeout: number = 70;
-
-            setTimeout(FSP.AudioPlayer.playTheme.bind(FSP.AudioPlayer), 100, battleInfo.theme || "Battle Trainer");
 
             battleInfo.player.selectedIndex = 0;
             battleInfo.player.selectedActor = battleInfo.player.actors[0];
@@ -6241,10 +6236,6 @@ module FullScreenPokemon {
             let battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 opponent: BattleMovr.IBattleThingsInfo = battleInfo.opponent;
 
-            /*if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }*/
-
             if (!opponent.hasActors) {
                 FSP.BattleMover.closeBattle(function (): void {
                     FSP.animateFadeFromColor(FSP, {
@@ -6383,10 +6374,6 @@ module FullScreenPokemon {
                     FSP.BattleMover.closeBattle();
                 };
             }
-
-            /*if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }*/
 
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
@@ -9500,9 +9487,7 @@ module FullScreenPokemon {
             let theme: string = location.theme || location.area.theme || location.area.map.theme;
             this.MapScreener.theme = theme;
             if (theme && this.AudioPlayer.getThemeName() !== theme) {
-                // if (!this.ScenePlayer.getCutscene()/* && this.ScenePlayer.getCutscene().firstRoutine !== "Entrance"*/) {
-                    this.AudioPlayer.playTheme(theme);
-                // }
+                this.AudioPlayer.playTheme(theme);
             }
 
             if (!noEntrance) {

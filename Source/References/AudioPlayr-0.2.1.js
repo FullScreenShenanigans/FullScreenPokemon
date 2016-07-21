@@ -198,10 +198,7 @@ var AudioPlayr;
          */
         AudioPlayr.prototype.play = function (name) {
             var sound, used;
-            if (this.timeout) {
-                clearTimeout(this.timeout);
-            }
-            // If the sound hasn't been played yet, see if it's in the library
+            // If the sound isn't yet being played, see if it's in the library
             if (!this.sounds.hasOwnProperty(name)) {
                 // If the sound also isn't in the library, it's unknown
                 if (!this.library.hasOwnProperty(name)) {
@@ -220,8 +217,7 @@ var AudioPlayr;
                 sound.setAttribute("volumeReal", "1");
                 sound.volume = this.getVolume();
             }
-            this.timeout = setTimeout(this.playSound.bind(this), 2, sound);
-            // this.playSound(sound);
+            setTimeout(this.playSound.bind(this), 1, sound);
             used = Number(sound.getAttribute("used"));
             // If this is the song's first play, let it know how to stop
             if (!used) {
