@@ -4741,6 +4741,7 @@ module FullScreenPokemon {
          */
         startBattle(battleInfo: IBattleInfo): void {
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+            this.MapScreener.blockInputs = true;
 
             let animations: string[] = battleInfo.animations || [
                 // "LineSpiral", "Flash"
@@ -4768,7 +4769,10 @@ module FullScreenPokemon {
                 this,
                 {
                     "battleInfo": battleInfo,
-                    "callback": this.BattleMover.startBattle.bind(this.BattleMover, battleInfo)
+                    "callback": (): void => {
+                        this.BattleMover.startBattle.call(this.BattleMover, battleInfo);
+                        // this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
+                    }
                 }
             );
 
@@ -5366,6 +5370,8 @@ module FullScreenPokemon {
                 playerGoal: number,
                 opponentGoal: number,
                 timeout: number = 70;
+
+            setTimeout(FSP.AudioPlayer.playTheme.bind(FSP.AudioPlayer), 100, battleInfo.theme || "Battle Trainer");
 
             battleInfo.player.selectedIndex = 0;
             battleInfo.player.selectedActor = battleInfo.player.actors[0];
@@ -9494,7 +9500,9 @@ module FullScreenPokemon {
             let theme: string = location.theme || location.area.theme || location.area.map.theme;
             this.MapScreener.theme = theme;
             if (theme && this.AudioPlayer.getThemeName() !== theme) {
-                this.AudioPlayer.playTheme(theme);
+                // if (!this.ScenePlayer.getCutscene()/* && this.ScenePlayer.getCutscene().firstRoutine !== "Entrance"*/) {
+                    this.AudioPlayer.playTheme(theme);
+                // }
             }
 
             if (!noEntrance) {

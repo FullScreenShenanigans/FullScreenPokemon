@@ -598,7 +598,7 @@ module AudioPlayr {
                 sound.volume = this.getVolume();
             }
 
-            this.timeout = setTimeout(this.playSound.bind(this), 10, sound);
+            this.timeout = setTimeout(this.playSound.bind(this), 2, sound);
             // this.playSound(sound);
             used = Number(sound.getAttribute("used"));
 

@@ -198,9 +198,9 @@ var AudioPlayr;
          */
         AudioPlayr.prototype.play = function (name) {
             var sound, used;
-            /*if (this.timeout) {
+            if (this.timeout) {
                 clearTimeout(this.timeout);
-            }*/
+            }
             // If the sound hasn't been played yet, see if it's in the library
             if (!this.sounds.hasOwnProperty(name)) {
                 // If the sound also isn't in the library, it's unknown
@@ -220,8 +220,8 @@ var AudioPlayr;
                 sound.setAttribute("volumeReal", "1");
                 sound.volume = this.getVolume();
             }
-            // this.timeout = setTimeout(this.playSound.bind(this), 10, sound);
-            this.playSound(sound);
+            this.timeout = setTimeout(this.playSound.bind(this), 2, sound);
+            // this.playSound(sound);
             used = Number(sound.getAttribute("used"));
             // If this is the song's first play, let it know how to stop
             if (!used) {
@@ -474,6 +474,7 @@ var AudioPlayr;
         AudioPlayr.prototype.soundStop = function (sound) {
             this.pauseSound(sound);
             if (sound.readyState) {
+                sound.currentTime = 0;
             }
         };
         /* Private loading / resetting

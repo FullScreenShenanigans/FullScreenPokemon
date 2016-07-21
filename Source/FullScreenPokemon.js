@@ -3698,7 +3698,9 @@ var FullScreenPokemon;
          * @param battleInfo   Settings for the battle.
          */
         FullScreenPokemon.prototype.startBattle = function (battleInfo) {
+            var _this = this;
             this.ModAttacher.fireEvent("onBattleStart", battleInfo);
+            this.MapScreener.blockInputs = true;
             var animations = battleInfo.animations || [
                 // "LineSpiral", "Flash"
                 "Flash"
@@ -3716,7 +3718,10 @@ var FullScreenPokemon;
             this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
             this["cutsceneBattleTransition" + animation](this, {
                 "battleInfo": battleInfo,
-                "callback": this.BattleMover.startBattle.bind(this.BattleMover, battleInfo)
+                "callback": function () {
+                    _this.BattleMover.startBattle.call(_this.BattleMover, battleInfo);
+                    // this.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
+                }
             });
             this.moveBattleKeptThingsToText(battleInfo);
         };
@@ -4159,6 +4164,7 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.cutsceneBattleEntrance = function (FSP, settings) {
             var things = settings.things, battleInfo = settings.battleInfo, player = things.player, opponent = things.opponent, menu = FSP.MenuGrapher.getMenu("BattleDisplayInitial"), playerX, opponentX, playerGoal, opponentGoal, timeout = 70;
+            setTimeout(FSP.AudioPlayer.playTheme.bind(FSP.AudioPlayer), 100, battleInfo.theme || "Battle Trainer");
             battleInfo.player.selectedIndex = 0;
             battleInfo.player.selectedActor = battleInfo.player.actors[0];
             battleInfo.opponent.selectedIndex = 0;
@@ -7071,6 +7077,7 @@ var FullScreenPokemon;
             var theme = location.theme || location.area.theme || location.area.map.theme;
             this.MapScreener.theme = theme;
             if (theme && this.AudioPlayer.getThemeName() !== theme) {
+                // if (!this.ScenePlayer.getCutscene()/* && this.ScenePlayer.getCutscene().firstRoutine !== "Entrance"*/) {
                 this.AudioPlayer.playTheme(theme);
             }
             if (!noEntrance) {
