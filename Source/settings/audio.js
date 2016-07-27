@@ -3,7 +3,10 @@ FullScreenPokemon.FullScreenPokemon.settings.audio = {
     "directory": "Sounds",
     "fileTypes": ["mp3"],
     "library": {
-        "Sounds": [],
+        "Sounds": [
+            "menu_bleep",
+            "open_menu"
+        ],
         "Themes": [
             "Battle Gym Leader",
             "Battle Trainer",
@@ -27,7 +30,7 @@ FullScreenPokemon.FullScreenPokemon.settings.audio = {
             "Lavender Town",
             "Level Up Fanfare",
             "Mt Moon Cave",
-            "Oak's Lab",
+            "Oak Research Lab",
             "Ocean",
             "Opening Part 1",
             "Opening Part 2",

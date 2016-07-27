@@ -1347,6 +1347,7 @@ module MenuGraphr {
                     this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
                 },
                 character.paddingY + 1);
+            this.GameStarter.AudioPlayer.play("menu_bleep");
         }
 
 
@@ -1779,6 +1780,10 @@ module MenuGraphr {
             if (menu.callback) {
                 menu.callback(menu.name);
             }
+
+            if (!menu.progress || !menu.progress.working) {
+                this.GameStarter.AudioPlayer.play("menu_bleep");
+            }
         }
 
         /**
@@ -1808,6 +1813,10 @@ module MenuGraphr {
                 this.setActiveMenu(menu.backMenu);
             } else {
                 this.deleteMenu(menu.name);
+            }
+            
+            if (!menu.progress || !menu.progress.working) {
+                this.GameStarter.AudioPlayer.play("menu_bleep");
             }
         }
 

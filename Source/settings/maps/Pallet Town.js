@@ -228,7 +228,7 @@ FullScreenPokemon.FullScreenPokemon.settings.maps.library["Pallet Town"] = {
         },
         "Oak's Lab": {
             "allowCycling": false,
-            "theme": "Oak's Lab",
+            "theme": "Oak Research Lab",
             "invisibleWallBorders": true,
             "creation": [
                 { "thing": "WallIndoorLightWithDarkBottom", "width": 64 },
