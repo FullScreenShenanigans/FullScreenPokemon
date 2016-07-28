@@ -6235,10 +6235,6 @@ module FullScreenPokemon {
             let battleInfo: IBattleInfo = <IBattleInfo>FSP.BattleMover.getBattleInfo(),
                 opponent: BattleMovr.IBattleThingsInfo = battleInfo.opponent;
 
-            if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }
-
             if (!opponent.hasActors) {
                 FSP.BattleMover.closeBattle(function (): void {
                     FSP.animateFadeFromColor(FSP, {
@@ -6378,10 +6374,6 @@ module FullScreenPokemon {
                 };
             }
 
-            if (FSP.MapScreener.theme) {
-                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
-            }
-
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog(
                 "GeneralText",
@@ -6406,6 +6398,9 @@ module FullScreenPokemon {
             FSP.moveBattleKeptThingsBack(settings.battleInfo);
             FSP.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.player.actors);
             FSP.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
+            if (FSP.MapScreener.theme) {
+                FSP.AudioPlayer.playTheme(FSP.MapScreener.theme);
+            }
         }
 
         /**
