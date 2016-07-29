@@ -4,8 +4,8 @@ FullScreenPokemon.FullScreenPokemon.settings.audio = {
     "fileTypes": ["mp3"],
     "library": {
         "Sounds": [
-            "menu_bleep",
-            "open_menu"
+            "Menu Bleep",
+            "Open Pause Menu"
         ],
         "Themes": [
             "Battle Gym Leader",

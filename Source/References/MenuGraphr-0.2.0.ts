@@ -694,7 +694,7 @@ declare module MenuGraphr {
     /**
      * A list of sounds that should be played for certain menu actions.
      */
-    export interface ISounds {
+    export interface ISoundNames {
         /**
          * The sound to play, if any, when interacting with a menu(usually off the A 
          * or B buttons being registered).
@@ -745,7 +745,7 @@ declare module MenuGraphr {
         /**
          * A list of sounds that should be played for certain menu actions.
          */
-        sounds?: ISounds;
+        sounds?: ISoundNames;
 
         /**
          * Programmatic replacements for deliniated words.
@@ -1011,7 +1011,7 @@ module MenuGraphr {
         /**
          * A list of sounds that should be played for certain menu actions
          */
-        private sounds: ISounds;
+        private sounds: ISoundNames;
 
         /**
          * Alternate Thing titles for charactes, such as " " for "space".

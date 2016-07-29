@@ -100,7 +100,7 @@ var FullScreenPokemon;
         },
         "replaceFromItemsHolder": true,
         "sounds": {
-            "menuSound": "menu_bleep"
+            "menuSound": "Menu Bleep"
         },
         "schemas": {
             "StartOptions": {
