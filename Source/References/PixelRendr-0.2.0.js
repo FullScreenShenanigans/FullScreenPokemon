@@ -189,6 +189,8 @@ var PixelRendr;
          */
         PixelRendr.prototype.changePalette = function (palette) {
             this.paletteDefault = palette;
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
+            this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
         };
         /**
          * Standard render function. Given a key, this finds the raw information via

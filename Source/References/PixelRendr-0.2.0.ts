@@ -771,6 +771,8 @@ module PixelRendr {
          */
         changePalette(palette: IPalette): void {
             this.paletteDefault = palette;
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
+            this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
         }
 
         /**
