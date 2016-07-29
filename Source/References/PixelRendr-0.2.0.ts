@@ -334,6 +334,13 @@ declare module PixelRendr {
         getSpriteBase(key: string): Uint8ClampedArray | SpriteMultiple;
 
         /**
+         * Replaces the current palette with a new one.
+         * 
+         * @param palette    The new palette to replace the current one.
+         */
+        changePalette(palette: IPalette): void;
+
+        /**
          * Standard render function. Given a key, this finds the raw information via
          * BaseFiler and processes it using ProcessorDims. Attributes are needed so
          * the ProcessorDims can stretch it on width and height.
@@ -756,6 +763,15 @@ module PixelRendr {
 
         /* External APIs
         */
+
+        /**
+         * Replaces the current palette with a new one.
+         * 
+         * @param palette    The new palette to replace the current one.
+         */
+        changePalette(palette: IPalette): void {
+            this.paletteDefault = palette;
+        }
 
         /**
          * Standard render function. Given a key, this finds the raw information via
