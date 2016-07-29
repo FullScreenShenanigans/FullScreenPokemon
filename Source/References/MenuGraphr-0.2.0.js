@@ -34,6 +34,7 @@ var MenuGraphr;
             this.aliases = settings.aliases || {};
             this.replacements = settings.replacements || {};
             this.replacerKey = settings.replacerKey || "%%%%%%%";
+            this.sounds = settings.sounds || {};
             this.menus = {};
         }
         /* Simple gets
@@ -279,7 +280,9 @@ var MenuGraphr;
             this.GameStarter.TimeHandler.addEvent(function () {
                 _this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
             }, character.paddingY + 1);
-            this.GameStarter.AudioPlayer.play("menu_bleep");
+            if (this.sounds.menuSound) {
+                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            }
         };
         /* Lists
         */
@@ -607,8 +610,8 @@ var MenuGraphr;
             if (menu.callback) {
                 menu.callback(menu.name);
             }
-            if (!menu.progress || !menu.progress.working) {
-                this.GameStarter.AudioPlayer.play("menu_bleep");
+            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
             }
         };
         /**
@@ -635,8 +638,8 @@ var MenuGraphr;
             else {
                 this.deleteMenu(menu.name);
             }
-            if (!menu.progress || !menu.progress.working) {
-                this.GameStarter.AudioPlayer.play("menu_bleep");
+            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
             }
         };
         /**

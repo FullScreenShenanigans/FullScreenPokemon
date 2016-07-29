@@ -692,6 +692,17 @@ declare module MenuGraphr {
     }
 
     /**
+     * A list of sounds that should be played for certain menu actions.
+     */
+    export interface ISounds {
+        /**
+         * The sound to play, if any, when interacting with a menu(usually off the A 
+         * or B buttons being registered).
+         */
+        menuSound?: string;
+    }
+
+    /**
      * Alternate Thing titles for characters, such as " " to "space".
      */
     export interface IAliases {
@@ -730,6 +741,11 @@ declare module MenuGraphr {
          * Alternate Thing titles for charactes, such as " " for "space".
          */
         aliases?: IAliases;
+
+        /**
+         * A list of sounds that should be played for certain menu actions.
+         */
+        sounds?: ISounds;
 
         /**
          * Programmatic replacements for deliniated words.
@@ -993,6 +1009,11 @@ module MenuGraphr {
         private schemas: IMenuSchemas;
 
         /**
+         * A list of sounds that should be played for certain menu actions
+         */
+        private sounds: ISounds;
+
+        /**
          * Alternate Thing titles for charactes, such as " " for "space".
          */
         private aliases: IAliases;
@@ -1026,6 +1047,7 @@ module MenuGraphr {
             this.aliases = settings.aliases || {};
             this.replacements = settings.replacements || {};
             this.replacerKey = settings.replacerKey || "%%%%%%%";
+            this.sounds = settings.sounds || {};
 
             this.menus = {};
         }
@@ -1347,7 +1369,9 @@ module MenuGraphr {
                     this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
                 },
                 character.paddingY + 1);
-            this.GameStarter.AudioPlayer.play("menu_bleep");
+            if (this.sounds.menuSound) {
+                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            }
         }
 
 
@@ -1781,8 +1805,8 @@ module MenuGraphr {
                 menu.callback(menu.name);
             }
 
-            if (!menu.progress || !menu.progress.working) {
-                this.GameStarter.AudioPlayer.play("menu_bleep");
+            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
             }
         }
 
@@ -1815,8 +1839,8 @@ module MenuGraphr {
                 this.deleteMenu(menu.name);
             }
             
-            if (!menu.progress || !menu.progress.working) {
-                this.GameStarter.AudioPlayer.play("menu_bleep");
+            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
             }
         }
 

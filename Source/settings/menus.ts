@@ -116,6 +116,9 @@ module FullScreenPokemon {
             "MONEY": true
         },
         "replaceFromItemsHolder": true,
+        "sounds": {
+            "menuSound": "menu_bleep"
+        },
         "schemas": {
             "StartOptions": {
                 "size": {
