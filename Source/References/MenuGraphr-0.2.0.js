@@ -280,8 +280,8 @@ var MenuGraphr;
             this.GameStarter.TimeHandler.addEvent(function () {
                 _this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
             }, character.paddingY + 1);
-            if (this.sounds.menuSound) {
-                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            if (this.sounds.onInteraction) {
+                this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
             }
         };
         /* Lists
@@ -610,8 +610,8 @@ var MenuGraphr;
             if (menu.callback) {
                 menu.callback(menu.name);
             }
-            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
-                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
             }
         };
         /**
@@ -638,8 +638,8 @@ var MenuGraphr;
             else {
                 this.deleteMenu(menu.name);
             }
-            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
-                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
             }
         };
         /**

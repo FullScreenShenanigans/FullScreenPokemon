@@ -699,7 +699,7 @@ declare module MenuGraphr {
          * The sound to play, if any, when interacting with a menu (usually off the A 
          * or B buttons being registered).
          */
-        menuSound?: string;
+        onInteraction?: string;
     }
 
     /**
@@ -1369,8 +1369,8 @@ module MenuGraphr {
                     this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
                 },
                 character.paddingY + 1);
-            if (this.sounds.menuSound) {
-                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            if (this.sounds.onInteraction) {
+                this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
             }
         }
 
@@ -1805,8 +1805,8 @@ module MenuGraphr {
                 menu.callback(menu.name);
             }
 
-            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
-                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
             }
         }
 
@@ -1839,8 +1839,8 @@ module MenuGraphr {
                 this.deleteMenu(menu.name);
             }
             
-            if (this.sounds.menuSound && (!menu.progress || !menu.progress.working)) {
-                this.GameStarter.AudioPlayer.play(this.sounds.menuSound);
+            if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+                this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
             }
         }
 
