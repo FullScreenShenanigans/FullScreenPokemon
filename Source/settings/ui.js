@@ -123,6 +123,20 @@ var FullScreenPokemon;
                         "disable": function (FSP) {
                             window.ondevicemotion = undefined;
                         }
+                    },
+                    {
+                        "title": "Auto Save",
+                        "type": "Boolean",
+                        "storeLocally": true,
+                        "source": function (FSP) {
+                            return true;
+                        },
+                        "enable": function (FSP) {
+                            FSP.ItemsHolder.toggleAutoSave();
+                        },
+                        "disable": function (FSP) {
+                            FSP.ItemsHolder.toggleAutoSave();
+                        }
                     }
                 ],
                 "actions": [

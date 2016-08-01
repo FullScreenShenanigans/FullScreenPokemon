@@ -644,7 +644,7 @@ var UserWrappr;
              * Ensures a collection of items all exist in localStorage. If their values
              * don't exist, their schema's .callback is used to provide them.
              *
-             * @param childRaw   An Array of input or select elements.
+             * @param children   An Array of input or select elements.
              * @param details   Details containing the title of the item and the source
              *                  Function to get its value.
              * @param schema   The container schema this child is within.
@@ -783,6 +783,7 @@ var UserWrappr;
             if (customs === void 0) { customs = {}; }
             this.loadGameStarter(this.fixCustoms(customs));
             window[settings.globalName] = this.GameStarter;
+            window.addEventListener("unload", this.GameStarter.GamesRunner.close.bind(this.GameStarter.GamesRunner));
             this.GameStarter.UserWrapper = this;
             this.loadGenerators();
             this.loadControls(settings.schemas);

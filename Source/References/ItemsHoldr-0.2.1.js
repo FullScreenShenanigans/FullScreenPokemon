@@ -182,8 +182,8 @@ var ItemsHoldr;
         function ItemsHoldr(settings) {
             if (settings === void 0) { settings = {}; }
             this.settings = settings;
-            this.prefix = settings.prefix || "";
             this.autoSave = settings.autoSave;
+            this.prefix = settings.prefix || "";
             this.callbackArgs = settings.callbackArgs || [];
             this.allowNewItems = settings.allowNewItems === undefined
                 ? true : settings.allowNewItems;
@@ -408,6 +408,12 @@ var ItemsHoldr;
             var value = this.items[key].getValue();
             value = value ? false : true;
             this.items[key].setValue(value);
+        };
+        /**
+         * Toggles whether autoSave is true or false.
+         */
+        ItemsHoldr.prototype.toggleAutoSave = function () {
+            this.autoSave = !this.autoSave;
         };
         /**
          * Ensures a key exists in values. If it doesn't, and new values are

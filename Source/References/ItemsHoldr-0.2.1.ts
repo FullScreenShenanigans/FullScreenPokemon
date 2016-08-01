@@ -402,6 +402,11 @@ declare module ItemsHoldr {
          * @param key   The key of the ItemValue.
          */
         toggle(key: string): void;
+
+        /**
+         * Toggles whether autoSave is true or false.
+         */
+        toggleAutoSave(): void;
         
         /**
          * Ensures a key exists in values. If it doesn't, and new values are
@@ -841,8 +846,8 @@ module ItemsHoldr {
          */
         constructor(settings: IItemsHoldrSettings = {}) {
             this.settings = settings;
-            this.prefix = settings.prefix || "";
             this.autoSave = settings.autoSave;
+            this.prefix = settings.prefix || "";
             this.callbackArgs = settings.callbackArgs || [];
 
             this.allowNewItems = settings.allowNewItems === undefined
@@ -1114,6 +1119,13 @@ module ItemsHoldr {
             value = value ? false : true;
 
             this.items[key].setValue(value);
+        }
+
+        /**
+         * Toggles whether autoSave is true or false.
+         */
+        toggleAutoSave(): void {
+            this.autoSave = !this.autoSave;
         }
 
         /**

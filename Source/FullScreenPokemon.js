@@ -387,6 +387,15 @@ var FullScreenPokemon;
             console.log("Paused.");
         };
         /**
+         * Pauses the game (currently a no-op).
+         *
+         * @param FSP
+         */
+        FullScreenPokemon.prototype.onGameClose = function (FSP) {
+            FSP.autoSave();
+            console.log("Closed.");
+        };
+        /**
          * Overriden Function to adds a new Thing to the game at a given position,
          * relative to the top left corner of the screen. The Thing is also
          * added to the Thing GroupHolder.group container.
@@ -1898,6 +1907,9 @@ var FullScreenPokemon;
                     other.sight = undefined;
                     this.StateHolder.addChange(other.id, "sight", undefined);
                 }
+            }
+            if (!other.dialogOptions) {
+                this.autoSave();
             }
         };
         /**
@@ -3531,8 +3543,7 @@ var FullScreenPokemon;
             this.MenuGrapher.createMenu("GeneralText");
             this.MenuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
             this.MenuGrapher.createMenu("Yes/No", {
-                "backMenu": "Pause",
-                "killOnB": ["GeneralText", "Save"]
+                "backMenu": "Pause"
             });
             this.MenuGrapher.addMenuList("Yes/No", {
                 "options": [
@@ -4794,6 +4805,7 @@ var FullScreenPokemon;
                 FSP.BattleMover.closeBattle(function () {
                     FSP.animateFadeFromColor(FSP, animationSettings);
                 });
+                FSP.autoSave();
             };
             if (battleInfo.giftAfterBattle) {
                 FSP.addItemToBag(battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
@@ -4846,6 +4858,7 @@ var FullScreenPokemon;
                 "color": "Black",
                 "callback": function () {
                     callback();
+                    FSP.autoSave();
                 }
             }));
             FSP.MenuGrapher.setActiveMenu("GeneralText");
@@ -5492,6 +5505,7 @@ var FullScreenPokemon;
             FSP.MenuGrapher.deleteMenu("ShopItems");
             FSP.MenuGrapher.deleteMenu("ShopItemsAmount");
             FSP.MenuGrapher.deleteMenu("Yes/No");
+            FSP.autoSave();
             FSP.MenuGrapher.createMenu("GeneralText");
             FSP.MenuGrapher.addMenuDialog("GeneralText", [
                 "Is there anything else I can do?"
@@ -6971,8 +6985,11 @@ var FullScreenPokemon;
         /**
          * Saves all persistant information about the
          * current game state.
+         *
+         * @param showText    Determines whether the "Saving Now" text shows on screen.
          */
-        FullScreenPokemon.prototype.saveGame = function () {
+        FullScreenPokemon.prototype.saveGame = function (showText) {
+            if (showText === void 0) { showText = true; }
             var ticksRecorded = this.FPSAnalyzer.getNumRecorded();
             this.ItemsHolder.setItem("map", this.AreaSpawner.getMapName());
             this.ItemsHolder.setItem("area", this.AreaSpawner.getAreaName());
@@ -6982,11 +6999,17 @@ var FullScreenPokemon;
             this.saveCharacterPositions();
             this.StateHolder.saveCollection();
             this.ItemsHolder.saveAll();
-            this.MenuGrapher.createMenu("GeneralText");
+            if (!showText) {
+                return;
+            }
+            this.MenuGrapher.createMenu("GeneralText", {
+                "killOnB": ["Yes/No", "Save", "Pause"]
+            });
             this.MenuGrapher.addMenuDialog("GeneralText", [
                 "Now saving..."
             ]);
-            this.TimeHandler.addEvent(this.MenuGrapher.registerB.bind(this.MenuGrapher), 49);
+            this.MenuGrapher.setActiveMenu("GeneralText");
+            this.TimeHandler.addEvent(this.MenuGrapher.deleteMenu.bind(this.MenuGrapher, "GeneralText"), 49);
         };
         /**
          * Saves current game state and downloads
@@ -7000,6 +7023,15 @@ var FullScreenPokemon;
             this.container.appendChild(link);
             link.click();
             this.container.removeChild(link);
+        };
+        /**
+         * Saves the game if autoSave is enabled and the situation allows for it (i.e. not
+         * in a cutscene).
+         */
+        FullScreenPokemon.prototype.autoSave = function () {
+            if (this.ItemsHolder.getAutoSave() && !this.ScenePlayer.getCutscene() && this.AreaSpawner.getMapName() !== "Blank") {
+                this.saveGame(false);
+            }
         };
         /**
          * Adds an in-game item to the character's bag.
@@ -7078,7 +7110,7 @@ var FullScreenPokemon;
                 "color": "Black"
             });
             if (location.push) {
-                this.animateCharacterStartWalking(this.player, this.player.direction);
+                this.animateCharacterStartWalking(this.player, this.player.direction, this.autoSave.bind(this));
             }
         };
         /**
