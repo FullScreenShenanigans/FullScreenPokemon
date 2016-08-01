@@ -3032,6 +3032,7 @@ var FullScreenPokemon;
                 "options": options
             });
             this.MenuGrapher.setActiveMenu("Pause");
+            this.AudioPlayer.play("Open Pause Menu");
         };
         /**
          * Closes the Pause menu.
@@ -3517,7 +3518,8 @@ var FullScreenPokemon;
          */
         FullScreenPokemon.prototype.openPlayerMenu = function () {
             this.MenuGrapher.createMenu("Player", {
-                "callback": this.MenuGrapher.registerB.bind(this.MenuGrapher)
+                "callback": this.MenuGrapher.registerB.bind(this.MenuGrapher),
+                "onBPress": this.MenuGrapher.deleteActiveMenu.bind(this.MenuGrapher)
             });
             this.MenuGrapher.setActiveMenu("Player");
         };

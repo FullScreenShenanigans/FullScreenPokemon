@@ -3926,6 +3926,7 @@ module FullScreenPokemon {
                 "options": options
             });
             this.MenuGrapher.setActiveMenu("Pause");
+            this.AudioPlayer.play("Open Pause Menu");
         }
 
         /**
@@ -4503,7 +4504,8 @@ module FullScreenPokemon {
          */
         openPlayerMenu(): void {
             this.MenuGrapher.createMenu("Player", {
-                "callback": this.MenuGrapher.registerB.bind(this.MenuGrapher)
+                "callback": this.MenuGrapher.registerB.bind(this.MenuGrapher),
+                "onBPress": this.MenuGrapher.deleteActiveMenu.bind(this.MenuGrapher)
             });
             this.MenuGrapher.setActiveMenu("Player");
         }
