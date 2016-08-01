@@ -696,7 +696,7 @@ declare module MenuGraphr {
      */
     export interface ISoundNames {
         /**
-         * The sound to play, if any, when interacting with a menu(usually off the A 
+         * The sound to play, if any, when interacting with a menu (usually off the A 
          * or B buttons being registered).
          */
         menuSound?: string;
