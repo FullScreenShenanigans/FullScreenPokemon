@@ -2522,7 +2522,9 @@ module FullScreenPokemon {
                 }
             }
 
-            this.autoSave();
+            if (!other.dialogOptions) {
+                this.autoSave();
+            }
         }
 
         /**

@@ -1904,7 +1904,9 @@ var FullScreenPokemon;
                     this.StateHolder.addChange(other.id, "sight", undefined);
                 }
             }
-            this.autoSave();
+            if (!other.dialogOptions) {
+                this.autoSave();
+            }
         };
         /**
          * Displays a yes/no options menu for after a dialog has completed.
