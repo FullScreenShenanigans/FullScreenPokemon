@@ -1,6 +1,8 @@
-Distribution
-Distribution/**
-Source/**/*.md
-Source/**/*.txt
+lib/**
+src/**/*.js*
+test/**/*.js
+test/index.html
+test/utils/**
+!test/utils/mocks.ts
 node_modules/
 npm-debug.log
