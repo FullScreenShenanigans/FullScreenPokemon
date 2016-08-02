@@ -15,7 +15,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "gamestartr": "^0.5.0"
+    "battlemovr": "^0.5.0",
+    "gamestartr": "^0.5.0",
+    "menugraphr": "^0.5.0"
   },
   "devDependencies": {
     "gulp-shenanigans": "^0.3.2"

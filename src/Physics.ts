@@ -2,7 +2,7 @@
 
 import { Direction } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IThing } from "./IFullScreenPokemon";
+import { ICharacter, IGrass, IThing } from "./IFullScreenPokemon";
 
 /**
  * Physics functions used by FullScreenPokemon instances.
@@ -149,5 +149,32 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
         thing.direction = direction;
         this.MapScreener.playerDirection = direction;
         thing.shouldWalk = true;
+    }
+
+    /**
+     * Standard Function to kill a Thing, which means marking it as dead and
+     * clearing its numquads, resting, movement, and cycles. It will later be
+     * removed by its maintain* Function.
+     * 
+     * @param thing   A Thing to kill.
+     */
+    killNormal(thing: IThing): void {
+        if (!thing) {
+            return;
+        }
+
+        thing.nocollide = thing.hidden = thing.dead = true;
+        thing.alive = false;
+        thing.numquads = 0;
+        thing.movement = undefined;
+
+        if (thing.FSP) {
+            thing.FSP.TimeHandler.cancelAllCycles(thing);
+            thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
+
+            if (thing.id) {
+                delete thing.FSP.GroupHolder.getGroup("Thing")[thing.id];
+            }
+        }
     }
 }

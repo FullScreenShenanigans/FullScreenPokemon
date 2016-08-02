@@ -1,5 +1,6 @@
 /// <reference path="../typings/BattleMovr.d.ts" />
 /// <reference path="../typings/GameStartr.d.ts" />
+/// <reference path="../typings/MenuGraphr.d.ts" />
 /// <reference path="../typings/StateHoldr.d.ts" />
 
 import { Animations } from "./Animations";

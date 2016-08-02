@@ -18,34 +18,6 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
     }
 
     /**
-     * Standard Function to kill a Thing, which means marking it as dead and
-     * clearing its numquads, resting, movement, and cycles. It will later be
-     * removed by its maintain* Function.
-     * 
-     * @param thing   A Thing to kill.
-     */
-    killNormal(thing: IThing): void {
-        if (!thing) {
-            return;
-        }
-
-        thing.nocollide = thing.hidden = thing.dead = true;
-        thing.alive = false;
-        thing.numquads = 0;
-        thing.movement = undefined;
-
-        if (thing.FSP) {
-            thing.FSP.TimeHandler.cancelAllCycles(thing);
-            thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
-
-            if (thing.id) {
-                delete thing.FSP.GroupHolder.getGroup("Thing")[thing.id];
-            }
-        }
-    }
-
-
-    /**
      * Creates a new Pokemon from a schema, using the newPokemon equation.
      * 
      * @param schema   A description of the Pokemon.
