@@ -191,6 +191,12 @@ var PixelRendr;
             this.paletteDefault = palette;
             this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
             this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
+            for (var sprite in this.library.sprites) {
+                if (!this.library.sprites.hasOwnProperty(sprite)) {
+                    continue;
+                }
+                this.BaseFiler.clearCached(sprite);
+            }
         };
         /**
          * Standard render function. Given a key, this finds the raw information via

@@ -773,6 +773,13 @@ module PixelRendr {
             this.paletteDefault = palette;
             this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
             this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
+
+            for (let sprite in this.library.sprites) {
+                if (!this.library.sprites.hasOwnProperty(sprite)) {
+                    continue;
+                }
+                this.BaseFiler.clearCached(sprite);
+            }
         }
 
         /**
