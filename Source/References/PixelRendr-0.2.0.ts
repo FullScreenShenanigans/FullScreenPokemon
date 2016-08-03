@@ -764,7 +764,7 @@ module PixelRendr {
         /**
          * Replaces the current palette with a new one.
          * 
-         * @param palette    The new palette to replace the current one.
+         * @param palette   The new palette to replace the current one.
          */
         changePalette(palette: IPalette): void {
             this.setPalette(palette);
@@ -1671,7 +1671,7 @@ module PixelRendr {
         /**
          * Sets the palette and digitsizeDefault/digitsplit based off that palette.
          * 
-         * @param palette    The palette being assigned to paletteDefault.
+         * @param palette   The palette being assigned to paletteDefault.
          */
         setPalette(palette: IPalette): void {
             this.paletteDefault = palette;

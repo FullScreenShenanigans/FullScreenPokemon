@@ -183,7 +183,7 @@ var PixelRendr;
         /**
          * Replaces the current palette with a new one.
          *
-         * @param palette    The new palette to replace the current one.
+         * @param palette   The new palette to replace the current one.
          */
         PixelRendr.prototype.changePalette = function (palette) {
             this.setPalette(palette);
@@ -895,7 +895,7 @@ var PixelRendr;
         /**
          * Sets the palette and digitsizeDefault/digitsplit based off that palette.
          *
-         * @param palette    The palette being assigned to paletteDefault.
+         * @param palette   The palette being assigned to paletteDefault.
          */
         PixelRendr.prototype.setPalette = function (palette) {
             this.paletteDefault = palette;
