@@ -641,10 +641,7 @@ module PixelRendr {
                 throw new Error("No paletteDefault given to PixelRendr.");
             }
 
-            this.paletteDefault = settings.paletteDefault;
-
-            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
-            this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
+            this.setPalette(settings.paletteDefault);
 
             this.library = {
                 "raws": settings.library || {}
@@ -770,9 +767,7 @@ module PixelRendr {
          * @param palette    The new palette to replace the current one.
          */
         changePalette(palette: IPalette): void {
-            this.paletteDefault = palette;
-            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
-            this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
+            this.setPalette(palette);
 
             for (let sprite in this.library.sprites) {
                 if (!this.library.sprites.hasOwnProperty(sprite)) {
@@ -1672,6 +1667,17 @@ module PixelRendr {
 
         /* Misc. utility functions
         */
+
+        /**
+         * Sets the palette and digitsizeDefault/digitsplit based off that palette.
+         * 
+         * @param palette    The palette being assigned to paletteDefault.
+         */
+        setPalette(palette: IPalette): void {
+            this.paletteDefault = palette;
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
+            this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
+        }
 
         /**
          * Determines how many digits will be required to represent a member of

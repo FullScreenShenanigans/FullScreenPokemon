@@ -80,9 +80,7 @@ var PixelRendr;
             if (!settings.paletteDefault) {
                 throw new Error("No paletteDefault given to PixelRendr.");
             }
-            this.paletteDefault = settings.paletteDefault;
-            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
-            this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
+            this.setPalette(settings.paletteDefault);
             this.library = {
                 "raws": settings.library || {}
             };
@@ -188,9 +186,7 @@ var PixelRendr;
          * @param palette    The new palette to replace the current one.
          */
         PixelRendr.prototype.changePalette = function (palette) {
-            this.paletteDefault = palette;
-            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
-            this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
+            this.setPalette(palette);
             for (var sprite in this.library.sprites) {
                 if (!this.library.sprites.hasOwnProperty(sprite)) {
                     continue;
@@ -896,6 +892,16 @@ var PixelRendr;
         };
         /* Misc. utility functions
         */
+        /**
+         * Sets the palette and digitsizeDefault/digitsplit based off that palette.
+         *
+         * @param palette    The palette being assigned to paletteDefault.
+         */
+        PixelRendr.prototype.setPalette = function (palette) {
+            this.paletteDefault = palette;
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
+            this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
+        };
         /**
          * Determines how many digits will be required to represent a member of
          * the palette.
