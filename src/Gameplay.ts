@@ -1,6 +1,7 @@
 /// <reference path="../typings/GameStartr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
+import { IPlayer } from "./IFullScreenPokemon";
 
 /**
  * Gameplay functions used by IGameStartr instances.
@@ -53,7 +54,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
             this.EightBitter.ItemsHolder.getItem("map") || this.EightBitter.settings.maps.mapDefault,
             this.EightBitter.ItemsHolder.getItem("location"),
             true);
-        this.EightBitter.mapEntranceResume();
+        this.EightBitter.maps.entranceResume();
 
         this.EightBitter.ModAttacher.fireEvent("onGameStartPlay");
     }
@@ -109,7 +110,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
      * @param event   The original user-caused Event.
      * @returns Whether inputs may trigger (true).
      */
-    canInputsTrigger(player?: IPlayer, code?: any, event?: Event): boolean {
+    public canInputsTrigger(player?: IPlayer, code?: any, event?: Event): boolean {
         if (event) {
             event.preventDefault();
         }
@@ -129,5 +130,13 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
      */
     public onGamePause(): void {
         console.log("Paused.");
+    }
+
+    /**
+     * Closes the game (currently a no-op).
+     */
+    public onGameClouse(): void {
+        this.EightBitter.storage.autoSave();
+        console.log("Closed.");
     }
 }

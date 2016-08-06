@@ -1,7 +1,14 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
+import { Direction, DirectionAliases, DirectionClasses } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { ICharacter, IThing } from "./IFullScreenPokemon";
+import {
+    IArea, IAreaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog, IDialogOptions,
+    IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMenuTriggerer, IPlayer,
+    IPokemon, ISightDetector, IThemeDetector, IThing, ITransporter, ITransportSchema,
+    IWalkingOnStop, IWalkingOnStopCommandFunction,
+    IWildPokemonSchema
+} from "./IFullScreenPokemon";
 
 /**
  * Animation functions used by FullScreenPokemon instances.
@@ -12,24 +19,24 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A newly placed Character.
      */
-    spawnCharacter(thing: ICharacter): void {
+    public spawnCharacter(thing: ICharacter): void {
         if (thing.sight) {
-            thing.sightDetector = <ISightDetector>thing.FSP.addThing(
+            thing.sightDetector = this.EightBitter.things.add(
                 [
                     "SightDetector",
                     {
                         "direction": thing.direction,
                         "width": thing.sight * 8
                     }
-                ]);
+                ]) as ISightDetector;
             thing.sightDetector.viewer = thing;
-            thing.FSP.animatePositionSightDetector(thing);
+            this.EightBitter.animations.animatePositionSightDetector(thing);
         }
 
         if (thing.roaming) {
-            thing.FSP.TimeHandler.addEvent(
-                thing.FSP.activateCharacterRoaming,
-                thing.FSP.NumberMaker.randomInt(70),
+            this.EightBitter.TimeHandler.addEvent(
+                this.EightBitter.animations.activateCharacterRoaming,
+                this.EightBitter.NumberMaker.randomInt(70),
                 thing);
         }
     }
@@ -40,25 +47,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A newly placed WindowDetector.
      */
-    spawnWindowDetector(thing: IDetector): void {
-        if (!thing.FSP.checkWindowDetector(thing)) {
-            thing.FSP.TimeHandler.addEventInterval(
-                thing.FSP.checkWindowDetector, 7, Infinity, thing);
+    public spawnWindowDetector(thing: IDetector): void {
+        if (!this.EightBitter.animations.checkWindowDetector(thing)) {
+            this.EightBitter.TimeHandler.addEventInterval(
+                this.EightBitter.animations.checkWindowDetector, 7, Infinity, thing);
         }
     }
-    
+
     /**
      * Snaps a moving Thing to a predictable grid position.
      * 
      * @param thing   A Thing to snap the position of.
      */
-    animateSnapToGrid(thing: IThing): void {
-        let grid: number = this.unitsize * 8,
-            x: number = (this.MapScreener.left + thing.left) / grid,
-            y: number = (this.MapScreener.top + thing.top) / grid;
+    public animateSnapToGrid(thing: IThing): void {
+        const grid: number = this.EightBitter.unitsize * 8;
+        const x: number = (this.EightBitter.MapScreener.left + thing.left) / grid;
+        const y: number = (this.EightBitter.MapScreener.top + thing.top) / grid;
 
-        this.setLeft(thing, Math.round(x) * grid - this.MapScreener.left);
-        this.setTop(thing, Math.round(y) * grid - this.MapScreener.top);
+        this.EightBitter.physics.setLeft(thing, Math.round(x) * grid - this.EightBitter.MapScreener.left);
+        this.EightBitter.physics.setTop(thing, Math.round(y) * grid - this.EightBitter.MapScreener.top);
     }
 
     /**
@@ -66,12 +73,12 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A Character to freeze.
      */
-    animatePlayerDialogFreeze(thing: ICharacter): void {
+    public animatePlayerDialogFreeze(thing: ICharacter): void {
         this.animateCharacterPreventWalking(thing);
-        this.TimeHandler.cancelClassCycle(thing, "walking");
+        this.EightBitter.TimeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
-            this.TimeHandler.cancelEvent(thing.walkingFlipping);
+            this.EightBitter.TimeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
     }
@@ -87,7 +94,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param onCompletion   A callback for when the attribute reaches the goal.
      * @returns The in-progress TimeEvent.
      */
-    animateFadeAttribute(
+    public animateFadeAttribute(
         thing: IThing,
         attribute: string,
         change: number,
@@ -95,19 +102,19 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         speed: number,
         onCompletion?: (thing: IThing) => void): TimeHandlr.ITimeEvent {
 
-        thing[attribute] += change;
+        (thing as any)[attribute] += change;
 
         if (change > 0) {
-            if (thing[attribute] >= goal) {
-                thing[attribute] = goal;
+            if ((thing as any)[attribute] >= goal) {
+                (thing as any)[attribute] = goal;
                 if (typeof onCompletion === "function") {
                     onCompletion(thing);
                 }
                 return;
             }
         } else {
-            if (thing[attribute] <= goal) {
-                thing[attribute] = goal;
+            if ((thing as any)[attribute] <= goal) {
+                (thing as any)[attribute] = goal;
                 if (typeof onCompletion === "function") {
                     onCompletion(thing);
                 }
@@ -115,8 +122,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             }
         }
 
-        return thing.FSP.TimeHandler.addEvent(
-            thing.FSP.animateFadeAttribute,
+        return this.EightBitter.TimeHandler.addEvent(
+            this.EightBitter.animations.animateFadeAttribute,
             speed,
             thing,
             attribute,
@@ -136,25 +143,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param onCompletion   A callback for when the Thing reaches the goal.
      * @returns The in-progress TimeEvent.
      */
-    animateSlideHorizontal(
+    public animateSlideHorizontal(
         thing: IThing,
         change: number,
         goal: number,
         speed: number,
         onCompletion?: (thing: IThing) => void): void {
-        this.shiftHoriz(thing, change);
+        this.EightBitter.physics.shiftHoriz(thing, change);
 
         if (change > 0) {
-            if (this.getMidX(thing) >= goal) {
-                this.setMidX(thing, goal);
+            if (this.EightBitter.physics.getMidX(thing) >= goal) {
+                this.EightBitter.physics.setMidX(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
                 return;
             }
         } else {
-            if (this.getMidX(thing) <= goal) {
-                this.setMidX(thing, goal);
+            if (this.EightBitter.physics.getMidX(thing) <= goal) {
+                this.EightBitter.physics.setMidX(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
@@ -162,7 +169,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             }
         }
 
-        this.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             this.animateSlideHorizontal.bind(this),
             speed,
             thing,
@@ -182,25 +189,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param onCompletion   A callback for when the Thing reaches the goal.
      * @returns The in-progress TimeEvent.
      */
-    animateSlideVertical(
+    public animateSlideVertical(
         thing: IThing,
         change: number,
         goal: number,
         speed: number,
         onCompletion?: (thing: IThing) => void): void {
-        this.shiftVert(thing, change);
+        this.EightBitter.physics.shiftVert(thing, change);
 
         if (change > 0) {
-            if (this.getMidY(thing) >= goal) {
-                this.setMidY(thing, goal);
+            if (this.EightBitter.physics.getMidY(thing) >= goal) {
+                this.EightBitter.physics.setMidY(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
                 return;
             }
         } else {
-            if (this.getMidY(thing) <= goal) {
-                this.setMidY(thing, goal);
+            if (this.EightBitter.physics.getMidY(thing) <= goal) {
+                this.EightBitter.physics.setMidY(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
@@ -208,7 +215,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             }
         }
 
-        this.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             this.animateSlideVertical.bind(this),
             speed,
             thing,
@@ -224,21 +231,21 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Character about to start a battle.
      * @param grass   Grass the Character is walking in.
      */
-    animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
-        let grassMap: IMap = <IMap>this.AreaSpawner.getMap(grass.mapName),
-            grassArea: IArea = <IArea>grassMap.areas[grass.areaName],
-            options: IWildPokemonSchema[] = grassArea.wildPokemon.grass,
-            chosen: IWildPokemonSchema = this.chooseRandomWildPokemon(options),
-            chosenPokemon: IPokemon = this.createPokemon(chosen);
+    public animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
+        const grassMap: IMap = this.EightBitter.AreaSpawner.getMap(grass.mapName) as IMap;
+        const grassArea: IArea = grassMap.areas[grass.areaName] as IArea;
+        const options: IWildPokemonSchema[] = grassArea.wildPokemon.grass;
+        const chosen: IWildPokemonSchema = this.EightBitter.battles.chooseRandomWildPokemon(options);
+        const chosenPokemon: IPokemon = this.EightBitter.utilities.createPokemon(chosen);
 
-        this.removeClass(thing, "walking");
+        this.EightBitter.graphics.removeClass(thing, "walking");
         if (thing.shadow) {
-            this.removeClass(thing.shadow, "walking");
+            this.EightBitter.graphics.removeClass(thing.shadow, "walking");
         }
 
         this.animateCharacterPreventWalking(thing);
 
-        this.startBattle({
+        this.EightBitter.battles.startBattle({
             "opponent": {
                 "name": chosen.title,
                 "actors": [chosenPokemon],
@@ -254,18 +261,21 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Character about to start a battle with other.
      * @param other   An enemy about to battle thing.
      */
-    animateTrainerBattleStart(thing: ICharacter, other: IEnemy): void {
-        let battleName: string = other.battleName || other.title,
-            battleSprite: string = other.battleSprite || battleName;
+    public animateTrainerBattleStart(thing: ICharacter, other: IEnemy): void {
+        const battleName: string = other.battleName || other.title;
+        const battleSprite: string = other.battleSprite || battleName;
 
-        this.startBattle({
+        this.EightBitter.battles.startBattle({
             "opponent": {
                 "name": battleName.split(""),
                 "sprite": battleSprite + "Front",
                 "category": "Trainer",
                 "hasActors": true,
                 "reward": other.reward,
-                "actors": <IPokemon[]>other.actors.map(this.createPokemon.bind(thing.FSP))
+                "actors": other.actors.map(
+                    (schema: IWildPokemonSchema): IPokemon => {
+                        return this.EightBitter.utilities.createPokemon(schema);
+                    })
             },
             "textStart": ["", " wants to fight!"],
             "textDefeat": other.textDefeat,
@@ -287,7 +297,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param groupType   Which group to move the Things into, if any.
      * @returns The four created Things.
      */
-    animateThingCorners(
+    public animateThingCorners(
         x: number,
         y: number,
         title: string,
@@ -296,34 +306,34 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         let things: IThing[] = [];
 
         for (let i: number = 0; i < 4; i += 1) {
-            things.push(this.addThing([title, settings]));
+            things.push(this.EightBitter.things.add([title, settings]));
         }
 
         if (groupType) {
             for (let thing of things) {
-                this.GroupHolder.switchMemberGroup(thing, thing.groupType, groupType);
+                this.EightBitter.GroupHolder.switchMemberGroup(thing, thing.groupType, groupType);
             }
         }
 
-        this.setLeft(things[0], x);
-        this.setLeft(things[1], x);
+        this.EightBitter.physics.setLeft(things[0], x);
+        this.EightBitter.physics.setLeft(things[1], x);
 
-        this.setRight(things[2], x);
-        this.setRight(things[3], x);
+        this.EightBitter.physics.setRight(things[2], x);
+        this.EightBitter.physics.setRight(things[3], x);
 
-        this.setBottom(things[0], y);
-        this.setBottom(things[3], y);
+        this.EightBitter.physics.setBottom(things[0], y);
+        this.EightBitter.physics.setBottom(things[3], y);
 
-        this.setTop(things[1], y);
-        this.setTop(things[2], y);
+        this.EightBitter.physics.setTop(things[1], y);
+        this.EightBitter.physics.setTop(things[2], y);
 
-        this.flipHoriz(things[0]);
-        this.flipHoriz(things[1]);
+        this.EightBitter.graphics.flipHoriz(things[0]);
+        this.EightBitter.graphics.flipHoriz(things[1]);
 
-        this.flipVert(things[1]);
-        this.flipVert(things[2]);
+        this.EightBitter.graphics.flipVert(things[1]);
+        this.EightBitter.graphics.flipVert(things[2]);
 
-        return <[IThing, IThing, IThing, IThing]>things;
+        return things as [IThing, IThing, IThing, IThing];
     }
 
     /**
@@ -332,16 +342,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param things   The four Things to move.
      * @param amount   How far to move each Thing horizontally and vertically.
      */
-    animateExpandCorners(things: [IThing, IThing, IThing, IThing], amount: number): void {
-        this.shiftHoriz(things[0], amount);
-        this.shiftHoriz(things[1], amount);
-        this.shiftHoriz(things[2], -amount);
-        this.shiftHoriz(things[3], -amount);
+    public animateExpandCorners(things: [IThing, IThing, IThing, IThing], amount: number): void {
+        this.EightBitter.physics.shiftHoriz(things[0], amount);
+        this.EightBitter.physics.shiftHoriz(things[1], amount);
+        this.EightBitter.physics.shiftHoriz(things[2], -amount);
+        this.EightBitter.physics.shiftHoriz(things[3], -amount);
 
-        this.shiftVert(things[0], -amount);
-        this.shiftVert(things[1], amount);
-        this.shiftVert(things[2], amount);
-        this.shiftVert(things[3], -amount);
+        this.EightBitter.physics.shiftVert(things[0], -amount);
+        this.EightBitter.physics.shiftVert(things[1], amount);
+        this.EightBitter.physics.shiftVert(things[2], amount);
+        this.EightBitter.physics.shiftVert(things[3], -amount);
     }
 
     /**
@@ -351,12 +361,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
      */
-    animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
+    public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
         let things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
 
-        this.TimeHandler.addEvent(things.forEach.bind(things), 7, this.killNormal);
+        this.EightBitter.TimeHandler.addEvent(
+            things.forEach.bind(things),
+            7,
+            (thing: IThing): void => this.EightBitter.physics.killNormal(thing));
 
-        this.TimeHandler.addEvent(this.animateSmokeMedium.bind(this), 7, x, y, callback);
+        this.EightBitter.TimeHandler.addEvent(this.animateSmokeMedium.bind(this), 7, x, y, callback);
     }
 
     /**
@@ -366,14 +379,17 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
      */
-    animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
+    public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
         let things: IThing[] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
 
-        this.TimeHandler.addEvent(this.animateExpandCorners.bind(this), 7, things, this.unitsize);
+        this.EightBitter.TimeHandler.addEvent(this.animateExpandCorners.bind(this), 7, things, this.EightBitter.unitsize);
 
-        this.TimeHandler.addEvent(things.forEach.bind(things), 14, this.killNormal);
+        this.EightBitter.TimeHandler.addEvent(
+            things.forEach.bind(things),
+            14,
+            (thing: IThing): void => this.EightBitter.physics.killNormal(thing));
 
-        this.TimeHandler.addEvent(this.animateSmokeLarge.bind(this), 14, x, y, callback);
+        this.EightBitter.TimeHandler.addEvent(this.animateSmokeLarge.bind(this), 14, x, y, callback);
     }
 
     /**
@@ -383,21 +399,24 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
      */
-    animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
+    public animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
         let things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeLarge", undefined, "Text");
 
-        this.animateExpandCorners(things, this.unitsize * 2.5);
+        this.animateExpandCorners(things, this.EightBitter.unitsize * 2.5);
 
-        this.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             this.animateExpandCorners.bind(this),
             7,
             things,
-            this.unitsize * 2);
+            this.EightBitter.unitsize * 2);
 
-        this.TimeHandler.addEvent(things.forEach.bind(things), 21, this.killNormal);
+        this.EightBitter.TimeHandler.addEvent(
+            things.forEach.bind(things),
+            21,
+            (thing: IThing): void => this.EightBitter.physics.killNormal(thing));
 
         if (callback) {
-            this.TimeHandler.addEvent(callback, 21);
+            this.EightBitter.TimeHandler.addEvent(callback, 21);
         }
     }
 
@@ -409,18 +428,20 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param callback   A callback for when the exclamation is removed.
      * @returns The exclamation Thing.
      */
-    animateExclamation(thing: IThing, timeout?: number, callback?: () => void): IThing {
-        let exclamation: IThing = this.addThing("Exclamation");
+    public animateExclamation(thing: IThing, timeout?: number, callback?: () => void): IThing {
+        let exclamation: IThing = this.EightBitter.things.add("Exclamation");
 
         timeout = timeout || 140;
 
-        this.setMidXObj(exclamation, thing);
-        this.setBottom(exclamation, thing.top);
+        this.EightBitter.physics.setMidXObj(exclamation, thing);
+        this.EightBitter.physics.setBottom(exclamation, thing.top);
 
-        this.TimeHandler.addEvent(this.killNormal.bind(this), timeout, exclamation);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.killNormal(exclamation),
+            timeout);
 
         if (callback) {
-            this.TimeHandler.addEvent(callback, timeout);
+            this.EightBitter.TimeHandler.addEvent(callback, timeout);
         }
 
         return exclamation;
@@ -429,33 +450,32 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
     /**
      * Fades the screen out to a solid color.
      * 
-     * @param FSP
      * @param settings   Settings for the animation.
      * @returns The solid color Thing.
      */
-    animateFadeToColor(FSP: FullScreenPokemon, settings: IColorFadeSettings = {}): IThing {
+    public animateFadeToColor(settings: IColorFadeSettings = {}): IThing {
         let color: string = settings.color || "White",
             callback: (...args: any[]) => void = settings.callback,
             change: number = settings.change || .33,
             speed: number = settings.speed || 4,
-            blank: IThing = FSP.ObjectMaker.make(color + "Square", {
-                "width": FSP.MapScreener.width,
-                "height": FSP.MapScreener.height,
+            blank: IThing = this.EightBitter.ObjectMaker.make(color + "Square", {
+                "width": this.EightBitter.MapScreener.width,
+                "height": this.EightBitter.MapScreener.height,
                 "opacity": 0
             });
 
-        FSP.addThing(blank);
+        this.EightBitter.things.add(blank);
 
-        FSP.animateFadeAttribute(
+        this.EightBitter.animations.animateFadeAttribute(
             blank,
             "opacity",
             change,
             1,
             speed,
-            function (): void {
-                FSP.killNormal(blank);
+            (): void => {
+                this.EightBitter.physics.killNormal(blank);
                 if (callback) {
-                    callback.call(FSP, FSP);
+                    callback();
                 }
             });
 
@@ -465,32 +485,31 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
     /**
      * Places a solid color over the screen and fades it out.
      * 
-     * @param FSP
      * @param settings   Settings for the animation.
      * @returns The solid color Thing.
      */
-    animateFadeFromColor(FSP: FullScreenPokemon, settings: IColorFadeSettings = {}): IThing {
+    public animateFadeFromColor(settings: IColorFadeSettings = {}): IThing {
         let color: string = settings.color || "White",
             callback: (...args: any[]) => void = settings.callback,
             change: number = settings.change || .33,
             speed: number = settings.speed || 4,
-            blank: IThing = FSP.ObjectMaker.make(color + "Square", {
-                "width": FSP.MapScreener.width,
-                "height": FSP.MapScreener.height,
+            blank: IThing = this.EightBitter.ObjectMaker.make(color + "Square", {
+                "width": this.EightBitter.MapScreener.width,
+                "height": this.EightBitter.MapScreener.height,
                 "opacity": 1
             }),
             args: IArguments = arguments;
 
-        FSP.addThing(blank);
+        this.EightBitter.things.add(blank);
 
-        FSP.animateFadeAttribute(
+        this.EightBitter.animations.animateFadeAttribute(
             blank,
             "opacity",
             -change,
             0,
             speed,
             function (): void {
-                FSP.killNormal(blank);
+                this.EightBitter.physics.killNormal(blank);
                 if (callback) {
                     callback.apply(this, args);
                 }
@@ -509,27 +528,27 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param callback   A Function to called on the Thing when done flickering.
      * @returns The flickering time event.
      */
-    animateFlicker(
+    public animateFlicker(
         thing: IThing,
         cleartime: number = 49,
         interval: number = 2,
         callback?: (thing: IThing) => void): TimeHandlr.ITimeEvent {
         thing.flickering = true;
 
-        thing.FSP.TimeHandler.addEventInterval(
+        this.EightBitter.TimeHandler.addEventInterval(
             function (): void {
                 thing.hidden = !thing.hidden;
                 if (!thing.hidden) {
-                    thing.FSP.PixelDrawer.setThingSprite(thing);
+                    this.EightBitter.PixelDrawer.setThingSprite(thing);
                 }
             },
             interval | 0,
             cleartime | 0);
 
-        return thing.FSP.TimeHandler.addEvent(
+        return this.EightBitter.TimeHandler.addEvent(
             function (): void {
                 thing.flickering = thing.hidden = false;
-                thing.FSP.PixelDrawer.setThingSprite(thing);
+                this.EightBitter.PixelDrawer.setThingSprite(thing);
 
                 if (callback) {
                     callback(thing);
@@ -542,34 +561,33 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * Shakes all Things on the screen back and forth for a little bit.
      * 
      * 
-     * @param FSP
+     * @param EightBitter
      * @param dx   How far to shift horizontally (by default, 0).
      * @param dy   How far to shift horizontally (by default, 0).
      * @param cleartime   How long until the screen is done shaking.
      * @param interval   How many game upkeeps between movements.
      * @returns The shaking time event.
      */
-    animateScreenShake(
-        FSP: FullScreenPokemon,
+    public animateScreenShake(
         dx: number = 0,
         dy: number = 0,
         cleartime: number = 8,
         interval: number = 8,
         callback?: TimeHandlr.IEventCallback): TimeHandlr.ITimeEvent {
-        FSP.TimeHandler.addEventInterval(
+        this.EightBitter.TimeHandler.addEventInterval(
             function (): void {
-                FSP.GroupHolder.callOnAll(FSP, FSP.shiftHoriz, dx);
-                FSP.GroupHolder.callOnAll(FSP, FSP.shiftVert, dy);
+                this.EightBitter.GroupHolder.callOnAll(this.EightBitter.physics, this.EightBitter.physics.shiftHoriz, dx);
+                this.EightBitter.GroupHolder.callOnAll(this.EightBitter.physics, this.EightBitter.physics.shiftVert, dy);
             },
             1,
             cleartime * interval);
 
-        return FSP.TimeHandler.addEvent(
+        return this.EightBitter.TimeHandler.addEvent(
             function (): void {
                 dx *= -1;
                 dy *= -1;
 
-                FSP.TimeHandler.addEventInterval(
+                this.EightBitter.TimeHandler.addEventInterval(
                     function (): void {
                         dx *= -1;
                         dy *= -1;
@@ -578,15 +596,11 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                     cleartime);
 
                 if (callback) {
-                    FSP.TimeHandler.addEvent(callback, interval * cleartime, FSP);
+                    this.EightBitter.TimeHandler.addEvent(callback, interval * cleartime);
                 }
             },
             (interval / 2) | 0);
     }
-
-
-    /* Character movement animations
-    */
 
     /**
      * Sets a Character's xvel and yvel based on its speed and direction, and marks
@@ -595,7 +609,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A moving Character.
      * @param distance   How far the Character is moving.
      */
-    animateCharacterSetDistanceVelocity(thing: ICharacter, distance: number): void {
+    public animateCharacterSetDistanceVelocity(thing: ICharacter, distance: number): void {
         thing.distance = distance;
 
         switch (thing.direction) {
@@ -635,7 +649,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param direction   What direction the Character should turn to face.
      * @param onStop   A queue of commands as alternating directions and distances.
      */
-    animateCharacterStartWalkingCycle(thing: ICharacter, direction: Direction, onStop: IWalkingOnStop): void {
+    public animateCharacterStartWalkingCycle(thing: ICharacter, direction: Direction, onStop: IWalkingOnStop): void {
         if (onStop.length === 0) {
             return;
         }
@@ -645,7 +659,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             // More commands indicates walking isn't done, and to continue turning/walking
             if (onStop.length > 1) {
                 if (typeof onStop[1] === "function") {
-                    (<IWalkingOnStopCommandFunction>onStop[1])(thing);
+                    (onStop[1] as IWalkingOnStopCommandFunction)(thing);
                     return;
                 }
 
@@ -667,7 +681,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         this.animateCharacterStartWalking(thing, direction, onStop);
 
         if (!thing.bordering[direction]) {
-            this.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            this.EightBitter.physics.shiftBoth(thing, -thing.xvel, -thing.yvel);
         }
     }
 
@@ -678,16 +692,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param direction   What direction to walk in (by default, up).
      * @param onStop   A queue of commands as alternating directions and distances.
      */
-    animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
-        let repeats: number = thing.FSP.MathDecider.compute("speedWalking", thing),
+    public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
+        let repeats: number = this.EightBitter.MathDecider.compute("speedWalking", thing),
             distance: number = repeats * thing.speed;
 
         thing.walking = true;
-        thing.FSP.animateCharacterSetDirection(thing, direction);
-        thing.FSP.animateCharacterSetDistanceVelocity(thing, distance);
+        this.EightBitter.animations.animateCharacterSetDirection(thing, direction);
+        this.EightBitter.animations.animateCharacterSetDistanceVelocity(thing, distance);
 
         if (!thing.cycles || !(<any>thing.cycles).walking) {
-            thing.FSP.TimeHandler.addClassCycle(
+            this.EightBitter.TimeHandler.addClassCycle(
                 thing,
                 ["walking", "standing"],
                 "walking",
@@ -695,19 +709,19 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         if (!thing.walkingFlipping) {
-            thing.walkingFlipping = thing.FSP.TimeHandler.addEventInterval(
-                thing.FSP.animateSwitchFlipOnDirection.bind(thing.FSP), repeats, Infinity, thing);
+            thing.walkingFlipping = this.EightBitter.TimeHandler.addEventInterval(
+                this.EightBitter.animations.animateSwitchFlipOnDirection.bind(this.EightBitter), repeats, Infinity, thing);
         }
 
         if (thing.sight) {
             thing.sightDetector.nocollide = true;
         }
 
-        thing.FSP.TimeHandler.addEventInterval(
+        this.EightBitter.TimeHandler.addEventInterval(
             thing.onWalkingStop, repeats, Infinity, thing, onStop);
 
         if (!thing.bordering[direction]) {
-            thing.FSP.shiftBoth(thing, thing.xvel, thing.yvel);
+            this.EightBitter.physics.shiftBoth(thing, thing.xvel, thing.yvel);
         }
     }
 
@@ -717,7 +731,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A roaming Character.
      */
-    animateCharacterStartWalkingRandom(thing: ICharacter): void {
+    public animateCharacterStartWalkingRandom(thing: ICharacter): void {
         let totalAllowed: number = 0,
             direction: Direction,
             i: number;
@@ -732,7 +746,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             return;
         }
 
-        direction = this.NumberMaker.randomInt(totalAllowed);
+        direction = this.EightBitter.NumberMaker.randomInt(totalAllowed);
 
         for (i = 0; i <= direction; i += 1) {
             if (thing.bordering[i]) {
@@ -754,9 +768,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A Character mid-step.
      */
-    animateCharacterRepeatWalking(thing: ICharacter): void {
+    public animateCharacterRepeatWalking(thing: ICharacter): void {
         if (typeof thing.turning !== "undefined") {
-            if (!thing.player || !(<IPlayer>thing).keys[thing.turning]) {
+            if (!thing.player || !(thing as any).keys[thing.turning]) {
                 this.animateCharacterSetDirection(thing, thing.turning);
                 thing.turning = undefined;
                 return;
@@ -766,7 +780,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         if (thing.player) {
-            (<IPlayer>thing).canKeyWalking = false;
+            (thing as IPlayer).canKeyWalking = false;
         }
 
         this.animateCharacterStartWalking(thing, thing.direction);
@@ -780,24 +794,24 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param onStop   A queue of commands as alternating directions and distances.
      * @returns True, unless the next onStop is a Function to return the result of.
      */
-    animateCharacterStopWalking(thing: ICharacter, onStop?: IWalkingOnStop): boolean {
+    public animateCharacterStopWalking(thing: ICharacter, onStop?: IWalkingOnStop): boolean {
         thing.xvel = 0;
         thing.yvel = 0;
         thing.walking = false;
 
-        thing.FSP.removeClasses(thing, "walking", "standing");
-        thing.FSP.TimeHandler.cancelClassCycle(thing, "walking");
+        this.EightBitter.graphics.removeClasses(thing, "walking", "standing");
+        this.EightBitter.TimeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
-            thing.FSP.TimeHandler.cancelEvent(thing.walkingFlipping);
+            this.EightBitter.TimeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
 
-        thing.FSP.animateSnapToGrid(thing);
+        this.EightBitter.animations.animateSnapToGrid(thing);
 
         if (thing.sight) {
             thing.sightDetector.nocollide = false;
-            thing.FSP.animatePositionSightDetector(thing);
+            this.EightBitter.animations.animatePositionSightDetector(thing);
         }
 
         if (!onStop) {
@@ -806,20 +820,20 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         switch (onStop.constructor) {
             case Number:
-                thing.FSP.animateCharacterRepeatWalking(thing);
+                this.EightBitter.animations.animateCharacterRepeatWalking(thing);
                 break;
 
             case Array:
                 if (onStop[0] > 0) {
                     onStop[0] = <number>onStop[0] - 1;
-                    thing.FSP.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
+                    this.EightBitter.animations.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
                 } else if (onStop.length === 0) {
                     break;
                 } else {
                     if (onStop[1] instanceof Function) {
                         return <boolean>(<IWalkingOnStopCommandFunction>onStop[1])(thing);
                     }
-                    thing.FSP.animateCharacterStartWalkingCycle(
+                    this.EightBitter.animations.animateCharacterStartWalkingCycle(
                         thing,
                         DirectionAliases[<number>onStop[1]],
                         onStop.slice(2));
@@ -827,7 +841,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 break;
 
             case Function:
-                return (<any>onStop)(thing);
+                return (onStop as any)(thing);
 
             default:
                 throw new Error("Unknown onStop: " + onStop + ".");
@@ -844,26 +858,26 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param onStop   A queue of commands as alternating directions and distances.
      * @returns True, unless the next onStop is a Function to return the result of.
      */
-    animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
-        if (thing.FSP.checkPlayerGrassBattle(thing)) {
+    public animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
+        if (this.EightBitter.battles.checkPlayerGrassBattle(thing)) {
             thing.canKeyWalking = true;
             return false;
         }
 
         if (thing.following) {
-            return thing.FSP.animateCharacterStopWalking(thing, onStop);
+            return this.EightBitter.animations.animateCharacterStopWalking(thing, onStop);
         }
 
         if (
-            !thing.FSP.MenuGrapher.getActiveMenu()
-            && thing.keys[thing.direction]) {
-            thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
+            !this.EightBitter.MenuGrapher.getActiveMenu()
+            && (thing.keys as any)[thing.direction]) {
+            this.EightBitter.animations.animateCharacterSetDistanceVelocity(thing, thing.distance);
             return false;
         }
 
         if (typeof thing.nextDirection !== "undefined") {
             if (thing.nextDirection !== thing.direction && !thing.ledge) {
-                thing.FSP.setPlayerDirection(thing, thing.nextDirection);
+                this.EightBitter.physics.setPlayerDirection(thing, thing.nextDirection);
             }
 
             delete thing.nextDirection;
@@ -871,7 +885,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             thing.canKeyWalking = true;
         }
 
-        return thing.FSP.animateCharacterStopWalking(thing, onStop);
+        return this.EightBitter.animations.animateCharacterStopWalking(thing, onStop);
     }
 
     /**
@@ -879,15 +893,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A Character that shouldn't be able to walk.
      */
-    animateCharacterPreventWalking(thing: ICharacter): void {
+    public animateCharacterPreventWalking(thing: ICharacter): void {
         thing.shouldWalk = false;
         thing.xvel = thing.yvel = 0;
 
         if (thing.player) {
-            (<IPlayer>thing).keys = (<IPlayer>thing).getKeys();
+            (thing as IPlayer).keys = (thing as IPlayer).getKeys();
         }
 
-        this.MapScreener.blockInputs = true;
+        this.EightBitter.MapScreener.blockInputs = true;
     }
 
     /**
@@ -897,25 +911,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param direction   A direction for thing to face.
      * @todo Add more logic here for better performance.
      */
-    animateCharacterSetDirection(thing: IThing, direction: Direction): void {
+    public animateCharacterSetDirection(thing: IThing, direction: Direction): void {
         thing.direction = direction;
 
         if (direction % 2 === 1) {
-            this.unflipHoriz(thing);
+            this.EightBitter.graphics.unflipHoriz(thing);
         }
 
-        this.removeClasses(
+        this.EightBitter.graphics.removeClasses(
             thing,
             DirectionClasses[Direction.Top],
             DirectionClasses[Direction.Right],
             DirectionClasses[Direction.Bottom],
             DirectionClasses[Direction.Left]);
 
-        this.addClass(thing, DirectionClasses[direction]);
+        this.EightBitter.graphics.addClass(thing, DirectionClasses[direction]);
 
         if (direction === Direction.Right) {
-            this.flipHoriz(thing);
-            this.addClass(thing, DirectionClasses[Direction.Left]);
+            this.EightBitter.graphics.flipHoriz(thing);
+            this.EightBitter.graphics.addClass(thing, DirectionClasses[Direction.Left]);
         }
     }
 
@@ -924,8 +938,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      *
      * @param thing   An in-game Thing.
      */
-    animateCharacterSetDirectionRandom(thing: IThing): void {
-        thing.FSP.animateCharacterSetDirection(thing, thing.FSP.NumberMaker.randomIntWithin(0, 3));
+    public animateCharacterSetDirectionRandom(thing: IThing): void {
+        this.EightBitter.animations.animateCharacterSetDirection(thing, this.EightBitter.NumberMaker.randomIntWithin(0, 3));
     }
 
     /**
@@ -933,15 +947,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A Character to flip or unflip.
      */
-    animateSwitchFlipOnDirection(thing: ICharacter): void {
+    public animateSwitchFlipOnDirection(thing: ICharacter): void {
         if (thing.direction % 2 !== 0) {
             return;
         }
 
         if (thing.flipHoriz) {
-            this.unflipHoriz(thing);
+            this.EightBitter.graphics.unflipHoriz(thing);
         } else {
-            this.flipHoriz(thing);
+            this.EightBitter.graphics.flipHoriz(thing);
         }
     }
 
@@ -950,38 +964,38 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A Character that should be able to see.
      */
-    animatePositionSightDetector(thing: ICharacter): void {
+    public animatePositionSightDetector(thing: ICharacter): void {
         let detector: ISightDetector = thing.sightDetector,
             direction: Direction = thing.direction,
             sight: number = Number(thing.sight);
 
         if (detector.direction !== direction) {
             if (thing.direction % 2 === 0) {
-                this.setWidth(detector, thing.width);
-                this.setHeight(detector, sight * 8);
+                this.EightBitter.physics.setWidth(detector, thing.width);
+                this.EightBitter.physics.setHeight(detector, sight * 8);
             } else {
-                this.setWidth(detector, sight * 8);
-                this.setHeight(detector, thing.height);
+                this.EightBitter.physics.setWidth(detector, sight * 8);
+                this.EightBitter.physics.setHeight(detector, thing.height);
             }
             detector.direction = direction;
         }
 
         switch (direction) {
             case 0:
-                this.setBottom(detector, thing.top);
-                this.setMidXObj(detector, thing);
+                this.EightBitter.physics.setBottom(detector, thing.top);
+                this.EightBitter.physics.setMidXObj(detector, thing);
                 break;
             case 1:
-                this.setLeft(detector, thing.right);
-                this.setMidYObj(detector, thing);
+                this.EightBitter.physics.setLeft(detector, thing.right);
+                this.EightBitter.physics.setMidYObj(detector, thing);
                 break;
             case 2:
-                this.setTop(detector, thing.bottom);
-                this.setMidXObj(detector, thing);
+                this.EightBitter.physics.setTop(detector, thing.bottom);
+                this.EightBitter.physics.setMidXObj(detector, thing);
                 break;
             case 3:
-                this.setRight(detector, thing.left);
-                this.setMidYObj(detector, thing);
+                this.EightBitter.physics.setRight(detector, thing.left);
+                this.EightBitter.physics.setMidYObj(detector, thing);
                 break;
             default:
                 throw new Error("Unknown direction: " + direction + ".");
@@ -995,10 +1009,10 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Player that's finished talking to other.
      * @param other   A Character that thing has finished talking to.
      */
-    animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
+    public animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
         let onStop: IWalkingOnStop;
 
-        this.ModAttacher.fireEvent("onDialogFinish", other);
+        this.EightBitter.ModAttacher.fireEvent("onDialogFinish", other);
 
         if (other.pushSteps) {
             onStop = other.pushSteps;
@@ -1014,7 +1028,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         if (other.transport) {
             other.active = true;
-            this.activateTransporter(thing, <ITransporter><any>other);
+            this.activateTransporter(thing, other as any);
             return;
         }
 
@@ -1025,20 +1039,20 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         if (other.gift) {
-            this.MenuGrapher.createMenu("GeneralText", {
+            this.EightBitter.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": true
             });
-            this.MenuGrapher.addMenuDialog(
+            this.EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
                 this.animateCharacterDialogFinish.bind(this, thing, other)
             );
-            this.MenuGrapher.setActiveMenu("GeneralText");
+            this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-            this.addItemToBag(other.gift);
+            this.EightBitter.storage.addItemToBag(other.gift);
 
             other.gift = undefined;
-            this.StateHolder.addChange(other.id, "gift", undefined);
+            this.EightBitter.StateHolder.addChange(other.id, "gift", undefined);
 
             return;
         }
@@ -1046,26 +1060,30 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         if (other.dialogNext) {
             other.dialog = other.dialogNext;
             other.dialogNext = undefined;
-            this.StateHolder.addChange(other.id, "dialog", other.dialog);
-            this.StateHolder.addChange(other.id, "dialogNext", undefined);
+            this.EightBitter.StateHolder.addChange(other.id, "dialog", other.dialog);
+            this.EightBitter.StateHolder.addChange(other.id, "dialogNext", undefined);
         }
 
         if (other.dialogOptions) {
             this.animateCharacterDialogOptions(thing, other, other.dialogOptions);
-        } else if (other.trainer && !(<IEnemy>other).alreadyBattled) {
-            this.animateTrainerBattleStart(thing, <IEnemy>other);
-            (<IEnemy>other).alreadyBattled = true;
-            this.StateHolder.addChange(other.id, "alreadyBattled", true);
+        } else if (other.trainer && !(other as IEnemy).alreadyBattled) {
+            this.animateTrainerBattleStart(thing, other as IEnemy);
+            (other as IEnemy).alreadyBattled = true;
+            this.EightBitter.StateHolder.addChange(other.id, "alreadyBattled", true);
         }
 
         if (other.trainer) {
             other.trainer = false;
-            this.StateHolder.addChange(other.id, "trainer", false);
+            this.EightBitter.StateHolder.addChange(other.id, "trainer", false);
 
             if (other.sight) {
                 other.sight = undefined;
-                this.StateHolder.addChange(other.id, "sight", undefined);
+                this.EightBitter.StateHolder.addChange(other.id, "sight", undefined);
             }
+        }
+
+        if (!other.dialogOptions) {
+            this.EightBitter.storage.autoSave();
         }
     }
 
@@ -1077,7 +1095,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Character that thing has finished talking to.
      * @param dialog   The dialog settings that just finished.
      */
-    animateCharacterDialogOptions(thing: IPlayer, other: ICharacter, dialog: IDialog): void {
+    public animateCharacterDialogOptions(thing: IPlayer, other: ICharacter, dialog: IDialog): void {
         let options: IDialogOptions = dialog.options,
             generateCallback: any = function (dialog: string | IDialog): () => void {
                 if (!dialog) {
@@ -1087,15 +1105,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 let callback: (...args: any[]) => void,
                     words: MenuGraphr.IMenuDialogRaw;
 
-                if (dialog.constructor === Object && (<IDialog>dialog).options) {
-                    words = (<IDialog>dialog).words;
+                if (dialog.constructor === Object && (dialog as IDialog).options) {
+                    words = (dialog as IDialog).words;
                     callback = this.animateCharacterDialogOptions.bind(
                         this, thing, other, dialog);
                 } else {
-                    words = (<IDialog>dialog).words || <string>dialog;
-                    if ((<IDialog>dialog).cutscene) {
+                    words = (dialog as IDialog).words || <string>dialog;
+                    if ((dialog as IDialog).cutscene) {
                         callback = this.ScenePlayer.bindCutscene(
-                            (<IDialog>dialog).cutscene,
+                            (dialog as IDialog).cutscene,
                             {
                                 "player": thing,
                                 "tirggerer": other
@@ -1104,26 +1122,26 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 }
 
                 return function (): void {
-                    thing.FSP.MenuGrapher.deleteMenu("Yes/No");
-                    thing.FSP.MenuGrapher.createMenu("GeneralText", {
+                    this.EightBitter.MenuGrapher.deleteMenu("Yes/No");
+                    this.EightBitter.MenuGrapher.createMenu("GeneralText", {
                         // "deleteOnFinish": true
                     });
-                    thing.FSP.MenuGrapher.addMenuDialog(
+                    this.EightBitter.MenuGrapher.addMenuDialog(
                         "GeneralText", words, callback);
-                    thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                    this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
                 };
             };
 
         console.warn("DialogOptions assumes type = Yes/No for now...");
 
-        this.MenuGrapher.createMenu("Yes/No", {
+        this.EightBitter.MenuGrapher.createMenu("Yes/No", {
             "position": {
                 "offset": {
                     "left": 28
                 }
             }
         });
-        this.MenuGrapher.addMenuList("Yes/No", {
+        this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
             "options": [
                 {
                     "text": "YES",
@@ -1133,7 +1151,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                     "callback": generateCallback(options.No)
                 }]
         });
-        this.MenuGrapher.setActiveMenu("Yes/No");
+        this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
@@ -1143,8 +1161,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   The following Character.
      * @param other   The leading Character.
      */
-    animateCharacterFollow(thing: ICharacter, other: ICharacter): void {
-        let direction: Direction = this.getDirectionBordering(thing, other);
+    public animateCharacterFollow(thing: ICharacter, other: ICharacter): void {
+        let direction: Direction = this.EightBitter.physics.getDirectionBordering(thing, other);
 
         thing.nocollide = true;
 
@@ -1156,7 +1174,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         thing.following = other;
         other.follower = thing;
 
-        this.addStateHistory(thing, "speed", thing.speed);
+        this.EightBitter.storage.addStateHistory(thing, "speed", thing.speed);
         thing.speed = other.speed;
 
         other.walkingCommands = [];
@@ -1165,16 +1183,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         switch (direction) {
             case 0:
-                this.setTop(thing, other.bottom);
+                this.EightBitter.physics.setTop(thing, other.bottom);
                 break;
             case 1:
-                this.setRight(thing, other.left);
+                this.EightBitter.physics.setRight(thing, other.left);
                 break;
             case 2:
-                this.setBottom(thing, other.top);
+                this.EightBitter.physics.setBottom(thing, other.top);
                 break;
             case 3:
-                this.setLeft(thing, other.right);
+                this.EightBitter.physics.setLeft(thing, other.right);
                 break;
             default:
                 break;
@@ -1184,9 +1202,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         // so that it continues smoothly in the walking interval
         this.animateCharacterStartWalking(thing, direction);
 
-        thing.followingLoop = this.TimeHandler.addEventInterval(
+        thing.followingLoop = this.EightBitter.TimeHandler.addEventInterval(
             this.animateCharacterFollowContinue.bind(this),
-            this.MathDecider.compute("speedWalking", thing),
+            this.EightBitter.MathDecider.compute("speedWalking", thing),
             Infinity,
             thing,
             other);
@@ -1199,7 +1217,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   The following Character.
      * @param other   The leading Character.
      */
-    animateCharacterFollowContinue(thing: ICharacter, other: ICharacter): void {
+    public animateCharacterFollowContinue(thing: ICharacter, other: ICharacter): void {
         if (other.walkingCommands.length === 0) {
             return;
         }
@@ -1215,7 +1233,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   The leading Character.
      * @returns True, to stop TimeHandlr cycles.
      */
-    animateCharacterFollowStop(thing: ICharacter): boolean {
+    public animateCharacterFollowStop(thing: ICharacter): boolean {
         let other: ICharacter = thing.following;
         if (!other) {
             return true;
@@ -1226,7 +1244,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         delete other.follower;
 
         this.animateCharacterStopWalking(thing);
-        this.TimeHandler.cancelEvent(thing.followingLoop);
+        this.EightBitter.TimeHandler.cancelEvent(thing.followingLoop);
 
         return true;
     }
@@ -1237,9 +1255,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A walking Character.
      * @param other   A ledge for thing to hop over.
      */
-    animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
-        let shadow: IThing = this.addThing("Shadow"),
-            dy: number = -this.unitsize,
+    public animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
+        let shadow: IThing = this.EightBitter.things.add("Shadow"),
+            dy: number = -this.EightBitter.unitsize,
             speed: number = 2,
             steps: number = 14,
             changed: number = 0;
@@ -1248,26 +1266,26 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         thing.ledge = other;
 
         // Center the shadow below the Thing
-        this.setMidXObj(shadow, thing);
-        this.setBottom(shadow, thing.bottom);
+        this.EightBitter.physics.setMidXObj(shadow, thing);
+        this.EightBitter.physics.setBottom(shadow, thing.bottom);
 
         // Continuously ensure The Thing still moves off the ledge if not walking
-        thing.FSP.TimeHandler.addEventInterval(
+        this.EightBitter.TimeHandler.addEventInterval(
             function (): boolean {
                 if (thing.walking) {
                     return false;
                 }
 
-                thing.FSP.animateCharacterSetDistanceVelocity(thing, thing.distance);
+                this.EightBitter.animations.animateCharacterSetDistanceVelocity(thing, thing.distance);
                 return true;
             },
             1,
             steps * speed - 1);
 
         // Keep the shadow below the Thing, and move the Thing's offsetY
-        thing.FSP.TimeHandler.addEventInterval(
+        this.EightBitter.TimeHandler.addEventInterval(
             function (): void {
-                thing.FSP.setBottom(shadow, thing.bottom);
+                this.EightBitter.setBottom(shadow, thing.bottom);
 
                 if (changed % speed === 0) {
                     thing.offsetY += dy;
@@ -1279,25 +1297,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             steps * speed);
 
         // Inverse the Thing's offsetY changes halfway through the hop
-        thing.FSP.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             function (): void {
                 dy *= -1;
             },
             speed * (steps / 2) | 0);
 
         // Delete the shadow after the jump is done
-        thing.FSP.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             function (): void {
                 delete thing.ledge;
-                thing.FSP.killNormal(shadow);
+                this.EightBitter.physics.killNormal(shadow);
 
                 if (!thing.walking) {
-                    thing.FSP.animateCharacterStopWalking(thing);
+                    this.EightBitter.animations.animateCharacterStopWalking(thing);
                 }
 
                 if (thing.player) {
                     (<IPlayer>thing).canKeyWalking = true;
-                    thing.FSP.MapScreener.blockInputs = false;
+                    this.EightBitter.MapScreener.blockInputs = false;
                 }
             },
             steps * speed);
@@ -1315,7 +1333,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         thing.collidedTrigger = other;
-        thing.FSP.animatePlayerDialogFreeze(thing);
+        this.EightBitter.animations.animatePlayerDialogFreeze(thing);
 
         if (!other.keepAlive) {
             other.alive = false;
@@ -1324,19 +1342,19 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
             }
 
-            thing.FSP.StateHolder.addChange(other.id, "alive", false);
-            thing.FSP.killNormal(other);
+            this.EightBitter.StateHolder.addChange(other.id, "alive", false);
+            this.EightBitter.physics.killNormal(other);
         }
 
         if (other.cutscene) {
-            thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
+            this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
                 "player": thing,
                 "triggerer": other
             });
         }
 
         if (other.routine) {
-            thing.FSP.ScenePlayer.playRoutine(other.routine);
+            this.EightBitter.ScenePlayer.playRoutine(other.routine);
         }
     }
 
@@ -1347,11 +1365,11 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Detector triggered by thing.
      */
     activateThemePlayer(thing: IPlayer, other: IThemeDetector): void {
-        if (!thing.player || thing.FSP.AudioPlayer.getThemeName() === other.theme) {
+        if (!thing.player || this.EightBitter.AudioPlayer.getThemeName() === other.theme) {
             return;
         }
 
-        thing.FSP.AudioPlayer.playTheme(other.theme);
+        this.EightBitter.AudioPlayer.playTheme(other.theme);
     }
 
     /**
@@ -1366,11 +1384,11 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         if (other.dialog) {
-            thing.FSP.activateMenuTriggerer(thing, other);
+            this.EightBitter.animations.activateMenuTriggerer(thing, other);
             return;
         }
 
-        thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
+        this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
             "player": thing,
             "triggerer": other
         });
@@ -1394,15 +1412,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         this.animateCharacterPreventWalking(thing);
 
         if (!other.keepAlive) {
-            this.killNormal(other);
+            this.EightBitter.physics.killNormal(other);
         }
 
-        if (!this.MenuGrapher.getMenu(name)) {
-            this.MenuGrapher.createMenu(name, other.menuAttributes);
+        if (!this.EightBitter.MenuGrapher.getMenu(name)) {
+            this.EightBitter.MenuGrapher.createMenu(name, other.menuAttributes);
         }
 
         if (dialog) {
-            this.MenuGrapher.addMenuDialog(
+            this.EightBitter.MenuGrapher.addMenuDialog(
                 name,
                 dialog,
                 (): void => {
@@ -1412,23 +1430,23 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                         onStop = other.pushSteps.slice();
                     }
 
-                    this.MenuGrapher.deleteMenu("GeneralText");
+                    this.EightBitter.MenuGrapher.deleteMenu("GeneralText");
 
                     if (typeof other.pushDirection !== "undefined") {
                         onStop.push((): void => {
-                            this.MapScreener.blockInputs = false;
+                            this.EightBitter.MapScreener.blockInputs = false;
                             delete thing.collidedTrigger;
                         });
                         this.animateCharacterStartWalkingCycle(
                             thing, other.pushDirection, onStop);
                     } else {
-                        this.MapScreener.blockInputs = false;
+                        this.EightBitter.MapScreener.blockInputs = false;
                         delete thing.collidedTrigger;
                     }
                 });
         }
 
-        this.MenuGrapher.setActiveMenu(name);
+        this.EightBitter.MenuGrapher.setActiveMenu(name);
     }
 
     /**
@@ -1446,9 +1464,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         other.viewer.talking = true;
         other.active = false;
 
-        thing.FSP.MapScreener.blockInputs = true;
+        this.EightBitter.MapScreener.blockInputs = true;
 
-        thing.FSP.ScenePlayer.startCutscene("TrainerSpotted", {
+        this.EightBitter.ScenePlayer.startCutscene("TrainerSpotted", {
             "player": thing,
             "sightDetector": other,
             "triggerer": other.viewer
@@ -1477,13 +1495,13 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             args: any[];
 
         if (transport.constructor === String) {
-            callback = thing.FSP.setLocation.bind(thing.FSP);
+            callback = this.EightBitter.maps.setLocation.bind(this.EightBitter.maps);
             args = [transport];
         } else if (typeof transport.map !== "undefined") {
-            callback = thing.FSP.setMap.bind(thing.FSP);
+            callback = this.EightBitter.maps.setMap.bind(this.EightBitter.maps);
             args = [transport.map, transport.location];
         } else if (typeof transport.location !== "undefined") {
-            callback = thing.FSP.setLocation.bind(thing.FSP);
+            callback = this.EightBitter.maps.setLocation.bind(this.EightBitter.maps);
             args = [transport.location];
         } else {
             throw new Error("Unknown transport type:" + transport);
@@ -1491,9 +1509,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         other.active = false;
 
-        thing.FSP.animateFadeToColor(thing.FSP, {
-            "color": "Black",
-            "callback": callback.apply.bind(callback, thing.FSP, args)
+        this.EightBitter.animations.animateFadeToColor({
+            color: "Black",
+            callback: (): void => callback(...args)
         });
     }
 
@@ -1518,13 +1536,13 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
             ];
 
-        if (thing.FSP.ItemsHolder.getItem("badges")[leader]) {
+        if (this.EightBitter.ItemsHolder.getItem("badges")[leader]) {
             dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
         }
 
-        thing.FSP.MenuGrapher.createMenu("GeneralText");
-        thing.FSP.MenuGrapher.addMenuDialog("GeneralText", dialog);
-        thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+        this.EightBitter.MenuGrapher.createMenu("GeneralText");
+        this.EightBitter.MenuGrapher.addMenuDialog("GeneralText", dialog);
+        this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1534,11 +1552,11 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   The Solid to be affected.
      */
     activateHMCharacter(player: IPlayer, thing: IHMCharacter): void {
-        if (thing.requiredBadge && !player.FSP.ItemsHolder.getItem("badges")[thing.requiredBadge]) {
+        if (thing.requiredBadge && !this.EightBitter.ItemsHolder.getItem("badges")[thing.requiredBadge]) {
             return;
         }
 
-        let partyPokemon: IPokemon[] = player.FSP.ItemsHolder.getItem("PokemonInParty");
+        let partyPokemon: IPokemon[] = this.EightBitter.ItemsHolder.getItem("PokemonInParty");
 
         for (let pokemon of partyPokemon) {
             let moves: BattleMovr.IMove[] = pokemon.moves;
@@ -1563,13 +1581,13 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             return true;
         }
 
-        thing.FSP.TimeHandler.addEvent(
-            thing.FSP.activateCharacterRoaming,
-            70 + thing.FSP.NumberMaker.randomInt(210),
+        this.EightBitter.TimeHandler.addEvent(
+            this.EightBitter.animations.activateCharacterRoaming,
+            70 + this.EightBitter.NumberMaker.randomInt(210),
             thing);
 
-        if (!thing.talking && !thing.FSP.MenuGrapher.getActiveMenu()) {
-            thing.FSP.animateCharacterStartWalkingRandom(thing);
+        if (!thing.talking && !this.EightBitter.MenuGrapher.getActiveMenu()) {
+            this.EightBitter.animations.animateCharacterStartWalkingRandom(thing);
         }
 
         return false;
@@ -1592,14 +1610,14 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
     checkWindowDetector(thing: IDetector): boolean {
         if (
             thing.bottom < 0
-            || thing.left > thing.FSP.MapScreener.width
-            || thing.top > thing.FSP.MapScreener.height
+            || thing.left > this.EightBitter.MapScreener.width
+            || thing.top > this.EightBitter.MapScreener.height
             || thing.right < 0) {
             return false;
         }
 
         thing.activate(thing);
-        thing.FSP.killNormal(thing);
+        this.EightBitter.physics.killNormal(thing);
         return true;
     }
 
@@ -1610,25 +1628,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   An AreaSpawner to activate.
      */
     spawnAreaSpawner(thing: IAreaSpawner): void {
-        let map: IMap = <IMap>thing.FSP.AreaSpawner.getMap(thing.map),
+        let map: IMap = <IMap>this.EightBitter.AreaSpawner.getMap(thing.map),
             area: IArea = <IArea>map.areas[thing.area];
 
-        if (area === thing.FSP.AreaSpawner.getArea()) {
-            thing.FSP.killNormal(thing);
+        if (area === this.EightBitter.AreaSpawner.getArea()) {
+            this.EightBitter.physics.killNormal(thing);
             return;
         }
 
         if (
             area.spawnedBy
-            && area.spawnedBy === (<IArea>thing.FSP.AreaSpawner.getArea()).spawnedBy
+            && area.spawnedBy === (<IArea>this.EightBitter.AreaSpawner.getArea()).spawnedBy
         ) {
-            thing.FSP.killNormal(thing);
+            this.EightBitter.physics.killNormal(thing);
             return;
         }
 
-        area.spawnedBy = (<IArea>thing.FSP.AreaSpawner.getArea()).spawnedBy;
+        area.spawnedBy = (<IArea>this.EightBitter.AreaSpawner.getArea()).spawnedBy;
 
-        thing.FSP.activateAreaSpawner(thing, area);
+        this.EightBitter.maps.activateAreaSpawner(thing, area);
     }
 
 
@@ -1656,10 +1674,10 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param pokemon   The Pokemon using Cut.
      * @todo Add an animation for what happens when the CuttableTree is cut.
      */
-    partyActivateCut(player: IPlayer, pokemon: IPokemon): void {
-        player.FSP.MenuGrapher.deleteAllMenus();
-        player.FSP.closePauseMenu();
-        player.FSP.killNormal(player.bordering[player.direction]);
+    public partyActivateCut(player: IPlayer, pokemon: IPokemon): void {
+        this.EightBitter.MenuGrapher.deleteAllMenus();
+        this.EightBitter.menus.closePauseMenu();
+        this.EightBitter.physics.killNormal(player.bordering[player.direction]);
     }
 
     /**
@@ -1669,13 +1687,14 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param pokemon   The Pokemon using Strength.
      * @todo Verify the exact speed, sound, and distance.
      */
-    partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {
+    public partyActivateStrength(player: IPlayer, pokemon: IPokemon): void {
         let boulder: IHMCharacter = <IHMCharacter>player.bordering[player.direction];
 
-        player.FSP.MenuGrapher.deleteAllMenus();
-        player.FSP.closePauseMenu();
+        this.EightBitter.MenuGrapher.deleteAllMenus();
+        this.EightBitter.menus.closePauseMenu();
 
-        if (!player.FSP.ThingHitter.checkHitForThings(player, boulder) || boulder.bordering[player.direction] !== undefined) {
+        if (!this.EightBitter.ThingHitter.checkHitForThings(player as any, boulder as any)
+            || boulder.bordering[player.direction] !== undefined) {
             return;
         }
 
@@ -1684,29 +1703,27 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         switch (player.direction) {
             case 0:
-                yvel = -boulder.FSP.unitsize;
+                yvel = -this.EightBitter.unitsize;
                 break;
 
             case 1:
-                xvel = boulder.FSP.unitsize;
+                xvel = this.EightBitter.unitsize;
                 break;
 
             case 2:
-                yvel = boulder.FSP.unitsize;
+                yvel = this.EightBitter.unitsize;
                 break;
 
             case 3:
-                xvel = -boulder.FSP.unitsize;
+                xvel = -this.EightBitter.unitsize;
                 break;
 
             default:
                 throw new Error("Unknown direction: " + player.direction + ".");
         }
 
-        player.FSP.TimeHandler.addEventInterval(
-            function (): void {
-                boulder.FSP.shiftBoth(boulder, xvel, yvel);
-            },
+        this.EightBitter.TimeHandler.addEventInterval(
+            (): void => this.EightBitter.physics.shiftBoth(boulder, xvel, yvel),
             1,
             8);
 
@@ -1724,16 +1741,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @todo Add the dialogue for when the Player starts surfing.
      */
     partyActivateSurf(player: IPlayer, pokemon: IPokemon): void {
-        player.FSP.MenuGrapher.deleteAllMenus();
-        player.FSP.closePauseMenu();
+        this.EightBitter.MenuGrapher.deleteAllMenus();
+        this.EightBitter.menus.closePauseMenu();
 
         if (player.cycling) {
             return;
         }
 
         player.bordering[player.direction] = undefined;
-        player.FSP.addClass(player, "surfing");
-        player.FSP.animateCharacterStartWalking(player, player.direction, [1]);
+        this.EightBitter.graphics.addClass(player, "surfing");
+        this.EightBitter.animations.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
     }
 }

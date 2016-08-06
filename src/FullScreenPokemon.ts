@@ -159,7 +159,7 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
     /**
      * Resets the minor system components.
      */
-    protected resetComponents() {
+    protected resetComponents(): void {
         this.animations = new Animations(this);
         this.battles = new Battles(this);
         this.collisions = new Collisions(this);

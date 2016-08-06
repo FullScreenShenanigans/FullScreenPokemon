@@ -13,17 +13,17 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A checkered pattern of Things.
      */
     public macroCheckered(reference: any): any[] {
-        let xStart: number = reference.x || 0,
-            yStart: number = reference.y || 0,
-            xnum: number = reference.xnum || 1,
-            ynum: number = reference.ynum || 1,
-            xwidth: number = reference.xwidth || 8,
-            yheight: number = reference.yheight || 8,
-            offset: number = reference.offset || 0,
-            things: string[] = reference.things,
-            mod: number = things.length,
-            output: any[] = [],
-            y: number;
+        const xStart: number = reference.x || 0;
+        const yStart: number = reference.y || 0;
+        const xnum: number = reference.xnum || 1;
+        const ynum: number = reference.ynum || 1;
+        const xwidth: number = reference.xwidth || 8;
+        const yheight: number = reference.yheight || 8;
+        const offset: number = reference.offset || 0;
+        const things: string[] = reference.things;
+        const mod: number = things.length;
+        const output: any[] = [];
+        let y: number;
 
         y = yStart;
         for (let i: number = 0; i < ynum; i += 1) {
@@ -52,18 +52,18 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A body of water.
      */
     public macroWater(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            width: number = reference.width || 8,
-            height: number = reference.height || 8,
-            open: boolean[] = reference.open || [true, true, true, true],
-            output: any[] = [{
-                "thing": "Water",
-                "x": x,
-                "y": y,
-                "width": width,
-                "height": height
-            }];
+        const x: number = reference.x || 0;
+        const y: number = reference.y || 0;
+        const width: number = reference.width || 8;
+        const height: number = reference.height || 8;
+        const open: boolean[] = reference.open || [true, true, true, true];
+        const output: any[] = [{
+            "thing": "Water",
+            "x": x,
+            "y": y,
+            "width": width,
+            "height": height
+        }];
 
         if (!open[0]) {
             output.push({
@@ -111,11 +111,11 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A House.
      */
     public macroHouse(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            width: number = reference.width || 32,
-            stories: number = reference.stories || 1,
-            output: any[] = [];
+        const width: number = reference.width || 32;
+        const stories: number = reference.stories || 1;
+        const output: any[] = [];
+        let x: number = reference.x || 0;
+        let y: number = reference.y || 0;
 
         if (stories === 1) {
             output.push({
@@ -210,12 +210,12 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A Large House.
      */
     public macroHouseLarge(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            width: number = reference.width || 48,
-            stories: number = reference.stories || 1,
-            doorOffset: number = reference.doorOffset || 16,
-            output: any[] = [
+        const x: number = reference.x || 0;
+        let y: number = reference.y || 0;
+        const width: number = reference.width || 48;
+        const stories: number = reference.stories || 1;
+        const doorOffset: number = reference.doorOffset || 16;
+        const output: any[] = [
                 {
                     "thing": "HouseLargeTopLeft",
                     "x": x,
@@ -304,7 +304,7 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
             y += 16;
 
-            let door: any = {
+            const door: any = {
                 "thing": "Door",
                 "x": x + doorOffset,
                 "y": y - 12,
@@ -330,33 +330,32 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A Gym.
      */
     public macroGym(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            width: number = reference.width || 48,
-            stories: number = reference.stories || 2,
-            output: any[] = [
-                {
-                    "macro": "HouseLarge",
-                    "x": x,
-                    "y": y,
-                    "width": width,
-                    "stories": stories,
-                    "white": {
-                        "start": x + 4,
-                        "end": x + width - 4
-                    },
-                    "transport": reference.transport,
-                    "entrance": reference.entrance,
-                    "door": true,
-                    "doorOffset": width - 16
-                }, {
-                    "thing": "GymLabel",
-                    "x": x + 16,
-                    "y": y + 16,
-                    "width": width - 32
-                }];
+        const x: number = reference.x || 0;
+        const y: number = reference.y || 0;
+        const width: number = reference.width || 48;
+        const stories: number = reference.stories || 2;
 
-        return output;
+        return [
+            {
+                "macro": "HouseLarge",
+                "x": x,
+                "y": y,
+                "width": width,
+                "stories": stories,
+                "white": {
+                    "start": x + 4,
+                    "end": x + width - 4
+                },
+                "transport": reference.transport,
+                "entrance": reference.entrance,
+                "door": true,
+                "doorOffset": width - 16
+            }, {
+                "thing": "GymLabel",
+                "x": x + 16,
+                "y": y + 16,
+                "width": width - 32
+            }];
     }
 
     /**
@@ -366,26 +365,26 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A Building.
      */
     public macroBuilding(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            width: number = reference.width || 32,
-            stories: number = reference.stories || 1,
-            doorOffset: number = reference.doorOffset || 8,
-            output: any[] = [
-                {
-                    "thing": "BuildingTopLeft",
-                    "x": x,
-                    "y": y
-                }, {
-                    "thing": "BuildingTopMiddle",
-                    "x": x + 4,
-                    "y": y,
-                    "width": width - 8
-                }, {
-                    "thing": "BuildingTopRight",
-                    "x": x + width - 4,
-                    "y": y
-                }];
+        const x: number = reference.x || 0;
+        let y: number = reference.y || 0;
+        const width: number = reference.width || 32;
+        const stories: number = reference.stories || 1;
+        const doorOffset: number = reference.doorOffset || 8;
+        const output: any[] = [
+            {
+                "thing": "BuildingTopLeft",
+                "x": x,
+                "y": y
+            }, {
+                "thing": "BuildingTopMiddle",
+                "x": x + 4,
+                "y": y,
+                "width": width - 8
+            }, {
+                "thing": "BuildingTopRight",
+                "x": x + width - 4,
+                "y": y
+            }];
 
         y += 16;
 
@@ -432,7 +431,7 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         });
 
         if (reference.door) {
-            let door: any = {
+            const door: any = {
                 "thing": "Door",
                 "x": x + doorOffset,
                 "y": y,
@@ -506,12 +505,12 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A Mountain.
      */
     public macroMountain(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            width: number = reference.width || 8,
-            height: number = reference.height || 8,
-            openingOffset: number = reference.openingOffset || 8,
-            output: any[] = [];
+        const openingOffset: number = reference.openingOffset || 8;
+        const output: any[] = [];
+        let x: number = reference.x || 0;
+        let y: number = reference.y || 0;
+        let width: number = reference.width || 8;
+        let height: number = reference.height || 8;
 
         if (reference.right) {
             if (reference.top) {
@@ -726,147 +725,147 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A Pokemon Center.
      */
     public macroPokeCenter(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            output: any = [
-                {
-                    "thing": "FloorDiamonds",
-                    "width": 112,
-                    "height": 64,
-                    "x": x,
-                    "y": y
-                }, {
-                    "thing": "SquareWallTop",
-                    "x": x,
-                    "y": y,
-                    "height": 16
-                }, {
-                    "thing": "HealingMachine",
-                    "x": x + 8,
-                    "y": y,
-                    "id": "HealingMachine"
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 8,
-                    "y": y,
-                    "width": 32
-                }, {
-                    "thing": "PokeCenterPoster",
-                    "x": x + 28,
-                    "y": y
-                }, {
-                    "thing": "SquareWallTop",
-                    "x": x + 40,
-                    "y": y,
-                    "height": 16
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 48,
-                    "y": y,
-                    "width": 32
-                }, {
-                    "thing": "StairsVertical",
-                    "x": x + 80,
-                    "y": y
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 88,
-                    "y": y
-                }, {
-                    "thing": "StairsVertical",
-                    "x": x + 96,
-                    "y": y
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 104,
-                    "y": y
-                }, {
-                    "thing": "Nurse",
-                    "id": "Nurse",
-                    "x": x + 24,
-                    "y": y + 8
-                }, {
-                    "thing": "SquareWallFront",
-                    "x": x,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDeskLeft",
-                    "x": x + 8,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 12,
-                    "y": y + 16,
-                    "width": 32
-                }, {
-                    "thing": "CutsceneResponder",
-                    "x": x + 24,
-                    "y": y + 16,
-                    "cutscene": "PokeCenter",
-                    "keepAlive": true
-                }, {
-                    "thing": "SquareWallFront",
-                    "x": x + 40,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 48,
-                    "y": y + 16,
-                    "width": 32
-                }, {
-                    "thing": "PokeCenterDeskBlocker",
-                    "x": x + 80,
-                    "y": y + 16
-                }, {
-                    "thing": "DeskWoman",
-                    "x": x + 88,
-                    "y": y + 16,
-                    "dialog": [
-                        "Welcome to the Cable Club!",
-                        "This area is reserved for 2 friends who are linked by cable."
-                    ]
-                }, {
-                    "thing": "PokeCenterDeskBlocker",
-                    "x": x + 96,
-                    "y": y + 16
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 104,
-                    "y": y + 16
-                }, {
-                    "thing": "Buzzer",
-                    "x": x + 28,
-                    "y": y + 19
-                }, {
-                    "thing": "Computer",
-                    "x": x + 104,
-                    "y": y + 24
-                }, {
-                    "thing": "SofaLeft",
-                    "x": x,
-                    "y": y + 32
-                }, {
-                    "thing": "PottedPalmTree",
-                    "x": x,
-                    "y": y + 48,
-                    "width": 16
-                }, {
-                    "thing": "PottedPalmTree",
-                    "x": x + 48,
-                    "y": y + 48,
-                    "width": 16
-                }, {
-                    "thing": "PottedPalmTree",
-                    "x": x + 96,
-                    "y": y + 48,
-                    "width": 16
-                }, {
-                    "thing": "Doormat",
-                    "x": x + 24,
-                    "y": y + 56,
-                    "width": 16,
-                    "entrance": reference.entrance
-                }];
+        const x: number = reference.x || 0;
+        const y: number = reference.y || 0;
+        const output: any = [
+            {
+                "thing": "FloorDiamonds",
+                "width": 112,
+                "height": 64,
+                "x": x,
+                "y": y
+            }, {
+                "thing": "SquareWallTop",
+                "x": x,
+                "y": y,
+                "height": 16
+            }, {
+                "thing": "HealingMachine",
+                "x": x + 8,
+                "y": y,
+                "id": "HealingMachine"
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 8,
+                "y": y,
+                "width": 32
+            }, {
+                "thing": "PokeCenterPoster",
+                "x": x + 28,
+                "y": y
+            }, {
+                "thing": "SquareWallTop",
+                "x": x + 40,
+                "y": y,
+                "height": 16
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 48,
+                "y": y,
+                "width": 32
+            }, {
+                "thing": "StairsVertical",
+                "x": x + 80,
+                "y": y
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 88,
+                "y": y
+            }, {
+                "thing": "StairsVertical",
+                "x": x + 96,
+                "y": y
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 104,
+                "y": y
+            }, {
+                "thing": "Nurse",
+                "id": "Nurse",
+                "x": x + 24,
+                "y": y + 8
+            }, {
+                "thing": "SquareWallFront",
+                "x": x,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDeskLeft",
+                "x": x + 8,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 12,
+                "y": y + 16,
+                "width": 32
+            }, {
+                "thing": "CutsceneResponder",
+                "x": x + 24,
+                "y": y + 16,
+                "cutscene": "PokeCenter",
+                "keepAlive": true
+            }, {
+                "thing": "SquareWallFront",
+                "x": x + 40,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 48,
+                "y": y + 16,
+                "width": 32
+            }, {
+                "thing": "PokeCenterDeskBlocker",
+                "x": x + 80,
+                "y": y + 16
+            }, {
+                "thing": "DeskWoman",
+                "x": x + 88,
+                "y": y + 16,
+                "dialog": [
+                    "Welcome to the Cable Club!",
+                    "This area is reserved for 2 friends who are linked by cable."
+                ]
+            }, {
+                "thing": "PokeCenterDeskBlocker",
+                "x": x + 96,
+                "y": y + 16
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 104,
+                "y": y + 16
+            }, {
+                "thing": "Buzzer",
+                "x": x + 28,
+                "y": y + 19
+            }, {
+                "thing": "Computer",
+                "x": x + 104,
+                "y": y + 24
+            }, {
+                "thing": "SofaLeft",
+                "x": x,
+                "y": y + 32
+            }, {
+                "thing": "PottedPalmTree",
+                "x": x,
+                "y": y + 48,
+                "width": 16
+            }, {
+                "thing": "PottedPalmTree",
+                "x": x + 48,
+                "y": y + 48,
+                "width": 16
+            }, {
+                "thing": "PottedPalmTree",
+                "x": x + 96,
+                "y": y + 48,
+                "width": 16
+            }, {
+                "thing": "Doormat",
+                "x": x + 24,
+                "y": y + 56,
+                "width": 16,
+                "entrance": reference.entrance
+            }];
 
         if (reference.transport) {
             output.push({
@@ -884,7 +883,7 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
                 "thing": "CoolTrainerM",
                 "x": x,
                 "y": y + 32,
-                "offsetX": FullScreenPokemon.unitsize * 1.75,
+                "offsetX": this.EightBitter.unitsize * 1.75,
                 "offsetY": 0,
                 "direction": 1,
                 "sitting": true,
@@ -908,115 +907,115 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @returns A PokeMart.
      */
     public macroPokeMart(reference: any): any[] {
-        let x: number = reference.x || 0,
-            y: number = reference.y || 0,
-            output: any[] = [
-                {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x,
-                    "y": y,
-                    "width": 16,
-                    "height": 4
-                }, {
-                    "thing": "FloorDiamonds",
-                    "x": x,
-                    "y": y + 8,
-                    "width": 64,
-                    "height": 56
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x,
-                    "y": y + 16,
-                    "height": 8
-                }, {
-                    "thing": "StoreFridge",
-                    "x": x + 16,
-                    "y": y,
-                    "width": 32
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 48,
-                    "y": y,
-                    "width": 16,
-                    "height": 4
-                }, {
-                    "thing": "StoreSaleBin",
-                    "x": x,
-                    "y": y + 4,
-                    "width": 16
-                }, {
-                    "thing": "StoreSaleBin",
-                    "x": x + 48,
-                    "y": y + 4,
-                    "width": 16
-                }, {
-                    "thing": "StoreAisle",
-                    "x": x,
-                    "y": y + 24,
-                    "height": 8
-                }, {
-                    "thing": "StoreAisle",
-                    "x": x + 32,
-                    "y": y + 24,
-                    "width": 32
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x,
-                    "y": y + 32
-                }, {
-                    "thing": "WallIndoorHorizontalBandsDark",
-                    "x": x + 8,
-                    "y": y + 32,
-                    "height": 4
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x + 16,
-                    "y": y + 32,
-                    "height": 24
-                }, {
-                    "thing": "SquareWallTop",
-                    "x": x + 8,
-                    "y": y + 36,
-                    "height": 16
-                }, {
-                    "thing": "Cashier",
-                    "x": x,
-                    "y": y + 40,
-                    "direction": 1
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x,
-                    "y": y + 40
-                }, {
-                    "thing": "Register",
-                    "x": x + 8,
-                    "y": y + 40,
-                    "id": reference.responderId,
-                    "activate": FullScreenPokemon.prototype.activateCutsceneResponder,
-                    "cutscene": "PokeMart",
-                    "keepAlive": true,
-                    "items": reference.items,
-                    "dialog": reference.responderDialog
-                }, {
-                    "thing": "PokeCenterDeskLeft",
-                    "x": x,
-                    "y": y + 48
-                }, {
-                    "thing": "PokeCenterDesk",
-                    "x": x + 4,
-                    "y": y + 48,
-                    "width": 12
-                }, {
-                    "thing": "FloorDiamondsDark",
-                    "x": x,
-                    "y": y + 56
-                }, {
-                    "thing": "Doormat",
-                    "x": x + 24,
-                    "y": y + 56,
-                    "width": 16,
-                    "entrance": reference.entrance
-                }];
+        const x: number = reference.x || 0;
+        const y: number = reference.y || 0;
+        const output: any[] = [
+            {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x,
+                "y": y,
+                "width": 16,
+                "height": 4
+            }, {
+                "thing": "FloorDiamonds",
+                "x": x,
+                "y": y + 8,
+                "width": 64,
+                "height": 56
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x,
+                "y": y + 16,
+                "height": 8
+            }, {
+                "thing": "StoreFridge",
+                "x": x + 16,
+                "y": y,
+                "width": 32
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 48,
+                "y": y,
+                "width": 16,
+                "height": 4
+            }, {
+                "thing": "StoreSaleBin",
+                "x": x,
+                "y": y + 4,
+                "width": 16
+            }, {
+                "thing": "StoreSaleBin",
+                "x": x + 48,
+                "y": y + 4,
+                "width": 16
+            }, {
+                "thing": "StoreAisle",
+                "x": x,
+                "y": y + 24,
+                "height": 8
+            }, {
+                "thing": "StoreAisle",
+                "x": x + 32,
+                "y": y + 24,
+                "width": 32
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x,
+                "y": y + 32
+            }, {
+                "thing": "WallIndoorHorizontalBandsDark",
+                "x": x + 8,
+                "y": y + 32,
+                "height": 4
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x + 16,
+                "y": y + 32,
+                "height": 24
+            }, {
+                "thing": "SquareWallTop",
+                "x": x + 8,
+                "y": y + 36,
+                "height": 16
+            }, {
+                "thing": "Cashier",
+                "x": x,
+                "y": y + 40,
+                "direction": 1
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x,
+                "y": y + 40
+            }, {
+                "thing": "Register",
+                "x": x + 8,
+                "y": y + 40,
+                "id": reference.responderId,
+                "activate": this.EightBitter.animations.activateCutsceneResponder,
+                "cutscene": "PokeMart",
+                "keepAlive": true,
+                "items": reference.items,
+                "dialog": reference.responderDialog
+            }, {
+                "thing": "PokeCenterDeskLeft",
+                "x": x,
+                "y": y + 48
+            }, {
+                "thing": "PokeCenterDesk",
+                "x": x + 4,
+                "y": y + 48,
+                "width": 12
+            }, {
+                "thing": "FloorDiamondsDark",
+                "x": x,
+                "y": y + 56
+            }, {
+                "thing": "Doormat",
+                "x": x + 24,
+                "y": y + 56,
+                "width": 16,
+                "entrance": reference.entrance
+            }];
 
         if (reference.transport) {
             output.push({

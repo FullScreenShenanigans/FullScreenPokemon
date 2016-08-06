@@ -3,7 +3,12 @@
 /// <reference path="../typings/MenuGraphr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IHMMoveSchema, IPokedexInformation, IPokemon, IThing } from "./IFullScreenPokemon";
+import { KeysLowercase, KeysUppercase } from "./Constants";
+import {
+    IHMMoveSchema, IItemsMenuSettings, IItemSchema, IKeyboardMenuSettings,
+    IKeyboardResultsMenu, ILevelUpStatsMenuSettings, IListMenu, IMenu,
+    IPokedexInformation, IPlayer, IPokedexListing, IPokemon, IThing
+} from "./IFullScreenPokemon";
 
 /**
  * Menu functions used by FullScreenPokemon instances.
@@ -16,23 +21,23 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         const options: any[] = [
             {
                 "text": "%%%%%%%POKEMON%%%%%%%",
-                "callback": this.openPokemonMenu.bind(this, {
+                "callback": (): void => this.openPokemonMenu.bind({
                     // "onSwitch": ...
                 })
             }, {
                 "text": "ITEM",
-                "callback": this.openItemsMenu.bind(this)
+                "callback": (settings: IItemsMenuSettings): void => this.openItemsMenu(settings)
             }, {
                 "text": "%%%%%%%PLAYER%%%%%%%",
-                "callback": this.openPlayerMenu.bind(this)
+                "callback": (): void => this.openPlayerMenu()
             }, {
                 "text": "SAVE",
-                "callback": this.openSaveMenu.bind(this)
+                "callback": (): void => this.openSaveMenu()
             }, {
                 "text": "OPTION"
             }, {
                 "text": "Exit",
-                "callback": this.closePauseMenu.bind(this)
+                "callback": (): void => this.closePauseMenu()
             }];
 
         // The Pokedex option is only shown if the Player has one
@@ -81,7 +86,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * Opens the Pokedex menu.
      */
     public openPokedexMenu(): void {
-        const listings: IPokedexInformation[] = this.EightBitter.getPokedexListingsOrdered();
+        const listings: IPokedexInformation[] = this.EightBitter.storage.getPokedexListingsOrdered();
         let currentListing: IPokedexInformation;
 
         this.EightBitter.MenuGrapher.createMenu("Pokedex");
@@ -169,11 +174,11 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
         for (const action of moves) {
             const move: IHMMoveSchema = this.EightBitter.MathDecider.getConstant("moves")[action.title];
-            if (move.partyActivate && move.requiredBadge && this.ItemsHolder.getItem("badges")[move.requiredBadge]) {
+            if (move.partyActivate && move.requiredBadge && this.EightBitter.ItemsHolder.getItem("badges")[move.requiredBadge]) {
                 options.push({
                     "text": action.title.toUpperCase(),
                     "callback": (): void => {
-                        this.partyActivateCheckThing(this.player, settings.pokemon, move);
+                        this.EightBitter.animations.partyActivateCheckThing(this.EightBitter.player, settings.pokemon, move);
                     }
                 });
             }
@@ -313,7 +318,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         let left: number;
 
         for (let i: number = 0; i < numStatistics; i += 1) {
-            statistics.push(this.EightBitter.utilities.makeDigit(pokemon[statistics[i] + "Normal"], 3, "\t"));
+            statistics.push(this.EightBitter.utilities.makeDigit((pokemon as any)[statistics[i] + "Normal"], 3, "\t"));
             statistics[i] = statistics[i].toUpperCase();
         }
 
@@ -379,7 +384,10 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
                 });
                 characters.push(...this.EightBitter.utilities.makeDigit(move.remaining, 2, " ").split(""));
                 characters.push("/");
-                characters.push(...this.EightBitter.utilities.makeDigit(this.EightBitter.MathDecider.getConstant("moves")[move.title].PP, 2, " ").split(""));
+                characters.push(
+                    ...this.EightBitter.utilities.makeDigit(
+                        this.EightBitter.MathDecider.getConstant("moves")[move.title].PP, 2, " ")
+                            .split(""));
 
                 characters.push({
                     "command": true,
@@ -428,7 +436,9 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             "options": options
         });
 
-        this.EightBitter.MenuGrapher.getMenu("PokemonMenuStats").callback = this.EightBitter.MenuGrapher.deleteMenu.bind(this.EightBitter.MenuGrapher);
+        this.EightBitter.MenuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
+            this.EightBitter.MenuGrapher.deleteMenu("PokemonMenuStats");
+        };
     }
 
     /**
@@ -437,7 +447,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param title   The title of the Pokemon to open the listing for.
      * @param callback   A callback for when the menu is closed.
      */
-    openPokedexListing(title: string[], callback?: (...args: any[]) => void, menuSettings?: any): void {
+    public openPokedexListing(title: string[], callback?: (...args: any[]) => void, menuSettings?: any): void {
         let pokemon: IPokedexListing = this.EightBitter.MathDecider.getConstant("pokemon")[title.join("")],
             height: string[] = pokemon.height,
             feet: string = [].slice.call(height[0]).reverse().join(""),
@@ -488,8 +498,8 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * 
      * @param settings   Custom attributes to apply to the menu.
      */
-    openPokemonMenu(settings: MenuGraphr.IMenuSchema): void {
-        let listings: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInParty");
+    public openPokemonMenu(settings: MenuGraphr.IMenuSchema): void {
+        let listings: BattleMovr.IActor[] = this.EightBitter.ItemsHolder.getItem("PokemonInParty");
         if (!listings || !listings.length) {
             return;
         }
@@ -588,10 +598,10 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param settings   Custom attributes to apply to the menu, as well as items
      *                   to optionally override the player's inventory.
      */
-    openItemsMenu(settings: IItemsMenuSettings): void {
-        let items: IItemSchema[] = settings.items || this.ItemsHolder.getItem("items").slice();
+    public openItemsMenu(settings: IItemsMenuSettings): void {
+        let items: IItemSchema[] = settings.items || this.EightBitter.ItemsHolder.getItem("items").slice();
 
-        this.ModAttacher.fireEvent("onOpenItemsMenu", items);
+        this.EightBitter.ModAttacher.fireEvent("onOpenItemsMenu", items);
 
         this.EightBitter.MenuGrapher.createMenu("Items", settings);
         this.EightBitter.MenuGrapher.addMenuList("Items", {
@@ -620,7 +630,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
     /**
      * Opens the Player menu.
      */
-    openPlayerMenu(): void {
+    public openPlayerMenu(): void {
         this.EightBitter.MenuGrapher.createMenu("Player", {
             "callback": this.EightBitter.MenuGrapher.registerB.bind(this.EightBitter.MenuGrapher)
         });
@@ -630,27 +640,28 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
     /**
      * Opens the Save menu.
      */
-    openSaveMenu(): void {
+    public openSaveMenu(): void {
         this.EightBitter.MenuGrapher.createMenu("Save");
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
         this.EightBitter.MenuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
         this.EightBitter.MenuGrapher.createMenu("Yes/No", {
-            "backMenu": "Pause",
-            "killOnB": ["GeneralText", "Save"]
+            "backMenu": "Pause"
         });
         this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
             "options": [
                 {
                     "text": "YES",
-                    "callback": this.downloadSaveGame.bind(this)
+                    "callback": this.EightBitter.storage.downloadSaveGame.bind(this)
                 }, {
                     "text": "NO",
                     "callback": this.EightBitter.MenuGrapher.registerB
                 }]
         });
         this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+
+        this.EightBitter.storage.autoSave();
     }
 
     /**
@@ -658,15 +669,15 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * 
      * @param settings   Settings to apply to the menu and for callbacks.
      */
-    openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
+    public openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
         let value: string[][] = [settings.value || ["_", "_", "_", "_", "_", "_", "_"]],
             onKeyPress: (...args: any[]) => void = this.addKeyboardMenuValue.bind(this),
             onBPress: (...args: any[]) => void = this.removeKeyboardMenuValue.bind(this),
             onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this),
             lowercase: boolean = settings.lowercase,
             letters: string[] = lowercase
-                ? FullScreenPokemon.keysLowercase
-                : FullScreenPokemon.keysUppercase,
+                ? KeysLowercase
+                : KeysUppercase,
             options: any[] = letters.map((letter: string): any => {
                 return {
                     "text": [letter],
@@ -710,7 +721,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         menuResults.displayedValue = value.slice()[0];
         menuResults.completeValue = settings.completeValue || [];
         menuResults.selectedChild = settings.selectedChild || 0;
-        menuResults.blinker = this.addThing(
+        menuResults.blinker = this.EightBitter.things.add(
             "CharMDash",
             menuResults.children[menuResults.selectedChild].left,
             menuResults.children[menuResults.selectedChild].top);
@@ -721,7 +732,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
     /**
      * Adds a value to the keyboard menu from the currently selected item.
      */
-    addKeyboardMenuValue(): void {
+    public addKeyboardMenuValue(): void {
         let menuKeys: IListMenu = <IListMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardKeys"),
             menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult"),
             child: IThing = menuResult.children[menuResult.selectedChild];
@@ -732,8 +743,8 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
         let selected: MenuGraphr.IGridCell = this.EightBitter.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
 
-        this.killNormal(child);
-        menuResult.children[menuResult.selectedChild] = this.addThing(
+        this.EightBitter.physics.killNormal(child);
+        menuResult.children[menuResult.selectedChild] = this.EightBitter.things.add(
             selected.title, child.left, child.top);
 
         menuResult.displayedValue[menuResult.selectedChild] = <string>selected.text[0];
@@ -751,14 +762,14 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
                 menuKeys.gridRows - 2); // assume there's a bottom option
         }
 
-        this.setLeft(menuResult.blinker, child.left);
-        this.setTop(menuResult.blinker, child.top);
+        this.EightBitter.physics.setLeft(menuResult.blinker, child.left);
+        this.EightBitter.physics.setTop(menuResult.blinker, child.top);
     }
 
     /**
      * Removes the rightmost keyboard menu value.
      */
-    removeKeyboardMenuValue(): void {
+    public removeKeyboardMenuValue(): void {
         let menuResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult");
         if (menuResult.selectedChild <= 0) {
             return;
@@ -771,21 +782,21 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             0, menuResult.completeValue.length - 1);
         menuResult.displayedValue[menuResult.selectedChild] = "_";
 
-        this.killNormal(child);
+        this.EightBitter.physics.killNormal(child);
 
         child = menuResult.children[menuResult.selectedChild];
 
-        menuResult.children[menuResult.selectedChild + 1] = this.addThing(
+        menuResult.children[menuResult.selectedChild + 1] = this.EightBitter.things.add(
             "CharUnderscore", child.right, child.top);
 
-        this.setLeft(menuResult.blinker, child.left);
-        this.setTop(menuResult.blinker, child.top);
+        this.EightBitter.physics.setLeft(menuResult.blinker, child.left);
+        this.EightBitter.physics.setTop(menuResult.blinker, child.top);
     }
 
     /**
      * Switches the keyboard menu's case.
      */
-    switchKeyboardCase(): void {
+    public switchKeyboardCase(): void {
         let keyboard: IMenu = <IMenu>this.EightBitter.MenuGrapher.getMenu("Keyboard"),
             keyboardKeys: IListMenu = <IListMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardKeys"),
             keyboardResult: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult"),
@@ -806,9 +817,9 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * 
      * @param settings   Custom attributes to apply to the menu.
      */
-    openTownMapMenu(settings?: MenuGraphr.IMenuSchema): void {
+    public openTownMapMenu(settings?: MenuGraphr.IMenuSchema): void {
         let playerPosition: number[] = this.EightBitter.MathDecider.getConstant("townMapLocations")["Pallet Town"],
-            playerSize: any = this.ObjectMaker.getFullPropertiesOf("Player");
+            playerSize: any = this.EightBitter.ObjectMaker.getFullPropertiesOf("Player");
 
         this.EightBitter.MenuGrapher.createMenu("Town Map", settings);
         this.EightBitter.MenuGrapher.createMenuThing("Town Map Inside", {
@@ -830,7 +841,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
     /**
      * Shows allowed flying locations on the Town Map menu.
      */
-    showTownMapFlyLocations(): void {
+    public showTownMapFlyLocations(): void {
         console.warn("Map fly locations not implemented.");
     }
 
@@ -839,7 +850,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * 
      * @param title   The title of the Pokemon to show nest locations of.
      */
-    showTownMapPokemonLocations(title: string[]): void {
+    public showTownMapPokemonLocations(title: string[]): void {
         let dialog: string[] = [].slice.call(title);
 
         dialog.push(..."'s NEST".split(""));
@@ -854,7 +865,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      *
      * @param player   A Player who cannot use an item.
      */
-    cannotDoThat(player: IPlayer): void {
+    public cannotDoThat(player: IPlayer): void {
         this.displayMessage(player, "OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
     }
 

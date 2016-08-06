@@ -24,20 +24,20 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartr.Th
         // ThingHittr becomes very non-performant if functions aren't generated
         // for each Thing constructor (optimization does not respect prototypal 
         // inheritance, sadly).
-        thing.FSP.ThingHitter.cacheChecksForType(thing.title, thing.groupType);
+        this.EightBitter.ThingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];
 
         if (typeof thing.id === "undefined") {
             thing.id = [
-                thing.FSP.AreaSpawner.getMapName(),
-                thing.FSP.AreaSpawner.getAreaName(),
+                this.EightBitter.AreaSpawner.getMapName(),
+                this.EightBitter.AreaSpawner.getAreaName(),
                 thing.title,
                 (thing.name || "Anonymous")
             ].join("::");
         }
     }
-    
+
     /**
      * Overriden Function to adds a new Thing to the game at a given position,
      * relative to the top left corner of the screen. The Thing is also 
@@ -54,8 +54,8 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartr.Th
      * @param useSavedInfo   Whether an Area's saved info in StateHolder should be 
      *                       applied to the Thing's position (by default, false).
      */
-    add(thingRaw: string | IThing | [string, any], left: number = 0, top: number = 0, useSavedInfo?: boolean): IThing {
-        let thing: IThing = super.add(thingRaw, left, top);
+    public add(thingRaw: string | IThing | [string, any], left: number = 0, top: number = 0, useSavedInfo?: boolean): IThing {
+        const thing: IThing = super.add(thingRaw, left, top) as IThing;
 
         if (useSavedInfo) {
             this.applySavedPosition(thing);
@@ -63,11 +63,11 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartr.Th
 
         if (thing.id) {
             this.EightBitter.StateHolder.applyChanges(thing.id, thing);
-            this.EightBitter.GroupHolder.getGroup("Thing")[thing.id] = thing;
+            (this.EightBitter.GroupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
         if (typeof thing.direction !== "undefined") {
-            this.EightBitter.animateCharacterSetDirection(thing, thing.direction);
+            this.EightBitter.animations.animateCharacterSetDirection(thing, thing.direction);
         }
 
         return thing;

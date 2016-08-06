@@ -22,7 +22,6 @@
 /// <reference path="../typings/TouchPassr.d.ts" />
 /// <reference path="../typings/UserWrappr.d.ts" />
 /// <reference path="../typings/WorldSeedr.d.ts" />
-/// <reference path="../typings/js-beautify.d.ts" />
 declare namespace GameStartr {
     /**
      * Extra CSS styles that may be added to a page.
@@ -592,7 +591,7 @@ declare namespace GameStartr {
         /**
          * A storage container for Quadrants this Thing may be in.
          */
-        quadrants: QuadsKeepr.IQuadrant[];
+        quadrants: QuadsKeepr.IQuadrant<IThing>[];
         /**
          * Any additional attributes triggered by thingProcessAttributes.
          */
@@ -664,7 +663,7 @@ declare namespace GameStartr {
     /**
      * A general-use game engine for 2D 8-bit games.
      */
-    class GameStartr extends EightBittr.EightBittr {
+    abstract class GameStartr extends EightBittr.EightBittr {
         /**
          * Loads GameStartr maps to spawn and unspawn areas on demand.
          */
@@ -745,7 +744,7 @@ declare namespace GameStartr {
         /**
          * Adjustable quadrant-based collision detection.
          */
-        QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        QuadsKeeper: QuadsKeepr.IQuadsKeepr<IThing>;
         /**
          * A cutscene runner for jumping between scenes and their routines.
          */
@@ -825,10 +824,6 @@ declare namespace GameStartr {
          * @param settings   Any additional user-provided settings.
          */
         constructor(settings?: IGameStartrSettings);
-        /**
-         * Resets the minor system components.
-         */
-        protected resetComponents(): void;
         /**
          * Resets the major system modules.
          *

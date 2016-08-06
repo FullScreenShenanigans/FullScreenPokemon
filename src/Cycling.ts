@@ -1,7 +1,7 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IPlayer, IThing } from "./IFullScreenPokemon";
+import { IArea, IPlayer } from "./IFullScreenPokemon";
 
 /**
  * Cycling functions used by FullScreenPokemon instances.
@@ -14,22 +14,22 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param area   The current Area.
      * @returns Whether the properties were changed.
      */
-    startCycling(thing: IPlayer): boolean {
+    public startCycling(thing: IPlayer): boolean {
         if (thing.surfing) {
             return false;
         }
 
-        if (!(<IArea>this.AreaSpawner.getArea()).allowCycling) {
+        if (!(this.EightBitter.AreaSpawner.getArea() as IArea).allowCycling) {
             return false;
         }
 
         thing.cycling = true;
-        thing.FSP.addStateHistory(thing, "speed", thing.speed);
-        thing.speed = thing.FSP.MathDecider.compute("speedCycling", thing);
+        this.EightBitter.storage.addStateHistory(thing, "speed", thing.speed);
+        thing.speed = this.EightBitter.MathDecider.compute("speedCycling", thing);
 
-        thing.FSP.addClass(thing, "cycling");
+        this.EightBitter.graphics.addClass(thing, "cycling");
 
-        thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.EightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
         return true;
     }
 
@@ -38,14 +38,14 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      *
      * @param thing   A Player to stop cycling.
      */
-    stopCycling(thing: IPlayer): void {
+    public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
-        thing.FSP.popStateHistory(thing, "speed");
+        this.EightBitter.storage.popStateHistory(thing, "speed");
 
-        thing.FSP.removeClass(thing, "cycling");
-        thing.FSP.TimeHandler.cancelClassCycle(thing, "cycling");
+        this.EightBitter.graphics.removeClass(thing, "cycling");
+        this.EightBitter.TimeHandler.cancelClassCycle(thing, "cycling");
 
-        thing.FSP.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.EightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**
@@ -54,12 +54,12 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param thing   A Player to start or stop cycling.
      * @returns Whether the Player started cycling.
      */
-    toggleCycling(thing: IPlayer): boolean {
+    public toggleCycling(thing: IPlayer): boolean {
         if (thing.cycling) {
-            thing.FSP.stopCycling(thing);
+            this.stopCycling(thing);
             return true;
         }
 
-        return thing.FSP.startCycling(thing);
+        return this.startCycling(thing);
     }
 }

@@ -1,7 +1,9 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IItemSchema, IRod, IPlayer, IThing } from "./IFullScreenPokemon";
+import {
+    IArea, IItemSchema, IMap, IPlayer, IPokemon, IRod, IWildPokemonSchema
+} from "./IFullScreenPokemon";
 
 /**
  * Fishing functions used by FullScreenPokemon instances.
@@ -16,36 +18,36 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
     startFishing(player: IPlayer, item: IItemSchema): void {
         if (player.bordering[player.direction] === undefined ||
             player.bordering[player.direction].title.indexOf("WaterEdge") === -1) {
-            player.FSP.cannotDoThat(player);
+            this.EightBitter.menus.cannotDoThat(player);
             return;
         }
 
-        let rod: IRod = <IRod>item;
+        let rod: IRod = item as IRod;
 
-        player.FSP.MenuGrapher.createMenu("GeneralText", {
+        this.EightBitter.MenuGrapher.createMenu("GeneralText", {
             "deleteOnFinish": true,
             "ignoreA": true,
             "ignoreB": true
         });
-        player.FSP.MenuGrapher.addMenuDialog(
+        this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!"
             ]);
-        player.FSP.MenuGrapher.setActiveMenu("GeneralText");
+        this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-        player.FSP.setWidth(player, 7, true, true);
-        player.FSP.addClass(player, "fishing");
+        this.EightBitter.physics.setWidth(player, 7, true, true);
+        this.EightBitter.graphics.addClass(player, "fishing");
 
-        player.FSP.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             function (): void {
-                if (!player.FSP.MathDecider.compute("canLandFish", player)) {
-                    player.FSP.playerFailedLandingFish(player);
+                if (!this.EightBitter.MathDecider.compute("canLandFish", player)) {
+                    this.EightBitter.playerFailedLandingFish(player);
                     return;
                 }
 
-                player.FSP.animateExclamation(player);
-                player.FSP.playerLandedFish(player, rod);
+                this.EightBitter.animateExclamation(player);
+                this.EightBitter.playerLandedFish(player, rod);
             },
             180
         );
@@ -58,24 +60,24 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param rod   The rod that will be used to fish.
      */
     playerLandedFish(player: IPlayer, rod: IRod): void {
-        let currentMap: IMap = <IMap>player.FSP.AreaSpawner.getMap(player.mapName),
+        let currentMap: IMap = <IMap>this.EightBitter.AreaSpawner.getMap(player.mapName),
             currentArea: IArea = <IArea>currentMap.areas[player.bordering[player.direction].areaName],
-            options: IWildPokemonSchema[] = currentArea.wildPokemon.fishing[rod.type],
-            chosen: IWildPokemonSchema = player.FSP.chooseRandomWildPokemon(options),
-            chosenPokemon: IPokemon = player.FSP.createPokemon(chosen);
+            options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type],
+            chosen: IWildPokemonSchema = this.EightBitter.battles.chooseRandomWildPokemon(options),
+            chosenPokemon: IPokemon = this.EightBitter.utilities.createPokemon(chosen);
 
-        player.FSP.TimeHandler.addEvent(
+        this.EightBitter.TimeHandler.addEvent(
             function (): void {
-                player.FSP.MenuGrapher.createMenu("GeneralText", {
+                this.EightBitter.MenuGrapher.createMenu("GeneralText", {
                     "deleteOnFinish": true
                 });
-                player.FSP.MenuGrapher.addMenuDialog(
+                this.EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "Oh! \n It's a bite!"
                     ],
                     function (): void {
-                        player.FSP.startBattle({
+                        this.EightBitter.startBattle({
                             "opponent": {
                                 "name": chosenPokemon.title,
                                 "actors": [chosenPokemon],
@@ -84,9 +86,9 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
                             }
                         });
                     });
-                player.FSP.MenuGrapher.setActiveMenu("GeneralText");
-                player.FSP.removeClass(player, "fishing");
-                player.FSP.setWidth(player, 8, true, true);
+                this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.EightBitter.removeClass(player, "fishing");
+                this.EightBitter.setWidth(player, 8, true, true);
             },
             140
         );
@@ -98,9 +100,9 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param player   A Player who does not land a fish.
      */
     playerFailedLandingFish(player: IPlayer): void {
-        player.FSP.MenuGrapher.deleteActiveMenu();
-        this.displayMessage(player, "rekt");
-        this.removeClass(player, "fishing");
-        this.setWidth(player, 8, true, true);
+        this.EightBitter.MenuGrapher.deleteActiveMenu();
+        this.EightBitter.menus.displayMessage(player, "rekt");
+        this.EightBitter.graphics.removeClass(player, "fishing");
+        this.EightBitter.physics.setWidth(player, 8, true, true);
     }
 }

@@ -20,6 +20,7 @@ require("gulp-shenanigans").initialize({
         "PixelRendr",
         "QuadsKeepr",
         "ScenePlayr",
+        "StateHoldr",
         "ThingHittr",
         "TimeHandlr",
         "TouchPassr",
@@ -28,5 +29,5 @@ require("gulp-shenanigans").initialize({
         "js-beautify"
     ],
     gulp: require("gulp"),
-    packageName: "GameStartr"
+    packageName: "FullScreenPokemon"
 });

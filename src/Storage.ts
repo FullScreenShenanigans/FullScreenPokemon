@@ -1,7 +1,11 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { ICharacter, ISaveFile, IStateSaveable } from "./IFullScreenPokemon";
+import { PokedexListingStatus } from "./Constants";
+import {
+    ICharacter, IPokedex, IPokedexInformation,
+    IPokemonListing, ISaveFile, IStateSaveable
+} from "./IFullScreenPokemon";
 
 /**
  * Storage functions used by FullScreenPokemon instances.
@@ -59,10 +63,11 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
     }
 
     /**
-     * Saves all persistant information about the
-     * current game state.
+     * Saves all persistant information about the current game state.
+     * 
+     * @param showText   Whether to display a status menu (by default, false).
      */
-    saveGame(): void {
+    public saveGame(showText: boolean = true): void {
         const ticksRecorded: number = this.EightBitter.FPSAnalyzer.getNumRecorded();
 
         this.EightBitter.ItemsHolder.setItem("map", this.EightBitter.AreaSpawner.getMapName());
@@ -76,6 +81,10 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         this.EightBitter.StateHolder.saveCollection();
         this.EightBitter.ItemsHolder.saveAll();
 
+        if (!showText) {
+            return;
+        }
+
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText", [
@@ -83,15 +92,26 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             ]);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.MenuGrapher.registerB.bind(this.EightBitter.MenuGrapher),
+            (): void => this.EightBitter.MenuGrapher.deleteMenu("GeneralText"),
             49);
+    }
+
+    /**
+     * 
+     */
+    public autoSave(): void {
+        if (this.EightBitter.ItemsHolder.getAutoSave()
+            && !this.EightBitter.ScenePlayer.getCutscene()
+            && this.EightBitter.AreaSpawner.getMapName() !== "Blank") {
+            this.saveGame(false);
+        }
     }
 
     /**
      * Saves current game state and downloads
      * it onto the client's computer as a JSON file.
      */
-    downloadSaveGame(): void {
+    public downloadSaveGame(): void {
         this.saveGame();
 
         const link: HTMLAnchorElement = document.createElement("a");
@@ -205,7 +225,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             throw new Error(`No state saved for '${title}'.`);
         }
 
-        thing[title] = stateHistory.pop();
+        (thing as any)[title] = stateHistory.pop();
     }
 
     /**
@@ -230,7 +250,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        let pokedex: IPokedex = this.ItemsHolder.getItem("Pokedex"),
+        let pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex"),
             title: string = titleRaw.join(""),
             information: IPokedexInformation = pokedex[title],
             caught: boolean = status === PokedexListingStatus.Caught,
@@ -252,7 +272,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             };
         }
 
-        this.ItemsHolder.setItem("Pokedex", pokedex);
+        this.EightBitter.ItemsHolder.setItem("Pokedex", pokedex);
     }
 
     /**
@@ -262,8 +282,8 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): IPokedexInformation[] {
-        let pokedex: IPokedex = this.ItemsHolder.getItem("Pokedex"),
-            pokemon: { [i: string]: IPokemonListing } = this.MathDecider.getConstant("pokemon"),
+        let pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex"),
+            pokemon: { [i: string]: IPokemonListing } = this.EightBitter.MathDecider.getConstant("pokemon"),
             titlesSorted: string[] = Object.keys(pokedex)
                 .sort(function (a: string, b: string): number {
                     return pokemon[a].number - pokemon[b].number;

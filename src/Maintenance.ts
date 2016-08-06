@@ -2,7 +2,7 @@
 
 import { Scrollability } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { ICharacter, IPlayer, IThing } from "./IFullScreenPokemon";
+import { ICharacter, IGrass, IPlayer, IThing } from "./IFullScreenPokemon";
 
 /**
  * Maintenance functions used by FullScreenPokemon instances.
@@ -32,7 +32,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
     maintainCharacters(characters: ICharacter[]): void {
         for (let i: number = 0; i < characters.length; i += 1) {
             const character: ICharacter = characters[i];
-            this.EightBitter.shiftCharacter(character);
+            this.EightBitter.physics.shiftCharacter(character);
 
             if (character.shouldWalk && !this.EightBitter.MenuGrapher.getActiveMenu()) {
                 character.onWalkingStart(character, character.direction);
@@ -54,7 +54,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
             }
 
             this.EightBitter.QuadsKeeper.determineThingQuadrants(character);
-            this.EightBitter.ThingHitter.checkHitsForThing(character);
+            this.EightBitter.ThingHitter.checkHitsForThing(character as any);
         }
     }
 
@@ -67,8 +67,8 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
      */
     maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
-        if (!this.EightBitter.isThingWithinGrass(thing, other)) {
-            this.EightBitter.killNormal(thing.shadow);
+        if (!this.EightBitter.physics.isThingWithinGrass(thing, other)) {
+            this.EightBitter.physics.killNormal(thing.shadow);
             thing.canvas.height = thing.height * this.EightBitter.unitsize;
             this.EightBitter.PixelDrawer.setThingSprite(thing);
 

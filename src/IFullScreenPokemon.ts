@@ -39,12 +39,12 @@ export interface IMapScreenr extends MapScreenr.IMapScreenr {
     /**
      * What direction the player is currently facing.
      */
-    playerDirection: Direction;
+    playerDirection: number;
 
     /**
      * What form of scrolling is currently capable on the screen.
      */
-    scrollability: Scrollability;
+    scrollability: number;
 
     /**
      * What theme is currently playing.
@@ -66,7 +66,7 @@ export interface IBattleMovrCustoms extends GameStartr.IGameStartrSettingsObject
     /**
      * The parent IGameStartr controlling Things.
      */
-    GameStarter: GameStartr.IGameStartr;
+    GameStarter: GameStartr.GameStartr;
 
     /**
      * The IMenuGraphr handling menu creation.
@@ -211,7 +211,7 @@ export interface IMathConstants {
 /**
  * Calculation Functions for an IMathDecidr, keyed by name.
  */
-export interface IMathEquations extends MathDecidr.IEquationContainer {
+export interface IMathEquations extends MathDecidr.IEquations {
     /**
      * Generates a new Pokemon with the given traits.
      * 
@@ -512,9 +512,9 @@ export interface IMathEquations extends MathDecidr.IEquationContainer {
  */
 export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject {
     /**
-     * The controlling IGameStartr.
+     * The controlling GameStartr.
      */
-    GameStarter?: GameStartr.IGameStartr;
+    GameStarter?: GameStartr.GameStartr;
 
     /**
      * Known menu schemas, keyed by name.
@@ -743,7 +743,7 @@ export interface ISaveFile {
 /**
  * A Map parsed from its raw JSON-friendly description.
  */
-export interface IMap extends MapsCreatr.IMapsCreatrMap, IStateSaveable {
+export interface IMap extends MapsCreatr.IMap, IStateSaveable {
     /**
      * A listing of areas in the Map, keyed by name.
      */
@@ -776,7 +776,7 @@ export interface IMap extends MapsCreatr.IMapsCreatrMap, IStateSaveable {
 /**
  * An Area parsed from a raw JSON-friendly Map description.
  */
-export interface IArea extends MapsCreatr.IMapsCreatrArea, IStateSaveable {
+export interface IArea extends MapsCreatr.IArea, IStateSaveable {
     /**
      * Whether the Area allows bicycling.
      */
@@ -937,7 +937,7 @@ export interface IWildPokemonSchema {
 /**
  * A Location parsed from a raw JSON-friendly Map description.
  */
-export interface ILocation extends MapsCreatr.IMapsCreatrLocation, IStateSaveable {
+export interface ILocation extends MapsCreatr.ILocation, IStateSaveable {
     /**
      * The Area this Location is a part of.
      */
@@ -951,7 +951,7 @@ export interface ILocation extends MapsCreatr.IMapsCreatrLocation, IStateSaveabl
     /**
      * A direction to immediately face the player towards.
      */
-    direction?: Direction;
+    direction?: number;
 
     /**
      * Whether the player should immediately walk forward.
@@ -1234,7 +1234,7 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
     /**
      * A callback for after showing the player menu.
      */
-    onShowPlayerMenu?: (FSP: FullScreenPokemon) => void;
+    onShowPlayerMenu?: () => void;
 
     /**
      * The opponent, including its actors (Pokemon) and settings.
@@ -1287,7 +1287,7 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
 /**
  * A trainer in battle, namely either the player or opponent.
  */
-export interface IBattleThingInfo extends BattleMovr.IBattleThingsInfo {
+export interface IBattleThingInfo extends BattleMovr.IBattleThingInfo {
     /**
      * The trainer's available Pokemon.
      */
@@ -1396,7 +1396,7 @@ export interface IPreThing extends MapsCreatr.IPreThing {
     /**
      * A starting direction to face (by default, up).
      */
-    direction?: Direction;
+    direction?: number;
 
     /**
      * The in-game Thing.
@@ -1428,11 +1428,6 @@ export interface IPreThing extends MapsCreatr.IPreThing {
  * An in-game Thing with size, velocity, position, and other information.
  */
 export interface IThing extends GameStartr.IThing, IStateSaveable {
-    /**
-     * The parent IFullScreenPokemon controlling this Thing.
-     */
-    FSP: FullScreenPokemon;
-
     /**
      * What to do when a Character, commonly a Player, activates this Thing.
      * 
@@ -1466,9 +1461,9 @@ export interface IThing extends GameStartr.IThing, IStateSaveable {
     collide: (thing: ICharacter, other: IThing) => boolean;
 
     /**
-     * Animation cycles set by the FSP's ITimeHandlr.
+     * Animation cycles set by the ITimeHandlr.
      */
-    cycles?: TimeHandlr.ITimeCycles;
+    cycles: TimeHandlr.ITimeCycles;
 
     /**
      * Whether this has been killed.
@@ -1478,7 +1473,7 @@ export interface IThing extends GameStartr.IThing, IStateSaveable {
     /**
      * What cardinal direction this is facing.
      */
-    direction: Direction;
+    direction: number;
 
     /**
      * Whether this is undergoing a "flicker" effect by toggling .hidden on an interval.
@@ -1544,6 +1539,11 @@ export interface IThing extends GameStartr.IThing, IStateSaveable {
      * Top vertical tolerance for not colliding with another Thing.
      */
     tolTop: number;
+
+    /**
+     * Keying by a Direction gives the corresponding bounding box edge.
+     */
+    [direction: number]: number;
 }
 
 /**
@@ -1580,7 +1580,7 @@ export interface ICharacter extends IThing {
     /**
      * Whether dialog should definitely be treated as an Array of one Dialog each direction.
      */
-    dialogDirections?: Direction[];
+    dialogDirections?: number[];
 
     /**
      * A single set of dialog (or dialog directions) to play after the primary dialog
@@ -1597,7 +1597,7 @@ export interface ICharacter extends IThing {
     /**
      * A direction to always face after a dialog completes.
      */
-    directionPreferred?: Direction;
+    directionPreferred?: number;
 
     /**
      * How far this will travel while walking, such as hopping over a ledge. 
@@ -1655,7 +1655,7 @@ export interface ICharacter extends IThing {
      * @param character   This character that has started walking.
      * @param direction   The direction the Character is facing.
      */
-    onWalkingStart: (character: ICharacter, direction: Direction) => void;
+    onWalkingStart: (character: ICharacter, direction: number) => void;
 
     /**
      * A callback for when this stops a single walking step, commonly to keep walking.
@@ -1674,12 +1674,12 @@ export interface ICharacter extends IThing {
     /**
      * Whether this is a Player.
      */
-    player?: this is IPlayer;
+    player?: boolean;
 
     /**
      * What direction to push the Player back after a dialog, if any.
      */
-    pushDirection?: Direction;
+    pushDirection?: number;
 
     /**
      * Steps for the Player to take after being pushed back.
@@ -1694,7 +1694,7 @@ export interface ICharacter extends IThing {
     /**
      * Directions this is allowed to roam.
      */
-    roamingDirections?: Direction[];
+    roamingDirections?: number[];
 
     /**
      * How far this can "see" a Player to walk forward and trigger a dialog.
@@ -1754,7 +1754,7 @@ export interface ICharacter extends IThing {
     /**
      * Where this will turn to when its current walking step is complete.
      */
-    turning?: Direction;
+    turning?: number;
 
     /**
      * Whether this is currently walking.
@@ -1764,7 +1764,7 @@ export interface ICharacter extends IThing {
     /**
      * A queue of walking commands in waiting, used by its follower.
      */
-    walkingCommands?: Direction[];
+    walkingCommands?: number[];
 
     /**
      * The class cycle for flipping back and forth while walking.
@@ -1871,7 +1871,7 @@ export interface IPlayer extends ICharacter {
     /**
      * A next direction to turn to after the current walking step.
      */
-    nextDirection?: Direction;
+    nextDirection?: number;
 }
 
 /**
@@ -1956,7 +1956,7 @@ export interface IDetector extends IThing {
     /**
      * Whether this requires a direction to be activated.
      */
-    requireDirection?: Direction;
+    requireDirection?: number;
 
     /**
      * Whether a Player needs to be fully within this Detector to trigger it.
@@ -2051,7 +2051,7 @@ export interface IMenuTriggerer extends IDetector {
     /**
      * What direction to push the activating Player back after a dialog, if any.
      */
-    pushDirection?: Direction;
+    pushDirection?: number;
 
     /**
      * Steps for the activating Player to take after being pushed back.
@@ -2243,7 +2243,7 @@ export type IWalkingOnStop = IWalkingOnStopCommand[];
  * taking in the current direction), a String (direction to face), Direction (direction to
  * face), or callback Function to evaluate.
  */
-export type IWalkingOnStopCommand = number | string | Direction | IWalkingOnStopCommandFunction;
+export type IWalkingOnStopCommand = number | string | IWalkingOnStopCommandFunction;
 
 /**
  * A callback to run on a Character mid-step. This may return true to indicate to the
@@ -2278,7 +2278,7 @@ export interface IColorFadeSettings {
     /**
      * A callback for when the animation completes.
      */
-    callback?: (FSP: FullScreenPokemon) => void;
+    callback?: () => void;
 }
 
 /**
@@ -2298,7 +2298,7 @@ export interface ILevelUpStatsMenuSettings {
     /**
      * A callback for when the menu is deleted.
      */
-    onMenuDelete?: (FSP: FullScreenPokemon) => void;
+    onMenuDelete?: () => void;
 
     /**
      * How to position the menu within its container.

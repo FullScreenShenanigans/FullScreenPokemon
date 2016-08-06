@@ -1,8 +1,7 @@
 /// <reference path="../typings/GameStartr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IArea, IAreaBoundaries, IMap, IPreThing } from "./IFullScreenPokemon";
-import { Direction } from "./Constants";
+import { IBattleInfo, IThing } from "./IFullScreenPokemon";
 
 /**
  * Graphics functions used by FullScreenPokemon instances.
@@ -15,14 +14,14 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.
      * @returns The unique Things that will be kept.
      */
     public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        let things: IThing[] = [this.player],
-            used: { [i: string]: IThing } = {
-                [this.player.title]: this.player
-            };
+        const things: IThing[] = [this.EightBitter.player];
+        const used: { [i: string]: IThing } = {
+            [this.EightBitter.player.title]: this.EightBitter.player
+        };
 
-        for (let thingRaw of thingsRaw) {
-            let thing: IThing = thingRaw.constructor === String
-                ? this.getThingById(<string>thingRaw)
+        for (const thingRaw of thingsRaw) {
+            const thing: IThing = thingRaw.constructor === String
+                ? this.EightBitter.utilities.getThingById(<string>thingRaw)
                 : <IThing>thingRaw;
 
             if (!used[thing.title]) {
@@ -46,8 +45,8 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.
             return;
         }
 
-        for (let keptThing of keptThings) {
-            this.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
+        for (const keptThing of keptThings) {
+            this.EightBitter.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
         }
     }
 
@@ -63,8 +62,8 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.
             return;
         }
 
-        for (let keptThing of keptThings) {
-            this.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
+        for (const keptThing of keptThings) {
+            this.EightBitter.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
         }
     }
 }

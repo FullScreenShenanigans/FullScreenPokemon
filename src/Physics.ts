@@ -2,7 +2,7 @@
 
 import { Direction } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { ICharacter, IGrass, IThing } from "./IFullScreenPokemon";
+import { ICharacter, IGrass, IPlayer, IThing } from "./IFullScreenPokemon";
 
 /**
  * Physics functions used by FullScreenPokemon instances.
@@ -147,7 +147,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      */
     setPlayerDirection(thing: IPlayer, direction: Direction): void {
         thing.direction = direction;
-        this.MapScreener.playerDirection = direction;
+        this.EightBitter.MapScreener.playerDirection = direction;
         thing.shouldWalk = true;
     }
 
@@ -168,13 +168,11 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
         thing.numquads = 0;
         thing.movement = undefined;
 
-        if (thing.FSP) {
-            thing.FSP.TimeHandler.cancelAllCycles(thing);
-            thing.FSP.ModAttacher.fireEvent("onKillNormal", thing);
+        this.EightBitter.TimeHandler.cancelAllCycles(thing);
+        this.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
 
-            if (thing.id) {
-                delete thing.FSP.GroupHolder.getGroup("Thing")[thing.id];
-            }
+        if (thing.id) {
+            delete (this.EightBitter.GroupHolder.getGroup("Thing") as any)[thing.id];
         }
     }
 }

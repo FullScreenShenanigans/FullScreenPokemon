@@ -47,22 +47,22 @@ export enum Scrollability {
 /**
  * How much to expand each pixel from raw sizing measurements to in-game.
  */
-export const unitsize: number = 4;
+export const Unitsize: number = 4;
 
 /**
  * Static scale of 2, to exand to two pixels per one game pixel.
  */
-export const scale: number = 2;
+export const Scale: number = 2;
 
 /**
  * Quickly tapping direction keys means to look in a direction, not walk.
  */
-export const inputTimeTolerance: number = 4;
+export const InputTimeTolerance: number = 4;
 
 /**
  * The allowed uppercase keys to be shown in a keyboard.
  */
-export const keysUppercase: string[] = [
+export const KeysUppercase: string[] = [
     "A", "J", "S", "Times", "-",
     "B", "K", "T", "(", "?",
     "C", "L", "U", ")", "!",
@@ -77,7 +77,7 @@ export const keysUppercase: string[] = [
 /**
  * The allowed lowercase keys to be shown in a keyboard.
  */
-export const keysLowercase: string[] = [
+export const KeysLowercase: string[] = [
     "a", "j", "s", "Times", "-",
     "b", "k", "t", "(", "?",
     "c", "l", "u", ")", "!",

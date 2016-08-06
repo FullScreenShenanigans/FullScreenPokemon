@@ -1,9 +1,9 @@
 /// <reference path="../typings/ObjectMakr.d.ts" />
 declare namespace QuadsKeepr {
     /**
-     * Any bounding box that can be within quadrant(s).
+     * Any rectangular bounding box.
      */
-    interface IThing {
+    interface IBoundingBox {
         /**
          * The top border of the bounding box.
          */
@@ -24,6 +24,11 @@ declare namespace QuadsKeepr {
          * Whether this has been changed since the last game tick.
          */
         changed: boolean;
+    }
+    /**
+     * A bounding box that can be within quadrants.
+     */
+    interface IThing extends IBoundingBox {
         /**
          * Which group of Things this belongs to.
          */
@@ -43,13 +48,15 @@ declare namespace QuadsKeepr {
         /**
          * Quadrants this is a member of.
          */
-        quadrants: IQuadrant[];
+        quadrants: IQuadrant<IThing>[];
     }
     /**
      * Some collection of Thing groups, keyed by group name.
+     *
+     * @type T   The type of Thing.
      */
-    interface IThingsCollection {
-        [i: string]: IThing[];
+    interface IThingsCollection<T extends IThing> {
+        [i: string]: T[];
     }
     /**
      * For each group name in a Quadrant, how many Things it has of that name.
@@ -62,12 +69,14 @@ declare namespace QuadsKeepr {
     }
     /**
      * A single cell in a grid structure containing any number of Things.
+     *
+     * @type T   The type of Thing.
      */
-    interface IQuadrant extends IThing {
+    interface IQuadrant<T extends IThing> extends IBoundingBox {
         /**
          * Groups of Things known to overlap (be within) the Quadrant, by group.
          */
-        things: IThingsCollection;
+        things: IThingsCollection<T>;
         /**
          * How many Things are in the Quadrant across all groups.
          */
@@ -75,8 +84,10 @@ declare namespace QuadsKeepr {
     }
     /**
      * A straight line of Quadrants, border-to-border.
+     *
+     * @type T   The type of Thing.
      */
-    interface IQuadrantCollection {
+    interface IQuadrantCollection<T extends IThing> {
         /**
          * The leftmost border (of the leftmost Quadrant).
          */
@@ -88,25 +99,29 @@ declare namespace QuadsKeepr {
         /**
          * The Quadrants, in order.
          */
-        quadrants: IQuadrant[];
+        quadrants: IQuadrant<T>[];
     }
     /**
      * A complete row of Quadrants, border-to-border.
+     *
+     * @type T   The type of Thing.
      */
-    interface IQuadrantRow extends IQuadrantCollection {
+    interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
         /**
          * The Quadrants, in order from left to right.
          */
-        quadrants: IQuadrant[];
+        quadrants: IQuadrant<T>[];
     }
     /**
      * A complete column of Quadrants, border-to-border.
+     *
+     * @type T   The type of Thing.
      */
-    interface IQuadrantCol extends IQuadrantCollection {
+    interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
         /**
          * The Quadrants, in order from top to bottom.
          */
-        quadrants: IQuadrant[];
+        quadrants: IQuadrant<T>[];
     }
     /**
      * A callback for a newly added or removed area from the grid.
@@ -175,8 +190,10 @@ declare namespace QuadsKeepr {
     }
     /**
      * Adjustable quadrant-based collision detection.
+     *
+     * @type T   The type of Thing contained in the quadrants.
      */
-    interface IQuadsKeepr {
+    interface IQuadsKeepr<T extends IThing> {
         /**
          * The top boundary for all quadrants.
          */
@@ -196,11 +213,11 @@ declare namespace QuadsKeepr {
         /**
          * @returns The listing of Quadrants grouped by row.
          */
-        getQuadrantRows(): IQuadrantRow[];
+        getQuadrantRows(): IQuadrantRow<T>[];
         /**
          * @returns The listing of Quadrants grouped by column.
          */
-        getQuadrantCols(): IQuadrantCol[];
+        getQuadrantCols(): IQuadrantCol<T>[];
         /**
          * @returns How many Quadrant rows there are.
          */
@@ -238,7 +255,7 @@ declare namespace QuadsKeepr {
          *                     with the new row's bounding box.
          * @returns The newly created QuadrantRow.
          */
-        pushQuadrantRow(callUpdate?: boolean): IQuadrantRow;
+        pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<T>;
         /**
          * Adds a QuadrantCol to the end of the quadrantCols Array.
          *
@@ -246,7 +263,7 @@ declare namespace QuadsKeepr {
          *                     with the new col's bounding box.
          * @returns The newly created QuadrantCol.
          */
-        pushQuadrantCol(callUpdate?: boolean): IQuadrantCol;
+        pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<T>;
         /**
          * Removes the last QuadrantRow from the end of the quadrantRows Array.
          *
@@ -269,7 +286,7 @@ declare namespace QuadsKeepr {
          *                     with the new row's bounding box.
          * @returns The newly created QuadrantRow.
          */
-        unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow;
+        unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow<T>;
         /**
          * Adds a QuadrantCol to the beginning of the quadrantCols Array.
          *
@@ -277,7 +294,7 @@ declare namespace QuadsKeepr {
          *                     with the new row's bounding box.
          * @returns The newly created QuadrantCol.
          */
-        unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol;
+        unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol<T>;
         /**
          * Removes a QuadrantRow from the beginning of the quadrantRows Array.
          *
@@ -319,12 +336,14 @@ declare namespace QuadsKeepr {
          * @param group   The grouping under which the Quadrant should store the
          *                Thing.
          */
-        setThingInQuadrant(thing: IThing, quadrant: IQuadrant, group: string): void;
+        setThingInQuadrant(thing: IThing, quadrant: IQuadrant<T>, group: string): void;
     }
     /**
      * Adjustable quadrant-based collision detection.
+     *
+     * @type TThing   The type of Thing contained in the quadrants.
      */
-    class QuadsKeepr implements IQuadsKeepr {
+    class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         /**
          * The top boundary for all quadrants.
          */
@@ -412,11 +431,11 @@ declare namespace QuadsKeepr {
         /**
          * @returns The listing of Quadrants grouped by row.
          */
-        getQuadrantRows(): IQuadrantRow[];
+        getQuadrantRows(): IQuadrantRow<TThing>[];
         /**
          * @returns The listing of Quadrants grouped by column.
          */
-        getQuadrantCols(): IQuadrantCol[];
+        getQuadrantCols(): IQuadrantCol<TThing>[];
         /**
          * @returns How many Quadrant rows there are.
          */
@@ -454,7 +473,7 @@ declare namespace QuadsKeepr {
          *                     with the new row's bounding box.
          * @returns The newly created QuadrantRow.
          */
-        pushQuadrantRow(callUpdate?: boolean): IQuadrantRow;
+        pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing>;
         /**
          * Adds a QuadrantCol to the end of the quadrantCols Array.
          *
@@ -462,7 +481,7 @@ declare namespace QuadsKeepr {
          *                     with the new col's bounding box.
          * @returns The newly created QuadrantCol.
          */
-        pushQuadrantCol(callUpdate?: boolean): IQuadrantCol;
+        pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing>;
         /**
          * Removes the last QuadrantRow from the end of the quadrantRows Array.
          *
@@ -485,7 +504,7 @@ declare namespace QuadsKeepr {
          *                     with the new row's bounding box.
          * @returns The newly created QuadrantRow.
          */
-        unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow;
+        unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing>;
         /**
          * Adds a QuadrantCol to the beginning of the quadrantCols Array.
          *
@@ -493,7 +512,7 @@ declare namespace QuadsKeepr {
          *                     with the new row's bounding box.
          * @returns The newly created QuadrantCol.
          */
-        unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol;
+        unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing>;
         /**
          * Removes a QuadrantRow from the beginning of the quadrantRows Array.
          *
@@ -516,7 +535,7 @@ declare namespace QuadsKeepr {
          * @param group   The name of the group to have Quadrants determined.
          * @param things   The listing of Things in that group.
          */
-        determineAllQuadrants(group: string, things: IThing[]): void;
+        determineAllQuadrants(group: string, things: TThing[]): void;
         /**
          * Determines the Quadrants for a single Thing. The starting row and column
          * indices are calculated so every Quadrant within them should contain the
@@ -525,7 +544,7 @@ declare namespace QuadsKeepr {
          *
          * @param thing   A Thing whose Quadrants are to be determined.
          */
-        determineThingQuadrants(thing: IThing): void;
+        determineThingQuadrants(thing: TThing): void;
         /**
          * Sets a Thing to be inside a Quadrant. The two are marked so they can
          * recognize each other's existence later.
@@ -535,7 +554,7 @@ declare namespace QuadsKeepr {
          * @param group   The grouping under which the Quadrant should store the
          *                Thing.
          */
-        setThingInQuadrant(thing: IThing, quadrant: IQuadrant, group: string): void;
+        setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void;
         /**
          * Adjusts the offset measurements by checking if rows or columns have gone
          * over the limit, which requires rows or columns be removed and new ones

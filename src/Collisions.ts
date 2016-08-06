@@ -1,7 +1,8 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
+import { Direction } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IThing } from "./IFullScreenPokemon";
+import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge } from "./IFullScreenPokemon";
 
 /**
  * Collision functions used by FullScreenPokemon instances.
@@ -14,16 +15,14 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @returns A Function that generates a canThingCollide checker.
      */
-    generateCanThingCollide(): (thing: IThing) => boolean {
+    public generateCanThingCollide(): (thing: IThing) => boolean {
         /**
          * Generic checker for canCollide. This just returns if the Thing is alive.
          * 
          * @param thing
          * @returns Whether the thing can collide.
          */
-        return function canThingCollide(thing: IThing): boolean {
-            return thing.alive;
-        };
+        return (thing: IThing): boolean => thing.alive;
     }
 
     /**
@@ -33,7 +32,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @returns A Function that generates isCharacterTouchingCharacter. 
      */
-    generateIsCharacterTouchingCharacter(): (thing: ICharacter, other: ICharacter) => boolean {
+    public generateIsCharacterTouchingCharacter(): (thing: ICharacter, other: ICharacter) => boolean {
         /**
          * Generic checker for whether two characters are touching each other.
          * This checks to see if either has the nocollide flag, or if they're
@@ -44,9 +43,6 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          * @returns Whether thing is touching other.
          */
         return function isCharacterTouchingCharacter(thing: ICharacter, other: ICharacter): boolean {
-            // if (other.xvel || other.yvel) {
-            //     // check destination...
-            // }
             return (
                 !thing.nocollide && !other.nocollide
                 && thing.right >= (other.left + other.tolLeft)
@@ -63,7 +59,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @returns A Function that generates isCharacterTouchingSolid.
      */
-    generateIsCharacterTouchingSolid(): (thing: ICharacter, other: IThing) => boolean {
+    public generateIsCharacterTouchingSolid(): (thing: ICharacter, other: IThing) => boolean {
         /**
          * Generic checker for whether a character is touching a solid. The
          * hidden, collideHidden, and nocollidesolid flags are most relevant.
@@ -89,7 +85,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @returns A Function that generates hitCharacterThing.
      */
-    generateHitCharacterThing(): (thing: ICharacter, other: IThing) => boolean {
+    public generateHitCharacterThing(): (thing: ICharacter, other: IThing) => boolean {
         /**
          * Generic callback for when a Character touches a Thing. Other may have a
          * .collide to override with, but normally this just sets thing's position.
@@ -112,36 +108,36 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
-            switch (thing.FSP.getDirectionBordering(thing, other)) {
+            switch (this.EightBitter.getDirectionBordering(thing, other)) {
                 case Direction.Top:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
-                        thing.FSP.setThingBordering(thing, other, Direction.Top);
-                        thing.FSP.setThingBordering(other, thing, Direction.Bottom);
-                        thing.FSP.setTop(thing, other.bottom - other.tolBottom);
+                        this.EightBitter.setThingBordering(thing, other, Direction.Top);
+                        this.EightBitter.setThingBordering(other, thing, Direction.Bottom);
+                        this.EightBitter.setTop(thing, other.bottom - other.tolBottom);
                     }
                     break;
 
                 case Direction.Right:
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
-                        thing.FSP.setThingBordering(thing, other, Direction.Right);
-                        thing.FSP.setThingBordering(other, thing, Direction.Left);
-                        thing.FSP.setRight(thing, other.left + other.tolLeft);
+                        this.EightBitter.setThingBordering(thing, other, Direction.Right);
+                        this.EightBitter.setThingBordering(other, thing, Direction.Left);
+                        this.EightBitter.setRight(thing, other.left + other.tolLeft);
                     }
                     break;
 
                 case Direction.Bottom:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
-                        thing.FSP.setThingBordering(thing, other, Direction.Bottom);
-                        thing.FSP.setThingBordering(other, thing, Direction.Top);
-                        thing.FSP.setBottom(thing, other.top + other.tolTop);
+                        this.EightBitter.setThingBordering(thing, other, Direction.Bottom);
+                        this.EightBitter.setThingBordering(other, thing, Direction.Top);
+                        this.EightBitter.setBottom(thing, other.top + other.tolTop);
                     }
                     break;
 
                 case Direction.Left:
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
-                        thing.FSP.setThingBordering(thing, other, Direction.Left);
-                        thing.FSP.setThingBordering(other, thing, Direction.Right);
-                        thing.FSP.setLeft(thing, other.right - other.tolRight);
+                        this.EightBitter.setThingBordering(thing, other, Direction.Left);
+                        this.EightBitter.setThingBordering(other, thing, Direction.Right);
+                        this.EightBitter.setLeft(thing, other.right - other.tolRight);
                     }
                     break;
 
@@ -180,10 +176,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         if (other.active) {
-            if (!other.requireOverlap || thing.FSP.isThingWithinOther(thing, other)) {
+            if (!other.requireOverlap || this.EightBitter.physics.isThingWithinOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
-                    && !thing.keys[other.requireDirection]
+                    && !(thing.keys as any)[other.requireDirection]
                     && !thing.allowDirectionAsKeys
                     && thing.direction !== other.requireDirection
                 ) {
@@ -193,14 +189,14 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                 if (other.singleUse) {
                     other.active = false;
                 }
-                other.activate.call(thing.FSP, thing, other);
+                other.activate(thing, other);
             }
 
             return true;
         }
 
         // If the thing is moving towards the triggerer, it's now active
-        if (thing.direction === thing.FSP.getDirectionBordering(thing, other)) {
+        if (thing.direction === this.EightBitter.physics.getDirectionBordering(thing, other)) {
             other.active = true;
             return true;
         }
@@ -214,11 +210,11 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Character with dialog triggered by thing.
      */
     collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
-        let dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog,
-            direction: Direction;
+        let dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog;
+        let direction: Direction;
 
         if (other.cutscene) {
-            thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
+            this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
                 "thing": thing,
                 "triggerer": other
             });
@@ -228,10 +224,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
             return;
         }
 
-        direction = thing.FSP.getDirectionBetween(other, thing);
+        direction = this.EightBitter.physics.getDirectionBetween(other, thing);
 
         if (other.dialogDirections) {
-            dialog = (<MenuGraphr.IMenuDialogRaw[]>dialog)[direction];
+            dialog = (dialog as MenuGraphr.IMenuDialogRaw[])[direction];
             if (!dialog) {
                 return;
             }
@@ -241,20 +237,20 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         other.talking = true;
         thing.canKeyWalking = false;
 
-        if (!thing.FSP.MenuGrapher.getActiveMenu()) {
-            thing.FSP.MenuGrapher.createMenu("GeneralText", {
+        if (!this.EightBitter.MenuGrapher.getActiveMenu()) {
+            this.EightBitter.MenuGrapher.createMenu("GeneralText", {
                 "deleteOnFinish": !other.dialogOptions
             });
-            thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
-            thing.FSP.MenuGrapher.addMenuDialog(
+            this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+            this.EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                thing.FSP.animateCharacterDialogFinish.bind(thing.FSP, thing, other)
+                (): void => this.EightBitter.animations.animateCharacterDialogFinish(thing, other)
             );
         }
 
         if (other.switchDirectionOnDialog) {
-            thing.FSP.animateCharacterSetDirection(other, direction);
+            this.EightBitter.animations.animateCharacterSetDirection(other, direction);
         }
     }
 
@@ -267,50 +263,50 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
     collidePokeball(thing: IPlayer, other: IPokeball): void {
         switch (other.action) {
             case "item":
-                thing.FSP.MenuGrapher.createMenu("GeneralText");
-                thing.FSP.MenuGrapher.addMenuDialog(
+                this.EightBitter.MenuGrapher.createMenu("GeneralText");
+                this.EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                     ],
                     function (): void {
-                        thing.FSP.MenuGrapher.deleteActiveMenu();
-                        thing.FSP.killNormal(other);
-                        thing.FSP.StateHolder.addChange(
+                        this.EightBitter.MenuGrapher.deleteActiveMenu();
+                        this.EightBitter.killNormal(other);
+                        this.EightBitter.StateHolder.addChange(
                             other.id, "alive", false
                         );
                     }
                 );
-                thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-                thing.FSP.addItemToBag(other.item, other.amount);
+                this.EightBitter.storage.addItemToBag(other.item, other.amount);
                 break;
 
             case "cutscene":
-                thing.FSP.ScenePlayer.startCutscene(other.cutscene, {
+                this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
                     "player": thing,
                     "triggerer": other
                 });
                 if (other.routine) {
-                    thing.FSP.ScenePlayer.playRoutine(other.routine);
+                    this.EightBitter.ScenePlayer.playRoutine(other.routine);
                 }
                 break;
 
             case "pokedex":
-                thing.FSP.openPokedexListing(other.pokemon);
+                this.EightBitter.menus.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
-                thing.FSP.MenuGrapher.createMenu("GeneralText");
-                thing.FSP.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
-                thing.FSP.MenuGrapher.setActiveMenu("GeneralText");
+                this.EightBitter.MenuGrapher.createMenu("GeneralText");
+                this.EightBitter.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
                 break;
 
             case "yes/no":
-                thing.FSP.MenuGrapher.createMenu("Yes/No", {
+                this.EightBitter.MenuGrapher.createMenu("Yes/No", {
                     "killOnB": ["GeneralText"]
                 });
-                thing.FSP.MenuGrapher.addMenuList("Yes/No", {
+                this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
                     "options": [
                         {
                             "text": "YES",
@@ -320,7 +316,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                             "callback": console.log.bind(console, "What do, no?")
                         }]
                 });
-                thing.FSP.MenuGrapher.setActiveMenu("Yes/No");
+                this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
                 break;
 
             default:
@@ -335,31 +331,31 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   The specific Grass that thing is within.
      */
     collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
-        if (thing.grass || !thing.FSP.isThingWithinGrass(thing, other)) {
+        if (thing.grass || !this.EightBitter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
 
         thing.grass = other;
-        thing.FSP.addStateHistory(thing, "height", thing.height);
+        this.EightBitter.storage.addStateHistory(thing, "height", thing.height);
 
         // Todo: Find a better way than manually setting canvas height?
-        thing.canvas.height = thing.heightGrass * thing.FSP.unitsize;
-        thing.FSP.PixelDrawer.setThingSprite(thing);
+        thing.canvas.height = thing.heightGrass * this.EightBitter.unitsize;
+        this.EightBitter.PixelDrawer.setThingSprite(thing);
 
-        thing.shadow = thing.FSP.ObjectMaker.make(thing.title, {
+        thing.shadow = this.EightBitter.ObjectMaker.make(thing.title, {
             "nocollide": true,
             "id": thing.id + " shadow"
         });
 
         if (thing.shadow.className !== thing.className) {
-            thing.FSP.setClass(thing.shadow, thing.className);
+            this.EightBitter.graphics.setClass(thing.shadow, thing.className);
         }
 
-        thing.FSP.addThing(thing.shadow, thing.left, thing.top);
+        this.EightBitter.things.add(thing.shadow, thing.left, thing.top);
 
         // Todo: is the arrayToEnd call necessary?
-        thing.FSP.GroupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
-        thing.FSP.arrayToEnd(thing.shadow, <IThing[]>thing.FSP.GroupHolder.getGroup("Terrain"));
+        this.EightBitter.GroupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.EightBitter.utilities.arrayToEnd(thing.shadow, <IThing[]>this.EightBitter.GroupHolder.getGroup("Terrain"));
 
         return true;
     }
@@ -392,9 +388,9 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         if (thing.player) {
             (<IPlayer>thing).canKeyWalking = false;
-            thing.FSP.MapScreener.blockInputs = true;
+            this.EightBitter.MapScreener.blockInputs = true;
         }
-        thing.FSP.animateCharacterHopLedge(thing, other);
+        this.EightBitter.animations.animateCharacterHopLedge(thing, other);
 
         return true;
     }
@@ -407,15 +403,15 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Ledge walked to by thing.
      */
     collideWaterEdge(thing: ICharacter, other: IThing): boolean {
-        let edge: IWaterEdge = <IWaterEdge>other;
+        let edge: IWaterEdge = other as IWaterEdge;
 
         if (!thing.surfing || edge.exitDirection !== thing.direction) {
             return false;
         }
 
-        thing.FSP.animateCharacterStartWalking(thing, thing.direction, [2]);
+        this.EightBitter.animations.animateCharacterStartWalking(thing, thing.direction, [2]);
         thing.surfing = false;
-        this.removeClass(thing, "surfing");
+        this.EightBitter.graphics.removeClass(thing, "surfing");
         return true;
     }
 }

@@ -1,7 +1,7 @@
 /// <reference path="../typings/GameStartr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IThing } from "./IFullScreenPokemon";
+import { IPokemon, IThing, IWildPokemonSchema } from "./IFullScreenPokemon";
 
 /**
  * Miscellaneous utility functions used by FullScreenPokemon instances.
@@ -14,7 +14,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns The Thing under the given id, if it exists.
      */
     getThingById(id: string): IThing {
-        return this.EightBitter.GroupHolder.getGroup("Thing")[id];
+        return (this.EightBitter.GroupHolder.getGroup("Thing") as any)[id];
     }
 
     /**
@@ -25,10 +25,10 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      */
     createPokemon(schema: IWildPokemonSchema): IPokemon {
         let level: number = typeof schema.levels !== "undefined"
-            ? this.NumberMaker.randomArrayMember(schema.levels)
+            ? this.EightBitter.NumberMaker.randomArrayMember(schema.levels)
             : schema.level;
 
-        return this.MathDecider.compute("newPokemon", schema.title, level);
+        return this.EightBitter.MathDecider.compute("newPokemon", schema.title, level);
     }
 
     /**
