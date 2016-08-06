@@ -2,6 +2,7 @@ require("gulp-shenanigans").initialize({
     dependencies: [
         "AreaSpawnr",
         "AudioPlayr",
+        "BattleMovr",
         "DeviceLayr",
         "EightBittr",
         "FPSAnalyzr",
@@ -14,6 +15,7 @@ require("gulp-shenanigans").initialize({
         "MapsCreatr",
         "MathDecidr",
         "ModAttachr",
+        "MenuGraphr",
         "NumberMakr",
         "ObjectMakr",
         "PixelDrawr",
@@ -25,8 +27,13 @@ require("gulp-shenanigans").initialize({
         "TimeHandlr",
         "TouchPassr",
         "UserWrappr",
-        "WorldSeedr",
-        "js-beautify"
+        "WorldSeedr"
+    ],
+    externals: [
+        {
+            file: "node_modules/js-beautify/js/bin/js-beautify",
+            typing: "js-beautify"
+        }
     ],
     gulp: require("gulp"),
     packageName: "FullScreenPokemon"
