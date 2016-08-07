@@ -192,31 +192,6 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
     }
 
     /**
-     * Sets this.ObjectMaker.
-     *
-     * @param customs   Any optional custom settings.
-     */
-    protected resetObjectMaker(settings: GameStartr.IGameStartrSettings): void {
-        this.ObjectMaker = new ObjectMakr.ObjectMakr(
-            this.utilities.proliferate(
-                {
-                    "properties": {
-                        "Quadrant": {
-                            "EightBitter": this,
-                            "GameStarter": this,
-                            "this": this
-                        },
-                        "Thing": {
-                            "EightBitter": this,
-                            "GameStarter": this,
-                            "this": this
-                        }
-                    }
-                },
-                this.settings.objects));
-    }
-
-    /**
      * Sets this.StateHolder.
      * 
      * @param customs   Any optional custom settings.

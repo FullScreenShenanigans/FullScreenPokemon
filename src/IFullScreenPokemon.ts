@@ -64,11 +64,6 @@ export interface IThingsById {
  */
 export interface IBattleMovrCustoms extends GameStartr.IGameStartrSettingsObject {
     /**
-     * The parent IGameStartr controlling Things.
-     */
-    GameStarter: GameStartr.GameStartr;
-
-    /**
      * The IMenuGraphr handling menu creation.
      */
     MenuGrapher: MenuGraphr.IMenuGraphr;

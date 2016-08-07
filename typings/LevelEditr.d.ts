@@ -76,7 +76,6 @@ declare namespace LevelEditr {
         real?: number;
     }
     interface IMapRaw extends MapsCreatr.IMapRaw {
-        time: number;
         areas: {
             [i: number]: IAreaRaw;
             [i: string]: IAreaRaw;

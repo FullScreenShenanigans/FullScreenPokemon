@@ -14,7 +14,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
      * 
      * @param things   A group of Things to maintain.
      */
-    maintainGeneric(things: IThing[]): void {
+    public maintainGeneric(things: IThing[]): void {
         for (let i: number = 0; i < things.length; i += 1) {
             if (!things[i].alive) {
                 this.EightBitter.utilities.arrayDeleteThing(things[i], things, i);
@@ -29,7 +29,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
      * 
      * @param characters   The Characters group of Things.
      */
-    maintainCharacters(characters: ICharacter[]): void {
+    public maintainCharacters(characters: ICharacter[]): void {
         for (let i: number = 0; i < characters.length; i += 1) {
             const character: ICharacter = characters[i];
             this.EightBitter.physics.shiftCharacter(character);
@@ -65,7 +65,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
      * @param thing   A Character in grass.
      * @param other   Grass that thing is in.
      */
-    maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
+    public maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
         if (!this.EightBitter.physics.isThingWithinGrass(thing, other)) {
             this.EightBitter.physics.killNormal(thing.shadow);
@@ -92,7 +92,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
      * 
      * @param player   An in-game Player Thing.
      */
-    maintainPlayer(player: IPlayer): void {
+    public maintainPlayer(player: IPlayer): void {
         if (!player || !player.alive) {
             return;
         }

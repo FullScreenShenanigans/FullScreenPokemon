@@ -193,11 +193,7 @@ declare namespace GameStartr {
         /**
          * The names of the audio files to be preloaded for on-demand playback.
          */
-        library: {
-            [i: string]: {
-                [i: string]: string[];
-            };
-        };
+        library: AudioPlayr.ILibrarySettings;
     }
     /**
      * Settings regarding device input detection, particularly for an IDeviceLayr.
