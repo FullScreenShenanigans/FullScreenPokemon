@@ -11,7 +11,7 @@ import { Cycling } from "./Cycling";
 import { Fishing } from "./Fishing";
 import { Gameplay } from "./Gameplay";
 import { Graphics } from "./Graphics";
-import { IFullScreenPokemonStoredSettings, IMapScreenr, IPlayer } from "./IFullScreenPokemon";
+import { IFullScreenPokemonStoredSettings, IMapScreenr, IPlayer, IThing } from "./IFullScreenPokemon";
 import { Macros } from "./Macros";
 import { Maintenance } from "./Maintenance";
 import { Maps } from "./Maps";
@@ -267,11 +267,16 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.container.className += " FullScreenPokemon";
 
         this.PixelDrawer.setThingArrays([
-            this.GroupHolder.getGroup("Terrain") as GameStartr.IThing[],
-            this.GroupHolder.getGroup("Solid") as GameStartr.IThing[],
-            this.GroupHolder.getGroup("Scenery") as GameStartr.IThing[],
-            this.GroupHolder.getGroup("Character") as GameStartr.IThing[],
-            this.GroupHolder.getGroup("Text") as GameStartr.IThing[]
+            this.GroupHolder.getGroup("Terrain") as IThing[],
+            this.GroupHolder.getGroup("Solid") as IThing[],
+            this.GroupHolder.getGroup("Scenery") as IThing[],
+            this.GroupHolder.getGroup("Character") as IThing[],
+            this.GroupHolder.getGroup("Text") as IThing[]
         ]);
     }
 }
+
+// Prototype constants are defined here so settings files can use them
+FullScreenPokemon.prototype.scale = 2;
+FullScreenPokemon.prototype.settings = {} as any;
+FullScreenPokemon.prototype.unitsize = 4;
