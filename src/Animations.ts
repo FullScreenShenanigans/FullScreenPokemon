@@ -123,7 +123,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         return this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute,
+            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
             speed,
             thing,
             attribute,
@@ -508,7 +508,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             -change,
             0,
             speed,
-            function (): void {
+            (): void => {
                 this.EightBitter.physics.killNormal(blank);
                 if (callback) {
                     callback.apply(this, args);
@@ -536,7 +536,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         thing.flickering = true;
 
         this.EightBitter.TimeHandler.addEventInterval(
-            function (): void {
+            (): void => {
                 thing.hidden = !thing.hidden;
                 if (!thing.hidden) {
                     this.EightBitter.PixelDrawer.setThingSprite(thing);
@@ -546,7 +546,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             cleartime | 0);
 
         return this.EightBitter.TimeHandler.addEvent(
-            function (): void {
+            (): void => {
                 thing.flickering = thing.hidden = false;
                 this.EightBitter.PixelDrawer.setThingSprite(thing);
 
@@ -575,7 +575,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         interval: number = 8,
         callback?: TimeHandlr.IEventCallback): TimeHandlr.ITimeEvent {
         this.EightBitter.TimeHandler.addEventInterval(
-            function (): void {
+            (): void => {
                 this.EightBitter.GroupHolder.callOnAll(this.EightBitter.physics, this.EightBitter.physics.shiftHoriz, dx);
                 this.EightBitter.GroupHolder.callOnAll(this.EightBitter.physics, this.EightBitter.physics.shiftVert, dy);
             },
@@ -583,12 +583,12 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             cleartime * interval);
 
         return this.EightBitter.TimeHandler.addEvent(
-            function (): void {
+            (): void => {
                 dx *= -1;
                 dy *= -1;
 
                 this.EightBitter.TimeHandler.addEventInterval(
-                    function (): void {
+                    (): void => {
                         dx *= -1;
                         dy *= -1;
                     },
@@ -1097,7 +1097,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      */
     public animateCharacterDialogOptions(thing: IPlayer, other: ICharacter, dialog: IDialog): void {
         let options: IDialogOptions = dialog.options,
-            generateCallback: any = function (dialog: string | IDialog): () => void {
+            generateCallback: any = (dialog: string | IDialog): () => void => {
                 if (!dialog) {
                     return undefined;
                 }
@@ -1112,7 +1112,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 } else {
                     words = (dialog as IDialog).words || <string>dialog;
                     if ((dialog as IDialog).cutscene) {
-                        callback = this.ScenePlayer.bindCutscene(
+                        callback = this.EightBitter.ScenePlayer.bindCutscene(
                             (dialog as IDialog).cutscene,
                             {
                                 "player": thing,
@@ -1121,7 +1121,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                     }
                 }
 
-                return function (): void {
+                return (): void => {
                     this.EightBitter.MenuGrapher.deleteMenu("Yes/No");
                     this.EightBitter.MenuGrapher.createMenu("GeneralText", {
                         // "deleteOnFinish": true
@@ -1271,7 +1271,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         // Continuously ensure The Thing still moves off the ledge if not walking
         this.EightBitter.TimeHandler.addEventInterval(
-            function (): boolean {
+            (): boolean => {
                 if (thing.walking) {
                     return false;
                 }
@@ -1284,8 +1284,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         // Keep the shadow below the Thing, and move the Thing's offsetY
         this.EightBitter.TimeHandler.addEventInterval(
-            function (): void {
-                this.EightBitter.setBottom(shadow, thing.bottom);
+            (): void => {
+                this.EightBitter.physics.setBottom(shadow, thing.bottom);
 
                 if (changed % speed === 0) {
                     thing.offsetY += dy;
@@ -1298,14 +1298,14 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         // Inverse the Thing's offsetY changes halfway through the hop
         this.EightBitter.TimeHandler.addEvent(
-            function (): void {
+            (): void => {
                 dy *= -1;
             },
             speed * (steps / 2) | 0);
 
         // Delete the shadow after the jump is done
         this.EightBitter.TimeHandler.addEvent(
-            function (): void {
+            (): void => {
                 delete thing.ledge;
                 this.EightBitter.physics.killNormal(shadow);
 

@@ -1,5 +1,9 @@
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-FullScreenPokemon.prototype.settings.generator = {
-    possibilities: {}
-};
+export function GenerateGeneratorSettings(): void {
+    "use strict";
+
+    FullScreenPokemon.prototype.settings.generator = {
+        possibilities: {}
+    };
+}

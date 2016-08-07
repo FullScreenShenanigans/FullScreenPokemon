@@ -169,7 +169,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         }
 
         if (!noEntrance) {
-            location.entry(this, location);
+            location.entry.call(this, location);
         }
 
         this.EightBitter.ModAttacher.fireEvent("onSetLocation", location);

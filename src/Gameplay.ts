@@ -10,7 +10,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
     /**
      * Completely restarts the game. The StartOptions menu is shown.
      */
-    public start(): void {
+    public gameStart(): void {
         this.startOptions();
         this.EightBitter.ModAttacher.fireEvent("onGameStart");
     }
@@ -135,7 +135,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
     /**
      * Closes the game (currently a no-op).
      */
-    public onGameClouse(): void {
+    public onGameClose(): void {
         this.EightBitter.storage.autoSave();
         console.log("Closed.");
     }

@@ -1,5 +1,6 @@
 lib/**
 src/**/*.js*
+~src/main.js
 test/**/*.js
 test/index.html
 test/utils/**

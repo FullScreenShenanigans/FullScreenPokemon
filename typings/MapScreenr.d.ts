@@ -6,6 +6,12 @@ declare namespace MapScreenr {
         [i: string]: Function;
     }
     /**
+     * Known variables, keyed by name.
+     */
+    interface IVariables {
+        [i: string]: any;
+    }
+    /**
      * Settings to initialize a new instance of the MapScreenr class.
      */
     interface IMapScreenrSettings {
@@ -18,7 +24,7 @@ declare namespace MapScreenr {
          */
         height: number;
         /**
-         * A mapping of Functions to generate member variables that should be
+         * A mapping of functions to generate member variables that should be
          * recomputed on screen change, keyed by variable name.
          */
         variableFunctions?: IVariableFunctions;
@@ -29,9 +35,11 @@ declare namespace MapScreenr {
         /**
          * Assorted known variables, keyed by name.
          */
-        variables: {
-            [i: string]: any;
-        };
+        variables?: IVariables;
+        /**
+         * A scope to run functions in, if not this IMapScreenr.
+         */
+        scope?: any;
     }
     /**
      * A flexible container for map attributes and viewport.
@@ -124,9 +132,7 @@ declare namespace MapScreenr {
         /**
          * Known variables, keyed by name.
          */
-        variables: {
-            [i: string]: any;
-        };
+        variables: IVariables;
     }
     /**
      * A flexible container for map attributes and viewport.
@@ -175,9 +181,11 @@ declare namespace MapScreenr {
         /**
          * Assorted known variables, keyed by name.
          */
-        variables: {
-            [i: string]: any;
-        };
+        variables: IVariables;
+        /**
+         * A scope to run functions in, if not this MapScreenr.
+         */
+        private scope;
         /**
          * Resets the MapScreenr. All members of the settings argument are copied
          * to the MapScreenr itself, though only width and height are required.

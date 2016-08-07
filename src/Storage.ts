@@ -15,12 +15,14 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.
      */
-    clearSavedData(): void {
+    public clearSavedData(): void {
         const oldLocalStorage: ItemsHoldr.IItems = this.EightBitter.ItemsHolder.exportItems();
 
         const collectionKeys: string[] = this.EightBitter.ItemsHolder.getItem("stateCollectionKeys");
-        for (const collection of collectionKeys) {
-            oldLocalStorage[collection] = this.EightBitter.ItemsHolder.getItem(collection);
+        if (collectionKeys) {
+            for (const collection of collectionKeys) {
+                oldLocalStorage[collection] = this.EightBitter.ItemsHolder.getItem(collection);
+            }
         }
 
         for (const key of this.EightBitter.ItemsHolder.getKeys()) {
@@ -39,7 +41,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * Checks to see if oldLocalStorage is defined in localStorage; if that is true and a prior game
      * hasn't been saved, the data is restored under localStorage.
      */
-    checkForOldStorageData(): void {
+    public checkForOldStorageData(): void {
         if (!this.EightBitter.ItemsHolder.getItem("oldLocalStorage") || this.EightBitter.ItemsHolder.getItem("gameStarted")) {
             return;
         }
@@ -97,7 +99,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
     }
 
     /**
-     * 
+     * Automatically saves the game.
      */
     public autoSave(): void {
         if (this.EightBitter.ItemsHolder.getAutoSave()
