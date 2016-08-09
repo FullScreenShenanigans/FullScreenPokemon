@@ -21,7 +21,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         const options: any[] = [
             {
                 "text": "%%%%%%%POKEMON%%%%%%%",
-                "callback": (): void => this.openPokemonMenu.bind({
+                "callback": (): void => this.openPokemonMenu({
                     // "onSwitch": ...
                 })
             }, {
@@ -44,7 +44,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         if (this.EightBitter.ItemsHolder.getItem("hasPokedex") === true) {
             options.unshift({
                 "text": "%%%%%%%POKEDEX%%%%%%%",
-                "callback": this.openPokedexMenu.bind(this)
+                "callback": (): void => this.openPokedexMenu()
             });
         }
 
@@ -143,7 +143,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
                     "callback": (): void => {
                         this.openPokedexListing(
                             currentListing.title,
-                            this.EightBitter.MenuGrapher.setActiveMenu.bind(this.EightBitter.MenuGrapher, "PokedexOptions"));
+                            (): void => this.EightBitter.MenuGrapher.setActiveMenu("PokedexOptions"));
                     }
                 }, {
                     "text": "CRY"
@@ -187,7 +187,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         options.push(
             {
                 "text": "STATS",
-                "callback": this.openPokemonMenuStats.bind(this, settings.pokemon)
+                "callback": (): void => this.openPokemonMenuStats(settings.pokemon)
             },
             {
                 "text": "SWITCH",
@@ -221,7 +221,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
         this.EightBitter.MenuGrapher.createMenu("PokemonMenuStats", {
             "backMenu": "PokemonMenuContext",
-            "callback": this.openPokemonMenuStatsSecondary.bind(this, pokemon),
+            "callback": (): void => this.openPokemonMenuStatsSecondary(pokemon),
             "container": "Pokemon"
         });
 
@@ -516,11 +516,10 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
                 return {
                     "text": listing.title,
-                    "callback": this.openPokemonMenuContext.bind(
-                        this, {
-                            "pokemon": listing
-                            // "onSwitch": settings.onSwitch.bind(FSP, "player", i)
-                        }),
+                    "callback": (): void => this.openPokemonMenuContext({
+                        "pokemon": listing
+                        // "onSwitch": (): void => settings.onSwitch("player", i)
+                    }),
                     "things": [
                         {
                             "thing": sprite,
@@ -632,7 +631,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      */
     public openPlayerMenu(): void {
         this.EightBitter.MenuGrapher.createMenu("Player", {
-            "callback": this.EightBitter.MenuGrapher.registerB.bind(this.EightBitter.MenuGrapher)
+            "callback": (): void => this.EightBitter.MenuGrapher.registerB()
         });
         this.EightBitter.MenuGrapher.setActiveMenu("Player");
     }
@@ -653,10 +652,10 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             "options": [
                 {
                     "text": "YES",
-                    "callback": this.EightBitter.storage.downloadSaveGame.bind(this)
+                    "callback": (): void => this.EightBitter.storage.downloadSaveGame()
                 }, {
                     "text": "NO",
-                    "callback": this.EightBitter.MenuGrapher.registerB
+                    "callback": (): void => this.EightBitter.MenuGrapher.registerB()
                 }]
         });
         this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -670,23 +669,23 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param settings   Settings to apply to the menu and for callbacks.
      */
     public openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
-        let value: string[][] = [settings.value || ["_", "_", "_", "_", "_", "_", "_"]],
-            onKeyPress: (...args: any[]) => void = this.addKeyboardMenuValue.bind(this),
-            onBPress: (...args: any[]) => void = this.removeKeyboardMenuValue.bind(this),
-            onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this),
-            lowercase: boolean = settings.lowercase,
-            letters: string[] = lowercase
-                ? KeysLowercase
-                : KeysUppercase,
-            options: any[] = letters.map((letter: string): any => {
-                return {
-                    "text": [letter],
-                    "value": letter,
-                    "callback": letter !== "ED"
-                        ? onKeyPress
-                        : onComplete
-                };
-            });
+        const value: string[][] = [settings.value || ["_", "_", "_", "_", "_", "_", "_"]];
+        const onKeyPress: (...args: any[]) => void = (): void => this.addKeyboardMenuValue();
+        const onBPress: (...args: any[]) => void = (): void => this.removeKeyboardMenuValue();
+        const onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this);
+        const lowercase: boolean = settings.lowercase;
+        const letters: string[] = lowercase
+            ? KeysLowercase
+            : KeysUppercase;
+        const options: any[] = letters.map((letter: string): any => {
+            return {
+                "text": [letter],
+                "value": letter,
+                "callback": letter !== "ED"
+                    ? onKeyPress
+                    : onComplete
+            };
+        });
 
         this.EightBitter.MenuGrapher.createMenu("Keyboard", <MenuGraphr.IMenuSchema>{
             "settings": settings,
@@ -695,7 +694,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             "ignoreB": false
         });
 
-        let menuResults: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult");
+        const menuResults: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult");
 
         this.EightBitter.MenuGrapher.addMenuDialog("KeyboardTitle", [[
             settings.title || "",
@@ -708,7 +707,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             "selectedIndex": settings.selectedIndex,
             "bottom": {
                 "text": lowercase ? "UPPER CASE" : "lower case",
-                "callback": this.switchKeyboardCase.bind(this),
+                "callback": (): void => this.switchKeyboardCase(),
                 "position": {
                     "top": 40,
                     "left": 0

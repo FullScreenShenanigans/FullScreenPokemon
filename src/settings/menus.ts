@@ -27,17 +27,17 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
         },
         "replacements": {
             "PLAYER": function (): string[] {
-                return this.GameStarter.ItemsHolder.getItem("name");
+                return this.EightBitter.ItemsHolder.getItem("name");
             },
             "RIVAL": function (): string[] {
-                return this.GameStarter.ItemsHolder.getItem("nameRival");
+                return this.EightBitter.ItemsHolder.getItem("nameRival");
             },
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": function (): string[] {
-                return this.GameStarter.makeDigit(
-                    this.GameStarter.getPokedexListingsOrdered()
+                return this.EightBitter.makeDigit(
+                    this.EightBitter.getPokedexListingsOrdered()
                         .filter(function (listing: IPokedexInformation): boolean {
                             return listing && listing.seen;
                         })
@@ -47,8 +47,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     .split("");
             },
             "POKEDEX.OWN": function (): string[] {
-                return this.GameStarter.makeDigit(
-                    this.GameStarter.getPokedexListingsOrdered()
+                return this.EightBitter.makeDigit(
+                    this.EightBitter.getPokedexListingsOrdered()
                         .filter(function (listing: IPokedexInformation): boolean {
                             return listing && listing.caught;
                         })
@@ -58,7 +58,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     .split("");
             },
             "BADGES.LENGTH": function (): string[] {
-                let badges: { [i: string]: boolean } = this.GameStarter.ItemsHolder.getItem("badges"),
+                let badges: { [i: string]: boolean } = this.EightBitter.ItemsHolder.getItem("badges"),
                     total: number = 0;
 
                 for (let i in badges) {
@@ -70,7 +70,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 return total.toString().split("");
             },
             "POKEDEX.LENGTH": function (): string[] {
-                let pokedex: IPokedexListing[] = this.GameStarter.ItemsHolder.getItem("Pokedex");
+                let pokedex: IPokedexListing[] = this.EightBitter.ItemsHolder.getItem("Pokedex");
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }
@@ -86,10 +86,10 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     .split("");
             },
             "TIME": function (): string[] {
-                let ticksRecorded: number = this.GameStarter.ItemsHolder.getItem("time"),
-                    ticksUnrecorded: number = this.GameStarter.FPSAnalyzer.getNumRecorded() - this.GameStarter.ticksElapsed,
+                let ticksRecorded: number = this.EightBitter.ItemsHolder.getItem("time"),
+                    ticksUnrecorded: number = this.EightBitter.FPSAnalyzer.getNumRecorded() - this.EightBitter.ticksElapsed,
                     ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded),
-                    secondsTotal: number = Math.floor(ticksTotal / this.GameStarter.settings.runner.interval),
+                    secondsTotal: number = Math.floor(ticksTotal / this.EightBitter.settings.runner.interval),
                     hours: string = Math.floor(secondsTotal / 3600).toString(),
                     minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
 
@@ -108,7 +108,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 return (hours + ":" + minutes).split("");
             },
             "MONEY": function (): string[] {
-                return this.GameStarter.ItemsHolder.getItem("money").toString().split("");
+                return this.EightBitter.ItemsHolder.getItem("money").toString().split("");
             }
         },
         "replacementStatistics": {

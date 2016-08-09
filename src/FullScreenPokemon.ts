@@ -302,7 +302,8 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.MenuGrapher = new MenuGraphr.MenuGraphr(
             this.utilities.proliferate(
                 {
-                    "GameStarter": this
+                    GameStarter: this,
+                    modifierScope: this.menus
                 },
                 this.settings.menus));
     }

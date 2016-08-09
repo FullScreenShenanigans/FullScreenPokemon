@@ -634,6 +634,10 @@ declare namespace MenuGraphr {
          * The separator for words to replace using replacements.
          */
         replacerKey?: string;
+        /**
+         * A scope to call text modifiers in, if not this IMenuGraphr.
+         */
+        modifierScope?: any;
     }
     /**
      * A menu management system. Menus can have dialog-style text, scrollable
@@ -861,6 +865,10 @@ declare namespace MenuGraphr {
          * The separator for words to replace using replacements.
          */
         private replacerKey;
+        /**
+         * A scope to call text modifiers in, if not this.
+         */
+        private modifierScope;
         /**
          * Initializes a new instance of the MenuGraphr class.
          *
