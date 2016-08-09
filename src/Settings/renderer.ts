@@ -1,13 +1,13 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateRendererSettings(): void {
+export function GenerateRendererSettings(): GameStartr.IPixelDrawrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.renderer = {
+    return {
         groupNames: ["Text", "Character", "Scenery", "Solid", "Terrain"],
         spriteCacheCutoff: 2048,
         framerateSkip: 2,
         keyOffsetX: "offsetX",
         keyOffsetY: "offsetY"
     };
-};
+}

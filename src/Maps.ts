@@ -55,13 +55,15 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         // Either the prething or thing, in that order, may request to be in the
         // front or back of the container
         if (position) {
-            this.EightBitter.TimeHandler.addEvent(function (): void {
+            this.EightBitter.TimeHandler.addEvent((): void => {
                 switch (position) {
                     case "beginning":
-                        this.EightBitter.arrayToBeginning(thing, this.EightBitter.GroupHolder.getGroup(thing.groupType) as IThing[]);
+                        this.EightBitter.utilities.arrayToBeginning(
+                            thing, this.EightBitter.GroupHolder.getGroup(thing.groupType) as IThing[]);
                         break;
                     case "end":
-                        this.EightBitter.arrayToEnd(thing, this.EightBitter.GroupHolder.getGroup(thing.groupType) as IThing[]);
+                        this.EightBitter.utilities.arrayToEnd(
+                            thing, this.EightBitter.GroupHolder.getGroup(thing.groupType) as IThing[]);
                         break;
                     default:
                         throw new Error("Unknown position: " + position + ".");

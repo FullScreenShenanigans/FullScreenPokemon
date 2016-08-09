@@ -1,10 +1,11 @@
-import { Inputs } from "../Inputs";
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateInputSettings(): void {
+import { Inputs } from "../Inputs";
+
+export function GenerateInputSettings(): GameStartr.IInputWritrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.input = {
+    return {
         InputWritrArgs: {
             aliases: {
                 // Keyboard aliases

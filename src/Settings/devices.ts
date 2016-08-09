@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateDevicesSettings(): void {
+export function GenerateDevicesSettings(): GameStartr.IDeviceLayrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.devices = {
+    return {
         triggers: {
             a: {
                 trigger: "a"

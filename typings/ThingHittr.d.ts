@@ -127,6 +127,10 @@ declare namespace ThingHittr {
          * The Function generators used for hitCallbacks.
          */
         hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
+        /**
+         * A scope to run generators in, if not this.
+         */
+        generatorScope?: any;
     }
     /**
      * A Thing collision detection automator that unifies GroupHoldr and
@@ -135,6 +139,12 @@ declare namespace ThingHittr {
      * each Thing type, based on the overarching Thing groups.
      */
     interface IThingHittr {
+        /**
+         * Sets the scope to run generators in, if not this.
+         *
+         * @param generatorScope   A scope to run generators in, if not this.
+         */
+        setGeneratorScope(generatorScope: any): void;
         /**
          * Caches global and hits checks for the given type if they do not yet exist.
          *
@@ -202,11 +212,21 @@ declare namespace ThingHittr {
          */
         private generatedHitsChecks;
         /**
+         * A scope to run generators in, if not this.
+         */
+        private generatorScope;
+        /**
          * Initializes a new instance of the ThingHittr class.
          *
          * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IThingHittrSettings);
+        /**
+         * Sets the scope to run generators in, if not this.
+         *
+         * @param generatorScope   A scope to run generators in, if not this.
+         */
+        setGeneratorScope(generatorScope: any): void;
         /**
          * Caches global and hits checks for the given type if they do not yet exist
          * and have their generators defined

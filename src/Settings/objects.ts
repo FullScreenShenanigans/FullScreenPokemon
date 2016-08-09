@@ -1,13 +1,15 @@
+/// <reference path="../../typings/GameStartr.d.ts" />
+
 import { Animations } from "../Animations";
 import { Collisions } from "../Collisions";
-import { FullScreenPokemon } from "../FullScreenPokemon";
+import { Unitsize } from "../Constants";
 import { Maps } from "../Maps";
 import { Things } from "../Things";
 
-export function GenerateObjectsSettings(): void {
+export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.objects = {
+    return {
         "onMake": "onMake",
         "indexMap": ["width", "height"],
         "doPropertiesFull": true,
@@ -780,13 +782,13 @@ export function GenerateObjectsSettings(): void {
             },
             "Character": {
                 "groupType": "Character",
-                "speed": FullScreenPokemon.prototype.unitsize / 3,
+                "speed": Unitsize / 3,
                 "walking": false,
                 "shouldWalk": false,
                 "switchDirectionOnDialog": true,
                 "heightGrass": 4,
                 "direction": 2,
-                "offsetY": FullScreenPokemon.prototype.unitsize * -2,
+                "offsetY": Unitsize * -2,
                 "roamingDirections": [0, 1, 2, 3],
                 "onThingAdd": Animations.prototype.spawnCharacter,
                 "onWalkingStart": Animations.prototype.animateCharacterStartWalking,
@@ -813,7 +815,7 @@ export function GenerateObjectsSettings(): void {
                 "player": true,
                 "canKeyWalking": true,
                 "direction": 2,
-                "speed": FullScreenPokemon.prototype.unitsize / 2,
+                "speed": Unitsize / 2,
                 "onWalkingStart": Animations.prototype.animateCharacterStartWalking,
                 "onWalkingStop": Animations.prototype.animatePlayerStopWalking,
                 "getKeys": () => {
@@ -894,7 +896,7 @@ export function GenerateObjectsSettings(): void {
             "Computer": {
                 "width": 8,
                 "height": 12,
-                "tolBottom": FullScreenPokemon.prototype.unitsize * 4
+                "tolBottom": Unitsize * 4
             },
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
@@ -933,7 +935,7 @@ export function GenerateObjectsSettings(): void {
             "StrengthBoulder": {
                 "moveName": "Strength",
                 "moveCallback": Animations.prototype.partyActivateStrength,
-                "speed": FullScreenPokemon.prototype.unitsize,
+                "speed": Unitsize,
                 "requiredBadge": "Rainbow"
             },
             "HouseBase": {
@@ -1013,7 +1015,7 @@ export function GenerateObjectsSettings(): void {
             "MountainTop": {
                 "width": 4,
                 "height": 5,
-                "tolBottom": FullScreenPokemon.prototype.unitsize * -3
+                "tolBottom": Unitsize * -3
             },
             "PlantLarge": [16, 16],
             "PokeCenterDeskBlocker": {
@@ -1046,7 +1048,7 @@ export function GenerateObjectsSettings(): void {
             "StoreFridge": [8, 16],
             "StoreSaleBin": [8, 12],
             "Table": {
-                "tolBottom": FullScreenPokemon.prototype.unitsize * 4
+                "tolBottom": Unitsize * 4
             },
             "Table1x2": [8, 16],
             "Table2x2": [16, 16],
@@ -1097,7 +1099,7 @@ export function GenerateObjectsSettings(): void {
             "Blackboard": [16, 8],
             "Bridge": [4, 4],
             "Clipboard": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * -1.5
+                "offsetY": Unitsize * -1.5
             },
             "Doormat": {
                 "spritewidth": .5,
@@ -1188,7 +1190,7 @@ export function GenerateObjectsSettings(): void {
             "Exclamation": {
                 "width": 7,
                 "height": 7,
-                "offsetY": FullScreenPokemon.prototype.unitsize * -2
+                "offsetY": Unitsize * -2
             },
             "HalfArrowHorizontal": [4, 2],
             "ExplosionSmall": [8, 8],
@@ -1199,7 +1201,7 @@ export function GenerateObjectsSettings(): void {
                 "repeat": true
             },
             "CharacterDropped": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * .75
+                "offsetY": Unitsize * .75
             },
             "CharacterShadow": [3.5, 3.5],
             "CharMDash": {
@@ -1210,29 +1212,29 @@ export function GenerateObjectsSettings(): void {
                 }
             },
             "CharPoke": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharMon": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharNo": {
                 "width": 4,
                 "height": 3,
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharID": {
                 "width": 4,
                 "height": 3,
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharSlash": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharPeriod": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharComma": {
-                "offsetY": FullScreenPokemon.prototype.unitsize * .5
+                "offsetY": Unitsize * .5
             },
             "CharApostrophe": [1, 2],
             "CharFeet": [2, 1.5],
@@ -1248,8 +1250,8 @@ export function GenerateObjectsSettings(): void {
                 "width": 4,
                 "spritewidth": 2.5,
                 "height": 4,
-                "offsetX": FullScreenPokemon.prototype.unitsize / 2,
-                "offsetY": FullScreenPokemon.prototype.unitsize / 2,
+                "offsetX": Unitsize / 2,
+                "offsetY": Unitsize / 2,
             },
             "CharArrowUp": [3.5, 2.5],
             "CharArrowRight": [2.5, 3.5],
@@ -1299,4 +1301,4 @@ export function GenerateObjectsSettings(): void {
             }
         }
     };
-};
+}

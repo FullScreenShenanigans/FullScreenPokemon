@@ -3,26 +3,27 @@
 /// <reference path="../typings/MenuGraphr.d.ts" />
 /// <reference path="../typings/StateHoldr.d.ts" />
 
-import { Animations } from "Animations";
-import { Battles } from "Battles";
-import { Collisions } from "Collisions";
-import { Cutscenes } from "Cutscenes";
-import { Cycling } from "Cycling";
-import { Fishing } from "Fishing";
-import { Gameplay } from "Gameplay";
-import { Graphics } from "Graphics";
-import { IFullScreenPokemonStoredSettings, IMapScreenr, IPlayer, IThing } from "IFullScreenPokemon";
-import { Inputs } from "Inputs";
-import { Macros } from "Macros";
-import { Maintenance } from "Maintenance";
-import { Maps } from "Maps";
-import { Menus } from "Menus";
-import { Physics } from "Physics";
-import { SettingsGenerator } from "SettingsGenerator";
-import { Scrolling } from "Scrolling";
-import { Storage } from "Storage";
-import { Things } from "Things";
-import { Utilities } from "Utilities";
+import { Animations } from "./Animations";
+import { Battles } from "./Battles";
+import { Collisions } from "./Collisions";
+import { Scale, Unitsize } from "./Constants";
+import { Cutscenes } from "./Cutscenes";
+import { Cycling } from "./Cycling";
+import { Fishing } from "./Fishing";
+import { Gameplay } from "./Gameplay";
+import { Graphics } from "./Graphics";
+import { IFullScreenPokemonStoredSettings, IMapScreenr, IPlayer, IThing } from "./IFullScreenPokemon";
+import { Inputs } from "./Inputs";
+import { Macros } from "./Macros";
+import { Maintenance } from "./Maintenance";
+import { Maps } from "./Maps";
+import { Menus } from "./Menus";
+import { Physics } from "./Physics";
+import { SettingsGenerator } from "./SettingsGenerator";
+import { Scrolling } from "./Scrolling";
+import { Storage } from "./Storage";
+import { Things } from "./Things";
+import { Utilities } from "./Utilities";
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
@@ -217,17 +218,35 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.resetMathDecider(settings);
         this.resetMenuGrapher(settings);
         this.resetStateHolder(settings);
+
+        this.AreaSpawner.setCommandScope(this.maps);
+        this.InputWriter.setEventScope(this.inputs);
+        this.TimeHandler.setClassScope(this.graphics);
+        this.ThingHitter.setGeneratorScope(this.collisions);
     }
 
+
     /**
-     * Sets this.InputWriter.
-     * 
+     * Sets this.ObjectMaker.
+     *
+     * Because many Thing functions require access to other FSP modules, each is
+     * given a reference to this container FSP via properties.thing.FSP.
+     * See #.
+     *
      * @param settings   Any additional user-provided settings.
      */
-    protected resetInputWriter(settings: GameStartr.IGameStartrSettings): void {
-        super.resetInputWriter(settings);
-
-        this.InputWriter.setEventScope(this.inputs);
+    protected resetObjectMaker(settings: GameStartr.IGameStartrSettings): void {
+        this.ObjectMaker = new ObjectMakr.ObjectMakr(
+            this.utilities.proliferate(
+                {
+                    properties: {
+                        Thing: {
+                            EightBitter: this
+                        }
+                    },
+                    scope: this.things
+                },
+                this.settings.objects));
     }
 
     /**
@@ -253,9 +272,9 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.StateHolder = new StateHoldr.StateHoldr(
             this.utilities.proliferate(
                 {
-                    "ItemsHolder": this.ItemsHolder
+                    ItemsHolder: this.ItemsHolder
                 },
-                this.settings.states));
+                this.settings.state));
     }
 
     /**
@@ -267,8 +286,8 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.MathDecider = new MathDecidr.MathDecidr(
             this.utilities.proliferate(
                 {
-                    "constants": {
-                        "NumberMaker": this.NumberMaker
+                    constants: {
+                        NumberMaker: this.NumberMaker
                     }
                 },
                 this.settings.math));
@@ -330,7 +349,6 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
 }
 
 // Prototype constants are defined first so settings files can use them
-FullScreenPokemon.prototype.scale = 2;
-FullScreenPokemon.prototype.settings = {} as any;
-FullScreenPokemon.prototype.unitsize = 4;
-new SettingsGenerator().generate();
+FullScreenPokemon.prototype.scale = Scale;
+FullScreenPokemon.prototype.unitsize = Unitsize;
+FullScreenPokemon.prototype.settings = new SettingsGenerator().generate();

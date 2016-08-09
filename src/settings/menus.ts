@@ -1,10 +1,11 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateMenusSettings(): void {
+import { IMenuGraphrCustoms, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
+
+export function GenerateMenusSettings(): IMenuGraphrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.menus = {
+    return {
         "aliases": {
             " ": "Space",
             "(": "LeftParenthesis",
@@ -26,17 +27,17 @@ export function GenerateMenusSettings(): void {
         },
         "replacements": {
             "PLAYER": function (): string[] {
-                return this.ItemsHolder.getItem("name");
+                return this.GameStarter.ItemsHolder.getItem("name");
             },
             "RIVAL": function (): string[] {
-                return this.ItemsHolder.getItem("nameRival");
+                return this.GameStarter.ItemsHolder.getItem("nameRival");
             },
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": function (): string[] {
-                return this.makeDigit(
-                    this.getPokedexListingsOrdered()
+                return this.GameStarter.makeDigit(
+                    this.GameStarter.getPokedexListingsOrdered()
                         .filter(function (listing: IPokedexInformation): boolean {
                             return listing && listing.seen;
                         })
@@ -46,8 +47,8 @@ export function GenerateMenusSettings(): void {
                     .split("");
             },
             "POKEDEX.OWN": function (): string[] {
-                return this.makeDigit(
-                    this.getPokedexListingsOrdered()
+                return this.GameStarter.makeDigit(
+                    this.GameStarter.getPokedexListingsOrdered()
                         .filter(function (listing: IPokedexInformation): boolean {
                             return listing && listing.caught;
                         })
@@ -57,7 +58,7 @@ export function GenerateMenusSettings(): void {
                     .split("");
             },
             "BADGES.LENGTH": function (): string[] {
-                let badges: { [i: string]: boolean } = this.ItemsHolder.getItem("badges"),
+                let badges: { [i: string]: boolean } = this.GameStarter.ItemsHolder.getItem("badges"),
                     total: number = 0;
 
                 for (let i in badges) {
@@ -69,7 +70,7 @@ export function GenerateMenusSettings(): void {
                 return total.toString().split("");
             },
             "POKEDEX.LENGTH": function (): string[] {
-                let pokedex: IPokedexListing[] = this.ItemsHolder.getItem("Pokedex");
+                let pokedex: IPokedexListing[] = this.GameStarter.ItemsHolder.getItem("Pokedex");
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }
@@ -85,10 +86,10 @@ export function GenerateMenusSettings(): void {
                     .split("");
             },
             "TIME": function (): string[] {
-                let ticksRecorded: number = this.ItemsHolder.getItem("time"),
-                    ticksUnrecorded: number = this.FPSAnalyzer.getNumRecorded() - this.ticksElapsed,
+                let ticksRecorded: number = this.GameStarter.ItemsHolder.getItem("time"),
+                    ticksUnrecorded: number = this.GameStarter.FPSAnalyzer.getNumRecorded() - this.GameStarter.ticksElapsed,
                     ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded),
-                    secondsTotal: number = Math.floor(ticksTotal / this.settings.runner.interval),
+                    secondsTotal: number = Math.floor(ticksTotal / this.GameStarter.settings.runner.interval),
                     hours: string = Math.floor(secondsTotal / 3600).toString(),
                     minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
 
@@ -107,7 +108,7 @@ export function GenerateMenusSettings(): void {
                 return (hours + ":" + minutes).split("");
             },
             "MONEY": function (): string[] {
-                return this.ItemsHolder.getItem("money").toString().split("");
+                return this.GameStarter.ItemsHolder.getItem("money").toString().split("");
             }
         },
         "replacementStatistics": {

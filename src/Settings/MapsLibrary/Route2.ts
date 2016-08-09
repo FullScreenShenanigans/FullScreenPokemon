@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Route 2"] = {
+export const Route2: IMapRaw = {
     "name": "Route 2",
     "theme": "Viridian City from Pallet Town",
     "locationDefault": "Viridian Forest Top",
@@ -168,6 +168,6 @@ FullScreenPokemon.prototype.settings.maps.library["Route 2"] = {
             ]
         }
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Route 21"] = {
+export const Route21: IMapRaw = {
     "name": "Route 21",
     "locationDefault": "Temp",
     "locations": {
@@ -73,6 +73,6 @@ FullScreenPokemon.prototype.settings.maps.library["Route 21"] = {
             ]
         }
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

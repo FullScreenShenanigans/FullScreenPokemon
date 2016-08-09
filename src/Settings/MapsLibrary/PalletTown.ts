@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Pallet Town"] = {
+export const PalletTown: IMapRaw = {
     "name": "Pallet Town",
     "theme": "Pallet Town",
     "locationDefault": "Player's House Door",
@@ -264,6 +264,6 @@ FullScreenPokemon.prototype.settings.maps.library["Pallet Town"] = {
             ]
         }
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

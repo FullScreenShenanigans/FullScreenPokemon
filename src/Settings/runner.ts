@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateRunnerSettings(): void {
+export function GenerateRunnerSettings(): GameStartr.IGamesRunnrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.runner = {
+    return {
         interval: 1000 / 60,
         adjustFramerate: true,
         games: [
@@ -40,4 +40,4 @@ export function GenerateRunnerSettings(): void {
             }
         ]
     };
-};
+}

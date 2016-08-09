@@ -112,6 +112,12 @@ declare namespace AreaSpawnr {
          */
         getPreThings(): MapsCreatr.IPreThingsContainers;
         /**
+         * Sets the scope to run stretchAdd and afterAdd in.
+         *
+         * @param commandScope   A scope to run stretchAdd and afterAdd in.
+         */
+        setCommandScope(commandScope: any): any;
+        /**
          * Sets the currently manipulated Map in the handler to be the one under a
          * given name. Note that this will do very little unless a location is
          * provided.
@@ -244,7 +250,7 @@ declare namespace AreaSpawnr {
          */
         private afterAdd;
         /**
-         * An optional scope to call stretchAdd and afterAdd on, if not this.
+         * An optional scope to call stretchAdd and afterAdd in, if not this.
          */
         private commandScope;
         /**
@@ -307,6 +313,12 @@ declare namespace AreaSpawnr {
          * @returns A listing of the current area's Prethings.
          */
         getPreThings(): MapsCreatr.IPreThingsContainers;
+        /**
+         * Sets the scope to run stretchAdd and afterAdd in.
+         *
+         * @param commandScope   A scope to run stretchAdd and afterAdd in.
+         */
+        setCommandScope(commandScope: any): any;
         /**
          * Sets the currently manipulated Map in the handler to be the one under a
          * given name. Note that this will do very little unless a location is

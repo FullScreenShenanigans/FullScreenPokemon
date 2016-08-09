@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Viridian City"] = {
+export const ViridianCity: IMapRaw = {
     "name": "Viridian City",
     "theme": "Pewter City",
     "locationDefault": "PokeCenter Outside Door",
@@ -258,23 +258,23 @@ FullScreenPokemon.prototype.settings.maps.library["Viridian City"] = {
                 { "thing": "Notepad", "x": 24, "y": 28 },
                 {
                     "thing": "DialogResponder", "x": 24, "y": 28, "dialog": ["Looked at the notebook!", "First page...", "%%%%%%%POKE%%%%%%% BALLs are used to catch %%%%%%%POKEMON%%%%%%%.", "Up to 6 %%%%%%%POKEMON%%%%%%% can be carried.", "People who raise and make %%%%%%%POKEMON%%%%%%% fight are called %%%%%%%POKEMON%%%%%%% trainers.", "Turn the page?"], "dialogOptions":
-                      {
-                          "options": {
-                              "Yes": {
-                                  "words": ["Second page...", "A healty %%%%%%%POKEMON%%%%%%% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
-                                  "options": {
-                                      "Yes": {
-                                          "words": ["Third page...", "%%%%%%%POKEMON%%%%%%% trainers seek others to engage in %%%%%%%POKEMON%%%%%%% fights.", "Battles are constantly fought at %%%%%%%POKEMON%%%%%%% GYMs.", "Turn the page?"],
-                                          "options": {
-                                              "Yes": {
-                                                  "words": ["Fourth page...", "The goal for %%%%%%%POKEMON%%%%%%% trainers is to beat the top 8 %%%%%%%POKEMON%%%%%%% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %%%%%%%POKEMON%%%%%%% LEAGUE!", "GIRL: Hey! Don't look at my notes!"]
-                                              }
-                                          }
-                                      }
-                                  }
-                              }
-                          }
-                      }
+                    {
+                        "options": {
+                            "Yes": {
+                                "words": ["Second page...", "A healty %%%%%%%POKEMON%%%%%%% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
+                                "options": {
+                                    "Yes": {
+                                        "words": ["Third page...", "%%%%%%%POKEMON%%%%%%% trainers seek others to engage in %%%%%%%POKEMON%%%%%%% fights.", "Battles are constantly fought at %%%%%%%POKEMON%%%%%%% GYMs.", "Turn the page?"],
+                                        "options": {
+                                            "Yes": {
+                                                "words": ["Fourth page...", "The goal for %%%%%%%POKEMON%%%%%%% trainers is to beat the top 8 %%%%%%%POKEMON%%%%%%% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %%%%%%%POKEMON%%%%%%% LEAGUE!", "GIRL: Hey! Don't look at my notes!"]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 },
                 { "thing": "Stool", "x": 24, "y": 40 },
                 { "thing": "Girl", "x": 24, "y": 40, "direction": 0, "dialog": "Whew! I'm trying to memorize all my notes." },
@@ -308,6 +308,6 @@ FullScreenPokemon.prototype.settings.maps.library["Viridian City"] = {
             ]
         }
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

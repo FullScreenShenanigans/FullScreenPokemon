@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateGroupsSettings(): void {
+export function GenerateGroupsSettings(): GameStartr.IGroupHoldrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.groups = {
+    return {
         groupNames: ["Solid", "Character", "Scenery", "Terrain", "Text", "Thing"],
         groupTypes: {
             Solid: "Array",

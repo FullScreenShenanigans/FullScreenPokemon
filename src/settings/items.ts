@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateItemsSettings(): void {
+export function GenerateItemsSettings(): GameStartr.IItemsHoldrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.items = {
+    return {
         allowAutoSave: true,
         autoSave: false,
         containersArguments: undefined,

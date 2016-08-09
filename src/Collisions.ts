@@ -42,14 +42,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          * @param other
          * @returns Whether thing is touching other.
          */
-        return function isCharacterTouchingCharacter(thing: ICharacter, other: ICharacter): boolean {
-            return (
-                !thing.nocollide && !other.nocollide
-                && thing.right >= (other.left + other.tolLeft)
-                && thing.left <= (other.right - other.tolRight)
-                && thing.bottom >= (other.top + other.tolTop)
-                && thing.top <= (other.bottom - other.tolBottom));
-        };
+        return (thing: ICharacter, other: ICharacter): boolean => (
+            !thing.nocollide && !other.nocollide
+            && thing.right >= (other.left + other.tolLeft)
+            && thing.left <= (other.right - other.tolRight)
+            && thing.bottom >= (other.top + other.tolTop)
+            && thing.top <= (other.bottom - other.tolBottom));
     }
 
     /**
@@ -68,14 +66,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          * @param other
          * @returns Whether thing is touching other.
          */
-        return function isCharacterTouchingSolid(thing: ICharacter, other: IThing): boolean {
-            return (
-                !thing.nocollide && !other.nocollide
-                && thing.right >= (other.left + other.tolLeft)
-                && thing.left <= (other.right - other.tolRight)
-                && thing.bottom >= (other.top + other.tolTop)
-                && thing.top <= (other.bottom - other.tolBottom));
-        };
+        return (thing: ICharacter, other: IThing): boolean => (
+            !thing.nocollide && !other.nocollide
+            && thing.right >= (other.left + other.tolLeft)
+            && thing.left <= (other.right - other.tolRight)
+            && thing.bottom >= (other.top + other.tolTop)
+            && thing.top <= (other.bottom - other.tolBottom));
     }
 
     /**
@@ -94,7 +90,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          * @param other
          * @returns Whether thing is hitting other.
          */
-        return function hitCharacterThing(thing: ICharacter, other: IThing): boolean {
+        return (thing: ICharacter, other: IThing): boolean => {
             // If either Thing is the player, it should be the first
             if ((<ICharacter>other).player && !thing.player) {
                 [thing, other] = [<ICharacter>other, thing];
@@ -108,36 +104,36 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
-            switch (this.EightBitter.getDirectionBordering(thing, other)) {
+            switch (this.EightBitter.physics.getDirectionBordering(thing, other)) {
                 case Direction.Top:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
-                        this.EightBitter.setThingBordering(thing, other, Direction.Top);
-                        this.EightBitter.setThingBordering(other, thing, Direction.Bottom);
-                        this.EightBitter.setTop(thing, other.bottom - other.tolBottom);
+                        this.setThingBordering(thing, other, Direction.Top);
+                        this.setThingBordering(other, thing, Direction.Bottom);
+                        this.EightBitter.physics.setTop(thing, other.bottom - other.tolBottom);
                     }
                     break;
 
                 case Direction.Right:
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
-                        this.EightBitter.setThingBordering(thing, other, Direction.Right);
-                        this.EightBitter.setThingBordering(other, thing, Direction.Left);
-                        this.EightBitter.setRight(thing, other.left + other.tolLeft);
+                        this.setThingBordering(thing, other, Direction.Right);
+                        this.setThingBordering(other, thing, Direction.Left);
+                        this.EightBitter.physics.setRight(thing, other.left + other.tolLeft);
                     }
                     break;
 
                 case Direction.Bottom:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
-                        this.EightBitter.setThingBordering(thing, other, Direction.Bottom);
-                        this.EightBitter.setThingBordering(other, thing, Direction.Top);
-                        this.EightBitter.setBottom(thing, other.top + other.tolTop);
+                        this.setThingBordering(thing, other, Direction.Bottom);
+                        this.setThingBordering(other, thing, Direction.Top);
+                        this.EightBitter.physics.setBottom(thing, other.top + other.tolTop);
                     }
                     break;
 
                 case Direction.Left:
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
-                        this.EightBitter.setThingBordering(thing, other, Direction.Left);
-                        this.EightBitter.setThingBordering(other, thing, Direction.Right);
-                        this.EightBitter.setLeft(thing, other.right - other.tolRight);
+                        this.setThingBordering(thing, other, Direction.Left);
+                        this.setThingBordering(other, thing, Direction.Right);
+                        this.EightBitter.physics.setLeft(thing, other.right - other.tolRight);
                     }
                     break;
 
@@ -154,7 +150,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A new border for thing.
      * @param direction   The direction border being changed.
      */
-    setThingBordering(thing: IThing, other: IThing, direction: Direction): void {
+    public setThingBordering(thing: IThing, other: IThing, direction: Direction): void {
         if (thing.bordering[direction] && thing.bordering[direction].borderPrimary && !other.borderPrimary) {
             return;
         }
@@ -170,7 +166,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Detector triggered by thing.
      * @returns Whether to override normal positioning logic in hitCharacterThing.
      */
-    collideCollisionDetector(thing: IPlayer, other: IDetector): boolean {
+    public collideCollisionDetector(thing: IPlayer, other: IDetector): boolean {
         if (!thing.player) {
             return false;
         }
@@ -209,7 +205,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Player triggering other.
      * @param other   A Character with dialog triggered by thing.
      */
-    collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
+    public collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
         let dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog;
         let direction: Direction;
 
@@ -260,7 +256,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Player interacting with other.
      * @param other   A Pokeball being interacted with by thing.
      */
-    collidePokeball(thing: IPlayer, other: IPokeball): void {
+    public collidePokeball(thing: IPlayer, other: IPokeball): void {
         switch (other.action) {
             case "item":
                 this.EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -330,7 +326,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Character within grass.
      * @param other   The specific Grass that thing is within.
      */
-    collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
+    public collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
         if (thing.grass || !this.EightBitter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
@@ -367,7 +363,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Character walking to other.
      * @param other   A Ledge walked to by thing.
      */
-    collideLedge(thing: ICharacter, other: IThing): boolean {
+    public collideLedge(thing: ICharacter, other: IThing): boolean {
         if (thing.ledge || !thing.walking) {
             return true;
         }
@@ -402,7 +398,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Character walking to other.
      * @param other   A Ledge walked to by thing.
      */
-    collideWaterEdge(thing: ICharacter, other: IThing): boolean {
+    public collideWaterEdge(thing: ICharacter, other: IThing): boolean {
         let edge: IWaterEdge = other as IWaterEdge;
 
         if (!thing.surfing || edge.exitDirection !== thing.direction) {

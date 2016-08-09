@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateEventsSettings(): void {
+export function GenerateEventsSettings(): GameStartr.ITimeHandlrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.events = {
+    return {
         keyOnClassCycleStart: "onThingAdd",
         keyDoClassCycleStart: "placed",
         keyCycleCheckValidity: "alive",

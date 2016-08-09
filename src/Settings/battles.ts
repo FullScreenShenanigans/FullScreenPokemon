@@ -1,51 +1,53 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateBattlesSettings(): void {
+import { IBattleMovrCustoms } from "../IFullScreenPokemon";
+
+export function GenerateBattlesSettings(): IBattleMovrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.battles = {
-        "MenuGrapher": undefined,
-        "battleMenuName": "Battle",
-        "battleOptionNames": {
-            "moves": "FIGHT",
-            "items": "ITEM",
-            "actors": ["Poke", "Mon"],
-            "exit": "RUN"
+    return {
+        MenuGrapher: undefined,
+        battleMenuName: "Battle",
+        battleOptionNames: {
+            moves: "FIGHT",
+            items: "ITEM",
+            actors: ["Poke", "Mon"],
+            exit: "RUN"
         },
-        "menuNames": {
-            "moves": "BattleFightList",
-            "items": "Items",
-            "actors": "Pokemon"
+        menuNames: {
+            moves: "BattleFightList",
+            items: "Items",
+            actors: "Pokemon"
         },
-        "backgroundType": "DirtWhite",
-        "defaults": {
-            "exitDialog": "Got away safely!",
-            "textStart": [
+        backgroundType: "DirtWhite",
+        defaults: {
+            exitDialog: "Got away safely!",
+            textStart: [
                 "A wild ".split(""),
                 " appeared!".split("")
             ],
-            "textEntry": [
+            textEntry: [
                 "Go! ".split(""),
                 "!".split("")
             ],
-            "textOpponentSendOut": [
+            textOpponentSendOut: [
                 "".split(""),
                 " sent out ".split(""),
                 "!".split("")
             ],
-            "textPlayerSendOut": [
+            textPlayerSendOut: [
                 "Go! ".split(""),
                 "!".split("")
             ]
         },
-        "positions": {
-            "player": {
-                "left": 4,
-                "top": 20
+        positions: {
+            player: {
+                left: 4,
+                top: 20
             },
-            "opponent": {
-                "left": 52,
-                "top": 8
+            opponent: {
+                left: 52,
+                top: 8
             }
         }
     };

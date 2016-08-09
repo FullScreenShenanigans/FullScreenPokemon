@@ -194,6 +194,10 @@ declare namespace TimeHandlr {
          * Function to remove a class from a Thing (by default, String removal).
          */
         classRemove?: IClassChanger;
+        /**
+         * A scope to run class changers in, if not this ITimeHandlr.
+         */
+        classScope?: any;
     }
     /**
      * A flexible, pausable alternative to setTimeout.
@@ -207,6 +211,12 @@ declare namespace TimeHandlr {
          * @returns The catalog of events, keyed by their time triggers.
          */
         getEvents(): ICurrentEvents;
+        /**
+         * Sets a scope to run class changers in, if not this.
+         *
+         * @param classScope   A scope to run class changers in, if not this.
+         */
+        setClassScope(classScope?: any): any;
         /**
          * Adds an event in a manner similar to setTimeout, though any arguments
          * past the timeDelay will be passed to the event callback. The added event
@@ -412,6 +422,10 @@ declare namespace TimeHandlr {
          */
         private classRemove;
         /**
+         * A scope to run class changers in, if not this.
+         */
+        private classScope;
+        /**
          * Initializes a new instance of the TimeHandlr class.
          *
          * @param settings   Settings to be used for initialization.
@@ -425,6 +439,12 @@ declare namespace TimeHandlr {
          * @returns The catalog of events, keyed by their time triggers.
          */
         getEvents(): ICurrentEvents;
+        /**
+         * Sets a scope to run class changers in, if not this.
+         *
+         * @param classScope   A scope to run class changers in, if not this.
+         */
+        setClassScope(classScope?: any): any;
         /**
          * Adds an event in a manner similar to setTimeout, though any arguments
          * past the timeDelay will be passed to the event callback. The added event

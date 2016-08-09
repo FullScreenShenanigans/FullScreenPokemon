@@ -1,6 +1,6 @@
+/// <reference path="../../typings/GameStartr.d.ts" />
 /// <reference path="../../typings/ModAttachr.d.ts" />
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IArea, IBattleInfo, IBattleThingInfo, ICharacter, IEnemy, IGrass,
     IItemSchema, IMap, IPokemon
@@ -8,10 +8,10 @@ import {
 
 const onModEnableKey: string = "onModEnable";
 
-export function GenerateModsSettings(): void {
+export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.mods = {
+    return {
         storeLocally: true,
         prefix: "FullScreenPokemon::Mods::",
         mods: [
@@ -310,6 +310,7 @@ export function GenerateModsSettings(): void {
                         }
                     }
                 }
-            }]
+            }
+        ]
     };
-};
+}

@@ -1,11 +1,13 @@
+/// <reference path="../../typings/GameStartr.d.ts" />
+
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-export function GenerateSpritesSettings(): void {
+export function GenerateSpritesSettings(): GameStartr.IPixelRendrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.sprites = {
+    return {
         "scale": FullScreenPokemon.prototype.scale,
         "spriteWidth": "spritewidthpixels",
         "spriteHeight": "spriteheightpixels",
@@ -1085,6 +1087,6 @@ export function GenerateSpritesSettings(): void {
             }
         }
     };
-};
 
-/* tslint:enable max-line-length */
+    /* tslint:enable max-line-length */
+}

@@ -35,9 +35,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         if (thing.roaming) {
             this.EightBitter.TimeHandler.addEvent(
-                this.EightBitter.animations.activateCharacterRoaming,
-                this.EightBitter.NumberMaker.randomInt(70),
-                thing);
+                (): boolean => this.EightBitter.animations.activateCharacterRoaming(thing),
+                this.EightBitter.NumberMaker.randomInt(70));
         }
     }
 
@@ -50,7 +49,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
     public spawnWindowDetector(thing: IDetector): void {
         if (!this.EightBitter.animations.checkWindowDetector(thing)) {
             this.EightBitter.TimeHandler.addEventInterval(
-                this.EightBitter.animations.checkWindowDetector, 7, Infinity, thing);
+                (): boolean => this.EightBitter.animations.checkWindowDetector(thing),
+                7,
+                Infinity);
         }
     }
 
@@ -710,7 +711,10 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         if (!thing.walkingFlipping) {
             thing.walkingFlipping = this.EightBitter.TimeHandler.addEventInterval(
-                this.EightBitter.animations.animateSwitchFlipOnDirection.bind(this.EightBitter), repeats, Infinity, thing);
+                (): void => this.EightBitter.animations.animateSwitchFlipOnDirection(thing),
+                repeats,
+                Infinity,
+                thing);
         }
 
         if (thing.sight) {
@@ -718,7 +722,11 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         this.EightBitter.TimeHandler.addEventInterval(
-            thing.onWalkingStop, repeats, Infinity, thing, onStop);
+            (): void => thing.onWalkingStop.call(this.EightBitter.animations, thing, onStop),
+            repeats,
+            Infinity,
+            thing,
+            onStop);
 
         if (!thing.bordering[direction]) {
             this.EightBitter.physics.shiftBoth(thing, thing.xvel, thing.yvel);
@@ -1576,15 +1584,14 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param thing   A Character to start roaming.
      * @returns Whether the time cycle should stop (thing is dead).
      */
-    activateCharacterRoaming(thing: ICharacter): boolean {
+    public activateCharacterRoaming(thing: ICharacter): boolean {
         if (!thing.alive) {
             return true;
         }
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.activateCharacterRoaming,
-            70 + this.EightBitter.NumberMaker.randomInt(210),
-            thing);
+            (): boolean => this.EightBitter.animations.activateCharacterRoaming(thing),
+            70 + this.EightBitter.NumberMaker.randomInt(210));
 
         if (!thing.talking && !this.EightBitter.MenuGrapher.getActiveMenu()) {
             this.EightBitter.animations.animateCharacterStartWalkingRandom(thing);
@@ -1598,7 +1605,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   A newly placed Spawner.
      */
-    activateSpawner(thing: IDetector): void {
+    public activateSpawner(thing: IDetector): void {
         thing.activate(thing);
     }
 
@@ -1607,7 +1614,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   An in-game WindowDetector.
      */
-    checkWindowDetector(thing: IDetector): boolean {
+    public checkWindowDetector(thing: IDetector): boolean {
         if (
             thing.bottom < 0
             || thing.left > this.EightBitter.MapScreener.width
@@ -1627,7 +1634,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * 
      * @param thing   An AreaSpawner to activate.
      */
-    spawnAreaSpawner(thing: IAreaSpawner): void {
+    public spawnAreaSpawner(thing: IAreaSpawner): void {
         let map: IMap = <IMap>this.EightBitter.AreaSpawner.getMap(thing.map),
             area: IArea = <IArea>map.areas[thing.area];
 
@@ -1659,7 +1666,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @todo Add context for what happens if player is not bordering the correct HMCharacter.
      * @todo Refactor to give borderedThing a .hmActivate property.
      */
-    partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IHMMoveSchema): void {
+    public partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IHMMoveSchema): void {
         let borderedThing: IThing = player.bordering[player.direction];
 
         if (borderedThing && borderedThing.title.indexOf(move.characterName) !== -1) {

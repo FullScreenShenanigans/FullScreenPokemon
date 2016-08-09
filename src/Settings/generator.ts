@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateGeneratorSettings(): void {
+export function GenerateGeneratorSettings(): GameStartr.IWorldSeedrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.generator = {
+    return {
         possibilities: {}
     };
 }

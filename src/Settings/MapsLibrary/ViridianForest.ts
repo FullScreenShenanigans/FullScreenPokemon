@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Viridian Forest"] = {
+export const ViridianForest: IMapRaw = {
     "name": "Viridian Forest",
     "theme": "Viridian Forest",
     "locationDefault": "Forest Top",
@@ -244,6 +244,6 @@ FullScreenPokemon.prototype.settings.maps.library["Viridian Forest"] = {
             ]
         }
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

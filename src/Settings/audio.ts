@@ -1,9 +1,9 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateAudioSettings(): void {
+export function GenerateAudioSettings(): GameStartr.IAudioPlayrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.audio = {
+    return {
         "directory": "Sounds",
         "fileTypes": ["mp3"],
         "library": {
@@ -66,4 +66,4 @@ export function GenerateAudioSettings(): void {
             ]
         }
     };
-};
+}

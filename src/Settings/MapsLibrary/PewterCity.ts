@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Pewter City"] = {
+export const PewterCity: IMapRaw = {
     "name": "Pewter City",
     "theme": "Pewter City",
     "locationDefault": "PokeCenter Outside Door",
@@ -356,6 +356,6 @@ FullScreenPokemon.prototype.settings.maps.library["Pewter City"] = {
             ]
         },
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

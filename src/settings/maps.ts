@@ -1,12 +1,22 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
+
+import { IMapCustoms } from "../IFullScreenPokemon";
 import { Macros } from "../Macros";
 import { Maps } from "../Maps";
 import { Scrolling } from "../Scrolling";
+import { PalletTown } from "./MapsLibrary/PalletTown";
+import { PewterCity } from "./MapsLibrary/PewterCity";
+import { Route1 } from "./MapsLibrary/Route1";
+import { Route2 } from "./MapsLibrary/Route2";
+import { Route21 } from "./MapsLibrary/Route21";
+import { Route22 } from "./MapsLibrary/Route22";
+import { ViridianCity } from "./MapsLibrary/ViridianCity";
+import { ViridianForest } from "./MapsLibrary/ViridianForest";
 
-export function GenerateMapsSettings(): void {
+export function GenerateMapsSettings(): IMapCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.maps = {
+    return {
         mapDefault: "Blank",
         locationDefault: "Black",
         groupTypes: ["Text", "Character", "Solid", "Scenery", "Terrain", "Thing"],
@@ -58,7 +68,15 @@ export function GenerateMapsSettings(): void {
                         creation: []
                     }
                 }
-            }
+            },
+            "Pallet Town": PalletTown,
+            "Pewter City": PewterCity,
+            "Route 1": Route1,
+            "Route 2": Route2,
+            "Route 21": Route21,
+            "Route 22": Route22,
+            "Viridian City": ViridianCity,
+            "Viridian Forest": ViridianForest
         }
     };
 }

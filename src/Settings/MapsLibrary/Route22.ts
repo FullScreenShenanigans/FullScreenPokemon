@@ -1,8 +1,8 @@
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IMapRaw } from "../../IFullScreenPokemon";
 
 /* tslint:disable max-line-length */
 
-FullScreenPokemon.prototype.settings.maps.library["Route 22"] = {
+export const Route22: IMapRaw = {
     "name": "Route 22",
     "theme": "Cerulean from Mount Moon",
     "locationDefault": "Pokemon League",
@@ -120,6 +120,6 @@ FullScreenPokemon.prototype.settings.maps.library["Route 22"] = {
             ]
         }
     }
-} as any;
+};
 
 /* tslint:enable max-line-length */

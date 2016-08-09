@@ -104,6 +104,11 @@ export interface IMathConstants {
     statisticNamesDisplayed?: string[];
 
     /**
+     * How much to expand each pixel from raw sizing measurements to in-game.
+     */
+    unitsize: number;
+
+    /**
      * Information on Pokemon status effects.
      */
     statuses: {
@@ -503,6 +508,19 @@ export interface IMathEquations extends MathDecidr.IEquations {
 }
 
 /**
+ * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
+ * and MapsCreatr.
+ */
+export interface IMapCustoms extends GameStartr.IMapCustoms {
+    /**
+     * Known map Objects, keyed by name.
+     */
+    library: {
+        [i: string]: IMapRaw;
+    };
+}
+
+/**
  * Settings regarding a menu system, particularly for an IMenuGraphr.
  */
 export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject {
@@ -530,9 +548,7 @@ export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject
 /**
  * Settings regarding large-scale state storage, particularly for an IStateHoldr.
  */
-export interface IStateHoldrCustoms extends GameStartr.IGameStartrSettingsObject {
-    ItemsHolder: ItemsHoldr.IItemsHoldr;
-}
+export interface IStateHoldrCustoms extends GameStartr.IGameStartrSettingsObject, StateHoldr.IStateHoldrSettings { }
 
 /**
  * Stored settings to be stored separately and kept within an IFullScreenPokemon.
@@ -549,6 +565,12 @@ export interface IFullScreenPokemonStoredSettings extends GameStartr.IGameStartr
     math: IMathDecidrCustoms;
 
     /**
+     * Settings regarding maps, particularly for an IAreaSpawnr, an
+     * IMapScreenr, and an IMapsCreatr.
+     */
+    maps: IMapCustoms;
+
+    /**
      * Settings regarding a menu system, particularly for an IMenuGraphr.
      */
     menus: IMenuGraphrCustoms;
@@ -556,7 +578,7 @@ export interface IFullScreenPokemonStoredSettings extends GameStartr.IGameStartr
     /**
      * Settings regarding large-scale state storage, particularly for an IStateHoldr.
      */
-    states: IStateHoldrCustoms;
+    state: IStateHoldrCustoms;
 }
 
 /**
@@ -736,21 +758,29 @@ export interface ISaveFile {
 }
 
 /**
- * A Map parsed from its raw JSON-friendly description.
+ * 
  */
-export interface IMap extends MapsCreatr.IMap, IStateSaveable {
+export interface IMapRaw extends MapsCreatr.IMapRaw {
     /**
      * A listing of areas in the Map, keyed by name.
      */
     areas: {
-        [i: string]: IArea;
-        [i: number]: IArea;
+        [i: string]: IAreaRaw;
+        [i: number]: IAreaRaw;
     };
 
     /**
      * The default location for the Map.
      */
-    locationDefault?: string;
+    locationDefault: string;
+
+    /**
+     * Descriptions of locations in the map.
+     */
+    locations: {
+        [i: string]: ILocationRaw;
+        [i: number]: ILocationRaw;
+    };
 
     /**
      * A starting seed to initialize random number generation.
@@ -761,21 +791,49 @@ export interface IMap extends MapsCreatr.IMap, IStateSaveable {
      * What theme to play by default, such as "Pallet Town".
      */
     theme?: string;
+}
+
+/**
+ * A Map parsed from its raw JSON-friendly description.
+ */
+export interface IMap extends IStateSaveable, MapsCreatr.IMap {
+    /**
+     * A listing of areas in the Map, keyed by name.
+     */
+    areas: {
+        [i: string]: IArea;
+        [i: number]: IArea;
+    };
 
     /**
      * The name of the Map, such as "Pallet Town".
      */
     name: string;
+
+    /**
+     * The default location for the Map.
+     */
+    locationDefault?: string;
+
+    /**
+     * A starting seed to initialize random number generation.
+     */
+    seed: number | number[];
+
+    /**
+     * What theme to play by default, such as "Pallet Town".
+     */
+    theme: string;
 }
 
 /**
- * An Area parsed from a raw JSON-friendly Map description.
+ * 
  */
-export interface IArea extends MapsCreatr.IArea, IStateSaveable {
+export interface IAreaRaw extends MapsCreatr.IAreaRaw {
     /**
      * Whether the Area allows bicycling.
      */
-    allowCycling: boolean;
+    allowCycling?: boolean;
 
     /**
      * Any additional attributes that should add extra properties to this Area.
@@ -787,18 +845,54 @@ export interface IArea extends MapsCreatr.IArea, IStateSaveable {
     /**
      * What background to display behind all Things.
      */
+    background?: string;
+
+    /**
+     * How tall the area is.
+     * @todo It's not clear if this is different from boundaries.height.
+     */
+    height?: number;
+
+    /**
+     * Whether the area should have invisible borders added around it.
+     */
+    invisibleWallBorders?: boolean;
+
+    /**
+     * A default theme to override the parent Map's.
+     */
+    theme?: string;
+
+    /**
+     * How wide the area is.
+     * @todo It's not clear if this is different from boundaries.width.
+     */
+    width?: number;
+
+    /**
+     * Wild Pokemon that may appear in this Area.
+     */
+    wildPokemon?: IAreaWildPokemonOptionGroups;
+}
+
+/**
+ * An Area parsed from a raw JSON-friendly Map description.
+ */
+export interface IArea extends IAreaRaw, IStateSaveable, MapsCreatr.IArea {
+    /**
+     * Whether the Area allows bicycling.
+     */
+    allowCycling: boolean;
+
+    /**
+     * What background to display behind all Things.
+     */
     background: string;
 
     /**
      * In-game boundaries of all placed Things.
      */
     boundaries: IAreaBoundaries;
-
-    /**
-     * How tall the area is.
-     * @todo It's not clear if this is different from boundaries.height.
-     */
-    height: number;
 
     /**
      * The Map this Area is within.
@@ -814,17 +908,6 @@ export interface IArea extends MapsCreatr.IArea, IStateSaveable {
      * Which Map spawned this Area and when.
      */
     spawnedBy: IAreaSpawnedBy;
-
-    /**
-     * A default theme to override the parent Map's.
-     */
-    theme?: string;
-
-    /**
-     * How wide the area is.
-     * @todo It's not clear if this is different from boundaries.width.
-     */
-    width: number;
 
     /**
      * Wild Pokemon that may appear in this Area.
@@ -896,7 +979,10 @@ export interface IAreaWildPokemonOptionGroups {
      */
     grass?: IWildPokemonSchema[];
 
-    fishing?: IFishing;
+    /**
+     * Types of Pokemon that may appear in water.
+     */
+    fishing?: IWildFishingPokemon;
 }
 
 /**
@@ -930,9 +1016,49 @@ export interface IWildPokemonSchema {
 }
 
 /**
+ * 
+ */
+export interface ILocationRaw extends MapsCreatr.ILocationRaw {
+    /**
+     * A cutscene to immediately start upon entering.
+     */
+    cutscene?: string;
+
+    /**
+     * A direction to immediately face the player towards.
+     */
+    direction?: number;
+
+    /**
+     * Whether the player should immediately walk forward.
+     */
+    push?: boolean;
+
+    /**
+     * A cutscene routine to immediately start upon entering.
+     */
+    routine?: string;
+
+    /**
+     * A theme to immediately play upon entering.
+     */
+    theme?: string;
+
+    /**
+     * The x-location in the parent Area.
+     */
+    xloc?: number;
+
+    /**
+     * The y-location in the parent Area.
+     */
+    yloc?: number;
+}
+
+/**
  * A Location parsed from a raw JSON-friendly Map description.
  */
-export interface ILocation extends MapsCreatr.ILocation, IStateSaveable {
+export interface ILocation extends IStateSaveable, MapsCreatr.ILocation {
     /**
      * The Area this Location is a part of.
      */
@@ -1098,7 +1224,7 @@ export interface IItemSchema {
 /**
  * The types of Pokemon that can be caught with different rods.
  */
-export interface IFishing extends IItemSchema {
+export interface IWildFishingPokemon {
     /**
      * The Pokemon that can be caught using an Old Rod.
      */

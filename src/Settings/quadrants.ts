@@ -1,13 +1,15 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateQuadrantsSettings(): void {
+import { Unitsize } from "../Constants";
+
+export function GenerateQuadrantsSettings(): GameStartr.IQuadsKeeprCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.quadrants = {
+    return {
         numRows: 5,
         numCols: 6,
-        tolerance: FullScreenPokemon.prototype.unitsize / 2,
+        tolerance: Unitsize / 2,
         groupNames: ["Solid", "Character", "Scenery", "Terrain", "Text"],
         keyGroupName: "groupType"
     };
-};
+}

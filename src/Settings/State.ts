@@ -1,8 +1,11 @@
-import { FullScreenPokemon } from "../FullScreenPokemon";
+/// <reference path="../../typings/GameStartr.d.ts" />
 
-export function GenerateStateSettings(): void {
+import { IStateHoldrCustoms } from "../IFullScreenPokemon";
+
+export function GenerateStateSettings(): IStateHoldrCustoms {
     "use strict";
-    FullScreenPokemon.prototype.settings.states = {
-        "prefix": "StateHolder::"
+
+    return {
+        prefix: "StateHolder::"
     } as any;
 }

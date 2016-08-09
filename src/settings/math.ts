@@ -1,21 +1,22 @@
+/// <reference path="../../typings/GameStartr.d.ts" />
+
 import { Animations } from "../Animations";
+import { Unitsize } from "../Constants";
 import { Cycling } from "../Cycling";
 import { Fishing } from "../Fishing";
-import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IBattleBall, IBattleInfo, IBattleModification, IBattleThingInfo,
     ICharacter, IExperience, IGrass, IHMMoveSchema,
-    IMathConstants, IMathEquations, IMovePossibility, IMoveSchema,
-    IPokemon, IPokemonListing, IPokemonMoveListing,
-    IRod
+    IMathConstants, IMathDecidrCustoms, IMathEquations, IMovePossibility,
+    IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod
 } from "../IFullScreenPokemon";
 
 /* tslint:disable:max-line-length */
 
-export function GenerateMathSettings(): void {
+export function GenerateMathSettings(): IMathDecidrCustoms {
     "use strict";
 
-    FullScreenPokemon.prototype.settings.math = {
+    return {
         "equations": {
             "averageLevel": function (constants: IMathConstants, equations: IMathEquations, actors: IPokemon[]): number {
                 let average: number = 0;
@@ -30,7 +31,7 @@ export function GenerateMathSettings(): void {
                 return thing.speed * 2;
             },
             "speedWalking": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
-                return Math.round(8 * this.EightBitter.unitsize / thing.speed);
+                return Math.round(8 * Unitsize / thing.speed);
             },
             "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
                 let statisticNames: string[] = constants.statisticNames,
@@ -520,6 +521,7 @@ export function GenerateMathSettings(): void {
         "constants": {
             "statisticNames": ["HP", "Attack", "Defense", "Speed", "Special"],
             "statisticNamesDisplayed": ["Attack", "Defense", "Speed", "Special"],
+            "unitsize": Unitsize,
             "statuses": {
                 "names": ["Sleep", "Freeze", "Paralyze", "Burn", "Poison"],
                 "probability25": {
