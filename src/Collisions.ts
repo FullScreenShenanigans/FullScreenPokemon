@@ -306,10 +306,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                     "options": [
                         {
                             "text": "YES",
-                            "callback": console.log.bind(console, "What do, yes?")
+                            "callback": (): void => console.log("What do, yes?")
                         }, {
                             "text": "NO",
-                            "callback": console.log.bind(console, "What do, no?")
+                            "callback": (): void => console.log("What do, no?")
                         }]
                 });
                 this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");

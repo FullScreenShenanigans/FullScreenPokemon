@@ -1207,7 +1207,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
             "CharMDash": {
                 "attributes": {
                     "blinking": {
-                        "onThingAdd": console.log.bind(console, "HA")
+                        "onThingAdd": (): void => console.log("HA")
                     }
                 }
             },

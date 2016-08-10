@@ -124,14 +124,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         return this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            speed,
-            thing,
-            attribute,
-            change,
-            goal,
-            speed,
-            onCompletion);
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    thing,
+                    attribute,
+                    change,
+                    goal,
+                    speed,
+                    onCompletion);
+            },
+            speed);
     }
 
     /**
@@ -171,13 +173,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         this.EightBitter.TimeHandler.addEvent(
-            this.animateSlideHorizontal.bind(this),
-            speed,
-            thing,
-            change,
-            goal,
-            speed,
-            onCompletion);
+            (): void => {
+                this.animateSlideHorizontal(
+                    thing,
+                    change,
+                    goal,
+                    speed,
+                    onCompletion);
+            },
+            speed);
     }
 
     /**
@@ -217,13 +221,15 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         this.EightBitter.TimeHandler.addEvent(
-            this.animateSlideVertical.bind(this),
-            speed,
-            thing,
-            change,
-            goal,
-            speed,
-            onCompletion);
+            (): void => {
+                this.animateSlideVertical(
+                    thing,
+                    change,
+                    goal,
+                    speed,
+                    onCompletion);
+            },
+            speed);
     }
 
     /**
@@ -366,11 +372,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         let things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
 
         this.EightBitter.TimeHandler.addEvent(
-            things.forEach.bind(things),
-            7,
-            (thing: IThing): void => this.EightBitter.physics.killNormal(thing));
+            (): void => {
+                for (const thing of things) {
+                    this.EightBitter.physics.killNormal(thing);
+                }
+            },
+            7);
 
-        this.EightBitter.TimeHandler.addEvent(this.animateSmokeMedium.bind(this), 7, x, y, callback);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.animateSmokeMedium(x, y, callback),
+            7);
     }
 
     /**
@@ -381,16 +392,23 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
-        let things: IThing[] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
-
-        this.EightBitter.TimeHandler.addEvent(this.animateExpandCorners.bind(this), 7, things, this.EightBitter.unitsize);
+        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
 
         this.EightBitter.TimeHandler.addEvent(
-            things.forEach.bind(things),
-            14,
-            (thing: IThing): void => this.EightBitter.physics.killNormal(thing));
+            (): void => this.animateExpandCorners(things, this.EightBitter.unitsize),
+            7);
 
-        this.EightBitter.TimeHandler.addEvent(this.animateSmokeLarge.bind(this), 14, x, y, callback);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                for (const thing of things) {
+                    this.EightBitter.physics.killNormal(thing);
+                }
+            },
+            14);
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.animateSmokeLarge(x, y, callback),
+            14);
     }
 
     /**
@@ -401,20 +419,21 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
-        let things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeLarge", undefined, "Text");
+        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeLarge", undefined, "Text");
 
         this.animateExpandCorners(things, this.EightBitter.unitsize * 2.5);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.animateExpandCorners.bind(this),
-            7,
-            things,
-            this.EightBitter.unitsize * 2);
+            (): void => this.animateExpandCorners(things, this.EightBitter.unitsize * 2),
+            7);
 
         this.EightBitter.TimeHandler.addEvent(
-            things.forEach.bind(things),
-            21,
-            (thing: IThing): void => this.EightBitter.physics.killNormal(thing));
+            (): void => {
+                for (const thing of things) {
+                    this.EightBitter.physics.killNormal(thing);
+                }
+            },
+            21);
 
         if (callback) {
             this.EightBitter.TimeHandler.addEvent(callback, 21);
@@ -1053,8 +1072,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             this.EightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
-                this.animateCharacterDialogFinish.bind(this, thing, other)
-            );
+                (): void => this.animateCharacterDialogFinish(thing, other));
             this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
             this.EightBitter.storage.addItemToBag(other.gift);
@@ -1110,21 +1128,22 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                     return undefined;
                 }
 
-                let callback: (...args: any[]) => void,
-                    words: MenuGraphr.IMenuDialogRaw;
+                let callback: (...args: any[]) => void;
+                let words: MenuGraphr.IMenuDialogRaw;
 
                 if (dialog.constructor === Object && (dialog as IDialog).options) {
                     words = (dialog as IDialog).words;
-                    callback = this.animateCharacterDialogOptions.bind(
-                        this, thing, other, dialog);
+                    callback = (): void => {
+                        this.animateCharacterDialogOptions(thing, other, dialog as IDialog);
+                    };
                 } else {
                     words = (dialog as IDialog).words || <string>dialog;
                     if ((dialog as IDialog).cutscene) {
                         callback = this.EightBitter.ScenePlayer.bindCutscene(
                             (dialog as IDialog).cutscene,
                             {
-                                "player": thing,
-                                "tirggerer": other
+                                player: thing,
+                                tirggerer: other
                             });
                     }
                 }
@@ -1211,11 +1230,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         this.animateCharacterStartWalking(thing, direction);
 
         thing.followingLoop = this.EightBitter.TimeHandler.addEventInterval(
-            this.animateCharacterFollowContinue.bind(this),
+            (): void => this.animateCharacterFollowContinue(thing, other),
             this.EightBitter.MathDecider.compute("speedWalking", thing),
-            Infinity,
-            thing,
-            other);
+            Infinity);
     }
 
     /**
@@ -1498,28 +1515,24 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             throw new Error("No transport given to activateTransporter");
         }
 
-        let transport: ITransportSchema = <ITransportSchema>other.transport,
-            callback: Function,
-            args: any[];
+        const transport: ITransportSchema = <ITransportSchema>other.transport;
+        let callback: () => void;
 
         if (transport.constructor === String) {
-            callback = this.EightBitter.maps.setLocation.bind(this.EightBitter.maps);
-            args = [transport];
+            callback = (): void => this.EightBitter.maps.setLocation(transport as any);
         } else if (typeof transport.map !== "undefined") {
-            callback = this.EightBitter.maps.setMap.bind(this.EightBitter.maps);
-            args = [transport.map, transport.location];
+            callback = (): void => this.EightBitter.maps.setMap(transport.map, transport.location);
         } else if (typeof transport.location !== "undefined") {
-            callback = this.EightBitter.maps.setLocation.bind(this.EightBitter.maps);
-            args = [transport.location];
+            callback = (): void => this.EightBitter.maps.setLocation(transport.location);
         } else {
-            throw new Error("Unknown transport type:" + transport);
+            throw new Error(`Unknown transport type: '${transport}'`);
         }
 
         other.active = false;
 
         this.EightBitter.animations.animateFadeToColor({
-            color: "Black",
-            callback: (): void => callback(...args)
+            callback,
+            color: "Black"
         });
     }
 

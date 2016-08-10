@@ -218,6 +218,7 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.resetMathDecider(settings);
         this.resetMenuGrapher(settings);
         this.resetStateHolder(settings);
+        this.resetBattleMover(settings);
 
         this.AreaSpawner.setCommandScope(this.maps);
         this.InputWriter.setEventScope(this.inputs);
@@ -317,10 +318,10 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.BattleMover = new BattleMovr.BattleMovr(
             this.utilities.proliferate(
                 {
-                    "GameStarter": this,
-                    "MenuGrapher": this.MenuGrapher,
-                    "openItemsMenuCallback": this.menus.openItemsMenu.bind(this),
-                    "openActorsMenuCallback": this.menus.openPokemonMenu.bind(this)
+                    GameStarter: this,
+                    MenuGrapher: this.MenuGrapher,
+                    openItemsMenuCallback: this.menus.openItemsMenu.bind(this.menus),
+                    openActorsMenuCallback: this.menus.openPokemonMenu.bind(this.menus)
                 },
                 this.settings.battles));
     }

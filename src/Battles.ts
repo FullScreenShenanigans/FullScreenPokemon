@@ -42,8 +42,8 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         (this.EightBitter.cutscenes as any)["cutsceneBattleTransition" + animation](
             this,
             {
-                "battleInfo": battleInfo,
-                "callback": this.EightBitter.BattleMover.startBattle.bind(this.EightBitter.BattleMover, battleInfo)
+                battleInfo,
+                callback: (): void => this.EightBitter.BattleMover.startBattle(battleInfo as any)
             }
         );
 
@@ -189,7 +189,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
 
         if (this.EightBitter.MenuGrapher.getMenu(menuNumbers)) {
             for (const menu of this.EightBitter.MenuGrapher.getMenu(menuNumbers).children) {
-                this.EightBitter.physics.killNormal.bind(menu);
+                this.EightBitter.physics.killNormal(menu as IThing);
             }
 
             this.EightBitter.MenuGrapher.addMenuDialog(menuNumbers, healthDialog);
@@ -228,12 +228,12 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         }
 
         this.EightBitter.TimeHandler.addEvent(
-            this.animateBattleDisplayPokemonHealthBar.bind(this),
-            2,
-            battlerName,
-            hpNew,
-            hpEnd,
-            hpNormal,
-            callback);
+            (): void => this.animateBattleDisplayPokemonHealthBar(
+                battlerName,
+                hpNew,
+                hpEnd,
+                hpNormal,
+                callback),
+            2);
     }
 }

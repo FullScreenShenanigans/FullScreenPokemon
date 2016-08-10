@@ -6,7 +6,6 @@ export function GenerateBattlesSettings(): IBattleMovrCustoms {
     "use strict";
 
     return {
-        MenuGrapher: undefined,
         battleMenuName: "Battle",
         battleOptionNames: {
             moves: "FIGHT",
@@ -50,5 +49,5 @@ export function GenerateBattlesSettings(): IBattleMovrCustoms {
                 top: 8
             }
         }
-    };
+    } as any;
 }

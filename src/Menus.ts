@@ -670,8 +670,8 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      */
     public openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
         const value: string[][] = [settings.value || ["_", "_", "_", "_", "_", "_", "_"]];
-        const onKeyPress: (...args: any[]) => void = (): void => this.addKeyboardMenuValue();
-        const onBPress: (...args: any[]) => void = (): void => this.removeKeyboardMenuValue();
+        const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
+        const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
         const onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this);
         const lowercase: boolean = settings.lowercase;
         const letters: string[] = lowercase

@@ -22,10 +22,10 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
         const options: any[] = [
             {
                 text: "NEW GAME",
-                callback: this.startIntro.bind(this)
+                callback: (): void => this.startIntro()
             }, {
                 text: "LOAD FILE",
-                callback: this.loadFile.bind(this, this)
+                callback: (): void => this.loadFile()
             }];
 
         this.EightBitter.storage.checkForOldStorageData();
@@ -33,7 +33,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
         if (this.EightBitter.ItemsHolder.getItem("gameStarted")) {
             options.unshift({
                 text: "CONTINUE",
-                callback: this.startPlay.bind(this)
+                callback: (): void => this.startPlay()
             });
         }
 

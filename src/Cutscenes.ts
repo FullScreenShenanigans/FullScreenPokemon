@@ -359,13 +359,15 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             1);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            (timeout / 2) | 0,
-            opponent,
-            "opacity",
-            -2 / timeout,
-            0,
-            1);
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    opponent,
+                    "opacity",
+                    -2 / timeout,
+                    0,
+                    1);
+            },
+            (timeout / 2) | 0);
 
         this.EightBitter.MenuGrapher.deleteMenu("BattleOpponentHealth");
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
@@ -423,13 +425,15 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             1);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            (timeout / 2) | 0,
-            player,
-            "opacity",
-            -2 / timeout,
-            0,
-            1);
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    player,
+                    "opacity",
+                    -2 / timeout,
+                    0,
+                    1);
+            },
+            (timeout / 2) | 0);
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
             "finishAutomatically": true
@@ -2152,14 +2156,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.physics.setMidY(oak, this.EightBitter.MapScreener.middleY | 0);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            70,
-            oak,
-            "opacity",
-            .15,
-            1,
-            14,
-            this.EightBitter.ScenePlayer.bindRoutine("FirstDialog"));
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    oak,
+                    "opacity",
+                    .15,
+                    1,
+                    14,
+                    this.EightBitter.ScenePlayer.bindRoutine("FirstDialog"));
+            },
+            70);
     }
 
     /**
@@ -2195,14 +2201,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.things.add(blank, 0, 0);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            35,
-            blank,
-            "opacity",
-            .15,
-            1,
-            7,
-            this.EightBitter.ScenePlayer.bindRoutine("PokemonExpo"));
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                blank,
+                "opacity",
+                .15,
+                1,
+                7,
+                this.EightBitter.ScenePlayer.bindRoutine("PokemonExpo"));
+            },
+            35);
     }
 
     /**
@@ -2427,14 +2435,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.things.add(blank, 0, 0);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            35,
-            blank,
-            "opacity",
-            .2,
-            1,
-            7,
-            this.EightBitter.ScenePlayer.bindRoutine("RivalAppear"));
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    blank,
+                    "opacity",
+                    .2,
+                    1,
+                    7,
+                    this.EightBitter.ScenePlayer.bindRoutine("RivalAppear"));
+            },
+            35);
     }
 
     /**
@@ -2599,14 +2609,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.things.add(blank, 0, 0);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            35,
-            blank,
-            "opacity",
-            .2,
-            1,
-            7,
-            this.EightBitter.ScenePlayer.bindRoutine("LastDialogAppear"));
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    blank,
+                    "opacity",
+                    .2,
+                    1,
+                    7,
+                    this.EightBitter.ScenePlayer.bindRoutine("LastDialogAppear"));
+            },
+            35);
     }
 
     /**
@@ -2710,14 +2722,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.things.add(blank, 0, 0);
 
         this.EightBitter.TimeHandler.addEvent(
-            this.EightBitter.animations.animateFadeAttribute.bind(this.EightBitter.animations),
-            35,
-            blank,
-            "opacity",
-            .2,
-            1,
-            7,
-            this.EightBitter.ScenePlayer.bindRoutine("Finish"));
+            (): void => {
+                this.EightBitter.animations.animateFadeAttribute(
+                    blank,
+                    "opacity",
+                    .2,
+                    1,
+                    7,
+                    this.EightBitter.ScenePlayer.bindRoutine("Finish"));
+            },
+            35);
     }
 
     /**
