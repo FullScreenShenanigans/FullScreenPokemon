@@ -22,6 +22,6 @@
     "typescript": "^2.0.0"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.2"
+    "gulp-shenanigans": "^0.4.0"
   }
 }
