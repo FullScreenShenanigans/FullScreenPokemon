@@ -27,6 +27,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
 
                         this.addStateHistory(area, "allowCycling", area.allowCycling);
                         area.allowCycling = true;
+                        this.MapScreener.variables.allowCycling = true;
                     },
                     onModDisable: function (mod: ModAttachr.IMod): void {
                         let area: IArea = this.AreaSpawner.getArea();
@@ -39,6 +40,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                         if (!area.allowCycling && this.player.cycling) {
                             this.stopCycling(this.player);
                         }
+                        this.MapScreener.variables.allowCycling = area.allowCycling;
                     },
                     onSetLocation: function (mod: ModAttachr.IMod): void {
                         mod.events[onModEnableKey].call(this, mod);

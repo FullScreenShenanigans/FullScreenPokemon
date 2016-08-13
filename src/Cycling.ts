@@ -1,7 +1,7 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IArea, IPlayer } from "./IFullScreenPokemon";
+import { IPlayer } from "./IFullScreenPokemon";
 
 /**
  * Cycling functions used by FullScreenPokemon instances.
@@ -19,7 +19,7 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             return false;
         }
 
-        if (!(this.EightBitter.AreaSpawner.getArea() as IArea).allowCycling) {
+        if (!this.EightBitter.MapScreener.variables.allowCycling) {
             return false;
         }
 

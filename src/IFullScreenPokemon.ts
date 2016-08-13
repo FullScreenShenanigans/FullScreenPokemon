@@ -27,11 +27,6 @@ export interface IMapScreenr extends MapScreenr.IMapScreenr {
     blockInputs: boolean;
 
     /**
-     * The current size of the area Things are placed in.
-     */
-    boundaries: IAreaBoundaries;
-
-    /**
      * The currently playing cutscene, if any.
      */
     cutscene?: string;
@@ -42,14 +37,29 @@ export interface IMapScreenr extends MapScreenr.IMapScreenr {
     playerDirection: number;
 
     /**
-     * What form of scrolling is currently capable on the screen.
-     */
-    scrollability: number;
-
-    /**
      * What theme is currently playing.
      */
     theme?: string;
+
+    /**
+     * Known variables, keyed by name.
+     */
+    variables: {
+        /**
+         * Whether the current Area allows bicycling.
+         */
+        allowCycling?: boolean;
+
+        /**
+         * The current size of the area Things are placed in.
+         */
+        boundaries: IAreaBoundaries;
+
+        /**
+         * What form of scrolling is currently capable on the screen.
+         */
+        scrollability: number;
+    };
 }
 
 /**

@@ -12,7 +12,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * Centers the current view of the Map based on scrollability.
      */
     public centerMapScreen(): void {
-        switch (this.EightBitter.MapScreener.scrollability) {
+        switch (this.EightBitter.MapScreener.variables.scrollability) {
             case Scrollability.None:
                 this.centerMapScreenHorizontally();
                 this.centerMapScreenVertically();
@@ -43,7 +43,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * the Area.
      */
     public centerMapScreenHorizontally(): void {
-        const boundaries: IAreaBoundaries = this.EightBitter.MapScreener.boundaries;
+        const boundaries: IAreaBoundaries = this.EightBitter.MapScreener.variables.boundaries;
         const difference: number = this.EightBitter.MapScreener.width - boundaries.width;
 
         if (difference > 0) {
@@ -56,7 +56,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * the Area.
      */
     public centerMapScreenVertically(): void {
-        const boundaries: IAreaBoundaries = this.EightBitter.MapScreener.boundaries;
+        const boundaries: IAreaBoundaries = this.EightBitter.MapScreener.variables.boundaries;
         const difference: number = this.EightBitter.MapScreener.height - boundaries.height;
 
         this.scrollWindow(0, difference / -2);
@@ -197,6 +197,6 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      *       hasn't been shown to be incorrect yet).
      */
     public expandMapBoundariesForArea(area: IArea, dx: number, dy: number): void {
-        this.EightBitter.MapScreener.scrollability = Scrollability.Both;
+        this.EightBitter.MapScreener.variables.scrollability = Scrollability.Both;
     }
 }

@@ -97,7 +97,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
             return;
         }
 
-        switch (this.EightBitter.MapScreener.scrollability) {
+        switch (this.EightBitter.MapScreener.variables.scrollability) {
             case Scrollability.Horizontal:
                 this.EightBitter.scrolling.scrollWindow(this.EightBitter.scrolling.getHorizontalScrollAmount());
                 return;
