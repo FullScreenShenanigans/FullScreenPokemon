@@ -1,33 +1,36 @@
 require("gulp-shenanigans").initialize({
     dependencies: [
-        "AreaSpawnr",
-        "AudioPlayr",
+        "ChangeLinr",
+        "StringFilr",
+        "MapScreenr",
+        "ItemsHoldr",
         "BattleMovr",
         "DeviceLayr",
         "EightBittr",
+        "AudioPlayr",
         "FPSAnalyzr",
         "GamesRunnr",
-        "GameStartr",
         "GroupHoldr",
         "InputWritr",
-        "ItemsHoldr",
         "LevelEditr",
         "MapsCreatr",
         "MathDecidr",
         "ModAttachr",
-        "MenuGraphr",
         "NumberMakr",
         "ObjectMakr",
+        "QuadsKeepr",
+        "AreaSpawnr",
         "PixelDrawr",
         "PixelRendr",
-        "QuadsKeepr",
         "ScenePlayr",
         "StateHoldr",
         "ThingHittr",
         "TimeHandlr",
         "TouchPassr",
+        "WorldSeedr",
+        "GameStartr",
+        "MenuGraphr",
         "UserWrappr",
-        "WorldSeedr"
     ],
     externals: [
         {
@@ -36,5 +39,11 @@ require("gulp-shenanigans").initialize({
         }
     ],
     gulp: require("gulp"),
-    packageName: "FullScreenPokemon"
+    packageName: "FullScreenPokemon",
+    taskGroups: {
+        lib: true,
+        src: true,
+        test: true,
+        web: true
+    }
 });
