@@ -12,6 +12,7 @@ import {
 } from "../IFullScreenPokemon";
 
 /* tslint:disable:max-line-length */
+/* tslint:disable object-literal-key-quotes */
 
 export function GenerateMathSettings(): IMathDecidrCustoms {
     "use strict";
@@ -34,34 +35,33 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 return Math.round(8 * Unitsize / thing.speed);
             },
             "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
-                let statisticNames: string[] = constants.statisticNames,
-                    pokemon: any = {
-                        "title": title,
-                        "nickname": title,
-                        "level": level || 1,
-                        "moves": moves || this.compute("newPokemonMoves", title, level || 1),
-                        "types": constants.pokemon[title.join("")].types,
-                        "status": "",
-                        "IV": iv || this.compute("newPokemonIVs"),
-                        "EV": ev || this.compute("newPokemonEVs"),
-                        "experience": this.compute("newPokemonExperience", title, level || 1)
-                    };
+                const statisticNames: string[] = constants.statisticNames;
+                const pokemon: any = {
+                    "title": title,
+                    "nickname": title,
+                    "level": level || 1,
+                    "moves": moves || this.compute("newPokemonMoves", title, level || 1),
+                    "types": constants.pokemon[title.join("")].types,
+                    "status": "",
+                    "IV": iv || this.compute("newPokemonIVs"),
+                    "EV": ev || this.compute("newPokemonEVs"),
+                    "experience": this.compute("newPokemonExperience", title, level || 1)
+                };
 
-                for (let i: number = 0; i < statisticNames.length; i += 1) {
-                    pokemon[statisticNames[i]] = this.compute(
-                        "pokemonStatistic", pokemon, statisticNames[i]);
-                    pokemon[statisticNames[i] + "Normal"] = pokemon[statisticNames[i]];
+                for (const statistic of statisticNames) {
+                    pokemon[statistic] = this.compute("pokemonStatistic", pokemon, statistic);
+                    pokemon[statistic + "Normal"] = pokemon[statistic];
                 }
 
                 return pokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
             "newPokemonMoves": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): BattleMovr.IMove[] {
-                let possibilities: IPokemonMoveListing[] = constants.pokemon[title.join("")].moves.natural,
-                    output: BattleMovr.IMove[] = [],
-                    move: IPokemonMoveListing,
-                    newMove: BattleMovr.IMove,
-                    end: number;
+                const possibilities: IPokemonMoveListing[] = constants.pokemon[title.join("")].moves.natural;
+                const output: BattleMovr.IMove[] = [];
+                let move: IPokemonMoveListing;
+                let newMove: BattleMovr.IMove;
+                let end: number;
 
                 for (end = 0; end < possibilities.length; end += 1) {
                     if (possibilities[end].level > level) {
@@ -83,16 +83,16 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             "newPokemonIVs": function (constants: IMathConstants, equations: IMathEquations): { [i: string]: number } {
-                let attack: number = constants.NumberMaker.randomIntWithin(0, 15),
-                    defense: number = constants.NumberMaker.randomIntWithin(0, 15),
-                    speed: number = constants.NumberMaker.randomIntWithin(0, 15),
-                    special: number = constants.NumberMaker.randomIntWithin(0, 15),
-                    output: any = {
-                        "Attack": attack,
-                        "Defense": defense,
-                        "Speed": speed,
-                        "Special": special
-                    };
+                const attack: number = constants.NumberMaker.randomIntWithin(0, 15);
+                const defense: number = constants.NumberMaker.randomIntWithin(0, 15);
+                const speed: number = constants.NumberMaker.randomIntWithin(0, 15);
+                const special: number = constants.NumberMaker.randomIntWithin(0, 15);
+                const output: any = {
+                    "Attack": attack,
+                    "Defense": defense,
+                    "Speed": speed,
+                    "Special": special
+                };
 
                 output.HP = (
                     8 * (attack % 2)
@@ -112,8 +112,8 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 };
             },
             "newPokemonExperience": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): IExperience {
-                let current: number = this.compute("experienceStarting", title, level),
-                    next: number = this.compute("experienceStarting", title, level + 1);
+                const current: number = this.compute("experienceStarting", title, level);
+                const next: number = this.compute("experienceStarting", title, level + 1);
 
                 return {
                     "current": current,
@@ -124,12 +124,12 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             // Note: the page mentions rounding errors... 
             "pokemonStatistic": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, statistic: string): number {
-                let topExtra: number = 0,
-                    added: number = 5,
-                    base: number = (constants.pokemon[pokemon.title.join("")] as any)[statistic],
-                    iv: number = (pokemon.IV as any)[statistic] || 0,
-                    ev: number = (pokemon.EV as any)[statistic] || 0,
-                    level: number = pokemon.level;
+                let topExtra: number = 0;
+                let added: number = 5;
+                let base: number = (constants.pokemon[pokemon.title.join("")] as any)[statistic];
+                let iv: number = (pokemon.IV as any)[statistic] || 0;
+                let ev: number = (pokemon.EV as any)[statistic] || 0;
+                let level: number = pokemon.level;
 
                 if (statistic === "HP") {
                     topExtra = 50;
@@ -191,10 +191,10 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
             "canEscapePokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
-                let a: number = pokemon.Speed,
-                    b: number = (enemy.Speed / 4) % 256,
-                    c: number = battleInfo.currentEscapeAttempts,
-                    f: number = (a * 32) / b + 30 * c;
+                const a: number = pokemon.Speed;
+                const b: number = (enemy.Speed / 4) % 256;
+                const c: number = battleInfo.currentEscapeAttempts;
+                const f: number = (a * 32) / b + 30 * c;
 
                 if (f > 255 || b === 0) {
                     return true;
@@ -205,7 +205,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
             "numBallShakes": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall): number {
                 // 1. Calculate d.
-                let d: number = pokemon.catchRate * 100 / ball.rate;
+                const d: number = pokemon.catchRate * 100 / ball.rate;
 
                 // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
                 if (d >= 256) {
@@ -213,12 +213,12 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 }
 
                 // 3. If not, calculate x = d * f / 255 + s, where s is 10 if the Pokemon is asleep or frozen or 5 if it is paralyzed, poisoned, or burned.
-                let f: number = Math.max(
+                const f: number = Math.max(
                     Math.min(
                         (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
                         255),
                     1);
-                let x: number = d * f / 255 + constants.statuses.shaking[pokemon.status];
+                const x: number = d * f / 255 + constants.statuses.shaking[pokemon.status];
 
                 // 4. If... 
                 if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
@@ -242,7 +242,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // TO DO: Also filter for moves with > 0 remaining remaining...
             "opponentMove": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, opponent: IBattleThingInfo): string {
                 let possibilities: IMovePossibility[] = opponent.selectedActor.moves.map(
-                    function (move: BattleMovr.IMove): IMovePossibility {
+                    (move: BattleMovr.IMove): IMovePossibility => {
                         return {
                             "move": move.title,
                             "priority": 10
@@ -256,19 +256,19 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
 
                 // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
                 if (player.selectedActor.status && !opponent.dumb) {
-                    for (let i: number = 0; i < possibilities.length; i += 1) {
-                        if (this.compute("moveOnlyStatuses", possibilities[i].move)) {
-                            possibilities[i].priority += 5;
+                    for (const possibility of possibilities) {
+                        if (this.compute("moveOnlyStatuses", possibility.move)) {
+                            possibility.priority += 5;
                         }
                     }
                 }
 
                 // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
                 if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
-                    for (let i: number = 0; i < possibilities.length; i += 1) {
+                    for (const possibility of possibilities) {
                         this.compute(
                             "applyMoveEffectPriority",
-                            possibilities[i],
+                            possibility,
                             constants.battleModifications["Turn 2"],
                             player.selectedActor,
                             1);
@@ -315,8 +315,8 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 return move.damage === "Non-Damaging" && move.effect === "Status";
             },
             "applyMoveEffectPriority": function (constants: IMathConstants, equations: IMathEquations, possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number): void {
-                let preferences: ([string, string, number] | [string, string])[] = modification.preferences,
-                    move: IMoveSchema = constants.moves[possibility.move];
+                const preferences: ([string, string, number] | [string, string])[] = modification.preferences;
+                const move: IMoveSchema = constants.moves[possibility.move];
 
                 for (let i: number = 0; i < preferences.length; i += 1) {
                     let preference: [string, string, number] | [string, string] = preferences[i];
@@ -393,8 +393,8 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // TO DO: Account for items, switching, etc.
             // TO DO: Factor in spec differences from paralyze, etc.
             "playerMovesFirst": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, choicePlayer: string, opponent: IBattleThingInfo, choiceOpponent: string): boolean {
-                let movePlayer: IMoveSchema = constants.moves[choicePlayer],
-                    moveOpponent: IMoveSchema = constants.moves[choiceOpponent];
+                const movePlayer: IMoveSchema = constants.moves[choicePlayer];
+                const moveOpponent: IMoveSchema = constants.moves[choiceOpponent];
 
                 if (movePlayer.priority === moveOpponent.priority) {
                     return player.selectedActor.Speed > opponent.selectedActor.Speed;
@@ -409,7 +409,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 let base: string | number = constants.moves[move].power;
 
                 // A base attack that's not numeric means no damage, no matter what
-                if (!base || isNaN(<number>base)) {
+                if (!base || isNaN(base as number)) {
                     return 0;
                 }
 
@@ -418,30 +418,30 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     return Infinity;
                 }
 
-                let critical: boolean = this.compute("criticalHit", move, attacker),
-                    level: number = attacker.level * Number(critical),
-                    attack: number = attacker.Attack,
-                    defense: number = defender.Defense,
-                    modifier: number = this.compute("damageModifier", move, critical, attacker, defender);
+                const critical: boolean = this.compute("criticalHit", move, attacker);
+                const level: number = attacker.level * Number(critical);
+                const attack: number = attacker.Attack;
+                const defense: number = defender.Defense;
+                const modifier: number = this.compute("damageModifier", move, critical, attacker, defender);
 
                 return Math.round(
                     Math.max(
-                        ((((2 * level + 10) / 250) * (attack / defense) * <number>base + 2) | 0) * modifier,
+                        ((((2 * level + 10) / 250) * (attack / defense) * (base as number) + 2) | 0) * modifier,
                         1));
             },
             // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
             "damageModifier": function (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema, critical: boolean, attacker: IPokemon, defender: IPokemon): number {
-                let stab: number = attacker.types.indexOf(move.type) !== -1 ? 1.5 : 1,
-                    type: number = this.compute("typeEffectiveness", move, defender);
+                const stab: number = attacker.types.indexOf(move.type) !== -1 ? 1.5 : 1;
+                const type: number = this.compute("typeEffectiveness", move, defender);
 
                 return stab * type * constants.NumberMaker.randomWithin(.85, 1);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
             "criticalHit": function (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon): boolean {
-                let moveInfo: IMoveSchema = constants.moves[move],
-                    baseSpeed: number = constants.pokemon[attacker.title.join("")].Speed,
-                    denominator: number = 512;
+                const moveInfo: IMoveSchema = constants.moves[move];
+                const baseSpeed: number = constants.pokemon[attacker.title.join("")].Speed;
+                let denominator: number = 512;
 
                 // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit, resulting in a probability of BaseSpeed / 64.
                 if (moveInfo.criticalRaised) {
@@ -462,9 +462,9 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
             "typeEffectiveness": function (constants: IMathConstants, equations: IMathEquations, move: string, defender: IPokemon): number {
-                let defenderTypes: string[] = constants.pokemon[defender.title.join("")].types,
-                    moveIndex: number = constants.types.indices[constants.moves[move].type],
-                    total: number = 1;
+                const defenderTypes: string[] = constants.pokemon[defender.title.join("")].types;
+                const moveIndex: number = constants.types.indices[constants.moves[move].type];
+                let total: number = 1;
 
                 for (let i: number = 0; i < defenderTypes.length; i += 1) {
                     total *= constants.types.table[moveIndex][constants.types.indices[defenderTypes[i]]];
@@ -799,8 +799,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "Its brain can outperform a supercomputer. Its intelligence quotient is said to be 5,000."
                     ],
-
-
                     "number": 65,
                     "height": ["4", "11"],
                     "weight": 105.8,
@@ -929,8 +927,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "It is rumored that the ferocious warning markings on its belly differ from area to area."
                     ],
-
-
                     "number": 24,
                     "height": ["11", "6"],
                     "weight": 143.3,
@@ -1032,8 +1028,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "A %%%%%%%POKEMON%%%%%%% that has been admired since the past for its beauty. It runs agilely as if on wings."
                     ],
-
-
                     "number": 59,
                     "height": ["6", "3"],
                     "weight": 341.7,
@@ -1178,8 +1172,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear to doomed people who are lost in icy mountains."
                     ],
-
-
                     "number": 144,
                     "height": ["5", "7"],
                     "weight": 122.1,
@@ -1278,8 +1270,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "Flies at high speed and attacks using its large venomous stingers on its forelegs and tail."
                     ],
-
-
                     "number": 15,
                     "height": ["3", "3"],
                     "weight": 65,
@@ -1656,8 +1646,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "In battle, it flaps its wings at high speed to release highly toxic dust into the air."
                     ],
-
-
                     "number": 12,
                     "height": ["3", "7"],
                     "weight": 70.5,
@@ -2325,8 +2313,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "A timid fairy %%%%%%%POKEMON%%%%%%% that is rarely seen. It will run and hide the moment it senses people."
                     ],
-
-
                     "number": 36,
                     "height": ["4", "3"],
                     "weight": 88.2,
@@ -2524,8 +2510,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "When attacked, it launches its horns in quick volleys. Its innards have never been seen."
                     ],
-
-
                     "number": 91,
                     "height": ["4", "11"],
                     "weight": 292.1,
@@ -2687,8 +2671,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters."
                     ],
-
-
                     "number": 87,
                     "height": ["5", "7"],
                     "weight": 264.6,
@@ -2918,8 +2900,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "Uses its three brains to execute complex plans. While two heads sleep, one head stays awake."
                     ],
-
-
                     "number": 85,
                     "height": ["5", "11"],
                     "weight": 187.8,
@@ -3230,8 +3210,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "info": [
                         "An extremely rarely seen marine %%%%%%%POKEMON%%%%%%%. Its intelligence is said to match that of humans."
                     ],
-
-
                     "number": 149,
                     "height": ["7", "3"],
                     "weight": 463,
@@ -16161,7 +16139,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "PP": 15,
                     "description": "10% chance to burn the target."
                 },
-                "Flash": <IHMMoveSchema>{
+                "Flash": {
                     "type": "Normal",
                     "damage": "Non-Damaging",
                     "power": "-",
@@ -16169,8 +16147,8 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "PP": 20,
                     "description": "Lowers the target's accuracy by one stage.",
                     "requiredBadge": "Boulder"
-                },
-                "Fly": <IHMMoveSchema>{
+                } as IHMMoveSchema,
+                "Fly": {
                     "type": "Flying",
                     "damage": "Physical",
                     "power": 70,
@@ -16178,7 +16156,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "PP": 15,
                     "description": "User is made invulnerable for one turn, then hits the next turn.",
                     "requiredBadge": "Thunder"
-                },
+                } as IHMMoveSchema,
                 "Focus Energy": {
                     "type": "Normal",
                     "damage": "Non-Damaging",
@@ -17628,3 +17606,6 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
         }
     };
 }
+
+/* tslint:enable max-line-length */
+/* tslint:enable object-literal-key-quotes */

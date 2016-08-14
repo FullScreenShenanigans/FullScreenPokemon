@@ -19,8 +19,8 @@ import { Maintenance } from "./Maintenance";
 import { Maps } from "./Maps";
 import { Menus } from "./Menus";
 import { Physics } from "./Physics";
-import { SettingsGenerator } from "./SettingsGenerator";
 import { Scrolling } from "./Scrolling";
+import { SettingsGenerator } from "./SettingsGenerator";
 import { Storage } from "./Storage";
 import { Things } from "./Things";
 import { Utilities } from "./Utilities";
@@ -29,7 +29,6 @@ import { Utilities } from "./Utilities";
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
  */
 export class FullScreenPokemon extends GameStartr.GameStartr {
-
     /**
      * A simple container for Map attributes given by switching to an Area within 
      * that map. A bounding box of the current viewport is kept, along with a bag
@@ -225,7 +224,6 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
         this.TimeHandler.setClassScope(this.graphics);
         this.ThingHitter.setGeneratorScope(this.collisions);
     }
-
 
     /**
      * Sets this.ObjectMaker.

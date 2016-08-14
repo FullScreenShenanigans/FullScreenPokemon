@@ -13,7 +13,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @param id   An id of a Thing to retrieve.
      * @returns The Thing under the given id, if it exists.
      */
-    getThingById(id: string): IThing {
+    public getThingById(id: string): IThing {
         return (this.EightBitter.GroupHolder.getGroup("Thing") as any)[id];
     }
 
@@ -23,7 +23,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @param schema   A description of the Pokemon.
      * @returns A newly created Pokemon.
      */
-    createPokemon(schema: IWildPokemonSchema): IPokemon {
+    public createPokemon(schema: IWildPokemonSchema): IPokemon {
         let level: number = typeof schema.levels !== "undefined"
             ? this.EightBitter.NumberMaker.randomArrayMember(schema.levels)
             : schema.level;
@@ -38,7 +38,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @param {String} string   The characters to repeat.
      * @param {Number} [times]   How many times to repeat (by default, 1).
      */
-    stringOf(str: string, times: number = 1): string {
+    public stringOf(str: string, times: number = 1): string {
         return (times === 0) ? "" : new Array(1 + (times || 1)).join(str);
     }
 
@@ -54,7 +54,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * makeDigit(7, 3); // '007'
      * makeDigit(7, 3, 1); // '117'
      */
-    makeDigit(num: number | string, size: number, prefix?: any): string {
+    public makeDigit(num: number | string, size: number, prefix?: any): string {
         return this.stringOf(
             prefix ? prefix.toString() : "0",
             Math.max(0, size - String(num).length)
@@ -68,7 +68,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @param key   The key being searched for.
      * @returns Whether the key exists within the Array members.
      */
-    checkArrayMembersIndex(array: any[], key: string): boolean {
+    public checkArrayMembersIndex(array: any[], key: string): boolean {
         for (const member of array) {
             if (member[key]) {
                 return true;
@@ -90,7 +90,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @param keyCount   The key associated with the item's count, such as "amount".
      * @returns Whether the stackable item was newly added.
      */
-    combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
+    public combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
         for (const member of array) {
             if (member[keyTitle] === title) {
                 member[keyCount] += count;

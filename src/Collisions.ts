@@ -92,8 +92,8 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          */
         return (thing: ICharacter, other: IThing): boolean => {
             // If either Thing is the player, it should be the first
-            if ((<ICharacter>other).player && !thing.player) {
-                [thing, other] = [<ICharacter>other, thing];
+            if ((other as ICharacter).player && !thing.player) {
+                [thing, other] = [other as ICharacter, thing];
             }
 
             // The other's collide may return true to cancel overlapping checks
@@ -211,8 +211,8 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         if (other.cutscene) {
             this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
-                "thing": thing,
-                "triggerer": other
+                thing: thing,
+                triggerer: other
             });
         }
 
@@ -235,7 +235,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         if (!this.EightBitter.MenuGrapher.getActiveMenu()) {
             this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-                "deleteOnFinish": !other.dialogOptions
+                deleteOnFinish: !other.dialogOptions
             });
             this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
             this.EightBitter.MenuGrapher.addMenuDialog(
@@ -265,9 +265,9 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                     ],
-                    function (): void {
+                    (): void => {
                         this.EightBitter.MenuGrapher.deleteActiveMenu();
-                        this.EightBitter.killNormal(other);
+                        this.EightBitter.physics.killNormal(other);
                         this.EightBitter.StateHolder.addChange(
                             other.id, "alive", false
                         );
@@ -280,8 +280,8 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
             case "cutscene":
                 this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
-                    "player": thing,
-                    "triggerer": other
+                    player: thing,
+                    triggerer: other
                 });
                 if (other.routine) {
                     this.EightBitter.ScenePlayer.playRoutine(other.routine);
@@ -300,16 +300,16 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
             case "yes/no":
                 this.EightBitter.MenuGrapher.createMenu("Yes/No", {
-                    "killOnB": ["GeneralText"]
+                    killOnB: ["GeneralText"]
                 });
                 this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [
+                    options: [
                         {
-                            "text": "YES",
-                            "callback": (): void => console.log("What do, yes?")
+                            text: "YES",
+                            callback: (): void => console.log("What do, yes?")
                         }, {
-                            "text": "NO",
-                            "callback": (): void => console.log("What do, no?")
+                            text: "NO",
+                            callback: (): void => console.log("What do, no?")
                         }]
                 });
                 this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -339,8 +339,8 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         this.EightBitter.PixelDrawer.setThingSprite(thing);
 
         thing.shadow = this.EightBitter.ObjectMaker.make(thing.title, {
-            "nocollide": true,
-            "id": thing.id + " shadow"
+            nocollide: true,
+            id: thing.id + " shadow"
         });
 
         if (thing.shadow.className !== thing.className) {
@@ -351,7 +351,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         // Todo: is the arrayToEnd call necessary?
         this.EightBitter.GroupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
-        this.EightBitter.utilities.arrayToEnd(thing.shadow, <IThing[]>this.EightBitter.GroupHolder.getGroup("Terrain"));
+        this.EightBitter.utilities.arrayToEnd(thing.shadow, this.EightBitter.GroupHolder.getGroup("Terrain") as IThing[]);
 
         return true;
     }
@@ -383,7 +383,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         if (thing.player) {
-            (<IPlayer>thing).canKeyWalking = false;
+            (thing as IPlayer).canKeyWalking = false;
             this.EightBitter.MapScreener.blockInputs = true;
         }
         this.EightBitter.animations.animateCharacterHopLedge(thing, other);
@@ -399,7 +399,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Ledge walked to by thing.
      */
     public collideWaterEdge(thing: ICharacter, other: IThing): boolean {
-        let edge: IWaterEdge = other as IWaterEdge;
+        const edge: IWaterEdge = other as IWaterEdge;
 
         if (!thing.surfing || edge.exitDirection !== thing.direction) {
             return false;

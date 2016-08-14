@@ -27,7 +27,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         }
     }
 
-
     /**
      * Adds a Thing via addPreThing based on the specifications in a PreThing.
      * This is done relative to MapScreener.left and MapScreener.top.
@@ -151,13 +150,13 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
 
         const location: ILocation = this.EightBitter.AreaSpawner.getLocation(name) as ILocation;
         location.area.spawnedBy = {
-            "name": name,
-            "timestamp": new Date().getTime()
+            name: name,
+            timestamp: new Date().getTime()
         };
 
         this.EightBitter.ModAttacher.fireEvent("onPreSetLocation", location);
 
-        this.EightBitter.PixelDrawer.setBackground((<IArea>this.EightBitter.AreaSpawner.getArea()).background);
+        this.EightBitter.PixelDrawer.setBackground((this.EightBitter.AreaSpawner.getArea() as IArea).background);
 
         this.EightBitter.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
@@ -179,7 +178,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         this.EightBitter.GamesRunner.play();
 
         this.EightBitter.animations.animateFadeFromColor({
-            "color": "Black"
+            color: "Black"
         });
 
         if (location.push) {
@@ -263,7 +262,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
 
         if (location.cutscene) {
             this.EightBitter.ScenePlayer.startCutscene(location.cutscene, {
-                "player": this.EightBitter.player
+                player: this.EightBitter.player
             });
         }
 
@@ -326,9 +325,9 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
             // A copy of the command must be used, so as to not modify the original 
             const command: any = this.EightBitter.utilities.proliferate(
                 {
-                    "noBoundaryStretch": true,
-                    "areaName": area.name,
-                    "mapName": area.map.name
+                    noBoundaryStretch: true,
+                    areaName: area.name,
+                    mapName: area.map.name
                 },
                 creation);
 

@@ -11,11 +11,11 @@ export function GenerateUISettings(): GameStartr.IUserWrapprCustoms {
         globalName: "FSP",
         styleSheet: {
             ".FullScreenPokemon": {
-                "color": "black"
+                color: "black"
             },
             "@font-face": {
                 "font-family": "'Press Start'",
-                "src": [
+                src: [
                     "url('Fonts/pressstart2p-webfont.eot?#iefix') format('embedded-opentype')",
                     "url('Fonts/pressstart2p-webfont.woff') format('woff')",
                     "url('Fonts/pressstart2p-webfont.ttf') format('truetype')",
@@ -123,7 +123,7 @@ export function GenerateUISettings(): GameStartr.IUserWrapprCustoms {
                             return false;
                         },
                         enable: (FSP: FullScreenPokemon): void => {
-                            window.ondevicemotion = <any>FSP.InputWriter.makePipe("ondevicemotion", "type");
+                            window.ondevicemotion = FSP.InputWriter.makePipe("ondevicemotion", "type") as any;
                         },
                         disable: (FSP: FullScreenPokemon): void => {
                             window.ondevicemotion = undefined;
@@ -190,9 +190,9 @@ export function GenerateUISettings(): GameStartr.IUserWrapprCustoms {
                     return output;
                 },
                 callback: (FSP: FullScreenPokemon, schema: UserWrappr.ISchema, button: HTMLElement): void => {
-                    let name: string = button.textContent,
-                        key: string = button.getAttribute("localStorageKey"),
-                        mod: ModAttachr.IMod = FSP.ModAttacher.getMod(name);
+                    const name: string = button.textContent;
+                    const key: string = button.getAttribute("localStorageKey");
+                    const mod: ModAttachr.IMod = FSP.ModAttacher.getMod(name);
 
                     FSP.ModAttacher.toggleMod(name);
                     FSP.ItemsHolder.setItem(key, mod.enabled);

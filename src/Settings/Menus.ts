@@ -2,6 +2,8 @@
 
 import { IMenuGraphrCustoms, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
 
+/* tslint:disable object-literal-key-quotes */
+
 export function GenerateMenusSettings(): IMenuGraphrCustoms {
     "use strict";
 
@@ -58,10 +60,10 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     .split("");
             },
             "BADGES.LENGTH": function (): string[] {
-                let badges: { [i: string]: boolean } = this.EightBitter.ItemsHolder.getItem("badges"),
-                    total: number = 0;
+                const badges: { [i: string]: boolean } = this.EightBitter.ItemsHolder.getItem("badges");
+                let total: number = 0;
 
-                for (let i in badges) {
+                for (const i in badges) {
                     if (badges.hasOwnProperty(i)) {
                         total += Number(badges[i]);
                     }
@@ -86,12 +88,12 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     .split("");
             },
             "TIME": function (): string[] {
-                let ticksRecorded: number = this.EightBitter.ItemsHolder.getItem("time"),
-                    ticksUnrecorded: number = this.EightBitter.FPSAnalyzer.getNumRecorded() - this.EightBitter.ticksElapsed,
-                    ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded),
-                    secondsTotal: number = Math.floor(ticksTotal / this.EightBitter.settings.runner.interval),
-                    hours: string = Math.floor(secondsTotal / 3600).toString(),
-                    minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
+                const ticksRecorded: number = this.EightBitter.ItemsHolder.getItem("time");
+                const ticksUnrecorded: number = this.EightBitter.FPSAnalyzer.getNumRecorded() - this.EightBitter.ticksElapsed;
+                const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
+                const secondsTotal: number = Math.floor(ticksTotal / this.EightBitter.settings.runner.interval);
+                let hours: string = Math.floor(secondsTotal / 3600).toString();
+                let minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
 
                 if (hours.length < 2) {
                     hours = " " + hours;
@@ -166,7 +168,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "textYOffset": 8,
                 "textPaddingY": 7.75
             },
-            "Pokedex": <MenuGraphr.IListMenuSchema>{
+            "Pokedex": {
                 "size": {
                     "width": 88
                 },
@@ -178,7 +180,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuChildSchema>{
+                    {
                         "type": "thing",
                         "thing": "LineDecoratorVertical",
                         "position": {
@@ -189,8 +191,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "bottom": 3
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuChildSchema>{
+                    } as MenuGraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "LineSeparatorHorizontal",
                         "size": {
@@ -203,8 +205,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": 35
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuChildSchema>{
+                    } as MenuGraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": ["CONTENTS"],
                         "position": {
@@ -213,11 +215,11 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": 7
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuChildSchema>{
+                    } as MenuGraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexNumbers"
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
                 "scrollingItemsComputed": true,
@@ -239,14 +241,14 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuChildSchema>{
+                    {
                         "type": "text",
                         "words": ["SEEN \r\n %%%%%%%POKEDEX.SEEN%%%%%%%"],
                         "position": {
                             "vertical": "top"
                         }
-                    },
-                    <MenuGraphr.IMenuChildSchema>{
+                    } as MenuGraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": ["OWN \r\n %%%%%%%POKEDEX.OWN%%%%%%%"],
                         "position": {
@@ -254,13 +256,13 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": 12
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "container": "Pokedex",
                 "hidden": true,
                 "textSpeed": 0,
                 "textPaddingY": 4
-            },
-            "PokedexOptions": <MenuGraphr.IListMenuSchema>{
+            } as any,
+            "PokedexOptions": {
                 "size": {
                     "width": 21.5,
                     "height": 37
@@ -280,8 +282,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "textSpeed": 0,
                 "textXOffset": 4,
                 "textYOffset": 5
-            },
-            "PokedexListing": <any>{
+            } as MenuGraphr.IListMenuSchema,
+            "PokedexListing": {
                 "size": {
                     "width": 80,
                     "height": 72
@@ -312,7 +314,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "type": "menu",
                         "name": "PokedexListingInfo"
                     },
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalLeft",
                         "position": {
@@ -324,7 +326,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "size": {
                             "width": 38
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalRight",
                         "position": {
@@ -399,7 +402,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "type": "menu",
                         "name": "PokedexListingHeightInches"
                     },
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "CharFeet",
                         "position": {
@@ -408,7 +411,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": .5
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "CharInches",
                         "position": {
@@ -611,7 +615,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "type": "menu",
                         "name": "PokemonMenuStatsOT"
                     },
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -625,8 +629,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -5
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuThingSchema>{
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -640,8 +644,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -5.5
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuThingSchema>{
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "args": {
@@ -654,8 +658,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -49
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuThingSchema>{
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -669,8 +673,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -5
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuThingSchema>{
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -684,8 +688,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -5.5
                             }
                         }
-                    },
-                    <MenuGraphr.IMenuThingSchema>{
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "args": {
@@ -698,7 +702,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -30.5
                             }
                         }
-                    }]
+                    } as MenuGraphr.IMenuThingSchema]
             },
             "PokemonMenuStatsTitle": {
                 "size": {
@@ -751,7 +755,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "CharHP",
                         "position": {
@@ -759,7 +763,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": 1
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1044,14 +1049,15 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "type": "menu",
                         "name": "PlayerTop"
                     },
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "DirtWhite",
                         "position": {
                             "horizontal": "stretch",
                             "vertical": "center"
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "text",
                         "words": ["BADGES"],
                         "position": {
@@ -1115,7 +1121,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                             }
                         }
                     },
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "PlayerPortrait",
                         "position": {
@@ -1126,7 +1132,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": 3.5
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuThingSchema],
                 "light": true,
                 "container": "Player",
                 "textSpeed": 0
@@ -1156,7 +1162,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                             }
                         }
                     },
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "BrockPortrait",
                         "position": {
@@ -1165,7 +1171,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": 6.5
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "MistyPortrait",
                         "position": {
@@ -1267,30 +1274,30 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }, {
                         "type": "text",
                         "words": [
-                            <MenuGraphr.IMenuWordPadLeftCommand>{
+                            {
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%PLAYER%%%%%%%",
                                 "alignRight": true
-                            },
-                            <MenuGraphr.IMenuWordPadLeftCommand>{
+                            } as MenuGraphr.IMenuWordPadLeftCommand,
+                            {
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
                                 "alignRight": true
-                            },
-                            <MenuGraphr.IMenuWordPadLeftCommand>{
+                            } as MenuGraphr.IMenuWordPadLeftCommand,
+                            {
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
                                 "alignRight": true
-                            },
-                            <MenuGraphr.IMenuWordPadLeftCommand>{
+                            } as MenuGraphr.IMenuWordPadLeftCommand,
+                            {
                                 "command": "padLeft",
                                 "length": 15,
                                 "word": "%%%%%%%TIME%%%%%%%",
                                 "alignRight": true
-                            }],
+                            } as MenuGraphr.IMenuWordPadLeftCommand],
                         "position": {
                             "offset": {
                                 "top": 7
@@ -1362,7 +1369,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "WhiteSquare",
                         "size": {
@@ -1376,7 +1383,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": -8
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "text",
                         "words": ["MONEY"],
                         "position": {
@@ -1412,7 +1420,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }],
                 "textSpeed": 0
             },
-            "ShopItems": <MenuGraphr.IListMenuSchema>{
+            "ShopItems": {
                 "size": {
                     "width": 64,
                     "height": 44
@@ -1427,7 +1435,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 },
                 "textXOffset": 8,
                 "scrollingItems": 4
-            },
+            } as MenuGraphr.IListMenuSchema,
             "ShopItemsAmount": {
                 "size": {
                     "width": 52,
@@ -1478,10 +1486,10 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "TownMapNoWater"
-                    }],
+                    } as MenuGraphr.IMenuThingSchema],
                 "container": "Town Map",
                 "watery": true
             },
@@ -1514,7 +1522,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "position": {
@@ -1523,7 +1531,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "args": {
                             "height": 5.75
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -1576,7 +1585,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "CharLevel",
                         "position": {
@@ -1585,7 +1594,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": .5
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuThingSchema],
                 "container": "BattlePlayerHealth",
                 "hidden": true,
                 "textXOffset": 4,
@@ -1603,7 +1612,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "CharHP",
                         "position": {
@@ -1611,7 +1620,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "left": 1
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1669,13 +1679,14 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
                             "height": 5.75
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "BlackSquare",
                         "args": {
@@ -1746,10 +1757,11 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "CharHP"
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1790,7 +1802,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "container": "Battle",
                 "hidden": true
             },
-            "BattleOptions": <MenuGraphr.IListMenuSchema>{
+            "BattleOptions": {
                 "size": {
                     "width": 48,
                     "height": 24
@@ -1803,7 +1815,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "ignoreB": true,
                 "textXOffset": 8,
                 "textColumnWidth": 24
-            },
+            } as MenuGraphr.IListMenuSchema,
             "BattleDisplayPlayer": {
                 "size": {
                     "width": 45,
@@ -1817,7 +1829,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "childrenSchemas": [
-                    <MenuGraphr.IMenuThingSchema>{
+                    {
                         "type": "thing",
                         "thing": "CharLevel",
                         "position": {
@@ -1826,7 +1838,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                                 "top": 6
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "HPBar",
                         "args": {
@@ -1974,7 +1987,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }],
                 "plain": true
             },
-            "KeyboardKeys": <MenuGraphr.IListMenuSchema>{
+            "KeyboardKeys": {
                 "size": {
                     "width": 80,
                     "height": 44
@@ -1988,7 +2001,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "textColumnWidth": 8,
                 "textXOffset": 8,
                 "textYOffset": 3.5
-            },
+            } as MenuGraphr.IListMenuSchema,
             "KeyboardResult": {
                 "size": {
                     "height": 8,
@@ -2024,3 +2037,5 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
         }
     };
 }
+
+/* tslint:enable object-literal-key-quotes */

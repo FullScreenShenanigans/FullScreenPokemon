@@ -4,14 +4,14 @@ export function GenerateAudioSettings(): GameStartr.IAudioPlayrCustoms {
     "use strict";
 
     return {
-        "directory": "Sounds",
-        "fileTypes": ["mp3"],
-        "library": {
-            "Sounds": [
+        directory: "Sounds",
+        fileTypes: ["mp3"],
+        library: {
+            Sounds: [
                 "Menu Bleep",
                 "Open Pause Menu"
             ],
-            "Themes": [
+            Themes: [
                 "Battle Gym Leader",
                 "Battle Trainer",
                 "Battle Wild Pokemon",

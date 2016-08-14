@@ -90,8 +90,9 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
                     }
 
                     const reader: FileReader = new FileReader();
-                    reader.onloadend = (event: LevelEditr.IDataProgressEvent): void => {
-                        this.EightBitter.storage.loadData(event.currentTarget.result);
+                    reader.onloadend = (loadEvent: LevelEditr.IDataProgressEvent): void => {
+                        this.EightBitter.storage.loadData(loadEvent.currentTarget.result);
+                        delete reader.onloadend;
                     };
                     reader.readAsText(file);
                 }

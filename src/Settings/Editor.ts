@@ -27,8 +27,8 @@ export function GenerateEditorSettings(): GameStartr.ILevelEditrCustoms {
                 {
                     setting: "Overworld",
                     creation: [
-                        { "location": "0" },
-                        { "macro": "Floor", "x": 0, "y": 0, "width": 128 }
+                        { location: "0" },
+                        { macro: "Floor", x: 0, y: 0, width: 128 }
                     ]
                 }
             ] as any

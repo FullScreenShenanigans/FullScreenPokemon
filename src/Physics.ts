@@ -15,7 +15,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @param other   The destination Thing.
      * @returns The direction from thing to other.
      */
-    getDirectionBordering(thing: IThing, other: IThing): Direction {
+    public getDirectionBordering(thing: IThing, other: IThing): Direction {
         if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < this.EightBitter.unitsize) {
             return Direction.Top;
         }
@@ -44,7 +44,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @remarks Like getDirectionBordering, but for cases where the two Things
      *          aren't necessarily touching.
      */
-    getDirectionBetween(thing: IThing, other: IThing): Direction {
+    public getDirectionBetween(thing: IThing, other: IThing): Direction {
         let directionBordering: Direction = this.getDirectionBordering(thing, other);
 
         if (typeof directionBordering !== "undefined") {
@@ -77,7 +77,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @param other   An in-game Thing.
      * @returns Whether thing and other are overlapping.
      */
-    isThingWithinOther(thing: IThing, other: IThing): boolean {
+    public isThingWithinOther(thing: IThing, other: IThing): boolean {
         return (
             thing.top >= other.top
             && thing.right <= other.right
@@ -92,7 +92,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @param other   Grass that thing might be in.
      * @returns Whether thing is visually within other.
      */
-    isThingWithinGrass(thing: ICharacter, other: IGrass): boolean {
+    public isThingWithinGrass(thing: ICharacter, other: IGrass): boolean {
         if (thing.right <= other.left) {
             return false;
         }
@@ -119,7 +119,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * 
      * @param thing   A Character to shift.
      */
-    shiftCharacter(thing: ICharacter): void {
+    public shiftCharacter(thing: ICharacter): void {
         if (thing.bordering[Direction.Top] && thing.yvel < 0) {
             thing.yvel = 0;
         }
@@ -145,7 +145,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @param thing   An in-game Player.
      * @param direction   A direction for thing to look at.
      */
-    setPlayerDirection(thing: IPlayer, direction: Direction): void {
+    public setPlayerDirection(thing: IPlayer, direction: Direction): void {
         thing.direction = direction;
         this.EightBitter.MapScreener.playerDirection = direction;
         thing.shouldWalk = true;
@@ -158,7 +158,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * 
      * @param thing   A Thing to kill.
      */
-    killNormal(thing: IThing): void {
+    public killNormal(thing: IThing): void {
         if (!thing) {
             return;
         }

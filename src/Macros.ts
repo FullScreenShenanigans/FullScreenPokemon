@@ -32,9 +32,9 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
                 let thing: string = reference.things[(i + j + offset) % mod];
                 if (thing !== "") {
                     output.push({
-                        "x": x,
-                        "y": y,
-                        "thing": thing
+                        x: x,
+                        y: y,
+                        thing: thing
                     });
                 }
                 x += xwidth;
@@ -58,46 +58,46 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         const height: number = reference.height || 8;
         const open: boolean[] = reference.open || [true, true, true, true];
         const output: any[] = [{
-            "thing": "Water",
-            "x": x,
-            "y": y,
-            "width": width,
-            "height": height
+            thing: "Water",
+            x: x,
+            y: y,
+            width: width,
+            height: height
         }];
 
         if (!open[0]) {
             output.push({
-                "thing": "WaterEdgeTop",
-                "x": x,
-                "y": y,
-                "width": width
+                thing: "WaterEdgeTop",
+                x: x,
+                y: y,
+                width: width
             });
         }
 
         if (!open[1]) {
             output.push({
-                "thing": "WaterEdgeRight",
-                "x": x + width - 4,
-                "y": open[0] ? y : y + 4,
-                "height": open[0] ? height : height - 4
+                thing: "WaterEdgeRight",
+                x: x + width - 4,
+                y: open[0] ? y : y + 4,
+                height: open[0] ? height : height - 4
             });
         }
 
         if (!open[2]) {
             output.push({
-                "thing": "WaterEdgeBottom",
-                "x": x,
-                "y": y + height - 4,
-                "width": width
+                thing: "WaterEdgeBottom",
+                x: x,
+                y: y + height - 4,
+                width: width
             });
         }
 
         if (!open[3]) {
             output.push({
-                "thing": "WaterEdgeLeft",
-                "x": x,
-                "y": y,
-                "height": height
+                thing: "WaterEdgeLeft",
+                x: x,
+                y: y,
+                height: height
             });
         }
 
@@ -119,77 +119,77 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
         if (stories === 1) {
             output.push({
-                "thing": "HouseTopRoofLeft",
-                "x": x,
-                "y": y
+                thing: "HouseTopRoofLeft",
+                x: x,
+                y: y
             });
             output.push({
-                "thing": "HouseTopRoof",
-                "x": x + 8,
-                "y": y,
-                "width": width - 16
+                thing: "HouseTopRoof",
+                x: x + 8,
+                y: y,
+                width: width - 16
             });
             output.push({
-                "thing": "HouseTopRoofRight",
-                "x": x + width - 8,
-                "y": y
+                thing: "HouseTopRoofRight",
+                x: x + width - 8,
+                y: y
             });
             output.push({
-                "thing": "HouseLeft",
-                "x": x,
-                "y": y + 8
+                thing: "HouseLeft",
+                x: x,
+                y: y + 8
             });
             output.push({
-                "thing": "HouseRight",
-                "x": x + width - 8,
-                "y": y + 8
+                thing: "HouseRight",
+                x: x + width - 8,
+                y: y + 8
             });
 
             if (reference.door) {
                 output.push({
-                    "thing": "HouseMiddle",
-                    "x": x + 16,
-                    "y": y + 8,
-                    "width": width - 24
+                    thing: "HouseMiddle",
+                    x: x + 16,
+                    y: y + 8,
+                    width: width - 24
                 });
             } else {
                 output.push({
-                    "thing": "HouseMiddle",
-                    "x": x + 8,
-                    "y": y + 8,
-                    "width": width - 16
+                    thing: "HouseMiddle",
+                    x: x + 8,
+                    y: y + 8,
+                    width: width - 16
                 });
             }
         } else {
             output.push({
-                "thing": "HouseTop",
-                "x": x,
-                "y": y
+                thing: "HouseTop",
+                x: x,
+                y: y
             });
         }
 
         y += 16;
         for (let i: number = 1; i < stories; i += 1) {
             output.push({
-                "thing": "HouseCenterLeft",
-                "x": x,
-                "y": y
+                thing: "HouseCenterLeft",
+                x: x,
+                y: y
             });
             output.push({
-                "thing": "HouseCenterRight",
-                "x": x + 16,
-                "y": y,
-                "width": width - 16
+                thing: "HouseCenterRight",
+                x: x + 16,
+                y: y,
+                width: width - 16
             });
             y += 8;
         }
 
         if (reference.door) {
             let door: any = {
-                "thing": "Door",
-                "x": x + 8,
-                "y": y - 8,
-                "requireDirection": 0
+                thing: "Door",
+                x: x + 8,
+                y: y - 8,
+                requireDirection: 0
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -217,36 +217,36 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         const doorOffset: number = reference.doorOffset || 16;
         const output: any[] = [
                 {
-                    "thing": "HouseLargeTopLeft",
-                    "x": x,
-                    "y": y
+                    thing: "HouseLargeTopLeft",
+                    x: x,
+                    y: y
                 }, {
-                    "thing": "HouseLargeTopMiddle",
-                    "x": x + 8,
-                    "y": y,
-                    "width": width - 16
+                    thing: "HouseLargeTopMiddle",
+                    x: x + 8,
+                    y: y,
+                    width: width - 16
                 }, {
-                    "thing": "HouseLargeTopRight",
-                    "x": x + width - 8,
-                    "y": y
+                    thing: "HouseLargeTopRight",
+                    x: x + width - 8,
+                    y: y
                 }];
 
         y += 20;
         for (let i: number = 2; i < stories; i += 1) {
             output.push({
-                "thing": "HouseLargeCenter",
-                "x": x,
-                "y": y,
-                "width": width
+                thing: "HouseLargeCenter",
+                x: x,
+                y: y,
+                width: width
             });
 
             if (reference.white) {
                 output.push({
-                    "thing": "HouseWallWhitewash",
-                    "x": reference.white.start,
-                    "y": y,
-                    "width": reference.white.end - reference.white.start,
-                    "position": "end"
+                    thing: "HouseWallWhitewash",
+                    x: reference.white.start,
+                    y: y,
+                    width: reference.white.end - reference.white.start,
+                    position: "end"
                 });
             }
 
@@ -255,61 +255,61 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
         if (!reference.door) {
             output.push({
-                "thing": "HouseLargeCenterLeft",
-                "x": x,
-                "y": y,
-                "width": 16
+                thing: "HouseLargeCenterLeft",
+                x: x,
+                y: y,
+                width: 16
             });
             output.push({
-                "thing": "HouseLargeCenterMiddle",
-                "x": x + 16,
-                "y": y,
-                "width": 8
+                thing: "HouseLargeCenterMiddle",
+                x: x + 16,
+                y: y,
+                width: 8
             });
             output.push({
-                "thing": "HouseLargeCenterRight",
-                "x": x + 24,
-                "y": y,
-                "width": width - 24
+                thing: "HouseLargeCenterRight",
+                x: x + 24,
+                y: y,
+                width: width - 24
             });
         } else {
             output.push({
-                "thing": "HouseLargeCenterLeft",
-                "x": x,
-                "y": y,
-                "width": doorOffset
+                thing: "HouseLargeCenterLeft",
+                x: x,
+                y: y,
+                width: doorOffset
             });
             output.push({
-                "thing": "HouseLargeCenterMiddle",
-                "x": x + doorOffset,
-                "y": y,
-                "width": 8,
-                "height": 4
+                thing: "HouseLargeCenterMiddle",
+                x: x + doorOffset,
+                y: y,
+                width: 8,
+                height: 4
             });
             output.push({
-                "thing": "HouseLargeCenterRight",
-                "x": x + doorOffset + 8,
-                "y": y,
-                "width": width - doorOffset - 8
+                thing: "HouseLargeCenterRight",
+                x: x + doorOffset + 8,
+                y: y,
+                width: width - doorOffset - 8
             });
             if (reference.white) {
                 output.push({
-                    "thing": "HouseWallWhitewash",
-                    "x": reference.white.start,
-                    "y": y,
-                    "width": reference.white.end - reference.white.start,
-                    "position": "end"
+                    thing: "HouseWallWhitewash",
+                    x: reference.white.start,
+                    y: y,
+                    width: reference.white.end - reference.white.start,
+                    position: "end"
                 });
             }
 
             y += 16;
 
             const door: any = {
-                "thing": "Door",
-                "x": x + doorOffset,
-                "y": y - 12,
-                "requireDirection": 0,
-                "id": reference.id
+                thing: "Door",
+                x: x + doorOffset,
+                y: y - 12,
+                requireDirection: 0,
+                id: reference.id
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -337,24 +337,24 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
         return [
             {
-                "macro": "HouseLarge",
-                "x": x,
-                "y": y,
-                "width": width,
-                "stories": stories,
-                "white": {
-                    "start": x + 4,
-                    "end": x + width - 4
+                macro: "HouseLarge",
+                x: x,
+                y: y,
+                width: width,
+                stories: stories,
+                white: {
+                    start: x + 4,
+                    end: x + width - 4
                 },
-                "transport": reference.transport,
-                "entrance": reference.entrance,
-                "door": true,
-                "doorOffset": width - 16
+                transport: reference.transport,
+                entrance: reference.entrance,
+                door: true,
+                doorOffset: width - 16
             }, {
-                "thing": "GymLabel",
-                "x": x + 16,
-                "y": y + 16,
-                "width": width - 32
+                thing: "GymLabel",
+                x: x + 16,
+                y: y + 16,
+                width: width - 32
             }];
     }
 
@@ -372,70 +372,70 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         const doorOffset: number = reference.doorOffset || 8;
         const output: any[] = [
             {
-                "thing": "BuildingTopLeft",
-                "x": x,
-                "y": y
+                thing: "BuildingTopLeft",
+                x: x,
+                y: y
             }, {
-                "thing": "BuildingTopMiddle",
-                "x": x + 4,
-                "y": y,
-                "width": width - 8
+                thing: "BuildingTopMiddle",
+                x: x + 4,
+                y: y,
+                width: width - 8
             }, {
-                "thing": "BuildingTopRight",
-                "x": x + width - 4,
-                "y": y
+                thing: "BuildingTopRight",
+                x: x + width - 4,
+                y: y
             }];
 
         y += 16;
 
         for (let i: number = 0; i < stories; i += 1) {
             output.push({
-                "thing": "BuildingMiddleLeft",
-                "x": x,
-                "y": y
+                thing: "BuildingMiddleLeft",
+                x: x,
+                y: y
             });
             output.push({
-                "thing": "BuildingMiddleWindow",
-                "x": x + 4,
-                "y": y,
-                "width": width - 8,
-                "height": 4
+                thing: "BuildingMiddleWindow",
+                x: x + 4,
+                y: y,
+                width: width - 8,
+                height: 4
             });
             output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + 4,
-                "y": y + 4,
-                "width": width - 8,
-                "height": 4
+                thing: "BuildingMiddleMiddle",
+                x: x + 4,
+                y: y + 4,
+                width: width - 8,
+                height: 4
             });
             output.push({
-                "thing": "BuildingMiddleRight",
-                "x": x + width - 4,
-                "y": y
+                thing: "BuildingMiddleRight",
+                x: x + width - 4,
+                y: y
             });
 
             y += 8;
         }
 
         output.push({
-            "thing": "BuildingMiddleLeft",
-            "x": x,
-            "y": y,
-            "height": 4
+            thing: "BuildingMiddleLeft",
+            x: x,
+            y: y,
+            height: 4
         });
         output.push({
-            "thing": "BuildingMiddleRight",
-            "x": x + width - 4,
-            "y": y,
-            "height": 4
+            thing: "BuildingMiddleRight",
+            x: x + width - 4,
+            y: y,
+            height: 4
         });
 
         if (reference.door) {
             const door: any = {
-                "thing": "Door",
-                "x": x + doorOffset,
-                "y": y,
-                "entrance": reference.entrance
+                thing: "Door",
+                x: x + doorOffset,
+                y: y,
+                entrance: reference.entrance
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -445,53 +445,53 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
             }
 
             output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + 4,
-                "y": y,
-                "height": 4,
-                "width": doorOffset - 4
+                thing: "BuildingMiddleMiddle",
+                x: x + 4,
+                y: y,
+                height: 4,
+                width: doorOffset - 4
             });
             output.push(door);
             output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + doorOffset + 8,
-                "y": y,
-                "height": 4,
-                "width": width - doorOffset - 12
+                thing: "BuildingMiddleMiddle",
+                x: x + doorOffset + 8,
+                y: y,
+                height: 4,
+                width: width - doorOffset - 12
             });
             output.push({
-                "thing": "BuildingBottomLeft",
-                "x": x,
-                "y": y + 4,
-                "width": doorOffset
+                thing: "BuildingBottomLeft",
+                x: x,
+                y: y + 4,
+                width: doorOffset
             });
             output.push({
-                "thing": "BuildingBottomRight",
-                "x": x + doorOffset + 8,
-                "y": y + 4,
-                "width": width - doorOffset - 8
+                thing: "BuildingBottomRight",
+                x: x + doorOffset + 8,
+                y: y + 4,
+                width: width - doorOffset - 8
             });
         } else {
             output.push({
-                "thing": "BuildingMiddleMiddle",
-                "x": x + 4,
-                "y": y,
-                "width": width - 8,
-                "height": 4
+                thing: "BuildingMiddleMiddle",
+                x: x + 4,
+                y: y,
+                width: width - 8,
+                height: 4
             });
             output.push({
-                "thing": "BuildingBottom",
-                "x": x,
-                "y": y + 4,
-                "width": width
+                thing: "BuildingBottom",
+                x: x,
+                y: y + 4,
+                width: width
             });
         }
 
         if (reference.label) {
             output.push({
-                "thing": reference.label + "Label",
-                "x": x + 16,
-                "y": y
+                thing: reference.label + "Label",
+                x: x + 16,
+                y: y
             });
         }
 
@@ -515,68 +515,68 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         if (reference.right) {
             if (reference.top) {
                 output.push({
-                    "thing": "MountainTopRight",
-                    "x": x + width - 8,
-                    "y": y
+                    thing: "MountainTopRight",
+                    x: x + width - 8,
+                    y: y
                 });
                 output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y + 4
+                    thing: "MountainRight",
+                    x: x + width - 8,
+                    y: y + 4
                 });
                 output.push({
-                    "thing": "MountainTopRight",
-                    "x": x + width - 4,
-                    "y": y + 4
+                    thing: "MountainTopRight",
+                    x: x + width - 4,
+                    y: y + 4
                 });
             } else {
                 output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y,
-                    "width": 8,
-                    "height": 8
+                    thing: "MountainRight",
+                    x: x + width - 8,
+                    y: y,
+                    width: 8,
+                    height: 8
                 });
             }
 
             if (reference.bottom) {
                 output.push({
-                    "thing": "MountainBottomRight",
-                    "x": x + width - 8,
-                    "y": y + height - 8
+                    thing: "MountainBottomRight",
+                    x: x + width - 8,
+                    y: y + height - 8
                 });
                 output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 4,
-                    "y": y + height - 8
+                    thing: "MountainRight",
+                    x: x + width - 4,
+                    y: y + height - 8
                 });
                 output.push({
-                    "thing": "MountainBottom",
-                    "x": x + width - 8,
-                    "y": y + height - 4
+                    thing: "MountainBottom",
+                    x: x + width - 8,
+                    y: y + height - 4
                 });
                 output.push({
-                    "thing": "MountainBottomRight",
-                    "x": x + width - 4,
-                    "y": y + height - 4
+                    thing: "MountainBottomRight",
+                    x: x + width - 4,
+                    y: y + height - 4
                 });
             } else {
                 output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y + height - 8,
-                    "width": 8,
-                    "height": 8
+                    thing: "MountainRight",
+                    x: x + width - 8,
+                    y: y + height - 8,
+                    width: 8,
+                    height: 8
                 });
             }
 
             if (height > 16) {
                 output.push({
-                    "thing": "MountainRight",
-                    "x": x + width - 8,
-                    "y": y + 8,
-                    "width": 8,
-                    "height": height - 16
+                    thing: "MountainRight",
+                    x: x + width - 8,
+                    y: y + 8,
+                    width: 8,
+                    height: height - 16
                 });
             }
 
@@ -586,68 +586,68 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         if (reference.left) {
             if (reference.top) {
                 output.push({
-                    "thing": "MountainTopLeft",
-                    "x": x + 4,
-                    "y": y
+                    thing: "MountainTopLeft",
+                    x: x + 4,
+                    y: y
                 });
                 output.push({
-                    "thing": "MountainTopLeft",
-                    "x": x,
-                    "y": y + 4
+                    thing: "MountainTopLeft",
+                    x: x,
+                    y: y + 4
                 });
                 output.push({
-                    "thing": "MountainLeft",
-                    "x": x + 4,
-                    "y": y + 4
+                    thing: "MountainLeft",
+                    x: x + 4,
+                    y: y + 4
                 });
             } else {
                 output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y,
-                    "width": 8,
-                    "height": 8
+                    thing: "MountainLeft",
+                    x: x,
+                    y: y,
+                    width: 8,
+                    height: 8
                 });
             }
 
             if (reference.bottom) {
                 output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y + height - 8
+                    thing: "MountainLeft",
+                    x: x,
+                    y: y + height - 8
                 });
                 output.push({
-                    "thing": "MountainBottomLeft",
-                    "x": x + 4,
-                    "y": y + height - 8
+                    thing: "MountainBottomLeft",
+                    x: x + 4,
+                    y: y + height - 8
                 });
                 output.push({
-                    "thing": "MountainBottomLeft",
-                    "x": x,
-                    "y": y + height - 4
+                    thing: "MountainBottomLeft",
+                    x: x,
+                    y: y + height - 4
                 });
                 output.push({
-                    "thing": "MountainBottom",
-                    "x": x + 4,
-                    "y": y + height - 4
+                    thing: "MountainBottom",
+                    x: x + 4,
+                    y: y + height - 4
                 });
             } else {
                 output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y + height - 8,
-                    "width": 8,
-                    "height": 8
+                    thing: "MountainLeft",
+                    x: x,
+                    y: y + height - 8,
+                    width: 8,
+                    height: 8
                 });
             }
 
             if (height > 16) {
                 output.push({
-                    "thing": "MountainLeft",
-                    "x": x,
-                    "y": y + 8,
-                    "width": 8,
-                    "height": height - 16
+                    thing: "MountainLeft",
+                    x: x,
+                    y: y + 8,
+                    width: 8,
+                    height: height - 16
                 });
             }
 
@@ -657,10 +657,10 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
         if (reference.top && width > 0) {
             output.push({
-                "thing": "MountainTop",
-                "x": x,
-                "y": y,
-                "width": width
+                thing: "MountainTop",
+                x: x,
+                y: y,
+                width: width
             });
             y += 5;
             height -= 5;
@@ -670,36 +670,36 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
             if (reference.opening) {
                 if (openingOffset > 0) {
                     output.push({
-                        "thing": "MountainBottom",
-                        "x": x,
-                        "y": y + height - 8,
-                        "width": openingOffset,
-                        "height": 8
+                        thing: "MountainBottom",
+                        x: x,
+                        y: y + height - 8,
+                        width: openingOffset,
+                        height: 8
                     });
                 }
                 output.push({
-                    "thing": "CaveOpening",
-                    "x": x + openingOffset,
-                    "y": y + height - 8,
-                    "entrance": reference.entrance,
-                    "transport": reference.transport
+                    thing: "CaveOpening",
+                    x: x + openingOffset,
+                    y: y + height - 8,
+                    entrance: reference.entrance,
+                    transport: reference.transport
                 });
                 if (openingOffset < width) {
                     output.push({
-                        "thing": "MountainBottom",
-                        "x": x + openingOffset + 8,
-                        "y": y + height - 8,
-                        "width": width - openingOffset - 8,
-                        "height": 8
+                        thing: "MountainBottom",
+                        x: x + openingOffset + 8,
+                        y: y + height - 8,
+                        width: width - openingOffset - 8,
+                        height: 8
                     });
                 }
             } else {
                 output.push({
-                    "thing": "MountainBottom",
-                    "x": x,
-                    "y": y + height - 8,
-                    "width": width,
-                    "height": 8
+                    thing: "MountainBottom",
+                    x: x,
+                    y: y + height - 8,
+                    width: width,
+                    height: 8
                 });
             }
             height -= 8;
@@ -707,11 +707,11 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
         if (width > 0 && height > 0) {
             output.push({
-                "thing": "Mountain",
-                "x": x,
-                "y": y,
-                "width": width,
-                "height": height
+                thing: "Mountain",
+                x: x,
+                y: y,
+                width: width,
+                height: height
             });
         }
 
@@ -729,166 +729,166 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         const y: number = reference.y || 0;
         const output: any = [
             {
-                "thing": "FloorDiamonds",
-                "width": 112,
-                "height": 64,
-                "x": x,
-                "y": y
+                thing: "FloorDiamonds",
+                width: 112,
+                height: 64,
+                x: x,
+                y: y
             }, {
-                "thing": "SquareWallTop",
-                "x": x,
-                "y": y,
-                "height": 16
+                thing: "SquareWallTop",
+                x: x,
+                y: y,
+                height: 16
             }, {
-                "thing": "HealingMachine",
-                "x": x + 8,
-                "y": y,
-                "id": "HealingMachine"
+                thing: "HealingMachine",
+                x: x + 8,
+                y: y,
+                id: "HealingMachine"
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x + 8,
-                "y": y,
-                "width": 32
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x + 8,
+                y: y,
+                width: 32
             }, {
-                "thing": "PokeCenterPoster",
-                "x": x + 28,
-                "y": y
+                thing: "PokeCenterPoster",
+                x: x + 28,
+                y: y
             }, {
-                "thing": "SquareWallTop",
-                "x": x + 40,
-                "y": y,
-                "height": 16
+                thing: "SquareWallTop",
+                x: x + 40,
+                y: y,
+                height: 16
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x + 48,
-                "y": y,
-                "width": 32
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x + 48,
+                y: y,
+                width: 32
             }, {
-                "thing": "StairsVertical",
-                "x": x + 80,
-                "y": y
+                thing: "StairsVertical",
+                x: x + 80,
+                y: y
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x + 88,
-                "y": y
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x + 88,
+                y: y
             }, {
-                "thing": "StairsVertical",
-                "x": x + 96,
-                "y": y
+                thing: "StairsVertical",
+                x: x + 96,
+                y: y
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x + 104,
-                "y": y
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x + 104,
+                y: y
             }, {
-                "thing": "Nurse",
-                "id": "Nurse",
-                "x": x + 24,
-                "y": y + 8
+                thing: "Nurse",
+                id: "Nurse",
+                x: x + 24,
+                y: y + 8
             }, {
-                "thing": "SquareWallFront",
-                "x": x,
-                "y": y + 16
+                thing: "SquareWallFront",
+                x: x,
+                y: y + 16
             }, {
-                "thing": "PokeCenterDeskLeft",
-                "x": x + 8,
-                "y": y + 16
+                thing: "PokeCenterDeskLeft",
+                x: x + 8,
+                y: y + 16
             }, {
-                "thing": "PokeCenterDesk",
-                "x": x + 12,
-                "y": y + 16,
-                "width": 32
+                thing: "PokeCenterDesk",
+                x: x + 12,
+                y: y + 16,
+                width: 32
             }, {
-                "thing": "CutsceneResponder",
-                "x": x + 24,
-                "y": y + 16,
-                "cutscene": "PokeCenter",
-                "keepAlive": true
+                thing: "CutsceneResponder",
+                x: x + 24,
+                y: y + 16,
+                cutscene: "PokeCenter",
+                keepAlive: true
             }, {
-                "thing": "SquareWallFront",
-                "x": x + 40,
-                "y": y + 16
+                thing: "SquareWallFront",
+                x: x + 40,
+                y: y + 16
             }, {
-                "thing": "PokeCenterDesk",
-                "x": x + 48,
-                "y": y + 16,
-                "width": 32
+                thing: "PokeCenterDesk",
+                x: x + 48,
+                y: y + 16,
+                width: 32
             }, {
-                "thing": "PokeCenterDeskBlocker",
-                "x": x + 80,
-                "y": y + 16
+                thing: "PokeCenterDeskBlocker",
+                x: x + 80,
+                y: y + 16
             }, {
-                "thing": "DeskWoman",
-                "x": x + 88,
-                "y": y + 16,
-                "dialog": [
+                thing: "DeskWoman",
+                x: x + 88,
+                y: y + 16,
+                dialog: [
                     "Welcome to the Cable Club!",
                     "This area is reserved for 2 friends who are linked by cable."
                 ]
             }, {
-                "thing": "PokeCenterDeskBlocker",
-                "x": x + 96,
-                "y": y + 16
+                thing: "PokeCenterDeskBlocker",
+                x: x + 96,
+                y: y + 16
             }, {
-                "thing": "PokeCenterDesk",
-                "x": x + 104,
-                "y": y + 16
+                thing: "PokeCenterDesk",
+                x: x + 104,
+                y: y + 16
             }, {
-                "thing": "Buzzer",
-                "x": x + 28,
-                "y": y + 19
+                thing: "Buzzer",
+                x: x + 28,
+                y: y + 19
             }, {
-                "thing": "Computer",
-                "x": x + 104,
-                "y": y + 24
+                thing: "Computer",
+                x: x + 104,
+                y: y + 24
             }, {
-                "thing": "SofaLeft",
-                "x": x,
-                "y": y + 32
+                thing: "SofaLeft",
+                x: x,
+                y: y + 32
             }, {
-                "thing": "PottedPalmTree",
-                "x": x,
-                "y": y + 48,
-                "width": 16
+                thing: "PottedPalmTree",
+                x: x,
+                y: y + 48,
+                width: 16
             }, {
-                "thing": "PottedPalmTree",
-                "x": x + 48,
-                "y": y + 48,
-                "width": 16
+                thing: "PottedPalmTree",
+                x: x + 48,
+                y: y + 48,
+                width: 16
             }, {
-                "thing": "PottedPalmTree",
-                "x": x + 96,
-                "y": y + 48,
-                "width": 16
+                thing: "PottedPalmTree",
+                x: x + 96,
+                y: y + 48,
+                width: 16
             }, {
-                "thing": "Doormat",
-                "x": x + 24,
-                "y": y + 56,
-                "width": 16,
-                "entrance": reference.entrance
+                thing: "Doormat",
+                x: x + 24,
+                y: y + 56,
+                width: 16,
+                entrance: reference.entrance
             }];
 
         if (reference.transport) {
             output.push({
-                "thing": "HiddenTransporter",
-                "x": x + 24,
-                "y": y + 56,
-                "width": 16,
-                "transport": reference.transport,
-                "requireDirection": 2
+                thing: "HiddenTransporter",
+                x: x + 24,
+                y: y + 56,
+                width: 16,
+                transport: reference.transport,
+                requireDirection: 2
             });
         }
 
         if (!reference.excludeCoolTrainer) {
             output.push({
-                "thing": "CoolTrainerM",
-                "x": x,
-                "y": y + 32,
-                "offsetX": this.EightBitter.unitsize * 1.75,
-                "offsetY": 0,
-                "direction": 1,
-                "sitting": true,
-                "dialogDirections": true,
-                "dialog": reference.coolTrainerDialog || [
+                thing: "CoolTrainerM",
+                x: x,
+                y: y + 32,
+                offsetX: this.EightBitter.unitsize * 1.75,
+                offsetY: 0,
+                direction: 1,
+                sitting: true,
+                dialogDirections: true,
+                dialog: reference.coolTrainerDialog || [
                     "",
                     "%%%%%%%POKEMON%%%%%%% CENTERs heal your tired, hurt, or fainted %%%%%%%POKEMON%%%%%%%!",
                     "",
@@ -911,120 +911,120 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         const y: number = reference.y || 0;
         const output: any[] = [
             {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x,
-                "y": y,
-                "width": 16,
-                "height": 4
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x,
+                y: y,
+                width: 16,
+                height: 4
             }, {
-                "thing": "FloorDiamonds",
-                "x": x,
-                "y": y + 8,
-                "width": 64,
-                "height": 56
+                thing: "FloorDiamonds",
+                x: x,
+                y: y + 8,
+                width: 64,
+                height: 56
             }, {
-                "thing": "FloorDiamondsDark",
-                "x": x,
-                "y": y + 16,
-                "height": 8
+                thing: "FloorDiamondsDark",
+                x: x,
+                y: y + 16,
+                height: 8
             }, {
-                "thing": "StoreFridge",
-                "x": x + 16,
-                "y": y,
-                "width": 32
+                thing: "StoreFridge",
+                x: x + 16,
+                y: y,
+                width: 32
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x + 48,
-                "y": y,
-                "width": 16,
-                "height": 4
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x + 48,
+                y: y,
+                width: 16,
+                height: 4
             }, {
-                "thing": "StoreSaleBin",
-                "x": x,
-                "y": y + 4,
-                "width": 16
+                thing: "StoreSaleBin",
+                x: x,
+                y: y + 4,
+                width: 16
             }, {
-                "thing": "StoreSaleBin",
-                "x": x + 48,
-                "y": y + 4,
-                "width": 16
+                thing: "StoreSaleBin",
+                x: x + 48,
+                y: y + 4,
+                width: 16
             }, {
-                "thing": "StoreAisle",
-                "x": x,
-                "y": y + 24,
-                "height": 8
+                thing: "StoreAisle",
+                x: x,
+                y: y + 24,
+                height: 8
             }, {
-                "thing": "StoreAisle",
-                "x": x + 32,
-                "y": y + 24,
-                "width": 32
+                thing: "StoreAisle",
+                x: x + 32,
+                y: y + 24,
+                width: 32
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x,
-                "y": y + 32
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x,
+                y: y + 32
             }, {
-                "thing": "WallIndoorHorizontalBandsDark",
-                "x": x + 8,
-                "y": y + 32,
-                "height": 4
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x + 8,
+                y: y + 32,
+                height: 4
             }, {
-                "thing": "FloorDiamondsDark",
-                "x": x + 16,
-                "y": y + 32,
-                "height": 24
+                thing: "FloorDiamondsDark",
+                x: x + 16,
+                y: y + 32,
+                height: 24
             }, {
-                "thing": "SquareWallTop",
-                "x": x + 8,
-                "y": y + 36,
-                "height": 16
+                thing: "SquareWallTop",
+                x: x + 8,
+                y: y + 36,
+                height: 16
             }, {
-                "thing": "Cashier",
-                "x": x,
-                "y": y + 40,
-                "direction": 1
+                thing: "Cashier",
+                x: x,
+                y: y + 40,
+                direction: 1
             }, {
-                "thing": "FloorDiamondsDark",
-                "x": x,
-                "y": y + 40
+                thing: "FloorDiamondsDark",
+                x: x,
+                y: y + 40
             }, {
-                "thing": "Register",
-                "x": x + 8,
-                "y": y + 40,
-                "id": reference.responderId,
-                "activate": this.EightBitter.animations.activateCutsceneResponder,
-                "cutscene": "PokeMart",
-                "keepAlive": true,
-                "items": reference.items,
-                "dialog": reference.responderDialog
+                thing: "Register",
+                x: x + 8,
+                y: y + 40,
+                id: reference.responderId,
+                activate: this.EightBitter.animations.activateCutsceneResponder,
+                cutscene: "PokeMart",
+                keepAlive: true,
+                items: reference.items,
+                dialog: reference.responderDialog
             }, {
-                "thing": "PokeCenterDeskLeft",
-                "x": x,
-                "y": y + 48
+                thing: "PokeCenterDeskLeft",
+                x: x,
+                y: y + 48
             }, {
-                "thing": "PokeCenterDesk",
-                "x": x + 4,
-                "y": y + 48,
-                "width": 12
+                thing: "PokeCenterDesk",
+                x: x + 4,
+                y: y + 48,
+                width: 12
             }, {
-                "thing": "FloorDiamondsDark",
-                "x": x,
-                "y": y + 56
+                thing: "FloorDiamondsDark",
+                x: x,
+                y: y + 56
             }, {
-                "thing": "Doormat",
-                "x": x + 24,
-                "y": y + 56,
-                "width": 16,
-                "entrance": reference.entrance
+                thing: "Doormat",
+                x: x + 24,
+                y: y + 56,
+                width: 16,
+                entrance: reference.entrance
             }];
 
         if (reference.transport) {
             output.push({
-                "thing": "HiddenTransporter",
-                "x": x + 24,
-                "y": y + 56,
-                "width": 16,
-                "transport": reference.transport,
-                "requireDirection": 2
+                thing: "HiddenTransporter",
+                x: x + 24,
+                y: y + 56,
+                width: 16,
+                transport: reference.transport,
+                requireDirection: 2
             });
         }
 

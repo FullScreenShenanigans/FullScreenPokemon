@@ -147,7 +147,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         }
 
         if (this.EightBitter.MenuGrapher.getActiveMenu()) {
-            this.EightBitter.MenuGrapher.registerDirection(<number>direction);
+            this.EightBitter.MenuGrapher.registerDirection(direction as number);
         } else {
             if (thing.direction !== direction) {
                 thing.turning = direction;

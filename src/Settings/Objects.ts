@@ -6,6 +6,8 @@ import { Unitsize } from "../Constants";
 import { Maps } from "../Maps";
 import { Things } from "../Things";
 
+/* tslint:disable object-literal-key-quotes */
+
 export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
     "use strict";
 
@@ -1302,3 +1304,5 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
         }
     };
 }
+
+/* tslint:enable object-literal-key-quotes */

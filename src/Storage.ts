@@ -1,7 +1,7 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
-import { FullScreenPokemon } from "./FullScreenPokemon";
 import { PokedexListingStatus } from "./Constants";
+import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
     ICharacter, IPokedex, IPokedexInformation,
     IPokemonListing, ISaveFile, IStateSaveable
@@ -252,11 +252,11 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        let pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex"),
-            title: string = titleRaw.join(""),
-            information: IPokedexInformation = pokedex[title],
-            caught: boolean = status === PokedexListingStatus.Caught,
-            seen: boolean = caught || (status === PokedexListingStatus.Seen);
+        const pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex");
+        const title: string = titleRaw.join("");
+        const caught: boolean = status === PokedexListingStatus.Caught;
+        const seen: boolean = caught || (status === PokedexListingStatus.Seen);
+        let information: IPokedexInformation = pokedex[title];
 
         if (information) {
             // Skip potentially expensive storage operations if they're unnecessary
@@ -279,18 +279,16 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
 
     /**
      * Retrieves known Pokedex listings in ascending order. Unknown Pokemon are
-     * replaced with `null`.
+     * replaced with `undefined`.
      * 
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): IPokedexInformation[] {
-        let pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex"),
-            pokemon: { [i: string]: IPokemonListing } = this.EightBitter.MathDecider.getConstant("pokemon"),
-            titlesSorted: string[] = Object.keys(pokedex)
-                .sort(function (a: string, b: string): number {
-                    return pokemon[a].number - pokemon[b].number;
-                }),
-            i: number;
+        const pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex");
+        const pokemon: { [i: string]: IPokemonListing } = this.EightBitter.MathDecider.getConstant("pokemon");
+        const titlesSorted: string[] = Object.keys(pokedex)
+            .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);
+        let i: number;
 
         if (!titlesSorted.length) {
             return [];
@@ -299,14 +297,14 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         let ordered: IPokedexInformation[] = [];
 
         for (i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
-            ordered.push(null);
+            ordered.push(undefined);
         }
 
         for (i = 0; i < titlesSorted.length - 1; i += 1) {
             ordered.push(pokedex[titlesSorted[i]]);
 
             for (let j: number = pokemon[titlesSorted[i]].number - 1; j < pokemon[titlesSorted[i + 1]].number - 2; j += 1) {
-                ordered.push(null);
+                ordered.push(undefined);
             }
         }
 

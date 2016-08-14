@@ -3,6 +3,7 @@
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /* tslint:disable max-line-length */
+/* tslint:disable object-literal-key-quotes */
 
 export function GenerateSpritesSettings(): GameStartr.IPixelRendrCustoms {
     "use strict";
@@ -1088,5 +1089,7 @@ export function GenerateSpritesSettings(): GameStartr.IPixelRendrCustoms {
         }
     };
 
-    /* tslint:enable max-line-length */
 }
+
+/* tslint:enable max-line-length */
+/* tslint:enable object-literal-key-quotes */

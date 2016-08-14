@@ -21,8 +21,8 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.
 
         for (const thingRaw of thingsRaw) {
             const thing: IThing = thingRaw.constructor === String
-                ? this.EightBitter.utilities.getThingById(<string>thingRaw)
-                : <IThing>thingRaw;
+                ? this.EightBitter.utilities.getThingById(thingRaw as string)
+                : thingRaw as IThing;
 
             if (!used[thing.title]) {
                 used[thing.title] = thing;

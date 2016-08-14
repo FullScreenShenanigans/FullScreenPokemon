@@ -3,14 +3,12 @@
 import { Direction, DirectionAliases, DirectionOpposites, PokedexListingStatus } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
-    IBattleCutsceneSettings, IBattleTransitionSettings, IBattleInfo,
     IBattleActionRoutineSettings, IBattleAttackRoutineSettings,
-    IBattleLevelRoutineSettings, IBattleMoveRoutineSettings, IBattleRoutineSettings, IBattleStatisticRoutineSettings,
-    IBattleThingInfo, IBattleThingsById,
+    IBattleCutsceneSettings, IBattleInfo, IBattleLevelRoutineSettings, IBattleMoveRoutineSettings,
+    IBattleRoutineSettings, IBattleStatisticRoutineSettings,
+    IBattleThingInfo, IBattleThingsById, IBattleTransitionSettings,
     ICharacter, IEnemy, IKeyboardResultsMenu, IMenu, IPlayer, IPokeball, IPokemonMoveListing,
-    IThing, ITransportSchema,
-    ITransitionFlashSettings,
-    ITransitionLineSpiralSettings
+    IThing, ITransitionFlashSettings, ITransitionLineSpiralSettings, ITransportSchema
 } from "./IFullScreenPokemon";
 
 /**
@@ -23,26 +21,26 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneBattleTransitionLineSpiral(settings: ITransitionLineSpiralSettings): void {
-        let unitsize: number = this.EightBitter.unitsize,
-            divisor: number = settings.divisor || 15,
-            screenWidth: number = this.EightBitter.MapScreener.width,
-            screenHeight: number = this.EightBitter.MapScreener.height,
-            width: number = Math.ceil(screenWidth / divisor),
-            height: number = Math.ceil(screenHeight / divisor),
-            numTimes: number = 0,
-            direction: number = 2,
-            things: IThing[] = [],
-            thing: IThing,
-            difference: number,
-            destination: number;
+        const unitsize: number = this.EightBitter.unitsize;
+        const divisor: number = settings.divisor || 15;
+        const screenWidth: number = this.EightBitter.MapScreener.width;
+        const screenHeight: number = this.EightBitter.MapScreener.height;
+        const width: number = Math.ceil(screenWidth / divisor);
+        const height: number = Math.ceil(screenHeight / divisor);
+        const things: IThing[] = [];
+        let numTimes: number = 0;
+        let direction: number = 2;
+        let thing: IThing;
+        let difference: number;
+        let destination: number;
 
-        function addLineSpiralThing(): void {
+        const addLineSpiralThing: () => void = (): void => {
             if (numTimes >= ((divisor / 2) | 0)) {
                 if (settings.callback) {
                     settings.callback();
 
-                    for (const thing of things) {
-                        this.EightBitter.physics.killNormal(thing);
+                    for (const other of things) {
+                        this.EightBitter.physics.killNormal(other);
                     }
                 }
                 return;
@@ -51,8 +49,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             switch (thing.direction) {
                 case 0:
                     thing = this.EightBitter.ObjectMaker.make("BlackSquare", {
-                        "width": width / unitsize,
-                        "height": screenHeight / unitsize
+                        width: width / unitsize,
+                        height: screenHeight / unitsize
                     });
                     this.EightBitter.things.add(
                         thing,
@@ -65,8 +63,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
                 case 1:
                     thing = this.EightBitter.ObjectMaker.make("BlackSquare", {
-                        "width": screenWidth / unitsize,
-                        "height": height / unitsize
+                        width: screenWidth / unitsize,
+                        height: height / unitsize
                     });
                     this.EightBitter.things.add(
                         thing,
@@ -79,8 +77,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
                 case 2:
                     thing = this.EightBitter.ObjectMaker.make("BlackSquare", {
-                        "width": width / unitsize,
-                        "height": screenHeight / unitsize
+                        width: width / unitsize,
+                        height: screenHeight / unitsize
                     });
                     this.EightBitter.things.add(
                         thing,
@@ -93,8 +91,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
                 case 3:
                     thing = this.EightBitter.ObjectMaker.make("BlackSquare", {
-                        "width": screenWidth / unitsize,
-                        "height": height / unitsize
+                        width: screenWidth / unitsize,
+                        height: height / unitsize
                     });
                     this.EightBitter.things.add(
                         thing,
@@ -111,7 +109,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
             things.push(thing);
 
-            this.EightBitter.moveBattleKeptThingsToText(settings.battleInfo);
+            this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo);
 
             this.EightBitter.TimeHandler.addEventInterval(
                 (): boolean => {
@@ -135,13 +133,15 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                     if (direction === 2) {
                         numTimes += 1;
                     }
+
                     addLineSpiralThing();
-                    this.EightBitter.moveBattleKeptThingsToText(settings);
+                    this.EightBitter.graphics.moveBattleKeptThingsToText(settings);
+
                     return true;
                 },
                 1,
                 Infinity);
-        }
+        };
 
         addLineSpiralThing();
     }
@@ -153,40 +153,40 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @remarks Three [black, white] flashes, then the spiral.
      */
     public cutsceneBattleTransitionFlash(settings: ITransitionFlashSettings): void {
-        let flashes: number = settings.flashes || 6,
-            flashColors: string[] = settings.flashColors || ["Black", "White"],
-            callback: Function = settings.callback,
-            change: number = settings.change || .33,
-            speed: number = settings.speed || 1,
-            completed: number = 0,
-            color: string,
-            repeater: () => void = (): void => {
-                if (completed >= flashes) {
-                    if (callback) {
-                        callback();
-                    }
-                    return;
+        const flashes: number = settings.flashes || 6;
+        const flashColors: string[] = settings.flashColors || ["Black", "White"];
+        const callback: Function = settings.callback;
+        let change: number = settings.change || .33;
+        let speed: number = settings.speed || 1;
+        let completed: number = 0;
+        let color: string;
+        let repeater: () => void = (): void => {
+            if (completed >= flashes) {
+                if (callback) {
+                    callback();
                 }
+                return;
+            }
 
-                color = flashColors[completed % flashColors.length];
-                completed += 1;
+            color = flashColors[completed % flashColors.length];
+            completed += 1;
 
-                this.EightBitter.animations.animateFadeToColor({
-                    color: color,
-                    change: change,
-                    speed: speed,
-                    callback: (): void => {
-                        this.EightBitter.animations.animateFadeFromColor({
-                            color: color,
-                            change: change,
-                            speed: speed,
-                            callback: repeater
-                        });
-                    }
-                });
+            this.EightBitter.animations.animateFadeToColor({
+                color: color,
+                change: change,
+                speed: speed,
+                callback: (): void => {
+                    this.EightBitter.animations.animateFadeFromColor({
+                        color: color,
+                        change: change,
+                        speed: speed,
+                        callback: repeater
+                    });
+                }
+            });
 
-                this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo);
-            };
+            this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo);
+        };
 
         repeater();
     }
@@ -306,13 +306,13 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.MenuGrapher.createMenu("BattlePlayerHealth");
         this.EightBitter.battles.addBattleDisplayPokeballs(
-            <IMenu>this.EightBitter.MenuGrapher.getMenu("BattlePlayerHealth"),
+            this.EightBitter.MenuGrapher.getMenu("BattlePlayerHealth") as IMenu,
             battleInfo.player);
 
         if (battleInfo.opponent.hasActors) {
             this.EightBitter.MenuGrapher.createMenu("BattleOpponentHealth");
             this.EightBitter.battles.addBattleDisplayPokeballs(
-                <IMenu>this.EightBitter.MenuGrapher.getMenu("BattleOpponentHealth"),
+                this.EightBitter.MenuGrapher.getMenu("BattleOpponentHealth") as IMenu,
                 battleInfo.player,
                 true);
         } else {
@@ -320,7 +320,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         }
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": battleInfo.automaticMenus
+            finishAutomatically: battleInfo.automaticMenus
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -343,7 +343,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneBattleOpponentIntro(settings: IBattleCutsceneSettings): void {
         const things: any = settings.things;
         const opponent: ICharacter = things.opponent;
-        const menu: IMenu = <IMenu>this.EightBitter.MenuGrapher.getMenu("GeneralText");
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("GeneralText") as IMenu;
         const opponentX: number = this.EightBitter.physics.getMidX(opponent);
         const opponentGoal: number = menu.right + opponent.width * this.EightBitter.unitsize / 2;
         const battleInfo: IBattleInfo = settings.battleInfo;
@@ -371,7 +371,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.MenuGrapher.deleteMenu("BattleOpponentHealth");
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
+            finishAutomatically: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -391,7 +391,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ScenePlayer.bindRoutine(
                 callback,
                 {
-                    "nextRoutine": "PlayerIntro"
+                    nextRoutine: "PlayerIntro"
                 }),
             timeout);
     }
@@ -405,7 +405,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneBattlePlayerIntro(settings: IBattleCutsceneSettings): void {
         const things: any = settings.things;
         const player: IPlayer = things.player;
-        const menu: IMenu = <IMenu>this.EightBitter.MenuGrapher.getMenu("GeneralText");
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("GeneralText") as IMenu;
         const playerX: number = this.EightBitter.physics.getMidX(player);
         const playerGoal: number = menu.left - player.width * this.EightBitter.unitsize / 2;
         const battleInfo: IBattleInfo = settings.battleInfo;
@@ -436,7 +436,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             (timeout / 2) | 0);
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
+            finishAutomatically: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -454,7 +454,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ScenePlayer.bindRoutine(
                 "PlayerSendOut",
                 {
-                    "nextRoutine": "ShowPlayerMenu"
+                    nextRoutine: "ShowPlayerMenu"
                 }),
             timeout);
     }
@@ -581,7 +581,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneBattlePlayerSwitchesSamePokemon(settings: IBattleCutsceneSettings): void {
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "backMenu": "PokemonMenuContext"
+            backMenu: "PokemonMenuContext"
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -656,9 +656,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             }
 
             this.EightBitter.ScenePlayer.playRoutine("Damage", {
-                "battlerName": "opponent",
-                "damage": args.damage,
-                "callback": callback
+                battlerName: "opponent",
+                damage: args.damage,
+                callback: callback
             });
         };
 
@@ -735,9 +735,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             }
 
             this.EightBitter.ScenePlayer.playRoutine("Damage", {
-                "battlerName": "player",
-                "damage": args.damage,
-                "callback": callback
+                battlerName: "player",
+                damage: args.damage,
+                callback: callback
             });
         };
 
@@ -806,11 +806,11 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         const blank: IThing = this.EightBitter.ObjectMaker.make(
             "WhiteSquare",
             {
-                "width": thing.width * thing.scale,
-                "height": thing.height * thing.scale
+                width: thing.width * thing.scale,
+                height: thing.height * thing.scale
             });
-        const texts: IThing[] = <IThing[]>this.EightBitter.GroupHolder.getGroup("Text");
-        const background: IThing = <IThing>this.EightBitter.BattleMover.getBackgroundThing();
+        const texts: IThing[] = this.EightBitter.GroupHolder.getGroup("Text") as IThing[];
+        const background: IThing = this.EightBitter.BattleMover.getBackgroundThing() as IThing;
         const backgroundIndex: number = texts.indexOf(background);
         const nextRoutine: string = battlerName === "player"
                 ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints";
@@ -896,8 +896,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ScenePlayer.bindRoutine(
                 "ExperienceGain",
                 {
-                    "experienceGained": experienceGained,
-                    "callback": callback
+                    experienceGained: experienceGained,
+                    callback: callback
                 }
             ));
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -918,7 +918,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.BattleMover.switchActor("opponent", opponent.selectedIndex + 1);
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "deleteOnFinish": false
+            deleteOnFinish: false
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -931,20 +931,20 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             (): void => {
                 this.EightBitter.MenuGrapher.createMenu("Yes/No");
                 this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [
+                    options: [
                         {
-                            "text": "Yes",
-                            "callback": this.EightBitter.ScenePlayer.bindRoutine(
+                            text: "Yes",
+                            callback: this.EightBitter.ScenePlayer.bindRoutine(
                                 "PlayerSwitchesPokemon",
                                 {
-                                    "nextRoutine": "OpponentSendOut"
+                                    nextRoutine: "OpponentSendOut"
                                 })
                         }, {
-                            "text": "No",
-                            "callback": this.EightBitter.ScenePlayer.bindRoutine(
+                            text: "No",
+                            callback: this.EightBitter.ScenePlayer.bindRoutine(
                                 "OpponentSendOut",
                                 {
-                                    "nextRoutine": "ShowPlayerMenu"
+                                    nextRoutine: "ShowPlayerMenu"
                                 })
                         }]
                 });
@@ -975,8 +975,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         if (experience.remaining < 0) {
             gains -= experience.remaining;
             this.EightBitter.ScenePlayer.playRoutine("LevelUp", {
-                "experienceGained": gains,
-                "callback": args.callback
+                experienceGained: gains,
+                callback: args.callback
             });
         } else {
             args.callback();
@@ -1024,16 +1024,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneBattleLevelUpStats(settings: IBattleCutsceneSettings, args: IBattleLevelRoutineSettings): void {
         this.EightBitter.menus.openPokemonLevelUpStats({
-            "container": "BattleDisplayInitial",
-            "position": {
-                "horizontal": "right",
-                "vertical": "bottom",
-                "offset": {
-                    "left": 4
+            container: "BattleDisplayInitial",
+            position: {
+                horizontal: "right",
+                vertical: "bottom",
+                offset: {
+                    left: 4
                 }
             },
-            "pokemon": settings.battleInfo.player.selectedActor,
-            "onMenuDelete": args.callback
+            pokemon: settings.battleInfo.player.selectedActor,
+            onMenuDelete: args.callback
         });
         this.EightBitter.MenuGrapher.setActiveMenu("LevelUpStats");
 
@@ -1045,10 +1045,10 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneBattlePlayerChoosesPokemon(): void {
         this.EightBitter.MenuGrapher.createMenu("Pokemon", {
-            "position": {
-                "vertical": "center",
-                "offset": {
-                    "left": 0
+            position: {
+                vertical: "center",
+                offset: {
+                    left: 0
                 }
             }
         });
@@ -1085,7 +1085,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         if (!opponent.hasActors) {
             this.EightBitter.BattleMover.closeBattle((): void => {
                 this.EightBitter.animations.animateFadeFromColor({
-                    "color": "White"
+                    color: "White"
                 });
             });
             return;
@@ -1151,7 +1151,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         const battleInfo: IBattleInfo = settings.battleInfo;
         const reward: number = battleInfo.opponent.reward;
         const animationSettings: any = {
-            "color": "White"
+            color: "White"
         };
         const callback: () => void = (): void => {
             this.EightBitter.BattleMover.closeBattle((): void => {
@@ -1226,8 +1226,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             message,
             (): void => {
                 this.EightBitter.animations.animateFadeToColor({
-                    "color": "Black",
-                    "callback": callback
+                    color: "Black",
+                    callback: callback
                 });
             });
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -1315,11 +1315,11 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ObjectMaker.make("Note"),
             this.EightBitter.ObjectMaker.make("Note")
         ];
-        let menu: IMenu = <IMenu>this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial");
+        let menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let dt: number = 10;
         let startX: number;
         let startY: number;
-        let movement: (note: IThing, dt: number) => void = (note: IThing, dt: number): void => {
+        let movement: (note: IThing, dx: number) => void = (note: IThing, dx: number): void => {
             let flip: number = 1;
             let differenceX: number;
             let differenceY: number;
@@ -1343,7 +1343,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                         }
                         flip *= -1;
                     },
-                    dt * i);
+                    dx * i);
             }
         };
 
@@ -1382,10 +1382,10 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                         "ChangeStatistic",
                         this.EightBitter.utilities.proliferate(
                             {
-                                "callback": args.callback,
-                                "defenderName": defenderName,
-                                "statistic": "Attack",
-                                "amount": -1
+                                callback: args.callback,
+                                defenderName: defenderName,
+                                statistic: "Attack",
+                                amount: -1
                             },
                             args)));
             },
@@ -1402,8 +1402,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneBattleAttackTackle(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName;
         const defenderName: string = args.defenderName;
-        const attacker: IThing = <IThing>this.EightBitter.BattleMover.getThing(attackerName);
-        const defender: IThing = <IThing>this.EightBitter.BattleMover.getThing(defenderName);
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         let xvel: number = 7 * direction;
         let dt: number = 7;
@@ -1459,7 +1459,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneBattleAttackTailWhip(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName;
         const defenderName: string = args.defenderName;
-        const attacker: IThing = <IThing>this.EightBitter.BattleMover.getThing(attackerName);
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         const dt: number = 11;
         const dx: number = this.EightBitter.unitsize * 4;
@@ -1480,10 +1480,10 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                     this.EightBitter.ScenePlayer.bindRoutine(
                         "ChangeStatistic",
                         {
-                            "callback": args.callback,
-                            "defenderName": defenderName,
-                            "statistic": "Defense",
-                            "amount": -1
+                            callback: args.callback,
+                            defenderName: defenderName,
+                            statistic: "Defense",
+                            amount: -1
                         }));
             },
             (dt * 3.5) | 0);
@@ -1502,7 +1502,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         let direction: number = defenderName === "opponent" ? -1 : 1;
         let differenceX: number = defender.width / 2 * this.EightBitter.unitsize;
         let lineArray: IThing[] = [];
-        let menu: IMenu = <IMenu>this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial");
+        let menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let scratches: IThing[] = [
             this.EightBitter.ObjectMaker.make("ExplosionSmall"),
             this.EightBitter.ObjectMaker.make("ExplosionSmall"),
@@ -1642,14 +1642,14 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.MenuGrapher.addMenuList(
             "Heal/Cancel",
             {
-                "options": [
+                options: [
                     {
-                        "text": "HEAL",
-                        "callback": this.EightBitter.ScenePlayer.bindRoutine("ChooseHeal")
+                        text: "HEAL",
+                        callback: this.EightBitter.ScenePlayer.bindRoutine("ChooseHeal")
                     },
                     {
-                        "text": "CANCEL",
-                        "callback": this.EightBitter.ScenePlayer.bindRoutine("ChooseCancel")
+                        text: "CANCEL",
+                        callback: this.EightBitter.ScenePlayer.bindRoutine("ChooseCancel")
                     }
                 ]
             }
@@ -1666,8 +1666,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.MenuGrapher.deleteMenu("Heal/Cancel");
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "ignoreA": true,
-            "finishAutomatically": true
+            ignoreA: true,
+            finishAutomatically: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -1751,7 +1751,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             (): void => this.EightBitter.ScenePlayer.playRoutine(
                 "HealingComplete",
                 {
-                    "balls": balls
+                    balls: balls
                 }),
             (numFlashes + 2) * 21);
     }
@@ -1818,9 +1818,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutscenePokeMartGreeting(settings: any): void {
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true,
-            "ignoreA": true,
-            "ignoreB": true
+            finishAutomatically: true,
+            ignoreA: true,
+            ignoreB: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -1840,19 +1840,19 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.MenuGrapher.createMenu("Money");
 
         this.EightBitter.MenuGrapher.createMenu("Buy/Sell", {
-            "killOnB": ["Money", "GeneralText"],
-            "onMenuDelete": this.EightBitter.ScenePlayer.bindRoutine("Exit")
+            killOnB: ["Money", "GeneralText"],
+            onMenuDelete: this.EightBitter.ScenePlayer.bindRoutine("Exit")
         });
         this.EightBitter.MenuGrapher.addMenuList("Buy/Sell", {
-            "options": [{
-                "text": "BUY",
-                "callback": this.EightBitter.ScenePlayer.bindRoutine("BuyMenu")
+            options: [{
+                text: "BUY",
+                callback: this.EightBitter.ScenePlayer.bindRoutine("BuyMenu")
             }, {
-                    "text": "SELL",
-                    "callback": undefined
+                    text: "SELL",
+                    callback: undefined
                 }, {
-                    "text": "QUIT",
-                    "callback": this.EightBitter.MenuGrapher.registerB
+                    text: "QUIT",
+                    callback: this.EightBitter.MenuGrapher.registerB
                 }]
         });
         this.EightBitter.MenuGrapher.setActiveMenu("Buy/Sell");
@@ -1872,30 +1872,30 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 const cost: number = reference.cost;
 
                 return {
-                    "text": text,
-                    "textsFloating": [{
-                        "text": "$" + cost,
-                        "x": 42 - String(cost).length * 3.5,
-                        "y": 4
+                    text: text,
+                    textsFloating: [{
+                        text: "$" + cost,
+                        x: 42 - String(cost).length * 3.5,
+                        y: 4
                     }],
-                    "callback": this.EightBitter.ScenePlayer.bindRoutine(
+                    callback: this.EightBitter.ScenePlayer.bindRoutine(
                         "SelectAmount",
                         {
-                            "reference": reference,
-                            "amount": 1,
-                            "cost": cost
+                            reference: reference,
+                            amount: 1,
+                            cost: cost
                         }),
-                    "reference": reference
+                    reference: reference
                 };
             });
 
         options.push({
-            "text": "CANCEL",
-            "callback": this.EightBitter.MenuGrapher.registerB
+            text: "CANCEL",
+            callback: this.EightBitter.MenuGrapher.registerB
         });
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
+            finishAutomatically: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -1904,10 +1904,10 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             ],
             (): void => {
                 this.EightBitter.MenuGrapher.createMenu("ShopItems", {
-                    "backMenu": "Buy/Sell"
+                    backMenu: "Buy/Sell"
                 });
                 this.EightBitter.MenuGrapher.addMenuList("ShopItems", {
-                    "options": options
+                    options: options
                 });
                 this.EightBitter.MenuGrapher.setActiveMenu("ShopItems");
             }
@@ -1930,42 +1930,42 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             + this.EightBitter.utilities.makeDigit("$" + costTotal, 8, " ");
 
         this.EightBitter.MenuGrapher.createMenu("ShopItemsAmount", {
-            "childrenSchemas": [
+            childrenSchemas: [
                 {
-                    "type": "text",
-                    "words": ["Times"],
-                    "position": {
-                        "offset": {
-                            "left": 4,
-                            "top": 4.25
+                    type: "text",
+                    words: ["Times"],
+                    position: {
+                        offset: {
+                            left: 4,
+                            top: 4.25
                         }
                     }
                 } as MenuGraphr.IMenuWordSchema,
                 {
-                    "type": "text",
-                    "words": [text],
-                    "position": {
-                        "offset": {
-                            "left": 8,
-                            "top": 3.75
+                    type: "text",
+                    words: [text],
+                    position: {
+                        offset: {
+                            left: 8,
+                            top: 3.75
                         }
                     }
                 } as MenuGraphr.IMenuWordSchema],
-            "onUp": this.EightBitter.ScenePlayer.bindRoutine(
+            onUp: this.EightBitter.ScenePlayer.bindRoutine(
                 "SelectAmount",
                 {
-                    "amount": (amount === 99) ? 1 : amount + 1,
-                    "cost": cost,
-                    "reference": reference
+                    amount: (amount === 99) ? 1 : amount + 1,
+                    cost: cost,
+                    reference: reference
                 }),
-            "onDown": this.EightBitter.ScenePlayer.bindRoutine(
+            onDown: this.EightBitter.ScenePlayer.bindRoutine(
                 "SelectAmount",
                 {
-                    "amount": (amount === 1) ? 99 : amount - 1,
-                    "cost": cost,
-                    "reference": reference
+                    amount: (amount === 1) ? 99 : amount - 1,
+                    cost: cost,
+                    reference: reference
                 }),
-            "callback": this.EightBitter.ScenePlayer.bindRoutine("ConfirmPurchase", args)
+            callback: this.EightBitter.ScenePlayer.bindRoutine("ConfirmPurchase", args)
         });
         this.EightBitter.MenuGrapher.setActiveMenu("ShopItemsAmount");
     }
@@ -1983,7 +1983,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         const costTotal: number = args.costTotal = cost * amount;
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
+            finishAutomatically: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -1992,28 +1992,28 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             ],
             (): void => {
                 this.EightBitter.MenuGrapher.createMenu("Yes/No", {
-                    "position": {
-                        "horizontal": "right",
-                        "vertical": "bottom",
-                        "offset": {
-                            "top": 0,
-                            "left": 0
+                    position: {
+                        horizontal: "right",
+                        vertical: "bottom",
+                        offset: {
+                            top: 0,
+                            left: 0
                         }
                     },
-                    "onMenuDelete": this.EightBitter.ScenePlayer.bindRoutine(
+                    onMenuDelete: this.EightBitter.ScenePlayer.bindRoutine(
                         "CancelPurchase"
                     ),
-                    "container": "ShopItemsAmount"
+                    container: "ShopItemsAmount"
                 });
                 this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [
+                    options: [
                         {
-                            "text": "YES",
-                            "callback": this.EightBitter.ScenePlayer.bindRoutine(
+                            text: "YES",
+                            callback: this.EightBitter.ScenePlayer.bindRoutine(
                                 "TryPurchase", args)
                         }, {
-                            "text": "NO",
-                            "callback": this.EightBitter.ScenePlayer.bindRoutine(
+                            text: "NO",
+                            callback: this.EightBitter.ScenePlayer.bindRoutine(
                                 "CancelPurchase")
                         }]
                 });
@@ -2051,8 +2051,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.ItemsHolder.decrease("money", args.costTotal);
         this.EightBitter.MenuGrapher.createMenu("Money");
         this.EightBitter.ItemsHolder.getItem("items").push({
-            "item": args.reference.item,
-            "amount": args.amount
+            item: args.reference.item,
+            amount: args.amount
         });
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
@@ -2139,7 +2139,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroFadeIn(settings: any): void {
         const oak: IThing = this.EightBitter.ObjectMaker.make("OakPortrait", {
-            "opacity": 0
+            opacity: 0
         });
 
         settings.oak = oak;
@@ -2193,9 +2193,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroFirstDialogFade(settings: any): void {
         let blank: IThing = this.EightBitter.ObjectMaker.make("WhiteSquare", {
-            "width": this.EightBitter.MapScreener.width,
-            "height": this.EightBitter.MapScreener.height,
-            "opacity": 0
+            width: this.EightBitter.MapScreener.width,
+            height: this.EightBitter.MapScreener.height,
+            opacity: 0
         });
 
         this.EightBitter.things.add(blank, 0, 0);
@@ -2220,8 +2220,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroPokemonExpo(settings: any): void {
         let pokemon: IThing = this.EightBitter.ObjectMaker.make("NIDORINOFront", {
-            "flipHoriz": true,
-            "opacity": .01
+            flipHoriz: true,
+            opacity: .01
         });
 
         this.EightBitter.GroupHolder.applyOnAll(this.EightBitter.physics, this.EightBitter.physics.killNormal);
@@ -2274,11 +2274,11 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroPlayerAppear(settings: any): void {
-        let middleX: number = this.EightBitter.MapScreener.middleX | 0,
-            player: IPlayer = this.EightBitter.ObjectMaker.make("PlayerPortrait", {
-                "flipHoriz": true,
-                "opacity": .01
-            });
+        const middleX: number = this.EightBitter.MapScreener.middleX | 0;
+        const player: IPlayer = this.EightBitter.ObjectMaker.make("PlayerPortrait", {
+            flipHoriz: true,
+            opacity: .01
+        });
 
         settings.player = player;
 
@@ -2339,22 +2339,22 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.MenuGrapher.createMenu("NameOptions");
         this.EightBitter.MenuGrapher.addMenuList("NameOptions", {
-            "options": [
+            options: [
                 {
-                    "text": "NEW NAME".split(""),
-                    "callback": () => this.EightBitter.menus.openKeyboardMenu({
-                        "title": "YOUR NAME?",
-                        "callback": fromKeyboard
+                    text: "NEW NAME".split(""),
+                    callback: () => this.EightBitter.menus.openKeyboardMenu({
+                        title: "YOUR NAME?",
+                        callback: fromKeyboard
                     })
                 }, {
-                    "text": "BLUE".split(""),
-                    "callback": fromMenu
+                    text: "BLUE".split(""),
+                    callback: fromMenu
                 }, {
-                    "text": "GARY".split(""),
-                    "callback": fromMenu
+                    text: "GARY".split(""),
+                    callback: fromMenu
                 }, {
-                    "text": "JOHN".split(""),
-                    "callback": fromMenu
+                    text: "JOHN".split(""),
+                    callback: fromMenu
                 }]
         });
         this.EightBitter.MenuGrapher.setActiveMenu("NameOptions");
@@ -2406,7 +2406,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.ItemsHolder.setItem("name", settings.name);
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true
+            finishAutomatically: true
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -2427,9 +2427,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroPlayerNameComplete(settings: any): void {
         const blank: IThing = this.EightBitter.ObjectMaker.make("WhiteSquare", {
-            "width": this.EightBitter.MapScreener.width,
-            "height": this.EightBitter.MapScreener.height,
-            "opacity": 0
+            width: this.EightBitter.MapScreener.width,
+            height: this.EightBitter.MapScreener.height,
+            opacity: 0
         });
 
         this.EightBitter.things.add(blank, 0, 0);
@@ -2454,7 +2454,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroRivalAppear(settings: any): void {
         const rival: IThing = this.EightBitter.ObjectMaker.make("RivalPortrait", {
-            "opacity": 0
+            opacity: 0
         });
 
         settings.rival = rival;
@@ -2516,22 +2516,22 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.MenuGrapher.createMenu("NameOptions");
         this.EightBitter.MenuGrapher.addMenuList("NameOptions", {
-            "options": [
+            options: [
                 {
-                    "text": "NEW NAME",
-                    "callback": (): void => this.EightBitter.menus.openKeyboardMenu({
-                        "title": "RIVAL's NAME?",
-                        "callback": fromKeyboard
+                    text: "NEW NAME",
+                    callback: (): void => this.EightBitter.menus.openKeyboardMenu({
+                        title: "RIVAL's NAME?",
+                        callback: fromKeyboard
                     })
                 }, {
-                    "text": "RED".split(""),
-                    "callback": fromMenu
+                    text: "RED".split(""),
+                    callback: fromMenu
                 }, {
-                    "text": "ASH".split(""),
-                    "callback": fromMenu
+                    text: "ASH".split(""),
+                    callback: fromMenu
                 }, {
-                    "text": "JACK".split(""),
-                    "callback": fromMenu
+                    text: "JACK".split(""),
+                    callback: fromMenu
                 }]
         });
         this.EightBitter.MenuGrapher.setActiveMenu("NameOptions");
@@ -2561,7 +2561,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroRivalNameFromKeyboard(settings: any): void {
-        settings.name = (<IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult")).completeValue;
+        settings.name = (this.EightBitter.MenuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
 
         this.EightBitter.MenuGrapher.deleteMenu("Keyboard");
         this.EightBitter.MenuGrapher.deleteMenu("NameOptions");
@@ -2601,9 +2601,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroRivalNameComplete(settings: any): void {
         let blank: IThing = this.EightBitter.ObjectMaker.make("WhiteSquare", {
-            "width": this.EightBitter.MapScreener.width,
-            "height": this.EightBitter.MapScreener.height,
-            "opacity": 0
+            width: this.EightBitter.MapScreener.width,
+            height: this.EightBitter.MapScreener.height,
+            opacity: 0
         });
 
         this.EightBitter.things.add(blank, 0, 0);
@@ -2628,8 +2628,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroLastDialogAppear(settings: any): void {
         const portrait: IThing = this.EightBitter.ObjectMaker.make("PlayerPortrait", {
-            "flipHoriz": true,
-            "opacity": 0
+            flipHoriz: true,
+            opacity: 0
         });
 
         settings.portrait = portrait;
@@ -2714,9 +2714,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneIntroFadeOut(settings: any): void {
         const blank: IThing = this.EightBitter.ObjectMaker.make("WhiteSquare", {
-            "width": this.EightBitter.MapScreener.width,
-            "height": this.EightBitter.MapScreener.height,
-            "opacity": 0
+            width: this.EightBitter.MapScreener.width,
+            height: this.EightBitter.MapScreener.height,
+            opacity: 0
         });
 
         this.EightBitter.things.add(blank, 0, 0);
@@ -2772,8 +2772,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.MapScreener.blockInputs = true;
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText", {
-            "finishAutomatically": true,
-            "finishAutomaticSpeed": 28
+            finishAutomatically: true,
+            finishAutomaticSpeed: 28
         });
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
@@ -2814,8 +2814,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneOakIntroCatchup(settings: any): void {
         const door: IThing = this.EightBitter.utilities.getThingById("Oak's Lab Door");
         const oak: ICharacter = this.EightBitter.ObjectMaker.make("Oak", {
-            "outerok": true,
-            "nocollide": true
+            outerOk: true,
+            nocollide: true
         });
         const isToLeft: boolean = this.EightBitter.player.bordering[Direction.Left] !== undefined;
         const walkingSteps: any[] = [
@@ -3048,7 +3048,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 this.EightBitter.MenuGrapher.createMenu(
                     "GeneralText",
                     {
-                        "deleteOnFinish": true
+                        deleteOnFinish: true
                     });
             },
             timeout);
@@ -3097,10 +3097,10 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             pokeball.pokemon,
             this.EightBitter.ScenePlayer.bindRoutine("PlayerDecidesPokemon"),
             {
-                "position": {
-                    "vertical": "center",
-                    "offset": {
-                        "left": 0
+                position: {
+                    vertical: "center",
+                    offset: {
+                        left: 0
                     }
                 }
             });
@@ -3122,16 +3122,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             ],
             (): void => {
                 this.EightBitter.MenuGrapher.createMenu("Yes/No", {
-                    "killOnB": ["GeneralText"]
+                    killOnB: ["GeneralText"]
                 });
                 this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
-                    "options": [
+                    options: [
                         {
-                            "text": "YES",
-                            "callback": this.EightBitter.ScenePlayer.bindRoutine("PlayerTakesPokemon")
+                            text: "YES",
+                            callback: this.EightBitter.ScenePlayer.bindRoutine("PlayerTakesPokemon")
                         }, {
-                            "text": "NO",
-                            "callback": this.EightBitter.MenuGrapher.registerB
+                            text: "NO",
+                            callback: this.EightBitter.MenuGrapher.registerB
                         }]
                 });
                 this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -3145,8 +3145,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene. 
      */
     public cutsceneOakIntroPokemonChoicePlayerTakesPokemon(settings: any): void {
-        const oak: ICharacter = <ICharacter>this.EightBitter.utilities.getThingById("Oak");
-        const rival: ICharacter = <ICharacter>this.EightBitter.utilities.getThingById("Rival");
+        const oak: ICharacter = this.EightBitter.utilities.getThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.EightBitter.utilities.getThingById("Rival") as ICharacter;
         const dialogOak: string = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival: string = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
@@ -3193,20 +3193,20 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneOakIntroPokemonChoicePlayerChoosesNickname(settings: any): void {
         this.EightBitter.MenuGrapher.createMenu("Yes/No", {
-            "ignoreB": true,
-            "killOnB": ["GeneralText"]
+            ignoreB: true,
+            killOnB: ["GeneralText"]
         });
         this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
-            "options": [
+            options: [
                 {
-                    "text": "YES",
-                    "callback": (): void => this.EightBitter.menus.openKeyboardMenu({
-                        "title": settings.chosen,
-                        "callback": this.EightBitter.ScenePlayer.bindRoutine("PlayerSetsNickname")
+                    text: "YES",
+                    callback: (): void => this.EightBitter.menus.openKeyboardMenu({
+                        title: settings.chosen,
+                        callback: this.EightBitter.ScenePlayer.bindRoutine("PlayerSetsNickname")
                     })
                 }, {
-                    "text": "NO",
-                    "callback": this.EightBitter.ScenePlayer.bindRoutine("RivalWalksToPokemon")
+                    text: "NO",
+                    callback: this.EightBitter.ScenePlayer.bindRoutine("RivalWalksToPokemon")
                 }]
         });
         this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
@@ -3219,7 +3219,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneOakIntroPokemonChoicePlayerSetsNickname(settings: any): void {
         const party: BattleMovr.IActor[] = this.EightBitter.ItemsHolder.getItem("PokemonInParty");
-        const menu: IKeyboardResultsMenu = <IKeyboardResultsMenu>this.EightBitter.MenuGrapher.getMenu("KeyboardResult");
+        const menu: IKeyboardResultsMenu = this.EightBitter.MenuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         const result: string[] = menu.completeValue;
 
         party[0].nickname = result;
@@ -3233,7 +3233,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(settings: any): void {
-        const rival: ICharacter = <ICharacter>this.EightBitter.utilities.getThingById("Rival");
+        const rival: ICharacter = this.EightBitter.utilities.getThingById("Rival") as ICharacter;
         let starterRival: string[];
         let steps: number;
 
@@ -3264,7 +3264,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.ItemsHolder.setItem("starterRival", starterRival);
         this.EightBitter.storage.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        let pokeball: IPokeball = <IPokeball>this.EightBitter.utilities.getThingById("Pokeball" + starterRival.join(""));
+        let pokeball: IPokeball = this.EightBitter.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
         this.EightBitter.animations.animateCharacterStartWalkingCycle(
@@ -3318,7 +3318,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroRivalBattleApproach(settings: any): void {
-        const rival: ICharacter = <ICharacter>this.EightBitter.utilities.getThingById("Rival");
+        const rival: ICharacter = this.EightBitter.utilities.getThingById("Rival") as ICharacter;
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < this.EightBitter.unitsize;
 
@@ -3338,7 +3338,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ScenePlayer.bindRoutine(
                 "Challenge",
                 {
-                    "further": further
+                    further: further
                 }
             ));
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -3401,8 +3401,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroRivalLeavesWalking(settings: any): void {
-        const oak: ICharacter = <ICharacter>this.EightBitter.utilities.getThingById("Oak");
-        const rival: ICharacter = <ICharacter>this.EightBitter.utilities.getThingById("Rival");
+        const oak: ICharacter = this.EightBitter.utilities.getThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.EightBitter.utilities.getThingById("Rival") as ICharacter;
         const isRight: boolean = Math.abs(oak.left - rival.left) < this.EightBitter.unitsize;
         const steps: any[] = [
             1,
@@ -3436,19 +3436,19 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneOakIntroRivalBattleChallenge(settings: any, args: any): void {
         const starterRival: string[] = this.EightBitter.ItemsHolder.getItem("starterRival");
         const battleInfo: IBattleInfo = {
-            "opponent": {
-                "sprite": "RivalPortrait",
-                "name": this.EightBitter.ItemsHolder.getItem("nameRival"),
-                "category": "Trainer",
-                "hasActors": true,
-                "reward": 175,
-                "actors": [
+            opponent: {
+                sprite: "RivalPortrait",
+                name: this.EightBitter.ItemsHolder.getItem("nameRival"),
+                category: "Trainer",
+                hasActors: true,
+                reward: 175,
+                actors: [
                     this.EightBitter.MathDecider.compute("newPokemon", starterRival, 5)
                 ]
             },
-            "textStart": ["", " wants to fight!"],
-            "textDefeat": ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
-            "textVictory": [
+            textStart: ["", " wants to fight!"],
+            textDefeat: ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
+            textVictory: [
                 [
                     "%%%%%%%RIVAL%%%%%%%: WHAT?",
                     "Unbelievable!",
@@ -3456,9 +3456,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 ].join(" ")
             ],
             // "animation": "LineSpiral",
-            "noBlackout": true,
-            "keptThings": this.EightBitter.graphics.collectBattleKeptThings(["player", "Rival"]),
-            "nextCutscene": "OakIntroRivalLeaves"
+            noBlackout: true,
+            keptThings: this.EightBitter.graphics.collectBattleKeptThings(["player", "Rival"]),
+            nextCutscene: "OakIntroRivalLeaves"
         };
         let steps: number;
 
@@ -3709,8 +3709,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakParcelDeliveryOakGivesPokedex(settings: any): void {
-        let bookLeft: IThing = this.EightBitter.utilities.getThingById("BookLeft"),
-            bookRight: IThing = this.EightBitter.utilities.getThingById("BookRight");
+        const bookLeft: IThing = this.EightBitter.utilities.getThingById("BookLeft");
+        const bookRight: IThing = this.EightBitter.utilities.getThingById("BookRight");
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
         this.EightBitter.MenuGrapher.addMenuDialog(
@@ -3871,27 +3871,27 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneElderTrainingStartBattle(settings: any): void {
         this.EightBitter.MapScreener.blockInputs = true;
         this.EightBitter.battles.startBattle({
-            "keptThings": this.EightBitter.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
-            "player": {
-                "name": "OLD MAN".split(""),
-                "sprite": "ElderBack",
-                "category": "Wild",
-                "actors": []
+            keptThings: this.EightBitter.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
+            player: {
+                name: "OLD MAN".split(""),
+                sprite: "ElderBack",
+                category: "Wild",
+                actors: []
             },
-            "opponent": {
-                "name": "WEEDLE".split(""),
-                "sprite": "WeedleFront",
-                "category": "Wild",
-                "actors": [
+            opponent: {
+                name: "WEEDLE".split(""),
+                sprite: "WeedleFront",
+                category: "Wild",
+                actors: [
                     this.EightBitter.MathDecider.compute("newPokemon", "WEEDLE".split(""), 5)
                 ]
             },
-            "items": [{
-                "item": "Pokeball",
-                "amount": 50
+            items: [{
+                item: "Pokeball",
+                amount: 50
             }],
-            "automaticMenus": true,
-            "onShowPlayerMenu": (): void => {
+            automaticMenus: true,
+            onShowPlayerMenu: (): void => {
                 const timeout: number = 70;
 
                 this.EightBitter.TimeHandler.addEvent(
@@ -3922,9 +3922,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             3 + playerUpper,
         ];
         const rival: ICharacter = this.EightBitter.ObjectMaker.make("Rival", {
-            "direction": 0,
-            "nocollide": true,
-            "opacity": 0
+            direction: 0,
+            nocollide: true,
+            opacity: 0
         });
 
         if (playerUpper) {
@@ -3970,28 +3970,28 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?"
             ],
             (): void => this.EightBitter.battles.startBattle({
-                "opponent": {
-                    "sprite": "RivalPortrait",
-                    "name": this.EightBitter.ItemsHolder.getItem("nameRival"),
-                    "category": "Trainer",
-                    "hasActors": true,
-                    "reward": 280,
-                    "actors": [
+                opponent: {
+                    sprite: "RivalPortrait",
+                    name: this.EightBitter.ItemsHolder.getItem("nameRival"),
+                    category: "Trainer",
+                    hasActors: true,
+                    reward: 280,
+                    actors: [
                         this.EightBitter.MathDecider.compute("newPokemon", rivalTitle, 8),
                         this.EightBitter.MathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
                     ]
                 },
-                "textStart": [
+                textStart: [
                     "",
                     " wants to fight!"
                 ],
-                "textDefeat": [
+                textDefeat: [
                     "Yeah! Am I great or what?".split("")
                 ],
-                "textVictory": [
+                textVictory: [
                     "Awww! You just lucked out!".split("")
                 ],
-                "keptThings": this.EightBitter.graphics.collectBattleKeptThings(["player", "Rival"])
+                keptThings: this.EightBitter.graphics.collectBattleKeptThings(["player", "Rival"])
             }));
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }

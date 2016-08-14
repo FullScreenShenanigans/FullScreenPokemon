@@ -90,7 +90,6 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
         }
     }
 
-
     /**
      * Determines the in-game measurements of the boundaries of the current Area.
      * 
@@ -101,22 +100,22 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
 
         if (!area) {
             return {
-                "top": 0,
-                "right": 0,
-                "bottom": 0,
-                "left": 0,
-                "width": 0,
-                "height": 0
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                width: 0,
+                height: 0
             };
         }
 
         return {
-            "top": area.boundaries.top * this.EightBitter.unitsize,
-            "right": area.boundaries.right * this.EightBitter.unitsize,
-            "bottom": area.boundaries.bottom * this.EightBitter.unitsize,
-            "left": area.boundaries.left * this.EightBitter.unitsize,
-            "width": (area.boundaries.right - area.boundaries.left) * this.EightBitter.unitsize,
-            "height": (area.boundaries.bottom - area.boundaries.top) * this.EightBitter.unitsize
+            top: area.boundaries.top * this.EightBitter.unitsize,
+            right: area.boundaries.right * this.EightBitter.unitsize,
+            bottom: area.boundaries.bottom * this.EightBitter.unitsize,
+            left: area.boundaries.left * this.EightBitter.unitsize,
+            width: (area.boundaries.right - area.boundaries.left) * this.EightBitter.unitsize,
+            height: (area.boundaries.bottom - area.boundaries.top) * this.EightBitter.unitsize
         };
     }
 
@@ -149,7 +148,6 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
 
         return Scrollability.None;
     }
-
 
     /**
      * Determines how much to scroll horizontally during upkeep based

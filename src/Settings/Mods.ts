@@ -72,7 +72,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                             })
                             .forEach(function (character: IEnemy): void {
                                 character.previousTitle = character.title;
-                                character.title = (<any>character).thing = "BugCatcher";
+                                character.title = (character as any).thing = "BugCatcher";
                                 this.ThingHitter.cacheChecksForType(character, "Character");
                                 this.setClass(character, character.className);
                             });
@@ -83,7 +83,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                                 return character.trainer;
                             })
                             .forEach(function (character: IEnemy): void {
-                                character.title = (<any>character).thing = character.previousTitle;
+                                character.title = (character as any).thing = character.previousTitle;
                                 this.ThingHitter.cacheChecksForType(character, "Character");
                                 this.setClass(character, character.className);
                             });
@@ -107,9 +107,9 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Level 100",
                 enabled: false,
                 events: {
-                    "onModEnable": function (mod: ModAttachr.IMod): void {
-                        let partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty"),
-                            statistics: string[] = this.MathDecider.getConstant("statisticNames");
+                    onModEnable: function (mod: ModAttachr.IMod): void {
+                        const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
+                        const statistics: string[] = this.MathDecider.getConstant("statisticNames");
 
                         for (let i: number = 0; i < partyPokemon.length; i += 1) {
                             partyPokemon[i].previousLevel = partyPokemon[i].level;
@@ -120,9 +120,9 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                             }
                         }
                     },
-                    "onModDisable": function (mod: ModAttachr.IMod): void {
-                        let partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty"),
-                            statistics: string[] = this.MathDecider.getConstant("statisticNames");
+                    onModDisable: function (mod: ModAttachr.IMod): void {
+                        const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
+                        const statistics: string[] = this.MathDecider.getConstant("statisticNames");
 
                         for (let i: number = 0; i < partyPokemon.length; i += 1) {
                             partyPokemon[i].level = partyPokemon[i].previousLevel;
@@ -155,10 +155,10 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Blind Trainers",
                 enabled: false,
                 events: {
-                    "onModEnable": function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (mod: ModAttachr.IMod): void {
                         this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = true;
                     },
-                    "onModDisable": function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (mod: ModAttachr.IMod): void {
                         this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
                     }
                 }
@@ -167,10 +167,10 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Nuzlocke Challenge",
                 enabled: false,
                 events: {
-                    "onModEnable": function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (mod: ModAttachr.IMod): void {
                         return;
                     },
-                    "onModDisable": function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (mod: ModAttachr.IMod): void {
                         return;
                     },
                     /**
@@ -180,11 +180,11 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param eventName   The name of the event that was fired.
                      * @param settings   The battle information.
                      */
-                    "onBattleComplete": function (mod: ModAttachr.IMod, eventName: string, settings: IBattleInfo): void {
-                        let grass: IGrass = this.player.grass,
-                            grassMap: IMap = grass ? <IMap>this.AreaSpawner.getMap(grass.mapName) : undefined,
-                            grassArea: IArea = grassMap ? <IArea>grassMap.areas[grass.areaName] : undefined,
-                            opponent: String = settings.opponent.category;
+                    onBattleComplete: function (mod: ModAttachr.IMod, eventName: string, settings: IBattleInfo): void {
+                        const grass: IGrass = this.player.grass;
+                        const grassMap: IMap = grass ? this.AreaSpawner.getMap(grass.mapName) as IMap : undefined;
+                        const grassArea: IArea = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
+                        const opponent: String = settings.opponent.category;
 
                         if (!grassArea || opponent !== "Wild") {
                             return;
@@ -199,9 +199,9 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param eventName   The name of the event that was fired.
                      * @param items   The Player's items.
                      */
-                    "onOpenItemsMenu": function (mod: ModAttachr.IMod, eventName: string, items: any[]): void {
-                        let grassMap: IMap = this.player.grass && <IMap>this.AreaSpawner.getMap(this.player.grass.mapName),
-                            grassArea: IArea = grassMap && <IArea>grassMap.areas[this.player.grass.areaName];
+                    onOpenItemsMenu: function (mod: ModAttachr.IMod, eventName: string, items: any[]): void {
+                        const grassMap: IMap = this.player.grass && this.AreaSpawner.getMap(this.player.grass.mapName) as IMap;
+                        const grassArea: IArea = grassMap && grassMap.areas[this.player.grass.areaName] as IArea;
 
                         if (!this.BattleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
                             return;
@@ -222,13 +222,13 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param thing   The fainted Pokemon.
                      * @param actors   The Player's party Pokemon.
                      */
-                    "onFaint": function (
+                    onFaint: function (
                         mod: ModAttachr.IMod,
                         eventName: string,
                         thing: BattleMovr.IActor,
                         actors: IPokemon[]): void {
-                        let partyPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInParty"),
-                            pcPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInPC");
+                        const partyPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInParty");
+                        const pcPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInPC");
 
                         actors.splice(actors.indexOf(thing), 1);
                         partyPokemon.splice(partyPokemon.indexOf(thing), 1);

@@ -25,7 +25,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         let player: any = battleInfo.player;
 
         if (!player) {
-            battleInfo.player = player = <any>{};
+            battleInfo.player = player = {} as any;
         }
 
         player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
@@ -56,8 +56,8 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
-        let moves: BattleMovr.IMove[] = this.EightBitter.MathDecider.getConstant("moves"),
-            statisticNames: string[] = this.EightBitter.MathDecider.getConstant("statisticNames");
+        const moves: BattleMovr.IMove[] = this.EightBitter.MathDecider.getConstant("moves");
+        const statisticNames: string[] = this.EightBitter.MathDecider.getConstant("statisticNames");
 
         for (let statisticName of statisticNames) {
             (pokemon as any)[statisticName] = (pokemon as any)[statisticName + "Normal"];
@@ -145,7 +145,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param battlerName   Which battler to add the display for, as "player"
      *                      or "opponent".
      */
-    addBattleDisplayPokemonHealth(battlerName: string): void {
+    public addBattleDisplayPokemonHealth(battlerName: string): void {
         const battleInfo: IBattleInfo = this.EightBitter.BattleMover.getBattleInfo() as IBattleInfo;
         const pokemon: IPokemon = (battleInfo as any)[battlerName].selectedActor;
         const menu: string = [
