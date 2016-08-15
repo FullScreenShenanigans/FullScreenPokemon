@@ -34,6 +34,7 @@ var AreaSpawnr;
             this.stretchAdd = settings.stretchAdd;
             this.afterAdd = settings.afterAdd;
             this.commandScope = settings.commandScope;
+            this.paletteSchema = settings.paletteSchema;
         }
         /* Simple gets
         */
@@ -117,6 +118,16 @@ var AreaSpawnr;
          */
         AreaSpawnr.prototype.getPreThings = function () {
             return this.prethings;
+        };
+        /**
+         * Gets the palette for the specified area, if one is available.
+         *
+         * @param area   The name of the area for the palette is being retrieved for.
+         *
+         * @returns The palette for the area.
+         */
+        AreaSpawnr.prototype.getPalette = function (area) {
+            return this.paletteSchema[area];
         };
         /* Map & area setting
         */

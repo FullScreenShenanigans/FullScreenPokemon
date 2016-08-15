@@ -186,13 +186,19 @@ var PixelRendr;
          * @param palette   The new palette to replace the current one.
          */
         PixelRendr.prototype.changePalette = function (palette) {
+            if (palette === void 0) { palette = this.paletteDefault; }
+            console.log("palette changed with palette: " + palette);
             this.setPalette(palette);
-            for (var sprite in this.library.sprites) {
+            /*for (let sprite in this.library.sprites) {
                 if (!this.library.sprites.hasOwnProperty(sprite)) {
                     continue;
                 }
+                console.log(sprite + " cache has been cleared");
                 this.BaseFiler.clearCached(sprite);
-            }
+            }*/
+            this.BaseFiler.clearCache();
+            console.log("here is cache");
+            console.log(this.BaseFiler.getCache());
         };
         /**
          * Standard render function. Given a key, this finds the raw information via
@@ -205,10 +211,11 @@ var PixelRendr;
          * @returns A sprite for the given key and attributes.
          */
         PixelRendr.prototype.decode = function (key, attributes) {
-            var render = this.BaseFiler.get(key), sprite;
-            if (!render) {
-                throw new Error("No sprite found for " + key + ".");
+            var result = this.BaseFiler.get(key), sprite;
+            if (result === this.library.sprites) {
+                throw new Error("No sprite found for '" + key + "'.");
             }
+            var render = result;
             // If the render doesn't have a listing for this key, create one
             if (!render.sprites.hasOwnProperty(key)) {
                 this.generateRenderSprite(render, key, attributes);
@@ -216,6 +223,10 @@ var PixelRendr;
             sprite = render.sprites[key];
             if (!sprite || (sprite.constructor === this.Uint8ClampedArray && sprite.length === 0)) {
                 throw new Error("Could not generate sprite for " + key + ".");
+            }
+            if (attributes.title === "HouseLargeTopRight") {
+                console.log("returning sprite DING\n\n\n");
+                console.log(sprite);
             }
             return sprite;
         };
@@ -345,7 +356,7 @@ var PixelRendr;
         PixelRendr.prototype.memcpyU8 = function (source, destination, readloc, writeloc, writelength) {
             if (readloc === void 0) { readloc = 0; }
             if (writeloc === void 0) { writeloc = 0; }
-            if (writelength === void 0) { writelength = Math.max(0, Math.min(source.length, destination.length)); }
+            if (writelength === void 0) { writelength = Math.min(source.length, destination.length); }
             // JIT compilation help
             var lwritelength = writelength + 0, lwriteloc = writeloc + 0, lreadloc = readloc + 0;
             while (lwritelength--) {

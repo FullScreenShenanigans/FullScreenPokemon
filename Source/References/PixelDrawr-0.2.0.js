@@ -176,6 +176,9 @@ var PixelDrawr;
             if (thing.hidden) {
                 return;
             }
+            if (thing.title === "HouseLargeTopRight") {
+                console.log("decoding DING\n\n\n");
+            }
             // PixelRender does most of the work in fetching the rendered sprite
             thing.sprite = this.PixelRender.decode(this.generateObjectKey(thing), thing);
             // To do: remove dependency on .numSprites
@@ -234,10 +237,19 @@ var PixelDrawr;
                 || this.getRight(thing) < 0
                 || this.getBottom(thing) < 0
                 || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
+                if (thing.title === "HouseLargeTopRight") {
+                    console.log("getting skipped DING\n\n\n");
+                }
                 return;
+            }
+            if (thing.title === "HouseLargeTopRight") {
+                console.log("not getting skipped DING\n\n\n");
             }
             // If Thing hasn't had a sprite yet (previously hidden), do that first
             if (typeof thing.numSprites === "undefined") {
+                if (thing.title === "HouseLargeTopRight") {
+                    console.log("setting sprite DING\n\n\n");
+                }
                 this.setThingSprite(thing);
             }
             // Whether or not the thing has a regular sprite or a SpriteMultiple, 

@@ -766,15 +766,20 @@ module PixelRendr {
          * 
          * @param palette   The new palette to replace the current one.
          */
-        changePalette(palette: IPalette): void {
+        changePalette(palette: IPalette = this.paletteDefault): void {
+            console.log("palette changed with palette: " + palette);
             this.setPalette(palette);
 
-            for (let sprite in this.library.sprites) {
+            /*for (let sprite in this.library.sprites) {
                 if (!this.library.sprites.hasOwnProperty(sprite)) {
                     continue;
                 }
+                console.log(sprite + " cache has been cleared");
                 this.BaseFiler.clearCached(sprite);
-            }
+            }*/
+            this.BaseFiler.clearCache();
+            console.log("here is cache");
+            console.log(this.BaseFiler.getCache());
         }
 
         /**
@@ -788,12 +793,14 @@ module PixelRendr {
          * @returns A sprite for the given key and attributes.
          */
         decode(key: string, attributes: any): Uint8ClampedArray | SpriteMultiple {
-            var render: Render = this.BaseFiler.get(key),
+            var result: IRender | IRenderLibrary = this.BaseFiler.get(key),
                 sprite: Uint8ClampedArray | SpriteMultiple;
 
-            if (!render) {
-                throw new Error("No sprite found for " + key + ".");
+            if (result === this.library.sprites) {
+              throw new Error(`No sprite found for '${key}'.`);
             }
+
+            const render: IRender = result as IRender;
 
             // If the render doesn't have a listing for this key, create one
             if (!render.sprites.hasOwnProperty(key)) {
@@ -804,6 +811,10 @@ module PixelRendr {
 
             if (!sprite || ((<any>sprite.constructor) === this.Uint8ClampedArray && (<Uint8ClampedArray>sprite).length === 0)) {
                 throw new Error("Could not generate sprite for " + key + ".");
+            }
+            if (attributes.title === "HouseLargeTopRight") {
+                console.log("returning sprite DING\n\n\n");
+                // console.log(sprite);
             }
 
             return sprite;
@@ -954,7 +965,7 @@ module PixelRendr {
             destination: Uint8ClampedArray | number[],
             readloc: number = 0,
             writeloc: number = 0,
-            writelength: number = Math.max(0, Math.min(source.length, destination.length))): void {
+            writelength: number = Math.min(source.length, destination.length)): void {
             // JIT compilation help
             var lwritelength: number = writelength + 0,
                 lwriteloc: number = writeloc + 0,
@@ -1673,7 +1684,7 @@ module PixelRendr {
          * 
          * @param palette   The palette being assigned to paletteDefault.
          */
-        setPalette(palette: IPalette): void {
+        private setPalette(palette: IPalette): void {
             this.paletteDefault = palette;
             this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
             this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");

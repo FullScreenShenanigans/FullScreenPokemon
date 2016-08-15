@@ -208,6 +208,7 @@ module StringFilr {
             }
 
             // Since a cache didn't exist, it must be found within the library
+            console.log("no sprite in cache for " + key);
             result = this.followClass(key.split(/\s+/g), this.library);
 
             this.cache[key] = this.cache[keyRaw] = result;
