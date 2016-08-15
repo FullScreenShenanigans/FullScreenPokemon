@@ -4,6 +4,23 @@
 
 declare module AreaSpawnr {
     /**
+     * A single [red, green, blue, alpha] pixel's colors.
+     */
+    export type IPixel = [number, number, number, number];
+
+    /**
+     * A palette of potential pixel colors.
+     */
+    export type IPalette = IPixel[];
+
+    /**
+     * The list of palettes for each area to be colored in.
+     */
+    export interface IPaletteSchema {
+        [i: string]: IPalette;
+    }
+
+    /**
      * A Function to add a map command, such as an after or stretch.
      * 
      * @param thing   The raw command to create a Thing, as either a title
@@ -37,6 +54,11 @@ declare module AreaSpawnr {
          * Function for when a PreThing's Thing should be un-spawned.
          */
         onUnspawn?: (prething: MapsCreatr.IPreThing) => void;
+
+        /**
+         * The list of palettes for each area to be colored in.
+         */
+        paletteSchema: IPaletteSchema;
 
         /**
          * Any property names to copy from Areas to MapScreenr.
@@ -132,6 +154,15 @@ declare module AreaSpawnr {
          * @returns A listing of the current area's Prethings.
          */
         getPreThings(): MapsCreatr.IPreThingsContainers;
+
+        /**
+         * Gets the palette for the specified area, if one is available.
+         * 
+         * @param area   The name of the area for the palette is being retrieved for.
+         * 
+         * @returns The palette for the area.
+         */
+        getPalette(area: string): IPalette;
 
         /**
          * Sets the currently manipulated Map in the handler to be the one under a
@@ -267,6 +298,11 @@ module AreaSpawnr {
         private mapName: string;
 
         /**
+         * The list of palettes for each area to be colored in.
+         */
+        private paletteSchema: IPaletteSchema;
+
+        /**
          * The current Area's listing of PreThings.
          */
         private prethings: MapsCreatr.IPreThingsContainers;
@@ -333,6 +369,7 @@ module AreaSpawnr {
             this.stretchAdd = settings.stretchAdd;
             this.afterAdd = settings.afterAdd;
             this.commandScope = settings.commandScope;
+            this.paletteSchema = settings.paletteSchema;
         }
 
 
@@ -428,6 +465,17 @@ module AreaSpawnr {
          */
         getPreThings(): MapsCreatr.IPreThingsContainers {
             return this.prethings;
+        }
+
+        /**
+         * Gets the palette for the specified area, if one is available.
+         * 
+         * @param area   The name of the area for the palette is being retrieved for.
+         * 
+         * @returns The palette for the area.
+         */
+        getPalette(area: string): IPalette {
+            return this.paletteSchema[area];
         }
 
 

@@ -3262,6 +3262,16 @@ module FullScreenPokemon {
             }
 
             thing.FSP.AudioPlayer.playTheme(other.theme);
+            thing.FSP.PixelRender.changePalette(thing.FSP.AreaSpawner.getPalette(other.theme));
+            console.log("MARKING CHANGED ");
+            // (thing.FSP.GroupHolder.getGroup("Solid") as IThing[]).forEach((solid: IThing): void => {
+            thing.FSP.GroupHolder.callOnAll(undefined, (t: IThing): void => {
+                if (t.title === "HouseLargeTopRight") {
+                    console.log("DING\n\n\n");
+                }
+                t.numSprites = undefined;
+                thing.FSP.PixelDrawer.drawThingOnContext(thing.FSP.PixelDrawer.getContext(), t);
+            });
         }
 
         /**

@@ -31,6 +31,24 @@ var FullScreenPokemon;
             "Blank": FullScreenPokemon.FullScreenPokemon.prototype.mapEntranceBlank,
             "Normal": FullScreenPokemon.FullScreenPokemon.prototype.mapEntranceNormal
         },
+        "paletteSchema": {
+            "Pallet Town": [
+                [0, 0, 0, 0],
+                [255, 255, 255, 255],
+                [0, 0, 0, 255],
+                [188, 0, 188, 255],
+                [60, 188, 252, 255],
+                [116, 116, 116, 255],
+                [156, 252, 240, 255],
+                [188, 188, 188, 255],
+                [252, 216, 168, 255],
+                [252, 116, 180, 255],
+                [136, 112, 0, 255],
+                [24, 60, 92, 255],
+                [0, 128, 136, 255],
+                [92, 148, 252, 255]
+            ]
+        },
         "library": {
             "Blank": {
                 "name": "Blank",

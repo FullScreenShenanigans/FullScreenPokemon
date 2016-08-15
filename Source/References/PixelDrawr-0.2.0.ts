@@ -730,6 +730,9 @@ module PixelDrawr {
             if (thing.hidden) {
                 return;
             }
+            if ((<any>thing).title === "HouseLargeTopRight") {
+                console.log("decoding DING\n\n\n");
+            }
 
             // PixelRender does most of the work in fetching the rendered sprite
             thing.sprite = this.PixelRender.decode(this.generateObjectKey(thing), thing);
@@ -797,11 +800,20 @@ module PixelDrawr {
                 || this.getRight(thing) < 0
                 || this.getBottom(thing) < 0
                 || this.getLeft(thing) > this.MapScreener[this.keyWidth]) {
+                if ((<any>thing).title === "HouseLargeTopRight") {
+                    console.log("getting skipped DING\n\n\n");
+                }
                 return;
+            }
+            if ((<any>thing).title === "HouseLargeTopRight") {
+                console.log("not getting skipped DING\n\n\n");
             }
 
             // If Thing hasn't had a sprite yet (previously hidden), do that first
             if (typeof thing.numSprites === "undefined") {
+                if ((<any>thing).title === "HouseLargeTopRight") {
+                    console.log("setting sprite DING\n\n\n");
+                }
                 this.setThingSprite(thing);
             }
 

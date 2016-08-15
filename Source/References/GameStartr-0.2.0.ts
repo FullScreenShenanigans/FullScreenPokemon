@@ -456,6 +456,11 @@ declare module GameStartr {
         library: {
             [i: string]: IMapsCreatrMapRaw;
         };
+
+        /**
+         * The list of palettes for each area to be colored in.
+         */
+        paletteSchema: AreaSpawnr.IPaletteSchema;
     }
 
     /**
@@ -2242,7 +2247,8 @@ module GameStartr {
                 "onUnspawn": GameStarter.settings.maps.onUnspawn,
                 "stretchAdd": GameStarter.settings.maps.stretchAdd,
                 "afterAdd": GameStarter.settings.maps.afterAdd,
-                "commandScope": GameStarter
+                "commandScope": GameStarter,
+                "paletteSchema": GameStarter.settings.maps.paletteSchema
             });
         }
 
