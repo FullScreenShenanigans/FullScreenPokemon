@@ -2398,6 +2398,9 @@ var FullScreenPokemon;
          * @param other   A Ledge walked to by thing.
          */
         FullScreenPokemon.prototype.collideLedge = function (thing, other) {
+            if (thing.title !== "Player") {
+                return false;
+            }
             if (thing.ledge || !thing.walking) {
                 return true;
             }
@@ -2413,6 +2416,45 @@ var FullScreenPokemon;
                 if (thing.top === other.bottom || thing.bottom === other.top) {
                     return true;
                 }
+            }
+            switch (thing.direction) {
+                case 0:
+                    if (other.bordering[0] && other.bordering[0].top === thing.top - 4) {
+                        console.log("should not jump up");
+                        thing.FSP.animateCharacterStopWalking(thing);
+                        return false;
+                    }
+                    break;
+                case 1:
+                    if (other.bordering[1] && other.bordering[1].left === thing.left + 4) {
+                        console.log("should not jump right");
+                        thing.FSP.animateCharacterStopWalking(thing);
+                        return false;
+                    }
+                    break;
+                case 2:
+                    if (other.bordering[2]) {
+                        console.log("printing the Thing bording the ledge");
+                        console.log(other.bordering);
+                        console.log("jumping down. thing's top should be " + other.bordering[2].top);
+                    }
+                    console.log("character's top is " + thing.top);
+                    console.log("distance is " + thing.distance);
+                    if (other.bordering[2] && other.bordering[2].top === thing.top + thing.distance * 2) {
+                        console.log("should not jump down");
+                        thing.FSP.animateCharacterStopWalking(thing);
+                        return false;
+                    }
+                    break;
+                case 3:
+                    if (other.bordering[3] && other.bordering[3].left === thing.left - 4) {
+                        console.log("should not jump left");
+                        thing.FSP.animateCharacterStopWalking(thing);
+                        return false;
+                    }
+                    break;
+                default:
+                    throw new Error("Unknown direction: " + thing.direction + ".");
             }
             if (thing.player) {
                 thing.canKeyWalking = false;
