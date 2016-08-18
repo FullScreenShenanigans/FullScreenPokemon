@@ -1,10 +1,10 @@
 {
   "name": "fullscreenpokemon",
-  "description": "An HTML5 remake of Nintendo's original Pokemon - expanded for the modern web.",
-  "version": "0.5.0",
+  "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
+  "version": "0.5.4",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,13 +15,41 @@
   },
   "license": "MIT",
   "dependencies": {
-    "battlemovr": "^0.5.0",
-    "gamestartr": "^0.5.1",
-    "menugraphr": "^0.5.1",
-    "stateholdr": "^0.5.0",
-    "typescript": "^2.0.0"
+    "changelinr": "^0.5.3",
+    "stringfilr": "^0.5.2",
+    "mapscreenr": "^0.5.2",
+    "itemsholdr": "^0.5.2",
+    "battlemovr": "^0.5.1",
+    "devicelayr": "^0.5.1",
+    "eightbittr": "^0.5.2",
+    "audioplayr": "^0.5.1",
+    "fpsanalyzr": "^0.5.1",
+    "gamesrunnr": "^0.5.3",
+    "groupholdr": "^0.5.1",
+    "inputwritr": "^0.5.2",
+    "leveleditr": "^0.5.2",
+    "mapscreatr": "^0.5.2",
+    "mathdecidr": "^0.5.1",
+    "modattachr": "^0.5.1",
+    "numbermakr": "^0.5.1",
+    "objectmakr": "^0.5.2",
+    "quadskeepr": "^0.5.2",
+    "areaspawnr": "^0.5.2",
+    "pixelrendr": "^0.5.2",
+    "pixeldrawr": "^0.5.1",
+    "sceneplayr": "^0.5.2",
+    "stateholdr": "^0.5.1",
+    "thinghittr": "^0.5.2",
+    "timehandlr": "^0.5.2",
+    "touchpassr": "^0.5.1",
+    "worldseedr": "^0.5.1",
+    "gamestartr": "^0.5.3",
+    "menugraphr": "^0.5.3",
+    "userwrappr": "^0.5.2",
+    "js-beautify": "^1.6.3"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.4.3"
+    "gulp-shenanigans": "^0.5.12",
+    "@types/js-beautify": "0.0.27"
   }
 }

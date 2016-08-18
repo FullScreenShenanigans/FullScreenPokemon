@@ -59,6 +59,10 @@ declare namespace ObjectMakr {
          * Optionally, existing classes that can be passed in instead of using auto-generated ones.
          */
         functions?: IClassFunctions;
+        /**
+         * A scope to call onMake functions in, if not this IObjectMakr.
+         */
+        scope?: any;
     }
     /**
      * A abstract factory for dynamic attribute-based JavaScript classes.
@@ -100,6 +104,10 @@ declare namespace ObjectMakr {
          */
         hasFunction(name: string): boolean;
         /**
+         * @returns The scope onMake functions are called in, if not this.
+         */
+        getScope(): any;
+        /**
          * @returns The optional mapping of indices.
          */
         getIndexMap(): any[];
@@ -129,6 +137,10 @@ declare namespace ObjectMakr {
          * The actual Functions for the classes to be made.
          */
         private functions;
+        /**
+         * A scope to call onMake functions in, if not this.
+         */
+        private scope;
         /**
          * Whether a full property mapping should be made for each type.
          */
@@ -184,6 +196,10 @@ declare namespace ObjectMakr {
          */
         getFunction(name: string): IClassFunction;
         /**
+         * @returns The scope onMake functions are called in, if not this.
+         */
+        getScope(): any;
+        /**
          * @param type   The name of a class to check for.
          * @returns Whether that class exists.
          */
@@ -191,7 +207,7 @@ declare namespace ObjectMakr {
         /**
          * @returns The optional mapping of indices.
          */
-        getIndexMap(): any[];
+        getIndexMap(): string[];
         /**
          * Creates a new instance of the specified type and returns it.
          * If desired, any settings are applied to it (deep copy using proliferate).

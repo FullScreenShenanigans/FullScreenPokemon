@@ -1,3 +1,6 @@
+/// <reference path="../typings/GameStartr.d.ts" />
+/// <reference path="../typings/UserWrappr.d.ts" />
+
 /**
  * Container for holding the states of objects in the game.
  */
@@ -78,6 +81,11 @@ export interface IBattleMovrCustoms extends GameStartr.IGameStartrSettingsObject
      */
     MenuGrapher: MenuGraphr.IMenuGraphr;
 }
+
+/**
+ * Settings regarding the level editor, particularly for an ILevelEditr.
+ */
+export interface ILevelEditrCustoms extends GameStartr.IGameStartrSettingsObject { }
 
 /**
  * Settings regarding computations, particularly for an IMathDecidr.
@@ -559,6 +567,11 @@ export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject
  * Settings regarding large-scale state storage, particularly for an IStateHoldr.
  */
 export interface IStateHoldrCustoms extends GameStartr.IGameStartrSettingsObject, StateHoldr.IStateHoldrSettings { }
+
+/**
+ * Settings regarding the UI, particularly for an IUserWrappr.
+ */
+export interface IUserWrapprCustoms extends GameStartr.IGameStartrSettingsObject, UserWrappr.IUserWrapprSettings {}
 
 /**
  * Stored settings to be stored separately and kept within an IFullScreenPokemon.

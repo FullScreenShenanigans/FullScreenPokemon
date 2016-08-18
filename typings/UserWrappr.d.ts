@@ -578,8 +578,20 @@ declare namespace UserWrappr {
         LevelEditor: LevelEditr.ILevelEditr;
         UserWrapper: IUserWrappr;
         container: HTMLElement;
-        addPageStyles(styles: StyleSheet): void;
+        gameplay: IGameStartrGameplay;
+        utilities: IGameStartrUtilities;
+    }
+    /**
+     *
+     */
+    interface IGameStartrGameplay {
         gameStart(): void;
+    }
+    /**
+     *
+     */
+    interface IGameStartrUtilities {
+        addPageStyles(styles: StyleSheet): void;
         createElement(tag: string, ...args: any[]): HTMLElement;
         createElement(tag: "div", ...args: any[]): HTMLDivElement;
         proliferate(recipient: any, donor: any, noOverride?: boolean): any;

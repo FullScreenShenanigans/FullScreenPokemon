@@ -154,7 +154,7 @@ declare namespace BattleMovr {
          */
         deleteBackground(): void;
     }
-    interface IGameStartr extends EightBittr.IEightBittr {
+    interface IGameStartr extends EightBittr.EightBittr {
         GroupHolder: GroupHoldr.IGroupHoldr;
         MapScreener: MapScreenr.IMapScreenr;
         MathDecider: MathDecidr.IMathDecidr;

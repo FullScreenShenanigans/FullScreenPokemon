@@ -3,18 +3,10 @@
 /// <reference path="../../typings/MapsCreatr.d.ts" />
 
 import { Unitsize } from "../Constants";
+import { ILevelEditrCustoms } from "../IFullScreenPokemon";
 
-export function GenerateEditorSettings(): GameStartr.ILevelEditrCustoms {
+export function GenerateEditorSettings(): ILevelEditrCustoms {
     "use strict";
-
-    const prethings: { [i: string]: any } = {
-        Characters: {},
-        Solids: {},
-        Scenery: {},
-        Terrain: {}
-    };
-
-    const macros: { [i: string]: string } = {};
 
     return {
         blocksize: Unitsize * 4,
@@ -25,34 +17,25 @@ export function GenerateEditorSettings(): GameStartr.ILevelEditrCustoms {
             },
             areas: [
                 {
-                    setting: "Overworld",
+                    setting: "Blank",
                     creation: [
-                        { location: "0" },
-                        { macro: "Floor", x: 0, y: 0, width: 128 }
+                        { location: "StartGame" }
                     ]
                 }
-            ] as any
+            ]
         },
         mapEntryDefault: undefined,
-        mapSettingDefault: "Overworld",
-        prethings: prethings,
+        mapSettingDefault: "Blank",
+        prethings: {
+            Text: {},
+            Characters: {},
+            Solids: {},
+            Scenery: {},
+            Terrain: {}
+        },
         thingGroups: ["Character", "Solid", "Scenery"],
         thingKeys: undefined,
-        things: ((): { [i: string]: any } => {
-            const things: { [i: string]: any } = {};
-
-            for (const i in prethings) {
-                if (prethings.hasOwnProperty(i)) {
-                    for (const j in prethings[i]) {
-                        if (prethings[i].hasOwnProperty(j)) {
-                            things[j] = prethings[i][j];
-                        }
-                    }
-                }
-            }
-
-            return things;
-        })(),
-        macros: macros as any
+        things: {},
+        macros: {}
     };
 }

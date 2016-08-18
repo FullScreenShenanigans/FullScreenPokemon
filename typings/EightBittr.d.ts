@@ -1,37 +1,37 @@
 declare namespace EightBittr {
     /**
-     * A section of
+     * A section of EightBittr functionality.
      */
-    abstract class Component<TIEightBittr extends IEightBittr> {
+    abstract class Component<TEightBittr extends EightBittr> {
         /**
          * A container EightBitter to work within.
          */
-        protected EightBitter: TIEightBittr;
+        protected EightBitter: TEightBittr;
         /**
          * Initializes a new instance of the EightBittr class.
          *
          * @param EightBitter   A container EightBitter to work within.
          */
-        constructor(EightBitter: TIEightBittr);
+        constructor(EightBitter: TEightBittr);
     }
     /**
      * An abstract class used exclusively as the parent of GameStartr. EightBittr
      * contains useful functions for manipulating Things that are independent of
      * the required GameStartr modules.
      */
-    class EightBittr implements IEightBittr {
+    class EightBittr {
         /**
          * Physics functions used by this instance.
          */
         physics: Physics<EightBittr>;
         /**
-         * How much to expand each pixel from raw sizing measurements to in-game.
-         */
-        unitsize: number;
-        /**
          * Utility functions used by this instance.
          */
         utilities: Utilities<EightBittr>;
+        /**
+         * How much to expand each pixel from raw sizing measurements to in-game.
+         */
+        unitsize: number;
         /**
          * Initializes a new instance of the EightBittr class. Constants are copied
          * onto the EightBittr from the designated source.
@@ -39,6 +39,10 @@ declare namespace EightBittr {
          * @param settings   Any optional custom settings.
          */
         constructor(settings?: IEightBittrSettings);
+        /**
+         *
+         */
+        protected resetComponents(): void;
         /**
          * Resets the physics component.
          */
@@ -56,23 +60,6 @@ declare namespace EightBittr {
          * How much to expand each pixel from raw sizing measurements to in-game.
          */
         unitsize?: number;
-    }
-    /**
-     *
-     */
-    interface IEightBittr {
-        /**
-         *
-         */
-        physics: Physics<IEightBittr>;
-        /**
-         * How much to expand each pixel from raw sizing measurements to in-game.
-         */
-        unitsize: number;
-        /**
-         *
-         */
-        utilities: Utilities<IEightBittr>;
     }
     /**
      * A basic representation of an in-game Thing. Size, velocity, and position
@@ -115,7 +102,7 @@ declare namespace EightBittr {
     /**
      * Physics functions used by EightBittr instances.
      */
-    class Physics<TIEightBittr extends IEightBittr> extends Component<TIEightBittr> {
+    class Physics<TEightBittr extends EightBittr> extends Component<TEightBittr> {
         /**
          * Shifts a Thing vertically by changing its top and bottom attributes.
          *
@@ -288,7 +275,7 @@ declare namespace EightBittr {
     /**
      * Miscellaneous utilities used by EightBittr instances.
      */
-    class Utilities<TIEightBittr extends IEightBittr> extends Component<TIEightBittr> {
+    class Utilities<TEightBittr extends EightBittr> extends Component<TEightBittr> {
         /**
          * "Proliferates" all properties of a donor onto a recipient by copying each
          * of them and recursing onto child Objects. This is a deep copy.

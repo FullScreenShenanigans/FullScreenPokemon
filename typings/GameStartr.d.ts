@@ -1,5 +1,6 @@
 /// <reference path="../typings/AreaSpawnr.d.ts" />
 /// <reference path="../typings/AudioPlayr.d.ts" />
+/// <reference path="../typings/ChangeLinr.d.ts" />
 /// <reference path="../typings/DeviceLayr.d.ts" />
 /// <reference path="../typings/EightBittr.d.ts" />
 /// <reference path="../typings/FPSAnalyzr.d.ts" />
@@ -7,8 +8,8 @@
 /// <reference path="../typings/GroupHoldr.d.ts" />
 /// <reference path="../typings/InputWritr.d.ts" />
 /// <reference path="../typings/ItemsHoldr.d.ts" />
-/// <reference path="../typings/LevelEditr.d.ts" />
 /// <reference path="../typings/MapsCreatr.d.ts" />
+/// <reference path="../typings/MapScreenr.d.ts" />
 /// <reference path="../typings/MathDecidr.d.ts" />
 /// <reference path="../typings/ModAttachr.d.ts" />
 /// <reference path="../typings/NumberMakr.d.ts" />
@@ -17,10 +18,10 @@
 /// <reference path="../typings/PixelRendr.d.ts" />
 /// <reference path="../typings/QuadsKeepr.d.ts" />
 /// <reference path="../typings/ScenePlayr.d.ts" />
+/// <reference path="../typings/StringFilr.d.ts" />
 /// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
 /// <reference path="../typings/TouchPassr.d.ts" />
-/// <reference path="../typings/UserWrappr.d.ts" />
 /// <reference path="../typings/WorldSeedr.d.ts" />
 declare namespace GameStartr {
     /**
@@ -96,10 +97,6 @@ declare namespace GameStartr {
          */
         devices: IDeviceLayrCustoms;
         /**
-         * Settings regarding the level editor, particularly for an ILevelEditr.
-         */
-        editor: ILevelEditrCustoms;
-        /**
          * Settings regarding map generation, particularly for an IWorldSeedr.
          */
         generator: IWorldSeedrCustoms;
@@ -160,10 +157,6 @@ declare namespace GameStartr {
          * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
          */
         touch: ITouchPassrCustoms;
-        /**
-         * Settings regarding the visible interface, particularly for an IUserWrappr.
-         */
-        ui: IUserWrapprCustoms;
         /**
          * Any other settings for a GameStartr generally inherit from IGameStartrSettingsObject.
          */
@@ -261,46 +254,6 @@ declare namespace GameStartr {
         values: ItemsHoldr.IItemValueDefaults;
     }
     /**
-     * Settings regarding the level editor, particularly for an ILevelEditr.
-     */
-    interface ILevelEditrCustoms extends IGameStartrSettingsObject {
-        /**
-         * What size grid placed Things should snap to.
-         */
-        blocksize?: number;
-        /**
-         * A JSON representation of the default map.
-         */
-        mapDefault: MapsCreatr.IMapRaw;
-        /**
-         * The default setting for maps.
-         */
-        mapSettingDefault: string;
-        /**
-         * The default entry method for maps.
-         */
-        mapEntryDefault: string;
-        /**
-         * Descriptions of Things that may be placed, within their groups.
-         */
-        prethings: {
-            [i: string]: {
-                [i: string]: any;
-            };
-        };
-        /**
-         * Names of groups that Things may be in.
-         */
-        thingGroups: string[];
-        thingKeys: string[];
-        macros: {
-            [i: string]: {
-                description: string;
-                options: any;
-            };
-        };
-    }
-    /**
      * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
      * and MapsCreatr.
      */
@@ -373,7 +326,7 @@ declare namespace GameStartr {
     /**
      * A raw JSON-friendly description of a map.
      */
-    interface IMapRaw extends LevelEditr.IMapRaw {
+    interface IMapRaw extends MapsCreatr.IMapRaw {
         /**
          * A default location to spawn into.
          */
@@ -388,7 +341,7 @@ declare namespace GameStartr {
     /**
      * A raw JSON-friendly description of a map area.
      */
-    interface IAreaRaw extends LevelEditr.IAreaRaw {
+    interface IAreaRaw extends MapsCreatr.IAreaRaw {
         /**
          * A background color for the area, if not the default for the setting.
          */
@@ -538,11 +491,6 @@ declare namespace GameStartr {
     interface ITouchPassrCustoms extends IGameStartrSettingsObject, TouchPassr.ITouchPassrSettings {
     }
     /**
-     * Settings regarding the visible interface, particularly for an IUserWrappr.
-     */
-    interface IUserWrapprCustoms extends IGameStartrSettingsObject {
-    }
-    /**
      * Settings regarding map generation, particularly for an IWorldSeedr.
      */
     interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
@@ -554,36 +502,36 @@ declare namespace GameStartr {
     /**
      * A standard in-game thing, with size, velocity, position, and other information.
      */
-    interface IThing extends EightBittr.IThing, LevelEditr.IThing, QuadsKeepr.IThing, TimeHandlr.IThing {
+    interface IThing extends EightBittr.IThing, MapsCreatr.IThing, PixelDrawr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
         /**
-         * Which group this Thing is a member of.
+         * Whether this is currently alive and well.
          */
-        groupType: string;
+        alive: boolean;
         /**
          * A search query for a PixelDrawr sprite to represent this Thing visually.
          */
         className: string;
-        /**
-         * An additional name to add to the Thing's .className.
-         */
-        name?: string;
-        /**
-         * Whether this is currently alive and well.
-         */
-        alive?: boolean;
-        /**
-         * Whether this has been placed into the game.
-         */
-        placed?: boolean;
         /**
          * Whether this has had its appearance and/or position changed since the last
          * game upkeep.
          */
         changed: boolean;
         /**
+         * Which group this Thing is a member of.
+         */
+        groupType: string;
+        /**
          * The maximum number of quadrants this can be a part of, based on size.
          */
         maxquads: number;
+        /**
+         * An additional name to add to the Thing's .className.
+         */
+        name?: string;
+        /**
+         * Whether this has been placed into the game.
+         */
+        placed?: boolean;
         /**
          * A storage container for Quadrants this Thing may be in.
          */
@@ -695,10 +643,6 @@ declare namespace GameStartr {
          */
         ItemsHolder: ItemsHoldr.IItemsHoldr;
         /**
-         * The level editor manager.
-         */
-        LevelEditor: LevelEditr.ILevelEditr;
-        /**
          * A typed MersenneTwister, which is a state-based random number generator.
          * Options exist for changing or randomizing state and producing random
          * booleans, integers, and real numbers.
@@ -761,10 +705,6 @@ declare namespace GameStartr {
          * API for adding touch-based control elements into an HTML element.
          */
         TouchPasser: TouchPassr.ITouchPassr;
-        /**
-         * A user interface wrapper for configurable HTML displays over GameStartr games.
-         */
-        UserWrapper: UserWrappr.IUserWrappr;
         /**
          * A randomization utility to automate random, recursive generation of
          * possibilities based on position and probability schemas.
@@ -929,12 +869,6 @@ declare namespace GameStartr {
          */
         protected resetTouchPasser(settings: IGameStartrSettings): void;
         /**
-         * Sets this.LevelEditor.
-         *
-         * @param settings   Any additional user-provided settings.
-         */
-        protected resetLevelEditor(settings: IGameStartrSettings): void;
-        /**
          * Sets this.WorldSeeder.
          *
          * @param settings   Any additional user-provided settings.
@@ -978,23 +912,22 @@ declare namespace GameStartr {
      */
     class Gameplay<TIEightBittr extends GameStartr> extends EightBittr.Component<TIEightBittr> {
         /**
+         * Triggered Function for when the game closes. The mod event is fired.
+         */
+        onClose(): void;
+        /**
          * Triggered Function for when the game is unpaused. Music resumes, and
          * the mod event is fired.
-         *
-         * @param GameStartr
          */
-        onGamePlay(): void;
+        onPlay(): void;
         /**
          * Triggered Function for when the game is paused. Music stops, and the
          * mod event is fired.
-         *
-         * @param GameStartr
          */
-        onGamePause(): void;
+        onPause(): void;
         /**
          * Checks whether inputs can be fired, which by default is always true.
          *
-         * @param GameStartr
          * @returns Whether inputs can be fired, which is always true.
          */
         canInputsTrigger(): boolean;
@@ -1123,7 +1056,15 @@ declare namespace GameStartr {
     /**
      * Maps functions used by IGameStartr instances.
      */
-    class Maps<TEightBittr extends GameStartr> extends EightBittr.Component<TEightBittr> {
+    abstract class Maps<TEightBittr extends GameStartr> extends EightBittr.Component<TEightBittr> {
+        /**
+         * Sets the current location.
+         */
+        abstract setLocation(...args: any[]): any;
+        /**
+         * Sets the current map.
+         */
+        abstract setMap(...args: any[]): any;
         /**
          * Spawns all Things within a given area that should be there.
          *

@@ -2,6 +2,7 @@
 /// <reference path="../typings/GameStartr.d.ts" />
 /// <reference path="../typings/MenuGraphr.d.ts" />
 /// <reference path="../typings/StateHoldr.d.ts" />
+/// <reference path="../typings/UserWrappr.d.ts" />
 
 import { Animations } from "./Animations";
 import { Battles } from "./Battles";
@@ -30,28 +31,35 @@ import { Utilities } from "./Utilities";
  */
 export class FullScreenPokemon extends GameStartr.GameStartr {
     /**
-     * A simple container for Map attributes given by switching to an Area within 
-     * that map. A bounding box of the current viewport is kept, along with a bag
-     * of assorted variable values.
-     */
-    public MapScreener: IMapScreenr;
-
-    /**
-     * A utility to save collections of game state using an ItemsHoldr.
-     * Keyed changes to named collections can be saved temporarily or permanently.
-     */
-    public StateHolder: StateHoldr.IStateHoldr;
-
-    /**
-     * A menu management system. Menus can have dialog-style text, scrollable
-     * and unscrollable grids, and children menus or decorations added.
-     */
-    public MenuGrapher: MenuGraphr.IMenuGraphr;
-
-    /**
      * An in-game battle management system for RPG-like battles between actors.
      */
-    public BattleMover: BattleMovr.IBattleMovr;
+    public /* readonly */ BattleMover: BattleMovr.IBattleMovr;
+
+    /**
+     * GUI-based level creation & editing for GameStartr.
+     */
+    public /* readonly */ LevelEditor: LevelEditr.ILevelEditr;
+
+    /**
+     * A simple container for Map attributes given by switching to an Area within 
+     * that map.
+     */
+    public /* readonly */ MapScreener: IMapScreenr;
+
+    /**
+     * In-game menu and dialog management system for GameStartr.
+     */
+    public /* readonly */ MenuGrapher: MenuGraphr.IMenuGraphr;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    public /* readonly */ StateHolder: StateHoldr.IStateHoldr;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    public /* readonly */ UserWrapper: UserWrappr.IUserWrappr;
 
     /**
      * Animation functions used by this instance.

@@ -545,6 +545,10 @@ declare namespace ItemsHoldr {
          */
         toggle(key: string): void;
         /**
+         * Toggles this.autoSave.
+         */
+        toggleAutoSave(): void;
+        /**
          * Ensures a key exists in values. If it doesn't, and new values are
          * allowed, it creates it; otherwise, it throws an Error.
          *

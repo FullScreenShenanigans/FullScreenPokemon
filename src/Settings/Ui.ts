@@ -2,8 +2,9 @@
 /// <reference path="../../typings/UserWrappr.d.ts" />
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IUserWrapprCustoms } from "../IFullScreenPokemon";
 
-export function GenerateUISettings(): GameStartr.IUserWrapprCustoms {
+export function GenerateUISettings(): IUserWrapprCustoms {
     "use strict";
 
     return {
@@ -138,7 +139,8 @@ export function GenerateUISettings(): GameStartr.IUserWrapprCustoms {
                         }
                     }
                 ]
-            }, {
+            },
+            {
                 title: "Controls",
                 generator: "OptionsTable",
                 options: ((controls: string[]): UserWrappr.Generators.IOptionsButtonSchema[] => {
@@ -200,5 +202,5 @@ export function GenerateUISettings(): GameStartr.IUserWrapprCustoms {
                 }
             }
         ]
-    };
+    } as any;
 }

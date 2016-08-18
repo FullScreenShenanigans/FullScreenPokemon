@@ -50,7 +50,7 @@ declare namespace ScenePlayr {
          */
         routine: IRoutine;
         /**
-         * THe name of the current playing routine.
+         * The name of the current playing routine.
          */
         routineName: string;
         /**
@@ -74,6 +74,10 @@ declare namespace ScenePlayr {
          * Arguments to pass to each routine within the cutscenes.
          */
         cutsceneArguments?: any[];
+        /**
+         * The scope routines are run in, if not this IScenePlayr.
+         */
+        scope?: any;
     }
     /**
      * A cutscene runner for jumping between scenes and their routines.
@@ -101,6 +105,10 @@ declare namespace ScenePlayr {
          *          by the given name.
          */
         getOtherRoutine(name: string): IRoutine;
+        /**
+         * @returns The scope routines are run in, if not this.
+         */
+        getRoutineScope(): any;
         /**
          * @returns The name of the currently playing cutscene.
          */
@@ -183,6 +191,10 @@ declare namespace ScenePlayr {
          */
         private cutsceneArguments;
         /**
+         * The scope routines are run in, if not this.
+         */
+        private scope;
+        /**
          * Initializes a new instance of the ScenePlayr class.
          *
          * @param [settings]   Settings to be used for initialization.
@@ -210,6 +222,10 @@ declare namespace ScenePlayr {
          *          by the given name.
          */
         getOtherRoutine(name: string): IRoutine;
+        /**
+         * @returns The scope routines are run in, if not this.
+         */
+        getRoutineScope(): any;
         /**
          * @returns The name of the currently playing cutscene.
          */

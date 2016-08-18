@@ -16,7 +16,7 @@ declare namespace ThingHittr {
         /**
          * What type this is within its group.
          */
-        type: string;
+        title: string;
     }
     /**
      * For group names, the names of other groups they are allowed to hit.
@@ -99,22 +99,6 @@ declare namespace ThingHittr {
      * Settings to initialize a new IThingHittr.
      */
     interface IThingHittrSettings {
-        /**
-         * The key under which Things store their number of quadrants (by default, "numquads").
-         */
-        keyNumQuads?: string;
-        /**
-         * The key under which Things store their quadrants (by default, "quadrants").
-         */
-        keyQuadrants?: string;
-        /**
-         * The key under which Things store which group they fall under (by default, "group").
-         */
-        keyGroupName?: string;
-        /**
-         * The key under which Things store which type they fall under (by default, "type").
-         */
-        keyTypeName?: string;
         /**
          * The Function generators used globalChecks.
          */

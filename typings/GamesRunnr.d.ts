@@ -9,6 +9,10 @@ declare namespace GamesRunnr {
          */
         private games;
         /**
+         * Optional trigger Function for this.close.
+         */
+        private onClose;
+        /**
          * Optional trigger Function for this.pause.
          */
         private onPause;
@@ -91,6 +95,10 @@ declare namespace GamesRunnr {
          */
         getSpeed(): number;
         /**
+         * @returns The optional trigger to be called on close.
+         */
+        getOnClose(): any;
+        /**
          * @returns The optional trigger to be called on pause.
          */
         getOnPause(): any;
@@ -122,6 +130,10 @@ declare namespace GamesRunnr {
          * @returns The total time spent, in milliseconds.
          */
         upkeepTimed(): number;
+        /**
+         * Runs onClose.
+         */
+        close(): void;
         /**
          * Continues execution of this.upkeep by calling it. If an onPlay has been
          * defined, it's called before.
@@ -212,6 +224,10 @@ declare namespace GamesRunnr {
          * A callback to run when upkeep is paused.
          */
         onPause?: ITriggerCallback;
+        /**
+         * A callback to run when play is closed.
+         */
+        onClose?: ITriggerCallback;
         /**
          * A callback to run when upkeep is played.
          */
