@@ -1794,6 +1794,10 @@ declare module FullScreenPokemon {
         walkingFlipping?: TimeHandlr.ITimeEvent;
     }
 
+    export interface ILedge extends IThing {
+        border: IThing[][];
+    }
+
     /**
      * An Enemy Thing such as a trainer or wild Pokemon.
      */

@@ -134,7 +134,6 @@ FullScreenPokemon.FullScreenPokemon.settings.objects = {
                 "Ledge": {},
                 "LedgeOpening": {},
                 "MountainSolidBase": {
-                    "MountainRight": {},
                     "MountainTop": {},
                     "MountainTopRight": {},
                     "MountainTopLeft": {},

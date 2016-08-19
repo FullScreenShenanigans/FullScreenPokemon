@@ -346,6 +346,26 @@ var FullScreenPokemon;
             // inheritance, sadly).
             thing.FSP.ThingHitter.cacheChecksForType(thing.title, thing.groupType);
             thing.bordering = [undefined, undefined, undefined, undefined];
+            if (thing.title === "Ledge") {
+                console.log("processed a ledge");
+                thing.border = [[], [], [], []];
+                switch (thing.direction) {
+                    case 0:
+                        thing.tolBottom = thing.FSP.unitsize * 3;
+                        break;
+                    case 1:
+                        thing.tolLeft = thing.FSP.unitsize * -3;
+                        break;
+                    case 2:
+                        thing.tolTop = thing.FSP.unitsize * -3;
+                        break;
+                    case 3:
+                        thing.tolRight = thing.FSP.unitsize * 3;
+                        break;
+                    default:
+                        throw new Error("Unknown direction: " + thing.direction + ".");
+                }
+            }
             if (typeof thing.id === "undefined") {
                 thing.id = [
                     thing.FSP.AreaSpawner.getMapName(),
@@ -2046,7 +2066,7 @@ var FullScreenPokemon;
          * @param other   A ledge for thing to hop over.
          */
         FullScreenPokemon.prototype.animateCharacterHopLedge = function (thing, other) {
-            var shadow = this.addThing("Shadow"), dy = -this.unitsize, speed = 2, steps = 14, changed = 0;
+            var shadow = this.addThing("Shadow"), dy = -this.unitsize, speed = 2, steps = 17, changed = 0;
             thing.shadow = shadow;
             thing.ledge = other;
             // Center the shadow below the Thing
@@ -2228,6 +2248,86 @@ var FullScreenPokemon;
          * @param direction   The direction border being changed.
          */
         FullScreenPokemon.prototype.setThingBordering = function (thing, other, direction) {
+            if (thing.title === "Ledge") {
+                var borders = thing.border[direction];
+                var placed = false;
+                // console.log("collided with ledge. setting border");
+                // console.log("ledge top/left is " + other.top + "/" + other.left);
+                for (var i = 0; i < borders.length; i += 1) {
+                    // the character has been removed via killNormal or the like
+                    if (!borders[i].alive) {
+                        if (placed) {
+                            borders.splice(i, 1);
+                            i--;
+                        }
+                        else {
+                            borders[i] = other;
+                            placed = !placed;
+                        }
+                    }
+                    else {
+                        /*if (borders[i] === other) {
+                            placed = !placed;
+                            continue;
+                        }*/
+                        // the character is alive so check to see if its still bordering the ledge
+                        // console.log("character top/left " + thing.top + "/" + thing.left);
+                        // if (!placed) {
+                        switch (thing.direction) {
+                            case 0:
+                                if (!placed && borders[i].top !== thing.top - 32 && borders[i].left !== other.left) {
+                                    borders[i] = other;
+                                    placed = !placed;
+                                }
+                                else if (!placed && borders[i] === other && other.top !== thing.top - 32) {
+                                    borders.splice(i, 1);
+                                    i--;
+                                    placed = !placed;
+                                }
+                                break;
+                            case 1:
+                                if (!placed && borders[i].left !== thing.left + 32 && borders[i].top !== other.top) {
+                                    borders[i] = other;
+                                    placed = !placed;
+                                }
+                                else if (!placed && borders[i] === other && other.top !== thing.left + 32) {
+                                    borders.splice(i, 1);
+                                    i--;
+                                    placed = !placed;
+                                }
+                                break;
+                            case 2:
+                                if (!placed && borders[i].top !== thing.top + 32 && borders[i].left !== other.left) {
+                                    borders[i] = other;
+                                    placed = !placed;
+                                }
+                                else if (!placed && borders[i] === other && other.top !== thing.top + 32) {
+                                    borders.splice(i, 1);
+                                    i--;
+                                    placed = !placed;
+                                }
+                                break;
+                            case 3:
+                                if (!placed && borders[i].left !== thing.left - 32 && borders[i].top !== other.top) {
+                                    borders[i] = other;
+                                    placed = !placed;
+                                }
+                                else if (!placed && borders[i] === other && other.top !== thing.left - 32) {
+                                    delete borders[i];
+                                    i--;
+                                    placed = !placed;
+                                }
+                                break;
+                            default:
+                                throw new Error("Unknown direction: " + thing.direction + ".");
+                        }
+                    }
+                }
+                // (<ILedge>thing).border[direction] = other;
+                if (!placed) {
+                    borders.push(other);
+                }
+            }
             if (thing.bordering[direction] && thing.bordering[direction].borderPrimary && !other.borderPrimary) {
                 return;
             }
@@ -2398,13 +2498,10 @@ var FullScreenPokemon;
          * @param other   A Ledge walked to by thing.
          */
         FullScreenPokemon.prototype.collideLedge = function (thing, other) {
-            if (thing.title !== "Player") {
-                return false;
-            }
-            if (thing.ledge || !thing.walking) {
+            if (thing.ledge) {
                 return true;
             }
-            if (thing.direction !== other.direction) {
+            if (!thing.walking || thing.direction !== other.direction) {
                 return false;
             }
             if (thing.direction % 2 === 0) {
@@ -2417,44 +2514,42 @@ var FullScreenPokemon;
                     return true;
                 }
             }
-            switch (thing.direction) {
-                case 0:
-                    if (other.bordering[0] && other.bordering[0].top === thing.top - 4) {
-                        console.log("should not jump up");
-                        thing.FSP.animateCharacterStopWalking(thing);
-                        return false;
-                    }
-                    break;
-                case 1:
-                    if (other.bordering[1] && other.bordering[1].left === thing.left + 4) {
-                        console.log("should not jump right");
-                        thing.FSP.animateCharacterStopWalking(thing);
-                        return false;
-                    }
-                    break;
-                case 2:
-                    if (other.bordering[2]) {
-                        console.log("printing the Thing bording the ledge");
-                        console.log(other.bordering);
-                        console.log("jumping down. thing's top should be " + other.bordering[2].top);
-                    }
-                    console.log("character's top is " + thing.top);
-                    console.log("distance is " + thing.distance);
-                    if (other.bordering[2] && other.bordering[2].top === thing.top + thing.distance * 2) {
-                        console.log("should not jump down");
-                        thing.FSP.animateCharacterStopWalking(thing);
-                        return false;
-                    }
-                    break;
-                case 3:
-                    if (other.bordering[3] && other.bordering[3].left === thing.left - 4) {
-                        console.log("should not jump left");
-                        thing.FSP.animateCharacterStopWalking(thing);
-                        return false;
-                    }
-                    break;
-                default:
-                    throw new Error("Unknown direction: " + thing.direction + ".");
+            console.log(other);
+            console.log("jumping character's top " + thing.top);
+            for (var _i = 0, _a = other.border[thing.direction]; _i < _a.length; _i++) {
+                var border = _a[_i];
+                switch (thing.direction) {
+                    case 0:
+                        if (border.left === thing.left) {
+                            thing.FSP.animateCharacterStopWalking(thing);
+                            thing.FSP.centerMapScreen();
+                            return false;
+                        }
+                        break;
+                    case 1:
+                        if (border.top === thing.top) {
+                            thing.FSP.animateCharacterStopWalking(thing);
+                            thing.FSP.centerMapScreen();
+                            return false;
+                        }
+                        break;
+                    case 2:
+                        if (border.left === thing.left) {
+                            thing.FSP.animateCharacterStopWalking(thing);
+                            thing.FSP.centerMapScreen();
+                            return false;
+                        }
+                        break;
+                    case 3:
+                        if (border.top === thing.top) {
+                            thing.FSP.animateCharacterStopWalking(thing);
+                            thing.FSP.centerMapScreen();
+                            return false;
+                        }
+                        break;
+                    default:
+                        throw new Error("Unknown direction: " + thing.direction + ".");
+                }
             }
             if (thing.player) {
                 thing.canKeyWalking = false;
