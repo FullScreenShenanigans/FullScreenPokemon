@@ -508,7 +508,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param settings   Settings for the animation.
      * @returns The solid color Thing.
      */
-    public animateFadeFromColor(settings: IColorFadeSettings = {}): IThing {
+    public animateFadeFromColor(settings: IColorFadeSettings = {}, ...args: any[]): IThing {
         const color: string = settings.color || "White";
         const callback: (...args: any[]) => void = settings.callback;
         const change: number = settings.change || .33;
@@ -518,7 +518,6 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             height: this.EightBitter.MapScreener.height,
             opacity: 1
         });
-        const args: IArguments = arguments;
 
         this.EightBitter.things.add(blank);
 
@@ -531,7 +530,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             (): void => {
                 this.EightBitter.physics.killNormal(blank);
                 if (callback) {
-                    callback(...args);
+                    callback(settings, ...args);
                 }
             });
 

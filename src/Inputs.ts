@@ -230,10 +230,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * @param event   The original user-caused Event.
      */
     public keyDownPause(thing: ICharacter, event?: Event): void {
-        if (!this.EightBitter.GamesRunner.getPaused()) {
-            this.EightBitter.GamesRunner.pause();
-        }
-
+        this.EightBitter.menus.togglePauseMenu(thing);
         this.EightBitter.ModAttacher.fireEvent("onKeyDownPause");
 
         if (event && event.preventDefault) {
@@ -412,15 +409,12 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
     }
 
     /**
-     * Reacts to the pause key being lifted. The onKeyUpLeft mod event is fired.
+     * Reacts to the pause key being lifted. The onKeyUpPause mod event is fired.
      * 
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpPause(thing: ICharacter, event?: Event): void {
-        if (this.EightBitter.GamesRunner.getPaused()) {
-            this.EightBitter.GamesRunner.play();
-        }
         this.EightBitter.ModAttacher.fireEvent("onKeyUpPause");
 
         if (event && event.preventDefault) {
@@ -437,7 +431,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      */
     public mouseDownRight(thing: ICharacter, event?: Event): void {
         this.EightBitter.menus.togglePauseMenu(thing);
-
         this.EightBitter.ModAttacher.fireEvent("onMouseDownRight");
 
         if (event && event.preventDefault) {

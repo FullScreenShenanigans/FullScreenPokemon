@@ -13,9 +13,9 @@ export function GenerateInputSettings(): GameStartr.IInputWritrCustoms {
                 right:  [68, 39],     // d,     right
                 up:     [87, 38],     // w,     up
                 down:   [83, 40],     // s,     down
-                a:      [90, 13],     // z
+                a:      [90, 13],     // z,     enter
                 b:      [88, 8],      // x,     backspace
-                pause:  [13, 80],     // enter, p
+                pause:  [80, 27],     // p,     escape
                 select: [17, 16],     // ctrl,  shift
                 // Mouse aliases
                 rightclick: [3],

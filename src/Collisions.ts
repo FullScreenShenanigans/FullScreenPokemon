@@ -185,7 +185,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                 if (other.singleUse) {
                     other.active = false;
                 }
-                other.activate(thing, other);
+                other.activate.call(this.EightBitter.animations, thing, other);
             }
 
             return true;
