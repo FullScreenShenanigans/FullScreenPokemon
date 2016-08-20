@@ -1,58 +1,34 @@
 /// <reference path="../typings/AreaSpawnr.d.ts" />
+/// <reference path="../typings/AudioPlayr.d.ts" />
+/// <reference path="../typings/ChangeLinr.d.ts" />
+/// <reference path="../typings/DeviceLayr.d.ts" />
+/// <reference path="../typings/EightBittr.d.ts" />
+/// <reference path="../typings/FPSAnalyzr.d.ts" />
+/// <reference path="../typings/GamesRunnr.d.ts" />
+/// <reference path="../typings/GameStartr.d.ts" />
 /// <reference path="../typings/GroupHoldr.d.ts" />
 /// <reference path="../typings/InputWritr.d.ts" />
 /// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/MapsCreatr.d.ts" />
 /// <reference path="../typings/MapScreenr.d.ts" />
+/// <reference path="../typings/MathDecidr.d.ts" />
+/// <reference path="../typings/ModAttachr.d.ts" />
+/// <reference path="../typings/NumberMakr.d.ts" />
 /// <reference path="../typings/ObjectMakr.d.ts" />
 /// <reference path="../typings/PixelDrawr.d.ts" />
+/// <reference path="../typings/PixelRendr.d.ts" />
+/// <reference path="../typings/QuadsKeepr.d.ts" />
+/// <reference path="../typings/ScenePlayr.d.ts" />
+/// <reference path="../typings/StringFilr.d.ts" />
+/// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
+/// <reference path="../typings/TouchPassr.d.ts" />
+/// <reference path="../typings/WorldSeedr.d.ts" />
+/// <reference path="../typings/js-beautify.d.ts" />
 declare namespace LevelEditr {
-    interface IGameStartr {
-        settings: any;
-        GroupHolder: GroupHoldr.IGroupHoldr;
-        InputWriter: InputWritr.IInputWritr;
-        MapsCreator: MapsCreatr.IMapsCreatr;
-        MapScreener: MapScreenr.IMapScreenr;
-        AreaSpawner: AreaSpawnr.IAreaSpawnr;
-        ObjectMaker: ObjectMakr.IObjectMakr;
-        PixelDrawer: PixelDrawr.IPixelDrawr;
-        ItemsHolder: ItemsHoldr.IItemsHoldr;
-        TimeHandler: TimeHandlr.ITimeHandlr;
-        player: IPlayer;
-        container: HTMLDivElement;
-        scale: number;
-        unitsize: number;
-        addPageStyles(styles: any): void;
-        addThing(thing: IThing, x?: number, y?: number): IThing;
-        createElement(tag: "a", ...args: any[]): HTMLLinkElement;
-        createElement(tag: "div", ...args: any[]): HTMLDivElement;
-        createElement(tag: "h1", ...args: any[]): HTMLHeadingElement;
-        createElement(tag: "h2", ...args: any[]): HTMLHeadingElement;
-        createElement(tag: "h3", ...args: any[]): HTMLHeadingElement;
-        createElement(tag: "h4", ...args: any[]): HTMLHeadingElement;
-        createElement(tag: "input", ...args: any[]): HTMLInputElement;
-        createElement(tag: "select", ...args: any[]): HTMLSelectElement;
-        createElement(tag: string, ...args: any[]): HTMLElement;
-        killNormal(thing: IThing): void;
-        proliferateElement(recipient: HTMLElement, donor: any, noOverride?: boolean): void;
-        setLeft(thing: IThing, left: number): void;
-        setMap(name: string, location?: string): void;
-        setRight(thing: IThing, right: number): void;
-        setTop(thing: IThing, top: number): void;
-        shiftHoriz(thing: IThing, dx: number, notChanged?: boolean): void;
-        proliferate(recipient: any, donor: any, noOverride?: boolean): any;
-        scrollWindow(x: number): void;
-    }
-    interface IThing extends PixelDrawr.IThing, MapsCreatr.IThing {
-        width: number;
-        height: number;
-        left: number;
-        outerok: boolean | number;
-        groupType: string;
-    }
-    interface IPlayer extends IThing {
+    interface IThing extends GameStartr.IThing {
         dead: boolean;
+        outerok?: number;
     }
     interface IPreThing extends MapsCreatr.IPreThing {
         thing: IThing;
@@ -76,11 +52,11 @@ declare namespace LevelEditr {
         real?: number;
     }
     interface IMapRaw extends MapsCreatr.IMapRaw {
-        time: number;
         areas: {
             [i: number]: IAreaRaw;
             [i: string]: IAreaRaw;
         };
+        time?: number;
     }
     interface IAreaRaw extends MapsCreatr.IAreaRaw {
         setting?: string;
@@ -94,34 +70,34 @@ declare namespace LevelEditr {
     interface IDataEventTarget extends EventTarget {
         result: string;
     }
-    interface IThingIcon extends HTMLDivElement {
+    interface IThingIcon extends HTMLElement {
         options: any[];
     }
     interface IDisplayContainer {
-        "container": HTMLDivElement;
+        "container": HTMLElement;
         "scrollers": {
-            "container": HTMLDivElement;
-            "left": HTMLDivElement;
-            "right": HTMLDivElement;
+            "container": HTMLElement;
+            "left": HTMLElement;
+            "right": HTMLElement;
         };
-        "gui": HTMLDivElement;
-        "head": HTMLDivElement;
+        "gui": HTMLElement;
+        "head": HTMLElement;
         "namer": HTMLInputElement;
-        "minimizer": HTMLDivElement;
+        "minimizer": HTMLElement;
         "stringer": {
             "textarea": HTMLTextAreaElement;
-            "messenger": HTMLDivElement;
+            "messenger": HTMLElement;
         };
         "inputDummy": HTMLInputElement;
         "sections": {
             "ClickToPlace": {
-                "container": HTMLDivElement;
-                "Things": HTMLDivElement;
-                "Macros": HTMLDivElement;
-                "VisualOptions": HTMLDivElement;
+                "container": HTMLElement;
+                "Things": HTMLElement;
+                "Macros": HTMLElement;
+                "VisualOptions": HTMLElement;
             };
             "MapSettings": {
-                "container": HTMLDivElement;
+                "container": HTMLElement;
                 "Time": HTMLSelectElement;
                 "Setting": {
                     "Primary": HTMLSelectElement;
@@ -132,20 +108,20 @@ declare namespace LevelEditr {
                 "Location": HTMLSelectElement;
                 "Entry": HTMLSelectElement;
             };
-            "JSON": HTMLDivElement;
+            "JSON": HTMLElement;
             "buttons": {
                 "ClickToPlace": {
-                    "container": HTMLDivElement;
-                    "Things": HTMLDivElement;
-                    "Macros": HTMLDivElement;
+                    "container": HTMLElement;
+                    "Things": HTMLElement;
+                    "Macros": HTMLElement;
                 };
-                "MapSettings": HTMLDivElement;
-                "JSON": HTMLDivElement;
+                "MapSettings": HTMLElement;
+                "JSON": HTMLElement;
             };
         };
     }
     interface ILevelEditrSettings {
-        GameStarter: IGameStartr;
+        GameStarter: GameStartr.GameStartr;
         prethings: {
             [i: string]: IPreThing[];
         };
@@ -286,7 +262,7 @@ declare namespace LevelEditr {
         /**
          *
          */
-        getGameStarter(): IGameStartr;
+        getGameStarter(): GameStartr.GameStartr;
         /**
          *
          */

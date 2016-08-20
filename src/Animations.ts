@@ -531,7 +531,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             (): void => {
                 this.EightBitter.physics.killNormal(blank);
                 if (callback) {
-                    callback.apply(this, args);
+                    callback(...args);
                 }
             });
 

@@ -1,6 +1,8 @@
+/// <reference path="../typings/ChangeLinr.d.ts" />
 /// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/ObjectMakr.d.ts" />
 /// <reference path="../typings/PixelRendr.d.ts" />
+/// <reference path="../typings/StringFilr.d.ts" />
 declare namespace PixelDrawr {
     /**
      * Boundaries of a drawing area, commonly fulfilled by an IMapScreenr.

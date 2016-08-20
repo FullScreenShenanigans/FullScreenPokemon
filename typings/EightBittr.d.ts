@@ -15,11 +15,9 @@ declare namespace EightBittr {
         constructor(EightBitter: TEightBittr);
     }
     /**
-     * An abstract class used exclusively as the parent of GameStartr. EightBittr
-     * contains useful functions for manipulating Things that are independent of
-     * the required GameStartr modules.
+     * An abstract class used exclusively as the parent of GameStartr.
      */
-    class EightBittr {
+    abstract class EightBittr {
         /**
          * Physics functions used by this instance.
          */
@@ -40,17 +38,9 @@ declare namespace EightBittr {
          */
         constructor(settings?: IEightBittrSettings);
         /**
-         *
+         * Sets the system components.
          */
-        protected resetComponents(): void;
-        /**
-         * Resets the physics component.
-         */
-        protected resetPhysics(): void;
-        /**
-         * Resets the utilities component.
-         */
-        protected resetUtilities(): void;
+        protected abstract resetComponents(): void;
     }
     /**
      * Settings to initialize a new instance of the IEightBittr interface.

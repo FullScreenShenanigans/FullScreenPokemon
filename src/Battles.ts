@@ -40,7 +40,6 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         this.EightBitter.AudioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 
         (this.EightBitter.cutscenes as any)["cutsceneBattleTransition" + animation](
-            this,
             {
                 battleInfo,
                 callback: (): void => this.EightBitter.BattleMover.startBattle(battleInfo as any)

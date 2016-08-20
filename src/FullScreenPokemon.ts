@@ -325,7 +325,6 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
             this.utilities.proliferate(
                 {
                     GameStarter: this,
-                    MenuGrapher: this.MenuGrapher,
                     openItemsMenuCallback: this.menus.openItemsMenu.bind(this.menus),
                     openActorsMenuCallback: this.menus.openPokemonMenu.bind(this.menus)
                 },

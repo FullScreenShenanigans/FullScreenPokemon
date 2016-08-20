@@ -1,3 +1,4 @@
+/// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/ObjectMakr.d.ts" />
 declare namespace MapsCreatr {
     /**

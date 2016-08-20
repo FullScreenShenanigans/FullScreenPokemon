@@ -346,6 +346,14 @@ declare namespace TimeHandlr {
          */
         count: number;
         /**
+         * Computes a value as either a raw Number or a Function.
+         *
+         * @param value   The value to be computed.
+         * @param args   Any additional arguments, if value is a Function.
+         * @returns A numeric equivalent of the value.
+         */
+        static runCalculator(value: number | INumericCalculator, ...args: any[]): number;
+        /**
          * Initializes a new instance of the Event class.
          *
          * @param callback   A callback to be run some number of times. If it returns
@@ -363,14 +371,6 @@ declare namespace TimeHandlr {
          * @returns The new call time.
          */
         scheduleNextRepeat(): number;
-        /**
-         * Computes a value as either a raw Number or a Function.
-         *
-         * @param value   The value to be computed.
-         * @param args   Any additional arguments, if value is a Function.
-         * @returns A numeric equivalent of the value.
-         */
-        static runCalculator(value: number | INumericCalculator, ...args: any[]): number;
     }
     /**
      * A flexible, pausable alternative to setTimeout.

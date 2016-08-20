@@ -270,10 +270,14 @@ declare namespace InputWritr {
      * A mapping of events to their key codes, to their callbacks.
      */
     interface ITriggerContainer {
-        [i: string]: {
-            [i: string]: ITriggerCallback;
-            [i: number]: ITriggerCallback;
-        };
+        [i: string]: ITriggerGroup;
+    }
+    /**
+     * A mapping of key codes to callbacks.
+     */
+    interface ITriggerGroup {
+        [i: string]: ITriggerCallback;
+        [j: number]: ITriggerCallback;
     }
     /**
      * Function to determine whether some functionality is available.

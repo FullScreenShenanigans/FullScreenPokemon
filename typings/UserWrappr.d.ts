@@ -1,19 +1,8 @@
-/// <reference path="../typings/AreaSpawnr.d.ts" />
 /// <reference path="../typings/DeviceLayr.d.ts" />
-/// <reference path="../typings/FPSAnalyzr.d.ts" />
 /// <reference path="../typings/GamesRunnr.d.ts" />
-/// <reference path="../typings/GroupHoldr.d.ts" />
 /// <reference path="../typings/InputWritr.d.ts" />
 /// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/LevelEditr.d.ts" />
-/// <reference path="../typings/MapsCreatr.d.ts" />
-/// <reference path="../typings/MapScreenr.d.ts" />
-/// <reference path="../typings/ObjectMakr.d.ts" />
-/// <reference path="../typings/PixelDrawr.d.ts" />
-/// <reference path="../typings/PixelRendr.d.ts" />
-/// <reference path="../typings/QuadsKeepr.d.ts" />
-/// <reference path="../typings/StringFilr.d.ts" />
-/// <reference path="../typings/TimeHandlr.d.ts" />
 declare namespace UserWrappr.Generators {
     /**
      * Base class for options generators. These all store a UserWrapper and

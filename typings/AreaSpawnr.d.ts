@@ -1,6 +1,7 @@
 /// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/MapsCreatr.d.ts" />
 /// <reference path="../typings/MapScreenr.d.ts" />
+/// <reference path="../typings/ObjectMakr.d.ts" />
 declare namespace AreaSpawnr {
     /**
      * A Function to add a map command, such as an after or stretch.

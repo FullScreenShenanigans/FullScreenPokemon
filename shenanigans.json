@@ -28,9 +28,9 @@
     "TimeHandlr": "^0.5.2",
     "TouchPassr": "^0.5.1",
     "WorldSeedr": "^0.5.1",
-    "GameStartr": "^0.5.3",
+    "GameStartr": "^0.5.2",
     "MenuGraphr": "^0.5.3",
-    "UserWrappr": "^0.5.2"
+    "UserWrappr": "^0.5.3"
   },
   "externals": [
     {

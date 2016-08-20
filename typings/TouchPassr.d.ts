@@ -1,4 +1,5 @@
 /// <reference path="../typings/InputWritr.d.ts" />
+/// <reference path="../typings/ItemsHoldr.d.ts" />
 declare namespace TouchPassr {
     /**
      * Abstract class for on-screen controls. Element creation for .element

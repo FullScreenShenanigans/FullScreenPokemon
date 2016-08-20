@@ -1,4 +1,4 @@
-/// <reference path="../typings/itemsholdr.d.ts" />
+/// <reference path="../typings/ItemsHoldr.d.ts" />
 declare namespace ModAttachr {
     /**
      * General schema for a mod, including its name, events with callbacks,

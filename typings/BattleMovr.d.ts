@@ -1,17 +1,30 @@
-/// <reference path="../typings/AreaSpawnr.d.ts" />
 /// <reference path="../typings/ChangeLinr.d.ts" />
+/// <reference path="../typings/StringFilr.d.ts" />
+/// <reference path="../typings/MapScreenr.d.ts" />
+/// <reference path="../typings/ItemsHoldr.d.ts" />
+/// <reference path="../typings/DeviceLayr.d.ts" />
+/// <reference path="../typings/EightBittr.d.ts" />
+/// <reference path="../typings/AudioPlayr.d.ts" />
+/// <reference path="../typings/FPSAnalyzr.d.ts" />
+/// <reference path="../typings/GamesRunnr.d.ts" />
 /// <reference path="../typings/GroupHoldr.d.ts" />
 /// <reference path="../typings/InputWritr.d.ts" />
-/// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/MapsCreatr.d.ts" />
-/// <reference path="../typings/MapScreenr.d.ts" />
-/// <reference path="../typings/MenuGraphr.d.ts" />
+/// <reference path="../typings/MathDecidr.d.ts" />
+/// <reference path="../typings/ModAttachr.d.ts" />
+/// <reference path="../typings/NumberMakr.d.ts" />
 /// <reference path="../typings/ObjectMakr.d.ts" />
-/// <reference path="../typings/PixelDrawr.d.ts" />
-/// <reference path="../typings/PixelRendr.d.ts" />
 /// <reference path="../typings/QuadsKeepr.d.ts" />
-/// <reference path="../typings/StringFilr.d.ts" />
+/// <reference path="../typings/AreaSpawnr.d.ts" />
+/// <reference path="../typings/PixelRendr.d.ts" />
+/// <reference path="../typings/PixelDrawr.d.ts" />
+/// <reference path="../typings/ScenePlayr.d.ts" />
+/// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
+/// <reference path="../typings/TouchPassr.d.ts" />
+/// <reference path="../typings/WorldSeedr.d.ts" />
+/// <reference path="../typings/GameStartr.d.ts" />
+/// <reference path="../typings/MenuGraphr.d.ts" />
 declare namespace BattleMovr {
     /**
      * A driver for RPG-like battles between two collections of actors.
@@ -21,10 +34,6 @@ declare namespace BattleMovr {
          * The IGameStartr providing Thing and actor informtaion.
          */
         private GameStarter;
-        /**
-         * The IMenuGraphr whose menus are to indicate battle statuses.
-         */
-        private MenuGrapher;
         /**
          *
          */
@@ -154,16 +163,8 @@ declare namespace BattleMovr {
          */
         deleteBackground(): void;
     }
-    interface IGameStartr extends EightBittr.EightBittr {
-        GroupHolder: GroupHoldr.IGroupHoldr;
-        MapScreener: MapScreenr.IMapScreenr;
-        MathDecider: MathDecidr.IMathDecidr;
-        ObjectMaker: ObjectMakr.IObjectMakr;
-        ScenePlayer: ScenePlayr.IScenePlayr;
-        addThing(thing: string | IThing | any[], left?: number, top?: number): IThing;
-        killNormal(thing: IThing): void;
-        setHeight(thing: IThing, height: number): void;
-        setWidth(thing: IThing, width: number): void;
+    interface IGameStartr extends GameStartr.GameStartr {
+        MenuGrapher: MenuGraphr.IMenuGraphr;
     }
     interface IPosition {
         left?: number;
@@ -173,7 +174,7 @@ declare namespace BattleMovr {
         menu?: IThing;
         [i: string]: IThing;
     }
-    interface IThing extends EightBittr.IThing {
+    interface IThing extends GameStartr.IThing {
         groupType: string;
     }
     interface IMenu extends IThing {
@@ -247,7 +248,6 @@ declare namespace BattleMovr {
     }
     interface IBattleMovrSettings {
         GameStarter: IGameStartr;
-        MenuGrapher: MenuGraphr.IMenuGraphr;
         battleMenuName: string;
         battleOptionNames: string;
         menuNames: string;

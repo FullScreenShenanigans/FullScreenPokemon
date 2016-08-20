@@ -296,6 +296,12 @@ declare namespace PixelRendr {
          */
         getSpriteBase(key: string): Uint8ClampedArray | ISpriteMultiple;
         /**
+         * Replaces the current palette with a new one.
+         *
+         * @param palette   The new palette to replace the current one.
+         */
+        changePalette(palette: IPalette): void;
+        /**
          * Standard render function. Given a key, this finds the raw information via
          * BaseFiler and processes it using ProcessorDims. Attributes are needed so
          * the ProcessorDims can stretch it on width and height.
@@ -487,6 +493,12 @@ declare namespace PixelRendr {
          * @param key   The key of the sprite to render.
          */
         resetRender(key: string): void;
+        /**
+         * Replaces the current palette with a new one.
+         *
+         * @param palette   The new palette to replace the current one.
+         */
+        changePalette(palette: IPalette): void;
         /**
          * Standard render function. Given a key, this finds the raw information via
          * BaseFiler and processes it using ProcessorDims. Attributes are needed so
@@ -766,6 +778,12 @@ declare namespace PixelRendr {
          * @returns The pixels from information, combined.
          */
         private imageCombinePixels(information);
+        /**
+         * Sets the palette and digitsize Default/digitsplit based off that palette.
+         *
+         * @param palette   The palette being assigned to paletteDefault.
+         */
+        private setPalette(palette);
         /**
          * Determines how many digits will be required to represent a member of
          * the palette.
