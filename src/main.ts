@@ -2,9 +2,6 @@
 
 /* tslint:disable */
 declare var require: any;
-if (UserWrappr) {
-    throw new Error(document.body.innerHTML);
-}
 
 const onLoad: () => void = (): void => {
     if (typeof require === "undefined") {
