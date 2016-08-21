@@ -45,7 +45,7 @@
     "worldseedr": "^0.5.1",
     "gamestartr": "^0.5.2",
     "menugraphr": "^0.5.3",
-    "userwrappr": "^0.5.3",
+    "userwrappr": "^0.5.4",
     "js-beautify": "^1.6.3"
   },
   "devDependencies": {

@@ -30,7 +30,7 @@
     "WorldSeedr": "^0.5.1",
     "GameStartr": "^0.5.2",
     "MenuGraphr": "^0.5.3",
-    "UserWrappr": "^0.5.3"
+    "UserWrappr": "^0.5.4"
   },
   "externals": [
     {
