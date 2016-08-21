@@ -94,7 +94,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             ]);
 
         this.EightBitter.TimeHandler.addEvent(
-            (): void => this.EightBitter.MenuGrapher.deleteMenu("GeneralText"),
+            (): void => this.EightBitter.MenuGrapher.deleteAllMenus(),
             49);
     }
 
