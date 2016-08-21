@@ -9,13 +9,11 @@ if (typeof require === "undefined") {
             (window as any).FullScreenPokemon.FullScreenPokemon.prototype.settings.ui);
         window.removeEventListener("load", onLoad);
     };
+    window.addEventListener("load", onLoad);
 } else {
     require(["FullScreenPokemon"], (FSP: any): void => {
         new UserWrappr.UserWrappr(
             (FSP || (window as any).FullScreenPokemon).FullScreenPokemon.prototype.settings.ui);
     });
 }
-
-
-window.addEventListener("load", onload);
 /* tslint:enable */
