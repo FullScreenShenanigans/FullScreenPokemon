@@ -123,8 +123,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         link.setAttribute(
             "href",
             "data:text/json;charset=utf-8," + encodeURIComponent(
-                this.EightBitter.LevelEditor.beautify(
-                    JSON.stringify(this.EightBitter.ItemsHolder.exportItems()))));
+                JSON.stringify(this.EightBitter.ItemsHolder.exportItems())));
 
         this.EightBitter.container.appendChild(link);
         link.click();
