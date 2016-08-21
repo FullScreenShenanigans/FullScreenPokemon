@@ -2,6 +2,9 @@
 
 /* tslint:disable */
 declare var require: any;
+if (UserWrappr) {
+    throw new Error(document.body.innerHTML);
+}
 if (typeof require === "undefined") {
     new UserWrappr.UserWrappr((window as any).FullScreenPokemon.FullScreenPokemon.prototype.settings.ui);
 } else {
