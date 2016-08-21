@@ -1306,17 +1306,17 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param args   Settings for the routine.
      */
     public cutsceneBattleAttackGrowl(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
-        let attackerName: string = args.attackerName;
-        let defenderName: string = args.defenderName;
-        let attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
-        let defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
-        let direction: number = attackerName === "player" ? 1 : -1;
-        let notes: IThing[] = [
+        const attackerName: string = args.attackerName;
+        const defenderName: string = args.defenderName;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const direction: number = attackerName === "player" ? 1 : -1;
+        const notes: IThing[] = [
             this.EightBitter.ObjectMaker.make("Note"),
             this.EightBitter.ObjectMaker.make("Note")
         ];
-        let menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        let dt: number = 10;
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const dt: number = 10;
         let startX: number;
         let startY: number;
         let movement: (note: IThing, dx: number) => void = (note: IThing, dx: number): void => {
@@ -1368,8 +1368,12 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         movement(notes[0], dt);
         movement(notes[1], dt + 2);
 
-        this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.killNormal, 5 * dt, notes[0]);
-        this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.killNormal, 5 * dt + 2, notes[1]);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.killNormal(notes[0]),
+            5 * dt);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.killNormal(notes[1]),
+            5 * dt + 2);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
@@ -1466,9 +1470,15 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.physics.shiftHoriz(attacker, dx * direction);
 
-        this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.shiftHoriz, dt, attacker, -dx * direction);
-        this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.shiftHoriz, dt * 2, attacker, dx * direction);
-        this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.shiftHoriz, dt * 3, attacker, -dx * direction);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.shiftHoriz(attacker, -dx * direction),
+            dt);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.shiftHoriz(attacker, dx * direction),
+            dt * 2);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.shiftHoriz(attacker, -dx * direction),
+            dt * 3);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
@@ -1496,14 +1506,14 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param args   Settings for the routine.
      */
     public cutsceneBattleAttackScratch(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
-        let defenderName: string = args.defenderName;
-        let defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
-        let dt: number = 1;
-        let direction: number = defenderName === "opponent" ? -1 : 1;
-        let differenceX: number = defender.width / 2 * this.EightBitter.unitsize;
-        let lineArray: IThing[] = [];
-        let menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        let scratches: IThing[] = [
+        const defenderName: string = args.defenderName;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const dt: number = 1;
+        const direction: number = defenderName === "opponent" ? -1 : 1;
+        const differenceX: number = defender.width / 2 * this.EightBitter.unitsize;
+        const lineArray: IThing[] = [];
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const scratches: IThing[] = [
             this.EightBitter.ObjectMaker.make("ExplosionSmall"),
             this.EightBitter.ObjectMaker.make("ExplosionSmall"),
             this.EightBitter.ObjectMaker.make("ExplosionSmall")
@@ -1520,20 +1530,24 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         }
 
         this.EightBitter.things.add(scratches[0], startX, startY);
-        let offset: number = scratches[0].width * this.EightBitter.unitsize / 2;
+        const offset: number = scratches[0].width * this.EightBitter.unitsize / 2;
         this.EightBitter.things.add(scratches[1], startX + offset * direction * -1, startY + offset);
         this.EightBitter.things.add(scratches[2], startX + offset * direction * -2, startY + offset * 2);
 
         this.EightBitter.TimeHandler.addEventInterval(
             (): void => {
-                for (let scratch of scratches) {
-                    let left: number = direction === -1 ? scratch.left : scratch.right - 3 * this.EightBitter.unitsize;
-                    let top: number =  scratch.bottom - 3 * this.EightBitter.unitsize;
+                for (const scratch of scratches) {
+                    const left: number = direction === -1 ? scratch.left : scratch.right - 3 * this.EightBitter.unitsize;
+                    const top: number =  scratch.bottom - 3 * this.EightBitter.unitsize;
 
-                    this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.shiftHoriz, dt, scratch, differenceX * direction / 16);
-                    this.EightBitter.TimeHandler.addEvent(this.EightBitter.physics.shiftVert, dt, scratch, differenceX / 16);
+                    this.EightBitter.TimeHandler.addEvent(
+                        (): void => this.EightBitter.physics.shiftHoriz(scratch, differenceX * direction / 16),
+                        dt);
+                    this.EightBitter.TimeHandler.addEvent(
+                        (): void => this.EightBitter.physics.shiftVert(scratch, differenceX * direction / 16),
+                        dt);
 
-                    let line: IThing = this.EightBitter.things.add("ScratchLine", left, top);
+                    const line: IThing = this.EightBitter.things.add("ScratchLine", left, top);
                     if (direction === 1) {
                         this.EightBitter.graphics.flipHoriz(line);
                     }
@@ -1545,11 +1559,11 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
-                for (let scratch of scratches) {
+                for (const scratch of scratches) {
                     this.EightBitter.physics.killNormal(scratch);
                 }
 
-                for (let line of lineArray) {
+                for (const line of lineArray) {
                     this.EightBitter.physics.killNormal(line);
                 }
 
