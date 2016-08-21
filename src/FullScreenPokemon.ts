@@ -229,6 +229,7 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
 
         this.AreaSpawner.setCommandScope(this.maps);
         this.InputWriter.setEventScope(this.inputs);
+        this.MapsCreator.setScope(this.maps);
         this.TimeHandler.setClassScope(this.graphics);
         this.ThingHitter.setGeneratorScope(this.collisions);
     }

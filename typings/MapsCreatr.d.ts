@@ -278,6 +278,12 @@ declare namespace MapsCreatr {
          */
         getMapRaw(name: string): IMapRaw;
         /**
+         * Sets a scope to call macros with, if not this.
+         *
+         * @param scope   Sets a scope to call macros with, if not this.
+         */
+        setScope(scope?: any): void;
+        /**
          * Getter for a map under the maps container. If the map has not yet been
          * initialized that is done here as lazy loading.
          *
@@ -487,8 +493,7 @@ declare namespace MapsCreatr {
          */
         private requireEntrance;
         /**
-         * An optional scope to pass to macros as an argument after maps, instead
-         * of this MapsCreatr.
+         * An optional scope to call macros with, if not this.
          */
         private scope;
         /**
@@ -536,6 +541,12 @@ declare namespace MapsCreatr {
          * @returns The raw map keyed by the given name.
          */
         getMapRaw(name: string): IMapRaw;
+        /**
+         * Sets a scope to call macros with, if not this.
+         *
+         * @param scope   Sets a scope to call macros with, if not this.
+         */
+        setScope(scope?: any): void;
         /**
          * Getter for a map under the maps container. If the map has not yet been
          * initialized that is done here as lazy loading.
@@ -615,13 +626,13 @@ declare namespace MapsCreatr {
         /**
          * Converts the raw area settings in a Map into Area objects.
          *
-         * @param map   A map whose area settings should be parsed.
+         * @param map   A map whose areas should be parsed.
          */
         private setMapAreas(map);
         /**
          * Converts the raw location settings in a Map into Location objects.
          *
-         * @param {Map} map
+         * @param map   A map whose locations should be parsed.
          */
         private setMapLocations(map);
         /**
