@@ -2,11 +2,18 @@
 
 /* tslint:disable */
 declare var require: any;
+
 if (typeof require === "undefined") {
-    new UserWrappr.UserWrappr((window as any).FullScreenPokemon.FullScreenPokemon.prototype.settings.ui);
+    const onLoad: () => void = (): void => {
+        new UserWrappr.UserWrappr(
+            (window as any).FullScreenPokemon.FullScreenPokemon.prototype.settings.ui);
+        window.removeEventListener("load", onLoad);
+    };
+    window.addEventListener("load", onLoad);
 } else {
     require(["FullScreenPokemon"], (FSP: any): void => {
-        new UserWrappr.UserWrappr((FSP || (window as any).FullScreenPokemon).FullScreenPokemon.prototype.settings.ui);
+        new UserWrappr.UserWrappr(
+            (FSP || (window as any).FullScreenPokemon).FullScreenPokemon.prototype.settings.ui);
     });
 }
 /* tslint:enable */
