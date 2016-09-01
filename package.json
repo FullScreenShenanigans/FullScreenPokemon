@@ -1,10 +1,10 @@
 {
-  "name": "FullScreenPokemon",
-  "description": "An HTML5 remake of Nintendo's original Pokemon - expanded for the modern web.",
-  "version": "0.0.0",
+  "name": "fullscreenpokemon",
+  "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
+  "version": "0.5.4",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -14,23 +14,42 @@
     "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
   },
   "license": "MIT",
+  "dependencies": {
+    "changelinr": "^0.5.3",
+    "stringfilr": "^0.5.2",
+    "mapscreenr": "^0.5.2",
+    "itemsholdr": "^0.5.2",
+    "battlemovr": "^0.5.1",
+    "devicelayr": "^0.5.1",
+    "eightbittr": "^0.5.2",
+    "audioplayr": "^0.5.1",
+    "fpsanalyzr": "^0.5.1",
+    "gamesrunnr": "^0.5.4",
+    "groupholdr": "^0.5.1",
+    "inputwritr": "^0.5.2",
+    "leveleditr": "^0.5.2",
+    "mapscreatr": "^0.5.3",
+    "mathdecidr": "^0.5.1",
+    "modattachr": "^0.5.1",
+    "numbermakr": "^0.5.1",
+    "objectmakr": "^0.5.2",
+    "quadskeepr": "^0.5.2",
+    "areaspawnr": "^0.5.2",
+    "pixelrendr": "^0.5.2",
+    "pixeldrawr": "^0.5.1",
+    "sceneplayr": "^0.5.2",
+    "stateholdr": "^0.5.1",
+    "thinghittr": "^0.5.2",
+    "timehandlr": "^0.5.2",
+    "touchpassr": "^0.5.1",
+    "worldseedr": "^0.5.1",
+    "gamestartr": "^0.5.2",
+    "menugraphr": "^0.5.3",
+    "userwrappr": "^0.5.4",
+    "js-beautify": "^1.6.3"
+  },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-copy": "^0.8.2",
-    "grunt-contrib-cssmin": "^0.13.0",
-    "grunt-contrib-htmlmin": "^0.4.0",
-    "grunt-contrib-uglify": "^0.8.1",
-    "grunt-mocha-phantomjs": "^2.0.1",
-    "grunt-preprocess": "^5.1.0",
-    "grunt-processhtml": "^0.3.13",
-    "grunt-tslint": "^2.5.0",
-    "grunt-typescript": "^0.8.0",
-    "grunt-zip": "^0.17.1",
-    "mocha": "^2.4.5",
-    "tslint": "^3.13.0",
-    "typescript": "^1.8.10"
+    "gulp-shenanigans": "^0.5.12",
+    "@types/js-beautify": "0.0.27"
   }
 }

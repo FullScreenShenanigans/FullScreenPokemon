@@ -1,42 +1,20 @@
-#### *This project is __not__ stable enough to be played yet. If you're looking to play Pokemon, you're better off with an emulator.*
+# FullScreenPokemon
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon)
+[![NPM version](https://badge.fury.io/js/fullscreenpokemon.svg)](http://badge.fury.io/js/fullscreenpokemon)
 
----
-
-## FullScreenPokemon [![Build Status](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon.svg?branch=typescript)](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon)
-
-#### A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
+A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 
 
-## How to Play
+## Build Process
 
-Although you may no longer play on [fullscreenpokemon.com](http://www.fullscreenpokemon.com), it is easy to play your own copy.
+FullScreenPokemon uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
-#### Newcomers (non-coders)
+To build from scratch, install NodeJS and run the following commands:
 
-[Download the latest release .zip](https://github.com/FullScreenShenanigans/FullScreenPokemon/archive/master.zip) of this project, extract that onto your computer, and open **index.html** in a browser (preferably Google Chrome). That's it!
+```
+npm install -g gulp
+npm install
+gulp
+```
 
-#### In your own site
-
-Upload the latest release of FullScreenPokemon (or your built version) to your FTP server. 
-
-
-## Developing
-
-#### Build Process
-
-FullScreenPokemon uses [Grunt](http://gruntjs.com/) to automate building, which requires [Node.js](http://node.js.org). The process is straightforward; see [Grunt's help page](http://gruntjs.com/getting-started).
-
-#### Coding
-
-FullScreenPokemon is built on a modular framework called GameStartr. The [FullScreenShenanigans](https://github.com/FullScreenShenanigans/) organization contains GameStartr, its parent class EightBittr, and the ~2 dozen modules used by the GameStartr framework. These all have their own README files, which you should skim before developing for FullScreenPokemon itself.
-
-All source code is in the [Source](Source/) directory.
-
-The FullScreenPokemon.ts class declaration contains class functions and some constants, while static settings to be added to the FullScreenPokemon prototype, such as map layouts and object attributes, are stored in files under [Source/settings](Source/settings), such as audio.js and collisions.js.
-
-
-## Legal
-
-This is released under the [MIT License](http://mit-license.org/) (see [License.txt](LICENSE.txt)). 
-
-The FullScreenMario project started October 21st, 2012. The initial beta release in October 2013 saw the [primary host website](http://www.fullscreenmario.com) receive approximately 2.68 million unique visitors within a month, after which Nintendo shut the site down with a DMCA complaint (no action was taken against the authors, GitHub, or other hosting websites). The coding project then underwent an extensive rewrite and architecture change to become a modular project centered on the GameStartr platform, followed by a complete conversion to TypeScript. FullScreenPokemon uses the same GameStartr engine.
+See [Build Details](https://github.com/FullScreenShenanigans/Documentation/blob/master/Build%20Details.md) for detailed Gulp usage.
