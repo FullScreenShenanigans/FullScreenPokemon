@@ -28,7 +28,7 @@
     "groupholdr": "^0.5.1",
     "inputwritr": "^0.5.2",
     "leveleditr": "^0.5.2",
-    "mapscreatr": "^0.5.3",
+    "mapscreatr": "^0.5.4",
     "mathdecidr": "^0.5.1",
     "modattachr": "^0.5.1",
     "numbermakr": "^0.5.1",
@@ -43,13 +43,13 @@
     "timehandlr": "^0.5.2",
     "touchpassr": "^0.5.1",
     "worldseedr": "^0.5.1",
-    "gamestartr": "^0.5.2",
+    "gamestartr": "^0.5.3",
     "menugraphr": "^0.5.3",
     "userwrappr": "^0.5.4",
     "js-beautify": "^1.6.3"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.12",
+    "gulp-shenanigans": "^0.5.13",
     "@types/js-beautify": "0.0.27"
   }
 }

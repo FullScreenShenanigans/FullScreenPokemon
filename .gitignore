@@ -1,4 +1,5 @@
 lib/**
+src/**/*.css
 src/**/*.js*
 ~src/main.js
 test/**/*.js

@@ -13,7 +13,7 @@
     "GroupHoldr": "^0.5.1",
     "InputWritr": "^0.5.2",
     "LevelEditr": "^0.5.2",
-    "MapsCreatr": "^0.5.3",
+    "MapsCreatr": "^0.5.4",
     "MathDecidr": "^0.5.1",
     "ModAttachr": "^0.5.1",
     "NumberMakr": "^0.5.1",
@@ -28,7 +28,7 @@
     "TimeHandlr": "^0.5.2",
     "TouchPassr": "^0.5.1",
     "WorldSeedr": "^0.5.1",
-    "GameStartr": "^0.5.2",
+    "GameStartr": "^0.5.3",
     "MenuGraphr": "^0.5.3",
     "UserWrappr": "^0.5.4"
   },
