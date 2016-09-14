@@ -10,7 +10,10 @@ if (typeof require === "undefined") {
         window.removeEventListener("load", onLoad);
     };
     window.addEventListener("load", onLoad);
-} else {
+}
+// https://github.com/FullScreenShenanigans/gulp-shenanigans/issues/22
+// FSP is being required during testing, which throws out-of-test errors
+else if (typeof mocha !== "undefined" && typeof chai !== "undefined") {
     require(["FullScreenPokemon"], (FSP: any): void => {
         new UserWrappr.UserWrappr(
             (FSP || (window as any).FullScreenPokemon).FullScreenPokemon.prototype.settings.ui);
