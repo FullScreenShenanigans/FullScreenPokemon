@@ -253,11 +253,13 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         this.animateCharacterPreventWalking(thing);
 
         this.EightBitter.battles.startBattle({
-            opponent: {
-                name: chosen.title,
-                actors: [chosenPokemon],
-                category: "Wild",
-                sprite: chosen.title.join("") + "Front"
+            battlers: {
+                opponent: {
+                    name: chosen.title,
+                    actors: [chosenPokemon],
+                    category: "Wild",
+                    sprite: chosen.title.join("") + "Front"
+                }
             }
         });
     }
@@ -273,16 +275,18 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         const battleSprite: string = other.battleSprite || battleName;
 
         this.EightBitter.battles.startBattle({
-            opponent: {
-                name: battleName.split(""),
-                sprite: battleSprite + "Front",
-                category: "Trainer",
-                hasActors: true,
-                reward: other.reward,
-                actors: other.actors.map(
-                    (schema: IWildPokemonSchema): IPokemon => {
-                        return this.EightBitter.utilities.createPokemon(schema);
-                    })
+            battlers: {
+                opponent: {
+                    name: battleName.split(""),
+                    sprite: battleSprite + "Front",
+                    category: "Trainer",
+                    hasActors: true,
+                    reward: other.reward,
+                    actors: other.actors.map(
+                        (schema: IWildPokemonSchema): IPokemon => {
+                            return this.EightBitter.utilities.createPokemon(schema);
+                        })
+                }
             },
             textStart: ["", " wants to fight!"],
             textDefeat: other.textDefeat,

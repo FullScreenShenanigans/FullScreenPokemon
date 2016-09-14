@@ -5,8 +5,8 @@ import { Unitsize } from "../Constants";
 import { Cycling } from "../Cycling";
 import { Fishing } from "../Fishing";
 import {
-    IBattleBall, IBattleInfo, IBattleModification, IBattleThingInfo,
-    ICharacter, IExperience, IGrass, IHMMoveSchema,
+    IBattleBall, IBattleInfo, IBattleModification, IBattler,
+    ICharacter, IGrass, IHMMoveSchema,
     IMathConstants, IMathDecidrCustoms, IMathEquations, IMovePossibility,
     IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod
 } from "../IFullScreenPokemon";
@@ -72,8 +72,9 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 for (let i: number = Math.max(end - 4, 0); i < end; i += 1) {
                     move = possibilities[i];
                     newMove = {
-                        "title": move.move,
-                        "remaining": constants.moves[move.move].PP
+                        title: move.move,
+                        remaining: constants.moves[move.move].PP,
+                        uses: constants.moves[move.move].PP
                     };
 
                     output.push(newMove);
@@ -111,14 +112,10 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "Special": 0
                 };
             },
-            "newPokemonExperience": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): IExperience {
-                const current: number = this.compute("experienceStarting", title, level);
-                const next: number = this.compute("experienceStarting", title, level + 1);
-
+            "newPokemonExperience": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): BattleMovr.IActorExperience {
                 return {
-                    "current": current,
-                    "next": next,
-                    "remaining": next - current
+                    current: this.compute("experienceStarting", title, level),
+                    next: this.compute("experienceStarting", title, level + 1)
                 };
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
@@ -240,7 +237,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
             // TO DO: Also filter for moves with > 0 remaining remaining...
-            "opponentMove": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, opponent: IBattleThingInfo): string {
+            "opponentMove": function (constants: IMathConstants, equations: IMathEquations, player: IBattler, opponent: IBattler): string {
                 let possibilities: IMovePossibility[] = opponent.selectedActor.moves.map(
                     (move: BattleMovr.IMove): IMovePossibility => {
                         return {
@@ -392,7 +389,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // http://bulbapedia.bulbagarden.net/wiki/Priority
             // TO DO: Account for items, switching, etc.
             // TO DO: Factor in spec differences from paralyze, etc.
-            "playerMovesFirst": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, choicePlayer: string, opponent: IBattleThingInfo, choiceOpponent: string): boolean {
+            "playerMovesFirst": function (constants: IMathConstants, equations: IMathEquations, player: IBattler, choicePlayer: string, opponent: IBattler, choiceOpponent: string): boolean {
                 const movePlayer: IMoveSchema = constants.moves[choicePlayer];
                 const moveOpponent: IMoveSchema = constants.moves[choiceOpponent];
 
@@ -495,7 +492,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 }
             },
             // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
-            "experienceGained": function (constants: IMathConstants, equations: IMathEquations, player: IBattleThingInfo, opponent: IBattleThingInfo): number {
+            "experienceGained": function (constants: IMathConstants, equations: IMathEquations, player: IBattler, opponent: IBattler): number {
                 // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
                 let a: number = opponent.category === "Trainer" ? 1.5 : 1;
 

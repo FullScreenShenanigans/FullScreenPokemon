@@ -326,8 +326,32 @@ export class FullScreenPokemon extends GameStartr.GameStartr {
             this.utilities.proliferate(
                 {
                     GameStarter: this,
-                    openItemsMenuCallback: this.menus.openItemsMenu.bind(this.menus),
-                    openActorsMenuCallback: this.menus.openPokemonMenu.bind(this.menus)
+                    battleOptions: [
+                        {
+                            text: "FIGHT",
+                            callback: (): void => {
+                                this.battles.openBattleMovesMenu();
+                            }
+                        },
+                        {
+                            text: "ITEM",
+                            callback: (): void => {
+                                this.battles.openBattleItemsMenu();
+                            }
+                        },
+                        {
+                            text: ["Poke", "Mon"],
+                            callback: (): void => {
+                                this.battles.openBattlePokemonMenu();
+                            }
+                        },
+                        {
+                            text: "RUN",
+                            callback: (): void => {
+                                this.battles.startBattleExit();
+                            }
+                        }
+                    ]
                 },
                 this.settings.battles));
     }

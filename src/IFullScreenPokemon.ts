@@ -75,11 +75,11 @@ export interface IThingsById {
 /**
  * Settings regarding in-game battles, particularly for an IBattleMovr.
  */
-export interface IBattleMovrCustoms extends GameStartr.IGameStartrSettingsObject {
+export interface IBattleMovrCustoms extends BattleMovr.IBattleMovrSettings, GameStartr.IGameStartrSettingsObject {
     /**
      * The IMenuGraphr handling menu creation.
      */
-    MenuGrapher: MenuGraphr.IMenuGraphr;
+    MenuGrapher?: MenuGraphr.IMenuGraphr;
 }
 
 /**
@@ -293,7 +293,11 @@ export interface IMathEquations extends MathDecidr.IEquations {
      * @param level   The level of the Pokemon.
      * @returns How much experience the Pokemon should start with.
      */
-    newPokemonExperience: (constants: IMathConstants, equations: IMathEquations, title: string[], level: number) => IExperience;
+    newPokemonExperience: (
+        constants: IMathConstants,
+        equations: IMathEquations,
+        title: string[],
+        level: number) => BattleMovr.IActorExperience;
 
     /**
      * Computes a Pokemon's new statistic based on its IVs and EVs.
@@ -366,8 +370,8 @@ export interface IMathEquations extends MathDecidr.IEquations {
     opponentMove: (
         constants: IMathConstants,
         equations: IMathEquations,
-        player: IBattleThingInfo,
-        opponent: IBattleThingInfo) => string;
+        player: IBattler,
+        opponent: IBattler) => string;
 
     /**
      * Checks whether a Pokemon contains any of the given types.
@@ -422,9 +426,9 @@ export interface IMathEquations extends MathDecidr.IEquations {
     playerMovesFirst: (
         constants: IMathConstants,
         equations: IMathEquations,
-        player: IBattleThingInfo,
+        player: IBattler,
         choicePlayer: string,
-        opponent: IBattleThingInfo,
+        opponent: IBattler,
         choiceOpponent: string) => boolean;
 
     /**
@@ -504,8 +508,8 @@ export interface IMathEquations extends MathDecidr.IEquations {
     experienceGained: (
         constants: IMathConstants,
         equations: IMathEquations,
-        player: IBattleThingInfo,
-        opponent: IBattleThingInfo) => number;
+        player: IBattler,
+        opponent: IBattler) => number;
 
     /**
      * Computes how wide a health bar should be.
@@ -1351,6 +1355,11 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
     badge?: string;
 
     /**
+     * 
+     */
+    battlers: IBattlers;
+
+    /**
      * How many times the player has attempted to flee.
      */
     currentEscapeAttempts?: number;
@@ -1379,16 +1388,6 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
      * A callback for after showing the player menu.
      */
     onShowPlayerMenu?: () => void;
-
-    /**
-     * The opponent, including its actors (Pokemon) and settings.
-     */
-    opponent?: IBattleThingInfo;
-
-    /**
-     * The player, including its actors (Pokemon) and settings.
-     */
-    player?: IBattleThingInfo;
 
     /**
      * Text to display after a battle victory when in the real world again.
@@ -1429,9 +1428,26 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
 }
 
 /**
+ * 
+ */
+export interface IBattlers extends BattleMovr.IBattlers {
+        /**
+         * The opponent battler's information.
+         */
+        opponent?: IBattler;
+
+        /**
+         * The player's battle information.
+         */
+        player?: IBattler;
+
+        [i: string]: IBattler;
+}
+
+/**
  * A trainer in battle, namely either the player or opponent.
  */
-export interface IBattleThingInfo extends BattleMovr.IBattleThingInfo {
+export interface IBattler extends BattleMovr.IBattler {
     /**
      * The trainer's available Pokemon.
      */
@@ -1458,6 +1474,111 @@ export interface IBattleThingInfo extends BattleMovr.IBattleThingInfo {
  */
 export interface IPokemon extends BattleMovr.IActor {
     /**
+     * Current (in-battle) Attack.
+     */
+    Attack: number;
+
+    /**
+     * Default Attack.
+     */
+    AttackNormal: number;
+
+    /**
+     * Current (in-battle) Defense.
+     */
+    Defense: number;
+
+    /**
+     * Default Defense.
+     */
+    DefenseNormal: number;
+
+    /**
+     * Accumulated effort value points.
+     */
+    EV: {
+        /**
+         * Attack EV points.
+         */
+        Attack: number;
+
+        /**
+         * Defense EV points.
+         */
+        Defense: number;
+
+        /**
+         * Special EV points.
+         */
+        Special: number;
+
+        /**
+         * Speed EV points.
+         */
+        Speed: number;
+    };
+
+    /**
+     * Current (in-battle) HP.
+     */
+    HP: number;
+
+    /**
+     * Default HP.
+     */
+    HPNormal: number;
+
+    /**
+     * Accumulated individual value points.
+     */
+    IV: {
+        /**
+         * Attack IV points.
+         */
+        Attack: number;
+
+        /**
+         * Defense IV points.
+         */
+        Defense: number;
+
+        /**
+         * HP IV points.
+         */
+        HP: number;
+
+        /**
+         * Special IV points.
+         */
+        Special: number;
+
+        /**
+         * Speed IV points.
+         */
+        Speed: number;
+    };
+
+    /**
+     * Current (in-battle) Special.
+     */
+    Special: number;
+
+    /**
+     * Default Special.
+     */
+    SpecialNormal: number;
+
+    /**
+     * Current (in-battle) Speed.
+     */
+    Speed: number;
+
+    /**
+     * Default Speed.
+     */
+    SpeedNormal: number;
+
+    /**
      * How difficult this is to catch, for the canCatchPokemon equation.
      */
     catchRate?: number;
@@ -1468,34 +1589,29 @@ export interface IPokemon extends BattleMovr.IActor {
     criticalHitProbability?: boolean;
 
     /**
-     * Whether the Pokemon was traded from another trainer.
+     * The Pokemon's nickname.
      */
-    traded?: boolean;
+    nickname: string[];
 
     /**
      * The level the Pokemon was before enabling the Level 100 mod.
      */
     previousLevel?: number;
-}
-
-/**
- * A Pokemon's level of experience.
- */
-export interface IExperience {
-    /**
-     * How much experience the Pokemon currently has.
-     */
-    current: number;
 
     /**
-     * The amount of experience required for the next level.
+     * Any current status, such as "Poison".
      */
-    next: number;
+    status: string;
 
     /**
-     * How much experience until the next level, as next - current.
+     * Whether the Pokemon was traded from another trainer.
      */
-    remaining: number;
+    traded?: boolean;
+
+    /**
+     * What types this Pokemon is, such as "Water".
+     */
+    types: string[];
 }
 
 /**
@@ -2671,7 +2787,7 @@ export interface IBattleActionRoutineSettings extends IBattleRoutineSettings {
     /**
      * Which battler this animation applies to.
      */
-    battlerName?: string;
+    battlerName?: "player" | "opponent";
 
     /**
      * How much damage this will do, if applicable.
@@ -2694,14 +2810,14 @@ export interface IBattleLevelRoutineSettings extends IBattleRoutineSettings {
  */
 export interface IBattleAttackRoutineSettings extends IBattleRoutineSettings {
     /**
-     * The attacking battler's name, as "player" or "opponent".
+     * The attacking battler's name.
      */
-    attackerName?: string;
+    attackerName?: "player" | "opponent";
 
     /**
-     * The defending battler's name, as "player" or "opponent".
+     * The defending battler's name.
      */
-    defenderName?: string;
+    defenderName?: "player" | "opponent";
 }
 
 /**

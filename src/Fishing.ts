@@ -78,11 +78,13 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
                     ],
                     (): void => {
                         this.EightBitter.battles.startBattle({
-                            opponent: {
-                                name: chosenPokemon.title,
-                                actors: [chosenPokemon],
-                                category: "Wild",
-                                sprite: chosenPokemon.title.join("") + "Front"
+                            battlers: {
+                                opponent: {
+                                    name: chosenPokemon.title,
+                                    actors: [chosenPokemon],
+                                    category: "Wild",
+                                    sprite: chosenPokemon.title.join("") + "Front"
+                                }
                             }
                         });
                     });

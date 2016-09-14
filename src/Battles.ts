@@ -22,10 +22,10 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             "Flash"
         ];
         const animation: string = this.EightBitter.NumberMaker.randomArrayMember(animations);
-        let player: any = battleInfo.player;
+        let player: any = battleInfo.battlers.player;
 
         if (!player) {
-            battleInfo.player = player = {} as any;
+            battleInfo.battlers.player = player = {} as any;
         }
 
         player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
@@ -42,7 +42,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         (this.EightBitter.cutscenes as any)["cutsceneBattleTransition" + animation](
             {
                 battleInfo,
-                callback: (): void => this.EightBitter.BattleMover.startBattle(battleInfo as any)
+                callback: (): void => this.EightBitter.BattleMover.startBattle(battleInfo)
             }
         );
 
@@ -119,7 +119,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * @param menu   A menu to add the Things to.
      * @param battler   Information on the Pokemon to add balls for.
      */
-    public addBattleDisplayPokeballs(menu: IMenu, battler: BattleMovr.IBattleThingInfo, opposite?: boolean): void {
+    public addBattleDisplayPokeballs(menu: IMenu, battler: BattleMovr.IBattler, opposite?: boolean): void {
         const text: string[][] = [];
         let i: number;
 
@@ -141,12 +141,11 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
     /**
      * Adds a Pokemon's health display to its appropriate menu.
      * 
-     * @param battlerName   Which battler to add the display for, as "player"
-     *                      or "opponent".
+     * @param battlerName   Which battler to add the display for.
      */
-    public addBattleDisplayPokemonHealth(battlerName: string): void {
+    public addBattleDisplayPokemonHealth(battlerName: "player" | "opponent"): void {
         const battleInfo: IBattleInfo = this.EightBitter.BattleMover.getBattleInfo() as IBattleInfo;
-        const pokemon: IPokemon = (battleInfo as any)[battlerName].selectedActor;
+        const pokemon: IPokemon = battleInfo.battlers[battlerName].selectedActor;
         const menu: string = [
             "Battle",
             battlerName[0].toUpperCase(),
@@ -234,5 +233,87 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.C
                 hpNormal,
                 callback),
             2);
+    }
+
+    /**
+     * Opens the in-battle moves menu.
+     */
+    public openBattleMovesMenu(): void {
+        const actorMoves: BattleMovr.IMove[] = this.EightBitter.BattleMover.getBattleInfo().battlers.player.selectedActor.moves;
+        const moveOptions: any[] = [];
+
+        for (let i: number = 0; i < actorMoves.length; i += 1) {
+            const move: BattleMovr.IMove = actorMoves[i];
+
+            moveOptions.push({
+                text: move.title.toUpperCase(),
+                remaining: move.remaining,
+                callback: (title: string): void => {
+                    this.EightBitter.BattleMover.playMove(move.title);
+                }
+            });
+        }
+
+        for (let i: number = actorMoves.length; i < 4; i += 1) {
+            moveOptions.push({
+                text: "-"
+            });
+        }
+
+        this.EightBitter.MenuGrapher.createMenu("BattleFightList");
+        this.EightBitter.MenuGrapher.addMenuList("BattleFightList", {
+            "options": moveOptions
+        });
+        this.EightBitter.MenuGrapher.setActiveMenu("BattleFightList");
+    }
+
+    /**
+     * Opens the in-battle items menu.
+     */
+    public openBattleItemsMenu(): void {
+        this.EightBitter.menus.openPokemonMenu({
+            position: {
+                horizontal: "right",
+                vertical: "bottom",
+                offset: {
+                    left: 0
+                }
+            },
+            size: {
+                height: 44
+            },
+            container: "Battle",
+            backMenu: "BattleOptions"
+        });
+    }
+
+    /**
+     * Opens the in-battle Pokemon menu.
+     */
+    public openBattlePokemonMenu(): void {
+        this.EightBitter.menus.openItemsMenu({
+            backMenu: "BattleOptions",
+            container: "Battle"
+        });
+    }
+
+    /**
+     * Starts the dialog to exit a battle.
+     */
+    public startBattleExit(): void {
+        if (this.EightBitter.BattleMover.getBattleInfo().battlers.opponent.category === "Trainer") {
+            this.EightBitter.ScenePlayer.playRoutine("BattleExitFail");
+            return;
+        }
+
+        this.EightBitter.MenuGrapher.deleteMenu("BattleOptions");
+        this.EightBitter.MenuGrapher.addMenuDialog(
+            "GeneralText",
+            this.EightBitter.BattleMover.getBattleInfo().exitDialog
+                || this.EightBitter.BattleMover.getDefaults().exitDialog || "",
+            (): void => {
+                this.EightBitter.BattleMover.closeBattle();
+            });
+        this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 }
