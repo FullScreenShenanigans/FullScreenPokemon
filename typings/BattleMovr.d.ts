@@ -31,256 +31,459 @@ declare namespace BattleMovr {
      */
     class BattleMovr implements IBattleMovr {
         /**
-         * The IGameStartr providing Thing and actor informtaion.
+         * The IGameStartr providing Thing and actor information.
          */
-        private GameStarter;
+        protected GameStarter: IGameStartr;
         /**
-         *
+         * Names of known MenuGraphr menus.
          */
-        private things;
+        protected menuNames: IMenuNames;
         /**
-         * The type of Thing to create and use as the background.
+         * Option menus the player may select during battle.
+         */
+        protected battleOptions: IBattleOption[];
+        /**
+         * Default settings for running battles.
+         */
+        protected defaults: IBattleInfoDefaults;
+        /**
+         * Default positions of in-battle Things.
+         */
+        protected positions: IPositions;
+        /**
+         * Current settings for a running battle.
+         */
+        protected battleInfo: IBattleInfo;
+        /**
+         * All in-battle Things.
+         */
+        protected things: IThingsContainer;
+        /**
+         * The type of Thing to create and use as a background.
          */
         private backgroundType;
         /**
-         *
+         * The created Thing used as a background.
          */
         private backgroundThing;
         /**
-         *
-         */
-        private battleMenuName;
-        /**
-         *
-         */
-        private battleOptionNames;
-        /**
-         *
-         */
-        private menuNames;
-        /**
-         *
-         */
-        private battleInfo;
-        /**
-         *
+         * Whether a battle is currently happening.
          */
         private inBattle;
         /**
+         * Initializes a new instance of the BattleMovr class.
          *
-         */
-        private defaults;
-        /**
-         *
-         */
-        private positions;
-        /**
-         *
-         */
-        private openItemsMenuCallback;
-        /**
-         *
-         */
-        private openActorsMenuCallback;
-        /**
-         * @param {IBattleMovrSettings} settings
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IBattleMovrSettings);
         /**
-         *
+         * @returns The IGameStartr providing Thing and actor information.
          */
         getGameStarter(): IGameStartr;
         /**
-         *
+         * @returns Names of known MenuGraphr menus.
+         */
+        getMenuNames(): IMenuNames;
+        /**
+         * @returns Default settings for running battles.
+         */
+        getDefaults(): IBattleInfoDefaults;
+        /**
+         * @returns All in-battle Things.
          */
         getThings(): IThingsContainer;
         /**
-         *
+         * @param name   A name of an in-battle Thing.
+         * @returns The named in-battle Thing.
          */
-        getThing(name: string): IThing;
+        getThing(name: string): GameStartr.IThing;
         /**
-         *
+         * @returns Current settings for a running battle.
          */
         getBattleInfo(): IBattleInfo;
         /**
-         *
-         */
-        getBackgroundType(): string;
-        /**
-         *
-         */
-        getBackgroundThing(): IThing;
-        /**
-         *
+         * @returns Whether a battle is currently happening.
          */
         getInBattle(): boolean;
         /**
-         *
+         * @returns The type of Thing to create and use as a background.
          */
-        startBattle(settings: IBattleSettings): void;
+        getBackgroundType(): string;
         /**
+         * @returns The created Thing used as a background.
+         */
+        getBackgroundThing(): GameStartr.IThing;
+        /**
+         * Starts a battle.
          *
+         * @param settings   Settings for running the battle.
+         */
+        startBattle(settings: IBattleInfo): void;
+        /**
+         * Closes any current battle.
+         *
+         * @param callback   A callback to run after the battle is closed.
+         * @remarks The callback will run after deleting menus but before the next cutscene.
          */
         closeBattle(callback?: () => void): void;
         /**
-         *
+         * Shows the player menu.
          */
         showPlayerMenu(): void;
         /**
+         * Creates and displays an in-battle Thing.
          *
+         * @param name   The storage name of the Thing.
+         * @param title   The Thing's in-game type.
+         * @param settings   Any additional settings to create the Thing.
+         * @returns The created Thing.
          */
-        setThing(name: string, title: string, settings?: any): IThing;
+        setThing(name: string, title: string, settings?: any): GameStartr.IThing;
         /**
+         * Starts a round of battle with a player's move.
          *
-         */
-        openMovesMenu(): void;
-        /**
-         *
-         */
-        openItemsMenu(): void;
-        /**
-         *
-         */
-        openActorsMenu(callback: (settings: any) => void): void;
-        /**
-         *
+         * @param choisePlayer   The player's move choice.
          */
         playMove(choicePlayer: string): void;
         /**
+         * Switches a battler's actor.
          *
+         * @param battlerName   The name of the battler.
          */
-        switchActor(battlerName: string, i: number): void;
+        switchActor(battlerName: "player" | "opponent", i: number): void;
         /**
+         * Creates the battle background.
          *
+         * @param type   A type of background, if not the default.
          */
-        startBattleExit(): void;
+        createBackground(type?: string): void;
         /**
-         *
-         */
-        createBackground(): void;
-        /**
-         *
+         * Deletes the battle background.
          */
         deleteBackground(): void;
     }
+    /**
+     * Extended IGameStartr with menus.
+     */
     interface IGameStartr extends GameStartr.GameStartr {
+        /**
+         * In-game menu and dialog creation and management for GameStartr.
+         */
         MenuGrapher: MenuGraphr.IMenuGraphr;
     }
+    /**
+     * Description of a menu available during battle.
+     */
+    interface IBattleOption {
+        /**
+         * A callback that opens the menu.
+         */
+        callback: () => void;
+        /**
+         * Text displayed in the options menu.
+         */
+        text: MenuGraphr.IMenuDialogRaw;
+    }
+    /**
+     * Names of known MenuGraphr menus.
+     */
+    interface IMenuNames {
+        /**
+         * The primary backdrop battle menu.
+         */
+        battle: string;
+        /**
+         * The initial display when a battle starts.
+         */
+        battleDisplayInitial: string;
+        /**
+         * The player's options menu.
+         */
+        player: string;
+        /**
+         * General dialog text container.
+         */
+        generalText: string;
+    }
+    /**
+     * Positions of in-battle Things, keyed by name.
+     */
+    interface IPositions {
+        [i: string]: IPosition;
+    }
+    /**
+     * Position of an in-battle Thing.
+     */
     interface IPosition {
+        /**
+         * The Thing's left.
+         */
         left?: number;
+        /**
+         * The Thing's top.
+         */
         top?: number;
     }
+    /**
+     * A container for all in-battle Things.
+     */
     interface IThingsContainer {
-        menu?: IThing;
-        [i: string]: IThing;
+        /**
+         * Any initial battle display menu.
+         */
+        menu?: GameStartr.IThing;
+        [i: string]: GameStartr.IThing;
     }
-    interface IThing extends GameStartr.IThing {
-        groupType: string;
-    }
-    interface IMenu extends IThing {
-    }
-    interface IBattleSettings {
-        nextCutscene: string;
-        nextCutsceneSettings: string;
-    }
-    interface IBattleInfo {
-        exitDialog?: string;
-        items?: any;
-        nextCutscene?: string;
-        nextCutsceneSettings?: any;
-        nextRoutine?: string;
-        nextRoutineSettings?: any;
-        opponent?: IBattleThingInfo;
-        player?: IBattleThingInfo;
-    }
+    /**
+     * Default settings for running a battle.
+     */
     interface IBattleInfoDefaults {
-        exitDialog: string;
+        /**
+         * A dialog to display after the battle.
+         */
+        exitDialog?: MenuGraphr.IMenuDialogRaw;
+        /**
+         * A next cutscene to play after the battle.
+         */
+        nextCutscene?: string;
+        /**
+         * Any settings for the next cutscene.
+         */
+        nextCutsceneSettings?: ScenePlayr.ICutsceneSettings;
+        /**
+         * A next routine to play in a next cutscene.
+         */
+        nextRoutine?: string;
+        /**
+         * Any settings for the next cutscene's routine.
+         */
+        nextRoutineSettings?: any;
+        [i: string]: any;
     }
-    interface IBattleThingInfo {
-        actors: IActor[];
+    /**
+     * Settings for running a battle.
+     */
+    interface IBattleInfo extends IBattleInfoDefaults {
+        /**
+         * The players controlling battling actors.
+         */
+        battlers: IBattlers;
+    }
+    /**
+     * In-battle players controlling battling actors.
+     */
+    interface IBattlers {
+        /**
+         * The opponent battler's information.
+         */
+        opponent?: IBattler;
+        /**
+         * The player's battle information.
+         */
+        player?: IBattler;
+        [i: string]: IBattler;
+    }
+    /**
+     * An in-battle player.
+     */
+    interface IBattler {
+        /**
+         * Actors that may be sent out to battle.
+         */
+        actors?: IActor[];
+        /**
+         * The game-specific category of fighter, such as "Trainer" or "Wild".
+         */
         category: string;
+        /**
+         * Whether the player has actors, rather than fighting alone.
+         */
         hasActors?: boolean;
+        /**
+         * The name of the player.
+         */
         name: string[];
+        /**
+         * Which actor is currently selected to battle, if any.
+         */
         selectedActor?: IActor;
+        /**
+         * The index of the currently selected actor, if any.
+         */
         selectedIndex?: number;
+        /**
+         * A sprite name to send out to battle.
+         */
         sprite: string;
     }
+    /**
+     * An actor that may be sent out in battle.
+     */
     interface IActor {
-        Attack: number;
-        AttackNormal: number;
-        Defense: number;
-        DefenseNormal: number;
-        EV: {
-            Attack: number;
-            Defense: number;
-            Special: number;
-            Speed: number;
-        };
-        HP: number;
-        HPNormal: number;
-        IV: {
-            Attack: number;
-            Defense: number;
-            HP: number;
-            Special: number;
-            Speed: number;
-        };
-        Special: number;
-        SpecialNormal: number;
-        Speed: number;
-        SpeedNormal: number;
+        /**
+         * Experience points for leveling up.
+         */
         experience: IActorExperience;
+        /**
+         * The actor's current level.
+         */
         level: number;
+        /**
+         * Moves the actor knows.
+         */
         moves: IMove[];
-        nickname: string[];
-        status: string;
+        /**
+         * The primary title of the actor.
+         */
         title: string[];
-        types: string[];
     }
+    /**
+     * An actor's experience points for leveling up.
+     */
     interface IActorExperience {
+        /**
+         * Current amount of experience points.
+         */
         current: number;
+        /**
+         * How many experience points are needed for the next level.
+         */
         next: number;
-        remaining: number;
     }
+    /**
+     * An actor's knowledge of a battle move.
+     */
     interface IMove {
+        /**
+         * The name of the battle move.
+         */
         title: string;
+        /**
+         * How many uses are remaining.
+         */
         remaining: number;
+        /**
+         * How many total uses of this move are allowed.
+         */
+        uses: number;
     }
+    /**
+     * Settings to initialize a new IBattleMovr instance.
+     */
     interface IBattleMovrSettings {
+        /**
+         * The IGameStartr providing Thing and actor information.
+         */
         GameStarter: IGameStartr;
-        battleMenuName: string;
-        battleOptionNames: string;
-        menuNames: string;
-        openItemsMenuCallback: (settings: any) => void;
-        openActorsMenuCallback: (settings: any) => void;
-        defaults?: any;
+        /**
+         *
+         */
+        battleOptions: IBattleOption[];
+        /**
+         *
+         */
+        menuNames: IMenuNames;
+        /**
+         * Default settings for running battles.
+         */
+        defaults?: IBattleInfoDefaults;
+        /**
+         *
+         */
         backgroundType?: string;
-        positions?: any;
+        /**
+         *
+         */
+        positions?: IPositions;
     }
     /**
      * A driver for RPG-like battles between two collections of actors.
      */
     interface IBattleMovr {
+        /**
+         * @returns The IGameStartr providing Thing and actor information.
+         */
         getGameStarter(): IGameStartr;
-        getThings(): {
-            [i: string]: IThing;
-        };
-        getThing(name: string): IThing;
+        /**
+         * @returns Names of known MenuGraphr menus.
+         */
+        getMenuNames(): IMenuNames;
+        /**
+         * @returns Default settings for running battles.
+         */
+        getDefaults(): IBattleInfoDefaults;
+        /**
+         * @returns All in-battle Things.
+         */
+        getThings(): IThingsContainer;
+        /**
+         * @param name   A name of an in-battle Thing.
+         * @returns The named in-battle Thing.
+         */
+        getThing(name: string): GameStartr.IThing;
+        /**
+         * @returns Current settings for a running battle.
+         */
         getBattleInfo(): IBattleInfo;
-        getBackgroundType(): string;
-        getBackgroundThing(): IThing;
+        /**
+         * @returns Whether a battle is currently happening.
+         */
         getInBattle(): boolean;
-        startBattle(settings: IBattleSettings): void;
+        /**
+         * @returns The type of Thing to create and use as a background.
+         */
+        getBackgroundType(): string;
+        /**
+         * @returns The created Thing used as a background.
+         */
+        getBackgroundThing(): GameStartr.IThing;
+        /**
+         * Starts a battle.
+         *
+         * @param settings   Settings for running the battle.
+         */
+        startBattle(settings: IBattleInfo): void;
+        /**
+         * Closes any current battle.
+         *
+         * @param callback   A callback to run after the battle is closed.
+         * @remarks The callback will run after deleting menus but before the next cutscene.
+         */
         closeBattle(callback?: () => void): void;
+        /**
+         * Shows the player menu.
+         */
         showPlayerMenu(): void;
-        setThing(name: string, title: string, settings?: any): IThing;
-        openMovesMenu(): void;
-        openItemsMenu(): void;
-        openActorsMenu(callback: (settings: any) => void): void;
+        /**
+         * Creates and displays an in-battle Thing.
+         *
+         * @param name   The storage name of the Thing.
+         * @param title   The Thing's in-game type.
+         * @param settings   Any additional settings to create the Thing.
+         * @returns The created Thing.
+         */
+        setThing(name: string, title: string, settings?: any): GameStartr.IThing;
+        /**
+         * Starts a round of battle with a player's move.
+         *
+         * @param choisePlayer   The player's move choice.
+         */
         playMove(choicePlayer: string): void;
-        switchActor(battlerName: string, i: number): void;
-        startBattleExit(): void;
-        createBackground(): void;
+        /**
+         * Switches a battler's actor.
+         *
+         * @param battlerName   The name of the battler.
+         */
+        switchActor(battlerName: "player" | "opponent", i: number): void;
+        /**
+         * Creates the battle background.
+         *
+         * @param type   A type of background, if not the default.
+         */
+        createBackground(type?: string): void;
+        /**
+         * Deletes the battle background.
+         */
         deleteBackground(): void;
     }
 }

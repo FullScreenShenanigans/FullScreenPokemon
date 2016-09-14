@@ -425,7 +425,8 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
         this.EightBitter.MenuGrapher.addMenuDialog(
             "PokemonMenuStatsExperienceFrom",
-            this.EightBitter.utilities.makeDigit(pokemon.experience.remaining, 3, "\t"));
+            this.EightBitter.utilities.makeDigit(
+                (pokemon.experience.next - pokemon.experience.current), 3, "\t"));
 
         this.EightBitter.MenuGrapher.addMenuDialog(
             "PokemonMenuStatsExperienceNext",
@@ -499,16 +500,16 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param settings   Custom attributes to apply to the menu.
      */
     public openPokemonMenu(settings: MenuGraphr.IMenuSchema): void {
-        let listings: BattleMovr.IActor[] = this.EightBitter.ItemsHolder.getItem("PokemonInParty");
+        const listings: IPokemon[] = this.EightBitter.ItemsHolder.getItem("PokemonInParty");
         if (!listings || !listings.length) {
             return;
         }
 
-        let references: any = this.EightBitter.MathDecider.getConstant("pokemon");
+        const references: any = this.EightBitter.MathDecider.getConstant("pokemon");
 
         this.EightBitter.MenuGrapher.createMenu("Pokemon", settings);
         this.EightBitter.MenuGrapher.addMenuList("Pokemon", {
-            options: listings.map((listing: BattleMovr.IActor, i: number): any => {
+            options: listings.map((listing: IPokemon, i: number): any => {
                 const sprite: string = references[listing.title.join("")].sprite + "Pokemon";
                 const barWidth: number = 25;
                 const health: number = this.EightBitter.MathDecider.compute(
@@ -576,7 +577,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
                         }],
                     textsFloating: [
                         {
-                            text: String(listing.level),
+                            text: listing.level.toString(),
                             x: 44.25,
                             y: 0
                         },

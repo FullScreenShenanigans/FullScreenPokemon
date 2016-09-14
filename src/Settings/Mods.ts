@@ -2,7 +2,7 @@
 /// <reference path="../../typings/ModAttachr.d.ts" />
 
 import {
-    IArea, IBattleInfo, IBattleThingInfo, ICharacter, IEnemy, IGrass,
+    IArea, IBattleInfo, IBattler, ICharacter, IEnemy, IGrass,
     IItemSchema, IMap, IPokemon
 } from "../IFullScreenPokemon";
 
@@ -89,7 +89,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                             });
                     },
                     onBattleStart: function (mod: ModAttachr.IMod, eventName: string, battleInfo: IBattleInfo): void {
-                        let opponent: IBattleThingInfo = battleInfo.opponent;
+                        let opponent: IBattler = battleInfo.battlers.opponent;
 
                         opponent.sprite = "BugCatcherFront";
                         opponent.name = "YOUNGSTER JOEY".split("");
@@ -184,7 +184,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                         const grass: IGrass = this.player.grass;
                         const grassMap: IMap = grass ? this.AreaSpawner.getMap(grass.mapName) as IMap : undefined;
                         const grassArea: IArea = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
-                        const opponent: String = settings.opponent.category;
+                        const opponent: String = settings.battlers.opponent.category;
 
                         if (!grassArea || opponent !== "Wild") {
                             return;
@@ -225,10 +225,10 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                     onFaint: function (
                         mod: ModAttachr.IMod,
                         eventName: string,
-                        thing: BattleMovr.IActor,
+                        thing: IPokemon,
                         actors: IPokemon[]): void {
-                        const partyPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInParty");
-                        const pcPokemon: BattleMovr.IActor[] = this.ItemsHolder.getItem("PokemonInPC");
+                        const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
+                        const pcPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInPC");
 
                         actors.splice(actors.indexOf(thing), 1);
                         partyPokemon.splice(partyPokemon.indexOf(thing), 1);
@@ -296,8 +296,8 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param battleInfo   Settings for the current battle.
                      */
                     onBattleReady: function (mod: ModAttachr.IModAttachr, eventName: string, battleInfo: IBattleInfo): void {
-                        const opponent: IBattleThingInfo = battleInfo.opponent;
-                        const player: IBattleThingInfo = battleInfo.player;
+                        const opponent: IBattler = battleInfo.battlers.opponent;
+                        const player: IBattler = battleInfo.battlers.player;
                         const statistics: string[] = this.MathDecider.getConstant("statisticNames");
                         const enemyPokemonAvg: number = this.MathDecider.compute("averageLevel", opponent.actors);
                         const playerPokemonAvg: number = this.MathDecider.compute("averageLevel", player.actors);

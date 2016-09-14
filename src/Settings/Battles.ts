@@ -6,17 +6,11 @@ export function GenerateBattlesSettings(): IBattleMovrCustoms {
     "use strict";
 
     return {
-        battleMenuName: "Battle",
-        battleOptionNames: {
-            moves: "FIGHT",
-            items: "ITEM",
-            actors: ["Poke", "Mon"],
-            exit: "RUN"
-        },
         menuNames: {
-            moves: "BattleFightList",
-            items: "Items",
-            actors: "Pokemon"
+            battle: "Battle",
+            battleDisplayInitial: "BattleDisplayInitial",
+            generalText: "GeneralText",
+            player: "BattleOptions"
         },
         backgroundType: "DirtWhite",
         defaults: {
