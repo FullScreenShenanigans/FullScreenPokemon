@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/@types/chai/index.d.ts" />
+/// <reference path="../node_modules/@types/mocha/index.d.ts" />
 /// <reference path="../typings/UserWrappr.d.ts" />
 
 /* tslint:disable */
@@ -10,7 +12,10 @@ if (typeof require === "undefined") {
         window.removeEventListener("load", onLoad);
     };
     window.addEventListener("load", onLoad);
-} else {
+}
+// https://github.com/FullScreenShenanigans/gulp-shenanigans/issues/22
+// FSP is being required during testing, which throws out-of-test errors
+else if (!(window as any)["mocha"] && !(window as any)["chai"]) {
     require(["FullScreenPokemon"], (FSP: any): void => {
         new UserWrappr.UserWrappr(
             (FSP || (window as any).FullScreenPokemon).FullScreenPokemon.prototype.settings.ui);
