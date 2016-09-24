@@ -1314,10 +1314,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ObjectMaker.make("Note")
         ];
         const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        const dt: number = 10;
         let startX: number;
         let startY: number;
-        let movement: (note: IThing, dx: number) => void = (note: IThing, dx: number): void => {
+        let animateNote: (note: IThing, dt: number) => void = (note: IThing, dt: number): void => {
             let flip: number = 1;
             let differenceX: number;
             let differenceY: number;
@@ -1341,7 +1340,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                         }
                         flip *= -1;
                     },
-                    dx * i);
+                    dt * i);
             }
         };
 
@@ -1363,15 +1362,15 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             },
             2);
 
-        movement(notes[0], dt);
-        movement(notes[1], dt + 2);
+        animateNote(notes[0], 10);
+        animateNote(notes[1], 12);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => this.EightBitter.physics.killNormal(notes[0]),
-            5 * dt);
+            50);
         this.EightBitter.TimeHandler.addEvent(
             (): void => this.EightBitter.physics.killNormal(notes[1]),
-            5 * dt + 2);
+            52);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
@@ -1391,7 +1390,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                             },
                             args)));
             },
-            5 * dt);
+            50);
 
     }
 
