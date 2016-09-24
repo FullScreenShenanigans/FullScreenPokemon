@@ -1,9 +1,8 @@
 lib/**
 src/**/*.css
 src/**/*.js*
-~src/main.js
+test/main.ts
 test/**/*.js
-test/index.css
 test/index.html
 test/utils/**
 !test/utils/mocks.ts

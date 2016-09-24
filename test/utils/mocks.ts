@@ -1,5 +1,10 @@
-/// <reference path="../../lib/FullScreenPokemon.d.ts" />
+import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 
-const mocks = {
-    // ...
+export const mocks = {
+    mockFullScreenPokemon: (): FullScreenPokemon => {
+        return new FullScreenPokemon({
+            width: 400,
+            height: 400
+        })
+    }
 };
