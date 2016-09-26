@@ -8,7 +8,7 @@ import {
     IBattleBall, IBattleInfo, IBattleModification, IBattler,
     ICharacter, IGrass, IHMMoveSchema,
     IMathConstants, IMathDecidrCustoms, IMathEquations, IMovePossibility,
-    IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod
+    IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod, IWildPokemonSchema
 } from "../IFullScreenPokemon";
 
 /* tslint:disable:max-line-length */
@@ -27,6 +27,25 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 }
 
                 return Math.round(average / actors.length);
+            },
+            "averageLevelWildPokemon": function (constants: IMathConstants, equations: IMathEquations, options: IWildPokemonSchema[]): number {
+                let average: number = 0;
+
+                for (const wildPokemon of options) {
+                    if (wildPokemon.level) {
+                        average += wildPokemon.level * wildPokemon.rate;
+                    } else {
+                        let levelAverage: number = 0;
+
+                        for (const level of wildPokemon.levels) {
+                            levelAverage += level * (1 / wildPokemon.levels.length);
+                        }
+
+                        average += levelAverage * wildPokemon.rate;
+                    }
+                }
+
+                return Math.round(average);
             },
             "speedCycling": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
                 return thing.speed * 2;
