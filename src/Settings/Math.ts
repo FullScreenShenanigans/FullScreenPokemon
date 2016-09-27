@@ -35,15 +35,14 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     if (wildPokemon.level) {
                         average += wildPokemon.level * wildPokemon.rate;
                         continue;
-                    } else {
-                        let levelAverage: number = 0;
-
-                        for (const level of wildPokemon.levels) {
-                            levelAverage += level * (1 / wildPokemon.levels.length);
-                        }
-
-                        average += levelAverage * wildPokemon.rate;
                     }
+                    let levelAverage: number = 0;
+
+                    for (const level of wildPokemon.levels) {
+                        levelAverage += level * (1 / wildPokemon.levels.length);
+                    }
+
+                    average += levelAverage * wildPokemon.rate;
                 }
 
                 return Math.round(average);
