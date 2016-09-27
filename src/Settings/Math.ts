@@ -34,6 +34,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 for (const wildPokemon of options) {
                     if (wildPokemon.level) {
                         average += wildPokemon.level * wildPokemon.rate;
+                        continue;
                     } else {
                         let levelAverage: number = 0;
 
