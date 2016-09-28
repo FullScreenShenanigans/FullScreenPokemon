@@ -866,7 +866,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param player   A Player who cannot use an item.
      */
     public cannotDoThat(player: IPlayer): void {
-        this.displayMessage(player, "OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
+        this.displayMessage("OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
     }
 
     /**
@@ -875,7 +875,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param thing   The Thing that triggered the error.
      * @param message   The message to be displayed.
      */
-    public displayMessage(thing: IThing, message: string): void {
+    public displayMessage(message: string): void {
         if (this.EightBitter.MenuGrapher.getActiveMenu()) {
             return;
         }

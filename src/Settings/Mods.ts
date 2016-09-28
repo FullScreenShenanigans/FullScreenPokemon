@@ -316,6 +316,25 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                         }
                     }
                 }
+            },
+            {
+                name: "Mobile PokeCenter",
+                enabled: false,
+                events: {
+                    onModEnable: function (mod: ModAttachr.IMod): void {
+                        const party: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
+
+                        for (const pokemon of party) {
+                            this.battles.healPokemon(pokemon);
+                        }
+
+                        this.menus.displayMessage("Your party has been fully healed!");
+                        this.ModAttacher.disableMod("Mobile PokeCenter");
+                    },
+                    onModDisable: function (mod: ModAttachr.IMod): void {
+                        return;
+                    }
+                }
             }
         ]
     };
