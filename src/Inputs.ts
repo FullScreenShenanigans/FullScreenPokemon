@@ -276,7 +276,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         const itemSchema: IItemSchema = this.EightBitter.MathDecider.getConstant("items")[selectItem];
 
         if (!itemSchema.bagActivate.call(this, thing, itemSchema)) {
-            this.EightBitter.menus.displayMessage(thing, itemSchema.error);
+            this.EightBitter.menus.displayMessage(itemSchema.error);
         }
 
         if (event && event.preventDefault) {

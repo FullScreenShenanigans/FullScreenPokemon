@@ -103,7 +103,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      */
     public playerFailedLandingFish(player: IPlayer): void {
         this.EightBitter.MenuGrapher.deleteActiveMenu();
-        this.EightBitter.menus.displayMessage(player, "rekt");
+        this.EightBitter.menus.displayMessage("rekt");
         this.EightBitter.graphics.removeClass(player, "fishing");
         this.EightBitter.physics.setWidth(player, 8, true, true);
     }
