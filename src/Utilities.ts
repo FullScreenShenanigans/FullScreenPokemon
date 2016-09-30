@@ -105,4 +105,16 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
 
         return true;
     }
+
+     /**
+     * Function to check if a pokemon should evolve at current level.
+     * 
+     * @param actor   Pokemon to be checked for evolution.
+     * @returns Whether the pokemon is able to evolve at current level.
+     */
+    public shouldEvolve(actor: IPokemon): boolean {
+        let t = actor.title.join();
+        let p = this.EightBitter.MathDecider.getConstant("pokemon").t;
+        return actor.level === parseInt(p.evolvesVia.split(' ')[1], 10);
+    }
 }
