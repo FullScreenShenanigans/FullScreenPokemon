@@ -1011,6 +1011,28 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             ],
             this.EightBitter.ScenePlayer.bindRoutine("LevelUpStats", args)
         );
+
+        if(this.EightBitter.utilities.shouldEvolve(actor)){
+            // Evolution cutscene not yet implemented
+            let t = actor.title.join();
+            let p = this.EightBitter.MathDecider.getConstant("pokemon").t;
+            let evolution = p.evolvesInto
+            actor.title = evolution.toUppercase().split("");
+
+            let evolInfo = this.EightBitter.MathDecider.getConstant("pokemon")[evolution.toUppercase()];
+
+            actor.Attack = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Attack);
+            actor.AttackNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Attack);
+            actor.Defense = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Defense);
+            actor.DefenseNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Defense);
+            actor.HP = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.HP);
+            actor.HPNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.HP);
+            actor.Special = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Special);
+            actor.SpecialNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Special);
+            actor.Speed = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Speed);
+            actor.SpeedNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Speed);
+        }
+
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
