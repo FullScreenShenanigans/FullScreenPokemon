@@ -49,7 +49,7 @@
     "js-beautify": "^1.6.3"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.14",
+    "gulp-shenanigans": "^0.5.15",
     "@types/js-beautify": "0.0.27"
   }
 }

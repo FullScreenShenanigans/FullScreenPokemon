@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es3",
-        "declaration": false
+        "declaration": false,
+        "module": "amd",
+        "target": "es3"
     },
     "files": [
+        "main.ts",
         "utils/mocks.ts",
         "utils/MochaLoader.ts",
         "FullScreenPokemon/_.ts"
