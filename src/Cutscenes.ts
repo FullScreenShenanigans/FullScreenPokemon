@@ -1314,10 +1314,9 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             this.EightBitter.ObjectMaker.make("Note")
         ];
         const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        const dt: number = 10;
         let startX: number;
         let startY: number;
-        let movement: (note: IThing, dx: number) => void = (note: IThing, dx: number): void => {
+        let animateNote: (note: IThing, dt: number) => void = (note: IThing, dt: number): void => {
             let flip: number = 1;
             let differenceX: number;
             let differenceY: number;
@@ -1341,7 +1340,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                         }
                         flip *= -1;
                     },
-                    dx * i);
+                    dt * i);
             }
         };
 
@@ -1363,15 +1362,15 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             },
             2);
 
-        movement(notes[0], dt);
-        movement(notes[1], dt + 2);
+        animateNote(notes[0], 10);
+        animateNote(notes[1], 12);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => this.EightBitter.physics.killNormal(notes[0]),
-            5 * dt);
+            50);
         this.EightBitter.TimeHandler.addEvent(
             (): void => this.EightBitter.physics.killNormal(notes[1]),
-            5 * dt + 2);
+            52);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
@@ -1391,7 +1390,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                             },
                             args)));
             },
-            5 * dt);
+            50);
 
     }
 
@@ -1568,6 +1567,71 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
             },
             17 * dt);
+    }
+
+    /**
+     * Cutscene for an Ember attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackEmber(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const attackerName: string = args.attackerName;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const direction: number = attackerName === "player" ? 1 : -1;
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const xPositions: number[] = new Array(3);
+        let yPosition: number;
+        const animateEmber: (x: number, y: number) => void = (x: number, y: number): void => {
+            const emberSmall: IThing = this.EightBitter.ObjectMaker.make("EmberSmall");
+            this.EightBitter.things.add(emberSmall, x + 4, y + 12);
+            this.EightBitter.animations.animateFlicker(emberSmall, 3, 6);
+
+            this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                            const emberLarge: IThing = this.EightBitter.ObjectMaker.make("EmberLarge");
+                            this.EightBitter.things.add(emberLarge, x, y);
+                            this.EightBitter.animations.animateFlicker(
+                                emberLarge,
+                                3,
+                                6,
+                                (): void => {
+                                    this.EightBitter.physics.killNormal(emberSmall);
+                                    this.EightBitter.physics.killNormal(emberLarge);
+                                });
+                    },
+                    6);
+        };
+
+        if (direction === 1) {
+            xPositions[0] = menu.left + (attacker.width * 3 + 4) * this.EightBitter.unitsize;
+            xPositions[1] = xPositions[0] + (menu.left + xPositions[0]) / 30;
+            xPositions[2] = xPositions[0] + (menu.left + xPositions[0]) / 60;
+            yPosition = menu.bottom - (attacker.height * 2 - 4) * this.EightBitter.unitsize;
+        } else {
+            // These positions are incorrect and need to be updated. See issue #327
+            xPositions[0] = menu.right - attacker.width / 2 * this.EightBitter.unitsize;
+            yPosition = menu.top + attacker.height * this.EightBitter.unitsize;
+        }
+
+        for (let i: number = 0; i < 3; i += 1) {
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    animateEmber(xPositions[i], yPosition);
+                },
+                24 * i);
+        }
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.animations.animateScreenShake(
+                    3,
+                    0,
+                    4,
+                    undefined,
+                    args.callback);
+            },
+            84);
     }
 
     /**
