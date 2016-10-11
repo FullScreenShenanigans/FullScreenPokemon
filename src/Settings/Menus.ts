@@ -148,7 +148,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                         "top": 36
                     }
                 },
-                "ignoreB": true
+                "ignoreB": true,
+                "textPaddingRight": 3
             },
             "Pause": {
                 "size": {
