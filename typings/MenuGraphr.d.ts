@@ -131,6 +131,10 @@ declare namespace MenuGraphr {
          */
         textHeight?: number;
         /**
+         * How much padding there is between the right of the text and the right side of the box.
+         */
+        textPaddingRight?: number;
+        /**
          * How much horizontal padding should be between characters.
          */
         textPaddingX?: number;
