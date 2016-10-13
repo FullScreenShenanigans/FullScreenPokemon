@@ -1425,12 +1425,14 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         if (attackerName === "player") {
             this.EightBitter.TimeHandler.addEvent(
-                this.EightBitter.animations.animateFlicker,
-                dt * 2,
-                defender,
-                14,
-                5,
-                args.callback);
+                (): void => {
+                    this.EightBitter.animations.animateFlicker(
+                        defender,
+                        14,
+                        5,
+                        args.callback);
+                },
+                dt * 2);
         } else {
             this.EightBitter.TimeHandler.addEvent(
                 (): void => {
@@ -3238,6 +3240,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         settings.triggerer.hidden = true;
         this.EightBitter.StateHolder.addChange(settings.triggerer.id, "hidden", true);
         this.EightBitter.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
+        this.EightBitter.physics.killNormal(settings.triggerer);
 
         this.EightBitter.MenuGrapher.deleteMenu("Yes/No");
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
