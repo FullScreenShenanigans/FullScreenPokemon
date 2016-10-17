@@ -579,6 +579,8 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     "HalfArrowHorizontal": {},
                     "HPBar": {},
                     "Note": {},
+                    "EmberSmall": {},
+                    "EmberLarge": {},
                     "ExplosionSmall": {},
                     "ScratchLine": {},
                     "Square": {
@@ -1195,6 +1197,8 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                 "offsetY": Unitsize * -2
             },
             "HalfArrowHorizontal": [4, 2],
+            "EmberSmall": [6, 6],
+            "EmberLarge": [8, 8],
             "ExplosionSmall": [8, 8],
             "ScratchLine": [1.5, 1.5],
             "Square": {

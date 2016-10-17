@@ -3,7 +3,7 @@
 
 import {
     IArea, IBattleInfo, IBattler, ICharacter, IEnemy, IGrass,
-    IItemSchema, IMap, IPokemon
+    IItemSchema, IMap, IPokemon, IWildPokemonSchema
 } from "../IFullScreenPokemon";
 
 const onModEnableKey: string = "onModEnable";
@@ -298,8 +298,12 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                     onBattleReady: function (mod: ModAttachr.IModAttachr, eventName: string, battleInfo: IBattleInfo): void {
                         const opponent: IBattler = battleInfo.battlers.opponent;
                         const player: IBattler = battleInfo.battlers.player;
+                        const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
+                        const wildPokemonOptions: IWildPokemonSchema[] = this.AreaSpawner.getArea().wildPokemon.grass;
                         const statistics: string[] = this.MathDecider.getConstant("statisticNames");
-                        const enemyPokemonAvg: number = this.MathDecider.compute("averageLevel", opponent.actors);
+                        const enemyPokemonAvg: number = isWildBattle ?
+                            this.MathDecider.compute("averageLevelWildPokemon", wildPokemonOptions) :
+                            this.MathDecider.compute("averageLevel", opponent.actors);
                         const playerPokemonAvg: number = this.MathDecider.compute("averageLevel", player.actors);
 
                         for (const actor of opponent.actors) {
