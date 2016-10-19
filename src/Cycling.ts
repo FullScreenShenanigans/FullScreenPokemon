@@ -29,7 +29,7 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.C
 
         this.EightBitter.graphics.addClass(thing, "cycling");
 
-        this.EightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.EightBitter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got on the bicycle!");
         return true;
     }
 
@@ -45,7 +45,7 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         this.EightBitter.graphics.removeClass(thing, "cycling");
         this.EightBitter.TimeHandler.cancelClassCycle(thing, "cycling");
 
-        this.EightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.EightBitter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**
