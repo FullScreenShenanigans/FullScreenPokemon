@@ -309,9 +309,13 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                         for (const actor of opponent.actors) {
                             actor.level += playerPokemonAvg - enemyPokemonAvg;
 
-                            for (const statistic of statistics) {
-                                (actor as any)[statistic] = (actor as any)[statistic + "Normal"] =
-                                    this.MathDecider.compute("pokemonStatistic", actor, statistic);
+                            if (this.utilities.shouldEvolve(actor)) {
+		                        this.utilities.evolvePokemon(actor);
+	                        } else {
+                                for (const statistic of statistics) {
+                                    (actor as any)[statistic] = (actor as any)[statistic + "Normal"] =
+                                        this.MathDecider.compute("pokemonStatistic", actor, statistic);
+                                }
                             }
                         }
                     }
