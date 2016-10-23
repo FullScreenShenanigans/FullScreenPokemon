@@ -329,10 +329,18 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                             this.battles.healPokemon(pokemon);
                         }
 
-                        this.menus.displayMessage("Your party has been fully healed!");
+                        this.MenuGrapher.createMenu("GeneralText", {
+                            deleteOnFinish: true,
+                            onMenuDelete: () => onChange(false)
+                        });
+                        this.MenuGrapher.addMenuDialog(
+                            "GeneralText",
+                            [
+                                "Your party has been fully healed!"
+                            ]
+                        );
+                        this.MenuGrapher.setActiveMenu("GeneralText");
                         this.ModAttacher.toggleMod("Mobile PokeCenter");
-                        // Call onChange with true because UserWrappr flips it right after.
-                        onChange(true);
                     },
                     onModDisable: function (mod: ModAttachr.IMod): void {
                         return;
