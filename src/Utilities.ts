@@ -113,7 +113,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns Whether the pokemon is able to evolve at current level.
      */
     public shouldEvolve(actor: IPokemon): boolean {
-        let t: string = actor.title.join('');
+        let t: string = actor.title.join("");
         let p: any = this.EightBitter.MathDecider.getConstant("pokemon")[t];
         return actor.level === parseInt(p.evolvesVia.split(" ")[1], 10);
     }
@@ -124,10 +124,10 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @param actor   Pokemon to be evolved.
      */
     public evolvePokemon(actor: IPokemon): void {
-        let actorTitle: string = actor.title.join('');
+        let actorTitle: string = actor.title.join("");
         let pokemon: any = this.EightBitter.MathDecider.getConstant("pokemon")[actorTitle];
         let evolution: any = pokemon.evolvesInto;
-        actor.title = evolution.toUppercase().split('');
+        actor.title = evolution.toUppercase().split("");
 
         let evolutionInfo: any = this.EightBitter.MathDecider.getConstant("pokemon")[evolution.toUppercase()];
         const statisticNames: string[] = this.EightBitter.MathDecider.getConstant("statisticNames");
