@@ -191,12 +191,13 @@ export function GenerateUISettings(): IUserWrapprCustoms {
 
                     return output;
                 },
-                callback: (FSP: FullScreenPokemon, schema: UserWrappr.ISchema, button: HTMLElement): void => {
+                callback: (FSP: FullScreenPokemon, schema: UserWrappr.ISchema, button: HTMLElement,
+                            onChange: (enabled: boolean) => void): void => {
                     const name: string = button.textContent;
                     const key: string = button.getAttribute("localStorageKey");
                     const mod: ModAttachr.IMod = FSP.ModAttacher.getMod(name);
 
-                    FSP.ModAttacher.toggleMod(name);
+                    FSP.ModAttacher.toggleMod(name, onChange);
                     FSP.ItemsHolder.setItem(key, mod.enabled);
                     FSP.ItemsHolder.saveItem(key);
                 }
