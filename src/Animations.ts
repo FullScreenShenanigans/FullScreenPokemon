@@ -3,8 +3,8 @@
 import { Direction, DirectionAliases, DirectionClasses } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
-    IArea, IAreaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog, IDialogOptions,
-    IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMenuTriggerer, IPlayer,
+    IArea, IAreaGate, IAreaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog,
+    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMenuTriggerer, IPlayer,
     IPokemon, ISightDetector, IThemeDetector, IThing, ITransporter, ITransportSchema,
     IWalkingOnStop, IWalkingOnStopCommandFunction,
     IWildPokemonSchema
@@ -1670,6 +1670,69 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
 
         this.EightBitter.maps.activateAreaSpawner(thing, area);
     }
+
+    /**
+     * Activation callback for an AreaGate. The Player is marked to now spawn
+     * in the new Map and Area.
+     * 
+     * @param thing   A Character walking to other.
+     * @param other   An AreaGate potentially being triggered.
+     */
+    public activateAreaGate(thing: ICharacter, other: IAreaGate): void {
+        if (!thing.player || !thing.walking || thing.direction !== other.direction) {
+            return;
+        }
+
+        const area: IArea = this.EightBitter.AreaSpawner.getMap(other.map).areas[other.area] as IArea;
+        let areaOffsetX: number;
+        let areaOffsetY: number;
+
+        switch (thing.direction) {
+            case Direction.Top:
+                areaOffsetX = thing.left - other.left;
+                areaOffsetY = area.height * this.EightBitter.unitsize - thing.height;
+                break;
+
+            case Direction.Right:
+                areaOffsetX = 0;
+                areaOffsetY = thing.top - other.top;
+                break;
+
+            case Direction.Bottom:
+                areaOffsetX = thing.left - other.left;
+                areaOffsetY = 0;
+                break;
+
+            case Direction.Left:
+                areaOffsetX = area.width * this.EightBitter.unitsize - thing.width;
+                areaOffsetY = thing.top - other.top;
+                break;
+
+            default:
+                throw new Error(`Unknown direction: '${thing.direction}'.`);
+        }
+
+        const screenOffsetX: number = areaOffsetX - thing.left;
+        const screenOffsetY: number = areaOffsetY - thing.top;
+
+        this.EightBitter.MapScreener.top = screenOffsetY;
+        this.EightBitter.MapScreener.right = screenOffsetX + this.EightBitter.MapScreener.width;
+        this.EightBitter.MapScreener.bottom = screenOffsetY + this.EightBitter.MapScreener.height;
+        this.EightBitter.MapScreener.left = screenOffsetX;
+
+        this.EightBitter.ItemsHolder.setItem("map", other.map);
+        this.EightBitter.ItemsHolder.setItem("area", other.area);
+        this.EightBitter.ItemsHolder.setItem("location", undefined);
+
+        this.EightBitter.StateHolder.setCollection(area.map.name + "::" + area.name);
+
+        other.active = false;
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                other.active = true;
+            },
+            2);
+    };
 
     /**
      * Makes sure that Player is facing the correct HMCharacter
