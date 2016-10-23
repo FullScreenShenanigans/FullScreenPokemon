@@ -331,14 +331,13 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
 
                         this.MenuGrapher.createMenu("GeneralText", {
                             deleteOnFinish: true,
-                            onMenuDelete: () => onChange(false)
+                            onMenuDelete: (): void => onChange(false)
                         });
                         this.MenuGrapher.addMenuDialog(
                             "GeneralText",
                             [
                                 "Your party has been fully healed!"
-                            ]
-                        );
+                            ]);
                         this.MenuGrapher.setActiveMenu("GeneralText");
                         this.ModAttacher.toggleMod("Mobile PokeCenter");
                     },
