@@ -2289,16 +2289,6 @@ export interface IAreaGate extends IDetector {
     area: string;
 
     /**
-     * Horizontal spawning offset for the Area.
-     */
-    areaOffsetX: number;
-
-    /**
-     * Vertical spawning offset for the Area.
-     */
-    areaOffsetY: number;
-
-    /**
      * The Map to now spawn within.
      */
     map: string;

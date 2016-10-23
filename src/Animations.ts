@@ -1683,16 +1683,48 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
             return;
         }
 
-        console.log("Now in map/area", other.map, other.area);
-        console.log("\t", other.areaOffsetX, other.areaOffsetY);
+        const area: IArea = this.EightBitter.AreaSpawner.getMap(other.map).areas[other.area] as IArea;
+        let areaOffsetX: number;
+        let areaOffsetY: number;
 
-        // Todo: figure out relative positioning
-        // let areaOffsetX: number = other.areaOffsetX;
-        // let areaOffsetY: number = other.areaOffsetY;
+        switch (thing.direction) {
+            case Direction.Top:
+                areaOffsetX = thing.left - other.left;
+                areaOffsetY = area.height * this.EightBitter.unitsize - thing.height;
+                break;
+
+            case Direction.Right:
+                areaOffsetX = 0;
+                areaOffsetY = thing.top - other.top;
+                break;
+
+            case Direction.Bottom:
+                areaOffsetX = thing.left - other.left;
+                areaOffsetY = 0;
+                break;
+
+            case Direction.Left:
+                areaOffsetX = area.width * this.EightBitter.unitsize - thing.width;
+                areaOffsetY = thing.top - other.top;
+                break;
+
+            default:
+                throw new Error(`Unknown direction: '${thing.direction}'.`);
+        }
+
+        const screenOffsetX: number = areaOffsetX - thing.left;
+        const screenOffsetY: number = areaOffsetY - thing.top;
+
+        this.EightBitter.MapScreener.top = screenOffsetY;
+        this.EightBitter.MapScreener.right = screenOffsetX + this.EightBitter.MapScreener.width;
+        this.EightBitter.MapScreener.bottom = screenOffsetY + this.EightBitter.MapScreener.height;
+        this.EightBitter.MapScreener.left = screenOffsetX;
 
         this.EightBitter.ItemsHolder.setItem("map", other.map);
         this.EightBitter.ItemsHolder.setItem("area", other.area);
         this.EightBitter.ItemsHolder.setItem("location", undefined);
+
+        this.EightBitter.StateHolder.setCollection(area.map.name + "::" + area.name);
 
         other.active = false;
         this.EightBitter.TimeHandler.addEvent(
@@ -1700,7 +1732,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
                 other.active = true;
             },
             2);
-    }
+    };
 
     /**
      * Makes sure that Player is facing the correct HMCharacter
