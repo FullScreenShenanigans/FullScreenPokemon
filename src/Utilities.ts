@@ -105,4 +105,36 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
 
         return true;
     }
+
+    /**
+     * Function to check if a pokemon should evolve at current level.
+     * 
+     * @param actor   Pokemon to be checked for evolution.
+     * @returns Whether the pokemon is able to evolve at current level.
+     */
+    public shouldEvolve(actor: IPokemon): boolean {
+        let t: string = actor.title.join("");
+        let p: any = this.EightBitter.MathDecider.getConstant("pokemon")[t];
+        return actor.level === parseInt(p.evolvesVia.split(" ")[1], 10);
+    }
+
+    /**
+     * Function to evolve a pokemon and subsequently modify their stats.
+     * 
+     * @param actor   Pokemon to be evolved.
+     */
+    public evolvePokemon(actor: IPokemon): void {
+        let actorTitle: string = actor.title.join("");
+        let pokemon: any = this.EightBitter.MathDecider.getConstant("pokemon")[actorTitle];
+        let evolution: any = pokemon.evolvesInto;
+        actor.title = evolution.toUppercase().split("");
+
+        let evolutionInfo: any = this.EightBitter.MathDecider.getConstant("pokemon")[evolution.toUppercase()];
+        const statisticNames: string[] = this.EightBitter.MathDecider.getConstant("statisticNames");
+
+        for (const statistic of statisticNames) {
+            (actor as any)[statistic] = this.EightBitter.MathDecider.compute("pokemonStatistic", pokemon, evolutionInfo.statistic);
+            (actor as any)[statistic + "Normal"] = pokemon[statistic];
+        }
+    }
 }
