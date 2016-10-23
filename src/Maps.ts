@@ -159,6 +159,11 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
 
         this.EightBitter.PixelDrawer.setBackground((this.EightBitter.AreaSpawner.getArea() as IArea).background);
 
+        if (location.area.map.name !== "Blank") {
+            this.EightBitter.ItemsHolder.setItem("map", location.area.map.name);
+            this.EightBitter.ItemsHolder.setItem("area", location.area.name);
+            this.EightBitter.ItemsHolder.setItem("location", name);
+        }
         this.EightBitter.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
         this.EightBitter.QuadsKeeper.resetQuadrants();

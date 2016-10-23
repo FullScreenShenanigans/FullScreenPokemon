@@ -72,10 +72,6 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
     public saveGame(showText: boolean = true): void {
         const ticksRecorded: number = this.EightBitter.FPSAnalyzer.getNumRecorded();
 
-        this.EightBitter.ItemsHolder.setItem("map", this.EightBitter.AreaSpawner.getMapName());
-        this.EightBitter.ItemsHolder.setItem("area", this.EightBitter.AreaSpawner.getAreaName());
-        this.EightBitter.ItemsHolder.setItem("location", this.EightBitter.AreaSpawner.getLocationEntered().name);
-
         this.EightBitter.ItemsHolder.increase("time", ticksRecorded - this.EightBitter.ticksElapsed);
         this.EightBitter.ticksElapsed = ticksRecorded;
 
