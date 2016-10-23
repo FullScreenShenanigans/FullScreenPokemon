@@ -207,26 +207,32 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
 
         prething.direction = direction;
         switch (direction) {
-            case 0:
+            case Direction.Top:
                 prething.x = boundaries.left;
                 prething.y = boundaries.top - 8;
+                prething.width = boundaries.right - boundaries.left;
                 break;
-            case 1:
+
+            case Direction.Right:
                 prething.x = boundaries.right;
                 prething.y = boundaries.top;
                 prething.height = boundaries.bottom - boundaries.top;
                 break;
-            case 2:
+
+            case Direction.Bottom:
                 prething.x = boundaries.left;
                 prething.y = boundaries.bottom;
+                prething.width = boundaries.right - boundaries.left;
                 break;
-            case 3:
+
+            case Direction.Left:
                 prething.x = boundaries.left - 8;
                 prething.y = boundaries.top;
                 prething.height = boundaries.bottom - boundaries.top;
                 break;
+
             default:
-                throw new Error("Unknown direction: " + direction + ".");
+                throw new Error(`Unknown direction: '${direction}'.`);
         }
 
         this.EightBitter.MapsCreator.analyzePreSwitch(prething, prethings, area, map);
@@ -302,13 +308,19 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
             case Direction.Top:
                 top -= area.height * this.EightBitter.unitsize;
                 break;
+
             case Direction.Right:
+                left += thing.width * this.EightBitter.unitsize;
                 break;
+
             case Direction.Bottom:
                 top += thing.height * this.EightBitter.unitsize;
                 break;
+
             case Direction.Left:
+                left -= area.width * this.EightBitter.unitsize;
                 break;
+
             default:
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
