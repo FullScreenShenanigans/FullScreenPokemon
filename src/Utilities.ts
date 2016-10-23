@@ -113,34 +113,28 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns Whether the pokemon is able to evolve at current level.
      */
     public shouldEvolve(actor: IPokemon): boolean {
-        let t: string = actor.title.join();
+        let t: string = actor.title.join('');
         let p: any = this.EightBitter.MathDecider.getConstant("pokemon")[t];
         return actor.level === parseInt(p.evolvesVia.split(" ")[1], 10);
     }
 
     /**
-     * Function to evolve a pokemon and subsequently modify their stats
+     * Function to evolve a pokemon and subsequently modify their stats.
      * 
-     * @param actor   Pokemon to be evolved
-     * @returns   void
+     * @param actor   Pokemon to be evolved.
      */
     public evolvePokemon(actor: IPokemon): void {
-        let t: string = actor.title.join();
-        let p: any = this.EightBitter.MathDecider.getConstant("pokemon")[t];
-        let evolution: any = p.evolvesInto;
-        actor.title = evolution.toUppercase().split("");
+        let actorTitle: string = actor.title.join('');
+        let pokemon: any = this.EightBitter.MathDecider.getConstant("pokemon")[actorTitle];
+        let evolution: any = pokemon.evolvesInto;
+        actor.title = evolution.toUppercase().split('');
 
-        let evolInfo: any = this.EightBitter.MathDecider.getConstant("pokemon")[evolution.toUppercase()];
+        let evolutionInfo: any = this.EightBitter.MathDecider.getConstant("pokemon")[evolution.toUppercase()];
+        const statisticNames: string[] = this.EightBitter.MathDecider.getConstant("statisticNames");
 
-        actor.Attack = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Attack);
-        actor.AttackNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Attack);
-        actor.Defense = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Defense);
-        actor.DefenseNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Defense);
-        actor.HP = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.HP);
-        actor.HPNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.HP);
-        actor.Special = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Special);
-        actor.SpecialNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Special);
-        actor.Speed = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Speed);
-        actor.SpeedNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Speed);
+        for (const statistic of statisticNames) {
+            (actor as any)[statistic] = this.EightBitter.MathDecider.compute("pokemonStatistic", pokemon, evolutionInfo.statistic);
+            (actor as any)[statistic + "Normal"] = pokemon[statistic];
+        }
     }
 }
