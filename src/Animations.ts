@@ -3,8 +3,8 @@
 import { Direction, DirectionAliases, DirectionClasses } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
-    IArea, IAreaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog, IDialogOptions,
-    IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMenuTriggerer, IPlayer,
+    IArea, IAreaGate, IAreaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog,
+    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMenuTriggerer, IPlayer,
     IPokemon, ISightDetector, IThemeDetector, IThing, ITransporter, ITransportSchema,
     IWalkingOnStop, IWalkingOnStopCommandFunction,
     IWildPokemonSchema
@@ -1669,6 +1669,37 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends EightBitt
         area.spawnedBy = (this.EightBitter.AreaSpawner.getArea() as IArea).spawnedBy;
 
         this.EightBitter.maps.activateAreaSpawner(thing, area);
+    }
+
+    /**
+     * Activation callback for an AreaGate. The Player is marked to now spawn
+     * in the new Map and Area.
+     * 
+     * @param thing   A Character walking to other.
+     * @param other   An AreaGate potentially being triggered.
+     */
+    public activateAreaGate(thing: ICharacter, other: IAreaGate): void {
+        if (!thing.player || !thing.walking || thing.direction !== other.direction) {
+            return;
+        }
+
+        console.log("Now in map/area", other.map, other.area);
+        console.log("\t", other.areaOffsetX, other.areaOffsetY);
+
+        // Todo: figure out relative positioning
+        // let areaOffsetX: number = other.areaOffsetX;
+        // let areaOffsetY: number = other.areaOffsetY;
+
+        this.EightBitter.ItemsHolder.setItem("map", other.map);
+        this.EightBitter.ItemsHolder.setItem("area", other.area);
+        this.EightBitter.ItemsHolder.setItem("location", undefined);
+
+        other.active = false;
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                other.active = true;
+            },
+            2);
     }
 
     /**

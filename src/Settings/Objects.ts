@@ -84,6 +84,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     },
                     "Cabinet": {},
                     "CollisionDetector": {
+                        "AreaGate": {},
                         "CutsceneTriggerer": {},
                         "MenuTriggerer": {},
                         "SightDetector": {},
@@ -870,6 +871,11 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                 "collide": Collisions.prototype.collideCollisionDetector,
                 "active": false,
                 "hidden": true
+            },
+            "AreaGate": {
+                "activate": Animations.prototype.activateAreaGate,
+                "active": true,
+                "requireOverlap": true
             },
             "CutsceneTriggerer": {
                 "activate": Animations.prototype.activateCutsceneTriggerer,

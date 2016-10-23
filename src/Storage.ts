@@ -88,10 +88,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
         }
 
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
-        this.EightBitter.MenuGrapher.addMenuDialog(
-            "GeneralText", [
-                "Now saving..."
-            ]);
+        this.EightBitter.MenuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => this.EightBitter.MenuGrapher.deleteAllMenus(),

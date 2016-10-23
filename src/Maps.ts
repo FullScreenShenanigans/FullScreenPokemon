@@ -3,7 +3,8 @@
 import { Direction, DirectionSpawns } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
-    IArea, IAreaBoundaries, IAreaSpawner, ILocation, IMap, IPlayer, IPreThing, IThing
+    IArea, IAreaBoundaries, IAreaGate, IAreaSpawner, ILocation,
+    IMap, IPlayer, IPreThing, IThing
 } from "./IFullScreenPokemon";
 
 /**
@@ -209,7 +210,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
             case 0:
                 prething.x = boundaries.left;
                 prething.y = boundaries.top - 8;
-                prething.width = boundaries.right - boundaries.left;
                 break;
             case 1:
                 prething.x = boundaries.right;
@@ -219,7 +219,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
             case 2:
                 prething.x = boundaries.left;
                 prething.y = boundaries.bottom;
-                prething.width = boundaries.right - boundaries.left;
                 break;
             case 3:
                 prething.x = boundaries.left - 8;
@@ -300,20 +299,18 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         let top: number = thing.top + this.EightBitter.MapScreener.top;
 
         switch (direction) {
-            case 0:
+            case Direction.Top:
                 top -= area.height * this.EightBitter.unitsize;
                 break;
-            case 1:
-                left += thing.width * this.EightBitter.unitsize;
+            case Direction.Right:
                 break;
-            case 2:
+            case Direction.Bottom:
                 top += thing.height * this.EightBitter.unitsize;
                 break;
-            case 3:
-                left -= area.width * this.EightBitter.unitsize;
+            case Direction.Left:
                 break;
             default:
-                throw new Error("Unknown direction: " + direction + ".");
+                throw new Error(`Unknown direction: '${direction}'.`);
         }
 
         const x: number = left / this.EightBitter.unitsize + (thing.offsetX || 0);
@@ -322,7 +319,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         this.EightBitter.scrolling.expandMapBoundariesForArea(area, x, y);
 
         for (const creation of area.creation) {
-            // A copy of the command must be used, so as to not modify the original 
+            // A copy of the command must be used, so as to not modify the original
             const command: any = this.EightBitter.utilities.proliferate(
                 {
                     noBoundaryStretch: true,
@@ -331,19 +328,11 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
                 },
                 creation);
 
-            if (!command.x) {
-                command.x = x;
-            } else {
-                command.x += x;
-            }
-            if (!command.y) {
-                command.y = y;
-            } else {
-                command.y += y;
-            }
+            command.x = (command.x || 0) + x;
+            command.y = (command.y || 0) + y;
 
             // Having an entrance might conflict with previously set Locations
-            if (command.hasOwnProperty("entrance")) {
+            if ("entrance" in command) {
                 delete command.entrance;
             }
 
@@ -356,8 +345,57 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
             this.EightBitter.QuadsKeeper.right / this.EightBitter.unitsize,
             this.EightBitter.QuadsKeeper.bottom / this.EightBitter.unitsize,
             this.EightBitter.QuadsKeeper.left / this.EightBitter.unitsize);
+        this.addAreaGate(thing, area, x, y);
 
         area.spawned = true;
         this.EightBitter.physics.killNormal(thing);
+    }
+
+    /**
+     * Adds an AreaGate on top of an AreaSpawner.
+     * 
+     * @param thing   An AreaSpawner that should have a gate.
+     * @param area   The Area to spawn into.
+     * @param offsetX   Horizontal spawning offset for the Area.
+     * @param offsetY   Vertical spawning offset for the Area.
+     * @returns The added AreaGate.
+     */
+    public addAreaGate(thing: IAreaSpawner, area: IArea, offsetX: number, offsetY: number): IAreaGate {
+        const properties: any = {
+            area: thing.area,
+            areaOffsetX: offsetX,
+            areaOffsetY: offsetY,
+            direction: thing.direction,
+            height: 8,
+            map: thing.map,
+            width: 8
+        };
+        let left: number = thing.left;
+        let top: number = thing.top;
+
+        switch (thing.direction) {
+            case Direction.Top:
+                top -= this.EightBitter.unitsize * 8;
+                properties.width = area.width;
+                break;
+
+            case Direction.Right:
+                properties.height = area.height;
+                break;
+
+            case Direction.Bottom:
+                properties.width = area.width;
+                break;
+
+            case Direction.Left:
+                left -= this.EightBitter.unitsize * 8;
+                properties.height = area.height;
+                break;
+
+            default:
+                throw new Error(`Unknown direction: '${thing.direction}'.`);
+        }
+
+        return this.EightBitter.things.add(["AreaGate", properties], left, top) as IAreaGate;
     }
 }

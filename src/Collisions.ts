@@ -397,6 +397,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      *
      * @param thing   A Character walking to other.
      * @param other   A Ledge walked to by thing.
+     * @returns Whether the Character was able animate onto land.
      */
     public collideWaterEdge(thing: ICharacter, other: IThing): boolean {
         const edge: IWaterEdge = other as IWaterEdge;
