@@ -583,6 +583,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     "EmberSmall": {},
                     "EmberLarge": {},
                     "ExplosionSmall": {},
+                    "ExplosionLarge": {},
                     "ScratchLine": {},
                     "Square": {
                         "BlackSquare": {},
@@ -1206,6 +1207,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
             "EmberSmall": [6, 6],
             "EmberLarge": [8, 8],
             "ExplosionSmall": [8, 8],
+            "ExplosionLarge": [12, 12],
             "ScratchLine": [1.5, 1.5],
             "Square": {
                 "width": 1,
