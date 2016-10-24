@@ -1637,6 +1637,146 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
+     * Cutscene for a Quick Attack attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackQuickAttack(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const attackerName: string = args.attackerName;
+        const defenderName: string = args.defenderName;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const direction: number = attackerName === "player" ? 1 : -1;
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+
+        let xvel: number = -7 * direction;
+        let dt: number = 20;
+        const movement: TimeHandlr.ITimeEvent = this.EightBitter.TimeHandler.addEventInterval(
+            (): void => {
+                this.EightBitter.physics.shiftHoriz(attacker, xvel);
+            },
+            1,
+            Infinity);
+
+        /*Make attacker disappear*/
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                attacker.hidden = !attacker.hidden;
+            },
+            (dt + 10) / 2);
+        /*Make attacker reappear*/
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                attacker.hidden = !attacker.hidden;
+            },
+            dt * 2);
+        /*Move attacker to original position*/
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                xvel *= -1;
+            },
+            dt);
+
+        this.EightBitter.TimeHandler.addEvent(this.EightBitter.TimeHandler.cancelEvent, dt * 2 - 1, movement);
+
+        /*const animateExplosion: (x: number, y: number) => void = (x: number, y: number): void => {
+            const explosion: IThing = this.EightBitter.ObjectMaker.make("ExplosionSmall");
+            this.EightBitter.things.add(explosion, x, y);
+            /*this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(explosion);
+                },
+                dt + 10);
+            console.log(x);
+            console.log(y);
+        };*/
+
+        const explosions: IThing[] = [
+            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
+            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
+            this.EightBitter.ObjectMaker.make("ExplosionSmall")
+        ];
+        let startX: number[] = [];
+        let startY: number[] = [];
+        console.log(menu.right);
+        if (direction === -1) {
+            startX[0] = menu.right - defender.width / 2 * this.EightBitter.unitsize;
+            startY[0] = menu.top;
+        } else {
+            console.log(direction);
+            startX[0] = menu.left + (defender.width + 32) * this.EightBitter.unitsize;
+            startY[0] = menu.bottom - (defender.height + 16) * this.EightBitter.unitsize;
+            startX[1] = startX[0] + 6 * this.EightBitter.unitsize;
+            startY[1] = startY[0] - 6 * this.EightBitter.unitsize;
+            startX[2] = startX[1] + 6 * this.EightBitter.unitsize;
+            startY[2] = startY[1] - 8 * this.EightBitter.unitsize;
+            console.log(startX);
+            console.log(startY);
+        }
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
+            },
+            dt);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(explosions[0]);
+            },
+            dt + 4);
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.things.add(explosions[1], startX[1], startY[1]);
+            },
+            dt + 4);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(explosions[1]);
+            },
+            dt + 8);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.things.add(explosions[2], startX[2], startY[2]);
+            },
+            dt + 8);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(explosions[2]);
+            },
+            dt + 12);
+
+        /*for (let i: number = 0; i < 3; i += 1) {
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    animateExplosion(startX[i], startX[i]);
+                },
+                dt + (2 * i));
+            console.log(i);
+        }*/
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.animations.animateFlicker(defender, 12, 6, args.callback);
+            },
+            dt * 2);
+    }
+
+    /**
+     * Cutscene for a Sand Attack attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    /*public cutsceneBattleAttackSandAttack(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const attackerName: string = args.attackerName;
+        const defenderName: string = args.defenderName;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+    }*/
+
+    /**
      * Cutscene for when a trainer is encountered for battle.
      * 
      * @param settings   Settings used for the cutscene.
