@@ -47,7 +47,8 @@ export function GenerateScenesSettings(): GameStartr.IScenePlayrCustoms {
                     AttackTailWhip: Cutscenes.prototype.cutsceneBattleAttackTailWhip,
                     AttackScratch: Cutscenes.prototype.cutsceneBattleAttackScratch,
                     AttackEmber: Cutscenes.prototype.cutsceneBattleAttackEmber,
-                    AttackQuickAttack: Cutscenes.prototype.cutsceneBattleAttackQuickAttack
+                    AttackQuickAttack: Cutscenes.prototype.cutsceneBattleAttackQuickAttack,
+                    AttackSandAttack: Cutscenes.prototype.cutsceneBattleAttackSandAttack
                 }
             },
             TrainerSpotted: {
