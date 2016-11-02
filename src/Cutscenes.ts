@@ -1664,13 +1664,13 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             (): void => {
                 attacker.hidden = !attacker.hidden;
             },
-            (30) / 2);
+            15);
         // Make attacker reappear
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
                 attacker.hidden = !attacker.hidden;
             },
-            20 * 2);
+            40);
         // Move attacker to original position
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
@@ -1751,7 +1751,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             (): void => {
                 this.EightBitter.animations.animateFlicker(defender, 12, 6, args.callback);
             },
-            20 * 2);
+            40);
     }
 
     /**
