@@ -133,6 +133,11 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     "horizontal": "center",
                     "vertical": "center"
                 },
+                "clearedIndicesOnDeletion": [
+                    "Pause",
+                    "Pokemon",
+                    "Items"
+                ],
                 "textXOffset": 8,
                 "ignoreB": true
             },
