@@ -1820,6 +1820,12 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     "horizontal": "right",
                     "vertical": "bottom"
                 },
+                "clearedIndicesOnDeletion": [
+                    "Pause",
+                    "Pokemon",
+                    "Items",
+                    "BattleFightList"
+                ],
                 "container": "GeneralText",
                 "ignoreB": true,
                 "textXOffset": 8,
@@ -1944,6 +1950,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 },
                 "container": "GeneralText",
                 "backMenu": "BattleOptions",
+                "saveIndex": true,
                 "textXOffset": 8,
                 "textYOffset": 3.5,
                 "textPaddingY": 4,
