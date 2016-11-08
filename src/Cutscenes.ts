@@ -1823,6 +1823,134 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             },
             (20) | 0);
     }
+    /**
+     * Cutscene for an Bubble attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackBubble(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const unitsize: number = this.EightBitter.unitsize;
+        const attackerName: string = args.attackerName;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const direction: number = attackerName === "player" ? 1 : -1;
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const xPositions: number[] = [];
+        const yPositions: number[] = [];
+        const animateBubble: (x: number, y: number, i: number) => void = (x: number, y: number, i: number): void => {
+            if (i === 0) {
+                const bubbleLarge: IThing = this.EightBitter.things.add("BubbleLarge", x, y);
+
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(bubbleLarge);
+                    },
+                    4 * 24);
+            } else if (i === 1) {
+                const bubbleLarge: IThing = this.EightBitter.things.add("BubbleLarge", x, y);
+                const bubblesSmall: IThing[] = [];
+
+                for (let j: number = 0; j < 4; j += 1) {
+                    bubblesSmall[j] = this.EightBitter.ObjectMaker.make("BubbleSmall");
+                }
+
+                this.EightBitter.things.add(bubblesSmall[0], x, y - 4 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[1], x + 4 * unitsize, y - 3 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[2], x + 8 * unitsize, y + 4 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[3], x, y + 8 * unitsize);
+
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(bubbleLarge);
+                        for (let j: number = 0; j < 4; j += 1) {
+                            this.EightBitter.physics.killNormal(bubblesSmall[j]);
+                        }
+                    },
+                    3 * 24);
+            } else if (i === 2) {
+                const bubblesLarge: IThing[] = [];
+                const bubblesSmall: IThing[] = [];
+
+                for (let j: number = 0; j < 3; j += 1) {
+                    bubblesLarge[j] = this.EightBitter.ObjectMaker.make("BubbleLarge");
+                    bubblesSmall[j] = this.EightBitter.ObjectMaker.make("BubbleSmall");
+                }
+
+                this.EightBitter.things.add(bubblesLarge[0], x, y - 4 * unitsize);
+                this.EightBitter.things.add(bubblesLarge[1], x, y);
+                this.EightBitter.things.add(bubblesLarge[2], x + 4 * unitsize, y - 2 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[0], x, y - 4 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[1], x + unitsize, y + 8 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[2], x + 8 * unitsize, y + 6 * unitsize);
+
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        for (let j: number = 0; j < 4; j += 1) {
+                            this.EightBitter.physics.killNormal(bubblesLarge[j]);
+                            this.EightBitter.physics.killNormal(bubblesSmall[j]);
+                        }
+                    },
+                    2 * 24);
+            } else {
+                const bubblesLarge: IThing[] = [];
+                const bubblesSmall: IThing[] = [];
+
+                for (let j: number = 0; j < 4; j += 1) {
+                    bubblesLarge[j] = this.EightBitter.ObjectMaker.make("BubbleLarge");
+                    bubblesSmall[j] = this.EightBitter.ObjectMaker.make("BubbleSmall");
+                }
+
+                this.EightBitter.things.add(bubblesLarge[0], x + 4 * unitsize, y + 12 * unitsize);
+                this.EightBitter.things.add(bubblesLarge[1], x, y);
+                this.EightBitter.things.add(bubblesLarge[2], x + 8 * unitsize, y + 4 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[0], x + 4 * unitsize, y - 4 * unitsize);
+                this.EightBitter.things.add(bubblesSmall[1], x + 8 * unitsize, y);
+                this.EightBitter.things.add(bubblesSmall[2], x, y + 12 * unitsize);
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        for (let j: number = 0; j < 4; j += 1) {
+                            this.EightBitter.physics.killNormal(bubblesLarge[j]);
+                            this.EightBitter.physics.killNormal(bubblesSmall[j]);
+                        }
+                    },
+                    24);
+            }
+        };
+
+        if (direction === 1) {
+            xPositions[0] = menu.left + (attacker.width + 6) * this.EightBitter.unitsize;
+            xPositions[1] = xPositions[0] + 10 * unitsize;
+            xPositions[2] = xPositions[1] + 10 * unitsize;
+            xPositions[3] = xPositions[2] + 10 * unitsize;
+            yPositions[0] = menu.bottom - (attacker.height * 2 - 4) * this.EightBitter.unitsize;
+            yPositions[1] = yPositions[0];
+            yPositions[2] = yPositions[1] - (menu.bottom - yPositions[1]) / 3;
+            yPositions[3] = yPositions[2] - (menu.bottom - yPositions[1]) / 3;
+        } else {
+            // These positions are incorrect and need to be updated. See issue #343.
+            xPositions[0] = menu.right - attacker.width / 2 * this.EightBitter.unitsize;
+            yPositions[0] = menu.top + attacker.height * this.EightBitter.unitsize;
+        }
+
+        for (let i: number = 0; i < 4; i += 1) {
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    animateBubble(xPositions[i], yPositions[i], i);
+                },
+                24 * i);
+        }
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.animations.animateScreenShake(
+                    3,
+                    0,
+                    4,
+                    undefined,
+                    args.callback);
+            },
+            100);
+    }
 
     /**
      * Cutscene for when a trainer is encountered for battle.
