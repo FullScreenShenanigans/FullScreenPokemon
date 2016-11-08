@@ -133,6 +133,11 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     "horizontal": "center",
                     "vertical": "center"
                 },
+                "clearedIndicesOnDeletion": [
+                    "Pause",
+                    "Pokemon",
+                    "Items"
+                ],
                 "textXOffset": 8,
                 "ignoreB": true
             },
@@ -165,6 +170,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "onMenuDelete": function (): void {
                     this.menus.closePauseMenu();
                 },
+                "saveIndex": true,
                 "textXOffset": 8,
                 "textYOffset": 8,
                 "textPaddingY": 7.75
@@ -538,6 +544,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 "arrowXOffset": 8,
                 "arrowYOffset": 3,
                 "ignoreProgressB": true,
+                "saveIndex": true,
                 "textSpeed": 0,
                 "textXOffset": 15.75,
                 "textYOffset": 4
@@ -1034,6 +1041,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     }
                 },
                 "backMenu": "Pause",
+                "saveIndex": true,
                 "scrollingItemsComputed": true,
                 "textXOffset": 8
             },
@@ -1812,6 +1820,12 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                     "horizontal": "right",
                     "vertical": "bottom"
                 },
+                "clearedIndicesOnDeletion": [
+                    "Pause",
+                    "Pokemon",
+                    "Items",
+                    "BattleFightList"
+                ],
                 "container": "GeneralText",
                 "ignoreB": true,
                 "textXOffset": 8,
@@ -1936,6 +1950,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 },
                 "container": "GeneralText",
                 "backMenu": "BattleOptions",
+                "saveIndex": true,
                 "textXOffset": 8,
                 "textYOffset": 3.5,
                 "textPaddingY": 4,
