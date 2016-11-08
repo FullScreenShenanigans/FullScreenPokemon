@@ -1651,14 +1651,20 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
 
         let xvel: number = -7 * direction;
-        let dt: number = 20;
-        const movement: TimeHandlr.ITimeEvent = this.EightBitter.TimeHandler.addEventInterval(
+
+        // Move the attacking pokemon
+        this.EightBitter.TimeHandler.addEventInterval(
             (): void => {
                 this.EightBitter.physics.shiftHoriz(attacker, xvel);
             },
             1,
-            Infinity);
-
+            38);
+        // Move attacker to original position
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                xvel *= -1;
+            },
+            20);
         // Make attacker disappear
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
@@ -1666,22 +1672,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             },
             15);
         // Make attacker reappear
+        // Make defending pokemon flicker
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
                 attacker.hidden = !attacker.hidden;
+                this.EightBitter.animations.animateFlicker(defender, 12, 6, args.callback);
             },
             40);
-        // Move attacker to original position
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                xvel *= -1;
-            },
-            20);
-
-        this.EightBitter.TimeHandler.addEvent(this.EightBitter.TimeHandler.cancelEvent, dt * 2 - 1, movement);
 
         /*const animateExplosion: (x: number, y: number) => void = (x: number, y: number): void => {
-            const explosion: IThing = this.EightBitter.ObjectMaker.make("ExplosionSmall");
+            const explosion: IThing = this.EightBitter.ObjectMaker.make("ExplosionLarge");
             this.EightBitter.things.add(explosion, x, y);
             /*this.EightBitter.TimeHandler.addEvent(
                 (): void => {
@@ -1693,13 +1693,12 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         };*/
 
         const explosions: IThing[] = [
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall")
+            this.EightBitter.ObjectMaker.make("ExplosionLarge"),
+            this.EightBitter.ObjectMaker.make("ExplosionLarge"),
+            this.EightBitter.ObjectMaker.make("ExplosionLarge")
         ];
         let startX: number[] = [];
         let startY: number[] = [];
-        console.log(menu.right);
         if (direction === -1) {
             startX[0] = menu.right - defender.width / 2 * this.EightBitter.unitsize;
             startY[0] = menu.top;
@@ -1711,33 +1710,38 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             startY[1] = startY[0] - 6 * this.EightBitter.unitsize;
             startX[2] = startX[1] + 6 * this.EightBitter.unitsize;
             startY[2] = startY[1] - 8 * this.EightBitter.unitsize;
-            console.log(startX);
-            console.log(startY);
         }
 
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
-            },
-            20);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(explosions[0]);
-                this.EightBitter.things.add(explosions[1], startX[1], startY[1]);
-            },
-            24);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(explosions[1]);
-                this.EightBitter.things.add(explosions[2], startX[2], startY[2]);
-            },
-            28);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(explosions[2]);
-            },
-            32);
+        const animateExplosions: () => void = (): void => {
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
+                },
+                0);
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(explosions[0]);
+                    this.EightBitter.things.add(explosions[1], startX[1], startY[1]);
+                },
+                4);
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(explosions[1]);
+                    this.EightBitter.things.add(explosions[2], startX[2], startY[2]);
+                },
+                8);
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(explosions[2]);
+                },
+                12);
+        };
 
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    animateExplosions();
+                },
+                20);
         /*for (let i: number = 0; i < 3; i += 1) {
             this.EightBitter.TimeHandler.addEvent(
                 (): void => {
@@ -1746,12 +1750,6 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 20 + (2 * i));
             console.log(i);
         }*/
-
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.animations.animateFlicker(defender, 12, 6, args.callback);
-            },
-            40);
     }
 
     /**
