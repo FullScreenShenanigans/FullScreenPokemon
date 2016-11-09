@@ -1694,11 +1694,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
-                this.EightBitter.TimeHandler.addEvent(
-                    (): void => {
-                        this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
-                    },
-                    0);
+                this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
                 this.EightBitter.TimeHandler.addEvent(
                     (): void => {
                         this.EightBitter.physics.killNormal(explosions[0]);
@@ -3452,6 +3448,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.StateHolder.addChange(settings.triggerer.id, "hidden", true);
         this.EightBitter.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
         this.EightBitter.physics.killNormal(settings.triggerer);
+
         this.EightBitter.MenuGrapher.deleteMenu("Yes/No");
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
         this.EightBitter.MenuGrapher.addMenuDialog(
