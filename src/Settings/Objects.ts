@@ -585,6 +585,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     "BubbleSmall": {},
                     "BubbleLarge": {},
                     "ExplosionSmall": {},
+                    "ExplosionLarge": {},
                     "ScratchLine": {},
                     "Square": {
                         "BlackSquare": {},
@@ -1210,6 +1211,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
             "BubbleSmall": [4, 4],
             "BubbleLarge": [8, 8],
             "ExplosionSmall": [8, 8],
+            "ExplosionLarge": [16, 16],
             "ScratchLine": [1.5, 1.5],
             "Square": {
                 "width": 1,
