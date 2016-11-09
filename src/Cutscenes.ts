@@ -1652,45 +1652,26 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         let xvel: number = -7 * direction;
 
-        // Move the attacking pokemon
         this.EightBitter.TimeHandler.addEventInterval(
-            (): void => {
-                this.EightBitter.physics.shiftHoriz(attacker, xvel);
-            },
+            (): void => this.EightBitter.physics.shiftHoriz(attacker, xvel),
             1,
             38);
-        // Move attacker to original position
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
                 xvel *= -1;
             },
             20);
-        // Make attacker disappear
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
                 attacker.hidden = !attacker.hidden;
             },
             15);
-        // Make attacker reappear
-        // Make defending pokemon flicker
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
                 attacker.hidden = !attacker.hidden;
                 this.EightBitter.animations.animateFlicker(defender, 12, 6, args.callback);
             },
             40);
-
-        /*const animateExplosion: (x: number, y: number) => void = (x: number, y: number): void => {
-            const explosion: IThing = this.EightBitter.ObjectMaker.make("ExplosionLarge");
-            this.EightBitter.things.add(explosion, x, y);
-            /*this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    this.EightBitter.physics.killNormal(explosion);
-                },
-                20 + 10);
-            console.log(x);
-            console.log(y);
-        };*/
 
         const explosions: IThing[] = [
             this.EightBitter.ObjectMaker.make("ExplosionLarge"),
@@ -1703,7 +1684,6 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             startX[0] = menu.right - defender.width / 2 * this.EightBitter.unitsize;
             startY[0] = menu.top;
         } else {
-            console.log(direction);
             startX[0] = menu.left + (defender.width + 32) * this.EightBitter.unitsize;
             startY[0] = menu.bottom - (defender.height + 16) * this.EightBitter.unitsize;
             startX[1] = startX[0] + 6 * this.EightBitter.unitsize;
@@ -1712,117 +1692,32 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             startY[2] = startY[1] - 8 * this.EightBitter.unitsize;
         }
 
-        const animateExplosions: () => void = (): void => {
-            this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
-                },
-                0);
-            this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    this.EightBitter.physics.killNormal(explosions[0]);
-                    this.EightBitter.things.add(explosions[1], startX[1], startY[1]);
-                },
-                4);
-            this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    this.EightBitter.physics.killNormal(explosions[1]);
-                    this.EightBitter.things.add(explosions[2], startX[2], startY[2]);
-                },
-                8);
-            this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    this.EightBitter.physics.killNormal(explosions[2]);
-                },
-                12);
-        };
-
         this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    animateExplosions();
-                },
-                20);
-        /*for (let i: number = 0; i < 3; i += 1) {
-            this.EightBitter.TimeHandler.addEvent(
-                (): void => {
-                    animateExplosion(startX[i], startX[i]);
-                },
-                20 + (2 * i));
-            console.log(i);
-        }*/
+            (): void => {
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.things.add(explosions[0], startX[0], startY[0]);
+                    },
+                    0);
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(explosions[0]);
+                        this.EightBitter.things.add(explosions[1], startX[1], startY[1]);
+                    },
+                    4);
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(explosions[1]);
+                        this.EightBitter.things.add(explosions[2], startX[2], startY[2]);
+                    },
+                    8);
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => this.EightBitter.physics.killNormal(explosions[2]),
+                    12);
+            },
+            20);
     }
 
-    /**
-     * Cutscene for a Sand Attack attack in battle.
-     * 
-     * @param settings   Settings used for the cutscene.
-     * @param args   Settings for the routine.
-     */
-    public cutsceneBattleAttackSandAttack(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
-        const attackerName: string = args.attackerName;
-        const defenderName: string = args.defenderName;
-        // const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
-        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
-        const direction: number = attackerName === "player" ? 1 : -1;
-        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-
-        const explosions: IThing[] = [
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall")
-        ];
-        let startX: number[] = [];
-        let startY: number;
-
-        if (direction === -1) { // Enemy use
-
-        } else {
-            startX[0] = menu.left + (defender.width + 8) * this.EightBitter.unitsize;
-            startX[1] = startX[0] + 5 * this.EightBitter.unitsize;
-            startX[2] = startX[1] + 5 * this.EightBitter.unitsize;
-            startY = menu.bottom - (defender.height + 10) * this.EightBitter.unitsize;
-        }
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.things.add(explosions[0], startX[0], startY);
-            },
-            4);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(explosions[0]);
-                this.EightBitter.things.add(explosions[1], startX[1], startY);
-            },
-            8);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(explosions[1]);
-                this.EightBitter.things.add(explosions[2], startX[2], startY);
-            },
-            12);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(explosions[2]);
-            },
-            16);
-
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.animations.animateScreenShake(
-                    3,
-                    0,
-                    6,
-                    undefined,
-                    this.EightBitter.ScenePlayer.bindRoutine(
-                        "ChangeStatistic",
-                        {
-                            callback: args.callback,
-                            defenderName: defenderName,
-                            statistic: "Accuracy",
-                            amount: -1
-                        }));
-            },
-            (20) | 0);
-    }
     /**
      * Cutscene for an Bubble attack in battle.
      * 
