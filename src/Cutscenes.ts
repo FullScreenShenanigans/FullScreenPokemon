@@ -1864,8 +1864,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         let startX: number[] = [];
         let startY: number;
 
-        if (direction === -1) { // Enemy use
-
+        if (direction === -1) {
+            // Enemy use
         } else {
             startX[0] = menu.left + (defender.width + 8) * this.EightBitter.unitsize;
             startX[1] = startX[0] + 5 * this.EightBitter.unitsize;
