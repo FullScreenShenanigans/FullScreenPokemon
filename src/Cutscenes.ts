@@ -1844,6 +1844,76 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
+     * Cutscene for a Sand Attack attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackSandAttack(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const attackerName: string = args.attackerName;
+        const defenderName: string = args.defenderName;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const direction: number = attackerName === "player" ? 1 : -1;
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+
+        const explosions: IThing[] = [
+            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
+            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
+            this.EightBitter.ObjectMaker.make("ExplosionSmall")
+        ];
+        let startX: number[] = [];
+        let startY: number;
+
+        if (direction === -1) {
+            // Enemy use
+        } else {
+            startX[0] = menu.left + (defender.width + 8) * this.EightBitter.unitsize;
+            startX[1] = startX[0] + 5 * this.EightBitter.unitsize;
+            startX[2] = startX[1] + 5 * this.EightBitter.unitsize;
+            startY = menu.bottom - (defender.height + 10) * this.EightBitter.unitsize;
+        }
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.things.add(explosions[0], startX[0], startY);
+            },
+            4);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(explosions[0]);
+                this.EightBitter.things.add(explosions[1], startX[1], startY);
+            },
+            8);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(explosions[1]);
+                this.EightBitter.things.add(explosions[2], startX[2], startY);
+            },
+            12);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => this.EightBitter.physics.killNormal(explosions[2]),
+            16);
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.animations.animateScreenShake(
+                    3,
+                    0,
+                    6,
+                    undefined,
+                    this.EightBitter.ScenePlayer.bindRoutine(
+                        "ChangeStatistic",
+                        {
+                            callback: args.callback,
+                            defenderName: defenderName,
+                            statistic: "Accuracy",
+                            amount: -1
+                        }));
+            },
+            (20) | 0);
+    }
+
+    /**
      * Cutscene for when a trainer is encountered for battle.
      * 
      * @param settings   Settings used for the cutscene.
