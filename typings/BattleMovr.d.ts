@@ -376,25 +376,25 @@ declare namespace BattleMovr {
          */
         GameStarter: IGameStartr;
         /**
-         *
-         */
-        battleOptions: IBattleOption[];
-        /**
-         *
+         * Names of known MenuGraphr menus.
          */
         menuNames: IMenuNames;
+        /**
+         * Option menus the player may select during battle.
+         */
+        battleOptions: IBattleOption[];
         /**
          * Default settings for running battles.
          */
         defaults?: IBattleInfoDefaults;
         /**
-         *
-         */
-        backgroundType?: string;
-        /**
-         *
+         * Default positions of in-battle Things.
          */
         positions?: IPositions;
+        /**
+         * The type of Thing to create and use as a background.
+         */
+        backgroundType?: string;
     }
     /**
      * A driver for RPG-like battles between two collections of actors.
