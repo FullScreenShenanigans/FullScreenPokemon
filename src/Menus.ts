@@ -42,13 +42,22 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
         // The Pokedex option is only shown if the Player has one
         if (this.EightBitter.ItemsHolder.getItem("hasPokedex") === true) {
+            const attributes: any = {
+                "size": {
+                    "height": 64
+                }
+            };
+
             options.unshift({
                 text: "%%%%%%%POKEDEX%%%%%%%",
                 callback: (): void => this.openPokedexMenu()
             });
+
+            this.EightBitter.MenuGrapher.createMenu("Pause", attributes);
+        } else {
+            this.EightBitter.MenuGrapher.createMenu("Pause");
         }
 
-        this.EightBitter.MenuGrapher.createMenu("Pause");
         this.EightBitter.MenuGrapher.addMenuList("Pause", {
             options: options
         });
@@ -608,6 +617,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             options: items.map((schema: any): any => {
                 return {
                     text: schema.item,
+                    callback: (): void => this.openItemMenu(schema.item),
                     textsFloating: [
                         {
                             text: [["Times"]],
@@ -625,6 +635,32 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         this.EightBitter.MenuGrapher.setActiveMenu("Items");
 
         console.warn("Once math.js contains item info, react to non-stackable items...");
+    }
+
+    /**
+     * Opens the Item menu for the item the player selected from the inventory.
+     * 
+     * @param settings   Custom attributes to apply to the menu, as well as items
+     *                   to optionally override the player's inventory.
+     * 
+     * @todo Fix #364.
+     */
+    public openItemMenu(itemName: string, settings?: any): void {
+        const options: any[] = [{
+                text: "USE",
+                callback: (): void => console.log("Use " + itemName)
+            }, {
+                text: "TOSS",
+                callback: (): void => console.log("Toss " + itemName)
+            }];
+
+        this.EightBitter.ModAttacher.fireEvent("onOpenItemMenu", itemName);
+
+        this.EightBitter.MenuGrapher.createMenu("Item", settings);
+        this.EightBitter.MenuGrapher.addMenuList("Item", {
+            options: options
+        });
+        this.EightBitter.MenuGrapher.setActiveMenu("Item");
     }
 
     /**
