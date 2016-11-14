@@ -1396,6 +1396,130 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
+     * Cutscene for a Ice Beam attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackIceBeam(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const defenderName: string = args.defenderName;
+        const attackerName: string = args.attackerName;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const dt: number = 1;
+        const size: number = this.EightBitter.unitsize;
+        const direction: number = defenderName === "opponent" ? -1 : 1;
+        const lineArray: IThing [] = [];
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const icicle1: IThing = this.EightBitter.ObjectMaker.make("IceBeamIcicles1");
+        const icicle2: IThing = this.EightBitter.ObjectMaker.make("IceBeamIcicles2");
+        const icicle3: IThing = this.EightBitter.ObjectMaker.make("IceBeamIcicles3");
+        const icicle4: IThing = this.EightBitter.ObjectMaker.make("IceBeamIcicles4");
+        let startX: number;
+        let startY: number;
+        let endX: number;
+        let endY: number;
+        let differenceX: number;
+        let differenceY: number;
+        let iceBall: IThing;
+        if (direction === -1) {
+            iceBall = this.EightBitter.ObjectMaker.make("IceBeamCircle");
+        } else {
+            iceBall = this.EightBitter.ObjectMaker.make("IceBeamCircleReverse");
+        }
+        if (direction === -1) {
+            startX = menu.left + attacker.width * 1.5 * this.EightBitter.unitsize;
+            startY = menu.bottom - attacker.height * 1.5 * this.EightBitter.unitsize;
+            endX = menu.right - defender.width * this.EightBitter.unitsize;
+            endY = menu.top + (defender.height / 2) * this.EightBitter.unitsize;
+        } else {
+            startX = menu.right - defender.width * this.EightBitter.unitsize;
+            startY = menu.top + (defender.height / 2) * this.EightBitter.unitsize;
+            endX = menu.left + attacker.width * this.EightBitter.unitsize;
+            endY =  menu.bottom - attacker.height * this.EightBitter.unitsize;
+        }
+        differenceX = (endX - startX) / 32;
+        differenceY = (endY - startY) / 32;
+        this.EightBitter.things.add(iceBall, startX, startY);
+        this.EightBitter.TimeHandler.addEventInterval (
+            (): void => {
+                const left: number = direction === -1 ? iceBall.left : iceBall.right - 3 * this.EightBitter.unitsize;
+                const top: number =  iceBall.bottom - 3 * this.EightBitter.unitsize;
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => this.EightBitter.physics.shiftHoriz(iceBall, differenceX),
+                    dt);
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => this.EightBitter.physics.shiftVert(iceBall, differenceY),
+                    dt);
+                const line: IThing = this.EightBitter.things.add("IceBeamLine", left, top);
+                if (direction === 1) {
+                    this.EightBitter.graphics.flipHoriz(line);
+                }
+                lineArray.push(line);
+            },
+            dt,
+            32);
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(iceBall);
+                for (const line of lineArray) {
+                    this.EightBitter.physics.killNormal(line);
+                }
+                this.EightBitter.things.add(icicle1, defender.left, defender.bottom - 4.5 * size);
+                this.EightBitter.TimeHandler.addEventInterval(
+                    (): void => {
+                        // wait
+                    },
+                    dt,
+                    8);
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(icicle1);
+                        this.EightBitter.things.add(icicle2, defender.left, defender.bottom - 8 * size);
+                        this.EightBitter.TimeHandler.addEventInterval(
+                        (): void => {
+                            // wait
+                        },
+                        dt,
+                        8);
+                        this.EightBitter.TimeHandler.addEvent(
+                            (): void => {
+                                this.EightBitter.physics.killNormal(icicle2);
+                                this.EightBitter.things.add(icicle3, defender.left, defender.bottom - 12.5 * size);
+                                this.EightBitter.TimeHandler.addEventInterval(
+                                    (): void => {
+                                        // wait
+                                    },
+                                    dt,
+                                    8);
+                                this.EightBitter.TimeHandler.addEvent(
+                                    (): void => {
+                                        this.EightBitter.physics.killNormal(icicle3);
+                                        this.EightBitter.things.add(icicle4, defender.left, defender.bottom - 20.5 * size);
+                                        this.EightBitter.TimeHandler.addEventInterval(
+                                            (): void => {
+                                                // wait
+                                            },
+                                            dt,
+                                            8);
+                                        this.EightBitter.things.add(icicle4, defender.left, defender.bottom - 20.5 * size);
+                                        this.EightBitter.TimeHandler.addEvent(
+                                            (): void => {
+                                                this.EightBitter.physics.killNormal(icicle4);
+                                                this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
+                                            },
+                                            9 * dt);
+                                    },
+                                    9 * dt);
+                            },
+                            9 * dt);
+                    },
+                    9 * dt);
+            },
+            33 * dt);
+    }
+
+    /**
      * Cutscene for a Tackle attack in battle.
      * 
      * @param settings   Settings used for the cutscene.
@@ -1568,6 +1692,115 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
             },
             17 * dt);
+    }
+
+    /**
+     *  Cutscene for a Surf attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackSurf(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const defenderName: string = args.defenderName;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const dt: number = 1;
+        const direction: number = defenderName === "opponent" ? -1 : 1;
+        const differenceY: number = defender.height / 3 * this.EightBitter.unitsize;
+        const lineArray: IThing [] = [];
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const wave1: IThing = this.EightBitter.ObjectMaker.make("ExplosionSmall");
+        const wave2: IThing = this.EightBitter.ObjectMaker.make("ExplosionSmall");
+        let dropplets: IThing[] = [this.EightBitter.ObjectMaker.make("ExplosionSmall")];
+        for (let drops: number = 0; drops < 48; drops++) {
+            dropplets.push(this.EightBitter.ObjectMaker.make("ExplosionSmall"));
+        }
+        let startX: number;
+        let startY: number;
+
+        if (direction === -1) {
+            startX = menu.right - defender.width * this.EightBitter.unitsize;
+            startY = menu.top + defender.height * 3;
+        } else {
+            startX = menu.left + defender.width * this.EightBitter.unitsize;
+            startY = menu.bottom - (defender.height + 8) * this.EightBitter.unitsize;
+        }
+        let dropcounter: number = 0;
+        for (let xrain: number = 1; xrain <= 7 ; xrain++) {
+            for (let yrain: number = 1; yrain <= 7; yrain++) {
+                let xdrop: number = menu.left + xrain * menu.width / 2 - yrain * this.EightBitter.unitsize;
+                let ydrop: number = menu.top + yrain * menu.height / 2;
+                this.EightBitter.things.add(dropplets[dropcounter], xdrop, ydrop);
+                dropcounter++;
+            }
+        }
+        this.EightBitter.TimeHandler.addEventInterval (
+            (): void => {
+                // for (const drop of dropplets) {
+                    /**
+                     * Animate the rain
+                     */
+                // }
+            },
+            6 * dt,
+            36);
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                for (const drop of dropplets){
+                    this.EightBitter.physics.killNormal(drop);
+                }
+                this.EightBitter.things.add(wave1, startX, startY);
+                const offset: number = wave1.width * this.EightBitter.unitsize * 2;
+                this.EightBitter.TimeHandler.addEventInterval(
+                    (): void => {
+                        const left: number = direction === -1 ? wave1.left : wave1.right - 3 * this.EightBitter.unitsize;
+                        const top: number = wave1.bottom - 3 * this.EightBitter.unitsize;
+                        this.EightBitter.TimeHandler.addEvent(
+                            (): void =>  this.EightBitter.physics.shiftVert(wave1, differenceY * 3 * direction / 16),
+                            dt);
+                        const line: IThing = this.EightBitter.things.add("ScratchLine", left, top);
+                        lineArray.push(line);
+                    },
+                    dt,
+                    16);
+
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(wave1);
+                        for (const line of lineArray){
+                            this.EightBitter.physics.killNormal(line);
+                        }
+
+                        this.EightBitter.things.add(wave2, startX + offset * direction * -1, startY);
+
+                        this.EightBitter.TimeHandler.addEventInterval(
+                            (): void => {
+
+                                const left: number = direction === -1 ? wave2.left : wave2.right - 3 * this.EightBitter.unitsize;
+                                const top: number = wave2.bottom - 3 * this.EightBitter.unitsize;
+                                this.EightBitter.TimeHandler.addEvent(
+                                    (): void =>  this.EightBitter.physics.shiftVert(wave2, differenceY * 3 * direction / 16),
+                                    dt);
+                                const line: IThing = this.EightBitter.things.add("ScratchLine", left, top);
+                                lineArray.push(line);
+                            },
+                            dt,
+                            16);
+
+                        this.EightBitter.TimeHandler.addEvent(
+                            (): void => {
+                                this.EightBitter.physics.killNormal(wave2);
+                                for (const line of lineArray) {
+                                    this.EightBitter.physics.killNormal(line);
+                                }
+
+                                this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
+                            },
+                            17 * dt);
+                    },
+                    17 * dt);
+                    },
+            193 * dt);
     }
 
     /**
