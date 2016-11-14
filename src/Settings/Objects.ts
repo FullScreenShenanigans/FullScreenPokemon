@@ -84,6 +84,7 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     },
                     "Cabinet": {},
                     "CollisionDetector": {
+                        "AreaGate": {},
                         "CutsceneTriggerer": {},
                         "MenuTriggerer": {},
                         "SightDetector": {},
@@ -579,6 +580,8 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     "HalfArrowHorizontal": {},
                     "HPBar": {},
                     "Note": {},
+                    "EmberSmall": {},
+                    "EmberLarge": {},
                     "ExplosionSmall": {},
                     "ScratchLine": {},
                     "Square": {
@@ -868,6 +871,11 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                 "collide": Collisions.prototype.collideCollisionDetector,
                 "active": false,
                 "hidden": true
+            },
+            "AreaGate": {
+                "activate": Animations.prototype.activateAreaGate,
+                "active": true,
+                "requireOverlap": true
             },
             "CutsceneTriggerer": {
                 "activate": Animations.prototype.activateCutsceneTriggerer,
@@ -1195,6 +1203,8 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                 "offsetY": Unitsize * -2
             },
             "HalfArrowHorizontal": [4, 2],
+            "EmberSmall": [6, 6],
+            "EmberLarge": [8, 8],
             "ExplosionSmall": [8, 8],
             "ScratchLine": [1.5, 1.5],
             "Square": {

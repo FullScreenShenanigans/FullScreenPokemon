@@ -2269,14 +2269,29 @@ export interface IWaterEdge extends IHMCharacter {
  */
 export interface IAreaSpawner extends IDetector {
     /**
-     * The name of the Map to retrieve the Area within.
-     */
-    map: string;
-
-    /**
      * The Area to add into the game.
      */
     area: string;
+
+    /**
+     * The name of the Map to retrieve the Area within.
+     */
+    map: string;
+}
+
+/**
+ * A Detector that marks a player as spawning in a different Area.
+ */
+export interface IAreaGate extends IDetector {
+    /**
+     * The Area to now spawn within.
+     */
+    area: string;
+
+    /**
+     * The Map to now spawn within.
+     */
+    map: string;
 }
 
 /**
