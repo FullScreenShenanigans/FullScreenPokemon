@@ -1926,87 +1926,45 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         const direction: number = attackerName === "player" ? 1 : -1;
         const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
 
-        const gusts: IThing[] = [
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionLarge"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionLarge"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionLarge"),
-            this.EightBitter.ObjectMaker.make("ExplosionSmall"),
-            this.EightBitter.ObjectMaker.make("ExplosionLarge")
-        ];
-        let gustX: number[] = [];
-        let gustY: number[] = [];
+        const gusts: IThing[] = [];
+        for (let i: number = 0; i < 8; i += 1) {
+            if (i % 2 === 0) {
+                gusts[i] = this.EightBitter.ObjectMaker.make("ExplosionSmall");
+            } else {
+                gusts[i] = this.EightBitter.ObjectMaker.make("ExplosionLarge");
+            }
+        }
+
+        let gustX: number;
+        let gustY: number;
+        let gustDx: number;
+        let gustDy: number;
         if (direction === -1) {
             // Enemy use
         } else {
-            gustX[0] = menu.left + (defender.width) * this.EightBitter.unitsize;
-            gustY[0] = menu.bottom - (defender.height) * this.EightBitter.unitsize;
-            gustX[1] = gustX[0] + 4 * this.EightBitter.unitsize;
-            gustY[1] = gustY[0];
-            gustX[2] = gustX[1] + 4 * this.EightBitter.unitsize;
-            gustY[2] = gustY[1];
-            gustX[3] = gustX[2] + 4 * this.EightBitter.unitsize;
-            gustY[3] = gustY[2];
-            gustX[4] = gustX[3] + 4 * this.EightBitter.unitsize;
-            gustY[4] = gustY[3];
-            gustX[5] = gustX[4] + 4 * this.EightBitter.unitsize;
-            gustY[5] = gustY[4] - 4 * this.EightBitter.unitsize;
-            gustX[6] = gustX[5] + 4 * this.EightBitter.unitsize;
-            gustY[6] = gustY[5] - 4 * this.EightBitter.unitsize;
-            gustX[7] = gustX[6] + 4 * this.EightBitter.unitsize;
-            gustY[7] = gustY[6] - 4 * this.EightBitter.unitsize;
+            gustX = menu.left + (defender.width) * this.EightBitter.unitsize;
+            gustY = menu.bottom - (defender.height) * this.EightBitter.unitsize;
+            gustDx = 4 * this.EightBitter.unitsize;
+            gustDy = -4 * this.EightBitter.unitsize;
         }
 
-        this.EightBitter.things.add(gusts[0], gustX[0], gustY[0]);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[0]);
-                this.EightBitter.things.add(gusts[1], gustX[1], gustY[1]);
-            },
-            5);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[1]);
-                this.EightBitter.things.add(gusts[2], gustX[2], gustY[2]);
-            },
-            10);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[2]);
-                this.EightBitter.things.add(gusts[3], gustX[3], gustY[3]);
-            },
-            15);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[3]);
-                this.EightBitter.things.add(gusts[4], gustX[4], gustY[4]);
-            },
-            20);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[4]);
-                this.EightBitter.things.add(gusts[5], gustX[5], gustY[5]);
-            },
-            25);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[5]);
-                this.EightBitter.things.add(gusts[6], gustX[6], gustY[6]);
-            },
-            30);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[6]);
-                this.EightBitter.things.add(gusts[7], gustX[7], gustY[7]);
-            },
-            35);
-        this.EightBitter.TimeHandler.addEvent(
-            (): void => {
-                this.EightBitter.physics.killNormal(gusts[7]);
-            },
-            40);
+        for (let i: number = 0; i < 9; i += 1) {
+            this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    if (i === 0) {
+                        this.EightBitter.things.add(gusts[i], gustX, gustY);
+                    } else if (i < 5) {
+                        this.EightBitter.physics.killNormal(gusts[i - 1]);
+                        this.EightBitter.things.add(gusts[i], gustX + (gustDx * i), gustY);
+                    } else if (i < 8) {
+                        this.EightBitter.physics.killNormal(gusts[i - 1]);
+                        this.EightBitter.things.add(gusts[i], gustX + (gustDx * i), gustY + (gustDy * (i - 4)));
+                    } else {
+                        this.EightBitter.physics.killNormal(gusts[i - 1]);
+                    }
+                },
+                5 * i);
+        }
 
         const explosions: IThing[] = [
             this.EightBitter.ObjectMaker.make("ExplosionSmall"),
