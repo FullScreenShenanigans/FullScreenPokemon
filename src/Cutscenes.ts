@@ -1422,21 +1422,20 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         let iceBall: IThing = this.EightBitter.ObjectMaker.make("IceBeamCircle");
         let lines: IThing [] = [];
 
-        if (direction === 1) {
-            this.EightBitter.graphics.flipVert(iceBall);
-            this.EightBitter.graphics.flipHoriz(iceBall);
-        }
         if (direction === -1) {
             startX = menu.left + attacker.width * 1.5 * this.EightBitter.unitsize;
             startY = menu.bottom - attacker.height * 1.5 * this.EightBitter.unitsize;
             endX = menu.right - defender.width * this.EightBitter.unitsize;
             endY = menu.top + (defender.height / 2) * this.EightBitter.unitsize;
         } else {
+            this.EightBitter.graphics.flipVert(iceBall);
+            this.EightBitter.graphics.flipHoriz(iceBall);
             startX = menu.right - defender.width * this.EightBitter.unitsize;
             startY = menu.top + (defender.height / 2) * this.EightBitter.unitsize;
             endX = menu.left + attacker.width * this.EightBitter.unitsize;
             endY =  menu.bottom - attacker.height * this.EightBitter.unitsize;
         }
+
         differenceX = (endX - startX) / 32;
         differenceY = (endY - startY) / 32;
 
@@ -1445,16 +1444,16 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             (): void => {
                 const left: number = direction === -1 ? iceBall.left : iceBall.right - 3 * this.EightBitter.unitsize;
                 const top: number =  iceBall.bottom - 3 * this.EightBitter.unitsize;
+                const line: IThing = this.EightBitter.things.add("IceBeamLine", left, top);
+
                 this.EightBitter.TimeHandler.addEvent(
-                    (): void => this.EightBitter.physics.shiftHoriz(iceBall, differenceX)
-                    );
+                    (): void => this.EightBitter.physics.shiftHoriz(iceBall, differenceX));
                 this.EightBitter.TimeHandler.addEvent(
-                    (): void => this.EightBitter.physics.shiftVert(iceBall, differenceY)
-                    );
-                let line: IThing = this.EightBitter.things.add("IceBeamLine", left, top);
+                    (): void => this.EightBitter.physics.shiftVert(iceBall, differenceY));
                 if (direction === 1) {
                     this.EightBitter.graphics.flipHoriz(line);
                 }
+
                 lines.push(line);
             },
             1,
@@ -1463,38 +1462,20 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
         this.EightBitter.TimeHandler.addEvent(
             (): void => {
                 this.EightBitter.physics.killNormal(iceBall);
-                for (const line of lines){
+                for (const line of lines) {
                     this.EightBitter.physics.killNormal(line);
                 }
                 this.EightBitter.things.add(icicles[0], defender.left, defender.bottom - 4.5 * this.EightBitter.unitsize);
-                this.EightBitter.TimeHandler.addEventInterval(
-                    (): void => {
-                        // wait
-                    },
-                    1,
-                    8);
 
                 this.EightBitter.TimeHandler.addEvent(
                     (): void => {
                         this.EightBitter.physics.killNormal(icicles[0]);
                         this.EightBitter.things.add(icicles[1], defender.left, defender.bottom - 8 * this.EightBitter.unitsize);
-                        this.EightBitter.TimeHandler.addEventInterval(
-                        (): void => {
-                            // wait
-                        },
-                        1,
-                        8);
 
                         this.EightBitter.TimeHandler.addEvent(
                             (): void => {
                                 this.EightBitter.physics.killNormal(icicles[1]);
                                 this.EightBitter.things.add(icicles[2], defender.left, defender.bottom - 12.5 * this.EightBitter.unitsize);
-                                this.EightBitter.TimeHandler.addEventInterval(
-                                    (): void => {
-                                        // wait
-                                    },
-                                    1,
-                                    8);
 
                                 this.EightBitter.TimeHandler.addEvent(
                                     (): void => {
@@ -1503,12 +1484,6 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                                             icicles[3],
                                             defender.left,
                                             defender.bottom - 20.5 * this.EightBitter.unitsize);
-                                        this.EightBitter.TimeHandler.addEventInterval(
-                                            (): void => {
-                                                // wait
-                                            },
-                                            1,
-                                            8);
 
                                         this.EightBitter.TimeHandler.addEvent(
                                             (): void => {
