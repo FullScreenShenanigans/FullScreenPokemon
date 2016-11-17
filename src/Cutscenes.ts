@@ -1465,39 +1465,39 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                     this.EightBitter.physics.killNormal(line);
                 }
                 this.EightBitter.things.add(icicles[0], defender.left, defender.bottom - 4.5 * this.EightBitter.unitsize);
-
-                this.EightBitter.TimeHandler.addEvent(
-                    (): void => {
-                        this.EightBitter.physics.killNormal(icicles[0]);
-                        this.EightBitter.things.add(icicles[1], defender.left, defender.bottom - 8 * this.EightBitter.unitsize);
-
-                        this.EightBitter.TimeHandler.addEvent(
-                            (): void => {
-                                this.EightBitter.physics.killNormal(icicles[1]);
-                                this.EightBitter.things.add(icicles[2], defender.left, defender.bottom - 12.5 * this.EightBitter.unitsize);
-
-                                this.EightBitter.TimeHandler.addEvent(
-                                    (): void => {
-                                        this.EightBitter.physics.killNormal(icicles[2]);
-                                        this.EightBitter.things.add(
-                                            icicles[3],
-                                            defender.left,
-                                            defender.bottom - 20.5 * this.EightBitter.unitsize);
-
-                                        this.EightBitter.TimeHandler.addEvent(
-                                            (): void => {
-                                                this.EightBitter.physics.killNormal(icicles[3]);
-                                                this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
-                                            },
-                                            9 * 1);
-                                    },
-                                    9 * 1);
-                            },
-                            9 * 1);
-                    },
-                    9 * 1);
             },
-            33 * 1);
+            33);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[0]);
+                    this.EightBitter.things.add(icicles[1], defender.left, defender.bottom - 8 * this.EightBitter.unitsize);
+                },
+                42);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[1]);
+                    this.EightBitter.things.add(icicles[2], defender.left, defender.bottom - 12.5 * this.EightBitter.unitsize);
+                },
+                51);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[2]);
+                    this.EightBitter.things.add(
+                    icicles[3],
+                    defender.left,
+                    defender.bottom - 20.5 * this.EightBitter.unitsize);
+                },
+                60);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[3]);
+                    this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
+                },
+                69);
     }
 
     /**
