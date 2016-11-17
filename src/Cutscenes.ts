@@ -1395,6 +1395,112 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
+     * Cutscene for a Ice Beam attack in battle.
+     * 
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackIceBeam(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const defenderName: string = args.defenderName;
+        const attackerName: string = args.attackerName;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const attacker: IThing = this.EightBitter.BattleMover.getThing(attackerName) as IThing;
+        const direction: number = defenderName === "opponent" ? -1 : 1;
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const icicles: IThing [] = [
+            this.EightBitter.ObjectMaker.make("IceBeamIciclesQuarter"),
+            this.EightBitter.ObjectMaker.make("IceBeamIciclesHalf"),
+            this.EightBitter.ObjectMaker.make("IceBeamIciclesThreeQuarters"),
+            this.EightBitter.ObjectMaker.make("IceBeamIciclesFull")];
+        let startX: number;
+        let startY: number;
+        let endX: number;
+        let endY: number;
+        let differenceX: number;
+        let differenceY: number;
+        let iceBall: IThing = this.EightBitter.ObjectMaker.make("IceBeamCircle");
+        let lines: IThing [] = [];
+
+        if (direction === -1) {
+            startX = menu.left + attacker.width * 1.5 * this.EightBitter.unitsize;
+            startY = menu.bottom - attacker.height * 1.5 * this.EightBitter.unitsize;
+            endX = menu.right - defender.width * this.EightBitter.unitsize;
+            endY = menu.top + (defender.height / 2) * this.EightBitter.unitsize;
+        } else {
+            this.EightBitter.graphics.flipVert(iceBall);
+            this.EightBitter.graphics.flipHoriz(iceBall);
+            startX = menu.right - defender.width * this.EightBitter.unitsize;
+            startY = menu.top + (defender.height / 2) * this.EightBitter.unitsize;
+            endX = menu.left + attacker.width * this.EightBitter.unitsize;
+            endY =  menu.bottom - attacker.height * this.EightBitter.unitsize;
+        }
+
+        differenceX = (endX - startX) / 32;
+        differenceY = (endY - startY) / 32;
+
+        this.EightBitter.things.add(iceBall, startX, startY);
+        this.EightBitter.TimeHandler.addEventInterval(
+            (): void => {
+                const left: number = direction === -1 ? iceBall.left : iceBall.right - 3 * this.EightBitter.unitsize;
+                const top: number =  iceBall.bottom - 3 * this.EightBitter.unitsize;
+                const line: IThing = this.EightBitter.things.add("IceBeamLine", left, top);
+
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => this.EightBitter.physics.shiftHoriz(iceBall, differenceX));
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => this.EightBitter.physics.shiftVert(iceBall, differenceY));
+                if (direction === 1) {
+                    this.EightBitter.graphics.flipHoriz(line);
+                }
+
+                lines.push(line);
+            },
+            1,
+            32);
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                this.EightBitter.physics.killNormal(iceBall);
+                for (const line of lines) {
+                    this.EightBitter.physics.killNormal(line);
+                }
+                this.EightBitter.things.add(icicles[0], defender.left, defender.bottom - 4.5 * this.EightBitter.unitsize);
+            },
+            33);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[0]);
+                    this.EightBitter.things.add(icicles[1], defender.left, defender.bottom - 8 * this.EightBitter.unitsize);
+                },
+                42);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[1]);
+                    this.EightBitter.things.add(icicles[2], defender.left, defender.bottom - 12.5 * this.EightBitter.unitsize);
+                },
+                51);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[2]);
+                    this.EightBitter.things.add(
+                    icicles[3],
+                    defender.left,
+                    defender.bottom - 20.5 * this.EightBitter.unitsize);
+                },
+                60);
+
+        this.EightBitter.TimeHandler.addEvent(
+                (): void => {
+                    this.EightBitter.physics.killNormal(icicles[3]);
+                    this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
+                },
+                69);
+    }
+
+    /**
      * Cutscene for a Tackle attack in battle.
      * 
      * @param settings   Settings used for the cutscene.
