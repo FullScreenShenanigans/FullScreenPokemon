@@ -159,7 +159,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
             "Pause": {
                 "size": {
                     "width": 40,
-                    "height": 64
+                    "height": 56
                 },
                 "position": {
                     "horizontal": "center",
@@ -1031,19 +1031,38 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
             },
             "Items": {
                 "size": {
-                    "width": 64
+                    "width": 64,
+                    "height": 44
                 },
                 "position": {
                     "horizontal": "center",
-                    "vertical": "stretch",
                     "offset": {
-                        "left": 8
+                        "left": 48,
+                        "top": 8
                     }
                 },
                 "backMenu": "Pause",
+                "ignoreProgressB": true,
                 "saveIndex": true,
                 "scrollingItemsComputed": true,
                 "textXOffset": 8
+            },
+            "Item": {
+                "size": {
+                    "width": 28,
+                    "height": 20
+                },
+                "position": {
+                    "horizontal": "center",
+                    "offset": {
+                        "left": 66,
+                        "top": 40
+                    }
+                },
+                "backMenu": "Items",
+                "ignoreProgressB": true,
+                "textXOffset": 8,
+                "textYOffset": 4
             },
             "Player": {
                 "size": {
