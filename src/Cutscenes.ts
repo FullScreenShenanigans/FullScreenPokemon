@@ -1678,6 +1678,110 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
+     *  Cutscene for a Surf attack in battle.
+     * 
+     * @todo animate the droplets
+     * @param settings   Settings used for the cutscene.
+     * @param args   Settings for the routine.
+     */
+    public cutsceneBattleAttackSurf(settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
+        const defenderName: string = args.defenderName;
+        const defender: IThing = this.EightBitter.BattleMover.getThing(defenderName) as IThing;
+        const dt: number = 1;
+        const direction: number = defenderName === "opponent" ? -1 : 1;
+        const differenceY: number = defender.height / 3 * this.EightBitter.unitsize;
+        const lines: IThing [] = [];
+        const menu: IMenu = this.EightBitter.MenuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const wave1: IThing = this.EightBitter.ObjectMaker.make("SurfSpout");
+        const wave2: IThing = this.EightBitter.ObjectMaker.make("SurfSpout");
+        let droplets: IThing[] = [this.EightBitter.ObjectMaker.make("SurfDroplet")];
+        for (let drops: number = 0; drops < 49; drops += 1) {
+            droplets.push(this.EightBitter.ObjectMaker.make("SurfDroplet"));
+        }
+        let startX: number;
+        let startY: number;
+        if (direction === -1) {
+            startX = defender.left;
+            startY = defender.bottom - defender.height / 2;
+        } else {
+            startX = defender.right;
+            startY = defender.bottom - defender.height / 2;
+        }
+
+        for (let xrain: number = 1; xrain <= 7 ; xrain += 1) {
+            for (let yrain: number = 1; yrain <= 7; yrain += 1) {
+                let xdrop: number = menu.left + xrain * menu.width / 2 - yrain * this.EightBitter.unitsize;
+                let ydrop: number = menu.top + yrain * menu.height / 2;
+                this.EightBitter.things.add(droplets[((xrain - 1) * 7) + yrain - 1], xdrop, ydrop);
+            }
+        }
+
+        this.EightBitter.TimeHandler.addEventInterval (
+            (): void => {
+                // for (const drop of dropplets) {
+                    /**
+                     * Animate the droplets
+                     */
+                // }
+            },
+            6 * dt,
+            36);
+
+        this.EightBitter.TimeHandler.addEvent(
+            (): void => {
+                for (const drop of droplets){
+                    this.EightBitter.physics.killNormal(drop);
+                }
+                this.EightBitter.things.add(wave1, startX, startY);
+                this.EightBitter.TimeHandler.addEventInterval(
+                    (): void => {
+                        const middle: number = wave1.left + 2 * this.EightBitter.unitsize;
+                        const top: number = wave1.bottom;
+                        this.EightBitter.TimeHandler.addEvent(
+                            (): void =>  this.EightBitter.physics.shiftVert(wave1, differenceY * 3 * direction / 16),
+                            dt);
+                        lines.push(this.EightBitter.things.add("SurfColumn", middle, top));
+                    },
+                    dt,
+                    16);
+
+                this.EightBitter.TimeHandler.addEvent(
+                    (): void => {
+                        this.EightBitter.physics.killNormal(wave1);
+                        for (const line of lines){
+                            this.EightBitter.physics.killNormal(line);
+                        }
+                        this.EightBitter.things.add(wave2, startX + wave2.width * 2 * this.EightBitter.unitsize * direction * -1, startY);
+
+                        this.EightBitter.TimeHandler.addEventInterval(
+                            (): void => {
+                                const middle: number = wave2.left + 2 * this.EightBitter.unitsize;
+                                const top: number = wave2.bottom;
+                                this.EightBitter.TimeHandler.addEvent(
+                                    (): void =>  this.EightBitter.physics.shiftVert(wave2, differenceY * 3 * direction / 16),
+                                    dt);
+                                lines.push(this.EightBitter.things.add("SurfColumn", middle, top));
+                            },
+                            dt,
+                            16);
+
+                        this.EightBitter.TimeHandler.addEvent(
+                            (): void => {
+                                this.EightBitter.physics.killNormal(wave2);
+                                for (const line of lines) {
+                                    this.EightBitter.physics.killNormal(line);
+                                }
+
+                                this.EightBitter.animations.animateFlicker(defender, 14, 5, args.callback);
+                            },
+                            17 * dt);
+                    },
+                    17 * dt);
+            },
+            193 * dt);
+    }
+
+    /**
      * Cutscene for an Ember attack in battle.
      * 
      * @param settings   Settings used for the cutscene.
