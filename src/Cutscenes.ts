@@ -1011,6 +1011,12 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             ],
             this.EightBitter.ScenePlayer.bindRoutine("LevelUpStats", args)
         );
+
+        if(this.EightBitter.utilities.shouldEvolve(actor)) {
+            // Evolution cutscene not yet implemented
+            this.EightBitter.utilities.evolvePokemon(actor);
+        }
+
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
 

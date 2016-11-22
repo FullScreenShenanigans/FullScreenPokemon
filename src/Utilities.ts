@@ -105,4 +105,42 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
 
         return true;
     }
+
+    /**
+     * Function to check if a pokemon should evolve at current level.
+     * 
+     * @param actor   Pokemon to be checked for evolution.
+     * @returns   Whether the pokemon is able to evolve at current level.
+     */
+    public shouldEvolve(actor: IPokemon): boolean {
+        let t = actor.title.join();
+        let p = this.EightBitter.MathDecider.getConstant("pokemon").t;
+        return actor.level === parseInt(p.evolvesVia.split(" ")[1], 10);
+    }
+
+    /**
+     * Function to evolve a pokemon and subsequently modify their stats
+     * 
+     * @param actor   Pokemon to be evolved
+     * @returns   void
+     */
+    public evolvePokemon(actor: IPokemon): void {
+        let t = actor.title.join();
+        let p = this.EightBitter.MathDecider.getConstant("pokemon").t;
+        let evolution = p.evolvesInto;
+        actor.title = evolution.toUppercase().split("");
+
+        let evolInfo = this.EightBitter.MathDecider.getConstant("pokemon")[evolution.toUppercase()];
+
+        actor.Attack = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Attack);
+        actor.AttackNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Attack);
+        actor.Defense = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Defense);
+        actor.DefenseNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Defense);
+        actor.HP = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.HP);
+        actor.HPNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.HP);
+        actor.Special = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Special);
+        actor.SpecialNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Special);
+        actor.Speed = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Speed);
+        actor.SpeedNormal = this.EightBitter.MathDecider.compute("pokemonStatistic", actor, evolInfo.Speed);
+    }
 }
