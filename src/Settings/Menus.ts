@@ -140,7 +140,7 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
                 ],
                 "textXOffset": 8,
                 "ignoreB": true
-            },
+            } as MenuGraphr.IListMenuSchema,
             "GeneralText": {
                 "size": {
                     "height": 24,
