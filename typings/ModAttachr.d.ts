@@ -145,8 +145,10 @@ declare namespace ModAttachr {
          * Toggles a mod via enableMod/disableMod of the given name, if it exists.
          *
          * @param name   The name of the mod to toggle.
+         * @param args   Any additional arguments to pass. This will have `mod`
+         *               and `name` unshifted in front, in that order.
          */
-        toggleMod(name: string): void;
+        toggleMod(name: string, ...args: any[]): void;
         /**
          * Toggles any number of mods.
          *
@@ -271,9 +273,11 @@ declare namespace ModAttachr {
          * Toggles a mod via enableMod/disableMod of the given name, if it exists.
          *
          * @param name   The name of the mod to toggle.
+         * @param args   Any additional arguments to pass. This will have `mod`
+         *               and `name` unshifted in front, in that order.
          * @returns The result of the mod's onModEnable or onModDisable event.
          */
-        toggleMod(name: string): void;
+        toggleMod(name: string, ...args: any[]): void;
         /**
          * Toggles any number of mods.
          *

@@ -247,6 +247,15 @@ declare namespace MenuGraphr {
      * A schema to specify creating a list menu.
      */
     interface IListMenuSchema extends IMenuSchema {
+       /**
+         * The names of all menu indices that should be forgotton upon deletion of
+         * this menu.
+         */
+        clearedIndicesOnDeletion?: string[];
+        /**
+         * Whether or not the last selected index should be saved.
+         */
+        saveIndex?: boolean;
         /**
          * How many scrolling items should be visible within the menu.
          */
@@ -1125,6 +1134,12 @@ declare namespace MenuGraphr {
          * @returns Whether the character was deleted.
          */
         private scrollCharacterUp(character, menu);
+        /**
+         * Clears saved indices that should be forgotten when the menu is deleted.
+         *
+         * @param name   The name of the menu that is being deleted.
+         */
+        private clearMenuIndices(name);
         /**
          * Deletes all children of a menu.
          *
