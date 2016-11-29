@@ -593,6 +593,9 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
                     "IceBeamIciclesHalf": {},
                     "IceBeamIciclesThreeQuarters": {},
                     "IceBeamIciclesFull": {},
+                    "SurfColumn": {},
+                    "SurfDroplet": {},
+                    "SurfSpout": {},
                     "Square": {
                         "BlackSquare": {},
                         "DarkGraySquare": {},
@@ -1225,6 +1228,9 @@ export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
             "IceBeamIciclesHalf": [20, 8],
             "IceBeamIciclesThreeQuarters": [20, 12.5],
             "IceBeamIciclesFull": [20, 20.5],
+            "SurfColumn": [4, 2],
+            "SurfDroplet": [3.5, 3.5],
+            "SurfSpout": [8, 5.5],
             "Square": {
                 "width": 1,
                 "height": 1,
