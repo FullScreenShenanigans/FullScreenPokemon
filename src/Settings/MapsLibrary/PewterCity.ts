@@ -232,7 +232,7 @@ export const PewterCity: IMapRaw = {
                 {
                     "thing": "CoolTrainerM", "x": 32, "y": 8, "name": "Brock", "trainer": true, "battleName": "Brock", "battleSprite": "Brock", "dialog": ["I'm BROCK! \n I'm PEWTER's GYM LEADER!", "I believe in rock hard defense and determination!", "That's why my %%%%%%%POKEMON%%%%%%% are all the rock-type!", "Do you still want to challenge me? Fine then! Show me your best!"],
                     "reward": 1386,
-                    "badge": "Boulder",
+                    "badge": "Brock",
                     "textVictory": ["BROCK: I took you for granted.", "As proof of your victory, here's the BOULDERBADGE!", "%%%%%%%PLAYER%%%%%%% received the BOULDERBADGE!", "That's an official %%%%%%%POKEMON%%%%%%% LEAGUE BADGE!", "Its bearer's %%%%%%%POKEMON%%%%%%% become more powerful!", "The technique FLASH can now be used any time!"],
                     "giftAfterBattle": "TM34",
                     "textAfterBattle": ["Wait! Take this with you!", "%%%%%%%PLAYER%%%%%%% received TM34!", "A TM contains a technique that can be taught to %%%%%%%POKEMON%%%%%%%!", "A TM is good only once! So when you use one to teach a new technique, pick the %%%%%%%POKEMON%%%%%%% carefully!", "TM34 contains BIDE! Your %%%%%%%POKEMON%%%%%%% will absorb damage in battle then pay it back double!"],
