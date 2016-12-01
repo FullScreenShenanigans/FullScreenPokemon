@@ -1,5 +1,5 @@
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IMenusModuleSettings, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
+import { IDialog, IMenuBase, IMenusModuleSettings, IMenuSchema, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
 import { Menus } from "../Menus";
 
 /* tslint:disable object-literal-key-quotes */
@@ -136,7 +136,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 ],
                 "textXOffset": 8,
                 "ignoreB": true
-            },
+            } as MenuGraphr.IListMenuSchema,
             "GeneralText": {
                 "size": {
                     "height": 24,
@@ -170,7 +170,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 8,
                 "textYOffset": 8,
                 "textPaddingY": 7.75
-            },
+            } as MenuGraphr.IListMenuSchema,
             "Pokedex": {
                 "size": {
                     "width": 88
@@ -230,7 +230,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 7,
                 "textYOffset": 11
-            },
+            } as MenuGraphr.IListMenuSchema,
             "PokedexNumbers": {
                 "size": {
                     "width": 16,
@@ -298,25 +298,25 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "PokedexListingSprite"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingName"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingLabel"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingHeight"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingWeight"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingNumber"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingInfo"
-                    },
+                    } as MenuGraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalLeft",
@@ -344,7 +344,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                         }
                     }],
                 "lined": true
-            },
+            } as IMenuBase,
             "PokedexListingSprite": {
                 "position": {
                     "offset": {
@@ -358,7 +358,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 },
                 "hidden": true,
                 "container": "PokedexListing"
-            },
+            } as IMenuSchema,
             "PokedexListingName": {
                 "position": {
                     "offset": {
@@ -370,7 +370,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "hidden": true,
                 "textSpeed": 0,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "PokedexListingLabel": {
                 "position": {
                     "offset": {
@@ -382,7 +382,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "hidden": true,
                 "textSpeed": 0,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "PokedexListingHeight": {
                 "position": {
                     "offset": {
@@ -398,13 +398,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "text",
                         "words": ["HT"]
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingHeightFeet"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingHeightInches"
-                    },
+                    } as MenuGraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "CharFeet",
@@ -430,7 +430,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 8,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "PokedexListingHeightFeet": {
                 "size": {
                     "height": 10,
@@ -441,7 +441,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 16.5,
                 "textYOffset": 0,
                 "textPaddingX": -8
-            },
+            } as IMenuSchema,
             "PokedexListingHeightInches": {
                 "size": {
                     "height": 10,
@@ -452,7 +452,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 28,
                 "textYOffset": 0,
                 "textPaddingX": -8
-            },
+            } as IMenuSchema,
             "PokedexListingWeight": {
                 "position": {
                     "offset": {
@@ -476,13 +476,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 32
                             }
                         }
-                    }],
+                    } as IDialog & MenuGraphr.IMenuChildSchema],
                 "container": "PokedexListing",
                 "hidden": true,
                 "textSpeed": 0,
                 "textXOffset": 16,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "PokedexListingNumber": {
                 "size": {
                     "width": 20,
@@ -497,13 +497,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [["No", "."]]
-                }],
+                } as IDialog & MenuGraphr.IMenuChildSchema],
                 "container": "PokedexListing",
                 "hidden": true,
                 "textSpeed": 0,
                 "textXOffset": 8,
                 "textYOffset": -.5
-            },
+            } as IMenuSchema,
             "PokedexListingInfo": {
                 "position": {
                     "vertical": "bottom",
@@ -520,7 +520,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "hidden": true,
                 "textSpeed": 0,
                 "textXOffset": 2
-            },
+            } as IMenuSchema,
             "Pokemon": {
                 "size": {
                     "width": 88,
@@ -535,7 +535,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "menu",
                     "name": "PokemonDialog"
-                }],
+                } as MenuGraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "arrowXOffset": 8,
                 "arrowYOffset": 3,
@@ -544,7 +544,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 15.75,
                 "textYOffset": 4
-            },
+            } as MenuGraphr.IListMenuSchema,
             "PokemonDialog": {
                 "size": {
                     "height": 24
@@ -564,7 +564,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                             "top": 7.5
                         }
                     }
-                }],
+                } as IDialog & MenuGraphr.IMenuChildSchema],
                 "container": "Pokemon",
                 "textSpeed": 0
             },
@@ -594,31 +594,31 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "PokemonMenuStatsTitle"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsLevel"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsHPBar"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsHP"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsNumber"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsStatus"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsType1"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsID"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsOT"
-                    },
+                    } as MenuGraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -724,7 +724,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 0,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "PokemonMenuStatsLevel": {
                 "size": {
                     "width": 36,
@@ -749,8 +749,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                             "top": 1.5
                         }
                     }
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsHPBar": {
                 "position": {
                     "offset": {
@@ -782,7 +782,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     }],
                 "container": "PokemonMenuStats",
                 "hidden": true
-            },
+            } as IMenuSchema,
             "PokemonMenuStatsHP": {
                 "size": {
                     "width": 24,
@@ -799,7 +799,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 0,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "PokemonMenuStatsNumber": {
                 "size": {
                     "width": 40,
@@ -819,8 +819,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [[["No"], "."]]
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsStatus": {
                 "size": {
                     "width": 40,
@@ -840,8 +840,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["STATUS/"]
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsType1": {
                 "size": {
                     "width": 40,
@@ -860,8 +860,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["TYPE1/"]
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsType2": {
                 "size": {
                     "width": 40,
@@ -880,8 +880,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["TYPE2/"]
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsID": {
                 "size": {
                     "width": 72,
@@ -900,8 +900,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [[["ID"], ["No"], "/"]]
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsOT": {
                 "size": {
                     "width": 72,
@@ -920,8 +920,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["OT/"]
-                }]
-            },
+                } as MenuGraphr.IMenuChildSchema]
+            } as IMenuSchema,
             "PokemonMenuStatsExperience": {
                 "size": {
                     "width": 43,
@@ -944,7 +944,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 3
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": ["LEVEL UP"],
                         "position": {
@@ -952,13 +952,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 11
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsExperienceFrom"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsExperienceNext"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [["To"]],
                         "position": {
@@ -967,13 +967,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 20.5
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "container": "PokemonMenuStats",
                 "plain": true,
                 "textXOffset": 0,
                 "textYOffset": 7,
                 "textSpeed": 0
-            },
+            } as IMenuBase,
             "PokemonMenuStatsExperienceFrom": {
                 "size": {
                     "width": 15
@@ -989,7 +989,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 0,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "PokemonMenuStatsExperienceNext": {
                 "position": {
                     "offset": {
@@ -1006,13 +1006,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 1.5
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "container": "PokemonMenuStatsExperience",
                 "hidden": true,
                 "textSpeed": 0,
                 "textXOffset": 4,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "PokemonMenuStatsMoves": {
                 "size": {
                     "width": 88,
@@ -1042,7 +1042,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "saveIndex": true,
                 "scrollingItemsComputed": true,
                 "textXOffset": 8
-            },
+            } as MenuGraphr.IListMenuSchema,
             "Item": {
                 "size": {
                     "width": 28,
@@ -1072,16 +1072,14 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "PlayerTop"
-                    },
-                    {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "DirtWhite",
                         "position": {
                             "horizontal": "stretch",
                             "vertical": "center"
                         }
-                    } as MenuGraphr.IMenuThingSchema,
-                    {
+                    } as MenuGraphr.IMenuThingSchema, {
                         "type": "text",
                         "words": ["BADGES"],
                         "position": {
@@ -1090,7 +1088,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 35.5
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [["Circle"]],
                         "position": {
@@ -1099,7 +1097,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 37
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [["Circle"]],
                         "position": {
@@ -1108,15 +1106,15 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 37
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PlayerBottom"
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "dirty": true,
                 "ignoreProgressB": true,
                 "textSpeed": 0
-            },
+            } as IMenuBase,
             "PlayerTop": {
                 "size": {
                     "width": 77,
@@ -1144,8 +1142,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 6
                             }
                         }
-                    },
-                    {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "PlayerPortrait",
                         "position": {
@@ -1160,7 +1157,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "light": true,
                 "container": "Player",
                 "textSpeed": 0
-            },
+            } as IMenuBase,
             "PlayerBottom": {
                 "size": {
                     "width": 69,
@@ -1185,8 +1182,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 3
                             }
                         }
-                    },
-                    {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "BrockPortrait",
                         "position": {
@@ -1195,8 +1191,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 6.5
                             }
                         }
-                    } as MenuGraphr.IMenuThingSchema,
-                    {
+                    } as MenuGraphr.IMenuThingSchema, {
                         "type": "thing",
                         "thing": "MistyPortrait",
                         "position": {
@@ -1205,7 +1200,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 6.5
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "LtSurgePortrait",
                         "position": {
@@ -1214,7 +1209,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 6.5
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "ErikaPortrait",
                         "position": {
@@ -1223,7 +1218,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 6.5
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "KogaPortrait",
                         "position": {
@@ -1232,7 +1227,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 18
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "SabrinaPortrait",
                         "position": {
@@ -1241,7 +1236,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 18
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "BlainePortrait",
                         "position": {
@@ -1250,7 +1245,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 18
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "GiovanniPortrait",
                         "position": {
@@ -1265,7 +1260,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textPaddingX": 8.5,
                 "textPaddingY": 12
-            },
+            } as IMenuBase,
             "Save": {
                 "size": {
                     "width": 64,
@@ -1295,7 +1290,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 7
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [
                             {
@@ -1327,7 +1322,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 7
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "textSpeed": 0
             },
             "Yes/No": {
@@ -1346,7 +1341,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "arrowXOffset": 1,
                 "textXOffset": 8,
                 "textYOffset": 3.5
-            },
+            } as IMenuSchema,
             "Heal/Cancel": {
                 "size": {
                     "width": 36,
@@ -1362,7 +1357,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 },
                 "arrowXOffset": 1,
                 "textXOffset": 8
-            },
+            } as IMenuSchema,
             "Buy/Sell": {
                 "size": {
                     "width": 44,
@@ -1417,7 +1412,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": -.25
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [{
                             "command": "padLeft",
@@ -1429,7 +1424,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 4
                             }
                         }
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [{
                             "command": "padLeft",
@@ -1441,7 +1436,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 4
                             }
                         }
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "textSpeed": 0
             },
             "ShopItems": {
@@ -1492,7 +1487,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "Town Map Inside"
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "ignoreProgressB": true,
                 "textSpeed": 0,
                 "textXOffset": 8,
@@ -1516,7 +1511,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     } as MenuGraphr.IMenuThingSchema],
                 "container": "Town Map",
                 "watery": true
-            },
+            } as IMenuBase,
             "Battle": {
                 "size": {
                     "width": 80,
@@ -1529,9 +1524,9 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "menu",
                     "name": "GeneralText"
-                }],
+                } as MenuGraphr.IMenuChildSchema],
                 "hidden": true
-            },
+            } as IMenuSchema,
             "BattlePlayerHealth": {
                 "size": {
                     "width": 38.5,
@@ -1584,7 +1579,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textYOffset": .5,
                 "textPaddingX": .5,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattlePlayerHealthTitle": {
                 "size": {
                     "width": 38
@@ -1600,7 +1595,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 0,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattlePlayerHealthLevel": {
                 "position": {
                     "offset": {
@@ -1624,7 +1619,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 4,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattlePlayerHealthAmount": {
                 "size": {
                     "height": 4
@@ -1673,7 +1668,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "container": "BattlePlayerHealth",
                 "hidden": true,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattlePlayerHealthNumbers": {
                 "size": {
                     "width": 36,
@@ -1690,7 +1685,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 4,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattleOpponentHealth": {
                 "size": {
                     "width": 38.5,
@@ -1736,7 +1731,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textYOffset": .5,
                 "textPaddingX": .5,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattleOpponentHealthTitle": {
                 "position": {
                     "offset": {
@@ -1749,7 +1744,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textXOffset": 0,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattleOpponentHealthLevel": {
                 "position": {
                     "offset": {
@@ -1766,13 +1761,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                             "left": .5
                         }
                     }
-                }],
+                } as MenuGraphr.IMenuChildSchema],
                 "container": "BattleOpponentHealth",
                 "hidden": true,
                 "textXOffset": 4,
                 "textYOffset": 0,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattleOpponentHealthAmount": {
                 "position": {
                     "offset": {
@@ -1814,7 +1809,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "hidden": true,
                 "height": 4,
                 "textSpeed": 0
-            },
+            } as IMenuSchema,
             "BattleDisplayInitial": {
                 "size": {
                     "width": 72
@@ -1825,7 +1820,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 },
                 "container": "Battle",
                 "hidden": true
-            },
+            } as IMenuSchema,
             "BattleOptions": {
                 "size": {
                     "width": 48,
@@ -1935,7 +1930,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     }],
                 "container": "Battle",
                 "hidden": true
-            },
+            } as IMenuSchema,
             "BattleDisplayOpponent": {
                 "size": {
                     "width": 41,
@@ -1954,7 +1949,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 1,
                 "textYOffset": -.5
-            },
+            } as IMenuBase,
             "BattleFightList": {
                 "size": {
                     "width": 64
@@ -1970,7 +1965,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textYOffset": 3.5,
                 "textPaddingY": 4,
                 "arrowXOffset": 1
-            },
+            } as MenuGraphr.IListMenuSchema,
             "LevelUpStats": {
                 "size": {
                     "width": 48,
@@ -2009,15 +2004,15 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "KeyboardKeys"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "KeyboardTitle"
-                    }, {
+                    } as MenuGraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "KeyboardResult"
-                    }],
+                    } as MenuGraphr.IMenuChildSchema],
                 "plain": true
-            },
+            } as IMenuBase,
             "KeyboardKeys": {
                 "size": {
                     "width": 80,
@@ -2049,7 +2044,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": .5,
                 "textYOffset": 0
-            },
+            } as IMenuSchema,
             "KeyboardTitle": {
                 "size": {
                     "height": 8
@@ -2064,7 +2059,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "container": "Keyboard",
                 "hidden": true,
                 "textSpeed": 0
-            }
+            } as IMenuSchema
         }
     };
 }

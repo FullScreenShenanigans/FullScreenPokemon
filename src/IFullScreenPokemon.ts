@@ -450,7 +450,7 @@ export interface IMapsModuleSettings extends igamestartr.IMapsModuleSettings {
 /**
  * Settings regarding a menu system, particularly for an IMenuGraphr.
  */
-export interface IMenusModuleSettings extends IModuleSettings {
+export interface IMenusModuleSettings extends igamestartr.IModuleSettingsObject {
     /**
      * Known menu schemas, keyed by name.
      */
@@ -470,17 +470,17 @@ export interface IMenusModuleSettings extends IModuleSettings {
 /**
  * Settings regarding large-scale state storage, particularly for an IStateHoldr.
  */
-export interface IStateModuleSettings extends IModuleSettings, istateholdr.IStateHoldrSettings { }
+export interface IStateModuleSettings extends igamestartr.IModuleSettingsObject, istateholdr.IStateHoldrSettings { }
 
 /**
  * Settings regarding the UI, particularly for an IUserWrappr.
  */
-export interface IUserWrapprCustoms extends IModuleSettings, iuserwrappr.IUserWrapprSettings {}
+export interface IUserWrapprCustoms extends igamestartr.IModuleSettingsObject, iuserwrappr.IUserWrapprSettings {}
 
 /**
  * Stored settings to generate modules.
  */
-export interface IModuleSettings extends igamestartr.IModuleSettings {
+export interface IModuleSettings extends igamestartr.IModuleSettingsObject {
     /**
      * Settings regarding in-game battles, particularly for an IBattleMovr.
      */
