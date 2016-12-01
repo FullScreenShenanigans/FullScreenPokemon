@@ -1,8 +1,8 @@
 /// <reference path="../../typings/GameStartr.d.ts" />
 
-import { IStateHoldrCustoms } from "../IFullScreenPokemon";
+import { IStateHoldrSettings } from "../IFullScreenPokemon";
 
-export function GenerateStateSettings(): IStateHoldrCustoms {
+export function GenerateStateSettings(): IStateHoldrSettings {
     "use strict";
 
     return {

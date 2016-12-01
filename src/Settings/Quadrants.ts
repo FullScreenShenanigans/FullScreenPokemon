@@ -1,8 +1,8 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IQuadrantsModuleSettings } from "gamestartr/lib/IGameStartr";
 
 import { Unitsize } from "../Constants";
 
-export function GenerateQuadrantsSettings(): GameStartr.IQuadsKeeprCustoms {
+export function GenerateQuadrantsSettings(): IQuadrantsModuleSettings {
     "use strict";
 
     return {

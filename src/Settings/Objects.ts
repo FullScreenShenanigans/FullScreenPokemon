@@ -1,4 +1,4 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IObjectsModuleSettings } from "gamestartr/lib/IGameStartr";
 
 import { Animations } from "../Animations";
 import { Collisions } from "../Collisions";
@@ -8,7 +8,7 @@ import { Things } from "../Things";
 
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateObjectsSettings(): GameStartr.IObjectMakrCustoms {
+export function GenerateObjectsSettings(): IObjectsModuleSettings {
     "use strict";
 
     return {

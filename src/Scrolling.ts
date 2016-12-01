@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Scrolling as GameStartrScrolling } from "gamestartr/lib/Scrolling";
 
 import { Scrollability } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -7,7 +7,7 @@ import { IArea, IAreaBoundaries } from "./IFullScreenPokemon";
 /**
  * Scrolling functions used by FullScreenPokemon instances.
  */
-export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr.Scrolling<TEightBittr> {
+export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartrScrolling<TEightBittr> {
     /**
      * Centers the current view of the Map based on scrollability.
      */

@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Graphics as GameStartrGraphics } from "gamestartr/lib/Graphics";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import { IBattleInfo, IThing } from "./IFullScreenPokemon";
@@ -6,7 +6,7 @@ import { IBattleInfo, IThing } from "./IFullScreenPokemon";
 /**
  * Graphics functions used by FullScreenPokemon instances.
  */
-export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.Graphics<TEightBittr> {
+export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartrGraphics<TEightBittr> {
     /**
      * Collects all unique Things that should be kept on top of battle intro animations.
      * 
@@ -39,8 +39,7 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.
      * @param batleInfo    In-game state and settings for an ongoing battle.
      */
     public moveBattleKeptThingsToText(battleInfo: IBattleInfo): void {
-        let keptThings: IThing[] = battleInfo.keptThings;
-
+        const  keptThings: IThing[] | undefined = battleInfo.keptThings;
         if (!keptThings) {
             return;
         }
@@ -56,8 +55,7 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartr.
      * @param batleInfo    In-game state and settings for an ongoing battle.
      */
     public moveBattleKeptThingsBack(battleInfo: IBattleInfo): void {
-        let keptThings: IThing[] = battleInfo.keptThings;
-
+        const keptThings: IThing[] | undefined = battleInfo.keptThings;
         if (!keptThings) {
             return;
         }

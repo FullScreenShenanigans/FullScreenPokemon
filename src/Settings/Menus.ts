@@ -1,10 +1,10 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
-
-import { IMenuGraphrCustoms, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IMenusModuleSettings, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
+import { Menus } from "../Menus";
 
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateMenusSettings(): IMenuGraphrCustoms {
+export function GenerateMenusSettings(): IMenusModuleSettings {
     "use strict";
 
     return {
@@ -28,38 +28,34 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
             "�": "eFancy"
         },
         "replacements": {
-            "PLAYER": function (): string[] {
+            "PLAYER": function (this: Menus<FullScreenPokemon>): string[] {
                 return this.EightBitter.ItemsHolder.getItem("name");
             },
-            "RIVAL": function (): string[] {
+            "RIVAL": function (this: Menus<FullScreenPokemon>): string[] {
                 return this.EightBitter.ItemsHolder.getItem("nameRival");
             },
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
-            "POKEDEX.SEEN": function (): string[] {
-                return this.EightBitter.makeDigit(
-                    this.EightBitter.getPokedexListingsOrdered()
-                        .filter(function (listing: IPokedexInformation): boolean {
-                            return listing && listing.seen;
-                        })
+            "POKEDEX.SEEN": function (this: Menus<FullScreenPokemon>): string[] {
+                return this.EightBitter.utilities.makeDigit(
+                    this.EightBitter.storage.getPokedexListingsOrdered()
+                        .filter((listing: IPokedexInformation): boolean => !!(listing && listing.seen))
                         .length,
                     3,
                     "\t")
                     .split("");
             },
-            "POKEDEX.OWN": function (): string[] {
-                return this.EightBitter.makeDigit(
-                    this.EightBitter.getPokedexListingsOrdered()
-                        .filter(function (listing: IPokedexInformation): boolean {
-                            return listing && listing.caught;
-                        })
+            "POKEDEX.OWN": function (this: Menus<FullScreenPokemon>): string[] {
+                return this.EightBitter.utilities.makeDigit(
+                    this.EightBitter.storage.getPokedexListingsOrdered()
+                        .filter((listing: IPokedexInformation): boolean => !!(listing && listing.caught))
                         .length,
                     3,
                     "\t")
                     .split("");
             },
-            "BADGES.LENGTH": function (): string[] {
+            "BADGES.LENGTH": function (this: Menus<FullScreenPokemon>): string[] {
                 const badges: { [i: string]: boolean } = this.EightBitter.ItemsHolder.getItem("badges");
                 let total: number = 0;
 
@@ -71,8 +67,8 @@ export function GenerateMenusSettings(): IMenuGraphrCustoms {
 
                 return total.toString().split("");
             },
-            "POKEDEX.LENGTH": function (): string[] {
-                let pokedex: IPokedexListing[] = this.EightBitter.ItemsHolder.getItem("Pokedex");
+            "POKEDEX.LENGTH": function (this: Menus<FullScreenPokemon>): string[] {
+                const pokedex: IPokedexListing[] = this.EightBitter.ItemsHolder.getItem("Pokedex");
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }

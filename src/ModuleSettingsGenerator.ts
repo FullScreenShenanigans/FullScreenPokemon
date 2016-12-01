@@ -1,4 +1,4 @@
-import { IFullScreenPokemonStoredSettings } from "./IFullScreenPokemon";
+import { IModuleSettings } from "./IFullScreenPokemon";
 import { GenerateAudioSettings } from "./Settings/Audio";
 import { GenerateBattlesSettings } from "./Settings/Battles";
 import { GenerateCollisionsSettings } from "./Settings/Collisions";
@@ -25,11 +25,11 @@ import { GenerateUISettings } from "./Settings/Ui";
 /**
  * Generator for FullScreenPokemon settings.
  */
-export class SettingsGenerator {
+export class ModuleSettingsGenerator {
     /**
      * @returns FullScreenPokemon settings.
      */
-    public generate(): IFullScreenPokemonStoredSettings {
+    public generate(): IModuleSettings {
         return {
             audio: GenerateAudioSettings(),
             battles: GenerateBattlesSettings(),
@@ -52,7 +52,7 @@ export class SettingsGenerator {
             scenes: GenerateScenesSettings(),
             sprites: GenerateSpritesSettings(),
             state: GenerateStateSettings(),
-            touch: undefined,
+            touch: {},
             ui: GenerateUISettings()
         };
     }

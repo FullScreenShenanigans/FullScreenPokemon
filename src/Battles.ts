@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
@@ -8,7 +8,7 @@ import {
 /**
  * Battle functions used by FullScreenPokemon instances.
  */
-export class Battles<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Starts a Pokemon battle.
      * 

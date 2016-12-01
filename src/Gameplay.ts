@@ -1,12 +1,12 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Gameplay as GameStartrGameplay } from "gamestartr/lib/Gameplay";
+import { IDataMouseEvent, IDataProgressEvent } from "leveledtir/lib/ILevelEditr";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
-import { IPlayer } from "./IFullScreenPokemon";
 
 /**
  * Gameplay functions used by IGameStartr instances.
  */
-export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.Gameplay<TEightBittr> {
+export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrGameplay<TEightBittr> {
     /**
      * Completely restarts the game. The StartOptions menu is shown.
      */
@@ -51,7 +51,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
      */
     public startPlay(): void {
         this.EightBitter.maps.setMap(
-            this.EightBitter.ItemsHolder.getItem("map") || this.EightBitter.settings.maps.mapDefault,
+            this.EightBitter.ItemsHolder.getItem("map") || this.EightBitter.moduleSettings.maps.mapDefault,
             this.EightBitter.ItemsHolder.getItem("location"),
             true);
         this.EightBitter.maps.entranceResume();
@@ -80,7 +80,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
             "input",
             {
                 type: "file",
-                onchange: (event: LevelEditr.IDataMouseEvent): void => {
+                onchange: (event: IDataMouseEvent): void => {
                     event.preventDefault();
                     event.stopPropagation();
 
@@ -90,7 +90,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
                     }
 
                     const reader: FileReader = new FileReader();
-                    reader.onloadend = (loadEvent: LevelEditr.IDataProgressEvent): void => {
+                    reader.onloadend = (loadEvent: IDataProgressEvent): void => {
                         this.EightBitter.storage.loadData(loadEvent.currentTarget.result);
                         delete reader.onloadend;
                     };
@@ -106,12 +106,9 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartr.
     /**
      * Checks whether inputs may trigger, which is always true, and prevents the event.
      * 
-     * @param player   FSP's current user-controlled Player.
-     * @param code   An key/mouse code from the event.
-     * @param event   The original user-caused Event.
      * @returns Whether inputs may trigger (true).
      */
-    public canInputsTrigger(player?: IPlayer, code?: any, event?: Event): boolean {
+    public canInputsTrigger(): boolean {
         if (event) {
             event.preventDefault();
         }

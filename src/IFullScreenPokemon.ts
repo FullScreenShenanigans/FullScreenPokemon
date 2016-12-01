@@ -1,5 +1,13 @@
-/// <reference path="../typings/GameStartr.d.ts" />
-/// <reference path="../typings/UserWrappr.d.ts" />
+import * as ibattlemovr from "battlemovr/lib/IBattleMovr";
+import * as igamestartr from "gamestartr/lib/IGameStartr";
+import * as imapscreatr from "mapscreatr/lib/IMapsCreatr";
+import { IPreThing as IMapsCreatrIPreThing } from "mapscreatr/lib/IPreThing";
+import * as imapscreenr from "mapscreenr/lib/IMapScreenr";
+import * as imathdecidr from "mathdecidr/lib/IMathDecidr";
+import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
+import * as istateholdr from "stateholdr/lib/IStateHoldr";
+import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
+import * as iuserwrappr from "userwrappr/lib/IUserWrappr";
 
 /**
  * Container for holding the states of objects in the game.
@@ -23,7 +31,7 @@ export interface IStateSaveable {
  * that map. A bounding box of the current viewport is kept, along with a bag
  * of assorted variable values.
  */
-export interface IMapScreenr extends MapScreenr.IMapScreenr {
+export interface IMapScreenr extends imapscreenr.IMapScreenr {
     /**
      * Whether user inputs should be ignored.
      */
@@ -75,22 +83,17 @@ export interface IThingsById {
 /**
  * Settings regarding in-game battles, particularly for an IBattleMovr.
  */
-export interface IBattleMovrCustoms extends BattleMovr.IBattleMovrSettings, GameStartr.IGameStartrSettingsObject {
-    /**
-     * The IMenuGraphr handling menu creation.
-     */
-    MenuGrapher?: MenuGraphr.IMenuGraphr;
-}
+export interface IBattlesModuleSettings extends ibattlemovr.IBattleMovrSettings, IModuleSettings { }
 
 /**
  * Settings regarding the level editor, particularly for an ILevelEditr.
  */
-export interface ILevelEditrCustoms extends GameStartr.IGameStartrSettingsObject { }
+export interface ILevelEditrCustoms extends IModuleSettings { }
 
 /**
  * Settings regarding computations, particularly for an IMathDecidr.
  */
-export interface IMathDecidrCustoms extends GameStartr.IMathDecidrCustoms {
+export interface IMathModuleSettings extends igamestartr.IMathModuleSettings {
     /**
      * Constants the IMathDecidr may use in equations.
      */
@@ -105,12 +108,7 @@ export interface IMathDecidrCustoms extends GameStartr.IMathDecidrCustoms {
 /**
  * Constants for an IMathDecidr, including all static Pokemon information.
  */
-export interface IMathConstants {
-    /**
-     * An INumberMakr for random number generation.
-     */
-    NumberMaker?: NumberMakr.INumberMakr;
-
+export interface IMathConstants extends imathdecidr.IConstants {
     /**
      * Names of all statistics Pokemon have.
      */
@@ -229,12 +227,10 @@ export interface IMathConstants {
 /**
  * Calculation Functions for an IMathDecidr, keyed by name.
  */
-export interface IMathEquations extends MathDecidr.IEquations {
+export interface IMathEquations extends imathdecidr.IEquations {
     /**
      * Generates a new Pokemon with the given traits.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param title   The type of Pokemon to create.
      * @param level   The level of the new Pokemon (by default, 1).
      * @param moves   What moves the Pokemon has (by default, generated from its type
@@ -245,297 +241,206 @@ export interface IMathEquations extends MathDecidr.IEquations {
      *             from the newPokemonEVs equation).
      * @returns A newly created Pokemon.
      */
-    newPokemon: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        title: string[],
-        level?: number,
-        moves?: BattleMovr.IMove[],
-        iv?: number,
-        ev?: number) => IPokemon;
+    newPokemon: (this: imathdecidr.IMathDecidr, title: string[], level?: number, moves?: ibattlemovr.IMove[], iv?: number, ev?: number) => IPokemon;
 
     /**
      * Computes the default new moves for a Pokemon based on its type and level.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param title   The type of Pokemon.
      * @param level   The level of the Pokemon.
      * @returns The default moves of the Pokemon.
      */
-    newPokemonMoves: (constants: IMathConstants, equations: IMathEquations, title: string[], level: number) => BattleMovr.IMove[];
+    newPokemonMoves: (this: imathdecidr.IMathDecidr, title: string[], level: number) => ibattlemovr.IMove[];
 
     /**
      * Computes a random set of IV points for a new Pokemon.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @returns A random set of IV points.
      */
-    newPokemonIVs: (constants: IMathConstants, equations: IMathEquations) => { [i: string]: number };
+    newPokemonIVs: (this: imathdecidr.IMathDecidr) => { [i: string]: number };
 
     /**
      * Computes a blank set of EV points for a new Pokemon.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @returns A blank set of EV points.
      */
-    newPokemonEVs: (constants: IMathConstants, equations: IMathEquations) => { [i: string]: number };
+    newPokemonEVs: (this: imathdecidr.IMathDecidr) => { [i: string]: number };
 
     /**
      * Computes how much experience a new Pokemon should start with, based on its
      * type and level.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param title   The type of Pokemon.
      * @param level   The level of the Pokemon.
      * @returns How much experience the Pokemon should start with.
      */
-    newPokemonExperience: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        title: string[],
-        level: number) => BattleMovr.IActorExperience;
+    newPokemonExperience: (this: imathdecidr.IMathDecidr, title: string[], level: number) => ibattlemovr.IActorExperience;
 
     /**
      * Computes a Pokemon's new statistic based on its IVs and EVs.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param statistic   Which statistic to compute.
      * @returns A new value for the statistic.
      */
-    pokemonStatistic: (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, statistic: string) => number;
+    pokemonStatistic: (this: imathdecidr.IMathDecidr, pokemon: IPokemon, statistic: string) => number;
 
     /**
      * Determines whether a wild encounter should occur when walking through grass.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param grass   The grass Thing being walked through.
      * @returns Whether a wild encounter should occur.
      */
-    doesGrassEncounterHappen: (constants: IMathConstants, equations: IMathEquations, grass: IGrass) => boolean;
+    doesGrassEncounterHappen: (this: imathdecidr.IMathDecidr, grass: IGrass) => boolean;
 
     /**
      * Determines whether a Pokemon may be caught by a ball.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param pokemon   The Pokemon the ball is attempting to catch.
      * @param ball   The ball attempting to catch the Pokemon.
      * @returns Whether the Pokemon may be caught.
      */
-    canCatchPokemon: (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall) => boolean;
+    canCatchPokemon: (this: imathdecidr.IMathDecidr, pokemon: IPokemon, ball: IBattleBall) => boolean;
 
     /**
      * Determines whether the player may flee a wild Pokemon encounter.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param pokemon   The player's current Pokemon.
      * @param enemy   The wild Pokemon.
      * @param battleInfo   Information on the current battle.
      * @returns Whether the player may flee.
      */
-    canEscapePokemon: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        pokemon: IPokemon,
-        enemy: IPokemon,
-        battleInfo: IBattleInfo) => boolean;
+    canEscapePokemon: (this: imathdecidr.IMathDecidr, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo) => boolean;
 
     /**
      * Calculates how many times a failed Pokeball should shake.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param pokemon   The wild Pokemon the ball is failing to catch.
      * @param ball   The Pokeball attempting to catch the wild Pokemon.
      * @returns How many times the balls hould shake.
      */
-    numBallShakes: (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall) => number;
+    numBallShakes: (this: imathdecidr.IMathDecidr, pokemon: IPokemon, ball: IBattleBall) => number;
 
     /**
      * Determines what move an opponent should take in battle.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param player   The in-battle player.
      * @param opponent   The in-battle opponent.
      * @returns The contatenated name of the move the opponent will choose.
      */
-    opponentMove: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        player: IBattler,
-        opponent: IBattler) => string;
+    opponentMove: (this: imathdecidr.IMathDecidr, constants: IMathConstants, equations: IMathEquations, player: IBattler, opponent: IBattler) => string;
 
     /**
      * Checks whether a Pokemon contains any of the given types.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param pokemon   A Pokemon.
      * @param types   The types to check.
      * @returns Whether the Pokemon's types includes any of the given types.
      */
-    pokemonMatchesTypes: (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, types: string[]) => boolean;
+    pokemonMatchesTypes: (this: imathdecidr.IMathDecidr, pokemon: IPokemon, types: string[]) => boolean;
 
     /**
      * Checks whether a move only has a status effect (does no damage, or nothing).
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param move   The move.
      * @returns Whether the moves has only a status effect.
      */
-    moveOnlyStatuses: (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema) => boolean;
+    moveOnlyStatuses: (this: imathdecidr.IMathDecidr, move: IMoveSchema) => boolean;
 
     /**
      * Modifies a move possibility's priority based on battle state.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param possibility   A move possibility.
      * @param modification   A modification summary for a part of the battle state.
      * @param target   The Pokemon being targeted.
      * @param amount   How much to modify the move's priority.
      */
-    applyMoveEffectPriority: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        possibility: IMovePossibility,
-        modification: IBattleModification,
-        target: IPokemon,
-        amount: number) => void;
+    applyMoveEffectPriority: (possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number) => void;
 
     /**
      * Determines whether a player's Pokemon should move before the opponent's.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param player   The in-battle player.
      * @param choicePlayer   The concatenated name of the move the player chose.
      * @param opponent   The in-battle opponent.
      * @param choiesOpponent   The concatenated name of the move the opponent chose.
      * @returns Whether the player will move before the opponent.
      */
-    playerMovesFirst: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        player: IBattler,
-        choicePlayer: string,
-        opponent: IBattler,
-        choiceOpponent: string) => boolean;
+    playerMovesFirst: (player: IBattler, choicePlayer: string, opponent: IBattler, choiceOpponent: string) => boolean;
 
     /**
      * Computes how much damage a move should do to a Pokemon.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param move   The concatenated name of the move.
      * @param attacker   The attacking pokemon.
      * @param defender   The defending Pokemon.
      * @returns How much damage should be dealt.
      */
-    damage: (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon, defender: IPokemon) => number;
+    damage: (this: imathdecidr.IMathDecidr, move: string, attacker: IPokemon, defender: IPokemon) => number;
 
     /**
      * Determines the damage modifier against a defending Pokemon.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param move   The attacking Pokemon's move.
      * @param critical   Whether the move is a critical hit.
      * @param attacker   The attacking Pokemon.
      * @param defender   The defending Pokemon.
      * @returns The damage modifier, as a multiplication constant.
      */
-    damageModifier: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        move: IMoveSchema,
-        critical: boolean,
-        attacker: IPokemon,
-        defender: IPokemon) => number;
+    damageModifier: (move: IMoveSchema, critical: boolean, attacker: IPokemon, defender: IPokemon) => number;
 
     /**
      * Determines whether a move should be a critical hit.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param move   The concatenated name of the move.
      * @param attacker   The attacking Pokemon.
      * @returns Whether the move should be a critical hit.
      */
-    criticalHit: (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon) => boolean;
+    criticalHit: (this: imathdecidr.IMathDecidr, move: string, attacker: IPokemon) => boolean;
 
     /**
      * Determines the type effectiveness of a move on a defending Pokemon.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param move   The concatenated name of the move.
      * @param defender   The defending Pokemon.
      * @returns A damage modifier, as a multiplication constant.
      */
-    typeEffectiveness: (constants: IMathConstants, equations: IMathEquations, move: string, defender: IPokemon) => number;
+    typeEffectiveness: (this: imathdecidr.IMathDecidr, move: string, defender: IPokemon) => number;
 
     /**
      * Computes how much experience a new Pokemon should start with.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param title   The name of the Pokemon.
      * @param level   The level of the Pokemon.
      * @returns An amount of experience.
      */
-    experienceStarting: (IMathConstants: IMathConstants, equations: IMathEquations, title: string[], level: number) => number;
+    experienceStarting: (IMaththis: imathdecidr.IMathDecidr, title: string[], level: number) => number;
 
     /**
      * Computes how much experience should be gained from defeating a Pokemon.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
-     * @param player   The in-game player, whose selected actor has been victorious.
-     * @param opponent   The in-game opponent, whose selected actor has been defeated.
      * @returns How much experience is to be gained.
      * @remarks This will need to be changed to accomodate rewarding multiple Pokemon.
      */
-    experienceGained: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        player: IBattler,
-        opponent: IBattler) => number;
+    experienceGained: (IMaththis: imathdecidr.IMathDecidr, player: IBattler, opponent: IBattler) => number;
 
     /**
      * Computes how wide a health bar should be.
      * 
-     * @param constants   Constants from the calculating IMathDecidr.
-     * @param equations   Other calculation Functions from the IMathDecidr.
      * @param widthFullBar   The maximum possible width.
      * @param hp   How much HP a Pokemon currently has.
      * @param hpNormal   The maximum HP the Pokemon may have.
      * @returns How wide the health bar should be.
      */
-    widthHealthBar: (
-        constants: IMathConstants,
-        equations: IMathEquations,
-        widthFullBar: number,
-        hp: number,
-        hpNormal: number) => number;
+    widthHealthBar: (widthFullBar: number, hp: number, hpNormal: number) => number;
 }
 
 /**
  * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
  * and MapsCreatr.
  */
-export interface IMapCustoms extends GameStartr.IMapCustoms {
+export interface IMapsModuleSettings extends igamestartr.IMapsModuleSettings {
     /**
-     * Known map Objects, keyed by name.
+     * Known maps, keyed by name.
      */
     library: {
         [i: string]: IMapRaw;
@@ -545,67 +450,62 @@ export interface IMapCustoms extends GameStartr.IMapCustoms {
 /**
  * Settings regarding a menu system, particularly for an IMenuGraphr.
  */
-export interface IMenuGraphrCustoms extends GameStartr.IGameStartrSettingsObject {
-    /**
-     * The controlling GameStartr.
-     */
-    GameStarter?: GameStartr.GameStartr;
-
+export interface IMenusModuleSettings extends IModuleSettings {
     /**
      * Known menu schemas, keyed by name.
      */
-    schemas?: MenuGraphr.IMenuSchemas;
+    schemas: imenugraphr.IMenuSchemas;
 
     /**
      * Alternate titles for texts, such as " " to "space".
      */
-    aliases?: MenuGraphr.IAliases;
+    aliases: imenugraphr.IAliases;
 
     /**
      * Programmatic replacements for deliniated words.
      */
-    replacements?: MenuGraphr.IReplacements;
+    replacements: imenugraphr.IReplacements;
 }
 
 /**
  * Settings regarding large-scale state storage, particularly for an IStateHoldr.
  */
-export interface IStateHoldrCustoms extends GameStartr.IGameStartrSettingsObject, StateHoldr.IStateHoldrSettings { }
+export interface IStateModuleSettings extends IModuleSettings, istateholdr.IStateHoldrSettings { }
 
 /**
  * Settings regarding the UI, particularly for an IUserWrappr.
  */
-export interface IUserWrapprCustoms extends GameStartr.IGameStartrSettingsObject, UserWrappr.IUserWrapprSettings {}
+export interface IUserWrapprCustoms extends IModuleSettings, iuserwrappr.IUserWrapprSettings {}
 
 /**
- * Stored settings to be stored separately and kept within an IFullScreenPokemon.
+ * Stored settings to generate modules.
  */
-export interface IFullScreenPokemonStoredSettings extends GameStartr.IGameStartrStoredSettings {
+export interface IModuleSettings extends igamestartr.IModuleSettings {
     /**
      * Settings regarding in-game battles, particularly for an IBattleMovr.
      */
-    battles: IBattleMovrCustoms;
+    battles: IBattlesModuleSettings;
 
     /**
      * Settings regarding computations, particularly for an IMathDecidr.
      */
-    math: IMathDecidrCustoms;
+    math: IMathModuleSettings;
 
     /**
      * Settings regarding maps, particularly for an IAreaSpawnr, an
      * IMapScreenr, and an IMapsCreatr.
      */
-    maps: IMapCustoms;
+    maps: IMapsModuleSettings;
 
     /**
      * Settings regarding a menu system, particularly for an IMenuGraphr.
      */
-    menus: IMenuGraphrCustoms;
+    menus: IMenusModuleSettings;
 
     /**
      * Settings regarding large-scale state storage, particularly for an IStateHoldr.
      */
-    state: IStateHoldrCustoms;
+    state: IStateModuleSettings;
 }
 
 /**
@@ -787,7 +687,7 @@ export interface ISaveFile {
 /**
  * 
  */
-export interface IMapRaw extends MapsCreatr.IMapRaw {
+export interface IMapRaw extends imapscreatr.IMapRaw {
     /**
      * A listing of areas in the Map, keyed by name.
      */
@@ -823,7 +723,7 @@ export interface IMapRaw extends MapsCreatr.IMapRaw {
 /**
  * A Map parsed from its raw JSON-friendly description.
  */
-export interface IMap extends IStateSaveable, MapsCreatr.IMap {
+export interface IMap extends IStateSaveable, imapscreatr.IMap {
     /**
      * A listing of areas in the Map, keyed by name.
      */
@@ -856,7 +756,7 @@ export interface IMap extends IStateSaveable, MapsCreatr.IMap {
 /**
  * 
  */
-export interface IAreaRaw extends MapsCreatr.IAreaRaw {
+export interface IAreaRaw extends imapscreatr.IAreaRaw {
     /**
      * Whether the Area allows bicycling.
      */
@@ -905,7 +805,7 @@ export interface IAreaRaw extends MapsCreatr.IAreaRaw {
 /**
  * An Area parsed from a raw JSON-friendly Map description.
  */
-export interface IArea extends IAreaRaw, IStateSaveable, MapsCreatr.IArea {
+export interface IArea extends IAreaRaw, IStateSaveable, imapscreatr.IArea {
     /**
      * Whether the Area allows bicycling.
      */
@@ -1043,9 +943,9 @@ export interface IWildPokemonSchema {
 }
 
 /**
- * 
+ * A raw JSON-friendly description of a location.
  */
-export interface ILocationRaw extends MapsCreatr.ILocationRaw {
+export interface ILocationRaw extends imapscreatr.ILocationRaw {
     /**
      * A cutscene to immediately start upon entering.
      */
@@ -1085,7 +985,7 @@ export interface ILocationRaw extends MapsCreatr.ILocationRaw {
 /**
  * A Location parsed from a raw JSON-friendly Map description.
  */
-export interface ILocation extends IStateSaveable, MapsCreatr.ILocation {
+export interface ILocation extends IStateSaveable, imapscreatr.ILocation {
     /**
      * The Area this Location is a part of.
      */
@@ -1338,7 +1238,7 @@ export interface IBattleModification {
 /**
  * In-game state and settings for an ongoing battle.
  */
-export interface IBattleInfo extends BattleMovr.IBattleInfo {
+export interface IBattleInfo extends ibattlemovr.IBattleInfo {
     /**
      * Allowed starting battle animations to choose between.
      */
@@ -1392,12 +1292,12 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
     /**
      * Text to display after a battle victory when in the real world again.
      */
-    textAfterBattle?: MenuGraphr.IMenuDialogRaw;
+    textAfterBattle?: imenugraphr.IMenuDialogRaw;
 
     /**
      * Text to display upon defeat.
      */
-    textDefeat?: MenuGraphr.IMenuDialogRaw;
+    textDefeat?: imenugraphr.IMenuDialogRaw;
 
     /**
      * Text for when the opponent sends out a Pokemon. The opponent's name and the
@@ -1419,7 +1319,7 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
     /**
      * Text to display upon victory.
      */
-    textVictory?: MenuGraphr.IMenuDialogRaw;
+    textVictory?: imenugraphr.IMenuDialogRaw;
 
     /**
      * An audio theme to play during the battle.
@@ -1430,24 +1330,24 @@ export interface IBattleInfo extends BattleMovr.IBattleInfo {
 /**
  * 
  */
-export interface IBattlers extends BattleMovr.IBattlers {
-        /**
-         * The opponent battler's information.
-         */
-        opponent?: IBattler;
+export interface IBattlers extends ibattlemovr.IBattlers {
+    /**
+     * The opponent battler's information.
+     */
+    opponent?: IBattler;
 
-        /**
-         * The player's battle information.
-         */
-        player?: IBattler;
+    /**
+     * The player's battle information.
+     */
+    player?: IBattler;
 
-        [i: string]: IBattler;
+    [i: string]: IBattler | undefined;
 }
 
 /**
  * A trainer in battle, namely either the player or opponent.
  */
-export interface IBattler extends BattleMovr.IBattler {
+export interface IBattler extends ibattlemovr.IBattler {
     /**
      * The trainer's available Pokemon.
      */
@@ -1472,7 +1372,7 @@ export interface IBattler extends BattleMovr.IBattler {
 /**
  * A Pokemon, stored in the player's party and/or as an in-battle actor.
  */
-export interface IPokemon extends BattleMovr.IActor {
+export interface IPokemon extends ibattlemovr.IActor {
     /**
      * Current (in-battle) Attack.
      */
@@ -1631,7 +1531,7 @@ export interface IDialog {
     /**
      * The actual text to display in the dialog.
      */
-    words: MenuGraphr.IMenuDialogRaw;
+    words: imenugraphr.IMenuDialogRaw;
 }
 
 /**
@@ -1652,7 +1552,7 @@ export interface IDialogOptions {
 /**
  * A position holder around an in-game Thing.
  */
-export interface IPreThing extends MapsCreatr.IPreThing {
+export interface IPreThing extends IMapsCreatrIPreThing {
     /**
      * A starting direction to face (by default, up).
      */
@@ -1687,7 +1587,7 @@ export interface IPreThing extends MapsCreatr.IPreThing {
 /**
  * An in-game Thing with size, velocity, position, and other information.
  */
-export interface IThing extends GameStartr.IThing, IStateSaveable {
+export interface IThing extends igamestartr.IThing, IStateSaveable {
     /**
      * What to do when a Character, commonly a Player, activates this Thing.
      * 
@@ -1704,7 +1604,7 @@ export interface IThing extends GameStartr.IThing, IStateSaveable {
     /**
      * Things this is touching in each cardinal direction.
      */
-    bordering: IThing[];
+    bordering: [IThing | undefined, IThing | undefined, IThing | undefined, IThing | undefined];
 
     /**
      * Whether this should be chosen over other Things if it is one of multiple
@@ -1723,7 +1623,7 @@ export interface IThing extends GameStartr.IThing, IStateSaveable {
     /**
      * Animation cycles set by the ITimeHandlr.
      */
-    cycles: TimeHandlr.ITimeCycles;
+    cycles: itimehandlr.ITimeCycles;
 
     /**
      * Whether this has been killed.
@@ -1835,7 +1735,7 @@ export interface ICharacter extends IThing {
      * A dialog to start when activating this Character. If dialogDirections is true,
      * it will be interpreted as a separate dialog for each direction of interaction.
      */
-    dialog?: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[];
+    dialog?: imenugraphr.IMenuDialogRaw | imenugraphr.IMenuDialogRaw[];
 
     /**
      * Whether dialog should definitely be treated as an Array of one Dialog each direction.
@@ -1846,7 +1746,7 @@ export interface ICharacter extends IThing {
      * A single set of dialog (or dialog directions) to play after the primary dialog
      * is complete.
      */
-    dialogNext?: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[];
+    dialogNext?: imenugraphr.IMenuDialogRaw | imenugraphr.IMenuDialogRaw[];
 
     /**
      * A dialog to place after the primary dialog as a yes or no menu.
@@ -1877,7 +1777,7 @@ export interface ICharacter extends IThing {
     /**
      * The time cycle keeping this behind the Character it's following. 
      */
-    followingLoop?: TimeHandlr.ITimeEvent;
+    followingLoop?: itimehandlr.ITimeEvent;
 
     /**
      * An item to give after a dialog is first initiated.
@@ -2029,7 +1929,7 @@ export interface ICharacter extends IThing {
     /**
      * The class cycle for flipping back and forth while walking.
      */
-    walkingFlipping?: TimeHandlr.ITimeEvent;
+    walkingFlipping?: itimehandlr.ITimeEvent;
 }
 
 /**
@@ -2084,17 +1984,17 @@ export interface IEnemy extends ICharacter {
     /**
      * Dialog to display after defeated in battle.
      */
-    textDefeat?: MenuGraphr.IMenuDialogRaw;
+    textDefeat?: imenugraphr.IMenuDialogRaw;
 
     /**
      * Dialog to display after the battle is over.
      */
-    textAfterBattle?: MenuGraphr.IMenuDialogRaw;
+    textAfterBattle?: imenugraphr.IMenuDialogRaw;
 
     /**
      * Text display upon victory.
      */
-    textVictory?: MenuGraphr.IMenuDialogRaw;
+    textVictory?: imenugraphr.IMenuDialogRaw;
 }
 
 /**
@@ -2206,7 +2106,7 @@ export interface IDetector extends IThing {
      * A dialog to start when activating this Character. If an Array, it will be interpreted
      * as a separate dialog for each cardinal direction of interaction.
      */
-    dialog?: MenuGraphr.IMenuDialogRaw;
+    dialog?: imenugraphr.IMenuDialogRaw;
 
     /**
      * Whether this shouldn't be killed after activation (by default, false).
@@ -2321,7 +2221,7 @@ export interface IMenuTriggerer extends IDetector {
     /**
      * Custom attributes to apply to the menu.
      */
-    menuAttributes?: MenuGraphr.IMenuSchema;
+    menuAttributes?: IMenuSchema;
 
     /**
      * What direction to push the activating Player back after a dialog, if any.
@@ -2393,7 +2293,7 @@ export interface IPokeball extends IDetector {
     /**
      * What dialog to say, if action is "dialog".
      */
-    dialog?: MenuGraphr.IMenuDialogRaw;
+    dialog?: imenugraphr.IMenuDialogRaw;
 
     /**
      * What item to give, if action is "item".
@@ -2414,7 +2314,7 @@ export interface IPokeball extends IDetector {
 /**
  * General attributes for all menus.
  */
-export interface IMenuBase extends MenuGraphr.IMenuBase {
+export interface IMenuBase extends imenugraphr.IMenuBase {
     /**
      * Whether this has the dirty visual background.
      */
@@ -2444,7 +2344,7 @@ export interface IMenuBase extends MenuGraphr.IMenuBase {
 /**
  * A schema to specify creating a menu.
  */
-export interface IMenuSchema extends MenuGraphr.IMenuSchema {
+export interface IMenuSchema extends imenugraphr.IMenuSchema {
     /**
      * Whether the menu should be hidden.
      */
@@ -2479,7 +2379,7 @@ export interface IMenu extends IMenuBase, IThing {
 /**
  * A ListMenu Thing.
  */
-export interface IListMenu extends IMenu, MenuGraphr.IListMenuBase { }
+export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
 
 /**
  * A Menu to display the results of a KeyboardKeys Menu. A set of "blank" spaces
@@ -2578,12 +2478,12 @@ export interface ILevelUpStatsMenuSettings {
     /**
      * How to position the menu within its container.
      */
-    position?: MenuGraphr.IMenuSchemaPosition;
+    position?: imenugraphr.IMenuSchemaPosition;
 
     /**
      * How to size the menu.
      */
-    size?: MenuGraphr.IMenuSchemaSize;
+    size?: imenugraphr.IMenuSchemaSize;
 
     /**
      * A horizontal offset for the menu.
@@ -2596,7 +2496,7 @@ export interface ILevelUpStatsMenuSettings {
  * 
  * @todo Refactor this interface's usage to contain IMenuSchema instead of inheritance.
  */
-export interface IItemsMenuSettings extends MenuGraphr.IMenuSchema {
+export interface IItemsMenuSettings extends IMenuSchema {
     /**
      * Items to override the player's inventory.
      */

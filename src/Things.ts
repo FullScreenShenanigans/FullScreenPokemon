@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Things as GameStartrThings } from "gamestartr/lib/Things";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import { IThing } from "./IFullScreenPokemon";
@@ -6,7 +6,7 @@ import { IThing } from "./IFullScreenPokemon";
 /**
  * Thing manipulation functions used by FullScreenPokemon instances.
  */
-export class Things<TEightBittr extends FullScreenPokemon> extends GameStartr.Things<TEightBittr> {
+export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThings<TEightBittr> {
     /**
      * Slight addition to the parent thingProcess Function. The Thing's hit
      * check type is cached immediately, and a default id is assigned if an id

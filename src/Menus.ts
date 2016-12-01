@@ -1,5 +1,5 @@
 /// <reference path="../typings/BattleMovr.d.ts" />
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 /// <reference path="../typings/MenuGraphr.d.ts" />
 
 import { KeysLowercase, KeysUppercase } from "./Constants";
@@ -13,7 +13,7 @@ import {
 /**
  * Menu functions used by FullScreenPokemon instances.
  */
-export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Menus<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Opens the Pause menu.
      */

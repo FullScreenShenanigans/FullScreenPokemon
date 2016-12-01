@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Utilities as GameStartrUtilities } from "gamestartr/lib/Utilities";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import { IPokemon, IThing, IWildPokemonSchema } from "./IFullScreenPokemon";
@@ -6,7 +6,7 @@ import { IPokemon, IThing, IWildPokemonSchema } from "./IFullScreenPokemon";
 /**
  * Miscellaneous utility functions used by FullScreenPokemon instances.
  */
-export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr.Utilities<TEightBittr> {
+export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartrUtilities<TEightBittr> {
     /**
      * Retrieves the Thing in MapScreener.thingById of the given id.
      * 
@@ -24,7 +24,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns A newly created Pokemon.
      */
     public createPokemon(schema: IWildPokemonSchema): IPokemon {
-        let level: number = typeof schema.levels !== "undefined"
+        const level: number = typeof schema.levels !== "undefined"
             ? this.EightBitter.NumberMaker.randomArrayMember(schema.levels)
             : schema.level;
 

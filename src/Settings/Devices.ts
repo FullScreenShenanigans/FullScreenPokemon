@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IDevicesModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateDevicesSettings(): GameStartr.IDeviceLayrCustoms {
+export function GenerateDevicesSettings(): IDevicesModuleSettings {
     "use strict";
 
     return {

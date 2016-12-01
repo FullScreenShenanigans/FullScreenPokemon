@@ -7,14 +7,14 @@ import { Fishing } from "../Fishing";
 import {
     IBattleBall, IBattleInfo, IBattleModification, IBattler,
     ICharacter, IGrass, IHMMoveSchema,
-    IMathConstants, IMathDecidrCustoms, IMathEquations, IMovePossibility,
+    IMathConstants, IMathModuleSettings, IMathEquations, IMovePossibility,
     IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod, IWildPokemonSchema
 } from "../IFullScreenPokemon";
 
 /* tslint:disable:max-line-length */
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateMathSettings(): IMathDecidrCustoms {
+export function GenerateMathSettings(): IMathModuleSettings {
     "use strict";
 
     return {
