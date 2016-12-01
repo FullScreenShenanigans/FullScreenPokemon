@@ -83,12 +83,12 @@ export interface IThingsById {
 /**
  * Settings regarding in-game battles, particularly for an IBattleMovr.
  */
-export interface IBattlesModuleSettings extends ibattlemovr.IBattleMovrSettings, IModuleSettings { }
+export interface IBattlesModuleSettings extends ibattlemovr.IBattleMovrSettings, igamestartr.IModuleSettingsObject { }
 
 /**
  * Settings regarding the level editor, particularly for an ILevelEditr.
  */
-export interface ILevelEditrCustoms extends IModuleSettings { }
+export interface ILevelEditrCustoms extends igamestartr.IModuleSettingsObject { }
 
 /**
  * Settings regarding computations, particularly for an IMathDecidr.
@@ -241,7 +241,13 @@ export interface IMathEquations extends imathdecidr.IEquations {
      *             from the newPokemonEVs equation).
      * @returns A newly created Pokemon.
      */
-    newPokemon: (this: imathdecidr.IMathDecidr, title: string[], level?: number, moves?: ibattlemovr.IMove[], iv?: number, ev?: number) => IPokemon;
+    newPokemon: (
+        this: imathdecidr.IMathDecidr,
+        title: string[],
+        level?: number,
+        moves?: ibattlemovr.IMove[],
+        iv?: number,
+        ev?: number) => IPokemon;
 
     /**
      * Computes the default new moves for a Pokemon based on its type and level.
@@ -327,7 +333,12 @@ export interface IMathEquations extends imathdecidr.IEquations {
      * @param opponent   The in-battle opponent.
      * @returns The contatenated name of the move the opponent will choose.
      */
-    opponentMove: (this: imathdecidr.IMathDecidr, constants: IMathConstants, equations: IMathEquations, player: IBattler, opponent: IBattler) => string;
+    opponentMove: (
+        this: imathdecidr.IMathDecidr,
+        constants: IMathConstants,
+        equations: IMathEquations,
+        player: IBattler,
+        opponent: IBattler) => string;
 
     /**
      * Checks whether a Pokemon contains any of the given types.
@@ -475,12 +486,12 @@ export interface IStateModuleSettings extends igamestartr.IModuleSettingsObject,
 /**
  * Settings regarding the UI, particularly for an IUserWrappr.
  */
-export interface IUserWrapprCustoms extends igamestartr.IModuleSettingsObject, iuserwrappr.IUserWrapprSettings {}
+export interface IUserWrapprSettings extends igamestartr.IModuleSettingsObject, iuserwrappr.IUserWrapprSettings {}
 
 /**
  * Stored settings to generate modules.
  */
-export interface IModuleSettings extends igamestartr.IModuleSettingsObject {
+export interface IModuleSettings extends igamestartr.IModuleSettings {
     /**
      * Settings regarding in-game battles, particularly for an IBattleMovr.
      */
@@ -1334,14 +1345,14 @@ export interface IBattlers extends ibattlemovr.IBattlers {
     /**
      * The opponent battler's information.
      */
-    opponent?: IBattler;
+    opponent: IBattler;
 
     /**
      * The player's battle information.
      */
-    player?: IBattler;
+    player: IBattler;
 
-    [i: string]: IBattler | undefined;
+    [i: string]: IBattler;
 }
 
 /**
@@ -2274,7 +2285,7 @@ export type ITransportSchema = {
      * The name of the Location to transport to.
      */
     location: string;
-}
+};
 
 /**
  * A Pokeball containing some item or trigger.
@@ -2364,6 +2375,11 @@ export interface IMenu extends IMenuBase, IThing {
      * How tall this is.
      */
     height: number;
+
+    /**
+     * Menu name this is listed under.
+     */
+    name: string;
 
     /**
      * Any settings to attach to this Menu.

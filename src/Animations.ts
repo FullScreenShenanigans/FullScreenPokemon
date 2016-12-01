@@ -1,7 +1,7 @@
 import { IMove } from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
-import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
+import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { Direction, DirectionAliases, DirectionClasses } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";

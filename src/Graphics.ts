@@ -39,7 +39,7 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartrG
      * @param batleInfo    In-game state and settings for an ongoing battle.
      */
     public moveBattleKeptThingsToText(battleInfo: IBattleInfo): void {
-        const  keptThings: IThing[] | undefined = battleInfo.keptThings;
+        const keptThings: IThing[] | undefined = battleInfo.keptThings;
         if (!keptThings) {
             return;
         }

@@ -1,8 +1,8 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IScenesModuleSettings } from "gamestartr/lib/IGameStartr";
 
 import { Cutscenes } from "../Cutscenes";
 
-export function GenerateScenesSettings(): GameStartr.IScenePlayrCustoms {
+export function GenerateScenesSettings(): IScenesModuleSettings {
     "use strict";
 
     return {

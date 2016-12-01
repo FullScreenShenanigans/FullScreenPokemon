@@ -7,7 +7,7 @@ import { Fishing } from "../Fishing";
 import {
     IBattleBall, IBattleInfo, IBattleModification, IBattler,
     ICharacter, IGrass, IHMMoveSchema,
-    IMathConstants, IMathModuleSettings, IMathEquations, IMovePossibility,
+    IMathConstants, IMathEquations, IMathModuleSettings, IMovePossibility,
     IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod, IWildPokemonSchema
 } from "../IFullScreenPokemon";
 

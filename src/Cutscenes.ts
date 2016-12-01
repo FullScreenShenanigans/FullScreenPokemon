@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { Direction, DirectionAliases, DirectionOpposites, PokedexListingStatus } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -15,7 +15,7 @@ import {
 /**
  * Cutscene functions used by FullScreenPokemon instances.
  */
-export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Cutscene for starting a battle with a spiral.
      * 
@@ -107,7 +107,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
 
             things.push(thing);
 
-            this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo);
+            this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
 
             this.EightBitter.TimeHandler.addEventInterval(
                 (): boolean => {
@@ -133,7 +133,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                     }
 
                     addLineSpiralThing();
-                    this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo);
+                    this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
 
                     return true;
                 },
@@ -153,7 +153,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     public cutsceneBattleTransitionFlash(settings: ITransitionFlashSettings): void {
         const flashes: number = settings.flashes || 6;
         const flashColors: string[] = settings.flashColors || ["Black", "White"];
-        const callback: Function = settings.callback;
+        const callback: Function | undefined = settings.callback;
         let change: number = settings.change || .33;
         let speed: number = settings.speed || 1;
         let completed: number = 0;
@@ -183,7 +183,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
                 }
             });
 
-            this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo);
+            this.EightBitter.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
         };
 
         repeater();
@@ -192,7 +192,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
     /**
      * Cutscene for starting a battle with a twist.
      * 
-     * @param settings   Settings used for the cutscene.
+     * @param _settings   Settings used for the cutscene.
      * 
      * I think the way to do this would be to treat each quarter of the screen
      * as one section. Divide each section into 10 parts. On each interval
@@ -200,7 +200,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      * the maximum, rounded to a large amount to appear pixellated (perhaps,
      * unitsize * 32?).
      */
-    public cutsceneBattleTransitionTwist(settings: IBattleTransitionSettings): void {
+    public cutsceneBattleTransitionTwist(_settings: IBattleTransitionSettings): void {
         throw new Error("Not yet implemented.");
     }
 
@@ -282,7 +282,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
      */
     public cutsceneBattleOpeningText(settings: IBattleCutsceneSettings): void {
         const battleInfo: IBattleInfo = settings.battleInfo;
-        const textStart: [string, string] = battleInfo.textStart;
+        const textStart: [string, string] = battleInfo.textStart || ["", ""];
         let nextRoutine: string;
         let callback: (...args: any[]) => void;
 
@@ -349,6 +349,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             ? "OpponentSendOut"
             : "PlayerIntro";
         const timeout: number = 49;
+        const textOpponentSendOut: [string, string, string] = battleInfo.textOpponentSendOut || ["", "", ""];
 
         this.EightBitter.animations.animateSlideHorizontal(
             opponent,
@@ -375,11 +376,11 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends EightBittr
             "GeneralText",
             [
                 [
-                    battleInfo.textOpponentSendOut[0],
+                    textOpponentSendOut[0],
                     battleInfo.battlers.opponent.name,
-                    battleInfo.textOpponentSendOut[1],
+                    textOpponentSendOut[1],
                     battleInfo.battlers.opponent.actors[0].nickname,
-                    battleInfo.textOpponentSendOut[2]
+                    textOpponentSendOut[2]
                 ]
             ]
         );

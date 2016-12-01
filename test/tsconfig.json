@@ -1,7 +1,16 @@
 {
     "compilerOptions": {
-        "declaration": false,
+        "declaration": true,
         "module": "amd",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "..",
+        "rootDir": "..",
+        "strictNullChecks": true,
         "target": "es3"
     },
     "include": [

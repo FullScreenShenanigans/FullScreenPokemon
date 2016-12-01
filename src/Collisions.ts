@@ -1,4 +1,5 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
+import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { Direction } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -7,7 +8,7 @@ import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge }
 /**
  * Collision functions used by FullScreenPokemon instances.
  */
-export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Collisions<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
@@ -98,7 +99,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
 
             // The other's collide may return true to cancel overlapping checks
             if (other.collide && other.collide(thing, other)) {
-                return;
+                return false;
             }
 
             // Both the thing and other should know they're bordering each other
@@ -140,6 +141,9 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                 default:
                     break;
             }
+
+            // Todo: investigate why this never returns true?
+            return false;
         };
     }
 
@@ -151,7 +155,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param direction   The direction border being changed.
      */
     public setThingBordering(thing: IThing, other: IThing, direction: Direction): void {
-        if (thing.bordering[direction] && thing.bordering[direction].borderPrimary && !other.borderPrimary) {
+        if (thing.bordering[direction] && thing.bordering[direction]!.borderPrimary && !other.borderPrimary) {
             return;
         }
 
@@ -185,6 +189,11 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                 if (other.singleUse) {
                     other.active = false;
                 }
+
+                if (!other.activate) {
+                    throw new Error("No activate callback for collision detector.");
+                }
+
                 other.activate.call(this.EightBitter.animations, thing, other);
             }
 
@@ -196,6 +205,8 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
             other.active = true;
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -206,8 +217,8 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param other   A Character with dialog triggered by thing.
      */
     public collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
-        let dialog: MenuGraphr.IMenuDialogRaw | MenuGraphr.IMenuDialogRaw[] = other.dialog;
-        let direction: Direction;
+        let dialog: IMenuDialogRaw | IMenuDialogRaw[] | undefined = other.dialog;
+        let direction: Direction | undefined;
 
         if (other.cutscene) {
             this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
@@ -221,9 +232,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         }
 
         direction = this.EightBitter.physics.getDirectionBetween(other, thing);
+        if (!direction) {
+            throw new Error("Characters not close enough to collide for dialog.");
+        }
 
         if (other.dialogDirections) {
-            dialog = (dialog as MenuGraphr.IMenuDialogRaw[])[direction];
+            dialog = (dialog as IMenuDialogRaw[])[direction];
             if (!dialog) {
                 return;
             }
@@ -259,6 +273,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
     public collidePokeball(thing: IPlayer, other: IPokeball): void {
         switch (other.action) {
             case "item":
+                if (!other.item) {
+                    throw new Error("Pokeball must have an item for the item action.");
+                }
+
                 this.EightBitter.MenuGrapher.createMenu("GeneralText");
                 this.EightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
@@ -279,6 +297,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                 break;
 
             case "cutscene":
+                if (!other.cutscene) {
+                    throw new Error("Pokeball must have a cutscene for the cutscene action.");
+                }
+
                 this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
                     player: thing,
                     triggerer: other
@@ -289,10 +311,18 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                 break;
 
             case "pokedex":
+                if (!other.pokemon) {
+                    throw new Error("Pokeball must have a Pokemon for the cutscene action.");
+                }
+
                 this.EightBitter.menus.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
+                if (!other.dialog) {
+                    throw new Error("Pokeball must have a dialog for the cutscene action.");
+                }
+
                 this.EightBitter.MenuGrapher.createMenu("GeneralText");
                 this.EightBitter.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
                 this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
@@ -341,7 +371,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         thing.shadow = this.EightBitter.ObjectMaker.make(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
-        });
+        }) as IThing;
 
         if (thing.shadow.className !== thing.className) {
             this.EightBitter.graphics.setClass(thing.shadow, thing.className);

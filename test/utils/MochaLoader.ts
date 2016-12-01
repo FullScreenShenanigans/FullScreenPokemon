@@ -17,7 +17,7 @@ interface ITestHierarchy {
      * Tests run in this describe().
      */
     tests: {
-        [i: string]: () => void;
+        [i: string]: (done: Function) => void;
     };
 }
 
@@ -68,7 +68,7 @@ export class MochaLoader {
      * @param testName   The name of the test.
      * @param test   A new test.
      */
-    public it(testName: string, test: (done?: Function) => void): void {
+    public it(testName: string, test: (done: Function) => void): void {
         if (!this.currentTestPath) {
             throw new Error(`No test path defined before adding test '${testName}'.`);
         }

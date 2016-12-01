@@ -2,10 +2,26 @@
 
 import { MochaLoader } from "./utils/MochaLoader";
 
-declare var require: any;
-declare var testPaths: any;
+declare var requirejs: any;
+declare var testDependencies: string[];
+declare var testPaths: string[];
 
 export const mochaLoader: MochaLoader = new MochaLoader(mocha);
+
+/**
+ * Informs RequireJS of the file location for a test dependency.
+ * 
+ * @param testDependencies   Modules depended upon for tests.
+ */
+function redirectTestDependencies(dependencies: string[]): void {
+    for (const dependency of dependencies) {
+        requirejs.config({
+            paths: {
+                [dependency.toLowerCase() + "/lib"]: `../node_modules/${dependency.toLowerCase()}/src`
+            }
+        });
+    }
+}
 
 /**
  * Recursively loads test paths under mocha loader.
@@ -23,17 +39,21 @@ function loadTestPaths(loadingPaths: string[], i: number, onComplete: () => void
     }
 
     mochaLoader.setTestPath(loadingPaths[i]);
-    require(
+    requirejs(
         [loadingPaths[i]],
         (): void => {
             loadTestPaths(loadingPaths, i + 1, onComplete);
         });
 }
 
-loadTestPaths(
-    testPaths,
-    0,
-    (): void => {
-        mochaLoader.describeTests();
-        mochaLoader.run();
-    });
+((): void => {
+    redirectTestDependencies(testDependencies);
+
+    loadTestPaths(
+        testPaths,
+        0,
+        (): void => {
+            mochaLoader.describeTests();
+            mochaLoader.run();
+        });
+})();

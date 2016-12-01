@@ -1,8 +1,9 @@
+import { IMove } from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
-    IBattleInfo, IMenu, IPlayer, IPokemon, IThing, IWildPokemonSchema
+    IBattleInfo, IBattler, IMenu, IPlayer, IPokemon, IThing, IWildPokemonSchema
 } from "./IFullScreenPokemon";
 
 /**
@@ -55,7 +56,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
-        const moves: BattleMovr.IMove[] = this.EightBitter.MathDecider.getConstant("moves");
+        const moves: IMove[] = this.EightBitter.MathDecider.getConstant("moves");
         const statisticNames: string[] = this.EightBitter.MathDecider.getConstant("statisticNames");
 
         for (let statisticName of statisticNames) {
@@ -111,6 +112,8 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
                 return option;
             }
         }
+
+        throw new Error("Failed to pick random wild Pokemon from options.");
     }
 
     /**
@@ -119,7 +122,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param menu   A menu to add the Things to.
      * @param battler   Information on the Pokemon to add balls for.
      */
-    public addBattleDisplayPokeballs(menu: IMenu, battler: BattleMovr.IBattler, opposite?: boolean): void {
+    public addBattleDisplayPokeballs(menu: IMenu, battler: IBattler, opposite?: boolean): void {
         const text: string[][] = [];
         let i: number;
 
@@ -145,7 +148,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      */
     public addBattleDisplayPokemonHealth(battlerName: "player" | "opponent"): void {
         const battleInfo: IBattleInfo = this.EightBitter.BattleMover.getBattleInfo() as IBattleInfo;
-        const pokemon: IPokemon = battleInfo.battlers[battlerName].selectedActor;
+        const pokemon: IPokemon = battleInfo.battlers[battlerName]!.selectedActor!;
         const menu: string = [
             "Battle",
             battlerName[0].toUpperCase(),
@@ -239,31 +242,25 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * Opens the in-battle moves menu.
      */
     public openBattleMovesMenu(): void {
-        const actorMoves: BattleMovr.IMove[] = this.EightBitter.BattleMover.getBattleInfo().battlers.player.selectedActor.moves;
-        const moveOptions: any[] = [];
-
-        for (let i: number = 0; i < actorMoves.length; i += 1) {
-            const move: BattleMovr.IMove = actorMoves[i];
-
-            moveOptions.push({
+        const actorMoves: IMove[] = this.EightBitter.BattleMover.getBattleInfo().battlers.player.selectedActor!.moves;
+        const options: any[] = actorMoves.map((move: IMove): any => {
+            return {
                 text: move.title.toUpperCase(),
                 remaining: move.remaining,
-                callback: (title: string): void => {
+                callback: (): void => {
                     this.EightBitter.BattleMover.playMove(move.title);
                 }
-            });
-        }
+            };
+        });
 
         for (let i: number = actorMoves.length; i < 4; i += 1) {
-            moveOptions.push({
+            options.push({
                 text: "-"
             });
         }
 
         this.EightBitter.MenuGrapher.createMenu("BattleFightList");
-        this.EightBitter.MenuGrapher.addMenuList("BattleFightList", {
-            "options": moveOptions
-        });
+        this.EightBitter.MenuGrapher.addMenuList("BattleFightList", { options });
         this.EightBitter.MenuGrapher.setActiveMenu("BattleFightList");
     }
 

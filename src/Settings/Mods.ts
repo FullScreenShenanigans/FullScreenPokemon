@@ -52,6 +52,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 name: "Speedrunner",
                 enabled: false,
                 events: {
+                    /* tslint:disable no-string-literal */
                     onModEnable: function (this: FullScreenPokemon): void {
                         const stats: any = this.ObjectMaker.getFunction("Player").prototype;
                         this.player.speed = stats.speed = 10;
@@ -60,6 +61,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         const stats: any = this.ObjectMaker.getFunction("Player").prototype;
                         this.player.speed = stats.speed = this.moduleSettings.objects.properties!["Player"].speed;
                     }
+                    /* tslint:enable no-string-literal */
                 }
             },
             {
@@ -86,7 +88,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             });
                     },
                     onBattleStart: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, battleInfo: IBattleInfo): void {
-                        const opponent: IBattler = battleInfo.battlers.opponent!;
+                        const opponent: IBattler = battleInfo.battlers.opponent;
 
                         opponent.sprite = "BugCatcherFront";
                         opponent.name = "YOUNGSTER JOEY".split("");
@@ -181,7 +183,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
 
                         const grassMap: IMap | undefined = this.AreaSpawner.getMap(grass.mapName) as IMap;
                         const grassArea: IArea | undefined = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
-                        const opponent: String = settings.battlers.opponent!.category;
+                        const opponent: String = settings.battlers.opponent.category;
 
                         if (!grassArea || opponent !== "Wild") {
                             return;
@@ -292,10 +294,11 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      * @param battleInfo   Settings for the current battle.
                      */
                     onBattleReady: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, battleInfo: IBattleInfo): void {
-                        const opponent: IBattler = battleInfo.battlers.opponent!;
-                        const player: IBattler = battleInfo.battlers.player!;
+                        const opponent: IBattler = battleInfo.battlers.opponent;
+                        const player: IBattler = battleInfo.battlers.player;
                         const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
-                        const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.AreaSpawner.getArea() as IArea).wildPokemon.grass;
+                        const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.AreaSpawner.getArea() as IArea)
+                            .wildPokemon.grass;
                         if (!wildPokemonOptions) {
                             return;
                         }
