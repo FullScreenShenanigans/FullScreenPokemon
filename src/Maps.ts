@@ -1,4 +1,5 @@
 import { Maps as GameStartrMaps } from "gamestartr/lib/Maps";
+import { IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
 
 import { Direction, DirectionSpawns } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -308,7 +309,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
         const direction: Direction = thing.direction;
         const areaCurrent: IArea = this.EightBitter.AreaSpawner.getArea() as IArea;
         const mapCurrent: IMap = this.EightBitter.AreaSpawner.getMap() as IMap;
-        const prethingsCurrent: MapsCreatr.IPreThingsContainers = this.EightBitter.AreaSpawner.getPreThings();
+        const prethingsCurrent: IPreThingsContainers = this.EightBitter.AreaSpawner.getPreThings();
         let left: number = thing.left + this.EightBitter.MapScreener.left;
         let top: number = thing.top + this.EightBitter.MapScreener.top;
 

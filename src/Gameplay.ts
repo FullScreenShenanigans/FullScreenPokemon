@@ -1,7 +1,18 @@
 import { Gameplay as GameStartrGameplay } from "gamestartr/lib/Gameplay";
-import { IDataMouseEvent, IDataProgressEvent } from "leveledtir/lib/ILevelEditr";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
+
+interface IDataMouseEvent extends MouseEvent {
+    dataTransfer: DataTransfer;
+}
+
+interface IDataProgressEvent extends ProgressEvent {
+    currentTarget: IDataEventTarget;
+}
+
+interface IDataEventTarget extends EventTarget {
+    result: string;
+}
 
 /**
  * Gameplay functions used by IGameStartr instances.

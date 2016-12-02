@@ -295,7 +295,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      */
                     onBattleReady: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, battleInfo: IBattleInfo): void {
                         const opponent: IBattler = battleInfo.battlers.opponent;
-                        const player: IBattler = battleInfo.battlers.player;
+                        const player: IBattler = battleInfo.battlers.player!;
                         const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
                         const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.AreaSpawner.getArea() as IArea)
                             .wildPokemon.grass;

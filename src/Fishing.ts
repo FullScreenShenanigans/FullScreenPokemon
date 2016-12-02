@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
@@ -8,7 +8,7 @@ import {
 /**
  * Fishing functions used by FullScreenPokemon instances.
  */
-export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Fishing<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Starts the Player fishing.
      *
@@ -17,7 +17,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      */
     public startFishing(player: IPlayer, item: IItemSchema): void {
         if (player.bordering[player.direction] === undefined ||
-            player.bordering[player.direction].title.indexOf("WaterEdge") === -1) {
+            player.bordering[player.direction]!.title.indexOf("WaterEdge") === -1) {
             this.EightBitter.menus.cannotDoThat(player);
             return;
         }
@@ -61,7 +61,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      */
     public playerLandedFish(player: IPlayer, rod: IRod): void {
         const currentMap: IMap = this.EightBitter.AreaSpawner.getMap(player.mapName) as IMap;
-        const currentArea: IArea = currentMap.areas[player.bordering[player.direction].areaName] as IArea;
+        const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName] as IArea;
         const options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type];
         const chosen: IWildPokemonSchema = this.EightBitter.battles.chooseRandomWildPokemon(options);
         const chosenPokemon: IPokemon = this.EightBitter.utilities.createPokemon(chosen);

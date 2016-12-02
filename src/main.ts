@@ -1,24 +1,12 @@
-/// <reference path="../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../typings/UserWrappr.d.ts" />
+import { UserWrappr } from "userwrappr/lib/UserWrappr";
 
-/* tslint:disable */
-declare var require: any;
+import { FullScreenPokemon } from "./FullScreenPokemon";
 
-if (typeof require === "undefined") {
+((): void => {
     const onLoad: () => void = (): void => {
-        new UserWrappr.UserWrappr(
-            (window as any).FullScreenPokemon.FullScreenPokemon.prototype.settings.ui);
+        (window as any).UserWrapper = new UserWrappr(FullScreenPokemon.prototype.moduleSettings.ui);
         window.removeEventListener("load", onLoad);
     };
+
     window.addEventListener("load", onLoad);
-}
-// https://github.com/FullScreenShenanigans/gulp-shenanigans/issues/22
-// FSP is being required during testing, which throws out-of-test errors
-else if (!(window as any)["mocha"] && !(window as any)["chai"]) {
-    require(["FullScreenPokemon"], (FSP: any): void => {
-        new UserWrappr.UserWrappr(
-            (FSP || (window as any).FullScreenPokemon).FullScreenPokemon.prototype.settings.ui);
-    });
-}
-/* tslint:enable */
+})();

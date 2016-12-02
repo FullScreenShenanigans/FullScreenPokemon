@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IRendererModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateRendererSettings(): GameStartr.IPixelDrawrCustoms {
+export function GenerateRendererSettings(): IRendererModuleSettings {
     "use strict";
 
     return {

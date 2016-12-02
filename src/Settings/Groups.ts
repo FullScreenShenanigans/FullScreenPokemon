@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IGroupsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateGroupsSettings(): GameStartr.IGroupHoldrCustoms {
+export function GenerateGroupsSettings(): IGroupsModuleSettings {
     "use strict";
 
     return {

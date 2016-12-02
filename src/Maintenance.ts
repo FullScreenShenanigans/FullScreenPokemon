@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { Scrollability } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -7,7 +7,7 @@ import { ICharacter, IGrass, IPlayer, IThing } from "./IFullScreenPokemon";
 /**
  * Maintenance functions used by FullScreenPokemon instances.
  */
-export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Maintenance<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Generic maintenance Function for a group of Things. For each Thing, if
      * it isn't alive, it's removed from the group.
@@ -68,7 +68,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
     public maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
         if (!this.EightBitter.physics.isThingWithinGrass(thing, other)) {
-            this.EightBitter.physics.killNormal(thing.shadow);
+            this.EightBitter.physics.killNormal(thing.shadow!);
             thing.canvas.height = thing.height * this.EightBitter.unitsize;
             this.EightBitter.PixelDrawer.setThingSprite(thing);
 
@@ -78,11 +78,11 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
         }
 
         // Keep the shadow in sync with thing in position and visuals.
-        this.EightBitter.physics.setLeft(thing.shadow, thing.left);
-        this.EightBitter.physics.setTop(thing.shadow, thing.top);
+        this.EightBitter.physics.setLeft(thing.shadow!, thing.left);
+        this.EightBitter.physics.setTop(thing.shadow!, thing.top);
 
-        if (thing.shadow.className !== thing.className) {
-            this.EightBitter.graphics.setClass(thing.shadow, thing.className);
+        if (thing.shadow!.className !== thing.className) {
+            this.EightBitter.graphics.setClass(thing.shadow!, thing.className);
         }
     }
 

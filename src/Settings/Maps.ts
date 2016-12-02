@@ -1,5 +1,3 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
-
 import { IMapsModuleSettings } from "../IFullScreenPokemon";
 import { Macros } from "../Macros";
 import { Maps } from "../Maps";

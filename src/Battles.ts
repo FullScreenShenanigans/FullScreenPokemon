@@ -242,7 +242,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * Opens the in-battle moves menu.
      */
     public openBattleMovesMenu(): void {
-        const actorMoves: IMove[] = this.EightBitter.BattleMover.getBattleInfo().battlers.player.selectedActor!.moves;
+        const actorMoves: IMove[] = this.EightBitter.BattleMover.getBattleInfo().battlers.player!.selectedActor!.moves;
         const options: any[] = actorMoves.map((move: IMove): any => {
             return {
                 text: move.title.toUpperCase(),
@@ -298,7 +298,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * Starts the dialog to exit a battle.
      */
     public startBattleExit(): void {
-        if (this.EightBitter.BattleMover.getBattleInfo().battlers.opponent.category === "Trainer") {
+        if (this.EightBitter.BattleMover.getBattleInfo().battlers.opponent!.category === "Trainer") {
             this.EightBitter.ScenePlayer.playRoutine("BattleExitFail");
             return;
         }

@@ -237,8 +237,8 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         let opponentGoal: number;
         let timeout: number = 70;
 
-        battleInfo.battlers.player.selectedIndex = 0;
-        battleInfo.battlers.player.selectedActor = battleInfo.battlers.player.actors[0];
+        battleInfo.battlers.player!.selectedIndex = 0;
+        battleInfo.battlers.player!.selectedActor = battleInfo.battlers.player!.actors[0];
         battleInfo.battlers.opponent.selectedIndex = 0;
         battleInfo.battlers.opponent.selectedActor = battleInfo.battlers.opponent.actors[0];
 
@@ -308,13 +308,13 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         this.EightBitter.MenuGrapher.createMenu("BattlePlayerHealth");
         this.EightBitter.battles.addBattleDisplayPokeballs(
             this.EightBitter.MenuGrapher.getMenu("BattlePlayerHealth") as IMenu,
-            battleInfo.battlers.player);
+            battleInfo.battlers.player!);
 
         if (battleInfo.battlers.opponent.hasActors) {
             this.EightBitter.MenuGrapher.createMenu("BattleOpponentHealth");
             this.EightBitter.battles.addBattleDisplayPokeballs(
                 this.EightBitter.MenuGrapher.getMenu("BattleOpponentHealth") as IMenu,
-                battleInfo.battlers.player,
+                battleInfo.battlers.player!,
                 true);
         } else {
             this.EightBitter.battles.addBattleDisplayPokemonHealth("opponent");
@@ -416,7 +416,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
 
         this.EightBitter.MenuGrapher.deleteMenu("BattlePlayerHealth");
 
-        if (!battleInfo.battlers.player.hasActors) {
+        if (!battleInfo.battlers.player!.hasActors) {
             this.EightBitter.ScenePlayer.playRoutine("ShowPlayerMenu");
             return;
         }
@@ -446,7 +446,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
             [
                 [
                     textPlayerSendOut[0],
-                    battleInfo.battlers.player.actors[0].nickname,
+                    battleInfo.battlers.player!.actors[0].nickname,
                     textPlayerSendOut[1]
                 ]
             ]
@@ -562,7 +562,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
      * @param args   Settings to pass to the next routine.
      */
     public cutsceneBattlePlayerSendOutAppear(settings: IBattleCutsceneSettings, args: IBattleRoutineSettings): void {
-        const playerInfo: IBattler = settings.battleInfo.battlers.player;
+        const playerInfo: IBattler = settings.battleInfo.battlers.player!;
         const pokemonInfo: IPokemon = playerInfo.selectedActor as IPokemon;
         const pokemon: IThing = this.EightBitter.BattleMover.setThing(
             "player",
@@ -589,7 +589,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         this.EightBitter.MenuGrapher.addMenuDialog(
             "GeneralText",
             [
-                settings.battleInfo.battlers.player.selectedActor!.nickname, " is already out!"
+                settings.battleInfo.battlers.player!.selectedActor!.nickname, " is already out!"
             ]);
         this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
     }
@@ -602,7 +602,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
      * @param args   Settings for the routine.
      */
     public cutsceneBattleMovePlayer(settings: IBattleCutsceneSettings, args: IBattleMoveRoutineSettings): void {
-        const player: IBattler = settings.battleInfo.battlers.player;
+        const player: IBattler = settings.battleInfo.battlers.player!;
         const playerActor: IPokemon = player.selectedActor as IPokemon;
         const opponent: IBattler = settings.battleInfo.battlers.opponent;
         const opponentActor: IPokemon = opponent.selectedActor as IPokemon;
@@ -684,7 +684,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
     public cutsceneBattleMoveOpponent(settings: IBattleCutsceneSettings, args: IBattleMoveRoutineSettings): void {
         const opponent: IBattler = settings.battleInfo.battlers.opponent;
         const opponentActor: IPokemon = opponent.selectedActor as IPokemon;
-        const player: IBattler = settings.battleInfo.battlers.player;
+        const player: IBattler = settings.battleInfo.battlers.player!;
         const playerActor: IPokemon = player.selectedActor as IPokemon;
         const choice: string = args.choiceOpponent!;
 
@@ -763,7 +763,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         const battlerName: "player" | "opponent" = args.battlerName!;
         const damage: number = args.damage!;
         const battleInfo: IBattleInfo = this.EightBitter.BattleMover.getBattleInfo() as IBattleInfo;
-        const battler: IBattler = battleInfo.battlers[battlerName];
+        const battler: IBattler = battleInfo.battlers[battlerName]!;
         const actor: IPokemon = battler.selectedActor as IPokemon;
         const hpStart: number = actor.HP;
         const hpEnd: number = Math.max(hpStart - damage, 0);
@@ -804,7 +804,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
     public cutsceneBattlePokemonFaints(settings: IBattleCutsceneSettings, args: IBattleActionRoutineSettings): void {
         const battlerName: "player" | "opponent" = args.battlerName!;
         const battleInfo: IBattleInfo = this.EightBitter.BattleMover.getBattleInfo() as IBattleInfo;
-        const actor: IPokemon = battleInfo.battlers[battlerName].selectedActor!;
+        const actor: IPokemon = battleInfo.battlers[battlerName]!.selectedActor!;
         const thing: IThing = settings.things[battlerName];
         const blank: IThing = this.EightBitter.ObjectMaker.make(
             "WhiteSquare",
@@ -847,7 +847,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
                 this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
             });
 
-        this.EightBitter.ModAttacher.fireEvent("onFaint", actor, battleInfo.battlers.player.actors);
+        this.EightBitter.ModAttacher.fireEvent("onFaint", actor, battleInfo.battlers.player!.actors);
     }
 
     /**
@@ -855,7 +855,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
      */
     public cutsceneBattleAfterPlayerPokemonFaints(): void {
         const battleInfo: IBattleInfo = this.EightBitter.BattleMover.getBattleInfo() as IBattleInfo;
-        const actorAvailable: boolean = this.EightBitter.utilities.checkArrayMembersIndex(battleInfo.battlers.player.actors, "HP");
+        const actorAvailable: boolean = this.EightBitter.utilities.checkArrayMembersIndex(battleInfo.battlers.player!.actors, "HP");
 
         if (actorAvailable) {
             this.EightBitter.ScenePlayer.playRoutine("PlayerChoosesPokemon");
@@ -874,7 +874,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         const opponent: IBattler = battleInfo.battlers.opponent;
         const actorAvailable: boolean = this.EightBitter.utilities.checkArrayMembersIndex(opponent.actors, "HP");
         const experienceGained: number = this.EightBitter.MathDecider.compute(
-            "experienceGained", battleInfo.battlers.player, battleInfo.battlers.opponent);
+            "experienceGained", battleInfo.battlers.player!, battleInfo.battlers.opponent);
         let callback: Function;
 
         if (actorAvailable) {
@@ -888,7 +888,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
             "GeneralText",
             [
                 [
-                    battleInfo.battlers.player.selectedActor!.nickname,
+                    battleInfo.battlers.player!.selectedActor!.nickname,
                     " gained ",
                     experienceGained.toString(),
                     " EXP. points!"
@@ -965,7 +965,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
      */
     public cutsceneBattleExperienceGain(settings: IBattleCutsceneSettings, args: IBattleLevelRoutineSettings): void {
         const battleInfo: IBattleInfo = settings.battleInfo;
-        const actor: IPokemon = battleInfo.battlers.player.selectedActor!;
+        const actor: IPokemon = battleInfo.battlers.player!.selectedActor!;
         const experience: IActorExperience = actor.experience;
         let gains: number = args.experienceGained!;
 
@@ -993,7 +993,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
     public cutsceneBattleLevelUp(settings: IBattleCutsceneSettings, args: IBattleLevelRoutineSettings): void {
         const battleInfo: IBattleInfo = settings.battleInfo;
         // const gains: number = args.experienceGained;
-        const actor: IPokemon = battleInfo.battlers.player.selectedActor!;
+        const actor: IPokemon = battleInfo.battlers.player!.selectedActor!;
 
         actor.level += 1;
         actor.experience = this.EightBitter.MathDecider.compute(
@@ -1033,7 +1033,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
                     left: 4
                 }
             },
-            pokemon: settings.battleInfo.battlers.player.selectedActor!,
+            pokemon: settings.battleInfo.battlers.player!.selectedActor!,
             onMenuDelete: args.callback
         });
         this.EightBitter.MenuGrapher.setActiveMenu("LevelUpStats");
@@ -1242,7 +1242,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
     public cutsceneBattleComplete(settings: IBattleCutsceneSettings): void {
         this.EightBitter.MapScreener.blockInputs = false;
         this.EightBitter.graphics.moveBattleKeptThingsBack(settings.battleInfo);
-        this.EightBitter.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.battlers.player.actors);
+        this.EightBitter.ItemsHolder.setItem("PokemonInParty", settings.battleInfo.battlers.player!.actors);
         this.EightBitter.ModAttacher.fireEvent("onBattleComplete", settings.battleInfo);
         if (this.EightBitter.MapScreener.theme) {
             this.EightBitter.AudioPlayer.playTheme(this.EightBitter.MapScreener.theme);
@@ -1257,7 +1257,7 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
     public cutsceneBattleChangeStatistic(settings: any, args: IBattleStatisticRoutineSettings): void {
         const battleInfo: IBattleInfo = settings.battleInfo;
         const defenderName: "player" | "opponent" = args.defenderName!;
-        const defender: IPokemon = battleInfo.battlers[defenderName].selectedActor!;
+        const defender: IPokemon = battleInfo.battlers[defenderName]!.selectedActor!;
         const defenderLabel: string = defenderName === "opponent"
             ? "Enemy " : "";
         const statistic: string = args.statistic!;
@@ -3832,7 +3832,6 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         const starterRival: string[] = this.EightBitter.ItemsHolder.getItem("starterRival");
         const battleInfo: IBattleInfo = {
             battlers: {
-                player: undefined!,
                 opponent: {
                     sprite: "RivalPortrait",
                     name: this.EightBitter.ItemsHolder.getItem("nameRival"),
@@ -4355,7 +4354,6 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
             ],
             (): void => this.EightBitter.battles.startBattle({
                 battlers: {
-                    player: undefined!,
                     opponent: {
                         sprite: "RivalPortrait",
                         name: this.EightBitter.ItemsHolder.getItem("nameRival"),

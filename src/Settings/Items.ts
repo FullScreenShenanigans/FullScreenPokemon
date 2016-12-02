@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IItemsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateItemsSettings(): GameStartr.IItemsHoldrCustoms {
+export function GenerateItemsSettings(): IItemsModuleSettings {
     "use strict";
 
     return {
@@ -10,7 +10,7 @@ export function GenerateItemsSettings(): GameStartr.IItemsHoldrCustoms {
         defaults: {
             storeLocally: {
                 value: true
-            } as any
+            }
         },
         prefix: "FullScreenPokemon::",
         values: {

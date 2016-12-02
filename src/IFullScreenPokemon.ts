@@ -5,7 +5,7 @@ import { IPreThing as IMapsCreatrIPreThing } from "mapscreatr/lib/IPreThing";
 import * as imapscreenr from "mapscreenr/lib/IMapScreenr";
 import * as imathdecidr from "mathdecidr/lib/IMathDecidr";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
-import * as istateholdr from "stateholdr/lib/IStateHoldr";
+import * as inumbermakr from "numbermakr/lib/INumberMakr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 import * as iuserwrappr from "userwrappr/lib/IUserWrappr";
 
@@ -97,7 +97,7 @@ export interface IMathModuleSettings extends igamestartr.IMathModuleSettings {
     /**
      * Constants the IMathDecidr may use in equations.
      */
-    constants: IMathConstants;
+    constants: IStaticMathConstants;
 
     /**
      * Calculation Functions, keyed by name.
@@ -106,18 +106,18 @@ export interface IMathModuleSettings extends igamestartr.IMathModuleSettings {
 }
 
 /**
- * Constants for an IMathDecidr, including all static Pokemon information.
+ * 
  */
-export interface IMathConstants extends imathdecidr.IConstants {
+export interface IStaticMathConstants extends imathdecidr.IConstants {
     /**
      * Names of all statistics Pokemon have.
      */
-    statisticNames?: string[];
+    statisticNames: string[];
 
     /**
      * Names of Pokemon statistics to display in statistics menus.
      */
-    statisticNamesDisplayed?: string[];
+    statisticNamesDisplayed: string[];
 
     /**
      * How much to expand each pixel from raw sizing measurements to in-game.
@@ -222,6 +222,16 @@ export interface IMathConstants extends imathdecidr.IConstants {
     battleModifications: {
         [i: string]: IBattleModification;
     };
+}
+
+/**
+ * Constants for an IMathDecidr, including all static Pokemon information.
+ */
+export interface IMathConstants extends IStaticMathConstants {
+    /**
+     * Generates random numbers for math equations.
+     */
+    NumberMaker: inumbermakr.INumberMakr;
 }
 
 /**
@@ -335,8 +345,6 @@ export interface IMathEquations extends imathdecidr.IEquations {
      */
     opponentMove: (
         this: imathdecidr.IMathDecidr,
-        constants: IMathConstants,
-        equations: IMathEquations,
         player: IBattler,
         opponent: IBattler) => string;
 
@@ -392,12 +400,11 @@ export interface IMathEquations extends imathdecidr.IEquations {
      * Determines the damage modifier against a defending Pokemon.
      * 
      * @param move   The attacking Pokemon's move.
-     * @param critical   Whether the move is a critical hit.
      * @param attacker   The attacking Pokemon.
      * @param defender   The defending Pokemon.
      * @returns The damage modifier, as a multiplication constant.
      */
-    damageModifier: (move: IMoveSchema, critical: boolean, attacker: IPokemon, defender: IPokemon) => number;
+    damageModifier: (move: IMoveSchema, attacker: IPokemon, defender: IPokemon) => number;
 
     /**
      * Determines whether a move should be a critical hit.
@@ -424,7 +431,7 @@ export interface IMathEquations extends imathdecidr.IEquations {
      * @param level   The level of the Pokemon.
      * @returns An amount of experience.
      */
-    experienceStarting: (IMaththis: imathdecidr.IMathDecidr, title: string[], level: number) => number;
+    experienceStarting: (this: imathdecidr.IMathDecidr, title: string[], level: number) => number;
 
     /**
      * Computes how much experience should be gained from defeating a Pokemon.
@@ -432,7 +439,7 @@ export interface IMathEquations extends imathdecidr.IEquations {
      * @returns How much experience is to be gained.
      * @remarks This will need to be changed to accomodate rewarding multiple Pokemon.
      */
-    experienceGained: (IMaththis: imathdecidr.IMathDecidr, player: IBattler, opponent: IBattler) => number;
+    experienceGained: (this: imathdecidr.IMathDecidr, player: IBattler, opponent: IBattler) => number;
 
     /**
      * Computes how wide a health bar should be.
@@ -443,6 +450,20 @@ export interface IMathEquations extends imathdecidr.IEquations {
      * @returns How wide the health bar should be.
      */
     widthHealthBar: (widthFullBar: number, hp: number, hpNormal: number) => number;
+}
+
+/**
+ * FullScreenPokemon-specific IMathDecidr usage.
+ */
+export interface IFullScreenPokemonMathDecidr extends imathdecidr.IMathDecidr {
+    /**
+     * Useful constants the IMathDecidr may use in equations.
+     */
+    readonly constants: IMathConstants;
+    /**
+     * Stored equations bound to the IMathDecidr.
+     */
+    readonly equations: IMathEquations;
 }
 
 /**
@@ -481,7 +502,12 @@ export interface IMenusModuleSettings extends igamestartr.IModuleSettingsObject 
 /**
  * Settings regarding large-scale state storage, particularly for an IStateHoldr.
  */
-export interface IStateModuleSettings extends igamestartr.IModuleSettingsObject, istateholdr.IStateHoldrSettings { }
+export interface IStateModuleSettings extends igamestartr.IModuleSettingsObject {
+    /**
+     * A prefix to prepend keys for the ItemsHolder.
+     */
+    prefix?: string;
+}
 
 /**
  * Settings regarding the UI, particularly for an IUserWrappr.
@@ -517,6 +543,11 @@ export interface IModuleSettings extends igamestartr.IModuleSettings {
      * Settings regarding large-scale state storage, particularly for an IStateHoldr.
      */
     state: IStateModuleSettings;
+
+    /**
+     * Settings regarding front-facing UI.
+     */
+    ui: IUserWrapprSettings;
 }
 
 /**
@@ -1350,9 +1381,9 @@ export interface IBattlers extends ibattlemovr.IBattlers {
     /**
      * The player's battle information.
      */
-    player: IBattler;
+    player?: IBattler;
 
-    [i: string]: IBattler;
+    [i: string]: IBattler | undefined;
 }
 
 /**

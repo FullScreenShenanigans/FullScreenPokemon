@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { Direction, InputTimeTolerance } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -7,7 +7,7 @@ import { ICharacter, IItemSchema, IPlayer } from "./IFullScreenPokemon";
 /**
  * Input functions used by IGameStartr instances.
  */
-export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Checks whether direction keys such as up may trigger, which is true if the
      * game isn't paused, the isn't an active menu, and the MapScreener doesn't
@@ -179,8 +179,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
         if (this.EightBitter.MenuGrapher.getActiveMenu()) {
             this.EightBitter.MenuGrapher.registerA();
         } else if (thing.bordering[thing.direction]) {
-            if (thing.bordering[thing.direction].activate) {
-                thing.bordering[thing.direction].activate(
+            if (thing.bordering[thing.direction]!.activate) {
+                thing.bordering[thing.direction]!.activate!(
                     thing,
                     thing.bordering[thing.direction]);
             }
@@ -226,11 +226,11 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * Reacts to the pause key being pressed. The game is paused if it isn't 
      * already. The onKeyDownPause mod event is fired.
      * 
-     * @param thing   The triggering Character.
+     * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownPause(thing: ICharacter, event?: Event): void {
-        this.EightBitter.menus.togglePauseMenu(thing);
+    public keyDownPause(_thing: ICharacter, event?: Event): void {
+        this.EightBitter.menus.togglePauseMenu();
         this.EightBitter.ModAttacher.fireEvent("onKeyDownPause");
 
         if (event && event.preventDefault) {
@@ -242,10 +242,10 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * Reacts to the mute key being pressed. The game has mute toggled, and the
      * onKeyDownMute mod event is fired.
      * 
-     * @param thing   The triggering Character.
+     * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownMute(thing: ICharacter, event?: Event): void {
+    public keyDownMute(_thing: ICharacter, event?: Event): void {
         this.EightBitter.AudioPlayer.toggleMuted();
         this.EightBitter.ModAttacher.fireEvent("onKeyDownMute");
 
@@ -275,8 +275,12 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
 
         const itemSchema: IItemSchema = this.EightBitter.MathDecider.getConstant("items")[selectItem];
 
+        if (!itemSchema.bagActivate) {
+            throw new Error("Currently selected item does not have a .bagActivate.");
+        }
+
         if (!itemSchema.bagActivate.call(this, thing, itemSchema)) {
-            this.EightBitter.menus.displayMessage(thing, itemSchema.error);
+            this.EightBitter.menus.displayMessage(thing, itemSchema.error || "");
         }
 
         if (event && event.preventDefault) {
@@ -411,10 +415,10 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
     /**
      * Reacts to the pause key being lifted. The onKeyUpPause mod event is fired.
      * 
-     * @param thing   The triggering Character.
+     * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpPause(thing: ICharacter, event?: Event): void {
+    public keyUpPause(_thing: ICharacter, event?: Event): void {
         this.EightBitter.ModAttacher.fireEvent("onKeyUpPause");
 
         if (event && event.preventDefault) {
@@ -426,11 +430,11 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittr.Co
      * Reacts to the context menu being activated. The pause menu is opened,
      * and the onMouseDownRight mod event is fired.
      * 
-     * @param thing   The triggering Character.
+     * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public mouseDownRight(thing: ICharacter, event?: Event): void {
-        this.EightBitter.menus.togglePauseMenu(thing);
+    public mouseDownRight(_thing: ICharacter, event?: Event): void {
+        this.EightBitter.menus.togglePauseMenu();
         this.EightBitter.ModAttacher.fireEvent("onMouseDownRight");
 
         if (event && event.preventDefault) {

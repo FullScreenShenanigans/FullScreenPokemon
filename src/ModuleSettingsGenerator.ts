@@ -3,7 +3,6 @@ import { GenerateAudioSettings } from "./Settings/Audio";
 import { GenerateBattlesSettings } from "./Settings/Battles";
 import { GenerateCollisionsSettings } from "./Settings/Collisions";
 import { GenerateDevicesSettings } from "./Settings/Devices";
-import { GenerateEditorSettings } from "./Settings/Editor";
 import { GenerateEventsSettings } from "./Settings/Events";
 import { GenerateGeneratorSettings } from "./Settings/Generator";
 import { GenerateGroupsSettings } from "./Settings/Groups";
@@ -35,7 +34,6 @@ export class ModuleSettingsGenerator {
             battles: GenerateBattlesSettings(),
             collisions: GenerateCollisionsSettings(),
             devices: GenerateDevicesSettings(),
-            editor: GenerateEditorSettings(),
             events: GenerateEventsSettings(),
             generator: GenerateGeneratorSettings(),
             groups: GenerateGroupsSettings(),
