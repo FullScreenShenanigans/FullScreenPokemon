@@ -2658,7 +2658,7 @@ export interface IBattleRoutineSettings {
     /**
      * A callback for when the routine is done, if applicable.
      */
-    callback?: (...args: any[]) => void;
+    callback?: () => void;
 
     /**
      * A name of a routine to play when this is done, if applicable.
