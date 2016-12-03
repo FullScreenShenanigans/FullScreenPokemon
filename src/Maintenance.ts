@@ -35,7 +35,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
             this.EightBitter.physics.shiftCharacter(character);
 
             if (character.shouldWalk && !this.EightBitter.MenuGrapher.getActiveMenu()) {
-                character.onWalkingStart(character, character.direction);
+                character.onWalkingStart.call(this, character, character.direction);
                 character.shouldWalk = false;
             }
 

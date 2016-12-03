@@ -43,7 +43,6 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
      * relative to the top left corner of the screen. The Thing is also 
      * added to the Thing GroupHolder.group container.
      * 
-     * 
      * @param thingRaw   What type of Thing to add. This may be a String of
      *                   the class title, an Array containing the String
      *                   and an Object of settings, or an actual Thing.

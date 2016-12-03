@@ -98,7 +98,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
             }
 
             // The other's collide may return true to cancel overlapping checks
-            if (other.collide && other.collide(thing, other)) {
+            if (other.collide && other.collide.call(this, thing, other)) {
                 return false;
             }
 

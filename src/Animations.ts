@@ -1646,7 +1646,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             throw new Error("Spawner should have .activate.");
         }
 
-        thing.activate(thing);
+        thing.activate.call(this, thing);
     }
 
     /**
@@ -1667,7 +1667,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             throw new Error("WindowDetector should have .activate.");
         }
 
-        thing.activate(thing);
+        thing.activate.call(this, thing);
         this.EightBitter.physics.killNormal(thing);
         return true;
     }

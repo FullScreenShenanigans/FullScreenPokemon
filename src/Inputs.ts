@@ -180,7 +180,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             this.EightBitter.MenuGrapher.registerA();
         } else if (thing.bordering[thing.direction]) {
             if (thing.bordering[thing.direction]!.activate) {
-                thing.bordering[thing.direction]!.activate!(
+                thing.bordering[thing.direction]!.activate!.call(
+                    this,
                     thing,
                     thing.bordering[thing.direction]);
             }
