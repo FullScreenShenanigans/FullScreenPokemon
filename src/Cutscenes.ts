@@ -3567,7 +3567,6 @@ export class Cutscenes<TEightBittr extends FullScreenPokemon> extends Component<
         this.EightBitter.StateHolder.addChange(settings.triggerer.id, "hidden", true);
         this.EightBitter.StateHolder.addChange(settings.triggerer.id, "nocollide", true);
         this.EightBitter.physics.killNormal(settings.triggerer);
-
         this.EightBitter.MenuGrapher.deleteMenu("Yes/No");
         this.EightBitter.MenuGrapher.createMenu("GeneralText");
         this.EightBitter.MenuGrapher.addMenuDialog(

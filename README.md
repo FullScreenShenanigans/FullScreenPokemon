@@ -39,3 +39,9 @@ gulp
 ```
 
 See [Build Details](https://github.com/FullScreenShenanigans/Documentation/blob/master/Build%20Details.md) for detailed Gulp usage.
+
+
+## Adding Functionality
+
+When making changes in only one folder, "gulp [folder name]" may complete faster than just "gulp"
+For example, if the only changes are to src/Cutscenes.ts, use "gulp src"
