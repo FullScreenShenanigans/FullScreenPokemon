@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Things as GameStartrThings } from "gamestartr/lib/Things";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import { IThing } from "./IFullScreenPokemon";
@@ -6,7 +6,7 @@ import { IThing } from "./IFullScreenPokemon";
 /**
  * Thing manipulation functions used by FullScreenPokemon instances.
  */
-export class Things<TEightBittr extends FullScreenPokemon> extends GameStartr.Things<TEightBittr> {
+export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThings<TEightBittr> {
     /**
      * Slight addition to the parent thingProcess Function. The Thing's hit
      * check type is cached immediately, and a default id is assigned if an id
@@ -42,7 +42,6 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartr.Th
      * Overriden Function to adds a new Thing to the game at a given position,
      * relative to the top left corner of the screen. The Thing is also 
      * added to the Thing GroupHolder.group container.
-     * 
      * 
      * @param thingRaw   What type of Thing to add. This may be a String of
      *                   the class title, an Array containing the String

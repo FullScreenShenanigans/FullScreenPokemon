@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Physics as GameStartrPhysics } from "gamestartr/lib/Physics";
 
 import { Direction } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -7,7 +7,7 @@ import { ICharacter, IGrass, IPlayer, IThing } from "./IFullScreenPokemon";
 /**
  * Physics functions used by FullScreenPokemon instances.
  */
-export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.Physics<TEightBittr> {
+export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPhysics<TEightBittr> {
     /**
      * Determines the bordering direction from one Thing to another.
      * 
@@ -15,7 +15,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @param other   The destination Thing.
      * @returns The direction from thing to other.
      */
-    public getDirectionBordering(thing: IThing, other: IThing): Direction {
+    public getDirectionBordering(thing: IThing, other: IThing): Direction | undefined {
         if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < this.EightBitter.unitsize) {
             return Direction.Top;
         }
@@ -44,8 +44,8 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartr.P
      * @remarks Like getDirectionBordering, but for cases where the two Things
      *          aren't necessarily touching.
      */
-    public getDirectionBetween(thing: IThing, other: IThing): Direction {
-        let directionBordering: Direction = this.getDirectionBordering(thing, other);
+    public getDirectionBetween(thing: IThing, other: IThing): Direction | undefined {
+        const directionBordering: Direction | undefined = this.getDirectionBordering(thing, other);
 
         if (typeof directionBordering !== "undefined") {
             return directionBordering;

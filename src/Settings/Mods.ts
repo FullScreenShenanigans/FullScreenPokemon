@@ -1,6 +1,7 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
-/// <reference path="../../typings/ModAttachr.d.ts" />
+import { IModsModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IMod } from "modattachr/lib/IModAttachr";
 
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IArea, IBattleInfo, IBattler, ICharacter, IEnemy, IGrass,
     IItemSchema, IMap, IPokemon, IWildPokemonSchema
@@ -8,7 +9,7 @@ import {
 
 const onModEnableKey: string = "onModEnable";
 
-export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
+export function GenerateModsSettings(): IModsModuleSettings {
     "use strict";
 
     return {
@@ -19,30 +20,30 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Running Indoors",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
-                        let area: IArea = this.AreaSpawner.getArea();
+                    onModEnable: function (this: FullScreenPokemon): void {
+                        const area: IArea = this.AreaSpawner.getArea() as IArea;
                         if (!area) {
                             return;
                         }
 
-                        this.addStateHistory(area, "allowCycling", area.allowCycling);
+                        this.storage.addStateHistory(area, "allowCycling", area.allowCycling);
                         area.allowCycling = true;
                         this.MapScreener.variables.allowCycling = true;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
-                        let area: IArea = this.AreaSpawner.getArea();
+                    onModDisable: function (this: FullScreenPokemon): void {
+                        const area: IArea = this.AreaSpawner.getArea() as IArea;
                         if (!area) {
                             return;
                         }
 
-                        this.popStateHistory(area, "allowCycling");
+                        this.storage.popStateHistory(area, "allowCycling");
 
                         if (!area.allowCycling && this.player.cycling) {
-                            this.stopCycling(this.player);
+                            this.cycling.stopCycling(this.player);
                         }
                         this.MapScreener.variables.allowCycling = area.allowCycling;
                     },
-                    onSetLocation: function (mod: ModAttachr.IMod): void {
+                    onSetLocation: function (this: FullScreenPokemon, mod: IMod): void {
                         mod.events[onModEnableKey].call(this, mod);
                     }
                 }
@@ -51,54 +52,52 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Speedrunner",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
-                        let stats: any = this.ObjectMaker.getFunction("Player").prototype;
+                    /* tslint:disable no-string-literal */
+                    onModEnable: function (this: FullScreenPokemon): void {
+                        const stats: any = this.ObjectMaker.getFunction("Player").prototype;
                         this.player.speed = stats.speed = 10;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
-                        let stats: any = this.ObjectMaker.getFunction("Player").prototype;
-                        this.player.speed = stats.speed = this.settings.objects.properties.Player.speed;
+                    onModDisable: function (this: FullScreenPokemon): void {
+                        const stats: any = this.ObjectMaker.getFunction("Player").prototype;
+                        this.player.speed = stats.speed = this.moduleSettings.objects.properties!["Player"].speed;
                     }
+                    /* tslint:enable no-string-literal */
                 }
             },
             {
                 name: "Joey's Rattata",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
-                        this.GroupHolder.groups.Character
-                            .filter(function (character: ICharacter): boolean {
-                                return character.trainer;
-                            })
-                            .forEach(function (character: IEnemy): void {
+                    onModEnable: function (this: FullScreenPokemon): void {
+                        (this.GroupHolder.getGroup("Character") as ICharacter[])
+                            .filter((character: ICharacter): boolean => !!character.trainer)
+                            .forEach((character: IEnemy): void => {
                                 character.previousTitle = character.title;
                                 character.title = (character as any).thing = "BugCatcher";
-                                this.ThingHitter.cacheChecksForType(character, "Character");
-                                this.setClass(character, character.className);
+                                this.ThingHitter.cacheChecksForType(character.title, "Character");
+                                this.graphics.setClass(character, character.className);
                             });
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
-                        this.GroupHolder.groups.Character
-                            .filter(function (character: ICharacter): boolean {
-                                return character.trainer;
-                            })
-                            .forEach(function (character: IEnemy): void {
-                                character.title = (character as any).thing = character.previousTitle;
-                                this.ThingHitter.cacheChecksForType(character, "Character");
-                                this.setClass(character, character.className);
+                    onModDisable: function (this: FullScreenPokemon): void {
+                        (this.GroupHolder.getGroup("Character") as ICharacter[])
+                            .filter((character: ICharacter): boolean => !!character.trainer)
+                            .forEach((character: IEnemy): void => {
+                                character.title = (character as any).thing = character.previousTitle!;
+                                this.ThingHitter.cacheChecksForType(character.title, "Character");
+                                this.graphics.setClass(character, character.className);
                             });
                     },
-                    onBattleStart: function (mod: ModAttachr.IMod, eventName: string, battleInfo: IBattleInfo): void {
-                        let opponent: IBattler = battleInfo.battlers.opponent;
+                    onBattleStart: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, battleInfo: IBattleInfo): void {
+                        const opponent: IBattler = battleInfo.battlers.opponent;
 
                         opponent.sprite = "BugCatcherFront";
                         opponent.name = "YOUNGSTER JOEY".split("");
 
-                        for (let i: number = 0; i < opponent.actors.length; i += 1) {
-                            opponent.actors[i].title = opponent.actors[i].nickname = "RATTATA".split("");
+                        for (const actor of opponent.actors) {
+                            actor.title = actor.nickname = "RATTATA".split("");
                         }
                     },
-                    onSetLocation: function (mod: ModAttachr.IMod): void {
+                    onSetLocation: function (this: FullScreenPokemon, mod: IMod): void {
                         mod.events[onModEnableKey].call(this, mod);
                     }
                 }
@@ -107,7 +106,7 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Level 100",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (this: FullScreenPokemon): void {
                         const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
                         const statistics: string[] = this.MathDecider.getConstant("statisticNames");
 
@@ -120,16 +119,16 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                             }
                         }
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (this: FullScreenPokemon): void {
                         const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
                         const statistics: string[] = this.MathDecider.getConstant("statisticNames");
 
-                        for (let i: number = 0; i < partyPokemon.length; i += 1) {
-                            partyPokemon[i].level = partyPokemon[i].previousLevel;
-                            partyPokemon[i].previousLevel = undefined;
+                        for (const pokemon of partyPokemon) {
+                            pokemon.level = pokemon.previousLevel!;
+                            pokemon.previousLevel = undefined;
                             for (let j: number = 0; j < statistics.length; j += 1) {
-                                (partyPokemon[i] as any)[statistics[j]] = (partyPokemon[i] as any)[statistics[j] + "Normal"] =
-                                    this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
+                                (pokemon as any)[statistics[j]] = (pokemon as any)[statistics[j] + "Normal"] =
+                                    this.MathDecider.compute("pokemonStatistic", pokemon, statistics[j]);
                             }
                         }
                     }
@@ -139,15 +138,11 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Walk Through Walls",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
-                        this.ObjectMaker.getFunction("Solid").prototype.collide = function (): boolean {
-                            return true;
-                        };
+                    onModEnable: function (this: FullScreenPokemon): void {
+                        this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => true;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
-                        this.ObjectMaker.getFunction("Solid").prototype.collide = function (): boolean {
-                            return false;
-                        };
+                    onModDisable: function (this: FullScreenPokemon): void {
+                        this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => false;
                     }
                 }
             },
@@ -155,10 +150,10 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Blind Trainers",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (this: FullScreenPokemon): void {
                         this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = true;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (this: FullScreenPokemon): void {
                         this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
                     }
                 }
@@ -167,10 +162,10 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Nuzlocke Challenge",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (this: FullScreenPokemon): void {
                         return;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (this: FullScreenPokemon): void {
                         return;
                     },
                     /**
@@ -180,10 +175,14 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param eventName   The name of the event that was fired.
                      * @param settings   The battle information.
                      */
-                    onBattleComplete: function (mod: ModAttachr.IMod, eventName: string, settings: IBattleInfo): void {
-                        const grass: IGrass = this.player.grass;
-                        const grassMap: IMap = grass ? this.AreaSpawner.getMap(grass.mapName) as IMap : undefined;
-                        const grassArea: IArea = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
+                    onBattleComplete: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, settings: IBattleInfo): void {
+                        const grass: IGrass | undefined = this.player.grass;
+                        if (!grass) {
+                            return;
+                        }
+
+                        const grassMap: IMap | undefined = this.AreaSpawner.getMap(grass.mapName) as IMap;
+                        const grassArea: IArea | undefined = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
                         const opponent: String = settings.battlers.opponent.category;
 
                         if (!grassArea || opponent !== "Wild") {
@@ -199,9 +198,9 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param eventName   The name of the event that was fired.
                      * @param items   The Player's items.
                      */
-                    onOpenItemsMenu: function (mod: ModAttachr.IMod, eventName: string, items: any[]): void {
-                        const grassMap: IMap = this.player.grass && this.AreaSpawner.getMap(this.player.grass.mapName) as IMap;
-                        const grassArea: IArea = grassMap && grassMap.areas[this.player.grass.areaName] as IArea;
+                    onOpenItemsMenu: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, items: any[]): void {
+                        const grassMap: IMap | undefined = this.player.grass && this.AreaSpawner.getMap(this.player.grass.mapName) as IMap;
+                        const grassArea: IArea | undefined = grassMap && grassMap.areas[this.player.grass!.areaName] as IArea;
 
                         if (!this.BattleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
                             return;
@@ -223,8 +222,9 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param actors   The Player's party Pokemon.
                      */
                     onFaint: function (
-                        mod: ModAttachr.IMod,
-                        eventName: string,
+                        this: FullScreenPokemon,
+                        _mod: IMod,
+                        _eventName: string,
                         thing: IPokemon,
                         actors: IPokemon[]): void {
                         const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
@@ -245,17 +245,15 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      *
                      * @param mod   The triggered mod.
                      */
-                    onModEnable: function (mod: ModAttachr.IMod): void {
-                        this.battles.checkPlayerGrassBattle = function (): boolean {
-                            return false;
-                        };
+                    onModEnable: function (this: FullScreenPokemon): void {
+                        this.battles.checkPlayerGrassBattle = (): boolean => false;
                     },
                     /**
                      * Allows the Player to encounter wild Pokemon.
                      *
                      * @param mod   The triggered mod.
                      */
-                    onModDisable: function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (this: FullScreenPokemon): void {
                         delete this.battles.checkPlayerGrassBattle;
                     }
                 }
@@ -264,13 +262,13 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Repeat Trainers",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (this: FullScreenPokemon): void {
                         return;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (this: FullScreenPokemon): void {
                         return;
                     },
-                    onDialogFinish: function (mod: ModAttachr.IMod, eventName: string, other: IEnemy): void {
+                    onDialogFinish: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, other: IEnemy): void {
                         if (other.trainer) {
                             other.alreadyBattled = false;
                         }
@@ -281,10 +279,10 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                 name: "Scaling Levels",
                 enabled: false,
                 events: {
-                    onModEnable: function (mod: ModAttachr.IMod): void {
+                    onModEnable: function (this: FullScreenPokemon): void {
                         return;
                     },
-                    onModDisable: function (mod: ModAttachr.IMod): void {
+                    onModDisable: function (this: FullScreenPokemon): void {
                         return;
                     },
                     /**
@@ -295,11 +293,16 @@ export function GenerateModsSettings(): GameStartr.IModAttachrCustoms {
                      * @param eventName   The name of the mod event being fired.
                      * @param battleInfo   Settings for the current battle.
                      */
-                    onBattleReady: function (mod: ModAttachr.IModAttachr, eventName: string, battleInfo: IBattleInfo): void {
+                    onBattleReady: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, battleInfo: IBattleInfo): void {
                         const opponent: IBattler = battleInfo.battlers.opponent;
-                        const player: IBattler = battleInfo.battlers.player;
+                        const player: IBattler = battleInfo.battlers.player!;
                         const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
-                        const wildPokemonOptions: IWildPokemonSchema[] = this.AreaSpawner.getArea().wildPokemon.grass;
+                        const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.AreaSpawner.getArea() as IArea)
+                            .wildPokemon.grass;
+                        if (!wildPokemonOptions) {
+                            return;
+                        }
+
                         const statistics: string[] = this.MathDecider.getConstant("statisticNames");
                         const enemyPokemonAvg: number = isWildBattle ?
                             this.MathDecider.compute("averageLevelWildPokemon", wildPokemonOptions) :

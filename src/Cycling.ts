@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import { IPlayer } from "./IFullScreenPokemon";
@@ -6,7 +6,7 @@ import { IPlayer } from "./IFullScreenPokemon";
 /**
  * Cycling functions used by FullScreenPokemon instances.
  */
-export class Cycling<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Cycling<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Starts the Player cycling if the current Area allows it.
      *

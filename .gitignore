@@ -1,10 +1,10 @@
+docs/**
 lib/**
 src/**/*.css
+src/**/*.d.ts
 src/**/*.js*
-test/main.ts
+~src/main.js
 test/**/*.js
-test/index.html
-test/utils/**
-!test/utils/mocks.ts
+test/**/*.d.ts
 node_modules/
 npm-debug.log

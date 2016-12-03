@@ -60,43 +60,49 @@
         <small><em>Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws.</em></small>
     </section>
 
-    <!-- build:template
-    <script src="FullScreenPokemon.min.js"></script>
-    /build -->
-    <!-- build:remove -->
-    <script src="../node_modules/areaspawnr/lib/AreaSpawnr.js" type="text/javascript"></script>
-    <script src="../node_modules/audioplayr/lib/AudioPlayr.js" type="text/javascript"></script>
-    <script src="../node_modules/changelinr/lib/ChangeLinr.js" type="text/javascript"></script>
-    <script src="../node_modules/devicelayr/lib/DeviceLayr.js" type="text/javascript"></script>
-    <script src="../node_modules/eightbittr/lib/EightBittr.js" type="text/javascript"></script>
-    <script src="../node_modules/fpsanalyzr/lib/FPSAnalyzr.js" type="text/javascript"></script>
-    <script src="../node_modules/gamesrunnr/lib/GamesRunnr.js" type="text/javascript"></script>
-    <script src="../node_modules/groupholdr/lib/GroupHoldr.js" type="text/javascript"></script>
-    <script src="../node_modules/inputwritr/lib/InputWritr.js" type="text/javascript"></script>
-    <script src="../node_modules/itemsholdr/lib/ItemsHoldr.js" type="text/javascript"></script>
-    <script src="../node_modules/leveleditr/lib/LevelEditr.js" type="text/javascript"></script>
-    <script src="../node_modules/mapscreatr/lib/MapsCreatr.js" type="text/javascript"></script>
-    <script src="../node_modules/mapscreenr/lib/MapScreenr.js" type="text/javascript"></script>
-    <script src="../node_modules/mathdecidr/lib/MathDecidr.js" type="text/javascript"></script>
-    <script src="../node_modules/modattachr/lib/ModAttachr.js" type="text/javascript"></script>
-    <script src="../node_modules/numbermakr/lib/NumberMakr.js" type="text/javascript"></script>
-    <script src="../node_modules/objectmakr/lib/ObjectMakr.js" type="text/javascript"></script>
-    <script src="../node_modules/pixeldrawr/lib/PixelDrawr.js" type="text/javascript"></script>
-    <script src="../node_modules/pixelrendr/lib/PixelRendr.js" type="text/javascript"></script>
-    <script src="../node_modules/quadskeepr/lib/QuadsKeepr.js" type="text/javascript"></script>
-    <script src="../node_modules/sceneplayr/lib/ScenePlayr.js" type="text/javascript"></script>
-    <script src="../node_modules/stringfilr/lib/StringFilr.js" type="text/javascript"></script>
-    <script src="../node_modules/thinghittr/lib/ThingHittr.js" type="text/javascript"></script>
-    <script src="../node_modules/timehandlr/lib/TimeHandlr.js" type="text/javascript"></script>
-    <script src="../node_modules/touchpassr/lib/TouchPassr.js" type="text/javascript"></script>
-    <script src="../node_modules/userwrappr/lib/UserWrappr.js" type="text/javascript"></script>
-    <script src="../node_modules/worldseedr/lib/WorldSeedr.js" type="text/javascript"></script>
-    <script src="../node_modules/js-beautify/js/lib/beautify.js" type="text/javascript"></script>
-    <script src="../node_modules/gamestartr/lib/GameStartr.js" type="text/javascript"></script>
-    <script src="../node_modules/battlemovr/lib/BattleMovr.js" type="text/javascript"></script>
-    <script src="../node_modules/menugraphr/lib/MenuGraphr.js" type="text/javascript"></script>
-    <script src="../node_modules/stateholdr/lib/StateHoldr.js" type="text/javascript"></script>
     <script data-main="main.js" src="../node_modules/requirejs/require.js" type="text/javascript"></script>
-    <!-- /build -->
+    <script>
+        var dependencies = [
+            "areaspawnr",
+            "audioplayr",
+            "battlemovr",
+            "changelinr",
+            "devicelayr",
+            "eightbittr",
+            "fpsanalyzr",
+            "gamesrunnr",
+            "gamestartr",
+            "groupholdr",
+            "inputwritr",
+            "itemsholdr",
+            "mapscreatr",
+            "mapscreenr",
+            "mathdecidr",
+            "menugraphr",
+            "modattachr",
+            "numbermakr",
+            "objectmakr",
+            "pixeldrawr",
+            "pixelrendr",
+            "stringfilr",
+            "quadskeepr",
+            "thinghittr",
+            "timehandlr",
+            "touchpassr",
+            "sceneplayr",
+            "stateholdr",
+            "userwrappr",
+            "worldseedr"
+        ];
+        var config = {
+            paths: {}
+        };
+
+        for (var i = 0; i < dependencies.length; i += 1) {
+            config.paths[dependencies[i]] = "../node_modules/" + dependencies[i];
+        }
+
+        requirejs.config(config);
+    </script>
 </body>
 </html>

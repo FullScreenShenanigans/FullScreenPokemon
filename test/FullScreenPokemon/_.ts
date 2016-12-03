@@ -1,10 +1,15 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
+import { IGameStartrSettings } from "gamestartr/lib/IGameStartr";
 
-import { mocks } from "../utils/mocks";
 import { mochaLoader } from "../main";
+import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 
-mochaLoader.it("_", (): void => {
-    chai.expect(() => mocks.mockFullScreenPokemon()).to.not.throw();
+mochaLoader.it("can be created", (): void => {
+    // Arrange
+    const settings: IGameStartrSettings = {
+        width: 256,
+        height: 256
+    };
+
+    // Act
+    chai.expect(() => new FullScreenPokemon(settings)).to.not.throw;
 });

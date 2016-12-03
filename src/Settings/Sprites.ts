@@ -1,11 +1,11 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { ISpritesModuleSettings } from "gamestartr/lib/IGameStartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /* tslint:disable max-line-length */
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateSpritesSettings(): GameStartr.IPixelRendrCustoms {
+export function GenerateSpritesSettings(): ISpritesModuleSettings {
     "use strict";
 
     return {

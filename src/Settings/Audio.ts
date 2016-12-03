@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IAudioModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateAudioSettings(): GameStartr.IAudioPlayrCustoms {
+export function GenerateAudioSettings(): IAudioModuleSettings {
     "use strict";
 
     return {

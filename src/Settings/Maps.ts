@@ -1,6 +1,4 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
-
-import { IMapCustoms } from "../IFullScreenPokemon";
+import { IMapsModuleSettings } from "../IFullScreenPokemon";
 import { Macros } from "../Macros";
 import { Maps } from "../Maps";
 import { Scrolling } from "../Scrolling";
@@ -13,7 +11,7 @@ import { Route22 } from "./MapsLibrary/Route22";
 import { ViridianCity } from "./MapsLibrary/ViridianCity";
 import { ViridianForest } from "./MapsLibrary/ViridianForest";
 
-export function GenerateMapsSettings(): IMapCustoms {
+export function GenerateMapsSettings(): IMapsModuleSettings {
     "use strict";
 
     return {

@@ -1,4 +1,5 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
+import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
 import { PokedexListingStatus } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -10,13 +11,13 @@ import {
 /**
  * Storage functions used by FullScreenPokemon instances.
  */
-export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: ItemsHoldr.IItems = this.EightBitter.ItemsHolder.exportItems();
+        const oldLocalStorage: IItems = this.EightBitter.ItemsHolder.exportItems();
 
         const collectionKeys: string[] = this.EightBitter.ItemsHolder.getItem("stateCollectionKeys");
         if (collectionKeys) {
@@ -46,7 +47,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             return;
         }
 
-        const oldLocalStorage: ItemsHoldr.IItems = this.EightBitter.ItemsHolder.getItem("oldLocalStorage");
+        const oldLocalStorage: IItems = this.EightBitter.ItemsHolder.getItem("oldLocalStorage");
         for (const key in oldLocalStorage) {
             if (!oldLocalStorage.hasOwnProperty(key)) {
                 continue;
@@ -275,7 +276,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
      * 
      * @returns Pokedex listings in ascending order.
      */
-    public getPokedexListingsOrdered(): IPokedexInformation[] {
+    public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
         const pokedex: IPokedex = this.EightBitter.ItemsHolder.getItem("Pokedex");
         const pokemon: { [i: string]: IPokemonListing } = this.EightBitter.MathDecider.getConstant("pokemon");
         const titlesSorted: string[] = Object.keys(pokedex)
@@ -286,7 +287,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends EightBittr.C
             return [];
         }
 
-        let ordered: IPokedexInformation[] = [];
+        const ordered: (IPokedexInformation | undefined)[] = [];
 
         for (i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
             ordered.push(undefined);

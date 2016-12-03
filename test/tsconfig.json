@@ -1,13 +1,19 @@
 {
     "compilerOptions": {
-        "declaration": false,
+        "declaration": true,
         "module": "amd",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "..",
+        "rootDir": "..",
+        "strictNullChecks": true,
         "target": "es3"
     },
-    "files": [
-        "main.ts",
-        "utils/mocks.ts",
-        "utils/MochaLoader.ts",
-        "FullScreenPokemon/_.ts"
+    "include": [
+        "./**/*.ts"
     ]
 }

@@ -1,50 +1,35 @@
 {
   "dependencies": {
-    "ChangeLinr": "^0.5.3",
-    "StringFilr": "^0.5.2",
-    "MapScreenr": "^0.5.2",
-    "ItemsHoldr": "^0.5.2",
-    "BattleMovr": "^0.5.2",
-    "DeviceLayr": "^0.5.1",
-    "EightBittr": "^0.5.2",
-    "AudioPlayr": "^0.5.1",
-    "FPSAnalyzr": "^0.5.1",
-    "GamesRunnr": "^0.5.4",
-    "GroupHoldr": "^0.5.1",
-    "InputWritr": "^0.5.2",
-    "LevelEditr": "^0.5.2",
-    "MapsCreatr": "^0.5.4",
-    "MathDecidr": "^0.5.1",
-    "ModAttachr": "^0.5.1",
-    "NumberMakr": "^0.5.1",
-    "ObjectMakr": "^0.5.2",
-    "QuadsKeepr": "^0.5.2",
-    "AreaSpawnr": "^0.5.2",
-    "PixelRendr": "^0.5.2",
-    "PixelDrawr": "^0.5.1",
-    "ScenePlayr": "^0.5.2",
-    "StateHoldr": "^0.5.1",
-    "ThingHittr": "^0.5.2",
-    "TimeHandlr": "^0.5.2",
-    "TouchPassr": "^0.5.1",
-    "WorldSeedr": "^0.5.1",
-    "GameStartr": "^0.5.3",
-    "MenuGraphr": "^0.5.4",
-    "UserWrappr": "^0.5.5"
-  },
-  "externals": [
-    {
-      "file": "node_modules/js-beautify/js/lib/beautify",
-      "typing": "js-beautify"
-    }
-  ],
-  "node_modules": {
-    "dependencies": {
-      "js-beautify": "^1.6.3"
-    },
-    "devDependencies": {
-      "@types/js-beautify": "0.0.27"
-    }
+    "AreaSpawnr": "^0.5.4",
+    "AudioPlayr": "^0.5.2",
+    "BattleMovr": "^0.5.4",
+    "ChangeLinr": "^0.5.4",
+    "DeviceLayr": "^0.5.2",
+    "EightBittr": "^0.5.3",
+    "FPSAnalyzr": "^0.5.2",
+    "GamesRunnr": "^0.5.5",
+    "GameStartr": "^0.5.4",
+    "GroupHoldr": "^0.5.2",
+    "InputWritr": "^0.5.3",
+    "ItemsHoldr": "^0.5.3",
+    "MapsCreatr": "^0.5.5",
+    "MapScreenr": "^0.5.3",
+    "MathDecidr": "^0.5.2",
+    "MenuGraphr": "^0.5.6",
+    "ModAttachr": "^0.5.3",
+    "NumberMakr": "^0.5.3",
+    "ObjectMakr": "^0.5.3",
+    "PixelDrawr": "^0.5.3",
+    "PixelRendr": "^0.5.3",
+    "QuadsKeepr": "^0.5.3",
+    "ScenePlayr": "^0.5.3",
+    "StateHoldr": "^0.5.2",
+    "StringFilr": "^0.5.3",
+    "ThingHittr": "^0.5.4",
+    "TimeHandlr": "^0.5.3",
+    "TouchPassr": "^0.5.2",
+    "UserWrappr": "^0.5.7",
+    "WorldSeedr": "^0.5.2"
   },
   "package": {
     "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",

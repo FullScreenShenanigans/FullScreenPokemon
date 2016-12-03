@@ -1,4 +1,4 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IActorExperience, IMove } from "battlemovr/lib/IBattleMovr";
 
 import { Animations } from "../Animations";
 import { Unitsize } from "../Constants";
@@ -6,20 +6,21 @@ import { Cycling } from "../Cycling";
 import { Fishing } from "../Fishing";
 import {
     IBattleBall, IBattleInfo, IBattleModification, IBattler,
-    ICharacter, IGrass, IHMMoveSchema,
-    IMathConstants, IMathDecidrCustoms, IMathEquations, IMovePossibility,
-    IMoveSchema, IPokemon, IPokemonListing, IPokemonMoveListing, IRod, IWildPokemonSchema
+    ICharacter, IFullScreenPokemonMathDecidr, IGrass, IHMMoveSchema,
+    IMathModuleSettings, IMovePossibility, IMoveSchema, IPokemon,
+    IPokemonListing, IPokemonMoveListing, IRod,
+    IWildPokemonSchema
 } from "../IFullScreenPokemon";
 
 /* tslint:disable:max-line-length */
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateMathSettings(): IMathDecidrCustoms {
+export function GenerateMathSettings(): IMathModuleSettings {
     "use strict";
 
     return {
         "equations": {
-            "averageLevel": function (constants: IMathConstants, equations: IMathEquations, actors: IPokemon[]): number {
+            "averageLevel": function (this: IFullScreenPokemonMathDecidr, actors: IPokemon[]): number {
                 let average: number = 0;
 
                 for (let i: number = 0; i < actors.length; i += 1) {
@@ -28,7 +29,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
 
                 return Math.round(average / actors.length);
             },
-            "averageLevelWildPokemon": function (constants: IMathConstants, equations: IMathEquations, options: IWildPokemonSchema[]): number {
+            "averageLevelWildPokemon": function (this: IFullScreenPokemonMathDecidr, options: IWildPokemonSchema[]): number {
                 let average: number = 0;
 
                 for (const wildPokemon of options) {
@@ -36,6 +37,11 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                         average += wildPokemon.level * wildPokemon.rate;
                         continue;
                     }
+
+                    if (!wildPokemon.levels) {
+                        throw new Error("Wild Pokemon must have wither .level of .levels defined.");
+                    }
+
                     let levelAverage: number = 0;
 
                     for (const level of wildPokemon.levels) {
@@ -47,20 +53,20 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
 
                 return Math.round(average);
             },
-            "speedCycling": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
+            "speedCycling": function (this: IFullScreenPokemonMathDecidr, thing: ICharacter): number {
                 return thing.speed * 2;
             },
-            "speedWalking": function (constants: IMathConstants, equations: IMathEquations, thing: ICharacter): number {
+            "speedWalking": function (this: IFullScreenPokemonMathDecidr, thing: ICharacter): number {
                 return Math.round(8 * Unitsize / thing.speed);
             },
-            "newPokemon": function (constants: IMathConstants, equations: IMathEquations, title: string[], level?: number, moves?: BattleMovr.IMove[], iv?: number, ev?: number): IPokemon {
-                const statisticNames: string[] = constants.statisticNames;
+            "newPokemon": function (this: IFullScreenPokemonMathDecidr, title: string[], level?: number, moves?: IMove[], iv?: number, ev?: number): IPokemon {
+                const statisticNames: string[] = this.constants.statisticNames;
                 const pokemon: any = {
                     "title": title,
                     "nickname": title,
                     "level": level || 1,
                     "moves": moves || this.compute("newPokemonMoves", title, level || 1),
-                    "types": constants.pokemon[title.join("")].types,
+                    "types": this.constants.pokemon[title.join("")].types,
                     "status": "",
                     "IV": iv || this.compute("newPokemonIVs"),
                     "EV": ev || this.compute("newPokemonEVs"),
@@ -75,11 +81,11 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 return pokemon;
             },
             // http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
-            "newPokemonMoves": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): BattleMovr.IMove[] {
-                const possibilities: IPokemonMoveListing[] = constants.pokemon[title.join("")].moves.natural;
-                const output: BattleMovr.IMove[] = [];
+            "newPokemonMoves": function (this: IFullScreenPokemonMathDecidr, title: string[], level: number): IMove[] {
+                const possibilities: IPokemonMoveListing[] = this.constants.pokemon[title.join("")].moves.natural;
+                const output: IMove[] = [];
                 let move: IPokemonMoveListing;
-                let newMove: BattleMovr.IMove;
+                let newMove: IMove;
                 let end: number;
 
                 for (end = 0; end < possibilities.length; end += 1) {
@@ -92,8 +98,8 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     move = possibilities[i];
                     newMove = {
                         title: move.move,
-                        remaining: constants.moves[move.move].PP,
-                        uses: constants.moves[move.move].PP
+                        remaining: this.constants.moves[move.move].PP,
+                        uses: this.constants.moves[move.move].PP
                     };
 
                     output.push(newMove);
@@ -102,11 +108,11 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 return output;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
-            "newPokemonIVs": function (constants: IMathConstants, equations: IMathEquations): { [i: string]: number } {
-                const attack: number = constants.NumberMaker.randomIntWithin(0, 15);
-                const defense: number = constants.NumberMaker.randomIntWithin(0, 15);
-                const speed: number = constants.NumberMaker.randomIntWithin(0, 15);
-                const special: number = constants.NumberMaker.randomIntWithin(0, 15);
+            "newPokemonIVs": function (this: IFullScreenPokemonMathDecidr): { [i: string]: number } {
+                const attack: number = this.constants.NumberMaker.randomIntWithin(0, 15);
+                const defense: number = this.constants.NumberMaker.randomIntWithin(0, 15);
+                const speed: number = this.constants.NumberMaker.randomIntWithin(0, 15);
+                const special: number = this.constants.NumberMaker.randomIntWithin(0, 15);
                 const output: any = {
                     "Attack": attack,
                     "Defense": defense,
@@ -123,7 +129,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
 
                 return output;
             },
-            "newPokemonEVs": function (constants: IMathConstants, equations: IMathEquations): { [i: string]: number } {
+            "newPokemonEVs": function (this: IFullScreenPokemonMathDecidr): { [i: string]: number } {
                 return {
                     "Attack": 0,
                     "Defense": 0,
@@ -131,7 +137,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "Special": 0
                 };
             },
-            "newPokemonExperience": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): BattleMovr.IActorExperience {
+            "newPokemonExperience": function (this: IFullScreenPokemonMathDecidr, title: string[], level: number): IActorExperience {
                 return {
                     current: this.compute("experienceStarting", title, level),
                     next: this.compute("experienceStarting", title, level + 1)
@@ -139,10 +145,10 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             // Note: the page mentions rounding errors... 
-            "pokemonStatistic": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, statistic: string): number {
+            "pokemonStatistic": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, statistic: string): number {
                 let topExtra: number = 0;
                 let added: number = 5;
-                let base: number = (constants.pokemon[pokemon.title.join("")] as any)[statistic];
+                let base: number = (this.constants.pokemon[pokemon.title.join("")] as any)[statistic];
                 let iv: number = (pokemon.IV as any)[statistic] || 0;
                 let ev: number = (pokemon.EV as any)[statistic] || 0;
                 let level: number = pokemon.level;
@@ -157,39 +163,39 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 return (numerator / 50 + added) | 0;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
-            "doesGrassEncounterHappen": function (constants: IMathConstants, equations: IMathEquations, grass: IGrass): boolean {
-                return constants.NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
+            "doesGrassEncounterHappen": function (this: IFullScreenPokemonMathDecidr, grass: IGrass): boolean {
+                return this.constants.NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
-            "canCatchPokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall): boolean {
+            "canCatchPokemon": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, ball: IBattleBall): boolean {
                 // 1. If a Master Ball is used, the Pokemon is caught.
                 if (ball.type === "Master") {
                     return true;
                 }
 
                 // 2. Generate a random number, N, depending on the type of ball used.
-                let n: number = constants.NumberMaker.randomInt(ball.probabilityMax);
+                let n: number = this.constants.NumberMaker.randomInt(ball.probabilityMax);
 
                 // 3. The Pokemon is caught if...
                 if (pokemon.status) { // ... it is asleep or frozen and N is less than 25.
                     if (n < 25) {
-                        if (constants.statuses.probability25[pokemon.status]) {
+                        if (this.constants.statuses.probability25[pokemon.status]) {
                             return true;
                         }
                     } else if (n < 12) { // ... it is paralyzed, burned, or poisoned and N is less than 12.
-                        if (constants.statuses.probability12[pokemon.status]) {
+                        if (this.constants.statuses.probability12[pokemon.status]) {
                             return true;
                         }
                     }
                 }
 
                 // 4. Otherwise, if N minus the status value is greater than the Pokemon's catch rate, the Pokemon breaks free.
-                if (n - constants.statuses.levels[pokemon.status] > pokemon.catchRate) {
+                if (n - this.constants.statuses.levels[pokemon.status] > pokemon.catchRate) {
                     return false;
                 }
 
                 // 5. If not, generate a random value, M, between 0 and 255.
-                let m: number = constants.NumberMaker.randomInt(255);
+                let m: number = this.constants.NumberMaker.randomInt(255);
 
                 // 6. Calculate f.
                 let f: number = Math.max(
@@ -202,24 +208,24 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 return f > m;
             },
             // @todo Add functionality.
-            "canLandFish": function (constants: IMathConstants, equations: IMathEquations): boolean {
+            "canLandFish": function (this: IFullScreenPokemonMathDecidr): boolean {
                 return true;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
-            "canEscapePokemon": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
+            "canEscapePokemon": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
                 const a: number = pokemon.Speed;
                 const b: number = (enemy.Speed / 4) % 256;
-                const c: number = battleInfo.currentEscapeAttempts;
+                const c: number = battleInfo.currentEscapeAttempts || 0;
                 const f: number = (a * 32) / b + 30 * c;
 
                 if (f > 255 || b === 0) {
                     return true;
                 }
 
-                return constants.NumberMaker.randomInt(256) < f;
+                return this.constants.NumberMaker.randomInt(256) < f;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
-            "numBallShakes": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, ball: IBattleBall): number {
+            "numBallShakes": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, ball: IBattleBall): number {
                 // 1. Calculate d.
                 const d: number = pokemon.catchRate * 100 / ball.rate;
 
@@ -234,7 +240,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                         (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
                         255),
                     1);
-                const x: number = d * f / 255 + constants.statuses.shaking[pokemon.status];
+                const x: number = d * f / 255 + this.constants.statuses.shaking[pokemon.status];
 
                 // 4. If... 
                 if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
@@ -256,9 +262,9 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
             // TO DO: Also filter for moves with > 0 remaining remaining...
-            "opponentMove": function (constants: IMathConstants, equations: IMathEquations, player: IBattler, opponent: IBattler): string {
-                let possibilities: IMovePossibility[] = opponent.selectedActor.moves.map(
-                    (move: BattleMovr.IMove): IMovePossibility => {
+            "opponentMove": function (this: IFullScreenPokemonMathDecidr, player: IBattler, opponent: IBattler): string {
+                let possibilities: IMovePossibility[] = opponent.selectedActor!.moves.map(
+                    (move: IMove): IMovePossibility => {
                         return {
                             "move": move.title,
                             "priority": 10
@@ -267,11 +273,11 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
 
                 // Wild Pokemon just choose randomly
                 if (opponent.category === "Wild") {
-                    return constants.NumberMaker.randomArrayMember(possibilities).move;
+                    return this.constants.NumberMaker.randomArrayMember(possibilities).move;
                 }
 
                 // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
-                if (player.selectedActor.status && !opponent.dumb) {
+                if (player.selectedActor!.status && !opponent.dumb) {
                     for (const possibility of possibilities) {
                         if (this.compute("moveOnlyStatuses", possibility.move)) {
                             possibility.priority += 5;
@@ -280,24 +286,24 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 }
 
                 // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
-                if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Turn 2"])) {
+                if (this.compute("pokemonMatchesTypes", opponent, this.constants.battleModifications["Turn 2"])) {
                     for (const possibility of possibilities) {
                         this.compute(
                             "applyMoveEffectPriority",
                             possibility,
-                            constants.battleModifications["Turn 2"],
+                            this.constants.battleModifications["Turn 2"],
                             player.selectedActor,
                             1);
                     }
                 }
 
                 // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
-                if (this.compute("pokemonMatchesTypes", opponent, constants.battleModifications["Good AI"])) {
+                if (this.compute("pokemonMatchesTypes", opponent, this.constants.battleModifications["Good AI"])) {
                     for (let i: number = 0; i < possibilities.length; i += 1) {
                         this.compute(
                             "applyMoveEffectPriority",
                             possibilities[i],
-                            constants.battleModifications["Good AI"],
+                            this.constants.battleModifications["Good AI"],
                             player.selectedActor,
                             1);
                     }
@@ -316,9 +322,9 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     });
                 }
 
-                return constants.NumberMaker.randomArrayMember(possibilities).move;
+                return this.constants.NumberMaker.randomArrayMember(possibilities).move;
             },
-            "pokemonMatchesTypes": function (constants: IMathConstants, equations: IMathEquations, pokemon: IPokemon, types: string[]): boolean {
+            "pokemonMatchesTypes": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, types: string[]): boolean {
                 for (let i: number = 0; i < types.length; i += 1) {
                     if (pokemon.types.indexOf(types[i]) !== -1) {
                         return true;
@@ -327,12 +333,12 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
 
                 return false;
             },
-            "moveOnlyStatuses": function (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema): boolean {
+            "moveOnlyStatuses": function (this: IFullScreenPokemonMathDecidr, move: IMoveSchema): boolean {
                 return move.damage === "Non-Damaging" && move.effect === "Status";
             },
-            "applyMoveEffectPriority": function (constants: IMathConstants, equations: IMathEquations, possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number): void {
+            "applyMoveEffectPriority": function (this: IFullScreenPokemonMathDecidr, possibility: IMovePossibility, modification: IBattleModification, target: IPokemon, amount: number): void {
                 const preferences: ([string, string, number] | [string, string])[] = modification.preferences;
-                const move: IMoveSchema = constants.moves[possibility.move];
+                const move: IMoveSchema = this.constants.moves[possibility.move];
 
                 for (let i: number = 0; i < preferences.length; i += 1) {
                     let preference: [string, string, number] | [string, string] = preferences[i];
@@ -408,12 +414,12 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // http://bulbapedia.bulbagarden.net/wiki/Priority
             // TO DO: Account for items, switching, etc.
             // TO DO: Factor in spec differences from paralyze, etc.
-            "playerMovesFirst": function (constants: IMathConstants, equations: IMathEquations, player: IBattler, choicePlayer: string, opponent: IBattler, choiceOpponent: string): boolean {
-                const movePlayer: IMoveSchema = constants.moves[choicePlayer];
-                const moveOpponent: IMoveSchema = constants.moves[choiceOpponent];
+            "playerMovesFirst": function (this: IFullScreenPokemonMathDecidr, player: IBattler, choicePlayer: string, opponent: IBattler, choiceOpponent: string): boolean {
+                const movePlayer: IMoveSchema = this.constants.moves[choicePlayer];
+                const moveOpponent: IMoveSchema = this.constants.moves[choiceOpponent];
 
                 if (movePlayer.priority === moveOpponent.priority) {
-                    return player.selectedActor.Speed > opponent.selectedActor.Speed;
+                    return player.selectedActor!.Speed > opponent.selectedActor!.Speed;
                 }
 
                 return movePlayer.priority > moveOpponent.priority;
@@ -421,8 +427,8 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
             // TO DO: Factor in spec differences from burns, etc.
-            "damage": function (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon, defender: IPokemon): number {
-                let base: string | number = constants.moves[move].power;
+            "damage": function (this: IFullScreenPokemonMathDecidr, move: string, attacker: IPokemon, defender: IPokemon): number {
+                let base: string | number = this.constants.moves[move].power;
 
                 // A base attack that's not numeric means no damage, no matter what
                 if (!base || isNaN(base as number)) {
@@ -438,7 +444,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 const level: number = attacker.level * Number(critical);
                 const attack: number = attacker.Attack;
                 const defense: number = defender.Defense;
-                const modifier: number = this.compute("damageModifier", move, critical, attacker, defender);
+                const modifier: number = this.compute("damageModifier", move, attacker, defender);
 
                 return Math.round(
                     Math.max(
@@ -447,16 +453,16 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-            "damageModifier": function (constants: IMathConstants, equations: IMathEquations, move: IMoveSchema, critical: boolean, attacker: IPokemon, defender: IPokemon): number {
+            "damageModifier": function (this: IFullScreenPokemonMathDecidr, move: IMoveSchema, attacker: IPokemon, defender: IPokemon): number {
                 const stab: number = attacker.types.indexOf(move.type) !== -1 ? 1.5 : 1;
                 const type: number = this.compute("typeEffectiveness", move, defender);
 
-                return stab * type * constants.NumberMaker.randomWithin(.85, 1);
+                return stab * type * this.constants.NumberMaker.randomWithin(.85, 1);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-            "criticalHit": function (constants: IMathConstants, equations: IMathEquations, move: string, attacker: IPokemon): boolean {
-                const moveInfo: IMoveSchema = constants.moves[move];
-                const baseSpeed: number = constants.pokemon[attacker.title.join("")].Speed;
+            "criticalHit": function (this: IFullScreenPokemonMathDecidr, move: string, attacker: IPokemon): boolean {
+                const moveInfo: IMoveSchema = this.constants.moves[move];
+                const baseSpeed: number = this.constants.pokemon[attacker.title.join("")].Speed;
                 let denominator: number = 512;
 
                 // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit, resulting in a probability of BaseSpeed / 64.
@@ -474,24 +480,24 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 }
 
                 // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%, it instead becomes 255/256 or about 99.6%.
-                return constants.NumberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
+                return this.constants.NumberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
             },
             // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-            "typeEffectiveness": function (constants: IMathConstants, equations: IMathEquations, move: string, defender: IPokemon): number {
-                const defenderTypes: string[] = constants.pokemon[defender.title.join("")].types;
-                const moveIndex: number = constants.types.indices[constants.moves[move].type];
+            "typeEffectiveness": function (this: IFullScreenPokemonMathDecidr, move: string, defender: IPokemon): number {
+                const defenderTypes: string[] = this.constants.pokemon[defender.title.join("")].types;
+                const moveIndex: number = this.constants.types.indices[this.constants.moves[move].type];
                 let total: number = 1;
 
                 for (let i: number = 0; i < defenderTypes.length; i += 1) {
-                    total *= constants.types.table[moveIndex][constants.types.indices[defenderTypes[i]]];
+                    total *= this.constants.types.table[moveIndex][this.constants.types.indices[defenderTypes[i]]];
                 }
 
                 return total;
             },
             // http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
             // Wild Pokémon of any level will always have the base amount of experience required to reach that level when caught, as will Pokémon hatched from Eggs.
-            "experienceStarting": function (constants: IMathConstants, equations: IMathEquations, title: string[], level: number): number {
-                let reference: IPokemonListing = constants.pokemon[title.join("")];
+            "experienceStarting": function (this: IFullScreenPokemonMathDecidr, title: string[], level: number): number {
+                let reference: IPokemonListing = this.constants.pokemon[title.join("")];
 
                 // TODO: remove defaulting to mediumFast
                 switch (reference.experienceType) {
@@ -511,7 +517,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 }
             },
             // http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
-            "experienceGained": function (constants: IMathConstants, equations: IMathEquations, player: IBattler, opponent: IBattler): number {
+            "experienceGained": function (this: IFullScreenPokemonMathDecidr, player: IBattler, opponent: IBattler): number {
                 // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
                 let a: number = opponent.category === "Trainer" ? 1.5 : 1;
 
@@ -519,18 +525,18 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                 let b: number = 64; // (Bulbasaur) TO DO: add this in
 
                 // lf is the level of the fainted Pokemon
-                let lf: number = opponent.selectedActor.level;
+                let lf: number = opponent.selectedActor!.level;
 
                 // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
                 // TO DO: Account for modifies like Exp. All
                 let s: number = 1;
 
                 // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
-                let t: number = player.selectedActor.traded ? 1.5 : 1;
+                let t: number = player.selectedActor!.traded ? 1.5 : 1;
 
                 return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
             },
-            "widthHealthBar": function (constants: IMathConstants, equations: IMathEquations, widthFullBar: number, hp: number, hpNormal: number): number {
+            "widthHealthBar": function (this: IFullScreenPokemonMathDecidr, widthFullBar: number, hp: number, hpNormal: number): number {
                 return (widthFullBar - 1) * hp / hpNormal;
             }
         },
@@ -8702,7 +8708,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                     "label": "Cocoon",
                     "sprite": "Water",
                     "info": [
-                        "This %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body."
+                        "this %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body."
                     ],
                     "evolvesInto": "Butterfree",
                     "evolvesVia": "Level 10",
@@ -17618,7 +17624,7 @@ export function GenerateMathSettings(): IMathDecidrCustoms {
                         ["Super", "Dragon, Dragon"]
                     ]
                 }
-            }
+            },
         }
     };
 }

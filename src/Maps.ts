@@ -1,4 +1,5 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Maps as GameStartrMaps } from "gamestartr/lib/Maps";
+import { IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
 
 import { Direction, DirectionSpawns } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -10,7 +11,7 @@ import {
 /**
  * Map functions used by FullScreenPokemon instances.
  */
-export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps<TEightBittr> {
+export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<TEightBittr> {
     /**
      * Processes additional Thing attributes. For each attribute the Area's
      * class says it may have, if it has it, the attribute value proliferated 
@@ -19,7 +20,10 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
      * @param area The Area being processed.
      */
     public areaProcess(area: IArea): void {
-        const attributes: { [i: string]: any } = area.attributes;
+        const attributes: { [i: string]: any } | undefined = area.attributes;
+        if (!attributes) {
+            return;
+        }
 
         for (const attribute in attributes) {
             if ((area as any)[attribute]) {
@@ -123,7 +127,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         this.setLocation(
             location
             || map.locationDefault
-            || this.EightBitter.settings.maps.locationDefault,
+            || this.EightBitter.moduleSettings.maps.locationDefault,
             noEntrance);
     }
 
@@ -175,7 +179,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
             this.EightBitter.AudioPlayer.playTheme(theme);
         }
 
-        if (!noEntrance) {
+        if (!noEntrance && location.entry) {
             location.entry.call(this, location);
         }
 
@@ -305,7 +309,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartr.Maps
         const direction: Direction = thing.direction;
         const areaCurrent: IArea = this.EightBitter.AreaSpawner.getArea() as IArea;
         const mapCurrent: IMap = this.EightBitter.AreaSpawner.getMap() as IMap;
-        const prethingsCurrent: MapsCreatr.IPreThingsContainers = this.EightBitter.AreaSpawner.getPreThings();
+        const prethingsCurrent: IPreThingsContainers = this.EightBitter.AreaSpawner.getPreThings();
         let left: number = thing.left + this.EightBitter.MapScreener.left;
         let top: number = thing.top + this.EightBitter.MapScreener.top;
 

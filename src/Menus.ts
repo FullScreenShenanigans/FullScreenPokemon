@@ -1,6 +1,6 @@
-/// <reference path="../typings/BattleMovr.d.ts" />
-/// <reference path="../typings/EightBittr.d.ts" />
-/// <reference path="../typings/MenuGraphr.d.ts" />
+import { IMove } from "battlemovr/lib/IBattleMovr";
+import { Component } from "eightbittr/lib/Component";
+import { IGridCell, IMenuSchema, IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 
 import { KeysLowercase, KeysUppercase } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -13,7 +13,7 @@ import {
 /**
  * Menu functions used by FullScreenPokemon instances.
  */
-export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Menus<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Opens the Pause menu.
      */
@@ -75,7 +75,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * Toggles whether the Pause menu is open. If there is an active menu, A
      * Start key trigger is registered in the MenuGraphr instead.
      */
-    public togglePauseMenu(thing: IThing): void {
+    public togglePauseMenu(): void {
         if (this.EightBitter.MenuGrapher.getActiveMenu()) {
             this.EightBitter.MenuGrapher.registerStart();
             return;
@@ -95,7 +95,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * Opens the Pokedex menu.
      */
     public openPokedexMenu(): void {
-        const listings: IPokedexInformation[] = this.EightBitter.storage.getPokedexListingsOrdered();
+        const listings: (IPokedexInformation | undefined)[] = this.EightBitter.storage.getPokedexListingsOrdered();
         let currentListing: IPokedexInformation;
 
         this.EightBitter.MenuGrapher.createMenu("Pokedex");
@@ -178,7 +178,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * @param settings   Settings for the selected Pokemon, including its HM moves.
      */
     public openPokemonMenuContext(settings: any): void {
-        const moves: BattleMovr.IMove[] = settings.pokemon.moves;
+        const moves: IMove[] = settings.pokemon.moves;
         const options: any[] = [];
 
         for (const action of moves) {
@@ -315,7 +315,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         const statistics: string[] = this.EightBitter.MathDecider.getConstant("statisticNamesDisplayed").slice();
         const numStatistics: number = statistics.length;
         const textXOffset: number = settings.textXOffset || 8;
-        const menuSchema: MenuGraphr.IMenuSchema = {
+        const menuSchema: IMenuSchema = {
             callback: (): void => this.EightBitter.MenuGrapher.deleteMenu("LevelUpStats"),
             onMenuDelete: settings.onMenuDelete,
             position: settings.position || {
@@ -331,7 +331,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             statistics[i] = statistics[i].toUpperCase();
         }
 
-        menuSchema.childrenSchemas = statistics.map((text: string, i: number): MenuGraphr.IMenuWordSchema => {
+        menuSchema.childrenSchemas = statistics.map((text: string, i: number): IMenuWordSchema => {
             if (i < numStatistics) {
                 top = i * 8 + 4;
                 left = textXOffset;
@@ -370,7 +370,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      */
     public openPokemonMenuStatsSecondary(pokemon: IPokemon): void {
         const options: any[] = pokemon.moves.map(
-            (move: BattleMovr.IMove): any => {
+            (move: IMove): any => {
                 const characters: any[] = [" "];
                 const output: any = {
                     text: characters
@@ -508,7 +508,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * 
      * @param settings   Custom attributes to apply to the menu.
      */
-    public openPokemonMenu(settings: MenuGraphr.IMenuSchema): void {
+    public openPokemonMenu(settings: IMenuSchema): void {
         const listings: IPokemon[] = this.EightBitter.ItemsHolder.getItem("PokemonInParty");
         if (!listings || !listings.length) {
             return;
@@ -518,7 +518,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
 
         this.EightBitter.MenuGrapher.createMenu("Pokemon", settings);
         this.EightBitter.MenuGrapher.addMenuList("Pokemon", {
-            options: listings.map((listing: IPokemon, i: number): any => {
+            options: listings.map((listing: IPokemon): any => {
                 const sprite: string = references[listing.title.join("")].sprite + "Pokemon";
                 const barWidth: number = 25;
                 const health: number = this.EightBitter.MathDecider.compute(
@@ -710,7 +710,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
         const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
         const onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this);
-        const lowercase: boolean = settings.lowercase;
+        const lowercase: boolean = !!settings.lowercase;
         const letters: string[] = lowercase
             ? KeysLowercase
             : KeysUppercase;
@@ -729,7 +729,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
             onKeyPress: onKeyPress,
             onComplete: onComplete,
             ignoreB: false
-        } as MenuGraphr.IMenuSchema);
+        } as IMenuSchema);
 
         const menuResults: IKeyboardResultsMenu = this.EightBitter.MenuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
 
@@ -772,16 +772,15 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
         const menuKeys: IListMenu = this.EightBitter.MenuGrapher.getMenu("KeyboardKeys") as IListMenu;
         const menuResult: IKeyboardResultsMenu = this.EightBitter.MenuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         let child: IThing = menuResult.children[menuResult.selectedChild];
-
         if (!child) {
             return;
         }
 
-        const selected: MenuGraphr.IGridCell = this.EightBitter.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
+        const selected: IGridCell = this.EightBitter.MenuGrapher.getMenuSelectedOption("KeyboardKeys");
 
         this.EightBitter.physics.killNormal(child);
         menuResult.children[menuResult.selectedChild] = this.EightBitter.things.add(
-            selected.title, child.left, child.top);
+            selected.title!, child.left, child.top);
 
         menuResult.displayedValue[menuResult.selectedChild] = selected.text[0] as string;
         menuResult.completeValue.push(selected.value);
@@ -853,7 +852,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
      * 
      * @param settings   Custom attributes to apply to the menu.
      */
-    public openTownMapMenu(settings?: MenuGraphr.IMenuSchema): void {
+    public openTownMapMenu(settings?: IMenuSchema): void {
         const playerPosition: number[] = this.EightBitter.MathDecider.getConstant("townMapLocations")["Pallet Town"];
         const playerSize: any = this.EightBitter.ObjectMaker.getFullPropertiesOf("Player");
 
@@ -908,10 +907,10 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends EightBittr.Com
     /**
      * Displays a message to the user.
      *
-     * @param thing   The Thing that triggered the error.
+     * @param _thing   The Thing that triggered the error.
      * @param message   The message to be displayed.
      */
-    public displayMessage(thing: IThing, message: string): void {
+    public displayMessage(_thing: IThing, message: string): void {
         if (this.EightBitter.MenuGrapher.getActiveMenu()) {
             return;
         }

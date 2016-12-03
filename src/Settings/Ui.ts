@@ -1,14 +1,18 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
-/// <reference path="../../typings/UserWrappr.d.ts" />
+import { IGameStartrSettings } from "gamestartr/lib/IGameStartr";
+import { IMod, IMods } from "modattachr/lib/IModAttachr";
+import { IOptionsButtonSchema } from "userwrappr/lib/Generators/ButtonsGenerator";
+import { ISchema } from "userwrappr/lib/UISchemas";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IUserWrapprCustoms } from "../IFullScreenPokemon";
+import { IUserWrapprSettings } from "../IFullScreenPokemon";
 
-export function GenerateUISettings(): IUserWrapprCustoms {
+export function GenerateUISettings(): IUserWrapprSettings {
     "use strict";
 
     return {
-        GameStartrConstructor: FullScreenPokemon,
+        GameStartrConstructor: (settings: IGameStartrSettings): FullScreenPokemon => {
+            return new FullScreenPokemon(settings);
+        },
         globalName: "FSP",
         styleSheet: {
             ".FullScreenPokemon": {
@@ -86,10 +90,10 @@ export function GenerateUISettings(): IUserWrapprCustoms {
                     {
                         title: "Speed",
                         type: "Select",
-                        options: (FSP: FullScreenPokemon): string[] => {
+                        options: (): string[] => {
                             return [".25x", ".5x", "1x", "2x", "5x"];
                         },
-                        source: (FSP: FullScreenPokemon): string => {
+                        source: (): string => {
                             return "1x";
                         },
                         update: (FSP: FullScreenPokemon, value: string): void => {
@@ -104,7 +108,7 @@ export function GenerateUISettings(): IUserWrapprCustoms {
                     {
                         title: "Framerate",
                         type: "Select",
-                        options: (FSP: FullScreenPokemon) : string[] => {
+                        options: () : string[] => {
                             return ["60fps", "30fps"];
                         },
                         source: (FSP: FullScreenPokemon): string => {
@@ -120,14 +124,14 @@ export function GenerateUISettings(): IUserWrapprCustoms {
                         title: "Tilt Controls",
                         type: "Boolean",
                         storeLocally: true,
-                        source: (FSP: FullScreenPokemon): boolean => {
+                        source: (): boolean => {
                             return false;
                         },
                         enable: (FSP: FullScreenPokemon): void => {
                             window.ondevicemotion = FSP.InputWriter.makePipe("ondevicemotion", "type") as any;
                         },
-                        disable: (FSP: FullScreenPokemon): void => {
-                            window.ondevicemotion = undefined;
+                        disable: (): void => {
+                            window.ondevicemotion = undefined!;
                         }
                     }
                 ],
@@ -143,18 +147,18 @@ export function GenerateUISettings(): IUserWrapprCustoms {
             {
                 title: "Controls",
                 generator: "OptionsTable",
-                options: ((controls: string[]): UserWrappr.Generators.IOptionsButtonSchema[] => {
-                    return controls.map((title: string): UserWrappr.Generators.IOptionsButtonSchema => {
+                options: ((controls: string[]): IOptionsButtonSchema[] => {
+                    return controls.map((title: string): IOptionsButtonSchema => {
                         return {
                             title: title[0].toUpperCase() + title.substr(1),
                             type: "Keys",
                             storeLocally: true,
-                            source: (FSP: UserWrappr.IGameStartr): string[] => {
+                            source: (FSP: FullScreenPokemon): string[] => {
                                 return FSP.InputWriter
                                     .getAliasAsKeyStrings(title)
                                     .map((text: string): string => text.toLowerCase());
                             },
-                            callback: (FSP: UserWrappr.IGameStartr, valueOld: string, valueNew: string): void => {
+                            callback: (FSP: FullScreenPokemon, valueOld: string, valueNew: string): void => {
                                 FSP.InputWriter.switchAliasValues(
                                     title,
                                     [FSP.InputWriter.convertKeyStringToAlias(valueOld)],
@@ -169,10 +173,10 @@ export function GenerateUISettings(): IUserWrapprCustoms {
                 generator: "OptionsButtons",
                 keyActive: "enabled",
                 assumeInactive: true,
-                options: (FSP: FullScreenPokemon): UserWrappr.Generators.IOptionsButtonSchema[] => {
-                    const mods: ModAttachr.IMods = FSP.ModAttacher.getMods();
-                    const output: UserWrappr.Generators.IOptionsButtonSchema[] = [];
-                    let mod: ModAttachr.IMod;
+                options: (FSP: FullScreenPokemon): IOptionsButtonSchema[] => {
+                    const mods: IMods = FSP.ModAttacher.getMods();
+                    const output: IOptionsButtonSchema[] = [];
+                    let mod: IMod;
 
                     for (let i in mods) {
                         if (!mods.hasOwnProperty(i)) {
@@ -183,7 +187,7 @@ export function GenerateUISettings(): IUserWrapprCustoms {
 
                         output.push({
                             title: mod.name,
-                            source: (): boolean => mod.enabled,
+                            source: (): boolean => !!mod.enabled,
                             storeLocally: true,
                             type: "text"
                         });
@@ -191,10 +195,10 @@ export function GenerateUISettings(): IUserWrapprCustoms {
 
                     return output;
                 },
-                callback: (FSP: FullScreenPokemon, schema: UserWrappr.ISchema, button: HTMLElement): void => {
-                    const name: string = button.textContent;
-                    const key: string = button.getAttribute("localStorageKey");
-                    const mod: ModAttachr.IMod = FSP.ModAttacher.getMod(name);
+                callback: (FSP: FullScreenPokemon, _schema: ISchema, button: HTMLElement): void => {
+                    const name: string = button.textContent!;
+                    const key: string = button.getAttribute("localStorageKey")!;
+                    const mod: IMod = FSP.ModAttacher.getMod(name);
 
                     FSP.ModAttacher.toggleMod(name);
                     FSP.ItemsHolder.setItem(key, mod.enabled);

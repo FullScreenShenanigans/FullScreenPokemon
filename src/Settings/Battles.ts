@@ -1,8 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IBattlesModuleSettings } from "../IFullScreenPokemon";
 
-import { IBattleMovrCustoms } from "../IFullScreenPokemon";
-
-export function GenerateBattlesSettings(): IBattleMovrCustoms {
+export function GenerateBattlesSettings(): IBattlesModuleSettings {
     "use strict";
 
     return {

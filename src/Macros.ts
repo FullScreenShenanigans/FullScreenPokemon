@@ -1,11 +1,11 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
 /**
  * Macro functions used by FullScreenPokemon instances.
  */
-export class Macros<TEightBittr extends FullScreenPokemon> extends EightBittr.Component<TEightBittr> {
+export class Macros<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *

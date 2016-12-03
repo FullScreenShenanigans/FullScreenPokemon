@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IGeneratorModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateGeneratorSettings(): GameStartr.IWorldSeedrCustoms {
+export function GenerateGeneratorSettings(): IGeneratorModuleSettings {
     "use strict";
 
     return {

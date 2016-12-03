@@ -1,8 +1,8 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { ICollisionsModuleSettings } from "gamestartr/lib/IGameStartr";
 
 import { Collisions } from "../Collisions";
 
-export function GenerateCollisionsSettings(): GameStartr.IThingHittrCustoms {
+export function GenerateCollisionsSettings(): ICollisionsModuleSettings {
     "use strict";
 
     return {

@@ -1,4 +1,4 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { Scrolling as GameStartrScrolling } from "gamestartr/lib/Scrolling";
 
 import { Scrollability } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
@@ -7,7 +7,7 @@ import { IArea, IAreaBoundaries } from "./IFullScreenPokemon";
 /**
  * Scrolling functions used by FullScreenPokemon instances.
  */
-export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr.Scrolling<TEightBittr> {
+export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartrScrolling<TEightBittr> {
     /**
      * Centers the current view of the Map based on scrollability.
      */
@@ -188,13 +188,13 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
     /**
      * Expands the MapScreener boundaries for a newly added Area.
      * 
-     * @param area   The newly added Area.
-     * @param x   The x-location of the expansion.
-     * @param y   The y-location of the expansion.
+     * @param _area   The newly added Area.
+     * @param _x   The x-location of the expansion.
+     * @param _y   The y-location of the expansion.
      * @todo For now, this assumes any Area with an added Area is outdoors (which
      *       hasn't been shown to be incorrect yet).
      */
-    public expandMapBoundariesForArea(area: IArea, dx: number, dy: number): void {
+    public expandMapBoundariesForArea(_area: IArea, _dx: number, _dy: number): void {
         this.EightBitter.MapScreener.variables.scrollability = Scrollability.Both;
     }
 }

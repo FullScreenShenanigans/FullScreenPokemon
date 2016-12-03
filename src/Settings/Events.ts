@@ -1,6 +1,6 @@
-/// <reference path="../../typings/GameStartr.d.ts" />
+import { IEventsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateEventsSettings(): GameStartr.ITimeHandlrCustoms {
+export function GenerateEventsSettings(): IEventsModuleSettings {
     "use strict";
 
     return {
