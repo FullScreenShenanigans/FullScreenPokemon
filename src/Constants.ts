@@ -143,6 +143,6 @@ export const DirectionsToAliases: IDirectionsToAliases = ["top", "right", "botto
 export const DirectionClasses: IDirectionsToAliases = ["up", "right", "down", "left"];
 
 /**
- * Direction aliases for AreaSpawner activations.
+ * Direction aliases for areaSpawner activations.
  */
 export const DirectionSpawns: IDirectionsToAliases = ["yDec", "xInc", "yInc", "xInc"];

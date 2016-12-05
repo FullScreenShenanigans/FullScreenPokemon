@@ -5,10 +5,10 @@
     "BattleMovr": "^0.5.4",
     "ChangeLinr": "^0.5.4",
     "DeviceLayr": "^0.5.2",
-    "EightBittr": "^0.5.3",
+    "EightBittr": "^0.6.0",
     "FPSAnalyzr": "^0.5.2",
     "GamesRunnr": "^0.5.5",
-    "GameStartr": "^0.5.4",
+    "GameStartr": "^0.6.0",
     "GroupHoldr": "^0.5.2",
     "InputWritr": "^0.5.3",
     "ItemsHoldr": "^0.5.3",
@@ -34,7 +34,7 @@
   "package": {
     "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
     "name": "FullScreenPokemon",
-    "version": "0.5.4"
+    "version": "0.6.0"
   },
   "taskGroups": {
     "web": true

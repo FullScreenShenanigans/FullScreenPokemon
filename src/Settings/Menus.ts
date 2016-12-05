@@ -33,17 +33,17 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
         },
         "replacements": {
             "PLAYER": function (this: Menus<FullScreenPokemon>): string[] {
-                return this.EightBitter.ItemsHolder.getItem("name");
+                return this.eightBitter.itemsHolder.getItem("name");
             },
             "RIVAL": function (this: Menus<FullScreenPokemon>): string[] {
-                return this.EightBitter.ItemsHolder.getItem("nameRival");
+                return this.eightBitter.itemsHolder.getItem("nameRival");
             },
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": function (this: Menus<FullScreenPokemon>): string[] {
-                return this.EightBitter.utilities.makeDigit(
-                    this.EightBitter.storage.getPokedexListingsOrdered()
+                return this.eightBitter.utilities.makeDigit(
+                    this.eightBitter.storage.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.seen))
                         .length,
                     3,
@@ -51,8 +51,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     .split("");
             },
             "POKEDEX.OWN": function (this: Menus<FullScreenPokemon>): string[] {
-                return this.EightBitter.utilities.makeDigit(
-                    this.EightBitter.storage.getPokedexListingsOrdered()
+                return this.eightBitter.utilities.makeDigit(
+                    this.eightBitter.storage.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.caught))
                         .length,
                     3,
@@ -60,7 +60,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     .split("");
             },
             "BADGES.LENGTH": function (this: Menus<FullScreenPokemon>): string[] {
-                const badges: { [i: string]: boolean } = this.EightBitter.ItemsHolder.getItem("badges");
+                const badges: { [i: string]: boolean } = this.eightBitter.itemsHolder.getItem("badges");
                 let total: number = 0;
 
                 for (const i in badges) {
@@ -72,7 +72,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 return total.toString().split("");
             },
             "POKEDEX.LENGTH": function (this: Menus<FullScreenPokemon>): string[] {
-                const pokedex: IPokedexListing[] = this.EightBitter.ItemsHolder.getItem("Pokedex");
+                const pokedex: IPokedexListing[] = this.eightBitter.itemsHolder.getItem("Pokedex");
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }
@@ -88,10 +88,10 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     .split("");
             },
             "TIME": function (this: Menus<FullScreenPokemon>): string[] {
-                const ticksRecorded: number = this.EightBitter.ItemsHolder.getItem("time");
-                const ticksUnrecorded: number = this.EightBitter.FPSAnalyzer.getNumRecorded() - this.EightBitter.ticksElapsed;
+                const ticksRecorded: number = this.eightBitter.itemsHolder.getItem("time");
+                const ticksUnrecorded: number = this.eightBitter.fpsAnalyzer.getNumRecorded() - this.eightBitter.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
-                const secondsTotal: number = Math.floor(ticksTotal / this.EightBitter.moduleSettings.runner.interval);
+                const secondsTotal: number = Math.floor(ticksTotal / this.eightBitter.moduleSettings.runner.interval);
                 let hours: string = Math.floor(secondsTotal / 3600).toString();
                 let minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
 
@@ -110,7 +110,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 return (hours + ":" + minutes).split("");
             },
             "MONEY": function (this: Menus<FullScreenPokemon>): string[] {
-                return this.EightBitter.ItemsHolder.getItem("money").toString().split("");
+                return this.eightBitter.itemsHolder.getItem("money").toString().split("");
             }
         },
         "replacementStatistics": {
@@ -119,7 +119,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
             "TIME": true,
             "MONEY": true
         },
-        "replaceFromItemsHolder": true,
+        "replaceFromitemsHolder": true,
         "sounds": {
             "menuSound": "Menu Bleep"
         },

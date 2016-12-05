@@ -16,19 +16,19 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPh
      * @returns The direction from thing to other.
      */
     public getDirectionBordering(thing: IThing, other: IThing): Direction | undefined {
-        if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < this.EightBitter.unitsize) {
+        if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < this.eightBitter.unitsize) {
             return Direction.Top;
         }
 
-        if (Math.abs(thing.right - other.left) < this.EightBitter.unitsize) {
+        if (Math.abs(thing.right - other.left) < this.eightBitter.unitsize) {
             return Direction.Right;
         }
 
-        if (Math.abs(thing.bottom - other.top) < this.EightBitter.unitsize) {
+        if (Math.abs(thing.bottom - other.top) < this.eightBitter.unitsize) {
             return Direction.Bottom;
         }
 
-        if (Math.abs(thing.left - other.right) < this.EightBitter.unitsize) {
+        if (Math.abs(thing.left - other.right) < this.eightBitter.unitsize) {
             return Direction.Left;
         }
 
@@ -51,19 +51,19 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPh
             return directionBordering;
         }
 
-        if (thing.top > other.bottom + this.EightBitter.unitsize) {
+        if (thing.top > other.bottom + this.eightBitter.unitsize) {
             return Direction.Top;
         }
 
-        if (thing.right < other.left - this.EightBitter.unitsize) {
+        if (thing.right < other.left - this.eightBitter.unitsize) {
             return Direction.Right;
         }
 
-        if (thing.bottom < other.top - this.EightBitter.unitsize) {
+        if (thing.bottom < other.top - this.eightBitter.unitsize) {
             return Direction.Bottom;
         }
 
-        if (thing.left > other.right + this.EightBitter.unitsize) {
+        if (thing.left > other.right + this.eightBitter.unitsize) {
             return Direction.Left;
         }
 
@@ -102,12 +102,12 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPh
         }
 
         if (other.top > (
-            thing.top + thing.heightGrass * this.EightBitter.unitsize)) {
+            thing.top + thing.heightGrass * this.eightBitter.unitsize)) {
             return false;
         }
 
         if (other.bottom < (
-            thing.top + thing.heightGrass * this.EightBitter.unitsize)) {
+            thing.top + thing.heightGrass * this.eightBitter.unitsize)) {
             return false;
         }
 
@@ -147,7 +147,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPh
      */
     public setPlayerDirection(thing: IPlayer, direction: Direction): void {
         thing.direction = direction;
-        this.EightBitter.MapScreener.playerDirection = direction;
+        this.eightBitter.MapScreener.playerDirection = direction;
         thing.shouldWalk = true;
     }
 
@@ -168,11 +168,11 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPh
         thing.numquads = 0;
         thing.movement = undefined;
 
-        this.EightBitter.TimeHandler.cancelAllCycles(thing);
-        this.EightBitter.ModAttacher.fireEvent("onKillNormal", thing);
+        this.eightBitter.timeHandler.cancelAllCycles(thing);
+        this.eightBitter.modAttacher.fireEvent("onKillNormal", thing);
 
         if (thing.id) {
-            delete (this.EightBitter.GroupHolder.getGroup("Thing") as any)[thing.id];
+            delete (this.eightBitter.groupHolder.getGroup("Thing") as any)[thing.id];
         }
     }
 }

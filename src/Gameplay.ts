@@ -23,7 +23,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
      */
     public gameStart(): void {
         this.startOptions();
-        this.EightBitter.ModAttacher.fireEvent("onGameStart");
+        this.eightBitter.modAttacher.fireEvent("onGameStart");
     }
 
     /**
@@ -39,47 +39,47 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
                 callback: (): void => this.loadFile()
             }];
 
-        this.EightBitter.storage.checkForOldStorageData();
+        this.eightBitter.storage.checkForOldStorageData();
 
-        if (this.EightBitter.ItemsHolder.getItem("gameStarted")) {
+        if (this.eightBitter.itemsHolder.getItem("gameStarted")) {
             options.unshift({
                 text: "CONTINUE",
                 callback: (): void => this.startPlay()
             });
         }
 
-        this.EightBitter.maps.setMap("Blank");
-        this.EightBitter.MenuGrapher.createMenu("StartOptions");
-        this.EightBitter.MenuGrapher.addMenuList("StartOptions", {
+        this.eightBitter.maps.setMap("Blank");
+        this.eightBitter.MenuGrapher.createMenu("StartOptions");
+        this.eightBitter.MenuGrapher.addMenuList("StartOptions", {
             options: options
         });
-        this.EightBitter.MenuGrapher.setActiveMenu("StartOptions");
+        this.eightBitter.MenuGrapher.setActiveMenu("StartOptions");
     }
 
     /**
-     * Starts the game in the saved map and location from ItemsHolder, and fires the
+     * Starts the game in the saved map and location from itemsHolder, and fires the
      * onGameStartPlay mod trigger.
      */
     public startPlay(): void {
-        this.EightBitter.maps.setMap(
-            this.EightBitter.ItemsHolder.getItem("map") || this.EightBitter.moduleSettings.maps.mapDefault,
-            this.EightBitter.ItemsHolder.getItem("location"),
+        this.eightBitter.maps.setMap(
+            this.eightBitter.itemsHolder.getItem("map") || this.eightBitter.moduleSettings.maps.mapDefault,
+            this.eightBitter.itemsHolder.getItem("location"),
             true);
-        this.EightBitter.maps.entranceResume();
+        this.eightBitter.maps.entranceResume();
 
-        this.EightBitter.ModAttacher.fireEvent("onGameStartPlay");
+        this.eightBitter.modAttacher.fireEvent("onGameStartPlay");
     }
 
     /**
      * Starts the game's intro, and fires the onGameStartIntro mod trigger.
      */
     public startIntro(): void {
-        this.EightBitter.storage.clearSavedData();
-        this.EightBitter.ScenePlayer.startCutscene("Intro", {
+        this.eightBitter.storage.clearSavedData();
+        this.eightBitter.scenePlayer.startCutscene("Intro", {
             disablePauseMenu: true
         });
 
-        this.EightBitter.ModAttacher.fireEvent("onGameStartIntro");
+        this.eightBitter.modAttacher.fireEvent("onGameStartIntro");
     }
 
     /**
@@ -87,7 +87,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
      * game state. The onGameStartIntro mod event is triggered.
      */
     public loadFile(): void {
-        const dummy: HTMLInputElement = this.EightBitter.utilities.createElement(
+        const dummy: HTMLInputElement = this.eightBitter.utilities.createElement(
             "input",
             {
                 type: "file",
@@ -102,7 +102,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
 
                     const reader: FileReader = new FileReader();
                     reader.onloadend = (loadEvent: IDataProgressEvent): void => {
-                        this.EightBitter.storage.loadData(loadEvent.currentTarget.result);
+                        this.eightBitter.storage.loadData(loadEvent.currentTarget.result);
                         delete reader.onloadend;
                     };
                     reader.readAsText(file);
@@ -111,7 +111,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
 
         dummy.click();
 
-        this.EightBitter.ModAttacher.fireEvent("onGameStartIntro");
+        this.eightBitter.modAttacher.fireEvent("onGameStartIntro");
     }
 
     /**
@@ -145,7 +145,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
      * Closes the game (currently a no-op).
      */
     public onGameClose(): void {
-        this.EightBitter.storage.autoSave();
+        this.eightBitter.storage.autoSave();
         console.log("Closed.");
     }
 }

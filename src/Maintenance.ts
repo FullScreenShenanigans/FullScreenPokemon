@@ -17,7 +17,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
     public maintainGeneric(things: IThing[]): void {
         for (let i: number = 0; i < things.length; i += 1) {
             if (!things[i].alive) {
-                this.EightBitter.utilities.arrayDeleteThing(things[i], things, i);
+                this.eightBitter.utilities.arrayDeleteThing(things[i], things, i);
                 i -= 1;
             }
         }
@@ -32,9 +32,9 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
     public maintainCharacters(characters: ICharacter[]): void {
         for (let i: number = 0; i < characters.length; i += 1) {
             const character: ICharacter = characters[i];
-            this.EightBitter.physics.shiftCharacter(character);
+            this.eightBitter.physics.shiftCharacter(character);
 
-            if (character.shouldWalk && !this.EightBitter.MenuGrapher.getActiveMenu()) {
+            if (character.shouldWalk && !this.eightBitter.MenuGrapher.getActiveMenu()) {
                 character.onWalkingStart.call(this, character, character.direction);
                 character.shouldWalk = false;
             }
@@ -44,7 +44,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
             }
 
             if (!character.alive && !character.outerOk) {
-                this.EightBitter.utilities.arrayDeleteThing(character, characters, i);
+                this.eightBitter.utilities.arrayDeleteThing(character, characters, i);
                 i -= 1;
                 continue;
             }
@@ -53,8 +53,8 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
                 character.bordering[j] = undefined;
             }
 
-            this.EightBitter.QuadsKeeper.determineThingQuadrants(character);
-            this.EightBitter.ThingHitter.checkHitsForThing(character as any);
+            this.eightBitter.quadsKeeper.determineThingQuadrants(character);
+            this.eightBitter.thingHitter.checkHitsForThing(character as any);
         }
     }
 
@@ -67,10 +67,10 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
      */
     public maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
-        if (!this.EightBitter.physics.isThingWithinGrass(thing, other)) {
-            this.EightBitter.physics.killNormal(thing.shadow!);
-            thing.canvas.height = thing.height * this.EightBitter.unitsize;
-            this.EightBitter.PixelDrawer.setThingSprite(thing);
+        if (!this.eightBitter.physics.isThingWithinGrass(thing, other)) {
+            this.eightBitter.physics.killNormal(thing.shadow!);
+            thing.canvas.height = thing.height * this.eightBitter.unitsize;
+            this.eightBitter.pixelDrawer.setThingSprite(thing);
 
             delete thing.shadow;
             delete thing.grass;
@@ -78,11 +78,11 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
         }
 
         // Keep the shadow in sync with thing in position and visuals.
-        this.EightBitter.physics.setLeft(thing.shadow!, thing.left);
-        this.EightBitter.physics.setTop(thing.shadow!, thing.top);
+        this.eightBitter.physics.setLeft(thing.shadow!, thing.left);
+        this.eightBitter.physics.setTop(thing.shadow!, thing.top);
 
         if (thing.shadow!.className !== thing.className) {
-            this.EightBitter.graphics.setClass(thing.shadow!, thing.className);
+            this.eightBitter.graphics.setClass(thing.shadow!, thing.className);
         }
     }
 
@@ -97,19 +97,19 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
             return;
         }
 
-        switch (this.EightBitter.MapScreener.variables.scrollability) {
+        switch (this.eightBitter.MapScreener.variables.scrollability) {
             case Scrollability.Horizontal:
-                this.EightBitter.scrolling.scrollWindow(this.EightBitter.scrolling.getHorizontalScrollAmount());
+                this.eightBitter.scrolling.scrollWindow(this.eightBitter.scrolling.getHorizontalScrollAmount());
                 return;
 
             case Scrollability.Vertical:
-                this.EightBitter.scrolling.scrollWindow(0, this.EightBitter.scrolling.getVerticalScrollAmount());
+                this.eightBitter.scrolling.scrollWindow(0, this.eightBitter.scrolling.getVerticalScrollAmount());
                 return;
 
             case Scrollability.Both:
-                this.EightBitter.scrolling.scrollWindow(
-                    this.EightBitter.scrolling.getHorizontalScrollAmount(),
-                    this.EightBitter.scrolling.getVerticalScrollAmount());
+                this.eightBitter.scrolling.scrollWindow(
+                    this.eightBitter.scrolling.getHorizontalScrollAmount(),
+                    this.eightBitter.scrolling.getVerticalScrollAmount());
                 return;
 
             default:

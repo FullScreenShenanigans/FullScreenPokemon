@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-us">
 <head>
     <meta charset="utf-8" />
@@ -61,39 +61,45 @@
     </section>
 
     <script data-main="main.js" src="../node_modules/requirejs/require.js" type="text/javascript"></script>
+
+    <!-- build:template
+    <script src="FullScreenPokemon.min.js"></script>
+    /build -->
+    <!-- build:remove -->
     <script>
         var dependencies = [
-            "areaspawnr",
-            "audioplayr",
-            "battlemovr",
-            "changelinr",
-            "devicelayr",
-            "eightbittr",
-            "fpsanalyzr",
-            "gamesrunnr",
-            "gamestartr",
-            "groupholdr",
-            "inputwritr",
-            "itemsholdr",
-            "mapscreatr",
-            "mapscreenr",
-            "mathdecidr",
-            "menugraphr",
-            "modattachr",
-            "numbermakr",
-            "objectmakr",
-            "pixeldrawr",
-            "pixelrendr",
-            "stringfilr",
-            "quadskeepr",
-            "thinghittr",
-            "timehandlr",
-            "touchpassr",
-            "sceneplayr",
-            "stateholdr",
-            "userwrappr",
-            "worldseedr"
+            "AreaSpawnr",
+            "AudioPlayr",
+            "BattleMovr",
+            "ChangeLinr",
+            "DeviceLayr",
+            "EightBittr",
+            "FPSAnalyzr",
+            "GamesRunnr",
+            "GameStartr",
+            "GroupHoldr",
+            "InputWritr",
+            "ItemsHoldr",
+            "MapsCreatr",
+            "MapScreenr",
+            "MathDecidr",
+            "MenuGraphr",
+            "ModAttachr",
+            "NumberMakr",
+            "ObjectMakr",
+            "PixelDrawr",
+            "PixelRendr",
+            "QuadsKeepr",
+            "ScenePlayr",
+            "StateHoldr",
+            "StringFilr",
+            "ThingHittr",
+            "TimeHandlr",
+            "TouchPassr",
+            "UserWrappr",
+            "WorldSeedr"
         ];
+
         var config = {
             paths: {}
         };
@@ -104,5 +110,6 @@
 
         requirejs.config(config);
     </script>
+    <!-- /build -->
 </body>
 </html>

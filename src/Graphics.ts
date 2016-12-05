@@ -14,14 +14,14 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartrG
      * @returns The unique Things that will be kept.
      */
     public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        const things: IThing[] = [this.EightBitter.player];
+        const things: IThing[] = [this.eightBitter.player];
         const used: { [i: string]: IThing } = {
-            [this.EightBitter.player.title]: this.EightBitter.player
+            [this.eightBitter.player.title]: this.eightBitter.player
         };
 
         for (const thingRaw of thingsRaw) {
             const thing: IThing = thingRaw.constructor === String
-                ? this.EightBitter.utilities.getThingById(thingRaw as string)
+                ? this.eightBitter.utilities.getThingById(thingRaw as string)
                 : thingRaw as IThing;
 
             if (!used[thing.title]) {
@@ -45,7 +45,7 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartrG
         }
 
         for (const keptThing of keptThings) {
-            this.EightBitter.GroupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
+            this.eightBitter.groupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
         }
     }
 
@@ -61,7 +61,7 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends GameStartrG
         }
 
         for (const keptThing of keptThings) {
-            this.EightBitter.GroupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
+            this.eightBitter.groupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
         }
     }
 }

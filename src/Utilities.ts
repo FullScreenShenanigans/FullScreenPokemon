@@ -14,7 +14,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns The Thing under the given id, if it exists.
      */
     public getThingById(id: string): IThing {
-        return (this.EightBitter.GroupHolder.getGroup("Thing") as any)[id];
+        return (this.eightBitter.groupHolder.getGroup("Thing") as any)[id];
     }
 
     /**
@@ -25,10 +25,10 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends GameStartr
      */
     public createPokemon(schema: IWildPokemonSchema): IPokemon {
         const level: number = typeof schema.levels !== "undefined"
-            ? this.EightBitter.NumberMaker.randomArrayMember(schema.levels)
+            ? this.eightBitter.numberMaker.randomArrayMember(schema.levels)
             : schema.level;
 
-        return this.EightBitter.MathDecider.compute("newPokemon", schema.title, level);
+        return this.eightBitter.mathDecider.compute("newPokemon", schema.title, level);
     }
 
     /**

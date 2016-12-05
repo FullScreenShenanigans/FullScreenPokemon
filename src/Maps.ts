@@ -4,7 +4,7 @@ import { IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
 import { Direction, DirectionSpawns } from "./Constants";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
-    IArea, IAreaBoundaries, IAreaGate, IAreaSpawner, ILocation,
+    IArea, IAreaBoundaries, IAreaGate, IareaSpawner, ILocation,
     IMap, IPlayer, IPreThing, IThing
 } from "./IFullScreenPokemon";
 
@@ -27,7 +27,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
 
         for (const attribute in attributes) {
             if ((area as any)[attribute]) {
-                this.EightBitter.utilities.proliferate(area, attributes[attribute]);
+                this.eightBitter.utilities.proliferate(area, attributes[attribute]);
             }
         }
     }
@@ -47,27 +47,27 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
         }
         thing.spawned = true;
 
-        thing.areaName = thing.areaName || this.EightBitter.AreaSpawner.getAreaName();
-        thing.mapName = thing.mapName || this.EightBitter.AreaSpawner.getMapName();
+        thing.areaName = thing.areaName || this.eightBitter.areaSpawner.getAreaName();
+        thing.mapName = thing.mapName || this.eightBitter.areaSpawner.getMapName();
 
-        this.EightBitter.things.add(
+        this.eightBitter.things.add(
             thing,
-            prething.left * this.EightBitter.unitsize - this.EightBitter.MapScreener.left,
-            prething.top * this.EightBitter.unitsize - this.EightBitter.MapScreener.top,
+            prething.left * this.eightBitter.unitsize - this.eightBitter.MapScreener.left,
+            prething.top * this.eightBitter.unitsize - this.eightBitter.MapScreener.top,
             true);
 
         // Either the prething or thing, in that order, may request to be in the
         // front or back of the container
         if (position) {
-            this.EightBitter.TimeHandler.addEvent((): void => {
+            this.eightBitter.timeHandler.addEvent((): void => {
                 switch (position) {
                     case "beginning":
-                        this.EightBitter.utilities.arrayToBeginning(
-                            thing, this.EightBitter.GroupHolder.getGroup(thing.groupType) as IThing[]);
+                        this.eightBitter.utilities.arrayToBeginning(
+                            thing, this.eightBitter.groupHolder.getGroup(thing.groupType) as IThing[]);
                         break;
                     case "end":
-                        this.EightBitter.utilities.arrayToEnd(
-                            thing, this.EightBitter.GroupHolder.getGroup(thing.groupType) as IThing[]);
+                        this.eightBitter.utilities.arrayToEnd(
+                            thing, this.eightBitter.groupHolder.getGroup(thing.groupType) as IThing[]);
                         break;
                     default:
                         throw new Error("Unknown position: " + position + ".");
@@ -75,11 +75,11 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
             });
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onAddPreThing", prething);
+        this.eightBitter.modAttacher.fireEvent("onAddPreThing", prething);
     }
 
     /**
-     * Adds a new Player Thing to the game and sets it as EightBitter.player. Any
+     * Adds a new Player Thing to the game and sets it as eightBitter.player. Any
      * required additional settings (namely keys, power/size, and swimming) are
      * applied here.
      * 
@@ -90,14 +90,14 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.EightBitter.player = this.EightBitter.ObjectMaker.make("Player");
+        const player: IPlayer = this.eightBitter.player = this.eightBitter.objectMaker.make("Player");
         player.keys = player.getKeys();
 
-        this.EightBitter.InputWriter.setEventInformation(player);
+        this.eightBitter.inputWriter.setEventInformation(player);
 
-        this.EightBitter.things.add(player, left || 0, top || 0, useSavedInfo);
+        this.eightBitter.things.add(player, left || 0, top || 0, useSavedInfo);
 
-        this.EightBitter.ModAttacher.fireEvent("onAddPlayer", player);
+        this.eightBitter.modAttacher.fireEvent("onAddPlayer", player);
 
         return player;
     }
@@ -114,20 +114,20 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      */
     public setMap(name: string, location?: string, noEntrance?: boolean): void {
         if (typeof name === "undefined" || name.constructor === FullScreenPokemon) {
-            name = this.EightBitter.AreaSpawner.getMapName();
+            name = this.eightBitter.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.EightBitter.AreaSpawner.setMap(name) as IMap;
+        const map: IMap = this.eightBitter.areaSpawner.setMap(name) as IMap;
 
-        this.EightBitter.ModAttacher.fireEvent("onPreSetMap", map);
-        this.EightBitter.NumberMaker.resetFromSeed(map.seed);
-        this.EightBitter.InputWriter.restartHistory();
-        this.EightBitter.ModAttacher.fireEvent("onSetMap", map);
+        this.eightBitter.modAttacher.fireEvent("onPreSetMap", map);
+        this.eightBitter.numberMaker.resetFromSeed(map.seed);
+        this.eightBitter.inputWriter.restartHistory();
+        this.eightBitter.modAttacher.fireEvent("onSetMap", map);
 
         this.setLocation(
             location
             || map.locationDefault
-            || this.EightBitter.moduleSettings.maps.locationDefault,
+            || this.eightBitter.moduleSettings.maps.locationDefault,
             noEntrance);
     }
 
@@ -144,58 +144,58 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
     public setLocation(name: string, noEntrance?: boolean): void {
         name = name || "0";
 
-        this.EightBitter.AudioPlayer.clearAll();
-        this.EightBitter.GroupHolder.clearArrays();
-        this.EightBitter.MapScreener.clearScreen();
-        this.EightBitter.MenuGrapher.deleteAllMenus();
-        this.EightBitter.TimeHandler.cancelAllEvents();
+        this.eightBitter.audioPlayer.clearAll();
+        this.eightBitter.groupHolder.clearArrays();
+        this.eightBitter.MapScreener.clearScreen();
+        this.eightBitter.MenuGrapher.deleteAllMenus();
+        this.eightBitter.timeHandler.cancelAllEvents();
 
-        this.EightBitter.AreaSpawner.setLocation(name);
-        this.EightBitter.MapScreener.setVariables();
+        this.eightBitter.areaSpawner.setLocation(name);
+        this.eightBitter.MapScreener.setVariables();
 
-        const location: ILocation = this.EightBitter.AreaSpawner.getLocation(name) as ILocation;
+        const location: ILocation = this.eightBitter.areaSpawner.getLocation(name) as ILocation;
         location.area.spawnedBy = {
             name: name,
             timestamp: new Date().getTime()
         };
 
-        this.EightBitter.ModAttacher.fireEvent("onPreSetLocation", location);
+        this.eightBitter.modAttacher.fireEvent("onPreSetLocation", location);
 
-        this.EightBitter.PixelDrawer.setBackground((this.EightBitter.AreaSpawner.getArea() as IArea).background);
+        this.eightBitter.pixelDrawer.setBackground((this.eightBitter.areaSpawner.getArea() as IArea).background);
 
         if (location.area.map.name !== "Blank") {
-            this.EightBitter.ItemsHolder.setItem("map", location.area.map.name);
-            this.EightBitter.ItemsHolder.setItem("area", location.area.name);
-            this.EightBitter.ItemsHolder.setItem("location", name);
+            this.eightBitter.itemsHolder.setItem("map", location.area.map.name);
+            this.eightBitter.itemsHolder.setItem("area", location.area.name);
+            this.eightBitter.itemsHolder.setItem("location", name);
         }
-        this.EightBitter.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
+        this.eightBitter.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
-        this.EightBitter.QuadsKeeper.resetQuadrants();
+        this.eightBitter.quadsKeeper.resetQuadrants();
 
         const theme: string = location.theme || location.area.theme || location.area.map.theme;
 
-        this.EightBitter.MapScreener.theme = theme;
-        if (theme && this.EightBitter.AudioPlayer.getThemeName() !== theme) {
-            this.EightBitter.AudioPlayer.playTheme(theme);
+        this.eightBitter.MapScreener.theme = theme;
+        if (theme && this.eightBitter.audioPlayer.getThemeName() !== theme) {
+            this.eightBitter.audioPlayer.playTheme(theme);
         }
 
         if (!noEntrance && location.entry) {
             location.entry.call(this, location);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onSetLocation", location);
+        this.eightBitter.modAttacher.fireEvent("onSetLocation", location);
 
-        this.EightBitter.GamesRunner.play();
+        this.eightBitter.gamesRunner.play();
 
-        this.EightBitter.animations.animateFadeFromColor({
+        this.eightBitter.animations.animateFadeFromColor({
             color: "Black"
         });
 
         if (location.push) {
-            this.EightBitter.animations.animateCharacterStartWalking(
-                this.EightBitter.player,
-                this.EightBitter.player.direction,
-                (): void => this.EightBitter.storage.autoSave());
+            this.eightBitter.animations.animateCharacterStartWalking(
+                this.eightBitter.player,
+                this.eightBitter.player.direction,
+                (): void => this.eightBitter.storage.autoSave());
         }
     }
 
@@ -209,10 +209,10 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      * @remarks Direction is taken in by the .forEach call as the index.
      */
     public addAfter(prething: IPreThing, direction: Direction): void {
-        const prethings: any = this.EightBitter.AreaSpawner.getPreThings();
-        const area: IArea = this.EightBitter.AreaSpawner.getArea() as IArea;
-        const map: IMap = this.EightBitter.AreaSpawner.getMap() as IMap;
-        const boundaries: IAreaBoundaries = this.EightBitter.AreaSpawner.getArea().boundaries as IAreaBoundaries;
+        const prethings: any = this.eightBitter.areaSpawner.getPreThings();
+        const area: IArea = this.eightBitter.areaSpawner.getArea() as IArea;
+        const map: IMap = this.eightBitter.areaSpawner.getMap() as IMap;
+        const boundaries: IAreaBoundaries = this.eightBitter.areaSpawner.getArea().boundaries as IAreaBoundaries;
 
         prething.direction = direction;
         switch (direction) {
@@ -244,7 +244,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
 
-        this.EightBitter.MapsCreator.analyzePreSwitch(prething, prethings, area, map);
+        this.eightBitter.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
     }
 
     /**
@@ -252,7 +252,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      */
     public entranceBlank(): void {
         this.addPlayer(0, 0);
-        this.EightBitter.player.hidden = true;
+        this.eightBitter.player.hidden = true;
     }
 
     /**
@@ -262,26 +262,26 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      */
     public entranceNormal(location: ILocation): void {
         this.addPlayer(
-            location.xloc ? location.xloc * this.EightBitter.unitsize : 0,
-            location.yloc ? location.yloc * this.EightBitter.unitsize : 0);
+            location.xloc ? location.xloc * this.eightBitter.unitsize : 0,
+            location.yloc ? location.yloc * this.eightBitter.unitsize : 0);
 
-        this.EightBitter.animations.animateCharacterSetDirection(
-            this.EightBitter.player,
+        this.eightBitter.animations.animateCharacterSetDirection(
+            this.eightBitter.player,
             (typeof location.direction === "undefined"
-                ? this.EightBitter.MapScreener.playerDirection
+                ? this.eightBitter.MapScreener.playerDirection
                 : location.direction)
             || 0);
 
-        this.EightBitter.scrolling.centerMapScreen();
+        this.eightBitter.scrolling.centerMapScreen();
 
         if (location.cutscene) {
-            this.EightBitter.ScenePlayer.startCutscene(location.cutscene, {
-                player: this.EightBitter.player
+            this.eightBitter.scenePlayer.startCutscene(location.cutscene, {
+                player: this.eightBitter.player
             });
         }
 
-        if (location.routine && this.EightBitter.ScenePlayer.getCutsceneName()) {
-            this.EightBitter.ScenePlayer.playRoutine(location.routine);
+        if (location.routine && this.eightBitter.scenePlayer.getCutsceneName()) {
+            this.eightBitter.scenePlayer.playRoutine(location.routine);
         }
     }
 
@@ -290,58 +290,58 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      * of play. Retrieves Character position from the previous save state.
      */
     public entranceResume(): void {
-        const savedInfo: any = this.EightBitter.StateHolder.getChanges("player") || {};
+        const savedInfo: any = this.eightBitter.StateHolder.getChanges("player") || {};
 
-        this.EightBitter.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
+        this.eightBitter.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
-        this.EightBitter.animations.animateCharacterSetDirection(this.EightBitter.player, savedInfo.direction || Direction.Top);
+        this.eightBitter.animations.animateCharacterSetDirection(this.eightBitter.player, savedInfo.direction || Direction.Top);
 
-        this.EightBitter.scrolling.centerMapScreen();
+        this.eightBitter.scrolling.centerMapScreen();
     }
 
     /**
-     * Runs an AreaSpawner to place its Area's Things in the map.
+     * Runs an areaSpawner to place its Area's Things in the map.
      * 
-     * @param thing   An in-game AreaSpawner.
+     * @param thing   An in-game areaSpawner.
      * @param area   The Area associated with thing.
      */
-    public activateAreaSpawner(thing: IAreaSpawner, area: IArea): void {
+    public activateareaSpawner(thing: IareaSpawner, area: IArea): void {
         const direction: Direction = thing.direction;
-        const areaCurrent: IArea = this.EightBitter.AreaSpawner.getArea() as IArea;
-        const mapCurrent: IMap = this.EightBitter.AreaSpawner.getMap() as IMap;
-        const prethingsCurrent: IPreThingsContainers = this.EightBitter.AreaSpawner.getPreThings();
-        let left: number = thing.left + this.EightBitter.MapScreener.left;
-        let top: number = thing.top + this.EightBitter.MapScreener.top;
+        const areaCurrent: IArea = this.eightBitter.areaSpawner.getArea() as IArea;
+        const mapCurrent: IMap = this.eightBitter.areaSpawner.getMap() as IMap;
+        const prethingsCurrent: IPreThingsContainers = this.eightBitter.areaSpawner.getPreThings();
+        let left: number = thing.left + this.eightBitter.MapScreener.left;
+        let top: number = thing.top + this.eightBitter.MapScreener.top;
 
         switch (direction) {
             case Direction.Top:
-                top -= area.height * this.EightBitter.unitsize;
+                top -= area.height * this.eightBitter.unitsize;
                 break;
 
             case Direction.Right:
-                left += thing.width * this.EightBitter.unitsize;
+                left += thing.width * this.eightBitter.unitsize;
                 break;
 
             case Direction.Bottom:
-                top += thing.height * this.EightBitter.unitsize;
+                top += thing.height * this.eightBitter.unitsize;
                 break;
 
             case Direction.Left:
-                left -= area.width * this.EightBitter.unitsize;
+                left -= area.width * this.eightBitter.unitsize;
                 break;
 
             default:
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
 
-        const x: number = left / this.EightBitter.unitsize + (thing.offsetX || 0);
-        const y: number = top / this.EightBitter.unitsize + (thing.offsetY || 0);
+        const x: number = left / this.eightBitter.unitsize + (thing.offsetX || 0);
+        const y: number = top / this.eightBitter.unitsize + (thing.offsetY || 0);
 
-        this.EightBitter.scrolling.expandMapBoundariesForArea(area, x, y);
+        this.eightBitter.scrolling.expandMapBoundariesForArea(area, x, y);
 
         for (const creation of area.creation) {
             // A copy of the command must be used, so as to not modify the original
-            const command: any = this.EightBitter.utilities.proliferate(
+            const command: any = this.eightBitter.utilities.proliferate(
                 {
                     noBoundaryStretch: true,
                     areaName: area.name,
@@ -357,31 +357,31 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
                 delete command.entrance;
             }
 
-            this.EightBitter.MapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
+            this.eightBitter.mapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
         }
 
-        this.EightBitter.AreaSpawner.spawnArea(
+        this.eightBitter.areaSpawner.spawnArea(
             DirectionSpawns[direction],
-            this.EightBitter.QuadsKeeper.top / this.EightBitter.unitsize,
-            this.EightBitter.QuadsKeeper.right / this.EightBitter.unitsize,
-            this.EightBitter.QuadsKeeper.bottom / this.EightBitter.unitsize,
-            this.EightBitter.QuadsKeeper.left / this.EightBitter.unitsize);
+            this.eightBitter.quadsKeeper.top / this.eightBitter.unitsize,
+            this.eightBitter.quadsKeeper.right / this.eightBitter.unitsize,
+            this.eightBitter.quadsKeeper.bottom / this.eightBitter.unitsize,
+            this.eightBitter.quadsKeeper.left / this.eightBitter.unitsize);
         this.addAreaGate(thing, area, x, y);
 
         area.spawned = true;
-        this.EightBitter.physics.killNormal(thing);
+        this.eightBitter.physics.killNormal(thing);
     }
 
     /**
-     * Adds an AreaGate on top of an AreaSpawner.
+     * Adds an AreaGate on top of an areaSpawner.
      * 
-     * @param thing   An AreaSpawner that should have a gate.
+     * @param thing   An areaSpawner that should have a gate.
      * @param area   The Area to spawn into.
      * @param offsetX   Horizontal spawning offset for the Area.
      * @param offsetY   Vertical spawning offset for the Area.
      * @returns The added AreaGate.
      */
-    public addAreaGate(thing: IAreaSpawner, area: IArea, offsetX: number, offsetY: number): IAreaGate {
+    public addAreaGate(thing: IareaSpawner, area: IArea, offsetX: number, offsetY: number): IAreaGate {
         const properties: any = {
             area: thing.area,
             areaOffsetX: offsetX,
@@ -396,7 +396,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
 
         switch (thing.direction) {
             case Direction.Top:
-                top -= this.EightBitter.unitsize * 8;
+                top -= this.eightBitter.unitsize * 8;
                 properties.width = area.width;
                 break;
 
@@ -409,7 +409,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
                 break;
 
             case Direction.Left:
-                left -= this.EightBitter.unitsize * 8;
+                left -= this.eightBitter.unitsize * 8;
                 properties.height = area.height;
                 break;
 
@@ -417,6 +417,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
                 throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
-        return this.EightBitter.things.add(["AreaGate", properties], left, top) as IAreaGate;
+        return this.eightBitter.things.add(["AreaGate", properties], left, top) as IAreaGate;
     }
 }

@@ -12,7 +12,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * Centers the current view of the Map based on scrollability.
      */
     public centerMapScreen(): void {
-        switch (this.EightBitter.MapScreener.variables.scrollability) {
+        switch (this.eightBitter.MapScreener.variables.scrollability) {
             case Scrollability.None:
                 this.centerMapScreenHorizontally();
                 this.centerMapScreenVertically();
@@ -43,8 +43,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * the Area.
      */
     public centerMapScreenHorizontally(): void {
-        const boundaries: IAreaBoundaries = this.EightBitter.MapScreener.variables.boundaries;
-        const difference: number = this.EightBitter.MapScreener.width - boundaries.width;
+        const boundaries: IAreaBoundaries = this.eightBitter.MapScreener.variables.boundaries;
+        const difference: number = this.eightBitter.MapScreener.width - boundaries.width;
 
         if (difference > 0) {
             this.scrollWindow(difference / -2);
@@ -56,8 +56,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * the Area.
      */
     public centerMapScreenVertically(): void {
-        const boundaries: IAreaBoundaries = this.EightBitter.MapScreener.variables.boundaries;
-        const difference: number = this.EightBitter.MapScreener.height - boundaries.height;
+        const boundaries: IAreaBoundaries = this.eightBitter.MapScreener.variables.boundaries;
+        const difference: number = this.eightBitter.MapScreener.height - boundaries.height;
 
         this.scrollWindow(0, difference / -2);
     }
@@ -67,8 +67,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      */
     public centerMapScreenHorizontallyOnPlayer(): void {
         const difference: number = (
-            this.EightBitter.physics.getMidX(this.EightBitter.player)
-            - this.EightBitter.MapScreener.middleX)
+            this.eightBitter.physics.getMidX(this.eightBitter.player)
+            - this.eightBitter.MapScreener.middleX)
             | 0;
 
         if (Math.abs(difference) > 0) {
@@ -81,8 +81,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      */
     public centerMapScreenVerticallyOnPlayer(): void {
         const difference: number = (
-            this.EightBitter.physics.getMidY(this.EightBitter.player)
-            - this.EightBitter.MapScreener.middleY)
+            this.eightBitter.physics.getMidY(this.eightBitter.player)
+            - this.eightBitter.MapScreener.middleY)
             | 0;
 
         if (Math.abs(difference) > 0) {
@@ -96,7 +96,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns The boundaries of the current Area.
      */
     public getAreaBoundariesReal(): IAreaBoundaries {
-        const area: IArea = this.EightBitter.AreaSpawner.getArea() as IArea;
+        const area: IArea = this.eightBitter.areaSpawner.getArea() as IArea;
 
         if (!area) {
             return {
@@ -110,12 +110,12 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
         }
 
         return {
-            top: area.boundaries.top * this.EightBitter.unitsize,
-            right: area.boundaries.right * this.EightBitter.unitsize,
-            bottom: area.boundaries.bottom * this.EightBitter.unitsize,
-            left: area.boundaries.left * this.EightBitter.unitsize,
-            width: (area.boundaries.right - area.boundaries.left) * this.EightBitter.unitsize,
-            height: (area.boundaries.bottom - area.boundaries.top) * this.EightBitter.unitsize
+            top: area.boundaries.top * this.eightBitter.unitsize,
+            right: area.boundaries.right * this.eightBitter.unitsize,
+            bottom: area.boundaries.bottom * this.eightBitter.unitsize,
+            left: area.boundaries.left * this.eightBitter.unitsize,
+            width: (area.boundaries.right - area.boundaries.left) * this.eightBitter.unitsize,
+            height: (area.boundaries.bottom - area.boundaries.top) * this.eightBitter.unitsize
         };
     }
 
@@ -125,24 +125,24 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns The direction(s) that are scrollable.
      */
     public getScreenScrollability(): Scrollability {
-        const area: IArea = this.EightBitter.AreaSpawner.getArea() as IArea;
+        const area: IArea = this.eightBitter.areaSpawner.getArea() as IArea;
         if (!area) {
             return Scrollability.None;
         }
 
         const boundaries: IAreaBoundaries = area.boundaries;
-        const width: number = (boundaries.right - boundaries.left) * this.EightBitter.unitsize;
-        const height: number = (boundaries.bottom - boundaries.top) * this.EightBitter.unitsize;
+        const width: number = (boundaries.right - boundaries.left) * this.eightBitter.unitsize;
+        const height: number = (boundaries.bottom - boundaries.top) * this.eightBitter.unitsize;
 
-        if (width > this.EightBitter.MapScreener.width) {
-            if (height > this.EightBitter.MapScreener.height) {
+        if (width > this.eightBitter.MapScreener.width) {
+            if (height > this.eightBitter.MapScreener.height) {
                 return Scrollability.Both;
             }
 
             return Scrollability.Horizontal;
         }
 
-        if (height > this.EightBitter.MapScreener.height) {
+        if (height > this.eightBitter.MapScreener.height) {
             return Scrollability.Vertical;
         }
 
@@ -156,14 +156,14 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns How far to scroll horizontally.
      */
     public getHorizontalScrollAmount(): number {
-        if (!this.EightBitter.player.xvel) {
+        if (!this.eightBitter.player.xvel) {
             return 0;
         }
 
-        if (this.EightBitter.player.xvel > 0) {
-            return this.EightBitter.player.bordering[1] ? 0 : this.EightBitter.player.xvel;
+        if (this.eightBitter.player.xvel > 0) {
+            return this.eightBitter.player.bordering[1] ? 0 : this.eightBitter.player.xvel;
         } else {
-            return this.EightBitter.player.bordering[3] ? 0 : this.EightBitter.player.xvel;
+            return this.eightBitter.player.bordering[3] ? 0 : this.eightBitter.player.xvel;
         }
     }
 
@@ -174,14 +174,14 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      * @returns How far to scroll vertically.
      */
     public getVerticalScrollAmount(): number {
-        if (!this.EightBitter.player.yvel) {
+        if (!this.eightBitter.player.yvel) {
             return 0;
         }
 
-        if (this.EightBitter.player.yvel > 0) {
-            return this.EightBitter.player.bordering[2] ? 0 : this.EightBitter.player.yvel;
+        if (this.eightBitter.player.yvel > 0) {
+            return this.eightBitter.player.bordering[2] ? 0 : this.eightBitter.player.yvel;
         } else {
-            return this.EightBitter.player.bordering[0] ? 0 : this.EightBitter.player.yvel;
+            return this.eightBitter.player.bordering[0] ? 0 : this.eightBitter.player.yvel;
         }
     }
 
@@ -195,6 +195,6 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends GameStartr
      *       hasn't been shown to be incorrect yet).
      */
     public expandMapBoundariesForArea(_area: IArea, _dx: number, _dy: number): void {
-        this.EightBitter.MapScreener.variables.scrollability = Scrollability.Both;
+        this.eightBitter.MapScreener.variables.scrollability = Scrollability.Both;
     }
 }

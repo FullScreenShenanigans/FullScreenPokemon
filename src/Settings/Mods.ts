@@ -21,7 +21,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 enabled: false,
                 events: {
                     onModEnable: function (this: FullScreenPokemon): void {
-                        const area: IArea = this.AreaSpawner.getArea() as IArea;
+                        const area: IArea = this.areaSpawner.getArea() as IArea;
                         if (!area) {
                             return;
                         }
@@ -31,7 +31,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         this.MapScreener.variables.allowCycling = true;
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
-                        const area: IArea = this.AreaSpawner.getArea() as IArea;
+                        const area: IArea = this.areaSpawner.getArea() as IArea;
                         if (!area) {
                             return;
                         }
@@ -54,11 +54,11 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 events: {
                     /* tslint:disable no-string-literal */
                     onModEnable: function (this: FullScreenPokemon): void {
-                        const stats: any = this.ObjectMaker.getFunction("Player").prototype;
+                        const stats: any = this.objectMaker.getFunction("Player").prototype;
                         this.player.speed = stats.speed = 10;
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
-                        const stats: any = this.ObjectMaker.getFunction("Player").prototype;
+                        const stats: any = this.objectMaker.getFunction("Player").prototype;
                         this.player.speed = stats.speed = this.moduleSettings.objects.properties!["Player"].speed;
                     }
                     /* tslint:enable no-string-literal */
@@ -69,21 +69,21 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 enabled: false,
                 events: {
                     onModEnable: function (this: FullScreenPokemon): void {
-                        (this.GroupHolder.getGroup("Character") as ICharacter[])
+                        (this.groupHolder.getGroup("Character") as ICharacter[])
                             .filter((character: ICharacter): boolean => !!character.trainer)
                             .forEach((character: IEnemy): void => {
                                 character.previousTitle = character.title;
                                 character.title = (character as any).thing = "BugCatcher";
-                                this.ThingHitter.cacheChecksForType(character.title, "Character");
+                                this.thingHitter.cacheChecksForType(character.title, "Character");
                                 this.graphics.setClass(character, character.className);
                             });
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
-                        (this.GroupHolder.getGroup("Character") as ICharacter[])
+                        (this.groupHolder.getGroup("Character") as ICharacter[])
                             .filter((character: ICharacter): boolean => !!character.trainer)
                             .forEach((character: IEnemy): void => {
                                 character.title = (character as any).thing = character.previousTitle!;
-                                this.ThingHitter.cacheChecksForType(character.title, "Character");
+                                this.thingHitter.cacheChecksForType(character.title, "Character");
                                 this.graphics.setClass(character, character.className);
                             });
                     },
@@ -107,28 +107,28 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 enabled: false,
                 events: {
                     onModEnable: function (this: FullScreenPokemon): void {
-                        const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
-                        const statistics: string[] = this.MathDecider.getConstant("statisticNames");
+                        const partyPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+                        const statistics: string[] = this.mathDecider.getConstant("statisticNames");
 
                         for (let i: number = 0; i < partyPokemon.length; i += 1) {
                             partyPokemon[i].previousLevel = partyPokemon[i].level;
                             partyPokemon[i].level = 100;
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 (partyPokemon[i] as any)[statistics[j]] = (partyPokemon[i] as any)[statistics[j] + "Normal"] =
-                                    this.MathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
+                                    this.mathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
                             }
                         }
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
-                        const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
-                        const statistics: string[] = this.MathDecider.getConstant("statisticNames");
+                        const partyPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+                        const statistics: string[] = this.mathDecider.getConstant("statisticNames");
 
                         for (const pokemon of partyPokemon) {
                             pokemon.level = pokemon.previousLevel!;
                             pokemon.previousLevel = undefined;
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 (pokemon as any)[statistics[j]] = (pokemon as any)[statistics[j] + "Normal"] =
-                                    this.MathDecider.compute("pokemonStatistic", pokemon, statistics[j]);
+                                    this.mathDecider.compute("pokemonStatistic", pokemon, statistics[j]);
                             }
                         }
                     }
@@ -139,10 +139,10 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 enabled: false,
                 events: {
                     onModEnable: function (this: FullScreenPokemon): void {
-                        this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => true;
+                        this.objectMaker.getFunction("Solid").prototype.collide = (): boolean => true;
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
-                        this.ObjectMaker.getFunction("Solid").prototype.collide = (): boolean => false;
+                        this.objectMaker.getFunction("Solid").prototype.collide = (): boolean => false;
                     }
                 }
             },
@@ -151,10 +151,10 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 enabled: false,
                 events: {
                     onModEnable: function (this: FullScreenPokemon): void {
-                        this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = true;
+                        this.objectMaker.getFunction("SightDetector").prototype.nocollide = true;
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
-                        this.ObjectMaker.getFunction("SightDetector").prototype.nocollide = false;
+                        this.objectMaker.getFunction("SightDetector").prototype.nocollide = false;
                     }
                 }
             },
@@ -181,7 +181,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             return;
                         }
 
-                        const grassMap: IMap | undefined = this.AreaSpawner.getMap(grass.mapName) as IMap;
+                        const grassMap: IMap | undefined = this.areaSpawner.getMap(grass.mapName) as IMap;
                         const grassArea: IArea | undefined = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
                         const opponent: String = settings.battlers.opponent.category;
 
@@ -199,7 +199,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      * @param items   The Player's items.
                      */
                     onOpenItemsMenu: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, items: any[]): void {
-                        const grassMap: IMap | undefined = this.player.grass && this.AreaSpawner.getMap(this.player.grass.mapName) as IMap;
+                        const grassMap: IMap | undefined = this.player.grass && this.areaSpawner.getMap(this.player.grass.mapName) as IMap;
                         const grassArea: IArea | undefined = grassMap && grassMap.areas[this.player.grass!.areaName] as IArea;
 
                         if (!this.BattleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
@@ -207,7 +207,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         }
 
                         for (let i: number = items.length - 1; i > -1; i -= 1) {
-                            let currentItem: IItemSchema = this.MathDecider.getConstant("items")[items[i].item];
+                            let currentItem: IItemSchema = this.mathDecider.getConstant("items")[items[i].item];
                             if (currentItem.category === "PokeBall") {
                                 items.splice(i, 1);
                             }
@@ -227,8 +227,8 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         _eventName: string,
                         thing: IPokemon,
                         actors: IPokemon[]): void {
-                        const partyPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInParty");
-                        const pcPokemon: IPokemon[] = this.ItemsHolder.getItem("PokemonInPC");
+                        const partyPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+                        const pcPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInPC");
 
                         actors.splice(actors.indexOf(thing), 1);
                         partyPokemon.splice(partyPokemon.indexOf(thing), 1);
@@ -297,24 +297,24 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         const opponent: IBattler = battleInfo.battlers.opponent;
                         const player: IBattler = battleInfo.battlers.player!;
                         const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
-                        const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.AreaSpawner.getArea() as IArea)
+                        const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.areaSpawner.getArea() as IArea)
                             .wildPokemon.grass;
                         if (!wildPokemonOptions) {
                             return;
                         }
 
-                        const statistics: string[] = this.MathDecider.getConstant("statisticNames");
+                        const statistics: string[] = this.mathDecider.getConstant("statisticNames");
                         const enemyPokemonAvg: number = isWildBattle ?
-                            this.MathDecider.compute("averageLevelWildPokemon", wildPokemonOptions) :
-                            this.MathDecider.compute("averageLevel", opponent.actors);
-                        const playerPokemonAvg: number = this.MathDecider.compute("averageLevel", player.actors);
+                            this.mathDecider.compute("averageLevelWildPokemon", wildPokemonOptions) :
+                            this.mathDecider.compute("averageLevel", opponent.actors);
+                        const playerPokemonAvg: number = this.mathDecider.compute("averageLevel", player.actors);
 
                         for (const actor of opponent.actors) {
                             actor.level += playerPokemonAvg - enemyPokemonAvg;
 
                             for (const statistic of statistics) {
                                 (actor as any)[statistic] = (actor as any)[statistic + "Normal"] =
-                                    this.MathDecider.compute("pokemonStatistic", actor, statistic);
+                                    this.mathDecider.compute("pokemonStatistic", actor, statistic);
                             }
                         }
                     }

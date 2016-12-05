@@ -16,15 +16,15 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @returns Whether direction keys may trigger.
      */
     public canDirectionsTrigger(): boolean {
-        if (this.EightBitter.GamesRunner.getPaused()) {
+        if (this.eightBitter.gamesRunner.getPaused()) {
             return false;
         }
 
-        if (this.EightBitter.MenuGrapher.getActiveMenu()) {
+        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
             return true;
         }
 
-        return !this.EightBitter.MapScreener.blockInputs;
+        return !this.eightBitter.MapScreener.blockInputs;
     }
 
     /**
@@ -42,12 +42,12 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
         if (thing.player) {
             ((thing as IPlayer).keys as any)[Direction.Top] = true;
 
-            this.EightBitter.TimeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 0),
                 InputTimeTolerance);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownUpReal");
+        this.eightBitter.modAttacher.fireEvent("onKeyDownUpReal");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -69,7 +69,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
         if (thing.player) {
             ((thing as IPlayer).keys as any)[Direction.Right] = true;
 
-            this.EightBitter.TimeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 1),
                 InputTimeTolerance);
         }
@@ -95,11 +95,11 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             ((thing as IPlayer).keys as any)[Direction.Bottom] = true;
         }
 
-        this.EightBitter.TimeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, 2),
             2);
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownDown");
+        this.eightBitter.modAttacher.fireEvent("onKeyDownDown");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -121,12 +121,12 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
         if (thing.player) {
             ((thing as IPlayer).keys as any)[Direction.Left] = true;
 
-            this.EightBitter.TimeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 3),
                 3);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownLeft");
+        this.eightBitter.modAttacher.fireEvent("onKeyDownLeft");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -146,22 +146,22 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             return;
         }
 
-        if (this.EightBitter.MenuGrapher.getActiveMenu()) {
-            this.EightBitter.MenuGrapher.registerDirection(direction as number);
+        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
+            this.eightBitter.MenuGrapher.registerDirection(direction as number);
         } else {
             if (thing.direction !== direction) {
                 thing.turning = direction;
             }
 
             if (thing.canKeyWalking && !thing.shouldWalk) {
-                this.EightBitter.physics.setPlayerDirection(thing, direction);
+                this.eightBitter.physics.setPlayerDirection(thing, direction);
                 thing.canKeyWalking = false;
             } else {
                 thing.nextDirection = direction;
             }
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownDirectionReal", direction);
+        this.eightBitter.modAttacher.fireEvent("onKeyDownDirectionReal", direction);
     }
 
     /**
@@ -172,12 +172,12 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyDownA(thing: ICharacter, event?: Event): void {
-        if (this.EightBitter.GamesRunner.getPaused()) {
+        if (this.eightBitter.gamesRunner.getPaused()) {
             return;
         }
 
-        if (this.EightBitter.MenuGrapher.getActiveMenu()) {
-            this.EightBitter.MenuGrapher.registerA();
+        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
+            this.eightBitter.MenuGrapher.registerA();
         } else if (thing.bordering[thing.direction]) {
             if (thing.bordering[thing.direction]!.activate) {
                 thing.bordering[thing.direction]!.activate!.call(
@@ -191,7 +191,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             }
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownA");
+        this.eightBitter.modAttacher.fireEvent("onKeyDownA");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -206,17 +206,17 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyDownB(thing: ICharacter, event?: Event): void {
-        if (this.EightBitter.GamesRunner.getPaused()) {
+        if (this.eightBitter.gamesRunner.getPaused()) {
             return;
         }
 
-        if (this.EightBitter.MenuGrapher.getActiveMenu()) {
-            this.EightBitter.MenuGrapher.registerB();
+        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
+            this.eightBitter.MenuGrapher.registerB();
         } else if ((thing as IPlayer).keys) {
             (thing as IPlayer).keys.b = true;
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownB");
+        this.eightBitter.modAttacher.fireEvent("onKeyDownB");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -231,8 +231,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyDownPause(_thing: ICharacter, event?: Event): void {
-        this.EightBitter.menus.togglePauseMenu();
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownPause");
+        this.eightBitter.menus.togglePauseMenu();
+        this.eightBitter.modAttacher.fireEvent("onKeyDownPause");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -247,8 +247,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyDownMute(_thing: ICharacter, event?: Event): void {
-        this.EightBitter.AudioPlayer.toggleMuted();
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownMute");
+        this.eightBitter.audioPlayer.toggleMuted();
+        this.eightBitter.modAttacher.fireEvent("onKeyDownMute");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -263,25 +263,25 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @todo Extend the use for any registered item, not just the bicycle.
      */
     public keyDownSelect(thing: IPlayer, event?: Event): void {
-        if (this.EightBitter.MenuGrapher.getActiveMenu() || thing.walking) {
+        if (this.eightBitter.MenuGrapher.getActiveMenu() || thing.walking) {
             return;
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onKeyDownSelect");
+        this.eightBitter.modAttacher.fireEvent("onKeyDownSelect");
 
-        const selectItem: string = this.EightBitter.ItemsHolder.getItem("SelectItem");
+        const selectItem: string = this.eightBitter.itemsHolder.getItem("SelectItem");
         if (!selectItem) {
             return;
         }
 
-        const itemSchema: IItemSchema = this.EightBitter.MathDecider.getConstant("items")[selectItem];
+        const itemSchema: IItemSchema = this.eightBitter.mathDecider.getConstant("items")[selectItem];
 
         if (!itemSchema.bagActivate) {
             throw new Error("Currently selected item does not have a .bagActivate.");
         }
 
         if (!itemSchema.bagActivate.call(this, thing, itemSchema)) {
-            this.EightBitter.menus.displayMessage(thing, itemSchema.error || "");
+            this.eightBitter.menus.displayMessage(thing, itemSchema.error || "");
         }
 
         if (event && event.preventDefault) {
@@ -296,7 +296,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpLeft(thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpLeft");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpLeft");
 
         if (thing.player) {
             (thing as IPlayer).keys[3] = false;
@@ -318,7 +318,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpRight(thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpRight");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpRight");
 
         if (thing.player) {
             (thing as IPlayer).keys[1] = false;
@@ -340,7 +340,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpUp(thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpUp");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpUp");
 
         if (thing.player) {
             (thing as IPlayer).keys[0] = false;
@@ -362,7 +362,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpDown(thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpDown");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpDown");
 
         if (thing.player) {
             (thing as IPlayer).keys[2] = false;
@@ -384,7 +384,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpA(thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpA");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpA");
 
         if (thing.player) {
             (thing as IPlayer).keys.a = false;
@@ -402,7 +402,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpB(thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpB");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpB");
 
         if (thing.player) {
             (thing as IPlayer).keys.b = false;
@@ -420,7 +420,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public keyUpPause(_thing: ICharacter, event?: Event): void {
-        this.EightBitter.ModAttacher.fireEvent("onKeyUpPause");
+        this.eightBitter.modAttacher.fireEvent("onKeyUpPause");
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -435,8 +435,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @param event   The original user-caused Event.
      */
     public mouseDownRight(_thing: ICharacter, event?: Event): void {
-        this.EightBitter.menus.togglePauseMenu();
-        this.EightBitter.ModAttacher.fireEvent("onMouseDownRight");
+        this.eightBitter.menus.togglePauseMenu();
+        this.eightBitter.modAttacher.fireEvent("onMouseDownRight");
 
         if (event && event.preventDefault) {
             event.preventDefault();

@@ -1,7 +1,7 @@
 {
   "name": "fullscreenpokemon",
   "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -20,10 +20,10 @@
     "battlemovr": "^0.5.4",
     "changelinr": "^0.5.4",
     "devicelayr": "^0.5.2",
-    "eightbittr": "^0.5.3",
+    "eightbittr": "^0.6.0",
     "fpsanalyzr": "^0.5.2",
     "gamesrunnr": "^0.5.5",
-    "gamestartr": "^0.5.4",
+    "gamestartr": "^0.6.0",
     "groupholdr": "^0.5.2",
     "inputwritr": "^0.5.3",
     "itemsholdr": "^0.5.3",

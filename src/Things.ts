@@ -24,14 +24,14 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
         // ThingHittr becomes very non-performant if functions aren't generated
         // for each Thing constructor (optimization does not respect prototypal 
         // inheritance, sadly).
-        this.EightBitter.ThingHitter.cacheChecksForType(thing.title, thing.groupType);
+        this.eightBitter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];
 
         if (typeof thing.id === "undefined") {
             thing.id = [
-                this.EightBitter.AreaSpawner.getMapName(),
-                this.EightBitter.AreaSpawner.getAreaName(),
+                this.eightBitter.areaSpawner.getMapName(),
+                this.eightBitter.areaSpawner.getAreaName(),
                 thing.title,
                 (thing.name || "Anonymous")
             ].join("::");
@@ -41,7 +41,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
     /**
      * Overriden Function to adds a new Thing to the game at a given position,
      * relative to the top left corner of the screen. The Thing is also 
-     * added to the Thing GroupHolder.group container.
+     * added to the Thing groupHolder.group container.
      * 
      * @param thingRaw   What type of Thing to add. This may be a String of
      *                   the class title, an Array containing the String
@@ -61,12 +61,12 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
         }
 
         if (thing.id) {
-            this.EightBitter.StateHolder.applyChanges(thing.id, thing);
-            (this.EightBitter.GroupHolder.getGroup("Thing") as any)[thing.id] = thing;
+            this.eightBitter.StateHolder.applyChanges(thing.id, thing);
+            (this.eightBitter.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
         if (typeof thing.direction !== "undefined") {
-            this.EightBitter.animations.animateCharacterSetDirection(thing, thing.direction);
+            this.eightBitter.animations.animateCharacterSetDirection(thing, thing.direction);
         }
 
         return thing;
@@ -78,20 +78,20 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
      * @param thing   A Thing being placed in the game.
      */
     public applySavedPosition(thing: IThing): void {
-        const savedInfo: any = this.EightBitter.StateHolder.getChanges(thing.id);
+        const savedInfo: any = this.eightBitter.StateHolder.getChanges(thing.id);
         if (!savedInfo) {
             return;
         }
 
         if (savedInfo.xloc) {
-            this.EightBitter.physics.setLeft(
+            this.eightBitter.physics.setLeft(
                 thing,
-                this.EightBitter.MapScreener.left + savedInfo.xloc * this.EightBitter.unitsize);
+                this.eightBitter.MapScreener.left + savedInfo.xloc * this.eightBitter.unitsize);
         }
         if (savedInfo.yloc) {
-            this.EightBitter.physics.setTop(
+            this.eightBitter.physics.setTop(
                 thing,
-                this.EightBitter.MapScreener.top + savedInfo.yloc * this.EightBitter.unitsize);
+                this.eightBitter.MapScreener.top + savedInfo.yloc * this.eightBitter.unitsize);
         }
     }
 }

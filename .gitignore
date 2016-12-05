@@ -1,7 +1,10 @@
+dist/**
 docs/**
 lib/**
 src/**/*.css
 src/**/*.d.ts
+src/**/*.html
+!src/**/*.hbs.html
 src/**/*.js*
 ~src/main.js
 test/**/*.js

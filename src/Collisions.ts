@@ -105,12 +105,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
-            switch (this.EightBitter.physics.getDirectionBordering(thing, other)) {
+            switch (this.eightBitter.physics.getDirectionBordering(thing, other)) {
                 case Direction.Top:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Top);
                         this.setThingBordering(other, thing, Direction.Bottom);
-                        this.EightBitter.physics.setTop(thing, other.bottom - other.tolBottom);
+                        this.eightBitter.physics.setTop(thing, other.bottom - other.tolBottom);
                     }
                     break;
 
@@ -118,7 +118,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Right);
                         this.setThingBordering(other, thing, Direction.Left);
-                        this.EightBitter.physics.setRight(thing, other.left + other.tolLeft);
+                        this.eightBitter.physics.setRight(thing, other.left + other.tolLeft);
                     }
                     break;
 
@@ -126,7 +126,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Bottom);
                         this.setThingBordering(other, thing, Direction.Top);
-                        this.EightBitter.physics.setBottom(thing, other.top + other.tolTop);
+                        this.eightBitter.physics.setBottom(thing, other.top + other.tolTop);
                     }
                     break;
 
@@ -134,7 +134,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Left);
                         this.setThingBordering(other, thing, Direction.Right);
-                        this.EightBitter.physics.setLeft(thing, other.right - other.tolRight);
+                        this.eightBitter.physics.setLeft(thing, other.right - other.tolRight);
                     }
                     break;
 
@@ -176,7 +176,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
         }
 
         if (other.active) {
-            if (!other.requireOverlap || this.EightBitter.physics.isThingWithinOther(thing, other)) {
+            if (!other.requireOverlap || this.eightBitter.physics.isThingWithinOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !(thing.keys as any)[other.requireDirection]
@@ -194,14 +194,14 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("No activate callback for collision detector.");
                 }
 
-                other.activate.call(this.EightBitter.animations, thing, other);
+                other.activate.call(this.eightBitter.animations, thing, other);
             }
 
             return true;
         }
 
         // If the thing is moving towards the triggerer, it's now active
-        if (thing.direction === this.EightBitter.physics.getDirectionBordering(thing, other)) {
+        if (thing.direction === this.eightBitter.physics.getDirectionBordering(thing, other)) {
             other.active = true;
             return true;
         }
@@ -221,7 +221,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
         let direction: Direction | undefined;
 
         if (other.cutscene) {
-            this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
+            this.eightBitter.scenePlayer.startCutscene(other.cutscene, {
                 thing: thing,
                 triggerer: other
             });
@@ -231,7 +231,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
             return;
         }
 
-        direction = this.EightBitter.physics.getDirectionBetween(other, thing);
+        direction = this.eightBitter.physics.getDirectionBetween(other, thing);
         if (!direction) {
             throw new Error("Characters not close enough to collide for dialog.");
         }
@@ -247,20 +247,20 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
         other.talking = true;
         thing.canKeyWalking = false;
 
-        if (!this.EightBitter.MenuGrapher.getActiveMenu()) {
-            this.EightBitter.MenuGrapher.createMenu("GeneralText", {
+        if (!this.eightBitter.MenuGrapher.getActiveMenu()) {
+            this.eightBitter.MenuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: !other.dialogOptions
             });
-            this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
-            this.EightBitter.MenuGrapher.addMenuDialog(
+            this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.MenuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                (): void => this.EightBitter.animations.animateCharacterDialogFinish(thing, other)
+                (): void => this.eightBitter.animations.animateCharacterDialogFinish(thing, other)
             );
         }
 
         if (other.switchDirectionOnDialog) {
-            this.EightBitter.animations.animateCharacterSetDirection(other, direction);
+            this.eightBitter.animations.animateCharacterSetDirection(other, direction);
         }
     }
 
@@ -277,23 +277,23 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("Pokeball must have an item for the item action.");
                 }
 
-                this.EightBitter.MenuGrapher.createMenu("GeneralText");
-                this.EightBitter.MenuGrapher.addMenuDialog(
+                this.eightBitter.MenuGrapher.createMenu("GeneralText");
+                this.eightBitter.MenuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                     ],
                     (): void => {
-                        this.EightBitter.MenuGrapher.deleteActiveMenu();
-                        this.EightBitter.physics.killNormal(other);
-                        this.EightBitter.StateHolder.addChange(
+                        this.eightBitter.MenuGrapher.deleteActiveMenu();
+                        this.eightBitter.physics.killNormal(other);
+                        this.eightBitter.StateHolder.addChange(
                             other.id, "alive", false
                         );
                     }
                 );
-                this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
 
-                this.EightBitter.storage.addItemToBag(other.item, other.amount);
+                this.eightBitter.storage.addItemToBag(other.item, other.amount);
                 break;
 
             case "cutscene":
@@ -301,12 +301,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("Pokeball must have a cutscene for the cutscene action.");
                 }
 
-                this.EightBitter.ScenePlayer.startCutscene(other.cutscene, {
+                this.eightBitter.scenePlayer.startCutscene(other.cutscene, {
                     player: thing,
                     triggerer: other
                 });
                 if (other.routine) {
-                    this.EightBitter.ScenePlayer.playRoutine(other.routine);
+                    this.eightBitter.scenePlayer.playRoutine(other.routine);
                 }
                 break;
 
@@ -315,7 +315,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("Pokeball must have a Pokemon for the cutscene action.");
                 }
 
-                this.EightBitter.menus.openPokedexListing(other.pokemon);
+                this.eightBitter.menus.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
@@ -323,16 +323,16 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("Pokeball must have a dialog for the cutscene action.");
                 }
 
-                this.EightBitter.MenuGrapher.createMenu("GeneralText");
-                this.EightBitter.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
-                this.EightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.MenuGrapher.createMenu("GeneralText");
+                this.eightBitter.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
                 break;
 
             case "yes/no":
-                this.EightBitter.MenuGrapher.createMenu("Yes/No", {
+                this.eightBitter.MenuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"]
                 });
-                this.EightBitter.MenuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.MenuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
@@ -342,7 +342,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                             callback: (): void => console.log("What do, no?")
                         }]
                 });
-                this.EightBitter.MenuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.MenuGrapher.setActiveMenu("Yes/No");
                 break;
 
             default:
@@ -357,31 +357,31 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
      * @param other   The specific Grass that thing is within.
      */
     public collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
-        if (thing.grass || !this.EightBitter.physics.isThingWithinGrass(thing, other)) {
+        if (thing.grass || !this.eightBitter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
 
         thing.grass = other;
-        this.EightBitter.storage.addStateHistory(thing, "height", thing.height);
+        this.eightBitter.storage.addStateHistory(thing, "height", thing.height);
 
         // Todo: Find a better way than manually setting canvas height?
-        thing.canvas.height = thing.heightGrass * this.EightBitter.unitsize;
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
+        thing.canvas.height = thing.heightGrass * this.eightBitter.unitsize;
+        this.eightBitter.pixelDrawer.setThingSprite(thing);
 
-        thing.shadow = this.EightBitter.ObjectMaker.make(thing.title, {
+        thing.shadow = this.eightBitter.objectMaker.make(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
         }) as IThing;
 
         if (thing.shadow.className !== thing.className) {
-            this.EightBitter.graphics.setClass(thing.shadow, thing.className);
+            this.eightBitter.graphics.setClass(thing.shadow, thing.className);
         }
 
-        this.EightBitter.things.add(thing.shadow, thing.left, thing.top);
+        this.eightBitter.things.add(thing.shadow, thing.left, thing.top);
 
         // Todo: is the arrayToEnd call necessary?
-        this.EightBitter.GroupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
-        this.EightBitter.utilities.arrayToEnd(thing.shadow, this.EightBitter.GroupHolder.getGroup("Terrain") as IThing[]);
+        this.eightBitter.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.eightBitter.utilities.arrayToEnd(thing.shadow, this.eightBitter.groupHolder.getGroup("Terrain") as IThing[]);
 
         return true;
     }
@@ -414,9 +414,9 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
 
         if (thing.player) {
             (thing as IPlayer).canKeyWalking = false;
-            this.EightBitter.MapScreener.blockInputs = true;
+            this.eightBitter.MapScreener.blockInputs = true;
         }
-        this.EightBitter.animations.animateCharacterHopLedge(thing, other);
+        this.eightBitter.animations.animateCharacterHopLedge(thing, other);
 
         return true;
     }
@@ -436,9 +436,9 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
             return false;
         }
 
-        this.EightBitter.animations.animateCharacterStartWalking(thing, thing.direction, [2]);
+        this.eightBitter.animations.animateCharacterStartWalking(thing, thing.direction, [2]);
         thing.surfing = false;
-        this.EightBitter.graphics.removeClass(thing, "surfing");
+        this.eightBitter.graphics.removeClass(thing, "surfing");
         return true;
     }
 }

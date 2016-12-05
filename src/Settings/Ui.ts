@@ -1,6 +1,9 @@
-import { IGameStartrSettings } from "gamestartr/lib/IGameStartr";
+import { IPipe } from "inputwritr/lib/IInputWritr";
 import { IMod, IMods } from "modattachr/lib/IModAttachr";
-import { IOptionsButtonSchema } from "userwrappr/lib/Generators/ButtonsGenerator";
+import { IOptionsButtonSchema, IOptionsButtonsSchema } from "userwrappr/lib/Generators/ButtonsGenerator";
+import {
+    IOptionsTableBooleanOption, IOptionsTableSchema, IOptionsTableScreenSizeOption, IOptionsTableSelectOption
+} from "userwrappr/lib/Generators/TableGenerator";
 import { ISchema } from "userwrappr/lib/UISchemas";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -10,26 +13,7 @@ export function GenerateUISettings(): IUserWrapprSettings {
     "use strict";
 
     return {
-        GameStartrConstructor: (settings: IGameStartrSettings): FullScreenPokemon => {
-            return new FullScreenPokemon(settings);
-        },
-        globalName: "FSP",
-        styleSheet: {
-            ".FullScreenPokemon": {
-                color: "black"
-            },
-            "@font-face": {
-                "font-family": "'Press Start'",
-                src: [
-                    "url('Fonts/pressstart2p-webfont.eot?#iefix') format('embedded-opentype')",
-                    "url('Fonts/pressstart2p-webfont.woff') format('woff')",
-                    "url('Fonts/pressstart2p-webfont.ttf') format('truetype')",
-                    "url('Fonts/pressstart2p-webfont.svg') format('svg')"
-                ].join(", "),
-                "font-weight": "normal",
-                "font-style": "normal"
-            }
-        },
+        globalName: "fsp",
         sizeDefault: "Wide",
         sizes: {
             GameBoy: {
@@ -38,18 +22,15 @@ export function GenerateUISettings(): IUserWrapprSettings {
             },
             NES: {
                 width: 512,
-                height: 464,
-                full: false
+                height: 464
             },
             Wide: {
                 width: Infinity,
-                height: 580,
-                full: false
+                height: 580
             },
             Large: {
                 width: Infinity,
-                height: Infinity,
-                full: false
+                height: Infinity
             },
             "Full!": {
                 width: Infinity,
@@ -67,83 +48,82 @@ export function GenerateUISettings(): IUserWrapprSettings {
                         type: "Number",
                         minimum: 0,
                         maximum: 100,
-                        source: (FSP: FullScreenPokemon): number => {
-                            return Math.round(FSP.AudioPlayer.getVolume() * 100);
+                        source: (fsp: FullScreenPokemon): number => {
+                            return Math.round(fsp.audioPlayer.getVolume() * 100);
                         },
-                        update: (FSP: FullScreenPokemon, value: number): void => {
-                            FSP.AudioPlayer.setVolume(value / 100);
+                        update: (fsp: FullScreenPokemon, value: number): void => {
+                            fsp.audioPlayer.setVolume(value / 100);
                         }
                     },
                     {
                         title: "Mute",
                         type: "Boolean",
-                        source: (FSP: FullScreenPokemon): boolean => {
-                            return FSP.AudioPlayer.getMuted();
+                        source: (fsp: FullScreenPokemon): boolean => {
+                            return fsp.audioPlayer.getMuted();
                         },
-                        enable: (FSP: FullScreenPokemon): void => {
-                            FSP.AudioPlayer.setMutedOn();
+                        enable: (fsp: FullScreenPokemon): void => {
+                            fsp.audioPlayer.setMutedOn();
                         },
-                        disable: (FSP: FullScreenPokemon): void => {
-                            FSP.AudioPlayer.setMutedOff();
+                        disable: (fsp: FullScreenPokemon): void => {
+                            fsp.audioPlayer.setMutedOff();
                         }
-                    },
+                    } as IOptionsTableBooleanOption,
                     {
                         title: "Speed",
                         type: "Select",
-                        options: (): string[] => {
-                            return [".25x", ".5x", "1x", "2x", "5x"];
-                        },
-                        source: (): string => {
-                            return "1x";
-                        },
-                        update: (FSP: FullScreenPokemon, value: string): void => {
-                            FSP.GamesRunner.setSpeed(Number(value.replace("x", "")));
+                        options: (): string[] => [".25x", ".5x", "1x", "2x", "5x"],
+                        source: (): string => "1x",
+                        update: (fsp: FullScreenPokemon, value: string): void => {
+                            fsp.gamesRunner.setSpeed(Number(value.replace("x", "")));
                         },
                         storeLocally: true
-                    },
+                    } as IOptionsTableSelectOption,
                     {
                         title: "View Mode",
                         type: "ScreenSize"
-                    },
+                    } as IOptionsTableScreenSizeOption,
                     {
                         title: "Framerate",
                         type: "Select",
-                        options: () : string[] => {
-                            return ["60fps", "30fps"];
+                        options: (): string[] => ["60fps", "30fps"],
+                        source: (fsp: FullScreenPokemon): string => {
+                            return (1 / fsp.pixelDrawer.getFramerateSkip() * 60) + "fps";
                         },
-                        source: (FSP: FullScreenPokemon): string => {
-                            return (1 / FSP.PixelDrawer.getFramerateSkip() * 60) + "fps";
-                        },
-                        update: (FSP: FullScreenPokemon, value: string): void => {
-                            let numeric: number = parseInt(value.replace("fps", ""), 10);
-                            FSP.PixelDrawer.setFramerateSkip(1 / numeric * 60);
+                        update: (fsp: FullScreenPokemon, value: string): void => {
+                            const numeric: number = parseInt(value.replace("fps", ""), 10);
+                            fsp.pixelDrawer.setFramerateSkip(1 / numeric * 60);
                         },
                         storeLocally: true
-                    },
-                    {
-                        title: "Tilt Controls",
-                        type: "Boolean",
-                        storeLocally: true,
-                        source: (): boolean => {
-                            return false;
-                        },
-                        enable: (FSP: FullScreenPokemon): void => {
-                            window.ondevicemotion = FSP.InputWriter.makePipe("ondevicemotion", "type") as any;
-                        },
-                        disable: (): void => {
-                            window.ondevicemotion = undefined!;
-                        }
-                    }
+                    } as IOptionsTableSelectOption,
+                    ((): IOptionsTableBooleanOption => {
+                        let deviceMotionPipe: IPipe;
+
+                        return {
+                            title: "Tilt Controls",
+                            type: "Boolean",
+                            storeLocally: true,
+                            source: (): boolean => {
+                                return false;
+                            },
+                            enable: (fsp: FullScreenPokemon): void => {
+                                deviceMotionPipe = fsp.inputWriter.makePipe("ondevicemotion", "type");
+                                window.addEventListener("devicemotion", deviceMotionPipe);
+                            },
+                            disable: (): void => {
+                                window.removeEventListener("devicemotion", deviceMotionPipe);
+                            }
+                        };
+                    })()
                 ],
                 actions: [
                     {
                         title: "Screenshot",
-                        action: (FSP: FullScreenPokemon): void => {
-                            FSP.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
+                        action: (fsp: FullScreenPokemon): void => {
+                            fsp.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
                         }
                     }
                 ]
-            },
+            } as IOptionsTableSchema,
             {
                 title: "Controls",
                 generator: "OptionsTable",
@@ -153,41 +133,39 @@ export function GenerateUISettings(): IUserWrapprSettings {
                             title: title[0].toUpperCase() + title.substr(1),
                             type: "Keys",
                             storeLocally: true,
-                            source: (FSP: FullScreenPokemon): string[] => {
-                                return FSP.InputWriter
+                            source: (fsp: FullScreenPokemon): string[] => {
+                                return fsp.inputWriter
                                     .getAliasAsKeyStrings(title)
                                     .map((text: string): string => text.toLowerCase());
                             },
-                            callback: (FSP: FullScreenPokemon, valueOld: string, valueNew: string): void => {
-                                FSP.InputWriter.switchAliasValues(
+                            callback: (fsp: FullScreenPokemon, valueOld: string, valueNew: string): void => {
+                                fsp.inputWriter.switchAliasValues(
                                     title,
-                                    [FSP.InputWriter.convertKeyStringToAlias(valueOld)],
-                                    [FSP.InputWriter.convertKeyStringToAlias(valueNew)]
+                                    [fsp.inputWriter.convertKeyStringToAlias(valueOld)],
+                                    [fsp.inputWriter.convertKeyStringToAlias(valueNew)]
                                 );
                             }
                         };
                     });
                 })(["a", "b", "left", "right", "up", "down", "pause"])
-            }, {
+            },
+            {
                 title: "Mods!",
                 generator: "OptionsButtons",
                 keyActive: "enabled",
                 assumeInactive: true,
-                options: (FSP: FullScreenPokemon): IOptionsButtonSchema[] => {
-                    const mods: IMods = FSP.ModAttacher.getMods();
+                options: (fsp: FullScreenPokemon): IOptionsButtonSchema[] => {
+                    const mods: IMods = fsp.modAttacher.getMods();
                     const output: IOptionsButtonSchema[] = [];
-                    let mod: IMod;
 
-                    for (let i in mods) {
+                    for (const i in mods) {
                         if (!mods.hasOwnProperty(i)) {
                             continue;
                         }
 
-                        mod = mods[i];
-
                         output.push({
-                            title: mod.name,
-                            source: (): boolean => !!mod.enabled,
+                            title: mods[i].name,
+                            source: (): boolean => !!mods[i].enabled,
                             storeLocally: true,
                             type: "text"
                         });
@@ -195,16 +173,16 @@ export function GenerateUISettings(): IUserWrapprSettings {
 
                     return output;
                 },
-                callback: (FSP: FullScreenPokemon, _schema: ISchema, button: HTMLElement): void => {
+                callback: (fsp: FullScreenPokemon, _schema: ISchema, button: HTMLElement): void => {
                     const name: string = button.textContent!;
                     const key: string = button.getAttribute("localStorageKey")!;
-                    const mod: IMod = FSP.ModAttacher.getMod(name);
+                    const mod: IMod = fsp.modAttacher.getMod(name);
 
-                    FSP.ModAttacher.toggleMod(name);
-                    FSP.ItemsHolder.setItem(key, mod.enabled);
-                    FSP.ItemsHolder.saveItem(key);
+                    fsp.modAttacher.toggleMod(name);
+                    fsp.itemsHolder.setItem(key, mod.enabled);
+                    fsp.itemsHolder.saveItem(key);
                 }
-            }
+            } as IOptionsButtonsSchema
         ]
-    } as any;
+    };
 }

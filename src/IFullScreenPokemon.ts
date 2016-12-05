@@ -231,7 +231,7 @@ export interface IMathConstants extends IStaticMathConstants {
     /**
      * Generates random numbers for math equations.
      */
-    NumberMaker: inumbermakr.INumberMakr;
+    numberMaker: inumbermakr.INumberMakr;
 }
 
 /**
@@ -504,7 +504,7 @@ export interface IMenusModuleSettings extends igamestartr.IModuleSettingsObject 
  */
 export interface IStateModuleSettings extends igamestartr.IModuleSettingsObject {
     /**
-     * A prefix to prepend keys for the ItemsHolder.
+     * A prefix to prepend keys for the itemsHolder.
      */
     prefix?: string;
 }
@@ -2209,7 +2209,7 @@ export interface IWaterEdge extends IHMCharacter {
 /**
  * A Detector that adds an Area into the game.
  */
-export interface IAreaSpawner extends IDetector {
+export interface IareaSpawner extends IDetector {
     /**
      * The Area to add into the game.
      */

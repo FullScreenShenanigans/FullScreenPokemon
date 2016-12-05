@@ -11,33 +11,33 @@ export function GenerateRunnerSettings(): IRunnerModuleSettings {
         adjustFramerate: true,
         games: [
             function (this: FullScreenPokemon): void {
-                this.PixelDrawer.refillGlobalCanvas();
+                this.pixelDrawer.refillGlobalCanvas();
             },
             function (this: FullScreenPokemon): void {
-                this.QuadsKeeper.determineAllQuadrants("Terrain", this.GroupHolder.getGroup("Terrain") as IThing[]);
-                this.QuadsKeeper.determineAllQuadrants("Scenery", this.GroupHolder.getGroup("Scenery") as IThing[]);
-                this.QuadsKeeper.determineAllQuadrants("Solid", this.GroupHolder.getGroup("Solid") as IThing[]);
+                this.quadsKeeper.determineAllQuadrants("Terrain", this.groupHolder.getGroup("Terrain") as IThing[]);
+                this.quadsKeeper.determineAllQuadrants("Scenery", this.groupHolder.getGroup("Scenery") as IThing[]);
+                this.quadsKeeper.determineAllQuadrants("Solid", this.groupHolder.getGroup("Solid") as IThing[]);
             },
             function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.GroupHolder.getGroup("Text") as IThing[]);
+                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Text") as IThing[]);
             },
             function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.GroupHolder.getGroup("Terrain") as IThing[]);
+                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Terrain") as IThing[]);
             },
             function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.GroupHolder.getGroup("Scenery") as IThing[]);
+                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Scenery") as IThing[]);
             },
             function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.GroupHolder.getGroup("Solid") as IThing[]);
+                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Solid") as IThing[]);
             },
             function (this: FullScreenPokemon): void {
-                this.maintenance.maintainCharacters(this.GroupHolder.getGroup("Character") as ICharacter[]);
+                this.maintenance.maintainCharacters(this.groupHolder.getGroup("Character") as ICharacter[]);
             },
             function (this: FullScreenPokemon): void {
                 this.maintenance.maintainPlayer(this.player);
             },
             function (this: FullScreenPokemon): void {
-                this.TimeHandler.handleEvents();
+                this.timeHandler.handleEvents();
             }
         ]
     };

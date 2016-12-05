@@ -109,10 +109,10 @@ export function GenerateMathSettings(): IMathModuleSettings {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Individual_values
             "newPokemonIVs": function (this: IFullScreenPokemonMathDecidr): { [i: string]: number } {
-                const attack: number = this.constants.NumberMaker.randomIntWithin(0, 15);
-                const defense: number = this.constants.NumberMaker.randomIntWithin(0, 15);
-                const speed: number = this.constants.NumberMaker.randomIntWithin(0, 15);
-                const special: number = this.constants.NumberMaker.randomIntWithin(0, 15);
+                const attack: number = this.constants.numberMaker.randomIntWithin(0, 15);
+                const defense: number = this.constants.numberMaker.randomIntWithin(0, 15);
+                const speed: number = this.constants.numberMaker.randomIntWithin(0, 15);
+                const special: number = this.constants.numberMaker.randomIntWithin(0, 15);
                 const output: any = {
                     "Attack": attack,
                     "Defense": defense,
@@ -164,7 +164,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
             },
             // http://bulbapedia.bulbagarden.net/wiki/Tall_grass
             "doesGrassEncounterHappen": function (this: IFullScreenPokemonMathDecidr, grass: IGrass): boolean {
-                return this.constants.NumberMaker.randomBooleanFraction(grass.rarity, 187.5);
+                return this.constants.numberMaker.randomBooleanFraction(grass.rarity, 187.5);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
             "canCatchPokemon": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, ball: IBattleBall): boolean {
@@ -174,7 +174,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                 }
 
                 // 2. Generate a random number, N, depending on the type of ball used.
-                let n: number = this.constants.NumberMaker.randomInt(ball.probabilityMax);
+                let n: number = this.constants.numberMaker.randomInt(ball.probabilityMax);
 
                 // 3. The Pokemon is caught if...
                 if (pokemon.status) { // ... it is asleep or frozen and N is less than 25.
@@ -195,7 +195,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                 }
 
                 // 5. If not, generate a random value, M, between 0 and 255.
-                let m: number = this.constants.NumberMaker.randomInt(255);
+                let m: number = this.constants.numberMaker.randomInt(255);
 
                 // 6. Calculate f.
                 let f: number = Math.max(
@@ -222,7 +222,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                     return true;
                 }
 
-                return this.constants.NumberMaker.randomInt(256) < f;
+                return this.constants.numberMaker.randomInt(256) < f;
             },
             // http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
             "numBallShakes": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, ball: IBattleBall): number {
@@ -273,7 +273,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
 
                 // Wild Pokemon just choose randomly
                 if (opponent.category === "Wild") {
-                    return this.constants.NumberMaker.randomArrayMember(possibilities).move;
+                    return this.constants.numberMaker.randomArrayMember(possibilities).move;
                 }
 
                 // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
@@ -322,7 +322,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                     });
                 }
 
-                return this.constants.NumberMaker.randomArrayMember(possibilities).move;
+                return this.constants.numberMaker.randomArrayMember(possibilities).move;
             },
             "pokemonMatchesTypes": function (this: IFullScreenPokemonMathDecidr, pokemon: IPokemon, types: string[]): boolean {
                 for (let i: number = 0; i < types.length; i += 1) {
@@ -457,7 +457,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                 const stab: number = attacker.types.indexOf(move.type) !== -1 ? 1.5 : 1;
                 const type: number = this.compute("typeEffectiveness", move, defender);
 
-                return stab * type * this.constants.NumberMaker.randomWithin(.85, 1);
+                return stab * type * this.constants.numberMaker.randomWithin(.85, 1);
             },
             // http://bulbapedia.bulbagarden.net/wiki/Critical_hit
             "criticalHit": function (this: IFullScreenPokemonMathDecidr, move: string, attacker: IPokemon): boolean {
@@ -480,7 +480,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                 }
 
                 // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%, it instead becomes 255/256 or about 99.6%.
-                return this.constants.NumberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
+                return this.constants.numberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
             },
             // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
             "typeEffectiveness": function (this: IFullScreenPokemonMathDecidr, move: string, defender: IPokemon): number {

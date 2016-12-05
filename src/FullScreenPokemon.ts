@@ -8,6 +8,7 @@ import { ScenePlayr } from "sceneplayr/lib/ScenePlayr";
 import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
 import { StateHoldr } from "stateholdr/lib/StateHoldr";
 import { IUserWrappr } from "userwrappr/lib/IUserWrappr";
+import { UserWrappr } from "userwrappr/lib/UserWrappr";
 
 import { Animations } from "./Animations";
 import { Battles } from "./Battles";
@@ -181,7 +182,7 @@ export class FullScreenPokemon extends GameStartr {
      *
      * @param settings   Any additional settings.
      */
-    public constructor(settings: IGameStartrSettings) {
+    public constructor(settings: IGameStartrSettings = {}) {
         if (!settings.unitsize) {
             settings.unitsize = FullScreenPokemon.prototype.unitsize;
         }
@@ -189,6 +190,8 @@ export class FullScreenPokemon extends GameStartr {
         super(settings);
 
         this.scale = FullScreenPokemon.prototype.scale;
+
+        this.gameplay.gameStart();
     }
 
     /**
@@ -227,20 +230,22 @@ export class FullScreenPokemon extends GameStartr {
         this.resetStateHolder();
         this.resetBattleMover();
 
-        this.AreaSpawner.setCommandScope(this.maps);
-        this.InputWriter.setEventScope(this.inputs);
-        this.MapsCreator.setScope(this.maps);
-        this.TimeHandler.setClassScope(this.graphics);
-        this.ThingHitter.setGeneratorScope(this.collisions);
+        this.areaSpawner.setCommandScope(this.maps);
+        this.inputWriter.setEventScope(this.inputs);
+        this.mapsCreator.setScope(this.maps);
+        this.timeHandler.setClassScope(this.graphics);
+        this.thingHitter.setGeneratorScope(this.collisions);
+
+        this.resetUserWrapper();
     }
 
     /**
-     * Sets this.ScenePlayer.
+     * Sets this.scenePlayer.
      * 
      * @param settings   Any additional settings.
      */
-    protected resetScenePlayer(): void {
-        this.ScenePlayer = new ScenePlayr(
+    protected resetscenePlayer(): void {
+        this.scenePlayer = new ScenePlayr(
             this.utilities.proliferate(
                 {
                     scope: this.cutscenes,
@@ -257,7 +262,7 @@ export class FullScreenPokemon extends GameStartr {
         this.StateHolder = new StateHoldr(
             this.utilities.proliferate(
                 {
-                    ItemsHolder: this.ItemsHolder
+                    itemsHolder: this.itemsHolder
                 },
                 this.moduleSettings.state));
     }
@@ -331,13 +336,20 @@ export class FullScreenPokemon extends GameStartr {
         this.container.style.fontFamily = "Press Start";
         this.container.className += " FullScreenPokemon";
 
-        this.PixelDrawer.setThingArrays([
-            this.GroupHolder.getGroup("Terrain") as IThing[],
-            this.GroupHolder.getGroup("Solid") as IThing[],
-            this.GroupHolder.getGroup("Scenery") as IThing[],
-            this.GroupHolder.getGroup("Character") as IThing[],
-            this.GroupHolder.getGroup("Text") as IThing[]
+        this.pixelDrawer.setThingArrays([
+            this.groupHolder.getGroup("Terrain") as IThing[],
+            this.groupHolder.getGroup("Solid") as IThing[],
+            this.groupHolder.getGroup("Scenery") as IThing[],
+            this.groupHolder.getGroup("Character") as IThing[],
+            this.groupHolder.getGroup("Text") as IThing[]
         ]);
+    }
+
+    /**
+     * Sets this.UserWrapper.
+     */
+    protected resetUserWrapper(): void {
+        this.UserWrapper = new UserWrappr(this.moduleSettings.ui);
     }
 }
 

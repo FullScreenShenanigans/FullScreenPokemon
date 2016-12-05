@@ -19,17 +19,17 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends Component<TE
             return false;
         }
 
-        if (!this.EightBitter.MapScreener.variables.allowCycling) {
+        if (!this.eightBitter.MapScreener.variables.allowCycling) {
             return false;
         }
 
         thing.cycling = true;
-        this.EightBitter.storage.addStateHistory(thing, "speed", thing.speed);
-        thing.speed = this.EightBitter.MathDecider.compute("speedCycling", thing);
+        this.eightBitter.storage.addStateHistory(thing, "speed", thing.speed);
+        thing.speed = this.eightBitter.mathDecider.compute("speedCycling", thing);
 
-        this.EightBitter.graphics.addClass(thing, "cycling");
+        this.eightBitter.graphics.addClass(thing, "cycling");
 
-        this.EightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.eightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
         return true;
     }
 
@@ -40,12 +40,12 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends Component<TE
      */
     public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
-        this.EightBitter.storage.popStateHistory(thing, "speed");
+        this.eightBitter.storage.popStateHistory(thing, "speed");
 
-        this.EightBitter.graphics.removeClass(thing, "cycling");
-        this.EightBitter.TimeHandler.cancelClassCycle(thing, "cycling");
+        this.eightBitter.graphics.removeClass(thing, "cycling");
+        this.eightBitter.timeHandler.cancelClassCycle(thing, "cycling");
 
-        this.EightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.eightBitter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**

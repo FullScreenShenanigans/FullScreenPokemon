@@ -1049,7 +1049,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "onThingAdd": Animations.prototype.activateSpawner
             },
             "AreaSpawner": {
-                "activate": Animations.prototype.spawnAreaSpawner
+                "activate": Animations.prototype.spawnareaSpawner
             },
             "SquareWallTop": {
                 "spriteheight": .5
