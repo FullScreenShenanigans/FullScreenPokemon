@@ -43,7 +43,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
         (this.eightBitter.cutscenes as any)["cutsceneBattleTransition" + animation](
             {
                 battleInfo,
-                callback: (): void => this.eightBitter.BattleMover.startBattle(battleInfo)
+                callback: (): void => this.eightBitter.battleMover.startBattle(battleInfo)
             }
         );
 
@@ -77,7 +77,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param thing   An in-game Player.
      */
     public checkPlayerGrassBattle(thing: IPlayer): boolean {
-        if (!thing.grass || this.eightBitter.MenuGrapher.getActiveMenu()) {
+        if (!thing.grass || this.eightBitter.menuGrapher.getActiveMenu()) {
             return false;
         }
 
@@ -138,7 +138,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
             text.reverse();
         }
 
-        this.eightBitter.MenuGrapher.addMenuDialog(menu.name, [text]);
+        this.eightBitter.menuGrapher.addMenuDialog(menu.name, [text]);
     }
 
     /**
@@ -147,7 +147,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param battlerName   Which battler to add the display for.
      */
     public addBattleDisplayPokemonHealth(battlerName: "player" | "opponent"): void {
-        const battleInfo: IBattleInfo = this.eightBitter.BattleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         const pokemon: IPokemon = battleInfo.battlers[battlerName]!.selectedActor!;
         const menu: string = [
             "Battle",
@@ -156,19 +156,19 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
             "Health"
         ].join("");
 
-        this.eightBitter.MenuGrapher.createMenu(menu);
-        this.eightBitter.MenuGrapher.createMenu(menu + "Title");
-        this.eightBitter.MenuGrapher.createMenu(menu + "Level");
-        this.eightBitter.MenuGrapher.createMenu(menu + "Amount");
+        this.eightBitter.menuGrapher.createMenu(menu);
+        this.eightBitter.menuGrapher.createMenu(menu + "Title");
+        this.eightBitter.menuGrapher.createMenu(menu + "Level");
+        this.eightBitter.menuGrapher.createMenu(menu + "Amount");
 
         this.setBattleDisplayPokemonHealthBar(
             battlerName,
             pokemon.HP,
             pokemon.HPNormal);
 
-        this.eightBitter.MenuGrapher.addMenuDialog(menu + "Title", [[pokemon.nickname]]);
+        this.eightBitter.menuGrapher.addMenuDialog(menu + "Title", [[pokemon.nickname]]);
 
-        this.eightBitter.MenuGrapher.addMenuDialog(menu + "Level", String(pokemon.level));
+        this.eightBitter.menuGrapher.addMenuDialog(menu + "Level", String(pokemon.level));
     }
 
     /**
@@ -188,12 +188,12 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
             + "/"
             + this.eightBitter.utilities.makeDigit(hpNormal, 3, "\t");
 
-        if (this.eightBitter.MenuGrapher.getMenu(menuNumbers)) {
-            for (const menu of this.eightBitter.MenuGrapher.getMenu(menuNumbers).children) {
+        if (this.eightBitter.menuGrapher.getMenu(menuNumbers)) {
+            for (const menu of this.eightBitter.menuGrapher.getMenu(menuNumbers).children) {
                 this.eightBitter.physics.killNormal(menu as IThing);
             }
 
-            this.eightBitter.MenuGrapher.addMenuDialog(menuNumbers, healthDialog);
+            this.eightBitter.menuGrapher.addMenuDialog(menuNumbers, healthDialog);
         }
 
         this.eightBitter.physics.setWidth(bar, barWidth);
@@ -242,13 +242,13 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * Opens the in-battle moves menu.
      */
     public openBattleMovesMenu(): void {
-        const actorMoves: IMove[] = this.eightBitter.BattleMover.getBattleInfo().battlers.player!.selectedActor!.moves;
+        const actorMoves: IMove[] = this.eightBitter.battleMover.getBattleInfo().battlers.player!.selectedActor!.moves;
         const options: any[] = actorMoves.map((move: IMove): any => {
             return {
                 text: move.title.toUpperCase(),
                 remaining: move.remaining,
                 callback: (): void => {
-                    this.eightBitter.BattleMover.playMove(move.title);
+                    this.eightBitter.battleMover.playMove(move.title);
                 }
             };
         });
@@ -259,9 +259,9 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
             });
         }
 
-        this.eightBitter.MenuGrapher.createMenu("BattleFightList");
-        this.eightBitter.MenuGrapher.addMenuList("BattleFightList", { options });
-        this.eightBitter.MenuGrapher.setActiveMenu("BattleFightList");
+        this.eightBitter.menuGrapher.createMenu("BattleFightList");
+        this.eightBitter.menuGrapher.addMenuList("BattleFightList", { options });
+        this.eightBitter.menuGrapher.setActiveMenu("BattleFightList");
     }
 
     /**
@@ -298,19 +298,19 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends Component<TE
      * Starts the dialog to exit a battle.
      */
     public startBattleExit(): void {
-        if (this.eightBitter.BattleMover.getBattleInfo().battlers.opponent!.category === "Trainer") {
+        if (this.eightBitter.battleMover.getBattleInfo().battlers.opponent!.category === "Trainer") {
             this.eightBitter.scenePlayer.playRoutine("BattleExitFail");
             return;
         }
 
-        this.eightBitter.MenuGrapher.deleteMenu("BattleOptions");
-        this.eightBitter.MenuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.deleteMenu("BattleOptions");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
-            this.eightBitter.BattleMover.getBattleInfo().exitDialog
-                || this.eightBitter.BattleMover.getDefaults().exitDialog || "",
+            this.eightBitter.battleMover.getBattleInfo().exitDialog
+                || this.eightBitter.battleMover.getDefaults().exitDialog || "",
             (): void => {
-                this.eightBitter.BattleMover.closeBattle();
+                this.eightBitter.battleMover.closeBattle();
             });
-        this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

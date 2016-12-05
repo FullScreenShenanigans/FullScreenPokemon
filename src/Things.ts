@@ -61,7 +61,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
         }
 
         if (thing.id) {
-            this.eightBitter.StateHolder.applyChanges(thing.id, thing);
+            this.eightBitter.stateHolder.applyChanges(thing.id, thing);
             (this.eightBitter.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
@@ -78,7 +78,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
      * @param thing   A Thing being placed in the game.
      */
     public applySavedPosition(thing: IThing): void {
-        const savedInfo: any = this.eightBitter.StateHolder.getChanges(thing.id);
+        const savedInfo: any = this.eightBitter.stateHolder.getChanges(thing.id);
         if (!savedInfo) {
             return;
         }
@@ -86,12 +86,12 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
         if (savedInfo.xloc) {
             this.eightBitter.physics.setLeft(
                 thing,
-                this.eightBitter.MapScreener.left + savedInfo.xloc * this.eightBitter.unitsize);
+                this.eightBitter.mapScreener.left + savedInfo.xloc * this.eightBitter.unitsize);
         }
         if (savedInfo.yloc) {
             this.eightBitter.physics.setTop(
                 thing,
-                this.eightBitter.MapScreener.top + savedInfo.yloc * this.eightBitter.unitsize);
+                this.eightBitter.mapScreener.top + savedInfo.yloc * this.eightBitter.unitsize);
         }
     }
 }

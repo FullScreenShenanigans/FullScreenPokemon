@@ -19,7 +19,7 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends Component<TE
             return false;
         }
 
-        if (!this.eightBitter.MapScreener.variables.allowCycling) {
+        if (!this.eightBitter.mapScreener.variables.allowCycling) {
             return false;
         }
 

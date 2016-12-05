@@ -65,11 +65,11 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
      */
     public animateSnapToGrid(thing: IThing): void {
         const grid: number = this.eightBitter.unitsize * 8;
-        const x: number = (this.eightBitter.MapScreener.left + thing.left) / grid;
-        const y: number = (this.eightBitter.MapScreener.top + thing.top) / grid;
+        const x: number = (this.eightBitter.mapScreener.left + thing.left) / grid;
+        const y: number = (this.eightBitter.mapScreener.top + thing.top) / grid;
 
-        this.eightBitter.physics.setLeft(thing, Math.round(x) * grid - this.eightBitter.MapScreener.left);
-        this.eightBitter.physics.setTop(thing, Math.round(y) * grid - this.eightBitter.MapScreener.top);
+        this.eightBitter.physics.setLeft(thing, Math.round(x) * grid - this.eightBitter.mapScreener.left);
+        this.eightBitter.physics.setTop(thing, Math.round(y) * grid - this.eightBitter.mapScreener.top);
     }
 
     /**
@@ -489,8 +489,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
         const blank: IThing = this.eightBitter.objectMaker.make(color + "Square", {
-            width: this.eightBitter.MapScreener.width,
-            height: this.eightBitter.MapScreener.height,
+            width: this.eightBitter.mapScreener.width,
+            height: this.eightBitter.mapScreener.height,
             opacity: 0
         });
 
@@ -524,8 +524,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
         const blank: IThing = this.eightBitter.objectMaker.make(color + "Square", {
-            width: this.eightBitter.MapScreener.width,
-            height: this.eightBitter.MapScreener.height,
+            width: this.eightBitter.mapScreener.width,
+            height: this.eightBitter.mapScreener.height,
             opacity: 1
         });
 
@@ -909,7 +909,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         }
 
         if (
-            !this.eightBitter.MenuGrapher.getActiveMenu()
+            !this.eightBitter.menuGrapher.getActiveMenu()
             && (thing.keys as any)[thing.direction]) {
             this.eightBitter.animations.animateCharacterSetDistanceVelocity(thing, thing.distance);
             return false;
@@ -941,7 +941,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             (thing as IPlayer).keys = (thing as IPlayer).getKeys();
         }
 
-        this.eightBitter.MapScreener.blockInputs = true;
+        this.eightBitter.mapScreener.blockInputs = true;
     }
 
     /**
@@ -1072,19 +1072,19 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         }
 
         if (other.gift) {
-            this.eightBitter.MenuGrapher.createMenu("GeneralText", {
+            this.eightBitter.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: true
             });
-            this.eightBitter.MenuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
                 (): void => this.animateCharacterDialogFinish(thing, other));
-            this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
             this.eightBitter.storage.addItemToBag(other.gift);
 
             other.gift = undefined;
-            this.eightBitter.StateHolder.addChange(other.id, "gift", undefined);
+            this.eightBitter.stateHolder.addChange(other.id, "gift", undefined);
 
             return;
         }
@@ -1092,8 +1092,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         if (other.dialogNext) {
             other.dialog = other.dialogNext;
             other.dialogNext = undefined;
-            this.eightBitter.StateHolder.addChange(other.id, "dialog", other.dialog);
-            this.eightBitter.StateHolder.addChange(other.id, "dialogNext", undefined);
+            this.eightBitter.stateHolder.addChange(other.id, "dialog", other.dialog);
+            this.eightBitter.stateHolder.addChange(other.id, "dialogNext", undefined);
         }
 
         if (other.dialogOptions) {
@@ -1101,16 +1101,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         } else if (other.trainer && !(other as IEnemy).alreadyBattled) {
             this.animateTrainerBattleStart(thing, other as IEnemy);
             (other as IEnemy).alreadyBattled = true;
-            this.eightBitter.StateHolder.addChange(other.id, "alreadyBattled", true);
+            this.eightBitter.stateHolder.addChange(other.id, "alreadyBattled", true);
         }
 
         if (other.trainer) {
             other.trainer = false;
-            this.eightBitter.StateHolder.addChange(other.id, "trainer", false);
+            this.eightBitter.stateHolder.addChange(other.id, "trainer", false);
 
             if (other.sight) {
                 other.sight = undefined;
-                this.eightBitter.StateHolder.addChange(other.id, "sight", undefined);
+                this.eightBitter.stateHolder.addChange(other.id, "sight", undefined);
             }
         }
 
@@ -1159,26 +1159,26 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             }
 
             return (): void => {
-                this.eightBitter.MenuGrapher.deleteMenu("Yes/No");
-                this.eightBitter.MenuGrapher.createMenu("GeneralText", {
+                this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+                this.eightBitter.menuGrapher.createMenu("GeneralText", {
                     // "deleteOnFinish": true
                 });
-                this.eightBitter.MenuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText", words, callback);
-                this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
             };
         };
 
         console.warn("DialogOptions assumes type = Yes/No for now...");
 
-        this.eightBitter.MenuGrapher.createMenu("Yes/No", {
+        this.eightBitter.menuGrapher.createMenu("Yes/No", {
             position: {
                 offset: {
                     left: 28
                 }
             }
         });
-        this.eightBitter.MenuGrapher.addMenuList("Yes/No", {
+        this.eightBitter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
@@ -1188,7 +1188,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
                     callback: generateCallback(options.No)
                 }]
         });
-        this.eightBitter.MenuGrapher.setActiveMenu("Yes/No");
+        this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
@@ -1357,7 +1357,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
 
                 if (thing.player) {
                     (thing as IPlayer).canKeyWalking = true;
-                    this.eightBitter.MapScreener.blockInputs = false;
+                    this.eightBitter.mapScreener.blockInputs = false;
                 }
             },
             steps * speed);
@@ -1384,7 +1384,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
                 console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
             }
 
-            this.eightBitter.StateHolder.addChange(other.id, "alive", false);
+            this.eightBitter.stateHolder.addChange(other.id, "alive", false);
             this.eightBitter.physics.killNormal(other);
         }
 
@@ -1461,12 +1461,12 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             this.eightBitter.physics.killNormal(other);
         }
 
-        if (!this.eightBitter.MenuGrapher.getMenu(name)) {
-            this.eightBitter.MenuGrapher.createMenu(name, other.menuAttributes);
+        if (!this.eightBitter.menuGrapher.getMenu(name)) {
+            this.eightBitter.menuGrapher.createMenu(name, other.menuAttributes);
         }
 
         if (dialog) {
-            this.eightBitter.MenuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.addMenuDialog(
                 name,
                 dialog,
                 (): void => {
@@ -1476,25 +1476,25 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
                         onStop = other.pushSteps.slice();
                     }
 
-                    this.eightBitter.MenuGrapher.deleteMenu("GeneralText");
+                    this.eightBitter.menuGrapher.deleteMenu("GeneralText");
 
                     if (typeof other.pushDirection !== "undefined") {
                         if (onStop) {
                             onStop.push((): void => {
-                                this.eightBitter.MapScreener.blockInputs = false;
+                                this.eightBitter.mapScreener.blockInputs = false;
                                 delete thing.collidedTrigger;
                             });
                             this.animateCharacterStartWalkingCycle(
                                 thing, other.pushDirection, onStop);
                         }
                     } else {
-                        this.eightBitter.MapScreener.blockInputs = false;
+                        this.eightBitter.mapScreener.blockInputs = false;
                         delete thing.collidedTrigger;
                     }
                 });
         }
 
-        this.eightBitter.MenuGrapher.setActiveMenu(name);
+        this.eightBitter.menuGrapher.setActiveMenu(name);
     }
 
     /**
@@ -1512,7 +1512,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         other.viewer.talking = true;
         other.active = false;
 
-        this.eightBitter.MapScreener.blockInputs = true;
+        this.eightBitter.mapScreener.blockInputs = true;
 
         this.eightBitter.scenePlayer.startCutscene("TrainerSpotted", {
             player: thing,
@@ -1584,9 +1584,9 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
         }
 
-        this.eightBitter.MenuGrapher.createMenu("GeneralText");
-        this.eightBitter.MenuGrapher.addMenuDialog("GeneralText", dialog);
-        this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", dialog);
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1629,7 +1629,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
             (): boolean => this.eightBitter.animations.activateCharacterRoaming(thing),
             70 + this.eightBitter.numberMaker.randomInt(210));
 
-        if (!thing.talking && !this.eightBitter.MenuGrapher.getActiveMenu()) {
+        if (!thing.talking && !this.eightBitter.menuGrapher.getActiveMenu()) {
             this.eightBitter.animations.animateCharacterStartWalkingRandom(thing);
         }
 
@@ -1657,8 +1657,8 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
     public checkWindowDetector(thing: IDetector): boolean {
         if (
             thing.bottom < 0
-            || thing.left > this.eightBitter.MapScreener.width
-            || thing.top > this.eightBitter.MapScreener.height
+            || thing.left > this.eightBitter.mapScreener.width
+            || thing.top > this.eightBitter.mapScreener.height
             || thing.right < 0) {
             return false;
         }
@@ -1744,16 +1744,16 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
         const screenOffsetX: number = areaOffsetX - thing.left;
         const screenOffsetY: number = areaOffsetY - thing.top;
 
-        this.eightBitter.MapScreener.top = screenOffsetY;
-        this.eightBitter.MapScreener.right = screenOffsetX + this.eightBitter.MapScreener.width;
-        this.eightBitter.MapScreener.bottom = screenOffsetY + this.eightBitter.MapScreener.height;
-        this.eightBitter.MapScreener.left = screenOffsetX;
+        this.eightBitter.mapScreener.top = screenOffsetY;
+        this.eightBitter.mapScreener.right = screenOffsetX + this.eightBitter.mapScreener.width;
+        this.eightBitter.mapScreener.bottom = screenOffsetY + this.eightBitter.mapScreener.height;
+        this.eightBitter.mapScreener.left = screenOffsetX;
 
         this.eightBitter.itemsHolder.setItem("map", other.map);
         this.eightBitter.itemsHolder.setItem("area", other.area);
         this.eightBitter.itemsHolder.setItem("location", undefined);
 
-        this.eightBitter.StateHolder.setCollection(area.map.name + "::" + area.name);
+        this.eightBitter.stateHolder.setCollection(area.map.name + "::" + area.name);
 
         other.active = false;
         this.eightBitter.timeHandler.addEvent(
@@ -1787,7 +1787,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
      * @todo Add an animation for what happens when the CuttableTree is cut.
      */
     public partyActivateCut(player: IPlayer): void {
-        this.eightBitter.MenuGrapher.deleteAllMenus();
+        this.eightBitter.menuGrapher.deleteAllMenus();
         this.eightBitter.menus.closePauseMenu();
         this.eightBitter.physics.killNormal(player.bordering[player.direction]!);
     }
@@ -1801,7 +1801,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
     public partyActivateStrength(player: IPlayer): void {
         let boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
 
-        this.eightBitter.MenuGrapher.deleteAllMenus();
+        this.eightBitter.menuGrapher.deleteAllMenus();
         this.eightBitter.menus.closePauseMenu();
 
         if (!this.eightBitter.thingHitter.checkHitForThings(player as any, boulder as any)
@@ -1850,7 +1850,7 @@ export class Animations<TEightBittr extends FullScreenPokemon> extends Component
      * @todo Add the dialogue for when the Player starts surfing.
      */
     public partyActivateSurf(player: IPlayer): void {
-        this.eightBitter.MenuGrapher.deleteAllMenus();
+        this.eightBitter.menuGrapher.deleteAllMenus();
         this.eightBitter.menus.closePauseMenu();
 
         if (player.cycling) {

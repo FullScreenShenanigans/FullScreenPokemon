@@ -8,6 +8,7 @@ import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as inumbermakr from "numbermakr/lib/INumberMakr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 import * as iuserwrappr from "userwrappr/lib/IUserWrappr";
+import * as iuserwrapprschemas from "userwrappr/lib/UISchemas";
 
 /**
  * Container for holding the states of objects in the game.
@@ -512,7 +513,22 @@ export interface IStateModuleSettings extends igamestartr.IModuleSettingsObject 
 /**
  * Settings regarding the UI, particularly for an IUserWrappr.
  */
-export interface IUserWrapprSettings extends igamestartr.IModuleSettingsObject, iuserwrappr.IUserWrapprSettings {}
+export interface IUserWrapprSettings extends igamestartr.IModuleSettingsObject {
+    /**
+     * Schemas for each UI control to be made.
+     */
+    schemas?: iuserwrapprschemas.ISchema[];
+
+    /**
+     * Allowed sizes for the game.
+     */
+    sizes?: iuserwrappr.ISizeSummaries;
+
+    /**
+     * The default starting size.
+     */
+    sizeDefault: string;
+}
 
 /**
  * Stored settings to generate modules.

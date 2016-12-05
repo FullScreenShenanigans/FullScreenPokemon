@@ -28,11 +28,7 @@
     </header>
 
     <section id="game">
-        <!-- FSP.UserWrapper will fill out this section... -->
-    </section>
-
-    <section id="controls">
-        <!-- FSP.UserWrapper will fill out this section... -->
+        <!-- FSP will fill out this section... -->
     </section>
 
     <section id="explanation" class="section-text">
@@ -105,7 +101,7 @@
         };
 
         for (var i = 0; i < dependencies.length; i += 1) {
-            config.paths[dependencies[i]] = "../node_modules/" + dependencies[i];
+            config.paths[dependencies[i].toLowerCase()] = "../node_modules/" + dependencies[i];
         }
 
         requirejs.config(config);

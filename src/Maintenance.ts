@@ -34,7 +34,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
             const character: ICharacter = characters[i];
             this.eightBitter.physics.shiftCharacter(character);
 
-            if (character.shouldWalk && !this.eightBitter.MenuGrapher.getActiveMenu()) {
+            if (character.shouldWalk && !this.eightBitter.menuGrapher.getActiveMenu()) {
                 character.onWalkingStart.call(this, character, character.direction);
                 character.shouldWalk = false;
             }
@@ -97,7 +97,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends Componen
             return;
         }
 
-        switch (this.eightBitter.MapScreener.variables.scrollability) {
+        switch (this.eightBitter.mapScreener.variables.scrollability) {
             case Scrollability.Horizontal:
                 this.eightBitter.scrolling.scrollWindow(this.eightBitter.scrolling.getHorizontalScrollAmount());
                 return;

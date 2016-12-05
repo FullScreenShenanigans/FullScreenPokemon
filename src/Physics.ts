@@ -147,7 +147,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends GameStartrPh
      */
     public setPlayerDirection(thing: IPlayer, direction: Direction): void {
         thing.direction = direction;
-        this.eightBitter.MapScreener.playerDirection = direction;
+        this.eightBitter.mapScreener.playerDirection = direction;
         thing.shouldWalk = true;
     }
 

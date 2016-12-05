@@ -20,11 +20,11 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             return false;
         }
 
-        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
             return true;
         }
 
-        return !this.eightBitter.MapScreener.blockInputs;
+        return !this.eightBitter.mapScreener.blockInputs;
     }
 
     /**
@@ -146,8 +146,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             return;
         }
 
-        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
-            this.eightBitter.MenuGrapher.registerDirection(direction as number);
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerDirection(direction as number);
         } else {
             if (thing.direction !== direction) {
                 thing.turning = direction;
@@ -176,8 +176,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             return;
         }
 
-        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
-            this.eightBitter.MenuGrapher.registerA();
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerA();
         } else if (thing.bordering[thing.direction]) {
             if (thing.bordering[thing.direction]!.activate) {
                 thing.bordering[thing.direction]!.activate!.call(
@@ -210,8 +210,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
             return;
         }
 
-        if (this.eightBitter.MenuGrapher.getActiveMenu()) {
-            this.eightBitter.MenuGrapher.registerB();
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerB();
         } else if ((thing as IPlayer).keys) {
             (thing as IPlayer).keys.b = true;
         }
@@ -263,7 +263,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends Component<TEi
      * @todo Extend the use for any registered item, not just the bicycle.
      */
     public keyDownSelect(thing: IPlayer, event?: Event): void {
-        if (this.eightBitter.MenuGrapher.getActiveMenu() || thing.walking) {
+        if (this.eightBitter.menuGrapher.getActiveMenu() || thing.walking) {
             return;
         }
 

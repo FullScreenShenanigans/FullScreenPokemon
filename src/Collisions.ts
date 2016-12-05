@@ -247,12 +247,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
         other.talking = true;
         thing.canKeyWalking = false;
 
-        if (!this.eightBitter.MenuGrapher.getActiveMenu()) {
-            this.eightBitter.MenuGrapher.createMenu("GeneralText", {
+        if (!this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: !other.dialogOptions
             });
-            this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
-            this.eightBitter.MenuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
                 (): void => this.eightBitter.animations.animateCharacterDialogFinish(thing, other)
@@ -277,21 +277,21 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("Pokeball must have an item for the item action.");
                 }
 
-                this.eightBitter.MenuGrapher.createMenu("GeneralText");
-                this.eightBitter.MenuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                     ],
                     (): void => {
-                        this.eightBitter.MenuGrapher.deleteActiveMenu();
+                        this.eightBitter.menuGrapher.deleteActiveMenu();
                         this.eightBitter.physics.killNormal(other);
-                        this.eightBitter.StateHolder.addChange(
+                        this.eightBitter.stateHolder.addChange(
                             other.id, "alive", false
                         );
                     }
                 );
-                this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
                 this.eightBitter.storage.addItemToBag(other.item, other.amount);
                 break;
@@ -323,16 +323,16 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                     throw new Error("Pokeball must have a dialog for the cutscene action.");
                 }
 
-                this.eightBitter.MenuGrapher.createMenu("GeneralText");
-                this.eightBitter.MenuGrapher.addMenuDialog("GeneralText", other.dialog);
-                this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
                 break;
 
             case "yes/no":
-                this.eightBitter.MenuGrapher.createMenu("Yes/No", {
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"]
                 });
-                this.eightBitter.MenuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
@@ -342,7 +342,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
                             callback: (): void => console.log("What do, no?")
                         }]
                 });
-                this.eightBitter.MenuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
                 break;
 
             default:
@@ -414,7 +414,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends Component
 
         if (thing.player) {
             (thing as IPlayer).canKeyWalking = false;
-            this.eightBitter.MapScreener.blockInputs = true;
+            this.eightBitter.mapScreener.blockInputs = true;
         }
         this.eightBitter.animations.animateCharacterHopLedge(thing, other);
 

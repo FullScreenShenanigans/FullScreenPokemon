@@ -24,17 +24,17 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends Component<TE
 
         const rod: IRod = item as IRod;
 
-        this.eightBitter.MenuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
             ignoreA: true,
             ignoreB: true
         });
-        this.eightBitter.MenuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!"
             ]);
-        this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
         this.eightBitter.physics.setWidth(player, 7, true, true);
         this.eightBitter.graphics.addClass(player, "fishing");
@@ -68,10 +68,10 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends Component<TE
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.MenuGrapher.createMenu("GeneralText", {
+                this.eightBitter.menuGrapher.createMenu("GeneralText", {
                     deleteOnFinish: true
                 });
-                this.eightBitter.MenuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "Oh! \n It's a bite!"
@@ -88,7 +88,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends Component<TE
                             }
                         });
                     });
-                this.eightBitter.MenuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
                 this.eightBitter.graphics.removeClass(player, "fishing");
                 this.eightBitter.physics.setWidth(player, 8, true, true);
             },
@@ -102,7 +102,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param player   A Player who does not land a fish.
      */
     public playerFailedLandingFish(player: IPlayer): void {
-        this.eightBitter.MenuGrapher.deleteActiveMenu();
+        this.eightBitter.menuGrapher.deleteActiveMenu();
         this.eightBitter.menus.displayMessage(player, "rekt");
         this.eightBitter.graphics.removeClass(player, "fishing");
         this.eightBitter.physics.setWidth(player, 8, true, true);

@@ -49,11 +49,11 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends GameStartrG
         }
 
         this.eightBitter.maps.setMap("Blank");
-        this.eightBitter.MenuGrapher.createMenu("StartOptions");
-        this.eightBitter.MenuGrapher.addMenuList("StartOptions", {
+        this.eightBitter.menuGrapher.createMenu("StartOptions");
+        this.eightBitter.menuGrapher.addMenuList("StartOptions", {
             options: options
         });
-        this.eightBitter.MenuGrapher.setActiveMenu("StartOptions");
+        this.eightBitter.menuGrapher.setActiveMenu("StartOptions");
     }
 
     /**

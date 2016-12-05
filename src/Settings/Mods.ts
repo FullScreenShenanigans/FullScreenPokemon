@@ -28,7 +28,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
 
                         this.storage.addStateHistory(area, "allowCycling", area.allowCycling);
                         area.allowCycling = true;
-                        this.MapScreener.variables.allowCycling = true;
+                        this.mapScreener.variables.allowCycling = true;
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
                         const area: IArea = this.areaSpawner.getArea() as IArea;
@@ -41,7 +41,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         if (!area.allowCycling && this.player.cycling) {
                             this.cycling.stopCycling(this.player);
                         }
-                        this.MapScreener.variables.allowCycling = area.allowCycling;
+                        this.mapScreener.variables.allowCycling = area.allowCycling;
                     },
                     onSetLocation: function (this: FullScreenPokemon, mod: IMod): void {
                         mod.events[onModEnableKey].call(this, mod);
@@ -202,7 +202,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         const grassMap: IMap | undefined = this.player.grass && this.areaSpawner.getMap(this.player.grass.mapName) as IMap;
                         const grassArea: IArea | undefined = grassMap && grassMap.areas[this.player.grass!.areaName] as IArea;
 
-                        if (!this.BattleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
+                        if (!this.battleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
                             return;
                         }
 

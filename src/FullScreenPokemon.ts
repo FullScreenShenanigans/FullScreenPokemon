@@ -39,28 +39,28 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * An in-game battle management system for RPG-like battles between actors.
      */
-    public BattleMover: IBattleMovr;
+    public battleMover: IBattleMovr;
 
     /**
      * A simple container for Map attributes given by switching to an Area within 
      * that map.
      */
-    public MapScreener: IMapScreenr;
+    public mapScreener: IMapScreenr;
 
     /**
      * In-game menu and dialog management system for GameStartr.
      */
-    public MenuGrapher: IMenuGraphr;
+    public menuGrapher: IMenuGraphr;
 
     /**
      * General localStorage saving for collections of state.
      */
-    public StateHolder: IStateHoldr;
+    public stateHolder: IStateHoldr;
 
     /**
      * General localStorage saving for collections of state.
      */
-    public UserWrapper: IUserWrappr;
+    public userWrapper: IUserWrappr;
 
     /**
      * Animation functions used by this instance.
@@ -183,8 +183,19 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Any additional settings.
      */
     public constructor(settings: IGameStartrSettings = {}) {
-        if (!settings.unitsize) {
-            settings.unitsize = FullScreenPokemon.prototype.unitsize;
+        settings = Utilities.prototype.proliferate(
+            {
+                unitsize: FullScreenPokemon.prototype.unitsize
+            },
+            settings);
+
+        if (!settings.size && !settings.width && !settings.height) {
+            settings.size = FullScreenPokemon.prototype.moduleSettings.ui.sizeDefault;
+        }
+
+        if (settings.size) {
+            settings.height = FullScreenPokemon.prototype.moduleSettings.ui.sizes![settings.size].height;
+            settings.width = FullScreenPokemon.prototype.moduleSettings.ui.sizes![settings.size].width;
         }
 
         super(settings);
@@ -259,7 +270,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param customs   Any optional custom settings.
      */
     protected resetStateHolder(): void {
-        this.StateHolder = new StateHoldr(
+        this.stateHolder = new StateHoldr(
             this.utilities.proliferate(
                 {
                     itemsHolder: this.itemsHolder
@@ -273,7 +284,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param customs   Any optional custom settings.
      */
     protected resetMenuGrapher(): void {
-        this.MenuGrapher = new MenuGraphr(
+        this.menuGrapher = new MenuGraphr(
             this.utilities.proliferate(
                 {
                     GameStarter: this,
@@ -288,7 +299,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param customs   Any optional custom settings.
      */
     protected resetBattleMover(): void {
-        this.BattleMover = new BattleMovr(
+        this.battleMover = new BattleMovr(
             this.utilities.proliferate(
                 {
                     GameStarter: this,
@@ -349,7 +360,12 @@ export class FullScreenPokemon extends GameStartr {
      * Sets this.UserWrapper.
      */
     protected resetUserWrapper(): void {
-        this.UserWrapper = new UserWrappr(this.moduleSettings.ui);
+        this.userWrapper = new UserWrappr(
+            this.utilities.proliferate(
+                {
+                    gameStarter: this
+                },
+                this.moduleSettings.ui));
     }
 }
 

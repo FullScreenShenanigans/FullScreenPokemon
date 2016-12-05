@@ -52,8 +52,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.eightBitter.things.add(
             thing,
-            prething.left * this.eightBitter.unitsize - this.eightBitter.MapScreener.left,
-            prething.top * this.eightBitter.unitsize - this.eightBitter.MapScreener.top,
+            prething.left * this.eightBitter.unitsize - this.eightBitter.mapScreener.left,
+            prething.top * this.eightBitter.unitsize - this.eightBitter.mapScreener.top,
             true);
 
         // Either the prething or thing, in that order, may request to be in the
@@ -146,12 +146,12 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.eightBitter.audioPlayer.clearAll();
         this.eightBitter.groupHolder.clearArrays();
-        this.eightBitter.MapScreener.clearScreen();
-        this.eightBitter.MenuGrapher.deleteAllMenus();
+        this.eightBitter.mapScreener.clearScreen();
+        this.eightBitter.menuGrapher.deleteAllMenus();
         this.eightBitter.timeHandler.cancelAllEvents();
 
         this.eightBitter.areaSpawner.setLocation(name);
-        this.eightBitter.MapScreener.setVariables();
+        this.eightBitter.mapScreener.setVariables();
 
         const location: ILocation = this.eightBitter.areaSpawner.getLocation(name) as ILocation;
         location.area.spawnedBy = {
@@ -168,13 +168,13 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
             this.eightBitter.itemsHolder.setItem("area", location.area.name);
             this.eightBitter.itemsHolder.setItem("location", name);
         }
-        this.eightBitter.StateHolder.setCollection(location.area.map.name + "::" + location.area.name);
+        this.eightBitter.stateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
         this.eightBitter.quadsKeeper.resetQuadrants();
 
         const theme: string = location.theme || location.area.theme || location.area.map.theme;
 
-        this.eightBitter.MapScreener.theme = theme;
+        this.eightBitter.mapScreener.theme = theme;
         if (theme && this.eightBitter.audioPlayer.getThemeName() !== theme) {
             this.eightBitter.audioPlayer.playTheme(theme);
         }
@@ -268,7 +268,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
         this.eightBitter.animations.animateCharacterSetDirection(
             this.eightBitter.player,
             (typeof location.direction === "undefined"
-                ? this.eightBitter.MapScreener.playerDirection
+                ? this.eightBitter.mapScreener.playerDirection
                 : location.direction)
             || 0);
 
@@ -290,7 +290,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
      * of play. Retrieves Character position from the previous save state.
      */
     public entranceResume(): void {
-        const savedInfo: any = this.eightBitter.StateHolder.getChanges("player") || {};
+        const savedInfo: any = this.eightBitter.stateHolder.getChanges("player") || {};
 
         this.eightBitter.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
@@ -310,8 +310,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends GameStartrMaps<
         const areaCurrent: IArea = this.eightBitter.areaSpawner.getArea() as IArea;
         const mapCurrent: IMap = this.eightBitter.areaSpawner.getMap() as IMap;
         const prethingsCurrent: IPreThingsContainers = this.eightBitter.areaSpawner.getPreThings();
-        let left: number = thing.left + this.eightBitter.MapScreener.left;
-        let top: number = thing.top + this.eightBitter.MapScreener.top;
+        let left: number = thing.left + this.eightBitter.mapScreener.left;
+        let top: number = thing.top + this.eightBitter.mapScreener.top;
 
         switch (direction) {
             case Direction.Top:

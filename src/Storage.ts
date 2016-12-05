@@ -35,7 +35,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
         this.eightBitter.itemsHolder.saveItem("oldLocalStorage");
         this.eightBitter.itemsHolder.setItem("stateCollectionKeys", []);
 
-        this.eightBitter.UserWrapper.resetControls();
+        this.eightBitter.userWrapper.resetControls();
     }
 
     /**
@@ -54,7 +54,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
             }
 
             if (key.slice(0, "StateHolder".length) === "StateHolder") {
-                this.eightBitter.StateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
+                this.eightBitter.stateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
             } else {
                 this.eightBitter.itemsHolder.setItem(key, oldLocalStorage[key]);
             }
@@ -62,7 +62,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
 
         this.eightBitter.itemsHolder.saveAll();
 
-        this.eightBitter.UserWrapper.resetControls();
+        this.eightBitter.userWrapper.resetControls();
     }
 
     /**
@@ -77,18 +77,18 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
         this.eightBitter.ticksElapsed = ticksRecorded;
 
         this.saveCharacterPositions();
-        this.eightBitter.StateHolder.saveCollection();
+        this.eightBitter.stateHolder.saveCollection();
         this.eightBitter.itemsHolder.saveAll();
 
         if (!showText) {
             return;
         }
 
-        this.eightBitter.MenuGrapher.createMenu("GeneralText");
-        this.eightBitter.MenuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
 
         this.eightBitter.timeHandler.addEvent(
-            (): void => this.eightBitter.MenuGrapher.deleteAllMenus(),
+            (): void => this.eightBitter.menuGrapher.deleteAllMenus(),
             49);
     }
 
@@ -142,14 +142,14 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
 
             if (key.slice(0, keyStart.length) === keyStart) {
                 const split: string[] = key.split("::");
-                this.eightBitter.StateHolder.setCollection(split[1] + "::" + split[2], data[key]);
+                this.eightBitter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {
                 this.eightBitter.itemsHolder.setItem(key, data[key]);
             }
         }
 
-        this.eightBitter.MenuGrapher.deleteActiveMenu();
-        this.eightBitter.UserWrapper.resetControls();
+        this.eightBitter.menuGrapher.deleteActiveMenu();
+        this.eightBitter.userWrapper.resetControls();
         this.eightBitter.gameplay.startPlay();
         this.eightBitter.itemsHolder.setItem("gameStarted", true);
     }
@@ -170,15 +170,15 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param id   The ID associated with the Character.
      */
     public saveCharacterPosition(character: ICharacter, id: string): void {
-        this.eightBitter.StateHolder.addChange(
+        this.eightBitter.stateHolder.addChange(
             id,
             "xloc",
-            (character.left + this.eightBitter.MapScreener.left) / this.eightBitter.unitsize);
-        this.eightBitter.StateHolder.addChange(
+            (character.left + this.eightBitter.mapScreener.left) / this.eightBitter.unitsize);
+        this.eightBitter.stateHolder.addChange(
             id,
             "yloc",
-            (character.top + this.eightBitter.MapScreener.top) / this.eightBitter.unitsize);
-        this.eightBitter.StateHolder.addChange(
+            (character.top + this.eightBitter.mapScreener.top) / this.eightBitter.unitsize);
+        this.eightBitter.stateHolder.addChange(
             id,
             "direction",
             character.direction);
