@@ -71,6 +71,7 @@ h1 {
 
 section#game {
     min-height: 210px;
+    margin-bottom: 35px;
 }
 
 section#game .EightBitter {
@@ -81,11 +82,11 @@ section#game .EightBitter {
 
 /* Control section */
 
-#controls {
+.controls {
     text-align: center;
 }
 
-#controls .control {
+.controls .control {
     position: relative;
     display: inline-block;
     margin-top: 0;
@@ -103,15 +104,15 @@ section#game .EightBitter {
     transition: 70ms all;
 }
 
-#controls.length-4 .control {
+.controls.length-4 .control {
     min-width: 25%;
 }
 
-#controls.length-5 .control {
+.controls.length-5 .control {
     min-width: 20%;
 }
 
-#controls .control:hover {
+.controls .control:hover {
     margin-top: -288px;
     height: 316px; /* 288px + 28px */
     border-color: #99ccff;
@@ -119,7 +120,7 @@ section#game .EightBitter {
     z-index: 70;
 }
 
-#controls .control h4 {
+.controls .control h4 {
     position: absolute;
     right: 0;
     bottom: 7px;
@@ -127,30 +128,30 @@ section#game .EightBitter {
     margin: 0;
 }
 
-#controls .control-inner {
+.controls .control-inner {
     margin-top: 28px;
     padding: 7px 3px;
     opacity: 0;
     transition: 35ms opacity;
 }
 
-#controls .control:hover .control-inner {
+.controls .control:hover .control-inner {
     display: block;
     margin-top: 0;
     opacity: 1
 }
 
-#controls .select-options {
+.controls .select-options {
     position: relative;
     max-height: 277px;
     overflow-y: auto;
 }
 
-#controls .select-option-title {
+.controls .select-option-title {
     padding: 11px;
 }
 
-#controls .select-option {
+.controls .select-option {
     margin: 1px 3px;
     display: inline-block;
     background: #ffcc33;
@@ -163,25 +164,25 @@ section#game .EightBitter {
     box-sizing: border-box;
 }
 
-#controls .select-option.option-enabled {
+.controls .select-option.option-enabled {
     background: #ffcc33;
 }
 
-#controls .select-option.option-disabled {
+.controls .select-option.option-disabled {
     background: #ccaa33;
 }
 
-#controls .select-option.select-option-inset {
+.controls .select-option.select-option-inset {
     border: 3px inset;
 }
 
-#controls .select-option.select-option-large {
+.controls .select-option.select-option-large {
     padding: 14px 0;
     font-size: 15px;
     line-height: 140%;
 }
 
-#controls .disabled {
+.controls .disabled {
     opacity: .49 !important;
     cursor: default !important;
     -ms-user-select: none !important;
@@ -192,7 +193,7 @@ section#game .EightBitter {
 
 /* Controls - option buttons */
 
-#controls .options-button-option {
+.controls .options-button-option {
     position: relative;
     display: block;
     left: 0;
@@ -201,7 +202,7 @@ section#game .EightBitter {
     /* width: 70px; */
 }
 
-#controls input[type=number] {
+.controls input[type=number] {
     display: inline;
     margin-left: -3px;
     padding-left: 17px;
@@ -209,7 +210,7 @@ section#game .EightBitter {
     font-family: "Press Start";
 }
 
-#controls select {
+.controls select {
     /* font-size: 1em; */
     font-family: "Press Start";
 }
@@ -217,7 +218,7 @@ section#game .EightBitter {
 
 /* Controls - options */
 
-#controls #control-Options .select-options td {
+.controls #control-Options .select-options td {
     padding-top: 7px;
     padding-bottom: 7px;
 }
@@ -225,42 +226,42 @@ section#game .EightBitter {
 
 /* Controls - option keys */
 
-#controls .options-label-Keys {
+.controls .options-label-Keys {
     padding-left: 14px;
 }
 
-#controls .options-cell-Keys {
+.controls .options-cell-Keys {
     padding: 7px 0;
 }
 
-#controls .options-key-option {
+.controls .options-key-option {
     display: inline;
 }
 
-#controls .options-key-option:not(:last-of-type):after {
+.controls .options-key-option:not(:last-of-type):after {
     content: ", ";
 }
 
 
 /* Controls - tables */
 
-#controls table {
+.controls table {
     width: 100%;
     border-spacing: 1px;
 }
 
-#controls .maps-grid-option {
+.controls .maps-grid-option {
     display: table-cell;
     padding: 3px;
 }
 
-#controls .maps-grid-option-extra {
+.controls .maps-grid-option-extra {
     display: block;
     margin: 7px 2px 0 1px;
     padding: 3px 0;
 }
 
-#controls .maps-grid-input {
+.controls .maps-grid-input {
     margin: 0 2px 0 1px;
     width: 98%;
     box-sizing: border-box;
@@ -271,12 +272,12 @@ section#game .EightBitter {
 
 /* Controls - uploader */
 
-#controls .select-upload {
+.controls .select-upload {
     cursor: pointer;
     overflow: hidden;
 }
 
-#controls .select-upload-input {
+.controls .select-upload-input {
     display: none;
 }
 
@@ -307,4 +308,15 @@ section.section-text {
     section.section-text {
         padding: 14px 7px;
     }
+}
+
+@font-face {
+    font-family: 'Press Start';
+    src:
+        url('Fonts/pressstart2p-webfont.eot?#iefix') format('embedded-opentype'),
+        url('Fonts/pressstart2p-webfont.woff') format('woff'),
+        url('Fonts/pressstart2p-webfont.ttf') format('truetype'),
+        url('Fonts/pressstart2p-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
