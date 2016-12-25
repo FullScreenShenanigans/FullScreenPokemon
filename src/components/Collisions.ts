@@ -1,12 +1,193 @@
-import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
+import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
+import { IMenuDialogRaw, IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
+import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
+import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
 
-import { Direction } from "./Constants";
-import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge } from "./IFullScreenPokemon";
+import { Direction } from "../Constants";
+import { Actions } from "./Actions";
+import { Graphics } from "./Graphics";
+import {
+    ICharacter, IDetector, IGrass, IMapScreenr, IPlayer, IPokeball, IThing, IWaterEdge
+} from "../IFullScreenPokemon";
+import { Menus } from "./Menus";
+import { Physics } from "./Physics";
+import { Saves } from "./Saves";
+import { Things } from "./Things";
+import { Utilities } from "./Utilities";
+
+/**
+ * 
+ */
+export interface ICollisionsSettings {
+    /**
+     * Action functions used by FullScreenPokemon instances.
+     */
+    animations: Actions;
+
+    /**
+     * Graphics functions used by FullScreenPokemon instances.
+     */
+    graphics: Graphics;
+
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    groupHolder: IGroupHoldr;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    mapScreener: IMapScreenr;
+
+    /**
+     * Menu functions used by FullScreenPokemon instances.
+     */
+    menus: Menus;
+
+    /**
+     * Menu management system.
+     */
+    menuGrapher: IMenuGraphr;
+
+    /**
+     * An abstract factory for dynamic attribute-based JavaScript classes.
+     */
+    objectMaker: IObjectMakr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    physics: Physics;
+
+    /**
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
+     */
+    pixelDrawer: IPixelDrawr;
+
+    /**
+     * Storage functions used by FullScreenPokemon instances.
+     */
+    saves: Saves;
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    scenePlayer: IScenePlayr;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    stateHolder: IStateHoldr;
+
+    /**
+     * Thing manipulation functions used by FullScreenPokemon instances.
+     */
+    things: Things;
+
+    /**
+     * Miscellaneous utility functions used by FullScreenPokemon instances.
+     */
+    utilities: Utilities;
+}
 
 /**
  * Collision functions used by FullScreenPokemon instances.
  */
 export class Collisions {
+    /**
+     * Action functions used by FullScreenPokemon instances.
+     */
+    protected readonly animations: Actions;
+
+    /**
+     * Graphics functions used by FullScreenPokemon instances.
+     */
+    protected readonly graphics: Graphics;
+
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    protected readonly groupHolder: IGroupHoldr;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    protected readonly mapScreener: IMapScreenr;
+
+    /**
+     * Menu functions used by FullScreenPokemon instances.
+     */
+    protected readonly menus: Menus;
+
+    /**
+     * Menu management system.
+     */
+    protected readonly menuGrapher: IMenuGraphr;
+
+    /**
+     * An abstract factory for dynamic attribute-based JavaScript classes.
+     */
+    protected readonly objectMaker: IObjectMakr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    protected readonly physics: Physics;
+
+    /**
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
+     */
+    protected readonly pixelDrawer: IPixelDrawr;
+
+    /**
+     * Storage functions used by FullScreenPokemon instances.
+     */
+    protected readonly saves: Saves;
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    protected readonly scenePlayer: IScenePlayr;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    protected readonly stateHolder: IStateHoldr;
+
+    /**
+     * Thing manipulation functions used by FullScreenPokemon instances.
+     */
+    protected readonly things: Things;
+
+    /**
+     * Miscellaneous utility functions used by FullScreenPokemon instances.
+     */
+    protected readonly utilities: Utilities;
+
+    /**
+     * Initializes a new instance of the Collisions class.
+     * 
+     * @param settings   Settings to be used for initialization.
+     */
+    public constructor(settings: ICollisionsSettings) {
+        this.animations = settings.animations;
+        this.graphics = settings.graphics;
+        this.groupHolder = settings.groupHolder;
+        this.mapScreener = settings.mapScreener;
+        this.menus = settings.menus;
+        this.menuGrapher = settings.menuGrapher;
+        this.objectMaker = settings.objectMaker;
+        this.physics = settings.physics;
+        this.pixelDrawer = settings.pixelDrawer;
+        this.saves = settings.saves;
+        this.scenePlayer = settings.scenePlayer;
+        this.stateHolder = settings.stateHolder;
+        this.things = settings.things;
+        this.utilities = settings.utilities;
+    }
+
     /**
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
@@ -291,7 +472,7 @@ export class Collisions {
                 );
                 this.menuGrapher.setActiveMenu("GeneralText");
 
-                this.storage.addItemToBag(other.item, other.amount);
+                this.saves.addItemToBag(other.item, other.amount);
                 break;
 
             case "cutscene":
@@ -360,7 +541,7 @@ export class Collisions {
         }
 
         thing.grass = other;
-        this.storage.addStateHistory(thing, "height", thing.height);
+        this.saves.addStateHistory(thing, "height", thing.height);
 
         // Todo: Find a better way than manually setting canvas height?
         thing.canvas.height = thing.heightGrass * 4;

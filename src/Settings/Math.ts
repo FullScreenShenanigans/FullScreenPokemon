@@ -1,6 +1,6 @@
 import { IActorExperience, IMove } from "battlemovr/lib/IBattleMovr";
 
-import { Animations } from "../Animations";
+import { Actions } from "../Animations";
 import { Unitsize } from "../Constants";
 import { Cycling } from "../Cycling";
 import { Fishing } from "../Fishing";
@@ -15997,7 +15997,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                     "accuracy": "95%",
                     "PP": 30,
                     "description": "No additional effect.",
-                    "partyActivate": Animations.prototype.partyActivateCut,
+                    "partyActivate": Actions.prototype.partyActivateCut,
                     "characterName": "CuttableTree",
                     "requiredBadge": "Cascade"
                 } as IHMMoveSchema,
@@ -16860,7 +16860,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                     "accuracy": "100%",
                     "PP": 15,
                     "description": "No additional effect.",
-                    "partyActivate": Animations.prototype.partyActivateStrength,
+                    "partyActivate": Actions.prototype.partyActivateStrength,
                     "characterName": "StrengthBoulder",
                     "requiredBadge": "Rainbow"
                 } as IHMMoveSchema,
@@ -16927,7 +16927,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                     "accuracy": "100%",
                     "PP": 15,
                     "description": "No additional effect.",
-                    "partyActivate": Animations.prototype.partyActivateSurf,
+                    "partyActivate": Actions.prototype.partyActivateSurf,
                     "characterName": "WaterEdge",
                     "requiredBadge": "Soul"
                 } as IHMMoveSchema,

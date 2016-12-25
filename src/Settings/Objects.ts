@@ -1,6 +1,6 @@
 import { IObjectsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Animations } from "../Animations";
+import { Actions } from "../Animations";
 import { Collisions } from "../Collisions";
 import { Unitsize } from "../Constants";
 import { Maps } from "../Maps";
@@ -798,9 +798,9 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "direction": 2,
                 "offsetY": Unitsize * -2,
                 "roamingDirections": [0, 1, 2, 3],
-                "onThingAdd": Animations.prototype.spawnCharacter,
-                "onWalkingStart": Animations.prototype.animateCharacterStartWalking,
-                "onWalkingStop": Animations.prototype.animateCharacterStopWalking,
+                "onThingAdd": Actions.prototype.spawnCharacter,
+                "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
+                "onWalkingStop": Actions.prototype.animateCharacterStopWalking,
                 "activate": Collisions.prototype.collideCharacterDialog,
             },
             "Buzzer": {
@@ -824,8 +824,8 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "canKeyWalking": true,
                 "direction": 2,
                 "speed": Unitsize / 2,
-                "onWalkingStart": Animations.prototype.animateCharacterStartWalking,
-                "onWalkingStop": Animations.prototype.animatePlayerStopWalking,
+                "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
+                "onWalkingStop": Actions.prototype.animatePlayerStopWalking,
                 "getKeys": () => {
                     return {
                         "0": false,
@@ -876,29 +876,29 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "hidden": true
             },
             "AreaGate": {
-                "activate": Animations.prototype.activateAreaGate,
+                "activate": Actions.prototype.activateAreaGate,
                 "active": true,
                 "requireOverlap": true
             },
             "CutsceneTriggerer": {
-                "activate": Animations.prototype.activateCutsceneTriggerer,
+                "activate": Actions.prototype.activateCutsceneTriggerer,
                 "requireOverlap": true
             },
             "MenuTriggerer": {
-                "activate": Animations.prototype.activateMenuTriggerer
+                "activate": Actions.prototype.activateMenuTriggerer
             },
             "SightDetector": {
-                "activate": Animations.prototype.activateSightDetector,
+                "activate": Actions.prototype.activateSightDetector,
                 "requireOverlap": true,
                 "hidden": true
             },
             "ThemePlayer": {
-                "activate": Animations.prototype.activateThemePlayer,
+                "activate": Actions.prototype.activateThemePlayer,
                 "requireOverlap": true,
                 "hidden": true
             },
             "Transporter": {
-                "activate": Animations.prototype.activateTransporter,
+                "activate": Actions.prototype.activateTransporter,
                 "requireOverlap": true,
                 "hidden": false
             },
@@ -917,7 +917,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "hidden": true
             },
             "CutsceneResponder": {
-                "activate": Animations.prototype.activateCutsceneResponder
+                "activate": Actions.prototype.activateCutsceneResponder
             },
             "FenceVertical": [4, 8],
             "FloorDiamondsDark": {
@@ -933,21 +933,21 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "GymStatue": {
                 "height": 16,
-                "activate": Animations.prototype.activateGymStatue
+                "activate": Actions.prototype.activateGymStatue
             },
             "HealingMachine": [16, 16],
             "HealingMachineBall": [3, 3],
             "HMCharacter": {
-                "activate": Animations.prototype.activateHMCharacter
+                "activate": Actions.prototype.activateHMCharacter
             },
             "CuttableTree": {
                 "moveName": "Cut",
-                "moveCallback": Animations.prototype.partyActivateCut,
+                "moveCallback": Actions.prototype.partyActivateCut,
                 "requiredBadge": "Cascade"
             },
             "StrengthBoulder": {
                 "moveName": "Strength",
-                "moveCallback": Animations.prototype.partyActivateStrength,
+                "moveCallback": Actions.prototype.partyActivateStrength,
                 "speed": Unitsize,
                 "requiredBadge": "Rainbow"
             },
@@ -1046,10 +1046,10 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "SofaLeft": [8, 16],
             "Spawner": {
                 "hidden": true,
-                "onThingAdd": Animations.prototype.activateSpawner
+                "onThingAdd": Actions.prototype.activateSpawner
             },
             "AreaSpawner": {
-                "activate": Animations.prototype.spawnareaSpawner
+                "activate": Actions.prototype.spawnareaSpawner
             },
             "SquareWallTop": {
                 "spriteheight": .5
@@ -1080,9 +1080,9 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "height": 4,
                 "width": 4,
                 "collide": Collisions.prototype.collideWaterEdge,
-                "activate": Animations.prototype.activateHMCharacter,
+                "activate": Actions.prototype.activateHMCharacter,
                 "moveName": "Surf",
-                "moveCallback": Animations.prototype.partyActivateSurf,
+                "moveCallback": Actions.prototype.partyActivateSurf,
                 "requiredBadge": "Soul"
             },
             "WaterEdgeTop": {
@@ -1099,7 +1099,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "WindowDetector": {
                 "hidden": true,
-                "onThingAdd": Animations.prototype.spawnWindowDetector
+                "onThingAdd": Actions.prototype.spawnWindowDetector
             },
             "FloorLinedHorizontal": {
                 "spritewidth": .5,
