@@ -1,305 +1,21 @@
-import { IAreaSpawnr } from "areaspawnr/lib/IAreaSpawnr";
-import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
 import { IMove } from "battlemovr/lib/IBattleMovr";
-import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
-import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
-import { IMenuDialogRaw, IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
-import { IModAttachr } from "modattachr/lib/IModAttachr";
-import { INumberMakr } from "numbermakr/lib/INumberMakr";
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
-import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
-import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
-import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
-import { IThingHittr } from "thinghittr/lib/IThingHittr";
-import { IEventCallback, ITimeEvent, ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
+import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
+import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { Direction, DirectionAliases, DirectionClasses } from "../Constants";
 import {
     IArea, IAreaGate, IareaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog,
-    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMapScreenr,
+    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap,
     IMenuTriggerer, IPlayer, IPokemon, ISightDetector, IThemeDetector, IThing,
     ITransporter, ITransportSchema, IWalkingOnStop, IWalkingOnStopCommandFunction,
     IWildPokemonSchema
 } from "../IFullScreenPokemon";
-import { Battles } from "./Battles";
-import { Graphics } from "./Graphics";
-import { Maps } from "./Maps";
-import { Menus } from "./Menus";
-import { Physics } from "./Physics";
-import { Saves } from "./Saves";
-import { Things } from "./Things";
-import { Utilities } from "./Utilities";
-
-/**
- * Settings to initialize a new instance of the Action class.
- */
-export interface IActionsSettings {
-    /**
-     * Loads GameStartr maps to spawn and unspawn areas on demand.
-     */
-    areaSpawner: IAreaSpawnr;
-
-    /**
-     * An audio playback manager for persistent and on-demand themes and sounds.
-     */
-    audioPlayer: IAudioPlayr;
-
-    /**
-     * Battle functions used by FullScreenPokemon instances.
-     */
-    battles: Battles;
-
-    /**
-     * Graphics functions used by FullScreenPokemon instances.
-     */
-    graphics: Graphics;
-
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    groupHolder: IGroupHoldr;
-
-    /**
-     * A versatile container to store and manipulate values in localStorage.
-     */
-    itemsHolder: IItemsHoldr;
-
-    /**
-     * Map functions used by FullScreenPokemon instances.
-     */
-    maps: Maps;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    mapScreener: IMapScreenr;
-
-    /**
-     * A computation utility to automate running common equations.
-     */
-    mathDecider: IMathDecidr;
-
-    /**
-     * Menu functions used by FullScreenPokemon instances.
-     */
-    menus: Menus;
-
-    /**
-     * Menu management system.
-     */
-    menuGrapher: IMenuGraphr;
-
-    /**
-     * Hookups for extensible triggered mod events.
-     */
-    modAttacher: IModAttachr;
-
-    /**
-     * State-based random number generator.
-     */
-    numberMaker: INumberMakr;
-
-    /**
-     * An abstract factory for dynamic attribute-based JavaScript classes.
-     */
-    objectMaker: IObjectMakr;
-
-    /**
-     * Physics functions used by FullScreenPokemon instances.
-     */
-    physics: Physics;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    pixelDrawer: IPixelDrawr;
-
-    /**
-     * Storage functions used by FullScreenPokemon instances.
-     */
-    saves: Saves;
-
-    /**
-     * A cutscene runner for jumping between scenes and their routines.
-     */
-    scenePlayer: IScenePlayr;
-
-    /**
-     * General storage saving for collections of state.
-     */
-    stateHolder: IStateHoldr;
-
-    /**
-     * Thing manipulation functions used by FullScreenPokemon instances.
-     */
-    things: Things;
-
-    /**
-     * Automation for physics collisions and reactions.
-     */
-    thingHitter: IThingHittr;
-
-    /**
-     * A flexible, pausable alternative to setTimeout.
-     */
-    timeHandler: ITimeHandlr;
-
-    /**
-     * Miscellaneous utility functions used by FullScreenPokemon instances.
-     */
-    utilities: Utilities;
-}
+import { Component } from "./Component";
 
 /**
  * Action functions used by FullScreenPokemon instances.
  */
-export class Actions {
-    /**
-     * Loads GameStartr maps to spawn and unspawn areas on demand.
-     */
-    protected readonly areaSpawner: IAreaSpawnr;
-
-    /**
-     * An audio playback manager for persistent and on-demand themes and sounds.
-     */
-    protected readonly audioPlayer: IAudioPlayr;
-
-    /**
-     * Battle functions used by FullScreenPokemon instances.
-     */
-    protected readonly battles: Battles;
-
-    /**
-     * Graphics functions used by FullScreenPokemon instances.
-     */
-    protected readonly graphics: Graphics;
-
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    protected readonly groupHolder: IGroupHoldr;
-
-    /**
-     * A versatile container to store and manipulate values in localStorage.
-     */
-    protected readonly itemsHolder: IItemsHoldr;
-
-    /**
-     * Map functions used by FullScreenPokemon instances.
-     */
-    protected readonly maps: Maps;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    protected readonly mapScreener: IMapScreenr;
-
-    /**
-     * A computation utility to automate running common equations.
-     */
-    protected readonly mathDecider: IMathDecidr;
-
-    /**
-     * Menu functions used by FullScreenPokemon instances.
-     */
-    protected readonly menus: Menus;
-
-    /**
-     * Menu management system.
-     */
-    protected readonly menuGrapher: IMenuGraphr;
-
-    /**
-     * Hookups for extensible triggered mod events.
-     */
-    protected readonly modAttacher: IModAttachr;
-
-    /**
-     * State-based random number generator.
-     */
-    protected readonly numberMaker: INumberMakr;
-
-    /**
-     * An abstract factory for dynamic attribute-based JavaScript classes.
-     */
-    protected readonly objectMaker: IObjectMakr;
-
-    /**
-     * Physics functions used by FullScreenPokemon instances.
-     */
-    protected readonly physics: Physics;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    protected readonly pixelDrawer: IPixelDrawr;
-
-    /**
-     * Storage functions used by FullScreenPokemon instances.
-     */
-    protected readonly saves: Saves;
-
-    /**
-     * A cutscene runner for jumping between scenes and their routines.
-     */
-    protected readonly scenePlayer: IScenePlayr;
-
-    /**
-     * General storage saving for collections of state.
-     */
-    protected readonly stateHolder: IStateHoldr;
-
-    /**
-     * Thing manipulation functions used by FullScreenPokemon instances.
-     */
-    protected readonly things: Things;
-
-    /**
-     * Automation for physics collisions and reactions.
-     */
-    protected readonly thingHitter: IThingHittr;
-
-    /**
-     * A flexible, pausable alternative to setTimeout.
-     */
-    protected readonly timeHandler: ITimeHandlr;
-
-    /**
-     * Miscellaneous utility functions used by FullScreenPokemon instances.
-     */
-    protected readonly utilities: Utilities;
-
-    /**
-     * Initializes a new instance of the Actions class.
-     * 
-     * @param settings   Settings to be used for initialization.
-     */
-    public constructor(settings: IActionsSettings) {
-        this.areaSpawner = settings.areaSpawner;
-        this.audioPlayer = settings.audioPlayer;
-        this.battles = settings.battles;
-        this.graphics = settings.graphics;
-        this.groupHolder = settings.groupHolder;
-        this.itemsHolder = settings.itemsHolder;
-        this.maps = settings.maps;
-        this.mapScreener = settings.mapScreener;
-        this.mathDecider = settings.mathDecider;
-        this.menus = settings.menus;
-        this.menuGrapher = settings.menuGrapher;
-        this.modAttacher = settings.modAttacher;
-        this.numberMaker = settings.numberMaker;
-        this.objectMaker = settings.objectMaker;
-        this.physics = settings.physics;
-        this.pixelDrawer = settings.pixelDrawer;
-        this.saves = settings.saves;
-        this.scenePlayer = settings.scenePlayer;
-        this.things = settings.things;
-        this.thingHitter = settings.thingHitter;
-        this.timeHandler = settings.timeHandler;
-        this.utilities = settings.utilities;
-    }
-
+export class Actions extends Component {
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
      * 
@@ -307,7 +23,7 @@ export class Actions {
      */
     public spawnCharacter(thing: ICharacter): void {
         if (thing.sight) {
-            thing.sightDetector = this.things.add(
+            thing.sightDetector = this.fsp.things.add(
                 [
                     "SightDetector",
                     {
@@ -320,9 +36,9 @@ export class Actions {
         }
 
         if (thing.roaming) {
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                 (): boolean => this.activateCharacterRoaming(thing),
-                this.numberMaker.randomInt(70));
+                this.fsp.numberMaker.randomInt(70));
         }
     }
 
@@ -334,7 +50,7 @@ export class Actions {
      */
     public spawnWindowDetector(thing: IDetector): void {
         if (!this.checkWindowDetector(thing)) {
-            this.timeHandler.addEventInterval(
+            this.fsp.timeHandler.addEventInterval(
                 (): boolean => this.checkWindowDetector(thing),
                 7,
                 Infinity);
@@ -348,11 +64,11 @@ export class Actions {
      */
     public animateSnapToGrid(thing: IThing): void {
         const grid: number = 4 * 8;
-        const x: number = (this.mapScreener.left + thing.left) / grid;
-        const y: number = (this.mapScreener.top + thing.top) / grid;
+        const x: number = (this.fsp.mapScreener.left + thing.left) / grid;
+        const y: number = (this.fsp.mapScreener.top + thing.top) / grid;
 
-        this.physics.setLeft(thing, Math.round(x) * grid - this.mapScreener.left);
-        this.physics.setTop(thing, Math.round(y) * grid - this.mapScreener.top);
+        this.fsp.physics.setLeft(thing, Math.round(x) * grid - this.fsp.mapScreener.left);
+        this.fsp.physics.setTop(thing, Math.round(y) * grid - this.fsp.mapScreener.top);
     }
 
     /**
@@ -362,10 +78,10 @@ export class Actions {
      */
     public animatePlayerDialogFreeze(thing: ICharacter): void {
         this.animateCharacterPreventWalking(thing);
-        this.timeHandler.cancelClassCycle(thing, "walking");
+        this.fsp.timeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
-            this.timeHandler.cancelEvent(thing.walkingFlipping);
+            this.fsp.timeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
     }
@@ -408,7 +124,7 @@ export class Actions {
             }
         }
 
-        return this.timeHandler.addEvent(
+        return this.fsp.timeHandler.addEvent(
             (): void => {
                 this.animateFadeAttribute(
                     thing,
@@ -437,19 +153,19 @@ export class Actions {
         goal: number,
         speed: number,
         onCompletion?: (thing: IThing) => void): void {
-        this.physics.shiftHoriz(thing, change);
+        this.fsp.physics.shiftHoriz(thing, change);
 
         if (change > 0) {
-            if (this.physics.getMidX(thing) >= goal) {
-                this.physics.setMidX(thing, goal);
+            if (this.fsp.physics.getMidX(thing) >= goal) {
+                this.fsp.physics.setMidX(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
                 return;
             }
         } else {
-            if (this.physics.getMidX(thing) <= goal) {
-                this.physics.setMidX(thing, goal);
+            if (this.fsp.physics.getMidX(thing) <= goal) {
+                this.fsp.physics.setMidX(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
@@ -457,7 +173,7 @@ export class Actions {
             }
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 this.animateSlideHorizontal(
                     thing,
@@ -485,19 +201,19 @@ export class Actions {
         goal: number,
         speed: number,
         onCompletion?: (thing: IThing) => void): void {
-        this.physics.shiftVert(thing, change);
+        this.fsp.physics.shiftVert(thing, change);
 
         if (change > 0) {
-            if (this.physics.getMidY(thing) >= goal) {
-                this.physics.setMidY(thing, goal);
+            if (this.fsp.physics.getMidY(thing) >= goal) {
+                this.fsp.physics.setMidY(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
                 return;
             }
         } else {
-            if (this.physics.getMidY(thing) <= goal) {
-                this.physics.setMidY(thing, goal);
+            if (this.fsp.physics.getMidY(thing) <= goal) {
+                this.fsp.physics.setMidY(thing, goal);
                 if (onCompletion) {
                     onCompletion(thing);
                 }
@@ -505,7 +221,7 @@ export class Actions {
             }
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 this.animateSlideVertical(
                     thing,
@@ -524,24 +240,24 @@ export class Actions {
      * @param grass   Grass the Character is walking in.
      */
     public animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
-        const grassMap: IMap = this.areaSpawner.getMap(grass.mapName) as IMap;
+        const grassMap: IMap = this.fsp.areaSpawner.getMap(grass.mapName) as IMap;
         const grassArea: IArea = grassMap.areas[grass.areaName] as IArea;
         const options: IWildPokemonSchema[] | undefined = grassArea.wildPokemon.grass;
         if (!options) {
             throw new Error("Grass doesn't have any wild Pokemon options defined.");
         }
 
-        const chosen: IWildPokemonSchema = this.battles.chooseRandomWildPokemon(options);
-        const chosenPokemon: IPokemon = this.utilities.createPokemon(chosen);
+        const chosen: IWildPokemonSchema = this.fsp.battles.chooseRandomWildPokemon(options);
+        const chosenPokemon: IPokemon = this.fsp.utilities.createPokemon(chosen);
 
-        this.graphics.removeClass(thing, "walking");
+        this.fsp.graphics.removeClass(thing, "walking");
         if (thing.shadow) {
-            this.graphics.removeClass(thing.shadow, "walking");
+            this.fsp.graphics.removeClass(thing.shadow, "walking");
         }
 
         this.animateCharacterPreventWalking(thing);
 
-        this.battles.startBattle({
+        this.fsp.battles.startBattle({
             battlers: {
                 opponent: {
                     name: chosen.title,
@@ -563,7 +279,7 @@ export class Actions {
         const battleName: string = other.battleName || other.title;
         const battleSprite: string = other.battleSprite || battleName;
 
-        this.battles.startBattle({
+        this.fsp.battles.startBattle({
             battlers: {
                 opponent: {
                     name: battleName.split(""),
@@ -573,7 +289,7 @@ export class Actions {
                     reward: other.reward,
                     actors: other.actors.map(
                         (schema: IWildPokemonSchema): IPokemon => {
-                            return this.utilities.createPokemon(schema);
+                            return this.fsp.utilities.createPokemon(schema);
                         })
                 }
             },
@@ -606,32 +322,32 @@ export class Actions {
         const things: IThing[] = [];
 
         for (let i: number = 0; i < 4; i += 1) {
-            things.push(this.things.add([title, settings]));
+            things.push(this.fsp.things.add([title, settings]));
         }
 
         if (groupType) {
             for (const thing of things) {
-                this.groupHolder.switchMemberGroup(thing, thing.groupType, groupType);
+                this.fsp.groupHolder.switchMemberGroup(thing, thing.groupType, groupType);
             }
         }
 
-        this.physics.setLeft(things[0], x);
-        this.physics.setLeft(things[1], x);
+        this.fsp.physics.setLeft(things[0], x);
+        this.fsp.physics.setLeft(things[1], x);
 
-        this.physics.setRight(things[2], x);
-        this.physics.setRight(things[3], x);
+        this.fsp.physics.setRight(things[2], x);
+        this.fsp.physics.setRight(things[3], x);
 
-        this.physics.setBottom(things[0], y);
-        this.physics.setBottom(things[3], y);
+        this.fsp.physics.setBottom(things[0], y);
+        this.fsp.physics.setBottom(things[3], y);
 
-        this.physics.setTop(things[1], y);
-        this.physics.setTop(things[2], y);
+        this.fsp.physics.setTop(things[1], y);
+        this.fsp.physics.setTop(things[2], y);
 
-        this.graphics.flipHoriz(things[0]);
-        this.graphics.flipHoriz(things[1]);
+        this.fsp.graphics.flipHoriz(things[0]);
+        this.fsp.graphics.flipHoriz(things[1]);
 
-        this.graphics.flipVert(things[1]);
-        this.graphics.flipVert(things[2]);
+        this.fsp.graphics.flipVert(things[1]);
+        this.fsp.graphics.flipVert(things[2]);
 
         return things as [IThing, IThing, IThing, IThing];
     }
@@ -643,15 +359,15 @@ export class Actions {
      * @param amount   How far to move each Thing horizontally and vertically.
      */
     public animateExpandCorners(things: [IThing, IThing, IThing, IThing], amount: number): void {
-        this.physics.shiftHoriz(things[0], amount);
-        this.physics.shiftHoriz(things[1], amount);
-        this.physics.shiftHoriz(things[2], -amount);
-        this.physics.shiftHoriz(things[3], -amount);
+        this.fsp.physics.shiftHoriz(things[0], amount);
+        this.fsp.physics.shiftHoriz(things[1], amount);
+        this.fsp.physics.shiftHoriz(things[2], -amount);
+        this.fsp.physics.shiftHoriz(things[3], -amount);
 
-        this.physics.shiftVert(things[0], -amount);
-        this.physics.shiftVert(things[1], amount);
-        this.physics.shiftVert(things[2], amount);
-        this.physics.shiftVert(things[3], -amount);
+        this.fsp.physics.shiftVert(things[0], -amount);
+        this.fsp.physics.shiftVert(things[1], amount);
+        this.fsp.physics.shiftVert(things[2], amount);
+        this.fsp.physics.shiftVert(things[3], -amount);
     }
 
     /**
@@ -664,15 +380,15 @@ export class Actions {
     public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
         let things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.physics.killNormal(thing);
+                    this.fsp.physics.killNormal(thing);
                 }
             },
             7);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => this.animateSmokeMedium(x, y, callback),
             7);
     }
@@ -687,19 +403,19 @@ export class Actions {
     public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
         const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => this.animateExpandCorners(things, 4),
             7);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.physics.killNormal(thing);
+                    this.fsp.physics.killNormal(thing);
                 }
             },
             14);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => this.animateSmokeLarge(x, y, callback),
             14);
     }
@@ -716,20 +432,20 @@ export class Actions {
 
         this.animateExpandCorners(things, 4 * 2.5);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => this.animateExpandCorners(things, 4 * 2),
             7);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.physics.killNormal(thing);
+                    this.fsp.physics.killNormal(thing);
                 }
             },
             21);
 
         if (callback) {
-            this.timeHandler.addEvent(callback, 21);
+            this.fsp.timeHandler.addEvent(callback, 21);
         }
     }
 
@@ -742,19 +458,19 @@ export class Actions {
      * @returns The exclamation Thing.
      */
     public animateExclamation(thing: IThing, timeout?: number, callback?: () => void): IThing {
-        let exclamation: IThing = this.things.add("Exclamation");
+        let exclamation: IThing = this.fsp.things.add("Exclamation");
 
         timeout = timeout || 140;
 
-        this.physics.setMidXObj(exclamation, thing);
-        this.physics.setBottom(exclamation, thing.top);
+        this.fsp.physics.setMidXObj(exclamation, thing);
+        this.fsp.physics.setBottom(exclamation, thing.top);
 
-        this.timeHandler.addEvent(
-            (): void => this.physics.killNormal(exclamation),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.killNormal(exclamation),
             timeout);
 
         if (callback) {
-            this.timeHandler.addEvent(callback, timeout);
+            this.fsp.timeHandler.addEvent(callback, timeout);
         }
 
         return exclamation;
@@ -771,13 +487,13 @@ export class Actions {
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.objectMaker.make(color + "Square", {
-            width: this.mapScreener.width,
-            height: this.mapScreener.height,
+        const blank: IThing = this.fsp.objectMaker.make(color + "Square", {
+            width: this.fsp.mapScreener.width,
+            height: this.fsp.mapScreener.height,
             opacity: 0
         });
 
-        this.things.add(blank);
+        this.fsp.things.add(blank);
 
         this.animateFadeAttribute(
             blank,
@@ -786,7 +502,7 @@ export class Actions {
             1,
             speed,
             (): void => {
-                this.physics.killNormal(blank);
+                this.fsp.physics.killNormal(blank);
                 if (callback) {
                     callback();
                 }
@@ -806,13 +522,13 @@ export class Actions {
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.objectMaker.make(color + "Square", {
-            width: this.mapScreener.width,
-            height: this.mapScreener.height,
+        const blank: IThing = this.fsp.objectMaker.make(color + "Square", {
+            width: this.fsp.mapScreener.width,
+            height: this.fsp.mapScreener.height,
             opacity: 1
         });
 
-        this.things.add(blank);
+        this.fsp.things.add(blank);
 
         this.animateFadeAttribute(
             blank,
@@ -821,7 +537,7 @@ export class Actions {
             0,
             speed,
             (): void => {
-                this.physics.killNormal(blank);
+                this.fsp.physics.killNormal(blank);
                 if (callback) {
                     callback(settings, ...args);
                 }
@@ -847,20 +563,20 @@ export class Actions {
         callback?: (thing: IThing) => void): ITimeEvent {
         thing.flickering = true;
 
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => {
                 thing.hidden = !thing.hidden;
                 if (!thing.hidden) {
-                    this.pixelDrawer.setThingSprite(thing);
+                    this.fsp.pixelDrawer.setThingSprite(thing);
                 }
             },
             interval | 0,
             cleartime | 0);
 
-        return this.timeHandler.addEvent(
+        return this.fsp.timeHandler.addEvent(
             (): void => {
                 thing.flickering = thing.hidden = false;
-                this.pixelDrawer.setThingSprite(thing);
+                this.fsp.pixelDrawer.setThingSprite(thing);
 
                 if (callback) {
                     callback(thing);
@@ -886,20 +602,20 @@ export class Actions {
         cleartime: number = 8,
         interval: number = 8,
         callback?: IEventCallback): ITimeEvent {
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => {
-                this.groupHolder.callOnAll(this.physics, this.physics.shiftHoriz, dx);
-                this.groupHolder.callOnAll(this.physics, this.physics.shiftVert, dy);
+                this.fsp.groupHolder.callOnAll(this.fsp.physics, this.fsp.physics.shiftHoriz, dx);
+                this.fsp.groupHolder.callOnAll(this.fsp.physics, this.fsp.physics.shiftVert, dy);
             },
             1,
             cleartime * interval);
 
-        return this.timeHandler.addEvent(
+        return this.fsp.timeHandler.addEvent(
             (): void => {
                 dx *= -1;
                 dy *= -1;
 
-                this.timeHandler.addEventInterval(
+                this.fsp.timeHandler.addEventInterval(
                     (): void => {
                         dx *= -1;
                         dy *= -1;
@@ -908,7 +624,7 @@ export class Actions {
                     cleartime);
 
                 if (callback) {
-                    this.timeHandler.addEvent(callback, interval * cleartime);
+                    this.fsp.timeHandler.addEvent(callback, interval * cleartime);
                 }
             },
             (interval / 2) | 0);
@@ -993,7 +709,7 @@ export class Actions {
         this.animateCharacterStartWalking(thing, direction, onStop);
 
         if (!thing.bordering[direction]) {
-            this.physics.shiftBoth(thing, -thing.xvel, -thing.yvel);
+            this.fsp.physics.shiftBoth(thing, -thing.xvel, -thing.yvel);
         }
     }
 
@@ -1005,7 +721,7 @@ export class Actions {
      * @param onStop   A queue of commands as alternating directions and distances.
      */
     public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
-        const repeats: number = this.mathDecider.compute("speedWalking", thing);
+        const repeats: number = this.fsp.mathDecider.compute("speedWalking", thing);
         const distance: number = repeats * thing.speed;
 
         thing.walking = true;
@@ -1013,7 +729,7 @@ export class Actions {
         this.animateCharacterSetDistanceVelocity(thing, distance);
 
         if (!thing.cycles || !(thing.cycles as any).walking) {
-            this.timeHandler.addClassCycle(
+            this.fsp.timeHandler.addClassCycle(
                 thing,
                 ["walking", "standing"],
                 "walking",
@@ -1021,7 +737,7 @@ export class Actions {
         }
 
         if (!thing.walkingFlipping) {
-            thing.walkingFlipping = this.timeHandler.addEventInterval(
+            thing.walkingFlipping = this.fsp.timeHandler.addEventInterval(
                 (): void => this.animateSwitchFlipOnDirection(thing),
                 repeats,
                 Infinity,
@@ -1032,7 +748,7 @@ export class Actions {
             thing.sightDetector!.nocollide = true;
         }
 
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => thing.onWalkingStop.call(this, thing, onStop),
             repeats,
             Infinity,
@@ -1040,7 +756,7 @@ export class Actions {
             onStop);
 
         if (!thing.bordering[direction]) {
-            this.physics.shiftBoth(thing, thing.xvel, thing.yvel);
+            this.fsp.physics.shiftBoth(thing, thing.xvel, thing.yvel);
         }
     }
 
@@ -1069,7 +785,7 @@ export class Actions {
             return;
         }
 
-        direction = this.numberMaker.randomInt(totalAllowed);
+        direction = this.fsp.numberMaker.randomInt(totalAllowed);
 
         for (i = 0; i <= direction; i += 1) {
             if (thing.bordering[i]) {
@@ -1122,11 +838,11 @@ export class Actions {
         thing.yvel = 0;
         thing.walking = false;
 
-        this.graphics.removeClasses(thing, "walking", "standing");
-        this.timeHandler.cancelClassCycle(thing, "walking");
+        this.fsp.graphics.removeClasses(thing, "walking", "standing");
+        this.fsp.timeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
-            this.timeHandler.cancelEvent(thing.walkingFlipping);
+            this.fsp.timeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
 
@@ -1182,7 +898,7 @@ export class Actions {
      * @returns True, unless the next onStop is a Function to return the result of.
      */
     public animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
-        if (this.battles.checkPlayerGrassBattle(thing)) {
+        if (this.fsp.battles.checkPlayerGrassBattle(thing)) {
             thing.canKeyWalking = true;
             return false;
         }
@@ -1192,7 +908,7 @@ export class Actions {
         }
 
         if (
-            !this.menuGrapher.getActiveMenu()
+            !this.fsp.menuGrapher.getActiveMenu()
             && (thing.keys as any)[thing.direction]) {
             this.animateCharacterSetDistanceVelocity(thing, thing.distance);
             return false;
@@ -1200,7 +916,7 @@ export class Actions {
 
         if (typeof thing.nextDirection !== "undefined") {
             if (thing.nextDirection !== thing.direction && !thing.ledge) {
-                this.physics.setPlayerDirection(thing, thing.nextDirection);
+                this.fsp.physics.setPlayerDirection(thing, thing.nextDirection);
             }
 
             delete thing.nextDirection;
@@ -1224,7 +940,7 @@ export class Actions {
             (thing as IPlayer).keys = (thing as IPlayer).getKeys();
         }
 
-        this.mapScreener.blockInputs = true;
+        this.fsp.mapScreener.blockInputs = true;
     }
 
     /**
@@ -1238,21 +954,21 @@ export class Actions {
         thing.direction = direction;
 
         if (direction % 2 === 1) {
-            this.graphics.unflipHoriz(thing);
+            this.fsp.graphics.unflipHoriz(thing);
         }
 
-        this.graphics.removeClasses(
+        this.fsp.graphics.removeClasses(
             thing,
             DirectionClasses[Direction.Top],
             DirectionClasses[Direction.Right],
             DirectionClasses[Direction.Bottom],
             DirectionClasses[Direction.Left]);
 
-        this.graphics.addClass(thing, DirectionClasses[direction]);
+        this.fsp.graphics.addClass(thing, DirectionClasses[direction]);
 
         if (direction === Direction.Right) {
-            this.graphics.flipHoriz(thing);
-            this.graphics.addClass(thing, DirectionClasses[Direction.Left]);
+            this.fsp.graphics.flipHoriz(thing);
+            this.fsp.graphics.addClass(thing, DirectionClasses[Direction.Left]);
         }
     }
 
@@ -1262,7 +978,7 @@ export class Actions {
      * @param thing   An in-game Thing.
      */
     public animateCharacterSetDirectionRandom(thing: IThing): void {
-        this.animateCharacterSetDirection(thing, this.numberMaker.randomIntWithin(0, 3));
+        this.animateCharacterSetDirection(thing, this.fsp.numberMaker.randomIntWithin(0, 3));
     }
 
     /**
@@ -1276,9 +992,9 @@ export class Actions {
         }
 
         if (thing.flipHoriz) {
-            this.graphics.unflipHoriz(thing);
+            this.fsp.graphics.unflipHoriz(thing);
         } else {
-            this.graphics.flipHoriz(thing);
+            this.fsp.graphics.flipHoriz(thing);
         }
     }
 
@@ -1293,31 +1009,31 @@ export class Actions {
 
         if (detector.direction !== direction) {
             if (thing.direction % 2 === 0) {
-                this.physics.setWidth(detector, thing.width);
-                this.physics.setHeight(detector, thing.sight * 8);
+                this.fsp.physics.setWidth(detector, thing.width);
+                this.fsp.physics.setHeight(detector, thing.sight * 8);
             } else {
-                this.physics.setWidth(detector, thing.sight * 8);
-                this.physics.setHeight(detector, thing.height);
+                this.fsp.physics.setWidth(detector, thing.sight * 8);
+                this.fsp.physics.setHeight(detector, thing.height);
             }
             detector.direction = direction;
         }
 
         switch (direction) {
             case 0:
-                this.physics.setBottom(detector, thing.top);
-                this.physics.setMidXObj(detector, thing);
+                this.fsp.physics.setBottom(detector, thing.top);
+                this.fsp.physics.setMidXObj(detector, thing);
                 break;
             case 1:
-                this.physics.setLeft(detector, thing.right);
-                this.physics.setMidYObj(detector, thing);
+                this.fsp.physics.setLeft(detector, thing.right);
+                this.fsp.physics.setMidYObj(detector, thing);
                 break;
             case 2:
-                this.physics.setTop(detector, thing.bottom);
-                this.physics.setMidXObj(detector, thing);
+                this.fsp.physics.setTop(detector, thing.bottom);
+                this.fsp.physics.setMidXObj(detector, thing);
                 break;
             case 3:
-                this.physics.setRight(detector, thing.left);
-                this.physics.setMidYObj(detector, thing);
+                this.fsp.physics.setRight(detector, thing.left);
+                this.fsp.physics.setMidYObj(detector, thing);
                 break;
             default:
                 throw new Error("Unknown direction: " + direction + ".");
@@ -1334,7 +1050,7 @@ export class Actions {
     public animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
         let onStop: IWalkingOnStop | undefined = other.pushSteps;
 
-        this.modAttacher.fireEvent("onDialogFinish", other);
+        this.fsp.modAttacher.fireEvent("onDialogFinish", other);
 
         thing.talking = false;
         other.talking = false;
@@ -1355,19 +1071,19 @@ export class Actions {
         }
 
         if (other.gift) {
-            this.menuGrapher.createMenu("GeneralText", {
+            this.fsp.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: true
             });
-            this.menuGrapher.addMenuDialog(
+            this.fsp.menuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
                 (): void => this.animateCharacterDialogFinish(thing, other));
-            this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-            this.saves.addItemToBag(other.gift);
+            this.fsp.saves.addItemToBag(other.gift);
 
             other.gift = undefined;
-            this.stateHolder.addChange(other.id, "gift", undefined);
+            this.fsp.stateHolder.addChange(other.id, "gift", undefined);
 
             return;
         }
@@ -1375,8 +1091,8 @@ export class Actions {
         if (other.dialogNext) {
             other.dialog = other.dialogNext;
             other.dialogNext = undefined;
-            this.stateHolder.addChange(other.id, "dialog", other.dialog);
-            this.stateHolder.addChange(other.id, "dialogNext", undefined);
+            this.fsp.stateHolder.addChange(other.id, "dialog", other.dialog);
+            this.fsp.stateHolder.addChange(other.id, "dialogNext", undefined);
         }
 
         if (other.dialogOptions) {
@@ -1384,21 +1100,21 @@ export class Actions {
         } else if (other.trainer && !(other as IEnemy).alreadyBattled) {
             this.animateTrainerBattleStart(thing, other as IEnemy);
             (other as IEnemy).alreadyBattled = true;
-            this.stateHolder.addChange(other.id, "alreadyBattled", true);
+            this.fsp.stateHolder.addChange(other.id, "alreadyBattled", true);
         }
 
         if (other.trainer) {
             other.trainer = false;
-            this.stateHolder.addChange(other.id, "trainer", false);
+            this.fsp.stateHolder.addChange(other.id, "trainer", false);
 
             if (other.sight) {
                 other.sight = undefined;
-                this.stateHolder.addChange(other.id, "sight", undefined);
+                this.fsp.stateHolder.addChange(other.id, "sight", undefined);
             }
         }
 
         if (!other.dialogOptions) {
-            this.saves.autoSave();
+            this.fsp.saves.autoSave();
         }
     }
 
@@ -1432,7 +1148,7 @@ export class Actions {
             } else {
                 words = (callbackDialog as IDialog).words || callbackDialog as string;
                 if ((callbackDialog as IDialog).cutscene) {
-                    callback = this.scenePlayer.bindCutscene(
+                    callback = this.fsp.scenePlayer.bindCutscene(
                         (callbackDialog as IDialog).cutscene!,
                         {
                             player: thing,
@@ -1442,26 +1158,26 @@ export class Actions {
             }
 
             return (): void => {
-                this.menuGrapher.deleteMenu("Yes/No");
-                this.menuGrapher.createMenu("GeneralText", {
+                this.fsp.menuGrapher.deleteMenu("Yes/No");
+                this.fsp.menuGrapher.createMenu("GeneralText", {
                     // "deleteOnFinish": true
                 });
-                this.menuGrapher.addMenuDialog(
+                this.fsp.menuGrapher.addMenuDialog(
                     "GeneralText", words, callback);
-                this.menuGrapher.setActiveMenu("GeneralText");
+                this.fsp.menuGrapher.setActiveMenu("GeneralText");
             };
         };
 
         console.warn("DialogOptions assumes type = Yes/No for now...");
 
-        this.menuGrapher.createMenu("Yes/No", {
+        this.fsp.menuGrapher.createMenu("Yes/No", {
             position: {
                 offset: {
                     left: 28
                 }
             }
         });
-        this.menuGrapher.addMenuList("Yes/No", {
+        this.fsp.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
@@ -1471,7 +1187,7 @@ export class Actions {
                     callback: generateCallback(options.No)
                 }]
         });
-        this.menuGrapher.setActiveMenu("Yes/No");
+        this.fsp.menuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
@@ -1482,7 +1198,7 @@ export class Actions {
      * @param other   The leading Character.
      */
     public animateCharacterFollow(thing: ICharacter, other: ICharacter): void {
-        let direction: Direction | undefined = this.physics.getDirectionBordering(thing, other);
+        let direction: Direction | undefined = this.fsp.physics.getDirectionBordering(thing, other);
         if (!direction) {
             throw new Error("Characters are too far away to follow.");
         }
@@ -1497,7 +1213,7 @@ export class Actions {
         thing.following = other;
         other.follower = thing;
 
-        this.saves.addStateHistory(thing, "speed", thing.speed);
+        this.fsp.saves.addStateHistory(thing, "speed", thing.speed);
         thing.speed = other.speed;
 
         other.walkingCommands = [];
@@ -1506,16 +1222,16 @@ export class Actions {
 
         switch (direction) {
             case 0:
-                this.physics.setTop(thing, other.bottom);
+                this.fsp.physics.setTop(thing, other.bottom);
                 break;
             case 1:
-                this.physics.setRight(thing, other.left);
+                this.fsp.physics.setRight(thing, other.left);
                 break;
             case 2:
-                this.physics.setBottom(thing, other.top);
+                this.fsp.physics.setBottom(thing, other.top);
                 break;
             case 3:
-                this.physics.setLeft(thing, other.right);
+                this.fsp.physics.setLeft(thing, other.right);
                 break;
             default:
                 break;
@@ -1525,9 +1241,9 @@ export class Actions {
         // so that it continues smoothly in the walking interval
         this.animateCharacterStartWalking(thing, direction);
 
-        thing.followingLoop = this.timeHandler.addEventInterval(
+        thing.followingLoop = this.fsp.timeHandler.addEventInterval(
             (): void => this.animateCharacterFollowContinue(thing, other),
-            this.mathDecider.compute("speedWalking", thing),
+            this.fsp.mathDecider.compute("speedWalking", thing),
             Infinity);
     }
 
@@ -1569,7 +1285,7 @@ export class Actions {
         delete other.follower;
 
         this.animateCharacterStopWalking(thing);
-        this.timeHandler.cancelEvent(thing.followingLoop!);
+        this.fsp.timeHandler.cancelEvent(thing.followingLoop!);
 
         return true;
     }
@@ -1581,7 +1297,7 @@ export class Actions {
      * @param other   A ledge for thing to hop over.
      */
     public animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
-        const shadow: IThing = this.things.add("Shadow");
+        const shadow: IThing = this.fsp.things.add("Shadow");
         const speed: number = 2;
         let dy: number = -4;
         let steps: number = 14;
@@ -1591,11 +1307,11 @@ export class Actions {
         thing.ledge = other;
 
         // Center the shadow below the Thing
-        this.physics.setMidXObj(shadow, thing);
-        this.physics.setBottom(shadow, thing.bottom);
+        this.fsp.physics.setMidXObj(shadow, thing);
+        this.fsp.physics.setBottom(shadow, thing.bottom);
 
         // Continuously ensure The Thing still moves off the ledge if not walking
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): boolean => {
                 if (thing.walking) {
                     return false;
@@ -1608,9 +1324,9 @@ export class Actions {
             steps * speed - 1);
 
         // Keep the shadow below the Thing, and move the Thing's offsetY
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => {
-                this.physics.setBottom(shadow, thing.bottom);
+                this.fsp.physics.setBottom(shadow, thing.bottom);
 
                 if (changed % speed === 0) {
                     thing.offsetY += dy;
@@ -1622,17 +1338,17 @@ export class Actions {
             steps * speed);
 
         // Inverse the Thing's offsetY changes halfway through the hop
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 dy *= -1;
             },
             speed * (steps / 2) | 0);
 
         // Delete the shadow after the jump is done
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 delete thing.ledge;
-                this.physics.killNormal(shadow);
+                this.fsp.physics.killNormal(shadow);
 
                 if (!thing.walking) {
                     this.animateCharacterStopWalking(thing);
@@ -1640,7 +1356,7 @@ export class Actions {
 
                 if (thing.player) {
                     (thing as IPlayer).canKeyWalking = true;
-                    this.mapScreener.blockInputs = false;
+                    this.fsp.mapScreener.blockInputs = false;
                 }
             },
             steps * speed);
@@ -1667,19 +1383,19 @@ export class Actions {
                 console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
             }
 
-            this.stateHolder.addChange(other.id, "alive", false);
-            this.physics.killNormal(other);
+            this.fsp.stateHolder.addChange(other.id, "alive", false);
+            this.fsp.physics.killNormal(other);
         }
 
         if (other.cutscene) {
-            this.scenePlayer.startCutscene(other.cutscene, {
+            this.fsp.scenePlayer.startCutscene(other.cutscene, {
                 player: thing,
                 triggerer: other
             });
         }
 
         if (other.routine) {
-            this.scenePlayer.playRoutine(other.routine);
+            this.fsp.scenePlayer.playRoutine(other.routine);
         }
     }
 
@@ -1690,11 +1406,11 @@ export class Actions {
      * @param other   A Detector triggered by thing.
      */
     public activateThemePlayer(thing: IPlayer, other: IThemeDetector): void {
-        if (!thing.player || this.audioPlayer.getThemeName() === other.theme) {
+        if (!thing.player || this.fsp.audioPlayer.getThemeName() === other.theme) {
             return;
         }
 
-        this.audioPlayer.playTheme(other.theme);
+        this.fsp.audioPlayer.playTheme(other.theme);
     }
 
     /**
@@ -1713,7 +1429,7 @@ export class Actions {
             return;
         }
 
-        this.scenePlayer.startCutscene(other.cutscene!, {
+        this.fsp.scenePlayer.startCutscene(other.cutscene!, {
             player: thing,
             triggerer: other
         });
@@ -1741,15 +1457,15 @@ export class Actions {
         this.animateCharacterPreventWalking(thing);
 
         if (!other.keepAlive) {
-            this.physics.killNormal(other);
+            this.fsp.physics.killNormal(other);
         }
 
-        if (!this.menuGrapher.getMenu(name)) {
-            this.menuGrapher.createMenu(name, other.menuAttributes);
+        if (!this.fsp.menuGrapher.getMenu(name)) {
+            this.fsp.menuGrapher.createMenu(name, other.menuAttributes);
         }
 
         if (dialog) {
-            this.menuGrapher.addMenuDialog(
+            this.fsp.menuGrapher.addMenuDialog(
                 name,
                 dialog,
                 (): void => {
@@ -1759,25 +1475,25 @@ export class Actions {
                         onStop = other.pushSteps.slice();
                     }
 
-                    this.menuGrapher.deleteMenu("GeneralText");
+                    this.fsp.menuGrapher.deleteMenu("GeneralText");
 
                     if (typeof other.pushDirection !== "undefined") {
                         if (onStop) {
                             onStop.push((): void => {
-                                this.mapScreener.blockInputs = false;
+                                this.fsp.mapScreener.blockInputs = false;
                                 delete thing.collidedTrigger;
                             });
                             this.animateCharacterStartWalkingCycle(
                                 thing, other.pushDirection, onStop);
                         }
                     } else {
-                        this.mapScreener.blockInputs = false;
+                        this.fsp.mapScreener.blockInputs = false;
                         delete thing.collidedTrigger;
                     }
                 });
         }
 
-        this.menuGrapher.setActiveMenu(name);
+        this.fsp.menuGrapher.setActiveMenu(name);
     }
 
     /**
@@ -1795,9 +1511,9 @@ export class Actions {
         other.viewer.talking = true;
         other.active = false;
 
-        this.mapScreener.blockInputs = true;
+        this.fsp.mapScreener.blockInputs = true;
 
-        this.scenePlayer.startCutscene("TrainerSpotted", {
+        this.fsp.scenePlayer.startCutscene("TrainerSpotted", {
             player: thing,
             sightDetector: other,
             triggerer: other.viewer
@@ -1826,15 +1542,15 @@ export class Actions {
 
         if (typeof transport === "string") {
             callback = (): void => {
-                this.maps.setLocation(transport);
+                this.fsp.maps.setLocation(transport);
             };
         } else if (typeof transport.map !== "undefined") {
             callback = (): void => {
-                this.maps.setMap(transport.map, transport.location);
+                this.fsp.maps.setMap(transport.map, transport.location);
             };
         } else if (typeof transport.location !== "undefined") {
             callback = (): void => {
-                this.maps.setLocation(transport.location);
+                this.fsp.maps.setLocation(transport.location);
             };
         } else {
             throw new Error(`Unknown transport type: '${transport}'`);
@@ -1869,13 +1585,13 @@ export class Actions {
             "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
         ];
 
-        if (this.itemsHolder.getItem("badges")[leader]) {
+        if (this.fsp.itemsHolder.getItem("badges")[leader]) {
             dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
         }
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog("GeneralText", dialog);
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog("GeneralText", dialog);
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1885,11 +1601,11 @@ export class Actions {
      * @param thing   The Solid to be affected.
      */
     public activateHMCharacter(player: IPlayer, thing: IHMCharacter): void {
-        if (thing.requiredBadge && !this.itemsHolder.getItem("badges")[thing.requiredBadge]) {
+        if (thing.requiredBadge && !this.fsp.itemsHolder.getItem("badges")[thing.requiredBadge]) {
             return;
         }
 
-        let partyPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+        let partyPokemon: IPokemon[] = this.fsp.itemsHolder.getItem("PokemonInParty");
 
         for (let pokemon of partyPokemon) {
             let moves: IMove[] = pokemon.moves;
@@ -1914,11 +1630,11 @@ export class Actions {
             return true;
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): boolean => this.activateCharacterRoaming(thing),
-            70 + this.numberMaker.randomInt(210));
+            70 + this.fsp.numberMaker.randomInt(210));
 
-        if (!thing.talking && !this.menuGrapher.getActiveMenu()) {
+        if (!thing.talking && !this.fsp.menuGrapher.getActiveMenu()) {
             this.animateCharacterStartWalkingRandom(thing);
         }
 
@@ -1946,8 +1662,8 @@ export class Actions {
     public checkWindowDetector(thing: IDetector): boolean {
         if (
             thing.bottom < 0
-            || thing.left > this.mapScreener.width
-            || thing.top > this.mapScreener.height
+            || thing.left > this.fsp.mapScreener.width
+            || thing.top > this.fsp.mapScreener.height
             || thing.right < 0) {
             return false;
         }
@@ -1957,7 +1673,7 @@ export class Actions {
         }
 
         thing.activate.call(this, thing);
-        this.physics.killNormal(thing);
+        this.fsp.physics.killNormal(thing);
         return true;
     }
 
@@ -1968,25 +1684,25 @@ export class Actions {
      * @param thing   An areaSpawner to activate.
      */
     public spawnareaSpawner(thing: IareaSpawner): void {
-        const map: IMap = this.areaSpawner.getMap(thing.map) as IMap;
+        const map: IMap = this.fsp.areaSpawner.getMap(thing.map) as IMap;
         const area: IArea = map.areas[thing.area] as IArea;
 
-        if (area === this.areaSpawner.getArea()) {
-            this.physics.killNormal(thing);
+        if (area === this.fsp.areaSpawner.getArea()) {
+            this.fsp.physics.killNormal(thing);
             return;
         }
 
         if (
             area.spawnedBy
-            && area.spawnedBy === (this.areaSpawner.getArea() as IArea).spawnedBy
+            && area.spawnedBy === (this.fsp.areaSpawner.getArea() as IArea).spawnedBy
         ) {
-            this.physics.killNormal(thing);
+            this.fsp.physics.killNormal(thing);
             return;
         }
 
-        area.spawnedBy = (this.areaSpawner.getArea() as IArea).spawnedBy;
+        area.spawnedBy = (this.fsp.areaSpawner.getArea() as IArea).spawnedBy;
 
-        this.maps.activateareaSpawner(thing, area);
+        this.fsp.maps.activateareaSpawner(thing, area);
     }
 
     /**
@@ -2001,7 +1717,7 @@ export class Actions {
             return;
         }
 
-        const area: IArea = this.areaSpawner.getMap(other.map).areas[other.area] as IArea;
+        const area: IArea = this.fsp.areaSpawner.getMap(other.map).areas[other.area] as IArea;
         let areaOffsetX: number;
         let areaOffsetY: number;
 
@@ -2033,19 +1749,19 @@ export class Actions {
         const screenOffsetX: number = areaOffsetX - thing.left;
         const screenOffsetY: number = areaOffsetY - thing.top;
 
-        this.mapScreener.top = screenOffsetY;
-        this.mapScreener.right = screenOffsetX + this.mapScreener.width;
-        this.mapScreener.bottom = screenOffsetY + this.mapScreener.height;
-        this.mapScreener.left = screenOffsetX;
+        this.fsp.mapScreener.top = screenOffsetY;
+        this.fsp.mapScreener.right = screenOffsetX + this.fsp.mapScreener.width;
+        this.fsp.mapScreener.bottom = screenOffsetY + this.fsp.mapScreener.height;
+        this.fsp.mapScreener.left = screenOffsetX;
 
-        this.itemsHolder.setItem("map", other.map);
-        this.itemsHolder.setItem("area", other.area);
-        this.itemsHolder.setItem("location", undefined);
+        this.fsp.itemsHolder.setItem("map", other.map);
+        this.fsp.itemsHolder.setItem("area", other.area);
+        this.fsp.itemsHolder.setItem("location", undefined);
 
-        this.stateHolder.setCollection(area.map.name + "::" + area.name);
+        this.fsp.stateHolder.setCollection(area.map.name + "::" + area.name);
 
         other.active = false;
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 other.active = true;
             },
@@ -2076,9 +1792,9 @@ export class Actions {
      * @todo Add an animation for what happens when the CuttableTree is cut.
      */
     public partyActivateCut(player: IPlayer): void {
-        this.menuGrapher.deleteAllMenus();
-        this.menus.closePauseMenu();
-        this.physics.killNormal(player.bordering[player.direction]!);
+        this.fsp.menuGrapher.deleteAllMenus();
+        this.fsp.menus.closePauseMenu();
+        this.fsp.physics.killNormal(player.bordering[player.direction]!);
     }
 
     /**
@@ -2090,10 +1806,10 @@ export class Actions {
     public partyActivateStrength(player: IPlayer): void {
         let boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
 
-        this.menuGrapher.deleteAllMenus();
-        this.menus.closePauseMenu();
+        this.fsp.menuGrapher.deleteAllMenus();
+        this.fsp.menus.closePauseMenu();
 
-        if (!this.thingHitter.checkHitForThings(player as any, boulder as any)
+        if (!this.fsp.thingHitter.checkHitForThings(player as any, boulder as any)
             || boulder.bordering[player.direction] !== undefined) {
             return;
         }
@@ -2122,8 +1838,8 @@ export class Actions {
                 throw new Error(`Unknown direction: '${player.direction}'.`);
         }
 
-        this.timeHandler.addEventInterval(
-            (): void => this.physics.shiftBoth(boulder, xvel, yvel),
+        this.fsp.timeHandler.addEventInterval(
+            (): void => this.fsp.physics.shiftBoth(boulder, xvel, yvel),
             1,
             8);
 
@@ -2139,15 +1855,15 @@ export class Actions {
      * @todo Add the dialogue for when the Player starts surfing.
      */
     public partyActivateSurf(player: IPlayer): void {
-        this.menuGrapher.deleteAllMenus();
-        this.menus.closePauseMenu();
+        this.fsp.menuGrapher.deleteAllMenus();
+        this.fsp.menus.closePauseMenu();
 
         if (player.cycling) {
             return;
         }
 
         player.bordering[player.direction] = undefined;
-        this.graphics.addClass(player, "surfing");
+        this.fsp.graphics.addClass(player, "surfing");
         this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
     }

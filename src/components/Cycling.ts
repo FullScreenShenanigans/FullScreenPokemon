@@ -1,9 +1,10 @@
-import { IPlayer } from "./IFullScreenPokemon";
+import { IPlayer } from "../IFullScreenPokemon";
+import { Component } from "./Component";
 
 /**
  * Cycling functions used by FullScreenPokemon instances.
  */
-export class Cycling {
+export class Cycling extends Component {
     /**
      * Starts the Player cycling if the current Area allows it.
      *
@@ -16,17 +17,17 @@ export class Cycling {
             return false;
         }
 
-        if (!this.mapScreener.variables.allowCycling) {
+        if (!this.fsp.mapScreener.variables.allowCycling) {
             return false;
         }
 
         thing.cycling = true;
-        this.storage.addStateHistory(thing, "speed", thing.speed);
-        thing.speed = this.mathDecider.compute("speedCycling", thing);
+        this.fsp.saves.addStateHistory(thing, "speed", thing.speed);
+        thing.speed = this.fsp.mathDecider.compute("speedCycling", thing);
 
-        this.graphics.addClass(thing, "cycling");
+        this.fsp.graphics.addClass(thing, "cycling");
 
-        this.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.fsp.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
         return true;
     }
 
@@ -37,12 +38,12 @@ export class Cycling {
      */
     public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
-        this.storage.popStateHistory(thing, "speed");
+        this.fsp.saves.popStateHistory(thing, "speed");
 
-        this.graphics.removeClass(thing, "cycling");
-        this.timeHandler.cancelClassCycle(thing, "cycling");
+        this.fsp.graphics.removeClass(thing, "cycling");
+        this.fsp.timeHandler.cancelClassCycle(thing, "cycling");
 
-        this.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.fsp.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**

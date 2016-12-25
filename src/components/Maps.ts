@@ -20,7 +20,7 @@ import {
     IArea, IAreaBoundaries, IAreaGate, IareaSpawner, ILocation,
     IMap, IMapScreenr, IPlayer, IPreThing, IThing
 } from "../IFullScreenPokemon";
-import { Actions } from "./Animations";
+import { Actions } from "./Actions";
 import { Physics } from "./Physics";
 import { Scrolling } from "./Scrolling";
 import { Saves } from "./Saves";
@@ -29,6 +29,8 @@ import { Utilities } from "./Utilities";
 
 /**
  * Setting to initialize a new instance of the Maps class.
+ * 
+ * @todo Spin these out so Maps doesn't have so many dependencies.
  */
 export interface IMapsSettings extends IGameStartrMapsSettings {
     /**

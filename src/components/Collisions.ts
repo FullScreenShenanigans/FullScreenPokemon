@@ -1,193 +1,15 @@
-import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
-import { IMenuDialogRaw, IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
-import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
-import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
-import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
+import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { Direction } from "../Constants";
-import { Actions } from "./Actions";
-import { Graphics } from "./Graphics";
 import {
-    ICharacter, IDetector, IGrass, IMapScreenr, IPlayer, IPokeball, IThing, IWaterEdge
+    ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge
 } from "../IFullScreenPokemon";
-import { Menus } from "./Menus";
-import { Physics } from "./Physics";
-import { Saves } from "./Saves";
-import { Things } from "./Things";
-import { Utilities } from "./Utilities";
-
-/**
- * 
- */
-export interface ICollisionsSettings {
-    /**
-     * Action functions used by FullScreenPokemon instances.
-     */
-    animations: Actions;
-
-    /**
-     * Graphics functions used by FullScreenPokemon instances.
-     */
-    graphics: Graphics;
-
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    groupHolder: IGroupHoldr;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    mapScreener: IMapScreenr;
-
-    /**
-     * Menu functions used by FullScreenPokemon instances.
-     */
-    menus: Menus;
-
-    /**
-     * Menu management system.
-     */
-    menuGrapher: IMenuGraphr;
-
-    /**
-     * An abstract factory for dynamic attribute-based JavaScript classes.
-     */
-    objectMaker: IObjectMakr;
-
-    /**
-     * Physics functions used by FullScreenPokemon instances.
-     */
-    physics: Physics;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    pixelDrawer: IPixelDrawr;
-
-    /**
-     * Storage functions used by FullScreenPokemon instances.
-     */
-    saves: Saves;
-
-    /**
-     * A cutscene runner for jumping between scenes and their routines.
-     */
-    scenePlayer: IScenePlayr;
-
-    /**
-     * General localStorage saving for collections of state.
-     */
-    stateHolder: IStateHoldr;
-
-    /**
-     * Thing manipulation functions used by FullScreenPokemon instances.
-     */
-    things: Things;
-
-    /**
-     * Miscellaneous utility functions used by FullScreenPokemon instances.
-     */
-    utilities: Utilities;
-}
+import { Component } from "./Component";
 
 /**
  * Collision functions used by FullScreenPokemon instances.
  */
-export class Collisions {
-    /**
-     * Action functions used by FullScreenPokemon instances.
-     */
-    protected readonly animations: Actions;
-
-    /**
-     * Graphics functions used by FullScreenPokemon instances.
-     */
-    protected readonly graphics: Graphics;
-
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    protected readonly groupHolder: IGroupHoldr;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    protected readonly mapScreener: IMapScreenr;
-
-    /**
-     * Menu functions used by FullScreenPokemon instances.
-     */
-    protected readonly menus: Menus;
-
-    /**
-     * Menu management system.
-     */
-    protected readonly menuGrapher: IMenuGraphr;
-
-    /**
-     * An abstract factory for dynamic attribute-based JavaScript classes.
-     */
-    protected readonly objectMaker: IObjectMakr;
-
-    /**
-     * Physics functions used by FullScreenPokemon instances.
-     */
-    protected readonly physics: Physics;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    protected readonly pixelDrawer: IPixelDrawr;
-
-    /**
-     * Storage functions used by FullScreenPokemon instances.
-     */
-    protected readonly saves: Saves;
-
-    /**
-     * A cutscene runner for jumping between scenes and their routines.
-     */
-    protected readonly scenePlayer: IScenePlayr;
-
-    /**
-     * General localStorage saving for collections of state.
-     */
-    protected readonly stateHolder: IStateHoldr;
-
-    /**
-     * Thing manipulation functions used by FullScreenPokemon instances.
-     */
-    protected readonly things: Things;
-
-    /**
-     * Miscellaneous utility functions used by FullScreenPokemon instances.
-     */
-    protected readonly utilities: Utilities;
-
-    /**
-     * Initializes a new instance of the Collisions class.
-     * 
-     * @param settings   Settings to be used for initialization.
-     */
-    public constructor(settings: ICollisionsSettings) {
-        this.animations = settings.animations;
-        this.graphics = settings.graphics;
-        this.groupHolder = settings.groupHolder;
-        this.mapScreener = settings.mapScreener;
-        this.menus = settings.menus;
-        this.menuGrapher = settings.menuGrapher;
-        this.objectMaker = settings.objectMaker;
-        this.physics = settings.physics;
-        this.pixelDrawer = settings.pixelDrawer;
-        this.saves = settings.saves;
-        this.scenePlayer = settings.scenePlayer;
-        this.stateHolder = settings.stateHolder;
-        this.things = settings.things;
-        this.utilities = settings.utilities;
-    }
-
+export class Collisions extends Component {
     /**
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
@@ -284,12 +106,12 @@ export class Collisions {
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
-            switch (this.physics.getDirectionBordering(thing, other)) {
+            switch (this.fsp.physics.getDirectionBordering(thing, other)) {
                 case Direction.Top:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Top);
                         this.setThingBordering(other, thing, Direction.Bottom);
-                        this.physics.setTop(thing, other.bottom - other.tolBottom);
+                        this.fsp.physics.setTop(thing, other.bottom - other.tolBottom);
                     }
                     break;
 
@@ -297,7 +119,7 @@ export class Collisions {
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Right);
                         this.setThingBordering(other, thing, Direction.Left);
-                        this.physics.setRight(thing, other.left + other.tolLeft);
+                        this.fsp.physics.setRight(thing, other.left + other.tolLeft);
                     }
                     break;
 
@@ -305,7 +127,7 @@ export class Collisions {
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Bottom);
                         this.setThingBordering(other, thing, Direction.Top);
-                        this.physics.setBottom(thing, other.top + other.tolTop);
+                        this.fsp.physics.setBottom(thing, other.top + other.tolTop);
                     }
                     break;
 
@@ -313,7 +135,7 @@ export class Collisions {
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Left);
                         this.setThingBordering(other, thing, Direction.Right);
-                        this.physics.setLeft(thing, other.right - other.tolRight);
+                        this.fsp.physics.setLeft(thing, other.right - other.tolRight);
                     }
                     break;
 
@@ -355,7 +177,7 @@ export class Collisions {
         }
 
         if (other.active) {
-            if (!other.requireOverlap || this.physics.isThingWithinOther(thing, other)) {
+            if (!other.requireOverlap || this.fsp.physics.isThingWithinOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !(thing.keys as any)[other.requireDirection]
@@ -373,14 +195,14 @@ export class Collisions {
                     throw new Error("No activate callback for collision detector.");
                 }
 
-                other.activate.call(this.animations, thing, other);
+                other.activate.call(this.fsp.actions, thing, other);
             }
 
             return true;
         }
 
         // If the thing is moving towards the triggerer, it's now active
-        if (thing.direction === this.physics.getDirectionBordering(thing, other)) {
+        if (thing.direction === this.fsp.physics.getDirectionBordering(thing, other)) {
             other.active = true;
             return true;
         }
@@ -400,7 +222,7 @@ export class Collisions {
         let direction: Direction | undefined;
 
         if (other.cutscene) {
-            this.scenePlayer.startCutscene(other.cutscene, {
+            this.fsp.scenePlayer.startCutscene(other.cutscene, {
                 thing: thing,
                 triggerer: other
             });
@@ -410,7 +232,7 @@ export class Collisions {
             return;
         }
 
-        direction = this.physics.getDirectionBetween(other, thing);
+        direction = this.fsp.physics.getDirectionBetween(other, thing);
         if (!direction) {
             throw new Error("Characters not close enough to collide for dialog.");
         }
@@ -426,20 +248,20 @@ export class Collisions {
         other.talking = true;
         thing.canKeyWalking = false;
 
-        if (!this.menuGrapher.getActiveMenu()) {
-            this.menuGrapher.createMenu("GeneralText", {
+        if (!this.fsp.menuGrapher.getActiveMenu()) {
+            this.fsp.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: !other.dialogOptions
             });
-            this.menuGrapher.setActiveMenu("GeneralText");
-            this.menuGrapher.addMenuDialog(
+            this.fsp.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.menuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                (): void => this.animations.animateCharacterDialogFinish(thing, other)
+                (): void => this.fsp.actions.animateCharacterDialogFinish(thing, other)
             );
         }
 
         if (other.switchDirectionOnDialog) {
-            this.animations.animateCharacterSetDirection(other, direction);
+            this.fsp.actions.animateCharacterSetDirection(other, direction);
         }
     }
 
@@ -456,23 +278,23 @@ export class Collisions {
                     throw new Error("Pokeball must have an item for the item action.");
                 }
 
-                this.menuGrapher.createMenu("GeneralText");
-                this.menuGrapher.addMenuDialog(
+                this.fsp.menuGrapher.createMenu("GeneralText");
+                this.fsp.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                     ],
                     (): void => {
-                        this.menuGrapher.deleteActiveMenu();
-                        this.physics.killNormal(other);
-                        this.stateHolder.addChange(
+                        this.fsp.menuGrapher.deleteActiveMenu();
+                        this.fsp.physics.killNormal(other);
+                        this.fsp.stateHolder.addChange(
                             other.id, "alive", false
                         );
                     }
                 );
-                this.menuGrapher.setActiveMenu("GeneralText");
+                this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-                this.saves.addItemToBag(other.item, other.amount);
+                this.fsp.saves.addItemToBag(other.item, other.amount);
                 break;
 
             case "cutscene":
@@ -480,12 +302,12 @@ export class Collisions {
                     throw new Error("Pokeball must have a cutscene for the cutscene action.");
                 }
 
-                this.scenePlayer.startCutscene(other.cutscene, {
+                this.fsp.scenePlayer.startCutscene(other.cutscene, {
                     player: thing,
                     triggerer: other
                 });
                 if (other.routine) {
-                    this.scenePlayer.playRoutine(other.routine);
+                    this.fsp.scenePlayer.playRoutine(other.routine);
                 }
                 break;
 
@@ -494,7 +316,7 @@ export class Collisions {
                     throw new Error("Pokeball must have a Pokemon for the cutscene action.");
                 }
 
-                this.menus.openPokedexListing(other.pokemon);
+                this.fsp.menus.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
@@ -502,16 +324,16 @@ export class Collisions {
                     throw new Error("Pokeball must have a dialog for the cutscene action.");
                 }
 
-                this.menuGrapher.createMenu("GeneralText");
-                this.menuGrapher.addMenuDialog("GeneralText", other.dialog);
-                this.menuGrapher.setActiveMenu("GeneralText");
+                this.fsp.menuGrapher.createMenu("GeneralText");
+                this.fsp.menuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.fsp.menuGrapher.setActiveMenu("GeneralText");
                 break;
 
             case "yes/no":
-                this.menuGrapher.createMenu("Yes/No", {
+                this.fsp.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"]
                 });
-                this.menuGrapher.addMenuList("Yes/No", {
+                this.fsp.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
@@ -521,7 +343,7 @@ export class Collisions {
                             callback: (): void => console.log("What do, no?")
                         }]
                 });
-                this.menuGrapher.setActiveMenu("Yes/No");
+                this.fsp.menuGrapher.setActiveMenu("Yes/No");
                 break;
 
             default:
@@ -536,31 +358,31 @@ export class Collisions {
      * @param other   The specific Grass that thing is within.
      */
     public collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
-        if (thing.grass || !this.physics.isThingWithinGrass(thing, other)) {
+        if (thing.grass || !this.fsp.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
 
         thing.grass = other;
-        this.saves.addStateHistory(thing, "height", thing.height);
+        this.fsp.saves.addStateHistory(thing, "height", thing.height);
 
         // Todo: Find a better way than manually setting canvas height?
         thing.canvas.height = thing.heightGrass * 4;
-        this.pixelDrawer.setThingSprite(thing);
+        this.fsp.pixelDrawer.setThingSprite(thing);
 
-        thing.shadow = this.objectMaker.make(thing.title, {
+        thing.shadow = this.fsp.objectMaker.make(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
         }) as IThing;
 
         if (thing.shadow.className !== thing.className) {
-            this.graphics.setClass(thing.shadow, thing.className);
+            this.fsp.graphics.setClass(thing.shadow, thing.className);
         }
 
-        this.things.add(thing.shadow, thing.left, thing.top);
+        this.fsp.things.add(thing.shadow, thing.left, thing.top);
 
         // Todo: is the arrayToEnd call necessary?
-        this.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
-        this.utilities.arrayToEnd(thing.shadow, this.groupHolder.getGroup("Terrain") as IThing[]);
+        this.fsp.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.fsp.utilities.arrayToEnd(thing.shadow, this.fsp.groupHolder.getGroup("Terrain") as IThing[]);
 
         return true;
     }
@@ -593,9 +415,9 @@ export class Collisions {
 
         if (thing.player) {
             (thing as IPlayer).canKeyWalking = false;
-            this.mapScreener.blockInputs = true;
+            this.fsp.mapScreener.blockInputs = true;
         }
-        this.animations.animateCharacterHopLedge(thing, other);
+        this.fsp.actions.animateCharacterHopLedge(thing, other);
 
         return true;
     }
@@ -615,9 +437,9 @@ export class Collisions {
             return false;
         }
 
-        this.animations.animateCharacterStartWalking(thing, thing.direction, [2]);
+        this.fsp.actions.animateCharacterStartWalking(thing, thing.direction, [2]);
         thing.surfing = false;
-        this.graphics.removeClass(thing, "surfing");
+        this.fsp.graphics.removeClass(thing, "surfing");
         return true;
     }
 }
