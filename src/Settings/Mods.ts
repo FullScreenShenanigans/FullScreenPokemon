@@ -26,7 +26,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             return;
                         }
 
-                        this.storage.addStateHistory(area, "allowCycling", area.allowCycling);
+                        this.saves.addStateHistory(area, "allowCycling", area.allowCycling);
                         area.allowCycling = true;
                         this.mapScreener.variables.allowCycling = true;
                     },
@@ -36,7 +36,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             return;
                         }
 
-                        this.storage.popStateHistory(area, "allowCycling");
+                        this.saves.popStateHistory(area, "allowCycling");
 
                         if (!area.allowCycling && this.player.cycling) {
                             this.cycling.stopCycling(this.player);

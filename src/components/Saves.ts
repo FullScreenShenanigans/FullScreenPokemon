@@ -9,7 +9,7 @@ import {
 /**
  * Storage functions used by FullScreenPokemon instances.
  */
-export class Storage {
+export class Saves {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.

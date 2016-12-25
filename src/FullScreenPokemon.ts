@@ -11,7 +11,7 @@ import { StateHoldr } from "stateholdr/lib/StateHoldr";
 import { IUserWrappr } from "userwrappr/lib/IUserWrappr";
 import { UserWrappr } from "userwrappr/lib/UserWrappr";
 
-import { Animations } from "./components/Animations";
+import { Actions } from "./components/Actions";
 import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
 import { Cutscenes } from "./components/Cutscenes";
@@ -26,7 +26,7 @@ import { Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
 import { Physics } from "./components/Physics";
 import { Scrolling } from "./components/Scrolling";
-import { Storage } from "./components/Storage";
+import { Saves } from "./components/Saves";
 import { Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
 import { ModuleSettingsGenerator } from "./settings/ModuleSettingsGenerator";
@@ -64,9 +64,9 @@ export class FullScreenPokemon extends GameStartr {
     public userWrapper: IUserWrappr;
 
     /**
-     * Animation functions used by this instance.
+     * Action functions used by this instance.
      */
-    public animations: Animations;
+    public actions: Actions;
 
     /**
      * Battle functions used by this instance.
@@ -146,7 +146,7 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * Storage functions used by this instance.
      */
-    public storage: Storage;
+    public saves: Saves;
 
     /**
      * Utility functions used by this instance.
@@ -189,7 +189,7 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * 
      */
-    protected reset(rawSettings: IGameStartrSettings): void {
+    public reset(rawSettings: IGameStartrSettings): void {
         const moduleSettings: IModuleSettings = FullScreenPokemon.prototype.moduleSettings;
         const settings: IGameStartrProcessedSettings = Utilities.processUiSettings(moduleSettings, rawSettings);
 

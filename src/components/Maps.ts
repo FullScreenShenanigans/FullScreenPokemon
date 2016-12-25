@@ -20,10 +20,10 @@ import {
     IArea, IAreaBoundaries, IAreaGate, IareaSpawner, ILocation,
     IMap, IMapScreenr, IPlayer, IPreThing, IThing
 } from "../IFullScreenPokemon";
-import { Animations } from "./Animations";
+import { Actions } from "./Animations";
 import { Physics } from "./Physics";
 import { Scrolling } from "./Scrolling";
-import { Storage } from "./Storage";
+import { Saves } from "./Saves";
 import { Things } from "./Things";
 import { Utilities } from "./Utilities";
 
@@ -34,7 +34,7 @@ export interface IMapsSettings extends IGameStartrMapsSettings {
     /**
      * Animation functions used by FullScreenPokemon instances.
      */
-    animations: Animations;
+    actions: Actions;
 
     /**
      * An audio playback manager for persistent and on-demand themes and sounds.
@@ -124,7 +124,7 @@ export interface IMapsSettings extends IGameStartrMapsSettings {
     /**
      * Storage functions used by FullScreenPokemon instances.
      */
-    storage: Storage;
+    saves: Saves;
 
     /**
      * Thing manipulation functions used by FullScreenPokemon instances.
@@ -149,7 +149,7 @@ export class Maps extends GameStartrMaps {
     /**
      * Animation functions used by FullScreenPokemon instances.
      */
-    protected readonly animations: Animations;
+    protected readonly actions: Actions;
 
     /**
      * An audio playback manager for persistent and on-demand themes and sounds.
@@ -239,7 +239,7 @@ export class Maps extends GameStartrMaps {
     /**
      * Storage functions used by FullScreenPokemon instances.
      */
-    protected readonly storage: Storage;
+    protected readonly saves: Saves;
 
     /**
      * Thing manipulation functions used by FullScreenPokemon instances.
@@ -264,7 +264,7 @@ export class Maps extends GameStartrMaps {
     public constructor(settings: IMapsSettings) {
         super(settings);
 
-        this.animations = settings.animations;
+        this.actions = settings.actions;
         this.audioPlayer = settings.audioPlayer;
         this.gamesRunner = settings.gamesRunner;
         this.groupHolder = settings.groupHolder;
@@ -281,7 +281,7 @@ export class Maps extends GameStartrMaps {
         this.scenePlayer = settings.scenePlayer;
         this.scrolling = settings.scrolling;
         this.stateHolder = settings.stateHolder;
-        this.storage = settings.storage;
+        this.saves = settings.saves;
         this.things = settings.things;
         this.timeHandler = settings.timeHandler;
     }
@@ -460,15 +460,15 @@ export class Maps extends GameStartrMaps {
 
         this.gamesRunner.play();
 
-        this.animations.animateFadeFromColor({
+        this.actions.animateFadeFromColor({
             color: "Black"
         });
 
         if (location.push) {
-            this.animations.animateCharacterStartWalking(
+            this.actions.animateCharacterStartWalking(
                 this.players[0],
                 this.players[0].direction,
-                (): void => this.storage.autoSave());
+                (): void => this.saves.autoSave());
         }
 
         return location;
@@ -541,7 +541,7 @@ export class Maps extends GameStartrMaps {
             location.xloc ? location.xloc * 4 : 0,
             location.yloc ? location.yloc * 4 : 0);
 
-        this.animations.animateCharacterSetDirection(
+        this.actions.animateCharacterSetDirection(
             this.players[0],
             (typeof location.direction === "undefined"
                 ? this.mapScreener.playerDirection
@@ -570,7 +570,7 @@ export class Maps extends GameStartrMaps {
 
         this.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
-        this.animations.animateCharacterSetDirection(this.players[0], savedInfo.direction || Direction.Top);
+        this.actions.animateCharacterSetDirection(this.players[0], savedInfo.direction || Direction.Top);
 
         this.scrolling.centerMapScreen();
     }

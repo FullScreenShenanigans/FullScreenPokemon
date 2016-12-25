@@ -1,20 +1,160 @@
+import { IAreaSpawnr } from "areaspawnr/lib/IAreaSpawnr";
+import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
 import { IMove } from "battlemovr/lib/IBattleMovr";
-import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
-import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
+import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
+import { IMenuDialogRaw, IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
+import { IModAttachr } from "modattachr/lib/IModAttachr";
+import { INumberMakr } from "numbermakr/lib/INumberMakr";
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
+import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
+import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
+import { IThingHittr } from "thinghittr/lib/IThingHittr";
+import { IEventCallback, ITimeEvent, ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
 
-import { Direction, DirectionAliases, DirectionClasses } from "./Constants";
+import { Direction, DirectionAliases, DirectionClasses } from "../Constants";
 import {
     IArea, IAreaGate, IareaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog,
-    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMenuTriggerer, IPlayer,
-    IPokemon, ISightDetector, IThemeDetector, IThing, ITransporter, ITransportSchema,
-    IWalkingOnStop, IWalkingOnStopCommandFunction,
+    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap, IMapScreenr,
+    IMenuTriggerer, IPlayer, IPokemon, ISightDetector, IThemeDetector, IThing,
+    ITransporter, ITransportSchema, IWalkingOnStop, IWalkingOnStopCommandFunction,
     IWildPokemonSchema
-} from "./IFullScreenPokemon";
+} from "../IFullScreenPokemon";
+import { Battles } from "./Battles";
+import { Graphics } from "./Graphics";
+import { Maps } from "./Maps";
+import { Menus } from "./Menus";
+import { Physics } from "./Physics";
+import { Saves } from "./Saves";
+import { Things } from "./Things";
+import { Utilities } from "./Utilities";
 
 /**
- * Animation functions used by FullScreenPokemon instances.
+ * Action functions used by FullScreenPokemon instances.
  */
-export class Animations {
+export class Actions {
+    /**
+     * 
+     */
+    protected readonly animations: Actions;
+
+    /**
+     * 
+     */
+    protected readonly areaSpawner: IAreaSpawnr;
+
+    /**
+     * 
+     */
+    protected readonly audioPlayer: IAudioPlayr;
+
+    /**
+     * 
+     */
+    protected readonly battles: Battles;
+
+    /**
+     * 
+     */
+    protected readonly graphics: Graphics;
+
+    /**
+     * 
+     */
+    protected readonly groupHolder: IGroupHoldr;
+
+    /**
+     * 
+     */
+    protected readonly itemsHolder: IItemsHoldr;
+
+    /**
+     * 
+     */
+    protected readonly maps: Maps;
+
+    /**
+     * 
+     */
+    protected readonly mapScreener: IMapScreenr;
+
+    /**
+     * 
+     */
+    protected readonly mathDecider: IMathDecidr;
+
+    /**
+     * 
+     */
+    protected readonly menus: Menus;
+
+    /**
+     * 
+     */
+    protected readonly menuGrapher: IMenuGraphr;
+
+    /**
+     * 
+     */
+    protected readonly modAttacher: IModAttachr;
+
+    /**
+     * 
+     */
+    protected readonly numberMaker: INumberMakr;
+
+    /**
+     * 
+     */
+    protected readonly objectMaker: IObjectMakr;
+
+    /**
+     * 
+     */
+    protected readonly physics: Physics;
+
+    /**
+     * 
+     */
+    protected readonly pixelDrawer: IPixelDrawr;
+
+    /**
+     * 
+     */
+    protected readonly saves: Saves;
+
+    /**
+     * 
+     */
+    protected readonly scenePlayer: IScenePlayr;
+
+    /**
+     * 
+     */
+    protected readonly stateHolder: IStateHoldr;
+
+    /**
+     * 
+     */
+    protected readonly things: Things;
+
+    /**
+     * 
+     */
+    protected readonly thingHitter: IThingHittr;
+
+    /**
+     * 
+     */
+    protected readonly timeHandler: ITimeHandlr;
+
+    /**
+     * 
+     */
+    protected readonly utilities: Utilities;
+
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
      * 
@@ -318,14 +458,14 @@ export class Animations {
         title: string,
         settings: any,
         groupType?: string): [IThing, IThing, IThing, IThing] {
-        let things: IThing[] = [];
+        const things: IThing[] = [];
 
         for (let i: number = 0; i < 4; i += 1) {
             things.push(this.things.add([title, settings]));
         }
 
         if (groupType) {
-            for (let thing of things) {
+            for (const thing of things) {
                 this.groupHolder.switchMemberGroup(thing, thing.groupType, groupType);
             }
         }
@@ -1079,7 +1219,7 @@ export class Animations {
                 (): void => this.animateCharacterDialogFinish(thing, other));
             this.menuGrapher.setActiveMenu("GeneralText");
 
-            this.storage.addItemToBag(other.gift);
+            this.saves.addItemToBag(other.gift);
 
             other.gift = undefined;
             this.stateHolder.addChange(other.id, "gift", undefined);
@@ -1113,7 +1253,7 @@ export class Animations {
         }
 
         if (!other.dialogOptions) {
-            this.storage.autoSave();
+            this.saves.autoSave();
         }
     }
 
@@ -1212,7 +1352,7 @@ export class Animations {
         thing.following = other;
         other.follower = thing;
 
-        this.storage.addStateHistory(thing, "speed", thing.speed);
+        this.saves.addStateHistory(thing, "speed", thing.speed);
         thing.speed = other.speed;
 
         other.walkingCommands = [];
@@ -1539,12 +1679,18 @@ export class Animations {
         const transport: ITransportSchema = other.transport as ITransportSchema;
         let callback: () => void;
 
-        if (transport.constructor === String) {
-            callback = (): void => this.maps.setLocation(transport as any);
+        if (typeof transport === "string") {
+            callback = (): void => {
+                this.maps.setLocation(transport);
+            };
         } else if (typeof transport.map !== "undefined") {
-            callback = (): void => this.maps.setMap(transport.map, transport.location);
+            callback = (): void => {
+                this.maps.setMap(transport.map, transport.location);
+            };
         } else if (typeof transport.location !== "undefined") {
-            callback = (): void => this.maps.setLocation(transport.location);
+            callback = (): void => {
+                this.maps.setLocation(transport.location);
+            };
         } else {
             throw new Error(`Unknown transport type: '${transport}'`);
         }
