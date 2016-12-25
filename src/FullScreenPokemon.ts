@@ -4,6 +4,7 @@ import { GameStartr } from "gamestartr/lib/GameStartr";
 import { IGameStartrSettings, IGameStartrProcessedSettings } from "gamestartr/lib/IGameStartr";
 import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
 import { MenuGraphr } from "menugraphr/lib/MenuGraphr";
+import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
 import { ScenePlayr } from "sceneplayr/lib/ScenePlayr";
 import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
 import { StateHoldr } from "stateholdr/lib/StateHoldr";
@@ -163,9 +164,9 @@ export class FullScreenPokemon extends GameStartr {
     public scale: number;
 
     /**
-     * The game's player, which (when defined) will always be a Player Thing.
+     * The game's single player.
      */
-    public player: IPlayer;
+    public player: [IPlayer];
 
     /**
      * The total FPSAnalyzr ticks that have elapsed since the constructor or saving.
@@ -251,8 +252,8 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal BattleMovr.
      */
-    protected resetBattleMover(): void {
-        this.battleMover = new BattleMovr({
+    protected createBattleMover(): IBattleMovr {
+        return new BattleMovr({
             gameStarter: this,
             battleOptions: [
                 {
@@ -289,7 +290,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal MenuGraphr.
      */
-    protected resetMenuGrapher(moduleSettings: IModuleSettings, _settings: IGameStartrProcessedSettings): IMenuGraphr {
+    protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IGameStartrProcessedSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
             modifierScope: this.menus,

@@ -1,16 +1,291 @@
-import { Maps as GameStartrMaps } from "gamestartr/lib/Maps";
+import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
+import { IGamesRunnr } from "gamesrunnr/lib/IGamesRunnr";
+import { IMapsModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IMapsSettings as IGameStartrMapsSettings, Maps as GameStartrMaps } from "gamestartr/lib/components/Maps";
+import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
+import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 import { IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
+import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
+import { IModAttachr } from "modattachr/lib/IModAttachr";
+import { INumberMakr } from "numbermakr/lib/INumberMakr";
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
+import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
+import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
+import { ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
 
-import { Direction, DirectionSpawns } from "./Constants";
+import { Direction, DirectionSpawns } from "../Constants";
 import {
     IArea, IAreaBoundaries, IAreaGate, IareaSpawner, ILocation,
-    IMap, IPlayer, IPreThing, IThing
-} from "./IFullScreenPokemon";
+    IMap, IMapScreenr, IPlayer, IPreThing, IThing
+} from "../IFullScreenPokemon";
+import { Animations } from "./Animations";
+import { Physics } from "./Physics";
+import { Scrolling } from "./Scrolling";
+import { Storage } from "./Storage";
+import { Things } from "./Things";
+import { Utilities } from "./Utilities";
+
+/**
+ * Setting to initialize a new instance of the Maps class.
+ */
+export interface IMapsSettings extends IGameStartrMapsSettings {
+    /**
+     * Animation functions used by FullScreenPokemon instances.
+     */
+    animations: Animations;
+
+    /**
+     * An audio playback manager for persistent and on-demand themes and sounds.
+     */
+    audioPlayer: IAudioPlayr;
+
+    /**
+     * Runs a series of callbacks on a timed interval.
+     */
+    gamesRunner: IGamesRunnr;
+
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    groupHolder: IGroupHoldr;
+
+    /**
+     * A configurable wrapper, recorder, and playback manager around user inputs.
+     */
+    inputWriter: IInputWritr;
+
+    /**
+     * A versatile container to store and manipulate values in localStorage.
+     */
+    itemsHolder: IItemsHoldr;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    mapScreener: IMapScreenr;
+
+    /**
+     * Module settings regarding maps.
+     */
+    mapsModuleSettings: IMapsModuleSettings;
+
+    /**
+     * Menu management system.
+     */
+    menuGrapher: IMenuGraphr;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    modAttacher: IModAttachr;
+
+    /**
+     * State-based random number generator.
+     */
+    numberMaker: INumberMakr;
+
+    /**
+     * An abstract factory for dynamic attribute-based JavaScript classes.
+     */
+    objectMaker: IObjectMakr;
+
+    /**
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
+     */
+    pixelDrawer: IPixelDrawr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    physics: Physics;
+
+    /**
+     * The game's single player.
+     */
+    players: [IPlayer];
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    scenePlayer: IScenePlayr;
+
+    /**
+     * Scrolling functions used by FullScreenPokemon instances.
+     */
+    scrolling: Scrolling;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    stateHolder: IStateHoldr;
+
+    /**
+     * Storage functions used by FullScreenPokemon instances.
+     */
+    storage: Storage;
+
+    /**
+     * Thing manipulation functions used by FullScreenPokemon instances.
+     */
+    things: Things;
+
+    /**
+     * A flexible, pausable alternative to setTimeout.
+     */
+    timeHandler: ITimeHandlr;
+
+    /**
+     * Miscellaneous utility functions used by FullScreenPokemon instances.
+     */
+    utilities: Utilities;
+}
 
 /**
  * Map functions used by FullScreenPokemon instances.
  */
 export class Maps extends GameStartrMaps {
+    /**
+     * Animation functions used by FullScreenPokemon instances.
+     */
+    protected readonly animations: Animations;
+
+    /**
+     * An audio playback manager for persistent and on-demand themes and sounds.
+     */
+    protected readonly audioPlayer: IAudioPlayr;
+
+    /**
+     * Runs a series of callbacks on a timed interval.
+     */
+    protected readonly gamesRunner: IGamesRunnr;
+
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    protected readonly groupHolder: IGroupHoldr;
+
+    /**
+     * A configurable wrapper, recorder, and playback manager around user inputs.
+     */
+    protected readonly inputWriter: IInputWritr;
+
+    /**
+     * A versatile container to store and manipulate values in localStorage.
+     */
+    protected readonly itemsHolder: IItemsHoldr;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    protected readonly mapScreener: IMapScreenr;
+
+    /**
+     * Module settings regarding maps.
+     */
+    protected readonly mapsModuleSettings: IMapsModuleSettings;
+
+    /**
+     * Menu management system.
+     */
+    protected readonly menuGrapher: IMenuGraphr;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    protected readonly modAttacher: IModAttachr;
+
+    /**
+     * State-based random number generator.
+     */
+    protected readonly numberMaker: INumberMakr;
+
+    /**
+     * An abstract factory for dynamic attribute-based JavaScript classes.
+     */
+    protected readonly objectMaker: IObjectMakr;
+
+    /**
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
+     */
+    protected readonly pixelDrawer: IPixelDrawr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    protected readonly physics: Physics;
+
+    /**
+     * The game's single player.
+     */
+    protected readonly players: [IPlayer];
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    protected readonly scenePlayer: IScenePlayr;
+
+    /**
+     * Scrolling functions used by FullScreenPokemon instances.
+     */
+    protected readonly scrolling: Scrolling;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    protected readonly stateHolder: IStateHoldr;
+
+    /**
+     * Storage functions used by FullScreenPokemon instances.
+     */
+    protected readonly storage: Storage;
+
+    /**
+     * Thing manipulation functions used by FullScreenPokemon instances.
+     */
+    protected readonly things: Things;
+
+    /**
+     * A flexible, pausable alternative to setTimeout.
+     */
+    protected readonly timeHandler: ITimeHandlr;
+
+    /**
+     * Miscellaneous utility functions used by FullScreenPokemon instances.
+     */
+    protected readonly utilities: Utilities;
+
+    /**
+     * Initializes a new instance of the Maps class.
+     * 
+     * @param settings   Settings to be used for initialization.
+     */
+    public constructor(settings: IMapsSettings) {
+        super(settings);
+
+        this.animations = settings.animations;
+        this.audioPlayer = settings.audioPlayer;
+        this.gamesRunner = settings.gamesRunner;
+        this.groupHolder = settings.groupHolder;
+        this.inputWriter = settings.inputWriter;
+        this.itemsHolder = settings.itemsHolder;
+        this.mapsModuleSettings = settings.mapsModuleSettings;
+        this.menuGrapher = settings.menuGrapher;
+        this.modAttacher = settings.modAttacher;
+        this.numberMaker = settings.numberMaker;
+        this.objectMaker = settings.objectMaker;
+        this.pixelDrawer = settings.pixelDrawer;
+        this.physics = settings.physics;
+        this.players = settings.players;
+        this.scenePlayer = settings.scenePlayer;
+        this.scrolling = settings.scrolling;
+        this.stateHolder = settings.stateHolder;
+        this.storage = settings.storage;
+        this.things = settings.things;
+        this.timeHandler = settings.timeHandler;
+    }
+
     /**
      * Processes additional Thing attributes. For each attribute the Area's
      * class says it may have, if it has it, the attribute value proliferated 
@@ -89,7 +364,7 @@ export class Maps extends GameStartrMaps {
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.player = this.objectMaker.make("Player");
+        const player: IPlayer = this.players[0] = this.objectMaker.make("Player");
         player.keys = player.getKeys();
 
         this.inputWriter.setEventInformation(player);
@@ -111,8 +386,8 @@ export class Maps extends GameStartrMaps {
      *                      be skipped (by default, false).
      * @remarks Most of the work here is done by setLocation.
      */
-    public setMap(name: string, location?: string, noEntrance?: boolean): void {
-        if (typeof name === "undefined" || name.constructor === FullScreenPokemon) {
+    public setMap(name: string, location?: string, noEntrance?: boolean): ILocation {
+        if (!name) {
             name = this.areaSpawner.getMapName();
         }
 
@@ -123,10 +398,10 @@ export class Maps extends GameStartrMaps {
         this.inputWriter.restartHistory();
         this.modAttacher.fireEvent("onSetMap", map);
 
-        this.setLocation(
+        return this.setLocation(
             location
             || map.locationDefault
-            || this.moduleSettings.maps.locationDefault,
+            || this.mapsModuleSettings.locationDefault!,
             noEntrance);
     }
 
@@ -137,12 +412,11 @@ export class Maps extends GameStartrMaps {
      * into the game if specified. The mod events are fired.
      * 
      * @param name   The name of the Location within the Map.
-     * @param noEntrance   Whether or not an entry Function should
-     *                     be skipped (by default, false).
+     * @param noEntrance   Whether an entry function should be skipped (by default, false).
+     * @todo Separate external module logic to their equivalent components then
+     *       pass them as an onPreSetLocation/onSetLocation here to reduce dependencies.
      */
-    public setLocation(name: string, noEntrance?: boolean): void {
-        name = name || "0";
-
+    public setLocation(name: string, noEntrance?: boolean): ILocation {
         this.audioPlayer.clearAll();
         this.groupHolder.clearArrays();
         this.mapScreener.clearScreen();
@@ -192,10 +466,12 @@ export class Maps extends GameStartrMaps {
 
         if (location.push) {
             this.animations.animateCharacterStartWalking(
-                this.player,
-                this.player.direction,
+                this.players[0],
+                this.players[0].direction,
                 (): void => this.storage.autoSave());
         }
+
+        return location;
     }
 
     /**
@@ -251,7 +527,8 @@ export class Maps extends GameStartrMaps {
      */
     public entranceBlank(): void {
         this.addPlayer(0, 0);
-        this.player.hidden = true;
+
+        this.players[0].hidden = true;
     }
 
     /**
@@ -265,7 +542,7 @@ export class Maps extends GameStartrMaps {
             location.yloc ? location.yloc * 4 : 0);
 
         this.animations.animateCharacterSetDirection(
-            this.player,
+            this.players[0],
             (typeof location.direction === "undefined"
                 ? this.mapScreener.playerDirection
                 : location.direction)
@@ -275,7 +552,7 @@ export class Maps extends GameStartrMaps {
 
         if (location.cutscene) {
             this.scenePlayer.startCutscene(location.cutscene, {
-                player: this.player
+                player: this.players[0]
             });
         }
 
@@ -291,9 +568,9 @@ export class Maps extends GameStartrMaps {
     public entranceResume(): void {
         const savedInfo: any = this.stateHolder.getChanges("player") || {};
 
-        this.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
+        this.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
 
-        this.animations.animateCharacterSetDirection(this.player, savedInfo.direction || Direction.Top);
+        this.animations.animateCharacterSetDirection(this.players[0], savedInfo.direction || Direction.Top);
 
         this.scrolling.centerMapScreen();
     }
