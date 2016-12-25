@@ -32,128 +32,273 @@ import { Things } from "./Things";
 import { Utilities } from "./Utilities";
 
 /**
+ * Settings to initialize a new instance of the Action class.
+ */
+export interface IActionsSettings {
+    /**
+     * Loads GameStartr maps to spawn and unspawn areas on demand.
+     */
+    areaSpawner: IAreaSpawnr;
+
+    /**
+     * An audio playback manager for persistent and on-demand themes and sounds.
+     */
+    audioPlayer: IAudioPlayr;
+
+    /**
+     * Battle functions used by FullScreenPokemon instances.
+     */
+    battles: Battles;
+
+    /**
+     * Graphics functions used by FullScreenPokemon instances.
+     */
+    graphics: Graphics;
+
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    groupHolder: IGroupHoldr;
+
+    /**
+     * A versatile container to store and manipulate values in localStorage.
+     */
+    itemsHolder: IItemsHoldr;
+
+    /**
+     * Map functions used by FullScreenPokemon instances.
+     */
+    maps: Maps;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    mapScreener: IMapScreenr;
+
+    /**
+     * A computation utility to automate running common equations.
+     */
+    mathDecider: IMathDecidr;
+
+    /**
+     * Menu functions used by FullScreenPokemon instances.
+     */
+    menus: Menus;
+
+    /**
+     * Menu management system.
+     */
+    menuGrapher: IMenuGraphr;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    modAttacher: IModAttachr;
+
+    /**
+     * State-based random number generator.
+     */
+    numberMaker: INumberMakr;
+
+    /**
+     * An abstract factory for dynamic attribute-based JavaScript classes.
+     */
+    objectMaker: IObjectMakr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    physics: Physics;
+
+    /**
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
+     */
+    pixelDrawer: IPixelDrawr;
+
+    /**
+     * Storage functions used by FullScreenPokemon instances.
+     */
+    saves: Saves;
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    scenePlayer: IScenePlayr;
+
+    /**
+     * General storage saving for collections of state.
+     */
+    stateHolder: IStateHoldr;
+
+    /**
+     * Thing manipulation functions used by FullScreenPokemon instances.
+     */
+    things: Things;
+
+    /**
+     * Automation for physics collisions and reactions.
+     */
+    thingHitter: IThingHittr;
+
+    /**
+     * A flexible, pausable alternative to setTimeout.
+     */
+    timeHandler: ITimeHandlr;
+
+    /**
+     * Miscellaneous utility functions used by FullScreenPokemon instances.
+     */
+    utilities: Utilities;
+}
+
+/**
  * Action functions used by FullScreenPokemon instances.
  */
 export class Actions {
     /**
-     * 
-     */
-    protected readonly animations: Actions;
-
-    /**
-     * 
+     * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
     protected readonly areaSpawner: IAreaSpawnr;
 
     /**
-     * 
+     * An audio playback manager for persistent and on-demand themes and sounds.
      */
     protected readonly audioPlayer: IAudioPlayr;
 
     /**
-     * 
+     * Battle functions used by FullScreenPokemon instances.
      */
     protected readonly battles: Battles;
 
     /**
-     * 
+     * Graphics functions used by FullScreenPokemon instances.
      */
     protected readonly graphics: Graphics;
 
     /**
-     * 
+     * A general storage abstraction for keyed containers of items.
      */
     protected readonly groupHolder: IGroupHoldr;
 
     /**
-     * 
+     * A versatile container to store and manipulate values in localStorage.
      */
     protected readonly itemsHolder: IItemsHoldr;
 
     /**
-     * 
+     * Map functions used by FullScreenPokemon instances.
      */
     protected readonly maps: Maps;
 
     /**
-     * 
+     * A flexible container for map attributes and viewport.
      */
     protected readonly mapScreener: IMapScreenr;
 
     /**
-     * 
+     * A computation utility to automate running common equations.
      */
     protected readonly mathDecider: IMathDecidr;
 
     /**
-     * 
+     * Menu functions used by FullScreenPokemon instances.
      */
     protected readonly menus: Menus;
 
     /**
-     * 
+     * Menu management system.
      */
     protected readonly menuGrapher: IMenuGraphr;
 
     /**
-     * 
+     * Hookups for extensible triggered mod events.
      */
     protected readonly modAttacher: IModAttachr;
 
     /**
-     * 
+     * State-based random number generator.
      */
     protected readonly numberMaker: INumberMakr;
 
     /**
-     * 
+     * An abstract factory for dynamic attribute-based JavaScript classes.
      */
     protected readonly objectMaker: IObjectMakr;
 
     /**
-     * 
+     * Physics functions used by FullScreenPokemon instances.
      */
     protected readonly physics: Physics;
 
     /**
-     * 
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
      */
     protected readonly pixelDrawer: IPixelDrawr;
 
     /**
-     * 
+     * Storage functions used by FullScreenPokemon instances.
      */
     protected readonly saves: Saves;
 
     /**
-     * 
+     * A cutscene runner for jumping between scenes and their routines.
      */
     protected readonly scenePlayer: IScenePlayr;
 
     /**
-     * 
+     * General storage saving for collections of state.
      */
     protected readonly stateHolder: IStateHoldr;
 
     /**
-     * 
+     * Thing manipulation functions used by FullScreenPokemon instances.
      */
     protected readonly things: Things;
 
     /**
-     * 
+     * Automation for physics collisions and reactions.
      */
     protected readonly thingHitter: IThingHittr;
 
     /**
-     * 
+     * A flexible, pausable alternative to setTimeout.
      */
     protected readonly timeHandler: ITimeHandlr;
 
     /**
-     * 
+     * Miscellaneous utility functions used by FullScreenPokemon instances.
      */
     protected readonly utilities: Utilities;
+
+    /**
+     * Initializes a new instance of the Actions class.
+     * 
+     * @param settings   Settings to be used for initialization.
+     */
+    public constructor(settings: IActionsSettings) {
+        this.areaSpawner = settings.areaSpawner;
+        this.audioPlayer = settings.audioPlayer;
+        this.battles = settings.battles;
+        this.graphics = settings.graphics;
+        this.groupHolder = settings.groupHolder;
+        this.itemsHolder = settings.itemsHolder;
+        this.maps = settings.maps;
+        this.mapScreener = settings.mapScreener;
+        this.mathDecider = settings.mathDecider;
+        this.menus = settings.menus;
+        this.menuGrapher = settings.menuGrapher;
+        this.modAttacher = settings.modAttacher;
+        this.numberMaker = settings.numberMaker;
+        this.objectMaker = settings.objectMaker;
+        this.physics = settings.physics;
+        this.pixelDrawer = settings.pixelDrawer;
+        this.saves = settings.saves;
+        this.scenePlayer = settings.scenePlayer;
+        this.things = settings.things;
+        this.thingHitter = settings.thingHitter;
+        this.timeHandler = settings.timeHandler;
+        this.utilities = settings.utilities;
+    }
 
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
@@ -171,12 +316,12 @@ export class Actions {
                     }
                 ]) as ISightDetector;
             thing.sightDetector.viewer = thing;
-            this.animations.animatePositionSightDetector(thing);
+            this.animatePositionSightDetector(thing);
         }
 
         if (thing.roaming) {
             this.timeHandler.addEvent(
-                (): boolean => this.animations.activateCharacterRoaming(thing),
+                (): boolean => this.activateCharacterRoaming(thing),
                 this.numberMaker.randomInt(70));
         }
     }
@@ -188,9 +333,9 @@ export class Actions {
      * @param thing   A newly placed WindowDetector.
      */
     public spawnWindowDetector(thing: IDetector): void {
-        if (!this.animations.checkWindowDetector(thing)) {
+        if (!this.checkWindowDetector(thing)) {
             this.timeHandler.addEventInterval(
-                (): boolean => this.animations.checkWindowDetector(thing),
+                (): boolean => this.checkWindowDetector(thing),
                 7,
                 Infinity);
         }
@@ -265,7 +410,7 @@ export class Actions {
 
         return this.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.animateFadeAttribute(
                     thing,
                     attribute,
                     change,
@@ -634,7 +779,7 @@ export class Actions {
 
         this.things.add(blank);
 
-        this.animations.animateFadeAttribute(
+        this.animateFadeAttribute(
             blank,
             "opacity",
             change,
@@ -669,7 +814,7 @@ export class Actions {
 
         this.things.add(blank);
 
-        this.animations.animateFadeAttribute(
+        this.animateFadeAttribute(
             blank,
             "opacity",
             -change,
@@ -864,8 +1009,8 @@ export class Actions {
         const distance: number = repeats * thing.speed;
 
         thing.walking = true;
-        this.animations.animateCharacterSetDirection(thing, direction);
-        this.animations.animateCharacterSetDistanceVelocity(thing, distance);
+        this.animateCharacterSetDirection(thing, direction);
+        this.animateCharacterSetDistanceVelocity(thing, distance);
 
         if (!thing.cycles || !(thing.cycles as any).walking) {
             this.timeHandler.addClassCycle(
@@ -877,7 +1022,7 @@ export class Actions {
 
         if (!thing.walkingFlipping) {
             thing.walkingFlipping = this.timeHandler.addEventInterval(
-                (): void => this.animations.animateSwitchFlipOnDirection(thing),
+                (): void => this.animateSwitchFlipOnDirection(thing),
                 repeats,
                 Infinity,
                 thing);
@@ -888,7 +1033,7 @@ export class Actions {
         }
 
         this.timeHandler.addEventInterval(
-            (): void => thing.onWalkingStop.call(this.animations, thing, onStop),
+            (): void => thing.onWalkingStop.call(this, thing, onStop),
             repeats,
             Infinity,
             thing,
@@ -985,11 +1130,11 @@ export class Actions {
             thing.walkingFlipping = undefined;
         }
 
-        this.animations.animateSnapToGrid(thing);
+        this.animateSnapToGrid(thing);
 
         if (thing.sight) {
             thing.sightDetector!.nocollide = false;
-            this.animations.animatePositionSightDetector(thing);
+            this.animatePositionSightDetector(thing);
         }
 
         if (!onStop) {
@@ -998,20 +1143,20 @@ export class Actions {
 
         switch (onStop.constructor) {
             case Number:
-                this.animations.animateCharacterRepeatWalking(thing);
+                this.animateCharacterRepeatWalking(thing);
                 break;
 
             case Array:
                 if (onStop[0] > 0) {
                     onStop[0] = onStop[0] as number - 1;
-                    this.animations.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
+                    this.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
                 } else if (onStop.length === 0) {
                     break;
                 } else {
                     if (onStop[1] instanceof Function) {
                         return (onStop[1] as IWalkingOnStopCommandFunction)(thing) as boolean;
                     }
-                    this.animations.animateCharacterStartWalkingCycle(
+                    this.animateCharacterStartWalkingCycle(
                         thing,
                         DirectionAliases[onStop[1] as number],
                         onStop.slice(2));
@@ -1043,13 +1188,13 @@ export class Actions {
         }
 
         if (thing.following) {
-            return this.animations.animateCharacterStopWalking(thing, onStop);
+            return this.animateCharacterStopWalking(thing, onStop);
         }
 
         if (
             !this.menuGrapher.getActiveMenu()
             && (thing.keys as any)[thing.direction]) {
-            this.animations.animateCharacterSetDistanceVelocity(thing, thing.distance);
+            this.animateCharacterSetDistanceVelocity(thing, thing.distance);
             return false;
         }
 
@@ -1063,7 +1208,7 @@ export class Actions {
             thing.canKeyWalking = true;
         }
 
-        return this.animations.animateCharacterStopWalking(thing, onStop);
+        return this.animateCharacterStopWalking(thing, onStop);
     }
 
     /**
@@ -1117,7 +1262,7 @@ export class Actions {
      * @param thing   An in-game Thing.
      */
     public animateCharacterSetDirectionRandom(thing: IThing): void {
-        this.animations.animateCharacterSetDirection(thing, this.numberMaker.randomIntWithin(0, 3));
+        this.animateCharacterSetDirection(thing, this.numberMaker.randomIntWithin(0, 3));
     }
 
     /**
@@ -1456,7 +1601,7 @@ export class Actions {
                     return false;
                 }
 
-                this.animations.animateCharacterSetDistanceVelocity(thing, thing.distance);
+                this.animateCharacterSetDistanceVelocity(thing, thing.distance);
                 return true;
             },
             1,
@@ -1490,7 +1635,7 @@ export class Actions {
                 this.physics.killNormal(shadow);
 
                 if (!thing.walking) {
-                    this.animations.animateCharacterStopWalking(thing);
+                    this.animateCharacterStopWalking(thing);
                 }
 
                 if (thing.player) {
@@ -1513,7 +1658,7 @@ export class Actions {
         }
 
         thing.collidedTrigger = other;
-        this.animations.animatePlayerDialogFreeze(thing);
+        this.animatePlayerDialogFreeze(thing);
 
         if (!other.keepAlive) {
             other.alive = false;
@@ -1564,7 +1709,7 @@ export class Actions {
         }
 
         if (other.dialog) {
-            this.animations.activateMenuTriggerer(thing, other);
+            this.activateMenuTriggerer(thing, other);
             return;
         }
 
@@ -1697,7 +1842,7 @@ export class Actions {
 
         other.active = false;
 
-        this.animations.animateFadeToColor({
+        this.animateFadeToColor({
             callback,
             color: "Black"
         });
@@ -1770,11 +1915,11 @@ export class Actions {
         }
 
         this.timeHandler.addEvent(
-            (): boolean => this.animations.activateCharacterRoaming(thing),
+            (): boolean => this.activateCharacterRoaming(thing),
             70 + this.numberMaker.randomInt(210));
 
         if (!thing.talking && !this.menuGrapher.getActiveMenu()) {
-            this.animations.animateCharacterStartWalkingRandom(thing);
+            this.animateCharacterStartWalkingRandom(thing);
         }
 
         return false;
@@ -2003,7 +2148,7 @@ export class Actions {
 
         player.bordering[player.direction] = undefined;
         this.graphics.addClass(player, "surfing");
-        this.animations.animateCharacterStartWalking(player, player.direction, [1]);
+        this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
     }
 }

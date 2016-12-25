@@ -2,7 +2,7 @@ import { IMove } from "battlemovr/lib/IBattleMovr";
 
 import {
     IBattleInfo, IBattler, IMenu, IPlayer, IPokemon, IThing, IWildPokemonSchema
-} from "./IFullScreenPokemon";
+} from "../IFullScreenPokemon";
 
 /**
  * Battle functions used by FullScreenPokemon instances.
