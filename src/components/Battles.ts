@@ -1,13 +1,217 @@
-import { IMove } from "battlemovr/lib/IBattleMovr";
+import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
+import { IBattleMovr, IMove } from "battlemovr/lib/IBattleMovr";
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
+import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
+import { IModAttachr } from "modattachr/lib/IModAttachr";
+import { INumberMakr } from "numbermakr/lib/INumberMakr";
+import { IThingHittr } from "thinghittr/lib/IThingHittr";
+import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
+import { ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
 
 import {
     IBattleInfo, IBattler, IMenu, IPlayer, IPokemon, IThing, IWildPokemonSchema
 } from "../IFullScreenPokemon";
+import { Actions } from "./Actions";
+import { Cutscenes } from "./Cutscenes";
+import { Graphics } from "./Graphics";
+import { Menus } from "./Menus";
+import { Physics } from "./Physics";
+import { Utilities } from "./Utilities";
+
+/**
+ * Settings to initialize a new instance of the Battles class.
+ */
+export interface IBattleSettings {
+    /**
+     * Action functions used by FullScreenPokemon instances.
+     */
+    actions: Actions;
+
+    /**
+     * An audio playback manager for persistent and on-demand themes and sounds.
+     */
+    audioPlayer: IAudioPlayr;
+
+    /**
+     * A driver for RPG-like battles between two collections of actors.
+     */
+    battleMover: IBattleMovr;
+
+    /**
+     * Cutscene functions used by FullScreenPokemon instances.
+     */
+    cutscenes: Cutscenes;
+
+    /**
+     * Graphics functions used by FullScreenPokemon instances.
+     */
+    graphics: Graphics;
+
+    /**
+     * A versatile container to store and manipulate values in localStorage.
+     */
+    itemsHolder: IItemsHoldr;
+
+    /**
+     * A computation utility to automate running common equations.
+     */
+    mathDecider: IMathDecidr;
+
+    /**
+     * Menu management system.
+     */
+    menuGrapher: IMenuGraphr;
+
+    /**
+     * Menu functions used by FullScreenPokemon instances.
+     */
+    menus: Menus;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    modAttacher: IModAttachr;
+
+    /**
+     * State based random number generator.
+     */
+    numberMaker: INumberMakr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    physics: Physics;
+
+    /**
+     * Automation for physics collisions and reactions.
+     */
+    thingHitter: IThingHittr;
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    scenePlayer: IScenePlayr;
+
+    /**
+     * A flexible, pausable alternative to setTimeout.
+     */
+    timeHandler: ITimeHandlr;
+
+    /**
+     * Utility functions used by FullScreenPokemon instances.
+     */
+    utilities: Utilities;
+}
 
 /**
  * Battle functions used by FullScreenPokemon instances.
  */
 export class Battles {
+    /**
+     * Action functions used by FullScreenPokemon instances.
+     */
+    protected readonly actions: Actions;
+
+    /**
+     * An audio playback manager for persistent and on-demand themes and sounds.
+     */
+    protected readonly audioPlayer: IAudioPlayr;
+
+    /**
+     * A driver for RPG-like battles between two collections of actors.
+     */
+    protected readonly battleMover: IBattleMovr;
+
+    /**
+     * Cutscene functions used by FullScreenPokemon instances.
+     */
+    protected readonly cutscenes: Cutscenes;
+
+    /**
+     * Graphics functions used by FullScreenPokemon instances.
+     */
+    protected readonly graphics: Graphics;
+
+    /**
+     * A versatile container to store and manipulate values in localStorage.
+     */
+    protected readonly itemsHolder: IItemsHoldr;
+
+    /**
+     * A computation utility to automate running common equations.
+     */
+    protected readonly mathDecider: IMathDecidr;
+
+    /**
+     * Menu management system.
+     */
+    protected readonly menuGrapher: IMenuGraphr;
+
+    /**
+     * Menu functions used by FullScreenPokemon instances.
+     */
+    protected readonly menus: Menus;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    protected readonly modAttacher: IModAttachr;
+
+    /**
+     * State based random number generator.
+     */
+    protected readonly numberMaker: INumberMakr;
+
+    /**
+     * Physics functions used by FullScreenPokemon instances.
+     */
+    protected readonly physics: Physics;
+
+    /**
+     * Automation for physics collisions and reactions.
+     */
+    protected readonly thingHitter: IThingHittr;
+
+    /**
+     * A cutscene runner for jumping between scenes and their routines.
+     */
+    protected readonly scenePlayer: IScenePlayr;
+
+    /**
+     * A flexible, pausable alternative to setTimeout.
+     */
+    protected readonly timeHandler: ITimeHandlr;
+
+    /**
+     * Utility functions used by FullScreenPokemon instances.
+     */
+    protected readonly utilities: Utilities;
+
+    /**
+     * Initializes a new instance of the Battles class.
+     * 
+     * @param settings   Settings to be used for initialization.
+     */
+    public constructor(settings: IBattleSettings) {
+        this.actions = settings.actions;
+        this.audioPlayer = settings.audioPlayer;
+        this.battleMover = settings.battleMover;
+        this.cutscenes = settings.cutscenes;
+        this.graphics = settings.graphics;
+        this.itemsHolder = settings.itemsHolder;
+        this.mathDecider = settings.mathDecider;
+        this.menuGrapher = settings.menuGrapher;
+        this.menus = settings.menus;
+        this.modAttacher = settings.modAttacher;
+        this.numberMaker = settings.numberMaker;
+        this.physics = settings.physics;
+        this.thingHitter = settings.thingHitter;
+        this.scenePlayer = settings.scenePlayer;
+        this.timeHandler = settings.timeHandler;
+        this.utilities = settings.utilities;
+    }
+
     /**
      * Starts a Pokemon battle.
      * 
@@ -89,7 +293,7 @@ export class Battles {
         }
 
         thing.keys = thing.getKeys();
-        this.animations.animateGrassBattleStart(thing, thing.grass);
+        this.actions.animateGrassBattleStart(thing, thing.grass);
 
         return true;
     }
