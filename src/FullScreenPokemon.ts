@@ -166,7 +166,7 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * The game's single player.
      */
-    public player: [IPlayer];
+    public players: [IPlayer];
 
     /**
      * The total FPSAnalyzr ticks that have elapsed since the constructor or saving.

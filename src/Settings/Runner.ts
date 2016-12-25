@@ -34,7 +34,7 @@ export function GenerateRunnerSettings(): IRunnerModuleSettings {
                 this.maintenance.maintainCharacters(this.groupHolder.getGroup("Character") as ICharacter[]);
             },
             function (this: FullScreenPokemon): void {
-                this.maintenance.maintainPlayer(this.player);
+                this.maintenance.maintainPlayer(this.players);
             },
             function (this: FullScreenPokemon): void {
                 this.timeHandler.handleEvents();

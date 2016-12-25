@@ -38,8 +38,8 @@ export function GenerateModsSettings(): IModsModuleSettings {
 
                         this.saves.popStateHistory(area, "allowCycling");
 
-                        if (!area.allowCycling && this.player.cycling) {
-                            this.cycling.stopCycling(this.player);
+                        if (!area.allowCycling && this.players.cycling) {
+                            this.cycling.stopCycling(this.players);
                         }
                         this.mapScreener.variables.allowCycling = area.allowCycling;
                     },
@@ -55,11 +55,11 @@ export function GenerateModsSettings(): IModsModuleSettings {
                     /* tslint:disable no-string-literal */
                     onModEnable: function (this: FullScreenPokemon): void {
                         const stats: any = this.objectMaker.getFunction("Player").prototype;
-                        this.player.speed = stats.speed = 10;
+                        this.players.speed = stats.speed = 10;
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
                         const stats: any = this.objectMaker.getFunction("Player").prototype;
-                        this.player.speed = stats.speed = this.moduleSettings.objects.properties!["Player"].speed;
+                        this.players.speed = stats.speed = this.moduleSettings.objects.properties!["Player"].speed;
                     }
                     /* tslint:enable no-string-literal */
                 }
@@ -176,7 +176,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      * @param settings   The battle information.
                      */
                     onBattleComplete: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, settings: IBattleInfo): void {
-                        const grass: IGrass | undefined = this.player.grass;
+                        const grass: IGrass | undefined = this.players.grass;
                         if (!grass) {
                             return;
                         }
@@ -199,8 +199,8 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      * @param items   The Player's items.
                      */
                     onOpenItemsMenu: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, items: any[]): void {
-                        const grassMap: IMap | undefined = this.player.grass && this.areaSpawner.getMap(this.player.grass.mapName) as IMap;
-                        const grassArea: IArea | undefined = grassMap && grassMap.areas[this.player.grass!.areaName] as IArea;
+                        const grassMap: IMap | undefined = this.players.grass && this.areaSpawner.getMap(this.players.grass.mapName) as IMap;
+                        const grassArea: IArea | undefined = grassMap && grassMap.areas[this.players.grass!.areaName] as IArea;
 
                         if (!this.battleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
                             return;

@@ -2,7 +2,8 @@ import { IActorExperience } from "battlemovr/lib/IBattleMovr";
 import { IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
-import { Direction, DirectionAliases, DirectionOpposites, PokedexListingStatus } from "./Constants";
+import { Direction, DirectionAliases, DirectionOpposites, PokedexListingStatus } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IBattleActionRoutineSettings, IBattleAttackRoutineSettings,
     IBattleCutsceneSettings, IBattleInfo, IBattleLevelRoutineSettings, IBattleMoveRoutineSettings,
@@ -11,12 +12,26 @@ import {
     ICharacter, IEnemy, IKeyboardResultsMenu, IMenu, IPlayer, IPokeball, IPokemon,
     IPokemonMoveListing, IThing, ITransitionFlashSettings, ITransitionLineSpiralSettings,
     ITransportSchema
-} from "./IFullScreenPokemon";
+} from "../IFullScreenPokemon";
 
 /**
  * Cutscene functions used by FullScreenPokemon instances.
  */
 export class Cutscenes {
+    /**
+     * FullScreenPokemon instance this is wrapping around.
+     */
+    protected readonly fsp: FullScreenPokemon;
+
+    /**
+     * Initializes a new instance of the Cutscenes class.
+     * 
+     * @param fsp   FullScreenPokemon instance this is wrapping around.
+     */
+    public constructor(fsp: FullScreenPokemon) {
+        this.fsp = fsp;
+    }
+
     /**
      * Cutscene for starting a battle with a spiral.
      * 
@@ -25,8 +40,8 @@ export class Cutscenes {
     public cutsceneBattleTransitionLineSpiral(settings: ITransitionLineSpiralSettings): void {
         const unitsize: number = 4;
         const divisor: number = settings.divisor || 15;
-        const screenWidth: number = this.mapScreener.width;
-        const screenHeight: number = this.mapScreener.height;
+        const screenWidth: number = this.fsp.mapScreener.width;
+        const screenHeight: number = this.fsp.mapScreener.height;
         const width: number = Math.ceil(screenWidth / divisor);
         const height: number = Math.ceil(screenHeight / divisor);
         const things: IThing[] = [];
@@ -42,7 +57,7 @@ export class Cutscenes {
                     settings.callback();
 
                     for (const other of things) {
-                        this.physics.killNormal(other);
+                        this.fsp.physics.killNormal(other);
                     }
                 }
 
@@ -51,11 +66,11 @@ export class Cutscenes {
 
             switch (thing.direction) {
                 case Direction.Top:
-                    thing = this.objectMaker.make("BlackSquare", {
+                    thing = this.fsp.objectMaker.make("BlackSquare", {
                         width: width / unitsize,
                         height: screenHeight / unitsize
                     });
-                    this.things.add(
+                    this.fsp.things.add(
                         thing,
                         screenWidth - ((numTimes + 1) * width),
                         screenHeight - ((numTimes + 1) * divisor));
@@ -64,11 +79,11 @@ export class Cutscenes {
                     break;
 
                 case Direction.Right:
-                    thing = this.objectMaker.make("BlackSquare", {
+                    thing = this.fsp.objectMaker.make("BlackSquare", {
                         width: screenWidth / unitsize,
                         height: height / unitsize
                     });
-                    this.things.add(
+                    this.fsp.things.add(
                         thing,
                         numTimes * divisor - screenWidth,
                         screenHeight - (numTimes + 1) * height);
@@ -77,11 +92,11 @@ export class Cutscenes {
                     break;
 
                 case Direction.Bottom:
-                    thing = this.objectMaker.make("BlackSquare", {
+                    thing = this.fsp.objectMaker.make("BlackSquare", {
                         width: width / unitsize,
                         height: screenHeight / unitsize
                     });
-                    this.things.add(
+                    this.fsp.things.add(
                         thing,
                         numTimes * width,
                         numTimes * height - screenHeight);
@@ -90,11 +105,11 @@ export class Cutscenes {
                     break;
 
                 case Direction.Left:
-                    thing = this.objectMaker.make("BlackSquare", {
+                    thing = this.fsp.objectMaker.make("BlackSquare", {
                         width: screenWidth / unitsize,
                         height: height / unitsize
                     });
-                    this.things.add(
+                    this.fsp.things.add(
                         thing,
                         screenWidth - numTimes * divisor,
                         numTimes * height);
@@ -108,14 +123,14 @@ export class Cutscenes {
 
             things.push(thing);
 
-            this.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
+            this.fsp.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
 
-            this.timeHandler.addEventInterval(
+            this.fsp.timeHandler.addEventInterval(
                 (): boolean => {
                     if (direction % 2 === 1) {
-                        this.physics.shiftHoriz(thing, difference);
+                        this.fsp.physics.shiftHoriz(thing, difference);
                     } else {
-                        this.physics.shiftVert(thing, difference);
+                        this.fsp.physics.shiftVert(thing, difference);
                     }
 
                     if (direction === Direction.Right || direction === Direction.Bottom) {
@@ -134,7 +149,7 @@ export class Cutscenes {
                     }
 
                     addLineSpiralThing();
-                    this.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
+                    this.fsp.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
 
                     return true;
                 },
@@ -170,12 +185,12 @@ export class Cutscenes {
             color = flashColors[completed % flashColors.length];
             completed += 1;
 
-            this.animations.animateFadeToColor({
+            this.fsp.actions.animateFadeToColor({
                 color: color,
                 change: change,
                 speed: speed,
                 callback: (): void => {
-                    this.animations.animateFadeFromColor({
+                    this.fsp.actions.animateFadeFromColor({
                         color: color,
                         change: change,
                         speed: speed,
@@ -184,7 +199,7 @@ export class Cutscenes {
                 }
             });
 
-            this.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
+            this.fsp.graphics.moveBattleKeptThingsToText(settings.battleInfo!);
         };
 
         repeater();
@@ -228,7 +243,7 @@ export class Cutscenes {
         const battleInfo: IBattleInfo = settings.battleInfo;
         const player: IPlayer = things.player;
         const opponent: IEnemy = things.opponent;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let playerX: number;
         let opponentX: number;
         let playerGoal: number;
@@ -243,36 +258,36 @@ export class Cutscenes {
         player.opacity = 0;
         opponent.opacity = 0;
 
-        this.physics.setLeft(player, menu.right + player.width * 4);
-        this.physics.setRight(opponent, menu.left);
-        this.physics.setTop(opponent, menu.top);
+        this.fsp.physics.setLeft(player, menu.right + player.width * 4);
+        this.fsp.physics.setRight(opponent, menu.left);
+        this.fsp.physics.setTop(opponent, menu.top);
 
         // They should be visible halfway through (2 * (1 / timeout))
-        this.animations.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
-        this.animations.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
+        this.fsp.actions.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
+        this.fsp.actions.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
 
-        playerX = this.physics.getMidX(player);
-        opponentX = this.physics.getMidX(opponent);
+        playerX = this.fsp.physics.getMidX(player);
+        opponentX = this.fsp.physics.getMidX(opponent);
         playerGoal = menu.left + player.width * 4 / 2;
         opponentGoal = menu.right - opponent.width * 4 / 2;
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
             1);
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,
             1);
 
-        this.storage.addPokemonToPokedex(battleInfo.battlers.opponent.actors[0].title, PokedexListingStatus.Seen);
+        this.fsp.saves.addPokemonToPokedex(battleInfo.battlers.opponent.actors[0].title, PokedexListingStatus.Seen);
 
-        this.timeHandler.addEvent(this.scenePlayer.bindRoutine("OpeningText"), timeout);
+        this.fsp.timeHandler.addEvent(this.fsp.scenePlayer.bindRoutine("OpeningText"), timeout);
 
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -295,33 +310,33 @@ export class Cutscenes {
 
         if (battleInfo.automaticMenus) {
             callback = (): void => {
-                this.timeHandler.addEvent(
-                    (): void => this.scenePlayer.playRoutine(nextRoutine),
+                this.fsp.timeHandler.addEvent(
+                    (): void => this.fsp.scenePlayer.playRoutine(nextRoutine),
                     70);
             };
         } else {
-            callback = this.scenePlayer.bindRoutine(nextRoutine);
+            callback = this.fsp.scenePlayer.bindRoutine(nextRoutine);
         }
 
-        this.menuGrapher.createMenu("BattlePlayerHealth");
-        this.battles.addBattleDisplayPokeballs(
-            this.menuGrapher.getMenu("BattlePlayerHealth") as IMenu,
+        this.fsp.menuGrapher.createMenu("BattlePlayerHealth");
+        this.fsp.battles.addBattleDisplayPokeballs(
+            this.fsp.menuGrapher.getMenu("BattlePlayerHealth") as IMenu,
             battleInfo.battlers.player!);
 
         if (battleInfo.battlers.opponent.hasActors) {
-            this.menuGrapher.createMenu("BattleOpponentHealth");
-            this.battles.addBattleDisplayPokeballs(
-                this.menuGrapher.getMenu("BattleOpponentHealth") as IMenu,
+            this.fsp.menuGrapher.createMenu("BattleOpponentHealth");
+            this.fsp.battles.addBattleDisplayPokeballs(
+                this.fsp.menuGrapher.getMenu("BattleOpponentHealth") as IMenu,
                 battleInfo.battlers.player!,
                 true);
         } else {
-            this.battles.addBattleDisplayPokemonHealth("opponent");
+            this.fsp.battles.addBattleDisplayPokemonHealth("opponent");
         }
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: battleInfo.automaticMenus
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -330,7 +345,7 @@ export class Cutscenes {
             ],
             callback
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -342,8 +357,8 @@ export class Cutscenes {
     public cutsceneBattleOpponentIntro(settings: IBattleCutsceneSettings): void {
         const things: any = settings.things;
         const opponent: ICharacter = things.opponent;
-        const menu: IMenu = this.menuGrapher.getMenu("GeneralText") as IMenu;
-        const opponentX: number = this.physics.getMidX(opponent);
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("GeneralText") as IMenu;
+        const opponentX: number = this.fsp.physics.getMidX(opponent);
         const opponentGoal: number = menu.right + opponent.width * 4 / 2;
         const battleInfo: IBattleInfo = settings.battleInfo;
         const callback: string = battleInfo.battlers.opponent.hasActors
@@ -352,15 +367,15 @@ export class Cutscenes {
         const timeout: number = 49;
         const textOpponentSendOut: [string, string, string] = battleInfo.textOpponentSendOut || ["", "", ""];
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,
             1);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                     opponent,
                     "opacity",
                     -2 / timeout,
@@ -369,11 +384,11 @@ export class Cutscenes {
             },
             (timeout / 2) | 0);
 
-        this.menuGrapher.deleteMenu("BattleOpponentHealth");
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.deleteMenu("BattleOpponentHealth");
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -385,10 +400,10 @@ export class Cutscenes {
                 ]
             ]
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-        this.timeHandler.addEvent(
-            this.scenePlayer.bindRoutine(
+        this.fsp.timeHandler.addEvent(
+            this.fsp.scenePlayer.bindRoutine(
                 callback,
                 {
                     nextRoutine: "PlayerIntro"
@@ -405,29 +420,29 @@ export class Cutscenes {
     public cutsceneBattlePlayerIntro(settings: IBattleCutsceneSettings): void {
         const things: any = settings.things;
         const player: IPlayer = things.player;
-        const menu: IMenu = this.menuGrapher.getMenu("GeneralText") as IMenu;
-        const playerX: number = this.physics.getMidX(player);
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("GeneralText") as IMenu;
+        const playerX: number = this.fsp.physics.getMidX(player);
         const playerGoal: number = menu.left - player.width * 4 / 2;
         const battleInfo: IBattleInfo = settings.battleInfo;
         const textPlayerSendOut: [string, string] = battleInfo.textPlayerSendOut || ["", ""];
         const timeout: number = 24;
 
-        this.menuGrapher.deleteMenu("BattlePlayerHealth");
+        this.fsp.menuGrapher.deleteMenu("BattlePlayerHealth");
 
         if (!battleInfo.battlers.player!.hasActors) {
-            this.scenePlayer.playRoutine("ShowPlayerMenu");
+            this.fsp.scenePlayer.playRoutine("ShowPlayerMenu");
             return;
         }
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
             1);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                     player,
                     "opacity",
                     -2 / timeout,
@@ -436,10 +451,10 @@ export class Cutscenes {
             },
             (timeout / 2) | 0);
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -449,10 +464,10 @@ export class Cutscenes {
                 ]
             ]
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-        this.timeHandler.addEvent(
-            this.scenePlayer.bindRoutine(
+        this.fsp.timeHandler.addEvent(
+            this.fsp.scenePlayer.bindRoutine(
                 "PlayerSendOut",
                 {
                     nextRoutine: "ShowPlayerMenu"
@@ -467,10 +482,10 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene
      */
     public cutsceneBattleShowPlayerMenu(settings: IBattleCutsceneSettings): void {
-        this.menuGrapher.deleteMenu("Yes/No");
+        this.fsp.menuGrapher.deleteMenu("Yes/No");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.battleMover.showPlayerMenu();
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.battleMover.showPlayerMenu();
 
         if (settings.battleInfo.onShowPlayerMenu) {
             settings.battleInfo.onShowPlayerMenu();
@@ -494,12 +509,12 @@ export class Cutscenes {
         settings.opponentLeft = left;
         settings.opponentTop = top;
 
-        this.menuGrapher.setActiveMenu(undefined);
+        this.fsp.menuGrapher.setActiveMenu(undefined);
 
-        this.animations.animateSmokeSmall(
+        this.fsp.actions.animateSmokeSmall(
             left,
             top,
-            this.scenePlayer.bindRoutine("OpponentSendOutAppear", args)
+            this.fsp.scenePlayer.bindRoutine("OpponentSendOutAppear", args)
         );
     }
 
@@ -513,17 +528,17 @@ export class Cutscenes {
     public cutsceneBattleOpponentSendOutAppear(settings: IBattleCutsceneSettings, args: IBattleRoutineSettings): void {
         const opponentInfo: IBattler = settings.battleInfo.battlers.opponent;
         const pokemonInfo: IPokemon = opponentInfo.actors[opponentInfo.selectedIndex!];
-        const pokemon: IThing = this.battleMover.setThing(
+        const pokemon: IThing = this.fsp.battleMover.setThing(
             "opponent",
             pokemonInfo.title.join("") + "Front") as IThing;
 
         console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
-        this.battles.addBattleDisplayPokemonHealth("opponent");
-        this.storage.addPokemonToPokedex(pokemonInfo.title, PokedexListingStatus.Seen);
+        this.fsp.battles.addBattleDisplayPokemonHealth("opponent");
+        this.fsp.saves.addPokemonToPokedex(pokemonInfo.title, PokedexListingStatus.Seen);
 
         if (args) {
-            this.scenePlayer.playRoutine(args.nextRoutine!);
+            this.fsp.scenePlayer.playRoutine(args.nextRoutine!);
         }
     }
 
@@ -544,12 +559,12 @@ export class Cutscenes {
         settings.playerLeft = left;
         settings.playerTop = top;
 
-        this.menuGrapher.setActiveMenu(undefined);
+        this.fsp.menuGrapher.setActiveMenu(undefined);
 
-        this.animations.animateSmokeSmall(
+        this.fsp.actions.animateSmokeSmall(
             left,
             top,
-            this.scenePlayer.bindRoutine("PlayerSendOutAppear", args));
+            this.fsp.scenePlayer.bindRoutine("PlayerSendOutAppear", args));
     }
 
     /**
@@ -562,17 +577,17 @@ export class Cutscenes {
     public cutsceneBattlePlayerSendOutAppear(settings: IBattleCutsceneSettings, args: IBattleRoutineSettings): void {
         const playerInfo: IBattler = settings.battleInfo.battlers.player!;
         const pokemonInfo: IPokemon = playerInfo.selectedActor as IPokemon;
-        const pokemon: IThing = this.battleMover.setThing(
+        const pokemon: IThing = this.fsp.battleMover.setThing(
             "player",
             pokemonInfo.title.join("") + "Back") as IThing;
 
         console.log("Should make the zoom-in animation for appearing Pokemon...", pokemon);
 
-        this.battles.addBattleDisplayPokemonHealth("player");
+        this.fsp.battles.addBattleDisplayPokemonHealth("player");
 
-        this.menuGrapher.createMenu("BattlePlayerHealthNumbers");
-        this.battles.setBattleDisplayPokemonHealthBar("Player", pokemonInfo.HP, pokemonInfo.HPNormal);
-        this.scenePlayer.playRoutine(args.nextRoutine!);
+        this.fsp.menuGrapher.createMenu("BattlePlayerHealthNumbers");
+        this.fsp.battles.setBattleDisplayPokemonHealthBar("Player", pokemonInfo.HP, pokemonInfo.HPNormal);
+        this.fsp.scenePlayer.playRoutine(args.nextRoutine!);
     }
 
     /**
@@ -581,15 +596,15 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneBattlePlayerSwitchesSamePokemon(settings: IBattleCutsceneSettings): void {
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             backMenu: "PokemonMenuContext"
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 settings.battleInfo.battlers.player!.selectedActor!.nickname, " is already out!"
             ]);
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -606,19 +621,19 @@ export class Cutscenes {
         const opponentActor: IPokemon = opponent.selectedActor as IPokemon;
         const choice: string = args.choicePlayer!;
 
-        args.damage = this.mathDecider.compute("damage", choice, playerActor, opponentActor);
+        args.damage = this.fsp.mathDecider.compute("damage", choice, playerActor, opponentActor);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
                     playerActor.nickname, " used ", choice + "!"
                 ]
             ],
-            this.scenePlayer.bindRoutine("MovePlayerAnimate", args)
+            this.fsp.scenePlayer.bindRoutine("MovePlayerAnimate", args)
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -629,7 +644,7 @@ export class Cutscenes {
      */
     public cutsceneBattleMovePlayerAnimate(_settings: any, args: IBattleMoveRoutineSettings): void {
         const choice: string = args.choicePlayer!;
-        const move: IPokemonMoveListing = this.mathDecider.getConstant("moves")[choice];
+        const move: IPokemonMoveListing = this.fsp.mathDecider.getConstant("moves")[choice];
 
         console.log("Should do something with", move);
 
@@ -645,18 +660,18 @@ export class Cutscenes {
                 callback = (): void => {
                     args.movePlayerDone = false;
                     args.moveOpponentDone = false;
-                    this.menuGrapher.createMenu("GeneralText");
-                    this.battleMover.showPlayerMenu();
+                    this.fsp.menuGrapher.createMenu("GeneralText");
+                    this.fsp.battleMover.showPlayerMenu();
                 };
             } else {
                 callback = (): void => {
-                    this.timeHandler.addEvent(
-                        (): void => this.scenePlayer.playRoutine("MoveOpponent", args),
+                    this.fsp.timeHandler.addEvent(
+                        (): void => this.fsp.scenePlayer.playRoutine("MoveOpponent", args),
                         7);
                 };
             }
 
-            this.scenePlayer.playRoutine("Damage", {
+            this.fsp.scenePlayer.playRoutine("Damage", {
                 battlerName: "opponent",
                 damage: args.damage,
                 callback: callback
@@ -664,11 +679,11 @@ export class Cutscenes {
         };
 
         // @todo: When all moves have been implemented, this will be simplified.
-        if (!this.scenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
+        if (!this.fsp.scenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
             console.warn(choice + " attack animation not implemented...");
             args.callback();
         } else {
-            this.scenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
+            this.fsp.scenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
         }
     }
 
@@ -686,18 +701,18 @@ export class Cutscenes {
         const playerActor: IPokemon = player.selectedActor as IPokemon;
         const choice: string = args.choiceOpponent!;
 
-        args.damage = this.mathDecider.compute("damage", choice, opponentActor, playerActor);
+        args.damage = this.fsp.mathDecider.compute("damage", choice, opponentActor, playerActor);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
                     opponentActor.nickname, " used ", choice + "!"
                 ]
             ],
-            this.scenePlayer.bindRoutine("MoveOpponentAnimate", args));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("MoveOpponentAnimate", args));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -708,7 +723,7 @@ export class Cutscenes {
      */
     public cutsceneBattleMoveOpponentAnimate(_settings: IBattleCutsceneSettings, args: IBattleMoveRoutineSettings): void {
         const choice: string = args.choiceOpponent!;
-        const move: string = this.mathDecider.getConstant("moves")[choice];
+        const move: string = this.fsp.mathDecider.getConstant("moves")[choice];
 
         console.log("Should do something with", move);
 
@@ -724,18 +739,18 @@ export class Cutscenes {
                 callback = (): void => {
                     args.movePlayerDone = false;
                     args.moveOpponentDone = false;
-                    this.menuGrapher.createMenu("GeneralText");
-                    this.battleMover.showPlayerMenu();
+                    this.fsp.menuGrapher.createMenu("GeneralText");
+                    this.fsp.battleMover.showPlayerMenu();
                 };
             } else {
                 callback = (): void => {
-                    this.timeHandler.addEvent(
-                        (): void => this.scenePlayer.playRoutine("MovePlayer", args),
+                    this.fsp.timeHandler.addEvent(
+                        (): void => this.fsp.scenePlayer.playRoutine("MovePlayer", args),
                         7);
                 };
             }
 
-            this.scenePlayer.playRoutine("Damage", {
+            this.fsp.scenePlayer.playRoutine("Damage", {
                 battlerName: "player",
                 damage: args.damage,
                 callback: callback
@@ -743,11 +758,11 @@ export class Cutscenes {
         };
 
         // @todo: When all moves have been implemented, this will be simplified.
-        if (!this.scenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
+        if (!this.fsp.scenePlayer.getOtherRoutine("Attack" + choice.replace(" ", ""))) {
             console.warn(choice + " attack animation not implemented...");
             args.callback();
         } else {
-            this.scenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
+            this.fsp.scenePlayer.playRoutine("Attack" + choice.replace(" ", ""), args);
         }
     }
 
@@ -760,16 +775,16 @@ export class Cutscenes {
     public cutsceneBattleDamage(_settings: IBattleCutsceneSettings, args: IBattleActionRoutineSettings): void {
         const battlerName: "player" | "opponent" = args.battlerName!;
         const damage: number = args.damage!;
-        const battleInfo: IBattleInfo = this.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.fsp.battleMover.getBattleInfo() as IBattleInfo;
         const battler: IBattler = battleInfo.battlers[battlerName]!;
         const actor: IPokemon = battler.selectedActor as IPokemon;
         const hpStart: number = actor.HP;
         const hpEnd: number = Math.max(hpStart - damage, 0);
         const callback: (() => void) | undefined = hpEnd === 0
             ? (): void => {
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.scenePlayer.playRoutine(
+                        this.fsp.scenePlayer.playRoutine(
                             "PokemonFaints",
                             {
                                 battlerName: battlerName
@@ -780,7 +795,7 @@ export class Cutscenes {
             : args.callback;
 
         if (damage !== 0) {
-            this.battles.animateBattleDisplayPokemonHealthBar(
+            this.fsp.battles.animateBattleDisplayPokemonHealthBar(
                 battlerName,
                 hpStart,
                 hpEnd,
@@ -801,64 +816,64 @@ export class Cutscenes {
      */
     public cutsceneBattlePokemonFaints(settings: IBattleCutsceneSettings, args: IBattleActionRoutineSettings): void {
         const battlerName: "player" | "opponent" = args.battlerName!;
-        const battleInfo: IBattleInfo = this.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.fsp.battleMover.getBattleInfo() as IBattleInfo;
         const actor: IPokemon = battleInfo.battlers[battlerName]!.selectedActor!;
         const thing: IThing = settings.things[battlerName];
-        const blank: IThing = this.objectMaker.make(
+        const blank: IThing = this.fsp.objectMaker.make(
             "WhiteSquare",
             {
                 width: thing.width * thing.scale,
                 height: thing.height * thing.scale
             });
-        const texts: IThing[] = this.groupHolder.getGroup("Text") as IThing[];
-        const background: IThing = this.battleMover.getBackgroundThing() as IThing;
+        const texts: IThing[] = this.fsp.groupHolder.getGroup("Text") as IThing[];
+        const background: IThing = this.fsp.battleMover.getBackgroundThing() as IThing;
         const backgroundIndex: number = texts.indexOf(background);
         const nextRoutine: string = battlerName === "player"
             ? "AfterPlayerPokemonFaints" : "AfterOpponentPokemonFaints";
 
-        this.things.add(
+        this.fsp.things.add(
             blank,
             thing.left,
             thing.top + thing.height * thing.scale * 4);
 
-        this.utilities.arrayToIndex(blank, texts, backgroundIndex + 1);
-        this.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);
+        this.fsp.utilities.arrayToIndex(blank, texts, backgroundIndex + 1);
+        this.fsp.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);
 
-        this.animations.animateSlideVertical(
+        this.fsp.actions.animateSlideVertical(
             thing,
             4 * 2,
-            this.physics.getMidY(thing) + thing.height * thing.scale * 4,
+            this.fsp.physics.getMidY(thing) + thing.height * thing.scale * 4,
             1,
             (): void => {
-                this.physics.killNormal(thing);
-                this.physics.killNormal(blank);
-                this.menuGrapher.createMenu("GeneralText");
-                this.menuGrapher.addMenuDialog(
+                this.fsp.physics.killNormal(thing);
+                this.fsp.physics.killNormal(blank);
+                this.fsp.menuGrapher.createMenu("GeneralText");
+                this.fsp.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         [
                             actor.nickname, " fainted!"
                         ]
                     ],
-                    this.scenePlayer.bindRoutine(nextRoutine, args)
+                    this.fsp.scenePlayer.bindRoutine(nextRoutine, args)
                 );
-                this.menuGrapher.setActiveMenu("GeneralText");
+                this.fsp.menuGrapher.setActiveMenu("GeneralText");
             });
 
-        this.modAttacher.fireEvent("onFaint", actor, battleInfo.battlers.player!.actors);
+        this.fsp.modAttacher.fireEvent("onFaint", actor, battleInfo.battlers.player!.actors);
     }
 
     /**
      * Cutscene for choosing what to do after a Pokemon faints in battle.
      */
     public cutsceneBattleAfterPlayerPokemonFaints(): void {
-        const battleInfo: IBattleInfo = this.battleMover.getBattleInfo() as IBattleInfo;
-        const actorAvailable: boolean = this.utilities.checkArrayMembersIndex(battleInfo.battlers.player!.actors, "HP");
+        const battleInfo: IBattleInfo = this.fsp.battleMover.getBattleInfo() as IBattleInfo;
+        const actorAvailable: boolean = this.fsp.utilities.checkArrayMembersIndex(battleInfo.battlers.player!.actors, "HP");
 
         if (actorAvailable) {
-            this.scenePlayer.playRoutine("PlayerChoosesPokemon");
+            this.fsp.scenePlayer.playRoutine("PlayerChoosesPokemon");
         } else {
-            this.scenePlayer.playRoutine("Defeat");
+            this.fsp.scenePlayer.playRoutine("Defeat");
         }
     }
 
@@ -870,19 +885,19 @@ export class Cutscenes {
     public cutsceneBattleAfterOpponentPokemonFaints(settings: IBattleCutsceneSettings): void {
         const battleInfo: IBattleInfo = settings.battleInfo;
         const opponent: IBattler = battleInfo.battlers.opponent;
-        const actorAvailable: boolean = this.utilities.checkArrayMembersIndex(opponent.actors, "HP");
-        const experienceGained: number = this.mathDecider.compute(
+        const actorAvailable: boolean = this.fsp.utilities.checkArrayMembersIndex(opponent.actors, "HP");
+        const experienceGained: number = this.fsp.mathDecider.compute(
             "experienceGained", battleInfo.battlers.player!, battleInfo.battlers.opponent);
         let callback: Function;
 
         if (actorAvailable) {
-            callback = this.scenePlayer.bindRoutine("OpponentSwitchesPokemon");
+            callback = this.fsp.scenePlayer.bindRoutine("OpponentSwitchesPokemon");
         } else {
-            callback = this.scenePlayer.bindRoutine("Victory");
+            callback = this.fsp.scenePlayer.bindRoutine("Victory");
         }
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -892,14 +907,14 @@ export class Cutscenes {
                     " EXP. points!"
                 ]
             ],
-            this.scenePlayer.bindRoutine(
+            this.fsp.scenePlayer.bindRoutine(
                 "ExperienceGain",
                 {
                     experienceGained: experienceGained,
                     callback: callback
                 }
             ));
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -915,12 +930,12 @@ export class Cutscenes {
 
         nicknameExclaim.push("!");
 
-        this.battleMover.switchActor("opponent", opponent.selectedIndex + 1);
+        this.fsp.battleMover.switchActor("opponent", opponent.selectedIndex + 1);
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: false
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 opponent.name,
@@ -929,29 +944,29 @@ export class Cutscenes {
                 "Will %%%%%%%PLAYER%%%%%%% change %%%%%%%POKEMON%%%%%%%?"
             ],
             (): void => {
-                this.menuGrapher.createMenu("Yes/No");
-                this.menuGrapher.addMenuList("Yes/No", {
+                this.fsp.menuGrapher.createMenu("Yes/No");
+                this.fsp.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "Yes",
-                            callback: this.scenePlayer.bindRoutine(
+                            callback: this.fsp.scenePlayer.bindRoutine(
                                 "PlayerSwitchesPokemon",
                                 {
                                     nextRoutine: "OpponentSendOut"
                                 })
                         }, {
                             text: "No",
-                            callback: this.scenePlayer.bindRoutine(
+                            callback: this.fsp.scenePlayer.bindRoutine(
                                 "OpponentSendOut",
                                 {
                                     nextRoutine: "ShowPlayerMenu"
                                 })
                         }]
                 });
-                this.menuGrapher.setActiveMenu("Yes/No");
+                this.fsp.menuGrapher.setActiveMenu("Yes/No");
             }
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
     }
 
@@ -973,7 +988,7 @@ export class Cutscenes {
 
         if (experience.next - experience.current < 0) {
             gains -= (experience.next - experience.current);
-            this.scenePlayer.playRoutine("LevelUp", {
+            this.fsp.scenePlayer.playRoutine("LevelUp", {
                 experienceGained: gains,
                 callback: args.callback
             });
@@ -994,13 +1009,13 @@ export class Cutscenes {
         const actor: IPokemon = battleInfo.battlers.player!.selectedActor!;
 
         actor.level += 1;
-        actor.experience = this.mathDecider.compute(
+        actor.experience = this.fsp.mathDecider.compute(
             "newPokemonExperience", actor.title, actor.level);
 
         console.warn("Leveling up does not yet increase stats...");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -1010,9 +1025,9 @@ export class Cutscenes {
                     "!"
                 ]
             ],
-            this.scenePlayer.bindRoutine("LevelUpStats", args)
+            this.fsp.scenePlayer.bindRoutine("LevelUpStats", args)
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1022,7 +1037,7 @@ export class Cutscenes {
      * @param args   Settings for the routine.
      */
     public cutsceneBattleLevelUpStats(settings: IBattleCutsceneSettings, args: IBattleLevelRoutineSettings): void {
-        this.menus.openPokemonLevelUpStats({
+        this.fsp.menus.openPokemonLevelUpStats({
             container: "BattleDisplayInitial",
             position: {
                 horizontal: "right",
@@ -1034,7 +1049,7 @@ export class Cutscenes {
             pokemon: settings.battleInfo.battlers.player!.selectedActor!,
             onMenuDelete: args.callback
         });
-        this.menuGrapher.setActiveMenu("LevelUpStats");
+        this.fsp.menuGrapher.setActiveMenu("LevelUpStats");
 
         console.warn("For stones, LevelUpStats should be taken out of battles.");
     }
@@ -1043,7 +1058,7 @@ export class Cutscenes {
      * Cutscene for a player choosing a Pokemon (creating the menu for it).
      */
     public cutsceneBattlePlayerChoosesPokemon(): void {
-        this.menuGrapher.createMenu("Pokemon", {
+        this.fsp.menuGrapher.createMenu("Pokemon", {
             position: {
                 vertical: "center",
                 offset: {
@@ -1057,12 +1072,12 @@ export class Cutscenes {
      * Cutscene for failing to run from a trainer battle.
      */
     public cutsceneBattleExitFail(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             "No! There's no running from a trainer battle!",
-            this.scenePlayer.bindRoutine("BattleExitFailReturn"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("BattleExitFailReturn"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1070,28 +1085,28 @@ export class Cutscenes {
      * 
      */
     public cutsceneBattleExitFailReturn(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.battleMover.showPlayerMenu();
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.battleMover.showPlayerMenu();
     }
 
     /**
      * Cutscene for becoming victorious in battle.
      */
     public cutsceneBattleVictory(): void {
-        const battleInfo: IBattleInfo = this.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.fsp.battleMover.getBattleInfo() as IBattleInfo;
         const opponent: IBattler = battleInfo.battlers.opponent;
 
         if (!opponent.hasActors) {
-            this.battleMover.closeBattle((): void => {
-                this.animations.animateFadeFromColor({
+            this.fsp.battleMover.closeBattle((): void => {
+                this.fsp.actions.animateFadeFromColor({
                     color: "White"
                 });
             });
             return;
         }
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -1100,9 +1115,9 @@ export class Cutscenes {
                     "!"
                 ]
             ],
-            this.scenePlayer.bindRoutine("VictorySpeech")
+            this.fsp.scenePlayer.bindRoutine("VictorySpeech")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1112,32 +1127,32 @@ export class Cutscenes {
      */
     public cutsceneBattleVictorySpeech(settings: IBattleCutsceneSettings): void {
         const battleInfo: IBattleInfo = settings.battleInfo;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        const opponent: IThing = this.battleMover.setThing("opponent", battleInfo.battlers.opponent.sprite) as IThing;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const opponent: IThing = this.fsp.battleMover.setThing("opponent", battleInfo.battlers.opponent.sprite) as IThing;
         const timeout: number = 35;
         let opponentX: number;
         let opponentGoal: number;
 
         opponent.opacity = 0;
 
-        this.physics.setTop(opponent, menu.top);
-        this.physics.setLeft(opponent, menu.right);
-        opponentX = this.physics.getMidX(opponent);
+        this.fsp.physics.setTop(opponent, menu.top);
+        this.fsp.physics.setLeft(opponent, menu.right);
+        opponentX = this.fsp.physics.getMidX(opponent);
         opponentGoal = menu.right - opponent.width * 4 / 2;
 
-        this.animations.animateFadeAttribute(opponent, "opacity", 4 / timeout, 1, 1);
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateFadeAttribute(opponent, "opacity", 4 / timeout, 1, 1);
+        this.fsp.actions.animateSlideHorizontal(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,
             1,
             (): void => {
-                this.menuGrapher.createMenu("GeneralText");
-                this.menuGrapher.addMenuDialog(
+                this.fsp.menuGrapher.createMenu("GeneralText");
+                this.fsp.menuGrapher.addMenuDialog(
                     "GeneralText",
                     battleInfo.textVictory!,
-                    this.scenePlayer.bindRoutine("VictoryWinnings"));
-                this.menuGrapher.setActiveMenu("GeneralText");
+                    this.fsp.scenePlayer.bindRoutine("VictoryWinnings"));
+                this.fsp.menuGrapher.setActiveMenu("GeneralText");
             });
     }
 
@@ -1153,24 +1168,24 @@ export class Cutscenes {
             color: "White"
         };
         const callback: () => void = (): void => {
-            this.battleMover.closeBattle((): void => {
-                this.animations.animateFadeFromColor(animationSettings);
+            this.fsp.battleMover.closeBattle((): void => {
+                this.fsp.actions.animateFadeFromColor(animationSettings);
             });
         };
 
         if (battleInfo.giftAfterBattle) {
-            this.storage.addItemToBag(battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
+            this.fsp.saves.addItemToBag(battleInfo.giftAfterBattle, battleInfo.giftAfterBattleAmount || 1);
         }
 
         if (battleInfo.badge) {
-            this.itemsHolder.getItem("badges")[battleInfo.badge] = true;
+            this.fsp.itemsHolder.getItem("badges")[battleInfo.badge] = true;
         }
 
         if (battleInfo.textAfterBattle) {
             animationSettings.callback = (): void => {
-                this.menuGrapher.createMenu("GeneralText");
-                this.menuGrapher.addMenuDialog("GeneralText", battleInfo.textAfterBattle!);
-                this.menuGrapher.setActiveMenu("GeneralText");
+                this.fsp.menuGrapher.createMenu("GeneralText");
+                this.fsp.menuGrapher.addMenuDialog("GeneralText", battleInfo.textAfterBattle!);
+                this.fsp.menuGrapher.setActiveMenu("GeneralText");
             };
         }
 
@@ -1179,16 +1194,16 @@ export class Cutscenes {
             return;
         }
 
-        this.itemsHolder.increase("money", reward);
+        this.fsp.itemsHolder.increase("money", reward);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%% got $" + reward + " for winning!"
             ],
             callback);
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1204,32 +1219,32 @@ export class Cutscenes {
         if (!battleInfo.noBlackout) {
             message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
             callback = (): void => {
-                let transport: ITransportSchema = this.itemsHolder.getItem("lastPokecenter");
+                let transport: ITransportSchema = this.fsp.itemsHolder.getItem("lastPokecenter");
 
-                this.battleMover.closeBattle();
-                this.maps.setMap(transport.map, transport.location);
+                this.fsp.battleMover.closeBattle();
+                this.fsp.maps.setMap(transport.map, transport.location);
 
-                for (const pokemon of this.itemsHolder.getItem("PokemonInParty")) {
-                    this.battles.healPokemon(pokemon);
+                for (const pokemon of this.fsp.itemsHolder.getItem("PokemonInParty")) {
+                    this.fsp.battles.healPokemon(pokemon);
                 }
 
-                this.storage.autoSave();
+                this.fsp.saves.autoSave();
             };
         } else {
-            callback = (): void => this.battleMover.closeBattle();
+            callback = (): void => this.fsp.battleMover.closeBattle();
         }
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             message,
             (): void => {
-                this.animations.animateFadeToColor({
+                this.fsp.actions.animateFadeToColor({
                     color: "Black",
                     callback: callback
                 });
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1238,12 +1253,12 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneBattleComplete(settings: IBattleCutsceneSettings): void {
-        this.mapScreener.blockInputs = false;
-        this.graphics.moveBattleKeptThingsBack(settings.battleInfo);
-        this.itemsHolder.setItem("PokemonInParty", settings.battleInfo.battlers.player!.actors);
-        this.modAttacher.fireEvent("onBattleComplete", settings.battleInfo);
-        if (this.mapScreener.theme) {
-            this.audioPlayer.playTheme(this.mapScreener.theme);
+        this.fsp.mapScreener.blockInputs = false;
+        this.fsp.graphics.moveBattleKeptThingsBack(settings.battleInfo);
+        this.fsp.itemsHolder.setItem("PokemonInParty", settings.battleInfo.battlers.player!.actors);
+        this.fsp.modAttacher.fireEvent("onBattleComplete", settings.battleInfo);
+        if (this.fsp.mapScreener.theme) {
+            this.fsp.audioPlayer.playTheme(this.fsp.mapScreener.theme);
         }
     }
 
@@ -1281,8 +1296,8 @@ export class Cutscenes {
                 throw new Error("Unknown amount for statistic change.");
         }
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -1295,7 +1310,7 @@ export class Cutscenes {
             ],
             args.callback
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -1307,14 +1322,14 @@ export class Cutscenes {
     public cutsceneBattleAttackGrowl(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
         const defenderName: string = args.defenderName!;
-        const attacker: IThing = this.battleMover.getThing(attackerName) as IThing;
-        const defender: IThing = this.battleMover.getThing(defenderName) as IThing;
+        const attacker: IThing = this.fsp.battleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.fsp.battleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         const notes: IThing[] = [
-            this.objectMaker.make("Note"),
-            this.objectMaker.make("Note")
+            this.fsp.objectMaker.make("Note"),
+            this.fsp.objectMaker.make("Note")
         ];
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let startX: number;
         let startY: number;
         let animateNote: (note: IThing, dt: number) => void = (note: IThing, dt: number): void => {
@@ -1331,13 +1346,13 @@ export class Cutscenes {
             }
 
             for (let i: number = 1; i <= 4; i += 1) {
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.shiftHoriz(note, differenceX / 4);
+                        this.fsp.physics.shiftHoriz(note, differenceX / 4);
                         if (flip === 1) {
-                            this.physics.shiftVert(note, differenceY / 10 * 6);
+                            this.fsp.physics.shiftVert(note, differenceY / 10 * 6);
                         } else {
-                            this.physics.shiftVert(note, -1 * differenceY / 8);
+                            this.fsp.physics.shiftVert(note, -1 * differenceY / 8);
                         }
                         flip *= -1;
                     },
@@ -1353,10 +1368,10 @@ export class Cutscenes {
             startY = menu.top + attacker.height * 4;
         }
 
-        this.things.add(notes[0], startX, startY);
-        this.timeHandler.addEvent(
+        this.fsp.things.add(notes[0], startX, startY);
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(
+                this.fsp.things.add(
                     notes[1],
                     startX + notes[1].width / 2 * 4,
                     startY + 4 * 3);
@@ -1366,23 +1381,23 @@ export class Cutscenes {
         animateNote(notes[0], 10);
         animateNote(notes[1], 12);
 
-        this.timeHandler.addEvent(
-            (): void => this.physics.killNormal(notes[0]),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.killNormal(notes[0]),
             50);
-        this.timeHandler.addEvent(
-            (): void => this.physics.killNormal(notes[1]),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.killNormal(notes[1]),
             52);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateScreenShake(
+                this.fsp.actions.animateScreenShake(
                     3,
                     0,
                     6,
                     undefined,
-                    this.scenePlayer.bindRoutine(
+                    this.fsp.scenePlayer.bindRoutine(
                         "ChangeStatistic",
-                        this.utilities.proliferate(
+                        this.fsp.utilities.proliferate(
                             {
                                 callback: args.callback,
                                 defenderName: defenderName,
@@ -1404,30 +1419,30 @@ export class Cutscenes {
     public cutsceneBattleAttackTackle(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
         const defenderName: string = args.defenderName!;
-        const attacker: IThing = this.battleMover.getThing(attackerName) as IThing;
-        const defender: IThing = this.battleMover.getThing(defenderName) as IThing;
+        const attacker: IThing = this.fsp.battleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.fsp.battleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         let xvel: number = 7 * direction;
         let dt: number = 7;
-        const movement: ITimeEvent = this.timeHandler.addEventInterval(
+        const movement: ITimeEvent = this.fsp.timeHandler.addEventInterval(
             (): void => {
-                this.physics.shiftHoriz(attacker, xvel);
+                this.fsp.physics.shiftHoriz(attacker, xvel);
             },
             1,
             Infinity);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 xvel *= -1;
             },
             dt);
 
-        this.timeHandler.addEvent(this.timeHandler.cancelEvent, dt * 2 - 1, movement);
+        this.fsp.timeHandler.addEvent(this.fsp.timeHandler.cancelEvent, dt * 2 - 1, movement);
 
         if (attackerName === "player") {
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                 (): void => {
-                    this.animations.animateFlicker(
+                    this.fsp.actions.animateFlicker(
                         defender,
                         14,
                         5,
@@ -1435,15 +1450,15 @@ export class Cutscenes {
                 },
                 dt * 2);
         } else {
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                 (): void => {
-                    this.animations.animateScreenShake(
+                    this.fsp.actions.animateScreenShake(
                         0,
                         undefined,
                         undefined,
                         undefined,
                         (): void => {
-                            this.animations.animateFlicker(
+                            this.fsp.actions.animateFlicker(
                                 defender,
                                 14,
                                 5,
@@ -1463,31 +1478,31 @@ export class Cutscenes {
     public cutsceneBattleAttackTailWhip(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
         const defenderName: string = args.defenderName!;
-        const attacker: IThing = this.battleMover.getThing(attackerName) as IThing;
+        const attacker: IThing = this.fsp.battleMover.getThing(attackerName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         const dt: number = 11;
         const dx: number = 4 * 4;
 
-        this.physics.shiftHoriz(attacker, dx * direction);
+        this.fsp.physics.shiftHoriz(attacker, dx * direction);
 
-        this.timeHandler.addEvent(
-            (): void => this.physics.shiftHoriz(attacker, -dx * direction),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.shiftHoriz(attacker, -dx * direction),
             dt);
-        this.timeHandler.addEvent(
-            (): void => this.physics.shiftHoriz(attacker, dx * direction),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.shiftHoriz(attacker, dx * direction),
             dt * 2);
-        this.timeHandler.addEvent(
-            (): void => this.physics.shiftHoriz(attacker, -dx * direction),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.shiftHoriz(attacker, -dx * direction),
             dt * 3);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateScreenShake(
+                this.fsp.actions.animateScreenShake(
                     3,
                     0,
                     6,
                     undefined,
-                    this.scenePlayer.bindRoutine(
+                    this.fsp.scenePlayer.bindRoutine(
                         "ChangeStatistic",
                         {
                             callback: args.callback,
@@ -1507,16 +1522,16 @@ export class Cutscenes {
      */
     public cutsceneBattleAttackScratch(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const defenderName: string = args.defenderName!;
-        const defender: IThing = this.battleMover.getThing(defenderName) as IThing;
+        const defender: IThing = this.fsp.battleMover.getThing(defenderName) as IThing;
         const dt: number = 1;
         const direction: number = defenderName === "opponent" ? -1 : 1;
         const differenceX: number = defender.width / 2 * 4;
         const lineArray: IThing[] = [];
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const scratches: IThing[] = [
-            this.objectMaker.make("ExplosionSmall"),
-            this.objectMaker.make("ExplosionSmall"),
-            this.objectMaker.make("ExplosionSmall")
+            this.fsp.objectMaker.make("ExplosionSmall"),
+            this.fsp.objectMaker.make("ExplosionSmall"),
+            this.fsp.objectMaker.make("ExplosionSmall")
         ];
         let startX: number;
         let startY: number;
@@ -1529,27 +1544,27 @@ export class Cutscenes {
             startY = menu.bottom - (defender.height + 8) * 4;
         }
 
-        this.things.add(scratches[0], startX, startY);
+        this.fsp.things.add(scratches[0], startX, startY);
         const offset: number = scratches[0].width * 4 / 2;
-        this.things.add(scratches[1], startX + offset * direction * -1, startY + offset);
-        this.things.add(scratches[2], startX + offset * direction * -2, startY + offset * 2);
+        this.fsp.things.add(scratches[1], startX + offset * direction * -1, startY + offset);
+        this.fsp.things.add(scratches[2], startX + offset * direction * -2, startY + offset * 2);
 
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => {
                 for (const scratch of scratches) {
                     const left: number = direction === -1 ? scratch.left : scratch.right - 3 * 4;
                     const top: number =  scratch.bottom - 3 * 4;
 
-                    this.timeHandler.addEvent(
-                        (): void => this.physics.shiftHoriz(scratch, differenceX * direction / 16),
+                    this.fsp.timeHandler.addEvent(
+                        (): void => this.fsp.physics.shiftHoriz(scratch, differenceX * direction / 16),
                         dt);
-                    this.timeHandler.addEvent(
-                        (): void => this.physics.shiftVert(scratch, differenceX * direction / 16),
+                    this.fsp.timeHandler.addEvent(
+                        (): void => this.fsp.physics.shiftVert(scratch, differenceX * direction / 16),
                         dt);
 
-                    const line: IThing = this.things.add("ScratchLine", left, top);
+                    const line: IThing = this.fsp.things.add("ScratchLine", left, top);
                     if (direction === 1) {
-                        this.graphics.flipHoriz(line);
+                        this.fsp.graphics.flipHoriz(line);
                     }
                     lineArray.push(line);
                 }
@@ -1557,17 +1572,17 @@ export class Cutscenes {
             dt,
             16);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 for (const scratch of scratches) {
-                    this.physics.killNormal(scratch);
+                    this.fsp.physics.killNormal(scratch);
                 }
 
                 for (const line of lineArray) {
-                    this.physics.killNormal(line);
+                    this.fsp.physics.killNormal(line);
                 }
 
-                this.animations.animateFlicker(defender, 14, 5, args.callback);
+                this.fsp.actions.animateFlicker(defender, 14, 5, args.callback);
             },
             17 * dt);
     }
@@ -1580,27 +1595,27 @@ export class Cutscenes {
      */
     public cutsceneBattleAttackEmber(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
-        const attacker: IThing = this.battleMover.getThing(attackerName) as IThing;
+        const attacker: IThing = this.fsp.battleMover.getThing(attackerName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const xPositions: number[] = new Array(3);
         let yPosition: number;
         const animateEmber: (x: number, y: number) => void = (x: number, y: number): void => {
-            const emberSmall: IThing = this.objectMaker.make("EmberSmall");
-            this.things.add(emberSmall, x + 4, y + 12);
-            this.animations.animateFlicker(emberSmall, 3, 6);
+            const emberSmall: IThing = this.fsp.objectMaker.make("EmberSmall");
+            this.fsp.things.add(emberSmall, x + 4, y + 12);
+            this.fsp.actions.animateFlicker(emberSmall, 3, 6);
 
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                     (): void => {
-                            const emberLarge: IThing = this.objectMaker.make("EmberLarge");
-                            this.things.add(emberLarge, x, y);
-                            this.animations.animateFlicker(
+                            const emberLarge: IThing = this.fsp.objectMaker.make("EmberLarge");
+                            this.fsp.things.add(emberLarge, x, y);
+                            this.fsp.actions.animateFlicker(
                                 emberLarge,
                                 3,
                                 6,
                                 (): void => {
-                                    this.physics.killNormal(emberSmall);
-                                    this.physics.killNormal(emberLarge);
+                                    this.fsp.physics.killNormal(emberSmall);
+                                    this.fsp.physics.killNormal(emberLarge);
                                 });
                     },
                     6);
@@ -1618,16 +1633,16 @@ export class Cutscenes {
         }
 
         for (let i: number = 0; i < 3; i += 1) {
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                 (): void => {
                     animateEmber(xPositions[i], yPosition);
                 },
                 24 * i);
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateScreenShake(
+                this.fsp.actions.animateScreenShake(
                     3,
                     0,
                     4,
@@ -1646,38 +1661,38 @@ export class Cutscenes {
     public cutsceneBattleAttackQuickAttack(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
         const defenderName: string = args.defenderName!;
-        const attacker: IThing = this.battleMover.getThing(attackerName) as IThing;
-        const defender: IThing = this.battleMover.getThing(defenderName) as IThing;
+        const attacker: IThing = this.fsp.battleMover.getThing(attackerName) as IThing;
+        const defender: IThing = this.fsp.battleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
 
         let xvel: number = -7 * direction;
 
-        this.timeHandler.addEventInterval(
-            (): void => this.physics.shiftHoriz(attacker, xvel),
+        this.fsp.timeHandler.addEventInterval(
+            (): void => this.fsp.physics.shiftHoriz(attacker, xvel),
             1,
             38);
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 xvel *= -1;
             },
             20);
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 attacker.hidden = !attacker.hidden;
             },
             15);
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
                 attacker.hidden = !attacker.hidden;
-                this.animations.animateFlicker(defender, 12, 6, args.callback);
+                this.fsp.actions.animateFlicker(defender, 12, 6, args.callback);
             },
             40);
 
         const explosions: IThing[] = [
-            this.objectMaker.make("ExplosionLarge"),
-            this.objectMaker.make("ExplosionLarge"),
-            this.objectMaker.make("ExplosionLarge")
+            this.fsp.objectMaker.make("ExplosionLarge"),
+            this.fsp.objectMaker.make("ExplosionLarge"),
+            this.fsp.objectMaker.make("ExplosionLarge")
         ];
         let startX: number[] = [];
         let startY: number[] = [];
@@ -1693,23 +1708,23 @@ export class Cutscenes {
             startY[2] = startY[1] - 8 * 4;
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(explosions[0], startX[0], startY[0]);
-                this.timeHandler.addEvent(
+                this.fsp.things.add(explosions[0], startX[0], startY[0]);
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(explosions[0]);
-                        this.things.add(explosions[1], startX[1], startY[1]);
+                        this.fsp.physics.killNormal(explosions[0]);
+                        this.fsp.things.add(explosions[1], startX[1], startY[1]);
                     },
                     4);
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(explosions[1]);
-                        this.things.add(explosions[2], startX[2], startY[2]);
+                        this.fsp.physics.killNormal(explosions[1]);
+                        this.fsp.things.add(explosions[2], startX[2], startY[2]);
                     },
                     8);
-                this.timeHandler.addEvent(
-                    (): void => this.physics.killNormal(explosions[2]),
+                this.fsp.timeHandler.addEvent(
+                    (): void => this.fsp.physics.killNormal(explosions[2]),
                     12);
             },
             20);
@@ -1724,38 +1739,38 @@ export class Cutscenes {
     public cutsceneBattleAttackBubble(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const unitsize: number = 4;
         const attackerName: string = args.attackerName!;
-        const attacker: IThing = this.battleMover.getThing(attackerName) as IThing;
+        const attacker: IThing = this.fsp.battleMover.getThing(attackerName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const xPositions: number[] = [];
         const yPositions: number[] = [];
         const animateBubble: (x: number, y: number, i: number) => void = (x: number, y: number, i: number): void => {
             if (i === 0) {
-                const bubbleLarge: IThing = this.things.add("BubbleLarge", x, y);
+                const bubbleLarge: IThing = this.fsp.things.add("BubbleLarge", x, y);
 
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(bubbleLarge);
+                        this.fsp.physics.killNormal(bubbleLarge);
                     },
                     4 * 24);
             } else if (i === 1) {
-                const bubbleLarge: IThing = this.things.add("BubbleLarge", x, y);
+                const bubbleLarge: IThing = this.fsp.things.add("BubbleLarge", x, y);
                 const bubblesSmall: IThing[] = [];
 
                 for (let j: number = 0; j < 4; j += 1) {
-                    bubblesSmall[j] = this.objectMaker.make("BubbleSmall");
+                    bubblesSmall[j] = this.fsp.objectMaker.make("BubbleSmall");
                 }
 
-                this.things.add(bubblesSmall[0], x, y - 4 * unitsize);
-                this.things.add(bubblesSmall[1], x + 4 * unitsize, y - 3 * unitsize);
-                this.things.add(bubblesSmall[2], x + 8 * unitsize, y + 4 * unitsize);
-                this.things.add(bubblesSmall[3], x, y + 8 * unitsize);
+                this.fsp.things.add(bubblesSmall[0], x, y - 4 * unitsize);
+                this.fsp.things.add(bubblesSmall[1], x + 4 * unitsize, y - 3 * unitsize);
+                this.fsp.things.add(bubblesSmall[2], x + 8 * unitsize, y + 4 * unitsize);
+                this.fsp.things.add(bubblesSmall[3], x, y + 8 * unitsize);
 
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(bubbleLarge);
+                        this.fsp.physics.killNormal(bubbleLarge);
                         for (let j: number = 0; j < 4; j += 1) {
-                            this.physics.killNormal(bubblesSmall[j]);
+                            this.fsp.physics.killNormal(bubblesSmall[j]);
                         }
                     },
                     3 * 24);
@@ -1764,22 +1779,22 @@ export class Cutscenes {
                 const bubblesSmall: IThing[] = [];
 
                 for (let j: number = 0; j < 3; j += 1) {
-                    bubblesLarge[j] = this.objectMaker.make("BubbleLarge");
-                    bubblesSmall[j] = this.objectMaker.make("BubbleSmall");
+                    bubblesLarge[j] = this.fsp.objectMaker.make("BubbleLarge");
+                    bubblesSmall[j] = this.fsp.objectMaker.make("BubbleSmall");
                 }
 
-                this.things.add(bubblesLarge[0], x, y - 4 * unitsize);
-                this.things.add(bubblesLarge[1], x, y);
-                this.things.add(bubblesLarge[2], x + 4 * unitsize, y - 2 * unitsize);
-                this.things.add(bubblesSmall[0], x, y - 4 * unitsize);
-                this.things.add(bubblesSmall[1], x + unitsize, y + 8 * unitsize);
-                this.things.add(bubblesSmall[2], x + 8 * unitsize, y + 6 * unitsize);
+                this.fsp.things.add(bubblesLarge[0], x, y - 4 * unitsize);
+                this.fsp.things.add(bubblesLarge[1], x, y);
+                this.fsp.things.add(bubblesLarge[2], x + 4 * unitsize, y - 2 * unitsize);
+                this.fsp.things.add(bubblesSmall[0], x, y - 4 * unitsize);
+                this.fsp.things.add(bubblesSmall[1], x + unitsize, y + 8 * unitsize);
+                this.fsp.things.add(bubblesSmall[2], x + 8 * unitsize, y + 6 * unitsize);
 
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
                         for (let j: number = 0; j < 4; j += 1) {
-                            this.physics.killNormal(bubblesLarge[j]);
-                            this.physics.killNormal(bubblesSmall[j]);
+                            this.fsp.physics.killNormal(bubblesLarge[j]);
+                            this.fsp.physics.killNormal(bubblesSmall[j]);
                         }
                     },
                     2 * 24);
@@ -1788,21 +1803,21 @@ export class Cutscenes {
                 const bubblesSmall: IThing[] = [];
 
                 for (let j: number = 0; j < 4; j += 1) {
-                    bubblesLarge[j] = this.objectMaker.make("BubbleLarge");
-                    bubblesSmall[j] = this.objectMaker.make("BubbleSmall");
+                    bubblesLarge[j] = this.fsp.objectMaker.make("BubbleLarge");
+                    bubblesSmall[j] = this.fsp.objectMaker.make("BubbleSmall");
                 }
 
-                this.things.add(bubblesLarge[0], x + 4 * unitsize, y + 12 * unitsize);
-                this.things.add(bubblesLarge[1], x, y);
-                this.things.add(bubblesLarge[2], x + 8 * unitsize, y + 4 * unitsize);
-                this.things.add(bubblesSmall[0], x + 4 * unitsize, y - 4 * unitsize);
-                this.things.add(bubblesSmall[1], x + 8 * unitsize, y);
-                this.things.add(bubblesSmall[2], x, y + 12 * unitsize);
-                this.timeHandler.addEvent(
+                this.fsp.things.add(bubblesLarge[0], x + 4 * unitsize, y + 12 * unitsize);
+                this.fsp.things.add(bubblesLarge[1], x, y);
+                this.fsp.things.add(bubblesLarge[2], x + 8 * unitsize, y + 4 * unitsize);
+                this.fsp.things.add(bubblesSmall[0], x + 4 * unitsize, y - 4 * unitsize);
+                this.fsp.things.add(bubblesSmall[1], x + 8 * unitsize, y);
+                this.fsp.things.add(bubblesSmall[2], x, y + 12 * unitsize);
+                this.fsp.timeHandler.addEvent(
                     (): void => {
                         for (let j: number = 0; j < 4; j += 1) {
-                            this.physics.killNormal(bubblesLarge[j]);
-                            this.physics.killNormal(bubblesSmall[j]);
+                            this.fsp.physics.killNormal(bubblesLarge[j]);
+                            this.fsp.physics.killNormal(bubblesSmall[j]);
                         }
                     },
                     24);
@@ -1825,16 +1840,16 @@ export class Cutscenes {
         }
 
         for (let i: number = 0; i < 4; i += 1) {
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                 (): void => {
                     animateBubble(xPositions[i], yPositions[i], i);
                 },
                 24 * i);
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateScreenShake(
+                this.fsp.actions.animateScreenShake(
                     3,
                     0,
                     4,
@@ -1853,14 +1868,14 @@ export class Cutscenes {
     public cutsceneBattleAttackSandAttack(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
         const defenderName: string = args.defenderName!;
-        const defender: IThing = this.battleMover.getThing(defenderName) as IThing;
+        const defender: IThing = this.fsp.battleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
 
         const explosions: IThing[] = [
-            this.objectMaker.make("ExplosionSmall"),
-            this.objectMaker.make("ExplosionSmall"),
-            this.objectMaker.make("ExplosionSmall")
+            this.fsp.objectMaker.make("ExplosionSmall"),
+            this.fsp.objectMaker.make("ExplosionSmall"),
+            this.fsp.objectMaker.make("ExplosionSmall")
         ];
         let startX: number[] = [];
         let startY: number;
@@ -1874,35 +1889,35 @@ export class Cutscenes {
             startY = menu.bottom - (defender.height + 10) * 4;
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(explosions[0], startX[0], startY);
+                this.fsp.things.add(explosions[0], startX[0], startY);
             },
             4);
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.physics.killNormal(explosions[0]);
-                this.things.add(explosions[1], startX[1], startY);
+                this.fsp.physics.killNormal(explosions[0]);
+                this.fsp.things.add(explosions[1], startX[1], startY);
             },
             8);
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.physics.killNormal(explosions[1]);
-                this.things.add(explosions[2], startX[2], startY);
+                this.fsp.physics.killNormal(explosions[1]);
+                this.fsp.things.add(explosions[2], startX[2], startY);
             },
             12);
-        this.timeHandler.addEvent(
-            (): void => this.physics.killNormal(explosions[2]),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.physics.killNormal(explosions[2]),
             16);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateScreenShake(
+                this.fsp.actions.animateScreenShake(
                     3,
                     0,
                     6,
                     undefined,
-                    this.scenePlayer.bindRoutine(
+                    this.fsp.scenePlayer.bindRoutine(
                         "ChangeStatistic",
                         {
                             callback: args.callback,
@@ -1923,16 +1938,16 @@ export class Cutscenes {
     public cutsceneBattleAttackGust(_settings: IBattleCutsceneSettings, args: IBattleAttackRoutineSettings): void {
         const attackerName: string = args.attackerName!;
         const defenderName: string = args.defenderName!;
-        const defender: IThing = this.battleMover.getThing(defenderName) as IThing;
+        const defender: IThing = this.fsp.battleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
-        const menu: IMenu = this.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.fsp.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
 
         const gusts: IThing[] = [];
         for (let i: number = 0; i < 8; i += 1) {
             if (i % 2 === 0) {
-                gusts[i] = this.objectMaker.make("ExplosionSmall");
+                gusts[i] = this.fsp.objectMaker.make("ExplosionSmall");
             } else {
-                gusts[i] = this.objectMaker.make("ExplosionLarge");
+                gusts[i] = this.fsp.objectMaker.make("ExplosionLarge");
             }
         }
 
@@ -1950,27 +1965,27 @@ export class Cutscenes {
         }
 
         for (let i: number = 0; i < 9; i += 1) {
-            this.timeHandler.addEvent(
+            this.fsp.timeHandler.addEvent(
                 (): void => {
                     if (i === 0) {
-                        this.things.add(gusts[i], gustX, gustY);
+                        this.fsp.things.add(gusts[i], gustX, gustY);
                     } else if (i < 5) {
-                        this.physics.killNormal(gusts[i - 1]);
-                        this.things.add(gusts[i], gustX + (gustDx * i), gustY);
+                        this.fsp.physics.killNormal(gusts[i - 1]);
+                        this.fsp.things.add(gusts[i], gustX + (gustDx * i), gustY);
                     } else if (i < 8) {
-                        this.physics.killNormal(gusts[i - 1]);
-                        this.things.add(gusts[i], gustX + (gustDx * i), gustY + (gustDy * (i - 4)));
+                        this.fsp.physics.killNormal(gusts[i - 1]);
+                        this.fsp.things.add(gusts[i], gustX + (gustDx * i), gustY + (gustDy * (i - 4)));
                     } else {
-                        this.physics.killNormal(gusts[i - 1]);
+                        this.fsp.physics.killNormal(gusts[i - 1]);
                     }
                 },
                 5 * i);
         }
 
         const explosions: IThing[] = [
-            this.objectMaker.make("ExplosionSmall"),
-            this.objectMaker.make("ExplosionSmall"),
-            this.objectMaker.make("ExplosionSmall")
+            this.fsp.objectMaker.make("ExplosionSmall"),
+            this.fsp.objectMaker.make("ExplosionSmall"),
+            this.fsp.objectMaker.make("ExplosionSmall")
         ];
         let startX: number[] = [];
         let startY: number[] = [];
@@ -1985,25 +2000,25 @@ export class Cutscenes {
             startY[2] = startY[1] + 4 * 4;
         }
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(explosions[0], startX[0], startY[0]);
-                this.timeHandler.addEvent(
+                this.fsp.things.add(explosions[0], startX[0], startY[0]);
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(explosions[0]);
-                        this.things.add(explosions[1], startX[1], startY[1]);
+                        this.fsp.physics.killNormal(explosions[0]);
+                        this.fsp.things.add(explosions[1], startX[1], startY[1]);
                     },
                     5);
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(explosions[1]);
-                        this.things.add(explosions[2], startX[2], startY[2]);
+                        this.fsp.physics.killNormal(explosions[1]);
+                        this.fsp.things.add(explosions[2], startX[2], startY[2]);
                     },
                     10);
-                this.timeHandler.addEvent(
+                this.fsp.timeHandler.addEvent(
                     (): void => {
-                        this.physics.killNormal(explosions[2]);
-                        this.animations.animateFlicker(defender, 12, 6, args.callback);
+                        this.fsp.physics.killNormal(explosions[2]);
+                        this.fsp.actions.animateFlicker(defender, 12, 6, args.callback);
                     },
                     15);
             },
@@ -2016,11 +2031,11 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneTrainerSpottedExclamation(settings: any): void {
-        this.animations.animateCharacterPreventWalking(this.player);
-        this.animations.animateExclamation(
+        this.fsp.actions.animateCharacterPreventWalking(this.fsp.players[0]);
+        this.fsp.actions.animateExclamation(
             settings.triggerer,
             70,
-            this.scenePlayer.bindRoutine("Approach"));
+            this.fsp.scenePlayer.bindRoutine("Approach"));
     }
 
     /**
@@ -2039,16 +2054,16 @@ export class Cutscenes {
         const blocks: number = Math.max(0, distance / 4 / 8);
 
         if (blocks) {
-            this.animations.animateCharacterStartWalking(
+            this.fsp.actions.animateCharacterStartWalking(
                 triggerer,
                 direction,
                 [
                     blocks,
-                    this.scenePlayer.bindRoutine("Dialog")
+                    this.fsp.scenePlayer.bindRoutine("Dialog")
                 ]
             );
         } else {
-            this.scenePlayer.playRoutine("Dialog");
+            this.fsp.scenePlayer.playRoutine("Dialog");
         }
     }
 
@@ -2058,8 +2073,8 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneTrainerSpottedDialog(settings: any): void {
-        this.collisions.collideCharacterDialog(settings.player, settings.triggerer);
-        this.mapScreener.blockInputs = false;
+        this.fsp.collisions.collideCharacterDialog(settings.player, settings.triggerer);
+        this.fsp.mapScreener.blockInputs = false;
     }
 
     /**
@@ -2068,63 +2083,63 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene. 
      */
     public cutscenePokeCenterWelcome(settings: any): void {
-        settings.nurse = this.utilities.getThingById(settings.nurseId || "Nurse");
-        settings.machine = this.utilities.getThingById(settings.machineId || "HealingMachine");
+        settings.nurse = this.fsp.utilities.getThingById(settings.nurseId || "Nurse");
+        settings.machine = this.fsp.utilities.getThingById(settings.machineId || "HealingMachine");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Welcome to our %%%%%%%POKEMON%%%%%%% CENTER!",
                 "We heal your %%%%%%%POKEMON%%%%%%% back to perfect health!",
                 "Shall we heal your %%%%%%%POKEMON%%%%%%%?"
             ],
-            this.scenePlayer.bindRoutine("Choose")
+            this.fsp.scenePlayer.bindRoutine("Choose")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for choosing whether or not to heal Pokemon.
      */
     public cutscenePokeCenterChoose(): void {
-        this.menuGrapher.createMenu("Heal/Cancel");
-        this.menuGrapher.addMenuList(
+        this.fsp.menuGrapher.createMenu("Heal/Cancel");
+        this.fsp.menuGrapher.addMenuList(
             "Heal/Cancel",
             {
                 options: [
                     {
                         text: "HEAL",
-                        callback: this.scenePlayer.bindRoutine("ChooseHeal")
+                        callback: this.fsp.scenePlayer.bindRoutine("ChooseHeal")
                     },
                     {
                         text: "CANCEL",
-                        callback: this.scenePlayer.bindRoutine("ChooseCancel")
+                        callback: this.fsp.scenePlayer.bindRoutine("ChooseCancel")
                     }
                 ]
             }
         );
-        this.menuGrapher.setActiveMenu("Heal/Cancel");
+        this.fsp.menuGrapher.setActiveMenu("Heal/Cancel");
     }
 
     /**
      * Cutscene for choosing to heal Pokemon.
      */
     public cutscenePokeCenterChooseHeal(): void {
-        this.menuGrapher.deleteMenu("Heal/Cancel");
+        this.fsp.menuGrapher.deleteMenu("Heal/Cancel");
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             ignoreA: true,
             finishAutomatically: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Ok. We'll need your %%%%%%%POKEMON%%%%%%%."
             ],
-            this.scenePlayer.bindRoutine("Healing")
+            this.fsp.scenePlayer.bindRoutine("Healing")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2133,7 +2148,7 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene. 
      */
     public cutscenePokeCenterHealing(settings: any): void {
-        const party: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+        const party: IPokemon[] = this.fsp.itemsHolder.getItem("PokemonInParty");
         const balls: IThing[] = [];
         const dt: number = 35;
         const left: number = settings.machine.left + 5 * 4;
@@ -2141,12 +2156,12 @@ export class Cutscenes {
         let i: number = 0;
 
         settings.balls = balls;
-        this.animations.animateCharacterSetDirection(settings.nurse, 3);
+        this.fsp.actions.animateCharacterSetDirection(settings.nurse, 3);
 
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => {
                 balls.push(
-                    this.things.add(
+                    this.fsp.things.add(
                         "HealingMachineBall",
                         left + (i % 2) * 3 * 4,
                         top + Math.floor(i / 2) * 2.5 * 4
@@ -2157,8 +2172,8 @@ export class Cutscenes {
             dt,
             party.length);
 
-        this.timeHandler.addEvent(
-            (): void => this.scenePlayer.playRoutine(
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.scenePlayer.playRoutine(
                 "HealingAction",
                 {
                     balls: balls
@@ -2178,11 +2193,11 @@ export class Cutscenes {
         let i: number = 0;
         let changer: Function;
 
-        this.timeHandler.addEventInterval(
+        this.fsp.timeHandler.addEventInterval(
             (): void => {
                 changer = i % 2 === 0
-                    ? (thing: IThing, className: string): void => this.graphics.addClass(thing, className)
-                    : (thing: IThing, className: string): void => this.graphics.removeClass(thing, className);
+                    ? (thing: IThing, className: string): void => this.fsp.graphics.addClass(thing, className)
+                    : (thing: IThing, className: string): void => this.fsp.graphics.removeClass(thing, className);
 
                 for (const ball of balls) {
                     changer(ball, "lit");
@@ -2195,8 +2210,8 @@ export class Cutscenes {
             21,
             numFlashes);
 
-        this.timeHandler.addEvent(
-            (): void => this.scenePlayer.playRoutine(
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.scenePlayer.playRoutine(
                 "HealingComplete",
                 {
                     balls: balls
@@ -2212,92 +2227,92 @@ export class Cutscenes {
      */
     public cutscenePokeCenterHealingComplete(settings: any, args: any): void {
         const balls: IThing[] = args.balls;
-        const party: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+        const party: IPokemon[] = this.fsp.itemsHolder.getItem("PokemonInParty");
 
         for (const ball of balls) {
-            this.physics.killNormal(ball);
+            this.fsp.physics.killNormal(ball);
         }
 
         for (const pokemon of party) {
-            this.battles.healPokemon(pokemon);
+            this.fsp.battles.healPokemon(pokemon);
         }
 
-        this.animations.animateCharacterSetDirection(settings.nurse, 2);
+        this.fsp.actions.animateCharacterSetDirection(settings.nurse, 2);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Thank you! \n Your %%%%%%%POKEMON%%%%%%% are fighting fit!",
                 "We hope to see you again!"
             ],
             (): void => {
-                this.menuGrapher.deleteMenu("GeneralText");
-                this.scenePlayer.stopCutscene();
+                this.fsp.menuGrapher.deleteMenu("GeneralText");
+                this.fsp.scenePlayer.stopCutscene();
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for choosing not to heal Pokemon.
      */
     public cutscenePokeCenterChooseCancel(): void {
-        this.menuGrapher.deleteMenu("Heal/Cancel");
+        this.fsp.menuGrapher.deleteMenu("Heal/Cancel");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "We hope to see you again!"
             ],
             (): void => {
-                this.menuGrapher.deleteMenu("GeneralText");
-                this.scenePlayer.stopCutscene();
+                this.fsp.menuGrapher.deleteMenu("GeneralText");
+                this.fsp.scenePlayer.stopCutscene();
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for speaking to a PokeMart cashier.
      */
     public cutscenePokeMartGreeting(): void {
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
             ignoreA: true,
             ignoreB: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Hi there! \n May I help you?"
             ],
-            this.scenePlayer.bindRoutine("Options"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("Options"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene showing the PokeMart action options.
      */
     public cutscenePokeMartOptions(): void {
-        this.menuGrapher.createMenu("Money");
+        this.fsp.menuGrapher.createMenu("Money");
 
-        this.menuGrapher.createMenu("Buy/Sell", {
+        this.fsp.menuGrapher.createMenu("Buy/Sell", {
             killOnB: ["Money", "GeneralText"],
-            onMenuDelete: this.scenePlayer.bindRoutine("Exit")
+            onMenuDelete: this.fsp.scenePlayer.bindRoutine("Exit")
         });
-        this.menuGrapher.addMenuList("Buy/Sell", {
+        this.fsp.menuGrapher.addMenuList("Buy/Sell", {
             options: [{
                 text: "BUY",
-                callback: this.scenePlayer.bindRoutine("BuyMenu")
+                callback: this.fsp.scenePlayer.bindRoutine("BuyMenu")
             }, {
                     text: "SELL",
                     callback: undefined
                 }, {
                     text: "QUIT",
-                    callback: this.menuGrapher.registerB
+                    callback: this.fsp.menuGrapher.registerB
                 }]
         });
-        this.menuGrapher.setActiveMenu("Buy/Sell");
+        this.fsp.menuGrapher.setActiveMenu("Buy/Sell");
     }
 
     /**
@@ -2320,7 +2335,7 @@ export class Cutscenes {
                         x: 42 - String(cost).length * 3.5,
                         y: 4
                     }],
-                    callback: this.scenePlayer.bindRoutine(
+                    callback: this.fsp.scenePlayer.bindRoutine(
                         "SelectAmount",
                         {
                             reference: reference,
@@ -2333,28 +2348,28 @@ export class Cutscenes {
 
         options.push({
             text: "CANCEL",
-            callback: this.menuGrapher.registerB
+            callback: this.fsp.menuGrapher.registerB
         });
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Take your time."
             ],
             (): void => {
-                this.menuGrapher.createMenu("ShopItems", {
+                this.fsp.menuGrapher.createMenu("ShopItems", {
                     backMenu: "Buy/Sell"
                 });
-                this.menuGrapher.addMenuList("ShopItems", {
+                this.fsp.menuGrapher.addMenuList("ShopItems", {
                     options: options
                 });
-                this.menuGrapher.setActiveMenu("ShopItems");
+                this.fsp.menuGrapher.setActiveMenu("ShopItems");
             }
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2368,10 +2383,10 @@ export class Cutscenes {
         const amount: number = args.amount;
         const cost: number = args.cost;
         const costTotal: number = cost * amount;
-        const text: string = this.utilities.makeDigit(amount, 2)
-            + this.utilities.makeDigit("$" + costTotal, 8, " ");
+        const text: string = this.fsp.utilities.makeDigit(amount, 2)
+            + this.fsp.utilities.makeDigit("$" + costTotal, 8, " ");
 
-        this.menuGrapher.createMenu("ShopItemsAmount", {
+        this.fsp.menuGrapher.createMenu("ShopItemsAmount", {
             childrenSchemas: [
                 {
                     type: "text",
@@ -2393,23 +2408,23 @@ export class Cutscenes {
                         }
                     }
                 } as IMenuWordSchema],
-            onUp: this.scenePlayer.bindRoutine(
+            onUp: this.fsp.scenePlayer.bindRoutine(
                 "SelectAmount",
                 {
                     amount: (amount === 99) ? 1 : amount + 1,
                     cost: cost,
                     reference: reference
                 }),
-            onDown: this.scenePlayer.bindRoutine(
+            onDown: this.fsp.scenePlayer.bindRoutine(
                 "SelectAmount",
                 {
                     amount: (amount === 1) ? 99 : amount - 1,
                     cost: cost,
                     reference: reference
                 }),
-            callback: this.scenePlayer.bindRoutine("ConfirmPurchase", args)
+            callback: this.fsp.scenePlayer.bindRoutine("ConfirmPurchase", args)
         });
-        this.menuGrapher.setActiveMenu("ShopItemsAmount");
+        this.fsp.menuGrapher.setActiveMenu("ShopItemsAmount");
     }
 
     /**
@@ -2424,16 +2439,16 @@ export class Cutscenes {
         const amount: number = args.amount;
         const costTotal: number = args.costTotal = cost * amount;
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?"
             ],
             (): void => {
-                this.menuGrapher.createMenu("Yes/No", {
+                this.fsp.menuGrapher.createMenu("Yes/No", {
                     position: {
                         horizontal: "right",
                         vertical: "bottom",
@@ -2442,26 +2457,26 @@ export class Cutscenes {
                             left: 0
                         }
                     },
-                    onMenuDelete: this.scenePlayer.bindRoutine(
+                    onMenuDelete: this.fsp.scenePlayer.bindRoutine(
                         "CancelPurchase"
                     ),
                     container: "ShopItemsAmount"
                 });
-                this.menuGrapher.addMenuList("Yes/No", {
+                this.fsp.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: this.scenePlayer.bindRoutine(
+                            callback: this.fsp.scenePlayer.bindRoutine(
                                 "TryPurchase", args)
                         }, {
                             text: "NO",
-                            callback: this.scenePlayer.bindRoutine(
+                            callback: this.fsp.scenePlayer.bindRoutine(
                                 "CancelPurchase")
                         }]
                 });
-                this.menuGrapher.setActiveMenu("Yes/No");
+                this.fsp.menuGrapher.setActiveMenu("Yes/No");
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2470,7 +2485,7 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutscenePokeMartCancelPurchase(): void {
-        this.scenePlayer.playRoutine("BuyMenu");
+        this.fsp.scenePlayer.playRoutine("BuyMenu");
     }
 
     /**
@@ -2483,27 +2498,27 @@ export class Cutscenes {
     public cutscenePokeMartTryPurchase(_settings: any, args: any): void {
         const costTotal: number = args.costTotal;
 
-        if (this.itemsHolder.getItem("money") < costTotal) {
-            this.scenePlayer.playRoutine("FailPurchase", args);
+        if (this.fsp.itemsHolder.getItem("money") < costTotal) {
+            this.fsp.scenePlayer.playRoutine("FailPurchase", args);
             return;
         }
 
-        this.itemsHolder.decrease("money", args.costTotal);
-        this.menuGrapher.createMenu("Money");
-        this.itemsHolder.getItem("items").push({
+        this.fsp.itemsHolder.decrease("money", args.costTotal);
+        this.fsp.menuGrapher.createMenu("Money");
+        this.fsp.itemsHolder.getItem("items").push({
             item: args.reference.item,
             amount: args.amount
         });
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Here you are! \n Thank you!"
             ],
-            this.scenePlayer.bindRoutine("ContinueShopping"));
+            this.fsp.scenePlayer.bindRoutine("ContinueShopping"));
 
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2511,59 +2526,59 @@ export class Cutscenes {
      * PokeMart purchase.
      */
     public cutscenePokeMartFailPurchase(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "You don't have enough money."
             ],
-            this.scenePlayer.bindRoutine("ContinueShopping")
+            this.fsp.scenePlayer.bindRoutine("ContinueShopping")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for asking if the player wants to continue shopping.
      */
     public cutscenePokeMartContinueShopping(): void {
-        if (this.menuGrapher.getMenu("Yes/No")) {
-            delete this.menuGrapher.getMenu("Yes/No").onMenuDelete;
+        if (this.fsp.menuGrapher.getMenu("Yes/No")) {
+            delete this.fsp.menuGrapher.getMenu("Yes/No").onMenuDelete;
         }
 
-        this.menuGrapher.deleteMenu("ShopItems");
-        this.menuGrapher.deleteMenu("ShopItemsAmount");
-        this.menuGrapher.deleteMenu("Yes/No");
+        this.fsp.menuGrapher.deleteMenu("ShopItems");
+        this.fsp.menuGrapher.deleteMenu("ShopItemsAmount");
+        this.fsp.menuGrapher.deleteMenu("Yes/No");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Is there anything else I can do?"
             ]);
 
-        this.menuGrapher.setActiveMenu("Buy/Sell");
+        this.fsp.menuGrapher.setActiveMenu("Buy/Sell");
 
-        this.storage.autoSave();
+        this.fsp.saves.autoSave();
     }
 
     /**
      * Cutscene for the player choosing to stop shopping.
      */
     public cutscenePokeMartExit(): void {
-        this.scenePlayer.stopCutscene();
+        this.fsp.scenePlayer.stopCutscene();
 
-        this.menuGrapher.deleteMenu("Buy/Sell");
-        this.menuGrapher.deleteMenu("Money");
+        this.fsp.menuGrapher.deleteMenu("Buy/Sell");
+        this.fsp.menuGrapher.deleteMenu("Money");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Thank you!"
             ],
-            this.menuGrapher.deleteActiveMenu
+            this.fsp.menuGrapher.deleteActiveMenu
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2572,32 +2587,32 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroFadeIn(settings: any): void {
-        const oak: IThing = this.objectMaker.make("OakPortrait", {
+        const oak: IThing = this.fsp.objectMaker.make("OakPortrait", {
             opacity: 0
         });
 
         settings.oak = oak;
 
         console.warn("Cannot find Introduction audio theme!");
-        // this.audioPlayer.playTheme("Introduction");
-        this.modAttacher.fireEvent("onIntroFadeIn", oak);
+        // this.fsp.audioPlayer.playTheme("Introduction");
+        this.fsp.modAttacher.fireEvent("onIntroFadeIn", oak);
 
-        this.maps.setMap("Blank", "White");
-        this.menuGrapher.deleteActiveMenu();
+        this.fsp.maps.setMap("Blank", "White");
+        this.fsp.menuGrapher.deleteActiveMenu();
 
-        this.things.add(oak);
-        this.physics.setMidX(oak, this.mapScreener.middleX | 0);
-        this.physics.setMidY(oak, this.mapScreener.middleY | 0);
+        this.fsp.things.add(oak);
+        this.fsp.physics.setMidX(oak, this.fsp.mapScreener.middleX | 0);
+        this.fsp.physics.setMidY(oak, this.fsp.mapScreener.middleY | 0);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                     oak,
                     "opacity",
                     .15,
                     1,
                     14,
-                    this.scenePlayer.bindRoutine("FirstDialog"));
+                    this.fsp.scenePlayer.bindRoutine("FirstDialog"));
             },
             70);
     }
@@ -2606,39 +2621,39 @@ export class Cutscenes {
      * Cutscene for Oak's introduction.
      */
     public cutsceneIntroFirstDialog(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Hello there! \n Welcome to the world of %%%%%%%POKEMON%%%%%%%!",
                 "My name is OAK! People call me the %%%%%%%POKEMON%%%%%%% PROF!"
             ],
-            this.scenePlayer.bindRoutine("FirstDialogFade")
+            this.fsp.scenePlayer.bindRoutine("FirstDialogFade")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak's introduction exit.
      */
     public cutsceneIntroFirstDialogFade(): void {
-        let blank: IThing = this.objectMaker.make("WhiteSquare", {
-            width: this.mapScreener.width,
-            height: this.mapScreener.height,
+        let blank: IThing = this.fsp.objectMaker.make("WhiteSquare", {
+            width: this.fsp.mapScreener.width,
+            height: this.fsp.mapScreener.height,
             opacity: 0
         });
 
-        this.things.add(blank, 0, 0);
+        this.fsp.things.add(blank, 0, 0);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                 blank,
                 "opacity",
                 .15,
                 1,
                 7,
-                this.scenePlayer.bindRoutine("PokemonExpo"));
+                this.fsp.scenePlayer.bindRoutine("PokemonExpo"));
             },
             35);
     }
@@ -2647,41 +2662,41 @@ export class Cutscenes {
      * Cutscene for transitioning Nidorino onto the screen.
      */
     public cutsceneIntroPokemonExpo(): void {
-        let pokemon: IThing = this.objectMaker.make("NIDORINOFront", {
+        let pokemon: IThing = this.fsp.objectMaker.make("NIDORINOFront", {
             flipHoriz: true,
             opacity: .01
         });
 
-        this.groupHolder.applyOnAll(this.physics, this.physics.killNormal);
+        this.fsp.groupHolder.applyOnAll(this.fsp.physics, this.fsp.physics.killNormal);
 
-        this.things.add(
+        this.fsp.things.add(
             pokemon,
-            (this.mapScreener.middleX + 24 * 4) | 0,
+            (this.fsp.mapScreener.middleX + 24 * 4) | 0,
             0);
 
-        this.physics.setMidY(pokemon, this.mapScreener.middleY);
+        this.fsp.physics.setMidY(pokemon, this.fsp.mapScreener.middleY);
 
-        this.animations.animateFadeAttribute(
+        this.fsp.actions.animateFadeAttribute(
             pokemon,
             "opacity",
             .15,
             1,
             3);
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             pokemon,
             -4 * 2,
-            this.mapScreener.middleX | 0,
+            this.fsp.mapScreener.middleX | 0,
             1,
-            this.scenePlayer.bindRoutine("PokemonExplanation"));
+            this.fsp.scenePlayer.bindRoutine("PokemonExplanation"));
     }
 
     /**
      * Cutscene for showing an explanation of the Pokemon world.
      */
     public cutsceneIntroPokemonExplanation(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "This world is inhabited by creatures called %%%%%%%POKEMON%%%%%%%!",
@@ -2689,9 +2704,9 @@ export class Cutscenes {
                 "Myself...",
                 "I study %%%%%%%POKEMON%%%%%%% as a profession."
             ],
-            this.scenePlayer.bindRoutine("PlayerAppear")
+            this.fsp.scenePlayer.bindRoutine("PlayerAppear")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2700,42 +2715,42 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroPlayerAppear(settings: any): void {
-        const middleX: number = this.mapScreener.middleX | 0;
-        const player: IPlayer = this.objectMaker.make("PlayerPortrait", {
+        const middleX: number = this.fsp.mapScreener.middleX | 0;
+        const player: IPlayer = this.fsp.objectMaker.make("PlayerPortrait", {
             flipHoriz: true,
             opacity: .01
         });
 
         settings.player = player;
 
-        this.groupHolder.applyOnAll(this.physics, this.physics.killNormal);
+        this.fsp.groupHolder.applyOnAll(this.fsp.physics, this.fsp.physics.killNormal);
 
-        this.things.add(player, this.mapScreener.middleX + 24 * 4, 0);
+        this.fsp.things.add(player, this.fsp.mapScreener.middleX + 24 * 4, 0);
 
-        this.physics.setMidY(player, this.mapScreener.middleY);
+        this.fsp.physics.setMidY(player, this.fsp.mapScreener.middleY);
 
-        this.animations.animateFadeAttribute(player, "opacity", .15, 1, 3);
+        this.fsp.actions.animateFadeAttribute(player, "opacity", .15, 1, 3);
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             player,
             -4 * 2,
             middleX - player.width * 4 / 2,
             1,
-            this.scenePlayer.bindRoutine("PlayerName"));
+            this.fsp.scenePlayer.bindRoutine("PlayerName"));
     }
 
     /**
      * Cutscene asking the player to enter his/her name.
      */
     public cutsceneIntroPlayerName(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "First, what is your name?"
             ],
-            this.scenePlayer.bindRoutine("PlayerSlide"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("PlayerSlide"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2744,27 +2759,27 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroPlayerSlide(settings: any): void {
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             settings.player,
             4,
-            (this.mapScreener.middleX + 16 * 4) | 0,
+            (this.fsp.mapScreener.middleX + 16 * 4) | 0,
             1,
-            this.scenePlayer.bindRoutine("PlayerNameOptions"));
+            this.fsp.scenePlayer.bindRoutine("PlayerNameOptions"));
     }
 
     /**
      * Cutscene for showing the player naming option menu.
      */
     public cutsceneIntroPlayerNameOptions(): void {
-        const fromMenu: () => void = this.scenePlayer.bindRoutine("PlayerNameFromMenu");
-        const fromKeyboard: () => void = this.scenePlayer.bindRoutine("PlayerNameFromKeyboard");
+        const fromMenu: () => void = this.fsp.scenePlayer.bindRoutine("PlayerNameFromMenu");
+        const fromKeyboard: () => void = this.fsp.scenePlayer.bindRoutine("PlayerNameFromKeyboard");
 
-        this.menuGrapher.createMenu("NameOptions");
-        this.menuGrapher.addMenuList("NameOptions", {
+        this.fsp.menuGrapher.createMenu("NameOptions");
+        this.fsp.menuGrapher.addMenuList("NameOptions", {
             options: [
                 {
                     text: "NEW NAME".split(""),
-                    callback: () => this.menus.openKeyboardMenu({
+                    callback: () => this.fsp.menus.openKeyboardMenu({
                         title: "YOUR NAME?",
                         callback: fromKeyboard
                     })
@@ -2779,7 +2794,7 @@ export class Cutscenes {
                     callback: fromMenu
                 }]
         });
-        this.menuGrapher.setActiveMenu("NameOptions");
+        this.fsp.menuGrapher.setActiveMenu("NameOptions");
     }
 
     /**
@@ -2788,16 +2803,16 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroPlayerNameFromMenu(settings: any): void {
-        settings.name = this.menuGrapher.getMenuSelectedOption("NameOptions").text;
+        settings.name = this.fsp.menuGrapher.getMenuSelectedOption("NameOptions").text;
 
-        this.menuGrapher.deleteMenu("NameOptions");
+        this.fsp.menuGrapher.deleteMenu("NameOptions");
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             settings.player,
             -4,
-            this.mapScreener.middleX | 0,
+            this.fsp.mapScreener.middleX | 0,
             1,
-            this.scenePlayer.bindRoutine("PlayerNameConfirm"));
+            this.fsp.scenePlayer.bindRoutine("PlayerNameConfirm"));
     }
 
     /**
@@ -2806,17 +2821,17 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroPlayerNameFromKeyboard(settings: any): void {
-        settings.name = (this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+        settings.name = (this.fsp.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
 
-        this.menuGrapher.deleteMenu("Keyboard");
-        this.menuGrapher.deleteMenu("NameOptions");
+        this.fsp.menuGrapher.deleteMenu("Keyboard");
+        this.fsp.menuGrapher.deleteMenu("NameOptions");
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             settings.player,
             -4,
-            this.mapScreener.middleX | 0,
+            this.fsp.mapScreener.middleX | 0,
             1,
-            this.scenePlayer.bindRoutine("PlayerNameConfirm"));
+            this.fsp.scenePlayer.bindRoutine("PlayerNameConfirm"));
     }
 
     /**
@@ -2825,12 +2840,12 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroPlayerNameConfirm(settings: any): void {
-        this.itemsHolder.setItem("name", settings.name);
+        this.fsp.itemsHolder.setItem("name", settings.name);
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -2839,30 +2854,30 @@ export class Cutscenes {
                     "!".split("")
                 ]
             ],
-            this.scenePlayer.bindRoutine("PlayerNameComplete"));
+            this.fsp.scenePlayer.bindRoutine("PlayerNameComplete"));
     }
 
     /**
      * Cutscene fading the player out.
      */
     public cutsceneIntroPlayerNameComplete(): void {
-        const blank: IThing = this.objectMaker.make("WhiteSquare", {
-            width: this.mapScreener.width,
-            height: this.mapScreener.height,
+        const blank: IThing = this.fsp.objectMaker.make("WhiteSquare", {
+            width: this.fsp.mapScreener.width,
+            height: this.fsp.mapScreener.height,
             opacity: 0
         });
 
-        this.things.add(blank, 0, 0);
+        this.fsp.things.add(blank, 0, 0);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                     blank,
                     "opacity",
                     .2,
                     1,
                     7,
-                    this.scenePlayer.bindRoutine("RivalAppear"));
+                    this.fsp.scenePlayer.bindRoutine("RivalAppear"));
             },
             35);
     }
@@ -2873,40 +2888,40 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroRivalAppear(settings: any): void {
-        const rival: IThing = this.objectMaker.make("RivalPortrait", {
+        const rival: IThing = this.fsp.objectMaker.make("RivalPortrait", {
             opacity: 0
         });
 
         settings.rival = rival;
 
-        this.groupHolder.applyOnAll(this.physics, this.physics.killNormal);
+        this.fsp.groupHolder.applyOnAll(this.fsp.physics, this.fsp.physics.killNormal);
 
-        this.things.add(rival, 0, 0);
-        this.physics.setMidX(rival, this.mapScreener.middleX | 0);
-        this.physics.setMidY(rival, this.mapScreener.middleY | 0);
-        this.animations.animateFadeAttribute(
+        this.fsp.things.add(rival, 0, 0);
+        this.fsp.physics.setMidX(rival, this.fsp.mapScreener.middleX | 0);
+        this.fsp.physics.setMidY(rival, this.fsp.mapScreener.middleY | 0);
+        this.fsp.actions.animateFadeAttribute(
             rival,
             "opacity",
             .1,
             1,
             1,
-            this.scenePlayer.bindRoutine("RivalName"));
+            this.fsp.scenePlayer.bindRoutine("RivalName"));
     }
 
     /**
      * Cutscene introducing the rival.
      */
     public cutsceneIntroRivalName(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "This is my grand-son. He's been your rival since you were a baby.",
                 "...Erm, what is his name again?"
             ],
-            this.scenePlayer.bindRoutine("RivalSlide")
+            this.fsp.scenePlayer.bindRoutine("RivalSlide")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -2915,27 +2930,27 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroRivalSlide(settings: any): void {
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             settings.rival,
             4,
-            (this.mapScreener.middleX + 16 * 4) | 0,
+            (this.fsp.mapScreener.middleX + 16 * 4) | 0,
             1,
-            this.scenePlayer.bindRoutine("RivalNameOptions"));
+            this.fsp.scenePlayer.bindRoutine("RivalNameOptions"));
     }
 
     /**
      * Cutscene for showing the rival naming option menu.
      */
     public cutsceneIntroRivalNameOptions(): void {
-        const fromMenu: () => void = this.scenePlayer.bindRoutine("RivalNameFromMenu");
-        const fromKeyboard: () => void = this.scenePlayer.bindRoutine("RivalNameFromKeyboard");
+        const fromMenu: () => void = this.fsp.scenePlayer.bindRoutine("RivalNameFromMenu");
+        const fromKeyboard: () => void = this.fsp.scenePlayer.bindRoutine("RivalNameFromKeyboard");
 
-        this.menuGrapher.createMenu("NameOptions");
-        this.menuGrapher.addMenuList("NameOptions", {
+        this.fsp.menuGrapher.createMenu("NameOptions");
+        this.fsp.menuGrapher.addMenuList("NameOptions", {
             options: [
                 {
                     text: "NEW NAME",
-                    callback: (): void => this.menus.openKeyboardMenu({
+                    callback: (): void => this.fsp.menus.openKeyboardMenu({
                         title: "RIVAL's NAME?",
                         callback: fromKeyboard
                     })
@@ -2950,7 +2965,7 @@ export class Cutscenes {
                     callback: fromMenu
                 }]
         });
-        this.menuGrapher.setActiveMenu("NameOptions");
+        this.fsp.menuGrapher.setActiveMenu("NameOptions");
     }
 
     /**
@@ -2959,16 +2974,16 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroRivalNameFromMenu(settings: any): void {
-        settings.name = this.menuGrapher.getMenuSelectedOption("NameOptions").text;
+        settings.name = this.fsp.menuGrapher.getMenuSelectedOption("NameOptions").text;
 
-        this.menuGrapher.deleteMenu("NameOptions");
+        this.fsp.menuGrapher.deleteMenu("NameOptions");
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             settings.rival,
             -4,
-            this.mapScreener.middleX | 0,
+            this.fsp.mapScreener.middleX | 0,
             1,
-            this.scenePlayer.bindRoutine("RivalNameConfirm"));
+            this.fsp.scenePlayer.bindRoutine("RivalNameConfirm"));
     }
 
     /**
@@ -2977,17 +2992,17 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroRivalNameFromKeyboard(settings: any): void {
-        settings.name = (this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+        settings.name = (this.fsp.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
 
-        this.menuGrapher.deleteMenu("Keyboard");
-        this.menuGrapher.deleteMenu("NameOptions");
+        this.fsp.menuGrapher.deleteMenu("Keyboard");
+        this.fsp.menuGrapher.deleteMenu("NameOptions");
 
-        this.animations.animateSlideHorizontal(
+        this.fsp.actions.animateSlideHorizontal(
             settings.rival,
             -4,
-            this.mapScreener.middleX | 0,
+            this.fsp.mapScreener.middleX | 0,
             1,
-            this.scenePlayer.bindRoutine("RivalNameConfirm"));
+            this.fsp.scenePlayer.bindRoutine("RivalNameConfirm"));
     }
 
     /**
@@ -2996,41 +3011,41 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroRivalNameConfirm(settings: any): void {
-        this.itemsHolder.setItem("nameRival", settings.name);
+        this.fsp.itemsHolder.setItem("nameRival", settings.name);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
                     "That's right! I remember now! His name is ", settings.name, "!"
                 ]
             ],
-            this.scenePlayer.bindRoutine("RivalNameComplete"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("RivalNameComplete"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene fading the rival out.
      */
     public cutsceneIntroRivalNameComplete(): void {
-        let blank: IThing = this.objectMaker.make("WhiteSquare", {
-            width: this.mapScreener.width,
-            height: this.mapScreener.height,
+        let blank: IThing = this.fsp.objectMaker.make("WhiteSquare", {
+            width: this.fsp.mapScreener.width,
+            height: this.fsp.mapScreener.height,
             opacity: 0
         });
 
-        this.things.add(blank, 0, 0);
+        this.fsp.things.add(blank, 0, 0);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                     blank,
                     "opacity",
                     .2,
                     1,
                     7,
-                    this.scenePlayer.bindRoutine("LastDialogAppear"));
+                    this.fsp.scenePlayer.bindRoutine("LastDialogAppear"));
             },
             35);
     }
@@ -3041,42 +3056,42 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroLastDialogAppear(settings: any): void {
-        const portrait: IThing = this.objectMaker.make("PlayerPortrait", {
+        const portrait: IThing = this.fsp.objectMaker.make("PlayerPortrait", {
             flipHoriz: true,
             opacity: 0
         });
 
         settings.portrait = portrait;
 
-        this.groupHolder.applyOnAll(this.physics, this.physics.killNormal);
+        this.fsp.groupHolder.applyOnAll(this.fsp.physics, this.fsp.physics.killNormal);
 
-        this.things.add(portrait, 0, 0);
-        this.physics.setMidX(portrait, this.mapScreener.middleX | 0);
-        this.physics.setMidY(portrait, this.mapScreener.middleY | 0);
+        this.fsp.things.add(portrait, 0, 0);
+        this.fsp.physics.setMidX(portrait, this.fsp.mapScreener.middleX | 0);
+        this.fsp.physics.setMidY(portrait, this.fsp.mapScreener.middleY | 0);
 
-        this.animations.animateFadeAttribute(
+        this.fsp.actions.animateFadeAttribute(
             portrait,
             "opacity",
             .1,
             1,
             1,
-            this.scenePlayer.bindRoutine("LastDialog"));
+            this.fsp.scenePlayer.bindRoutine("LastDialog"));
     }
 
     /**
      * Cutscene for the last part of the introduction.
      */
     public cutsceneIntroLastDialog(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%%!",
                 "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
                 "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!"
             ],
-            this.scenePlayer.bindRoutine("ShrinkPlayer"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("ShrinkPlayer"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -3085,37 +3100,37 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneIntroShrinkPlayer(settings: any): void {
-        const silhouetteLarge: IThing = this.objectMaker.make("PlayerSilhouetteLarge");
-        const silhouetteSmall: IThing = this.objectMaker.make("PlayerSilhouetteSmall");
-        const player: IPlayer = this.objectMaker.make("Player");
+        const silhouetteLarge: IThing = this.fsp.objectMaker.make("PlayerSilhouetteLarge");
+        const silhouetteSmall: IThing = this.fsp.objectMaker.make("PlayerSilhouetteSmall");
+        const player: IPlayer = this.fsp.objectMaker.make("Player");
         const timeDelay: number = 49;
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(silhouetteLarge);
-                this.physics.setMidObj(silhouetteLarge, settings.portrait);
-                this.physics.killNormal(settings.portrait);
+                this.fsp.things.add(silhouetteLarge);
+                this.fsp.physics.setMidObj(silhouetteLarge, settings.portrait);
+                this.fsp.physics.killNormal(settings.portrait);
             },
             timeDelay);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(silhouetteSmall);
-                this.physics.setMidObj(silhouetteSmall, silhouetteLarge);
-                this.physics.killNormal(silhouetteLarge);
+                this.fsp.things.add(silhouetteSmall);
+                this.fsp.physics.setMidObj(silhouetteSmall, silhouetteLarge);
+                this.fsp.physics.killNormal(silhouetteLarge);
             },
             timeDelay * 2);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.things.add(player);
-                this.physics.setMidObj(player, silhouetteSmall);
-                this.physics.killNormal(silhouetteSmall);
+                this.fsp.things.add(player);
+                this.fsp.physics.setMidObj(player, silhouetteSmall);
+                this.fsp.physics.killNormal(silhouetteSmall);
             },
             timeDelay * 3);
 
-        this.timeHandler.addEvent(
-            this.scenePlayer.bindRoutine("FadeOut"),
+        this.fsp.timeHandler.addEvent(
+            this.fsp.scenePlayer.bindRoutine("FadeOut"),
             timeDelay * 4);
     }
 
@@ -3123,23 +3138,23 @@ export class Cutscenes {
      * Cutscene for completing the introduction and fading it out.
      */
     public cutsceneIntroFadeOut(): void {
-        const blank: IThing = this.objectMaker.make("WhiteSquare", {
-            width: this.mapScreener.width,
-            height: this.mapScreener.height,
+        const blank: IThing = this.fsp.objectMaker.make("WhiteSquare", {
+            width: this.fsp.mapScreener.width,
+            height: this.fsp.mapScreener.height,
             opacity: 0
         });
 
-        this.things.add(blank, 0, 0);
+        this.fsp.things.add(blank, 0, 0);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateFadeAttribute(
+                this.fsp.actions.animateFadeAttribute(
                     blank,
                     "opacity",
                     .2,
                     1,
                     7,
-                    this.scenePlayer.bindRoutine("Finish"));
+                    this.fsp.scenePlayer.bindRoutine("Finish"));
             },
             35);
     }
@@ -3148,13 +3163,13 @@ export class Cutscenes {
      * Cutscene showing the player in his bedroom.
      */
     public cutsceneIntroFinish(): void {
-        delete this.mapScreener.cutscene;
+        delete this.fsp.mapScreener.cutscene;
 
-        this.menuGrapher.deleteActiveMenu();
-        this.scenePlayer.stopCutscene();
-        this.itemsHolder.setItem("gameStarted", true);
+        this.fsp.menuGrapher.deleteActiveMenu();
+        this.fsp.scenePlayer.stopCutscene();
+        this.fsp.itemsHolder.setItem("gameStarted", true);
 
-        this.maps.setMap("Pallet Town", "Start Game");
+        this.fsp.maps.setMap("Pallet Town", "Start Game");
     }
 
     /**
@@ -3166,33 +3181,33 @@ export class Cutscenes {
         let triggered: boolean = false;
 
         settings.triggerer.alive = false;
-        this.stateHolder.addChange(settings.triggerer.id, "alive", false);
+        this.fsp.stateHolder.addChange(settings.triggerer.id, "alive", false);
 
-        if (this.itemsHolder.getItem("starter")) {
-            this.mapScreener.blockInputs = false;
+        if (this.fsp.itemsHolder.getItem("starter")) {
+            this.fsp.mapScreener.blockInputs = false;
             return;
         }
 
-        this.animations.animatePlayerDialogFreeze(settings.player);
-        this.animations.animateCharacterSetDirection(settings.player, 2);
+        this.fsp.actions.animatePlayerDialogFreeze(settings.player);
+        this.fsp.actions.animateCharacterSetDirection(settings.player, 2);
 
-        this.audioPlayer.playTheme("Professor Oak");
-        this.mapScreener.blockInputs = true;
+        this.fsp.audioPlayer.playTheme("Professor Oak");
+        this.fsp.mapScreener.blockInputs = true;
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.fsp.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
             finishAutomaticSpeed: 28
         });
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             "OAK: Hey! Wait! Don't go out!",
             (): void => {
                 if (!triggered) {
                     triggered = true;
-                    this.scenePlayer.playRoutine("Exclamation");
+                    this.fsp.scenePlayer.playRoutine("Exclamation");
                 }
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -3203,14 +3218,14 @@ export class Cutscenes {
     public cutsceneOakIntroExclamation(settings: any): void {
         const timeout: number = 49;
 
-        this.animations.animateExclamation(settings.player, timeout);
+        this.fsp.actions.animateExclamation(settings.player, timeout);
 
-        this.timeHandler.addEvent(
-            (): void => this.menuGrapher.hideMenu("GeneralText"),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.menuGrapher.hideMenu("GeneralText"),
             timeout);
 
-        this.timeHandler.addEvent(
-            this.scenePlayer.bindRoutine("Catchup"),
+        this.fsp.timeHandler.addEvent(
+            this.fsp.scenePlayer.bindRoutine("Catchup"),
             timeout);
     }
 
@@ -3220,12 +3235,12 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroCatchup(settings: any): void {
-        const door: IThing = this.utilities.getThingById("Oak's Lab Door");
-        const oak: ICharacter = this.objectMaker.make("Oak", {
+        const door: IThing = this.fsp.utilities.getThingById("Oak's Lab Door");
+        const oak: ICharacter = this.fsp.objectMaker.make("Oak", {
             outerOk: true,
             nocollide: true
         });
-        const isToLeft: boolean = this.player.bordering[Direction.Left] !== undefined;
+        const isToLeft: boolean = this.fsp.players[0].bordering[Direction.Left] !== undefined;
         const walkingSteps: any[] = [
             1, "left", 4, "top", 8, "right", 1, "top", 1, "right", 1, "top", 1
         ];
@@ -3234,29 +3249,29 @@ export class Cutscenes {
             walkingSteps.push("right", 1, "top", 0);
         }
 
-        walkingSteps.push(this.scenePlayer.bindRoutine("GrassWarning"));
+        walkingSteps.push(this.fsp.scenePlayer.bindRoutine("GrassWarning"));
 
         settings.oak = oak;
         settings.isToLeft = isToLeft;
 
-        this.things.add(oak, door.left, door.top);
-        this.animations.animateCharacterStartWalkingCycle(oak, 2, walkingSteps);
+        this.fsp.things.add(oak, door.left, door.top);
+        this.fsp.actions.animateCharacterStartWalkingCycle(oak, 2, walkingSteps);
     }
 
     /**
      * Cutscene for Oak telling the player to keep out of the grass.
      */
     public cutsceneOakIntroGrassWarning(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "It's unsafe! Wild %%%%%%%POKEMON%%%%%%% live in tall grass!",
                 "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know!",
                 "Here, come with me."
             ],
-            this.scenePlayer.bindRoutine("FollowToLab"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("FollowToLab"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -3276,11 +3291,11 @@ export class Cutscenes {
             walkingSteps = [1, "bottom", 5, "left", 1, "bottom", 5, "right", 3, "top", 1];
         }
 
-        walkingSteps.push(this.scenePlayer.bindRoutine("EnterLab"));
+        walkingSteps.push(this.fsp.scenePlayer.bindRoutine("EnterLab"));
 
-        this.menuGrapher.deleteMenu("GeneralText");
-        this.animations.animateCharacterFollow(settings.player, settings.oak);
-        this.animations.animateCharacterStartWalkingCycle(
+        this.fsp.menuGrapher.deleteMenu("GeneralText");
+        this.fsp.actions.animateCharacterFollow(settings.player, settings.oak);
+        this.fsp.actions.animateCharacterStartWalkingCycle(
             settings.oak,
             startingDirection,
             walkingSteps);
@@ -3292,21 +3307,21 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroEnterLab(settings: any): void {
-        this.stateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
+        this.fsp.stateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
         settings.oak.hidden = true;
 
-        this.timeHandler.addEvent(
-            this.animations.animateCharacterStartWalkingCycle,
-            this.mathDecider.compute("speedWalking", this.player),
-            this.player,
+        this.fsp.timeHandler.addEvent(
+            this.fsp.actions.animateCharacterStartWalkingCycle,
+            this.fsp.mathDecider.compute("speedWalking", this.fsp.players[0]),
+            this.fsp.players[0],
             0,
             [
                 0,
                 (): void => {
-                    this.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
-                    this.player.hidden = true;
+                    this.fsp.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
+                    this.fsp.players[0].hidden = true;
 
-                    this.scenePlayer.playRoutine("WalkToTable");
+                    this.fsp.scenePlayer.playRoutine("WalkToTable");
                 }
             ]);
     }
@@ -3317,44 +3332,44 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroWalkToTable(settings: any): void {
-        const oak: ICharacter = this.utilities.getThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.utilities.getThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.fsp.utilities.getThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.fsp.utilities.getThingById("Rival") as ICharacter;
 
         settings.oak = oak;
-        settings.player = this.player;
+        settings.player = this.fsp.players[0];
 
         oak.dialog = "OAK: Now, %%%%%%%PLAYER%%%%%%%, which %%%%%%%POKEMON%%%%%%% do you want?";
         oak.hidden = false;
         oak.nocollide = true;
-        this.physics.setMidXObj(oak, settings.player);
-        this.physics.setBottom(oak, settings.player.top);
+        this.fsp.physics.setMidXObj(oak, settings.player);
+        this.fsp.physics.setBottom(oak, settings.player.top);
 
-        this.stateHolder.addChange(oak.id, "hidden", false);
-        this.stateHolder.addChange(oak.id, "nocollide", false);
-        this.stateHolder.addChange(oak.id, "dialog", oak.dialog);
+        this.fsp.stateHolder.addChange(oak.id, "hidden", false);
+        this.fsp.stateHolder.addChange(oak.id, "nocollide", false);
+        this.fsp.stateHolder.addChange(oak.id, "dialog", oak.dialog);
 
         rival.dialog = [
             "%%%%%%%RIVAL%%%%%%%: Heh, I don't need to be greedy like you!",
             "Go ahead and choose, %%%%%%%PLAYER%%%%%%%!"
         ];
-        this.stateHolder.addChange(rival.id, "dialog", rival.dialog);
+        this.fsp.stateHolder.addChange(rival.id, "dialog", rival.dialog);
 
-        this.animations.animateCharacterStartWalking(oak, 0, [
+        this.fsp.actions.animateCharacterStartWalking(oak, 0, [
             8, "bottom", 0
         ]);
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.player.hidden = false;
+                this.fsp.players[0].hidden = false;
             },
-            112 - this.mathDecider.compute("speedWalking", settings.player));
+            112 - this.fsp.mathDecider.compute("speedWalking", settings.player));
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.animations.animateCharacterStartWalking(
+                this.fsp.actions.animateCharacterStartWalking(
                     settings.player,
                     0,
-                    [8, this.scenePlayer.bindRoutine("RivalComplain")]);
+                    [8, this.fsp.scenePlayer.bindRoutine("RivalComplain")]);
             },
             112);
     }
@@ -3367,22 +3382,22 @@ export class Cutscenes {
     public cutsceneOakIntroRivalComplain(settings: any): void {
         settings.oak.nocollide = false;
         settings.player.nocollide = false;
-        this.stateHolder.addChange(settings.oak.id, "nocollide", false);
+        this.fsp.stateHolder.addChange(settings.oak.id, "nocollide", false);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             "%%%%%%%RIVAL%%%%%%%: Gramps! I'm fed up with waiting!",
-            this.scenePlayer.bindRoutine("OakThinksToRival"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("OakThinksToRival"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak telling the player to pick a Pokemon.
      */
     public cutsceneOakIntroOakThinksToRival(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: %%%%%%%RIVAL%%%%%%%? Let me think...",
@@ -3394,8 +3409,8 @@ export class Cutscenes {
                 "When I was young, I was a serious %%%%%%%POKEMON%%%%%%% trainer!",
                 "In my old age, I have only 3 left, but you can have one! Choose!"
             ],
-            this.scenePlayer.bindRoutine("RivalProtests"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("RivalProtests"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -3404,25 +3419,25 @@ export class Cutscenes {
     public cutsceneOakIntroRivalProtests(): void {
         let timeout: number = 21;
 
-        this.menuGrapher.deleteMenu("GeneralText");
+        this.fsp.menuGrapher.deleteMenu("GeneralText");
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.menuGrapher.createMenu("GeneralText");
+                this.fsp.menuGrapher.createMenu("GeneralText");
             },
             timeout);
 
-        this.timeHandler.addEvent(
-            (): void => this.menuGrapher.addMenuDialog(
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
                     "%%%%%%%RIVAL%%%%%%%: Hey! Gramps! What about me?"
                 ],
-                this.scenePlayer.bindRoutine("OakRespondsToProtest")),
+                this.fsp.scenePlayer.bindRoutine("OakRespondsToProtest")),
             timeout);
 
-        this.timeHandler.addEvent(
-            (): void => this.menuGrapher.setActiveMenu("GeneralText"),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.menuGrapher.setActiveMenu("GeneralText"),
             timeout);
     }
 
@@ -3432,22 +3447,22 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroOakRespondsToProtest(settings: any): void {
-        const blocker: IThing = this.utilities.getThingById("OakBlocker");
+        const blocker: IThing = this.fsp.utilities.getThingById("OakBlocker");
         const timeout: number = 21;
 
         settings.player.nocollide = false;
         settings.oak.nocollide = false;
 
         blocker.nocollide = false;
-        this.stateHolder.addChange(blocker.id, "nocollide", false);
+        this.fsp.stateHolder.addChange(blocker.id, "nocollide", false);
 
-        this.mapScreener.blockInputs = false;
+        this.fsp.mapScreener.blockInputs = false;
 
-        this.menuGrapher.deleteMenu("GeneralText");
+        this.fsp.menuGrapher.deleteMenu("GeneralText");
 
-        this.timeHandler.addEvent(
+        this.fsp.timeHandler.addEvent(
             (): void => {
-                this.menuGrapher.createMenu(
+                this.fsp.menuGrapher.createMenu(
                     "GeneralText",
                     {
                         deleteOnFinish: true
@@ -3455,14 +3470,14 @@ export class Cutscenes {
             },
             timeout);
 
-        this.timeHandler.addEvent(
-            (): void => this.menuGrapher.addMenuDialog(
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.menuGrapher.addMenuDialog(
                 "GeneralText",
                 "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!"),
             timeout);
 
-        this.timeHandler.addEvent(
-            (): void => this.menuGrapher.setActiveMenu("GeneralText"),
+        this.fsp.timeHandler.addEvent(
+            (): void => this.fsp.menuGrapher.setActiveMenu("GeneralText"),
             timeout);
     }
 
@@ -3473,31 +3488,31 @@ export class Cutscenes {
      */
     public cutsceneOakIntroPokemonChoicePlayerChecksPokeball(settings: any): void {
         // If Oak is hidden, this cutscene shouldn't be starting (too early)
-        if (this.utilities.getThingById("Oak").hidden) {
-            this.scenePlayer.stopCutscene();
+        if (this.fsp.utilities.getThingById("Oak").hidden) {
+            this.fsp.scenePlayer.stopCutscene();
 
-            this.menuGrapher.createMenu("GeneralText");
-            this.menuGrapher.addMenuDialog(
+            this.fsp.menuGrapher.createMenu("GeneralText");
+            this.fsp.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
                     "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!"
                 ]);
-            this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
             return;
         }
 
         // If there's already a starter, ignore this sad last ball...
-        if (this.itemsHolder.getItem("starter")) {
+        if (this.fsp.itemsHolder.getItem("starter")) {
             return;
         }
 
         let pokeball: IPokeball = settings.triggerer;
         settings.chosen = pokeball.pokemon;
 
-        this.menus.openPokedexListing(
+        this.fsp.menus.openPokedexListing(
             pokeball.pokemon!,
-            this.scenePlayer.bindRoutine("PlayerDecidesPokemon"),
+            this.fsp.scenePlayer.bindRoutine("PlayerDecidesPokemon"),
             {
                 position: {
                     vertical: "center",
@@ -3514,8 +3529,8 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoicePlayerDecidesPokemon(settings: any): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -3523,22 +3538,22 @@ export class Cutscenes {
                 ]
             ],
             (): void => {
-                this.menuGrapher.createMenu("Yes/No", {
+                this.fsp.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"]
                 });
-                this.menuGrapher.addMenuList("Yes/No", {
+                this.fsp.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: this.scenePlayer.bindRoutine("PlayerTakesPokemon")
+                            callback: this.fsp.scenePlayer.bindRoutine("PlayerTakesPokemon")
                         }, {
                             text: "NO",
-                            callback: this.menuGrapher.registerB
+                            callback: this.fsp.menuGrapher.registerB
                         }]
                 });
-                this.menuGrapher.setActiveMenu("Yes/No");
+                this.fsp.menuGrapher.setActiveMenu("Yes/No");
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -3547,28 +3562,28 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene. 
      */
     public cutsceneOakIntroPokemonChoicePlayerTakesPokemon(settings: any): void {
-        const oak: ICharacter = this.utilities.getThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.utilities.getThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.fsp.utilities.getThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.fsp.utilities.getThingById("Rival") as ICharacter;
         const dialogOak: string = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival: string = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
         settings.oak = oak;
         oak.dialog = dialogOak;
-        this.stateHolder.addChange(oak.id, "dialog", dialogOak);
+        this.fsp.stateHolder.addChange(oak.id, "dialog", dialogOak);
 
         settings.rival = rival;
         rival.dialog = dialogRival;
-        this.stateHolder.addChange(rival.id, "dialog", dialogRival);
+        this.fsp.stateHolder.addChange(rival.id, "dialog", dialogRival);
 
-        this.itemsHolder.setItem("starter", settings.chosen.join(""));
+        this.fsp.itemsHolder.setItem("starter", settings.chosen.join(""));
         settings.triggerer.hidden = true;
-        this.stateHolder.addChange(settings.triggerer.id, "hidden", true);
-        this.stateHolder.addChange(settings.triggerer.id, "nocollide", true);
-        this.physics.killNormal(settings.triggerer);
+        this.fsp.stateHolder.addChange(settings.triggerer.id, "hidden", true);
+        this.fsp.stateHolder.addChange(settings.triggerer.id, "nocollide", true);
+        this.fsp.physics.killNormal(settings.triggerer);
 
-        this.menuGrapher.deleteMenu("Yes/No");
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.deleteMenu("Yes/No");
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -3579,14 +3594,14 @@ export class Cutscenes {
                     "Do you want to give a nickname to ", settings.chosen, "?"
                 ]
             ],
-            this.scenePlayer.bindRoutine("PlayerChoosesNickname"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("PlayerChoosesNickname"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-        this.itemsHolder.setItem("starter", settings.chosen);
-        this.itemsHolder.setItem("PokemonInParty", [
-            this.mathDecider.compute("newPokemon", settings.chosen, 5)
+        this.fsp.itemsHolder.setItem("starter", settings.chosen);
+        this.fsp.itemsHolder.setItem("PokemonInParty", [
+            this.fsp.mathDecider.compute("newPokemon", settings.chosen, 5)
         ]);
-        this.storage.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
+        this.fsp.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
     }
 
     /**
@@ -3595,37 +3610,37 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoicePlayerChoosesNickname(settings: any): void {
-        this.menuGrapher.createMenu("Yes/No", {
+        this.fsp.menuGrapher.createMenu("Yes/No", {
             ignoreB: true,
             killOnB: ["GeneralText"]
         });
-        this.menuGrapher.addMenuList("Yes/No", {
+        this.fsp.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.menus.openKeyboardMenu({
+                    callback: (): void => this.fsp.menus.openKeyboardMenu({
                         title: settings.chosen,
-                        callback: this.scenePlayer.bindRoutine("PlayerSetsNickname")
+                        callback: this.fsp.scenePlayer.bindRoutine("PlayerSetsNickname")
                     })
                 }, {
                     text: "NO",
-                    callback: this.scenePlayer.bindRoutine("RivalWalksToPokemon")
+                    callback: this.fsp.scenePlayer.bindRoutine("RivalWalksToPokemon")
                 }]
         });
-        this.menuGrapher.setActiveMenu("Yes/No");
+        this.fsp.menuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
      * Cutscene for the player finishing the naming process.
      */
     public cutsceneOakIntroPokemonChoicePlayerSetsNickname(): void {
-        const party: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
-        const menu: IKeyboardResultsMenu = this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const party: IPokemon[] = this.fsp.itemsHolder.getItem("PokemonInParty");
+        const menu: IKeyboardResultsMenu = this.fsp.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         const result: string[] = menu.completeValue;
 
         party[0].nickname = result;
 
-        this.scenePlayer.playRoutine("RivalWalksToPokemon");
+        this.fsp.scenePlayer.playRoutine("RivalWalksToPokemon");
     }
 
     /**
@@ -3634,14 +3649,14 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(settings: any): void {
-        const rival: ICharacter = this.utilities.getThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.fsp.utilities.getThingById("Rival") as ICharacter;
         let starterRival: string[];
         let steps: number;
 
-        this.menuGrapher.deleteMenu("Keyboard");
-        this.menuGrapher.deleteMenu("GeneralText");
-        this.menuGrapher.deleteMenu("Yes/No");
-        this.mapScreener.blockInputs = true;
+        this.fsp.menuGrapher.deleteMenu("Keyboard");
+        this.fsp.menuGrapher.deleteMenu("GeneralText");
+        this.fsp.menuGrapher.deleteMenu("Yes/No");
+        this.fsp.mapScreener.blockInputs = true;
 
         switch (settings.chosen.join("")) {
             case "SQUIRTLE":
@@ -3662,18 +3677,18 @@ export class Cutscenes {
 
         settings.rivalPokemon = starterRival;
         settings.rivalSteps = steps;
-        this.itemsHolder.setItem("starterRival", starterRival);
-        this.storage.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
+        this.fsp.itemsHolder.setItem("starterRival", starterRival);
+        this.fsp.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        let pokeball: IPokeball = this.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
+        let pokeball: IPokeball = this.fsp.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
-        this.animations.animateCharacterStartWalkingCycle(
+        this.fsp.actions.animateCharacterStartWalkingCycle(
             rival,
             2,
             [
                 2, "right", steps, "top", 1,
-                (): void => this.scenePlayer.playRoutine("RivalTakesPokemon")
+                (): void => this.fsp.scenePlayer.playRoutine("RivalTakesPokemon")
             ]);
     }
 
@@ -3683,19 +3698,19 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoiceRivalTakesPokemon(settings: any): void {
-        const oakblocker: IThing = this.utilities.getThingById("OakBlocker");
-        const rivalblocker: IThing = this.utilities.getThingById("RivalBlocker");
+        const oakblocker: IThing = this.fsp.utilities.getThingById("OakBlocker");
+        const rivalblocker: IThing = this.fsp.utilities.getThingById("RivalBlocker");
 
-        this.menuGrapher.deleteMenu("Yes/No");
+        this.fsp.menuGrapher.deleteMenu("Yes/No");
 
         oakblocker.nocollide = true;
-        this.stateHolder.addChange(oakblocker.id, "nocollide", true);
+        this.fsp.stateHolder.addChange(oakblocker.id, "nocollide", true);
 
         rivalblocker.nocollide = false;
-        this.stateHolder.addChange(rivalblocker.id, "nocollide", false);
+        this.fsp.stateHolder.addChange(rivalblocker.id, "nocollide", false);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
@@ -3705,11 +3720,11 @@ export class Cutscenes {
             ],
             (): void => {
                 settings.rivalPokeball.hidden = true;
-                this.stateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
-                this.menuGrapher.deleteActiveMenu();
-                this.mapScreener.blockInputs = false;
+                this.fsp.stateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
+                this.fsp.menuGrapher.deleteActiveMenu();
+                this.fsp.mapScreener.blockInputs = false;
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
     }
 
@@ -3719,92 +3734,92 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroRivalBattleApproach(settings: any): void {
-        const rival: ICharacter = this.utilities.getThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.fsp.utilities.getThingById("Rival") as ICharacter;
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 
-        this.audioPlayer.playTheme("Rival Appears");
+        this.fsp.audioPlayer.playTheme("Rival Appears");
 
         settings.rival = rival;
-        this.animations.animateCharacterSetDirection(rival, Direction.Bottom);
-        this.animations.animateCharacterSetDirection(settings.player, Direction.Top);
+        this.fsp.actions.animateCharacterSetDirection(rival, Direction.Bottom);
+        this.fsp.actions.animateCharacterSetDirection(settings.player, Direction.Top);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
                 "Come on, I'll take you on!"
             ],
-            this.scenePlayer.bindRoutine(
+            this.fsp.scenePlayer.bindRoutine(
                 "Challenge",
                 {
                     further: further
                 }
             ));
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for showing the lab after the battle ends.
      */
     public cutsceneOakIntroRivalLeavesAfterBattle(): void {
-        this.mapScreener.blockInputs = true;
+        this.fsp.mapScreener.blockInputs = true;
 
-        for (const pokemon of this.itemsHolder.getItem("PokemonInParty")) {
-            this.battles.healPokemon(pokemon);
+        for (const pokemon of this.fsp.itemsHolder.getItem("PokemonInParty")) {
+            this.fsp.battles.healPokemon(pokemon);
         }
 
-        this.timeHandler.addEvent(this.scenePlayer.bindRoutine("Complaint"), 49);
+        this.fsp.timeHandler.addEvent(this.fsp.scenePlayer.bindRoutine("Complaint"), 49);
     }
 
     /**
      * Cutscene for the rival's comment after losing the battle.
      */
     public cutsceneOakIntroRivalLeavesComplaint(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!"
             ],
             (): void => {
-                this.menuGrapher.deleteActiveMenu();
-                this.timeHandler.addEvent(this.scenePlayer.bindRoutine("Goodbye"), 21);
+                this.fsp.menuGrapher.deleteActiveMenu();
+                this.fsp.timeHandler.addEvent(this.fsp.scenePlayer.bindRoutine("Goodbye"), 21);
             }
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for the rival telling Oak he is leaving.
      */
     public cutsceneOakIntroRivalLeavesGoodbye(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!"
             ],
-            this.scenePlayer.bindRoutine("Walking"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("Walking"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for the rival leaving the lab and Oak giving the player advice.
      */
     public cutsceneOakIntroRivalLeavesWalking(): void {
-        const oak: ICharacter = this.utilities.getThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.utilities.getThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.fsp.utilities.getThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.fsp.utilities.getThingById("Rival") as ICharacter;
         const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
         const steps: any[] = [
             1,
             "bottom",
             6,
             (): void => {
-                this.physics.killNormal(rival);
-                this.stateHolder.addChange(rival.id, "alive", false);
-                this.mapScreener.blockInputs = false;
+                this.fsp.physics.killNormal(rival);
+                this.fsp.stateHolder.addChange(rival.id, "alive", false);
+                this.fsp.mapScreener.blockInputs = false;
             }
         ];
         const dialog: string[] = [
@@ -3813,11 +3828,11 @@ export class Cutscenes {
 
         console.log("Shouldn't this say the dialog?", dialog);
 
-        this.scenePlayer.stopCutscene();
-        this.menuGrapher.deleteMenu("GeneralText");
+        this.fsp.scenePlayer.stopCutscene();
+        this.fsp.menuGrapher.deleteMenu("GeneralText");
 
         rival.nocollide = true;
-        this.animations.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
+        this.fsp.actions.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
     }
 
     /**
@@ -3827,17 +3842,17 @@ export class Cutscenes {
      * @param args   Settings for the routine.
      */
     public cutsceneOakIntroRivalBattleChallenge(settings: any, args: any): void {
-        const starterRival: string[] = this.itemsHolder.getItem("starterRival");
+        const starterRival: string[] = this.fsp.itemsHolder.getItem("starterRival");
         const battleInfo: IBattleInfo = {
             battlers: {
                 opponent: {
                     sprite: "RivalPortrait",
-                    name: this.itemsHolder.getItem("nameRival"),
+                    name: this.fsp.itemsHolder.getItem("nameRival"),
                     category: "Trainer",
                     hasActors: true,
                     reward: 175,
                     actors: [
-                        this.mathDecider.compute("newPokemon", starterRival, 5)
+                        this.fsp.mathDecider.compute("newPokemon", starterRival, 5)
                     ]
                 }
             },
@@ -3852,12 +3867,12 @@ export class Cutscenes {
             ],
             // "animation": "LineSpiral",
             noBlackout: true,
-            keptThings: this.graphics.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.fsp.graphics.collectBattleKeptThings(["player", "Rival"]),
             nextCutscene: "OakIntroRivalLeaves"
         };
         let steps: number;
 
-        switch (this.itemsHolder.getItem("starterRival").join("")) {
+        switch (this.fsp.itemsHolder.getItem("starterRival").join("")) {
             case "SQUIRTLE":
                 steps = 2;
                 break;
@@ -3875,14 +3890,14 @@ export class Cutscenes {
             steps += 1;
         }
 
-        this.animations.animateCharacterStartWalkingCycle(
+        this.fsp.actions.animateCharacterStartWalkingCycle(
             settings.rival,
             3,
             [
                 steps,
                 "bottom",
                 1,
-                (): void => this.battles.startBattle(battleInfo)
+                (): void => this.fsp.battles.startBattle(battleInfo)
             ]);
     }
 
@@ -3893,16 +3908,16 @@ export class Cutscenes {
      */
     public cutsceneOakParcelPickupGreeting(settings: any): void {
         settings.triggerer.alive = false;
-        this.stateHolder.addChange(settings.triggerer.id, "alive", false);
+        this.fsp.stateHolder.addChange(settings.triggerer.id, "alive", false);
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Hey! You came from PALLET TOWN?"
             ],
-            this.scenePlayer.bindRoutine("WalkToCounter"));
-        this.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("WalkToCounter"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -3911,14 +3926,14 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakParcelPickupWalkToCounter(settings: any): void {
-        this.animations.animateCharacterStartWalkingCycle(
+        this.fsp.actions.animateCharacterStartWalkingCycle(
             settings.player,
             0,
             [
                 2,
                 "left",
                 1,
-                this.scenePlayer.bindRoutine("CounterDialog")
+                this.fsp.scenePlayer.bindRoutine("CounterDialog")
             ]);
     }
 
@@ -3926,8 +3941,8 @@ export class Cutscenes {
      * Cutscene for the player receiving the parcel from the PokeMart clerk.
      */
     public cutsceneOakParcelPickupCounterDialog(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "You know PROF. Oak, right?",
@@ -3935,13 +3950,13 @@ export class Cutscenes {
                 "%%%%%%%PLAYER%%%%%%% got OAK's PARCEL!"
             ],
             (): void => {
-                this.menuGrapher.deleteMenu("GeneralText");
-                this.scenePlayer.stopCutscene();
-                this.mapScreener.blockInputs = false;
+                this.fsp.menuGrapher.deleteMenu("GeneralText");
+                this.fsp.scenePlayer.stopCutscene();
+                this.fsp.mapScreener.blockInputs = false;
             });
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Pallet Town::Oak's Lab", "Oak", "cutscene", "OakParcelDelivery"
         );
     }
@@ -3952,13 +3967,13 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakParcelDeliveryGreeting(settings: any): void {
-        settings.rival = this.utilities.getThingById("Rival");
+        settings.rival = this.fsp.utilities.getThingById("Rival");
         settings.oak = settings.triggerer;
         delete settings.oak.cutscene;
         delete settings.oak.dialog;
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: Oh, %%%%%%%PLAYER%%%%%%%!",
@@ -3970,26 +3985,26 @@ export class Cutscenes {
                 "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!"
             ],
             (): void => {
-                this.timeHandler.addEvent(
-                    this.scenePlayer.bindRoutine("RivalInterrupts"),
+                this.fsp.timeHandler.addEvent(
+                    this.fsp.scenePlayer.bindRoutine("RivalInterrupts"),
                     14);
             }
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Viridian City::PokeMart", "CashierDetector", "dialog", false);
 
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Viridian City::Land", "CrankyGrandpa", "alive", false);
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Viridian City::Land", "CrankyGrandpaBlocker", "alive", false);
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Viridian City::Land", "CrankyGranddaughter", "alive", false);
 
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Viridian City::Land", "HappyGrandpa", "alive", true);
-        this.stateHolder.addCollectionChange(
+        this.fsp.stateHolder.addCollectionChange(
             "Viridian City::Land", "HappyGranddaughter", "alive", true);
     }
 
@@ -3997,15 +4012,15 @@ export class Cutscenes {
      * Cutscene for when the rival interrupts Oak and the player.
      */
     public cutsceneOakParcelDeliveryRivalInterrupts(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Gramps!"
             ],
-            this.scenePlayer.bindRoutine("RivalWalksUp")
+            this.fsp.scenePlayer.bindRoutine("RivalWalksUp")
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -4014,20 +4029,20 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakParcelDeliveryRivalWalksUp(settings: any): void {
-        const doormat: IThing = this.utilities.getThingById("DoormatLeft");
-        const rival: ICharacter = this.things.add("Rival", doormat.left, doormat.top) as ICharacter;
+        const doormat: IThing = this.fsp.utilities.getThingById("DoormatLeft");
+        const rival: ICharacter = this.fsp.things.add("Rival", doormat.left, doormat.top) as ICharacter;
 
         rival.alive = true;
         settings.rival = rival;
 
-        this.menuGrapher.deleteMenu("GeneralText");
+        this.fsp.menuGrapher.deleteMenu("GeneralText");
 
-        this.animations.animateCharacterStartWalkingCycle(
+        this.fsp.actions.animateCharacterStartWalkingCycle(
             rival,
             0,
             [
                 8,
-                (): void => this.scenePlayer.playRoutine("RivalInquires")
+                (): void => this.fsp.scenePlayer.playRoutine("RivalInquires")
             ]);
     }
 
@@ -4035,45 +4050,45 @@ export class Cutscenes {
      * Cutscene for the rival asking Oak why he was called.
      */
     public cutsceneOakParcelDeliveryRivalInquires(): void {
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: What did you call me for?"
             ],
             (): void => {
-                this.timeHandler.addEvent(
-                    this.scenePlayer.bindRoutine("OakRequests"),
+                this.fsp.timeHandler.addEvent(
+                    this.fsp.scenePlayer.bindRoutine("OakRequests"),
                     14);
             }
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak requesting something of the player and rival.
      */
     public cutsceneOakParcelDeliveryOakRequests(): void {
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Oak: Oh right! I have a request of you two."
             ],
             (): void => {
-                this.eightBitter.timeHandler.addEvent(
-                    this.eightBitter.scenePlayer.bindRoutine("OakDescribesPokedex"),
+                this.fsp.timeHandler.addEvent(
+                    this.fsp.scenePlayer.bindRoutine("OakDescribesPokedex"),
                     14);
             });
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak describing the Pokedex.
      */
     public cutsceneOakParcelDeliveryOakDescribesPokedex(): void {
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "On the desk there is my invention, %%%%%%%POKEDEX%%%%%%%!",
@@ -4081,50 +4096,50 @@ export class Cutscenes {
                 "It's a hi-tech encyclopedia!"
             ],
             (): void => {
-                this.eightBitter.timeHandler.addEvent(
-                    this.eightBitter.scenePlayer.bindRoutine("OakGivesPokedex"),
+                this.fsp.timeHandler.addEvent(
+                    this.fsp.scenePlayer.bindRoutine("OakGivesPokedex"),
                     14);
             });
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak giving the player and rival Pokedexes.
      */
     public cutsceneOakParcelDeliveryOakGivesPokedex(): void {
-        const bookLeft: IThing = this.eightBitter.utilities.getThingById("BookLeft");
-        const bookRight: IThing = this.eightBitter.utilities.getThingById("BookRight");
+        const bookLeft: IThing = this.fsp.utilities.getThingById("BookLeft");
+        const bookRight: IThing = this.fsp.utilities.getThingById("BookRight");
 
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: %%%%%%%PLAYER%%%%%%% and %%%%%%%RIVAL%%%%%%%! Take these with you!",
                 "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!"
             ],
             (): void => {
-                this.eightBitter.timeHandler.addEvent(
-                    this.eightBitter.scenePlayer.bindRoutine("OakDescribesGoal"),
+                this.fsp.timeHandler.addEvent(
+                    this.fsp.scenePlayer.bindRoutine("OakDescribesGoal"),
                     14);
 
-                this.eightBitter.physics.killNormal(bookLeft);
-                this.eightBitter.physics.killNormal(bookRight);
+                this.fsp.physics.killNormal(bookLeft);
+                this.fsp.physics.killNormal(bookRight);
 
-                this.eightBitter.stateHolder.addChange(bookLeft.id, "alive", false);
-                this.eightBitter.stateHolder.addChange(bookRight.id, "alive", false);
+                this.fsp.stateHolder.addChange(bookLeft.id, "alive", false);
+                this.fsp.stateHolder.addChange(bookRight.id, "alive", false);
 
-                this.eightBitter.itemsHolder.setItem("hasPokedex", true);
+                this.fsp.itemsHolder.setItem("hasPokedex", true);
             }
         );
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak describing his life goal.
      */
     public cutsceneOakParcelDeliveryOakDescribesGoal(): void {
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "To make a complete guide on all the %%%%%%%POKEMON%%%%%%% in the world...",
@@ -4135,12 +4150,12 @@ export class Cutscenes {
                 "This is a great undertaking in %%%%%%%POKEMON%%%%%%% history!"
             ],
             (): void => {
-                this.eightBitter.timeHandler.addEvent(
-                    this.eightBitter.scenePlayer.bindRoutine("RivalAccepts"),
+                this.fsp.timeHandler.addEvent(
+                    this.fsp.scenePlayer.bindRoutine("RivalAccepts"),
                     14);
             }
         );
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -4149,10 +4164,10 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakParcelDeliveryRivalAccepts(settings: any): void {
-        this.eightBitter.animations.animateCharacterSetDirection(settings.rival, 1);
+        this.fsp.actions.animateCharacterSetDirection(settings.rival, 1);
 
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Alright Gramps! Leave it all to me!",
@@ -4161,19 +4176,19 @@ export class Cutscenes {
                 "I'll tell her not to lend you one, %%%%%%%PLAYER%%%%%%%! Hahaha!"
             ],
             (): void => {
-                this.eightBitter.scenePlayer.stopCutscene();
-                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                this.fsp.scenePlayer.stopCutscene();
+                this.fsp.menuGrapher.deleteMenu("GeneralText");
 
                 delete settings.oak.activate;
                 settings.rival.nocollide = true;
-                this.eightBitter.animations.animateCharacterStartWalkingCycle(
+                this.fsp.actions.animateCharacterStartWalkingCycle(
                     settings.rival,
                     2,
                     [
                         8,
                         (): void => {
-                            this.eightBitter.physics.killNormal(settings.rival);
-                            this.eightBitter.player.canKeyWalking = true;
+                            this.fsp.physics.killNormal(settings.rival);
+                            this.fsp.players[0].canKeyWalking = true;
                         }
                     ]);
 
@@ -4182,29 +4197,29 @@ export class Cutscenes {
                     "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!"
                 ];
 
-                this.eightBitter.stateHolder.addChange(
+                this.fsp.stateHolder.addChange(
                     settings.oak.id, "dialog", settings.oak.dialog
                 );
-                this.eightBitter.stateHolder.addChange(
+                this.fsp.stateHolder.addChange(
                     settings.oak.id, "cutscene", undefined
                 );
             }
         );
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Daisy giving the player a Town Map.
      */
     public cutsceneDaisyTownMapGreeting(): void {
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Grandpa asked you to run an errand? Here, this will help you!"
             ],
-            this.eightBitter.scenePlayer.bindRoutine("ReceiveMap"));
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+            this.fsp.scenePlayer.bindRoutine("ReceiveMap"));
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -4213,31 +4228,31 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneDaisyTownMapReceiveMap(settings: any): void {
-        const book: IThing = this.eightBitter.utilities.getThingById("Book");
+        const book: IThing = this.fsp.utilities.getThingById("Book");
         const daisy: ICharacter = settings.triggerer;
 
-        this.eightBitter.physics.killNormal(book);
-        this.eightBitter.stateHolder.addChange(book.id, "alive", false);
+        this.fsp.physics.killNormal(book);
+        this.fsp.stateHolder.addChange(book.id, "alive", false);
 
         delete daisy.cutscene;
-        this.eightBitter.stateHolder.addChange(daisy.id, "cutscene", undefined);
+        this.fsp.stateHolder.addChange(daisy.id, "cutscene", undefined);
 
         daisy.dialog = [
             "Use the TOWN MAP to find out where you are."
         ];
-        this.eightBitter.stateHolder.addChange(daisy.id, "dialog", daisy.dialog);
+        this.fsp.stateHolder.addChange(daisy.id, "dialog", daisy.dialog);
 
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%% got a TOWN MAP!"
             ],
             (): void => {
-                this.eightBitter.scenePlayer.stopCutscene();
-                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                this.fsp.scenePlayer.stopCutscene();
+                this.fsp.menuGrapher.deleteMenu("GeneralText");
             });
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
 
         console.warn("Player does not actually get a Town Map...");
     }
@@ -4248,9 +4263,9 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene. 
      */
     public cutsceneElderTrainingStartBattle(settings: any): void {
-        this.eightBitter.mapScreener.blockInputs = true;
-        this.eightBitter.battles.startBattle({
-            keptThings: this.eightBitter.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
+        this.fsp.mapScreener.blockInputs = true;
+        this.fsp.battles.startBattle({
+            keptThings: this.fsp.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
             battlers: {
                 player: {
                     name: "OLD MAN".split(""),
@@ -4263,7 +4278,7 @@ export class Cutscenes {
                     sprite: "WeedleFront",
                     category: "Wild",
                     actors: [
-                        this.eightBitter.mathDecider.compute("newPokemon", "WEEDLE".split(""), 5)
+                        this.fsp.mathDecider.compute("newPokemon", "WEEDLE".split(""), 5)
                     ]
                 }
             },
@@ -4275,14 +4290,14 @@ export class Cutscenes {
             onShowPlayerMenu: (): void => {
                 const timeout: number = 70;
 
-                this.eightBitter.timeHandler.addEvent(
-                    (): void => this.eightBitter.menuGrapher.registerDown(),
+                this.fsp.timeHandler.addEvent(
+                    (): void => this.fsp.menuGrapher.registerDown(),
                     timeout);
-                this.eightBitter.timeHandler.addEvent(
-                    (): void => this.eightBitter.menuGrapher.registerA(),
+                this.fsp.timeHandler.addEvent(
+                    (): void => this.fsp.menuGrapher.registerA(),
                     timeout * 2);
-                this.eightBitter.timeHandler.addEvent(
-                    (): void => this.eightBitter.menuGrapher.registerA(),
+                this.fsp.timeHandler.addEvent(
+                    (): void => this.fsp.menuGrapher.registerA(),
                     timeout * 3);
             }
         } as IBattleInfo);
@@ -4296,13 +4311,13 @@ export class Cutscenes {
     public cutsceneRivalRoute22RivalEmerges(settings: any): void {
         const player: IPlayer = settings.player;
         const triggerer: ICharacter = settings.triggerer;
-        const playerUpper: number = Number(Math.abs(player.top - triggerer.top) < this.eightBitter.unitsize);
+        const playerUpper: number = Number(Math.abs(player.top - triggerer.top) < 4);
         const steps: any[] = [
             2,
             "right",
             3 + playerUpper,
         ];
-        const rival: ICharacter = this.eightBitter.objectMaker.make("Rival", {
+        const rival: ICharacter = this.fsp.objectMaker.make("Rival", {
             direction: 0,
             nocollide: true,
             opacity: 0
@@ -4315,17 +4330,12 @@ export class Cutscenes {
 
         settings.rival = rival;
 
-        steps.push(this.eightBitter.scenePlayer.bindRoutine("RivalTalks"));
+        steps.push(this.fsp.scenePlayer.bindRoutine("RivalTalks"));
 
         // thing, attribute, change, goal, speed, onCompletion
-        this.eightBitter.animations.animateFadeAttribute(rival, "opacity", .2, 1, 3);
-
-        this.eightBitter.things.add(
-            rival,
-            triggerer.left - this.eightBitter.unitsize * 28,
-            triggerer.top + this.eightBitter.unitsize * 24);
-
-        this.eightBitter.animations.animateCharacterStartWalkingCycle(rival, 0, steps);
+        this.fsp.actions.animateFadeAttribute(rival, "opacity", .2, 1, 3);
+        this.fsp.things.add(rival, triggerer.left - 112, triggerer.top + 96);
+        this.fsp.actions.animateCharacterStartWalkingCycle(rival, 0, steps);
     }
 
     /**
@@ -4334,14 +4344,14 @@ export class Cutscenes {
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneRivalRoute22RivalTalks(settings: any): void {
-        const rivalTitle: string[] = this.eightBitter.itemsHolder.getItem("starterRival");
+        const rivalTitle: string[] = this.fsp.itemsHolder.getItem("starterRival");
 
-        this.eightBitter.animations.animateCharacterSetDirection(
+        this.fsp.actions.animateCharacterSetDirection(
             settings.player,
-            this.eightBitter.physics.getDirectionBordering(settings.player, settings.rival)!);
+            this.fsp.physics.getDirectionBordering(settings.player, settings.rival)!);
 
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog(
+        this.fsp.menuGrapher.createMenu("GeneralText");
+        this.fsp.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Hey! %%%%%%%PLAYER%%%%%%%!",
@@ -4350,17 +4360,17 @@ export class Cutscenes {
                 "The guard won't let you through!",
                 "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?"
             ],
-            (): void => this.eightBitter.battles.startBattle({
+            (): void => this.fsp.battles.startBattle({
                 battlers: {
                     opponent: {
                         sprite: "RivalPortrait",
-                        name: this.eightBitter.itemsHolder.getItem("nameRival"),
+                        name: this.fsp.itemsHolder.getItem("nameRival"),
                         category: "Trainer",
                         hasActors: true,
                         reward: 280,
                         actors: [
-                            this.eightBitter.mathDecider.compute("newPokemon", rivalTitle, 8),
-                            this.eightBitter.mathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
+                            this.fsp.mathDecider.compute("newPokemon", rivalTitle, 8),
+                            this.fsp.mathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
                         ]
                     }
                 },
@@ -4374,8 +4384,8 @@ export class Cutscenes {
                 textVictory: [
                     "Awww! You just lucked out!".split("")
                 ],
-                keptThings: this.eightBitter.graphics.collectBattleKeptThings(["player", "Rival"])
+                keptThings: this.fsp.graphics.collectBattleKeptThings(["player", "Rival"])
             }));
-        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.fsp.menuGrapher.setActiveMenu("GeneralText");
     }
 }
