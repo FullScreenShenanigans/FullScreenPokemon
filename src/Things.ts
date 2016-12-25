@@ -1,12 +1,11 @@
-import { Things as GameStartrThings } from "gamestartr/lib/Things";
+import { Things as GameStartrThings } from "gamestartr/lib/components/Things";
 
-import { FullScreenPokemon } from "./FullScreenPokemon";
 import { IThing } from "./IFullScreenPokemon";
 
 /**
  * Thing manipulation functions used by FullScreenPokemon instances.
  */
-export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThings<TEightBittr> {
+export class Things extends GameStartrThings {
     /**
      * Slight addition to the parent thingProcess Function. The Thing's hit
      * check type is cached immediately, and a default id is assigned if an id
@@ -24,14 +23,14 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
         // ThingHittr becomes very non-performant if functions aren't generated
         // for each Thing constructor (optimization does not respect prototypal 
         // inheritance, sadly).
-        this.eightBitter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
+        this.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];
 
         if (typeof thing.id === "undefined") {
             thing.id = [
-                this.eightBitter.areaSpawner.getMapName(),
-                this.eightBitter.areaSpawner.getAreaName(),
+                this.areaSpawner.getMapName(),
+                this.areaSpawner.getAreaName(),
                 thing.title,
                 (thing.name || "Anonymous")
             ].join("::");
@@ -61,12 +60,12 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
         }
 
         if (thing.id) {
-            this.eightBitter.stateHolder.applyChanges(thing.id, thing);
-            (this.eightBitter.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
+            this.stateHolder.applyChanges(thing.id, thing);
+            (this.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
         if (typeof thing.direction !== "undefined") {
-            this.eightBitter.animations.animateCharacterSetDirection(thing, thing.direction);
+            this.animations.animateCharacterSetDirection(thing, thing.direction);
         }
 
         return thing;
@@ -78,20 +77,20 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GameStartrThi
      * @param thing   A Thing being placed in the game.
      */
     public applySavedPosition(thing: IThing): void {
-        const savedInfo: any = this.eightBitter.stateHolder.getChanges(thing.id);
+        const savedInfo: any = this.stateHolder.getChanges(thing.id);
         if (!savedInfo) {
             return;
         }
 
         if (savedInfo.xloc) {
-            this.eightBitter.physics.setLeft(
+            this.physics.setLeft(
                 thing,
-                this.eightBitter.mapScreener.left + savedInfo.xloc * this.eightBitter.unitsize);
+                this.mapScreener.left + savedInfo.xloc * 4);
         }
         if (savedInfo.yloc) {
-            this.eightBitter.physics.setTop(
+            this.physics.setTop(
                 thing,
-                this.eightBitter.mapScreener.top + savedInfo.yloc * this.eightBitter.unitsize);
+                this.mapScreener.top + savedInfo.yloc * 4);
         }
     }
 }

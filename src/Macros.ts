@@ -1,11 +1,7 @@
-import { Component } from "eightbittr/lib/Component";
-
-import { FullScreenPokemon } from "./FullScreenPokemon";
-
 /**
  * Macro functions used by FullScreenPokemon instances.
  */
-export class Macros<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
+export class Macros {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *
@@ -883,7 +879,7 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends Component<TEi
                 thing: "CoolTrainerM",
                 x: x,
                 y: y + 32,
-                offsetX: this.eightBitter.unitsize * 1.75,
+                offsetX: 4 * 1.75,
                 offsetY: 0,
                 direction: 1,
                 sitting: true,
@@ -991,7 +987,7 @@ export class Macros<TEightBittr extends FullScreenPokemon> extends Component<TEi
                 x: x + 8,
                 y: y + 40,
                 id: reference.responderId,
-                activate: this.eightBitter.animations.activateCutsceneResponder,
+                activate: this.animations.activateCutsceneResponder,
                 cutscene: "PokeMart",
                 keepAlive: true,
                 items: reference.items,

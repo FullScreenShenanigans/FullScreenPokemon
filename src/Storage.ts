@@ -1,8 +1,6 @@
-import { Component } from "eightbittr/lib/Component";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
 import { PokedexListingStatus } from "./Constants";
-import { FullScreenPokemon } from "./FullScreenPokemon";
 import {
     ICharacter, IPokedex, IPokedexInformation,
     IPokemonListing, ISaveFile, IStateSaveable
@@ -11,31 +9,31 @@ import {
 /**
  * Storage functions used by FullScreenPokemon instances.
  */
-export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TEightBittr> {
+export class Storage {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IItems = this.eightBitter.itemsHolder.exportItems();
+        const oldLocalStorage: IItems = this.itemsHolder.exportItems();
 
-        const collectionKeys: string[] = this.eightBitter.itemsHolder.getItem("stateCollectionKeys");
+        const collectionKeys: string[] = this.itemsHolder.getItem("stateCollectionKeys");
         if (collectionKeys) {
             for (const collection of collectionKeys) {
-                oldLocalStorage[collection] = this.eightBitter.itemsHolder.getItem(collection);
+                oldLocalStorage[collection] = this.itemsHolder.getItem(collection);
             }
         }
 
-        for (const key of this.eightBitter.itemsHolder.getKeys()) {
-            this.eightBitter.itemsHolder.removeItem(key);
+        for (const key of this.itemsHolder.getKeys()) {
+            this.itemsHolder.removeItem(key);
         }
 
-        this.eightBitter.itemsHolder.clear();
-        this.eightBitter.itemsHolder.setItem("oldLocalStorage", oldLocalStorage);
-        this.eightBitter.itemsHolder.saveItem("oldLocalStorage");
-        this.eightBitter.itemsHolder.setItem("stateCollectionKeys", []);
+        this.itemsHolder.clear();
+        this.itemsHolder.setItem("oldLocalStorage", oldLocalStorage);
+        this.itemsHolder.saveItem("oldLocalStorage");
+        this.itemsHolder.setItem("stateCollectionKeys", []);
 
-        this.eightBitter.userWrapper.resetControls();
+        this.userWrapper.resetControls();
     }
 
     /**
@@ -43,26 +41,26 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * hasn't been saved, the data is restored under localStorage.
      */
     public checkForOldStorageData(): void {
-        if (!this.eightBitter.itemsHolder.getItem("oldLocalStorage") || this.eightBitter.itemsHolder.getItem("gameStarted")) {
+        if (!this.itemsHolder.getItem("oldLocalStorage") || this.itemsHolder.getItem("gameStarted")) {
             return;
         }
 
-        const oldLocalStorage: IItems = this.eightBitter.itemsHolder.getItem("oldLocalStorage");
+        const oldLocalStorage: IItems = this.itemsHolder.getItem("oldLocalStorage");
         for (const key in oldLocalStorage) {
             if (!oldLocalStorage.hasOwnProperty(key)) {
                 continue;
             }
 
             if (key.slice(0, "StateHolder".length) === "StateHolder") {
-                this.eightBitter.stateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
+                this.stateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
             } else {
-                this.eightBitter.itemsHolder.setItem(key, oldLocalStorage[key]);
+                this.itemsHolder.setItem(key, oldLocalStorage[key]);
             }
         }
 
-        this.eightBitter.itemsHolder.saveAll();
+        this.itemsHolder.saveAll();
 
-        this.eightBitter.userWrapper.resetControls();
+        this.userWrapper.resetControls();
     }
 
     /**
@@ -71,24 +69,24 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param showText   Whether to display a status menu (by default, false).
      */
     public saveGame(showText: boolean = true): void {
-        const ticksRecorded: number = this.eightBitter.fpsAnalyzer.getNumRecorded();
+        const ticksRecorded: number = this.fpsAnalyzer.getNumRecorded();
 
-        this.eightBitter.itemsHolder.increase("time", ticksRecorded - this.eightBitter.ticksElapsed);
-        this.eightBitter.ticksElapsed = ticksRecorded;
+        this.itemsHolder.increase("time", ticksRecorded - this.ticksElapsed);
+        this.ticksElapsed = ticksRecorded;
 
         this.saveCharacterPositions();
-        this.eightBitter.stateHolder.saveCollection();
-        this.eightBitter.itemsHolder.saveAll();
+        this.stateHolder.saveCollection();
+        this.itemsHolder.saveAll();
 
         if (!showText) {
             return;
         }
 
-        this.eightBitter.menuGrapher.createMenu("GeneralText");
-        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
+        this.menuGrapher.createMenu("GeneralText");
+        this.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
 
-        this.eightBitter.timeHandler.addEvent(
-            (): void => this.eightBitter.menuGrapher.deleteAllMenus(),
+        this.timeHandler.addEvent(
+            (): void => this.menuGrapher.deleteAllMenus(),
             49);
     }
 
@@ -96,9 +94,9 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * Automatically saves the game.
      */
     public autoSave(): void {
-        if (this.eightBitter.itemsHolder.getAutoSave()
-            && !this.eightBitter.scenePlayer.getCutscene()
-            && this.eightBitter.areaSpawner.getMapName() !== "Blank") {
+        if (this.itemsHolder.getAutoSave()
+            && !this.scenePlayer.getCutscene()
+            && this.areaSpawner.getMapName() !== "Blank") {
             this.saveGame(false);
         }
     }
@@ -117,11 +115,11 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
         link.setAttribute(
             "href",
             "data:text/json;charset=utf-8," + encodeURIComponent(
-                JSON.stringify(this.eightBitter.itemsHolder.exportItems())));
+                JSON.stringify(this.itemsHolder.exportItems())));
 
-        this.eightBitter.container.appendChild(link);
+        this.container.appendChild(link);
         link.click();
-        this.eightBitter.container.removeChild(link);
+        this.container.removeChild(link);
     }
 
     /**
@@ -142,23 +140,23 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
 
             if (key.slice(0, keyStart.length) === keyStart) {
                 const split: string[] = key.split("::");
-                this.eightBitter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
+                this.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {
-                this.eightBitter.itemsHolder.setItem(key, data[key]);
+                this.itemsHolder.setItem(key, data[key]);
             }
         }
 
-        this.eightBitter.menuGrapher.deleteActiveMenu();
-        this.eightBitter.userWrapper.resetControls();
-        this.eightBitter.gameplay.startPlay();
-        this.eightBitter.itemsHolder.setItem("gameStarted", true);
+        this.menuGrapher.deleteActiveMenu();
+        this.userWrapper.resetControls();
+        this.gameplay.startPlay();
+        this.itemsHolder.setItem("gameStarted", true);
     }
 
     /**
      * Saves the positions of all Characters in the game.
      */
     public saveCharacterPositions(): void {
-        for (const character of this.eightBitter.groupHolder.getGroup("Character") as ICharacter[]) {
+        for (const character of this.groupHolder.getGroup("Character") as ICharacter[]) {
             this.saveCharacterPosition(character, character.id);
         }
     }
@@ -170,15 +168,15 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param id   The ID associated with the Character.
      */
     public saveCharacterPosition(character: ICharacter, id: string): void {
-        this.eightBitter.stateHolder.addChange(
+        this.stateHolder.addChange(
             id,
             "xloc",
-            (character.left + this.eightBitter.mapScreener.left) / this.eightBitter.unitsize);
-        this.eightBitter.stateHolder.addChange(
+            (character.left + this.mapScreener.left) / 4);
+        this.stateHolder.addChange(
             id,
             "yloc",
-            (character.top + this.eightBitter.mapScreener.top) / this.eightBitter.unitsize);
-        this.eightBitter.stateHolder.addChange(
+            (character.top + this.mapScreener.top) / 4);
+        this.stateHolder.addChange(
             id,
             "direction",
             character.direction);
@@ -230,8 +228,8 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param amount   The quantity of this item being stored.
      */
     public addItemToBag(item: string, amount: number = 1): void {
-        this.eightBitter.utilities.combineArrayMembers(
-            this.eightBitter.itemsHolder.getItem("items"),
+        this.utilities.combineArrayMembers(
+            this.itemsHolder.getItem("items"),
             item,
             amount,
             "item",
@@ -245,7 +243,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        const pokedex: IPokedex = this.eightBitter.itemsHolder.getItem("Pokedex");
+        const pokedex: IPokedex = this.itemsHolder.getItem("Pokedex");
         const title: string = titleRaw.join("");
         const caught: boolean = status === PokedexListingStatus.Caught;
         const seen: boolean = caught || (status === PokedexListingStatus.Seen);
@@ -267,7 +265,7 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
             };
         }
 
-        this.eightBitter.itemsHolder.setItem("Pokedex", pokedex);
+        this.itemsHolder.setItem("Pokedex", pokedex);
     }
 
     /**
@@ -277,8 +275,8 @@ export class Storage<TEightBittr extends FullScreenPokemon> extends Component<TE
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
-        const pokedex: IPokedex = this.eightBitter.itemsHolder.getItem("Pokedex");
-        const pokemon: { [i: string]: IPokemonListing } = this.eightBitter.mathDecider.getConstant("pokemon");
+        const pokedex: IPokedex = this.itemsHolder.getItem("Pokedex");
+        const pokemon: { [i: string]: IPokemonListing } = this.mathDecider.getConstant("pokemon");
         const titlesSorted: string[] = Object.keys(pokedex)
             .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);
         let i: number;
