@@ -1,11 +1,88 @@
 import { Utilities as GameStartrUtilities } from "gamestartr/lib/components/Utilities";
+import { IGameStartrProcessedSettings, IGameStartrSettings } from "gamestartr/lib/IGameStartr";
+import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
+import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
+import { INumberMakr } from "numbermakr/lib/INumberMakr";
 
-import { IPokemon, IThing, IWildPokemonSchema } from "./IFullScreenPokemon";
+import { IModuleSettings, IPokemon, IThing, IWildPokemonSchema } from "../IFullScreenPokemon";
+
+/**
+ * Settings to initialize a new instance of the Utilities class.
+ */
+export interface IUtilitiesSettings {
+    /**
+     * Canvas upon which the game's screen is constantly drawn.
+     */
+    canvas: HTMLCanvasElement;
+
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    groupHolder: IGroupHoldr;
+
+    /**
+     * A computation utility to automate running common equations.
+     */
+    mathDecider: IMathDecidr;
+
+    /**
+     * A state-based random number generator.
+     */
+    numberMaker: INumberMakr;
+}
 
 /**
  * Miscellaneous utility functions used by FullScreenPokemon instances.
  */
 export class Utilities extends GameStartrUtilities {
+    /**
+     * A general storage abstraction for keyed containers of items.
+     */
+    protected readonly groupHolder: IGroupHoldr;
+
+    /**
+     * A computation utility to automate running common equations.
+     */
+    protected readonly mathDecider: IMathDecidr;
+
+    /**
+     * A state-based random number generator.
+     */
+    protected readonly numberMaker: INumberMakr;
+
+    /**
+     * Initializes a new instance of the Utilities class.
+     * 
+     * @param settings   Settings to be used for initialization.
+     */
+    public constructor(settings: IUtilitiesSettings) {
+        super(settings.canvas);
+
+        this.groupHolder = settings.groupHolder;
+        this.mathDecider = settings.mathDecider;
+        this.numberMaker = settings.numberMaker;
+    }
+
+    /**
+     * Processes raw instantiation settings for sizing based on UI defaults.
+     * 
+     * @param moduleSettings   Stored settings to generate modules.
+     * @param settings   Raw instantiation settings.
+     * @returns Initialization settings with filled out, finite sizes.
+     */
+    public static processUiSettings(moduleSettings: IModuleSettings, settings: IGameStartrSettings): IGameStartrProcessedSettings {
+        if (!settings.size && !settings.width && !settings.height) {
+            settings.size = moduleSettings.ui.sizeDefault;
+        }
+
+        if (settings.size) {
+            settings.height = moduleSettings.ui.sizes![settings.size].height;
+            settings.width = moduleSettings.ui.sizes![settings.size].width;
+        }
+
+        return Utilities.processSettings(settings);
+    }
+
     /**
      * Retrieves the Thing in MapScreener.thingById of the given id.
      * 

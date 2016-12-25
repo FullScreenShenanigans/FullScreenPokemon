@@ -28,9 +28,9 @@ import { Scrolling } from "./components/Scrolling";
 import { Storage } from "./components/Storage";
 import { Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
+import { ModuleSettingsGenerator } from "./settings/ModuleSettingsGenerator";
 import { Scale } from "./Constants";
 import { IMapScreenr, IModuleSettings, IPlayer, IThing } from "./IFullScreenPokemon";
-import { ModuleSettingsGenerator } from "./ModuleSettingsGenerator";
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
@@ -178,15 +178,6 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Any additional settings.
      */
     public constructor(settings: IGameStartrSettings = {}) {
-        if (!settings.size && !settings.width && !settings.height) {
-            settings.size = FullScreenPokemon.prototype.moduleSettings.ui.sizeDefault;
-        }
-
-        if (settings.size) {
-            settings.height = FullScreenPokemon.prototype.moduleSettings.ui.sizes![settings.size].height;
-            settings.width = FullScreenPokemon.prototype.moduleSettings.ui.sizes![settings.size].width;
-        }
-
         super(settings);
 
         this.scale = FullScreenPokemon.prototype.scale;
@@ -198,9 +189,43 @@ export class FullScreenPokemon extends GameStartr {
      * 
      */
     protected reset(rawSettings: IGameStartrSettings): void {
-        super.reset(rawSettings);
+        const moduleSettings: IModuleSettings = FullScreenPokemon.prototype.moduleSettings;
+        const settings: IGameStartrProcessedSettings = Utilities.processUiSettings(moduleSettings, rawSettings);
 
-        // this.resetMathDecider();
+        this.utilities = this.createUtilities(settings);
+        this.objectMaker = this.createObjectMaker(moduleSettings, settings);
+        this.pixelRender = this.createPixelRender(moduleSettings, settings);
+        this.timeHandler = this.createTimeHandler(moduleSettings, settings);
+        this.itemsHolder = this.createItemsHolder(moduleSettings, settings);
+        this.audioPlayer = this.createAudioPlayer(moduleSettings, settings);
+        this.quadsKeeper = this.createQuadsKeeper(moduleSettings, settings);
+        this.gamesRunner = this.createGamesRunner(moduleSettings, settings);
+        this.groupHolder = this.createGroupHolder(moduleSettings, settings);
+        this.thingHitter = this.createThingHitter(moduleSettings, settings);
+        this.mapScreener = this.createMapScreener(moduleSettings, settings);
+        this.pixelDrawer = this.createPixelDrawer(moduleSettings, settings);
+        this.numberMaker = this.createNumberMaker(moduleSettings, settings);
+        this.mapsCreator = this.createMapsCreator(moduleSettings, settings);
+        this.areaSpawner = this.createAreaSpawner(moduleSettings, settings);
+        this.inputWriter = this.createInputWriter(moduleSettings, settings);
+        this.deviceLayer = this.createDeviceLayer(moduleSettings, settings);
+        this.touchPasser = this.createTouchPasser(moduleSettings, settings);
+        this.worldSeeder = this.createWorldSeeder(moduleSettings, settings);
+        this.scenePlayer = this.createScenePlayer(moduleSettings, settings);
+        this.mathDecider = this.createMathDecider(moduleSettings, settings);
+        this.modAttacher = this.createModAttacher(moduleSettings, settings);
+        this.container = this.createContainer(settings);
+        this.canvas = this.createCanvas(settings);
+        this.physics = this.createPhysics(settings);
+        this.graphics = this.createGraphics(settings);
+        this.gameplay = this.createGameplay(settings);
+        this.maps = this.createMaps(settings);
+        this.scrolling = this.createScrolling(settings);
+        this.things = this.createThings(settings);
+
+        this.pixelDrawer.setCanvas(this.canvas);
+        this.touchPasser.setParentContainer(this.container);
+
         // this.resetMenuGrapher();
         // this.resetStateHolder();
         // this.resetBattleMover();
@@ -319,6 +344,19 @@ export class FullScreenPokemon extends GameStartr {
         container.className += " FullScreenPokemon";
 
         return container;
+    }
+
+    /**
+     * @param _settings   Settings to reset an instance of the GameStartr class.
+     * @returns Utility functions to be used by this instance.
+     */
+    protected createUtilities(_settings: IGameStartrProcessedSettings): Utilities {
+        return new Utilities({
+            canvas: this.canvas,
+            groupHolder: this.groupHolder,
+            mathDecider: this.mathDecider,
+            numberMaker: this.numberMaker
+        });
     }
 }
 
