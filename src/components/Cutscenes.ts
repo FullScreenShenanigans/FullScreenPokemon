@@ -608,7 +608,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const opponentActor: IPokemon = opponent.selectedActor as IPokemon;
         const choice: string = args.choicePlayer!;
 
-        args.damage = this.gameStarter.mathDecider.compute("damage", choice, playerActor, opponentActor);
+        args.damage = this.gameStarter.equations.damage(choice, playerActor, opponentActor);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
@@ -688,7 +688,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const playerActor: IPokemon = player.selectedActor as IPokemon;
         const choice: string = args.choiceOpponent!;
 
-        args.damage = this.gameStarter.mathDecider.compute("damage", choice, opponentActor, playerActor);
+        args.damage = this.gameStarter.equations.damage(choice, opponentActor, playerActor);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
@@ -873,8 +873,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const battleInfo: IBattleInfo = settings.battleInfo;
         const opponent: IBattler = battleInfo.battlers.opponent;
         const actorAvailable: boolean = this.gameStarter.utilities.checkArrayMembersIndex(opponent.actors, "HP");
-        const experienceGained: number = this.gameStarter.mathDecider.compute(
-            "experienceGained", battleInfo.battlers.player!, battleInfo.battlers.opponent);
+        const experienceGained: number = this.gameStarter.equations.experienceGained(
+            battleInfo.battlers.player!, battleInfo.battlers.opponent);
         let callback: Function;
 
         if (actorAvailable) {
@@ -996,8 +996,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const actor: IPokemon = battleInfo.battlers.player!.selectedActor!;
 
         actor.level += 1;
-        actor.experience = this.gameStarter.mathDecider.compute(
-            "newPokemonExperience", actor.title, actor.level);
+        actor.experience = this.gameStarter.equations.newPokemonExperience(actor.title, actor.level);
 
         console.warn("Leveling up does not yet increase stats...");
 
@@ -3297,7 +3296,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         this.gameStarter.timeHandler.addEvent(
             this.gameStarter.actions.animateCharacterStartWalkingCycle,
-            this.gameStarter.mathDecider.compute("speedWalking", this.gameStarter.players[0]),
+            this.gameStarter.equations.speedWalking(this.gameStarter.players[0]),
             this.gameStarter.players[0],
             0,
             [
@@ -3347,7 +3346,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             (): void => {
                 this.gameStarter.players[0].hidden = false;
             },
-            112 - this.gameStarter.mathDecider.compute("speedWalking", settings.player));
+            112 - this.gameStarter.equations.speedWalking(settings.player));
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
@@ -3584,7 +3583,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         this.gameStarter.itemsHolder.setItem("starter", settings.chosen);
         this.gameStarter.itemsHolder.setItem("PokemonInParty", [
-            this.gameStarter.mathDecider.compute("newPokemon", settings.chosen, 5)
+            this.gameStarter.equations.newPokemon(settings.chosen, 5)
         ]);
         this.gameStarter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
     }
@@ -3837,7 +3836,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                     hasActors: true,
                     reward: 175,
                     actors: [
-                        this.gameStarter.mathDecider.compute("newPokemon", starterRival, 5)
+                        this.gameStarter.equations.newPokemon(starterRival, 5)
                     ]
                 }
             },
@@ -4263,7 +4262,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                     sprite: "WeedleFront",
                     category: "Wild",
                     actors: [
-                        this.gameStarter.mathDecider.compute("newPokemon", "WEEDLE".split(""), 5)
+                        this.gameStarter.equations.newPokemon("WEEDLE".split(""), 5)
                     ]
                 }
             },
@@ -4354,8 +4353,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                         hasActors: true,
                         reward: 280,
                         actors: [
-                            this.gameStarter.mathDecider.compute("newPokemon", rivalTitle, 8),
-                            this.gameStarter.mathDecider.compute("newPokemon", "PIDGEY".split(""), 9)
+                            this.gameStarter.equations.newPokemon(rivalTitle, 8),
+                            this.gameStarter.equations.newPokemon("PIDGEY".split(""), 9)
                         ]
                     }
                 },

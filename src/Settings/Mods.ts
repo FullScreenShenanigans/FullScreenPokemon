@@ -115,7 +115,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             partyPokemon[i].level = 100;
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 (partyPokemon[i] as any)[statistics[j]] = (partyPokemon[i] as any)[statistics[j] + "Normal"] =
-                                    this.mathDecider.compute("pokemonStatistic", partyPokemon[i], statistics[j]);
+                                    this.equations.pokemonStatistic(partyPokemon[i], statistics[j]);
                             }
                         }
                     },
@@ -128,7 +128,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             pokemon.previousLevel = undefined;
                             for (let j: number = 0; j < statistics.length; j += 1) {
                                 (pokemon as any)[statistics[j]] = (pokemon as any)[statistics[j] + "Normal"] =
-                                    this.mathDecider.compute("pokemonStatistic", pokemon, statistics[j]);
+                                    this.equations.pokemonStatistic(pokemon, statistics[j]);
                             }
                         }
                     }
@@ -306,16 +306,16 @@ export function GenerateModsSettings(): IModsModuleSettings {
 
                         const statistics: string[] = this.mathDecider.getConstant("statisticNames");
                         const enemyPokemonAvg: number = isWildBattle ?
-                            this.mathDecider.compute("averageLevelWildPokemon", wildPokemonOptions) :
-                            this.mathDecider.compute("averageLevel", opponent.actors);
-                        const playerPokemonAvg: number = this.mathDecider.compute("averageLevel", player.actors);
+                            this.equations.averageLevelWildPokemon(wildPokemonOptions) :
+                            this.equations.averageLevel(opponent.actors);
+                        const playerPokemonAvg: number = this.equations.averageLevel(player.actors);
 
                         for (const actor of opponent.actors) {
                             actor.level += playerPokemonAvg - enemyPokemonAvg;
 
                             for (const statistic of statistics) {
                                 (actor as any)[statistic] = (actor as any)[statistic + "Normal"] =
-                                    this.mathDecider.compute("pokemonStatistic", actor, statistic);
+                                    this.equations.pokemonStatistic(actor, statistic);
                             }
                         }
                     }

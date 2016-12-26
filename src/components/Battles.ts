@@ -86,7 +86,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
             return false;
         }
 
-        if (!this.gameStarter.mathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
+        if (!this.gameStarter.equations.doesGrassEncounterHappen(thing.grass)) {
             return false;
         }
 
@@ -183,7 +183,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
         const nameUpper: string = battlerName[0].toUpperCase() + battlerName.slice(1);
         const menuNumbers: string = "Battle" + nameUpper + "HealthNumbers";
         const bar: IThing = this.gameStarter.utilities.getThingById("HPBarFill" + nameUpper);
-        const barWidth: number = this.gameStarter.mathDecider.compute("widthHealthBar", 25, hp, hpNormal);
+        const barWidth: number = this.gameStarter.equations.widthHealthBar(25, hp, hpNormal);
         const healthDialog: string = this.gameStarter.utilities.makeDigit(hp, 3, "\t")
             + "/"
             + this.gameStarter.utilities.makeDigit(hpNormal, 3, "\t");

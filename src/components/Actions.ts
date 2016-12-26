@@ -723,7 +723,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @remarks The hard numbers are hardcoded to the player for now.
      */
     public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
-        const repeats: number = this.gameStarter.mathDecider.compute("speedWalking", thing);
+        const repeats: number = this.gameStarter.equations.speedWalking(thing);
         const distance: number = repeats * thing.speed;
 
         thing.walking = true;
@@ -1245,7 +1245,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         thing.followingLoop = this.gameStarter.timeHandler.addEventInterval(
             (): void => this.animateCharacterFollowContinue(thing, other),
-            this.gameStarter.mathDecider.compute("speedWalking", thing),
+            this.gameStarter.equations.speedWalking(thing),
             Infinity);
     }
 

@@ -25,7 +25,7 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         thing.cycling = true;
         this.gameStarter.saves.addStateHistory(thing, "speed", thing.speed);
-        thing.speed = this.gameStarter.mathDecider.compute("speedCycling", thing);
+        thing.speed = this.gameStarter.equations.speedCycling(thing);
 
         this.gameStarter.graphics.addClass(thing, "cycling");
 

@@ -41,7 +41,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
-                if (!this.gameStarter.mathDecider.compute("canLandFish", player)) {
+                if (!this.canLandFish()) {
                     this.gameStarter.fishing.playerFailedLandingFish(player);
                     return;
                 }
@@ -106,5 +106,12 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.menus.displayMessage(player, "rekt");
         this.gameStarter.graphics.removeClass(player, "fishing");
         this.gameStarter.physics.setWidth(player, 8, true, true);
+    }
+
+    /**
+     * @todo Add functionality.
+     */
+    public canLandFish(): boolean {
+        return true;
     }
 }

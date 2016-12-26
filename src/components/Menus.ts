@@ -225,8 +225,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const schemas: any = this.gameStarter.mathDecider.getConstant("pokemon");
         const schema: any = schemas[pokemon.title.join("")];
         const barWidth: number = 25;
-        const health: number = this.gameStarter.mathDecider.compute(
-            "widthHealthBar", barWidth, pokemon.HP, pokemon.HPNormal);
+        const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.HP, pokemon.HPNormal);
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
             backMenu: "PokemonMenuContext",
@@ -521,8 +520,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             options: listings.map((listing: IPokemon): any => {
                 const sprite: string = references[listing.title.join("")].sprite + "Pokemon";
                 const barWidth: number = 25;
-                const health: number = this.gameStarter.mathDecider.compute(
-                    "widthHealthBar", barWidth, listing.HP, listing.HPNormal);
+                const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.HP, listing.HPNormal);
 
                 return {
                     text: listing.title,

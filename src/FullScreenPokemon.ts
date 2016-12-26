@@ -16,6 +16,7 @@ import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
 import { Cutscenes } from "./components/Cutscenes";
 import { Cycling } from "./components/Cycling";
+import { Equations } from "./components/Equations";
 import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
@@ -97,6 +98,11 @@ export class FullScreenPokemon extends GameStartr {
      * Cycling functions used by this instance.
      */
     public cycling: Cycling<FullScreenPokemon>;
+
+    /**
+     * Equations used by this instance.
+     */
+    public equations: Equations<FullScreenPokemon>;
 
     /**
      * Fishing functions used by this instance.
@@ -191,6 +197,7 @@ export class FullScreenPokemon extends GameStartr {
         this.collisions = new Collisions(this);
         this.cutscenes = new Cutscenes(this);
         this.cycling = new Cycling(this);
+        this.equations = new Equations(this);
         this.fishing = new Fishing(this);
         this.gameplay = new Gameplay(this);
         this.graphics = new Graphics(this);

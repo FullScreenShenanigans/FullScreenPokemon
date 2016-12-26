@@ -25,11 +25,11 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
      * @returns A newly created Pokemon.
      */
     public createPokemon(schema: IWildPokemonSchema): IPokemon {
-        const level: number = typeof schema.levels !== "undefined"
+        const level: number = schema.levels
             ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
             : schema.level;
 
-        return this.gameStarter.mathDecider.compute("newPokemon", schema.title, level);
+        return this.gameStarter.equations.newPokemon(schema.title, level);
     }
 
     /**
