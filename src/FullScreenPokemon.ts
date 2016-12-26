@@ -183,6 +183,30 @@ export class FullScreenPokemon extends GameStartr {
     }
 
     /**
+     * Resets the system components.
+     */
+    protected resetComponents(): void {
+        this.actions = new Actions(this);
+        this.battles = new Battles(this);
+        this.collisions = new Collisions(this);
+        this.cutscenes = new Cutscenes(this);
+        this.cycling = new Cycling(this);
+        this.fishing = new Fishing(this);
+        this.gameplay = new Gameplay(this);
+        this.graphics = new Graphics(this);
+        this.inputs = new Inputs(this);
+        this.macros = new Macros(this);
+        this.maintenance = new Maintenance(this);
+        this.maps = new Maps(this);
+        this.menus = new Menus(this);
+        this.physics = new Physics(this);
+        this.things = new Things(this);
+        this.scrolling = new Scrolling(this);
+        this.saves = new Saves(this);
+        this.utilities = new Utilities(this);
+    }
+
+    /**
      * Resets the system modules.
      * 
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.

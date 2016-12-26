@@ -91,13 +91,12 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.gameStarter.players[0] = this.gameStarter.objectMaker.make("Player");
+        const player: IPlayer = this.gameStarter.objectMaker.make("Player");
         player.keys = player.getKeys();
 
+        this.gameStarter.players = [player];
         this.gameStarter.inputWriter.setEventInformation(player);
-
         this.gameStarter.things.add(player, left || 0, top || 0, useSavedInfo);
-
         this.gameStarter.modAttacher.fireEvent("onAddPlayer", player);
 
         return player;

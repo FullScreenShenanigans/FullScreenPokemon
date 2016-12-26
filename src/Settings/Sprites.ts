@@ -10,8 +10,8 @@ export function GenerateSpritesSettings(): ISpritesModuleSettings {
 
     return {
         "scale": Scale,
-        "spriteWidth": "spritewidthpixels",
-        "spriteHeight": "spriteheightpixels",
+        "spriteWidth": "spritewidth",
+        "spriteHeight": "spriteheight",
         "flipVert": "flip-vert",
         "flipHoriz": "flipped",
         "paletteDefault": [

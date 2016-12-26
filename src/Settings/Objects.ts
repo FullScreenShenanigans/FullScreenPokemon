@@ -177,10 +177,10 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                     "StoreSaleBin": {},
                     "Stump": {},
                     "Table": {
-                        "Table1x2": {},
-                        "Table2x2": {},
-                        "Table2x3": {},
-                        "Table3x1": {},
+                        "Table16x32": {},
+                        "Table32x32": {},
+                        "Table32x48": {},
+                        "Table48x16": {},
                     },
                     "TelevisionMonitor": {},
                     "Tree": {},
@@ -652,27 +652,27 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                     },
                     "CharacterShadow": {
                         "Char0Shadow": {},
-                        "Char1Shadow": {},
-                        "Char2Shadow": {},
-                        "Char3Shadow": {},
-                        "Char4Shadow": {},
-                        "Char5Shadow": {},
-                        "Char6Shadow": {},
-                        "Char7Shadow": {},
-                        "Char8Shadow": {},
-                        "Char9Shadow": {},
+                        "Char16Shadow": {},
+                        "Char32Shadow": {},
+                        "Char48Shadow": {},
+                        "Char64Shadow": {},
+                        "Char80Shadow": {},
+                        "Char96Shadow": {},
+                        "Char112Shadow": {},
+                        "Char128Shadow": {},
+                        "Char144Shadow": {},
                     },
                     "Number": {
                         "Char0": {},
-                        "Char1": {},
-                        "Char2": {},
-                        "Char3": {},
-                        "Char4": {},
-                        "Char5": {},
-                        "Char6": {},
-                        "Char7": {},
-                        "Char8": {},
-                        "Char9": {}
+                        "Char16": {},
+                        "Char32": {},
+                        "Char48": {},
+                        "Char64": {},
+                        "Char80": {},
+                        "Char96": {},
+                        "Char112": {},
+                        "Char128": {},
+                        "Char144": {}
                     },
                     "Symbol": {
                         "CharSpace": {},
@@ -765,16 +765,15 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "Thing": {
                 // Sizing
-                "width": 8,
-                "height": 8,
+                "width": 128,
+                "height": 128,
                 // Placement
                 "alive": true,
                 "placed": false,
-                "maxquads": 4,
                 // Sprites
                 "sprite": "",
                 "spriteType": "neither",
-                "scale": 1,
+                "scale": 16,
                 "offsetX": 0,
                 "offsetY": 0,
                 // Movements
@@ -793,9 +792,9 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "walking": false,
                 "shouldWalk": false,
                 "switchDirectionOnDialog": true,
-                "heightGrass": 4,
-                "direction": 2,
-                "offsetY": -8,
+                "heightGrass": 64,
+                "direction": 32,
+                "offsetY": -4,
                 "roamingDirections": [0, 1, 2, 3],
                 "onThingAdd": Actions.prototype.spawnCharacter,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
@@ -803,8 +802,8 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "activate": Collisions.prototype.collideCharacterDialog,
             },
             "Buzzer": {
-                "width": 3.5,
-                "height": 3,
+                "width": 56,
+                "height": 48,
                 "nocollide": true
             },
             "CoolTrainerM": {
@@ -821,16 +820,16 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "id": "player",
                 "player": true,
                 "canKeyWalking": true,
-                "direction": 2,
-                "speed": 2,
+                "direction": 32,
+                "speed": 8,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
                 "onWalkingStop": Actions.prototype.animatePlayerStopWalking,
                 "getKeys": () => {
                     return {
                         "0": false,
-                        "1": false,
-                        "2": false,
-                        "3": false,
+                        "16": false,
+                        "32": false,
+                        "48": false,
                         "a": false,
                         "b": false
                     };
@@ -849,26 +848,26 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "groupType": "Solid",
                 "activate": Collisions.prototype.collideCharacterDialog
             },
-            "BedSingle": [8, 16],
+            "BedSingle": [128, 256],
             "Bookshelf": {
-                "width": 8,
-                "height": 16,
+                "width": 128,
+                "height": 256,
                 "dialogDirections": true,
                 "dialog": ["", "", "Crammed full of %%%%%%%POKEMON%%%%%%% books!", ""]
             },
-            "BuildingBase": [4, 4],
+            "BuildingBase": [64, 64],
             "BuildingTopBase": {
-                "height": 16,
-                "spriteheight": 4
+                "height": 256,
+                "spriteheight": 64
             },
             "BuildingMiddleBase": {
-                "height": 8,
-                "spriteheight": 4
+                "height": 128,
+                "spriteheight": 64
             },
             "BuildingBottom": {
-                "height": 4
+                "height": 64
             },
-            "Cabinet": [8, 16],
+            "Cabinet": [128, 256],
             "CollisionDetector": {
                 "collide": Collisions.prototype.collideCollisionDetector,
                 "active": false,
@@ -906,36 +905,36 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "noStretchBoundaries": true
             },
             "Computer": {
-                "width": 8,
-                "height": 12,
-                "tolBottom": 16
+                "width": 128,
+                "height": 192,
+                "tolBottom": 64
             },
-            "ComputerDesk": [8, 16],
-            "ConsoleController": [8, 5],
+            "ComputerDesk": [128, 256],
+            "ConsoleController": [128, 80],
             "DialogResponder": {
                 "hidden": true
             },
             "CutsceneResponder": {
                 "activate": Actions.prototype.activateCutsceneResponder
             },
-            "FenceVertical": [4, 8],
+            "FenceVertical": [64, 128],
             "FloorDiamondsDark": {
-                "width": 4,
-                "height": 8,
-                "spritewidth": 8,
-                "spriteheight": 8,
+                "width": 64,
+                "height": 128,
+                "spritewidth": 128,
+                "spriteheight": 128,
                 "nocollide": true
             },
             "Grass": {
-                "rarity": 10,
+                "rarity": 160,
                 "collide": Collisions.prototype.collideCharacterGrass
             },
             "GymStatue": {
-                "height": 16,
+                "height": 256,
                 "activate": Actions.prototype.activateGymStatue
             },
-            "HealingMachine": [16, 16],
-            "HealingMachineBall": [3, 3],
+            "HealingMachine": [256, 256],
+            "HealingMachineBall": [48, 48],
             "HMCharacter": {
                 "activate": Actions.prototype.activateHMCharacter
             },
@@ -947,102 +946,102 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "StrengthBoulder": {
                 "moveName": "Strength",
                 "moveCallback": Actions.prototype.partyActivateStrength,
-                "speed": 4,
+                "speed": 16,
                 "requiredBadge": "Rainbow"
             },
             "HouseBase": {
-                "width": 32,
-                "height": 8,
-                "spritewidth": 16,
-                "spriteheight": 16
+                "width": 512,
+                "height": 128,
+                "spritewidth": 256,
+                "spriteheight": 256
             },
             "HouseSide": {
-                "width": 8,
-                "spritewidth": 8,
-                "spriteheight": 8
+                "width": 128,
+                "spritewidth": 128,
+                "spriteheight": 128
             },
             "HouseTop": {
-                "width": 32,
-                "height": 16,
-                "spritewidth": 16
+                "width": 512,
+                "height": 256,
+                "spritewidth": 256
             },
             "HouseTopRoof": {
-                "spritewidth": .5
+                "spritewidth": 8
             },
             "HouseTopRoofSide": {
-                "width": 8,
-                "spritewidth": 8,
-                "spriteheight": 8
+                "width": 128,
+                "spritewidth": 128,
+                "spriteheight": 128
             },
             "HouseLargeBase": {
-                "width": 48,
-                "height": 20,
-                "spritewidth": 20
+                "width": 768,
+                "height": 320,
+                "spritewidth": 320
             },
             "HouseLargeTopLeft": {
-                "width": 8,
-                "spritewidth": 8
+                "width": 128,
+                "spritewidth": 128
             },
             "HouseLargeTopMiddle": {
-                "width": 48,
+                "width": 768,
             },
             "HouseLargeTopRight": {
-                "width": 8,
-                "spritewidth": 8
+                "width": 128,
+                "spritewidth": 128
             },
             "HouseLargeCenter": {
-                "spritewidth": 4,
-                "height": 12
+                "spritewidth": 64,
+                "height": 192
             },
-            "HouseWallWhitewash": [4, 4],
+            "HouseWallWhitewash": [64, 64],
             "InvisibleWall": {
                 "hidden": true
             },
-            "LabComputer": [16, 8],
+            "LabComputer": [256, 128],
             "Label": {
                 "position": "end"
             },
-            "GymLabel": [16, 4],
+            "GymLabel": [256, 64],
             "Ledge": {
-                "width": 8,
-                "height": 4,
-                "spritewidth": 4,
-                "direction": 2,
+                "width": 128,
+                "height": 64,
+                "spritewidth": 64,
+                "direction": 32,
                 "collide": Collisions.prototype.collideLedge,
                 "attributes": {
                     "jagged": {
-                        "spritewidth": 16
+                        "spritewidth": 256
                     },
                     "crumbleLeft": {},
                     "crumbleRight": {}
                 }
             },
             "LedgeOpening": {
-                "width": 8,
-                "height": 4,
-                "spritewidth": 4,
+                "width": 128,
+                "height": 64,
+                "spritewidth": 64,
                 "nocollide": true
             },
-            "MountainSolidBase": [4, 4],
+            "MountainSolidBase": [64, 64],
             "MountainTop": {
-                "width": 4,
-                "height": 5,
-                "tolBottom": -12
+                "width": 64,
+                "height": 80,
+                "tolBottom": -48
             },
-            "PlantLarge": [16, 16],
+            "PlantLarge": [256, 256],
             "PokeCenterDeskBlocker": {
-                "width": 8,
-                "height": 8,
-                "spritewidth": 1
+                "width": 128,
+                "height": 128,
+                "spritewidth": 16
             },
-            "PokeCenterDeskLeft": [4, 8],
-            "PottedPalmTree": [8, 16],
+            "PokeCenterDeskLeft": [64, 128],
+            "PottedPalmTree": [128, 256],
             "Sign": {
                 "attributes": {
                     "forest": {}
                 }
             },
-            "SofaLeft": [8, 16],
+            "SofaLeft": [128, 256],
             "Spawner": {
                 "hidden": true,
                 "onThingAdd": Actions.prototype.activateSpawner
@@ -1051,33 +1050,33 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "activate": Actions.prototype.spawnareaSpawner
             },
             "SquareWallTop": {
-                "spriteheight": .5
+                "spriteheight": 8
             },
             "SquareWallFront": {
-                "spriteheight": 1.5
+                "spriteheight": 24
             },
-            "StoreAisle": [16, 16],
-            "StoreFridge": [8, 16],
-            "StoreSaleBin": [8, 12],
+            "StoreAisle": [256, 256],
+            "StoreFridge": [128, 256],
+            "StoreSaleBin": [128, 192],
             "Table": {
-                "tolBottom": 16
+                "tolBottom": 64
             },
-            "Table1x2": [8, 16],
-            "Table2x2": [16, 16],
-            "Table2x3": [16, 16],
-            "Table3x1": [24, 12],
+            "Table16x32": [128, 256],
+            "Table32x32": [256, 256],
+            "Table32x48": [256, 256],
+            "Table48x16": [384, 192],
             "Tree": {},
             "Door": {
-                "width": 8,
-                "height": 8,
+                "width": 128,
+                "height": 128,
                 "requireDirection": 0,
                 "attributes": {
                     "indoor": {}
                 }
             },
             "WaterEdge": {
-                "height": 4,
-                "width": 4,
+                "height": 64,
+                "width": 64,
                 "collide": Collisions.prototype.collideWaterEdge,
                 "activate": Actions.prototype.activateHMCharacter,
                 "moveName": "Surf",
@@ -1088,139 +1087,139 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "exitDirection": 0
             },
             "WaterEdgeRight": {
-                "exitDirection": 1
+                "exitDirection": 16
             },
             "WaterEdgeBottom": {
-                "exitDirection": 2
+                "exitDirection": 32
             },
             "WaterEdgeLeft": {
-                "exitDirection": 3
+                "exitDirection": 48
             },
             "WindowDetector": {
                 "hidden": true,
                 "onThingAdd": Actions.prototype.spawnWindowDetector
             },
             "FloorLinedHorizontal": {
-                "spritewidth": .5,
-                "spriteheight": 2
+                "spritewidth": 8,
+                "spriteheight": 32
             },
             "Scenery": {
                 "groupType": "Scenery",
                 "repeat": true
             },
-            "Blackboard": [16, 8],
-            "Bridge": [4, 4],
+            "Blackboard": [256, 128],
+            "Bridge": [64, 64],
             "Clipboard": {
-                "offsetY": -6
+                "offsetY": -4
             },
             "Doormat": {
-                "spritewidth": .5,
-                "spriteheight": 8
+                "spritewidth": 8,
+                "spriteheight": 128
             },
             "DoormatDotted": {
-                "spritewidth": 3.5,
-                "spriteheight": 7.5
+                "spritewidth": 56,
+                "spriteheight": 120
             },
             "DoormatDashed": {
-                "spritewidth": 4,
-                "spriteheight": 8
+                "spritewidth": 64,
+                "spriteheight": 128
             },
             "Flower": {
-                "width": 4,
-                "height": 4,
+                "width": 64,
+                "height": 64,
                 "spriteCycle": [
-                    ["one", "one", "two", "three"], "waving", 14
+                    ["one", "one", "two", "three"], "waving", 224
                 ]
             },
-            "FlowerVase": [6, 6],
-            "ForestDirt": [4, 4],
-            "GroundArrow": [4, 4],
+            "FlowerVase": [96, 96],
+            "ForestDirt": [64, 64],
+            "GroundArrow": [64, 64],
             "HPBar": {
-                "width": .5,
-                "height": 2,
+                "width": 8,
+                "height": 32,
                 "repeat": true
             },
-            "Note": [6.5, 7],
-            "Shadow": [7, 4],
-            "SmokeSmall": [5.5, 5.5],
-            "SmokeMedium": [7.5, 7.5],
-            "SmokeLarge": [7.5, 7.5],
-            "PlayerPortrait": [13, 23],
-            "PlayerSilhouetteSmall": [7, 11.5],
-            "PlayerSilhouetteLarge": [11, 20],
-            "OakPortrait": [14.5, 28],
-            "RivalPortrait": [14.5, 28],
-            "BattleSpriteFrontSmall": [20, 20],
-            "BattleSpriteFrontMedium": [24, 24],
-            "BattleSpriteFrontLarge": [28, 28],
+            "Note": [104, 112],
+            "Shadow": [112, 64],
+            "SmokeSmall": [88, 88],
+            "SmokeMedium": [120, 120],
+            "SmokeLarge": [120, 120],
+            "PlayerPortrait": [208, 368],
+            "PlayerSilhouetteSmall": [112, 184],
+            "PlayerSilhouetteLarge": [176, 320],
+            "OakPortrait": [232, 448],
+            "RivalPortrait": [232, 448],
+            "BattleSpriteFrontSmall": [320, 320],
+            "BattleSpriteFrontMedium": [384, 384],
+            "BattleSpriteFrontLarge": [448, 448],
             "BattleSpriteBack": {
-                "width": 16,
-                "height": 14, // 16 (lowest 2 cropped)
-                "scale": 2,
+                "width": 256,
+                "height": 224, // 256 (lowest 32 cropped)
+                "scale": 32,
                 "repeat": false
             },
-            "ElderBack": [14, 14],
-            "PlayerBack": [14, 14],
+            "ElderBack": [224, 224],
+            "PlayerBack": [224, 224],
             "Terrain": {
                 "groupType": "Terrain",
                 "repeat": true,
             },
-            "TerrainSmall": [2, 2],
+            "TerrainSmall": [32, 32],
             "TerrainSmallRepeating": {
-                "width": 8,
-                "height": 8,
-                "spritewidth": 2,
-                "spriteheight": 2
+                "width": 128,
+                "height": 128,
+                "spritewidth": 32,
+                "spriteheight": 32
             },
-            "BrickRoad": [4, 4],
-            "Mountain": [4, 4],
+            "BrickRoad": [64, 64],
+            "Mountain": [64, 64],
             "WallIndoorLightWithDarkBottom": {
-                "spritewidth": .5,
-                "spriteheight": 8
+                "spritewidth": 8,
+                "spriteheight": 128
             },
-            "WallIndoorFancyWithDarkBottom": [4, 8],
+            "WallIndoorFancyWithDarkBottom": [64, 128],
             "WallIndoorHorizontalBandsDark": {
-                "width": 8,
-                "height": 8,
-                "spritewidth": .5,
-                "spriteheight": 2,
+                "width": 128,
+                "height": 128,
+                "spritewidth": 8,
+                "spriteheight": 32,
             },
             "Water": {
                 "spriteCycle": [
-                    ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 14
+                    ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 224
                 ]
             },
             "Text": {
                 "groupType": "Text",
-                "width": 4,
-                "height": 4,
+                "width": 64,
+                "height": 64,
                 "paddingX": 0,
-                "paddingY": 8,
+                "paddingY": 128,
                 "noshiftx": true,
                 "noshifty": true,
             },
             "Exclamation": {
-                "width": 7,
-                "height": 7,
-                "offsetY": -8
+                "width": 112,
+                "height": 112,
+                "offsetY": -4
             },
-            "HalfArrowHorizontal": [4, 2],
-            "EmberSmall": [6, 6],
-            "EmberLarge": [8, 8],
-            "BubbleSmall": [4, 4],
-            "BubbleLarge": [8, 8],
-            "ExplosionSmall": [8, 8],
-            "ExplosionLarge": [16, 16],
-            "ScratchLine": [1.5, 1.5],
+            "HalfArrowHorizontal": [64, 32],
+            "EmberSmall": [96, 96],
+            "EmberLarge": [128, 128],
+            "BubbleSmall": [64, 64],
+            "BubbleLarge": [128, 128],
+            "ExplosionSmall": [128, 128],
+            "ExplosionLarge": [256, 256],
+            "ScratchLine": [24, 24],
             "Square": {
-                "width": 1,
-                "height": 1,
+                "width": 16,
+                "height": 16,
                 "repeat": true
             },
             "CharacterDropped": {
                 "offsetY": 3
             },
-            "CharacterShadow": [3.5, 3.5],
+            "CharacterShadow": [56, 56],
             "CharMDash": {
                 "attributes": {
                     "blinking": {
@@ -1235,13 +1234,13 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "offsetY": 2
             },
             "CharNo": {
-                "width": 4,
-                "height": 3,
+                "width": 64,
+                "height": 48,
                 "offsetY": 2
             },
             "CharID": {
-                "width": 4,
-                "height": 3,
+                "width": 64,
+                "height": 48,
                 "offsetY": 2
             },
             "CharSlash": {
@@ -1253,66 +1252,66 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "CharComma": {
                 "offsetY": 2
             },
-            "CharApostrophe": [1, 2],
-            "CharFeet": [2, 1.5],
-            "CharInches": [3.5, 2],
-            "CharBall": [3.5, 3.5],
-            "CharBallEmpty": [3.5, 3.5],
-            "CharCircle": [2.5, 2.5],
-            "CharHP": [5.5, 2],
-            "CharPP": [7.5, 3.5],
-            "CharTo": [3.5, 3],
-            "CharLevel": [3, 2.5],
+            "CharApostrophe": [16, 32],
+            "CharFeet": [32, 24],
+            "CharInches": [56, 32],
+            "CharBall": [56, 56],
+            "CharBallEmpty": [56, 56],
+            "CharCircle": [40, 40],
+            "CharHP": [88, 32],
+            "CharPP": [120, 56],
+            "CharTo": [56, 48],
+            "CharLevel": [48, 40],
             "Char$": {
-                "width": 4,
-                "spritewidth": 2.5,
-                "height": 4,
-                "offsetX": 2,
+                "width": 64,
+                "spritewidth": 40,
+                "height": 64,
+                "offsetx": 2,
                 "offsetY": 2
             },
-            "CharArrowUp": [3.5, 2.5],
-            "CharArrowRight": [2.5, 3.5],
-            "CharArrowDown": [3.5, 2.5],
-            "CharArrowLeft": [2.5, 3.5],
-            "HalfArrow": [4, 2],
+            "CharArrowUp": [56, 40],
+            "CharArrowRight": [40, 56],
+            "CharArrowDown": [56, 40],
+            "CharArrowLeft": [40, 56],
+            "HalfArrow": [64, 32],
             "Line": {
-                "width": 1,
-                "height": 1,
+                "width": 16,
+                "height": 16,
                 "repeat": true
             },
-            "LineDecoratorHorizontal": [8, 3],
-            "LineDecoratorVertical": [3, 8],
-            "LineSeparatorHorizontal": [4, 4],
-            "MapGreyDiagonal": [4, 4],
-            "TownMapNoWater": [76, 128],
+            "LineDecoratorHorizontal": [128, 48],
+            "LineDecoratorVertical": [48, 128],
+            "LineSeparatorHorizontal": [64, 64],
+            "MapGreyDiagonal": [64, 64],
+            "TownMapNoWater": [1216, 2048],
             "Menu": {
                 "groupType": "Text",
-                "spritewidth": 4,
-                "spriteheight": 4,
-                "width": 8,
-                "height": 8,
+                "spritewidth": 64,
+                "spriteheight": 64,
+                "width": 128,
+                "height": 128,
                 "repeat": true,
                 "noshiftx": true,
                 "noshifty": true,
-                "arrowXOffset": 1.25,
-                "arrowYOffset": 1,
-                "textXOffset": 4,
-                "textYOffset": 7.5,
-                "textSpeed": 1,
+                "arrowXOffset": 20,
+                "arrowYOffset": 16,
+                "textXOffset": 64,
+                "textYOffset": 120,
+                "textSpeed": 16,
                 "attributes": {
                     "plain": {},
                     "light": {
-                        "spritewidth": 1,
-                        "spriteheight": 1
+                        "spritewidth": 16,
+                        "spriteheight": 16
                     },
                     "lined": {
-                        "spritewidth": 2,
-                        "spriteheight": 2
+                        "spritewidth": 32,
+                        "spriteheight": 32
                     },
                     "dirty": {},
                     "watery": {
-                        "spritewidth": 4,
-                        "spriteheight": 4
+                        "spritewidth": 64,
+                        "spriteheight": 64
                     },
                 }
             }
