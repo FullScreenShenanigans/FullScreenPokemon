@@ -795,7 +795,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "switchDirectionOnDialog": true,
                 "heightGrass": 16,
                 "direction": 8,
-                "offsetY": -32,
+                "offsetY": -8,
                 "roamingDirections": [0, 1, 2, 3],
                 "onThingAdd": Actions.prototype.spawnCharacter,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
@@ -822,7 +822,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "player": true,
                 "canKeyWalking": true,
                 "direction": 8,
-                "speed": 8,
+                "speed": 2,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
                 "onWalkingStop": Actions.prototype.animatePlayerStopWalking,
                 "getKeys": () => {
@@ -908,7 +908,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Computer": {
                 "width": 32,
                 "height": 48,
-                "tolBottom": 64
+                "tolBottom": 16
             },
             "ComputerDesk": [32, 64],
             "ConsoleController": [32, 20],
@@ -947,7 +947,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "StrengthBoulder": {
                 "moveName": "Strength",
                 "moveCallback": Actions.prototype.partyActivateStrength,
-                "speed": 16,
+                "speed": 4,
                 "requiredBadge": "Rainbow"
             },
             "HouseBase": {
@@ -1027,7 +1027,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "MountainTop": {
                 "width": 16,
                 "height": 20,
-                "tolBottom": -48
+                "tolBottom": -12
             },
             "PlantLarge": [64, 64],
             "PokeCenterDeskBlocker": {
@@ -1060,7 +1060,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "StoreFridge": [32, 64],
             "StoreSaleBin": [32, 48],
             "Table": {
-                "tolBottom": 64
+                "tolBottom": 16
             },
             "Table4x8": [32, 64],
             "Table8x8": [64, 64],
@@ -1111,7 +1111,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Blackboard": [64, 32],
             "Bridge": [16, 16],
             "Clipboard": {
-                "offsetY": -24
+                "offsetY": -6
             },
             "Doormat": {
                 "spritewidth": 2,
@@ -1202,7 +1202,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Exclamation": {
                 "width": 28,
                 "height": 28,
-                "offsetY": -32
+                "offsetY": -8
             },
             "HalfArrowHorizontal": [16, 8],
             "EmberSmall": [24, 24],
@@ -1218,7 +1218,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "repeat": true
             },
             "CharacterDropped": {
-                "offsetY": 12
+                "offsetY": 3
             },
             "CharacterShadow": [14, 14],
             "CharMDash": {
@@ -1229,29 +1229,29 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 }
             },
             "CharPoke": {
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharMon": {
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharNo": {
                 "width": 16,
                 "height": 12,
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharID": {
                 "width": 16,
                 "height": 12,
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharSlash": {
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharPeriod": {
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharComma": {
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharApostrophe": [4, 8],
             "CharFeet": [8, 6],
@@ -1268,7 +1268,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "spritewidth": 10,
                 "height": 16,
                 "offsetX": 8,
-                "offsetY": 8
+                "offsetx": 2
             },
             "CharArrowUp": [14, 10],
             "CharArrowRight": [10, 14],
@@ -1298,7 +1298,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "arrowYOffset": 4,
                 "textXOffset": 16,
                 "textYOffset": 30,
-                "textSpeed": 4,
+                "textSpeed": 1,
                 "attributes": {
                     "plain": {},
                     "light": {
