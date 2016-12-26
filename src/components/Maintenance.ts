@@ -35,7 +35,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
             this.gameStarter.physics.shiftCharacter(character);
 
             if (character.shouldWalk && !this.gameStarter.menuGrapher.getActiveMenu()) {
-                character.onWalkingStart.call(this, character, character.direction);
+                character.onWalkingStart.call(this.gameStarter.actions, character, character.direction);
                 character.shouldWalk = false;
             }
 

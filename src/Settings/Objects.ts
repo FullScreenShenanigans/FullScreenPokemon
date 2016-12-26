@@ -822,15 +822,15 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "player": true,
                 "canKeyWalking": true,
                 "direction": 8,
-                "speed": 2,
+                "speed": 1,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
                 "onWalkingStop": Actions.prototype.animatePlayerStopWalking,
                 "getKeys": () => {
                     return {
                         "0": false,
-                        "4": false,
-                        "8": false,
-                        "12": false,
+                        "1": false,
+                        "2": false,
+                        "3": false,
                         "a": false,
                         "b": false
                     };

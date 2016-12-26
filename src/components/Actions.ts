@@ -720,6 +720,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   The Character to start walking.
      * @param direction   What direction to walk in (by default, up).
      * @param onStop   A queue of commands as alternating directions and distances.
+     * @remarks The hard numbers are hardcoded to the player for now.
      */
     public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
         const repeats: number = this.gameStarter.mathDecider.compute("speedWalking", thing);
@@ -734,13 +735,13 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 thing,
                 ["walking", "standing"],
                 "walking",
-                repeats / 2);
+                8);
         }
 
         if (!thing.walkingFlipping) {
             thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
                 (): void => this.animateSwitchFlipOnDirection(thing),
-                repeats,
+                16,
                 Infinity,
                 thing);
         }
@@ -751,7 +752,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => thing.onWalkingStop.call(this, thing, onStop),
-            repeats,
+            32,
             Infinity,
             thing,
             onStop);

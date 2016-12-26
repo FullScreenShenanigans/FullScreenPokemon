@@ -40,7 +40,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (thing.player) {
-            ((thing as IPlayer).keys as any)[Direction.Top] = true;
+            (thing as IPlayer).keys[Direction.Top] = true;
 
             this.gameStarter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 0),
@@ -67,7 +67,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (thing.player) {
-            ((thing as IPlayer).keys as any)[Direction.Right] = true;
+            (thing as IPlayer).keys[Direction.Right] = true;
 
             this.gameStarter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 1),
@@ -92,7 +92,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (thing.player) {
-            ((thing as IPlayer).keys as any)[Direction.Bottom] = true;
+            (thing as IPlayer).keys[Direction.Bottom] = true;
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -119,7 +119,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (thing.player) {
-            ((thing as IPlayer).keys as any)[Direction.Left] = true;
+            (thing as IPlayer).keys[Direction.Left] = true;
 
             this.gameStarter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 3),
@@ -147,18 +147,19 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.gameStarter.menuGrapher.registerDirection(direction as number);
-        } else {
-            if (thing.direction !== direction) {
-                thing.turning = direction;
-            }
+            this.gameStarter.menuGrapher.registerDirection(direction);
+            return;
+        }
 
-            if (thing.canKeyWalking && !thing.shouldWalk) {
-                this.gameStarter.physics.setPlayerDirection(thing, direction);
-                thing.canKeyWalking = false;
-            } else {
-                thing.nextDirection = direction;
-            }
+        if (thing.direction !== direction) {
+            thing.turning = direction;
+        }
+
+        if (thing.canKeyWalking && !thing.shouldWalk) {
+            this.gameStarter.physics.setPlayerDirection(thing, direction);
+            thing.canKeyWalking = false;
+        } else {
+            thing.nextDirection = direction;
         }
 
         this.gameStarter.modAttacher.fireEvent("onKeyDownDirectionReal", direction);

@@ -746,7 +746,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                 text: lowercase ? "UPPER CASE" : "lower case",
                 callback: (): void => this.switchKeyboardCase(),
                 position: {
-                    top: 40,
+                    top: 160,
                     left: 0
                 }
             }
