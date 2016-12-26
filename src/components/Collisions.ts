@@ -1,15 +1,16 @@
+import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { Direction } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge
 } from "../IFullScreenPokemon";
-import { Component } from "./Component";
 
 /**
  * Collision functions used by FullScreenPokemon instances.
  */
-export class Collisions extends Component {
+export class Collisions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
@@ -106,12 +107,12 @@ export class Collisions extends Component {
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
-            switch (this.fsp.physics.getDirectionBordering(thing, other)) {
+            switch (this.gameStarter.physics.getDirectionBordering(thing, other)) {
                 case Direction.Top:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Top);
                         this.setThingBordering(other, thing, Direction.Bottom);
-                        this.fsp.physics.setTop(thing, other.bottom - other.tolBottom);
+                        this.gameStarter.physics.setTop(thing, other.bottom - other.tolBottom);
                     }
                     break;
 
@@ -119,7 +120,7 @@ export class Collisions extends Component {
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Right);
                         this.setThingBordering(other, thing, Direction.Left);
-                        this.fsp.physics.setRight(thing, other.left + other.tolLeft);
+                        this.gameStarter.physics.setRight(thing, other.left + other.tolLeft);
                     }
                     break;
 
@@ -127,7 +128,7 @@ export class Collisions extends Component {
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Bottom);
                         this.setThingBordering(other, thing, Direction.Top);
-                        this.fsp.physics.setBottom(thing, other.top + other.tolTop);
+                        this.gameStarter.physics.setBottom(thing, other.top + other.tolTop);
                     }
                     break;
 
@@ -135,7 +136,7 @@ export class Collisions extends Component {
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Left);
                         this.setThingBordering(other, thing, Direction.Right);
-                        this.fsp.physics.setLeft(thing, other.right - other.tolRight);
+                        this.gameStarter.physics.setLeft(thing, other.right - other.tolRight);
                     }
                     break;
 
@@ -177,7 +178,7 @@ export class Collisions extends Component {
         }
 
         if (other.active) {
-            if (!other.requireOverlap || this.fsp.physics.isThingWithinOther(thing, other)) {
+            if (!other.requireOverlap || this.gameStarter.physics.isThingWithinOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !(thing.keys as any)[other.requireDirection]
@@ -195,14 +196,14 @@ export class Collisions extends Component {
                     throw new Error("No activate callback for collision detector.");
                 }
 
-                other.activate.call(this.fsp.actions, thing, other);
+                other.activate.call(this.gameStarter.actions, thing, other);
             }
 
             return true;
         }
 
         // If the thing is moving towards the triggerer, it's now active
-        if (thing.direction === this.fsp.physics.getDirectionBordering(thing, other)) {
+        if (thing.direction === this.gameStarter.physics.getDirectionBordering(thing, other)) {
             other.active = true;
             return true;
         }
@@ -222,7 +223,7 @@ export class Collisions extends Component {
         let direction: Direction | undefined;
 
         if (other.cutscene) {
-            this.fsp.scenePlayer.startCutscene(other.cutscene, {
+            this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
                 thing: thing,
                 triggerer: other
             });
@@ -232,7 +233,7 @@ export class Collisions extends Component {
             return;
         }
 
-        direction = this.fsp.physics.getDirectionBetween(other, thing);
+        direction = this.gameStarter.physics.getDirectionBetween(other, thing);
         if (!direction) {
             throw new Error("Characters not close enough to collide for dialog.");
         }
@@ -248,20 +249,20 @@ export class Collisions extends Component {
         other.talking = true;
         thing.canKeyWalking = false;
 
-        if (!this.fsp.menuGrapher.getActiveMenu()) {
-            this.fsp.menuGrapher.createMenu("GeneralText", {
+        if (!this.gameStarter.menuGrapher.getActiveMenu()) {
+            this.gameStarter.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: !other.dialogOptions
             });
-            this.fsp.menuGrapher.setActiveMenu("GeneralText");
-            this.fsp.menuGrapher.addMenuDialog(
+            this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                (): void => this.fsp.actions.animateCharacterDialogFinish(thing, other)
+                (): void => this.gameStarter.actions.animateCharacterDialogFinish(thing, other)
             );
         }
 
         if (other.switchDirectionOnDialog) {
-            this.fsp.actions.animateCharacterSetDirection(other, direction);
+            this.gameStarter.actions.animateCharacterSetDirection(other, direction);
         }
     }
 
@@ -278,23 +279,23 @@ export class Collisions extends Component {
                     throw new Error("Pokeball must have an item for the item action.");
                 }
 
-                this.fsp.menuGrapher.createMenu("GeneralText");
-                this.fsp.menuGrapher.addMenuDialog(
+                this.gameStarter.menuGrapher.createMenu("GeneralText");
+                this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
                     ],
                     (): void => {
-                        this.fsp.menuGrapher.deleteActiveMenu();
-                        this.fsp.physics.killNormal(other);
-                        this.fsp.stateHolder.addChange(
+                        this.gameStarter.menuGrapher.deleteActiveMenu();
+                        this.gameStarter.physics.killNormal(other);
+                        this.gameStarter.stateHolder.addChange(
                             other.id, "alive", false
                         );
                     }
                 );
-                this.fsp.menuGrapher.setActiveMenu("GeneralText");
+                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-                this.fsp.saves.addItemToBag(other.item, other.amount);
+                this.gameStarter.saves.addItemToBag(other.item, other.amount);
                 break;
 
             case "cutscene":
@@ -302,12 +303,12 @@ export class Collisions extends Component {
                     throw new Error("Pokeball must have a cutscene for the cutscene action.");
                 }
 
-                this.fsp.scenePlayer.startCutscene(other.cutscene, {
+                this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
                     player: thing,
                     triggerer: other
                 });
                 if (other.routine) {
-                    this.fsp.scenePlayer.playRoutine(other.routine);
+                    this.gameStarter.scenePlayer.playRoutine(other.routine);
                 }
                 break;
 
@@ -316,7 +317,7 @@ export class Collisions extends Component {
                     throw new Error("Pokeball must have a Pokemon for the cutscene action.");
                 }
 
-                this.fsp.menus.openPokedexListing(other.pokemon);
+                this.gameStarter.menus.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
@@ -324,16 +325,16 @@ export class Collisions extends Component {
                     throw new Error("Pokeball must have a dialog for the cutscene action.");
                 }
 
-                this.fsp.menuGrapher.createMenu("GeneralText");
-                this.fsp.menuGrapher.addMenuDialog("GeneralText", other.dialog);
-                this.fsp.menuGrapher.setActiveMenu("GeneralText");
+                this.gameStarter.menuGrapher.createMenu("GeneralText");
+                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
                 break;
 
             case "yes/no":
-                this.fsp.menuGrapher.createMenu("Yes/No", {
+                this.gameStarter.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"]
                 });
-                this.fsp.menuGrapher.addMenuList("Yes/No", {
+                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
@@ -343,7 +344,7 @@ export class Collisions extends Component {
                             callback: (): void => console.log("What do, no?")
                         }]
                 });
-                this.fsp.menuGrapher.setActiveMenu("Yes/No");
+                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
                 break;
 
             default:
@@ -358,31 +359,31 @@ export class Collisions extends Component {
      * @param other   The specific Grass that thing is within.
      */
     public collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
-        if (thing.grass || !this.fsp.physics.isThingWithinGrass(thing, other)) {
+        if (thing.grass || !this.gameStarter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
 
         thing.grass = other;
-        this.fsp.saves.addStateHistory(thing, "height", thing.height);
+        this.gameStarter.saves.addStateHistory(thing, "height", thing.height);
 
         // Todo: Find a better way than manually setting canvas height?
         thing.canvas.height = thing.heightGrass * 4;
-        this.fsp.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
-        thing.shadow = this.fsp.objectMaker.make(thing.title, {
+        thing.shadow = this.gameStarter.objectMaker.make(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
         }) as IThing;
 
         if (thing.shadow.className !== thing.className) {
-            this.fsp.graphics.setClass(thing.shadow, thing.className);
+            this.gameStarter.graphics.setClass(thing.shadow, thing.className);
         }
 
-        this.fsp.things.add(thing.shadow, thing.left, thing.top);
+        this.gameStarter.things.add(thing.shadow, thing.left, thing.top);
 
         // Todo: is the arrayToEnd call necessary?
-        this.fsp.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
-        this.fsp.utilities.arrayToEnd(thing.shadow, this.fsp.groupHolder.getGroup("Terrain") as IThing[]);
+        this.gameStarter.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.gameStarter.utilities.arrayToEnd(thing.shadow, this.gameStarter.groupHolder.getGroup("Terrain") as IThing[]);
 
         return true;
     }
@@ -415,9 +416,9 @@ export class Collisions extends Component {
 
         if (thing.player) {
             (thing as IPlayer).canKeyWalking = false;
-            this.fsp.mapScreener.blockInputs = true;
+            this.gameStarter.mapScreener.blockInputs = true;
         }
-        this.fsp.actions.animateCharacterHopLedge(thing, other);
+        this.gameStarter.actions.animateCharacterHopLedge(thing, other);
 
         return true;
     }
@@ -437,9 +438,9 @@ export class Collisions extends Component {
             return false;
         }
 
-        this.fsp.actions.animateCharacterStartWalking(thing, thing.direction, [2]);
+        this.gameStarter.actions.animateCharacterStartWalking(thing, thing.direction, [2]);
         thing.surfing = false;
-        this.fsp.graphics.removeClass(thing, "surfing");
+        this.gameStarter.graphics.removeClass(thing, "surfing");
         return true;
     }
 }

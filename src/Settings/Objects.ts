@@ -1,10 +1,10 @@
 import { IObjectsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Actions } from "../Animations";
-import { Collisions } from "../Collisions";
-import { Unitsize } from "../Constants";
-import { Maps } from "../Maps";
-import { Things } from "../Things";
+import { Actions } from "../components/Animations";
+import { Collisions } from "../components/Collisions";
+import { Unitsize } from "../components/Constants";
+import { Maps } from "../components/Maps";
+import { Things } from "../components/Things";
 
 /* tslint:disable object-literal-key-quotes */
 

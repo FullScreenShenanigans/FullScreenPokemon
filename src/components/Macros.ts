@@ -1,7 +1,11 @@
+import { Component } from "eightbittr/lib/Component";
+
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
 /**
  * Macro functions used by FullScreenPokemon instances.
  */
-export class Macros {
+export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *
@@ -987,7 +991,7 @@ export class Macros {
                 x: x + 8,
                 y: y + 40,
                 id: reference.responderId,
-                activate: this.animations.activateCutsceneResponder,
+                activate: this.gameStarter.actions.activateCutsceneResponder,
                 cutscene: "PokeMart",
                 keepAlive: true,
                 items: reference.items,

@@ -1,11 +1,12 @@
 import { Graphics as GameStartrGraphics } from "gamestartr/lib/components/Graphics";
 
-import { IBattleInfo, IThing } from "./IFullScreenPokemon";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IBattleInfo, IThing } from "../IFullScreenPokemon";
 
 /**
  * Graphics functions used by FullScreenPokemon instances.
  */
-export class Graphics extends GameStartrGraphics {
+export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrGraphics<TGameStartr> {
     /**
      * Collects all unique Things that should be kept on top of battle intro animations.
      * 
@@ -13,9 +14,9 @@ export class Graphics extends GameStartrGraphics {
      * @returns The unique Things that will be kept.
      */
     public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        const things: IThing[] = [this.player];
+        const things: IThing[] = [this.gameStarter.player];
         const used: { [i: string]: IThing } = {
-            [this.player.title]: this.player
+            [this.gameStarter.player.title]: this.gameStarter.player
         };
 
         for (const thingRaw of thingsRaw) {

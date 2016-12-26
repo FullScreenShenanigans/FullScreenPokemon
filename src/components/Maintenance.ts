@@ -1,10 +1,13 @@
-import { Scrollability } from "./Constants";
-import { ICharacter, IGrass, IPlayer, IThing } from "./IFullScreenPokemon";
+import { Component } from "eightbittr/lib/Component";
+
+import { Scrollability } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { ICharacter, IGrass, IPlayer, IThing } from "../IFullScreenPokemon";
 
 /**
  * Maintenance functions used by FullScreenPokemon instances.
  */
-export class Maintenance {
+export class Maintenance<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Generic maintenance Function for a group of Things. For each Thing, if
      * it isn't alive, it's removed from the group.
@@ -14,7 +17,7 @@ export class Maintenance {
     public maintainGeneric(things: IThing[]): void {
         for (let i: number = 0; i < things.length; i += 1) {
             if (!things[i].alive) {
-                this.utilities.arrayDeleteThing(things[i], things, i);
+                this.gameStarter.utilities.arrayDeleteThing(things[i], things, i);
                 i -= 1;
             }
         }
@@ -29,9 +32,9 @@ export class Maintenance {
     public maintainCharacters(characters: ICharacter[]): void {
         for (let i: number = 0; i < characters.length; i += 1) {
             const character: ICharacter = characters[i];
-            this.physics.shiftCharacter(character);
+            this.gameStarter.physics.shiftCharacter(character);
 
-            if (character.shouldWalk && !this.menuGrapher.getActiveMenu()) {
+            if (character.shouldWalk && !this.gameStarter.menuGrapher.getActiveMenu()) {
                 character.onWalkingStart.call(this, character, character.direction);
                 character.shouldWalk = false;
             }
@@ -41,7 +44,7 @@ export class Maintenance {
             }
 
             if (!character.alive && !character.outerOk) {
-                this.utilities.arrayDeleteThing(character, characters, i);
+                this.gameStarter.utilities.arrayDeleteThing(character, characters, i);
                 i -= 1;
                 continue;
             }
@@ -50,8 +53,8 @@ export class Maintenance {
                 character.bordering[j] = undefined;
             }
 
-            this.quadsKeeper.determineThingQuadrants(character);
-            this.thingHitter.checkHitsForThing(character as any);
+            this.gameStarter.quadsKeeper.determineThingQuadrants(character);
+            this.gameStarter.thingHitter.checkHitsForThing(character as any);
         }
     }
 
@@ -64,10 +67,10 @@ export class Maintenance {
      */
     public maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
-        if (!this.physics.isThingWithinGrass(thing, other)) {
-            this.physics.killNormal(thing.shadow!);
+        if (!this.gameStarter.physics.isThingWithinGrass(thing, other)) {
+            this.gameStarter.physics.killNormal(thing.shadow!);
             thing.canvas.height = thing.height * 4;
-            this.pixelDrawer.setThingSprite(thing);
+            this.gameStarter.pixelDrawer.setThingSprite(thing);
 
             delete thing.shadow;
             delete thing.grass;
@@ -75,11 +78,11 @@ export class Maintenance {
         }
 
         // Keep the shadow in sync with thing in position and visuals.
-        this.physics.setLeft(thing.shadow!, thing.left);
-        this.physics.setTop(thing.shadow!, thing.top);
+        this.gameStarter.physics.setLeft(thing.shadow!, thing.left);
+        this.gameStarter.physics.setTop(thing.shadow!, thing.top);
 
         if (thing.shadow!.className !== thing.className) {
-            this.graphics.setClass(thing.shadow!, thing.className);
+            this.gameStarter.graphics.setClass(thing.shadow!, thing.className);
         }
     }
 
@@ -94,19 +97,19 @@ export class Maintenance {
             return;
         }
 
-        switch (this.mapScreener.variables.scrollability) {
+        switch (this.gameStarter.mapScreener.variables.scrollability) {
             case Scrollability.Horizontal:
-                this.scrolling.scrollWindow(this.scrolling.getHorizontalScrollAmount());
+                this.gameStarter.scrolling.scrollWindow(this.gameStarter.scrolling.getHorizontalScrollAmount());
                 return;
 
             case Scrollability.Vertical:
-                this.scrolling.scrollWindow(0, this.scrolling.getVerticalScrollAmount());
+                this.gameStarter.scrolling.scrollWindow(0, this.gameStarter.scrolling.getVerticalScrollAmount());
                 return;
 
             case Scrollability.Both:
-                this.scrolling.scrollWindow(
-                    this.scrolling.getHorizontalScrollAmount(),
-                    this.scrolling.getVerticalScrollAmount());
+                this.gameStarter.scrolling.scrollWindow(
+                    this.gameStarter.scrolling.getHorizontalScrollAmount(),
+                    this.gameStarter.scrolling.getVerticalScrollAmount());
                 return;
 
             default:

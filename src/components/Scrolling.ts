@@ -1,17 +1,18 @@
 import { Scrolling as GameStartrScrolling } from "gamestartr/lib/components/Scrolling";
 
-import { Scrollability } from "./Constants";
-import { IArea, IAreaBoundaries } from "./IFullScreenPokemon";
+import { Scrollability } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IArea, IAreaBoundaries } from "../IFullScreenPokemon";
 
 /**
  * Scrolling functions used by FullScreenPokemon instances.
  */
-export class Scrolling extends GameStartrScrolling {
+export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartrScrolling<TGameStartr> {
     /**
      * Centers the current view of the Map based on scrollability.
      */
     public centerMapScreen(): void {
-        switch (this.mapScreener.variables.scrollability) {
+        switch (this.gameStarter.mapScreener.variables.scrollability) {
             case Scrollability.None:
                 this.centerMapScreenHorizontally();
                 this.centerMapScreenVertically();
@@ -42,8 +43,8 @@ export class Scrolling extends GameStartrScrolling {
      * the Area.
      */
     public centerMapScreenHorizontally(): void {
-        const boundaries: IAreaBoundaries = this.mapScreener.variables.boundaries;
-        const difference: number = this.mapScreener.width - boundaries.width;
+        const boundaries: IAreaBoundaries = this.gameStarter.mapScreener.variables.boundaries;
+        const difference: number = this.gameStarter.mapScreener.width - boundaries.width;
 
         if (difference > 0) {
             this.scrollWindow(difference / -2);
@@ -55,8 +56,8 @@ export class Scrolling extends GameStartrScrolling {
      * the Area.
      */
     public centerMapScreenVertically(): void {
-        const boundaries: IAreaBoundaries = this.mapScreener.variables.boundaries;
-        const difference: number = this.mapScreener.height - boundaries.height;
+        const boundaries: IAreaBoundaries = this.gameStarter.mapScreener.variables.boundaries;
+        const difference: number = this.gameStarter.mapScreener.height - boundaries.height;
 
         this.scrollWindow(0, difference / -2);
     }
@@ -66,8 +67,8 @@ export class Scrolling extends GameStartrScrolling {
      */
     public centerMapScreenHorizontallyOnPlayer(): void {
         const difference: number = (
-            this.physics.getMidX(this.player)
-            - this.mapScreener.middleX)
+            this.gameStarter.physics.getMidX(this.gameStarter.players[0])
+            - this.gameStarter.mapScreener.middleX)
             | 0;
 
         if (Math.abs(difference) > 0) {
@@ -80,8 +81,8 @@ export class Scrolling extends GameStartrScrolling {
      */
     public centerMapScreenVerticallyOnPlayer(): void {
         const difference: number = (
-            this.physics.getMidY(this.player)
-            - this.mapScreener.middleY)
+            this.gameStarter.physics.getMidY(this.gameStarter.players[0])
+            - this.gameStarter.mapScreener.middleY)
             | 0;
 
         if (Math.abs(difference) > 0) {
@@ -95,7 +96,7 @@ export class Scrolling extends GameStartrScrolling {
      * @returns The boundaries of the current Area.
      */
     public getAreaBoundariesReal(): IAreaBoundaries {
-        const area: IArea = this.areaSpawner.getArea() as IArea;
+        const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
 
         if (!area) {
             return {
@@ -124,7 +125,7 @@ export class Scrolling extends GameStartrScrolling {
      * @returns The direction(s) that are scrollable.
      */
     public getScreenScrollability(): Scrollability {
-        const area: IArea = this.areaSpawner.getArea() as IArea;
+        const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
         if (!area) {
             return Scrollability.None;
         }
@@ -133,15 +134,15 @@ export class Scrolling extends GameStartrScrolling {
         const width: number = (boundaries.right - boundaries.left) * 4;
         const height: number = (boundaries.bottom - boundaries.top) * 4;
 
-        if (width > this.mapScreener.width) {
-            if (height > this.mapScreener.height) {
+        if (width > this.gameStarter.mapScreener.width) {
+            if (height > this.gameStarter.mapScreener.height) {
                 return Scrollability.Both;
             }
 
             return Scrollability.Horizontal;
         }
 
-        if (height > this.mapScreener.height) {
+        if (height > this.gameStarter.mapScreener.height) {
             return Scrollability.Vertical;
         }
 
@@ -155,14 +156,14 @@ export class Scrolling extends GameStartrScrolling {
      * @returns How far to scroll horizontally.
      */
     public getHorizontalScrollAmount(): number {
-        if (!this.player.xvel) {
+        if (!this.gameStarter.players[0].xvel) {
             return 0;
         }
 
-        if (this.player.xvel > 0) {
-            return this.player.bordering[1] ? 0 : this.player.xvel;
+        if (this.gameStarter.players[0].xvel > 0) {
+            return this.gameStarter.players[0].bordering[1] ? 0 : this.gameStarter.players[0].xvel;
         } else {
-            return this.player.bordering[3] ? 0 : this.player.xvel;
+            return this.gameStarter.players[0].bordering[3] ? 0 : this.gameStarter.players[0].xvel;
         }
     }
 
@@ -173,14 +174,14 @@ export class Scrolling extends GameStartrScrolling {
      * @returns How far to scroll vertically.
      */
     public getVerticalScrollAmount(): number {
-        if (!this.player.yvel) {
+        if (!this.gameStarter.players[0].yvel) {
             return 0;
         }
 
-        if (this.player.yvel > 0) {
-            return this.player.bordering[2] ? 0 : this.player.yvel;
+        if (this.gameStarter.players[0].yvel > 0) {
+            return this.gameStarter.players[0].bordering[2] ? 0 : this.gameStarter.players[0].yvel;
         } else {
-            return this.player.bordering[0] ? 0 : this.player.yvel;
+            return this.gameStarter.players[0].bordering[0] ? 0 : this.gameStarter.players[0].yvel;
         }
     }
 
@@ -194,6 +195,6 @@ export class Scrolling extends GameStartrScrolling {
      *       hasn't been shown to be incorrect yet).
      */
     public expandMapBoundariesForArea(_area: IArea, _dx: number, _dy: number): void {
-        this.mapScreener.variables.scrollability = Scrollability.Both;
+        this.gameStarter.mapScreener.variables.scrollability = Scrollability.Both;
     }
 }

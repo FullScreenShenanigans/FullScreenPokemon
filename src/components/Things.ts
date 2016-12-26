@@ -1,11 +1,12 @@
 import { Things as GameStartrThings } from "gamestartr/lib/components/Things";
 
-import { IThing } from "./IFullScreenPokemon";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IThing } from "../IFullScreenPokemon";
 
 /**
  * Thing manipulation functions used by FullScreenPokemon instances.
  */
-export class Things extends GameStartrThings {
+export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThings<TGameStartr> {
     /**
      * Slight addition to the parent thingProcess Function. The Thing's hit
      * check type is cached immediately, and a default id is assigned if an id
@@ -23,14 +24,14 @@ export class Things extends GameStartrThings {
         // ThingHittr becomes very non-performant if functions aren't generated
         // for each Thing constructor (optimization does not respect prototypal 
         // inheritance, sadly).
-        this.thingHitter.cacheChecksForType(thing.title, thing.groupType);
+        this.gameStarter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];
 
         if (typeof thing.id === "undefined") {
             thing.id = [
-                this.areaSpawner.getMapName(),
-                this.areaSpawner.getAreaName(),
+                this.gameStarter.areaSpawner.getMapName(),
+                this.gameStarter.areaSpawner.getAreaName(),
                 thing.title,
                 (thing.name || "Anonymous")
             ].join("::");
@@ -60,12 +61,12 @@ export class Things extends GameStartrThings {
         }
 
         if (thing.id) {
-            this.stateHolder.applyChanges(thing.id, thing);
-            (this.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
+            this.gameStarter.stateHolder.applyChanges(thing.id, thing);
+            (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
         if (typeof thing.direction !== "undefined") {
-            this.animations.animateCharacterSetDirection(thing, thing.direction);
+            this.gameStarter.actions.animateCharacterSetDirection(thing, thing.direction);
         }
 
         return thing;
@@ -77,20 +78,20 @@ export class Things extends GameStartrThings {
      * @param thing   A Thing being placed in the game.
      */
     public applySavedPosition(thing: IThing): void {
-        const savedInfo: any = this.stateHolder.getChanges(thing.id);
+        const savedInfo: any = this.gameStarter.stateHolder.getChanges(thing.id);
         if (!savedInfo) {
             return;
         }
 
         if (savedInfo.xloc) {
-            this.physics.setLeft(
+            this.gameStarter.physics.setLeft(
                 thing,
-                this.mapScreener.left + savedInfo.xloc * 4);
+                this.gameStarter.mapScreener.left + savedInfo.xloc * 4);
         }
         if (savedInfo.yloc) {
-            this.physics.setTop(
+            this.gameStarter.physics.setTop(
                 thing,
-                this.mapScreener.top + savedInfo.yloc * 4);
+                this.gameStarter.mapScreener.top + savedInfo.yloc * 4);
         }
     }
 }

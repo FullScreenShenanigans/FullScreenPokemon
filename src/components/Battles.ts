@@ -1,27 +1,28 @@
 import { IMove } from "battlemovr/lib/IBattleMovr";
+import { Component } from "eightbittr/lib/Component";
 
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IBattleInfo, IBattler, IMenu, IPlayer, IPokemon, IThing, IWildPokemonSchema
 } from "../IFullScreenPokemon";
-import { Component } from "./Component";
 
 /**
  * Battle functions used by FullScreenPokemon instances.
  */
-export class Battles extends Component {
+export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Starts a Pokemon battle.
      * 
      * @param battleInfo   Settings for the battle.
      */
     public startBattle(battleInfo: IBattleInfo): void {
-        this.fsp.modAttacher.fireEvent("onBattleStart", battleInfo);
+        this.gameStarter.modAttacher.fireEvent("onBattleStart", battleInfo);
 
         const animations: string[] = battleInfo.animations || [
             // "LineSpiral", "Flash"
             "Flash"
         ];
-        const animation: string = this.fsp.numberMaker.randomArrayMember(animations);
+        const animation: string = this.gameStarter.numberMaker.randomArrayMember(animations);
         let player: any = battleInfo.battlers.player;
 
         if (!player) {
@@ -31,22 +32,22 @@ export class Battles extends Component {
         player.name = player.name || "%%%%%%%PLAYER%%%%%%%";
         player.sprite = player.sprite || "PlayerBack";
         player.category = player.category || "Trainer";
-        player.actors = player.actors || this.fsp.itemsHolder.getItem("PokemonInParty");
+        player.actors = player.actors || this.gameStarter.itemsHolder.getItem("PokemonInParty");
         player.hasActors = typeof player.hasActors === "undefined"
             ? true : player.hasActors;
 
-        this.fsp.modAttacher.fireEvent("onBattleReady", battleInfo);
+        this.gameStarter.modAttacher.fireEvent("onBattleReady", battleInfo);
 
-        this.fsp.audioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
+        this.gameStarter.audioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 
-        (this.fsp.cutscenes as any)["cutsceneBattleTransition" + animation](
+        (this.gameStarter.cutscenes as any)["cutsceneBattleTransition" + animation](
             {
                 battleInfo,
-                callback: (): void => this.fsp.battleMover.startBattle(battleInfo)
+                callback: (): void => this.gameStarter.battleMover.startBattle(battleInfo)
             }
         );
 
-        this.fsp.graphics.moveBattleKeptThingsToText(battleInfo);
+        this.gameStarter.graphics.moveBattleKeptThingsToText(battleInfo);
     }
 
     /**
@@ -55,8 +56,8 @@ export class Battles extends Component {
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
-        const moves: IMove[] = this.fsp.mathDecider.getConstant("moves");
-        const statisticNames: string[] = this.fsp.mathDecider.getConstant("statisticNames");
+        const moves: IMove[] = this.gameStarter.mathDecider.getConstant("moves");
+        const statisticNames: string[] = this.gameStarter.mathDecider.getConstant("statisticNames");
 
         for (let statisticName of statisticNames) {
             (pokemon as any)[statisticName] = (pokemon as any)[statisticName + "Normal"];
@@ -76,21 +77,21 @@ export class Battles extends Component {
      * @param thing   An in-game Player.
      */
     public checkPlayerGrassBattle(thing: IPlayer): boolean {
-        if (!thing.grass || this.fsp.menuGrapher.getActiveMenu()) {
+        if (!thing.grass || this.gameStarter.menuGrapher.getActiveMenu()) {
             return false;
         }
 
-        if (!this.fsp.thingHitter.checkHitForThings(thing as any, thing.grass as any)) {
+        if (!this.gameStarter.thingHitter.checkHitForThings(thing as any, thing.grass as any)) {
             delete thing.grass;
             return false;
         }
 
-        if (!this.fsp.mathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
+        if (!this.gameStarter.mathDecider.compute("doesGrassEncounterHappen", thing.grass)) {
             return false;
         }
 
         thing.keys = thing.getKeys();
-        this.fsp.actions.animateGrassBattleStart(thing, thing.grass);
+        this.gameStarter.actions.animateGrassBattleStart(thing, thing.grass);
 
         return true;
     }
@@ -102,7 +103,7 @@ export class Battles extends Component {
      * @returns One of the potential Pokemon schemas at random.
      */
     public chooseRandomWildPokemon(options: IWildPokemonSchema[]): IWildPokemonSchema {
-        const choice: number = this.fsp.numberMaker.random();
+        const choice: number = this.gameStarter.numberMaker.random();
         let sum: number = 0;
 
         for (const option of options) {
@@ -137,7 +138,7 @@ export class Battles extends Component {
             text.reverse();
         }
 
-        this.fsp.menuGrapher.addMenuDialog(menu.name, [text]);
+        this.gameStarter.menuGrapher.addMenuDialog(menu.name, [text]);
     }
 
     /**
@@ -146,7 +147,7 @@ export class Battles extends Component {
      * @param battlerName   Which battler to add the display for.
      */
     public addBattleDisplayPokemonHealth(battlerName: "player" | "opponent"): void {
-        const battleInfo: IBattleInfo = this.fsp.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
         const pokemon: IPokemon = battleInfo.battlers[battlerName]!.selectedActor!;
         const menu: string = [
             "Battle",
@@ -155,19 +156,19 @@ export class Battles extends Component {
             "Health"
         ].join("");
 
-        this.fsp.menuGrapher.createMenu(menu);
-        this.fsp.menuGrapher.createMenu(menu + "Title");
-        this.fsp.menuGrapher.createMenu(menu + "Level");
-        this.fsp.menuGrapher.createMenu(menu + "Amount");
+        this.gameStarter.menuGrapher.createMenu(menu);
+        this.gameStarter.menuGrapher.createMenu(menu + "Title");
+        this.gameStarter.menuGrapher.createMenu(menu + "Level");
+        this.gameStarter.menuGrapher.createMenu(menu + "Amount");
 
         this.setBattleDisplayPokemonHealthBar(
             battlerName,
             pokemon.HP,
             pokemon.HPNormal);
 
-        this.fsp.menuGrapher.addMenuDialog(menu + "Title", [[pokemon.nickname]]);
+        this.gameStarter.menuGrapher.addMenuDialog(menu + "Title", [[pokemon.nickname]]);
 
-        this.fsp.menuGrapher.addMenuDialog(menu + "Level", String(pokemon.level));
+        this.gameStarter.menuGrapher.addMenuDialog(menu + "Level", String(pokemon.level));
     }
 
     /**
@@ -181,21 +182,21 @@ export class Battles extends Component {
     public setBattleDisplayPokemonHealthBar(battlerName: string, hp: number, hpNormal: number): void {
         const nameUpper: string = battlerName[0].toUpperCase() + battlerName.slice(1);
         const menuNumbers: string = "Battle" + nameUpper + "HealthNumbers";
-        const bar: IThing = this.fsp.utilities.getThingById("HPBarFill" + nameUpper);
-        const barWidth: number = this.fsp.mathDecider.compute("widthHealthBar", 25, hp, hpNormal);
-        const healthDialog: string = this.fsp.utilities.makeDigit(hp, 3, "\t")
+        const bar: IThing = this.gameStarter.utilities.getThingById("HPBarFill" + nameUpper);
+        const barWidth: number = this.gameStarter.mathDecider.compute("widthHealthBar", 25, hp, hpNormal);
+        const healthDialog: string = this.gameStarter.utilities.makeDigit(hp, 3, "\t")
             + "/"
-            + this.fsp.utilities.makeDigit(hpNormal, 3, "\t");
+            + this.gameStarter.utilities.makeDigit(hpNormal, 3, "\t");
 
-        if (this.fsp.menuGrapher.getMenu(menuNumbers)) {
-            for (const menu of this.fsp.menuGrapher.getMenu(menuNumbers).children) {
-                this.fsp.physics.killNormal(menu as IThing);
+        if (this.gameStarter.menuGrapher.getMenu(menuNumbers)) {
+            for (const menu of this.gameStarter.menuGrapher.getMenu(menuNumbers).children) {
+                this.gameStarter.physics.killNormal(menu as IThing);
             }
 
-            this.fsp.menuGrapher.addMenuDialog(menuNumbers, healthDialog);
+            this.gameStarter.menuGrapher.addMenuDialog(menuNumbers, healthDialog);
         }
 
-        this.fsp.physics.setWidth(bar, barWidth);
+        this.gameStarter.physics.setWidth(bar, barWidth);
         bar.hidden = barWidth === 0;
     }
 
@@ -227,7 +228,7 @@ export class Battles extends Component {
             return;
         }
 
-        this.fsp.timeHandler.addEvent(
+        this.gameStarter.timeHandler.addEvent(
             (): void => this.animateBattleDisplayPokemonHealthBar(
                 battlerName,
                 hpNew,
@@ -241,13 +242,13 @@ export class Battles extends Component {
      * Opens the in-battle moves menu.
      */
     public openBattleMovesMenu(): void {
-        const actorMoves: IMove[] = this.fsp.battleMover.getBattleInfo().battlers.player!.selectedActor!.moves;
+        const actorMoves: IMove[] = this.gameStarter.battleMover.getBattleInfo().battlers.player!.selectedActor!.moves;
         const options: any[] = actorMoves.map((move: IMove): any => {
             return {
                 text: move.title.toUpperCase(),
                 remaining: move.remaining,
                 callback: (): void => {
-                    this.fsp.battleMover.playMove(move.title);
+                    this.gameStarter.battleMover.playMove(move.title);
                 }
             };
         });
@@ -258,16 +259,16 @@ export class Battles extends Component {
             });
         }
 
-        this.fsp.menuGrapher.createMenu("BattleFightList");
-        this.fsp.menuGrapher.addMenuList("BattleFightList", { options });
-        this.fsp.menuGrapher.setActiveMenu("BattleFightList");
+        this.gameStarter.menuGrapher.createMenu("BattleFightList");
+        this.gameStarter.menuGrapher.addMenuList("BattleFightList", { options });
+        this.gameStarter.menuGrapher.setActiveMenu("BattleFightList");
     }
 
     /**
      * Opens the in-battle items menu.
      */
     public openBattleItemsMenu(): void {
-        this.fsp.menus.openPokemonMenu({
+        this.gameStarter.menus.openPokemonMenu({
             position: {
                 horizontal: "right",
                 vertical: "bottom",
@@ -287,7 +288,7 @@ export class Battles extends Component {
      * Opens the in-battle Pokemon menu.
      */
     public openBattlePokemonMenu(): void {
-        this.fsp.menus.openItemsMenu({
+        this.gameStarter.menus.openItemsMenu({
             backMenu: "BattleOptions",
             container: "Battle"
         });
@@ -297,19 +298,19 @@ export class Battles extends Component {
      * Starts the dialog to exit a battle.
      */
     public startBattleExit(): void {
-        if (this.fsp.battleMover.getBattleInfo().battlers.opponent!.category === "Trainer") {
-            this.fsp.scenePlayer.playRoutine("BattleExitFail");
+        if (this.gameStarter.battleMover.getBattleInfo().battlers.opponent!.category === "Trainer") {
+            this.gameStarter.scenePlayer.playRoutine("BattleExitFail");
             return;
         }
 
-        this.fsp.menuGrapher.deleteMenu("BattleOptions");
-        this.fsp.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.deleteMenu("BattleOptions");
+        this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            this.fsp.battleMover.getBattleInfo().exitDialog
-                || this.fsp.battleMover.getDefaults().exitDialog || "",
+            this.gameStarter.battleMover.getBattleInfo().exitDialog
+                || this.gameStarter.battleMover.getDefaults().exitDialog || "",
             (): void => {
-                this.fsp.battleMover.closeBattle();
+                this.gameStarter.battleMover.closeBattle();
             });
-        this.fsp.menuGrapher.setActiveMenu("GeneralText");
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

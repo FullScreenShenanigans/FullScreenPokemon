@@ -45,11 +45,6 @@ export enum Scrollability {
 };
 
 /**
- * How much to expand each pixel from raw sizing measurements to in-game.
- */
-export const Unitsize: number = 4;
-
-/**
  * Static scale of 2, to exand to two pixels per one game pixel.
  */
 export const Scale: number = 2;

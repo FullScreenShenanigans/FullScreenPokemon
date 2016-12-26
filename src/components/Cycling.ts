@@ -1,10 +1,12 @@
+import { Component } from "eightbittr/lib/Component";
+
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPlayer } from "../IFullScreenPokemon";
-import { Component } from "./Component";
 
 /**
  * Cycling functions used by FullScreenPokemon instances.
  */
-export class Cycling extends Component {
+export class Cycling<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Starts the Player cycling if the current Area allows it.
      *
@@ -17,17 +19,17 @@ export class Cycling extends Component {
             return false;
         }
 
-        if (!this.fsp.mapScreener.variables.allowCycling) {
+        if (!this.gameStarter.mapScreener.variables.allowCycling) {
             return false;
         }
 
         thing.cycling = true;
-        this.fsp.saves.addStateHistory(thing, "speed", thing.speed);
-        thing.speed = this.fsp.mathDecider.compute("speedCycling", thing);
+        this.gameStarter.saves.addStateHistory(thing, "speed", thing.speed);
+        thing.speed = this.gameStarter.mathDecider.compute("speedCycling", thing);
 
-        this.fsp.graphics.addClass(thing, "cycling");
+        this.gameStarter.graphics.addClass(thing, "cycling");
 
-        this.fsp.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.gameStarter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
         return true;
     }
 
@@ -38,12 +40,12 @@ export class Cycling extends Component {
      */
     public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
-        this.fsp.saves.popStateHistory(thing, "speed");
+        this.gameStarter.saves.popStateHistory(thing, "speed");
 
-        this.fsp.graphics.removeClass(thing, "cycling");
-        this.fsp.timeHandler.cancelClassCycle(thing, "cycling");
+        this.gameStarter.graphics.removeClass(thing, "cycling");
+        this.gameStarter.timeHandler.cancelClassCycle(thing, "cycling");
 
-        this.fsp.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.gameStarter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**

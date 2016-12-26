@@ -1,5 +1,7 @@
 import { Gameplay as GameStartrGameplay } from "gamestartr/lib/components/Gameplay";
 
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
 interface IDataMouseEvent extends MouseEvent {
     dataTransfer: DataTransfer;
 }
@@ -15,13 +17,13 @@ interface IDataEventTarget extends EventTarget {
 /**
  * Gameplay functions used by IGameStartr instances.
  */
-export class Gameplay extends GameStartrGameplay {
+export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrGameplay<TGameStartr> {
     /**
      * Completely restarts the game. The StartOptions menu is shown.
      */
     public gameStart(): void {
         this.startOptions();
-        this.modAttacher.fireEvent("onGameStart");
+        this.gameStarter.modAttacher.fireEvent("onGameStart");
     }
 
     /**
@@ -37,21 +39,21 @@ export class Gameplay extends GameStartrGameplay {
                 callback: (): void => this.loadFile()
             }];
 
-        this.storage.checkForOldStorageData();
+        this.gameStarter.saves.checkForOldStorageData();
 
-        if (this.itemsHolder.getItem("gameStarted")) {
+        if (this.gameStarter.itemsHolder.getItem("gameStarted")) {
             options.unshift({
                 text: "CONTINUE",
                 callback: (): void => this.startPlay()
             });
         }
 
-        this.maps.setMap("Blank");
-        this.menuGrapher.createMenu("StartOptions");
-        this.menuGrapher.addMenuList("StartOptions", {
+        this.gameStarter.maps.setMap("Blank");
+        this.gameStarter.menuGrapher.createMenu("StartOptions");
+        this.gameStarter.menuGrapher.addMenuList("StartOptions", {
             options: options
         });
-        this.menuGrapher.setActiveMenu("StartOptions");
+        this.gameStarter.menuGrapher.setActiveMenu("StartOptions");
     }
 
     /**
@@ -59,25 +61,25 @@ export class Gameplay extends GameStartrGameplay {
      * onGameStartPlay mod trigger.
      */
     public startPlay(): void {
-        this.maps.setMap(
-            this.itemsHolder.getItem("map") || this.moduleSettings.maps.mapDefault,
-            this.itemsHolder.getItem("location"),
+        this.gameStarter.maps.setMap(
+            this.gameStarter.itemsHolder.getItem("map") || this.gameStarter.moduleSettings.maps.mapDefault,
+            this.gameStarter.itemsHolder.getItem("location"),
             true);
-        this.maps.entranceResume();
+        this.gameStarter.maps.entranceResume();
 
-        this.modAttacher.fireEvent("onGameStartPlay");
+        this.gameStarter.modAttacher.fireEvent("onGameStartPlay");
     }
 
     /**
      * Starts the game's intro, and fires the onGameStartIntro mod trigger.
      */
     public startIntro(): void {
-        this.storage.clearSavedData();
-        this.scenePlayer.startCutscene("Intro", {
+        this.gameStarter.saves.clearSavedData();
+        this.gameStarter.scenePlayer.startCutscene("Intro", {
             disablePauseMenu: true
         });
 
-        this.modAttacher.fireEvent("onGameStartIntro");
+        this.gameStarter.modAttacher.fireEvent("onGameStartIntro");
     }
 
     /**
@@ -85,7 +87,7 @@ export class Gameplay extends GameStartrGameplay {
      * game state. The onGameStartIntro mod event is triggered.
      */
     public loadFile(): void {
-        const dummy: HTMLInputElement = this.utilities.createElement(
+        const dummy: HTMLInputElement = this.gameStarter.utilities.createElement(
             "input",
             {
                 type: "file",
@@ -100,7 +102,7 @@ export class Gameplay extends GameStartrGameplay {
 
                     const reader: FileReader = new FileReader();
                     reader.onloadend = (loadEvent: IDataProgressEvent): void => {
-                        this.storage.loadData(loadEvent.currentTarget.result);
+                        this.gameStarter.saves.loadData(loadEvent.currentTarget.result);
                         delete reader.onloadend;
                     };
                     reader.readAsText(file);
@@ -109,7 +111,7 @@ export class Gameplay extends GameStartrGameplay {
 
         dummy.click();
 
-        this.modAttacher.fireEvent("onGameStartIntro");
+        this.gameStarter.modAttacher.fireEvent("onGameStartIntro");
     }
 
     /**
@@ -140,10 +142,10 @@ export class Gameplay extends GameStartrGameplay {
     }
 
     /**
-     * Closes the game (currently a no-op).
+     * Closes the game.
      */
     public onGameClose(): void {
-        this.storage.autoSave();
+        this.gameStarter.saves.autoSave();
         console.log("Closed.");
     }
 }

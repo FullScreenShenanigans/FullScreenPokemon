@@ -1,12 +1,13 @@
 import { Physics as GameStartrPhysics } from "gamestartr/lib/components/Physics";
 
-import { Direction } from "./Constants";
-import { ICharacter, IGrass, IPlayer, IThing } from "./IFullScreenPokemon";
+import { Direction } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { ICharacter, IGrass, IPlayer, IThing } from "../IFullScreenPokemon";
 
 /**
  * Physics functions used by FullScreenPokemon instances.
  */
-export class Physics extends GameStartrPhysics {
+export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPhysics<TGameStartr> {
     /**
      * Determines the bordering direction from one Thing to another.
      * 
@@ -146,7 +147,7 @@ export class Physics extends GameStartrPhysics {
      */
     public setPlayerDirection(thing: IPlayer, direction: Direction): void {
         thing.direction = direction;
-        this.mapScreener.playerDirection = direction;
+        this.gameStarter.mapScreener.playerDirection = direction;
         thing.shouldWalk = true;
     }
 
@@ -167,11 +168,11 @@ export class Physics extends GameStartrPhysics {
         thing.numquads = 0;
         thing.movement = undefined;
 
-        this.timeHandler.cancelAllCycles(thing);
-        this.modAttacher.fireEvent("onKillNormal", thing);
+        this.gameStarter.timeHandler.cancelAllCycles(thing);
+        this.gameStarter.modAttacher.fireEvent("onKillNormal", thing);
 
         if (thing.id) {
-            delete (this.groupHolder.getGroup("Thing") as any)[thing.id];
+            delete (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id];
         }
     }
 }
