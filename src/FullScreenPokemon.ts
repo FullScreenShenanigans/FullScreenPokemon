@@ -11,6 +11,7 @@ import { StateHoldr } from "stateholdr/lib/StateHoldr";
 import { IUserWrappr } from "userwrappr/lib/IUserWrappr";
 import { UserWrappr } from "userwrappr/lib/UserWrappr";
 
+import { Scale } from "./Constants";
 import { Actions } from "./components/Actions";
 import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
@@ -255,7 +256,7 @@ export class FullScreenPokemon extends GameStartr {
     protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
-            modifierScope: this.menus,
+            modifierScope: this,
             ...moduleSettings.menus
         });
     }

@@ -39,7 +39,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         this.saves.popStateHistory(area, "allowCycling");
 
                         if (!area.allowCycling && this.players[0].cycling) {
-                            this.cycling.stopCycling(this.players);
+                            this.cycling.stopCycling(this.players[0]);
                         }
                         this.mapScreener.variables.allowCycling = area.allowCycling;
                     },
@@ -59,7 +59,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
                         const stats: any = this.objectMaker.getFunction("Player").prototype;
-                        this.players[0].speed = stats.speed = this.moduleSettings.objects.properties!["Player"].speed;
+                        this.players[0].speed = stats.speed = this.moduleSettings.objects!.properties!["Player"].speed;
                     }
                     /* tslint:enable no-string-literal */
                 }
@@ -199,7 +199,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      * @param items   The Player's items.
                      */
                     onOpenItemsMenu: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, items: any[]): void {
-                        const grassMap: IMap | undefined = this.players[0].grass && this.areaSpawner.getMap(this.players[0].grass.mapName) as IMap;
+                        const grassMap: IMap | undefined = this.players[0].grass && this.areaSpawner.getMap(this.players[0].grass!.mapName) as IMap;
                         const grassArea: IArea | undefined = grassMap && grassMap.areas[this.players[0].grass!.areaName] as IArea;
 
                         if (!this.battleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {

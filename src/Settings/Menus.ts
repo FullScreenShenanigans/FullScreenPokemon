@@ -4,7 +4,6 @@ import {
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IDialog, IMenuBase, IMenuSchema, IMenusModuleSettings, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
-import { Menus } from "../Menus";
 
 /* tslint:disable object-literal-key-quotes */
 
@@ -32,34 +31,34 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
             "�": "eFancy"
         },
         "replacements": {
-            "PLAYER": function (this: Menus<FullScreenPokemon>): string[] {
+            "PLAYER": function (this: FullScreenPokemon): string[] {
                 return this.itemsHolder.getItem("name");
             },
-            "RIVAL": function (this: Menus<FullScreenPokemon>): string[] {
+            "RIVAL": function (this: FullScreenPokemon): string[] {
                 return this.itemsHolder.getItem("nameRival");
             },
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
-            "POKEDEX.SEEN": function (this: Menus<FullScreenPokemon>): string[] {
+            "POKEDEX.SEEN": function (this: FullScreenPokemon): string[] {
                 return this.utilities.makeDigit(
-                    this.storage.getPokedexListingsOrdered()
+                    this.saves.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.seen))
                         .length,
                     3,
                     "\t")
                     .split("");
             },
-            "POKEDEX.OWN": function (this: Menus<FullScreenPokemon>): string[] {
+            "POKEDEX.OWN": function (this: FullScreenPokemon): string[] {
                 return this.utilities.makeDigit(
-                    this.storage.getPokedexListingsOrdered()
+                    this.saves.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.caught))
                         .length,
                     3,
                     "\t")
                     .split("");
             },
-            "BADGES.LENGTH": function (this: Menus<FullScreenPokemon>): string[] {
+            "BADGES.LENGTH": function (this: FullScreenPokemon): string[] {
                 const badges: { [i: string]: boolean } = this.itemsHolder.getItem("badges");
                 let total: number = 0;
 
@@ -71,7 +70,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
 
                 return total.toString().split("");
             },
-            "POKEDEX.LENGTH": function (this: Menus<FullScreenPokemon>): string[] {
+            "POKEDEX.LENGTH": function (this: FullScreenPokemon): string[] {
                 const pokedex: IPokedexListing[] = this.itemsHolder.getItem("Pokedex");
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
@@ -87,11 +86,11 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     .toString()
                     .split("");
             },
-            "TIME": function (this: Menus<FullScreenPokemon>): string[] {
+            "TIME": function (this: FullScreenPokemon): string[] {
                 const ticksRecorded: number = this.itemsHolder.getItem("time");
-                const ticksUnrecorded: number = this.fpsAnalyzer.getNumRecorded() - this.ticksElapsed;
+                const ticksUnrecorded: number = this.gamesRunner.getFPSAnalyzer().getNumRecorded() - this.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
-                const secondsTotal: number = Math.floor(ticksTotal / this.moduleSettings.runner.interval);
+                const secondsTotal: number = Math.floor(ticksTotal / ((this.moduleSettings.runner || {}).interval) || 0);
                 let hours: string = Math.floor(secondsTotal / 3600).toString();
                 let minutes: string = Math.floor((secondsTotal - Number(hours)) / 60).toString();
 
@@ -109,7 +108,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
 
                 return (hours + ":" + minutes).split("");
             },
-            "MONEY": function (this: Menus<FullScreenPokemon>): string[] {
+            "MONEY": function (this: FullScreenPokemon): string[] {
                 return this.itemsHolder.getItem("money").toString().split("");
             }
         },

@@ -1,6 +1,6 @@
 import { IInputModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Inputs } from "../Inputs";
+import { Inputs } from "../components/Inputs";
 
 export function GenerateInputSettings(): IInputModuleSettings {
     "use strict";

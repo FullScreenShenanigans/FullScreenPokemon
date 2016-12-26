@@ -1,7 +1,7 @@
 import { IMapsModuleSettings } from "../IFullScreenPokemon";
-import { Macros } from "../Macros";
-import { Maps } from "../Maps";
-import { Scrolling } from "../Scrolling";
+import { Macros } from "../components/Macros";
+import { Maps } from "../components/Maps";
+import { Scrolling } from "../components/Scrolling";
 import { PalletTown } from "./MapsLibrary/PalletTown";
 import { PewterCity } from "./MapsLibrary/PewterCity";
 import { Route1 } from "./MapsLibrary/Route1";
