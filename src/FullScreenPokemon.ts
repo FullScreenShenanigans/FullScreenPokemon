@@ -14,6 +14,7 @@ import { UserWrappr } from "userwrappr/lib/UserWrappr";
 import { Actions } from "./components/Actions";
 import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
+import { Constants } from "./components/Constants";
 import { Cutscenes } from "./components/Cutscenes";
 import { Cycling } from "./components/Cycling";
 import { Equations } from "./components/Equations";
@@ -30,7 +31,6 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { Scale } from "./Constants";
 import { IMapScreenr, IModuleSettings, IPlayer, IThing } from "./IFullScreenPokemon";
 import { ModuleSettingsGenerator } from "./settings/ModuleSettingsGenerator";
 
@@ -88,6 +88,11 @@ export class FullScreenPokemon extends GameStartr {
      * Collision functions used by this instance.
      */
     public collisions: Collisions<FullScreenPokemon>;
+
+    /**
+     * Constants used by this instance.
+     */
+    public constants: Constants<FullScreenPokemon>;
 
     /**
      * Cutscene functions used by this instance.
@@ -195,6 +200,7 @@ export class FullScreenPokemon extends GameStartr {
         this.actions = new Actions(this);
         this.battles = new Battles(this);
         this.collisions = new Collisions(this);
+        this.constants = new Constants(this);
         this.cutscenes = new Cutscenes(this);
         this.cycling = new Cycling(this);
         this.equations = new Equations(this);
@@ -353,4 +359,4 @@ export class FullScreenPokemon extends GameStartr {
 }
 
 FullScreenPokemon.prototype.moduleSettings = new ModuleSettingsGenerator().generate();
-FullScreenPokemon.prototype.scale = Scale;
+FullScreenPokemon.prototype.scale = Constants.scale;

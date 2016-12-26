@@ -15,6 +15,16 @@ import {
  */
 export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * 
+     */
+    public readonly townMapLocations: { [i: string]: [number, number ] } = {
+        "Pallet Town": [18, 48],
+        "Pewter City": [18, 16],
+        "Serebii Islands": [18, 64],
+        "Viridian City": [18, 36]
+    };
+
+    /**
      * Opens the Pause menu.
      */
     public openPauseMenu(): void {

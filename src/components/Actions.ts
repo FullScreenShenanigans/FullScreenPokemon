@@ -3,11 +3,10 @@ import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
-import { Direction, DirectionAliases, DirectionClasses } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IArea, IAreaGate, IareaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog,
-    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IHMMoveSchema, IMap,
+    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IMap,
     IMenuTriggerer, IPlayer, IPokemon, ISightDetector, IThemeDetector, IThing,
     ITransporter, ITransportSchema, IWalkingOnStop, IWalkingOnStopCommandFunction,
     IWildPokemonSchema
@@ -692,11 +691,11 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                     return;
                 }
 
-                this.animateCharacterSetDirection(thing, DirectionAliases[onStop[1] as number]);
+                this.animateCharacterSetDirection(thing, this.gameStarter.constants.directionAliases[onStop[1] as number]);
 
                 this.animateCharacterStartWalkingCycle(
                     thing,
-                    DirectionAliases[onStop[1] as number],
+                    this.gameStarter.constants.directionAliases[onStop[1] as number],
                     onStop.slice(2));
             }
 
@@ -876,7 +875,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                     }
                     this.animateCharacterStartWalkingCycle(
                         thing,
-                        DirectionAliases[onStop[1] as number],
+                        this.gameStarter.constants.directionAliases[onStop[1] as number],
                         onStop.slice(2));
                 }
                 break;

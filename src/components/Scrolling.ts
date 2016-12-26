@@ -1,8 +1,32 @@
 import { Scrolling as GameStartrScrolling } from "gamestartr/lib/components/Scrolling";
 
-import { Scrollability } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IArea, IAreaBoundaries } from "../IFullScreenPokemon";
+
+/**
+ * What direction(s) the screen may scroll from player movement.
+ */
+export enum Scrollability {
+    /**
+     * The screen may not scroll in either direction.
+     */
+    None,
+
+    /**
+     * The screen may scroll vertically.
+     */
+    Vertical,
+
+    /**
+     * The screen may scroll horizontally.
+     */
+    Horizontal,
+
+    /**
+     * The screen may scroll vertically and horizontally.
+     */
+    Both,
+};
 
 /**
  * Scrolling functions used by FullScreenPokemon instances.
