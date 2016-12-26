@@ -1,25 +1,25 @@
-import { IModuleSettings } from "./IFullScreenPokemon";
-import { GenerateAudioSettings } from "./settings/Audio";
-import { GenerateBattlesSettings } from "./settings/Battles";
-import { GenerateCollisionsSettings } from "./settings/Collisions";
-import { GenerateDevicesSettings } from "./settings/Devices";
-import { GenerateEventsSettings } from "./settings/Events";
-import { GenerateGeneratorSettings } from "./settings/Generator";
-import { GenerateGroupsSettings } from "./settings/Groups";
-import { GenerateInputSettings } from "./settings/Input";
-import { GenerateItemsSettings } from "./settings/Items";
-import { GenerateMapsSettings } from "./settings/Maps";
-import { GenerateMathSettings } from "./settings/Math";
-import { GenerateMenusSettings } from "./settings/Menus";
-import { GenerateModsSettings } from "./settings/Mods";
-import { GenerateObjectsSettings } from "./settings/Objects";
-import { GenerateQuadrantsSettings } from "./settings/Quadrants";
-import { GenerateRendererSettings } from "./settings/Renderer";
-import { GenerateRunnerSettings } from "./settings/Runner";
-import { GenerateScenesSettings } from "./settings/Scenes";
-import { GenerateSpritesSettings } from "./settings/Sprites";
-import { GenerateStateSettings } from "./settings/State";
-import { GenerateUISettings } from "./settings/Ui";
+import { IModuleSettings } from "../IFullScreenPokemon";
+import { GenerateAudioSettings } from "./Audio";
+import { GenerateBattlesSettings } from "./Battles";
+import { GenerateCollisionsSettings } from "./Collisions";
+import { GenerateDevicesSettings } from "./Devices";
+import { GenerateEventsSettings } from "./Events";
+import { GenerateGeneratorSettings } from "./Generator";
+import { GenerateGroupsSettings } from "./Groups";
+import { GenerateInputSettings } from "./Input";
+import { GenerateItemsSettings } from "./Items";
+import { GenerateMapsSettings } from "./Maps";
+import { GenerateMathSettings } from "./Math";
+import { GenerateMenusSettings } from "./Menus";
+import { GenerateModsSettings } from "./Mods";
+import { GenerateObjectsSettings } from "./Objects";
+import { GenerateQuadrantsSettings } from "./Quadrants";
+import { GenerateRendererSettings } from "./Renderer";
+import { GenerateRunnerSettings } from "./Runner";
+import { GenerateScenesSettings } from "./Scenes";
+import { GenerateSpritesSettings } from "./Sprites";
+import { GenerateStateSettings } from "./State";
+import { GenerateUISettings } from "./Ui";
 
 /**
  * Generator for FullScreenPokemon settings.

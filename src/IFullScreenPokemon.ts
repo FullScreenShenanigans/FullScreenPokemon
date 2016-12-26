@@ -119,11 +119,6 @@ export interface IStaticMathConstants extends imathdecidr.IConstants {
     statisticNamesDisplayed: string[];
 
     /**
-     * How much to expand each pixel from raw sizing measurements to in-game.
-     */
-    unitsize: number;
-
-    /**
      * Information on Pokemon status effects.
      */
     statuses: {

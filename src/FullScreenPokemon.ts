@@ -75,92 +75,92 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * Action functions used by this instance.
      */
-    public actions: Actions;
+    public actions: Actions<FullScreenPokemon>;
 
     /**
      * Battle functions used by this instance.
      */
-    public battles: Battles;
+    public battles: Battles<FullScreenPokemon>;
 
     /**
      * Collision functions used by this instance.
      */
-    public collisions: Collisions;
+    public collisions: Collisions<FullScreenPokemon>;
 
     /**
      * Cutscene functions used by this instance.
      */
-    public cutscenes: Cutscenes;
+    public cutscenes: Cutscenes<FullScreenPokemon>;
 
     /**
      * Cycling functions used by this instance.
      */
-    public cycling: Cycling;
+    public cycling: Cycling<FullScreenPokemon>;
 
     /**
      * Fishing functions used by this instance.
      */
-    public fishing: Fishing;
+    public fishing: Fishing<FullScreenPokemon>;
 
     /**
      * Gameplay functions used by this instance.
      */
-    public gameplay: Gameplay;
+    public gameplay: Gameplay<FullScreenPokemon>;
 
     /**
      * Graphics functions used by this instance.
      */
-    public graphics: Graphics;
+    public graphics: Graphics<FullScreenPokemon>;
 
     /**
      * Input functions used by this instance.
      */
-    public inputs: Inputs;
+    public inputs: Inputs<FullScreenPokemon>;
 
     /**
      * Macro functions used by this instance.
      */
-    public macros: Macros;
+    public macros: Macros<FullScreenPokemon>;
 
     /**
      * Maintenance functions used by this instance.
      */
-    public maintenance: Maintenance;
+    public maintenance: Maintenance<FullScreenPokemon>;
 
     /**
      * Maps functions used by this instance.
      */
-    public maps: Maps;
+    public maps: Maps<FullScreenPokemon>;
 
     /**
      * Menu functions used by this instance.
      */
-    public menus: Menus;
+    public menus: Menus<FullScreenPokemon>;
 
     /**
      * Physics functions used by this instance.
      */
-    public physics: Physics;
+    public physics: Physics<FullScreenPokemon>;
 
     /**
      * Thing manipulation functions used by this instance.
      */
-    public things: Things;
+    public things: Things<FullScreenPokemon>;
 
     /**
      * Scrolling functions used by this instance.
      */
-    public scrolling: Scrolling;
+    public scrolling: Scrolling<FullScreenPokemon>;
 
     /**
      * Storage functions used by this instance.
      */
-    public saves: Saves;
+    public saves: Saves<FullScreenPokemon>;
 
     /**
      * Utility functions used by this instance.
      */
-    public utilities: Utilities;
+    public utilities: Utilities<FullScreenPokemon>;
 
     /**
      * The game's single player.

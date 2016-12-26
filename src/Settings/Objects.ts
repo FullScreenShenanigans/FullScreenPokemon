@@ -1,8 +1,7 @@
 import { IObjectsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Actions } from "../components/Animations";
+import { Actions } from "../components/Actions";
 import { Collisions } from "../components/Collisions";
-import { Unitsize } from "../components/Constants";
 import { Maps } from "../components/Maps";
 import { Things } from "../components/Things";
 
@@ -790,13 +789,13 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "Character": {
                 "groupType": "Character",
-                "speed": Unitsize / 3,
+                "speed": 4 / 3,
                 "walking": false,
                 "shouldWalk": false,
                 "switchDirectionOnDialog": true,
                 "heightGrass": 4,
                 "direction": 2,
-                "offsetY": Unitsize * -2,
+                "offsetY": -8,
                 "roamingDirections": [0, 1, 2, 3],
                 "onThingAdd": Actions.prototype.spawnCharacter,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
@@ -823,7 +822,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "player": true,
                 "canKeyWalking": true,
                 "direction": 2,
-                "speed": Unitsize / 2,
+                "speed": 2,
                 "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
                 "onWalkingStop": Actions.prototype.animatePlayerStopWalking,
                 "getKeys": () => {
@@ -909,7 +908,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Computer": {
                 "width": 8,
                 "height": 12,
-                "tolBottom": Unitsize * 4
+                "tolBottom": 16
             },
             "ComputerDesk": [8, 16],
             "ConsoleController": [8, 5],
@@ -948,7 +947,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "StrengthBoulder": {
                 "moveName": "Strength",
                 "moveCallback": Actions.prototype.partyActivateStrength,
-                "speed": Unitsize,
+                "speed": 4,
                 "requiredBadge": "Rainbow"
             },
             "HouseBase": {
@@ -1028,7 +1027,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "MountainTop": {
                 "width": 4,
                 "height": 5,
-                "tolBottom": Unitsize * -3
+                "tolBottom": -12
             },
             "PlantLarge": [16, 16],
             "PokeCenterDeskBlocker": {
@@ -1061,7 +1060,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "StoreFridge": [8, 16],
             "StoreSaleBin": [8, 12],
             "Table": {
-                "tolBottom": Unitsize * 4
+                "tolBottom": 16
             },
             "Table1x2": [8, 16],
             "Table2x2": [16, 16],
@@ -1112,7 +1111,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Blackboard": [16, 8],
             "Bridge": [4, 4],
             "Clipboard": {
-                "offsetY": Unitsize * -1.5
+                "offsetY": -6
             },
             "Doormat": {
                 "spritewidth": .5,
@@ -1203,7 +1202,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Exclamation": {
                 "width": 7,
                 "height": 7,
-                "offsetY": Unitsize * -2
+                "offsetY": -8
             },
             "HalfArrowHorizontal": [4, 2],
             "EmberSmall": [6, 6],
@@ -1219,7 +1218,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "repeat": true
             },
             "CharacterDropped": {
-                "offsetY": Unitsize * .75
+                "offsetY": 3
             },
             "CharacterShadow": [3.5, 3.5],
             "CharMDash": {
@@ -1230,29 +1229,29 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 }
             },
             "CharPoke": {
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharMon": {
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharNo": {
                 "width": 4,
                 "height": 3,
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharID": {
                 "width": 4,
                 "height": 3,
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharSlash": {
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharPeriod": {
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharComma": {
-                "offsetY": Unitsize * .5
+                "offsetY": 2
             },
             "CharApostrophe": [1, 2],
             "CharFeet": [2, 1.5],
@@ -1268,8 +1267,8 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "width": 4,
                 "spritewidth": 2.5,
                 "height": 4,
-                "offsetX": Unitsize / 2,
-                "offsetY": Unitsize / 2,
+                "offsetX": 2,
+                "offsetY": 2
             },
             "CharArrowUp": [3.5, 2.5],
             "CharArrowRight": [2.5, 3.5],

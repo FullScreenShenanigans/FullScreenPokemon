@@ -1,9 +1,8 @@
 import { IActorExperience, IMove } from "battlemovr/lib/IBattleMovr";
 
-import { Actions } from "../Animations";
-import { Unitsize } from "../Constants";
-import { Cycling } from "../Cycling";
-import { Fishing } from "../Fishing";
+import { Actions } from "../components/Actions";
+import { Cycling } from "../components/Cycling";
+import { Fishing } from "../components/Fishing";
 import {
     IBattleBall, IBattleInfo, IBattleModification, IBattler,
     ICharacter, IFullScreenPokemonMathDecidr, IGrass, IHMMoveSchema,
@@ -57,7 +56,7 @@ export function GenerateMathSettings(): IMathModuleSettings {
                 return thing.speed * 2;
             },
             "speedWalking": function (this: IFullScreenPokemonMathDecidr, thing: ICharacter): number {
-                return Math.round(8 * Unitsize / thing.speed);
+                return Math.round(8 / thing.speed);
             },
             "newPokemon": function (this: IFullScreenPokemonMathDecidr, title: string[], level?: number, moves?: IMove[], iv?: number, ev?: number): IPokemon {
                 const statisticNames: string[] = this.constants.statisticNames;
@@ -543,7 +542,6 @@ export function GenerateMathSettings(): IMathModuleSettings {
         "constants": {
             "statisticNames": ["HP", "Attack", "Defense", "Speed", "Special"],
             "statisticNamesDisplayed": ["Attack", "Defense", "Speed", "Special"],
-            "unitsize": Unitsize,
             "statuses": {
                 "names": ["Sleep", "Freeze", "Paralyze", "Burn", "Poison"],
                 "probability25": {

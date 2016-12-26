@@ -1,17 +1,19 @@
 import { IMove } from "battlemovr/lib/IBattleMovr";
+import { Component } from "eightbittr/lib/Component";
 import { IGridCell, IMenuSchema, IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 
-import { KeysLowercase, KeysUppercase } from "./Constants";
+import { KeysLowercase, KeysUppercase } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IHMMoveSchema, IItemSchema, IItemsMenuSettings, IKeyboardMenuSettings,
     IKeyboardResultsMenu, ILevelUpStatsMenuSettings, IListMenu, IMenu,
     IPlayer, IPokedexInformation, IPokedexListing, IPokemon, IThing
-} from "./IFullScreenPokemon";
+} from "../IFullScreenPokemon";
 
 /**
  * Menu functions used by FullScreenPokemon instances.
  */
-export class Menus {
+export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Opens the Pause menu.
      */
@@ -39,7 +41,7 @@ export class Menus {
             }];
 
         // The Pokedex option is only shown if the Player has one
-        if (this.itemsHolder.getItem("hasPokedex") === true) {
+        if (this.gameStarter.itemsHolder.getItem("hasPokedex") === true) {
             const attributes: any = {
                 "size": {
                     "height": 64
@@ -51,22 +53,22 @@ export class Menus {
                 callback: (): void => this.openPokedexMenu()
             });
 
-            this.menuGrapher.createMenu("Pause", attributes);
+            this.gameStarter.menuGrapher.createMenu("Pause", attributes);
         } else {
-            this.menuGrapher.createMenu("Pause");
+            this.gameStarter.menuGrapher.createMenu("Pause");
         }
 
-        this.menuGrapher.addMenuList("Pause", {
+        this.gameStarter.menuGrapher.addMenuList("Pause", {
             options: options
         });
-        this.menuGrapher.setActiveMenu("Pause");
+        this.gameStarter.menuGrapher.setActiveMenu("Pause");
     }
 
     /**
      * Closes the Pause menu.
      */
     public closePauseMenu(): void {
-        this.menuGrapher.deleteMenu("Pause");
+        this.gameStarter.menuGrapher.deleteMenu("Pause");
     }
 
     /**
@@ -74,17 +76,17 @@ export class Menus {
      * Start key trigger is registered in the MenuGraphr instead.
      */
     public togglePauseMenu(): void {
-        if (this.menuGrapher.getActiveMenu()) {
-            this.menuGrapher.registerStart();
+        if (this.gameStarter.menuGrapher.getActiveMenu()) {
+            this.gameStarter.menuGrapher.registerStart();
             return;
         }
 
-        let cutsceneSettings: any = this.scenePlayer.getCutsceneSettings();
+        let cutsceneSettings: any = this.gameStarter.scenePlayer.getCutsceneSettings();
         if (cutsceneSettings && cutsceneSettings.disablePauseMenu) {
             return;
         }
 
-        this.menuGrapher.getMenu("Pause")
+        this.gameStarter.menuGrapher.getMenu("Pause")
             ? this.closePauseMenu()
             : this.openPauseMenu();
     }
@@ -93,18 +95,18 @@ export class Menus {
      * Opens the Pokedex menu.
      */
     public openPokedexMenu(): void {
-        const listings: (IPokedexInformation | undefined)[] = this.storage.getPokedexListingsOrdered();
+        const listings: (IPokedexInformation | undefined)[] = this.gameStarter.saves.getPokedexListingsOrdered();
         let currentListing: IPokedexInformation;
 
-        this.menuGrapher.createMenu("Pokedex");
-        this.menuGrapher.addMenuList("Pokedex", {
+        this.gameStarter.menuGrapher.createMenu("Pokedex");
+        this.gameStarter.menuGrapher.addMenuList("Pokedex", {
             options: listings.map((listing: IPokedexInformation, i: number): any => {
-                const characters: any[] = this.utilities.makeDigit(i + 1, 3, 0).split("");
+                const characters: any[] = this.gameStarter.utilities.makeDigit(i + 1, 3, 0).split("");
                 const output: any = {
                     text: characters,
                     callback: (): void => {
                         currentListing = listing;
-                        this.menuGrapher.setActiveMenu("PokedexOptions");
+                        this.gameStarter.menuGrapher.setActiveMenu("PokedexOptions");
                     }
                 };
 
@@ -140,17 +142,17 @@ export class Menus {
                 return output;
             })
         });
-        this.menuGrapher.setActiveMenu("Pokedex");
+        this.gameStarter.menuGrapher.setActiveMenu("Pokedex");
 
-        this.menuGrapher.createMenu("PokedexOptions");
-        this.menuGrapher.addMenuList("PokedexOptions", {
+        this.gameStarter.menuGrapher.createMenu("PokedexOptions");
+        this.gameStarter.menuGrapher.addMenuList("PokedexOptions", {
             options: [
                 {
                     text: "DATA",
                     callback: (): void => {
                         this.openPokedexListing(
                             currentListing.title,
-                            (): void => this.menuGrapher.setActiveMenu("PokedexOptions"));
+                            (): void => this.gameStarter.menuGrapher.setActiveMenu("PokedexOptions"));
                     }
                 }, {
                     text: "CRY"
@@ -164,7 +166,7 @@ export class Menus {
                     }
                 }, {
                     text: "QUIT",
-                    callback: this.menuGrapher.registerB
+                    callback: this.gameStarter.menuGrapher.registerB
                 }
             ]
         });
@@ -180,12 +182,12 @@ export class Menus {
         const options: any[] = [];
 
         for (const action of moves) {
-            const move: IHMMoveSchema = this.mathDecider.getConstant("moves")[action.title];
-            if (move.partyActivate && move.requiredBadge && this.itemsHolder.getItem("badges")[move.requiredBadge]) {
+            const move: IHMMoveSchema = this.gameStarter.mathDecider.getConstant("moves")[action.title];
+            if (move.partyActivate && move.requiredBadge && this.gameStarter.itemsHolder.getItem("badges")[move.requiredBadge]) {
                 options.push({
                     text: action.title.toUpperCase(),
                     callback: (): void => {
-                        this.animations.partyActivateCheckThing(this.player, settings.pokemon, move);
+                        this.gameStarter.actions.partyActivateCheckThing(this.gameStarter.players[0], settings.pokemon, move);
                     }
                 });
             }
@@ -202,16 +204,16 @@ export class Menus {
             },
             {
                 text: "CANCEL",
-                callback: this.menuGrapher.registerB
+                callback: this.gameStarter.menuGrapher.registerB
             });
 
-        this.menuGrapher.createMenu("PokemonMenuContext", {
+        this.gameStarter.menuGrapher.createMenu("PokemonMenuContext", {
             backMenu: "Pokemon"
         });
-        this.menuGrapher.addMenuList("PokemonMenuContext", {
+        this.gameStarter.menuGrapher.addMenuList("PokemonMenuContext", {
             options: options
         });
-        this.menuGrapher.setActiveMenu("PokemonMenuContext");
+        this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
     }
 
     /**
@@ -220,13 +222,13 @@ export class Menus {
      * @param pokemon   A Pokemon to show statistics of.
      */
     public openPokemonMenuStats(pokemon: IPokemon): void {
-        const schemas: any = this.mathDecider.getConstant("pokemon");
+        const schemas: any = this.gameStarter.mathDecider.getConstant("pokemon");
         const schema: any = schemas[pokemon.title.join("")];
         const barWidth: number = 25;
-        const health: number = this.mathDecider.compute(
+        const health: number = this.gameStarter.mathDecider.compute(
             "widthHealthBar", barWidth, pokemon.HP, pokemon.HPNormal);
 
-        this.menuGrapher.createMenu("PokemonMenuStats", {
+        this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
             backMenu: "PokemonMenuContext",
             callback: (): void => this.openPokemonMenuStatsSecondary(pokemon),
             container: "Pokemon"
@@ -250,25 +252,25 @@ export class Menus {
             textXOffset: 4
         });
 
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.utilities.makeDigit(schema.number, 3, 0));
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.gameStarter.utilities.makeDigit(schema.number, 3, 0));
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
         if (pokemon.types.length >= 2) {
-            this.menuGrapher.createMenu("PokemonMenuStatsType2");
-            this.menuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
+            this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsType2");
+            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
         }
-        this.menuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
+        this.gameStarter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsOT",
             [
                 "%%%%%%%PLAYER%%%%%%%"
             ]
         );
 
-        this.menuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
+        this.gameStarter.menuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
             type: "thing",
             thing: "LightGraySquare",
             position: {
@@ -285,7 +287,7 @@ export class Menus {
             }
         });
 
-        this.menuGrapher.createMenuThing("PokemonMenuStats", {
+        this.gameStarter.menuGrapher.createMenuThing("PokemonMenuStats", {
             type: "thing",
             thing: pokemon.title.join("") + "Front",
             args: {
@@ -300,7 +302,7 @@ export class Menus {
             }
         });
 
-        this.menuGrapher.setActiveMenu("PokemonMenuStats");
+        this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuStats");
     }
 
     /**
@@ -310,11 +312,11 @@ export class Menus {
      */
     public openPokemonLevelUpStats(settings: ILevelUpStatsMenuSettings): void {
         const pokemon: IPokemon = settings.pokemon;
-        const statistics: string[] = this.mathDecider.getConstant("statisticNamesDisplayed").slice();
+        const statistics: string[] = this.gameStarter.mathDecider.getConstant("statisticNamesDisplayed").slice();
         const numStatistics: number = statistics.length;
         const textXOffset: number = settings.textXOffset || 8;
         const menuSchema: IMenuSchema = {
-            callback: (): void => this.menuGrapher.deleteMenu("LevelUpStats"),
+            callback: (): void => this.gameStarter.menuGrapher.deleteMenu("LevelUpStats"),
             onMenuDelete: settings.onMenuDelete,
             position: settings.position || {
                 horizontal: "center",
@@ -325,7 +327,7 @@ export class Menus {
         let left: number;
 
         for (let i: number = 0; i < numStatistics; i += 1) {
-            statistics.push(this.utilities.makeDigit((pokemon as any)[statistics[i] + "Normal"], 3, "\t"));
+            statistics.push(this.gameStarter.utilities.makeDigit((pokemon as any)[statistics[i] + "Normal"], 3, "\t"));
             statistics[i] = statistics[i].toUpperCase();
         }
 
@@ -358,7 +360,7 @@ export class Menus {
             menuSchema.size = settings.size;
         }
 
-        this.menuGrapher.createMenu("LevelUpStats", menuSchema);
+        this.gameStarter.menuGrapher.createMenu("LevelUpStats", menuSchema);
     }
 
     /**
@@ -389,11 +391,11 @@ export class Menus {
                     command: true,
                     y: -.5
                 });
-                characters.push(...this.utilities.makeDigit(move.remaining, 2, " ").split(""));
+                characters.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
                 characters.push("/");
                 characters.push(
-                    ...this.utilities.makeDigit(
-                        this.mathDecider.getConstant("moves")[move.title].PP, 2, " ")
+                    ...this.gameStarter.utilities.makeDigit(
+                        this.gameStarter.mathDecider.getConstant("moves")[move.title].PP, 2, " ")
                             .split(""));
 
                 characters.push({
@@ -424,28 +426,28 @@ export class Menus {
             });
         }
 
-        this.menuGrapher.createMenu("PokemonMenuStatsExperience");
+        this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsExperience");
 
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsExperience",
-            this.utilities.makeDigit(pokemon.experience.current, 10, "\t"));
+            this.gameStarter.utilities.makeDigit(pokemon.experience.current, 10, "\t"));
 
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsExperienceFrom",
-            this.utilities.makeDigit(
+            this.gameStarter.utilities.makeDigit(
                 (pokemon.experience.next - pokemon.experience.current), 3, "\t"));
 
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsExperienceNext",
             pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
 
-        this.menuGrapher.createMenu("PokemonMenuStatsMoves");
-        this.menuGrapher.addMenuList("PokemonMenuStatsMoves", {
+        this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsMoves");
+        this.gameStarter.menuGrapher.addMenuList("PokemonMenuStatsMoves", {
             options: options
         });
 
-        this.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
-            this.menuGrapher.deleteMenu("PokemonMenuStats");
+        this.gameStarter.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
+            this.gameStarter.menuGrapher.deleteMenu("PokemonMenuStats");
         };
     }
 
@@ -456,35 +458,35 @@ export class Menus {
      * @param callback   A callback for when the menu is closed.
      */
     public openPokedexListing(title: string[], callback?: (...args: any[]) => void, menuSettings?: any): void {
-        const pokemon: IPokedexListing = this.mathDecider.getConstant("pokemon")[title.join("")];
+        const pokemon: IPokedexListing = this.gameStarter.mathDecider.getConstant("pokemon")[title.join("")];
         const height: string[] = pokemon.height;
         const feet: string = [].slice.call(height[0]).reverse().join("");
         const inches: string = [].slice.call(height[1]).reverse().join("");
         const onCompletion: () => any = (): void => {
-            this.menuGrapher.deleteMenu("PokedexListing");
+            this.gameStarter.menuGrapher.deleteMenu("PokedexListing");
             if (callback) {
                 callback();
             }
         };
 
-        this.menuGrapher.createMenu("PokedexListing", menuSettings);
-        this.menuGrapher.createMenuThing("PokedexListingSprite", {
+        this.gameStarter.menuGrapher.createMenu("PokedexListing", menuSettings);
+        this.gameStarter.menuGrapher.createMenuThing("PokedexListingSprite", {
             thing: title.join("") + "Front",
             type: "thing",
             args: {
                 flipHoriz: true
             }
         });
-        this.menuGrapher.addMenuDialog("PokedexListingName", [[title]]);
-        this.menuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
-        this.menuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
-        this.menuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
-        this.menuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingName", [[title]]);
+        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
+        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
+        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
+        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
+        this.gameStarter.menuGrapher.addMenuDialog(
             "PokedexListingNumber",
-            this.utilities.makeDigit(pokemon.number, 3, "0"));
+            this.gameStarter.utilities.makeDigit(pokemon.number, 3, "0"));
 
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog(
             "PokedexListingInfo",
             pokemon.info[0],
             (): void => {
@@ -493,12 +495,12 @@ export class Menus {
                     return;
                 }
 
-                this.menuGrapher.createMenu("PokedexListingInfo");
-                this.menuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
-                this.menuGrapher.setActiveMenu("PokedexListingInfo");
+                this.gameStarter.menuGrapher.createMenu("PokedexListingInfo");
+                this.gameStarter.menuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
+                this.gameStarter.menuGrapher.setActiveMenu("PokedexListingInfo");
             });
 
-        this.menuGrapher.setActiveMenu("PokedexListingInfo");
+        this.gameStarter.menuGrapher.setActiveMenu("PokedexListingInfo");
     }
 
     /**
@@ -507,19 +509,19 @@ export class Menus {
      * @param settings   Custom attributes to apply to the menu.
      */
     public openPokemonMenu(settings: IMenuSchema): void {
-        const listings: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
+        const listings: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
         if (!listings || !listings.length) {
             return;
         }
 
-        const references: any = this.mathDecider.getConstant("pokemon");
+        const references: any = this.gameStarter.mathDecider.getConstant("pokemon");
 
-        this.menuGrapher.createMenu("Pokemon", settings);
-        this.menuGrapher.addMenuList("Pokemon", {
+        this.gameStarter.menuGrapher.createMenu("Pokemon", settings);
+        this.gameStarter.menuGrapher.addMenuList("Pokemon", {
             options: listings.map((listing: IPokemon): any => {
                 const sprite: string = references[listing.title.join("")].sprite + "Pokemon";
                 const barWidth: number = 25;
-                const health: number = this.mathDecider.compute(
+                const health: number = this.gameStarter.mathDecider.compute(
                     "widthHealthBar", barWidth, listing.HP, listing.HPNormal);
 
                 return {
@@ -596,7 +598,7 @@ export class Menus {
                 };
             })
         });
-        this.menuGrapher.setActiveMenu("Pokemon");
+        this.gameStarter.menuGrapher.setActiveMenu("Pokemon");
     }
 
     /**
@@ -606,12 +608,12 @@ export class Menus {
      *                   to optionally override the player's inventory.
      */
     public openItemsMenu(settings: IItemsMenuSettings): void {
-        let items: IItemSchema[] = settings.items || this.itemsHolder.getItem("items").slice();
+        let items: IItemSchema[] = settings.items || this.gameStarter.itemsHolder.getItem("items").slice();
 
-        this.modAttacher.fireEvent("onOpenItemsMenu", items);
+        this.gameStarter.modAttacher.fireEvent("onOpenItemsMenu", items);
 
-        this.menuGrapher.createMenu("Items", settings);
-        this.menuGrapher.addMenuList("Items", {
+        this.gameStarter.menuGrapher.createMenu("Items", settings);
+        this.gameStarter.menuGrapher.addMenuList("Items", {
             options: items.map((schema: any): any => {
                 return {
                     text: schema.item,
@@ -622,7 +624,7 @@ export class Menus {
                             x: 32,
                             y: 4.5
                         }, {
-                            text: this.utilities.makeDigit(schema.amount, 2, " "),
+                            text: this.gameStarter.utilities.makeDigit(schema.amount, 2, " "),
                             x: 36.5,
                             y: 4
                         }
@@ -630,7 +632,7 @@ export class Menus {
                 };
             })
         });
-        this.menuGrapher.setActiveMenu("Items");
+        this.gameStarter.menuGrapher.setActiveMenu("Items");
 
         console.warn("Once math.js contains item info, react to non-stackable items...");
     }
@@ -652,50 +654,50 @@ export class Menus {
                 callback: (): void => console.log("Toss " + itemName)
             }];
 
-        this.modAttacher.fireEvent("onOpenItemMenu", itemName);
+        this.gameStarter.modAttacher.fireEvent("onOpenItemMenu", itemName);
 
-        this.menuGrapher.createMenu("Item", settings);
-        this.menuGrapher.addMenuList("Item", {
+        this.gameStarter.menuGrapher.createMenu("Item", settings);
+        this.gameStarter.menuGrapher.addMenuList("Item", {
             options: options
         });
-        this.menuGrapher.setActiveMenu("Item");
+        this.gameStarter.menuGrapher.setActiveMenu("Item");
     }
 
     /**
      * Opens the Player menu.
      */
     public openPlayerMenu(): void {
-        this.menuGrapher.createMenu("Player", {
-            callback: (): void => this.menuGrapher.registerB()
+        this.gameStarter.menuGrapher.createMenu("Player", {
+            callback: (): void => this.gameStarter.menuGrapher.registerB()
         });
-        this.menuGrapher.setActiveMenu("Player");
+        this.gameStarter.menuGrapher.setActiveMenu("Player");
     }
 
     /**
      * Opens the Save menu.
      */
     public openSaveMenu(): void {
-        this.menuGrapher.createMenu("Save");
+        this.gameStarter.menuGrapher.createMenu("Save");
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
-        this.menuGrapher.createMenu("Yes/No", {
+        this.gameStarter.menuGrapher.createMenu("Yes/No", {
             backMenu: "Pause"
         });
-        this.menuGrapher.addMenuList("Yes/No", {
+        this.gameStarter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.storage.downloadSaveGame()
+                    callback: (): void => this.gameStarter.saves.downloadSaveGame()
                 }, {
                     text: "NO",
-                    callback: (): void => this.menuGrapher.registerB()
+                    callback: (): void => this.gameStarter.menuGrapher.registerB()
                 }]
         });
-        this.menuGrapher.setActiveMenu("Yes/No");
+        this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
 
-        this.storage.autoSave();
+        this.gameStarter.saves.autoSave();
     }
 
     /**
@@ -722,22 +724,22 @@ export class Menus {
             };
         });
 
-        this.menuGrapher.createMenu("Keyboard", {
+        this.gameStarter.menuGrapher.createMenu("Keyboard", {
             settings: settings,
             onKeyPress: onKeyPress,
             onComplete: onComplete,
             ignoreB: false
         } as IMenuSchema);
 
-        const menuResults: IKeyboardResultsMenu = this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
 
-        this.menuGrapher.addMenuDialog("KeyboardTitle", [[
+        this.gameStarter.menuGrapher.addMenuDialog("KeyboardTitle", [[
             settings.title || "",
         ]]);
 
-        this.menuGrapher.addMenuDialog("KeyboardResult", value);
+        this.gameStarter.menuGrapher.addMenuDialog("KeyboardResult", value);
 
-        this.menuGrapher.addMenuList("KeyboardKeys", {
+        this.gameStarter.menuGrapher.addMenuList("KeyboardKeys", {
             options: options,
             selectedIndex: settings.selectedIndex,
             bottom: {
@@ -749,13 +751,13 @@ export class Menus {
                 }
             }
         });
-        this.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
-        this.menuGrapher.setActiveMenu("KeyboardKeys");
+        this.gameStarter.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
+        this.gameStarter.menuGrapher.setActiveMenu("KeyboardKeys");
 
         menuResults.displayedValue = value.slice()[0];
         menuResults.completeValue = settings.completeValue || [];
         menuResults.selectedChild = settings.selectedChild || 0;
-        menuResults.blinker = this.things.add(
+        menuResults.blinker = this.gameStarter.things.add(
             "CharMDash",
             menuResults.children[menuResults.selectedChild].left,
             menuResults.children[menuResults.selectedChild].top);
@@ -767,17 +769,17 @@ export class Menus {
      * Adds a value to the keyboard menu from the currently selected item.
      */
     public addKeyboardMenuValue(): void {
-        const menuKeys: IListMenu = this.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
-        const menuResult: IKeyboardResultsMenu = this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const menuResult: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         let child: IThing = menuResult.children[menuResult.selectedChild];
         if (!child) {
             return;
         }
 
-        const selected: IGridCell = this.menuGrapher.getMenuSelectedOption("KeyboardKeys");
+        const selected: IGridCell = this.gameStarter.menuGrapher.getMenuSelectedOption("KeyboardKeys");
 
-        this.physics.killNormal(child);
-        menuResult.children[menuResult.selectedChild] = this.things.add(
+        this.gameStarter.physics.killNormal(child);
+        menuResult.children[menuResult.selectedChild] = this.gameStarter.things.add(
             selected.title!, child.left, child.top);
 
         menuResult.displayedValue[menuResult.selectedChild] = selected.text[0] as string;
@@ -789,21 +791,21 @@ export class Menus {
             child.hidden = true;
         } else {
             menuResult.blinker.hidden = true;
-            this.menuGrapher.setSelectedIndex(
+            this.gameStarter.menuGrapher.setSelectedIndex(
                 "KeyboardKeys",
                 menuKeys.gridColumns - 1,
                 menuKeys.gridRows - 2); // assume there's a bottom option
         }
 
-        this.physics.setLeft(menuResult.blinker, child.left);
-        this.physics.setTop(menuResult.blinker, child.top);
+        this.gameStarter.physics.setLeft(menuResult.blinker, child.left);
+        this.gameStarter.physics.setTop(menuResult.blinker, child.top);
     }
 
     /**
      * Removes the rightmost keyboard menu value.
      */
     public removeKeyboardMenuValue(): void {
-        let menuResult: IKeyboardResultsMenu = this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        let menuResult: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         if (menuResult.selectedChild <= 0) {
             return;
         }
@@ -815,24 +817,24 @@ export class Menus {
             0, menuResult.completeValue.length - 1);
         menuResult.displayedValue[menuResult.selectedChild] = "_";
 
-        this.physics.killNormal(child);
+        this.gameStarter.physics.killNormal(child);
 
         child = menuResult.children[menuResult.selectedChild];
 
-        menuResult.children[menuResult.selectedChild + 1] = this.things.add(
+        menuResult.children[menuResult.selectedChild + 1] = this.gameStarter.things.add(
             "CharUnderscore", child.right, child.top);
 
-        this.physics.setLeft(menuResult.blinker, child.left);
-        this.physics.setTop(menuResult.blinker, child.top);
+        this.gameStarter.physics.setLeft(menuResult.blinker, child.left);
+        this.gameStarter.physics.setTop(menuResult.blinker, child.top);
     }
 
     /**
      * Switches the keyboard menu's case.
      */
     public switchKeyboardCase(): void {
-        const keyboard: IMenu = this.menuGrapher.getMenu("Keyboard") as IMenu;
-        const keyboardKeys: IListMenu = this.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
-        const keyboardResult: IKeyboardResultsMenu = this.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const keyboard: IMenu = this.gameStarter.menuGrapher.getMenu("Keyboard") as IMenu;
+        const keyboardKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const keyboardResult: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         const settings: any = keyboard.settings;
 
         settings.lowercase = !settings.lowercase;
@@ -851,11 +853,11 @@ export class Menus {
      * @param settings   Custom attributes to apply to the menu.
      */
     public openTownMapMenu(settings?: IMenuSchema): void {
-        const playerPosition: number[] = this.mathDecider.getConstant("townMapLocations")["Pallet Town"];
-        const playerSize: any = this.objectMaker.getFullPropertiesOf("Player");
+        const playerPosition: number[] = this.gameStarter.mathDecider.getConstant("townMapLocations")["Pallet Town"];
+        const playerSize: any = this.gameStarter.objectMaker.getFullPropertiesOf("Player");
 
-        this.menuGrapher.createMenu("Town Map", settings);
-        this.menuGrapher.createMenuThing("Town Map Inside", {
+        this.gameStarter.menuGrapher.createMenu("Town Map", settings);
+        this.gameStarter.menuGrapher.createMenuThing("Town Map Inside", {
             type: "thing",
             thing: "Player",
             args: {
@@ -868,7 +870,7 @@ export class Menus {
                 }
             }
         });
-        this.menuGrapher.setActiveMenu("Town Map");
+        this.gameStarter.menuGrapher.setActiveMenu("Town Map");
     }
 
     /**
@@ -888,7 +890,7 @@ export class Menus {
 
         dialog.push(..."'s NEST".split(""));
 
-        this.menuGrapher.addMenuDialog("Town Map", [dialog]);
+        this.gameStarter.menuGrapher.addMenuDialog("Town Map", [dialog]);
 
         console.warn("Pokemon map locations not implemented.");
     }
@@ -909,19 +911,19 @@ export class Menus {
      * @param message   The message to be displayed.
      */
     public displayMessage(_thing: IThing, message: string): void {
-        if (this.menuGrapher.getActiveMenu()) {
+        if (this.gameStarter.menuGrapher.getActiveMenu()) {
             return;
         }
 
-        this.menuGrapher.createMenu("GeneralText", {
+        this.gameStarter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true
         });
-        this.menuGrapher.addMenuDialog(
+        this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 message
             ]
         );
-        this.menuGrapher.setActiveMenu("GeneralText");
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

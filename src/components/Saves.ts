@@ -1,39 +1,41 @@
+import { Component } from "eightbittr/lib/Component";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
-import { PokedexListingStatus } from "./Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+import { PokedexListingStatus } from "../Constants";
 import {
     ICharacter, IPokedex, IPokedexInformation,
     IPokemonListing, ISaveFile, IStateSaveable
-} from "./IFullScreenPokemon";
+} from "../IFullScreenPokemon";
 
 /**
  * Storage functions used by FullScreenPokemon instances.
  */
-export class Saves {
+export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IItems = this.itemsHolder.exportItems();
+        const oldLocalStorage: IItems = this.gameStarter.itemsHolder.exportItems();
 
-        const collectionKeys: string[] = this.itemsHolder.getItem("stateCollectionKeys");
+        const collectionKeys: string[] = this.gameStarter.itemsHolder.getItem("stateCollectionKeys");
         if (collectionKeys) {
             for (const collection of collectionKeys) {
-                oldLocalStorage[collection] = this.itemsHolder.getItem(collection);
+                oldLocalStorage[collection] = this.gameStarter.itemsHolder.getItem(collection);
             }
         }
 
-        for (const key of this.itemsHolder.getKeys()) {
-            this.itemsHolder.removeItem(key);
+        for (const key of this.gameStarter.itemsHolder.getKeys()) {
+            this.gameStarter.itemsHolder.removeItem(key);
         }
 
-        this.itemsHolder.clear();
-        this.itemsHolder.setItem("oldLocalStorage", oldLocalStorage);
-        this.itemsHolder.saveItem("oldLocalStorage");
-        this.itemsHolder.setItem("stateCollectionKeys", []);
+        this.gameStarter.itemsHolder.clear();
+        this.gameStarter.itemsHolder.setItem("oldLocalStorage", oldLocalStorage);
+        this.gameStarter.itemsHolder.saveItem("oldLocalStorage");
+        this.gameStarter.itemsHolder.setItem("stateCollectionKeys", []);
 
-        this.userWrapper.resetControls();
+        this.gameStarter.userWrapper.resetControls();
     }
 
     /**
@@ -41,26 +43,26 @@ export class Saves {
      * hasn't been saved, the data is restored under localStorage.
      */
     public checkForOldStorageData(): void {
-        if (!this.itemsHolder.getItem("oldLocalStorage") || this.itemsHolder.getItem("gameStarted")) {
+        if (!this.gameStarter.itemsHolder.getItem("oldLocalStorage") || this.gameStarter.itemsHolder.getItem("gameStarted")) {
             return;
         }
 
-        const oldLocalStorage: IItems = this.itemsHolder.getItem("oldLocalStorage");
+        const oldLocalStorage: IItems = this.gameStarter.itemsHolder.getItem("oldLocalStorage");
         for (const key in oldLocalStorage) {
             if (!oldLocalStorage.hasOwnProperty(key)) {
                 continue;
             }
 
             if (key.slice(0, "StateHolder".length) === "StateHolder") {
-                this.stateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
+                this.gameStarter.stateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
             } else {
-                this.itemsHolder.setItem(key, oldLocalStorage[key]);
+                this.gameStarter.itemsHolder.setItem(key, oldLocalStorage[key]);
             }
         }
 
-        this.itemsHolder.saveAll();
+        this.gameStarter.itemsHolder.saveAll();
 
-        this.userWrapper.resetControls();
+        this.gameStarter.userWrapper.resetControls();
     }
 
     /**
@@ -69,24 +71,24 @@ export class Saves {
      * @param showText   Whether to display a status menu (by default, false).
      */
     public saveGame(showText: boolean = true): void {
-        const ticksRecorded: number = this.fpsAnalyzer.getNumRecorded();
+        const ticksRecorded: number = this.gameStarter.gamesRunner.getFPSAnalyzer().getNumRecorded();
 
-        this.itemsHolder.increase("time", ticksRecorded - this.ticksElapsed);
-        this.ticksElapsed = ticksRecorded;
+        this.gameStarter.itemsHolder.increase("time", ticksRecorded - this.gameStarter.ticksElapsed);
+        this.gameStarter.ticksElapsed = ticksRecorded;
 
         this.saveCharacterPositions();
-        this.stateHolder.saveCollection();
-        this.itemsHolder.saveAll();
+        this.gameStarter.stateHolder.saveCollection();
+        this.gameStarter.itemsHolder.saveAll();
 
         if (!showText) {
             return;
         }
 
-        this.menuGrapher.createMenu("GeneralText");
-        this.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
 
-        this.timeHandler.addEvent(
-            (): void => this.menuGrapher.deleteAllMenus(),
+        this.gameStarter.timeHandler.addEvent(
+            (): void => this.gameStarter.menuGrapher.deleteAllMenus(),
             49);
     }
 
@@ -94,9 +96,9 @@ export class Saves {
      * Automatically saves the game.
      */
     public autoSave(): void {
-        if (this.itemsHolder.getAutoSave()
-            && !this.scenePlayer.getCutscene()
-            && this.areaSpawner.getMapName() !== "Blank") {
+        if (this.gameStarter.itemsHolder.getAutoSave()
+            && !this.gameStarter.scenePlayer.getCutscene()
+            && this.gameStarter.areaSpawner.getMapName() !== "Blank") {
             this.saveGame(false);
         }
     }
@@ -115,11 +117,11 @@ export class Saves {
         link.setAttribute(
             "href",
             "data:text/json;charset=utf-8," + encodeURIComponent(
-                JSON.stringify(this.itemsHolder.exportItems())));
+                JSON.stringify(this.gameStarter.itemsHolder.exportItems())));
 
-        this.container.appendChild(link);
+        this.gameStarter.container.appendChild(link);
         link.click();
-        this.container.removeChild(link);
+        this.gameStarter.container.removeChild(link);
     }
 
     /**
@@ -140,23 +142,23 @@ export class Saves {
 
             if (key.slice(0, keyStart.length) === keyStart) {
                 const split: string[] = key.split("::");
-                this.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
+                this.gameStarter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {
-                this.itemsHolder.setItem(key, data[key]);
+                this.gameStarter.itemsHolder.setItem(key, data[key]);
             }
         }
 
-        this.menuGrapher.deleteActiveMenu();
-        this.userWrapper.resetControls();
-        this.gameplay.startPlay();
-        this.itemsHolder.setItem("gameStarted", true);
+        this.gameStarter.menuGrapher.deleteActiveMenu();
+        this.gameStarter.userWrapper.resetControls();
+        this.gameStarter.gameplay.startPlay();
+        this.gameStarter.itemsHolder.setItem("gameStarted", true);
     }
 
     /**
      * Saves the positions of all Characters in the game.
      */
     public saveCharacterPositions(): void {
-        for (const character of this.groupHolder.getGroup("Character") as ICharacter[]) {
+        for (const character of this.gameStarter.groupHolder.getGroup("Character") as ICharacter[]) {
             this.saveCharacterPosition(character, character.id);
         }
     }
@@ -168,15 +170,15 @@ export class Saves {
      * @param id   The ID associated with the Character.
      */
     public saveCharacterPosition(character: ICharacter, id: string): void {
-        this.stateHolder.addChange(
+        this.gameStarter.stateHolder.addChange(
             id,
             "xloc",
-            (character.left + this.mapScreener.left) / 4);
-        this.stateHolder.addChange(
+            (character.left + this.gameStarter.mapScreener.left) / 4);
+        this.gameStarter.stateHolder.addChange(
             id,
             "yloc",
-            (character.top + this.mapScreener.top) / 4);
-        this.stateHolder.addChange(
+            (character.top + this.gameStarter.mapScreener.top) / 4);
+        this.gameStarter.stateHolder.addChange(
             id,
             "direction",
             character.direction);
@@ -228,8 +230,8 @@ export class Saves {
      * @param amount   The quantity of this item being stored.
      */
     public addItemToBag(item: string, amount: number = 1): void {
-        this.utilities.combineArrayMembers(
-            this.itemsHolder.getItem("items"),
+        this.gameStarter.utilities.combineArrayMembers(
+            this.gameStarter.itemsHolder.getItem("items"),
             item,
             amount,
             "item",
@@ -243,7 +245,7 @@ export class Saves {
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        const pokedex: IPokedex = this.itemsHolder.getItem("Pokedex");
+        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem("Pokedex");
         const title: string = titleRaw.join("");
         const caught: boolean = status === PokedexListingStatus.Caught;
         const seen: boolean = caught || (status === PokedexListingStatus.Seen);
@@ -265,7 +267,7 @@ export class Saves {
             };
         }
 
-        this.itemsHolder.setItem("Pokedex", pokedex);
+        this.gameStarter.itemsHolder.setItem("Pokedex", pokedex);
     }
 
     /**
@@ -275,8 +277,8 @@ export class Saves {
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
-        const pokedex: IPokedex = this.itemsHolder.getItem("Pokedex");
-        const pokemon: { [i: string]: IPokemonListing } = this.mathDecider.getConstant("pokemon");
+        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem("Pokedex");
+        const pokemon: { [i: string]: IPokemonListing } = this.gameStarter.mathDecider.getConstant("pokemon");
         const titlesSorted: string[] = Object.keys(pokedex)
             .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);
         let i: number;

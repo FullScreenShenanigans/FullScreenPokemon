@@ -14,14 +14,14 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * @returns The unique Things that will be kept.
      */
     public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        const things: IThing[] = [this.gameStarter.player];
+        const things: IThing[] = [this.gameStarter.players[0]];
         const used: { [i: string]: IThing } = {
-            [this.gameStarter.player.title]: this.gameStarter.player
+            [this.gameStarter.players[0].title]: this.gameStarter.players[0]
         };
 
         for (const thingRaw of thingsRaw) {
             const thing: IThing = thingRaw.constructor === String
-                ? this.utilities.getThingById(thingRaw as string)
+                ? this.gameStarter.utilities.getThingById(thingRaw as string)
                 : thingRaw as IThing;
 
             if (!used[thing.title]) {
@@ -45,7 +45,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
         }
 
         for (const keptThing of keptThings) {
-            this.groupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
+            this.gameStarter.groupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
         }
     }
 
@@ -61,7 +61,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
         }
 
         for (const keptThing of keptThings) {
-            this.groupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
+            this.gameStarter.groupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
         }
     }
 }

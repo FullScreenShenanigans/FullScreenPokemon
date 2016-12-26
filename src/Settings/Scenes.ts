@@ -1,6 +1,6 @@
 import { IScenesModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Cutscenes } from "../Cutscenes";
+import { Cutscenes } from "../components/Cutscenes";
 
 export function GenerateScenesSettings(): IScenesModuleSettings {
     "use strict";

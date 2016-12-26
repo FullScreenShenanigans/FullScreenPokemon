@@ -48,27 +48,27 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         }
         thing.spawned = true;
 
-        thing.areaName = thing.areaName || this.areaSpawner.getAreaName();
-        thing.mapName = thing.mapName || this.areaSpawner.getMapName();
+        thing.areaName = thing.areaName || this.gameStarter.areaSpawner.getAreaName();
+        thing.mapName = thing.mapName || this.gameStarter.areaSpawner.getMapName();
 
-        this.things.add(
+        this.gameStarter.things.add(
             thing,
-            prething.left * 4 - this.mapScreener.left,
-            prething.top * 4 - this.mapScreener.top,
+            prething.left * 4 - this.gameStarter.mapScreener.left,
+            prething.top * 4 - this.gameStarter.mapScreener.top,
             true);
 
         // Either the prething or thing, in that order, may request to be in the
         // front or back of the container
         if (position) {
-            this.timeHandler.addEvent((): void => {
+            this.gameStarter.timeHandler.addEvent((): void => {
                 switch (position) {
                     case "beginning":
                         this.gameStarter.utilities.arrayToBeginning(
-                            thing, this.groupHolder.getGroup(thing.groupType) as IThing[]);
+                            thing, this.gameStarter.groupHolder.getGroup(thing.groupType) as IThing[]);
                         break;
                     case "end":
                         this.gameStarter.utilities.arrayToEnd(
-                            thing, this.groupHolder.getGroup(thing.groupType) as IThing[]);
+                            thing, this.gameStarter.groupHolder.getGroup(thing.groupType) as IThing[]);
                         break;
                     default:
                         throw new Error("Unknown position: " + position + ".");
@@ -76,7 +76,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             });
         }
 
-        this.modAttacher.fireEvent("onAddPreThing", prething);
+        this.gameStarter.modAttacher.fireEvent("onAddPreThing", prething);
     }
 
     /**
@@ -91,14 +91,14 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.players[0] = this.objectMaker.make("Player");
+        const player: IPlayer = this.gameStarter.players[0] = this.gameStarter.objectMaker.make("Player");
         player.keys = player.getKeys();
 
-        this.inputWriter.setEventInformation(player);
+        this.gameStarter.inputWriter.setEventInformation(player);
 
-        this.things.add(player, left || 0, top || 0, useSavedInfo);
+        this.gameStarter.things.add(player, left || 0, top || 0, useSavedInfo);
 
-        this.modAttacher.fireEvent("onAddPlayer", player);
+        this.gameStarter.modAttacher.fireEvent("onAddPlayer", player);
 
         return player;
     }
@@ -115,20 +115,20 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      */
     public setMap(name: string, location?: string, noEntrance?: boolean): ILocation {
         if (!name) {
-            name = this.areaSpawner.getMapName();
+            name = this.gameStarter.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.areaSpawner.setMap(name) as IMap;
+        const map: IMap = this.gameStarter.areaSpawner.setMap(name) as IMap;
 
-        this.modAttacher.fireEvent("onPreSetMap", map);
-        this.numberMaker.resetFromSeed(map.seed);
-        this.inputWriter.restartHistory();
-        this.modAttacher.fireEvent("onSetMap", map);
+        this.gameStarter.modAttacher.fireEvent("onPreSetMap", map);
+        this.gameStarter.numberMaker.resetFromSeed(map.seed);
+        this.gameStarter.inputWriter.restartHistory();
+        this.gameStarter.modAttacher.fireEvent("onSetMap", map);
 
-        return this.setLocation(
+        return this.gameStarter.maps.setLocation(
             location
             || map.locationDefault
-            || this.mapsModuleSettings.locationDefault!,
+            || this.gameStarter.moduleSettings.maps.locationDefault!,
             noEntrance);
     }
 
@@ -144,58 +144,58 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      *       pass them as an onPreSetLocation/onSetLocation here to reduce dependencies.
      */
     public setLocation(name: string, noEntrance?: boolean): ILocation {
-        this.audioPlayer.clearAll();
-        this.groupHolder.clearArrays();
-        this.mapScreener.clearScreen();
-        this.menuGrapher.deleteAllMenus();
-        this.timeHandler.cancelAllEvents();
+        this.gameStarter.audioPlayer.clearAll();
+        this.gameStarter.groupHolder.clearArrays();
+        this.gameStarter.mapScreener.clearScreen();
+        this.gameStarter.menuGrapher.deleteAllMenus();
+        this.gameStarter.timeHandler.cancelAllEvents();
 
-        this.areaSpawner.setLocation(name);
-        this.mapScreener.setVariables();
+        this.gameStarter.areaSpawner.setLocation(name);
+        this.gameStarter.mapScreener.setVariables();
 
-        const location: ILocation = this.areaSpawner.getLocation(name) as ILocation;
+        const location: ILocation = this.gameStarter.areaSpawner.getLocation(name) as ILocation;
         location.area.spawnedBy = {
             name: name,
             timestamp: new Date().getTime()
         };
 
-        this.modAttacher.fireEvent("onPreSetLocation", location);
+        this.gameStarter.modAttacher.fireEvent("onPreSetLocation", location);
 
-        this.pixelDrawer.setBackground((this.areaSpawner.getArea() as IArea).background);
+        this.gameStarter.pixelDrawer.setBackground((this.gameStarter.areaSpawner.getArea() as IArea).background);
 
         if (location.area.map.name !== "Blank") {
-            this.itemsHolder.setItem("map", location.area.map.name);
-            this.itemsHolder.setItem("area", location.area.name);
-            this.itemsHolder.setItem("location", name);
+            this.gameStarter.itemsHolder.setItem("map", location.area.map.name);
+            this.gameStarter.itemsHolder.setItem("area", location.area.name);
+            this.gameStarter.itemsHolder.setItem("location", name);
         }
-        this.stateHolder.setCollection(location.area.map.name + "::" + location.area.name);
+        this.gameStarter.stateHolder.setCollection(location.area.map.name + "::" + location.area.name);
 
-        this.quadsKeeper.resetQuadrants();
+        this.gameStarter.quadsKeeper.resetQuadrants();
 
         const theme: string = location.theme || location.area.theme || location.area.map.theme;
 
-        this.mapScreener.theme = theme;
-        if (theme && this.audioPlayer.getThemeName() !== theme) {
-            this.audioPlayer.playTheme(theme);
+        this.gameStarter.mapScreener.theme = theme;
+        if (theme && this.gameStarter.audioPlayer.getThemeName() !== theme) {
+            this.gameStarter.audioPlayer.playTheme(theme);
         }
 
         if (!noEntrance && location.entry) {
             location.entry.call(this, location);
         }
 
-        this.modAttacher.fireEvent("onSetLocation", location);
+        this.gameStarter.modAttacher.fireEvent("onSetLocation", location);
 
-        this.gamesRunner.play();
+        this.gameStarter.gamesRunner.play();
 
-        this.actions.animateFadeFromColor({
+        this.gameStarter.actions.animateFadeFromColor({
             color: "Black"
         });
 
         if (location.push) {
-            this.actions.animateCharacterStartWalking(
-                this.players[0],
-                this.players[0].direction,
-                (): void => this.saves.autoSave());
+            this.gameStarter.actions.animateCharacterStartWalking(
+                this.gameStarter.players[0],
+                this.gameStarter.players[0].direction,
+                (): void => this.gameStarter.saves.autoSave());
         }
 
         return location;
@@ -211,10 +211,10 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @remarks Direction is taken in by the .forEach call as the index.
      */
     public addAfter(prething: IPreThing, direction: Direction): void {
-        const prethings: any = this.areaSpawner.getPreThings();
-        const area: IArea = this.areaSpawner.getArea() as IArea;
-        const map: IMap = this.areaSpawner.getMap() as IMap;
-        const boundaries: IAreaBoundaries = this.areaSpawner.getArea().boundaries as IAreaBoundaries;
+        const prethings: any = this.gameStarter.areaSpawner.getPreThings();
+        const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
+        const map: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
+        const boundaries: IAreaBoundaries = this.gameStarter.areaSpawner.getArea().boundaries as IAreaBoundaries;
 
         prething.direction = direction;
         switch (direction) {
@@ -246,16 +246,16 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
 
-        this.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
+        this.gameStarter.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
     }
 
     /**
      * A blank Map entrance Function where no Character is placed.
      */
     public entranceBlank(): void {
-        this.addPlayer(0, 0);
+        this.gameStarter.things.addPlayer(0, 0);
 
-        this.players[0].hidden = true;
+        this.gameStarter.players[0].hidden = true;
     }
 
     /**
@@ -264,27 +264,27 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param location   The name of the Location within the Map.
      */
     public entranceNormal(location: ILocation): void {
-        this.addPlayer(
+        this.gameStarter.things.addPlayer(
             location.xloc ? location.xloc * 4 : 0,
             location.yloc ? location.yloc * 4 : 0);
 
-        this.actions.animateCharacterSetDirection(
-            this.players[0],
+        this.gameStarter.actions.animateCharacterSetDirection(
+            this.gameStarter.players[0],
             (typeof location.direction === "undefined"
-                ? this.mapScreener.playerDirection
+                ? this.gameStarter.mapScreener.playerDirection
                 : location.direction)
             || 0);
 
-        this.scrolling.centerMapScreen();
+        this.gameStarter.scrolling.centerMapScreen();
 
         if (location.cutscene) {
-            this.scenePlayer.startCutscene(location.cutscene, {
-                player: this.players[0]
+            this.gameStarter.scenePlayer.startCutscene(location.cutscene, {
+                player: this.gameStarter.players[0]
             });
         }
 
-        if (location.routine && this.scenePlayer.getCutsceneName()) {
-            this.scenePlayer.playRoutine(location.routine);
+        if (location.routine && this.gameStarter.scenePlayer.getCutsceneName()) {
+            this.gameStarter.scenePlayer.playRoutine(location.routine);
         }
     }
 
@@ -293,13 +293,11 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * of play. Retrieves Character position from the previous save state.
      */
     public entranceResume(): void {
-        const savedInfo: any = this.stateHolder.getChanges("player") || {};
+        const savedInfo: any = this.gameStarter.stateHolder.getChanges("player") || {};
 
-        this.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
-
-        this.actions.animateCharacterSetDirection(this.players[0], savedInfo.direction || Direction.Top);
-
-        this.scrolling.centerMapScreen();
+        this.gameStarter.things.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
+        this.gameStarter.actions.animateCharacterSetDirection(this.gameStarter.players[0], savedInfo.direction || Direction.Top);
+        this.gameStarter.scrolling.centerMapScreen();
     }
 
     /**
@@ -310,11 +308,11 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      */
     public activateareaSpawner(thing: IareaSpawner, area: IArea): void {
         const direction: Direction = thing.direction;
-        const areaCurrent: IArea = this.areaSpawner.getArea() as IArea;
-        const mapCurrent: IMap = this.areaSpawner.getMap() as IMap;
-        const prethingsCurrent: IPreThingsContainers = this.areaSpawner.getPreThings();
-        let left: number = thing.left + this.mapScreener.left;
-        let top: number = thing.top + this.mapScreener.top;
+        const areaCurrent: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
+        const mapCurrent: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
+        const prethingsCurrent: IPreThingsContainers = this.gameStarter.areaSpawner.getPreThings();
+        let left: number = thing.left + this.gameStarter.mapScreener.left;
+        let top: number = thing.top + this.gameStarter.mapScreener.top;
 
         switch (direction) {
             case Direction.Top:
@@ -340,7 +338,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         const x: number = left / 4 + (thing.offsetX || 0);
         const y: number = top / 4 + (thing.offsetY || 0);
 
-        this.scrolling.expandMapBoundariesForArea(area, x, y);
+        this.gameStarter.scrolling.expandMapBoundariesForArea(area, x, y);
 
         for (const creation of area.creation) {
             // A copy of the command must be used, so as to not modify the original
@@ -360,19 +358,19 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 delete command.entrance;
             }
 
-            this.mapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
+            this.gameStarter.mapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
         }
 
-        this.areaSpawner.spawnArea(
+        this.gameStarter.areaSpawner.spawnArea(
             DirectionSpawns[direction],
-            this.quadsKeeper.top / 4,
-            this.quadsKeeper.right / 4,
-            this.quadsKeeper.bottom / 4,
-            this.quadsKeeper.left / 4);
-        this.addAreaGate(thing, area, x, y);
+            this.gameStarter.quadsKeeper.top / 4,
+            this.gameStarter.quadsKeeper.right / 4,
+            this.gameStarter.quadsKeeper.bottom / 4,
+            this.gameStarter.quadsKeeper.left / 4);
+        this.gameStarter.maps.addAreaGate(thing, area, x, y);
 
         area.spawned = true;
-        this.physics.killNormal(thing);
+        this.gameStarter.physics.killNormal(thing);
     }
 
     /**
@@ -420,6 +418,6 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
-        return this.things.add(["AreaGate", properties], left, top) as IAreaGate;
+        return this.gameStarter.things.add(["AreaGate", properties], left, top) as IAreaGate;
     }
 }

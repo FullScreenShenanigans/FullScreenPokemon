@@ -1,6 +1,6 @@
 import { ICollisionsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Collisions } from "../Collisions";
+import { Collisions } from "../components/Collisions";
 
 export function GenerateCollisionsSettings(): ICollisionsModuleSettings {
     "use strict";
@@ -25,5 +25,5 @@ export function GenerateCollisionsSettings(): ICollisionsModuleSettings {
                 Character: Collisions.prototype.generateHitCharacterThing
             }
         }
-    } as any;
+    };
 }
