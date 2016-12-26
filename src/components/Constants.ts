@@ -1,7 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IPlayer, IPokemon } from "../IFullScreenPokemon"
 import * as Moves from "./constants/Moves";
 import { Pokemon } from "./constants/Pokemon";
 import { Statuses } from "./constants/Statuses";
