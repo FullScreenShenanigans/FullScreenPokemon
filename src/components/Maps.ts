@@ -253,7 +253,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * A blank Map entrance Function where no Character is placed.
      */
     public entranceBlank(): void {
-        this.gameStarter.things.addPlayer(0, 0);
+        this.addPlayer(0, 0);
 
         this.gameStarter.players[0].hidden = true;
     }
@@ -264,7 +264,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param location   The name of the Location within the Map.
      */
     public entranceNormal(location: ILocation): void {
-        this.gameStarter.things.addPlayer(
+        this.addPlayer(
             location.xloc ? location.xloc * 4 : 0,
             location.yloc ? location.yloc * 4 : 0);
 
@@ -295,7 +295,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
     public entranceResume(): void {
         const savedInfo: any = this.gameStarter.stateHolder.getChanges("player") || {};
 
-        this.gameStarter.things.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
+        this.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
         this.gameStarter.actions.animateCharacterSetDirection(this.gameStarter.players[0], savedInfo.direction || Direction.Top);
         this.gameStarter.scrolling.centerMapScreen();
     }

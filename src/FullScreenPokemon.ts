@@ -11,7 +11,6 @@ import { StateHoldr } from "stateholdr/lib/StateHoldr";
 import { IUserWrappr } from "userwrappr/lib/IUserWrappr";
 import { UserWrappr } from "userwrappr/lib/UserWrappr";
 
-import { Scale } from "./Constants";
 import { Actions } from "./components/Actions";
 import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
@@ -26,12 +25,13 @@ import { Maintenance } from "./components/Maintenance";
 import { Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
 import { Physics } from "./components/Physics";
-import { Scrolling } from "./components/Scrolling";
 import { Saves } from "./components/Saves";
+import { Scrolling } from "./components/Scrolling";
 import { Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { ModuleSettingsGenerator } from "./settings/ModuleSettingsGenerator";
+import { Scale } from "./Constants";
 import { IMapScreenr, IModuleSettings, IPlayer, IThing } from "./IFullScreenPokemon";
+import { ModuleSettingsGenerator } from "./settings/ModuleSettingsGenerator";
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
@@ -183,7 +183,9 @@ export class FullScreenPokemon extends GameStartr {
     }
 
     /**
+     * Resets the system modules.
      * 
+     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      */
     public resetModules(settings: IProcessedSizeSettings): void {
         super.resetModules(settings);

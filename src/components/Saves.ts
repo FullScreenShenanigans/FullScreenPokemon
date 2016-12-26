@@ -1,8 +1,8 @@
 import { Component } from "eightbittr/lib/Component";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
 import { PokedexListingStatus } from "../Constants";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     ICharacter, IPokedex, IPokedexInformation,
     IPokemonListing, ISaveFile, IStateSaveable

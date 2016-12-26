@@ -199,7 +199,8 @@ export function GenerateModsSettings(): IModsModuleSettings {
                      * @param items   The Player's items.
                      */
                     onOpenItemsMenu: function (this: FullScreenPokemon, _mod: IMod, _eventName: string, items: any[]): void {
-                        const grassMap: IMap | undefined = this.players[0].grass && this.areaSpawner.getMap(this.players[0].grass!.mapName) as IMap;
+                        const grassMap: IMap | undefined = (
+                            this.players[0].grass && this.areaSpawner.getMap(this.players[0].grass!.mapName) as IMap);
                         const grassArea: IArea | undefined = grassMap && grassMap.areas[this.players[0].grass!.areaName] as IArea;
 
                         if (!this.battleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {

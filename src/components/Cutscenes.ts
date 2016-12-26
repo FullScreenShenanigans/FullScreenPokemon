@@ -1384,13 +1384,13 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                     undefined,
                     this.gameStarter.scenePlayer.bindRoutine(
                         "ChangeStatistic",
-                            {
-                                callback: args.callback,
-                                defenderName: defenderName,
-                                statistic: "Attack",
-                                amount: -1,
-                                ...args
-                            }));
+                        {
+                            callback: args.callback,
+                            defenderName: defenderName,
+                            statistic: "Attack",
+                            amount: -1,
+                            ...args
+                        }));
             },
             50);
     }
