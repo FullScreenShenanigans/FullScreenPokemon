@@ -1062,10 +1062,10 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Table": {
                 "tolBottom": 16
             },
-            "Table4x8": [32, 64],
-            "Table8x8": [64, 64],
-            "Table8x12": [64, 64],
-            "Table12x4": [96, 48],
+            "Table1x2": [32, 64],
+            "Table2x2": [64, 64],
+            "Table3x3": [64, 64],
+            "Table3x1": [96, 48],
             "Tree": {},
             "Door": {
                 "width": 32,

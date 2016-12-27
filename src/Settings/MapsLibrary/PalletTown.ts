@@ -196,7 +196,7 @@ export const PalletTown: IMapRaw = {
                         "You are destiny."
                     ]
                 },
-                { "thing": "Table8x8", "x": 32, "tolBottom": 0 },
+                { "thing": "Table2x2", "x": 32, "tolBottom": 0 },
                 { "thing": "StairsDown", "x": 224, "y": 32, "entrance": "Player's House Floor 2 Stairs", "transport": { "map": "Pallet Town", "location": "Player's House Floor 1 Stairs" } },
                 { "thing": "WindowBlinds", "x": 160 },
                 { "thing": "WindowBlinds", "x": 224 },
@@ -237,7 +237,7 @@ export const PalletTown: IMapRaw = {
             "creation": [
                 { "thing": "WallIndoorLightWithDarkBottom", "width": 256 },
                 { "thing": "InvisibleWall", "width": 256 },
-                { "thing": "Table8x8", "y": 16, "width": 128 },
+                { "thing": "Table2x2", "y": 16, "width": 128 },
                 { "thing": "LabComputer", "y": 32, "dialog": ["There's an e-mail message here!", "...", "Calling all %%%%%%%POKEMON%%%%%%% trainers!", "The elite trainers of %%%%%%%POKEMON%%%%%%% LEAGUE are ready to take on all comers!", "Bring your best %%%%%%%POKEMON%%%%%%% and see how you rate as a trainer!", "%%%%%%%POKEMON%%%%%%% LEAGUE HQ INDIGO PLATEAU", "PS: PROF. OAK, please visit us! ..."] },
                 { "thing": "Book", "x": 64, "y": 32, "id": "BookLeft", "dialog": "It's encyclopedia- like, but the pages are blank!" },
                 { "thing": "Book", "x": 96, "y": 32, "id": "BookRight", "dialog": "It's encyclopedia- like, but the pages are blank!" },
@@ -246,7 +246,7 @@ export const PalletTown: IMapRaw = {
                 { "thing": "AsianScroll", "x": 160, "dialog": "The SAVE option is on the MENU screen." },
                 { "thing": "Oak", "x": 160, "y": 64, "id": "Oak", "hidden": true, "nocollide": true },
                 { "thing": "Rival", "x": 128, "y": 96, "id": "Rival", "dialog": "Yo %%%%%%%PLAYER%%%%%%%! Gramps isn't around!" },
-                { "thing": "Table12x4", "x": 192, "y": 96 },
+                { "thing": "Table3x2", "x": 192, "y": 96 },
                 { "thing": "Pokeball", "x": 192, "y": 96, "id": "PokeballCHARMANDER", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"], "description": "fire" },
                 { "thing": "Pokeball", "x": 224, "y": 96, "id": "PokeballSQUIRTLE", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["S", "Q", "U", "I", "R", "T", "L", "E"], "description": "water" },
                 { "thing": "Pokeball", "x": 256, "y": 96, "id": "PokeballBULBASAUR", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["B", "U", "L", "B", "A", "S", "A", "U", "R"], "description": "plant" },
