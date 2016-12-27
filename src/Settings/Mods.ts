@@ -4,8 +4,9 @@ import { IMod } from "modattachr/lib/IModAttachr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IArea, IBattleInfo, IBattler, ICharacter, IEnemy, IGrass,
-    IItemSchema, IMap, IPokemon, IWildPokemonSchema
+    IMap, IPokemon, IWildPokemonSchema
 } from "../IFullScreenPokemon";
+import { IItemSchema } from "../components/constants/Items";
 
 const onModEnableKey: string = "onModEnable";
 
@@ -108,7 +109,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                 events: {
                     onModEnable: function (this: FullScreenPokemon): void {
                         const partyPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
-                        const statistics: string[] = this.mathDecider.getConstant("statisticNames");
+                        const statistics: string[] = this.constants.pokemon.statisticNames;
 
                         for (let i: number = 0; i < partyPokemon.length; i += 1) {
                             partyPokemon[i].previousLevel = partyPokemon[i].level;
@@ -121,7 +122,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                     },
                     onModDisable: function (this: FullScreenPokemon): void {
                         const partyPokemon: IPokemon[] = this.itemsHolder.getItem("PokemonInParty");
-                        const statistics: string[] = this.mathDecider.getConstant("statisticNames");
+                        const statistics: string[] = this.constants.pokemon.statisticNames;
 
                         for (const pokemon of partyPokemon) {
                             pokemon.level = pokemon.previousLevel!;
@@ -208,8 +209,9 @@ export function GenerateModsSettings(): IModsModuleSettings {
                         }
 
                         for (let i: number = items.length - 1; i > -1; i -= 1) {
-                            let currentItem: IItemSchema = this.mathDecider.getConstant("items")[items[i].item];
-                            if (currentItem.category === "PokeBall") {
+                            const currentItem: IItemSchema = this.constants.items.byName[items[i].item];
+
+                            if (currentItem.category === "Pokeball") {
                                 items.splice(i, 1);
                             }
                         }
@@ -304,7 +306,7 @@ export function GenerateModsSettings(): IModsModuleSettings {
                             return;
                         }
 
-                        const statistics: string[] = this.mathDecider.getConstant("statisticNames");
+                        const statistics: string[] = this.constants.pokemon.statisticNames;
                         const enemyPokemonAvg: number = isWildBattle ?
                             this.equations.averageLevelWildPokemon(wildPokemonOptions) :
                             this.equations.averageLevel(opponent.actors);

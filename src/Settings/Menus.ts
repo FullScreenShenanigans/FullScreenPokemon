@@ -3,7 +3,8 @@ import {
 } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IDialog, IMenuBase, IMenuSchema, IMenusModuleSettings, IPokedexInformation, IPokedexListing } from "../IFullScreenPokemon";
+import { IDialog, IMenuBase, IMenuSchema, IMenusModuleSettings } from "../IFullScreenPokemon";
+import { IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
 
 /* tslint:disable object-literal-key-quotes */
 

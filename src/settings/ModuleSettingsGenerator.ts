@@ -9,7 +9,6 @@ import { GenerateGroupsSettings } from "./Groups";
 import { GenerateInputSettings } from "./Input";
 import { GenerateItemsSettings } from "./Items";
 import { GenerateMapsSettings } from "./Maps";
-import { GenerateMathSettings } from "./Math";
 import { GenerateMenusSettings } from "./Menus";
 import { GenerateModsSettings } from "./Mods";
 import { GenerateObjectsSettings } from "./Objects";
@@ -40,7 +39,6 @@ export class ModuleSettingsGenerator {
             input: GenerateInputSettings(),
             items: GenerateItemsSettings(),
             maps: GenerateMapsSettings(),
-            math: GenerateMathSettings(),
             menus: GenerateMenusSettings(),
             mods: GenerateModsSettings(),
             objects: GenerateObjectsSettings(),

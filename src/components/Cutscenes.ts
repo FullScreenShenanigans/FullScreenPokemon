@@ -707,9 +707,6 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public cutsceneBattleMoveOpponentAnimate(_settings: IBattleCutsceneSettings, args: IBattleMoveRoutineSettings): void {
         const choice: string = args.choiceOpponent!;
-        const move: string = this.gameStarter.mathDecider.getConstant("moves")[choice];
-
-        console.log("Should do something with", move);
 
         args.attackerName = "opponent";
         args.defenderName = "player";

@@ -1,12 +1,10 @@
 import { Component } from "eightbittr/lib/Component";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
-import { PokedexListingStatus } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import {
-    ICharacter, IPokedex, IPokedexInformation,
-    IPokemonListing, ISaveFile, IStateSaveable
-} from "../IFullScreenPokemon";
+import { ICharacter, ISaveFile, IStateSaveable } from "../IFullScreenPokemon";
+import { PokedexListingStatus } from "./Constants";
+import { IPokedex, IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
 
 /**
  * Storage functions used by FullScreenPokemon instances.
@@ -278,7 +276,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
         const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem("Pokedex");
-        const pokemon: { [i: string]: IPokemonListing } = this.gameStarter.mathDecider.getConstant("pokemon");
+        const pokemon: { [i: string]: IPokemonListing } = this.gameStarter.constants.pokemon.byName;
         const titlesSorted: string[] = Object.keys(pokedex)
             .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);
         let i: number;

@@ -1,8 +1,8 @@
 import { Component } from "eightbittr/lib/Component";
 
-import { Scrollability } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ICharacter, IGrass, IPlayer, IThing } from "../IFullScreenPokemon";
+import { Scrollability } from "./Scrolling";
 
 /**
  * Maintenance functions used by FullScreenPokemon instances.

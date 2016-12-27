@@ -1,18 +1,17 @@
 import { Maps as GameStartrMaps } from "gamestartr/lib/components/Maps";
 import { IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
 
-import { Direction, DirectionSpawns } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IArea, IAreaBoundaries, IAreaGate, IareaSpawner, ILocation,
     IMap, IPlayer, IPreThing, IThing
 } from "../IFullScreenPokemon";
+import { Direction } from "./Constants";
 
 /**
  * Map functions used by FullScreenPokemon instances.
  */
 export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<TGameStartr> {
-
     /**
      * Processes additional Thing attributes. For each attribute the Area's
      * class says it may have, if it has it, the attribute value proliferated 
@@ -361,7 +360,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         }
 
         this.gameStarter.areaSpawner.spawnArea(
-            DirectionSpawns[direction],
+            this.gameStarter.constants.directionSpawns[direction],
             this.gameStarter.quadsKeeper.top / 4,
             this.gameStarter.quadsKeeper.right / 4,
             this.gameStarter.quadsKeeper.bottom / 4,

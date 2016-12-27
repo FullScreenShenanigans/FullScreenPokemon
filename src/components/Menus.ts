@@ -2,13 +2,15 @@ import { IMove } from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
 import { IGridCell, IMenuSchema, IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 
-import { KeysLowercase, KeysUppercase } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
-    IHMMoveSchema, IItemSchema, IItemsMenuSettings, IKeyboardMenuSettings,
+    IItemsMenuSettings, IKeyboardMenuSettings,
     IKeyboardResultsMenu, ILevelUpStatsMenuSettings, IListMenu, IMenu,
-    IPlayer, IPokedexInformation, IPokedexListing, IPokemon, IThing
+    IPlayer, IPokemon, IThing
 } from "../IFullScreenPokemon";
+import { IItemSchema } from "./constants/Items";
+import { IHMMoveSchema } from "./constants/Moves";
+import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
 
 /**
  * Menu functions used by FullScreenPokemon instances.
@@ -192,7 +194,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const options: any[] = [];
 
         for (const action of moves) {
-            const move: IHMMoveSchema = this.gameStarter.mathDecider.getConstant("moves")[action.title];
+            const move: IHMMoveSchema = this.gameStarter.constants.moves.byName[action.title];
             if (move.partyActivate && move.requiredBadge && this.gameStarter.itemsHolder.getItem("badges")[move.requiredBadge]) {
                 options.push({
                     text: action.title.toUpperCase(),
@@ -232,8 +234,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param pokemon   A Pokemon to show statistics of.
      */
     public openPokemonMenuStats(pokemon: IPokemon): void {
-        const schemas: any = this.gameStarter.mathDecider.getConstant("pokemon");
-        const schema: any = schemas[pokemon.title.join("")];
+        const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")];
         const barWidth: number = 25;
         const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.HP, pokemon.HPNormal);
 
@@ -321,7 +322,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public openPokemonLevelUpStats(settings: ILevelUpStatsMenuSettings): void {
         const pokemon: IPokemon = settings.pokemon;
-        const statistics: string[] = this.gameStarter.mathDecider.getConstant("statisticNamesDisplayed").slice();
+        const statistics: string[] = this.gameStarter.constants.pokemon.statisticNamesDisplayed.slice();
         const numStatistics: number = statistics.length;
         const textXOffset: number = settings.textXOffset || 8;
         const menuSchema: IMenuSchema = {
@@ -404,7 +405,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                 characters.push("/");
                 characters.push(
                     ...this.gameStarter.utilities.makeDigit(
-                        this.gameStarter.mathDecider.getConstant("moves")[move.title].PP, 2, " ")
+                        this.gameStarter.constants.moves.byName[move.title].PP, 2, " ")
                             .split(""));
 
                 characters.push({
@@ -467,7 +468,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param callback   A callback for when the menu is closed.
      */
     public openPokedexListing(title: string[], callback?: (...args: any[]) => void, menuSettings?: any): void {
-        const pokemon: IPokedexListing = this.gameStarter.mathDecider.getConstant("pokemon")[title.join("")];
+        const pokemon: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
         const height: string[] = pokemon.height;
         const feet: string = [].slice.call(height[0]).reverse().join("");
         const inches: string = [].slice.call(height[1]).reverse().join("");
@@ -523,12 +524,11 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             return;
         }
 
-        const references: any = this.gameStarter.mathDecider.getConstant("pokemon");
-
         this.gameStarter.menuGrapher.createMenu("Pokemon", settings);
         this.gameStarter.menuGrapher.addMenuList("Pokemon", {
             options: listings.map((listing: IPokemon): any => {
-                const sprite: string = references[listing.title.join("")].sprite + "Pokemon";
+                const title: string = listing.title.join("");
+                const sprite: string = this.gameStarter.constants.pokemon.byName[title].sprite + "Pokemon";
                 const barWidth: number = 25;
                 const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.HP, listing.HPNormal);
 
@@ -720,8 +720,8 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this);
         const lowercase: boolean = !!settings.lowercase;
         const letters: string[] = lowercase
-            ? KeysLowercase
-            : KeysUppercase;
+            ? this.gameStarter.constants.keysLowercase
+            : this.gameStarter.constants.keysUppercase;
         const options: any[] = letters.map((letter: string): any => {
             return {
                 text: [letter],
@@ -861,7 +861,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param settings   Custom attributes to apply to the menu.
      */
     public openTownMapMenu(settings?: IMenuSchema): void {
-        const playerPosition: number[] = this.gameStarter.mathDecider.getConstant("townMapLocations")["Pallet Town"];
+        const playerPosition: number[] = this.townMapLocations["Pallet Town"];
         const playerSize: any = this.gameStarter.objectMaker.getFullPropertiesOf("Player");
 
         this.gameStarter.menuGrapher.createMenu("Town Map", settings);

@@ -1,8 +1,9 @@
 import { Component } from "eightbittr/lib/Component";
 
-import { Direction, InputTimeTolerance } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { ICharacter, IItemSchema, IPlayer } from "../IFullScreenPokemon";
+import { ICharacter, IPlayer } from "../IFullScreenPokemon";
+import { Direction } from "./Constants";
+import { IItemSchema } from "./constants/Items";
 
 /**
  * Input functions used by FullScreenPokemon instances.
@@ -50,7 +51,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
             this.gameStarter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 0),
-                InputTimeTolerance);
+                this.inputTimeTolerance);
         }
 
         this.gameStarter.modAttacher.fireEvent("onKeyDownUpReal");
@@ -77,7 +78,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
             this.gameStarter.timeHandler.addEvent(
                 (): void => this.keyDownDirectionReal(thing as IPlayer, 1),
-                InputTimeTolerance);
+                this.inputTimeTolerance);
         }
 
         if (event && event.preventDefault) {
@@ -281,8 +282,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             return;
         }
 
-        const itemSchema: IItemSchema = this.gameStarter //.mathDecider.getConstant("items")[selectItem];
-
+        const itemSchema: IItemSchema = this.gameStarter.constants.items.byName[selectItem];
         if (!itemSchema.bagActivate) {
             throw new Error("Currently selected item does not have a .bagActivate.");
         }

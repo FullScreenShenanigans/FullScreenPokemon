@@ -1,11 +1,9 @@
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
-import { Direction } from "../Constants";
+import { Direction } from "./Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import {
-    ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge
-} from "../IFullScreenPokemon";
+import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge } from "../IFullScreenPokemon";
 
 /**
  * Collision functions used by FullScreenPokemon instances.

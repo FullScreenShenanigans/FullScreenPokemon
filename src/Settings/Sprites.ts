@@ -1,7 +1,5 @@
 import { ISpritesModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Scale } from "../Constants";
-
 /* tslint:disable max-line-length */
 /* tslint:disable object-literal-key-quotes */
 
@@ -9,7 +7,7 @@ export function GenerateSpritesSettings(): ISpritesModuleSettings {
     "use strict";
 
     return {
-        "scale": Scale,
+        "scale": 2,
         "spriteWidth": "spritewidth",
         "spriteHeight": "spriteheight",
         "flipVert": "flip-vert",

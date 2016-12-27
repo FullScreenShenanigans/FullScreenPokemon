@@ -78,7 +78,6 @@
             "ItemsHoldr",
             "MapsCreatr",
             "MapScreenr",
-            "MathDecidr",
             "MenuGraphr",
             "ModAttachr",
             "NumberMakr",
@@ -101,7 +100,7 @@
         };
 
         for (var i = 0; i < dependencies.length; i += 1) {
-            config.paths[dependencies[i].toLowerCase() + "/lib"] = "../node_modules/" + dependencies[i] + "/src";
+            config.paths[dependencies[i].toLowerCase()] = "../node_modules/" + dependencies[i];
         }
 
         requirejs.config(config);
