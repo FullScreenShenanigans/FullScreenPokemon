@@ -3,7 +3,7 @@ import { IMapRaw } from "../../IFullScreenPokemon";
 /* tslint:disable max-line-length */
 
 export const Route21: IMapRaw = {
-    "name": "Route 21",
+    "name": "Route 84",
     "locationDefault": "Temp",
     "locations": {
         "Temp": {
@@ -13,8 +13,8 @@ export const Route21: IMapRaw = {
     "areas": {
         "Land": {
             "allowCycling": true,
-            "width": 160,
-            "height": 720,
+            "width": 640,
+            "height": 2880,
             "wildPokemon": {
                 "fishing": {
                     "old": [{
@@ -52,24 +52,24 @@ export const Route21: IMapRaw = {
             },
             "creation": [
                 { "thing": "AreaSpawner", "map": "Pallet Town", "area": "Land", "direction": 0 },
-                { "thing": "DirtMedium", "width": 32, "height": 112 },
-                { "thing": "FenceWide", "width": 32 },
-                { "macro": "Water", "x": 32, "width": 32, "height": 80, "open": [true, false, true, false] },
-                { "thing": "DirtMedium", "x": 64, "width": 96, "height": 80 },
-                { "thing": "FenceWide", "x": 64, "width": 96 },
-                { "thing": "FenceWide", "x": 24, "y": 8, "height": 104 },
-                { "thing": "FenceWide", "x": 112, "y": 8, "height": 120 },
-                { "macro": "Checkered", "things": ["", "Flower"], "x": 80, "y": 20, "xnum": 8, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                { "thing": "Grass", "x": 64, "y": 32, "width": 48, "height": 48 },
-                { "macro": "Checkered", "things": ["", "Flower"], "x": 128, "y": 36, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                { "macro": "Checkered", "things": ["", "Flower"], "y": 36, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                { "macro": "Checkered", "things": ["", "Flower"], "y": 52, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                { "macro": "Checkered", "things": ["", "Flower"], "y": 68, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                { "macro": "Water", "x": 32, "y": 80, "width": 32, "height": 32, "open": [true, true, true, false] },
-                { "macro": "Checkered", "things": ["", "Flower"], "y": 84, "xnum": 4, "ynum": 2, "xwidth": 4, "yheight": 4 },
-                { "macro": "Water", "x": 64, "y": 80, "width": 96, "height": 32, "open": [false, true, true, true] },
-                { "macro": "Water", "y": 112, "width": 32, "height": 200, "open": [false, true, true, true] },
-                { "macro": "Water", "x": 32, "y": 112, "width": 128, "height": 200, "open": [true, true, true, true] },
+                { "thing": "DirtMedium", "width": 128, "height": 448 },
+                { "thing": "FenceWide", "width": 128 },
+                { "macro": "Water", "x": 128, "width": 128, "height": 320, "open": [true, false, true, false] },
+                { "thing": "DirtMedium", "x": 256, "width": 384, "height": 320 },
+                { "thing": "FenceWide", "x": 256, "width": 384 },
+                { "thing": "FenceWide", "x": 96, "y": 32, "height": 416 },
+                { "thing": "FenceWide", "x": 448, "y": 32, "height": 480 },
+                { "macro": "Checkered", "things": ["", "Flower"], "x": 320, "y": 80, "xnum": 8 /* fixed */, "ynum": 2 /* fixed */, "xwidth": 16, "yheight": 16 },
+                { "thing": "Grass", "x": 256, "y": 128, "width": 192, "height": 192 },
+                { "macro": "Checkered", "things": ["", "Flower"], "x": 512, "y": 144, "xnum": 4 /* fixed */, "ynum": 2 /* fixed */, "xwidth": 16, "yheight": 16 },
+                { "macro": "Checkered", "things": ["", "Flower"], "y": 144, "xnum": 4 /* fixed */, "ynum": 2 /* fixed */, "xwidth": 16, "yheight": 16 },
+                { "macro": "Checkered", "things": ["", "Flower"], "y": 208, "xnum": 4 /* fixed */, "ynum": 2 /* fixed */, "xwidth": 16, "yheight": 16 },
+                { "macro": "Checkered", "things": ["", "Flower"], "y": 272, "xnum": 4 /* fixed */, "ynum": 2 /* fixed */, "xwidth": 16, "yheight": 16 },
+                { "macro": "Water", "x": 128, "y": 320, "width": 128, "height": 128, "open": [true, true, true, false] },
+                { "macro": "Checkered", "things": ["", "Flower"], "y": 336, "xnum": 4 /* fixed */, "ynum": 2 /* fixed */, "xwidth": 16, "yheight": 16 },
+                { "macro": "Water", "x": 256, "y": 320, "width": 384, "height": 128, "open": [false, true, true, true] },
+                { "macro": "Water", "y": 448, "width": 128, "height": 800, "open": [false, true, true, true] },
+                { "macro": "Water", "x": 128, "y": 448, "width": 512, "height": 800, "open": [true, true, true, true] },
             ]
         }
     }

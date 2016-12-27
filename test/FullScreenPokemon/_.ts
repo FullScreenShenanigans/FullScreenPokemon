@@ -1,11 +1,11 @@
-import { IGameStartrSettings } from "gamestartr/lib/IGameStartr";
+import { ISizeSettings } from "gamestartr/lib/IGameStartr";
 
-import { mochaLoader } from "../main";
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
+import { mochaLoader } from "../main";
 
 mochaLoader.it("can be created", (): void => {
     // Arrange
-    const settings: IGameStartrSettings = {
+    const settings: ISizeSettings = {
         width: 256,
         height: 256
     };

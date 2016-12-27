@@ -2,14 +2,14 @@ import { Macros } from "../components/Macros";
 import { Maps } from "../components/Maps";
 import { Scrolling } from "../components/Scrolling";
 import { IMapsModuleSettings } from "../IFullScreenPokemon";
-import { PalletTown } from "./MapsLibrary/PalletTown";
-import { PewterCity } from "./MapsLibrary/PewterCity";
-import { Route1 } from "./MapsLibrary/Route1";
-import { Route2 } from "./MapsLibrary/Route2";
-import { Route21 } from "./MapsLibrary/Route21";
-import { Route22 } from "./MapsLibrary/Route22";
-import { ViridianCity } from "./MapsLibrary/ViridianCity";
-import { ViridianForest } from "./MapsLibrary/ViridianForest";
+import { PalletTown } from "./mapsLibrary/PalletTown";
+import { PewterCity } from "./mapsLibrary/PewterCity";
+import { Route1 } from "./mapsLibrary/Route1";
+import { Route2 } from "./mapsLibrary/Route2";
+import { Route21 } from "./mapsLibrary/Route21";
+import { Route22 } from "./mapsLibrary/Route22";
+import { ViridianCity } from "./mapsLibrary/ViridianCity";
+import { ViridianForest } from "./mapsLibrary/ViridianForest";
 
 export function GenerateMapsSettings(): IMapsModuleSettings {
     "use strict";
