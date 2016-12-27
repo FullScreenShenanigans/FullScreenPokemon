@@ -6,7 +6,7 @@ export class Statuses {
      * Names of all statuses Pokemon may have.
      */
     public readonly names: string[] = ["Sleep", "Freeze", "Paralyze", "Burn", "Poison"];
-    
+
     /**
      * Statuses that will enable a Pokemon to be caught in the canCatchPokemon
      * equation if a random generated N is < 25.

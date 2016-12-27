@@ -2,9 +2,9 @@ import {
     IListMenuSchema, IMenuChildSchema, IMenuThingSchema, IMenuWordPadLeftCommand
 } from "menugraphr/lib/IMenuGraphr";
 
+import { IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IDialog, IMenuBase, IMenuSchema, IMenusModuleSettings } from "../IFullScreenPokemon";
-import { IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
 
 /* tslint:disable object-literal-key-quotes */
 

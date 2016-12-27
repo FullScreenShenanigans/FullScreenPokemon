@@ -1,8 +1,8 @@
 import { Physics as GameStartrPhysics } from "gamestartr/lib/components/Physics";
 
-import { Direction } from "./Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ICharacter, IGrass, IPlayer, IThing } from "../IFullScreenPokemon";
+import { Direction } from "./Constants";
 
 /**
  * Physics functions used by FullScreenPokemon instances.

@@ -182,7 +182,7 @@ export class Pokemon {
     public readonly statisticNamesDisplayed: string[] = ["Attack", "Defense", "Speed", "Special"];
 
     /**
-    * All known Pokemon, keyed by concatenated name.
+     * All known Pokemon, keyed by concatenated name.
      */
     public readonly byName: { [i: string]: IPokemonListing } = {
         "ABRA": {
@@ -15326,5 +15326,5 @@ export class Pokemon {
                     }]
             }
         }
-    }
+    };
 };

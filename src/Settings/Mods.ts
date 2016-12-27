@@ -1,12 +1,12 @@
 import { IModsModuleSettings } from "gamestartr/lib/IGameStartr";
 import { IMod } from "modattachr/lib/IModAttachr";
 
+import { IItemSchema } from "../components/constants/Items";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IArea, IBattleInfo, IBattler, ICharacter, IEnemy, IGrass,
     IMap, IPokemon, IWildPokemonSchema
 } from "../IFullScreenPokemon";
-import { IItemSchema } from "../components/constants/Items";
 
 const onModEnableKey: string = "onModEnable";
 
