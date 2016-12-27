@@ -2,12 +2,15 @@ import { IActorExperience, IMove } from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
 
 import {
-    IBattleBall, IBattleInfo, IBattleModification, IBattler,
-    ICharacter, IGrass, IMovePossibility, IMoveSchema, IPokemon,
-    IPokemonListing, IPokemonMoveListing,
+    IBattleInfo, IBattler,
+    ICharacter, IGrass, IMovePossibility, IPokemon,
     IWildPokemonSchema
 } from "../IFullScreenPokemon";
 import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IBattleModification } from "./constants/BattleModifications";
+import { IBattleBall } from "./constants/Items";
+import { IMoveSchema } from "./constants/Moves";
+import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 
 /**
  * Math functions used by FullScreenPokemon instances.
@@ -70,13 +73,13 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns A newly created Pokemon.
      */
     public newPokemon(title: string[], level?: number, moves?: IMove[], iv?: number, ev?: number): IPokemon {
-        const statisticNames: string[] = this.gameStarter.constants.statisticNames;
+        const statisticNames: string[] = this.gameStarter.constants.pokemon.statisticNames;
         const pokemon: any = {
             "title": title,
             "nickname": title,
             "level": level || 1,
             "moves": moves || this.newPokemonMoves(title, level || 1),
-            "types": this.gameStarter.constants.pokemon[title.join("")].types,
+            "types": this.gameStarter.constants.pokemon.byName[title.join("")].types,
             "status": "",
             "IV": iv || this.newPokemonIVs(),
             "EV": ev || this.newPokemonEVs(),
@@ -100,7 +103,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @remarks http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
      */
     public newPokemonMoves(title: string[], level: number): IMove[] {
-        const possibilities: IPokemonMoveListing[] = this.gameStarter.constants.pokemon[title.join("")].moves.natural;
+        const possibilities: IPokemonMoveListing[] = this.gameStarter.constants.pokemon.byName[title.join("")].moves.natural;
         const output: IMove[] = [];
         let move: IPokemonMoveListing;
         let newMove: IMove;
@@ -194,7 +197,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     public pokemonStatistic(pokemon: IPokemon, statistic: string): number {
         let topExtra: number = 0;
         let added: number = 5;
-        let base: number = (this.gameStarter.constants.pokemon[pokemon.title.join("")] as any)[statistic];
+        let base: number = (this.gameStarter.constants.pokemon.byName[pokemon.title.join("")] as any)[statistic];
         let iv: number = (pokemon.IV as any)[statistic] || 0;
         let ev: number = (pokemon.EV as any)[statistic] || 0;
         let level: number = pokemon.level;
@@ -366,22 +369,22 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
-        if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications["Turn 2"].opponentType)) {
+        if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications.turnTwo.opponentType)) {
             for (const possibility of possibilities) {
                 this.applyMoveEffectPriority(
                     possibility,
-                    this.gameStarter.constants.battleModifications["Turn 2"],
+                    this.gameStarter.constants.battleModifications.turnTwo,
                     player.selectedActor!,
                     1);
             }
         }
 
         // Modification 3 (Good AI): Prefer a move that is super effective. Do not use moves that are not very effective as long as there is an alternative.
-        if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications["Good AI"].opponentType)) {
+        if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications.goodAi.opponentType)) {
             for (let i: number = 0; i < possibilities.length; i += 1) {
                 this.applyMoveEffectPriority(
                     possibilities[i],
-                    this.gameStarter.constants.battleModifications["Good AI"],
+                    this.gameStarter.constants.battleModifications.goodAi,
                     player.selectedActor!,
                     1);
             }
@@ -601,7 +604,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public criticalHit(move: string, attacker: IPokemon): boolean {
         const moveInfo: IMoveSchema = this.gameStarter.constants.moves[move];
-        const baseSpeed: number = this.gameStarter.constants.pokemon[attacker.title.join("")].Speed;
+        const baseSpeed: number = this.gameStarter.constants.pokemon.byName[attacker.title.join("")].Speed;
         let denominator: number = 512;
 
         // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit, resulting in a probability of BaseSpeed / 64.
@@ -631,12 +634,12 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @remarks http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
     public typeEffectiveness(move: string, defender: IPokemon): number {
-        const defenderTypes: string[] = this.gameStarter.constants.pokemon[defender.title.join("")].types;
+        const defenderTypes: string[] = this.gameStarter.constants.pokemon.byName[defender.title.join("")].types;
         const moveIndex: number = this.gameStarter.constants.types.indices[this.gameStarter.constants.moves[move].type];
         let total: number = 1;
 
         for (let i: number = 0; i < defenderTypes.length; i += 1) {
-            total *= this.gameStarter.constants.types.table[moveIndex][this.gameStarter.constants.types.indices[defenderTypes[i]]];
+            total *= this.gameStarter.constants.types.effectivenessTable[moveIndex][this.gameStarter.constants.types.indices[defenderTypes[i]]];
         }
 
         return total;
@@ -653,7 +656,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      *          required to reach that level when caught, as will Pokémon hatched from Eggs.
      */
     public experienceStarting(title: string[], level: number): number {
-        let reference: IPokemonListing = this.gameStarter.constants.pokemon[title.join("")];
+        let reference: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
 
         // TODO: remove defaulting to mediumFast
         switch (reference.experienceType) {

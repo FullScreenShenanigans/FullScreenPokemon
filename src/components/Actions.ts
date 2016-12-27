@@ -11,6 +11,8 @@ import {
     ITransporter, ITransportSchema, IWalkingOnStop, IWalkingOnStopCommandFunction,
     IWildPokemonSchema
 } from "../IFullScreenPokemon";
+import { Direction } from "./Constants";
+import { IHMMoveSchema } from "./constants/Moves";
 
 /**
  * Action functions used by FullScreenPokemon instances.
@@ -960,16 +962,16 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.graphics.removeClasses(
             thing,
-            DirectionClasses[Direction.Top],
-            DirectionClasses[Direction.Right],
-            DirectionClasses[Direction.Bottom],
-            DirectionClasses[Direction.Left]);
+            this.gameStarter.constants.directionClasses[Direction.Top],
+            this.gameStarter.constants.directionClasses[Direction.Right],
+            this.gameStarter.constants.directionClasses[Direction.Bottom],
+            this.gameStarter.constants.directionClasses[Direction.Left]);
 
-        this.gameStarter.graphics.addClass(thing, DirectionClasses[direction]);
+        this.gameStarter.graphics.addClass(thing, this.gameStarter.constants.directionClasses[direction]);
 
         if (direction === Direction.Right) {
             this.gameStarter.graphics.flipHoriz(thing);
-            this.gameStarter.graphics.addClass(thing, DirectionClasses[Direction.Left]);
+            this.gameStarter.graphics.addClass(thing, this.gameStarter.constants.directionClasses[Direction.Left]);
         }
     }
 

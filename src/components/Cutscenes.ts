@@ -3,7 +3,6 @@ import { Component } from "eightbittr/lib/Component";
 import { IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
-import { Direction, DirectionAliases, DirectionOpposites, PokedexListingStatus } from "../Constants";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import {
     IBattleActionRoutineSettings, IBattleAttackRoutineSettings,
@@ -11,9 +10,10 @@ import {
     IBattler, IBattleRoutineSettings, IBattleStatisticRoutineSettings,
     IBattleThingsById, IBattleTransitionSettings,
     ICharacter, IEnemy, IKeyboardResultsMenu, IMenu, IPlayer, IPokeball, IPokemon,
-    IPokemonMoveListing, IThing, ITransitionFlashSettings, ITransitionLineSpiralSettings,
+    IThing, ITransitionFlashSettings, ITransitionLineSpiralSettings,
     ITransportSchema
 } from "../IFullScreenPokemon";
+import { Direction, PokedexListingStatus } from "./Constants";
 
 /**
  * Cutscene functions used by FullScreenPokemon instances.
@@ -121,11 +121,11 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                     }
 
                     if (direction === Direction.Right || direction === Direction.Bottom) {
-                        if (thing[DirectionAliases[direction]] < destination) {
+                        if (thing[this.gameStarter.constants.directionAliases[direction]] < destination) {
                             return false;
                         }
                     } else {
-                        if (thing[DirectionAliases[direction]] > destination) {
+                        if (thing[this.gameStarter.constants.directionAliases[direction]] > destination) {
                             return false;
                         }
                     }
@@ -631,9 +631,6 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public cutsceneBattleMovePlayerAnimate(_settings: any, args: IBattleMoveRoutineSettings): void {
         const choice: string = args.choicePlayer!;
-        const move: IPokemonMoveListing = this.gameStarter.mathDecider.getConstant("moves")[choice];
-
-        console.log("Should do something with", move);
 
         args.attackerName = "player";
         args.defenderName = "opponent";
@@ -2033,7 +2030,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const direction: Direction = triggerer.direction;
         const directionName: string = Direction[direction].toLowerCase();
         const locationTriggerer: number = (triggerer as any)[directionName];
-        const locationPlayer: number = (player as any)[DirectionOpposites[directionName]];
+        const locationPlayer: number = (player as any)[this.gameStarter.constants.directionOpposites[directionName]];
         const distance: number = Math.abs(locationTriggerer - locationPlayer);
         const blocks: number = Math.max(0, distance / 4 / 8);
 

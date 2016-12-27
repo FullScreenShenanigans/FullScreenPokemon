@@ -1,8 +1,28 @@
+/**
+ * A modifier for battle behavior in the opponentMove equation.
+ */
+export interface IBattleModification {
+    /**
+     * What type of opponents this applies to.
+     */
+    opponentType: string[];
 
+    /**
+     * Move type preferences, as the type of change, the target, and optionally
+     * a Number amount if relevant.
+     */
+    preferences: ([string, string, number] | [string, string])[];
+}
 
-export const BattleModifications: { [i: string]: IBattleModification } = {
-    "Turn 2": {
-        "opponentType": [
+/**
+ * Battle modifications used in the opponentMove equation.
+ */
+export class BattleModifications {
+    /**
+     * Battle modifications for the second turn.
+     */
+    public readonly turnTwo: IBattleModification = {
+        opponentType: [
             "Pokemaniac",
             "Super Nerd",
             "Juggler",
@@ -12,7 +32,7 @@ export const BattleModifications: { [i: string]: IBattleModification } = {
             "Gentleman",
             "Lorelei"
         ],
-        "preferences": [
+        preferences: [
             ["Raise", "Attack", 1],
             ["Raise", "Defense", 1],
             ["Raise", "Special", 1],
@@ -33,11 +53,15 @@ export const BattleModifications: { [i: string]: IBattleModification } = {
             ["Move", "Light Screen"],
             ["Move", "Reflect"]
         ]
-    },
-    "Good AI": {
+    };
+
+    /**
+     * Battle modifications for smart opponents.
+     */
+    public readonly goodAi: IBattleModification = {
         // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
-        "opponentType": [
-            "smart",
+        opponentType: [
+            "Smart",
             "Sailor",
             "Pokemaniac",
             "Burglar",
@@ -60,7 +84,7 @@ export const BattleModifications: { [i: string]: IBattleModification } = {
             "Lorelei",
             "Lance"
         ],
-        "preferences": [
+        preferences: [
             ["Super", "Water, Fire"],
             ["Super", "Fire, Grass"],
             ["Super", "Fire, Ice"],
@@ -143,5 +167,5 @@ export const BattleModifications: { [i: string]: IBattleModification } = {
             ["Super", "Ice, Dragon"],
             ["Super", "Dragon, Dragon"]
         ]
-    }
+    };
 };

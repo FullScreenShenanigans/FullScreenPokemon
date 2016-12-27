@@ -37,7 +37,7 @@ export class Types {
      * The type effectiveness table, mapping each [attacker, defender] type
      * effectiveness multiplier.
      */
-    public readonly effectivenessTbale: number[][] = [
+    public readonly effectivenessTable: number[][] = [
         [1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
         [2.0, 1.0, 0.5, 0.5, 1.0, 2.0, 0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0],
         [1.0, 2.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0],

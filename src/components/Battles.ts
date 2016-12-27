@@ -56,15 +56,12 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
-        const moves: IMove[] = this.gameStarter.mathDecider.getConstant("moves");
-        const statisticNames: string[] = this.gameStarter.mathDecider.getConstant("statisticNames");
-
-        for (let statisticName of statisticNames) {
+        for (const statisticName of this.gameStarter.constants.pokemon.statisticNames) {
             (pokemon as any)[statisticName] = (pokemon as any)[statisticName + "Normal"];
         }
 
-        for (let move of pokemon.moves) {
-            move.remaining = (moves as any)[move.title].PP;
+        for (const move of pokemon.moves) {
+            move.remaining = this.gameStarter.constants.moves.byName[move.title].PP;
         }
 
         pokemon.status = "";

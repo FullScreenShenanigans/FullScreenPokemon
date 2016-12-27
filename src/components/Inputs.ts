@@ -8,6 +8,12 @@ import { ICharacter, IItemSchema, IPlayer } from "../IFullScreenPokemon";
  * Input functions used by FullScreenPokemon instances.
  */
 export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+
+    /**
+     * Quickly tapping direction keys means to look in a direction, not walk.
+     */
+    public readonly inputTimeTolerance: number = 4;
+
     /**
      * Checks whether direction keys such as up may trigger, which is true if the
      * game isn't paused, there isn't an active menu, and the MapScreener doesn't
@@ -275,7 +281,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             return;
         }
 
-        const itemSchema: IItemSchema = this.gameStarter.mathDecider.getConstant("items")[selectItem];
+        const itemSchema: IItemSchema = this.gameStarter //.mathDecider.getConstant("items")[selectItem];
 
         if (!itemSchema.bagActivate) {
             throw new Error("Currently selected item does not have a .bagActivate.");

@@ -1,7 +1,9 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import * as Moves from "./constants/Moves";
+import { BattleModifications } from "./constants/BattleModifications";
+import { Items } from "./constants/Items";
+import { Moves } from "./constants/Moves";
 import { Pokemon } from "./constants/Pokemon";
 import { Statuses } from "./constants/Statuses";
 import { Types } from "./constants/Types";
@@ -25,55 +27,6 @@ export interface IDirectionAliases {
  */
 export interface IDirectionOpposites {
     [i: string]: string;
-}
-
-/**
- * A description of a Pokemon in a player's Pokedex.
- * @todo It's not clear how this is different from IPokedexInformation.
- */
-export interface IPokedexListing extends IPokemonListing {
-    /**
-     * Whether the Pokemon has been caught.
-     */
-    caught?: boolean;
-
-    /**
-     * Whether the Pokemon has been seen.
-     */
-    seen?: boolean;
-
-    /**
-     * The concatenated title of the Pokemon.
-     */
-    title: string;
-}
-
-/**
- * A description of a Pokemon in a player's Pokedex.
- * @todo It's not clear how this is different from IPokedexListing.
- */
-export interface IPokedexInformation {
-    /**
-     * Whether the Pokemon has been caught.
-     */
-    caught?: boolean;
-
-    /**
-     * Whether the Pokemon has been seen.
-     */
-    seen?: boolean;
-
-    /**
-     * The title of the Pokemon.
-     */
-    title: string[];
-}
-
-/**
- * A player's Pokedex, as a summary of seen Pokemon keyed by name.
- */
-export interface IPokedex {
-    [i: string]: IPokedexInformation;
 }
 
 /**
@@ -105,14 +58,24 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
     public static readonly scale: number = 2;
 
     /**
-     * 
+     * Battle modifications used in the opponentMove equation.
      */
-    public readonly moves: typeof Moves = Moves;
+    public readonly battleModifications: BattleModifications = new BattleModifications();
 
     /**
-     * 
+     * All known items, keyed by English name.
      */
-    public readonly pokemon: typeof Pokemon = Pokemon;
+    public readonly items: Items = new Items();
+
+    /**
+     * All known Pokemon moves, keyed by concatenated name.
+     */
+    public readonly moves: Moves = new Moves();
+
+    /**
+     * All known Pokemon, keyed by concatenated name.
+     */
+    public readonly pokemon: Pokemon = new Pokemon();
 
     /**
      * Information on Pokemon status effects.
@@ -123,22 +86,6 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
      * Information on move types.
      */
     public readonly types: Types = new Types();
-
-    /**
-     * Names of all statistics Pokemon have.
-     */
-    public readonly statisticNames: string[] = ["HP", "Attack", "Defense", "Speed", "Special"];
-
-    /**
-     * Names of Pokemon statistics to display in statistics menus.
-     */
-    public readonly statisticNamesDisplayed: string[] = ["Attack", "Defense", "Speed", "Special"];
-
-    /**
-     * Quickly tapping direction keys means to look in a direction, not walk.
-     */
-    public readonly inputTimeTolerance: number = 4;
-
     /**
      * The allowed uppercase keys to be shown in a keyboard.
      */

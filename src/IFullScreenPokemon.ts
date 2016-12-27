@@ -8,7 +8,7 @@ import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 import * as iuserwrappr from "userwrappr/lib/IUserWrappr";
 import * as iuserwrapprschemas from "userwrappr/lib/UISchemas";
 
-import { IItemSchema } from "./components/Constants";
+import { IItemSchema } from "./components/constants/Items";
 
 /**
  * Container for holding the states of objects in the game.

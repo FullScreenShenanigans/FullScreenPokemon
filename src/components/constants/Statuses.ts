@@ -11,13 +11,20 @@ export class Statuses {
      * Statuses that will enable a Pokemon to be caught in the canCatchPokemon
      * equation if a random generated N is < 25.
      */
-    public readonly probability25: string[] = ["Sleep", "Freeze"];
+    public readonly probability25: { [i: string]: boolean } = {
+        "Sleep": true,
+        "Freeze": true
+    };
 
     /**
      * Statuses that will enable a Pokemon to be caught in the canCatchPokemon
      * equation if a random generated N is < 12.
      */
-    public readonly probability12: string[] = ["Paralyze", "Burn", "Poison"];
+    public readonly probability12: { [i: string]: boolean } = {
+        "Paralyze": true,
+        "Burn": true,
+        "Poison": true
+    };
 
     /**
      * Bonus probability points awarded for statuses in the canCatchPokemon equation
@@ -44,5 +51,5 @@ export class Statuses {
         "Paralyze": 5,
         "Burn": 5,
         "Poison": 5
-    }
+    };
 }
