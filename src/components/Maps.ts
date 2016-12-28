@@ -705,9 +705,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param location   The name of the Location within the Map.
      */
     public entranceNormal(location: ILocation): void {
-        this.addPlayer(
-            location.xloc ? location.xloc * 4 : 0,
-            location.yloc ? location.yloc * 4 : 0);
+        this.addPlayer(location.xloc || 0, location.yloc || 0);
 
         this.gameStarter.actions.animateCharacterSetDirection(
             this.gameStarter.players[0],
@@ -757,27 +755,27 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         switch (direction) {
             case Direction.Top:
-                top -= area.height * 4;
+                top -= area.height;
                 break;
 
             case Direction.Right:
-                left += thing.width * 4;
+                left += thing.width;
                 break;
 
             case Direction.Bottom:
-                top += thing.height * 4;
+                top += thing.height;
                 break;
 
             case Direction.Left:
-                left -= area.width * 4;
+                left -= area.width;
                 break;
 
             default:
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
 
-        const x: number = left / 4 + (thing.offsetX || 0);
-        const y: number = top / 4 + (thing.offsetY || 0);
+        const x: number = left + (thing.offsetX || 0);
+        const y: number = top + (thing.offsetY || 0);
 
         this.gameStarter.scrolling.expandMapBoundariesForArea(area, x, y);
 
@@ -804,10 +802,10 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.gameStarter.areaSpawner.spawnArea(
             this.gameStarter.constants.directionSpawns[direction],
-            this.gameStarter.quadsKeeper.top / 4,
-            this.gameStarter.quadsKeeper.right / 4,
-            this.gameStarter.quadsKeeper.bottom / 4,
-            this.gameStarter.quadsKeeper.left / 4);
+            this.gameStarter.quadsKeeper.top,
+            this.gameStarter.quadsKeeper.right,
+            this.gameStarter.quadsKeeper.bottom,
+            this.gameStarter.quadsKeeper.left);
         this.gameStarter.maps.addAreaGate(thing, area, x, y);
 
         area.spawned = true;

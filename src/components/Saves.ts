@@ -195,11 +195,11 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.stateHolder.addChange(
             id,
             "xloc",
-            (character.left + this.gameStarter.mapScreener.left) / 4);
+            (character.left + this.gameStarter.mapScreener.left));
         this.gameStarter.stateHolder.addChange(
             id,
             "yloc",
-            (character.top + this.gameStarter.mapScreener.top) / 4);
+            (character.top + this.gameStarter.mapScreener.top));
         this.gameStarter.stateHolder.addChange(
             id,
             "direction",
