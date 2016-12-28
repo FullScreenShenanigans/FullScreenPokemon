@@ -15,13 +15,16 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public readonly inputTimeTolerance: number = 4;
 
     /**
-     * Checks whether direction keys such as up may trigger, which is true if the
-     * game isn't paused, there isn't an active menu, and the MapScreener doesn't
-     * specify blockInputs = true.
+     * Checks whether direction keys such as up may trigger for a Character.
      * 
+     * @param thing   A Character that wants to move.
      * @returns Whether direction keys may trigger.
      */
-    public canDirectionsTrigger(): boolean {
+    public canDirectionsTrigger(thing: ICharacter): boolean {
+        if (thing.following) {
+            return false;
+        }
+
         if (this.gameStarter.gamesRunner.getPaused()) {
             return false;
         }
@@ -41,7 +44,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param event   The original user-caused Event.
      */
     public keyDownUp(thing: ICharacter, event?: Event): void {
-        if (!this.canDirectionsTrigger()) {
+        if (!this.canDirectionsTrigger(thing)) {
             return;
         }
 
@@ -68,7 +71,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param event   The original user-caused Event.
      */
     public keyDownRight(thing: ICharacter, event?: Event): void {
-        if (!this.canDirectionsTrigger()) {
+        if (!this.canDirectionsTrigger(thing)) {
             return;
         }
 
@@ -93,7 +96,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param event   The original user-caused Event.
      */
     public keyDownDown(thing: ICharacter, event?: Event): void {
-        if (!this.canDirectionsTrigger()) {
+        if (!this.canDirectionsTrigger(thing)) {
             return;
         }
 
@@ -120,7 +123,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param event   The original user-caused Event.
      */
     public keyDownLeft(thing: ICharacter, event?: Event): void {
-        if (!this.canDirectionsTrigger()) {
+        if (!this.canDirectionsTrigger(thing)) {
             return;
         }
 

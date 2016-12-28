@@ -199,6 +199,11 @@ export interface ICharacter extends IThing {
     distance: number;
 
     /**
+     * A queue of walking commands in waiting, used by its follower.
+     */
+    followCommands?: number[];
+
+    /**
      * A Character walking directly behind this as a follower.
      */
     follower?: ICharacter;
@@ -207,11 +212,6 @@ export interface ICharacter extends IThing {
      * A Character this is walking directly behind as a follower.
      */
     following?: ICharacter;
-
-    /**
-     * The time cycle keeping this behind the Character it's following. 
-     */
-    followingLoop?: itimehandlr.ITimeEvent;
 
     /**
      * An item to give after a dialog is first initiated.
@@ -247,27 +247,6 @@ export interface ICharacter extends IThing {
      * A direction to turn to when the current walking step is done.
      */
     nextDirection?: Direction;
-
-    /**
-     * A direction to turn to when the current walking step is done.
-     */
-    wantsToWalk?: boolean;
-
-    // /**
-    //  * A callback for when this starts a single walking step.
-    //  * 
-    //  * @param character   This character that has started walking.
-    //  * @param direction   The direction the Character is facing.
-    //  */
-    // onWalkingStart: (character: ICharacter, direction: number) => void;
-
-    // /**
-    //  * A callback for when this stops a single walking step, commonly to keep walking.
-    //  * 
-    //  * @param character   A Character mid-step.
-    //  * @param onStop   Commands to run as a walking continuation.
-    //  */
-    // onWalkingStop: (character: ICharacter, onStop: IWalkingOnStop) => void;
 
     /**
      * Whether this is allowed to be outside the QuadsKeepr quadrants area, or not
@@ -361,14 +340,14 @@ export interface ICharacter extends IThing {
     walking?: boolean;
 
     /**
-     * A queue of walking commands in waiting, used by its follower.
-     */
-    walkingCommands?: number[];
-
-    /**
      * The class cycle for flipping back and forth while walking.
      */
     walkingFlipping?: itimehandlr.ITimeEvent;
+
+    /**
+     * A direction to turn to when the current walking step is done.
+     */
+    wantsToWalk?: boolean;
 }
 
 /**

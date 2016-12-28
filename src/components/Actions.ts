@@ -4,6 +4,7 @@ import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+import { Following } from "./actions/Following";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
@@ -45,6 +46,11 @@ export interface IColorFadeSettings {
  * Action functions used by FullScreenPokemon instances.
  */
 export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Following functions used by the FullScreenPokemon instance.
+     */
+    public readonly following: Following<TGameStartr> = new Following(this.gameStarter);
+
     /**
      * Walking functions used by the FullScreenPokemon instance.
      */
@@ -705,97 +711,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     // /**
-    //  * Starts a Character's walking cycle regardless of the direction.
-    //  * 
-    //  * @param thing   A Character to start walking.
-    //  * @param direction   What direction the Character should turn to face.
-    //  * @param onStop   A queue of commands as alternating directions and distances.
-    //  */
-    // public animateCharacterStartWalkingCycle(thing: ICharacter, direction: Direction, onStop?: IWalkingOnStop): void {
-    //     if (!onStop || onStop.length === 0) {
-    //         return;
-    //     }
-
-    //     // If the first queued command is a 0 distance, walking might be complete
-    //     if (onStop[0] === 0) {
-    //         // More commands indicates walking isn't done, and to continue turning/walking
-    //         if (onStop.length > 1) {
-    //             if (typeof onStop[1] === "function") {
-    //                 (onStop[1] as IWalkingOnStopCommandFunction)(thing);
-    //                 return;
-    //             }
-
-    //             this.animateCharacterSetDirection(thing, this.gameStarter.constants.directionAliases[onStop[1] as number]);
-
-    //             this.animateCharacterStartWalkingCycle(
-    //                 thing,
-    //                 this.gameStarter.constants.directionAliases[onStop[1] as number],
-    //                 onStop.slice(2));
-    //         }
-
-    //         return;
-    //     }
-
-    //     if (thing.follower) {
-    //         thing.walkingCommands!.push(direction);
-    //     }
-
-    //     this.animateCharacterStartWalking(thing, direction, onStop);
-
-    //     if (!thing.bordering[direction]) {
-    //         this.gameStarter.physics.shiftBoth(thing, -thing.xvel, -thing.yvel);
-    //     }
-    // }
-
-    // /**
-    //  * Starts a Character walking in the given direction as part of a walking cycle.
-    //  * 
-    //  * @param thing   The Character to start walking.
-    //  * @param direction   What direction to walk in (by default, up).
-    //  * @param onStop   A queue of commands as alternating directions and distances.
-    //  * @remarks The hard numbers are hardcoded to the player for now.
-    //  */
-    // public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
-    //     const repeats: number = this.gameStarter.equations.speedWalking(thing);
-    //     const distance: number = repeats * thing.speed;
-
-    //     thing.walking = true;
-    //     this.animateCharacterSetDirection(thing, direction);
-    //     this.animateCharacterSetDistanceVelocity(thing, distance);
-
-    //     if (!thing.cycles || !(thing.cycles as any).walking) {
-    //         this.gameStarter.timeHandler.addClassCycle(
-    //             thing,
-    //             ["walking", "standing"],
-    //             "walking",
-    //             8);
-    //     }
-
-    //     if (!thing.walkingFlipping) {
-    //         thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
-    //             (): void => this.animateSwitchFlipOnDirection(thing),
-    //             16,
-    //             Infinity,
-    //             thing);
-    //     }
-
-    //     if (thing.sight) {
-    //         thing.sightDetector!.nocollide = true;
-    //     }
-
-    //     this.gameStarter.timeHandler.addEventInterval(
-    //         (): void => thing.onWalkingStop.call(this, thing, onStop),
-    //         32,
-    //         Infinity,
-    //         thing,
-    //         onStop);
-
-    //     if (!thing.bordering[direction]) {
-    //         this.gameStarter.physics.shiftBoth(thing, thing.xvel, thing.yvel);
-    //     }
-    // }
-
-    // /**
     //  * Starts a roaming Character walking in a random direction, determined
     //  * by the allowed directions it may use (that aren't blocked).
     //  * 
@@ -833,95 +748,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     //     } else {
     //         this.animateCharacterStartWalking(thing, direction);
     //     }
-    // }
-
-    // /**
-    //  * Continues a Character's walking cycle after taking a step. If .turning
-    //  * is provided, the Character turns. If a Player is provided, its keys
-    //  * and .canKeyWalking are respected.
-    //  * 
-    //  * @param thing   A Character mid-step.
-    //  */
-    // public animateCharacterRepeatWalking(thing: ICharacter): void {
-    //     if (typeof thing.turning !== "undefined") {
-    //         if (!thing.player || !(thing as any).keys[thing.turning]) {
-    //             this.animateCharacterSetDirection(thing, thing.turning);
-    //             thing.turning = undefined;
-    //             return;
-    //         }
-
-    //         thing.turning = undefined;
-    //     }
-
-    //     if (thing.player) {
-    //         (thing as IPlayer).canKeyWalking = false;
-    //     }
-
-    //     this.animateCharacterStartWalking(thing, thing.direction);
-    // }
-
-    // /**
-    //  * Reacts to a Character finishing a step and either stops all walking or moves to
-    //  * the next action in the onStop queue.
-    //  * 
-    //  * @param thing   A Character finishing a walking step.
-    //  * @param onStop   A queue of commands as alternating directions and distances.
-    //  * @returns True, unless the next onStop is a Function to return the result of.
-    //  */
-    // public animateCharacterStopWalking(thing: ICharacter, onStop?: IWalkingOnStop): boolean {
-    //     thing.xvel = 0;
-    //     thing.yvel = 0;
-    //     thing.walking = false;
-
-    //     this.gameStarter.graphics.removeClasses(thing, "walking", "standing");
-    //     this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
-
-    //     if (thing.walkingFlipping) {
-    //         this.gameStarter.timeHandler.cancelEvent(thing.walkingFlipping);
-    //         thing.walkingFlipping = undefined;
-    //     }
-
-    //     this.animateSnapToGrid(thing);
-
-    //     if (thing.sight) {
-    //         thing.sightDetector!.nocollide = false;
-    //         this.animatePositionSightDetector(thing);
-    //     }
-
-    //     if (!onStop) {
-    //         return true;
-    //     }
-
-    //     switch (onStop.constructor) {
-    //         case Number:
-    //             this.animateCharacterRepeatWalking(thing);
-    //             break;
-
-    //         case Array:
-    //             if (onStop[0] > 0) {
-    //                 onStop[0] = onStop[0] as number - 1;
-    //                 this.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
-    //             } else if (onStop.length === 0) {
-    //                 break;
-    //             } else {
-    //                 if (onStop[1] instanceof Function) {
-    //                     return (onStop[1] as IWalkingOnStopCommandFunction)(thing) as boolean;
-    //                 }
-    //                 this.animateCharacterStartWalkingCycle(
-    //                     thing,
-    //                     this.gameStarter.constants.directionAliases[onStop[1] as number],
-    //                     onStop.slice(2));
-    //             }
-    //             break;
-
-    //         case Function:
-    //             return (onStop as any)(thing);
-
-    //         default:
-    //             throw new Error("Unknown onStop: " + onStop + ".");
-    //     }
-
-    //     return true;
     // }
 
     // /**
