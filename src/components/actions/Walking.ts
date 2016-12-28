@@ -59,8 +59,8 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * 
      */
-    public continueWalking(thing: ICharacter, ticksPerBlock: number): void {
-        if (!thing.wantsToWalk) {
+    protected continueWalking(thing: ICharacter, ticksPerBlock: number): void {
+        if (!thing.wantsToWalk || (thing.player && this.gameStarter.battles.checkPlayerGrassBattle(thing as IPlayer))) {
             this.stopWalking(thing);
             return;
         }
@@ -99,44 +99,6 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
     }
 
-    // /**
-    //  * Animates a Player to stop walking, which is the same logic for a normal
-    //  * Character as well as MenuGrapher and following checks.
-    //  * 
-    //  * @param thing   A Player to stop walking.
-    //  * @param onStop   A queue of commands as alternating directions and distances.
-    //  * @returns True, unless the next onStop is a Function to return the result of.
-    //  */
-    // public animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
-    //     if (this.gameStarter.battles.checkPlayerGrassBattle(thing)) {
-    //         thing.canKeyWalking = true;
-    //         return false;
-    //     }
-
-    //     if (thing.following) {
-    //         return this.animateCharacterStopWalking(thing, onStop);
-    //     }
-
-    //     if (
-    //         !this.gameStarter.menuGrapher.getActiveMenu()
-    //         && (thing.keys as any)[thing.direction]) {
-    //         this.animateCharacterSetDistanceVelocity(thing, thing.distance);
-    //         return false;
-    //     }
-
-    //     if (typeof thing.nextDirection !== "undefined") {
-    //         if (thing.nextDirection !== thing.direction && !thing.ledge) {
-    //             this.gameStarter.physics.setPlayerDirection(thing, thing.nextDirection);
-    //         }
-
-    //         delete thing.nextDirection;
-    //     } else {
-    //         thing.canKeyWalking = true;
-    //     }
-
-    //     return this.animateCharacterStopWalking(thing, onStop);
-    // }
-
     /**
      * Animates a Character to no longer be able to walk.
      * 
@@ -147,9 +109,8 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         if (thing.player) {
             (thing as IPlayer).keys = (thing as IPlayer).getKeys();
+            this.gameStarter.mapScreener.blockInputs = true;
         }
-
-        this.gameStarter.mapScreener.blockInputs = true;
     }
 
     // /**
@@ -326,20 +287,20 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
                     ["walking", "standing"],
                     "walking",
                     ticksPerStep / 2);
+
+                thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
+                    (): void => {
+                        if (thing.direction % 2 === 0) {
+                            if (thing.flipHoriz) {
+                                this.gameStarter.graphics.unflipHoriz(thing);
+                            } else {
+                                this.gameStarter.graphics.flipHoriz(thing);
+                            }
+                        }
+                    },
+                    ticksPerStep,
+                    Infinity);
             },
             ticksPerStep);
-
-        thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
-            (): void => {
-                if (thing.direction % 2 === 0) {
-                    if (thing.flipHoriz) {
-                        this.gameStarter.graphics.unflipHoriz(thing);
-                    } else {
-                        this.gameStarter.graphics.flipHoriz(thing);
-                    }
-                }
-            },
-            ticksPerStep,
-            Infinity);
     }
 }
