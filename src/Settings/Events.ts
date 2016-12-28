@@ -1,6 +1,12 @@
 import { IEventsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateEventsSettings(): IEventsModuleSettings {
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Event settings for the FullScreenPokemon instance.
+ */
+export function GenerateEventsSettings(_fsp: FullScreenPokemon): IEventsModuleSettings {
     "use strict";
 
     return {

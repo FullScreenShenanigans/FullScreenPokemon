@@ -1,7 +1,9 @@
 import { Utilities as GameStartrUtilities } from "gamestartr/lib/components/Utilities";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IPokemon, IThing, IWildPokemonSchema } from "../IFullScreenPokemon";
+import { IPokemon } from "./Battles";
+import { IWildPokemonSchema } from "./Maps";
+import { IThing } from "./Things";
 
 /**
  * Miscellaneous utility functions used by FullScreenPokemon instances.

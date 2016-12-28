@@ -1,13 +1,14 @@
 import { IObjectsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Actions } from "../components/Actions";
-import { Collisions } from "../components/Collisions";
-import { Maps } from "../components/Maps";
-import { Things } from "../components/Things";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateObjectsSettings(): IObjectsModuleSettings {
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Object settings for the FullScreenPokemon instance.
+ */
+export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleSettings {
     "use strict";
 
     return {
@@ -748,7 +749,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 // "stretches": [
                 //     { "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
                 // ],
-                "onMake": Maps.prototype.areaProcess,
+                "onMake": fsp.maps.areaProcess.bind(fsp.maps),
                 "attributes": {
                     "invisibleWallBorders": {
                         "afters": [
@@ -785,7 +786,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "tolBottom": 0,
                 "tolLeft": 0,
                 // Triggered Functions
-                "onMake": Things.prototype.process
+                "onMake": fsp.things.process.bind(fsp.things)
             },
             "Character": {
                 "groupType": "Character",
@@ -797,10 +798,10 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "direction": 8,
                 "offsetY": -8,
                 "roamingDirections": [0, 1, 2, 3],
-                "onThingAdd": Actions.prototype.spawnCharacter,
-                "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
-                "onWalkingStop": Actions.prototype.animateCharacterStopWalking,
-                "activate": Collisions.prototype.collideCharacterDialog,
+                "onThingAdd": fsp.actions.spawnCharacter.bind(fsp.actions),
+                "onWalkingStart": fsp.actions.animateCharacterStartWalking.bind(fsp.actions),
+                "onWalkingStop": fsp.actions.animateCharacterStopWalking.bind(fsp.actions),
+                "activate": fsp.collisions.collideCharacterDialog.bind(fsp.collisions),
             },
             "Buzzer": {
                 "width": 14,
@@ -823,8 +824,8 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "canKeyWalking": true,
                 "direction": 8,
                 "speed": 1,
-                "onWalkingStart": Actions.prototype.animateCharacterStartWalking,
-                "onWalkingStop": Actions.prototype.animatePlayerStopWalking,
+                "onWalkingStart": fsp.actions.animateCharacterStartWalking.bind(fsp.actions),
+                "onWalkingStop": fsp.actions.animatePlayerStopWalking.bind(fsp.actions),
                 "getKeys": () => {
                     return {
                         "0": false,
@@ -838,7 +839,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "Pokeball": {
                 "action": "item",
-                "activate": Collisions.prototype.collidePokeball,
+                "activate": fsp.collisions.collidePokeball.bind(fsp.collisions),
                 "borderPrimary": true
             },
             "Rival": {
@@ -847,7 +848,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "Solid": {
                 "repeat": true,
                 "groupType": "Solid",
-                "activate": Collisions.prototype.collideCharacterDialog
+                "activate": fsp.collisions.collideCharacterDialog.bind(fsp.collisions)
             },
             "BedSingle": [32, 64],
             "Bookshelf": {
@@ -870,34 +871,34 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "Cabinet": [32, 64],
             "CollisionDetector": {
-                "collide": Collisions.prototype.collideCollisionDetector,
+                "collide": fsp.collisions.collideCollisionDetector.bind(fsp.collisions),
                 "active": false,
                 "hidden": true
             },
             "AreaGate": {
-                "activate": Actions.prototype.activateAreaGate,
+                "activate": fsp.actions.activateAreaGate.bind(fsp.actions),
                 "active": true,
                 "requireOverlap": true
             },
             "CutsceneTriggerer": {
-                "activate": Actions.prototype.activateCutsceneTriggerer,
+                "activate": fsp.actions.activateCutsceneTriggerer.bind(fsp.actions),
                 "requireOverlap": true
             },
             "MenuTriggerer": {
-                "activate": Actions.prototype.activateMenuTriggerer
+                "activate": fsp.actions.activateMenuTriggerer.bind(fsp.actions)
             },
             "SightDetector": {
-                "activate": Actions.prototype.activateSightDetector,
+                "activate": fsp.actions.activateSightDetector.bind(fsp.actions),
                 "requireOverlap": true,
                 "hidden": true
             },
             "ThemePlayer": {
-                "activate": Actions.prototype.activateThemePlayer,
+                "activate": fsp.actions.activateThemePlayer.bind(fsp.actions),
                 "requireOverlap": true,
                 "hidden": true
             },
             "Transporter": {
-                "activate": Actions.prototype.activateTransporter,
+                "activate": fsp.actions.activateTransporter.bind(fsp.actions),
                 "requireOverlap": true,
                 "hidden": false
             },
@@ -916,7 +917,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "hidden": true
             },
             "CutsceneResponder": {
-                "activate": Actions.prototype.activateCutsceneResponder
+                "activate": fsp.actions.activateCutsceneResponder.bind(fsp.actions)
             },
             "FenceVertical": [16, 32],
             "FloorDiamondsDark": {
@@ -928,25 +929,25 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "Grass": {
                 "rarity": 40,
-                "collide": Collisions.prototype.collideCharacterGrass
+                "collide": fsp.collisions.collideCharacterGrass.bind(fsp.collisions)
             },
             "GymStatue": {
                 "height": 64,
-                "activate": Actions.prototype.activateGymStatue
+                "activate": fsp.actions.activateGymStatue.bind(fsp.actions)
             },
             "HealingMachine": [64, 64],
             "HealingMachineBall": [12, 12],
             "HMCharacter": {
-                "activate": Actions.prototype.activateHMCharacter
+                "activate": fsp.actions.activateHMCharacter.bind(fsp.actions)
             },
             "CuttableTree": {
                 "moveName": "Cut",
-                "moveCallback": Actions.prototype.partyActivateCut,
+                "moveCallback": fsp.actions.partyActivateCut.bind(fsp.actions),
                 "requiredBadge": "Cascade"
             },
             "StrengthBoulder": {
                 "moveName": "Strength",
-                "moveCallback": Actions.prototype.partyActivateStrength,
+                "moveCallback": fsp.actions.partyActivateStrength.bind(fsp.actions),
                 "speed": 4,
                 "requiredBadge": "Rainbow"
             },
@@ -1008,7 +1009,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
                 "height": 16,
                 "spritewidth": 16,
                 "direction": 8,
-                "collide": Collisions.prototype.collideLedge,
+                "collide": fsp.collisions.collideLedge.bind(fsp.collisions),
                 "attributes": {
                     "jagged": {
                         "spritewidth": 64
@@ -1045,10 +1046,10 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "SofaLeft": [32, 64],
             "Spawner": {
                 "hidden": true,
-                "onThingAdd": Actions.prototype.activateSpawner
+                "onThingAdd": fsp.actions.activateSpawner.bind(fsp.actions)
             },
             "AreaSpawner": {
-                "activate": Actions.prototype.spawnareaSpawner
+                "activate": fsp.actions.spawnAreaSpawner.bind(fsp.actions)
             },
             "SquareWallTop": {
                 "spriteheight": 2
@@ -1078,10 +1079,10 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             "WaterEdge": {
                 "height": 16,
                 "width": 16,
-                "collide": Collisions.prototype.collideWaterEdge,
-                "activate": Actions.prototype.activateHMCharacter,
+                "collide": fsp.collisions.collideWaterEdge.bind(fsp.collisions),
+                "activate": fsp.actions.activateHMCharacter.bind(fsp.actions),
                 "moveName": "Surf",
-                "moveCallback": Actions.prototype.partyActivateSurf,
+                "moveCallback": fsp.actions.partyActivateSurf.bind(fsp.actions),
                 "requiredBadge": "Soul"
             },
             "WaterEdgeTop": {
@@ -1098,7 +1099,7 @@ export function GenerateObjectsSettings(): IObjectsModuleSettings {
             },
             "WindowDetector": {
                 "hidden": true,
-                "onThingAdd": Actions.prototype.spawnWindowDetector
+                "onThingAdd": fsp.actions.spawnWindowDetector.bind(fsp.actions)
             },
             "FloorLinedHorizontal": {
                 "spritewidth": 2,

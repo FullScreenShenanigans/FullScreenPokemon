@@ -1,7 +1,8 @@
 import { Graphics as GameStartrGraphics } from "gamestartr/lib/components/Graphics";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IBattleInfo, IThing } from "../IFullScreenPokemon";
+import { IBattleInfo } from "./Battles";
+import { IThing } from "./Things";
 
 /**
  * Graphics functions used by FullScreenPokemon instances.

@@ -9,11 +9,11 @@ import {
     IBattleCutsceneSettings, IBattleInfo, IBattleLevelRoutineSettings, IBattleMoveRoutineSettings,
     IBattler, IBattleRoutineSettings, IBattleStatisticRoutineSettings,
     IBattleThingsById, IBattleTransitionSettings,
-    ICharacter, IEnemy, IKeyboardResultsMenu, IMenu, IPlayer, IPokeball, IPokemon,
-    IThing, ITransitionFlashSettings, ITransitionLineSpiralSettings,
-    ITransportSchema
-} from "../IFullScreenPokemon";
+    IPokemon, ITransitionFlashSettings, ITransitionLineSpiralSettings
+} from "./Battles";
 import { Direction, PokedexListingStatus } from "./Constants";
+import { IKeyboardResultsMenu, IMenu } from "./Menus";
+import { ICharacter, IEnemy, IPlayer, IPokeball, IThing, ITransportSchema } from "./Things";
 
 /**
  * Cutscene functions used by FullScreenPokemon instances.

@@ -1,7 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IPlayer } from "../IFullScreenPokemon";
+import { IPlayer } from "./Things";
 
 /**
  * Cycling functions used by FullScreenPokemon instances.

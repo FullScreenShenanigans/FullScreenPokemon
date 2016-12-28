@@ -1,12 +1,455 @@
 import { Maps as GameStartrMaps } from "gamestartr/lib/components/Maps";
-import { IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
+import * as imapscreatr from "mapscreatr/lib/IMapsCreatr";
+import { IPreThing as IMapsCreatrPreThing } from "mapscreatr/lib/IPreThing";
+import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import {
-    IArea, IAreaBoundaries, IAreaGate, IareaSpawner, ILocation,
-    IMap, IPlayer, IPreThing, IThing
-} from "../IFullScreenPokemon";
 import { Direction } from "./Constants";
+import { IStateSaveable } from "./Saves";
+import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
+
+/**
+ * A flexible container for map attributes and viewport.
+ */
+export interface IMapScreenr extends IMapScreenr {
+    /**
+     * Whether user inputs should be ignored.
+     */
+    blockInputs: boolean;
+
+    /**
+     * The currently playing cutscene, if any.
+     */
+    cutscene?: string;
+
+    /**
+     * What direction the player is currently facing.
+     */
+    playerDirection: number;
+
+    /**
+     * What theme is currently playing.
+     */
+    theme?: string;
+
+    /**
+     * Known variables, keyed by name.
+     */
+    variables: {
+        /**
+         * Whether the current Area allows bicycling.
+         */
+        allowCycling?: boolean;
+
+        /**
+         * The current size of the area Things are placed in.
+         */
+        boundaries: IAreaBoundaries;
+
+        /**
+         * What form of scrolling is currently capable on the screen.
+         */
+        scrollability: number;
+    };
+}
+
+/**
+ * 
+ */
+export interface IMapRaw extends imapscreatr.IMapRaw {
+    /**
+     * A listing of areas in the Map, keyed by name.
+     */
+    areas: {
+        [i: string]: IAreaRaw;
+        [i: number]: IAreaRaw;
+    };
+
+    /**
+     * The default location for the Map.
+     */
+    locationDefault: string;
+
+    /**
+     * Descriptions of locations in the map.
+     */
+    locations: {
+        [i: string]: ILocationRaw;
+        [i: number]: ILocationRaw;
+    };
+
+    /**
+     * A starting seed to initialize random number generation.
+     */
+    seed?: number | number[];
+
+    /**
+     * What theme to play by default, such as "Pallet Town".
+     */
+    theme?: string;
+}
+
+/**
+ * A Map parsed from its raw JSON-friendly description.
+ */
+export interface IMap extends IStateSaveable, imapscreatr.IMap {
+    /**
+     * A listing of areas in the Map, keyed by name.
+     */
+    areas: {
+        [i: string]: IArea;
+        [i: number]: IArea;
+    };
+
+    /**
+     * The name of the Map, such as "Pallet Town".
+     */
+    name: string;
+
+    /**
+     * The default location for the Map.
+     */
+    locationDefault?: string;
+
+    /**
+     * A starting seed to initialize random number generation.
+     */
+    seed: number | number[];
+
+    /**
+     * What theme to play by default, such as "Pallet Town".
+     */
+    theme: string;
+}
+
+/**
+ * 
+ */
+export interface IAreaRaw extends imapscreatr.IAreaRaw {
+    /**
+     * Whether the Area allows bicycling.
+     */
+    allowCycling?: boolean;
+
+    /**
+     * Any additional attributes that should add extra properties to this Area.
+     */
+    attributes?: {
+        [i: string]: any;
+    };
+
+    /**
+     * What background to display behind all Things.
+     */
+    background?: string;
+
+    /**
+     * How tall the area is.
+     * @todo It's not clear if this is different from boundaries.height.
+     */
+    height?: number;
+
+    /**
+     * Whether the area should have invisible borders added around it.
+     */
+    invisibleWallBorders?: boolean;
+
+    /**
+     * A default theme to override the parent Map's.
+     */
+    theme?: string;
+
+    /**
+     * How wide the area is.
+     * @todo It's not clear if this is different from boundaries.width.
+     */
+    width?: number;
+
+    /**
+     * Wild Pokemon that may appear in this Area.
+     */
+    wildPokemon?: IAreaWildPokemonOptionGroups;
+}
+
+/**
+ * An Area parsed from a raw JSON-friendly Map description.
+ */
+export interface IArea extends IAreaRaw, IStateSaveable, imapscreatr.IArea {
+    /**
+     * Whether the Area allows bicycling.
+     */
+    allowCycling: boolean;
+
+    /**
+     * What background to display behind all Things.
+     */
+    background: string;
+
+    /**
+     * In-game boundaries of all placed Things.
+     */
+    boundaries: IAreaBoundaries;
+
+    /**
+     * The Map this Area is within.
+     */
+    map: IMap;
+
+    /**
+     * Whether this Area has been spawned.
+     */
+    spawned: boolean;
+
+    /**
+     * Which Map spawned this Area and when.
+     */
+    spawnedBy: IAreaSpawnedBy;
+
+    /**
+     * Wild Pokemon that may appear in this Area.
+     */
+    wildPokemon: IAreaWildPokemonOptionGroups;
+
+    /**
+     * Whether the Player has encountered a Pokemon in this area's grass.
+     */
+    pokemonEncountered?: boolean;
+}
+
+/**
+ * A description of how an Area has been stretched by its placed Things.
+ */
+export interface IAreaBoundaries {
+    /**
+     * How wide the Area is.
+     */
+    width: number;
+
+    /**
+     * How tall the Area is.
+     */
+    height: number;
+
+    /**
+     * The top border of the boundaries' bounding box.
+     */
+    top: number;
+
+    /**
+     * The right border of the boundaries' bounding box.
+     */
+    right: number;
+
+    /**
+     * The bottom border of the boundaries' bounding box.
+     */
+    bottom: number;
+
+    /**
+     * The left border of the boundaries' bounding box.
+     */
+    left: number;
+}
+
+/**
+ * A description of which Map spawned an Area and when.
+ */
+export interface IAreaSpawnedBy {
+    /**
+     * The name of the Map that spawned the Area.
+     */
+    name: string;
+
+    /**
+     * When the spawning occurred.
+     */
+    timestamp: number;
+}
+
+/**
+ * Types of Pokemon that may appear in an Area, keyed by terrain type, such as "grass".
+ */
+export interface IAreaWildPokemonOptionGroups {
+    /**
+     * Types of Pokemon that may appear in grass.
+     */
+    grass?: IWildPokemonSchema[];
+
+    /**
+     * Types of Pokemon that may appear in water.
+     */
+    fishing?: IWildFishingPokemon;
+}
+
+/**
+ * A description of a type of Pokemon that may appear in an Area.
+ */
+export interface IWildPokemonSchema {
+    /**
+     * The type of Pokemon.
+     */
+    title: string[];
+
+    /**
+     * What level the Pokemon may be, if only one.
+     */
+    level?: number;
+
+    /**
+     * What levels the Pokemon may be, if multiple.
+     */
+    levels?: number[];
+
+    /**
+     * Concatenated names of moves the Pokemon should have.
+     */
+    moves?: string[];
+
+    /**
+     * The rate of appearance for this type of Pokemon, in [0, 1].
+     */
+    rate?: number;
+}
+
+/**
+ * A raw JSON-friendly description of a location.
+ */
+export interface ILocationRaw extends imapscreatr.ILocationRaw {
+    /**
+     * A cutscene to immediately start upon entering.
+     */
+    cutscene?: string;
+
+    /**
+     * A direction to immediately face the player towards.
+     */
+    direction?: number;
+
+    /**
+     * Whether the player should immediately walk forward.
+     */
+    push?: boolean;
+
+    /**
+     * A cutscene routine to immediately start upon entering.
+     */
+    routine?: string;
+
+    /**
+     * A theme to immediately play upon entering.
+     */
+    theme?: string;
+
+    /**
+     * The x-location in the parent Area.
+     */
+    xloc?: number;
+
+    /**
+     * The y-location in the parent Area.
+     */
+    yloc?: number;
+}
+
+/**
+ * A Location parsed from a raw JSON-friendly Map description.
+ */
+export interface ILocation extends IStateSaveable, imapscreatr.ILocation {
+    /**
+     * The Area this Location is a part of.
+     */
+    area: IArea;
+
+    /**
+     * A cutscene to immediately start upon entering.
+     */
+    cutscene?: string;
+
+    /**
+     * A direction to immediately face the player towards.
+     */
+    direction?: number;
+
+    /**
+     * Whether the player should immediately walk forward.
+     */
+    push?: boolean;
+
+    /**
+     * A cutscene routine to immediately start upon entering.
+     */
+    routine?: string;
+
+    /**
+     * A theme to immediately play upon entering.
+     */
+    theme?: string;
+
+    /**
+     * The x-location in the parent Area.
+     */
+    xloc?: number;
+
+    /**
+     * The y-location in the parent Area.
+     */
+    yloc?: number;
+}
+
+/**
+ * The types of Pokemon that can be caught with different rods.
+ */
+export interface IWildFishingPokemon {
+    /**
+     * The Pokemon that can be caught using an Old Rod.
+     */
+    old?: IWildPokemonSchema[];
+
+    /**
+     * The Pokemon that can be caught using a Good Rod.
+     */
+    good?: IWildPokemonSchema[];
+
+    /**
+     * The Pokemon that can be caught using a Super Rod.
+     */
+    super?: IWildPokemonSchema[];
+}
+
+/**
+ * A position holder around an in-game Thing.
+ */
+export interface IPreThing extends IMapsCreatrPreThing {
+    /**
+     * A starting direction to face (by default, up).
+     */
+    direction?: number;
+
+    /**
+     * The in-game Thing.
+     */
+    thing: IThing;
+
+    /**
+     * The raw x-location from the Area's creation command.
+     */
+    x: number;
+
+    /**
+     * The raw y-location from the Area's creation command.
+     */
+    y: number;
+
+    /**
+     * How wide the Thing should be.
+     */
+    width?: number;
+
+    /**
+     * How tall the Thing should be.
+     */
+    height: number;
+}
 
 /**
  * Map functions used by FullScreenPokemon instances.
@@ -304,11 +747,11 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param thing   An in-game areaSpawner.
      * @param area   The Area associated with thing.
      */
-    public activateareaSpawner(thing: IareaSpawner, area: IArea): void {
+    public activateareaSpawner(thing: IAreaSpawner, area: IArea): void {
         const direction: Direction = thing.direction;
         const areaCurrent: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
         const mapCurrent: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
-        const prethingsCurrent: IPreThingsContainers = this.gameStarter.areaSpawner.getPreThings();
+        const prethingsCurrent: imapscreatr.IPreThingsContainers = this.gameStarter.areaSpawner.getPreThings();
         let left: number = thing.left + this.gameStarter.mapScreener.left;
         let top: number = thing.top + this.gameStarter.mapScreener.top;
 
@@ -380,7 +823,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param offsetY   Vertical spawning offset for the Area.
      * @returns The added AreaGate.
      */
-    public addAreaGate(thing: IareaSpawner, area: IArea, offsetX: number, offsetY: number): IAreaGate {
+    public addAreaGate(thing: IAreaGate, area: IArea, offsetX: number, offsetY: number): IAreaGate {
         const properties: any = {
             area: thing.area,
             areaOffsetX: offsetX,

@@ -1,14 +1,37 @@
-import {
-    IListMenuSchema, IMenuChildSchema, IMenuThingSchema, IMenuWordPadLeftCommand
-} from "menugraphr/lib/IMenuGraphr";
+import * as igamestartr from "gamestartr/lib/IGameStartr";
+import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 
 import { IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
+import { IDialog, IMenuBase, IMenuSchema } from "../components/Menus";
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IDialog, IMenuBase, IMenuSchema, IMenusModuleSettings } from "../IFullScreenPokemon";
+
+/**
+ * Settings regarding a menu system, particularly for an IMenuGraphr.
+ */
+export interface IMenusModuleSettings extends igamestartr.IModuleSettingsObject {
+    /**
+     * Known menu schemas, keyed by name.
+     */
+    schemas: imenugraphr.IMenuSchemas;
+
+    /**
+     * Alternate titles for texts, such as " " to "space".
+     */
+    aliases: imenugraphr.IAliases;
+
+    /**
+     * Programmatic replacements for deliniated words.
+     */
+    replacements: imenugraphr.IReplacements;
+}
 
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateMenusSettings(): IMenusModuleSettings {
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Menu settings for the FullScreenPokemon instance.
+ */
+export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSettings {
     "use strict";
 
     return {
@@ -32,35 +55,35 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
             "�": "eFancy"
         },
         "replacements": {
-            "PLAYER": function (this: FullScreenPokemon): string[] {
-                return this.itemsHolder.getItem("name");
+            "PLAYER": (): string[] => {
+                return fsp.itemsHolder.getItem("name");
             },
-            "RIVAL": function (this: FullScreenPokemon): string[] {
-                return this.itemsHolder.getItem("nameRival");
+            "RIVAL": (): string[] => {
+                return fsp.itemsHolder.getItem("nameRival");
             },
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
-            "POKEDEX.SEEN": function (this: FullScreenPokemon): string[] {
-                return this.utilities.makeDigit(
-                    this.saves.getPokedexListingsOrdered()
+            "POKEDEX.SEEN": (): string[] => {
+                return fsp.utilities.makeDigit(
+                    fsp.saves.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.seen))
                         .length,
                     12,
                     "\t")
                     .split("");
             },
-            "POKEDEX.OWN": function (this: FullScreenPokemon): string[] {
-                return this.utilities.makeDigit(
-                    this.saves.getPokedexListingsOrdered()
+            "POKEDEX.OWN": (): string[] => {
+                return fsp.utilities.makeDigit(
+                    fsp.saves.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.caught))
                         .length,
                     12,
                     "\t")
                     .split("");
             },
-            "BADGES.LENGTH": function (this: FullScreenPokemon): string[] {
-                const badges: { [i: string]: boolean } = this.itemsHolder.getItem("badges");
+            "BADGES.LENGTH": (): string[] => {
+                const badges: { [i: string]: boolean } = fsp.itemsHolder.getItem("badges");
                 let total: number = 0;
 
                 for (const i in badges) {
@@ -71,27 +94,27 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
 
                 return total.toString().split("");
             },
-            "POKEDEX.LENGTH": function (this: FullScreenPokemon): string[] {
-                const pokedex: IPokedexListing[] = this.itemsHolder.getItem("Pokedex");
+            "POKEDEX.LENGTH": (): string[] => {
+                const pokedex: IPokedexListing[] = fsp.itemsHolder.getItem("Pokedex");
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }
 
                 return pokedex
-                    .map(function (listing: IPokedexListing): number {
+                    .map((listing: IPokedexListing): number => {
                         return Number(listing.seen);
                     })
-                    .reduce(function (a: number, b: number): number {
+                    .reduce((a: number, b: number): number => {
                         return a + b;
                     })
                     .toString()
                     .split("");
             },
-            "TIME": function (this: FullScreenPokemon): string[] {
-                const ticksRecorded: number = this.itemsHolder.getItem("time");
-                const ticksUnrecorded: number = this.gamesRunner.getFPSAnalyzer().getNumRecorded() - this.ticksElapsed;
+            "TIME": (): string[] => {
+                const ticksRecorded: number = fsp.itemsHolder.getItem("time");
+                const ticksUnrecorded: number = fsp.gamesRunner.getFPSAnalyzer().getNumRecorded() - fsp.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
-                const secondsTotal: number = Math.floor(ticksTotal / ((this.moduleSettings.runner || {}).interval) || 0);
+                const secondsTotal: number = Math.floor(ticksTotal / ((fsp.moduleSettings.runner || {}).interval) || 0);
                 let hours: string = Math.floor(secondsTotal / 14400).toString();
                 let minutes: string = Math.floor((secondsTotal - Number(hours)) / 240).toString();
 
@@ -109,8 +132,8 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
 
                 return (hours + ":" + minutes).split("");
             },
-            "MONEY": function (this: FullScreenPokemon): string[] {
-                return this.itemsHolder.getItem("money").toString().split("");
+            "MONEY": (): string[] => {
+                return fsp.itemsHolder.getItem("money").toString().split("");
             }
         },
         "replacementStatistics": {
@@ -140,7 +163,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 ],
                 "textXOffset": 32,
                 "ignoreB": true
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "GeneralText": {
                 "size": {
                     "height": 96,
@@ -167,14 +190,14 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                         "left": 240
                     }
                 },
-                "onMenuDelete": function (this: FullScreenPokemon): void {
-                    this.menus.closePauseMenu();
+                "onMenuDelete": (): void => {
+                    fsp.menus.closePauseMenu();
                 },
                 "saveIndex": true,
                 "textXOffset": 32,
                 "textYOffset": 32,
                 "textPaddingY": 31
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "Pokedex": {
                 "size": {
                     "width": 352
@@ -198,7 +221,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "bottom": 12
                             }
                         }
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "LineSeparatorHorizontal",
@@ -212,7 +235,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 140
                             }
                         }
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "text",
                         "words": ["CONTENTS"],
@@ -222,11 +245,11 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 28
                             }
                         }
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "menu",
                         "name": "PokedexNumbers"
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "ignoreProgressB": true,
                 "scrollingItemsComputed": true,
@@ -234,7 +257,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 28,
                 "textYOffset": 44
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "PokedexNumbers": {
                 "size": {
                     "width": 64,
@@ -254,7 +277,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                         "position": {
                             "vertical": "top"
                         }
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "text",
                         "words": ["OWN \r\n %%%%%%%POKEDEX.OWN%%%%%%%"],
@@ -263,7 +286,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 48
                             }
                         }
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "container": "Pokedex",
                 "hidden": true,
                 "textSpeed": 0,
@@ -289,7 +312,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 16,
                 "textYOffset": 20
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "PokedexListing": {
                 "size": {
                     "width": 320,
@@ -302,25 +325,25 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "PokedexListingSprite"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingName"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingLabel"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingHeight"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingWeight"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingNumber"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingInfo"
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalLeft",
@@ -333,7 +356,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                         "size": {
                             "width": 152
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "LineDecoratorHorizontalRight",
@@ -402,13 +425,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "text",
                         "words": ["HT"]
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingHeightFeet"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokedexListingHeightInches"
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "CharFeet",
@@ -418,7 +441,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 2
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "CharInches",
@@ -480,7 +503,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 128
                             }
                         }
-                    } as IDialog & IMenuChildSchema],
+                    } as IDialog & imenugraphr.IMenuChildSchema],
                 "container": "PokedexListing",
                 "hidden": true,
                 "textSpeed": 0,
@@ -501,7 +524,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [["No", "."]]
-                } as IDialog & IMenuChildSchema],
+                } as IDialog & imenugraphr.IMenuChildSchema],
                 "container": "PokedexListing",
                 "hidden": true,
                 "textSpeed": 0,
@@ -539,7 +562,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "menu",
                     "name": "PokemonDialog"
-                } as IMenuChildSchema],
+                } as imenugraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "arrowXOffset": 32,
                 "arrowYOffset": 12,
@@ -548,7 +571,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textSpeed": 0,
                 "textXOffset": 63,
                 "textYOffset": 16
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "PokemonDialog": {
                 "size": {
                     "height": 96
@@ -568,7 +591,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                             "top": 30
                         }
                     }
-                } as IDialog & IMenuChildSchema],
+                } as IDialog & imenugraphr.IMenuChildSchema],
                 "container": "Pokemon",
                 "textSpeed": 0
             },
@@ -598,31 +621,31 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "PokemonMenuStatsTitle"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsLevel"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsHPBar"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsHP"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsNumber"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsStatus"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsType4"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsID"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsOT"
-                    } as IMenuChildSchema,
+                    } as imenugraphr.IMenuChildSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -637,7 +660,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -20
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -652,7 +675,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -22
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
@@ -666,7 +689,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -196
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -681,7 +704,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -20
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -696,7 +719,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -22
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
@@ -710,7 +733,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -122
                             }
                         }
-                    } as IMenuThingSchema]
+                    } as imenugraphr.IMenuThingSchema]
             },
             "PokemonMenuStatsTitle": {
                 "size": {
@@ -753,7 +776,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                             "top": 6
                         }
                     }
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsHPBar": {
                 "position": {
@@ -771,7 +794,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 4
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "HPBar",
@@ -823,7 +846,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [[["No"], "."]]
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsStatus": {
                 "size": {
@@ -844,7 +867,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["STATUS/"]
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsType4": {
                 "size": {
@@ -864,7 +887,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["TYPE4/"]
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsType8": {
                 "size": {
@@ -884,7 +907,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["TYPE8/"]
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsID": {
                 "size": {
@@ -904,7 +927,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [[["ID"], ["No"], "/"]]
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsOT": {
                 "size": {
@@ -924,7 +947,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "text",
                     "words": ["OT/"]
-                } as IMenuChildSchema]
+                } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
             "PokemonMenuStatsExperience": {
                 "size": {
@@ -948,7 +971,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 12
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": ["LEVEL UP"],
                         "position": {
@@ -956,13 +979,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 44
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsExperienceFrom"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsExperienceNext"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [["To"]],
                         "position": {
@@ -971,7 +994,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 82
                             }
                         }
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "container": "PokemonMenuStats",
                 "plain": true,
                 "textXOffset": 0,
@@ -1010,7 +1033,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 6
                             }
                         }
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "container": "PokemonMenuStatsExperience",
                 "hidden": true,
                 "textSpeed": 0,
@@ -1046,7 +1069,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "saveIndex": true,
                 "scrollingItemsComputed": true,
                 "textXOffset": 32
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "Item": {
                 "size": {
                     "width": 112,
@@ -1076,14 +1099,14 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "PlayerTop"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "DirtWhite",
                         "position": {
                             "horizontal": "stretch",
                             "vertical": "center"
                         }
-                    } as IMenuThingSchema, {
+                    } as imenugraphr.IMenuThingSchema, {
                         "type": "text",
                         "words": ["BADGES"],
                         "position": {
@@ -1092,7 +1115,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 142
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [["Circle"]],
                         "position": {
@@ -1101,7 +1124,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 148
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [["Circle"]],
                         "position": {
@@ -1110,10 +1133,10 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 148
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PlayerBottom"
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "dirty": true,
                 "ignoreProgressB": true,
@@ -1146,7 +1169,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 24
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "PlayerPortrait",
                         "position": {
@@ -1157,7 +1180,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 14
                             }
                         }
-                    } as IMenuThingSchema],
+                    } as imenugraphr.IMenuThingSchema],
                 "light": true,
                 "container": "Player",
                 "textSpeed": 0
@@ -1186,7 +1209,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 12
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "BrockPortrait",
                         "position": {
@@ -1195,7 +1218,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 26
                             }
                         }
-                    } as IMenuThingSchema, {
+                    } as imenugraphr.IMenuThingSchema, {
                         "type": "thing",
                         "thing": "MistyPortrait",
                         "position": {
@@ -1204,7 +1227,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 26
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "LtSurgePortrait",
                         "position": {
@@ -1213,7 +1236,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 26
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "ErikaPortrait",
                         "position": {
@@ -1222,7 +1245,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 26
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "KogaPortrait",
                         "position": {
@@ -1231,7 +1254,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 72
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "SabrinaPortrait",
                         "position": {
@@ -1240,7 +1263,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 72
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "BlainePortrait",
                         "position": {
@@ -1249,7 +1272,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 72
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "thing",
                         "thing": "GiovanniPortrait",
                         "position": {
@@ -1294,7 +1317,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 28
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [
                             {
@@ -1302,31 +1325,31 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "length": 60,
                                 "word": "%%%%%%%PLAYER%%%%%%%",
                                 "alignRight": true
-                            } as IMenuWordPadLeftCommand,
+                            } as imenugraphr.IMenuWordPadLeftCommand,
                             {
                                 "command": "padLeft",
                                 "length": 60,
                                 "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
                                 "alignRight": true
-                            } as IMenuWordPadLeftCommand,
+                            } as imenugraphr.IMenuWordPadLeftCommand,
                             {
                                 "command": "padLeft",
                                 "length": 60,
                                 "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
                                 "alignRight": true
-                            } as IMenuWordPadLeftCommand,
+                            } as imenugraphr.IMenuWordPadLeftCommand,
                             {
                                 "command": "padLeft",
                                 "length": 60,
                                 "word": "%%%%%%%TIME%%%%%%%",
                                 "alignRight": true
-                            } as IMenuWordPadLeftCommand],
+                            } as imenugraphr.IMenuWordPadLeftCommand],
                         "position": {
                             "offset": {
                                 "top": 28
                             }
                         }
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "textSpeed": 0
             },
             "Yes/No": {
@@ -1406,7 +1429,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": -32
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "text",
                         "words": ["MONEY"],
@@ -1416,7 +1439,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": -1
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [{
                             "command": "padLeft",
@@ -1428,7 +1451,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 16
                             }
                         }
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "text",
                         "words": [{
                             "command": "padLeft",
@@ -1440,7 +1463,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 16
                             }
                         }
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "textSpeed": 0
             },
             "ShopItems": {
@@ -1458,7 +1481,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 },
                 "textXOffset": 32,
                 "scrollingItems": 16
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "ShopItemsAmount": {
                 "size": {
                     "width": 208,
@@ -1491,7 +1514,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "Town Map Inside"
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "ignoreProgressB": true,
                 "textSpeed": 0,
                 "textXOffset": 32,
@@ -1512,7 +1535,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "thing",
                         "thing": "TownMapNoWater"
-                    } as IMenuThingSchema],
+                    } as imenugraphr.IMenuThingSchema],
                 "container": "Town Map",
                 "watery": true
             } as IMenuBase,
@@ -1528,7 +1551,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "childrenSchemas": [{
                     "type": "menu",
                     "name": "GeneralText"
-                } as IMenuChildSchema],
+                } as imenugraphr.IMenuChildSchema],
                 "hidden": true
             } as IMenuSchema,
             "BattlePlayerHealth": {
@@ -1554,7 +1577,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                         "args": {
                             "height": 23
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -1617,7 +1640,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 2
                             }
                         }
-                    } as IMenuThingSchema],
+                    } as imenugraphr.IMenuThingSchema],
                 "container": "BattlePlayerHealth",
                 "hidden": true,
                 "textXOffset": 16,
@@ -1643,7 +1666,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "left": 4
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "HPBar",
@@ -1708,7 +1731,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                         "args": {
                             "height": 23
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "BlackSquare",
@@ -1765,7 +1788,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                             "left": 2
                         }
                     }
-                } as IMenuChildSchema],
+                } as imenugraphr.IMenuChildSchema],
                 "container": "BattleOpponentHealth",
                 "hidden": true,
                 "textXOffset": 16,
@@ -1783,7 +1806,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "thing",
                         "thing": "CharHP"
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "HPBar",
@@ -1844,7 +1867,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "ignoreB": true,
                 "textXOffset": 32,
                 "textColumnWidth": 96
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "BattleDisplayPlayer": {
                 "size": {
                     "width": 180,
@@ -1867,7 +1890,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                                 "top": 24
                             }
                         }
-                    } as IMenuThingSchema,
+                    } as imenugraphr.IMenuThingSchema,
                     {
                         "type": "thing",
                         "thing": "HPBar",
@@ -1969,7 +1992,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textYOffset": 14,
                 "textPaddingY": 16,
                 "arrowXOffset": 4
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "LevelUpStats": {
                 "size": {
                     "width": 192,
@@ -2008,13 +2031,13 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                     {
                         "type": "menu",
                         "name": "KeyboardKeys"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "KeyboardTitle"
-                    } as IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "KeyboardResult"
-                    } as IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema],
                 "plain": true
             } as IMenuBase,
             "KeyboardKeys": {
@@ -2031,7 +2054,7 @@ export function GenerateMenusSettings(): IMenusModuleSettings {
                 "textColumnWidth": 32,
                 "textXOffset": 32,
                 "textYOffset": 14
-            } as IListMenuSchema,
+            } as imenugraphr.IListMenuSchema,
             "KeyboardResult": {
                 "size": {
                     "height": 32,

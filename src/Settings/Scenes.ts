@@ -1,8 +1,12 @@
 import { IScenesModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Cutscenes } from "../components/Cutscenes";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 
-export function GenerateScenesSettings(): IScenesModuleSettings {
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Scene settings for the FullScreenPokemon instance.
+ */
+export function GenerateScenesSettings(fsp: FullScreenPokemon): IScenesModuleSettings {
     "use strict";
 
     return {
@@ -10,198 +14,198 @@ export function GenerateScenesSettings(): IScenesModuleSettings {
             Battle: {
                 firstRoutine: "Entrance",
                 routines: {
-                    Entrance: Cutscenes.prototype.cutsceneBattleEntrance,
-                    OpeningText: Cutscenes.prototype.cutsceneBattleOpeningText,
-                    OpponentIntro: Cutscenes.prototype.cutsceneBattleOpponentIntro,
-                    PlayerIntro: Cutscenes.prototype.cutsceneBattlePlayerIntro,
-                    ShowPlayerMenu: Cutscenes.prototype.cutsceneBattleShowPlayerMenu,
-                    OpponentSendOut: Cutscenes.prototype.cutsceneBattleOpponentSendOut,
-                    OpponentSendOutAppear: Cutscenes.prototype.cutsceneBattleOpponentSendOutAppear,
-                    PlayerSendOut: Cutscenes.prototype.cutsceneBattlePlayerSendOut,
-                    PlayerSendOutAppear: Cutscenes.prototype.cutsceneBattlePlayerSendOutAppear,
-                    PlayerSwitchesSamePokemon: Cutscenes.prototype.cutsceneBattlePlayerSwitchesSamePokemon,
-                    MovePlayer: Cutscenes.prototype.cutsceneBattleMovePlayer,
-                    MovePlayerAnimate: Cutscenes.prototype.cutsceneBattleMovePlayerAnimate,
-                    MoveOpponent: Cutscenes.prototype.cutsceneBattleMoveOpponent,
-                    MoveOpponentAnimate: Cutscenes.prototype.cutsceneBattleMoveOpponentAnimate,
-                    Damage: Cutscenes.prototype.cutsceneBattleDamage,
-                    PokemonFaints: Cutscenes.prototype.cutsceneBattlePokemonFaints,
-                    AfterPlayerPokemonFaints: Cutscenes.prototype.cutsceneBattleAfterPlayerPokemonFaints,
-                    AfterOpponentPokemonFaints: Cutscenes.prototype.cutsceneBattleAfterOpponentPokemonFaints,
-                    OpponentSwitchesPokemon: Cutscenes.prototype.cutsceneBattleOpponentSwitchesPokemon,
-                    ExperienceGain: Cutscenes.prototype.cutsceneBattleExperienceGain,
-                    LevelUp: Cutscenes.prototype.cutsceneBattleLevelUp,
-                    LevelUpStats: Cutscenes.prototype.cutsceneBattleLevelUpStats,
-                    BattleExitFail: Cutscenes.prototype.cutsceneBattleExitFail,
-                    BattleExitFailReturn: Cutscenes.prototype.cutsceneBattleExitFailReturn,
-                    Victory: Cutscenes.prototype.cutsceneBattleVictory,
-                    VictorySpeech: Cutscenes.prototype.cutsceneBattleVictorySpeech,
-                    VictoryWinnings: Cutscenes.prototype.cutsceneBattleVictoryWinnings,
-                    Defeat: Cutscenes.prototype.cutsceneBattleDefeat,
-                    Complete: Cutscenes.prototype.cutsceneBattleComplete,
+                    Entrance: fsp.cutscenes.cutsceneBattleEntrance.bind(fsp.cutscenes),
+                    OpeningText: fsp.cutscenes.cutsceneBattleOpeningText.bind(fsp.cutscenes),
+                    OpponentIntro: fsp.cutscenes.cutsceneBattleOpponentIntro.bind(fsp.cutscenes),
+                    PlayerIntro: fsp.cutscenes.cutsceneBattlePlayerIntro.bind(fsp.cutscenes),
+                    ShowPlayerMenu: fsp.cutscenes.cutsceneBattleShowPlayerMenu.bind(fsp.cutscenes),
+                    OpponentSendOut: fsp.cutscenes.cutsceneBattleOpponentSendOut.bind(fsp.cutscenes),
+                    OpponentSendOutAppear: fsp.cutscenes.cutsceneBattleOpponentSendOutAppear.bind(fsp.cutscenes),
+                    PlayerSendOut: fsp.cutscenes.cutsceneBattlePlayerSendOut.bind(fsp.cutscenes),
+                    PlayerSendOutAppear: fsp.cutscenes.cutsceneBattlePlayerSendOutAppear.bind(fsp.cutscenes),
+                    PlayerSwitchesSamePokemon: fsp.cutscenes.cutsceneBattlePlayerSwitchesSamePokemon.bind(fsp.cutscenes),
+                    MovePlayer: fsp.cutscenes.cutsceneBattleMovePlayer.bind(fsp.cutscenes),
+                    MovePlayerAnimate: fsp.cutscenes.cutsceneBattleMovePlayerAnimate.bind(fsp.cutscenes),
+                    MoveOpponent: fsp.cutscenes.cutsceneBattleMoveOpponent.bind(fsp.cutscenes),
+                    MoveOpponentAnimate: fsp.cutscenes.cutsceneBattleMoveOpponentAnimate.bind(fsp.cutscenes),
+                    Damage: fsp.cutscenes.cutsceneBattleDamage.bind(fsp.cutscenes),
+                    PokemonFaints: fsp.cutscenes.cutsceneBattlePokemonFaints.bind(fsp.cutscenes),
+                    AfterPlayerPokemonFaints: fsp.cutscenes.cutsceneBattleAfterPlayerPokemonFaints.bind(fsp.cutscenes),
+                    AfterOpponentPokemonFaints: fsp.cutscenes.cutsceneBattleAfterOpponentPokemonFaints.bind(fsp.cutscenes),
+                    OpponentSwitchesPokemon: fsp.cutscenes.cutsceneBattleOpponentSwitchesPokemon.bind(fsp.cutscenes),
+                    ExperienceGain: fsp.cutscenes.cutsceneBattleExperienceGain.bind(fsp.cutscenes),
+                    LevelUp: fsp.cutscenes.cutsceneBattleLevelUp.bind(fsp.cutscenes),
+                    LevelUpStats: fsp.cutscenes.cutsceneBattleLevelUpStats.bind(fsp.cutscenes),
+                    BattleExitFail: fsp.cutscenes.cutsceneBattleExitFail.bind(fsp.cutscenes),
+                    BattleExitFailReturn: fsp.cutscenes.cutsceneBattleExitFailReturn.bind(fsp.cutscenes),
+                    Victory: fsp.cutscenes.cutsceneBattleVictory.bind(fsp.cutscenes),
+                    VictorySpeech: fsp.cutscenes.cutsceneBattleVictorySpeech.bind(fsp.cutscenes),
+                    VictoryWinnings: fsp.cutscenes.cutsceneBattleVictoryWinnings.bind(fsp.cutscenes),
+                    Defeat: fsp.cutscenes.cutsceneBattleDefeat.bind(fsp.cutscenes),
+                    Complete: fsp.cutscenes.cutsceneBattleComplete.bind(fsp.cutscenes),
                     // Attack utilities
-                    ChangeStatistic: Cutscenes.prototype.cutsceneBattleChangeStatistic,
+                    ChangeStatistic: fsp.cutscenes.cutsceneBattleChangeStatistic.bind(fsp.cutscenes),
                     // Attack animations
-                    AttackGrowl: Cutscenes.prototype.cutsceneBattleAttackGrowl,
-                    AttackTackle: Cutscenes.prototype.cutsceneBattleAttackTackle,
-                    AttackTailWhip: Cutscenes.prototype.cutsceneBattleAttackTailWhip,
-                    AttackScratch: Cutscenes.prototype.cutsceneBattleAttackScratch,
-                    AttackEmber: Cutscenes.prototype.cutsceneBattleAttackEmber,
-                    AttackQuickAttack: Cutscenes.prototype.cutsceneBattleAttackQuickAttack,
-                    AttackBubble: Cutscenes.prototype.cutsceneBattleAttackBubble,
-                    AttackSandAttack: Cutscenes.prototype.cutsceneBattleAttackSandAttack,
-                    AttackGust: Cutscenes.prototype.cutsceneBattleAttackGust
+                    AttackGrowl: fsp.cutscenes.cutsceneBattleAttackGrowl.bind(fsp.cutscenes),
+                    AttackTackle: fsp.cutscenes.cutsceneBattleAttackTackle.bind(fsp.cutscenes),
+                    AttackTailWhip: fsp.cutscenes.cutsceneBattleAttackTailWhip.bind(fsp.cutscenes),
+                    AttackScratch: fsp.cutscenes.cutsceneBattleAttackScratch.bind(fsp.cutscenes),
+                    AttackEmber: fsp.cutscenes.cutsceneBattleAttackEmber.bind(fsp.cutscenes),
+                    AttackQuickAttack: fsp.cutscenes.cutsceneBattleAttackQuickAttack.bind(fsp.cutscenes),
+                    AttackBubble: fsp.cutscenes.cutsceneBattleAttackBubble.bind(fsp.cutscenes),
+                    AttackSandAttack: fsp.cutscenes.cutsceneBattleAttackSandAttack.bind(fsp.cutscenes),
+                    AttackGust: fsp.cutscenes.cutsceneBattleAttackGust.bind(fsp.cutscenes)
                 }
             },
             TrainerSpotted: {
                 firstRoutine: "Exclamation",
                 routines: {
-                    Exclamation: Cutscenes.prototype.cutsceneTrainerSpottedExclamation,
-                    Approach: Cutscenes.prototype.cutsceneTrainerSpottedApproach,
-                    Dialog: Cutscenes.prototype.cutsceneTrainerSpottedDialog
+                    Exclamation: fsp.cutscenes.cutsceneTrainerSpottedExclamation.bind(fsp.cutscenes),
+                    Approach: fsp.cutscenes.cutsceneTrainerSpottedApproach.bind(fsp.cutscenes),
+                    Dialog: fsp.cutscenes.cutsceneTrainerSpottedDialog.bind(fsp.cutscenes)
                 }
             },
             PokeCenter: {
                 firstRoutine: "Welcome",
                 routines: {
-                    Welcome: Cutscenes.prototype.cutscenePokeCenterWelcome,
-                    Choose: Cutscenes.prototype.cutscenePokeCenterChoose,
-                    ChooseHeal: Cutscenes.prototype.cutscenePokeCenterChooseHeal,
-                    Healing: Cutscenes.prototype.cutscenePokeCenterHealing,
-                    HealingAction: Cutscenes.prototype.cutscenePokeCenterHealingAction,
-                    HealingComplete: Cutscenes.prototype.cutscenePokeCenterHealingComplete,
-                    ChooseCancel: Cutscenes.prototype.cutscenePokeCenterChooseCancel,
+                    Welcome: fsp.cutscenes.cutscenePokeCenterWelcome.bind(fsp.cutscenes),
+                    Choose: fsp.cutscenes.cutscenePokeCenterChoose.bind(fsp.cutscenes),
+                    ChooseHeal: fsp.cutscenes.cutscenePokeCenterChooseHeal.bind(fsp.cutscenes),
+                    Healing: fsp.cutscenes.cutscenePokeCenterHealing.bind(fsp.cutscenes),
+                    HealingAction: fsp.cutscenes.cutscenePokeCenterHealingAction.bind(fsp.cutscenes),
+                    HealingComplete: fsp.cutscenes.cutscenePokeCenterHealingComplete.bind(fsp.cutscenes),
+                    ChooseCancel: fsp.cutscenes.cutscenePokeCenterChooseCancel.bind(fsp.cutscenes),
                 }
             },
             PokeMart: {
                 firstRoutine: "Greeting",
                 routines: {
-                    Greeting: Cutscenes.prototype.cutscenePokeMartGreeting,
-                    Options: Cutscenes.prototype.cutscenePokeMartOptions,
-                    BuyMenu: Cutscenes.prototype.cutscenePokeMartBuyMenu,
-                    SelectAmount: Cutscenes.prototype.cutscenePokeMartSelectAmount,
-                    ConfirmPurchase: Cutscenes.prototype.cutscenePokeMartConfirmPurchase,
-                    CancelPurchase: Cutscenes.prototype.cutscenePokeMartCancelPurchase,
-                    TryPurchase: Cutscenes.prototype.cutscenePokeMartTryPurchase,
-                    FailPurchase: Cutscenes.prototype.cutscenePokeMartFailPurchase,
-                    ContinueShopping: Cutscenes.prototype.cutscenePokeMartContinueShopping,
-                    Exit: Cutscenes.prototype.cutscenePokeMartExit
+                    Greeting: fsp.cutscenes.cutscenePokeMartGreeting.bind(fsp.cutscenes),
+                    Options: fsp.cutscenes.cutscenePokeMartOptions.bind(fsp.cutscenes),
+                    BuyMenu: fsp.cutscenes.cutscenePokeMartBuyMenu.bind(fsp.cutscenes),
+                    SelectAmount: fsp.cutscenes.cutscenePokeMartSelectAmount.bind(fsp.cutscenes),
+                    ConfirmPurchase: fsp.cutscenes.cutscenePokeMartConfirmPurchase.bind(fsp.cutscenes),
+                    CancelPurchase: fsp.cutscenes.cutscenePokeMartCancelPurchase.bind(fsp.cutscenes),
+                    TryPurchase: fsp.cutscenes.cutscenePokeMartTryPurchase.bind(fsp.cutscenes),
+                    FailPurchase: fsp.cutscenes.cutscenePokeMartFailPurchase.bind(fsp.cutscenes),
+                    ContinueShopping: fsp.cutscenes.cutscenePokeMartContinueShopping.bind(fsp.cutscenes),
+                    Exit: fsp.cutscenes.cutscenePokeMartExit.bind(fsp.cutscenes)
                 }
             },
             Intro: {
                 firstRoutine: "FadeIn",
                 routines: {
-                    FadeIn: Cutscenes.prototype.cutsceneIntroFadeIn,
-                    FirstDialog: Cutscenes.prototype.cutsceneIntroFirstDialog,
-                    FirstDialogFade: Cutscenes.prototype.cutsceneIntroFirstDialogFade,
-                    PokemonExpo: Cutscenes.prototype.cutsceneIntroPokemonExpo,
-                    PokemonExplanation: Cutscenes.prototype.cutsceneIntroPokemonExplanation,
-                    PlayerAppear: Cutscenes.prototype.cutsceneIntroPlayerAppear,
-                    PlayerName: Cutscenes.prototype.cutsceneIntroPlayerName,
-                    PlayerSlide: Cutscenes.prototype.cutsceneIntroPlayerSlide,
-                    PlayerNameOptions: Cutscenes.prototype.cutsceneIntroPlayerNameOptions,
-                    PlayerNameFromMenu: Cutscenes.prototype.cutsceneIntroPlayerNameFromMenu,
-                    PlayerNameFromKeyboard: Cutscenes.prototype.cutsceneIntroPlayerNameFromKeyboard,
-                    PlayerNameConfirm: Cutscenes.prototype.cutsceneIntroPlayerNameConfirm,
-                    PlayerNameComplete: Cutscenes.prototype.cutsceneIntroPlayerNameComplete,
-                    RivalAppear: Cutscenes.prototype.cutsceneIntroRivalAppear,
-                    RivalName: Cutscenes.prototype.cutsceneIntroRivalName,
-                    RivalSlide: Cutscenes.prototype.cutsceneIntroRivalSlide,
-                    RivalNameOptions: Cutscenes.prototype.cutsceneIntroRivalNameOptions,
-                    RivalNameFromMenu: Cutscenes.prototype.cutsceneIntroRivalNameFromMenu,
-                    RivalNameFromKeyboard: Cutscenes.prototype.cutsceneIntroRivalNameFromKeyboard,
-                    RivalNameConfirm: Cutscenes.prototype.cutsceneIntroRivalNameConfirm,
-                    RivalNameComplete: Cutscenes.prototype.cutsceneIntroRivalNameComplete,
-                    LastDialogAppear: Cutscenes.prototype.cutsceneIntroLastDialogAppear,
-                    LastDialog: Cutscenes.prototype.cutsceneIntroLastDialog,
-                    ShrinkPlayer: Cutscenes.prototype.cutsceneIntroShrinkPlayer,
-                    FadeOut: Cutscenes.prototype.cutsceneIntroFadeOut,
-                    Finish: Cutscenes.prototype.cutsceneIntroFinish
+                    FadeIn: fsp.cutscenes.cutsceneIntroFadeIn.bind(fsp.cutscenes),
+                    FirstDialog: fsp.cutscenes.cutsceneIntroFirstDialog.bind(fsp.cutscenes),
+                    FirstDialogFade: fsp.cutscenes.cutsceneIntroFirstDialogFade.bind(fsp.cutscenes),
+                    PokemonExpo: fsp.cutscenes.cutsceneIntroPokemonExpo.bind(fsp.cutscenes),
+                    PokemonExplanation: fsp.cutscenes.cutsceneIntroPokemonExplanation.bind(fsp.cutscenes),
+                    PlayerAppear: fsp.cutscenes.cutsceneIntroPlayerAppear.bind(fsp.cutscenes),
+                    PlayerName: fsp.cutscenes.cutsceneIntroPlayerName.bind(fsp.cutscenes),
+                    PlayerSlide: fsp.cutscenes.cutsceneIntroPlayerSlide.bind(fsp.cutscenes),
+                    PlayerNameOptions: fsp.cutscenes.cutsceneIntroPlayerNameOptions.bind(fsp.cutscenes),
+                    PlayerNameFromMenu: fsp.cutscenes.cutsceneIntroPlayerNameFromMenu.bind(fsp.cutscenes),
+                    PlayerNameFromKeyboard: fsp.cutscenes.cutsceneIntroPlayerNameFromKeyboard.bind(fsp.cutscenes),
+                    PlayerNameConfirm: fsp.cutscenes.cutsceneIntroPlayerNameConfirm.bind(fsp.cutscenes),
+                    PlayerNameComplete: fsp.cutscenes.cutsceneIntroPlayerNameComplete.bind(fsp.cutscenes),
+                    RivalAppear: fsp.cutscenes.cutsceneIntroRivalAppear.bind(fsp.cutscenes),
+                    RivalName: fsp.cutscenes.cutsceneIntroRivalName.bind(fsp.cutscenes),
+                    RivalSlide: fsp.cutscenes.cutsceneIntroRivalSlide.bind(fsp.cutscenes),
+                    RivalNameOptions: fsp.cutscenes.cutsceneIntroRivalNameOptions.bind(fsp.cutscenes),
+                    RivalNameFromMenu: fsp.cutscenes.cutsceneIntroRivalNameFromMenu.bind(fsp.cutscenes),
+                    RivalNameFromKeyboard: fsp.cutscenes.cutsceneIntroRivalNameFromKeyboard.bind(fsp.cutscenes),
+                    RivalNameConfirm: fsp.cutscenes.cutsceneIntroRivalNameConfirm.bind(fsp.cutscenes),
+                    RivalNameComplete: fsp.cutscenes.cutsceneIntroRivalNameComplete.bind(fsp.cutscenes),
+                    LastDialogAppear: fsp.cutscenes.cutsceneIntroLastDialogAppear.bind(fsp.cutscenes),
+                    LastDialog: fsp.cutscenes.cutsceneIntroLastDialog.bind(fsp.cutscenes),
+                    ShrinkPlayer: fsp.cutscenes.cutsceneIntroShrinkPlayer.bind(fsp.cutscenes),
+                    FadeOut: fsp.cutscenes.cutsceneIntroFadeOut.bind(fsp.cutscenes),
+                    Finish: fsp.cutscenes.cutsceneIntroFinish.bind(fsp.cutscenes)
                 }
             },
             OakIntro: {
                 firstRoutine: "FirstDialog",
                 routines: {
-                    FirstDialog: Cutscenes.prototype.cutsceneOakIntroFirstDialog,
-                    Exclamation: Cutscenes.prototype.cutsceneOakIntroExclamation,
-                    Catchup: Cutscenes.prototype.cutsceneOakIntroCatchup,
-                    GrassWarning: Cutscenes.prototype.cutsceneOakIntroGrassWarning,
-                    FollowToLab: Cutscenes.prototype.cutsceneOakIntroFollowToLab,
-                    EnterLab: Cutscenes.prototype.cutsceneOakIntroEnterLab,
-                    WalkToTable: Cutscenes.prototype.cutsceneOakIntroWalkToTable,
-                    RivalComplain: Cutscenes.prototype.cutsceneOakIntroRivalComplain,
-                    OakThinksToRival: Cutscenes.prototype.cutsceneOakIntroOakThinksToRival,
-                    RivalProtests: Cutscenes.prototype.cutsceneOakIntroRivalProtests,
-                    OakRespondsToProtest: Cutscenes.prototype.cutsceneOakIntroOakRespondsToProtest,
+                    FirstDialog: fsp.cutscenes.cutsceneOakIntroFirstDialog.bind(fsp.cutscenes),
+                    Exclamation: fsp.cutscenes.cutsceneOakIntroExclamation.bind(fsp.cutscenes),
+                    Catchup: fsp.cutscenes.cutsceneOakIntroCatchup.bind(fsp.cutscenes),
+                    GrassWarning: fsp.cutscenes.cutsceneOakIntroGrassWarning.bind(fsp.cutscenes),
+                    FollowToLab: fsp.cutscenes.cutsceneOakIntroFollowToLab.bind(fsp.cutscenes),
+                    EnterLab: fsp.cutscenes.cutsceneOakIntroEnterLab.bind(fsp.cutscenes),
+                    WalkToTable: fsp.cutscenes.cutsceneOakIntroWalkToTable.bind(fsp.cutscenes),
+                    RivalComplain: fsp.cutscenes.cutsceneOakIntroRivalComplain.bind(fsp.cutscenes),
+                    OakThinksToRival: fsp.cutscenes.cutsceneOakIntroOakThinksToRival.bind(fsp.cutscenes),
+                    RivalProtests: fsp.cutscenes.cutsceneOakIntroRivalProtests.bind(fsp.cutscenes),
+                    OakRespondsToProtest: fsp.cutscenes.cutsceneOakIntroOakRespondsToProtest.bind(fsp.cutscenes),
                 }
             },
             OakIntroPokemonChoice: {
                 firstRoutine: "PlayerChecksPokeball",
                 routines: {
-                    PlayerChecksPokeball: Cutscenes.prototype.cutsceneOakIntroPokemonChoicePlayerChecksPokeball,
-                    PlayerDecidesPokemon: Cutscenes.prototype.cutsceneOakIntroPokemonChoicePlayerDecidesPokemon,
-                    PlayerTakesPokemon: Cutscenes.prototype.cutsceneOakIntroPokemonChoicePlayerTakesPokemon,
-                    PlayerChoosesNickname: Cutscenes.prototype.cutsceneOakIntroPokemonChoicePlayerChoosesNickname,
-                    PlayerSetsNickname: Cutscenes.prototype.cutsceneOakIntroPokemonChoicePlayerSetsNickname,
-                    RivalWalksToPokemon: Cutscenes.prototype.cutsceneOakIntroPokemonChoiceRivalWalksToPokemon,
-                    RivalTakesPokemon: Cutscenes.prototype.cutsceneOakIntroPokemonChoiceRivalTakesPokemon
+                    PlayerChecksPokeball: fsp.cutscenes.cutsceneOakIntroPokemonChoicePlayerChecksPokeball.bind(fsp.cutscenes),
+                    PlayerDecidesPokemon: fsp.cutscenes.cutsceneOakIntroPokemonChoicePlayerDecidesPokemon.bind(fsp.cutscenes),
+                    PlayerTakesPokemon: fsp.cutscenes.cutsceneOakIntroPokemonChoicePlayerTakesPokemon.bind(fsp.cutscenes),
+                    PlayerChoosesNickname: fsp.cutscenes.cutsceneOakIntroPokemonChoicePlayerChoosesNickname.bind(fsp.cutscenes),
+                    PlayerSetsNickname: fsp.cutscenes.cutsceneOakIntroPokemonChoicePlayerSetsNickname.bind(fsp.cutscenes),
+                    RivalWalksToPokemon: fsp.cutscenes.cutsceneOakIntroPokemonChoiceRivalWalksToPokemon.bind(fsp.cutscenes),
+                    RivalTakesPokemon: fsp.cutscenes.cutsceneOakIntroPokemonChoiceRivalTakesPokemon.bind(fsp.cutscenes)
                 }
             },
             OakIntroRivalBattle: {
                 routines: {
-                    Challenge: Cutscenes.prototype.cutsceneOakIntroRivalBattleChallenge,
-                    Approach: Cutscenes.prototype.cutsceneOakIntroRivalBattleApproach
+                    Challenge: fsp.cutscenes.cutsceneOakIntroRivalBattleChallenge.bind(fsp.cutscenes),
+                    Approach: fsp.cutscenes.cutsceneOakIntroRivalBattleApproach.bind(fsp.cutscenes)
                 }
             },
             OakIntroRivalLeaves: {
                 firstRoutine: "AfterBattle",
                 routines: {
-                    AfterBattle: Cutscenes.prototype.cutsceneOakIntroRivalLeavesAfterBattle,
-                    Complaint: Cutscenes.prototype.cutsceneOakIntroRivalLeavesComplaint,
-                    Goodbye: Cutscenes.prototype.cutsceneOakIntroRivalLeavesGoodbye,
-                    Walking: Cutscenes.prototype.cutsceneOakIntroRivalLeavesWalking
+                    AfterBattle: fsp.cutscenes.cutsceneOakIntroRivalLeavesAfterBattle.bind(fsp.cutscenes),
+                    Complaint: fsp.cutscenes.cutsceneOakIntroRivalLeavesComplaint.bind(fsp.cutscenes),
+                    Goodbye: fsp.cutscenes.cutsceneOakIntroRivalLeavesGoodbye.bind(fsp.cutscenes),
+                    Walking: fsp.cutscenes.cutsceneOakIntroRivalLeavesWalking.bind(fsp.cutscenes)
                 }
             },
             OakParcelPickup: {
                 firstRoutine: "Greeting",
                 routines: {
-                    Greeting: Cutscenes.prototype.cutsceneOakParcelPickupGreeting,
-                    WalkToCounter: Cutscenes.prototype.cutsceneOakParcelPickupWalkToCounter,
-                    CounterDialog: Cutscenes.prototype.cutsceneOakParcelPickupCounterDialog
+                    Greeting: fsp.cutscenes.cutsceneOakParcelPickupGreeting,
+                    WalkToCounter: fsp.cutscenes.cutsceneOakParcelPickupWalkToCounter.bind(fsp.cutscenes),
+                    CounterDialog: fsp.cutscenes.cutsceneOakParcelPickupCounterDialog.bind(fsp.cutscenes)
                 }
             },
             OakParcelDelivery: {
                 firstRoutine: "Greeting",
                 routines: {
-                    Greeting: Cutscenes.prototype.cutsceneOakParcelDeliveryGreeting,
-                    RivalInterrupts: Cutscenes.prototype.cutsceneOakParcelDeliveryRivalInterrupts,
-                    RivalWalksUp: Cutscenes.prototype.cutsceneOakParcelDeliveryRivalWalksUp,
-                    RivalInquires: Cutscenes.prototype.cutsceneOakParcelDeliveryRivalInquires,
-                    OakRequests: Cutscenes.prototype.cutsceneOakParcelDeliveryOakRequests,
-                    OakDescribesPokedex: Cutscenes.prototype.cutsceneOakParcelDeliveryOakDescribesPokedex,
-                    OakGivesPokedex: Cutscenes.prototype.cutsceneOakParcelDeliveryOakGivesPokedex,
-                    OakDescribesGoal: Cutscenes.prototype.cutsceneOakParcelDeliveryOakDescribesGoal,
-                    RivalAccepts: Cutscenes.prototype.cutsceneOakParcelDeliveryRivalAccepts
+                    Greeting: fsp.cutscenes.cutsceneOakParcelDeliveryGreeting.bind(fsp.cutscenes),
+                    RivalInterrupts: fsp.cutscenes.cutsceneOakParcelDeliveryRivalInterrupts.bind(fsp.cutscenes),
+                    RivalWalksUp: fsp.cutscenes.cutsceneOakParcelDeliveryRivalWalksUp.bind(fsp.cutscenes),
+                    RivalInquires: fsp.cutscenes.cutsceneOakParcelDeliveryRivalInquires.bind(fsp.cutscenes),
+                    OakRequests: fsp.cutscenes.cutsceneOakParcelDeliveryOakRequests.bind(fsp.cutscenes),
+                    OakDescribesPokedex: fsp.cutscenes.cutsceneOakParcelDeliveryOakDescribesPokedex.bind(fsp.cutscenes),
+                    OakGivesPokedex: fsp.cutscenes.cutsceneOakParcelDeliveryOakGivesPokedex.bind(fsp.cutscenes),
+                    OakDescribesGoal: fsp.cutscenes.cutsceneOakParcelDeliveryOakDescribesGoal.bind(fsp.cutscenes),
+                    RivalAccepts: fsp.cutscenes.cutsceneOakParcelDeliveryRivalAccepts.bind(fsp.cutscenes)
                 }
             },
             DaisyTownMap: {
                 firstRoutine: "Greeting",
                 routines: {
-                    Greeting: Cutscenes.prototype.cutsceneDaisyTownMapGreeting,
-                    ReceiveMap: Cutscenes.prototype.cutsceneDaisyTownMapReceiveMap
+                    Greeting: fsp.cutscenes.cutsceneDaisyTownMapGreeting.bind(fsp.cutscenes),
+                    ReceiveMap: fsp.cutscenes.cutsceneDaisyTownMapReceiveMap.bind(fsp.cutscenes)
                 }
             },
             ElderTraining: {
                 firstRoutine: "StartBattle",
                 routines: {
-                    StartBattle: Cutscenes.prototype.cutsceneElderTrainingStartBattle
+                    StartBattle: fsp.cutscenes.cutsceneElderTrainingStartBattle.bind(fsp.cutscenes)
                 }
             },
             RivalRoute22: {
                 firstRoutine: "RivalEmerges",
                 routines: {
-                    RivalEmerges: Cutscenes.prototype.cutsceneRivalRoute22RivalEmerges,
-                    RivalTalks: Cutscenes.prototype.cutsceneRivalRoute22RivalTalks
+                    RivalEmerges: fsp.cutscenes.cutsceneRivalRoute22RivalEmerges.bind(fsp.cutscenes),
+                    RivalTalks: fsp.cutscenes.cutsceneRivalRoute22RivalTalks.bind(fsp.cutscenes)
                 }
             }
         }

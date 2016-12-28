@@ -1,9 +1,15 @@
 import { ISpritesModuleSettings } from "gamestartr/lib/IGameStartr";
 
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
 /* tslint:disable max-line-length */
 /* tslint:disable object-literal-key-quotes */
 
-export function GenerateSpritesSettings(): ISpritesModuleSettings {
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Sprite settings for the FullScreenPokemon instance.
+ */
+export function GenerateSpritesSettings(_fsp: FullScreenPokemon): ISpritesModuleSettings {
     "use strict";
 
     return {

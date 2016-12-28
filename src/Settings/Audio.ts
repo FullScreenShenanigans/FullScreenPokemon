@@ -1,6 +1,12 @@
 import { IAudioModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateAudioSettings(): IAudioModuleSettings {
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
+/**
+ * @param _fsp   A generating FullScreenPokemon instance.
+ * @returns Audio settings for the FullScreenPokemon instance.
+ */
+export function GenerateAudioSettings(_fsp: FullScreenPokemon): IAudioModuleSettings {
     "use strict";
 
     return {

@@ -1,7 +1,7 @@
-import { Macros } from "../components/Macros";
-import { Maps } from "../components/Maps";
-import { Scrolling } from "../components/Scrolling";
-import { IMapsModuleSettings } from "../IFullScreenPokemon";
+import * as igamestartr from "gamestartr/lib/IGameStartr";
+
+import { IMapRaw } from "../components/Maps";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 import { PalletTown } from "./mapsLibrary/PalletTown";
 import { PewterCity } from "./mapsLibrary/PewterCity";
 import { Route1 } from "./mapsLibrary/Route1";
@@ -11,7 +11,24 @@ import { Route22 } from "./mapsLibrary/Route22";
 import { ViridianCity } from "./mapsLibrary/ViridianCity";
 import { ViridianForest } from "./mapsLibrary/ViridianForest";
 
-export function GenerateMapsSettings(): IMapsModuleSettings {
+/**
+ * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
+ * and MapsCreatr.
+ */
+export interface IMapsModuleSettings extends igamestartr.IMapsModuleSettings {
+    /**
+     * Known maps, keyed by name.
+     */
+    library: {
+        [i: string]: IMapRaw;
+    };
+}
+
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Map settings for the FullScreenPokemon instance.
+ */
+export function GenerateMapsSettings(fsp: FullScreenPokemon): IMapsModuleSettings {
     "use strict";
 
     return {
@@ -23,25 +40,25 @@ export function GenerateMapsSettings(): IMapsModuleSettings {
             "allowCycling"
         ],
         screenVariables: {
-            boundaries: Scrolling.prototype.getAreaBoundariesReal,
-            scrollability: Scrolling.prototype.getScreenScrollability
+            boundaries: fsp.scrolling.getAreaBoundariesReal.bind(fsp.scrolling),
+            scrollability: fsp.scrolling.getScreenScrollability.bind(fsp.scrolling)
         },
-        onSpawn: Maps.prototype.addPreThing,
-        afterAdd: Maps.prototype.addAfter,
+        onSpawn: fsp.maps.addPreThing.bind(fsp.maps),
+        afterAdd: fsp.maps.addAfter.bind(fsp.maps),
         macros: {
-            Checkered: Macros.prototype.macroCheckered,
-            Water: Macros.prototype.macroWater,
-            House: Macros.prototype.macroHouse,
-            HouseLarge: Macros.prototype.macroHouseLarge,
-            Building: Macros.prototype.macroBuilding,
-            Gym: Macros.prototype.macroGym,
-            Mountain: Macros.prototype.macroMountain,
-            PokeCenter: Macros.prototype.macroPokeCenter,
-            PokeMart: Macros.prototype.macroPokeMart
+            Checkered: fsp.macros.macroCheckered.bind(fsp.macros),
+            Water: fsp.macros.macroWater.bind(fsp.macros),
+            House: fsp.macros.macroHouse.bind(fsp.macros),
+            HouseLarge: fsp.macros.macroHouseLarge.bind(fsp.macros),
+            Building: fsp.macros.macroBuilding.bind(fsp.macros),
+            Gym: fsp.macros.macroGym.bind(fsp.macros),
+            Mountain: fsp.macros.macroMountain.bind(fsp.macros),
+            PokeCenter: fsp.macros.macroPokeCenter.bind(fsp.macros),
+            PokeMart: fsp.macros.macroPokeMart.bind(fsp.macros)
         },
         entrances: {
-            Blank: Maps.prototype.entranceBlank,
-            Normal: Maps.prototype.entranceNormal
+            Blank: fsp.maps.entranceBlank.bind(fsp.maps),
+            Normal: fsp.maps.entranceNormal.bind(fsp.maps)
         },
         library: {
             Blank: {

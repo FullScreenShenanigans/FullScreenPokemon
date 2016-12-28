@@ -24,15 +24,14 @@ import { Graphics } from "./components/Graphics";
 import { Inputs } from "./components/Inputs";
 import { Macros } from "./components/Macros";
 import { Maintenance } from "./components/Maintenance";
-import { Maps } from "./components/Maps";
+import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
-import { Things } from "./components/Things";
+import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { IMapScreenr, IModuleSettings, IPlayer, IThing } from "./IFullScreenPokemon";
-import { ModuleSettingsGenerator } from "./settings/ModuleSettingsGenerator";
+import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
@@ -225,6 +224,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      */
     public resetModules(settings: IProcessedSizeSettings): void {
+        this.moduleSettings = new ModuleSettingsGenerator().generate(this);
         super.resetModules(settings);
 
         this.battleMover = this.createBattleMover(this.moduleSettings, settings);
@@ -255,36 +255,7 @@ export class FullScreenPokemon extends GameStartr {
      * @returns A new internal BattleMovr.
      */
     protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
-        return new BattleMovr({
-            gameStarter: this,
-            battleOptions: [
-                {
-                    text: "FIGHT",
-                    callback: (): void => {
-                        this.battles.openBattleMovesMenu();
-                    }
-                },
-                {
-                    text: "ITEM",
-                    callback: (): void => {
-                        this.battles.openBattleItemsMenu();
-                    }
-                },
-                {
-                    text: ["Poke", "Mon"],
-                    callback: (): void => {
-                        this.battles.openBattlePokemonMenu();
-                    }
-                },
-                {
-                    text: "RUN",
-                    callback: (): void => {
-                        this.battles.startBattleExit();
-                    }
-                }
-            ],
-            ...moduleSettings.battles
-        });
+        return new BattleMovr(moduleSettings.battles);
     }
 
     /**
@@ -358,5 +329,4 @@ export class FullScreenPokemon extends GameStartr {
     }
 }
 
-FullScreenPokemon.prototype.moduleSettings = new ModuleSettingsGenerator().generate();
 FullScreenPokemon.prototype.scale = Constants.scale;

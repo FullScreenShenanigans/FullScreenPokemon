@@ -4,15 +4,66 @@ import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import {
-    IArea, IAreaGate, IareaSpawner, ICharacter, IColorFadeSettings, IDetector, IDialog,
-    IDialogOptions, IEnemy, IGymDetector, IHMCharacter, IMap,
-    IMenuTriggerer, IPlayer, IPokemon, ISightDetector, IThemeDetector, IThing,
-    ITransporter, ITransportSchema, IWalkingOnStop, IWalkingOnStopCommandFunction,
-    IWildPokemonSchema
-} from "../IFullScreenPokemon";
+import { IColorFadeSettings, IWalkingOnStop, IWalkingOnStopCommandFunction } from "./Actions";
+import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
 import { IHMMoveSchema } from "./constants/Moves";
+import { IArea, IMap, IWildPokemonSchema } from "./Maps";
+import { IDialog, IDialogOptions } from "./Menus";
+import {
+    IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
+    IMenuTriggerer, IPlayer, ISightDetector, IThemeDetector, IThing, ITransporter,
+    ITransportSchema
+} from "./Things";
+
+/**
+ * Steps to take after a Character's current walking step. These should be alternating
+ * directions and numbers of steps to take; Function commands are allowed as well.
+ */
+export type IWalkingOnStop = IWalkingOnStopCommand[];
+
+/**
+ * A single command within an IWalkingOnStop. This can be a number (how many steps to keep
+ * taking in the current direction), a String (direction to face), Direction (direction to
+ * face), or callback Function to evaluate.
+ */
+export type IWalkingOnStopCommand = number | string | IWalkingOnStopCommandFunction;
+
+/**
+ * A callback to run on a Character mid-step. This may return true to indicate to the
+ * managing TimeHandlr to stop the walking cycle.
+ * 
+ * @param thing   The Character mid-step.
+ * @returns Either nothing or whether the walking cycle should stop.
+ */
+export interface IWalkingOnStopCommandFunction {
+    (thing: ICharacter): void | boolean;
+}
+
+/**
+ * Settings for a color fade animation.
+ */
+export interface IColorFadeSettings {
+    /**
+     * What color to fade to/from (by default, "White").
+     */
+    color?: string;
+
+    /**
+     * How much to change the color's opacity each tick (by default, .33).
+     */
+    change?: number;
+
+    /**
+     * How many game upkeeps are between each tick (by default, 4).
+     */
+    speed?: number;
+
+    /**
+     * A callback for when the animation completes.
+     */
+    callback?: () => void;
+}
 
 /**
  * Action functions used by FullScreenPokemon instances.
@@ -1681,12 +1732,12 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Activates an areaSpawner. If it's for a different Area than the current,
+     * Activates an IAreaSpawner. If it's for a different Area than the current,
      * that area is spawned in the appropriate direction.
      * 
      * @param thing   An areaSpawner to activate.
      */
-    public spawnareaSpawner(thing: IareaSpawner): void {
+    public spawnAreaSpawner(thing: IAreaSpawner): void {
         const map: IMap = this.gameStarter.areaSpawner.getMap(thing.map) as IMap;
         const area: IArea = map.areas[thing.area] as IArea;
 

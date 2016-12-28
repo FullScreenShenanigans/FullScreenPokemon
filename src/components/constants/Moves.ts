@@ -1,5 +1,6 @@
 import { Actions } from "../../components/Actions";
-import { IPlayer, IPokemon } from "../../IFullScreenPokemon";
+import { IPokemon } from "../../components/Battles";
+import { IPlayer } from "../../components/Things";
 
 /**
  * Static information on a move's metadata and effects.

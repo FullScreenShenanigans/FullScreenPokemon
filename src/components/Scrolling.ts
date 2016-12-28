@@ -1,7 +1,7 @@
 import { Scrolling as GameStartrScrolling } from "gamestartr/lib/components/Scrolling";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IArea, IAreaBoundaries } from "../IFullScreenPokemon";
+import { IArea, IAreaBoundaries } from "./Maps";
 
 /**
  * What direction(s) the screen may scroll from player movement.

@@ -1,8 +1,10 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IArea, IMap, IPlayer, IPokemon, IWildPokemonSchema } from "../IFullScreenPokemon";
+import { IPokemon } from "./Battles";
 import { IItemSchema, IRod } from "./constants/Items";
+import { IArea, IMap, IWildPokemonSchema } from "./Maps";
+import { IPlayer } from "./Things";
 
 /**
  * Fishing functions used by FullScreenPokemon instances.

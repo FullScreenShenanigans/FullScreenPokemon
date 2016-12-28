@@ -2,15 +2,13 @@ import { IActorExperience, IMove } from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import {
-    IBattleInfo, IBattler,
-    ICharacter, IGrass, IMovePossibility, IPokemon,
-    IWildPokemonSchema
-} from "../IFullScreenPokemon";
+import { IBattleInfo, IBattler, IMovePossibility, IPokemon } from "./Battles";
 import { IBattleModification } from "./constants/BattleModifications";
 import { IBattleBall } from "./constants/Items";
 import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
+import { IWildPokemonSchema } from "./Maps";
+import { ICharacter, IGrass } from "./Things";
 
 /**
  * Math functions used by FullScreenPokemon instances.

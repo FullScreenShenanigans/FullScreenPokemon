@@ -1,43 +1,47 @@
 import { IRunnerModuleSettings } from "gamestartr/lib/IGameStartr";
 
+import { ICharacter, IThing } from "../components/Things";
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { ICharacter, IThing } from "../IFullScreenPokemon";
 
-export function GenerateRunnerSettings(): IRunnerModuleSettings {
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Runner settings for the FullScreenPokemon instance.
+ */
+export function GenerateRunnerSettings(fsp: FullScreenPokemon): IRunnerModuleSettings {
     "use strict";
 
     return {
         interval: 1000 / 60,
         adjustFramerate: true,
         games: [
-            function (this: FullScreenPokemon): void {
-                this.pixelDrawer.refillGlobalCanvas();
+            (): void => {
+                fsp.pixelDrawer.refillGlobalCanvas();
             },
-            function (this: FullScreenPokemon): void {
-                this.quadsKeeper.determineAllQuadrants("Terrain", this.groupHolder.getGroup("Terrain") as IThing[]);
-                this.quadsKeeper.determineAllQuadrants("Scenery", this.groupHolder.getGroup("Scenery") as IThing[]);
-                this.quadsKeeper.determineAllQuadrants("Solid", this.groupHolder.getGroup("Solid") as IThing[]);
+            (): void => {
+                fsp.quadsKeeper.determineAllQuadrants("Terrain", fsp.groupHolder.getGroup("Terrain") as IThing[]);
+                fsp.quadsKeeper.determineAllQuadrants("Scenery", fsp.groupHolder.getGroup("Scenery") as IThing[]);
+                fsp.quadsKeeper.determineAllQuadrants("Solid", fsp.groupHolder.getGroup("Solid") as IThing[]);
             },
-            function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Text") as IThing[]);
+            (): void => {
+                fsp.maintenance.maintainGeneric(fsp.groupHolder.getGroup("Text") as IThing[]);
             },
-            function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Terrain") as IThing[]);
+            (): void => {
+                fsp.maintenance.maintainGeneric(fsp.groupHolder.getGroup("Terrain") as IThing[]);
             },
-            function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Scenery") as IThing[]);
+            (): void => {
+                fsp.maintenance.maintainGeneric(fsp.groupHolder.getGroup("Scenery") as IThing[]);
             },
-            function (this: FullScreenPokemon): void {
-                this.maintenance.maintainGeneric(this.groupHolder.getGroup("Solid") as IThing[]);
+            (): void => {
+                fsp.maintenance.maintainGeneric(fsp.groupHolder.getGroup("Solid") as IThing[]);
             },
-            function (this: FullScreenPokemon): void {
-                this.maintenance.maintainCharacters(this.groupHolder.getGroup("Character") as ICharacter[]);
+            (): void => {
+                fsp.maintenance.maintainCharacters(fsp.groupHolder.getGroup("Character") as ICharacter[]);
             },
-            function (this: FullScreenPokemon): void {
-                this.maintenance.maintainPlayer(this.players[0]);
+            (): void => {
+                fsp.maintenance.maintainPlayer(fsp.players[0]);
             },
-            function (this: FullScreenPokemon): void {
-                this.timeHandler.handleEvents();
+            (): void => {
+                fsp.timeHandler.handleEvents();
             }
         ]
     };

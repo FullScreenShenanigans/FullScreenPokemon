@@ -1,4 +1,4 @@
-import { IMapRaw } from "../../IFullScreenPokemon";
+import { IMapRaw } from "../../components/Maps";
 
 /* tslint:disable max-line-length */
 

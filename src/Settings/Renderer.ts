@@ -1,6 +1,12 @@
 import { IRendererModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateRendererSettings(): IRendererModuleSettings {
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
+/**
+ * @param _fsp   A generating FullScreenPokemon instance.
+ * @returns Renderer settings for the FullScreenPokemon instance.
+ */
+export function GenerateRendererSettings(_fsp: FullScreenPokemon): IRendererModuleSettings {
     "use strict";
 
     return {

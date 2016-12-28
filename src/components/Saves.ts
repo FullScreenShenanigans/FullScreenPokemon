@@ -2,9 +2,33 @@ import { Component } from "eightbittr/lib/Component";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { ICharacter, ISaveFile, IStateSaveable } from "../IFullScreenPokemon";
 import { PokedexListingStatus } from "./Constants";
 import { IPokedex, IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
+import { ICharacter } from "./Things";
+
+/**
+ * Container for holding the states of objects in the game.
+ */
+export interface IStateHistory {
+    [i: string]: [any];
+}
+
+/**
+ * An object for saving this object's state history.
+ */
+export interface IStateSaveable {
+    /**
+     * Holds the states of an object in the game.
+     */
+    state: IStateHistory;
+}
+
+/**
+ * A general description of a save file.
+ */
+export interface ISaveFile {
+    [i: string]: any;
+}
 
 /**
  * Storage functions used by FullScreenPokemon instances.

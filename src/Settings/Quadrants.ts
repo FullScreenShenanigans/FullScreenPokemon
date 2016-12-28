@@ -1,6 +1,12 @@
 import { IQuadrantsModuleSettings } from "gamestartr/lib/IGameStartr";
 
-export function GenerateQuadrantsSettings(): IQuadrantsModuleSettings {
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
+/**
+ * @param _fsp   A generating FullScreenPokemon instance.
+ * @returns Quadrant settings for the FullScreenPokemon instance.
+ */
+export function GenerateQuadrantsSettings(_fsp: FullScreenPokemon): IQuadrantsModuleSettings {
     "use strict";
 
     return {

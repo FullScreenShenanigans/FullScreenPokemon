@@ -1,8 +1,12 @@
 import { IInputModuleSettings } from "gamestartr/lib/IGameStartr";
 
-import { Inputs } from "../components/Inputs";
+import { FullScreenPokemon } from "../FullScreenPokemon";
 
-export function GenerateInputSettings(): IInputModuleSettings {
+/**
+ * @param fsp   A generating FullScreenPokemon instance.
+ * @returns Input settings for the FullScreenPokemon instance.
+ */
+export function GenerateInputSettings(fsp: FullScreenPokemon): IInputModuleSettings {
     "use strict";
 
     return {
@@ -21,31 +25,31 @@ export function GenerateInputSettings(): IInputModuleSettings {
         },
         triggers: {
             onkeydown: {
-                left: Inputs.prototype.keyDownLeft,
-                right: Inputs.prototype.keyDownRight,
-                up: Inputs.prototype.keyDownUp,
-                down: Inputs.prototype.keyDownDown,
-                a: Inputs.prototype.keyDownA,
-                b: Inputs.prototype.keyDownB,
-                pause: Inputs.prototype.keyDownPause,
-                mute: Inputs.prototype.keyDownMute,
-                select: Inputs.prototype.keyDownSelect
+                left: fsp.inputs.keyDownLeft.bind(fsp.inputs),
+                right: fsp.inputs.keyDownRight.bind(fsp.inputs),
+                up: fsp.inputs.keyDownUp.bind(fsp.inputs),
+                down: fsp.inputs.keyDownDown.bind(fsp.inputs),
+                a: fsp.inputs.keyDownA.bind(fsp.inputs),
+                b: fsp.inputs.keyDownB.bind(fsp.inputs),
+                pause: fsp.inputs.keyDownPause.bind(fsp.inputs),
+                mute: fsp.inputs.keyDownMute.bind(fsp.inputs),
+                select: fsp.inputs.keyDownSelect.bind(fsp.inputs)
             },
             onkeyup: {
-                left: Inputs.prototype.keyUpLeft,
-                right: Inputs.prototype.keyUpRight,
-                up: Inputs.prototype.keyUpUp,
-                down: Inputs.prototype.keyUpDown,
-                a: Inputs.prototype.keyUpA,
-                b: Inputs.prototype.keyUpB,
-                pause: Inputs.prototype.keyUpPause
+                left: fsp.inputs.keyUpLeft.bind(fsp.inputs),
+                right: fsp.inputs.keyUpRight.bind(fsp.inputs),
+                up: fsp.inputs.keyUpUp.bind(fsp.inputs),
+                down: fsp.inputs.keyUpDown.bind(fsp.inputs),
+                a: fsp.inputs.keyUpA.bind(fsp.inputs),
+                b: fsp.inputs.keyUpB.bind(fsp.inputs),
+                pause: fsp.inputs.keyUpPause.bind(fsp.inputs)
             },
             onmousedown: {
-                rightclick: Inputs.prototype.mouseDownRight
+                rightclick: fsp.inputs.mouseDownRight.bind(fsp.inputs)
             },
             oncontextmenu: {},
             ondevicemotion: {
-                // "devicemotion: Inputs.prototype.deviceMotion
+                // "devicemotion: fsp.inputs.deviceMotion
             }
         }
     };

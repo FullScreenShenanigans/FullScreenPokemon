@@ -1,9 +1,9 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { ICharacter, IPlayer } from "../IFullScreenPokemon";
 import { Direction } from "./Constants";
 import { IItemSchema } from "./constants/Items";
+import { ICharacter, IPlayer } from "./Things";
 
 /**
  * Input functions used by FullScreenPokemon instances.

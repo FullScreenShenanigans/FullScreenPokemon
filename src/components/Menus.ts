@@ -1,16 +1,236 @@
-import { IMove } from "battlemovr/lib/IBattleMovr";
+import * as ibattlemovr from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
-import { IGridCell, IMenuSchema, IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
+import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import {
-    IItemsMenuSettings, IKeyboardMenuSettings,
-    IKeyboardResultsMenu, ILevelUpStatsMenuSettings, IListMenu, IMenu,
-    IPlayer, IPokemon, IThing
-} from "../IFullScreenPokemon";
+import { IPokemon } from "./Battles";
 import { IItemSchema } from "./constants/Items";
 import { IHMMoveSchema } from "./constants/Moves";
 import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
+import { IPlayer, IThing } from "./Things";
+
+/**
+ * A description of a simple general text dialog to start.
+ */
+export interface IDialog {
+    /**
+     * An optional cutscene to start after the dialog.
+     */
+    cutscene?: string;
+
+    /**
+     * Options for a yes or no dialog menu with callbacks after the dialog.
+     */
+    options?: IDialogOptions;
+
+    /**
+     * The actual text to display in the dialog.
+     */
+    words: imenugraphr.IMenuDialogRaw;
+}
+
+/**
+ * Dialog settings for a yes or no menu after a dialog.
+ */
+export interface IDialogOptions {
+    /**
+     * What to display after the "Yes" option is activated.
+     */
+    Yes: string | IDialog;
+
+    /**
+     * What to display after the "No" option is activated.
+     */
+    No: string | IDialog;
+}
+
+/**
+ * General attributes for all menus.
+ */
+export interface IMenuBase extends imenugraphr.IMenuBase {
+    /**
+     * Whether this has the dirty visual background.
+     */
+    dirty?: boolean;
+
+    /**
+     * Whether this has the light visual background.
+     */
+    light?: boolean;
+
+    /**
+     * Whether this has the lined visual background.
+     */
+    lined?: boolean;
+
+    /**
+     * Whether this has the plain white visual background.
+     */
+    plain?: boolean;
+
+    /**
+     * Whether this has the water visual background.
+     */
+    watery?: boolean;
+}
+
+/**
+ * A schema to specify creating a menu.
+ */
+export interface IMenuSchema extends imenugraphr.IMenuSchema {
+    /**
+     * Whether the menu should be hidden.
+     */
+    hidden?: boolean;
+}
+
+/**
+ * A Menu Thing.
+ */
+export interface IMenu extends IMenuBase, IThing {
+    /**
+     * Children Things attached to the Menu.
+     */
+    children: IThing[];
+
+    /**
+     * How tall this is.
+     */
+    height: number;
+
+    /**
+     * Menu name this is listed under.
+     */
+    name: string;
+
+    /**
+     * Any settings to attach to this Menu.
+     */
+    settings?: any;
+
+    /**
+     * How wide this is.
+     */
+    width: number;
+}
+
+/**
+ * A ListMenu Thing.
+ */
+export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
+
+/**
+ * A Menu to display the results of a KeyboardKeys Menu. A set of "blank" spaces
+ * are available, and filled with Text Things as keyboard characters are chosen.
+ */
+export interface IKeyboardResultsMenu extends IMenu {
+    /**
+     * The blinking hypen Thing.
+     */
+    blinker: IThing;
+
+    /**
+     * The complete accumulated values of text characters added, in order.
+     */
+    completeValue: string[];
+
+    /**
+     * The displayed value on the screen.
+     */
+    displayedValue: string[];
+
+    /**
+     * Which blank space is currently available.
+     */
+    selectedChild: number;
+}
+
+/**
+ * Settings to open the LevelUpStats menu for a Pokemon.
+ */
+export interface ILevelUpStatsMenuSettings {
+    /**
+     * The Pokemon to display the statistics for.
+     */
+    pokemon: IPokemon;
+
+    /**
+     * A menu container for LevelUpStats.
+     */
+    container?: string;
+
+    /**
+     * A callback for when the menu is deleted.
+     */
+    onMenuDelete?: () => void;
+
+    /**
+     * How to position the menu within its container.
+     */
+    position?: imenugraphr.IMenuSchemaPosition;
+
+    /**
+     * How to size the menu.
+     */
+    size?: imenugraphr.IMenuSchemaSize;
+
+    /**
+     * A horizontal offset for the menu.
+     */
+    textXOffset?: number;
+}
+
+/**
+ * Settings to open the Items menu.
+ * 
+ * @todo Refactor this interface's usage to contain IMenuSchema instead of inheritance.
+ */
+export interface IItemsMenuSettings extends IMenuSchema {
+    /**
+     * Items to override the player's inventory.
+     */
+    items?: IItemSchema[];
+}
+
+/**
+ * Settings to open a keyboard menu.
+ */
+export interface IKeyboardMenuSettings {
+    /**
+     * A callback to replace key presses.
+     */
+    callback?: (...args: any[]) => void;
+
+    /**
+     * An initial complete value for the result (by default, []).
+     */
+    completeValue?: string[];
+
+    /**
+     * Whether the menu should start in lowercase (by default, false).
+     */
+    lowercase?: boolean;
+
+    /**
+     * Which blank space should initially be available (by default, 0).
+     */
+    selectedChild?: number;
+
+    /**
+     * The initial selected index (by default, [0, 0]).
+     */
+    selectedIndex?: [number, number];
+
+    /**
+     * A starting result value (by default, "").
+     */
+    title?: string;
+
+    /**
+     * A starting value to replace the initial underscores.
+     */
+    value?: string[];
+}
 
 /**
  * Menu functions used by FullScreenPokemon instances.
@@ -190,7 +410,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param settings   Settings for the selected Pokemon, including its HM moves.
      */
     public openPokemonMenuContext(settings: any): void {
-        const moves: IMove[] = settings.pokemon.moves;
+        const moves: ibattlemovr.IMove[] = settings.pokemon.moves;
         const options: any[] = [];
 
         for (const action of moves) {
@@ -341,7 +561,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             statistics[i] = statistics[i].toUpperCase();
         }
 
-        menuSchema.childrenSchemas = statistics.map((text: string, i: number): IMenuWordSchema => {
+        menuSchema.childrenSchemas = statistics.map((text: string, i: number): imenugraphr.IMenuWordSchema => {
             if (i < numStatistics) {
                 top = i * 8 + 4;
                 left = textXOffset;
@@ -380,7 +600,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public openPokemonMenuStatsSecondary(pokemon: IPokemon): void {
         const options: any[] = pokemon.moves.map(
-            (move: IMove): any => {
+            (move: ibattlemovr.IMove): any => {
                 const characters: any[] = [" "];
                 const output: any = {
                     text: characters
@@ -784,7 +1004,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             return;
         }
 
-        const selected: IGridCell = this.gameStarter.menuGrapher.getMenuSelectedOption("KeyboardKeys");
+        const selected: imenugraphr.IGridCell = this.gameStarter.menuGrapher.getMenuSelectedOption("KeyboardKeys");
 
         this.gameStarter.physics.killNormal(child);
         menuResult.children[menuResult.selectedChild] = this.gameStarter.things.add(
