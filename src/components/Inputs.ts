@@ -9,7 +9,6 @@ import { ICharacter, IPlayer } from "./Things";
  * Input functions used by FullScreenPokemon instances.
  */
 export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
-
     /**
      * Quickly tapping direction keys means to look in a direction, not walk.
      */
@@ -48,11 +47,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Top] = true;
-
-            this.gameStarter.timeHandler.addEvent(
-                (): void => this.keyDownDirectionReal(thing as IPlayer, 0),
-                this.inputTimeTolerance);
         }
+
+        this.gameStarter.timeHandler.addEvent(
+            (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Top),
+            this.inputTimeTolerance);
 
         this.gameStarter.modAttacher.fireEvent("onKeyDownUpReal");
 
@@ -75,11 +74,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Right] = true;
-
-            this.gameStarter.timeHandler.addEvent(
-                (): void => this.keyDownDirectionReal(thing as IPlayer, 1),
-                this.inputTimeTolerance);
         }
+
+        this.gameStarter.timeHandler.addEvent(
+            (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Right),
+            this.inputTimeTolerance);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -103,8 +102,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.keyDownDirectionReal(thing as IPlayer, 2),
-            2);
+            (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Bottom),
+            this.inputTimeTolerance);
 
         this.gameStarter.modAttacher.fireEvent("onKeyDownDown");
 
@@ -127,11 +126,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Left] = true;
-
-            this.gameStarter.timeHandler.addEvent(
-                (): void => this.keyDownDirectionReal(thing as IPlayer, 3),
-                3);
         }
+
+        this.gameStarter.timeHandler.addEvent(
+            (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Left),
+            this.inputTimeTolerance);
 
         this.gameStarter.modAttacher.fireEvent("onKeyDownLeft");
 
@@ -148,8 +147,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownDirectionReal(thing: IPlayer, direction: Direction): void {
-        if (!thing.player || !((thing as IPlayer).keys as any)[direction]) {
+    protected keyDownDirectionReal(thing: IPlayer, direction: Direction): void {
+        if (!(thing.keys as any)[direction]) {
             return;
         }
 
@@ -158,16 +157,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             return;
         }
 
-        if (thing.direction !== direction) {
-            thing.turning = direction;
-        }
-
-        if (thing.canKeyWalking && !thing.shouldWalk) {
-            this.gameStarter.physics.setPlayerDirection(thing, direction);
-            thing.canKeyWalking = false;
-        } else {
-            thing.nextDirection = direction;
-        }
+        thing.nextDirection = direction;
+        thing.wantsToWalk = true;
 
         this.gameStarter.modAttacher.fireEvent("onKeyDownDirectionReal", direction);
     }
@@ -306,11 +297,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         this.gameStarter.modAttacher.fireEvent("onKeyUpLeft");
 
         if (thing.player) {
-            (thing as IPlayer).keys[3] = false;
+            (thing as IPlayer).keys[Direction.Left] = false;
+        }
 
-            if ((thing as IPlayer).nextDirection === 3) {
-                delete (thing as IPlayer).nextDirection;
-            }
+        if (thing.nextDirection === Direction.Left) {
+            thing.nextDirection = undefined;
+            thing.wantsToWalk = false;
         }
 
         if (event && event.preventDefault) {
@@ -328,11 +320,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         this.gameStarter.modAttacher.fireEvent("onKeyUpRight");
 
         if (thing.player) {
-            (thing as IPlayer).keys[1] = false;
+            (thing as IPlayer).keys[Direction.Right] = false;
+        }
 
-            if ((thing as IPlayer).nextDirection === 1) {
-                delete (thing as IPlayer).nextDirection;
-            }
+        if (thing.nextDirection === Direction.Right) {
+            thing.nextDirection = undefined;
+            thing.wantsToWalk = false;
         }
 
         if (event && event.preventDefault) {
@@ -351,10 +344,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.player) {
             (thing as IPlayer).keys[0] = false;
+        }
 
-            if ((thing as IPlayer).nextDirection === 0) {
-                delete (thing as IPlayer).nextDirection;
-            }
+        if (thing.nextDirection === Direction.Top) {
+            thing.nextDirection = undefined;
+            thing.wantsToWalk = false;
         }
 
         if (event && event.preventDefault) {
@@ -373,10 +367,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.player) {
             (thing as IPlayer).keys[2] = false;
+        }
 
-            if ((thing as IPlayer).nextDirection === 2) {
-                delete (thing as IPlayer).nextDirection;
-            }
+        if (thing.nextDirection === Direction.Bottom) {
+            thing.nextDirection = undefined;
+            thing.wantsToWalk = false;
         }
 
         if (event && event.preventDefault) {

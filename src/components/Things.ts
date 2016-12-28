@@ -4,8 +4,9 @@ import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IWalkingOnStop } from "./Actions";
+// import { IWalkingOnStop } from "./Actions";
 import { IPokemon } from "./Battles";
+import { Direction } from "./Constants";
 import { IWildPokemonSchema } from "./Maps";
 import { IDialog, IMenuSchema } from "./Menus";
 import { IStateSaveable } from "./Saves";
@@ -243,20 +244,30 @@ export interface ICharacter extends IThing {
     ledge?: IThing;
 
     /**
-     * A callback for when this starts a single walking step.
-     * 
-     * @param character   This character that has started walking.
-     * @param direction   The direction the Character is facing.
+     * A direction to turn to when the current walking step is done.
      */
-    onWalkingStart: (character: ICharacter, direction: number) => void;
+    nextDirection?: Direction;
 
     /**
-     * A callback for when this stops a single walking step, commonly to keep walking.
-     * 
-     * @param character   A Character mid-step.
-     * @param onStop   Commands to run as a walking continuation.
+     * A direction to turn to when the current walking step is done.
      */
-    onWalkingStop: (character: ICharacter, onStop: IWalkingOnStop) => void;
+    wantsToWalk?: boolean;
+
+    // /**
+    //  * A callback for when this starts a single walking step.
+    //  * 
+    //  * @param character   This character that has started walking.
+    //  * @param direction   The direction the Character is facing.
+    //  */
+    // onWalkingStart: (character: ICharacter, direction: number) => void;
+
+    // /**
+    //  * A callback for when this stops a single walking step, commonly to keep walking.
+    //  * 
+    //  * @param character   A Character mid-step.
+    //  * @param onStop   Commands to run as a walking continuation.
+    //  */
+    // onWalkingStop: (character: ICharacter, onStop: IWalkingOnStop) => void;
 
     /**
      * Whether this is allowed to be outside the QuadsKeepr quadrants area, or not
@@ -274,10 +285,10 @@ export interface ICharacter extends IThing {
      */
     pushDirection?: number;
 
-    /**
-     * Steps for the Player to take after being pushed back.
-     */
-    pushSteps?: IWalkingOnStop;
+    // /**
+    //  * Steps for the Player to take after being pushed back.
+    //  */
+    // pushSteps?: IWalkingOnStop;
 
     /**
      * Whether this is sporadically
@@ -303,11 +314,6 @@ export interface ICharacter extends IThing {
      * A shadow Thing for when this is hopping a ledge.
      */
     shadow?: IThing;
-
-    /**
-     * Whether this intends to walk when its current walking step is complete.
-     */
-    shouldWalk: boolean;
 
     /**
      * How fast this moves.
@@ -442,11 +448,6 @@ export interface IPlayer extends ICharacter {
     allowDirectionAsKeys?: boolean;
 
     /**
-     * Whether this is allowed to start walking via user input.
-     */
-    canKeyWalking: boolean;
-
-    /**
      * Whether the player is currently bicycling.
      */
     cycling: boolean;
@@ -460,11 +461,6 @@ export interface IPlayer extends ICharacter {
      * A descriptor for a user's keys' statuses.
      */
     keys: IPlayerKeys;
-
-    /**
-     * A next direction to turn to after the current walking step.
-     */
-    nextDirection?: number;
 }
 
 /**
@@ -661,10 +657,10 @@ export interface IMenuTriggerer extends IDetector {
      */
     pushDirection?: number;
 
-    /**
-     * Steps for the activating Player to take after being pushed back.
-     */
-    pushSteps?: IWalkingOnStop;
+    // /**
+    //  * Steps for the activating Player to take after being pushed back.
+    //  */
+    // pushSteps?: IWalkingOnStop;
 }
 
 /**

@@ -2,7 +2,7 @@ import { Physics as GameStartrPhysics } from "gamestartr/lib/components/Physics"
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
-import { ICharacter, IGrass, IPlayer, IThing } from "./Things";
+import { ICharacter, IGrass, IThing } from "./Things";
 
 /**
  * Physics functions used by FullScreenPokemon instances.
@@ -135,18 +135,6 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
         }
 
         this.shiftBoth(thing, thing.xvel, thing.yvel);
-    }
-
-    /**
-     * Sets a Player looking in a direction and updates MapScreener.
-     * 
-     * @param thing   An in-game Player.
-     * @param direction   A direction for thing to look at.
-     */
-    public setPlayerDirection(thing: IPlayer, direction: Direction): void {
-        thing.direction = direction;
-        this.gameStarter.mapScreener.playerDirection = direction;
-        thing.shouldWalk = true;
     }
 
     /**

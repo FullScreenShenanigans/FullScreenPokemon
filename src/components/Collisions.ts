@@ -245,7 +245,6 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
         thing.talking = true;
         other.talking = true;
-        thing.canKeyWalking = false;
 
         if (!this.gameStarter.menuGrapher.getActiveMenu()) {
             this.gameStarter.menuGrapher.createMenu("GeneralText", {
@@ -413,10 +412,10 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
         }
 
         if (thing.player) {
-            (thing as IPlayer).canKeyWalking = false;
             this.gameStarter.mapScreener.blockInputs = true;
         }
-        this.gameStarter.actions.animateCharacterHopLedge(thing, other);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterHopLedge(thing, other);
 
         return true;
     }
@@ -436,7 +435,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
             return false;
         }
 
-        this.gameStarter.actions.animateCharacterStartWalking(thing, thing.direction, [2]);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalking(thing, thing.direction, [2]);
         thing.surfing = false;
         this.gameStarter.graphics.removeClass(thing, "surfing");
         return true;

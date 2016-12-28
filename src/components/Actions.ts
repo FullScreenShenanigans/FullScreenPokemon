@@ -4,7 +4,7 @@ import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IColorFadeSettings, IWalkingOnStop, IWalkingOnStopCommandFunction } from "./Actions";
+import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
 import { IHMMoveSchema } from "./constants/Moves";
@@ -15,30 +15,6 @@ import {
     IMenuTriggerer, IPlayer, ISightDetector, IThemeDetector, IThing, ITransporter,
     ITransportSchema
 } from "./Things";
-
-/**
- * Steps to take after a Character's current walking step. These should be alternating
- * directions and numbers of steps to take; Function commands are allowed as well.
- */
-export type IWalkingOnStop = IWalkingOnStopCommand[];
-
-/**
- * A single command within an IWalkingOnStop. This can be a number (how many steps to keep
- * taking in the current direction), a String (direction to face), Direction (direction to
- * face), or callback Function to evaluate.
- */
-export type IWalkingOnStopCommand = number | string | IWalkingOnStopCommandFunction;
-
-/**
- * A callback to run on a Character mid-step. This may return true to indicate to the
- * managing TimeHandlr to stop the walking cycle.
- * 
- * @param thing   The Character mid-step.
- * @returns Either nothing or whether the walking cycle should stop.
- */
-export interface IWalkingOnStopCommandFunction {
-    (thing: ICharacter): void | boolean;
-}
 
 /**
  * Settings for a color fade animation.
@@ -70,6 +46,11 @@ export interface IColorFadeSettings {
  */
 export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * Walking functions used by the FullScreenPokemon instance.
+     */
+    public readonly walking: Walking<TGameStartr> = new Walking(this.gameStarter);
+
+    /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
      * 
      * @param thing   A newly placed Character.
@@ -90,7 +71,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         if (thing.roaming) {
             this.gameStarter.timeHandler.addEvent(
-                (): boolean => this.activateCharacterRoaming(thing),
+                (): boolean => this.walking.activateCharacterRoaming(thing),
                 this.gameStarter.numberMaker.randomInt(70));
         }
     }
@@ -130,7 +111,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   A Character to freeze.
      */
     public animatePlayerDialogFreeze(thing: ICharacter): void {
-        this.animateCharacterPreventWalking(thing);
+        this.walking.animateCharacterPreventWalking(thing);
         this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
@@ -308,7 +289,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             this.gameStarter.graphics.removeClass(thing.shadow, "walking");
         }
 
-        this.animateCharacterPreventWalking(thing);
+        this.walking.animateCharacterPreventWalking(thing);
 
         this.gameStarter.battles.startBattle({
             battlers: {
@@ -723,279 +704,299 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
     }
 
-    /**
-     * Starts a Character's walking cycle regardless of the direction.
-     * 
-     * @param thing   A Character to start walking.
-     * @param direction   What direction the Character should turn to face.
-     * @param onStop   A queue of commands as alternating directions and distances.
-     */
-    public animateCharacterStartWalkingCycle(thing: ICharacter, direction: Direction, onStop?: IWalkingOnStop): void {
-        if (!onStop || onStop.length === 0) {
-            return;
-        }
+    // /**
+    //  * Starts a Character's walking cycle regardless of the direction.
+    //  * 
+    //  * @param thing   A Character to start walking.
+    //  * @param direction   What direction the Character should turn to face.
+    //  * @param onStop   A queue of commands as alternating directions and distances.
+    //  */
+    // public animateCharacterStartWalkingCycle(thing: ICharacter, direction: Direction, onStop?: IWalkingOnStop): void {
+    //     if (!onStop || onStop.length === 0) {
+    //         return;
+    //     }
 
-        // If the first queued command is a 0 distance, walking might be complete
-        if (onStop[0] === 0) {
-            // More commands indicates walking isn't done, and to continue turning/walking
-            if (onStop.length > 1) {
-                if (typeof onStop[1] === "function") {
-                    (onStop[1] as IWalkingOnStopCommandFunction)(thing);
-                    return;
-                }
+    //     // If the first queued command is a 0 distance, walking might be complete
+    //     if (onStop[0] === 0) {
+    //         // More commands indicates walking isn't done, and to continue turning/walking
+    //         if (onStop.length > 1) {
+    //             if (typeof onStop[1] === "function") {
+    //                 (onStop[1] as IWalkingOnStopCommandFunction)(thing);
+    //                 return;
+    //             }
 
-                this.animateCharacterSetDirection(thing, this.gameStarter.constants.directionAliases[onStop[1] as number]);
+    //             this.animateCharacterSetDirection(thing, this.gameStarter.constants.directionAliases[onStop[1] as number]);
 
-                this.animateCharacterStartWalkingCycle(
-                    thing,
-                    this.gameStarter.constants.directionAliases[onStop[1] as number],
-                    onStop.slice(2));
-            }
+    //             this.animateCharacterStartWalkingCycle(
+    //                 thing,
+    //                 this.gameStarter.constants.directionAliases[onStop[1] as number],
+    //                 onStop.slice(2));
+    //         }
 
-            return;
-        }
+    //         return;
+    //     }
 
-        if (thing.follower) {
-            thing.walkingCommands!.push(direction);
-        }
+    //     if (thing.follower) {
+    //         thing.walkingCommands!.push(direction);
+    //     }
 
-        this.animateCharacterStartWalking(thing, direction, onStop);
+    //     this.animateCharacterStartWalking(thing, direction, onStop);
 
-        if (!thing.bordering[direction]) {
-            this.gameStarter.physics.shiftBoth(thing, -thing.xvel, -thing.yvel);
-        }
-    }
+    //     if (!thing.bordering[direction]) {
+    //         this.gameStarter.physics.shiftBoth(thing, -thing.xvel, -thing.yvel);
+    //     }
+    // }
 
-    /**
-     * Starts a Character walking in the given direction as part of a walking cycle.
-     * 
-     * @param thing   The Character to start walking.
-     * @param direction   What direction to walk in (by default, up).
-     * @param onStop   A queue of commands as alternating directions and distances.
-     * @remarks The hard numbers are hardcoded to the player for now.
-     */
-    public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
-        const repeats: number = this.gameStarter.equations.speedWalking(thing);
-        const distance: number = repeats * thing.speed;
+    // /**
+    //  * Starts a Character walking in the given direction as part of a walking cycle.
+    //  * 
+    //  * @param thing   The Character to start walking.
+    //  * @param direction   What direction to walk in (by default, up).
+    //  * @param onStop   A queue of commands as alternating directions and distances.
+    //  * @remarks The hard numbers are hardcoded to the player for now.
+    //  */
+    // public animateCharacterStartWalking(thing: ICharacter, direction: Direction = Direction.Top, onStop?: any): void {
+    //     const repeats: number = this.gameStarter.equations.speedWalking(thing);
+    //     const distance: number = repeats * thing.speed;
 
-        thing.walking = true;
-        this.animateCharacterSetDirection(thing, direction);
-        this.animateCharacterSetDistanceVelocity(thing, distance);
+    //     thing.walking = true;
+    //     this.animateCharacterSetDirection(thing, direction);
+    //     this.animateCharacterSetDistanceVelocity(thing, distance);
 
-        if (!thing.cycles || !(thing.cycles as any).walking) {
-            this.gameStarter.timeHandler.addClassCycle(
-                thing,
-                ["walking", "standing"],
-                "walking",
-                8);
-        }
+    //     if (!thing.cycles || !(thing.cycles as any).walking) {
+    //         this.gameStarter.timeHandler.addClassCycle(
+    //             thing,
+    //             ["walking", "standing"],
+    //             "walking",
+    //             8);
+    //     }
 
-        if (!thing.walkingFlipping) {
-            thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
-                (): void => this.animateSwitchFlipOnDirection(thing),
-                16,
-                Infinity,
-                thing);
-        }
+    //     if (!thing.walkingFlipping) {
+    //         thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
+    //             (): void => this.animateSwitchFlipOnDirection(thing),
+    //             16,
+    //             Infinity,
+    //             thing);
+    //     }
 
-        if (thing.sight) {
-            thing.sightDetector!.nocollide = true;
-        }
+    //     if (thing.sight) {
+    //         thing.sightDetector!.nocollide = true;
+    //     }
 
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => thing.onWalkingStop.call(this, thing, onStop),
-            32,
-            Infinity,
-            thing,
-            onStop);
+    //     this.gameStarter.timeHandler.addEventInterval(
+    //         (): void => thing.onWalkingStop.call(this, thing, onStop),
+    //         32,
+    //         Infinity,
+    //         thing,
+    //         onStop);
 
-        if (!thing.bordering[direction]) {
-            this.gameStarter.physics.shiftBoth(thing, thing.xvel, thing.yvel);
-        }
-    }
+    //     if (!thing.bordering[direction]) {
+    //         this.gameStarter.physics.shiftBoth(thing, thing.xvel, thing.yvel);
+    //     }
+    // }
 
-    /**
-     * Starts a roaming Character walking in a random direction, determined
-     * by the allowed directions it may use (that aren't blocked).
-     * 
-     * @param thing   A roaming Character.
-     */
-    public animateCharacterStartWalkingRandom(thing: ICharacter): void {
-        if (!thing.roamingDirections) {
-            throw new Error("Roaming Thing should define a .roamingDirections.");
-        }
+    // /**
+    //  * Starts a roaming Character walking in a random direction, determined
+    //  * by the allowed directions it may use (that aren't blocked).
+    //  * 
+    //  * @param thing   A roaming Character.
+    //  */
+    // public animateCharacterStartWalkingRandom(thing: ICharacter): void {
+    //     if (!thing.roamingDirections) {
+    //         throw new Error("Roaming Thing should define a .roamingDirections.");
+    //     }
 
-        let totalAllowed: number = 0;
-        let direction: Direction;
-        let i: number;
+    //     let totalAllowed: number = 0;
+    //     let direction: Direction;
+    //     let i: number;
 
-        for (const border of thing.bordering) {
-            if (!border) {
-                totalAllowed += 1;
-            }
-        }
+    //     for (const border of thing.bordering) {
+    //         if (!border) {
+    //             totalAllowed += 1;
+    //         }
+    //     }
 
-        if (totalAllowed === 0) {
-            return;
-        }
+    //     if (totalAllowed === 0) {
+    //         return;
+    //     }
 
-        direction = this.gameStarter.numberMaker.randomInt(totalAllowed);
+    //     direction = this.gameStarter.numberMaker.randomInt(totalAllowed);
 
-        for (i = 0; i <= direction; i += 1) {
-            if (thing.bordering[i]) {
-                direction += 1;
-            }
-        }
+    //     for (i = 0; i <= direction; i += 1) {
+    //         if (thing.bordering[i]) {
+    //             direction += 1;
+    //         }
+    //     }
 
-        if (thing.roamingDirections.indexOf(direction) === -1) {
-            this.animateCharacterSetDirection(thing, direction);
-        } else {
-            this.animateCharacterStartWalking(thing, direction);
-        }
-    }
+    //     if (thing.roamingDirections.indexOf(direction) === -1) {
+    //         this.animateCharacterSetDirection(thing, direction);
+    //     } else {
+    //         this.animateCharacterStartWalking(thing, direction);
+    //     }
+    // }
 
-    /**
-     * Continues a Character's walking cycle after taking a step. If .turning
-     * is provided, the Character turns. If a Player is provided, its keys
-     * and .canKeyWalking are respected.
-     * 
-     * @param thing   A Character mid-step.
-     */
-    public animateCharacterRepeatWalking(thing: ICharacter): void {
-        if (typeof thing.turning !== "undefined") {
-            if (!thing.player || !(thing as any).keys[thing.turning]) {
-                this.animateCharacterSetDirection(thing, thing.turning);
-                thing.turning = undefined;
-                return;
-            }
+    // /**
+    //  * Continues a Character's walking cycle after taking a step. If .turning
+    //  * is provided, the Character turns. If a Player is provided, its keys
+    //  * and .canKeyWalking are respected.
+    //  * 
+    //  * @param thing   A Character mid-step.
+    //  */
+    // public animateCharacterRepeatWalking(thing: ICharacter): void {
+    //     if (typeof thing.turning !== "undefined") {
+    //         if (!thing.player || !(thing as any).keys[thing.turning]) {
+    //             this.animateCharacterSetDirection(thing, thing.turning);
+    //             thing.turning = undefined;
+    //             return;
+    //         }
 
-            thing.turning = undefined;
-        }
+    //         thing.turning = undefined;
+    //     }
 
-        if (thing.player) {
-            (thing as IPlayer).canKeyWalking = false;
-        }
+    //     if (thing.player) {
+    //         (thing as IPlayer).canKeyWalking = false;
+    //     }
 
-        this.animateCharacterStartWalking(thing, thing.direction);
-    }
+    //     this.animateCharacterStartWalking(thing, thing.direction);
+    // }
 
-    /**
-     * Reacts to a Character finishing a step and either stops all walking or moves to
-     * the next action in the onStop queue.
-     * 
-     * @param thing   A Character finishing a walking step.
-     * @param onStop   A queue of commands as alternating directions and distances.
-     * @returns True, unless the next onStop is a Function to return the result of.
-     */
-    public animateCharacterStopWalking(thing: ICharacter, onStop?: IWalkingOnStop): boolean {
-        thing.xvel = 0;
-        thing.yvel = 0;
-        thing.walking = false;
+    // /**
+    //  * Reacts to a Character finishing a step and either stops all walking or moves to
+    //  * the next action in the onStop queue.
+    //  * 
+    //  * @param thing   A Character finishing a walking step.
+    //  * @param onStop   A queue of commands as alternating directions and distances.
+    //  * @returns True, unless the next onStop is a Function to return the result of.
+    //  */
+    // public animateCharacterStopWalking(thing: ICharacter, onStop?: IWalkingOnStop): boolean {
+    //     thing.xvel = 0;
+    //     thing.yvel = 0;
+    //     thing.walking = false;
 
-        this.gameStarter.graphics.removeClasses(thing, "walking", "standing");
-        this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
+    //     this.gameStarter.graphics.removeClasses(thing, "walking", "standing");
+    //     this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
 
-        if (thing.walkingFlipping) {
-            this.gameStarter.timeHandler.cancelEvent(thing.walkingFlipping);
-            thing.walkingFlipping = undefined;
-        }
+    //     if (thing.walkingFlipping) {
+    //         this.gameStarter.timeHandler.cancelEvent(thing.walkingFlipping);
+    //         thing.walkingFlipping = undefined;
+    //     }
 
-        this.animateSnapToGrid(thing);
+    //     this.animateSnapToGrid(thing);
 
-        if (thing.sight) {
-            thing.sightDetector!.nocollide = false;
-            this.animatePositionSightDetector(thing);
-        }
+    //     if (thing.sight) {
+    //         thing.sightDetector!.nocollide = false;
+    //         this.animatePositionSightDetector(thing);
+    //     }
 
-        if (!onStop) {
-            return true;
-        }
+    //     if (!onStop) {
+    //         return true;
+    //     }
 
-        switch (onStop.constructor) {
-            case Number:
-                this.animateCharacterRepeatWalking(thing);
-                break;
+    //     switch (onStop.constructor) {
+    //         case Number:
+    //             this.animateCharacterRepeatWalking(thing);
+    //             break;
 
-            case Array:
-                if (onStop[0] > 0) {
-                    onStop[0] = onStop[0] as number - 1;
-                    this.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
-                } else if (onStop.length === 0) {
-                    break;
-                } else {
-                    if (onStop[1] instanceof Function) {
-                        return (onStop[1] as IWalkingOnStopCommandFunction)(thing) as boolean;
-                    }
-                    this.animateCharacterStartWalkingCycle(
-                        thing,
-                        this.gameStarter.constants.directionAliases[onStop[1] as number],
-                        onStop.slice(2));
-                }
-                break;
+    //         case Array:
+    //             if (onStop[0] > 0) {
+    //                 onStop[0] = onStop[0] as number - 1;
+    //                 this.animateCharacterStartWalkingCycle(thing, thing.direction, onStop);
+    //             } else if (onStop.length === 0) {
+    //                 break;
+    //             } else {
+    //                 if (onStop[1] instanceof Function) {
+    //                     return (onStop[1] as IWalkingOnStopCommandFunction)(thing) as boolean;
+    //                 }
+    //                 this.animateCharacterStartWalkingCycle(
+    //                     thing,
+    //                     this.gameStarter.constants.directionAliases[onStop[1] as number],
+    //                     onStop.slice(2));
+    //             }
+    //             break;
 
-            case Function:
-                return (onStop as any)(thing);
+    //         case Function:
+    //             return (onStop as any)(thing);
 
-            default:
-                throw new Error("Unknown onStop: " + onStop + ".");
-        }
+    //         default:
+    //             throw new Error("Unknown onStop: " + onStop + ".");
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    /**
-     * Animates a Player to stop walking, which is the same logic for a normal
-     * Character as well as MenuGrapher and following checks.
-     * 
-     * @param thing   A Player to stop walking.
-     * @param onStop   A queue of commands as alternating directions and distances.
-     * @returns True, unless the next onStop is a Function to return the result of.
-     */
-    public animatePlayerStopWalking(thing: IPlayer, onStop: IWalkingOnStop): boolean {
-        if (this.gameStarter.battles.checkPlayerGrassBattle(thing)) {
-            thing.canKeyWalking = true;
-            return false;
-        }
+    // /**
+    //  * Animates a Character to hop over a ledge.
+    //  * 
+    //  * @param thing   A walking Character.
+    //  * @param other   A ledge for thing to hop over.
+    //  */
+    // public animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
+    //     const shadow: IThing = this.gameStarter.things.add("Shadow");
+    //     const speed: number = 2;
+    //     let dy: number = -4;
+    //     let steps: number = 14;
+    //     let changed: number = 0;
 
-        if (thing.following) {
-            return this.animateCharacterStopWalking(thing, onStop);
-        }
+    //     thing.shadow = shadow;
+    //     thing.ledge = other;
 
-        if (
-            !this.gameStarter.menuGrapher.getActiveMenu()
-            && (thing.keys as any)[thing.direction]) {
-            this.animateCharacterSetDistanceVelocity(thing, thing.distance);
-            return false;
-        }
+    //     // Center the shadow below the Thing
+    //     this.gameStarter.physics.setMidXObj(shadow, thing);
+    //     this.gameStarter.physics.setBottom(shadow, thing.bottom);
 
-        if (typeof thing.nextDirection !== "undefined") {
-            if (thing.nextDirection !== thing.direction && !thing.ledge) {
-                this.gameStarter.physics.setPlayerDirection(thing, thing.nextDirection);
-            }
+    //     // Continuously ensure The Thing still moves off the ledge if not walking
+    //     this.gameStarter.timeHandler.addEventInterval(
+    //         (): boolean => {
+    //             if (thing.walking) {
+    //                 return false;
+    //             }
 
-            delete thing.nextDirection;
-        } else {
-            thing.canKeyWalking = true;
-        }
+    //             console.log("Should set distance velocity");
+    //             // this.animateCharacterSetDistanceVelocity(thing, thing.distance);
+    //             return true;
+    //         },
+    //         1,
+    //         steps * speed - 1);
 
-        return this.animateCharacterStopWalking(thing, onStop);
-    }
+    //     // Keep the shadow below the Thing, and move the Thing's offsetY
+    //     this.gameStarter.timeHandler.addEventInterval(
+    //         (): void => {
+    //             this.gameStarter.physics.setBottom(shadow, thing.bottom);
 
-    /**
-     * Animates a Character to no longer be able to walk.
-     * 
-     * @param thing   A Character that shouldn't be able to walk.
-     */
-    public animateCharacterPreventWalking(thing: ICharacter): void {
-        thing.shouldWalk = false;
-        thing.xvel = thing.yvel = 0;
+    //             if (changed % speed === 0) {
+    //                 thing.offsetY += dy;
+    //             }
 
-        if (thing.player) {
-            (thing as IPlayer).keys = (thing as IPlayer).getKeys();
-        }
+    //             changed += 1;
+    //         },
+    //         1,
+    //         steps * speed);
 
-        this.gameStarter.mapScreener.blockInputs = true;
-    }
+    //     // Inverse the Thing's offsetY changes halfway through the hop
+    //     this.gameStarter.timeHandler.addEvent(
+    //         (): void => {
+    //             dy *= -1;
+    //         },
+    //         speed * (steps / 2) | 0);
+
+    //     // Delete the shadow after the jump is done
+    //     this.gameStarter.timeHandler.addEvent(
+    //         (): void => {
+    //             delete thing.ledge;
+    //             this.gameStarter.physics.killNormal(shadow);
+
+    //             if (!thing.walking) {
+    //                 console.log("Should stop walking", thing);
+    //                 // this.animateCharacterStopWalking(thing);
+    //             }
+
+    //             if (thing.player) {
+    //                 (thing as IPlayer).canKeyWalking = true;
+    //                 this.gameStarter.mapScreener.blockInputs = false;
+    //             }
+    //         },
+    //         steps * speed);
+    // }
 
     /**
      * Sets a Thing facing a particular direction.
@@ -1033,23 +1034,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public animateCharacterSetDirectionRandom(thing: IThing): void {
         this.animateCharacterSetDirection(thing, this.gameStarter.numberMaker.randomIntWithin(0, 3));
-    }
-
-    /**
-     * Flips or unflips a Character if its direction is vertical.
-     * 
-     * @param thing   A Character to flip or unflip.
-     */
-    public animateSwitchFlipOnDirection(thing: ICharacter): void {
-        if (thing.direction % 2 !== 0) {
-            return;
-        }
-
-        if (thing.flipHoriz) {
-            this.gameStarter.graphics.unflipHoriz(thing);
-        } else {
-            this.gameStarter.graphics.flipHoriz(thing);
-        }
     }
 
     /**
@@ -1102,13 +1086,10 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param other   A Character that thing has finished talking to.
      */
     public animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
-        let onStop: IWalkingOnStop | undefined = other.pushSteps;
-
         this.gameStarter.modAttacher.fireEvent("onDialogFinish", other);
 
         thing.talking = false;
         other.talking = false;
-        thing.canKeyWalking = true;
 
         if (other.directionPreferred) {
             this.animateCharacterSetDirection(other, other.directionPreferred);
@@ -1121,7 +1102,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         if (typeof other.pushDirection !== "undefined") {
-            this.animateCharacterStartWalkingCycle(thing, other.pushDirection, onStop);
+            console.log("Should push", other.pushDirection);
+            // this.animateCharacterStartWalkingCycle(thing, other.pushDirection, other.pushSteps);
         }
 
         if (other.gift) {
@@ -1245,178 +1227,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Starts a Character walking behind another Character. The leader is given a
-     * .walkingCommands queue of recent steps that the follower will mimic.
-     * 
-     * @param thing   The following Character.
-     * @param other   The leading Character.
-     */
-    public animateCharacterFollow(thing: ICharacter, other: ICharacter): void {
-        let direction: Direction | undefined = this.gameStarter.physics.getDirectionBordering(thing, other);
-        if (!direction) {
-            throw new Error("Characters are too far away to follow.");
-        }
-
-        thing.nocollide = true;
-
-        if (thing.player) {
-            (thing as IPlayer).allowDirectionAsKeys = true;
-            (thing as IPlayer).shouldWalk = false;
-        }
-
-        thing.following = other;
-        other.follower = thing;
-
-        this.gameStarter.saves.addStateHistory(thing, "speed", thing.speed);
-        thing.speed = other.speed;
-
-        other.walkingCommands = [];
-
-        this.animateCharacterSetDirection(thing, direction);
-
-        switch (direction) {
-            case 0:
-                this.gameStarter.physics.setTop(thing, other.bottom);
-                break;
-            case 1:
-                this.gameStarter.physics.setRight(thing, other.left);
-                break;
-            case 2:
-                this.gameStarter.physics.setBottom(thing, other.top);
-                break;
-            case 3:
-                this.gameStarter.physics.setLeft(thing, other.right);
-                break;
-            default:
-                break;
-        }
-
-        // Manually start the walking process without giving a 0 onStop,
-        // so that it continues smoothly in the walking interval
-        this.animateCharacterStartWalking(thing, direction);
-
-        thing.followingLoop = this.gameStarter.timeHandler.addEventInterval(
-            (): void => this.animateCharacterFollowContinue(thing, other),
-            this.gameStarter.equations.speedWalking(thing),
-            Infinity);
-    }
-
-    /**
-     * Continuation helper for a following cycle. The next walking command is
-     * played, if it exists.
-     * 
-     * @param thing   The following Character.
-     * @param other   The leading Character.
-     */
-    public animateCharacterFollowContinue(thing: ICharacter, other: ICharacter): void {
-        if (!other.walkingCommands) {
-            throw new Error("Thing should have .walkingCommands.");
-        }
-
-        if (other.walkingCommands.length === 0) {
-            return;
-        }
-
-        const direction: Direction = other.walkingCommands.shift()!;
-
-        this.animateCharacterStartWalking(thing, direction, 0);
-    }
-
-    /**
-     * Animates a Character to stop having a follower.
-     * 
-     * @param thing   The leading Character.
-     * @returns True, to stop TimeHandlr cycles.
-     */
-    public animateCharacterFollowStop(thing: ICharacter): boolean {
-        const other: ICharacter | undefined = thing.following;
-        if (!other) {
-            return true;
-        }
-
-        thing.nocollide = false;
-        delete thing.following;
-        delete other.follower;
-
-        this.animateCharacterStopWalking(thing);
-        this.gameStarter.timeHandler.cancelEvent(thing.followingLoop!);
-
-        return true;
-    }
-
-    /**
-     * Animates a Character to hop over a ledge.
-     * 
-     * @param thing   A walking Character.
-     * @param other   A ledge for thing to hop over.
-     */
-    public animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
-        const shadow: IThing = this.gameStarter.things.add("Shadow");
-        const speed: number = 2;
-        let dy: number = -4;
-        let steps: number = 14;
-        let changed: number = 0;
-
-        thing.shadow = shadow;
-        thing.ledge = other;
-
-        // Center the shadow below the Thing
-        this.gameStarter.physics.setMidXObj(shadow, thing);
-        this.gameStarter.physics.setBottom(shadow, thing.bottom);
-
-        // Continuously ensure The Thing still moves off the ledge if not walking
-        this.gameStarter.timeHandler.addEventInterval(
-            (): boolean => {
-                if (thing.walking) {
-                    return false;
-                }
-
-                this.animateCharacterSetDistanceVelocity(thing, thing.distance);
-                return true;
-            },
-            1,
-            steps * speed - 1);
-
-        // Keep the shadow below the Thing, and move the Thing's offsetY
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => {
-                this.gameStarter.physics.setBottom(shadow, thing.bottom);
-
-                if (changed % speed === 0) {
-                    thing.offsetY += dy;
-                }
-
-                changed += 1;
-            },
-            1,
-            steps * speed);
-
-        // Inverse the Thing's offsetY changes halfway through the hop
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                dy *= -1;
-            },
-            speed * (steps / 2) | 0);
-
-        // Delete the shadow after the jump is done
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                delete thing.ledge;
-                this.gameStarter.physics.killNormal(shadow);
-
-                if (!thing.walking) {
-                    this.animateCharacterStopWalking(thing);
-                }
-
-                if (thing.player) {
-                    (thing as IPlayer).canKeyWalking = true;
-                    this.gameStarter.mapScreener.blockInputs = false;
-                }
-            },
-            steps * speed);
-    }
-
-    /**
      * Activates a Detector to trigger a cutscene and/or routine.
      * 
      * @param thing   A Player triggering other.
@@ -1508,7 +1318,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const dialog: IMenuDialogRaw | IMenuDialogRaw[] = other.dialog;
 
         thing.collidedTrigger = other;
-        this.animateCharacterPreventWalking(thing);
+        this.walking.animateCharacterPreventWalking(thing);
 
         if (!other.keepAlive) {
             this.gameStarter.physics.killNormal(other);
@@ -1523,27 +1333,28 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 name,
                 dialog,
                 (): void => {
-                    let onStop: IWalkingOnStop | undefined = undefined;
+                    console.log("Should account for pushing");
+                    // let onStop: IWalkingOnStop | undefined = undefined;
 
-                    if (other.pushSteps) {
-                        onStop = other.pushSteps.slice();
-                    }
+                    // if (other.pushSteps) {
+                    //     onStop = other.pushSteps.slice();
+                    // }
 
-                    this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+                    // this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
-                    if (typeof other.pushDirection !== "undefined") {
-                        if (onStop) {
-                            onStop.push((): void => {
-                                this.gameStarter.mapScreener.blockInputs = false;
-                                delete thing.collidedTrigger;
-                            });
-                            this.animateCharacterStartWalkingCycle(
-                                thing, other.pushDirection, onStop);
-                        }
-                    } else {
-                        this.gameStarter.mapScreener.blockInputs = false;
-                        delete thing.collidedTrigger;
-                    }
+                    // if (typeof other.pushDirection !== "undefined") {
+                    //     if (onStop) {
+                    //         onStop.push((): void => {
+                    //             this.gameStarter.mapScreener.blockInputs = false;
+                    //             delete thing.collidedTrigger;
+                    //         });
+                    //         this.animateCharacterStartWalkingCycle(
+                    //             thing, other.pushDirection, onStop);
+                    //     }
+                    // } else {
+                    //     this.gameStarter.mapScreener.blockInputs = false;
+                    //     delete thing.collidedTrigger;
+                    // }
                 });
         }
 
@@ -1671,28 +1482,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 }
             }
         }
-    }
-
-    /**
-     * Starts a Character roaming in random directions.
-     * 
-     * @param thing   A Character to start roaming.
-     * @returns Whether the time cycle should stop (thing is dead).
-     */
-    public activateCharacterRoaming(thing: ICharacter): boolean {
-        if (!thing.alive) {
-            return true;
-        }
-
-        this.gameStarter.timeHandler.addEvent(
-            (): boolean => this.activateCharacterRoaming(thing),
-            70 + this.gameStarter.numberMaker.randomInt(210));
-
-        if (!thing.talking && !this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.animateCharacterStartWalkingRandom(thing);
-        }
-
-        return false;
     }
 
     /**
@@ -1918,7 +1707,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         player.bordering[player.direction] = undefined;
         this.gameStarter.graphics.addClass(player, "surfing");
-        this.animateCharacterStartWalking(player, player.direction, [1]);
+        console.log("Should start walking");
+        // this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
     }
 }

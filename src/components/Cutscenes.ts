@@ -2009,7 +2009,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneTrainerSpottedExclamation(settings: any): void {
-        this.gameStarter.actions.animateCharacterPreventWalking(this.gameStarter.players[0]);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterPreventWalking(this.gameStarter.players[0]);
         this.gameStarter.actions.animateExclamation(
             settings.triggerer,
             70,
@@ -2032,14 +2033,14 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const blocks: number = Math.max(0, distance / 4 / 8);
 
         if (blocks) {
-            this.gameStarter.actions.animateCharacterStartWalking(
-                triggerer,
-                direction,
-                [
-                    blocks,
-                    this.gameStarter.scenePlayer.bindRoutine("Dialog")
-                ]
-            );
+            console.log("todo: walking");
+            // this.gameStarter.actions.animateCharacterStartWalking(
+            //     triggerer,
+            //     direction,
+            //     [
+            //         blocks,
+            //         this.gameStarter.scenePlayer.bindRoutine("Dialog")
+            //     ]);
         } else {
             this.gameStarter.scenePlayer.playRoutine("Dialog");
         }
@@ -3233,7 +3234,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         settings.isToLeft = isToLeft;
 
         this.gameStarter.things.add(oak, door.left, door.top);
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(oak, 2, walkingSteps);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(oak, 2, walkingSteps);
     }
 
     /**
@@ -3272,11 +3274,12 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         walkingSteps.push(this.gameStarter.scenePlayer.bindRoutine("EnterLab"));
 
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-        this.gameStarter.actions.animateCharacterFollow(settings.player, settings.oak);
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(
-            settings.oak,
-            startingDirection,
-            walkingSteps);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterFollow(settings.player, settings.oak);
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
+        //     settings.oak,
+        //     startingDirection,
+        //     walkingSteps);
     }
 
     /**
@@ -3288,20 +3291,21 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.stateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
         settings.oak.hidden = true;
 
-        this.gameStarter.timeHandler.addEvent(
-            this.gameStarter.actions.animateCharacterStartWalkingCycle,
-            this.gameStarter.equations.speedWalking(this.gameStarter.players[0]),
-            this.gameStarter.players[0],
-            0,
-            [
-                0,
-                (): void => {
-                    this.gameStarter.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
-                    this.gameStarter.players[0].hidden = true;
+        console.log("todo: walking");
+        // this.gameStarter.timeHandler.addEvent(
+        //     this.gameStarter.actions.animateCharacterStartWalkingCycle,
+        //     this.gameStarter.equations.speedWalking(this.gameStarter.players[0]),
+        //     this.gameStarter.players[0],
+        //     0,
+        //     [
+        //         0,
+        //         (): void => {
+        //             this.gameStarter.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
+        //             this.gameStarter.players[0].hidden = true;
 
-                    this.gameStarter.scenePlayer.playRoutine("WalkToTable");
-                }
-            ]);
+        //             this.gameStarter.scenePlayer.playRoutine("WalkToTable");
+        //         }
+        //     ]);
     }
 
     /**
@@ -3332,24 +3336,25 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         ];
         this.gameStarter.stateHolder.addChange(rival.id, "dialog", rival.dialog);
 
-        this.gameStarter.actions.animateCharacterStartWalking(oak, 0, [
-            8, "bottom", 0
-        ]);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalking(oak, 0, [
+        //     8, "bottom", 0
+        // ]);
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.gameStarter.players[0].hidden = false;
-            },
-            112 - this.gameStarter.equations.speedWalking(settings.player));
+        // this.gameStarter.timeHandler.addEvent(
+        //     (): void => {
+        //         this.gameStarter.players[0].hidden = false;
+        //     },
+        //     112 - this.gameStarter.equations.speedWalking(settings.player));
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.gameStarter.actions.animateCharacterStartWalking(
-                    settings.player,
-                    0,
-                    [8, this.gameStarter.scenePlayer.bindRoutine("RivalComplain")]);
-            },
-            112);
+        // // this.gameStarter.timeHandler.addEvent(
+        // //     (): void => {
+        // //         this.gameStarter.actions.animateCharacterStartWalking(
+        // //             settings.player,
+        // //             0,
+        // //             [8, this.gameStarter.scenePlayer.bindRoutine("RivalComplain")]);
+        // //     },
+        // //     112);
     }
 
     /**
@@ -3627,7 +3632,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(settings: any): void {
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        // const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
         let starterRival: string[];
         let steps: number;
 
@@ -3661,13 +3666,14 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         let pokeball: IPokeball = this.gameStarter.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(
-            rival,
-            2,
-            [
-                2, "right", steps, "top", 1,
-                (): void => this.gameStarter.scenePlayer.playRoutine("RivalTakesPokemon")
-            ]);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
+        //     rival,
+        //     2,
+        //     [
+        //         2, "right", steps, "top", 1,
+        //         (): void => this.gameStarter.scenePlayer.playRoutine("RivalTakesPokemon")
+        //     ]);
     }
 
     /**
@@ -3787,19 +3793,19 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * Cutscene for the rival leaving the lab and Oak giving the player advice.
      */
     public cutsceneOakIntroRivalLeavesWalking(): void {
-        const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
+        // const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
         const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
-        const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
-        const steps: any[] = [
-            1,
-            "bottom",
-            6,
-            (): void => {
-                this.gameStarter.physics.killNormal(rival);
-                this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
-                this.gameStarter.mapScreener.blockInputs = false;
-            }
-        ];
+        // const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
+        // const steps: any[] = [
+        //     1,
+        //     "bottom",
+        //     6,
+        //     (): void => {
+        //         this.gameStarter.physics.killNormal(rival);
+        //         this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
+        //         this.gameStarter.mapScreener.blockInputs = false;
+        //     }
+        // ];
         const dialog: string[] = [
             "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
         ];
@@ -3810,7 +3816,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
         rival.nocollide = true;
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(rival, isRight ? Direction.Left : Direction.Right, steps);
     }
 
     /**
@@ -3819,35 +3826,35 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      * @param args   Settings for the routine.
      */
-    public cutsceneOakIntroRivalBattleChallenge(settings: any, args: any): void {
-        const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
-        const battleInfo: IBattleInfo = {
-            battlers: {
-                opponent: {
-                    sprite: "RivalPortrait",
-                    name: this.gameStarter.itemsHolder.getItem("nameRival"),
-                    category: "Trainer",
-                    hasActors: true,
-                    reward: 175,
-                    actors: [
-                        this.gameStarter.equations.newPokemon(starterRival, 5)
-                    ]
-                }
-            },
-            textStart: ["", " wants to fight!"],
-            textDefeat: ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
-            textVictory: [
-                [
-                    "%%%%%%%RIVAL%%%%%%%: WHAT?",
-                    "Unbelievable!",
-                    "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
-                ].join(" ")
-            ],
-            // "animation": "LineSpiral",
-            noBlackout: true,
-            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
-            nextCutscene: "OakIntroRivalLeaves"
-        };
+    public cutsceneOakIntroRivalBattleChallenge(_settings: any, args: any): void {
+        // const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
+        // const battleInfo: IBattleInfo = {
+        //     battlers: {
+        //         opponent: {
+        //             sprite: "RivalPortrait",
+        //             name: this.gameStarter.itemsHolder.getItem("nameRival"),
+        //             category: "Trainer",
+        //             hasActors: true,
+        //             reward: 175,
+        //             actors: [
+        //                 this.gameStarter.equations.newPokemon(starterRival, 5)
+        //             ]
+        //         }
+        //     },
+        //     textStart: ["", " wants to fight!"],
+        //     textDefeat: ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
+        //     textVictory: [
+        //         [
+        //             "%%%%%%%RIVAL%%%%%%%: WHAT?",
+        //             "Unbelievable!",
+        //             "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+        //         ].join(" ")
+        //     ],
+        //     // "animation": "LineSpiral",
+        //     noBlackout: true,
+        //     keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
+        //     nextCutscene: "OakIntroRivalLeaves"
+        // };
         let steps: number;
 
         switch (this.gameStarter.itemsHolder.getItem("starterRival").join("")) {
@@ -3868,15 +3875,16 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             steps += 1;
         }
 
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(
-            settings.rival,
-            3,
-            [
-                steps,
-                "bottom",
-                1,
-                (): void => this.gameStarter.battles.startBattle(battleInfo)
-            ]);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
+        //     settings.rival,
+        //     3,
+        //     [
+        //         steps,
+        //         "bottom",
+        //         1,
+        //         (): void => this.gameStarter.battles.startBattle(battleInfo)
+        //     ]);
     }
 
     /**
@@ -3903,16 +3911,17 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      *
      * @param settings   Settings used for the cutscene.
      */
-    public cutsceneOakParcelPickupWalkToCounter(settings: any): void {
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(
-            settings.player,
-            0,
-            [
-                2,
-                "left",
-                1,
-                this.gameStarter.scenePlayer.bindRoutine("CounterDialog")
-            ]);
+    public cutsceneOakParcelPickupWalkToCounter(_settings: any): void {
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
+        //     settings.player,
+        //     0,
+        //     [
+        //         2,
+        //         "left",
+        //         1,
+        //         this.gameStarter.scenePlayer.bindRoutine("CounterDialog")
+        //     ]);
     }
 
     /**
@@ -4015,13 +4024,14 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(
-            rival,
-            0,
-            [
-                8,
-                (): void => this.gameStarter.scenePlayer.playRoutine("RivalInquires")
-            ]);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
+        //     rival,
+        //     0,
+        //     [
+        //         8,
+        //         (): void => this.gameStarter.scenePlayer.playRoutine("RivalInquires")
+        //     ]);
     }
 
     /**
@@ -4159,16 +4169,17 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
                 delete settings.oak.activate;
                 settings.rival.nocollide = true;
-                this.gameStarter.actions.animateCharacterStartWalkingCycle(
-                    settings.rival,
-                    2,
-                    [
-                        8,
-                        (): void => {
-                            this.gameStarter.physics.killNormal(settings.rival);
-                            this.gameStarter.players[0].canKeyWalking = true;
-                        }
-                    ]);
+                console.log("todo: walking");
+                // this.gameStarter.actions.animateCharacterStartWalkingCycle(
+                //     settings.rival,
+                //     2,
+                //     [
+                //         8,
+                //         (): void => {
+                //             this.gameStarter.physics.killNormal(settings.rival);
+                //             this.gameStarter.players[0].canKeyWalking = true;
+                //         }
+                //     ]);
 
                 delete settings.oak.cutscene;
                 settings.oak.dialog = [
@@ -4313,7 +4324,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         // thing, attribute, change, goal, speed, onCompletion
         this.gameStarter.actions.animateFadeAttribute(rival, "opacity", .2, 1, 3);
         this.gameStarter.things.add(rival, triggerer.left - 112, triggerer.top + 96);
-        this.gameStarter.actions.animateCharacterStartWalkingCycle(rival, 0, steps);
+        console.log("todo: walking");
+        // this.gameStarter.actions.animateCharacterStartWalkingCycle(rival, 0, steps);
     }
 
     /**

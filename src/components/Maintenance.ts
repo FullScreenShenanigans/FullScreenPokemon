@@ -34,9 +34,8 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
             const character: ICharacter = characters[i];
             this.gameStarter.physics.shiftCharacter(character);
 
-            if (character.shouldWalk && !this.gameStarter.menuGrapher.getActiveMenu()) {
-                character.onWalkingStart.call(this.gameStarter.actions, character, character.direction);
-                character.shouldWalk = false;
+            if (character.wantsToWalk && !character.walking && !this.gameStarter.menuGrapher.getActiveMenu()) {
+                this.gameStarter.actions.walking.startWalking(character, character.nextDirection!);
             }
 
             if (character.grass) {

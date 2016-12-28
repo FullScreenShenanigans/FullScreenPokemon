@@ -799,8 +799,8 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                 "offsetY": -8,
                 "roamingDirections": [0, 1, 2, 3],
                 "onThingAdd": fsp.actions.spawnCharacter.bind(fsp.actions),
-                "onWalkingStart": fsp.actions.animateCharacterStartWalking.bind(fsp.actions),
-                "onWalkingStop": fsp.actions.animateCharacterStopWalking.bind(fsp.actions),
+                // "onWalkingStart": fsp.actions.animateCharacterStartWalking.bind(fsp.actions),
+                // "onWalkingStop": fsp.actions.animateCharacterStopWalking.bind(fsp.actions),
                 "activate": fsp.collisions.collideCharacterDialog.bind(fsp.collisions),
             },
             "Buzzer": {
@@ -824,8 +824,8 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                 "canKeyWalking": true,
                 "direction": 8,
                 "speed": 1,
-                "onWalkingStart": fsp.actions.animateCharacterStartWalking.bind(fsp.actions),
-                "onWalkingStop": fsp.actions.animatePlayerStopWalking.bind(fsp.actions),
+                // "onWalkingStart": fsp.actions.animateCharacterStartWalking.bind(fsp.actions),
+                // "onWalkingStop": fsp.actions.animatePlayerStopWalking.bind(fsp.actions),
                 "getKeys": () => {
                     return {
                         "0": false,

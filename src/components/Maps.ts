@@ -23,11 +23,6 @@ export interface IMapScreenr extends IMapScreenr {
     cutscene?: string;
 
     /**
-     * What direction the player is currently facing.
-     */
-    playerDirection: number;
-
-    /**
      * What theme is currently playing.
      */
     theme?: string;
@@ -633,10 +628,11 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         });
 
         if (location.push) {
-            this.gameStarter.actions.animateCharacterStartWalking(
-                this.gameStarter.players[0],
-                this.gameStarter.players[0].direction,
-                (): void => this.gameStarter.saves.autoSave());
+            console.log("todo: walking");
+            // this.gameStarter.actions.animateCharacterStartWalking(
+            //     this.gameStarter.players[0],
+            //     this.gameStarter.players[0].direction,
+                // (): void => this.gameStarter.saves.autoSave());
         }
 
         return location;
@@ -709,10 +705,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.gameStarter.actions.animateCharacterSetDirection(
             this.gameStarter.players[0],
-            (typeof location.direction === "undefined"
-                ? this.gameStarter.mapScreener.playerDirection
-                : location.direction)
-            || 0);
+            location.direction || Direction.Top);
 
         this.gameStarter.scrolling.centerMapScreen();
 
