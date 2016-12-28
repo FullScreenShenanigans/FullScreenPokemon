@@ -45,6 +45,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
          */
         return (thing: ICharacter, other: ICharacter): boolean => (
             !thing.nocollide && !other.nocollide
+            && thing.following !== other
+            && other.following !== thing
             && thing.right >= (other.left + other.tolLeft)
             && thing.left <= (other.right - other.tolRight)
             && thing.bottom >= (other.top + other.tolTop)
@@ -350,37 +352,18 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
     }
 
     /**
-     * Marks a Character as being visually within grass. 
+     * Marks a Character as being visually within grass.
      * 
      * @param thing   A Character within grass.
      * @param other   The specific Grass that thing is within.
+     * @returns true, to allow for passing through.
      */
-    public collideCharacterGrass(thing: ICharacter, other: IGrass): boolean {
+    public collideCharacterGrass(thing: ICharacter, other: IGrass): true {
         if (thing.grass || !this.gameStarter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
 
-        thing.grass = other;
-        this.gameStarter.saves.addStateHistory(thing, "height", thing.height);
-
-        // Todo: Find a better way than manually setting canvas height?
-        thing.canvas.height = thing.heightGrass * 4;
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
-
-        thing.shadow = this.gameStarter.objectMaker.make(thing.title, {
-            nocollide: true,
-            id: thing.id + " shadow"
-        }) as IThing;
-
-        if (thing.shadow.className !== thing.className) {
-            this.gameStarter.graphics.setClass(thing.shadow, thing.className);
-        }
-
-        this.gameStarter.things.add(thing.shadow, thing.left, thing.top);
-
-        // Todo: is the arrayToEnd call necessary?
-        this.gameStarter.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
-        this.gameStarter.utilities.arrayToEnd(thing.shadow, this.gameStarter.groupHolder.getGroup("Terrain") as IThing[]);
+        this.gameStarter.actions.grass.enterGrassVisually(thing, other);
 
         return true;
     }

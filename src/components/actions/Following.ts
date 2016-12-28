@@ -22,7 +22,6 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
 
         lead.follower = follow;
         follow.following = lead;
-        follow.nocollide = true;
 
         this.gameStarter.saves.addStateHistory(follow, "speed", follow.speed);
         follow.speed = lead.speed;
@@ -76,6 +75,5 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
     public stopFollowing(follow: ICharacter, lead: ICharacter): void {
         lead.follower = undefined;
         follow.following = undefined;
-        follow.nocollide = false;
     }
 }

@@ -247,7 +247,7 @@ export function GenerateModsSettings(fsp: FullScreenPokemon): IModsModuleSetting
                      * @param mod   The triggered mod.
                      */
                     onModEnable: (): void => {
-                        fsp.battles.checkPlayerGrassBattle = (): boolean => false;
+                        fsp.actions.grass.checkPlayerGrassBattle = (): boolean => false;
                     },
                     /**
                      * Allows the Player to encounter wild Pokemon.
@@ -255,7 +255,7 @@ export function GenerateModsSettings(fsp: FullScreenPokemon): IModsModuleSetting
                      * @param mod   The triggered mod.
                      */
                     onModDisable: (): void => {
-                        delete fsp.battles.checkPlayerGrassBattle;
+                        delete fsp.actions.grass.checkPlayerGrassBattle;
                     }
                 }
             },

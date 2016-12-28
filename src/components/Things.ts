@@ -219,11 +219,6 @@ export interface ICharacter extends IThing {
     grass?: IGrass;
 
     /**
-     * How high the grass Scenery should be.
-     */
-    heightGrass?: number;
-
-    /**
      * A scratch variable for height, such as when behind grass.
      */
     heightOld?: number;

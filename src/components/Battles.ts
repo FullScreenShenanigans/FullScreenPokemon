@@ -570,32 +570,6 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Starts grass battle if a Player is in grass, using the doesGrassEncounterHappen
-     * equation.
-     * 
-     * @param thing   An in-game Player.
-     */
-    public checkPlayerGrassBattle(thing: IPlayer): boolean {
-        if (!thing.grass || this.gameStarter.menuGrapher.getActiveMenu()) {
-            return false;
-        }
-
-        if (!this.gameStarter.thingHitter.checkHitForThings(thing as any, thing.grass as any)) {
-            delete thing.grass;
-            return false;
-        }
-
-        if (!this.gameStarter.equations.doesGrassEncounterHappen(thing.grass)) {
-            return false;
-        }
-
-        thing.keys = thing.getKeys();
-        this.gameStarter.actions.animateGrassBattleStart(thing, thing.grass);
-
-        return true;
-    }
-
-    /**
      * Chooses a random wild Pokemon schema from the given ones.
      * 
      * @param options   Potential Pokemon schemas to choose from.

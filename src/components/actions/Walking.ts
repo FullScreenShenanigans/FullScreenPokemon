@@ -109,7 +109,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
             onContinueWalking();
         }
 
-        if (!thing.wantsToWalk || (thing.player && this.gameStarter.battles.checkPlayerGrassBattle(thing as IPlayer))) {
+        if (!thing.wantsToWalk || (thing.player && this.gameStarter.actions.grass.checkPlayerGrassBattle(thing as IPlayer))) {
             this.stopWalking(thing);
             return;
         }

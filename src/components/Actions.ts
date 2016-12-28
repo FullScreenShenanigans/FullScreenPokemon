@@ -5,6 +5,7 @@ import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
+import { Grass } from "./actions/Grass";
 import { Roaming } from "./actions/Roaming";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
@@ -51,6 +52,11 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Following functions used by the FullScreenPokemon instance.
      */
     public readonly following: Following<TGameStartr> = new Following(this.gameStarter);
+
+    /**
+     * Grass functions used by the FullScreenPokemon instance.
+     */
+    public readonly grass: Grass<TGameStartr> = new Grass(this.gameStarter);
 
     /**
      * Roaming functions used by the FullScreenPokemon instance.
@@ -277,42 +283,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                     onCompletion);
             },
             speed);
-    }
-
-    /**
-     * Freezes a Character in grass and calls startBattle.
-     * 
-     * @param thing   A Character about to start a battle.
-     * @param grass   Grass the Character is walking in.
-     */
-    public animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
-        const grassMap: IMap = this.gameStarter.areaSpawner.getMap(grass.mapName) as IMap;
-        const grassArea: IArea = grassMap.areas[grass.areaName] as IArea;
-        const options: IWildPokemonSchema[] | undefined = grassArea.wildPokemon.grass;
-        if (!options) {
-            throw new Error("Grass doesn't have any wild Pokemon options defined.");
-        }
-
-        const chosen: IWildPokemonSchema = this.gameStarter.battles.chooseRandomWildPokemon(options);
-        const chosenPokemon: IPokemon = this.gameStarter.utilities.createPokemon(chosen);
-
-        this.gameStarter.graphics.removeClass(thing, "walking");
-        if (thing.shadow) {
-            this.gameStarter.graphics.removeClass(thing.shadow, "walking");
-        }
-
-        this.walking.animateCharacterPreventWalking(thing);
-
-        this.gameStarter.battles.startBattle({
-            battlers: {
-                opponent: {
-                    name: chosen.title,
-                    actors: [chosenPokemon],
-                    category: "Wild",
-                    sprite: chosen.title.join("") + "Front"
-                }
-            }
-        });
     }
 
     /**

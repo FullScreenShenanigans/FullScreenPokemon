@@ -2,7 +2,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Scrollability } from "./Scrolling";
-import { ICharacter, IGrass, IPlayer, IThing } from "./Things";
+import { ICharacter, IPlayer, IThing } from "./Things";
 
 /**
  * Maintenance functions used by FullScreenPokemon instances.
@@ -39,7 +39,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
             }
 
             if (character.grass) {
-                this.maintainCharacterGrass(character, character.grass);
+                this.gameStarter.actions.grass.maintainGrassVisuals(character, character.grass);
             }
 
             if (!character.alive && !character.outerOk) {
@@ -54,34 +54,6 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
 
             this.gameStarter.quadsKeeper.determineThingQuadrants(character);
             this.gameStarter.thingHitter.checkHitsForThing(character as any);
-        }
-    }
-
-    /**
-     * Maintenance for a Character visually in grass. The shadow is updated to
-     * move or be deleted as needed.
-     * 
-     * @param thing   A Character in grass.
-     * @param other   Grass that thing is in.
-     */
-    public maintainCharacterGrass(thing: ICharacter, other: IGrass): void {
-        // If thing is no longer in grass, delete the shadow and stop
-        if (!this.gameStarter.physics.isThingWithinGrass(thing, other)) {
-            this.gameStarter.physics.killNormal(thing.shadow!);
-            thing.canvas.height = thing.height * 4;
-            this.gameStarter.pixelDrawer.setThingSprite(thing);
-
-            delete thing.shadow;
-            delete thing.grass;
-            return;
-        }
-
-        // Keep the shadow in sync with thing in position and visuals.
-        this.gameStarter.physics.setLeft(thing.shadow!, thing.left);
-        this.gameStarter.physics.setTop(thing.shadow!, thing.top);
-
-        if (thing.shadow!.className !== thing.className) {
-            this.gameStarter.graphics.setClass(thing.shadow!, thing.className);
         }
     }
 
