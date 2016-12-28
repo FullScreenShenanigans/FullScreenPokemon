@@ -199,11 +199,6 @@ export interface ICharacter extends IThing {
     distance: number;
 
     /**
-     * A queue of walking commands in waiting, used by its follower.
-     */
-    followCommands?: number[];
-
-    /**
      * A Character walking directly behind this as a follower.
      */
     follower?: ICharacter;

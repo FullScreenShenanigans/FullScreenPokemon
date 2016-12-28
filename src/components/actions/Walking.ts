@@ -5,16 +5,70 @@ import { Direction } from "../Constants";
 import { ICharacter, IPlayer } from "../Things";
 
 /**
- * 
+ * A single instruction on a walking path.
+ */
+export interface IWalkingInstruction {
+    /**
+     * How many blocks long this should take.
+     */
+    blocks: number;
+
+    /**
+     * What direction to walk in.
+     */
+    direction: Direction;
+}
+
+/**
+ * Walking functions used by FullScreenPokemon instances.
  */
 export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Starts a Character walking on a predetermined path.
+     * 
+     * @param thing   The walking Character.
+     * @param path   A path to walk along.
+     */
+    public startWalkingPath(thing: ICharacter, path: IWalkingInstruction[]): void {
+        if (!path.length) {
+            throw new Error("Walkig path must have instructions.");
+        }
+
+        let instructionIndex: number = 0;
+        let currentInstruction: IWalkingInstruction = path[0];
+        let remainingBlocks: number = currentInstruction.blocks;
+
+        this.startWalking(
+            thing,
+            currentInstruction.direction,
+            (): void => {
+                remainingBlocks -= 1;
+
+                if (!remainingBlocks) {
+                    instructionIndex += 1;
+
+                    if (instructionIndex >= path.length) {
+                        thing.wantsToWalk = false;
+                        return;
+                    }
+
+                    currentInstruction = path[instructionIndex];
+                    remainingBlocks = currentInstruction.blocks;
+                    thing.nextDirection = currentInstruction.direction;
+                }
+
+                thing.wantsToWalk = true;
+            });
+    }
+
     /**
      * Starts a Character walking in a direction.
      * 
      * @param thing   A Character to start walking.
      * @param commands   Instructions on how to walk.
+     * @param onContinueWalking   Callback to run before continuing walking.
      */
-    public startWalking(thing: ICharacter, direction: Direction): void {
+    public startWalking(thing: ICharacter, direction: Direction, onContinueWalking?: Function): void {
         const ticksPerBlock: number = 32 / thing.speed;
 
         this.setWalkingAttributes(thing, direction);
@@ -25,7 +79,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.continueWalking(thing, ticksPerBlock),
+            (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
             ticksPerBlock);
     }
 
@@ -34,8 +88,13 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
      * 
      * @param thing   A Character to continue walking.
      * @param ticksPerBlock   How many ticks it takes to span a block.
+     * @param onContinueWalking   Callback to run before continuing walking.
      */
-    public continueWalking(thing: ICharacter, ticksPerBlock: number): void {
+    public continueWalking(thing: ICharacter, ticksPerBlock: number, onContinueWalking?: Function): void {
+        if (onContinueWalking) {
+            onContinueWalking();
+        }
+
         if (!thing.wantsToWalk || (thing.player && this.gameStarter.battles.checkPlayerGrassBattle(thing as IPlayer))) {
             this.stopWalking(thing);
             return;
@@ -52,7 +111,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.continueWalking(thing, ticksPerBlock),
+            (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
             ticksPerBlock);
     }
 
@@ -121,9 +180,12 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
+     * Sets the logical attributes of a walking Character.
      * 
+     * @param thing   The walking Character.
+     * @param direction   What direction to walk in.
      */
-    public setWalkingAttributes(thing: ICharacter, direction: Direction): void {
+    protected setWalkingAttributes(thing: ICharacter, direction: Direction): void {
         thing.walking = true;
 
         this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
@@ -159,9 +221,11 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
+     * Sets the visual attributes of a walking Character.
      * 
+     * @param thing   The walking Character.
      */
-    public setWalkingGraphics(thing: ICharacter): void {
+    protected setWalkingGraphics(thing: ICharacter): void {
         const ticksPerBlock: number = 32 / thing.speed;
         const ticksPerStep: number = ticksPerBlock / 2;
 

@@ -5,11 +5,14 @@ import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
 /**
- * 
+ * Following functions used by FullScreenPokemon instances.
  */
 export class Following<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * Starts a Character following another Character.
      * 
+     * @param follow   The following Character.
+     * @param lead   The leading Character.
      */
     public startFollowing(follow: ICharacter, lead: ICharacter): void {
         const direction: Direction | undefined = this.gameStarter.physics.getDirectionBordering(follow, lead);
@@ -20,7 +23,6 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
         lead.follower = follow;
         follow.following = lead;
         follow.nocollide = true;
-        follow.followCommands = [direction];
 
         this.gameStarter.saves.addStateHistory(follow, "speed", follow.speed);
         follow.speed = lead.speed;
@@ -46,7 +48,10 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
+     * Handles a follow needing to continue following after a block.
      * 
+     * @param follow   The following Character.
+     * @param direction   What direction to walk in next.
      */
     public continueFollowing(follow: ICharacter, direction: Direction): void {
         follow.wantsToWalk = true;
@@ -54,19 +59,23 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
+     * Handles a following Charcater's lead stopping walking.
      * 
+     * @param follow   The following Character.
      */
     public pauseFollowing(follow: ICharacter): void {
         follow.wantsToWalk = false;
     }
 
     /**
+     * Handles a following Character ceasing to follow.
      * 
+     * @param follow   The following Character.
+     * @param lead   The leading Character.
      */
     public stopFollowing(follow: ICharacter, lead: ICharacter): void {
         lead.follower = undefined;
         follow.following = undefined;
         follow.nocollide = false;
-        follow.followCommands = [];
     }
 }
