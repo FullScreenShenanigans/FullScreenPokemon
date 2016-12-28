@@ -4,7 +4,7 @@ import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-// import { IWalkingOnStop } from "./Actions";
+import { IWalkingInstructions } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
 import { IWildPokemonSchema } from "./Maps";
@@ -255,14 +255,9 @@ export interface ICharacter extends IThing {
     player?: boolean;
 
     /**
-     * What direction to push the Player back after a dialog, if any.
+     * Path to push the Player back on after a dialog, if any.
      */
-    pushDirection?: number;
-
-    // /**
-    //  * Steps for the Player to take after being pushed back.
-    //  */
-    // pushSteps?: IWalkingOnStop;
+    pushSteps?: IWalkingInstructions;
 
     /**
      * Whether this is sporadically
@@ -627,14 +622,9 @@ export interface IMenuTriggerer extends IDetector {
     menuAttributes?: IMenuSchema;
 
     /**
-     * What direction to push the activating Player back after a dialog, if any.
+     * Path to push the Player back on after a dialog, if any.
      */
-    pushDirection?: number;
-
-    // /**
-    //  * Steps for the activating Player to take after being pushed back.
-    //  */
-    // pushSteps?: IWalkingOnStop;
+    pushSteps?: IWalkingInstructions;
 }
 
 /**

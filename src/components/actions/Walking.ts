@@ -20,6 +20,20 @@ export interface IWalkingInstruction {
 }
 
 /**
+ * Generates a walking instruction for a path.
+ * 
+ * @param thing   A Thing walking on a path.
+ */
+export interface IWalkingInstructionGenerator {
+    (thing: ICharacter): IWalkingInstruction | void;
+}
+
+/**
+ * Instructions to generate a walking path.
+ */
+export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGenerator)[];
+
+/**
  * Walking functions used by FullScreenPokemon instances.
  */
 export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
@@ -29,13 +43,13 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   The walking Character.
      * @param path   A path to walk along.
      */
-    public startWalkingPath(thing: ICharacter, path: IWalkingInstruction[]): void {
+    public startWalkingOnPath(thing: ICharacter, path: IWalkingInstructions): void {
         if (!path.length) {
             throw new Error("Walkig path must have instructions.");
         }
 
         let instructionIndex: number = 0;
-        let currentInstruction: IWalkingInstruction = path[0];
+        let currentInstruction: IWalkingInstruction = this.parseWalkingInstruction(path[0], thing);
         let remainingBlocks: number = currentInstruction.blocks;
 
         this.startWalking(
@@ -52,7 +66,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
                         return;
                     }
 
-                    currentInstruction = path[instructionIndex];
+                    currentInstruction = this.parseWalkingInstruction(path[instructionIndex], thing);
                     remainingBlocks = currentInstruction.blocks;
                     thing.nextDirection = currentInstruction.direction;
                 }
@@ -158,28 +172,6 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Starts a Character roaming in random directions.
-     * 
-     * @param thing   A Character to start roaming.
-     * @returns Whether the time cycle should stop (thing is dead).
-     */
-    public activateCharacterRoaming(thing: ICharacter): boolean {
-        if (!thing.alive) {
-            return true;
-        }
-
-        this.gameStarter.timeHandler.addEvent(
-            (): boolean => this.activateCharacterRoaming(thing),
-            70 + this.gameStarter.numberMaker.randomInt(210));
-
-        if (!thing.talking && !this.gameStarter.menuGrapher.getActiveMenu()) {
-            // this.animateCharacterStartWalkingRandom(thing);
-        }
-
-        return false;
-    }
-
-    /**
      * Sets the logical attributes of a walking Character.
      * 
      * @param thing   The walking Character.
@@ -251,5 +243,21 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
                     Infinity);
             },
             ticksPerStep);
+    }
+
+    /**
+     * 
+     */
+    protected parseWalkingInstruction(
+        instruction: IWalkingInstruction | IWalkingInstructionGenerator,
+        thing: ICharacter): IWalkingInstruction {
+        if (typeof instruction !== "function") {
+            return instruction;
+        }
+
+        return instruction(thing) || {
+            blocks: 0,
+            direction: thing.direction
+        };
     }
 }

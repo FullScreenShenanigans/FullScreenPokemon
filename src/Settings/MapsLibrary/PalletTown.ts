@@ -253,7 +253,7 @@ export const PalletTown: IMapRaw = {
                 { "thing": "Bookshelf", "x": 192, "width": 128 },
                 { "thing": "Bookshelf", "y": 192, "width": 128 },
                 { "thing": "Bookshelf", "x": 192, "y": 192, "width": 128 },
-                { "thing": "MenuTriggerer", "x": 128, "y": 224, "width": 128, "id": "OakBlocker", "pushDirection": 0, "pushSteps": [4], "keepAlive": true, "nocollide": true, "dialog": "OAK: Hey! Don't go away yet!" },
+                { "thing": "MenuTriggerer", "x": 128, "y": 224, "width": 128, "id": "OakBlocker", "pushSteps": [{ direction: 0, blocks: 4 }], "keepAlive": true, "nocollide": true, "dialog": "OAK: Hey! Don't go away yet!" },
                 { "thing": "CutsceneTriggerer", "x": 128, "y": 192, "width": 128, "id": "RivalBlocker", "cutscene": "OakIntroRivalBattle", "routine": "Approach", "nocollide": true },
                 { "thing": "Lady", "x": 32, "y": 288, "dialog": ["PROF.OAK is the authority on %%%%%%%POKEMON%%%%%%%!", "Many %%%%%%%POKEMON%%%%%%% trainers hold him in high regard!"], "roaming": true, "roamingDirections": [0, 8] },
                 { "thing": "Scientist", "x": 64, "y": 320, "name": "Scientist One", "dialog": "I study %%%%%%%POKEMON%%%%%%% as PROF.OAK's aide.", "roaming": true, "roamingDirections": [] },

@@ -109,11 +109,11 @@ export const ViridianCity: IMapRaw = {
                 { "thing": "Sign", "x": 864, "y": 224, "dialog": "VIRIDIAN CITY \n %%%%%%%POKEMON%%%%%%% GYM" },
                 { "macro": "House", "x": 640, "y": 256, "door": true, "entrance": "Nicknamer House Front Door", "transport": "Nicknamer House Floor 1 Door" },
                 { "thing": "Elder", "x": 960, "y": 256, "name": "GymWatcher", "direction": 0, "roaming": true, "roamingDirections": [], "dialog": ["This %%%%%%%POKEMON%%%%%%% gym is always closed.", "I wonder who the LEADER is?"] },
-                { "thing": "MenuTriggerer", "x": 992, "y": 256, "dialog": "The GYM's doors are locked...", "pushDirection": 2, "pushSteps": [1] },
+                { "thing": "MenuTriggerer", "x": 992, "y": 256, "dialog": "The GYM's doors are locked...", "pushSteps": [{ direction: 2, blocks: 1 }] },
                 { "thing": "DirtMedium", "x": 896, "y": 256, "width": 192, "height": 64 },
                 { "thing": "Lady", "x": 544, "y": 288, "id": "CrankyGranddaughter", "direction": 1, "directionPreferred": 1, "dialog": "Oh Grandpa! Don't be so mean! \n He hasn't had his coffee yet." },
                 { "thing": "Lady", "x": 544, "y": 288, "id": "HappyGranddaughter", "alive": false, "direction": 1, "directionPreferred": 1, "dialog": "When I go to shop in PEWTER CITY, I have to take the winding trail in VIRIDIAN FOREST." },
-                { "thing": "Elder", "x": 576, "y": 288, "id": "CrankyGrandpa", "resting": true, "pushDirection": 2, "pushSteps": [1], "dialog": "You can't go through here! This is private property!" },
+                { "thing": "Elder", "x": 576, "y": 288, "id": "CrankyGrandpa", "resting": true, "pushSteps": [{ direction: 2, blocks: 1 }], "dialog": "You can't go through here! This is private property!" },
                 {
                     "thing": "Elder", "x": 576, "y": 160, "id": "HappyGrandpa", "alive": false, "roaming": true, "roamingDirections": [1, 3], "dialog": ["Ahh, I've had my coffee now and I feel great!", "Sure you can go through.", "Are you in a hurry?"], "dialogOptions":
                     {
@@ -127,7 +127,7 @@ export const ViridianCity: IMapRaw = {
                         }
                     }
                 },
-                { "thing": "MenuTriggerer", "x": 608, "y": 288, "id": "CrankyGrandpaBlocker", "pushDirection": 2, "pushSteps": [1], "keepAlive": true, "requireOverlap": true, "dialog": "You can't go through here! This is private property!" },
+                { "thing": "MenuTriggerer", "x": 608, "y": 288, "id": "CrankyGrandpaBlocker", "pushSteps": [{ direction: 2, blocks: 1 }], "keepAlive": true, "requireOverlap": true, "dialog": "You can't go through here! This is private property!" },
                 { "thing": "Ledge", "x": 768, "y": 304, "width": 128, "jagged": true },
                 { "thing": "Ledge", "x": 896, "y": 304, "width": 192 },
                 { "thing": "Ledge", "x": 1088, "y": 304, "width": 64, "jagged": true },

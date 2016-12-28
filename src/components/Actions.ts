@@ -5,6 +5,7 @@ import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
+import { Roaming } from "./actions/Roaming";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
@@ -52,6 +53,11 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     public readonly following: Following<TGameStartr> = new Following(this.gameStarter);
 
     /**
+     * Roaming functions used by the FullScreenPokemon instance.
+     */
+    public readonly roaming: Roaming<TGameStartr> = new Roaming(this.gameStarter);
+
+    /**
      * Walking functions used by the FullScreenPokemon instance.
      */
     public readonly walking: Walking<TGameStartr> = new Walking(this.gameStarter);
@@ -77,7 +83,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         if (thing.roaming) {
             this.gameStarter.timeHandler.addEvent(
-                (): boolean => this.walking.activateCharacterRoaming(thing),
+                (): void => this.roaming.startRoaming(thing),
                 this.gameStarter.numberMaker.randomInt(70));
         }
     }
@@ -711,46 +717,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     // /**
-    //  * Starts a roaming Character walking in a random direction, determined
-    //  * by the allowed directions it may use (that aren't blocked).
-    //  * 
-    //  * @param thing   A roaming Character.
-    //  */
-    // public animateCharacterStartWalkingRandom(thing: ICharacter): void {
-    //     if (!thing.roamingDirections) {
-    //         throw new Error("Roaming Thing should define a .roamingDirections.");
-    //     }
-
-    //     let totalAllowed: number = 0;
-    //     let direction: Direction;
-    //     let i: number;
-
-    //     for (const border of thing.bordering) {
-    //         if (!border) {
-    //             totalAllowed += 1;
-    //         }
-    //     }
-
-    //     if (totalAllowed === 0) {
-    //         return;
-    //     }
-
-    //     direction = this.gameStarter.numberMaker.randomInt(totalAllowed);
-
-    //     for (i = 0; i <= direction; i += 1) {
-    //         if (thing.bordering[i]) {
-    //             direction += 1;
-    //         }
-    //     }
-
-    //     if (thing.roamingDirections.indexOf(direction) === -1) {
-    //         this.animateCharacterSetDirection(thing, direction);
-    //     } else {
-    //         this.animateCharacterStartWalking(thing, direction);
-    //     }
-    // }
-
-    // /**
     //  * Animates a Character to hop over a ledge.
     //  * 
     //  * @param thing   A walking Character.
@@ -927,9 +893,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             return;
         }
 
-        if (typeof other.pushDirection !== "undefined") {
-            console.log("Should push", other.pushDirection);
-            // this.animateCharacterStartWalkingCycle(thing, other.pushDirection, other.pushSteps);
+        if (other.pushSteps) {
+            this.walking.startWalkingOnPath(thing, other.pushSteps);
         }
 
         if (other.gift) {
@@ -1159,28 +1124,23 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 name,
                 dialog,
                 (): void => {
-                    console.log("Should account for pushing");
-                    // let onStop: IWalkingOnStop | undefined = undefined;
+                    const complete: () => void = (): void => {
+                        this.gameStarter.mapScreener.blockInputs = false;
+                        delete thing.collidedTrigger;
+                    };
 
-                    // if (other.pushSteps) {
-                    //     onStop = other.pushSteps.slice();
-                    // }
+                    this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
-                    // this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-
-                    // if (typeof other.pushDirection !== "undefined") {
-                    //     if (onStop) {
-                    //         onStop.push((): void => {
-                    //             this.gameStarter.mapScreener.blockInputs = false;
-                    //             delete thing.collidedTrigger;
-                    //         });
-                    //         this.animateCharacterStartWalkingCycle(
-                    //             thing, other.pushDirection, onStop);
-                    //     }
-                    // } else {
-                    //     this.gameStarter.mapScreener.blockInputs = false;
-                    //     delete thing.collidedTrigger;
-                    // }
+                    if (other.pushSteps) {
+                        this.walking.startWalkingOnPath(
+                            thing,
+                            [
+                                ...other.pushSteps,
+                                complete
+                            ]);
+                    } else {
+                        complete();
+                    }
                 });
         }
 
