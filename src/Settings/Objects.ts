@@ -1065,7 +1065,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
             },
             "Table1x2": [32, 64],
             "Table2x2": [64, 64],
-            "Table3x3": [64, 64],
+            "Table2x3": [64, 64],
             "Table3x1": [96, 48],
             "Tree": {},
             "Door": {

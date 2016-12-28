@@ -17,8 +17,8 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const yStart: number = reference.y || 0;
         const xnum: number = reference.xnum || 1;
         const ynum: number = reference.ynum || 1;
-        const xwidth: number = reference.xwidth || 8;
-        const yheight: number = reference.yheight || 8;
+        const xwidth: number = reference.xwidth || 32;
+        const yheight: number = reference.yheight || 32;
         const offset: number = reference.offset || 0;
         const things: string[] = reference.things;
         const mod: number = things.length;
@@ -54,8 +54,8 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public macroWater(reference: any): any[] {
         const x: number = reference.x || 0;
         const y: number = reference.y || 0;
-        const width: number = reference.width || 8;
-        const height: number = reference.height || 8;
+        const width: number = reference.width || 32;
+        const height: number = reference.height || 32;
         const open: boolean[] = reference.open || [true, true, true, true];
         const output: any[] = [{
             thing: "Water",
@@ -77,9 +77,9 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (!open[1]) {
             output.push({
                 thing: "WaterEdgeRight",
-                x: x + width - 4,
-                y: open[0] ? y : y + 4,
-                height: open[0] ? height : height - 4
+                x: x + width - 16,
+                y: open[0] ? y : y + 16,
+                height: open[0] ? height : height - 16
             });
         }
 
@@ -87,7 +87,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             output.push({
                 thing: "WaterEdgeBottom",
                 x: x,
-                y: y + height - 4,
+                y: y + height - 16,
                 width: width
             });
         }
@@ -111,7 +111,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @returns A House.
      */
     public macroHouse(reference: any): any[] {
-        const width: number = reference.width || 32;
+        const width: number = reference.width || 128;
         const stories: number = reference.stories || 1;
         const output: any[] = [];
         let x: number = reference.x || 0;
@@ -127,37 +127,37 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "HouseTopRoof",
                 x: x + 8,
                 y: y,
-                width: width - 16
+                width: width - 64
             });
             output.push({
                 thing: "HouseTopRoofRight",
-                x: x + width - 8,
+                x: x + width - 32,
                 y: y
             });
             output.push({
                 thing: "HouseLeft",
                 x: x,
-                y: y + 8
+                y: y + 32
             });
             output.push({
                 thing: "HouseRight",
-                x: x + width - 8,
-                y: y + 8
+                x: x + width - 32,
+                y: y + 32
             });
 
             if (reference.door) {
                 output.push({
                     thing: "HouseMiddle",
-                    x: x + 16,
-                    y: y + 8,
-                    width: width - 24
+                    x: x + 64,
+                    y: y + 32,
+                    width: width - 96
                 });
             } else {
                 output.push({
                     thing: "HouseMiddle",
-                    x: x + 8,
-                    y: y + 8,
-                    width: width - 16
+                    x: x + 32,
+                    y: y + 32,
+                    width: width - 64
                 });
             }
         } else {
@@ -168,7 +168,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             });
         }
 
-        y += 16;
+        y += 64;
         for (let i: number = 1; i < stories; i += 1) {
             output.push({
                 thing: "HouseCenterLeft",
@@ -177,18 +177,18 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             });
             output.push({
                 thing: "HouseCenterRight",
-                x: x + 16,
+                x: x + 64,
                 y: y,
-                width: width - 16
+                width: width - 64
             });
-            y += 8;
+            y += 32;
         }
 
         if (reference.door) {
             let door: any = {
                 thing: "Door",
-                x: x + 8,
-                y: y - 8,
+                x: x + 32,
+                y: y - 32,
                 requireDirection: 0
             };
             if (reference.entrance) {
@@ -212,26 +212,26 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public macroHouseLarge(reference: any): any[] {
         const x: number = reference.x || 0;
         let y: number = reference.y || 0;
-        const width: number = reference.width || 48;
+        const width: number = reference.width || 192;
         const stories: number = reference.stories || 1;
-        const doorOffset: number = reference.doorOffset || 16;
+        const doorOffset: number = reference.doorOffset || 64;
         const output: any[] = [
-                {
-                    thing: "HouseLargeTopLeft",
-                    x: x,
-                    y: y
-                }, {
-                    thing: "HouseLargeTopMiddle",
-                    x: x + 8,
-                    y: y,
-                    width: width - 16
-                }, {
-                    thing: "HouseLargeTopRight",
-                    x: x + width - 8,
-                    y: y
-                }];
+            {
+                thing: "HouseLargeTopLeft",
+                x: x,
+                y: y
+            }, {
+                thing: "HouseLargeTopMiddle",
+                x: x + 32,
+                y: y,
+                width: width - 64
+            }, {
+                thing: "HouseLargeTopRight",
+                x: x + width - 32,
+                y: y
+            }];
 
-        y += 20;
+        y += 80;
         for (let i: number = 2; i < stories; i += 1) {
             output.push({
                 thing: "HouseLargeCenter",
@@ -250,7 +250,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 });
             }
 
-            y += 16;
+            y += 64;
         }
 
         if (!reference.door) {
@@ -258,19 +258,19 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "HouseLargeCenterLeft",
                 x: x,
                 y: y,
-                width: 16
+                width: 64
             });
             output.push({
                 thing: "HouseLargeCenterMiddle",
-                x: x + 16,
+                x: x + 64,
                 y: y,
-                width: 8
+                width: 32
             });
             output.push({
                 thing: "HouseLargeCenterRight",
-                x: x + 24,
+                x: x + 96,
                 y: y,
-                width: width - 24
+                width: width - 96
             });
         } else {
             output.push({
@@ -283,14 +283,14 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "HouseLargeCenterMiddle",
                 x: x + doorOffset,
                 y: y,
-                width: 8,
-                height: 4
+                width: 32,
+                height: 16
             });
             output.push({
                 thing: "HouseLargeCenterRight",
-                x: x + doorOffset + 8,
+                x: x + doorOffset + 32,
                 y: y,
-                width: width - doorOffset - 8
+                width: width - doorOffset - 32
             });
             if (reference.white) {
                 output.push({
@@ -302,12 +302,12 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 });
             }
 
-            y += 16;
+            y += 64;
 
             const door: any = {
                 thing: "Door",
                 x: x + doorOffset,
-                y: y - 12,
+                y: y - 48,
                 requireDirection: 0,
                 id: reference.id
             };
@@ -332,7 +332,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public macroGym(reference: any): any[] {
         const x: number = reference.x || 0;
         const y: number = reference.y || 0;
-        const width: number = reference.width || 48;
+        const width: number = reference.width || 192;
         const stories: number = reference.stories || 2;
 
         return [
@@ -343,18 +343,18 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 width: width,
                 stories: stories,
                 white: {
-                    start: x + 4,
-                    end: x + width - 4
+                    start: x + 16,
+                    end: x + width - 16
                 },
                 transport: reference.transport,
                 entrance: reference.entrance,
                 door: true,
-                doorOffset: width - 16
+                doorOffset: width - 64
             }, {
                 thing: "GymLabel",
-                x: x + 16,
-                y: y + 16,
-                width: width - 32
+                x: x + 64,
+                y: y + 64,
+                width: width - 128
             }];
     }
 
