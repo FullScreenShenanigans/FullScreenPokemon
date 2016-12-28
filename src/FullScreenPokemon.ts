@@ -306,27 +306,6 @@ export class FullScreenPokemon extends GameStartr {
             ...moduleSettings.ui
         });
     }
-
-    /**
-     * Processes raw instantiation settings for sizing.
-     * 
-     * @param settings   Raw instantiation settings.
-     * @returns Initialization settings with filled out, finite sizes.
-     */
-    protected processSettings(rawSettings: ISizeSettings = {}): IProcessedSizeSettings {
-        const settings: ISizeSettings = { ...rawSettings };
-
-        if (!settings.size && !settings.width && !settings.height) {
-            settings.size = this.moduleSettings.ui.sizeDefault;
-        }
-
-        if (settings.size) {
-            settings.height = this.moduleSettings.ui.sizes![settings.size].height;
-            settings.width = this.moduleSettings.ui.sizes![settings.size].width;
-        }
-
-        return super.processSettings(settings);
-    }
 }
 
 FullScreenPokemon.prototype.scale = Constants.scale;

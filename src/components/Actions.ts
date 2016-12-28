@@ -1756,7 +1756,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         area.spawnedBy = (this.gameStarter.areaSpawner.getArea() as IArea).spawnedBy;
 
-        this.gameStarter.maps.activateareaSpawner(thing, area);
+        this.gameStarter.maps.activateAreaSpawner(thing, area);
     }
 
     /**

@@ -227,7 +227,7 @@ export const ViridianCity: IMapRaw = {
                 { "thing": "Window", "x": 160 },
                 { "thing": "Bookshelf", "x": 224 },
                 { "thing": "FloorTiledDiagonal", "y": 32, "width": 256, "height": 224 },
-                { "thing": "Table8x12", "x": 96, "y": 96 },
+                { "thing": "Table2x3", "x": 96, "y": 96 },
                 { "thing": "Dad", "x": 160, "y": 96, "direction": 3, "roaming": true, "roamingDirections": [], "dialog": ["Coming up with nicknames is fun, but hard.", "Simple names are the easiest to remember."] },
                 { "thing": "Stool", "x": 64, "y": 96 },
                 { "thing": "Stool", "x": 160, "y": 96 },
@@ -254,7 +254,7 @@ export const ViridianCity: IMapRaw = {
                 { "thing": "Bookshelf", "x": 224 },
                 { "thing": "FloorTiledDiagonal", "y": 32, "width": 256, "height": 224 },
                 { "thing": "Lass", "x": 128, "y": 32, "direction": 2, "directionPreferred": 2, "dialog": ["Okay!", "Be sure to read the blackboard carefully!"] },
-                { "thing": "Table8x12", "x": 96, "y": 96 },
+                { "thing": "Table2x3", "x": 96, "y": 96 },
                 { "thing": "Notepad", "x": 96, "y": 112 },
                 {
                     "thing": "DialogResponder", "x": 96, "y": 112, "dialog": ["Looked at the notebook!", "First page...", "%%%%%%%POKE%%%%%%% BALLs are used to catch %%%%%%%POKEMON%%%%%%%.", "Up to 24 %%%%%%%POKEMON%%%%%%% can be carried.", "People who raise and make %%%%%%%POKEMON%%%%%%% fight are called %%%%%%%POKEMON%%%%%%% trainers.", "Turn the page?"], "dialogOptions":

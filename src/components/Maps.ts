@@ -54,7 +54,7 @@ export interface IMapScreenr extends IMapScreenr {
 }
 
 /**
- * 
+ * A raw JSON-friendly description of a map.
  */
 export interface IMapRaw extends imapscreatr.IMapRaw {
     /**
@@ -123,7 +123,7 @@ export interface IMap extends IStateSaveable, imapscreatr.IMap {
 }
 
 /**
- * 
+ * A raw JSON-friendly description of a map area.
  */
 export interface IAreaRaw extends imapscreatr.IAreaRaw {
     /**
@@ -172,7 +172,7 @@ export interface IAreaRaw extends imapscreatr.IAreaRaw {
 }
 
 /**
- * An Area parsed from a raw JSON-friendly Map description.
+ * An Area parsed from a raw JSON-friendly Area description.
  */
 export interface IArea extends IAreaRaw, IStateSaveable, imapscreatr.IArea {
     /**
@@ -495,8 +495,8 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.gameStarter.things.add(
             thing,
-            prething.left * 4 - this.gameStarter.mapScreener.left,
-            prething.top * 4 - this.gameStarter.mapScreener.top,
+            prething.left - this.gameStarter.mapScreener.left,
+            prething.top - this.gameStarter.mapScreener.top,
             true);
 
         // Either the prething or thing, in that order, may request to be in the
@@ -747,7 +747,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param thing   An in-game areaSpawner.
      * @param area   The Area associated with thing.
      */
-    public activateareaSpawner(thing: IAreaSpawner, area: IArea): void {
+    public activateAreaSpawner(thing: IAreaSpawner, area: IArea): void {
         const direction: Direction = thing.direction;
         const areaCurrent: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
         const mapCurrent: IMap = this.gameStarter.areaSpawner.getMap() as IMap;

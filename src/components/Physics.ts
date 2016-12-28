@@ -101,13 +101,11 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
             return false;
         }
 
-        if (other.top > (
-            thing.top + thing.heightGrass * 4)) {
+        if (other.top > (thing.top + thing.heightGrass * 4)) {
             return false;
         }
 
-        if (other.bottom < (
-            thing.top + thing.heightGrass * 4)) {
+        if (other.bottom < (thing.top + thing.heightGrass * 4)) {
             return false;
         }
 

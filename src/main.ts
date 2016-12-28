@@ -1,8 +1,6 @@
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
-const FSP: FullScreenPokemon = new FullScreenPokemon({
-    size: FullScreenPokemon.prototype.moduleSettings.ui.sizeDefault
-});
+const FSP: FullScreenPokemon = new FullScreenPokemon();
 
 document.getElementById("game")!.appendChild(FSP.container);
 

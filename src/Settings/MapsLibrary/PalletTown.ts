@@ -136,7 +136,7 @@ export const PalletTown: IMapRaw = {
                 { "thing": "DirtLight", "x": 320, "y": 480, "width": 192, "height": 64 },
                 { "thing": "FenceWide", "x": 256, "y": 512, "width": 352 },
                 { "thing": "FenceWide", "x": 32, "y": 512 },
-                { "thing": "AreaSpawner", "y": 512, "map": "Route 84", "area": "Land", "direction": 2 }
+                { "thing": "AreaSpawner", "y": 512, "map": "Route 21", "area": "Land", "direction": 2 }
             ]
         },
         "Player's House": {
@@ -152,7 +152,7 @@ export const PalletTown: IMapRaw = {
                 { "thing": "Bookshelf", "width": 64 },
                 { "thing": "TelevisionMonitor", "x": 96, "y": 32, "dialogDirections": true, "dialog": ["Oops, wrong side.", "Oops, wrong side.", ["There's a movie on TV. Four boys are walking on railroad tracks.", "I better go too."], "Oops, wrong side."] },
                 { "thing": "StairsUp", "x": 224, "y": 32, "entrance": "Player's House Floor 1 Stairs", "transport": { "map": "Pallet Town", "location": "Player's House Floor 2 Stairs" } },
-                { "thing": "Table8x12", "x": 96, "y": 128 },
+                { "thing": "Table2x3", "x": 96, "y": 128 },
                 { "thing": "Stool", "x": 64, "y": 128 },
                 { "thing": "Stool", "x": 64, "y": 160 },
                 { "thing": "Stool", "x": 160, "y": 128 },
@@ -217,7 +217,7 @@ export const PalletTown: IMapRaw = {
                 { "thing": "Painting", "x": 96, "dialog": "A TOWN MAP." },
                 { "thing": "Window", "x": 160 },
                 { "thing": "Bookshelf", "x": 224 },
-                { "thing": "Table8x12", "x": 96, "y": 96 },
+                { "thing": "Table2x3", "x": 96, "y": 96 },
                 { "thing": "Book", "x": 96, "y": 96, "id": "Book", "dialog": "It's a big map! This is useful!" },
                 { "thing": "Daisy", "x": 64, "y": 96, "direction": 1, "directionPreferred": 4, "dialog": "Hi %%%%%%%PLAYER%%%%%%%! %%%%%%%RIVAL%%%%%%% is out at Grandpa's lab." },
                 { "thing": "Stool", "x": 64, "y": 96 },
