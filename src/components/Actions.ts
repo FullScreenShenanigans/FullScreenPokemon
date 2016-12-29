@@ -6,6 +6,7 @@ import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
 import { Grass } from "./actions/Grass";
+import { Ledges } from "./actions/Ledges";
 import { Roaming } from "./actions/Roaming";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
@@ -57,6 +58,11 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Grass functions used by the FullScreenPokemon instance.
      */
     public readonly grass: Grass<TGameStartr> = new Grass(this.gameStarter);
+
+    /**
+     * Ledge functions used by the FullScreenPokemon instance.
+     */
+    public readonly ledges: Ledges<TGameStartr> = new Ledges(this.gameStarter);
 
     /**
      * Roaming functions used by the FullScreenPokemon instance.
@@ -685,80 +691,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 throw new Error("Unknown direction: " + thing.direction + ".");
         }
     }
-
-    // /**
-    //  * Animates a Character to hop over a ledge.
-    //  * 
-    //  * @param thing   A walking Character.
-    //  * @param other   A ledge for thing to hop over.
-    //  */
-    // public animateCharacterHopLedge(thing: ICharacter, other: IThing): void {
-    //     const shadow: IThing = this.gameStarter.things.add("Shadow");
-    //     const speed: number = 2;
-    //     let dy: number = -4;
-    //     let steps: number = 14;
-    //     let changed: number = 0;
-
-    //     thing.shadow = shadow;
-    //     thing.ledge = other;
-
-    //     // Center the shadow below the Thing
-    //     this.gameStarter.physics.setMidXObj(shadow, thing);
-    //     this.gameStarter.physics.setBottom(shadow, thing.bottom);
-
-    //     // Continuously ensure The Thing still moves off the ledge if not walking
-    //     this.gameStarter.timeHandler.addEventInterval(
-    //         (): boolean => {
-    //             if (thing.walking) {
-    //                 return false;
-    //             }
-
-    //             console.log("Should set distance velocity");
-    //             // this.animateCharacterSetDistanceVelocity(thing, thing.distance);
-    //             return true;
-    //         },
-    //         1,
-    //         steps * speed - 1);
-
-    //     // Keep the shadow below the Thing, and move the Thing's offsetY
-    //     this.gameStarter.timeHandler.addEventInterval(
-    //         (): void => {
-    //             this.gameStarter.physics.setBottom(shadow, thing.bottom);
-
-    //             if (changed % speed === 0) {
-    //                 thing.offsetY += dy;
-    //             }
-
-    //             changed += 1;
-    //         },
-    //         1,
-    //         steps * speed);
-
-    //     // Inverse the Thing's offsetY changes halfway through the hop
-    //     this.gameStarter.timeHandler.addEvent(
-    //         (): void => {
-    //             dy *= -1;
-    //         },
-    //         speed * (steps / 2) | 0);
-
-    //     // Delete the shadow after the jump is done
-    //     this.gameStarter.timeHandler.addEvent(
-    //         (): void => {
-    //             delete thing.ledge;
-    //             this.gameStarter.physics.killNormal(shadow);
-
-    //             if (!thing.walking) {
-    //                 console.log("Should stop walking", thing);
-    //                 // this.animateCharacterStopWalking(thing);
-    //             }
-
-    //             if (thing.player) {
-    //                 (thing as IPlayer).canKeyWalking = true;
-    //                 this.gameStarter.mapScreener.blockInputs = false;
-    //             }
-    //         },
-    //         steps * speed);
-    // }
 
     /**
      * Sets a Thing facing a particular direction.

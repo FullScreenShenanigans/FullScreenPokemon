@@ -163,6 +163,10 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         thing.nextDirection = direction;
         thing.wantsToWalk = true;
 
+        if (!thing.walking) {
+            this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
+        }
+
         this.gameStarter.modAttacher.fireEvent("onKeyDownDirectionReal", direction);
     }
 

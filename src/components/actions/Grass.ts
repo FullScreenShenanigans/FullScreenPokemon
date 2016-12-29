@@ -125,7 +125,10 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
     }
 
     /**
+     * Chooses a wild Pokemon to start a battle with.
      * 
+     * @param grass   Grass Scenery the player is in.
+     * @returns A wild Pokemon to start a battle with.
      */
     protected chooseWildPokemonForBattle(grass: IThing): IPokemon {
         const grassMap: IMap = this.gameStarter.areaSpawner.getMap(grass.mapName) as IMap;

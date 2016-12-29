@@ -155,6 +155,8 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
             this.gameStarter.actions.animatePositionSightDetector(thing);
             thing.sightDetector.nocollide = false;
         }
+
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
     }
 
     /**
@@ -227,7 +229,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
                     thing,
                     ["walking", "standing"],
                     "walking",
-                    ticksPerStep / 2);
+                    ticksPerStep);
 
                 thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
                     (): void => {
@@ -239,7 +241,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
                             }
                         }
                     },
-                    ticksPerStep,
+                    ticksPerStep * 2,
                     Infinity);
             },
             ticksPerStep);

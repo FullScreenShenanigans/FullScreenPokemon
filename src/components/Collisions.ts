@@ -394,11 +394,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
             }
         }
 
-        if (thing.player) {
-            this.gameStarter.mapScreener.blockInputs = true;
-        }
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterHopLedge(thing, other);
+        this.gameStarter.actions.ledges.startLedgeHop(thing, other);
 
         return true;
     }

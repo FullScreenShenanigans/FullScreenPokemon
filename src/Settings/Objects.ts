@@ -790,11 +790,11 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
             },
             "Character": {
                 "groupType": "Character",
-                "speed": 4 / 3,
+                "speed": 2,
                 "walking": false,
                 "shouldWalk": false,
                 "switchDirectionOnDialog": true,
-                "direction": 8,
+                "direction": 2,
                 "offsetY": -8,
                 "roamingDirections": [0, 1, 2, 3],
                 "onThingAdd": fsp.actions.spawnCharacter.bind(fsp.actions),
@@ -819,8 +819,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                 "id": "player",
                 "player": true,
                 "canKeyWalking": true,
-                "direction": 8,
-                "speed": 1,
+                "direction": 2,
                 "getKeys": () => {
                     return {
                         "0": false,
@@ -1003,7 +1002,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                 "width": 32,
                 "height": 16,
                 "spritewidth": 16,
-                "direction": 8,
+                "direction": 2,
                 "collide": fsp.collisions.collideLedge.bind(fsp.collisions),
                 "attributes": {
                     "jagged": {
@@ -1084,13 +1083,13 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                 "exitDirection": 0
             },
             "WaterEdgeRight": {
-                "exitDirection": 4
+                "exitDirection": 1
             },
             "WaterEdgeBottom": {
-                "exitDirection": 8
+                "exitDirection": 2
             },
             "WaterEdgeLeft": {
-                "exitDirection": 12
+                "exitDirection": 3
             },
             "WindowDetector": {
                 "hidden": true,

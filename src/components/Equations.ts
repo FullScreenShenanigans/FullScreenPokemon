@@ -8,7 +8,7 @@ import { IBattleBall } from "./constants/Items";
 import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 import { IWildPokemonSchema } from "./Maps";
-import { ICharacter, IGrass } from "./Things";
+import { IGrass } from "./Things";
 
 /**
  * Math functions used by FullScreenPokemon instances.
@@ -55,20 +55,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         return Math.round(average);
-    }
-
-    /**
-     * @todo Rethink this...
-     */
-    public speedCycling(thing: ICharacter): number {
-        return thing.speed * 2;
-    }
-
-    /**
-     * @todo Rethink this...
-     */
-    public speedWalking(thing: ICharacter): number {
-        return Math.round(8 / thing.speed);
     }
 
     /**
