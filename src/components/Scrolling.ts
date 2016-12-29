@@ -134,12 +134,12 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
         }
 
         return {
-            top: area.boundaries.top * 4,
-            right: area.boundaries.right * 4,
-            bottom: area.boundaries.bottom * 4,
-            left: area.boundaries.left * 4,
-            width: (area.boundaries.right - area.boundaries.left) * 4,
-            height: (area.boundaries.bottom - area.boundaries.top) * 4
+            top: area.boundaries.top,
+            right: area.boundaries.right,
+            bottom: area.boundaries.bottom,
+            left: area.boundaries.left,
+            width: (area.boundaries.right - area.boundaries.left),
+            height: (area.boundaries.bottom - area.boundaries.top)
         };
     }
 
@@ -155,8 +155,8 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
         }
 
         const boundaries: IAreaBoundaries = area.boundaries;
-        const width: number = (boundaries.right - boundaries.left) * 4;
-        const height: number = (boundaries.bottom - boundaries.top) * 4;
+        const width: number = (boundaries.right - boundaries.left);
+        const height: number = (boundaries.bottom - boundaries.top);
 
         if (width > this.gameStarter.mapScreener.width) {
             if (height > this.gameStarter.mapScreener.height) {
