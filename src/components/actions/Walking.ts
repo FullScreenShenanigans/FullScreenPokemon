@@ -131,7 +131,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
-            ticksPerBlock + 1);
+            ticksPerBlock);
     }
 
     /**
