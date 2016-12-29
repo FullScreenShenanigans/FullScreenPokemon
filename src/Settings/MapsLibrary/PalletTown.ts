@@ -246,7 +246,7 @@ export const PalletTown: IMapRaw = {
                 { "thing": "AsianScroll", "x": 160, "dialog": "The SAVE option is on the MENU screen." },
                 { "thing": "Oak", "x": 160, "y": 64, "id": "Oak", "hidden": true, "nocollide": true },
                 { "thing": "Rival", "x": 128, "y": 96, "id": "Rival", "dialog": "Yo %%%%%%%PLAYER%%%%%%%! Gramps isn't around!" },
-                { "thing": "Table3x2", "x": 192, "y": 96 },
+                { "thing": "Table2x3", "x": 192, "y": 96 },
                 { "thing": "Pokeball", "x": 192, "y": 96, "id": "PokeballCHARMANDER", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"], "description": "fire" },
                 { "thing": "Pokeball", "x": 224, "y": 96, "id": "PokeballSQUIRTLE", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["S", "Q", "U", "I", "R", "T", "L", "E"], "description": "water" },
                 { "thing": "Pokeball", "x": 256, "y": 96, "id": "PokeballBULBASAUR", "action": "cutscene", "cutscene": "OakIntroPokemonChoice", "pokemon": ["B", "U", "L", "B", "A", "S", "A", "U", "R"], "description": "plant" },

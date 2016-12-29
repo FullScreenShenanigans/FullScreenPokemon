@@ -255,7 +255,11 @@ export class FullScreenPokemon extends GameStartr {
      * @returns A new internal BattleMovr.
      */
     protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
-        return new BattleMovr(moduleSettings.battles);
+        return new BattleMovr({
+            gameStarter: this,
+            menuGrapher: this,
+            ...moduleSettings.battles
+        });
     }
 
     /**
