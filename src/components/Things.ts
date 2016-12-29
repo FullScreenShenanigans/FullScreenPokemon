@@ -782,12 +782,12 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
         if (savedInfo.xloc) {
             this.gameStarter.physics.setLeft(
                 thing,
-                this.gameStarter.mapScreener.left + savedInfo.xloc * 4);
+                this.gameStarter.mapScreener.left + savedInfo.xloc);
         }
         if (savedInfo.yloc) {
             this.gameStarter.physics.setTop(
                 thing,
-                this.gameStarter.mapScreener.top + savedInfo.yloc * 4);
+                this.gameStarter.mapScreener.top + savedInfo.yloc);
         }
     }
 }

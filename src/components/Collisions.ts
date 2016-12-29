@@ -414,8 +414,10 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
             return false;
         }
 
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterStartWalking(thing, thing.direction, [2]);
+        this.gameStarter.actions.walking.startWalkingOnPath(thing, [{
+            blocks: 2,
+            direction: thing.direction
+        }]);
         thing.surfing = false;
         this.gameStarter.graphics.removeClass(thing, "surfing");
         return true;

@@ -310,6 +310,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (thing.nextDirection === Direction.Left) {
             thing.nextDirection = undefined;
             thing.wantsToWalk = false;
+        } else if (thing.nextDirection === undefined) {
+            thing.wantsToWalk = false;
         }
 
         if (event && event.preventDefault) {
@@ -332,6 +334,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.nextDirection === Direction.Right) {
             thing.nextDirection = undefined;
+            thing.wantsToWalk = false;
+        } else if (thing.nextDirection === undefined) {
             thing.wantsToWalk = false;
         }
 
@@ -356,6 +360,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (thing.nextDirection === Direction.Top) {
             thing.nextDirection = undefined;
             thing.wantsToWalk = false;
+        } else if (thing.nextDirection === undefined) {
+            thing.wantsToWalk = false;
         }
 
         if (event && event.preventDefault) {
@@ -378,6 +384,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         if (thing.nextDirection === Direction.Bottom) {
             thing.nextDirection = undefined;
+            thing.wantsToWalk = false;
+        } else if (thing.nextDirection === undefined) {
             thing.wantsToWalk = false;
         }
 

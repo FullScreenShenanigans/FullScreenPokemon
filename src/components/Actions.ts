@@ -1,4 +1,3 @@
-import { IMove } from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
@@ -1158,12 +1157,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             return;
         }
 
-        let partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-
-        for (let pokemon of partyPokemon) {
-            let moves: IMove[] = pokemon.moves;
-
-            for (let move of moves) {
+        for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+            for (const move of pokemon.moves) {
                 if (move.title === thing.moveName) {
                     thing.moveCallback(player, pokemon);
                     return;

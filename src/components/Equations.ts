@@ -15,7 +15,10 @@ import { ICharacter, IGrass } from "./Things";
  */
 export class Equations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * Calculates how many game ticks it will take for a Character to traverse a block.
      * 
+     * @param thing   A walking Character.
+     * @returns how many game ticks it will take for thing to traverse a block.
      */
     public walkingTicksPerBlock(thing: ICharacter): number {
         return 32 / thing.speed;

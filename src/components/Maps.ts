@@ -628,11 +628,15 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         });
 
         if (location.push) {
-            console.log("todo: walking");
-            // this.gameStarter.actions.animateCharacterStartWalking(
-            //     this.gameStarter.players[0],
-            //     this.gameStarter.players[0].direction,
-                // (): void => this.gameStarter.saves.autoSave());
+            this.gameStarter.actions.walking.startWalkingOnPath(
+                this.gameStarter.players[0],
+                [
+                    {
+                        blocks: 1,
+                        direction: this.gameStarter.players[0].direction
+                    },
+                    (): void => this.gameStarter.saves.autoSave()
+                ]);
         }
 
         return location;

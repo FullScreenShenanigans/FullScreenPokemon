@@ -52,13 +52,18 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         let currentInstruction: IWalkingInstruction = this.parseWalkingInstruction(path[0], thing);
         let remainingBlocks: number = currentInstruction.blocks;
 
+        if (!remainingBlocks) {
+            this.stopWalking(thing);
+            return;
+        }
+
         this.startWalking(
             thing,
             currentInstruction.direction,
             (): void => {
                 remainingBlocks -= 1;
 
-                if (!remainingBlocks) {
+                while (!remainingBlocks) {
                     instructionIndex += 1;
 
                     if (instructionIndex >= path.length) {

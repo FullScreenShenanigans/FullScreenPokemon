@@ -110,7 +110,7 @@ export const PalletTown: IMapRaw = {
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 384, "y": 96, "xnum": 6, "ynum": 2 },
                 { "thing": "Sign", "x": 96, "y": 128, "dialog": "%%%%%%%PLAYER%%%%%%%'s house" },
                 { "thing": "Sign", "x": 352, "y": 128, "dialog": "%%%%%%%RIVAL%%%%%%%'s house" },
-                { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 160, "xnum": 6, "ynum": 2 },
+                { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 160, "xnum": 16, "ynum": 2 },
                 { "macro": "Checkered", "things": ["DirtClean", "DirtWhite"], "x": 64, "y": 224, "xnum": 2, "ynum": 6 },
                 { "thing": "Lady", "x": 96, "y": 224, "roaming": true, "dialog": ["I'm raising %%%%%%%POKEMON%%%%%%% too!", "When they get strong, they can protect me!"] },
                 { "thing": "DirtLight", "x": 128, "y": 224, "width": 128, "height": 64 },

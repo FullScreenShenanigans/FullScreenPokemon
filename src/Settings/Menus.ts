@@ -1200,8 +1200,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "text",
                         "words": [
-                            ["4Shadow"], " ", ["8Shadow"], " ", ["12Shadow"], " ", ["16Shadow"],
-                            ["20Shadow"], " ", ["24Shadow"], " ", ["28Shadow"], " ", ["32Shadow"],
+                            ["1Shadow"], " ", ["2Shadow"], " ", ["3Shadow"], " ", ["4Shadow"],
+                            ["5Shadow"], " ", ["6Shadow"], " ", ["7Shadow"], " ", ["8Shadow"],
                         ],
                         "position": {
                             "offset": {
