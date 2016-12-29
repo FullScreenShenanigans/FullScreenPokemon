@@ -78,7 +78,7 @@ export const Route22: IMapRaw = {
                 { "thing": "Ledge", "x": 1088, "y": 112, "width": 64 },
                 { "thing": "BrickRoad", "x": 512, "y": 128, "width": 640, "height": 64 },
                 { "thing": "BrickRoad", "x": 64, "y": 192, "width": 384, "height": 64 },
-                { "thing": "CutsceneTriggerer", "x": 912, "y": 128, "height": 64, "id": "RivalTriggerer", "cutscene": "RivalRoute88" },
+                { "thing": "CutsceneTriggerer", "x": 912, "y": 128, "height": 64, "id": "RivalTriggerer", "cutscene": "RivalRoute22" },
                 { "thing": "DirtMedium", "x": 512, "y": 192, "width": 192, "height": 64 },
                 { "macro": "Water", "x": 704, "y": 192, "width": 128, "height": 128, "open": [false, false, true, false] },
                 { "thing": "DirtMedium", "x": 832, "y": 192, "width": 320, "height": 256 },

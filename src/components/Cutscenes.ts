@@ -1197,7 +1197,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         if (!battleInfo.noBlackout) {
             message.push("%%%%%%%PLAYER%%%%%%% blacked out!");
             callback = (): void => {
-                let transport: ITransportSchema = this.gameStarter.itemsHolder.getItem("lastPokecenter");
+                const transport: ITransportSchema = this.gameStarter.itemsHolder.getItem("lastPokecenter");
 
                 this.gameStarter.battleMover.closeBattle();
                 this.gameStarter.maps.setMap(transport.map, transport.location);
@@ -2125,8 +2125,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
         const balls: IThing[] = [];
         const dt: number = 35;
-        const left: number = settings.machine.left + 5;
-        const top: number = settings.machine.top + 7;
+        const left: number = settings.machine.left + 20;
+        const top: number = settings.machine.top + 28;
         let i: number = 0;
 
         settings.balls = balls;
@@ -2137,9 +2137,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                 balls.push(
                     this.gameStarter.things.add(
                         "HealingMachineBall",
-                        left + (i % 2) * 3,
-                        top + Math.floor(i / 2) * 2.5
-                    )
+                        left + (i % 2) * 12,
+                        top + Math.floor(i / 2) * 10)
                 );
                 i += 1;
             },
@@ -2185,11 +2184,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             numFlashes);
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.scenePlayer.playRoutine(
-                "HealingComplete",
-                {
-                    balls: balls
-                }),
+            (): void => this.gameStarter.scenePlayer.playRoutine("HealingComplete", { balls }),
             (numFlashes + 2) * 21);
     }
 

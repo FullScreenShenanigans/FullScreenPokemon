@@ -730,149 +730,149 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const output: any = [
             {
                 thing: "FloorDiamonds",
-                width: 112,
-                height: 64,
+                width: 448,
+                height: 256,
                 x: x,
                 y: y
             }, {
                 thing: "SquareWallTop",
                 x: x,
                 y: y,
-                height: 16
+                height: 64
             }, {
                 thing: "HealingMachine",
-                x: x + 8,
+                x: x + 32,
                 y: y,
                 id: "HealingMachine"
             }, {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x + 8,
+                x: x + 32,
                 y: y,
-                width: 32
+                width: 128
             }, {
                 thing: "PokeCenterPoster",
-                x: x + 28,
+                x: x + 112,
                 y: y
             }, {
                 thing: "SquareWallTop",
-                x: x + 40,
+                x: x + 160,
                 y: y,
-                height: 16
+                height: 64
             }, {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x + 48,
+                x: x + 192,
                 y: y,
-                width: 32
+                width: 128
             }, {
                 thing: "StairsVertical",
-                x: x + 80,
+                x: x + 320,
                 y: y
             }, {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x + 88,
+                x: x + 352,
                 y: y
             }, {
                 thing: "StairsVertical",
-                x: x + 96,
+                x: x + 384,
                 y: y
             }, {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x + 104,
+                x: x + 416,
                 y: y
             }, {
                 thing: "Nurse",
                 id: "Nurse",
-                x: x + 24,
-                y: y + 8
+                x: x + 96,
+                y: y + 32
             }, {
                 thing: "SquareWallFront",
                 x: x,
-                y: y + 16
+                y: y + 64
             }, {
                 thing: "PokeCenterDeskLeft",
-                x: x + 8,
-                y: y + 16
+                x: x + 32,
+                y: y + 64
             }, {
                 thing: "PokeCenterDesk",
-                x: x + 12,
-                y: y + 16,
-                width: 32
+                x: x + 48,
+                y: y + 64,
+                width: 128
             }, {
                 thing: "CutsceneResponder",
-                x: x + 24,
-                y: y + 16,
+                x: x + 96,
+                y: y + 64,
                 cutscene: "PokeCenter",
                 keepAlive: true
             }, {
                 thing: "SquareWallFront",
-                x: x + 40,
-                y: y + 16
+                x: x + 160,
+                y: y + 64
             }, {
                 thing: "PokeCenterDesk",
-                x: x + 48,
-                y: y + 16,
-                width: 32
+                x: x + 192,
+                y: y + 64,
+                width: 128
             }, {
                 thing: "PokeCenterDeskBlocker",
-                x: x + 80,
-                y: y + 16
+                x: x + 320,
+                y: y + 64
             }, {
                 thing: "DeskWoman",
-                x: x + 88,
-                y: y + 16,
+                x: x + 352,
+                y: y + 64,
                 dialog: [
                     "Welcome to the Cable Club!",
                     "This area is reserved for 2 friends who are linked by cable."
                 ]
             }, {
                 thing: "PokeCenterDeskBlocker",
-                x: x + 96,
-                y: y + 16
+                x: x + 384,
+                y: y + 64
             }, {
                 thing: "PokeCenterDesk",
-                x: x + 104,
-                y: y + 16
+                x: x + 416,
+                y: y + 64
             }, {
                 thing: "Buzzer",
-                x: x + 28,
-                y: y + 19
+                x: x + 112,
+                y: y + 76
             }, {
                 thing: "Computer",
-                x: x + 104,
-                y: y + 24
+                x: x + 416,
+                y: y + 96
             }, {
                 thing: "SofaLeft",
                 x: x,
-                y: y + 32
+                y: y + 128
             }, {
                 thing: "PottedPalmTree",
                 x: x,
-                y: y + 48,
-                width: 16
+                y: y + 192,
+                width: 64
             }, {
                 thing: "PottedPalmTree",
-                x: x + 48,
-                y: y + 48,
-                width: 16
+                x: x + 192,
+                y: y + 192,
+                width: 64
             }, {
                 thing: "PottedPalmTree",
-                x: x + 96,
-                y: y + 48,
-                width: 16
+                x: x + 384,
+                y: y + 192,
+                width: 64
             }, {
                 thing: "Doormat",
-                x: x + 24,
-                y: y + 56,
-                width: 16,
+                x: x + 96,
+                y: y + 224,
+                width: 64,
                 entrance: reference.entrance
             }];
 
         if (reference.transport) {
             output.push({
                 thing: "HiddenTransporter",
-                x: x + 24,
-                y: y + 56,
-                width: 16,
+                x: x + 96,
+                y: y + 224,
+                width: 64,
                 transport: reference.transport,
                 requireDirection: 2
             });
@@ -882,8 +882,8 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             output.push({
                 thing: "CoolTrainerM",
                 x: x,
-                y: y + 32,
-                offsetX: 4 * 1.75,
+                y: y + 128,
+                offsetX: 7,
                 offsetY: 0,
                 direction: 1,
                 sitting: true,
@@ -914,82 +914,82 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x,
                 y: y,
-                width: 16,
-                height: 4
+                width: 64,
+                height: 16
             }, {
                 thing: "FloorDiamonds",
                 x: x,
-                y: y + 8,
-                width: 64,
-                height: 56
+                y: y + 32,
+                width: 256,
+                height: 224
             }, {
                 thing: "FloorDiamondsDark",
                 x: x,
-                y: y + 16,
-                height: 8
+                y: y + 64,
+                height: 32
             }, {
                 thing: "StoreFridge",
-                x: x + 16,
+                x: x + 64,
                 y: y,
-                width: 32
+                width: 128
             }, {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x + 48,
+                x: x + 192,
                 y: y,
-                width: 16,
-                height: 4
+                width: 64,
+                height: 16
             }, {
                 thing: "StoreSaleBin",
                 x: x,
-                y: y + 4,
-                width: 16
+                y: y + 16,
+                width: 64
             }, {
                 thing: "StoreSaleBin",
-                x: x + 48,
-                y: y + 4,
-                width: 16
+                x: x + 192,
+                y: y + 16,
+                width: 64
             }, {
                 thing: "StoreAisle",
                 x: x,
-                y: y + 24,
-                height: 8
+                y: y + 96,
+                height: 32
             }, {
                 thing: "StoreAisle",
+                x: x + 128,
+                y: y + 96,
+                width: 128
+            }, {
+                thing: "WallIndoorHorizontalBandsDark",
+                x: x,
+                y: y + 128
+            }, {
+                thing: "WallIndoorHorizontalBandsDark",
                 x: x + 32,
-                y: y + 24,
-                width: 32
-            }, {
-                thing: "WallIndoorHorizontalBandsDark",
-                x: x,
-                y: y + 32
-            }, {
-                thing: "WallIndoorHorizontalBandsDark",
-                x: x + 8,
-                y: y + 32,
-                height: 4
+                y: y + 128,
+                height: 16
             }, {
                 thing: "FloorDiamondsDark",
-                x: x + 16,
-                y: y + 32,
-                height: 24
+                x: x + 64,
+                y: y + 128,
+                height: 96
             }, {
                 thing: "SquareWallTop",
-                x: x + 8,
-                y: y + 36,
-                height: 16
+                x: x + 32,
+                y: y + 144,
+                height: 64
             }, {
                 thing: "Cashier",
                 x: x,
-                y: y + 40,
+                y: y + 160,
                 direction: 1
             }, {
                 thing: "FloorDiamondsDark",
                 x: x,
-                y: y + 40
+                y: y + 160
             }, {
                 thing: "Register",
-                x: x + 8,
-                y: y + 40,
+                x: x + 32,
+                y: y + 160,
                 id: reference.responderId,
                 activate: this.gameStarter.actions.activateCutsceneResponder,
                 cutscene: "PokeMart",
@@ -999,30 +999,30 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             }, {
                 thing: "PokeCenterDeskLeft",
                 x: x,
-                y: y + 48
+                y: y + 192
             }, {
                 thing: "PokeCenterDesk",
-                x: x + 4,
-                y: y + 48,
-                width: 12
+                x: x + 16,
+                y: y + 192,
+                width: 48
             }, {
                 thing: "FloorDiamondsDark",
                 x: x,
-                y: y + 56
+                y: y + 224
             }, {
                 thing: "Doormat",
-                x: x + 24,
-                y: y + 56,
-                width: 16,
+                x: x + 96,
+                y: y + 224,
+                width: 64,
                 entrance: reference.entrance
             }];
 
         if (reference.transport) {
             output.push({
                 thing: "HiddenTransporter",
-                x: x + 24,
-                y: y + 56,
-                width: 16,
+                x: x + 96,
+                y: y + 224,
+                width: 64,
                 transport: reference.transport,
                 requireDirection: 2
             });

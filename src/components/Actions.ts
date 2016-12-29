@@ -120,7 +120,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   A Thing to snap the position of.
      */
     public animateSnapToGrid(thing: IThing): void {
-        const grid: number = 4 * 8;
+        const grid: number = 32;
         const x: number = (this.gameStarter.mapScreener.left + thing.left) / grid;
         const y: number = (this.gameStarter.mapScreener.top + thing.top) / grid;
 
@@ -1210,7 +1210,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         switch (thing.direction) {
             case Direction.Top:
                 areaOffsetX = thing.left - other.left;
-                areaOffsetY = area.height * 4 - thing.height;
+                areaOffsetY = area.height - thing.height;
                 break;
 
             case Direction.Right:
@@ -1224,7 +1224,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 break;
 
             case Direction.Left:
-                areaOffsetX = area.width * 4 - thing.width;
+                areaOffsetX = area.width - thing.width;
                 areaOffsetY = thing.top - other.top;
                 break;
 
