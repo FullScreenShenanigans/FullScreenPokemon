@@ -247,7 +247,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         player.opacity = 0;
         opponent.opacity = 0;
 
-        this.gameStarter.physics.setLeft(player, menu.right + player.width * 4);
+        this.gameStarter.physics.setLeft(player, menu.right + player.width);
+        this.gameStarter.physics.setBottom(player, menu.bottom - player.height);
         this.gameStarter.physics.setRight(opponent, menu.left);
         this.gameStarter.physics.setTop(opponent, menu.top);
 
@@ -257,8 +258,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         playerX = this.gameStarter.physics.getMidX(player);
         opponentX = this.gameStarter.physics.getMidX(opponent);
-        playerGoal = menu.left + player.width * 4 / 2;
-        opponentGoal = menu.right - opponent.width * 4 / 2;
+        playerGoal = menu.left + player.width / 2;
+        opponentGoal = menu.right - opponent.width / 2;
 
         this.gameStarter.actions.animateSlideHorizontal(
             player,
@@ -348,7 +349,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const opponent: ICharacter = things.opponent;
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
         const opponentX: number = this.gameStarter.physics.getMidX(opponent);
-        const opponentGoal: number = menu.right + opponent.width * 4 / 2;
+        const opponentGoal: number = menu.right + opponent.width / 2;
         const battleInfo: IBattleInfo = settings.battleInfo;
         const callback: string = battleInfo.battlers.opponent.hasActors
             ? "OpponentSendOut"
@@ -411,7 +412,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const player: IPlayer = things.player;
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
         const playerX: number = this.gameStarter.physics.getMidX(player);
-        const playerGoal: number = menu.left - player.width * 4 / 2;
+        const playerGoal: number = menu.left - player.width / 2;
         const battleInfo: IBattleInfo = settings.battleInfo;
         const textPlayerSendOut: [string, string] = battleInfo.textPlayerSendOut || ["", ""];
         const timeout: number = 24;
@@ -490,15 +491,13 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public cutsceneBattleOpponentSendOut(settings: IBattleCutsceneSettings, args: IBattleRoutineSettings): void {
         const menu: IMenu = settings.things.menu;
-        const left: number = menu.right - 4 * 8;
-        const top: number = menu.top + 4 * 32;
+        const left: number = menu.right - 32;
+        const top: number = menu.top + 32;
 
         console.warn("Should reset *Normal statistics for opponent Pokemon.");
 
         settings.opponentLeft = left;
         settings.opponentTop = top;
-
-        this.gameStarter.menuGrapher.setActiveMenu(undefined);
 
         this.gameStarter.actions.animateSmokeSmall(
             left,
@@ -540,15 +539,13 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public cutsceneBattlePlayerSendOut(settings: any, args: IBattleRoutineSettings): void {
         const menu: IMenu = settings.things.menu;
-        const left: number = menu.left + 4 * 8;
-        const top: number = menu.bottom - 4 * 8;
+        const left: number = menu.left + 32;
+        const top: number = menu.bottom - 32;
 
         console.warn("Should reset *Normal statistics for player Pokemon.");
 
         settings.playerLeft = left;
         settings.playerTop = top;
-
-        this.gameStarter.menuGrapher.setActiveMenu(undefined);
 
         this.gameStarter.actions.animateSmokeSmall(
             left,
@@ -817,7 +814,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.things.add(
             blank,
             thing.left,
-            thing.top + thing.height * thing.scale * 4);
+            thing.top + thing.height * thing.scale);
 
         this.gameStarter.utilities.arrayToIndex(blank, texts, backgroundIndex + 1);
         this.gameStarter.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);
@@ -825,7 +822,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.actions.animateSlideVertical(
             thing,
             4 * 2,
-            this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale * 4,
+            this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale,
             1,
             (): void => {
                 this.gameStarter.physics.killNormal(thing);
@@ -1120,7 +1117,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.physics.setTop(opponent, menu.top);
         this.gameStarter.physics.setLeft(opponent, menu.right);
         opponentX = this.gameStarter.physics.getMidX(opponent);
-        opponentGoal = menu.right - opponent.width * 4 / 2;
+        opponentGoal = menu.right - opponent.width / 2;
 
         this.gameStarter.actions.animateFadeAttribute(opponent, "opacity", 4 / timeout, 1, 1);
         this.gameStarter.actions.animateSlideHorizontal(
@@ -1321,10 +1318,10 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
             if (direction === 1) {
                 differenceX = menu.right - startX;
-                differenceY = (menu.top + defender.height / 2 * 4) - startY;
+                differenceY = (menu.top + defender.height / 2) - startY;
             } else {
                 differenceX = menu.left - startX;
-                differenceY = (menu.bottom - defender.height * 4) - startY;
+                differenceY = (menu.bottom - defender.height) - startY;
             }
 
             for (let i: number = 1; i <= 4; i += 1) {
@@ -1343,11 +1340,11 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         };
 
         if (direction === 1) {
-            startX = menu.left + attacker.width / 2 * 4;
-            startY = menu.bottom - attacker.height * 4;
+            startX = menu.left + attacker.width / 2;
+            startY = menu.bottom - attacker.height;
         } else {
-            startX = menu.right - attacker.width / 2 * 4;
-            startY = menu.top + attacker.height * 4;
+            startX = menu.right - attacker.width / 2;
+            startY = menu.top + attacker.height;
         }
 
         this.gameStarter.things.add(notes[0], startX, startY);
@@ -1355,7 +1352,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             (): void => {
                 this.gameStarter.things.add(
                     notes[1],
-                    startX + notes[1].width / 2 * 4,
+                    startX + notes[1].width / 2,
                     startY + 4 * 3);
             },
             2);
@@ -1461,7 +1458,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const attacker: IThing = this.gameStarter.battleMover.getThing(attackerName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         const dt: number = 11;
-        const dx: number = 4 * 4;
+        const dx: number = 4;
 
         this.gameStarter.physics.shiftHoriz(attacker, dx * direction);
 
@@ -1505,7 +1502,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const defender: IThing = this.gameStarter.battleMover.getThing(defenderName) as IThing;
         const dt: number = 1;
         const direction: number = defenderName === "opponent" ? -1 : 1;
-        const differenceX: number = defender.width / 2 * 4;
+        const differenceX: number = defender.width / 2;
         const lineArray: IThing[] = [];
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const scratches: IThing[] = [
@@ -1517,23 +1514,23 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         let startY: number;
 
         if (direction === -1) {
-            startX = menu.right - defender.width / 2 * 4;
+            startX = menu.right - defender.width / 2;
             startY = menu.top;
         } else {
-            startX = menu.left + defender.width * 4;
-            startY = menu.bottom - (defender.height + 8) * 4;
+            startX = menu.left + defender.width;
+            startY = menu.bottom - (defender.height + 8);
         }
 
         this.gameStarter.things.add(scratches[0], startX, startY);
-        const offset: number = scratches[0].width * 4 / 2;
+        const offset: number = scratches[0].width / 2;
         this.gameStarter.things.add(scratches[1], startX + offset * direction * -1, startY + offset);
         this.gameStarter.things.add(scratches[2], startX + offset * direction * -2, startY + offset * 2);
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {
                 for (const scratch of scratches) {
-                    const left: number = direction === -1 ? scratch.left : scratch.right - 3 * 4;
-                    const top: number =  scratch.bottom - 3 * 4;
+                    const left: number = direction === -1 ? scratch.left : scratch.right - 3;
+                    const top: number =  scratch.bottom - 3;
 
                     this.gameStarter.timeHandler.addEvent(
                         (): void => this.gameStarter.physics.shiftHoriz(scratch, differenceX * direction / 16),
@@ -1602,14 +1599,14 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         };
 
         if (direction === 1) {
-            xPositions[0] = menu.left + (attacker.width * 3 + 4) * 4;
+            xPositions[0] = menu.left + (attacker.width * 3 + 4);
             xPositions[1] = xPositions[0] + (menu.left + xPositions[0]) / 30;
             xPositions[2] = xPositions[0] + (menu.left + xPositions[0]) / 60;
-            yPosition = menu.bottom - (attacker.height * 2 - 4) * 4;
+            yPosition = menu.bottom - (attacker.height * 2 - 4);
         } else {
             // These positions are incorrect and need to be updated. See issue #327
-            xPositions[0] = menu.right - attacker.width / 2 * 4;
-            yPosition = menu.top + attacker.height * 4;
+            xPositions[0] = menu.right - attacker.width / 2;
+            yPosition = menu.top + attacker.height;
         }
 
         for (let i: number = 0; i < 3; i += 1) {
@@ -1677,15 +1674,15 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         let startX: number[] = [];
         let startY: number[] = [];
         if (direction === -1) {
-            startX[0] = menu.right - defender.width / 2 * 4;
+            startX[0] = menu.right - defender.width / 2;
             startY[0] = menu.top;
         } else {
-            startX[0] = menu.left + (defender.width + 32) * 4;
-            startY[0] = menu.bottom - (defender.height + 16) * 4;
-            startX[1] = startX[0] + 6 * 4;
-            startY[1] = startY[0] - 6 * 4;
-            startX[2] = startX[1] + 6 * 4;
-            startY[2] = startY[1] - 8 * 4;
+            startX[0] = menu.left + (defender.width + 32);
+            startY[0] = menu.bottom - (defender.height + 16);
+            startX[1] = startX[0] + 6;
+            startY[1] = startY[0] - 6;
+            startX[2] = startX[1] + 6;
+            startY[2] = startY[1] - 8;
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -1805,18 +1802,18 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         };
 
         if (direction === 1) {
-            xPositions[0] = menu.left + (attacker.width + 6) * 4;
+            xPositions[0] = menu.left + (attacker.width + 6);
             xPositions[1] = xPositions[0] + 10 * unitsize;
             xPositions[2] = xPositions[1] + 10 * unitsize;
             xPositions[3] = xPositions[2] + 10 * unitsize;
-            yPositions[0] = menu.bottom - (attacker.height * 2 - 4) * 4;
+            yPositions[0] = menu.bottom - (attacker.height * 2 - 4);
             yPositions[1] = yPositions[0];
             yPositions[2] = yPositions[1] - (menu.bottom - yPositions[1]) / 3;
             yPositions[3] = yPositions[2] - (menu.bottom - yPositions[1]) / 3;
         } else {
             // These positions are incorrect and need to be updated. See issue #343.
-            xPositions[0] = menu.right - attacker.width / 2 * 4;
-            yPositions[0] = menu.top + attacker.height * 4;
+            xPositions[0] = menu.right - attacker.width / 2;
+            yPositions[0] = menu.top + attacker.height;
         }
 
         for (let i: number = 0; i < 4; i += 1) {
@@ -1863,10 +1860,10 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         if (direction === -1) {
             // Enemy use
         } else {
-            startX[0] = menu.left + (defender.width + 8) * 4;
-            startX[1] = startX[0] + 5 * 4;
-            startX[2] = startX[1] + 5 * 4;
-            startY = menu.bottom - (defender.height + 10) * 4;
+            startX[0] = menu.left + (defender.width + 8);
+            startX[1] = startX[0] + 5;
+            startX[2] = startX[1] + 5;
+            startY = menu.bottom - (defender.height + 10);
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -1938,10 +1935,10 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         if (direction === -1) {
             // Enemy use
         } else {
-            gustX = menu.left + (defender.width) * 4;
-            gustY = menu.bottom - (defender.height) * 4;
-            gustDx = 4 * 4;
-            gustDy = -4 * 4;
+            gustX = menu.left + (defender.width);
+            gustY = menu.bottom - (defender.height);
+            gustDx = 4;
+            gustDy = -4;
         }
 
         for (let i: number = 0; i < 9; i += 1) {
@@ -1972,12 +1969,12 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         if (direction === -1) {
             // Enemy use
         } else {
-            startX[0] = menu.left + (defender.width + 40) * 4;
-            startY[0] = menu.bottom - (defender.height + 22) * 4;
-            startX[1] = startX[0] - 16 * 4;
-            startY[1] = startY[0] + 4 * 4;
-            startX[2] = startX[1] + 10 * 4;
-            startY[2] = startY[1] + 4 * 4;
+            startX[0] = menu.left + (defender.width + 40);
+            startY[0] = menu.bottom - (defender.height + 22);
+            startX[1] = startX[0] - 16;
+            startY[1] = startY[0] + 4;
+            startX[2] = startX[1] + 10;
+            startY[2] = startY[1] + 4;
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -2132,8 +2129,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
         const balls: IThing[] = [];
         const dt: number = 35;
-        const left: number = settings.machine.left + 5 * 4;
-        const top: number = settings.machine.top + 7 * 4;
+        const left: number = settings.machine.left + 5;
+        const top: number = settings.machine.top + 7;
         let i: number = 0;
 
         settings.balls = balls;
@@ -2144,8 +2141,8 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                 balls.push(
                     this.gameStarter.things.add(
                         "HealingMachineBall",
-                        left + (i % 2) * 3 * 4,
-                        top + Math.floor(i / 2) * 2.5 * 4
+                        left + (i % 2) * 3,
+                        top + Math.floor(i / 2) * 2.5
                     )
                 );
                 i += 1;
@@ -2652,7 +2649,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         this.gameStarter.things.add(
             pokemon,
-            (this.gameStarter.mapScreener.middleX + 24 * 4) | 0,
+            (this.gameStarter.mapScreener.middleX + 24) | 0,
             0);
 
         this.gameStarter.physics.setMidY(pokemon, this.gameStarter.mapScreener.middleY);
@@ -2706,7 +2703,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
 
-        this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 24 * 4, 0);
+        this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 24, 0);
 
         this.gameStarter.physics.setMidY(player, this.gameStarter.mapScreener.middleY);
 
@@ -2715,7 +2712,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.actions.animateSlideHorizontal(
             player,
             -4 * 2,
-            middleX - player.width * 4 / 2,
+            middleX - player.width / 2,
             1,
             this.gameStarter.scenePlayer.bindRoutine("PlayerName"));
     }
@@ -2743,7 +2740,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.actions.animateSlideHorizontal(
             settings.player,
             4,
-            (this.gameStarter.mapScreener.middleX + 16 * 4) | 0,
+            (this.gameStarter.mapScreener.middleX + 16) | 0,
             1,
             this.gameStarter.scenePlayer.bindRoutine("PlayerNameOptions"));
     }
@@ -2914,7 +2911,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.actions.animateSlideHorizontal(
             settings.rival,
             4,
-            (this.gameStarter.mapScreener.middleX + 16 * 4) | 0,
+            (this.gameStarter.mapScreener.middleX + 16) | 0,
             1,
             this.gameStarter.scenePlayer.bindRoutine("RivalNameOptions"));
     }
@@ -3112,7 +3109,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
 
         this.gameStarter.timeHandler.addEvent(
             this.gameStarter.scenePlayer.bindRoutine("FadeOut"),
-            timeDelay * 4);
+            timeDelay);
     }
 
     /**
@@ -3558,7 +3555,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             return;
         }
 
-        let pokeball: IPokeball = settings.triggerer;
+        const pokeball: IPokeball = settings.triggerer;
         settings.chosen = pokeball.pokemon;
 
         this.gameStarter.menus.openPokedexListing(
@@ -3610,7 +3607,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
     /**
      * Cutscene for the player receiving his Pokemon.
      *
-     * @param settings   Settings used for the cutscene. 
+     * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoicePlayerTakesPokemon(settings: any): void {
         const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
@@ -3812,12 +3809,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                 "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
                 "Come on, I'll take you on!"
             ],
-            this.gameStarter.scenePlayer.bindRoutine(
-                "Challenge",
-                {
-                    further: further
-                }
-            ));
+            this.gameStarter.scenePlayer.bindRoutine("Challenge", { further }));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -3903,65 +3895,68 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      * @param args   Settings for the routine.
      */
-    public cutsceneOakIntroRivalBattleChallenge(_settings: any, args: any): void {
-        // const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
-        // const battleInfo: IBattleInfo = {
-        //     battlers: {
-        //         opponent: {
-        //             sprite: "RivalPortrait",
-        //             name: this.gameStarter.itemsHolder.getItem("nameRival"),
-        //             category: "Trainer",
-        //             hasActors: true,
-        //             reward: 175,
-        //             actors: [
-        //                 this.gameStarter.equations.newPokemon(starterRival, 5)
-        //             ]
-        //         }
-        //     },
-        //     textStart: ["", " wants to fight!"],
-        //     textDefeat: ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
-        //     textVictory: [
-        //         [
-        //             "%%%%%%%RIVAL%%%%%%%: WHAT?",
-        //             "Unbelievable!",
-        //             "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
-        //         ].join(" ")
-        //     ],
-        //     // "animation": "LineSpiral",
-        //     noBlackout: true,
-        //     keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
-        //     nextCutscene: "OakIntroRivalLeaves"
-        // };
-        let steps: number;
+    public cutsceneOakIntroRivalBattleChallenge(settings: any, args: any): void {
+        const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
+        const battleInfo: IBattleInfo = {
+            battlers: {
+                opponent: {
+                    sprite: "RivalPortrait",
+                    name: this.gameStarter.itemsHolder.getItem("nameRival"),
+                    category: "Trainer",
+                    hasActors: true,
+                    reward: 175,
+                    actors: [
+                        this.gameStarter.equations.newPokemon(starterRival, 5)
+                    ]
+                }
+            },
+            textStart: ["", " wants to fight!"],
+            textDefeat: ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
+            textVictory: [
+                [
+                    "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                    "Unbelievable!",
+                    "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+                ].join(" ")
+            ],
+            // "animation": "LineSpiral",
+            noBlackout: true,
+            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
+            nextCutscene: "OakIntroRivalLeaves"
+        };
+        let blocks: number;
 
         switch (this.gameStarter.itemsHolder.getItem("starterRival").join("")) {
             case "SQUIRTLE":
-                steps = 2;
+                blocks = 2;
                 break;
             case "BULBASAUR":
-                steps = 3;
+                blocks = 3;
                 break;
             case "CHARMANDER":
-                steps = 1;
+                blocks = 1;
                 break;
             default:
                 throw new Error("Unknown starterRival.");
         }
 
         if (args.further) {
-            steps += 1;
+            blocks += 1;
         }
 
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
-        //     settings.rival,
-        //     3,
-        //     [
-        //         steps,
-        //         "bottom",
-        //         1,
-        //         (): void => this.gameStarter.battles.startBattle(battleInfo)
-        //     ]);
+        this.gameStarter.actions.walking.startWalkingOnPath(
+            settings.rival,
+            [
+                {
+                    blocks: blocks,
+                    direction: Direction.Left
+                },
+                {
+                    blocks: 1,
+                    direction: Direction.Bottom
+                },
+                (): void => this.gameStarter.battles.startBattle(battleInfo)
+            ]);
     }
 
     /**

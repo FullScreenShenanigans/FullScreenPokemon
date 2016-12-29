@@ -1151,7 +1151,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
             "BattleSpriteBack": {
                 "width": 64,
                 "height": 56, // 64 (lowest 8 cropped)
-                "scale": 8,
+                "scale": 2,
                 "repeat": false
             },
             "ElderBack": [56, 56],

@@ -227,9 +227,9 @@ export class FullScreenPokemon extends GameStartr {
         this.moduleSettings = new ModuleSettingsGenerator().generate(this);
         super.resetModules(settings);
 
-        this.battleMover = this.createBattleMover(this.moduleSettings, settings);
-        this.menuGrapher = this.createMenuGrapher(this.moduleSettings, settings);
         this.stateHolder = this.createStateHolder(this.moduleSettings, settings);
+        this.menuGrapher = this.createMenuGrapher(this.moduleSettings, settings);
+        this.battleMover = this.createBattleMover(this.moduleSettings, settings);
         this.userWrapper = this.createUserWrapper(this.moduleSettings, settings);
 
         this.areaSpawner.setCommandScope(this.maps);
@@ -257,7 +257,7 @@ export class FullScreenPokemon extends GameStartr {
     protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
         return new BattleMovr({
             gameStarter: this,
-            menuGrapher: this,
+            menuGrapher: this.menuGrapher,
             ...moduleSettings.battles
         });
     }

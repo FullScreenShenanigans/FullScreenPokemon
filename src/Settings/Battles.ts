@@ -6,7 +6,32 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Settings regarding in-game battles, particularly for an IBattleMovr.
  */
-export interface IBattlesModuleSettings extends ibattlemovr.IBattleMovrSettings, igamestartr.IModuleSettingsObject { }
+export interface IBattlesModuleSettings extends igamestartr.IModuleSettingsObject {
+    /**
+     * Names of known MenuGraphr menus.
+     */
+    menuNames: ibattlemovr.IMenuNames;
+
+    /**
+     * Option menus the player may select during battle.
+     */
+    battleOptions: ibattlemovr.IBattleOption[];
+
+    /**
+     * Default settings for running battles.
+     */
+    defaults?: ibattlemovr.IBattleInfoDefaults;
+
+    /**
+     * Default positions of in-battle Things.
+     */
+    positions?: ibattlemovr.IPositions;
+
+    /**
+     * The type of Thing to create and use as a background.
+     */
+    backgroundType?: string;
+}
 
 /**
  * @param fsp   A generating FullScreenPokemon instance.
@@ -16,8 +41,6 @@ export function GenerateBattlesSettings(fsp: FullScreenPokemon): IBattlesModuleS
     "use strict";
 
     return {
-        gameStarter: fsp,
-        menuGrapher: fsp.menuGrapher,
         battleOptions: [
             {
                 text: "FIGHT",
@@ -73,12 +96,12 @@ export function GenerateBattlesSettings(fsp: FullScreenPokemon): IBattlesModuleS
         },
         positions: {
             player: {
-                left: 4,
-                top: 20
+                left: 16,
+                top: 80
             },
             opponent: {
-                left: 52,
-                top: 8
+                left: 204,
+                top: 32
             }
         }
     };

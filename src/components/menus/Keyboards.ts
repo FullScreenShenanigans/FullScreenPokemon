@@ -3,18 +3,12 @@ import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IListMenu, IMenu, IMenuSchema } from "../Menus";
-import { IThing } from "../Things";
 
 /**
  * A Menu to display the results of a KeyboardKeys Menu. A set of "blank" spaces
  * are available, and filled with Text Things as keyboard characters are chosen.
  */
 export interface IKeyboardResultsMenu extends IMenu {
-    /**
-     * The blinking hypen Thing.
-     */
-    blinker: IThing;
-
     /**
      * The complete accumulated values of text characters added, in order.
      */
@@ -195,7 +189,7 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * 
+     * Recreates the display of current results and cursor.
      */
     protected resetResultsDisplay(): void {
         const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
