@@ -234,9 +234,6 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
         }
 
         direction = this.gameStarter.physics.getDirectionBetween(other, thing);
-        if (direction === undefined) {
-            throw new Error("Characters not close enough to collide for dialog.");
-        }
 
         if (other.dialogDirections) {
             dialog = (dialog as IMenuDialogRaw[])[direction];

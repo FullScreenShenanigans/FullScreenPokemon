@@ -131,9 +131,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Freezes a Character to start a dialog.
      * 
-     * @param thing   A Character to freeze.
+     * @param thing   A Player to freeze.
      */
-    public animatePlayerDialogFreeze(thing: ICharacter): void {
+    public animatePlayerDialogFreeze(thing: IPlayer): void {
         this.walking.animateCharacterPreventWalking(thing);
         this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
 
@@ -649,7 +649,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 }
             },
             (interval / 2) | 0);
-    }
     }
 
     /**

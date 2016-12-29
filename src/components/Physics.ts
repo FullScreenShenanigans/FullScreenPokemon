@@ -44,30 +44,19 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
      * @remarks Like getDirectionBordering, but for cases where the two Things
      *          aren't necessarily touching.
      */
-    public getDirectionBetween(thing: IThing, other: IThing): Direction | undefined {
-        const directionBordering: Direction | undefined = this.getDirectionBordering(thing, other);
+    public getDirectionBetween(thing: IThing, other: IThing): Direction {
+        const dx: number = this.getMidX(other) - this.getMidX(thing);
+        const dy: number = this.getMidY(other) - this.getMidY(thing);
 
-        if (typeof directionBordering !== "undefined") {
-            return directionBordering;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            return dx > 0
+                ? Direction.Right
+                : Direction.Left;
         }
 
-        if (thing.top > other.bottom + 4) {
-            return Direction.Top;
-        }
-
-        if (thing.right < other.left - 4) {
-            return Direction.Right;
-        }
-
-        if (thing.bottom < other.top - 4) {
-            return Direction.Bottom;
-        }
-
-        if (thing.left > other.right + 4) {
-            return Direction.Left;
-        }
-
-        return undefined;
+        return dy > 0
+            ? Direction.Bottom
+            : Direction.Top;
     }
 
     /**

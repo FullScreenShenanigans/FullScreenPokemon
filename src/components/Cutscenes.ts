@@ -3169,10 +3169,9 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         this.gameStarter.actions.animatePlayerDialogFreeze(settings.player);
-        this.gameStarter.actions.animateCharacterSetDirection(settings.player, 2);
+        this.gameStarter.actions.animateCharacterSetDirection(settings.player, Direction.Bottom);
 
         this.gameStarter.audioPlayer.playTheme("Professor Oak");
-        this.gameStarter.mapScreener.blockInputs = true;
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
@@ -3295,26 +3294,43 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroFollowToLab(settings: any): void {
-        let startingDirection: number;
-        let walkingSteps: any[];
+        const walkingInstructions: IWalkingInstructions = [
+            {
+                blocks: 5,
+                direction: Direction.Bottom
+            },
+            {
+                blocks: 1,
+                direction: Direction.Left
+            },
+            {
+                blocks: 5,
+                direction: Direction.Bottom
+            },
+            {
+                blocks: 3,
+                direction: Direction.Right
+            },
+            {
+                blocks: 1,
+                direction: Direction.Top
+            }
+        ];
 
-        if (settings.isToLeft) {
-            startingDirection = Direction.Bottom;
-            walkingSteps = [5, "left", 1, "bottom", 5, "right", 3, "top", 1];
-        } else {
-            startingDirection = Direction.Left;
-            walkingSteps = [1, "bottom", 5, "left", 1, "bottom", 5, "right", 3, "top", 1];
+        if (!settings.isToLeft) {
+            walkingInstructions.unshift({
+                blocks: 1,
+                direction: Direction.Left
+            });
         }
 
-        walkingSteps.push(this.gameStarter.scenePlayer.bindRoutine("EnterLab"));
+        walkingInstructions.push(this.gameStarter.scenePlayer.bindRoutine("EnterLab"));
 
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterFollow(settings.player, settings.oak);
-        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
-        //     settings.oak,
-        //     startingDirection,
-        //     walkingSteps);
+        this.gameStarter.actions.following.startFollowing(settings.player, settings.oak);
+        this.gameStarter.actions.walking.startWalkingOnPath(
+            settings.oak,
+            walkingInstructions);
     }
 
     /**
@@ -3323,24 +3339,28 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroEnterLab(settings: any): void {
+        this.gameStarter.players[0].nocollide = true;
         this.gameStarter.stateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
         settings.oak.hidden = true;
 
-        console.log("todo: walking");
-        // this.gameStarter.timeHandler.addEvent(
-        //     this.gameStarter.actions.animateCharacterStartWalkingCycle,
-        //     this.gameStarter.equations.speedWalking(this.gameStarter.players[0]),
-        //     this.gameStarter.players[0],
-        //     0,
-        //     [
-        //         0,
-        //         (): void => {
-        //             this.gameStarter.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
-        //             this.gameStarter.players[0].hidden = true;
+        this.gameStarter.timeHandler.addEvent(
+            (): void => {
+                this.gameStarter.actions.walking.startWalkingOnPath(
+                    this.gameStarter.players[0],
+                    [
+                        {
+                            blocks: 1,
+                            direction: Direction.Top
+                        },
+                        (): void => {
+                            this.gameStarter.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
+                            this.gameStarter.players[0].hidden = true;
 
-        //             this.gameStarter.scenePlayer.playRoutine("WalkToTable");
-        //         }
-        //     ]);
+                            this.gameStarter.scenePlayer.playRoutine("WalkToTable");
+                        }
+                    ]);
+            },
+            this.gameStarter.equations.walkingTicksPerBlock(this.gameStarter.players[0]));
     }
 
     /**
@@ -3351,6 +3371,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
     public cutsceneOakIntroWalkToTable(settings: any): void {
         const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
         const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const appearanceDelay: number = this.gameStarter.equations.walkingTicksPerBlock(oak) * 6;
 
         settings.oak = oak;
         settings.player = this.gameStarter.players[0];
@@ -3371,25 +3392,37 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         ];
         this.gameStarter.stateHolder.addChange(rival.id, "dialog", rival.dialog);
 
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterStartWalking(oak, 0, [
-        //     8, "bottom", 0
-        // ]);
+        // make sure Oak faces down, yeah?
+        this.gameStarter.actions.walking.startWalkingOnPath(oak, [
+            {
+                blocks: 8,
+                direction: Direction.Top
+            },
+            {
+                blocks: 0,
+                direction: Direction.Bottom
+            }
+        ]);
 
-        // this.gameStarter.timeHandler.addEvent(
-        //     (): void => {
-        //         this.gameStarter.players[0].hidden = false;
-        //     },
-        //     112 - this.gameStarter.equations.speedWalking(settings.player));
+        this.gameStarter.timeHandler.addEvent(
+            (): void => {
+                this.gameStarter.players[0].hidden = false;
+            },
+            appearanceDelay);
 
-        // // this.gameStarter.timeHandler.addEvent(
-        // //     (): void => {
-        // //         this.gameStarter.actions.animateCharacterStartWalking(
-        // //             settings.player,
-        // //             0,
-        // //             [8, this.gameStarter.scenePlayer.bindRoutine("RivalComplain")]);
-        // //     },
-        // //     112);
+        this.gameStarter.timeHandler.addEvent(
+            (): void => {
+                this.gameStarter.actions.walking.startWalkingOnPath(
+                    settings.player,
+                    [
+                        {
+                            blocks: 8,
+                            direction: 0
+                        },
+                        this.gameStarter.scenePlayer.bindRoutine("RivalComplain")
+                    ]);
+            },
+            appearanceDelay);
     }
 
     /**

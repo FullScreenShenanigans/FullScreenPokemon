@@ -45,7 +45,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public startWalkingOnPath(thing: ICharacter, path: IWalkingInstructions): void {
         if (!path.length) {
-            throw new Error("Walkig path must have instructions.");
+            throw new Error("Walking path must have instructions.");
         }
 
         let instructionIndex: number = 0;
@@ -57,6 +57,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
             return;
         }
 
+        thing.nextDirection = undefined;
         this.startWalking(
             thing,
             currentInstruction.direction,
@@ -68,6 +69,11 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
                     if (instructionIndex >= path.length) {
                         thing.wantsToWalk = false;
+
+                        if (thing.direction !== currentInstruction.direction) {
+                            this.gameStarter.actions.animateCharacterSetDirection(thing, currentInstruction.direction);
+                        }
+
                         return;
                     }
 
@@ -171,6 +177,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public animateCharacterPreventWalking(thing: ICharacter): void {
         thing.xvel = thing.yvel = 0;
+        thing.wantsToWalk = false;
 
         if (thing.player) {
             (thing as IPlayer).keys = (thing as IPlayer).getKeys();
