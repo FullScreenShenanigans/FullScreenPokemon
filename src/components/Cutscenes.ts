@@ -4,6 +4,7 @@ import { IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IWalkingInstructions } from "./actions/Walking";
 import {
     IBattleActionRoutineSettings, IBattleAttackRoutineSettings,
     IBattleCutsceneSettings, IBattleInfo, IBattleLevelRoutineSettings, IBattleMoveRoutineSettings,
@@ -3220,22 +3221,56 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             nocollide: true
         });
         const isToLeft: boolean = this.gameStarter.players[0].bordering[Direction.Left] !== undefined;
-        const walkingSteps: any[] = [
-            1, "left", 4, "top", 8, "right", 1, "top", 1, "right", 1, "top", 1
+        const walkingInstructions: IWalkingInstructions = [
+            {
+                blocks: 1,
+                direction: Direction.Bottom
+            },
+            {
+                blocks: 4,
+                direction: Direction.Left
+            },
+            {
+                blocks: 8,
+                direction: Direction.Top
+            },
+            {
+                blocks: 1,
+                direction: Direction.Right
+            },
+            {
+                blocks: 1,
+                direction: Direction.Top
+            },
+            {
+                blocks: 1,
+                direction: Direction.Right
+            },
+            {
+                blocks: 1,
+                direction: Direction.Top
+            }
         ];
 
         if (!isToLeft) {
-            walkingSteps.push("right", 1, "top", 0);
+            walkingInstructions.push(
+                {
+                    blocks: 1,
+                    direction: Direction.Right
+                },
+                {
+                    blocks: 0,
+                    direction: Direction.Top
+                });
         }
 
-        walkingSteps.push(this.gameStarter.scenePlayer.bindRoutine("GrassWarning"));
+        walkingInstructions.push(this.gameStarter.scenePlayer.bindRoutine("GrassWarning"));
 
         settings.oak = oak;
         settings.isToLeft = isToLeft;
 
         this.gameStarter.things.add(oak, door.left, door.top);
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterStartWalkingCycle(oak, 2, walkingSteps);
+        this.gameStarter.actions.walking.startWalkingOnPath(oak, walkingInstructions);
     }
 
     /**
