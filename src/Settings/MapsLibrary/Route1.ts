@@ -66,7 +66,7 @@ export const Route1: IMapRaw = {
                 { "thing": "Grass", "x": 448, "y": 384, "width": 128, "height": 128 },
                 { "thing": "PlantSmall", "x": 128, "y": 416, "width": 64 },
                 { "thing": "PlantSmall", "x": 320, "y": 416, "width": 128 },
-                { "thing": "BugCatcher", "x": 480, "y": 416, "direction": 12, "roaming": true, "roamingDirections": [4, 12], "name": "LedgeAdvertiser", "dialog": ["See those ledges along the road?", "It's a bit scary, but you can jump from them.", "You can get back to Pallet Town quicker that way."] },
+                { "thing": "BugCatcher", "x": 480, "y": 416, "direction": 3, "roaming": true, "roamingDirections": [4, 12], "name": "LedgeAdvertiser", "dialog": ["See those ledges along the road?", "It's a bit scary, but you can jump from them.", "You can get back to Pallet Town quicker that way."] },
                 { "thing": "Ledge", "x": 192, "y": 432, "width": 128 },
                 { "thing": "FenceWide", "x": 96, "y": 448, "height": 448 },
                 { "thing": "FenceWide", "x": 576, "y": 448, "height": 448 },
@@ -87,7 +87,7 @@ export const Route1: IMapRaw = {
                 { "thing": "Grass", "x": 384, "y": 704, "width": 128, "height": 128 },
                 { "thing": "DirtLight", "x": 512, "y": 704, "width": 64, "height": 128 },
                 { "thing": "PlantSmall", "x": 128, "y": 736, "width": 256 },
-                { "thing": "BugCatcher", "x": 160, "y": 768, "direction": 8, "roaming": true, "roamingDirections": [0, 8], "name": "ShopAdvertiser", "dialog": ["Hi! I work at a %%%%%%%POKEMON%%%%%%% MART.", "It's a convenient shop, so please visit us in VIRIDIAN CITY.", "I know, I'll give you a sample! Here you go!"], "dialogNext": "We also carry %%%%%%%POKE%%%%%%% BALLs for catching %%%%%%%POKEMON%%%%%%%!", "gift": "Potion" },
+                { "thing": "BugCatcher", "x": 160, "y": 768, "direction": 2, "roaming": true, "roamingDirections": [0, 8], "name": "ShopAdvertiser", "dialog": ["Hi! I work at a %%%%%%%POKEMON%%%%%%% MART.", "It's a convenient shop, so please visit us in VIRIDIAN CITY.", "I know, I'll give you a sample! Here you go!"], "dialogNext": "We also carry %%%%%%%POKE%%%%%%% BALLs for catching %%%%%%%POKEMON%%%%%%%!", "gift": "Potion" },
                 { "thing": "Ledge", "x": 512, "y": 752, "width": 64, "jagged": true },
                 { "macro": "Checkered", "things": ["", "Flower"], "x": 256, "y": 784, "xnum": 8, "ynum": 2, "xwidth": 16, "yheight": 16 },
                 { "thing": "DirtLight", "x": 128, "y": 832, "width": 448, "height": 64 },
@@ -115,7 +115,7 @@ export const Route1: IMapRaw = {
                 { "thing": "FenceWide", "x": 96, "y": 1152 },
                 { "thing": "ThemePlayer", "x": 320, "y": 1152, "width": 64, "theme": "Pallet Town" },
                 { "thing": "FenceWide", "x": 576, "y": 1152 },
-                { "thing": "AreaSpawner", "y": 1152, "width": 640, "map": "Pallet Town", "area": "Land", "direction": 8 }
+                { "thing": "AreaSpawner", "y": 1152, "width": 640, "map": "Pallet Town", "area": "Land", "direction": 2 }
             ]
         }
     }

@@ -73,8 +73,8 @@ export const ViridianCity: IMapRaw = {
                 }
             },
             "creation": [
-                { "thing": "AreaSpawner", "width": 1280, "map": "Route 8", "area": "Land", "direction": 0, "offsetX": 192 },
-                { "thing": "AreaSpawner", "height": 1152, "map": "Route 88", "area": "Land", "direction": 3, "offsetY": 256 },
+                { "thing": "AreaSpawner", "width": 1280, "map": "Route 2", "area": "Land", "direction": 0, "offsetX": 192 },
+                { "thing": "AreaSpawner", "height": 1152, "map": "Route 22", "area": "Land", "direction": 3, "offsetY": 256 },
                 { "macro": "Mountain", "width": 192, "height": 448, "bottom": true, "right": true },
                 { "thing": "DirtMedium", "x": 192, "width": 320, "height": 576 },
                 { "thing": "PlantSmall", "x": 192, "width": 320, "height": 128 },
@@ -210,7 +210,7 @@ export const ViridianCity: IMapRaw = {
                 { "thing": "FenceWide", "x": 704, "y": 1024, "height": 128 },
                 { "thing": "FenceWide", "x": 896, "y": 1024, "height": 128 },
                 { "thing": "ThemePlayer", "x": 640, "y": 1088, "width": 64, "theme": "Pewter City" },
-                { "thing": "AreaSpawner", "y": 1152, "width": 1280, "map": "Route 4", "area": "Land", "direction": 1, "offsetX": -960 }
+                { "thing": "AreaSpawner", "y": 1152, "width": 1280, "map": "Route 1", "area": "Land", "direction": 1, "offsetX": -960 }
             ]
         },
         "Nicknamer House": {

@@ -8,12 +8,19 @@ import { IBattleBall } from "./constants/Items";
 import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 import { IWildPokemonSchema } from "./Maps";
-import { IGrass } from "./Things";
+import { ICharacter, IGrass } from "./Things";
 
 /**
  * Math functions used by FullScreenPokemon instances.
  */
 export class Equations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * 
+     */
+    public walkingTicksPerBlock(thing: ICharacter): number {
+        return 32 / thing.speed;
+    }
+
     /**
      * @param pokemon   A group of Pokemon.
      * @returns The average level of the Pokemon.

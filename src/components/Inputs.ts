@@ -21,7 +21,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @returns Whether direction keys may trigger.
      */
     public canDirectionsTrigger(thing: ICharacter): boolean {
-        if (thing.following) {
+        if (thing.following || thing.ledge) {
             return false;
         }
 

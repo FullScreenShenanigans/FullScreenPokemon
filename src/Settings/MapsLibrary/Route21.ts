@@ -3,7 +3,7 @@ import { IMapRaw } from "../../components/Maps";
 /* tslint:disable max-line-length */
 
 export const Route21: IMapRaw = {
-    "name": "Route 84",
+    "name": "Route 21",
     "locationDefault": "Temp",
     "locations": {
         "Temp": {

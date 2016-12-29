@@ -3,7 +3,7 @@ import { IMapRaw } from "../../components/Maps";
 /* tslint:disable max-line-length */
 
 export const Route22: IMapRaw = {
-    "name": "Route 88",
+    "name": "Route 22",
     "theme": "Cerulean from Mount Moon",
     "locationDefault": "Pokemon League",
     "locations": {

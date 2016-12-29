@@ -83,7 +83,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param onContinueWalking   Callback to run before continuing walking.
      */
     public startWalking(thing: ICharacter, direction: Direction, onContinueWalking?: Function): void {
-        const ticksPerBlock: number = 32 / thing.speed;
+        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
 
         this.setWalkingAttributes(thing, direction);
         this.setWalkingGraphics(thing);
@@ -94,7 +94,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
-            ticksPerBlock);
+            ticksPerBlock + 1);
     }
 
     /**
@@ -126,7 +126,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
-            ticksPerBlock);
+            ticksPerBlock + 1);
     }
 
     /**
@@ -220,7 +220,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   The walking Character.
      */
     protected setWalkingGraphics(thing: ICharacter): void {
-        const ticksPerBlock: number = 32 / thing.speed;
+        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
         const ticksPerStep: number = ticksPerBlock / 2;
 
         this.gameStarter.timeHandler.addEvent(
