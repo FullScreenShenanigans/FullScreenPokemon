@@ -11,7 +11,7 @@
         "outDir": "..",
         "rootDir": "..",
         "strictNullChecks": true,
-        "target": "es3"
+        "target": "es5"
     },
     "include": [
         "./**/*.ts"
