@@ -920,7 +920,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     callback: (): void => this.gameStarter.saves.downloadSaveGame()
                 }, {
                     text: "NO",
-                    callback: (): void => this.gameStarter.menuGrapher.registerB()
+                    callback: (): void => this.gameStarter.menuGrapher.deleteAllMenus()
                 }]
         });
         this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
