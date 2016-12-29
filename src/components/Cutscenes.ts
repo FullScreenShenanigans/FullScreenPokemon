@@ -13,7 +13,8 @@ import {
     IPokemon, ITransitionFlashSettings, ITransitionLineSpiralSettings
 } from "./Battles";
 import { Direction, PokedexListingStatus } from "./Constants";
-import { IKeyboardResultsMenu, IMenu } from "./Menus";
+import { IMenu } from "./Menus";
+import { IKeyboardResultsMenu } from "./menus/Keyboards";
 import { ICharacter, IEnemy, IPlayer, IPokeball, IThing, ITransportSchema } from "./Things";
 
 /**
@@ -2759,7 +2760,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             options: [
                 {
                     text: "NEW NAME".split(""),
-                    callback: () => this.gameStarter.menus.openKeyboardMenu({
+                    callback: () => this.gameStarter.menus.keyboards.openKeyboardMenu({
                         title: "YOUR NAME?",
                         callback: fromKeyboard
                     })
@@ -2930,7 +2931,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             options: [
                 {
                     text: "NEW NAME",
-                    callback: (): void => this.gameStarter.menus.openKeyboardMenu({
+                    callback: (): void => this.gameStarter.menus.keyboards.openKeyboardMenu({
                         title: "RIVAL's NAME?",
                         callback: fromKeyboard
                     })
@@ -3392,7 +3393,6 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         ];
         this.gameStarter.stateHolder.addChange(rival.id, "dialog", rival.dialog);
 
-        // make sure Oak faces down, yeah?
         this.gameStarter.actions.walking.startWalkingOnPath(oak, [
             {
                 blocks: 8,
@@ -3669,7 +3669,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.gameStarter.menus.openKeyboardMenu({
+                    callback: (): void => this.gameStarter.menus.keyboards.openKeyboardMenu({
                         title: settings.chosen,
                         callback: this.gameStarter.scenePlayer.bindRoutine("PlayerSetsNickname")
                     })
@@ -3700,11 +3700,11 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * @param settings   Settings used for the cutscene.
      */
     public cutsceneOakIntroPokemonChoiceRivalWalksToPokemon(settings: any): void {
-        // const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
         let starterRival: string[];
         let steps: number;
 
-        this.gameStarter.menuGrapher.deleteMenu("Keyboard");
+        this.gameStarter.menus.keyboards.closeKeyboardMenu();
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
         this.gameStarter.mapScreener.blockInputs = true;
@@ -3734,14 +3734,23 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         let pokeball: IPokeball = this.gameStarter.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
-        console.log("todo: walking");
-        // this.gameStarter.actions.animateCharacterStartWalkingCycle(
-        //     rival,
-        //     2,
-        //     [
-        //         2, "right", steps, "top", 1,
-        //         (): void => this.gameStarter.scenePlayer.playRoutine("RivalTakesPokemon")
-        //     ]);
+        this.gameStarter.actions.walking.startWalkingOnPath(
+            rival,
+            [
+                {
+                    blocks: 2,
+                    direction: Direction.Bottom
+                },
+                {
+                    blocks: steps,
+                    direction: Direction.Right
+                },
+                {
+                    blocks: 1,
+                    direction: Direction.Top
+                },
+                this.gameStarter.scenePlayer.bindRoutine("RivalTakesPokemon")
+            ]);
     }
 
     /**

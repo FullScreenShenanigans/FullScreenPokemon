@@ -7,6 +7,7 @@ import { IPokemon } from "./Battles";
 import { IItemSchema } from "./constants/Items";
 import { IHMMoveSchema } from "./constants/Moves";
 import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
+import { Keyboards } from "./menus/Keyboards";
 import { IPlayer, IThing } from "./Things";
 
 /**
@@ -120,32 +121,6 @@ export interface IMenu extends IMenuBase, IThing {
 export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
 
 /**
- * A Menu to display the results of a KeyboardKeys Menu. A set of "blank" spaces
- * are available, and filled with Text Things as keyboard characters are chosen.
- */
-export interface IKeyboardResultsMenu extends IMenu {
-    /**
-     * The blinking hypen Thing.
-     */
-    blinker: IThing;
-
-    /**
-     * The complete accumulated values of text characters added, in order.
-     */
-    completeValue: string[];
-
-    /**
-     * The displayed value on the screen.
-     */
-    displayedValue: string[];
-
-    /**
-     * Which blank space is currently available.
-     */
-    selectedChild: number;
-}
-
-/**
  * Settings to open the LevelUpStats menu for a Pokemon.
  */
 export interface ILevelUpStatsMenuSettings {
@@ -193,51 +168,16 @@ export interface IItemsMenuSettings extends IMenuSchema {
 }
 
 /**
- * Settings to open a keyboard menu.
- */
-export interface IKeyboardMenuSettings {
-    /**
-     * A callback to replace key presses.
-     */
-    callback?: (...args: any[]) => void;
-
-    /**
-     * An initial complete value for the result (by default, []).
-     */
-    completeValue?: string[];
-
-    /**
-     * Whether the menu should start in lowercase (by default, false).
-     */
-    lowercase?: boolean;
-
-    /**
-     * Which blank space should initially be available (by default, 0).
-     */
-    selectedChild?: number;
-
-    /**
-     * The initial selected index (by default, [0, 0]).
-     */
-    selectedIndex?: [number, number];
-
-    /**
-     * A starting result value (by default, "").
-     */
-    title?: string;
-
-    /**
-     * A starting value to replace the initial underscores.
-     */
-    value?: string[];
-}
-
-/**
  * Menu functions used by FullScreenPokemon instances.
  */
 export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * 
+     * Keyboard functions used by this instance.
+     */
+    public readonly keyboards: Keyboards<TGameStartr> = new Keyboards(this.gameStarter);
+
+    /**
+     * Locations of known cities on town maps.
      */
     public readonly townMapLocations: { [i: string]: [number, number ] } = {
         "Pallet Town": [18, 48],
@@ -926,153 +866,6 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
 
         this.gameStarter.saves.autoSave();
-    }
-
-    /**
-     * Opens the Keyboard menu and binds it to some required callbacks.
-     * 
-     * @param settings   Settings to apply to the menu and for callbacks.
-     */
-    public openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
-        const value: string[][] = [settings.value || ["_", "_", "_", "_", "_", "_", "_"]];
-        const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
-        const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
-        const onComplete: (...args: any[]) => void = (settings.callback || onKeyPress).bind(this);
-        const lowercase: boolean = !!settings.lowercase;
-        const letters: string[] = lowercase
-            ? this.gameStarter.constants.keysLowercase
-            : this.gameStarter.constants.keysUppercase;
-        const options: any[] = letters.map((letter: string): any => {
-            return {
-                text: [letter],
-                value: letter,
-                callback: letter !== "ED"
-                    ? onKeyPress
-                    : onComplete
-            };
-        });
-
-        this.gameStarter.menuGrapher.createMenu("Keyboard", {
-            settings: settings,
-            onKeyPress: onKeyPress,
-            onComplete: onComplete,
-            ignoreB: false
-        } as IMenuSchema);
-
-        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
-
-        this.gameStarter.menuGrapher.addMenuDialog("KeyboardTitle", [[
-            settings.title || "",
-        ]]);
-
-        this.gameStarter.menuGrapher.addMenuDialog("KeyboardResult", value);
-
-        this.gameStarter.menuGrapher.addMenuList("KeyboardKeys", {
-            options: options,
-            selectedIndex: settings.selectedIndex,
-            bottom: {
-                text: lowercase ? "UPPER CASE" : "lower case",
-                callback: (): void => this.switchKeyboardCase(),
-                position: {
-                    top: 160,
-                    left: 0
-                }
-            }
-        });
-        this.gameStarter.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
-        this.gameStarter.menuGrapher.setActiveMenu("KeyboardKeys");
-
-        menuResults.displayedValue = value.slice()[0];
-        menuResults.completeValue = settings.completeValue || [];
-        menuResults.selectedChild = settings.selectedChild || 0;
-        menuResults.blinker = this.gameStarter.things.add(
-            "CharMDash",
-            menuResults.children[menuResults.selectedChild].left,
-            menuResults.children[menuResults.selectedChild].top);
-        menuResults.children.push(menuResults.blinker);
-        menuResults.children[menuResults.selectedChild].hidden = true;
-    }
-
-    /**
-     * Adds a value to the keyboard menu from the currently selected item.
-     */
-    public addKeyboardMenuValue(): void {
-        const menuKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
-        const menuResult: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
-        let child: IThing = menuResult.children[menuResult.selectedChild];
-        if (!child) {
-            return;
-        }
-
-        const selected: imenugraphr.IGridCell = this.gameStarter.menuGrapher.getMenuSelectedOption("KeyboardKeys");
-
-        this.gameStarter.physics.killNormal(child);
-        menuResult.children[menuResult.selectedChild] = this.gameStarter.things.add(
-            selected.title!, child.left, child.top);
-
-        menuResult.displayedValue[menuResult.selectedChild] = selected.text[0] as string;
-        menuResult.completeValue.push(selected.value);
-        menuResult.selectedChild += 1;
-
-        if (menuResult.selectedChild < menuResult.children.length - 1) {
-            child = menuResult.children[menuResult.selectedChild];
-            child.hidden = true;
-        } else {
-            menuResult.blinker.hidden = true;
-            this.gameStarter.menuGrapher.setSelectedIndex(
-                "KeyboardKeys",
-                menuKeys.gridColumns - 1,
-                menuKeys.gridRows - 2); // assume there's a bottom option
-        }
-
-        this.gameStarter.physics.setLeft(menuResult.blinker, child.left);
-        this.gameStarter.physics.setTop(menuResult.blinker, child.top);
-    }
-
-    /**
-     * Removes the rightmost keyboard menu value.
-     */
-    public removeKeyboardMenuValue(): void {
-        let menuResult: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
-        if (menuResult.selectedChild <= 0) {
-            return;
-        }
-
-        let child: IThing = menuResult.children[menuResult.selectedChild - 1];
-
-        menuResult.selectedChild -= 1;
-        menuResult.completeValue = menuResult.completeValue.slice(
-            0, menuResult.completeValue.length - 1);
-        menuResult.displayedValue[menuResult.selectedChild] = "_";
-
-        this.gameStarter.physics.killNormal(child);
-
-        child = menuResult.children[menuResult.selectedChild];
-
-        menuResult.children[menuResult.selectedChild + 1] = this.gameStarter.things.add(
-            "CharUnderscore", child.right, child.top);
-
-        this.gameStarter.physics.setLeft(menuResult.blinker, child.left);
-        this.gameStarter.physics.setTop(menuResult.blinker, child.top);
-    }
-
-    /**
-     * Switches the keyboard menu's case.
-     */
-    public switchKeyboardCase(): void {
-        const keyboard: IMenu = this.gameStarter.menuGrapher.getMenu("Keyboard") as IMenu;
-        const keyboardKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
-        const keyboardResult: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
-        const settings: any = keyboard.settings;
-
-        settings.lowercase = !settings.lowercase;
-        settings.value = keyboardResult.displayedValue;
-        settings.selectedChild = keyboardResult.selectedChild;
-        settings.displayedValue = keyboardResult.displayedValue;
-        settings.completeValue = keyboardResult.completeValue;
-        settings.selectedIndex = keyboardKeys.selectedIndex;
-
-        this.openKeyboardMenu(settings);
     }
 
     /**
