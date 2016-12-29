@@ -125,7 +125,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             });
             output.push({
                 thing: "HouseTopRoof",
-                x: x + 8,
+                x: x + 32,
                 y: y,
                 width: width - 64
             });
@@ -367,9 +367,9 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public macroBuilding(reference: any): any[] {
         const x: number = reference.x || 0;
         let y: number = reference.y || 0;
-        const width: number = reference.width || 32;
+        const width: number = reference.width || 128;
         const stories: number = reference.stories || 1;
-        const doorOffset: number = reference.doorOffset || 8;
+        const doorOffset: number = reference.doorOffset || 32;
         const output: any[] = [
             {
                 thing: "BuildingTopLeft",
@@ -377,16 +377,16 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 y: y
             }, {
                 thing: "BuildingTopMiddle",
-                x: x + 4,
+                x: x + 16,
                 y: y,
-                width: width - 8
+                width: width - 32
             }, {
                 thing: "BuildingTopRight",
-                x: x + width - 4,
+                x: x + width - 16,
                 y: y
             }];
 
-        y += 16;
+        y += 64;
 
         for (let i: number = 0; i < stories; i += 1) {
             output.push({
@@ -396,38 +396,38 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             });
             output.push({
                 thing: "BuildingMiddleWindow",
-                x: x + 4,
+                x: x + 16,
                 y: y,
-                width: width - 8,
-                height: 4
+                width: width - 32,
+                height: 16
             });
             output.push({
                 thing: "BuildingMiddleMiddle",
-                x: x + 4,
-                y: y + 4,
-                width: width - 8,
-                height: 4
+                x: x + 16,
+                y: y + 16,
+                width: width - 32,
+                height: 16
             });
             output.push({
                 thing: "BuildingMiddleRight",
-                x: x + width - 4,
+                x: x + width - 16,
                 y: y
             });
 
-            y += 8;
+            y += 32;
         }
 
         output.push({
             thing: "BuildingMiddleLeft",
             x: x,
             y: y,
-            height: 4
+            height: 16
         });
         output.push({
             thing: "BuildingMiddleRight",
-            x: x + width - 4,
+            x: x + width - 16,
             y: y,
-            height: 4
+            height: 16
         });
 
         if (reference.door) {
@@ -446,43 +446,43 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
             output.push({
                 thing: "BuildingMiddleMiddle",
-                x: x + 4,
+                x: x + 16,
                 y: y,
-                height: 4,
-                width: doorOffset - 4
+                height: 16,
+                width: doorOffset - 16
             });
             output.push(door);
             output.push({
                 thing: "BuildingMiddleMiddle",
-                x: x + doorOffset + 8,
+                x: x + doorOffset + 32,
                 y: y,
-                height: 4,
-                width: width - doorOffset - 12
+                height: 16,
+                width: width - doorOffset - 48
             });
             output.push({
                 thing: "BuildingBottomLeft",
                 x: x,
-                y: y + 4,
+                y: y + 16,
                 width: doorOffset
             });
             output.push({
                 thing: "BuildingBottomRight",
-                x: x + doorOffset + 8,
-                y: y + 4,
-                width: width - doorOffset - 8
+                x: x + doorOffset + 32,
+                y: y + 16,
+                width: width - doorOffset - 32
             });
         } else {
             output.push({
                 thing: "BuildingMiddleMiddle",
-                x: x + 4,
+                x: x + 16,
                 y: y,
-                width: width - 8,
-                height: 4
+                width: width - 32,
+                height: 16
             });
             output.push({
                 thing: "BuildingBottom",
                 x: x,
-                y: y + 4,
+                y: y + 16,
                 width: width
             });
         }
@@ -490,7 +490,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (reference.label) {
             output.push({
                 thing: reference.label + "Label",
-                x: x + 16,
+                x: x + 64,
                 y: y
             });
         }
@@ -505,108 +505,108 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @returns A Mountain.
      */
     public macroMountain(reference: any): any[] {
-        const openingOffset: number = reference.openingOffset || 8;
+        const openingOffset: number = reference.openingOffset || 32;
         const output: any[] = [];
         let x: number = reference.x || 0;
         let y: number = reference.y || 0;
-        let width: number = reference.width || 8;
-        let height: number = reference.height || 8;
+        let width: number = reference.width || 32;
+        let height: number = reference.height || 32;
 
         if (reference.right) {
             if (reference.top) {
                 output.push({
                     thing: "MountainTopRight",
-                    x: x + width - 8,
+                    x: x + width - 32,
                     y: y
                 });
                 output.push({
                     thing: "MountainRight",
-                    x: x + width - 8,
-                    y: y + 4
+                    x: x + width - 32,
+                    y: y + 16
                 });
                 output.push({
                     thing: "MountainTopRight",
-                    x: x + width - 4,
-                    y: y + 4
+                    x: x + width - 16,
+                    y: y + 16
                 });
             } else {
                 output.push({
                     thing: "MountainRight",
-                    x: x + width - 8,
+                    x: x + width - 32,
                     y: y,
-                    width: 8,
-                    height: 8
+                    width: 32,
+                    height: 32
                 });
             }
 
             if (reference.bottom) {
                 output.push({
                     thing: "MountainBottomRight",
-                    x: x + width - 8,
-                    y: y + height - 8
+                    x: x + width - 32,
+                    y: y + height - 32
                 });
                 output.push({
                     thing: "MountainRight",
-                    x: x + width - 4,
-                    y: y + height - 8
+                    x: x + width - 16,
+                    y: y + height - 32
                 });
                 output.push({
                     thing: "MountainBottom",
-                    x: x + width - 8,
-                    y: y + height - 4
+                    x: x + width - 32,
+                    y: y + height - 16
                 });
                 output.push({
                     thing: "MountainBottomRight",
-                    x: x + width - 4,
-                    y: y + height - 4
+                    x: x + width - 16,
+                    y: y + height - 16
                 });
             } else {
                 output.push({
                     thing: "MountainRight",
-                    x: x + width - 8,
-                    y: y + height - 8,
-                    width: 8,
-                    height: 8
+                    x: x + width - 32,
+                    y: y + height - 32,
+                    width: 32,
+                    height: 32
                 });
             }
 
-            if (height > 16) {
+            if (height > 64) {
                 output.push({
                     thing: "MountainRight",
-                    x: x + width - 8,
-                    y: y + 8,
-                    width: 8,
-                    height: height - 16
+                    x: x + width - 32,
+                    y: y + 32,
+                    width: 32,
+                    height: height - 64
                 });
             }
 
-            width -= 8;
+            width -= 32;
         }
 
         if (reference.left) {
             if (reference.top) {
                 output.push({
                     thing: "MountainTopLeft",
-                    x: x + 4,
+                    x: x + 16,
                     y: y
                 });
                 output.push({
                     thing: "MountainTopLeft",
                     x: x,
-                    y: y + 4
+                    y: y + 16
                 });
                 output.push({
                     thing: "MountainLeft",
-                    x: x + 4,
-                    y: y + 4
+                    x: x + 16,
+                    y: y + 16
                 });
             } else {
                 output.push({
                     thing: "MountainLeft",
                     x: x,
                     y: y,
-                    width: 8,
-                    height: 8
+                    width: 32,
+                    height: 32
                 });
             }
 
@@ -614,45 +614,45 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 output.push({
                     thing: "MountainLeft",
                     x: x,
-                    y: y + height - 8
+                    y: y + height - 32
                 });
                 output.push({
                     thing: "MountainBottomLeft",
                     x: x + 4,
-                    y: y + height - 8
+                    y: y + height - 32
                 });
                 output.push({
                     thing: "MountainBottomLeft",
                     x: x,
-                    y: y + height - 4
+                    y: y + height - 16
                 });
                 output.push({
                     thing: "MountainBottom",
-                    x: x + 4,
-                    y: y + height - 4
+                    x: x + 16,
+                    y: y + height - 16
                 });
             } else {
                 output.push({
                     thing: "MountainLeft",
                     x: x,
-                    y: y + height - 8,
-                    width: 8,
-                    height: 8
+                    y: y + height - 32,
+                    width: 32,
+                    height: 32
                 });
             }
 
-            if (height > 16) {
+            if (height > 64) {
                 output.push({
                     thing: "MountainLeft",
                     x: x,
-                    y: y + 8,
-                    width: 8,
-                    height: height - 16
+                    y: y + 32,
+                    width: 32,
+                    height: height - 64
                 });
             }
 
-            width -= 8;
-            x += 8;
+            width -= 32;
+            x += 32;
         }
 
         if (reference.top && width > 0) {
@@ -662,8 +662,8 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 y: y,
                 width: width
             });
-            y += 5;
-            height -= 5;
+            y += 20;
+            height -= 20;
         }
 
         if (reference.bottom && width > 0) {
@@ -672,37 +672,37 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                     output.push({
                         thing: "MountainBottom",
                         x: x,
-                        y: y + height - 8,
+                        y: y + height - 32,
                         width: openingOffset,
-                        height: 8
+                        height: 32
                     });
                 }
                 output.push({
                     thing: "CaveOpening",
                     x: x + openingOffset,
-                    y: y + height - 8,
+                    y: y + height - 32,
                     entrance: reference.entrance,
                     transport: reference.transport
                 });
                 if (openingOffset < width) {
                     output.push({
                         thing: "MountainBottom",
-                        x: x + openingOffset + 8,
-                        y: y + height - 8,
-                        width: width - openingOffset - 8,
-                        height: 8
+                        x: x + openingOffset + 32,
+                        y: y + height - 32,
+                        width: width - openingOffset - 32,
+                        height: 32
                     });
                 }
             } else {
                 output.push({
                     thing: "MountainBottom",
                     x: x,
-                    y: y + height - 8,
+                    y: y + height - 32,
                     width: width,
-                    height: 8
+                    height: 32
                 });
             }
-            height -= 8;
+            height -= 32;
         }
 
         if (width > 0 && height > 0) {
