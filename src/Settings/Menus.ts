@@ -1302,45 +1302,67 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "childrenSchemas": [
                     {
                         "type": "text",
-                        "words": [
-                            "PLAYER",
-                            "\n",
-                            "BADGES",
-                            "\n",
-                            "%%%%%%%POKEDEX%%%%%%%",
-                            "\n",
-                            "TIME"
-                        ],
+                        "words": ["PLAYER"],
                         "position": {
                             "offset": {
                                 "left": 16,
                                 "top": 28
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
+                        "type": "text",
+                        "words": ["BADGES"],
+                        "position": {
+                            "offset": {
+                                "left": 16,
+                                "top": 60
+                            }
+                        }
+                    } as imenugraphr.IMenuChildSchema,
+                    {
+                        "type": "text",
+                        "words": ["%%%%%%%POKEDEX%%%%%%%"],
+                        "position": {
+                            "offset": {
+                                "left": 16,
+                                "top": 92
+                            }
+                        }
+                    } as imenugraphr.IMenuChildSchema,
+                    {
+                        "type": "text",
+                        "words": ["TIME"],
+                        "position": {
+                            "offset": {
+                                "left": 16,
+                                "top": 124
+                            }
+                        }
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": [
                             {
                                 "command": "padLeft",
-                                "length": 60,
-                                "word": "%%%%%%%PLAYER%%%%%%%",
-                                "alignRight": true
+                                "length": 8,
+                                "word": "%%%%%%%PLAYER%%%%%%%"
                             } as imenugraphr.IMenuWordPadLeftCommand,
                             {
                                 "command": "padLeft",
-                                "length": 60,
+                                "length": 14,
                                 "word": "%%%%%%%BADGES.LENGTH%%%%%%%",
                                 "alignRight": true
                             } as imenugraphr.IMenuWordPadLeftCommand,
                             {
                                 "command": "padLeft",
-                                "length": 60,
+                                "length": 14,
                                 "word": "%%%%%%%POKEDEX.LENGTH%%%%%%%",
                                 "alignRight": true
                             } as imenugraphr.IMenuWordPadLeftCommand,
                             {
                                 "command": "padLeft",
-                                "length": 60,
+                                "length": 14,
                                 "word": "%%%%%%%TIME%%%%%%%",
                                 "alignRight": true
                             } as imenugraphr.IMenuWordPadLeftCommand],

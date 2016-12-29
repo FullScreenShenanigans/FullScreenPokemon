@@ -161,11 +161,6 @@ export interface ICharacter extends IThing {
     cutscene?: string;
 
     /**
-     * The x- or y- position this will finish walking to, if applicable.
-     */
-    destination: number;
-
-    /**
      * A dialog to start when activating this Character. If dialogDirections is true,
      * it will be interpreted as a separate dialog for each direction of interaction.
      */

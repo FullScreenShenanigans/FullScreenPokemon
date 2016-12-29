@@ -650,45 +650,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             },
             (interval / 2) | 0);
     }
-
-    /**
-     * Sets a Character's xvel and yvel based on its speed and direction, and marks
-     * its destination endpoint.
-     * 
-     * @param thing   A moving Character.
-     * @param distance   How far the Character is moving.
-     */
-    public animateCharacterSetDistanceVelocity(thing: ICharacter, distance: number): void {
-        thing.distance = distance;
-
-        switch (thing.direction) {
-            case 0:
-                thing.xvel = 0;
-                thing.yvel = -thing.speed;
-                thing.destination = thing.top - distance;
-                break;
-
-            case 1:
-                thing.xvel = thing.speed;
-                thing.yvel = 0;
-                thing.destination = thing.right + distance;
-                break;
-
-            case 2:
-                thing.xvel = 0;
-                thing.yvel = thing.speed;
-                thing.destination = thing.bottom + distance;
-                break;
-
-            case 3:
-                thing.xvel = -thing.speed;
-                thing.yvel = 0;
-                thing.destination = thing.left - distance;
-                break;
-
-            default:
-                throw new Error("Unknown direction: " + thing.direction + ".");
-        }
     }
 
     /**

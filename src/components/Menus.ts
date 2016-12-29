@@ -911,7 +911,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
         this.gameStarter.menuGrapher.createMenu("Yes/No", {
-            backMenu: "Pause"
+            onBPress: (): void => this.gameStarter.menuGrapher.deleteAllMenus()
         });
         this.gameStarter.menuGrapher.addMenuList("Yes/No", {
             options: [
