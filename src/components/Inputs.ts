@@ -286,7 +286,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (!itemSchema.bagActivate.call(this, thing, itemSchema)) {
-            this.gameStarter.menus.displayMessage(thing, itemSchema.error || "");
+            this.gameStarter.menus.displayMessage(itemSchema.error || "");
         }
 
         if (event && event.preventDefault) {

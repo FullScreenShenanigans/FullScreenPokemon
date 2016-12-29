@@ -8,7 +8,7 @@ import { IItemSchema } from "./constants/Items";
 import { IHMMoveSchema } from "./constants/Moves";
 import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
 import { Keyboards } from "./menus/Keyboards";
-import { IPlayer, IThing } from "./Things";
+import { IThing } from "./Things";
 
 /**
  * A description of a simple general text dialog to start.
@@ -918,20 +918,17 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Displays message when a Player tries to use an item that cannot be used.
-     *
-     * @param player   A Player who cannot use an item.
      */
-    public cannotDoThat(player: IPlayer): void {
-        this.displayMessage(player, "OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
+    public cannotDoThat(): void {
+        this.displayMessage("OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
     }
 
     /**
      * Displays a message to the user.
      *
-     * @param _thing   The Thing that triggered the error.
      * @param message   The message to be displayed.
      */
-    public displayMessage(_thing: IThing, message: string): void {
+    public displayMessage(message: string): void {
         if (this.gameStarter.menuGrapher.getActiveMenu()) {
             return;
         }

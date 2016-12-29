@@ -1090,8 +1090,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
             [
                 [
                     "%%%%%%%PLAYER%%%%%%% defeated ",
-                    opponent.name,
-                    "!"
+                    [...opponent.name, "!"]
                 ]
             ],
             this.gameStarter.scenePlayer.bindRoutine("VictorySpeech")
@@ -1458,7 +1457,7 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
         const attacker: IThing = this.gameStarter.battleMover.getThing(attackerName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         const dt: number = 11;
-        const dx: number = 4;
+        const dx: number = 16;
 
         this.gameStarter.physics.shiftHoriz(attacker, dx * direction);
 
@@ -3875,19 +3874,15 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
                 this.gameStarter.physics.killNormal(rival);
                 this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
                 this.gameStarter.mapScreener.blockInputs = false;
+
+                this.gameStarter.menus.displayMessage(
+                    "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!");
             }
         ];
-        const dialog: string[] = [
-            "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
-        ];
-
-        console.log("Shouldn't this say the dialog?", dialog);
-
-        this.gameStarter.scenePlayer.stopCutscene();
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
         rival.nocollide = true;
         this.gameStarter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
+        this.gameStarter.scenePlayer.stopCutscene();
     }
 
     /**

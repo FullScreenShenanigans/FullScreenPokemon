@@ -203,19 +203,19 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @remarks Note: the page mentions rounding errors... 
      */
     public pokemonStatistic(pokemon: IPokemon, statistic: string): number {
+        const base: number = (this.gameStarter.constants.pokemon.byName[pokemon.title.join("")] as any)[statistic];
+        const iv: number = (pokemon.IV as any)[statistic] || 0;
+        const ev: number = (pokemon.EV as any)[statistic] || 0;
+        const level: number = pokemon.level;
         let topExtra: number = 0;
         let added: number = 5;
-        let base: number = (this.gameStarter.constants.pokemon.byName[pokemon.title.join("")] as any)[statistic];
-        let iv: number = (pokemon.IV as any)[statistic] || 0;
-        let ev: number = (pokemon.EV as any)[statistic] || 0;
-        let level: number = pokemon.level;
 
         if (statistic === "HP") {
             topExtra = 50;
             added = 10;
         }
 
-        let numerator: number = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
+        const numerator: number = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
 
         return (numerator / 50 + added) | 0;
     }
@@ -246,7 +246,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         // 2. Generate a random number, N, depending on the type of ball used.
-        let n: number = this.gameStarter.numberMaker.randomInt(ball.probabilityMax);
+        const n: number = this.gameStarter.numberMaker.randomInt(ball.probabilityMax);
 
         // 3. The Pokemon is caught if...
         if (pokemon.status) { // ... it is asleep or frozen and N is less than 25.
@@ -267,10 +267,10 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         // 5. If not, generate a random value, M, between 0 and 255.
-        let m: number = this.gameStarter.numberMaker.randomInt(255);
+        const m: number = this.gameStarter.numberMaker.randomInt(255);
 
         // 6. Calculate f.
-        let f: number = Math.max(
+        const f: number = Math.max(
             Math.min(
                 (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
                 255),
@@ -463,7 +463,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         const move: IMoveSchema = this.gameStarter.constants.moves.byName[possibility.move];
 
         for (let i: number = 0; i < preferences.length; i += 1) {
-            let preference: [string, string, number] | [string, string] = preferences[i];
+            const preference: [string, string, number] | [string, string] = preferences[i];
 
             switch (preference[0]) {
                 // ["Move", String]
@@ -569,7 +569,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @remarks Todo: Factor in spec differences from burns, etc.
      */
     public damage(move: string, attacker: IPokemon, defender: IPokemon): number {
-        let base: string | number = this.gameStarter.constants.moves.byName[move].power;
+        const base: string | number = this.gameStarter.constants.moves.byName[move].power;
 
         // A base attack that's not numeric means no damage, no matter what
         if (!base || isNaN(base as number)) {
@@ -677,7 +677,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      *          required to reach that level when caught, as will Pokémon hatched from Eggs.
      */
     public experienceStarting(title: string[], level: number): number {
-        let reference: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
+        const reference: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
 
         // TODO: remove defaulting to mediumFast
         switch (reference.experienceType) {
@@ -706,20 +706,20 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public experienceGained(player: IBattler, opponent: IBattler): number {
         // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
-        let a: number = opponent.category === "Trainer" ? 1.5 : 1;
+        const a: number = opponent.category === "Trainer" ? 1.5 : 1;
 
         // b is the base experience yield of the fainted Pokemon's species
-        let b: number = 64; // (Bulbasaur) Todo: add this in
+        const b: number = 64; // (Bulbasaur) Todo: add this in
 
         // lf is the level of the fainted Pokemon
-        let lf: number = opponent.selectedActor!.level;
+        const lf: number = opponent.selectedActor!.level;
 
         // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
         // Todo: Account for modifies like Exp. All
-        let s: number = 1;
+        const s: number = 1;
 
         // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
-        let t: number = player.selectedActor!.traded ? 1.5 : 1;
+        const t: number = player.selectedActor!.traded ? 1.5 : 1;
 
         return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
     }
@@ -733,6 +733,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns How wide the health bar should be.
      */
     public widthHealthBar(widthFullBar: number, hp: number, hpNormal: number): number {
-        return (widthFullBar - 1) * hp / hpNormal;
+        return (widthFullBar - 4) * hp / hpNormal;
     }
 }

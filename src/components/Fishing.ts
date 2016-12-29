@@ -19,7 +19,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
     public startFishing(player: IPlayer, item: IItemSchema): void {
         if (player.bordering[player.direction] === undefined ||
             player.bordering[player.direction]!.title.indexOf("WaterEdge") === -1) {
-            this.gameStarter.menus.cannotDoThat(player);
+            this.gameStarter.menus.cannotDoThat();
             return;
         }
 
@@ -104,7 +104,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public playerFailedLandingFish(player: IPlayer): void {
         this.gameStarter.menuGrapher.deleteActiveMenu();
-        this.gameStarter.menus.displayMessage(player, "rekt");
+        this.gameStarter.menus.displayMessage("rekt");
         this.gameStarter.graphics.removeClass(player, "fishing");
         this.gameStarter.physics.setWidth(player, 8, true, true);
     }

@@ -29,7 +29,7 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.graphics.addClass(thing, "cycling");
 
-        this.gameStarter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.gameStarter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got on the bicycle!");
         return true;
     }
 
@@ -45,7 +45,7 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.graphics.removeClass(thing, "cycling");
         this.gameStarter.timeHandler.cancelClassCycle(thing, "cycling");
 
-        this.gameStarter.menus.displayMessage(thing, "%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.gameStarter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**
