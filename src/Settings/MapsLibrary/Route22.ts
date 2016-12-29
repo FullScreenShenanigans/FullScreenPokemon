@@ -64,7 +64,7 @@ export const Route22: IMapRaw = {
                 { "thing": "AreaSpawner", "x": 1280, "height": 1280, "map": "Viridian City", "area": "Land", "direction": 1, "offsetY": -256 },
                 { "thing": "FenceWide", "width": 64, "height": 64 },
                 { "thing": "DirtLight", "width": 448, "height": 192 },
-                { "macro": "Building", "x": 64, "stories": 12, "width": 384, /* "door": true,*/ "doorOffset": 192, "entrance": "Pokemon League" },
+                { "macro": "Building", "x": 64, "stories": 3, "width": 384, /* "door": true,*/ "doorOffset": 192, "entrance": "Pokemon League" },
                 { "macro": "Mountain", "x": 448, "width": 832, "height": 32, "left": true },
                 { "macro": "Mountain", "x": 448, "y": 32, "width": 512, "height": 96, "right": true, "bottom": true, "left": true },
                 { "macro": "Mountain", "x": 928, "y": 32, "width": 224, "bottom": true },

@@ -618,7 +618,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 });
                 output.push({
                     thing: "MountainBottomLeft",
-                    x: x + 4,
+                    x: x + 16,
                     y: y + height - 32
                 });
                 output.push({
