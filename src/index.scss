@@ -50,23 +50,6 @@ h1 {
 }
 
 
-/* Header */
-
-#header-right {
-    position: absolute;
-    top: 0;
-    right: 3px;
-    opacity: 1;
-    transition: 280ms opacity;
-}
-
-@media(max-width: 819px) {
-    #header-right {
-        opacity: 0;
-    }
-}
-
-
 /* Game section */
 
 section#game {
@@ -96,7 +79,7 @@ section#game .EightBitter {
     border-radius: 7px;
     box-shadow: 0 3px 7px black inset;
     background: black;
-    font-family: 'Press Start';
+    font-family: "Press Start";
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -183,11 +166,12 @@ section#game .EightBitter {
 }
 
 .controls .disabled {
-    opacity: .49 !important;
-    cursor: default !important;
-    -ms-user-select: none !important;
-    -moz-user-select: none !important;
-    -webkit-user-select: none !important;
+    opacity: .49;
+    cursor: default;
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 
@@ -265,7 +249,7 @@ section#game .EightBitter {
     margin: 0 2px 0 1px;
     width: 98%;
     box-sizing: border-box;
-    font-family: 'Press Start';
+    font-family: "Press Start";
     text-align: center;
 }
 
@@ -296,14 +280,6 @@ section.section-text {
     color: #cfc;
 }
 
-.link-facebook {
-    color: #ccf;
-}
-
-.link-twitter {
-    color: #cff;
-}
-
 @media(max-width: 350px) {
     section.section-text {
         padding: 14px 7px;
@@ -311,12 +287,12 @@ section.section-text {
 }
 
 @font-face {
-    font-family: 'Press Start';
+    font-family: "Press Start";
     src:
-        url('Fonts/pressstart2p-webfont.eot?#iefix') format('embedded-opentype'),
-        url('Fonts/pressstart2p-webfont.woff') format('woff'),
-        url('Fonts/pressstart2p-webfont.ttf') format('truetype'),
-        url('Fonts/pressstart2p-webfont.svg') format('svg');
+        url("theme/fonts/pressstart2p-webfont.eot?#iefix") format("embedded-opentype"),
+        url("theme/fonts/pressstart2p-webfont.woff") format("woff"),
+        url("theme/fonts/pressstart2p-webfont.ttf") format("truetype"),
+        url("theme/fonts/pressstart2p-webfont.svg") format("svg");
     font-weight: normal;
     font-style: normal;
 }

@@ -2,34 +2,21 @@
 <html lang="en-us">
 <head>
     <meta charset="utf-8" />
-    <title>Full Screen Pokemon</title>
-    <meta name="keywords" content="fullscreenpokemon, full, screen, pokemon, javascript, html5, gaming, online, online game, fun, distraction" />
-    <meta name="description" content="FullScreenPokemon is a free HTML5 remake of Nintendo's original Pokemon. Play it here!" />
+    <title>FullScreenPokemon</title>
+    <meta name="keywords" content="FullScreenPokemon, full, screen, typescript, javascript, html5, gaming, online, online game, fun, distraction" />
+    <meta name="description" content="A free HTML5 remake of the original Pokemon, expanded for modern browsing." />
 
     <link href="index.css" rel="stylesheet" />
 
-    <link rel="shortcut icon" href="Theme/Icon.gif">
+    <link rel="shortcut icon" href="theme/Icon.gif">
 </head>
 
 <body>
     <header>
-        <img src="Theme/Header.gif" alt="FullScreenPokemon.com" />
-        <div id="header-right">
-            <a class="hoverable" target="_blank" href="https://twitter.com/FSPokemon">
-                <img id="twitter" src="Theme/Twitter.png" alt="Twitter" />
-            </a>
-            <a class="hoverable" target="_blank" href="https://github.com/FullScreenShenanigans/FullScreenPokemon">
-                <img id="github" src="Theme/Github.png" alt="Github" />
-            </a>
-            <a class="hoverable" target="_blank" href="https://facebook.com/FullScreenPokemon">
-                <img id="facebook" src="Theme/Facebook.png" alt="Facebook" />
-            </a>
-        </div>
+        <img src="Theme/Header.gif" alt="fullscreenpokemon.com" />
     </header>
 
-    <section id="game">
-        <!-- FSP will fill out this section... -->
-    </section>
+    <section id="game"></section>
 
     <section id="explanation" class="section-text">
         Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.
@@ -37,8 +24,7 @@
     </section>
 
     <section id="social" class="section-text">
-        You may <a class="link-github" href="http://www.github.com/FullScreenShenanigans/FullScreenPokemon">download the game for yourself</a> from GitHub, the location of Full Screen Pokemon's open source project.
-        Be sure to get the latest news on our <a class="link-facebook" href="http://www.facebook.com/FullScreenPokemon">Facebook</a> and <a class="link-twitter" href="http://www.twitter.com/FSPokemon">Twitter</a> too!
+        You may <a class="link-github" href="http://www.github.com/FullScreenShenanigans/FullScreenPokemon">download the game for yourself</a> from GitHub, the location of FullScreenPokemon's open source project.
     </section>
 
     <section id="credits" class="section-text">
@@ -53,7 +39,7 @@
     </section>
 
     <section id="legal" class="section-text">
-        <small><em>Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws.</em></small>
+        <small><em></em></small>
     </section>
 
     <script data-main="main.js" src="../node_modules/requirejs/require.js" type="text/javascript"></script>
@@ -100,7 +86,7 @@
         };
 
         for (var i = 0; i < dependencies.length; i += 1) {
-            config.paths[dependencies[i].toLowerCase()] = "../node_modules/" + dependencies[i];
+            config.paths[dependencies[i].toLowerCase() + "/lib"] = "../node_modules/" + dependencies[i] + "/src";
         }
 
         requirejs.config(config);

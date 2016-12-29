@@ -36,6 +36,22 @@
     "version": "0.6.0"
   },
   "taskGroups": {
-    "web": true
+    "web": {
+      "drivingObject": "FSP",
+      "sections": {
+        "credits": [
+          "Full Screen Pokemon was made possible first and foremost by Nintendo, who originally created Pokemon and has since maintained the series.",
+          "It would also not have been possible without the dedicated efforts of the Pokemon fan community over the past two decades, in particular <a href=\"http://bulbapedia.bulbagarden.net/\">Bulbapedia</a>."
+        ],
+        "explanation": [
+          "Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.",
+          "It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods."
+        ],
+        "legal": [
+          "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
+        ]
+      },
+      "url": "fullscreenpokemon.com"
+    }
   }
 }

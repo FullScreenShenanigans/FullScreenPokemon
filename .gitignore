@@ -1,12 +1,10 @@
+dist/**
 docs/**
 lib/**
 src/**/*.css
 src/**/*.d.ts
-src/**/*.html
-!src/**/*.template.html
 src/**/*.js*
-~src/main.js
-test/**/*.js
 test/**/*.d.ts
+test/**/*.js*
 node_modules/
 npm-debug.log
