@@ -2,7 +2,7 @@ import { FullScreenPokemon } from "../../../src/FullScreenPokemon";
 import { it } from "../../main";
 import { stubBlankGame } from "../../utils/fakes";
 
-it("openes when pause is pressed", (): void => {
+it("opens when pause is pressed", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
 

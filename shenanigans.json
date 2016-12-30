@@ -47,9 +47,7 @@
           "Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.",
           "It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods."
         ],
-        "legal": [
-          "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
-        ]
+        "legal": "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
       },
       "url": "fullscreenpokemon.com"
     }
