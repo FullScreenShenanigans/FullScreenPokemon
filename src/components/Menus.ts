@@ -771,35 +771,39 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Opens the Items menu for the items in the player's inventory.
-     * 
+     * ""
      * @param settings   Custom attributes to apply to the menu, as well as items
      *                   to optionally override the player's inventory.
      */
     public openItemsMenu(settings: IItemsMenuSettings): void {
-        let items: IItemSchema[] = settings.items || this.gameStarter.itemsHolder.getItem("items").slice();
+        const items: IItemSchema[] = settings.items || this.gameStarter.itemsHolder.getItem("items").slice();
+        const options: any[] = items.map((schema: any): any => {
+            return {
+                text: schema.item,
+                callback: (): void => this.openItemMenu(schema.item),
+                textsFloating: [
+                    {
+                        text: [["Times"]],
+                        x: 32,
+                        y: 4.5
+                    }, {
+                        text: this.gameStarter.utilities.makeDigit(schema.amount, 2, " "),
+                        x: 36.5,
+                        y: 4
+                    }
+                ]
+            };
+        });
+
+        options.push({
+            text: "CANCEL",
+            callback: () => this.gameStarter.menuGrapher.registerB()
+        });
 
         this.gameStarter.modAttacher.fireEvent("onOpenItemsMenu", items);
 
         this.gameStarter.menuGrapher.createMenu("Items", settings);
-        this.gameStarter.menuGrapher.addMenuList("Items", {
-            options: items.map((schema: any): any => {
-                return {
-                    text: schema.item,
-                    callback: (): void => this.openItemMenu(schema.item),
-                    textsFloating: [
-                        {
-                            text: [["Times"]],
-                            x: 32,
-                            y: 4.5
-                        }, {
-                            text: this.gameStarter.utilities.makeDigit(schema.amount, 2, " "),
-                            x: 36.5,
-                            y: 4
-                        }
-                    ]
-                };
-            })
-        });
+        this.gameStarter.menuGrapher.addMenuList("Items", { options });
         this.gameStarter.menuGrapher.setActiveMenu("Items");
 
         console.warn("Once math.js contains item info, react to non-stackable items...");

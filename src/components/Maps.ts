@@ -833,7 +833,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         switch (thing.direction) {
             case Direction.Top:
-                top -= 32;
+                top -= this.gameStarter.constants.blockSize;
                 properties.width = area.width;
                 break;
 
@@ -846,7 +846,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 break;
 
             case Direction.Left:
-                left -= 32;
+                left -= this.gameStarter.constants.blockSize;
                 properties.height = area.height;
                 break;
 

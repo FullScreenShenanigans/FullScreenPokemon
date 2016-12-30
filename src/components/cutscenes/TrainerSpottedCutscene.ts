@@ -34,7 +34,7 @@ export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> exten
         const locationTriggerer: number = (triggerer as any)[directionName];
         const locationPlayer: number = (player as any)[this.gameStarter.constants.directionOpposites[directionName]];
         const distance: number = Math.abs(locationTriggerer - locationPlayer);
-        const blocks: number = Math.max(0, distance / 4 / 8);
+        const blocks: number = Math.max(0, distance / this.gameStarter.constants.blockSize);
 
         if (blocks) {
             this.gameStarter.actions.walking.startWalkingOnPath(

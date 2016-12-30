@@ -2,11 +2,22 @@
 
 import { MochaLoader } from "./utils/MochaLoader";
 
-declare var requirejs: any;
-declare var testDependencies: string[];
-declare var testPaths: string[];
+declare const requirejs: any;
+declare const testDependencies: string[];
+declare const testPaths: string[];
 
+/**
+ * Combines mocha tests into their describe() groups.
+ */
 export const mochaLoader: MochaLoader = new MochaLoader(mocha);
+
+/**
+ * Adds a new test under the current test path.
+ * 
+ * @param testName   The name of the test.
+ * @param test   A new test.
+ */
+export const it: typeof mochaLoader.it = mochaLoader.it.bind(mochaLoader);
 
 /**
  * Informs RequireJS of the file location for a test dependency.

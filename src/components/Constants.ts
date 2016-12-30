@@ -58,6 +58,11 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
     public static readonly scale: number = 2;
 
     /**
+     * How many game pixels wide each map "block" is.
+     */
+    public readonly blockSize: number = 32;
+
+    /**
      * Battle modifications used in the opponentMove equation.
      */
     public readonly battleModifications: BattleModifications = new BattleModifications();

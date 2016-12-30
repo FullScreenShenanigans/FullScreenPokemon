@@ -387,6 +387,4 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
             (): void => this.gameStarter.menuGrapher.setActiveMenu("GeneralText"),
             timeout);
     }
-
-
 }
