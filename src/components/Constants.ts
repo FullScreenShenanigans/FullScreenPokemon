@@ -1,7 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { BattleModifications } from "./constants/BattleModifications";
+import { BattleModifications } from "./constants/battleModifications";
 import { Items } from "./constants/Items";
 import { Moves } from "./constants/Moves";
 import { Pokemon } from "./constants/Pokemon";
