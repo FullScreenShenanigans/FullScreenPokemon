@@ -1,9 +1,7 @@
-import { UserWrappr } from "userwrappr/lib/UserWrappr";
-
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
-((): void => {
-    /* tslint:disable */
-    new UserWrappr(FullScreenPokemon.prototype.moduleSettings.ui);
-    /* tslint:enable */
-})();
+const FSP: FullScreenPokemon = new FullScreenPokemon();
+
+document.getElementById("game")!.appendChild(FSP.container);
+
+(window as any).FSP = FSP;

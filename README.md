@@ -11,7 +11,7 @@ A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 
 The `fullscreenpokemon` module exposes a `FullScreenPokemon` class.
 You can create a new game object by passing it `width` and `height` for a screen size.
-That game object will contain a `.canvas` HTML <code>&lt;canvas&gt;</code> element which can be added to the page.
+That game object will contain a `.container` HTML element which can be added to the page.
 
 ```javascript
 import { FullScreenPokemon } from "fullscreenpokemon";
@@ -21,7 +21,7 @@ const fsp = new FullScreenPokemon({
     height: 490
 });
 
-document.body.appendChild(fsp.canvas);
+document.body.appendChild(fsp.container);
 ```
 
 
