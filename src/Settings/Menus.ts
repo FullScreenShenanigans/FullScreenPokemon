@@ -550,8 +550,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
             } as IMenuSchema,
             "Pokemon": {
                 "size": {
-                    "width": 352,
-                    "height": 300
+                    height: 320,
+                    width: 320
                 },
                 "position": {
                     "horizontal": "center",
@@ -565,12 +565,13 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 } as imenugraphr.IMenuChildSchema],
                 "backMenu": "Pause",
                 "arrowXOffset": 32,
-                "arrowYOffset": 12,
+                "arrowYOffset": 20,
                 "ignoreProgressB": true,
                 "saveIndex": true,
                 "textSpeed": 0,
-                "textXOffset": 63,
-                "textYOffset": 16
+                "textXOffset": 48,
+                "textYOffset": 16,
+                "plain": true
             } as imenugraphr.IListMenuSchema,
             "PokemonDialog": {
                 "size": {
@@ -583,7 +584,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "childrenSchemas": [{
                     "type": "text",
                     "words": [
-                        "Choose a %%%%%%%POKEMON%%%%%%%"
+                        "Choose a %%%%%%%POKEMON%%%%%%%."
                     ],
                     "position": {
                         "offset": {
@@ -638,7 +639,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                         "name": "PokemonMenuStatsStatus"
                     } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
-                        "name": "PokemonMenuStatsType4"
+                        "name": "PokemonMenuStatsType1"
                     } as imenugraphr.IMenuChildSchema, {
                         "type": "menu",
                         "name": "PokemonMenuStatsID"
@@ -869,7 +870,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     "words": ["STATUS/"]
                 } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
-            "PokemonMenuStatsType4": {
+            "PokemonMenuStatsType1": {
                 "size": {
                     "width": 160,
                     "height": 32
@@ -889,7 +890,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     "words": ["TYPE4/"]
                 } as imenugraphr.IMenuChildSchema]
             } as IMenuSchema,
-            "PokemonMenuStatsType8": {
+            "PokemonMenuStatsType2": {
                 "size": {
                     "width": 160,
                     "height": 32

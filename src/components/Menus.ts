@@ -395,7 +395,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public openPokemonMenuStats(pokemon: IPokemon): void {
         const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")];
-        const barWidth: number = 25;
+        const barWidth: number = 100;
         const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.HP, pokemon.HPNormal);
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
@@ -689,7 +689,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             options: listings.map((listing: IPokemon): any => {
                 const title: string = listing.title.join("");
                 const sprite: string = this.gameStarter.constants.pokemon.byName[title].sprite + "Pokemon";
-                const barWidth: number = 25;
+                const barWidth: number = 100;
                 const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.HP, listing.HPNormal);
 
                 return {
@@ -703,8 +703,8 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                             thing: sprite,
                             position: {
                                 offset: {
-                                    left: 7.5,
-                                    top: .5
+                                    left: 16,
+                                    top: 8
                                 }
                             }
                         },
@@ -712,8 +712,8 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                             thing: "CharLevel",
                             position: {
                                 offset: {
-                                    left: 56,
-                                    top: 1.5
+                                    left: 194,
+                                    top: 6
                                 }
                             }
                         },
@@ -721,8 +721,8 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                             thing: "CharHP",
                             position: {
                                 offset: {
-                                    left: 20,
-                                    top: 5.5
+                                    left: 66,
+                                    top: 22
                                 }
                             }
                         },
@@ -733,8 +733,8 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                             },
                             position: {
                                 offset: {
-                                    left: 27,
-                                    top: 5.5
+                                    left: 94,
+                                    top: 22
                                 }
                             }
                         },
@@ -742,26 +742,26 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                             thing: "LightGraySquare",
                             args: {
                                 width: Math.max(health, 1),
-                                height: 1,
+                                height: 4,
                                 hidden: health === 0
                             },
                             position: {
                                 offset: {
-                                    left: 27.5,
-                                    top: 6
+                                    left: 96,
+                                    top: 24
                                 }
                             }
                         }],
                     textsFloating: [
                         {
                             text: listing.level.toString(),
-                            x: 44.25,
+                            x: 160,
                             y: 0
                         },
                         {
                             text: listing.HP + "/ " + listing.HPNormal,
-                            x: 43.75,
-                            y: 4
+                            x: 160,
+                            y: 16
                         }]
                 };
             })

@@ -4,7 +4,7 @@ import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IWildPokemonSchema } from "./Maps";
-import { IMenu } from "./Menus";
+import { IMenu, IMenuBase } from "./Menus";
 import { IEnemy, IPlayer, IThing, IThingsById } from "./Things";
 
 /**
@@ -752,19 +752,9 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Opens the in-battle items menu.
      */
     public openBattleItemsMenu(): void {
-        this.gameStarter.menus.openPokemonMenu({
-            position: {
-                horizontal: "right",
-                vertical: "bottom",
-                offset: {
-                    left: 0
-                }
-            },
-            size: {
-                height: 44
-            },
-            container: "Battle",
-            backMenu: "BattleOptions"
+        this.gameStarter.menus.openItemsMenu({
+            backMenu: "BattleOptions",
+            container: "Battle"
         });
     }
 
@@ -772,10 +762,17 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Opens the in-battle Pokemon menu.
      */
     public openBattlePokemonMenu(): void {
-        this.gameStarter.menus.openItemsMenu({
-            backMenu: "BattleOptions",
-            container: "Battle"
-        });
+        this.gameStarter.menus.openPokemonMenu({
+            position: {
+                vertical: "bottom",
+                offset: {
+                    left: 0,
+                    top: 96
+                }
+            },
+            container: "Battle",
+            backMenu: "BattleOptions"
+        } as IMenuBase);
     }
 
     /**
