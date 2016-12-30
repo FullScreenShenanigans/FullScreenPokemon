@@ -1,6 +1,7 @@
 import { BattleMovr } from "battlemovr/lib/BattleMovr";
 import { IBattleMovr } from "battlemovr/lib/IBattleMovr";
 import { GameStartr } from "gamestartr/lib/GameStartr";
+import { IProcessedSizeSettings, ISizeSettings } from "gamestartr/lib/IGameStartr";
 import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
 import { MenuGraphr } from "menugraphr/lib/MenuGraphr";
 import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
@@ -30,7 +31,6 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { IProcessedSettings, ISettings } from "./IFullScreenPokemon";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
 /**
@@ -188,7 +188,7 @@ export class FullScreenPokemon extends GameStartr {
      *
      * @param settings   Any additional settings.
      */
-    public constructor(settings?: ISettings) {
+    public constructor(settings?: ISizeSettings) {
         super(settings);
     }
 
@@ -223,11 +223,7 @@ export class FullScreenPokemon extends GameStartr {
      * 
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      */
-    public resetModules(settings: IProcessedSettings): void {
-        this.moduleSettings = {
-            ...new ModuleSettingsGenerator().generate(this),
-            ...settings.moduleSettings
-        };
+    protected resetModules(settings: IProcessedSizeSettings): void {
         super.resetModules(settings);
 
         this.stateHolder = this.createStateHolder(this.moduleSettings, settings);
@@ -253,11 +249,24 @@ export class FullScreenPokemon extends GameStartr {
     }
 
     /**
+     * Creates the settings for individual modules.
+     * 
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @returns Settings for individual modules.
+     */
+    protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
+        return {
+            ...new ModuleSettingsGenerator().generate(this),
+            ...settings.moduleSettings
+        };
+    }
+
+    /**
      * @param moduleSettings   Stored settings to generate modules.
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal BattleMovr.
      */
-    protected createBattleMover(moduleSettings: IModuleSettings, _settings: ISettings): IBattleMovr {
+    protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
         return new BattleMovr({
             gameStarter: this,
             menuGrapher: this.menuGrapher,
@@ -270,7 +279,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal MenuGraphr.
      */
-    protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: ISettings): IMenuGraphr {
+    protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
             modifierScope: this,
@@ -283,7 +292,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal ScenePlayer.
      */
-    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: ISettings): IScenePlayr {
+    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IScenePlayr {
         return new ScenePlayr({
             scope: this.cutscenes,
             ...moduleSettings.scenes
@@ -295,7 +304,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal StateHoldr.
      */
-    protected createStateHolder(moduleSettings: IModuleSettings, _settings: ISettings): IStateHoldr {
+    protected createStateHolder(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IStateHoldr {
         return new StateHoldr({
             itemsHolder: this.itemsHolder,
             ...moduleSettings.state
@@ -307,7 +316,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal UserWrappr.
      */
-    protected createUserWrapper(moduleSettings: IModuleSettings, _settings: ISettings): IUserWrappr {
+    protected createUserWrapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IUserWrappr {
         return new UserWrappr({
             gameStarter: this,
             ...moduleSettings.ui
