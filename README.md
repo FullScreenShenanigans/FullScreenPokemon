@@ -6,9 +6,6 @@ A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 
 ## Usage
 
-> *Note*: The output process for FullScreenPokemon is in flux.
-> The following represents what *will* be true, but may be slightly inaccurate now.
-
 The `fullscreenpokemon` module exposes a `FullScreenPokemon` class.
 You can create a new game object by passing it `width` and `height` for a screen size.
 That game object will contain a `.container` HTML element which can be added to the page.
