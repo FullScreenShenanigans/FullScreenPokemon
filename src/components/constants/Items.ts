@@ -1,5 +1,5 @@
-import { Cycling } from "../cycling";
-import { Fishing } from "../fishing";
+import { Cycling } from "../Cycling";
+import { Fishing } from "../Fishing";
 
 /**
  * A static description of an in-game item.
