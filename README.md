@@ -35,4 +35,4 @@ npm install
 gulp
 ```
 
-See [Build Details](https://github.com/FullScreenShenanigans/Documentation/blob/master/Build%20Details.md) for detailed Gulp usage.
+See [gulp-shenanigans](https://github.com/FullScreenShenanigans/gulp-shenanigans) for detailed Gulp usage.
