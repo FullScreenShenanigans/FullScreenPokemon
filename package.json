@@ -46,6 +46,6 @@
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.6.2"
+    "gulp-shenanigans": "0.6.X"
   }
 }
