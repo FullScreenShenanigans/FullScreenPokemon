@@ -1,10 +1,10 @@
 dist/**
 docs/**
 lib/**
-src/**/*.css
-src/**/*.d.ts
-src/**/*.js*
-test/**/*.d.ts
-test/**/*.js*
+*.css
+*.d.ts
+*.js*
+*.html
 node_modules/
 npm-debug.log
+debug.log
