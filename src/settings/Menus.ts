@@ -1721,7 +1721,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
             } as IMenuSchema,
             "BattlePlayerHealthNumbers": {
                 "size": {
-                    "width": 144,
+                    "width": 256,
                     "height": 40
                 },
                 "position": {
