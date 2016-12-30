@@ -1,6 +1,7 @@
 import { ISizeSettings } from "gamestartr/lib/IGameStartr";
 
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
+import { ISettings } from "../../src/IFullScreenPokemon";
 
 /**
  * Creates a new instance of the FullScreenPokemon class.
@@ -8,10 +9,19 @@ import { FullScreenPokemon } from "../../src/FullScreenPokemon";
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class.
  */
-export function stubFullScreenPokemon(settings?: ISizeSettings): FullScreenPokemon {
-    return new FullScreenPokemon(settings || {
+export function stubFullScreenPokemon(settings?: ISettings): FullScreenPokemon {
+    settings = settings || {
         width: 256,
         height: 256
+    };
+
+    return new FullScreenPokemon({
+        moduleSettings: {
+            audio: {
+                fileTypes: []
+            }
+        },
+        ...settings,
     });
 };
 

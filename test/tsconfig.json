@@ -2,6 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "module": "amd",
+        "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
