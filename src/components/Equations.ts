@@ -3,7 +3,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IBattleInfo, IBattler, IMovePossibility, IPokemon } from "./Battles";
-import { IBattleModification } from "./constants/BattleModifications";
+import { IBattleModification } from "./constants/battleModifications";
 import { IBattleBall } from "./constants/Items";
 import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
