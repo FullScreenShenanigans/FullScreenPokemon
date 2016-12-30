@@ -542,7 +542,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.audioPlayer.playTheme(battleInfo.theme || "Battle Trainer");
 
-        (this.gameStarter.cutscenes as any)["cutsceneBattleTransition" + animation](
+        (this.gameStarter.cutscenes.battle as any)["Transition" + animation](
             {
                 battleInfo,
                 callback: (): void => this.gameStarter.battleMover.startBattle(battleInfo)

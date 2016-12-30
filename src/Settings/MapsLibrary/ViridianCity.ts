@@ -238,7 +238,7 @@ export const ViridianCity: IMapRaw = {
                 { "thing": "PottedPalmTree", "y": 192 },
                 { "thing": "PottedPalmTree", "x": 224, "y": 192 },
                 { "thing": "DoormatDashed", "x": 64, "y": 224, "width": 64, "entrance": "Nicknamer House Floor 1 Door" },
-                { "thing": "HiddenTransporter", "x": 64, "y": 224, "width": 64, "transport": { "location": "Nicknamer House Front Door" }, "requireDirection": 8 }
+                { "thing": "HiddenTransporter", "x": 64, "y": 224, "width": 64, "transport": { "location": "Nicknamer House Front Door" }, "requireDirection": 2 }
             ]
         },
         "School": {
@@ -281,7 +281,7 @@ export const ViridianCity: IMapRaw = {
                 { "thing": "PottedPalmTree", "y": 192 },
                 { "thing": "PottedPalmTree", "x": 224, "y": 192 },
                 { "thing": "DoormatDashed", "x": 64, "y": 224, "width": 64, "entrance": "School Floor 1 Door" },
-                { "thing": "HiddenTransporter", "x": 64, "y": 224, "width": 64, "transport": { "location": "School Front Door" }, "requireDirection": 8 }
+                { "thing": "HiddenTransporter", "x": 64, "y": 224, "width": 64, "transport": { "location": "School Front Door" }, "requireDirection": 2 }
             ]
         },
         "PokeCenter": {
