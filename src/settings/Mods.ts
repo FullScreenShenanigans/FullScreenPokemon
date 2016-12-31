@@ -58,11 +58,11 @@ export function GenerateModsSettings(fsp: FullScreenPokemon): IModsModuleSetting
                 events: {
                     /* tslint:disable no-string-literal */
                     onModEnable: (): void => {
-                        const stats: any = fsp.objectMaker.getFunction("Player").prototype;
+                        const stats: any = fsp.objectMaker.getClass("Player").prototype;
                         fsp.players[0].speed = stats.speed = 10;
                     },
                     onModDisable: (): void => {
-                        const stats: any = fsp.objectMaker.getFunction("Player").prototype;
+                        const stats: any = fsp.objectMaker.getClass("Player").prototype;
                         fsp.players[0].speed = stats.speed = fsp.moduleSettings.objects!.properties!["Player"].speed;
                     }
                     /* tslint:enable no-string-literal */
@@ -143,10 +143,10 @@ export function GenerateModsSettings(fsp: FullScreenPokemon): IModsModuleSetting
                 enabled: false,
                 events: {
                     onModEnable: (): void => {
-                        fsp.objectMaker.getFunction("Solid").prototype.collide = (): boolean => true;
+                        fsp.objectMaker.getClass("Solid").prototype.collide = (): boolean => true;
                     },
                     onModDisable: (): void => {
-                        fsp.objectMaker.getFunction("Solid").prototype.collide = (): boolean => false;
+                        fsp.objectMaker.getClass("Solid").prototype.collide = (): boolean => false;
                     }
                 }
             },
@@ -155,10 +155,10 @@ export function GenerateModsSettings(fsp: FullScreenPokemon): IModsModuleSetting
                 enabled: false,
                 events: {
                     onModEnable: (): void => {
-                        fsp.objectMaker.getFunction("SightDetector").prototype.nocollide = true;
+                        fsp.objectMaker.getClass("SightDetector").prototype.nocollide = true;
                     },
                     onModDisable: (): void => {
-                        fsp.objectMaker.getFunction("SightDetector").prototype.nocollide = false;
+                        fsp.objectMaker.getClass("SightDetector").prototype.nocollide = false;
                     }
                 }
             },

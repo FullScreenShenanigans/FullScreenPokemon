@@ -528,7 +528,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.gameStarter.objectMaker.make("Player");
+        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>("Player");
         player.keys = player.getKeys();
 
         this.gameStarter.players = [player];

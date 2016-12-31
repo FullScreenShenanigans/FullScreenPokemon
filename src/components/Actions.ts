@@ -508,7 +508,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.gameStarter.objectMaker.make(color + "Square", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + "Square", {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0
@@ -543,7 +543,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.gameStarter.objectMaker.make(color + "Square", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + "Square", {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 1

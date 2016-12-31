@@ -22,7 +22,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         thing.canvas.height = thing.height / 2;
         this.gameStarter.pixelDrawer.setThingSprite(thing);
 
-        thing.shadow = this.gameStarter.objectMaker.make(thing.title, {
+        thing.shadow = this.gameStarter.objectMaker.make<IThing>(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
         }) as IThing;

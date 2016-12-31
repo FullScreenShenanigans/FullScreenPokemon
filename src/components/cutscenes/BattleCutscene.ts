@@ -52,7 +52,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
 
             switch (thing.direction) {
                 case Direction.Top:
-                    thing = this.gameStarter.objectMaker.make("BlackSquare", {
+                    thing = this.gameStarter.objectMaker.make<IThing>("BlackSquare", {
                         width: width / unitsize,
                         height: screenHeight / unitsize
                     });
@@ -65,7 +65,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
                     break;
 
                 case Direction.Right:
-                    thing = this.gameStarter.objectMaker.make("BlackSquare", {
+                    thing = this.gameStarter.objectMaker.make<IThing>("BlackSquare", {
                         width: screenWidth / unitsize,
                         height: height / unitsize
                     });
@@ -78,7 +78,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
                     break;
 
                 case Direction.Bottom:
-                    thing = this.gameStarter.objectMaker.make("BlackSquare", {
+                    thing = this.gameStarter.objectMaker.make<IThing>("BlackSquare", {
                         width: width / unitsize,
                         height: screenHeight / unitsize
                     });
@@ -91,7 +91,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
                     break;
 
                 case Direction.Left:
-                    thing = this.gameStarter.objectMaker.make("BlackSquare", {
+                    thing = this.gameStarter.objectMaker.make<IThing>("BlackSquare", {
                         width: screenWidth / unitsize,
                         height: height / unitsize
                     });
@@ -796,7 +796,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
         const actor: IPokemon = battleInfo.battlers[battlerName]!.selectedActor!;
         const thing: IThing = settings.things[battlerName];
-        const blank: IThing = this.gameStarter.objectMaker.make(
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(
             "WhiteSquare",
             {
                 width: thing.width * thing.scale,
@@ -1301,8 +1301,8 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         const defender: IThing = this.gameStarter.battleMover.getThing(defenderName) as IThing;
         const direction: number = attackerName === "player" ? 1 : -1;
         const notes: IThing[] = [
-            this.gameStarter.objectMaker.make("Note"),
-            this.gameStarter.objectMaker.make("Note")
+            this.gameStarter.objectMaker.make<IThing>("Note"),
+            this.gameStarter.objectMaker.make<IThing>("Note")
         ];
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let startX: number;
@@ -1502,9 +1502,9 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         const lineArray: IThing[] = [];
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const scratches: IThing[] = [
-            this.gameStarter.objectMaker.make("ExplosionSmall"),
-            this.gameStarter.objectMaker.make("ExplosionSmall"),
-            this.gameStarter.objectMaker.make("ExplosionSmall")
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall")
         ];
         let startX: number;
         let startY: number;
@@ -1574,13 +1574,13 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         const xPositions: number[] = new Array(3);
         let yPosition: number;
         const animateEmber: (x: number, y: number) => void = (x: number, y: number): void => {
-            const emberSmall: IThing = this.gameStarter.objectMaker.make("EmberSmall");
+            const emberSmall: IThing = this.gameStarter.objectMaker.make<IThing>("EmberSmall");
             this.gameStarter.things.add(emberSmall, x + 4, y + 12);
             this.gameStarter.actions.animateFlicker(emberSmall, 3, 6);
 
             this.gameStarter.timeHandler.addEvent(
                     (): void => {
-                            const emberLarge: IThing = this.gameStarter.objectMaker.make("EmberLarge");
+                            const emberLarge: IThing = this.gameStarter.objectMaker.make<IThing>("EmberLarge");
                             this.gameStarter.things.add(emberLarge, x, y);
                             this.gameStarter.actions.animateFlicker(
                                 emberLarge,
@@ -1663,9 +1663,9 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
             40);
 
         const explosions: IThing[] = [
-            this.gameStarter.objectMaker.make("ExplosionLarge"),
-            this.gameStarter.objectMaker.make("ExplosionLarge"),
-            this.gameStarter.objectMaker.make("ExplosionLarge")
+            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge")
         ];
         let startX: number[] = [];
         let startY: number[] = [];
@@ -1731,7 +1731,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
                 const bubblesSmall: IThing[] = [];
 
                 for (let j: number = 0; j < 4; j += 1) {
-                    bubblesSmall[j] = this.gameStarter.objectMaker.make("BubbleSmall");
+                    bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
                 }
 
                 this.gameStarter.things.add(bubblesSmall[0], x, y - 4 * unitsize);
@@ -1752,8 +1752,8 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
                 const bubblesSmall: IThing[] = [];
 
                 for (let j: number = 0; j < 3; j += 1) {
-                    bubblesLarge[j] = this.gameStarter.objectMaker.make("BubbleLarge");
-                    bubblesSmall[j] = this.gameStarter.objectMaker.make("BubbleSmall");
+                    bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>("BubbleLarge");
+                    bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
                 }
 
                 this.gameStarter.things.add(bubblesLarge[0], x, y - 4 * unitsize);
@@ -1776,8 +1776,8 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
                 const bubblesSmall: IThing[] = [];
 
                 for (let j: number = 0; j < 4; j += 1) {
-                    bubblesLarge[j] = this.gameStarter.objectMaker.make("BubbleLarge");
-                    bubblesSmall[j] = this.gameStarter.objectMaker.make("BubbleSmall");
+                    bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>("BubbleLarge");
+                    bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
                 }
 
                 this.gameStarter.things.add(bubblesLarge[0], x + 4 * unitsize, y + 12 * unitsize);
@@ -1846,9 +1846,9 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
 
         const explosions: IThing[] = [
-            this.gameStarter.objectMaker.make("ExplosionSmall"),
-            this.gameStarter.objectMaker.make("ExplosionSmall"),
-            this.gameStarter.objectMaker.make("ExplosionSmall")
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall")
         ];
         let startX: number[] = [];
         let startY: number;
@@ -1918,9 +1918,9 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         const gusts: IThing[] = [];
         for (let i: number = 0; i < 8; i += 1) {
             if (i % 2 === 0) {
-                gusts[i] = this.gameStarter.objectMaker.make("ExplosionSmall");
+                gusts[i] = this.gameStarter.objectMaker.make<IThing>("ExplosionSmall");
             } else {
-                gusts[i] = this.gameStarter.objectMaker.make("ExplosionLarge");
+                gusts[i] = this.gameStarter.objectMaker.make<IThing>("ExplosionLarge");
             }
         }
 
@@ -1956,9 +1956,9 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
         }
 
         const explosions: IThing[] = [
-            this.gameStarter.objectMaker.make("ExplosionSmall"),
-            this.gameStarter.objectMaker.make("ExplosionSmall"),
-            this.gameStarter.objectMaker.make("ExplosionSmall")
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
+            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall")
         ];
         let startX: number[] = [];
         let startY: number[] = [];
