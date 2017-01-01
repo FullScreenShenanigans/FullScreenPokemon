@@ -217,6 +217,7 @@ export class FullScreenPokemon extends GameStartr {
         this.maintenance = new Maintenance(this);
         this.maps = new Maps(this);
         this.menus = new Menus(this);
+        this.mods = new Mods(this);
         this.physics = new Physics(this);
         this.things = new Things(this);
         this.scrolling = new Scrolling(this);
