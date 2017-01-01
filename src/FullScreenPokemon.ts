@@ -26,6 +26,7 @@ import { Macros } from "./components/Macros";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
+import { Mods } from "./components/Mods";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
@@ -147,6 +148,11 @@ export class FullScreenPokemon extends GameStartr {
      * Menu functions used by this instance.
      */
     public menus: Menus<FullScreenPokemon>;
+
+    /**
+     * Mods used by this instance.
+     */
+    public mods: Mods<FullScreenPokemon>;
 
     /**
      * Physics functions used by this instance.
