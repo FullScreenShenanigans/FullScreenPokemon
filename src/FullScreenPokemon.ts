@@ -26,6 +26,7 @@ import { Macros } from "./components/Macros";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
+import { Mods } from "./components/Mods";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
@@ -149,6 +150,11 @@ export class FullScreenPokemon extends GameStartr {
     public menus: Menus<FullScreenPokemon>;
 
     /**
+     * Mods used by this instance.
+     */
+    public mods: Mods<FullScreenPokemon>;
+
+    /**
      * Physics functions used by this instance.
      */
     public physics: Physics<FullScreenPokemon>;
@@ -211,6 +217,7 @@ export class FullScreenPokemon extends GameStartr {
         this.maintenance = new Maintenance(this);
         this.maps = new Maps(this);
         this.menus = new Menus(this);
+        this.mods = new Mods(this);
         this.physics = new Physics(this);
         this.things = new Things(this);
         this.scrolling = new Scrolling(this);
@@ -230,12 +237,6 @@ export class FullScreenPokemon extends GameStartr {
         this.menuGrapher = this.createMenuGrapher(this.moduleSettings, settings);
         this.battleMover = this.createBattleMover(this.moduleSettings, settings);
         this.userWrapper = this.createUserWrapper(this.moduleSettings, settings);
-
-        this.areaSpawner.setCommandScope(this.maps);
-        this.inputWriter.setEventScope(this.inputs);
-        this.mapsCreator.setScope(this.maps);
-        this.timeHandler.setClassScope(this.graphics);
-        this.thingHitter.setGeneratorScope(this.collisions);
 
         this.pixelDrawer.setThingArrays([
             this.groupHolder.getGroup("Terrain") as IThing[],
