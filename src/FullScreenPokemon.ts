@@ -238,12 +238,6 @@ export class FullScreenPokemon extends GameStartr {
         this.battleMover = this.createBattleMover(this.moduleSettings, settings);
         this.userWrapper = this.createUserWrapper(this.moduleSettings, settings);
 
-        this.areaSpawner.setCommandScope(this.maps);
-        this.inputWriter.setEventScope(this.inputs);
-        this.mapsCreator.setScope(this.maps);
-        this.timeHandler.setClassScope(this.graphics);
-        this.thingHitter.setGeneratorScope(this.collisions);
-
         this.pixelDrawer.setThingArrays([
             this.groupHolder.getGroup("Terrain") as IThing[],
             this.groupHolder.getGroup("Solid") as IThing[],
