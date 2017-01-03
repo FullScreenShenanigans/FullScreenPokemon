@@ -37,7 +37,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
             ]);
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.physics.setWidth(player, 7, true, true);
+        this.gameStarter.physics.setWidth(player, 7, true);
         this.gameStarter.graphics.addClass(player, "fishing");
 
         this.gameStarter.timeHandler.addEvent(
@@ -91,7 +91,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
                     });
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
                 this.gameStarter.graphics.removeClass(player, "fishing");
-                this.gameStarter.physics.setWidth(player, 8, true, true);
+                this.gameStarter.physics.setWidth(player, 8, true);
             },
             140
         );
@@ -106,7 +106,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.menuGrapher.deleteActiveMenu();
         this.gameStarter.menus.displayMessage("rekt");
         this.gameStarter.graphics.removeClass(player, "fishing");
-        this.gameStarter.physics.setWidth(player, 8, true, true);
+        this.gameStarter.physics.setWidth(player, 8, true);
     }
 
     /**
