@@ -334,7 +334,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                                 "KABUTOPSFront": {},
                                 "DRAGONAIRFront": {}
                             },
-                            "BattleSpritFrontLarge": {
+                            "BattleSpriteFrontLarge": {
                                 "BROCKFront": {},
                                 "JRTRAINERFront": {},
                                 "VENUSAURFront": {},
