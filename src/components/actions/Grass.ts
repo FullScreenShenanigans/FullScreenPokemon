@@ -19,8 +19,6 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         thing.grass = other;
 
         this.gameStarter.saves.addStateHistory(thing, "height", thing.height);
-        thing.canvas.height = thing.height / 2;
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
         thing.shadow = this.gameStarter.objectMaker.make<IThing>(thing.title, {
             nocollide: true,
@@ -63,8 +61,6 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
     public exitGrassVisually(thing: ICharacter): void {
         this.gameStarter.physics.killNormal(thing.shadow!);
         this.gameStarter.saves.popStateHistory(thing, "height");
-        thing.canvas.height = thing.height;
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
         thing.shadow = undefined;
         thing.grass = undefined;

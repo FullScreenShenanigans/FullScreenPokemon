@@ -334,7 +334,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                                 "KABUTOPSFront": {},
                                 "DRAGONAIRFront": {}
                             },
-                            "BattleSpritFrontLarge": {
+                            "BattleSpriteFrontLarge": {
                                 "BROCKFront": {},
                                 "JRTRAINERFront": {},
                                 "VENUSAURFront": {},
@@ -1150,7 +1150,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
             "BattleSpriteFrontLarge": [112, 112],
             "BattleSpriteBack": {
                 "width": 64,
-                "height": 56, // 64 (lowest 8 cropped)
+                "height": 64,
                 "scale": 2,
                 "repeat": false
             },

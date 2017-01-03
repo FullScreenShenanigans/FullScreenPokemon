@@ -166,8 +166,6 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
             this.gameStarter.actions.animatePositionSightDetector(thing);
             thing.sightDetector.nocollide = false;
         }
-
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
     }
 
     /**
