@@ -587,9 +587,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {
                 thing.hidden = !thing.hidden;
-                if (!thing.hidden) {
-                    this.gameStarter.pixelDrawer.setThingSprite(thing);
-                }
             },
             interval | 0,
             cleartime | 0);
@@ -597,7 +594,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         return this.gameStarter.timeHandler.addEvent(
             (): void => {
                 thing.flickering = thing.hidden = false;
-                this.gameStarter.pixelDrawer.setThingSprite(thing);
 
                 if (callback) {
                     callback(thing);
