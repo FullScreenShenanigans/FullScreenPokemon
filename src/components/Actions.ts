@@ -11,7 +11,7 @@ import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
 import { IHMMoveSchema } from "./constants/Moves";
-import { IArea, IMap, IWildPokemonSchema } from "./Maps";
+import { IArea, IMap/*, IWildPokemonSchema*/ } from "./Maps";
 import { IDialog, IDialogOptions } from "./Menus";
 import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
@@ -296,32 +296,33 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param _   A Character about to start a battle with other.
      * @param other   An enemy about to battle thing.
      */
-    public animateTrainerBattleStart(_: ICharacter, other: IEnemy): void {
-        const battleName: string = other.battleName || other.title;
-        const battleSprite: string = other.battleSprite || battleName;
+    public animateTrainerBattleStart(thing: ICharacter, other: IEnemy): void {
+        console.log("should start battle", thing, other);
+        // const battleName: string = other.battleName || other.title;
+        // const battleSprite: string = other.battleSprite || battleName;
 
-        this.gameStarter.battles.startBattle({
-            battlers: {
-                opponent: {
-                    name: battleName.split(""),
-                    sprite: battleSprite + "Front",
-                    category: "Trainer",
-                    hasActors: true,
-                    reward: other.reward,
-                    actors: other.actors.map(
-                        (schema: IWildPokemonSchema): IPokemon => {
-                            return this.gameStarter.utilities.createPokemon(schema);
-                        })
-                }
-            },
-            textStart: ["", " wants to fight!"],
-            textDefeat: other.textDefeat,
-            textAfterBattle: other.textAfterBattle,
-            giftAfterBattle: other.giftAfterBattle,
-            badge: other.badge,
-            textVictory: other.textVictory,
-            nextCutscene: other.nextCutscene
-        });
+        // this.gameStarter.battles.startBattle({
+        //     battlers: {
+        //         opponent: {
+        //             name: battleName.split(""),
+        //             sprite: battleSprite + "Front",
+        //             category: "Trainer",
+        //             hasActors: true,
+        //             reward: other.reward,
+        //             actors: other.actors.map(
+        //                 (schema: IWildPokemonSchema): IPokemon => {
+        //                     return this.gameStarter.utilities.createPokemon(schema);
+        //                 })
+        //         }
+        //     },
+        //     textStart: ["", " wants to fight!"],
+        //     textDefeat: other.textDefeat,
+        //     textAfterBattle: other.textAfterBattle,
+        //     giftAfterBattle: other.giftAfterBattle,
+        //     badge: other.badge,
+        //     textVictory: other.textVictory,
+        //     nextCutscene: other.nextCutscene
+        // });
     }
 
     /**

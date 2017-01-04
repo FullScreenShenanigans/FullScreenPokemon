@@ -1,11 +1,9 @@
-import * as ibattlemovr from "battlemovr/lib/IBattleMovr";
 import { Component } from "eightbittr/lib/Component";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 import { IItemSchema } from "./constants/Items";
-import { IHMMoveSchema } from "./constants/Moves";
 import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
 import { Keyboards } from "./menus/Keyboards";
 import { IThing } from "./Things";
@@ -350,42 +348,43 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param settings   Settings for the selected Pokemon, including its HM moves.
      */
     public openPokemonMenuContext(settings: any): void {
-        const moves: ibattlemovr.IMove[] = settings.pokemon.moves;
-        const options: any[] = [];
+        console.log("Should open pokemon menu for", settings);
+        // const moves: ibattlemovr.IMove[] = settings.pokemon.moves;
+        // const options: any[] = [];
 
-        for (const action of moves) {
-            const move: IHMMoveSchema = this.gameStarter.constants.moves.byName[action.title];
-            if (move.partyActivate && move.requiredBadge && this.gameStarter.itemsHolder.getItem("badges")[move.requiredBadge]) {
-                options.push({
-                    text: action.title.toUpperCase(),
-                    callback: (): void => {
-                        this.gameStarter.actions.partyActivateCheckThing(this.gameStarter.players[0], settings.pokemon, move);
-                    }
-                });
-            }
-        }
+        // for (const action of moves) {
+        //     const move: IHMMoveSchema = this.gameStarter.constants.moves.byName[action.title];
+        //     if (move.partyActivate && move.requiredBadge && this.gameStarter.itemsHolder.getItem("badges")[move.requiredBadge]) {
+        //         options.push({
+        //             text: action.title.toUpperCase(),
+        //             callback: (): void => {
+        //                 this.gameStarter.actions.partyActivateCheckThing(this.gameStarter.players[0], settings.pokemon, move);
+        //             }
+        //         });
+        //     }
+        // }
 
-        options.push(
-            {
-                text: "STATS",
-                callback: (): void => this.openPokemonMenuStats(settings.pokemon)
-            },
-            {
-                text: "SWITCH",
-                callback: settings.onSwitch
-            },
-            {
-                text: "CANCEL",
-                callback: this.gameStarter.menuGrapher.registerB
-            });
+        // options.push(
+        //     {
+        //         text: "STATS",
+        //         callback: (): void => this.openPokemonMenuStats(settings.pokemon)
+        //     },
+        //     {
+        //         text: "SWITCH",
+        //         callback: settings.onSwitch
+        //     },
+        //     {
+        //         text: "CANCEL",
+        //         callback: this.gameStarter.menuGrapher.registerB
+        //     });
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuContext", {
-            backMenu: "Pokemon"
-        });
-        this.gameStarter.menuGrapher.addMenuList("PokemonMenuContext", {
-            options: options
-        });
-        this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
+        // this.gameStarter.menuGrapher.createMenu("PokemonMenuContext", {
+        //     backMenu: "Pokemon"
+        // });
+        // this.gameStarter.menuGrapher.addMenuList("PokemonMenuContext", {
+        //     options: options
+        // });
+        // this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
     }
 
     /**
@@ -396,7 +395,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
     public openPokemonMenuStats(pokemon: IPokemon): void {
         const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")];
         const barWidth: number = 100;
-        const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.HP, pokemon.HPNormal);
+        const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.statistics.health);
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
             backMenu: "PokemonMenuContext",
@@ -424,7 +423,9 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsHP", pokemon.HP + "/ " + pokemon.HPNormal);
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "PokemonMenuStatsHP",
+            pokemon.statistics.health.current + "/ " + pokemon.statistics.health.normal);
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.gameStarter.utilities.makeDigit(schema.number, 3, 0));
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
@@ -539,86 +540,87 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param pokemon   The Pokemon to open the menu for.
      */
     public openPokemonMenuStatsSecondary(pokemon: IPokemon): void {
-        const options: any[] = pokemon.moves.map(
-            (move: ibattlemovr.IMove): any => {
-                const characters: any[] = [" "];
-                const output: any = {
-                    text: characters
-                };
+        console.log("Should open secondary starts for", pokemon);
+        // const options: any[] = pokemon.moves.map(
+        //     (move: ibattlemovr.IMove): any => {
+        //         const characters: any[] = [" "];
+        //         const output: any = {
+        //             text: characters
+        //         };
 
-                characters.push({
-                    command: true,
-                    x: 40,
-                    y: 4
-                });
+        //         characters.push({
+        //             command: true,
+        //             x: 40,
+        //             y: 4
+        //         });
 
-                characters.push({
-                    command: true,
-                    y: .5
-                });
-                characters.push("PP", " ");
-                characters.push({
-                    command: true,
-                    y: -.5
-                });
-                characters.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
-                characters.push("/");
-                characters.push(
-                    ...this.gameStarter.utilities.makeDigit(
-                        this.gameStarter.constants.moves.byName[move.title].PP, 2, " ")
-                            .split(""));
+        //         characters.push({
+        //             command: true,
+        //             y: .5
+        //         });
+        //         characters.push("PP", " ");
+        //         characters.push({
+        //             command: true,
+        //             y: -.5
+        //         });
+        //         characters.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
+        //         characters.push("/");
+        //         characters.push(
+        //             ...this.gameStarter.utilities.makeDigit(
+        //                 this.gameStarter.constants.moves.byName[move.title].PP, 2, " ")
+        //                     .split(""));
 
-                characters.push({
-                    command: true,
-                    x: -75,
-                    y: -4
-                });
+        //         characters.push({
+        //             command: true,
+        //             x: -75,
+        //             y: -4
+        //         });
 
-                // TODO: Moves should always be uppercase...
-                characters.push(...move.title.toUpperCase().split(""));
+        //         // TODO: Moves should always be uppercase...
+        //         characters.push(...move.title.toUpperCase().split(""));
 
-                return output;
-            });
+        //         return output;
+        //     });
 
-        // Fill any remaining options with "-" and "--" for move and PP, respectively
-        for (let i: number = options.length; i < 4; i += 1) {
-            options.push({
-                text: [
-                    "-",
-                    {
-                        command: true,
-                        x: 40,
-                        y: 4
-                    },
-                    "-",
-                    "-"
-                ]
-            });
-        }
+        // // Fill any remaining options with "-" and "--" for move and PP, respectively
+        // for (let i: number = options.length; i < 4; i += 1) {
+        //     options.push({
+        //         text: [
+        //             "-",
+        //             {
+        //                 command: true,
+        //                 x: 40,
+        //                 y: 4
+        //             },
+        //             "-",
+        //             "-"
+        //         ]
+        //     });
+        // }
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsExperience");
+        // this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsExperience");
 
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "PokemonMenuStatsExperience",
-            this.gameStarter.utilities.makeDigit(pokemon.experience.current, 10, "\t"));
+        // this.gameStarter.menuGrapher.addMenuDialog(
+        //     "PokemonMenuStatsExperience",
+        //     this.gameStarter.utilities.makeDigit(pokemon.experience.current, 10, "\t"));
 
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "PokemonMenuStatsExperienceFrom",
-            this.gameStarter.utilities.makeDigit(
-                (pokemon.experience.next - pokemon.experience.current), 3, "\t"));
+        // this.gameStarter.menuGrapher.addMenuDialog(
+        //     "PokemonMenuStatsExperienceFrom",
+        //     this.gameStarter.utilities.makeDigit(
+        //         (pokemon.experience.next - pokemon.experience.current), 3, "\t"));
 
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "PokemonMenuStatsExperienceNext",
-            pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
+        // this.gameStarter.menuGrapher.addMenuDialog(
+        //     "PokemonMenuStatsExperienceNext",
+        //     pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsMoves");
-        this.gameStarter.menuGrapher.addMenuList("PokemonMenuStatsMoves", {
-            options: options
-        });
+        // this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsMoves");
+        // this.gameStarter.menuGrapher.addMenuList("PokemonMenuStatsMoves", {
+        //     options: options
+        // });
 
-        this.gameStarter.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
-            this.gameStarter.menuGrapher.deleteMenu("PokemonMenuStats");
-        };
+        // this.gameStarter.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
+        //     this.gameStarter.menuGrapher.deleteMenu("PokemonMenuStats");
+        // };
     }
 
     /**
@@ -690,7 +692,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                 const title: string = listing.title.join("");
                 const sprite: string = this.gameStarter.constants.pokemon.byName[title].sprite + "Pokemon";
                 const barWidth: number = 100;
-                const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.HP, listing.HPNormal);
+                const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.statistics.health);
 
                 return {
                     text: listing.title,
@@ -759,7 +761,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                             y: 0
                         },
                         {
-                            text: listing.HP + "/ " + listing.HPNormal,
+                            text: listing.statistics.health.current + "/ " + listing.statistics.health.normal,
                             x: 160,
                             y: 16
                         }]

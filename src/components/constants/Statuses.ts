@@ -21,9 +21,9 @@ export class Statuses {
      * equation if a random generated N is < 12.
      */
     public readonly probability12: { [i: string]: boolean } = {
-        "Paralyze": true,
-        "Burn": true,
-        "Poison": true
+        "paralyze": true,
+        "burn": true,
+        "poison": true
     };
 
     /**
@@ -33,23 +33,23 @@ export class Statuses {
      * @todo Where to get?
      */
     public readonly levels: { [i: string]: number } = {
-        "Normal": -1,
-        "Sleep": -1,
-        "Freeze": -1,
-        "Paralyze": -1,
-        "Burn": -1,
-        "Poison": -1
+        "normal": -1,
+        "sleep": -1,
+        "freeze": -1,
+        "paralyze": -1,
+        "burn": -1,
+        "poison": -1
     };
 
     /**
      * Additional shake points(s) in the numBallShakes equation for each status.
      */
     public readonly shaking: { [i: string]: number } = {
-        "Normal": 0,
-        "Sleep": 10,
-        "Freeze": 10,
-        "Paralyze": 5,
-        "Burn": 5,
-        "Poison": 5
+        "normal": 0,
+        "sleep": 10,
+        "freeze": 10,
+        "paralyze": 5,
+        "burn": 5,
+        "poison": 5
     };
 }

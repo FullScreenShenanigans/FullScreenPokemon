@@ -1,7 +1,16 @@
+import { IPokemonStatistics } from "../Battles";
+
 /**
  * Static information about a known Pokemon.
  */
 export interface IPokemonListing {
+    /**
+     * How difficult this is to catch, for the canCatchPokemon equation.
+     * 
+     * @todo Make this non-optional, once it's added to the data.
+     */
+    catchRate?: number;
+
     /**
      * The height of the Pokemon, as ["feet", "inches"].
      */
@@ -60,22 +69,22 @@ export interface IPokemonListing {
     /**
      * The rate of Attack statistic growth.
      */
-    Attack: number;
+    attack: number;
 
     /**
      * The rate of Defense statistic growth.
      */
-    Defense: number;
+    defense: number;
 
     /**
      * The rate of Special statistic growth.
      */
-    Special: number;
+    special: number;
 
     /**
      * The rate of HP statistic growth.
      */
-    Speed: number;
+    speed: number;
 
     /**
      * Known moves this Pokemon may learn.
@@ -174,12 +183,12 @@ export class Pokemon {
     /**
      * Names of all statistics Pokemon have.
      */
-    public readonly statisticNames: string[] = ["HP", "Attack", "Defense", "Speed", "Special"];
+    public readonly statisticNames: (keyof IPokemonStatistics)[] = ["attack", "defense", "health", "special", "speed"];
 
     /**
      * Names of Pokemon statistics to display in statistics menus.
      */
-    public readonly statisticNamesDisplayed: string[] = ["Attack", "Defense", "Speed", "Special"];
+    public readonly statisticNamesDisplayed: (keyof IPokemonStatistics)[] = ["attack", "defense", "special", "speed"];
 
     /**
      * All known Pokemon, keyed by concatenated name.
@@ -198,10 +207,10 @@ export class Pokemon {
             "weight": 43,
             "types": ["Psychic"],
             "HP": 25,
-            "Attack": 20,
-            "Defense": 15,
-            "Special": 105,
-            "Speed": 90,
+            "attack": 20,
+            "defense": 15,
+            "special": 105,
+            "speed": 90,
             "moves": {
                 "natural": [{
                     "move": "Teleport",
@@ -295,10 +304,10 @@ export class Pokemon {
             "weight": 130.1,
             "types": ["Rock", "Flying"],
             "HP": 80,
-            "Attack": 105,
-            "Defense": 65,
-            "Special": 60,
-            "Speed": 130,
+            "attack": 105,
+            "defense": 65,
+            "special": 60,
+            "speed": 130,
             "moves": {
                 "natural": [{
                     "move": "Agility",
@@ -388,10 +397,10 @@ export class Pokemon {
             "weight": 105.8,
             "types": ["Psychic"],
             "HP": 55,
-            "Attack": 50,
-            "Defense": 45,
-            "Special": 135,
-            "Speed": 120,
+            "attack": 50,
+            "defense": 45,
+            "special": 135,
+            "speed": 120,
             "moves": {
                 "natural": [
                     {
@@ -516,10 +525,10 @@ export class Pokemon {
             "weight": 143.3,
             "types": ["Poison"],
             "HP": 60,
-            "Attack": 85,
-            "Defense": 69,
-            "Special": 65,
-            "Speed": 80,
+            "attack": 85,
+            "defense": 69,
+            "special": 65,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -617,10 +626,10 @@ export class Pokemon {
             "weight": 341.7,
             "types": ["Fire"],
             "HP": 90,
-            "Attack": 110,
-            "Defense": 80,
-            "Special": 100,
-            "Speed": 95,
+            "attack": 110,
+            "defense": 80,
+            "special": 100,
+            "speed": 95,
             "moves": {
                 "natural": [
                     {
@@ -761,10 +770,10 @@ export class Pokemon {
             "weight": 122.1,
             "types": ["Ice", "Flying"],
             "HP": 90,
-            "Attack": 85,
-            "Defense": 100,
-            "Special": 95,
-            "Speed": 85,
+            "attack": 85,
+            "defense": 100,
+            "special": 95,
+            "speed": 85,
             "moves": {
                 "natural": [
                     {
@@ -859,10 +868,10 @@ export class Pokemon {
             "weight": 65,
             "types": ["Bug", "Poison"],
             "HP": 65,
-            "Attack": 90,
-            "Defense": 40,
-            "Special": 45,
-            "Speed": 75,
+            "attack": 90,
+            "defense": 40,
+            "special": 45,
+            "speed": 75,
             "moves": {
                 "natural": [
                     {
@@ -910,10 +919,10 @@ export class Pokemon {
             "weight": 8.8,
             "types": ["Grass", "Poison"],
             "HP": 50,
-            "Attack": 75,
-            "Defense": 35,
-            "Special": 70,
-            "Speed": 40,
+            "attack": 75,
+            "defense": 35,
+            "special": 70,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -1002,10 +1011,10 @@ export class Pokemon {
             "weight": 188.5,
             "types": ["Water"],
             "HP": 79,
-            "Attack": 83,
-            "Defense": 100,
-            "Special": 85,
-            "Speed": 78,
+            "attack": 83,
+            "defense": 100,
+            "special": 85,
+            "speed": 78,
             "moves": {
                 "natural": [
                     {
@@ -1140,10 +1149,10 @@ export class Pokemon {
             "weight": 15.2,
             "types": ["Grass", "Poison"],
             "HP": 45,
-            "Attack": 49,
-            "Defense": 49,
-            "Special": 65,
-            "Speed": 45,
+            "attack": 49,
+            "defense": 49,
+            "special": 65,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -1235,10 +1244,10 @@ export class Pokemon {
             "weight": 70.5,
             "types": ["Bug", "Flying"],
             "HP": 60,
-            "Attack": 45,
-            "Defense": 50,
-            "Special": 90,
-            "Speed": 70,
+            "attack": 45,
+            "defense": 50,
+            "special": 90,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -1341,10 +1350,10 @@ export class Pokemon {
             "weight": 6.4,
             "types": ["Bug"],
             "HP": 45,
-            "Attack": 30,
-            "Defense": 35,
-            "Special": 20,
-            "Speed": 45,
+            "attack": 30,
+            "defense": 35,
+            "special": 20,
+            "speed": 45,
             "moves": {
                 "natural": [{
                     "move": "String Shot",
@@ -1370,10 +1379,10 @@ export class Pokemon {
             "weight": 76.3,
             "types": ["Normal"],
             "HP": 250,
-            "Attack": 5,
-            "Defense": 5,
-            "Special": 35,
-            "Speed": 50,
+            "attack": 5,
+            "defense": 5,
+            "special": 35,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -1526,10 +1535,10 @@ export class Pokemon {
             "weight": 199.5,
             "types": ["Fire", "Flying"],
             "HP": 78,
-            "Attack": 84,
-            "Defense": 78,
-            "Special": 109,
-            "Speed": 100,
+            "attack": 84,
+            "defense": 78,
+            "special": 109,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -1664,10 +1673,10 @@ export class Pokemon {
             "weight": 18.7,
             "types": ["Fire"],
             "HP": 39,
-            "Attack": 52,
-            "Defense": 43,
-            "Special": 60,
-            "Speed": 65,
+            "attack": 52,
+            "defense": 43,
+            "special": 60,
+            "speed": 65,
             "moves": {
                 "natural": [
                     {
@@ -1786,10 +1795,10 @@ export class Pokemon {
             "weight": 41.9,
             "types": ["Fire"],
             "HP": 58,
-            "Attack": 64,
-            "Defense": 58,
-            "Special": 80,
-            "Speed": 80,
+            "attack": 64,
+            "defense": 58,
+            "special": 80,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -1902,10 +1911,10 @@ export class Pokemon {
             "weight": 88.2,
             "types": ["Fairy"],
             "HP": 95,
-            "Attack": 70,
-            "Defense": 73,
-            "Special": 95,
-            "Speed": 60,
+            "attack": 70,
+            "defense": 73,
+            "special": 95,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -1952,10 +1961,10 @@ export class Pokemon {
             "weight": 16.5,
             "types": ["Fairy"],
             "HP": 70,
-            "Attack": 45,
-            "Defense": 48,
-            "Special": 60,
-            "Speed": 35,
+            "attack": 45,
+            "defense": 48,
+            "special": 60,
+            "speed": 35,
             "moves": {
                 "natural": [
                     {
@@ -2099,10 +2108,10 @@ export class Pokemon {
             "weight": 292.1,
             "types": ["Water", "Ice"],
             "HP": 50,
-            "Attack": 95,
-            "Defense": 180,
-            "Special": 85,
-            "Speed": 70,
+            "attack": 95,
+            "defense": 180,
+            "special": 85,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -2141,10 +2150,10 @@ export class Pokemon {
             "weight": 14.3,
             "types": ["Ground"],
             "HP": 50,
-            "Attack": 50,
-            "Defense": 95,
-            "Special": 40,
-            "Speed": 35,
+            "attack": 50,
+            "defense": 95,
+            "special": 40,
+            "speed": 35,
             "moves": {
                 "natural": [
                     {
@@ -2260,10 +2269,10 @@ export class Pokemon {
             "weight": 264.6,
             "types": ["Water", "Ice"],
             "HP": 90,
-            "Attack": 70,
-            "Defense": 80,
-            "Special": 70,
-            "Speed": 70,
+            "attack": 70,
+            "defense": 80,
+            "special": 70,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -2363,10 +2372,10 @@ export class Pokemon {
             "weight": 1.8,
             "types": ["Ground"],
             "HP": 10,
-            "Attack": 55,
-            "Defense": 25,
-            "Special": 35,
-            "Speed": 95,
+            "attack": 55,
+            "defense": 25,
+            "special": 35,
+            "speed": 95,
             "moves": {
                 "natural": [
                     {
@@ -2465,10 +2474,10 @@ export class Pokemon {
             "weight": 8.8,
             "types": ["Normal"],
             "HP": 48,
-            "Attack": 48,
-            "Defense": 48,
-            "Special": 48,
-            "Speed": 48,
+            "attack": 48,
+            "defense": 48,
+            "special": 48,
+            "speed": 48,
             "moves": {
                 "natural": [{
                     "move": "Transform",
@@ -2489,10 +2498,10 @@ export class Pokemon {
             "weight": 187.8,
             "types": ["Normal", "Flying"],
             "HP": 60,
-            "Attack": 110,
-            "Defense": 70,
-            "Special": 60,
-            "Speed": 100,
+            "attack": 110,
+            "defense": 70,
+            "special": 60,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -2589,10 +2598,10 @@ export class Pokemon {
             "weight": 86.4,
             "types": ["Normal", "Flying"],
             "HP": 35,
-            "Attack": 85,
-            "Defense": 45,
-            "Special": 35,
-            "Speed": 75,
+            "attack": 85,
+            "defense": 45,
+            "special": 35,
+            "speed": 75,
             "moves": {
                 "natural": [
                     {
@@ -2683,10 +2692,10 @@ export class Pokemon {
             "weight": 36.4,
             "types": ["Dragon"],
             "HP": 61,
-            "Attack": 84,
-            "Defense": 65,
-            "Special": 70,
-            "Speed": 70,
+            "attack": 84,
+            "defense": 65,
+            "special": 70,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -2799,10 +2808,10 @@ export class Pokemon {
             "weight": 463,
             "types": ["Dragon", "Flying"],
             "HP": 91,
-            "Attack": 134,
-            "Defense": 95,
-            "Special": 100,
-            "Speed": 80,
+            "attack": 134,
+            "defense": 95,
+            "special": 100,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -2933,10 +2942,10 @@ export class Pokemon {
             "weight": 7.3,
             "types": ["Dragon"],
             "HP": 41,
-            "Attack": 64,
-            "Defense": 45,
-            "Special": 50,
-            "Speed": 50,
+            "attack": 64,
+            "defense": 45,
+            "special": 50,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -3048,10 +3057,10 @@ export class Pokemon {
             "weight": 71.4,
             "types": ["Psychic"],
             "HP": 60,
-            "Attack": 48,
-            "Defense": 45,
-            "Special": 43,
-            "Speed": 42,
+            "attack": 48,
+            "defense": 45,
+            "special": 43,
+            "speed": 42,
             "moves": {
                 "natural": [
                     {
@@ -3167,10 +3176,10 @@ export class Pokemon {
             "weight": 73.4,
             "types": ["Ground"],
             "HP": 35,
-            "Attack": 80,
-            "Defense": 50,
-            "Special": 50,
-            "Speed": 120,
+            "attack": 80,
+            "defense": 50,
+            "special": 50,
+            "speed": 120,
             "moves": {
                 "natural": [
                     {
@@ -3240,10 +3249,10 @@ export class Pokemon {
             "weight": 14.3,
             "types": ["Normal"],
             "HP": 55,
-            "Attack": 55,
-            "Defense": 50,
-            "Special": 45,
-            "Speed": 55,
+            "attack": 55,
+            "defense": 50,
+            "special": 45,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -3347,10 +3356,10 @@ export class Pokemon {
             "weight": 15.2,
             "types": ["Poison"],
             "HP": 35,
-            "Attack": 60,
-            "Defense": 44,
-            "Special": 40,
-            "Speed": 55,
+            "attack": 60,
+            "defense": 44,
+            "special": 40,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -3441,10 +3450,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Electric"],
             "HP": 65,
-            "Attack": 83,
-            "Defense": 57,
-            "Special": 95,
-            "Speed": 105,
+            "attack": 83,
+            "defense": 57,
+            "special": 95,
+            "speed": 105,
             "moves": {
                 "natural": [
                     {
@@ -3570,10 +3579,10 @@ export class Pokemon {
             "weight": 146.8,
             "types": ["Electric"],
             "HP": 60,
-            "Attack": 50,
-            "Defense": 70,
-            "Special": 80,
-            "Speed": 140,
+            "attack": 50,
+            "defense": 70,
+            "special": 80,
+            "speed": 140,
             "moves": {
                 "natural": [
                     {
@@ -3672,10 +3681,10 @@ export class Pokemon {
             "weight": 5.5,
             "types": ["Grass", "Psychic"],
             "HP": 60,
-            "Attack": 40,
-            "Defense": 80,
-            "Special": 60,
-            "Speed": 40,
+            "attack": 40,
+            "defense": 80,
+            "special": 60,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -3743,10 +3752,10 @@ export class Pokemon {
             "weight": 264.6,
             "types": ["Grass", "Psychic"],
             "HP": 95,
-            "Attack": 95,
-            "Defense": 85,
-            "Special": 125,
-            "Speed": 55,
+            "attack": 95,
+            "defense": 85,
+            "special": 125,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -3780,10 +3789,10 @@ export class Pokemon {
             "weight": 33.1,
             "types": ["Normal", "Flying"],
             "HP": 52,
-            "Attack": 65,
-            "Defense": 55,
-            "Special": 58,
-            "Speed": 60,
+            "attack": 65,
+            "defense": 55,
+            "special": 58,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -3872,10 +3881,10 @@ export class Pokemon {
             "weight": 83.8,
             "types": ["Normal", "Flying"],
             "HP": 65,
-            "Attack": 90,
-            "Defense": 65,
-            "Special": 61,
-            "Speed": 100,
+            "attack": 90,
+            "defense": 65,
+            "special": 61,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -3966,10 +3975,10 @@ export class Pokemon {
             "weight": 55.1,
             "types": ["Fire"],
             "HP": 65,
-            "Attack": 130,
-            "Defense": 60,
-            "Special": 95,
-            "Speed": 65,
+            "attack": 130,
+            "defense": 60,
+            "special": 95,
+            "speed": 65,
             "moves": {
                 "natural": [
                     {
@@ -4118,10 +4127,10 @@ export class Pokemon {
             "weight": 0.2,
             "types": ["Ghost", "Poison"],
             "HP": 30,
-            "Attack": 35,
-            "Defense": 30,
-            "Special": 100,
-            "Speed": 80,
+            "attack": 35,
+            "defense": 30,
+            "special": 100,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -4171,10 +4180,10 @@ export class Pokemon {
             "weight": 89.3,
             "types": ["Ghost", "Poison"],
             "HP": 60,
-            "Attack": 65,
-            "Defense": 60,
-            "Special": 130,
-            "Speed": 110,
+            "attack": 65,
+            "defense": 60,
+            "special": 130,
+            "speed": 110,
             "moves": {
                 "natural": [
                     {
@@ -4292,10 +4301,10 @@ export class Pokemon {
             "weight": 44.1,
             "types": ["Rock", "Ground"],
             "HP": 40,
-            "Attack": 80,
-            "Defense": 100,
-            "Special": 30,
-            "Speed": 20,
+            "attack": 80,
+            "defense": 100,
+            "special": 30,
+            "speed": 20,
             "moves": {
                 "natural": [
                     {
@@ -4404,10 +4413,10 @@ export class Pokemon {
             "weight": 19,
             "types": ["Grass", "Poison"],
             "HP": 60,
-            "Attack": 65,
-            "Defense": 70,
-            "Special": 85,
-            "Speed": 40,
+            "attack": 65,
+            "defense": 70,
+            "special": 85,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -4495,10 +4504,10 @@ export class Pokemon {
             "weight": 121.3,
             "types": ["Poison", "Flying"],
             "HP": 75,
-            "Attack": 80,
-            "Defense": 70,
-            "Special": 65,
-            "Speed": 90,
+            "attack": 80,
+            "defense": 70,
+            "special": 65,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -4611,10 +4620,10 @@ export class Pokemon {
             "weight": 33.1,
             "types": ["Water"],
             "HP": 45,
-            "Attack": 67,
-            "Defense": 60,
-            "Special": 35,
-            "Speed": 63,
+            "attack": 67,
+            "defense": 60,
+            "special": 35,
+            "speed": 63,
             "moves": {
                 "natural": [
                     {
@@ -4709,10 +4718,10 @@ export class Pokemon {
             "weight": 168.9,
             "types": ["Water"],
             "HP": 80,
-            "Attack": 82,
-            "Defense": 78,
-            "Special": 95,
-            "Speed": 85,
+            "attack": 82,
+            "defense": 78,
+            "special": 95,
+            "speed": 85,
             "moves": {
                 "natural": [
                     {
@@ -4828,10 +4837,10 @@ export class Pokemon {
             "weight": 661.4,
             "types": ["Rock", "Ground"],
             "HP": 80,
-            "Attack": 120,
-            "Defense": 130,
-            "Special": 55,
-            "Speed": 45,
+            "attack": 120,
+            "defense": 130,
+            "special": 55,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -4952,10 +4961,10 @@ export class Pokemon {
             "weight": 231.5,
             "types": ["Rock", "Ground"],
             "HP": 55,
-            "Attack": 95,
-            "Defense": 115,
-            "Special": 45,
-            "Speed": 35,
+            "attack": 95,
+            "defense": 115,
+            "special": 45,
+            "speed": 35,
             "moves": {
                 "natural": [
                     {
@@ -5067,10 +5076,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Poison"],
             "HP": 80,
-            "Attack": 80,
-            "Defense": 50,
-            "Special": 40,
-            "Speed": 25,
+            "attack": 80,
+            "defense": 50,
+            "special": 40,
+            "speed": 25,
             "moves": {
                 "natural": [
                     {
@@ -5183,10 +5192,10 @@ export class Pokemon {
             "weight": 41.9,
             "types": ["Fire"],
             "HP": 55,
-            "Attack": 70,
-            "Defense": 45,
-            "Special": 70,
-            "Speed": 60,
+            "attack": 70,
+            "defense": 45,
+            "special": 70,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -5248,10 +5257,10 @@ export class Pokemon {
             "weight": 518.1,
             "types": ["Water", "Flying"],
             "HP": 95,
-            "Attack": 125,
-            "Defense": 79,
-            "Special": 60,
-            "Speed": 81,
+            "attack": 125,
+            "defense": 79,
+            "special": 60,
+            "speed": 81,
             "moves": {
                 "natural": [
                     {
@@ -5313,10 +5322,10 @@ export class Pokemon {
             "weight": 0.2,
             "types": ["Ghost", "Poison"],
             "HP": 45,
-            "Attack": 50,
-            "Defense": 45,
-            "Special": 115,
-            "Speed": 95,
+            "attack": 50,
+            "defense": 45,
+            "special": 115,
+            "speed": 95,
             "moves": {
                 "natural": [
                     {
@@ -5368,10 +5377,10 @@ export class Pokemon {
             "weight": 110.7,
             "types": ["Fighting"],
             "HP": 50,
-            "Attack": 105,
-            "Defense": 79,
-            "Special": 35,
-            "Speed": 76,
+            "attack": 105,
+            "defense": 79,
+            "special": 35,
+            "speed": 76,
             "moves": {
                 "natural": [
                     {
@@ -5471,10 +5480,10 @@ export class Pokemon {
             "weight": 109.8,
             "types": ["Fighting"],
             "HP": 50,
-            "Attack": 120,
-            "Defense": 53,
-            "Special": 35,
-            "Speed": 87,
+            "attack": 120,
+            "defense": 53,
+            "special": 35,
+            "speed": 87,
             "moves": {
                 "natural": [
                     {
@@ -5571,10 +5580,10 @@ export class Pokemon {
             "weight": 17.6,
             "types": ["Water"],
             "HP": 30,
-            "Attack": 40,
-            "Defense": 70,
-            "Special": 70,
-            "Speed": 60,
+            "attack": 40,
+            "defense": 70,
+            "special": 70,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -5660,10 +5669,10 @@ export class Pokemon {
             "weight": 166.7,
             "types": ["Psychic"],
             "HP": 85,
-            "Attack": 73,
-            "Defense": 70,
-            "Special": 73,
-            "Speed": 67,
+            "attack": 73,
+            "defense": 70,
+            "special": 73,
+            "speed": 67,
             "moves": {
                 "natural": [
                     {
@@ -5790,10 +5799,10 @@ export class Pokemon {
             "weight": 28.7,
             "types": ["Grass", "Poison"],
             "HP": 60,
-            "Attack": 62,
-            "Defense": 63,
-            "Special": 80,
-            "Speed": 60,
+            "attack": 62,
+            "defense": 63,
+            "special": 80,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -5890,10 +5899,10 @@ export class Pokemon {
             "weight": 12.1,
             "types": ["Normal", "Fairy"],
             "HP": 115,
-            "Attack": 45,
-            "Defense": 20,
-            "Special": 45,
-            "Speed": 20,
+            "attack": 45,
+            "defense": 20,
+            "special": 45,
+            "speed": 20,
             "moves": {
                 "natural": [
                     {
@@ -6036,10 +6045,10 @@ export class Pokemon {
             "weight": 54,
             "types": ["Electric"],
             "HP": 65,
-            "Attack": 65,
-            "Defense": 60,
-            "Special": 110,
-            "Speed": 130,
+            "attack": 65,
+            "defense": 60,
+            "special": 110,
+            "speed": 130,
             "moves": {
                 "natural": [
                     {
@@ -6097,10 +6106,10 @@ export class Pokemon {
             "weight": 89.5,
             "types": ["Ice", "Psychic"],
             "HP": 65,
-            "Attack": 50,
-            "Defense": 35,
-            "Special": 115,
-            "Speed": 95,
+            "attack": 50,
+            "defense": 35,
+            "special": 115,
+            "speed": 95,
             "moves": {
                 "natural": [
                     {
@@ -6249,10 +6258,10 @@ export class Pokemon {
             "weight": 25.4,
             "types": ["Rock", "Water"],
             "HP": 30,
-            "Attack": 80,
-            "Defense": 90,
-            "Special": 55,
-            "Speed": 55,
+            "attack": 80,
+            "defense": 90,
+            "special": 55,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -6338,10 +6347,10 @@ export class Pokemon {
             "weight": 89.3,
             "types": ["Rock", "Water"],
             "HP": 60,
-            "Attack": 115,
-            "Defense": 105,
-            "Special": 65,
-            "Speed": 80,
+            "attack": 115,
+            "defense": 105,
+            "special": 65,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -6450,10 +6459,10 @@ export class Pokemon {
             "weight": 124.6,
             "types": ["Psychic"],
             "HP": 40,
-            "Attack": 35,
-            "Defense": 30,
-            "Special": 120,
-            "Speed": 105,
+            "attack": 35,
+            "defense": 30,
+            "special": 120,
+            "speed": 105,
             "moves": {
                 "natural": [
                     {
@@ -6577,10 +6586,10 @@ export class Pokemon {
             "weight": 22,
             "types": ["Bug", "Poison"],
             "HP": 45,
-            "Attack": 25,
-            "Defense": 50,
-            "Special": 25,
-            "Speed": 35,
+            "attack": 25,
+            "defense": 50,
+            "special": 25,
+            "speed": 35,
             "moves": {
                 "natural": [{
                     "move": "Harden",
@@ -6604,10 +6613,10 @@ export class Pokemon {
             "weight": 176.4,
             "types": ["Normal"],
             "HP": 105,
-            "Attack": 95,
-            "Defense": 80,
-            "Special": 40,
-            "Speed": 90,
+            "attack": 95,
+            "defense": 80,
+            "special": 40,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -6729,10 +6738,10 @@ export class Pokemon {
             "weight": 132.3,
             "types": ["Water"],
             "HP": 55,
-            "Attack": 130,
-            "Defense": 115,
-            "Special": 50,
-            "Speed": 75,
+            "attack": 130,
+            "defense": 115,
+            "special": 50,
+            "speed": 75,
             "moves": {
                 "natural": [
                     {
@@ -6836,10 +6845,10 @@ export class Pokemon {
             "weight": 2.2,
             "types": ["Poison"],
             "HP": 40,
-            "Attack": 65,
-            "Defense": 95,
-            "Special": 60,
-            "Speed": 35,
+            "attack": 65,
+            "defense": 95,
+            "special": 60,
+            "speed": 35,
             "moves": {
                 "natural": [
                     {
@@ -6940,10 +6949,10 @@ export class Pokemon {
             "weight": 14.3,
             "types": ["Water"],
             "HP": 30,
-            "Attack": 105,
-            "Defense": 90,
-            "Special": 25,
-            "Speed": 50,
+            "attack": 105,
+            "defense": 90,
+            "special": 25,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -7029,10 +7038,10 @@ export class Pokemon {
             "weight": 485,
             "types": ["Water", "Ice"],
             "HP": 130,
-            "Attack": 85,
-            "Defense": 80,
-            "Special": 85,
-            "Speed": 60,
+            "attack": 85,
+            "defense": 80,
+            "special": 85,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -7157,10 +7166,10 @@ export class Pokemon {
             "weight": 144.4,
             "types": ["Normal"],
             "HP": 90,
-            "Attack": 55,
-            "Defense": 75,
-            "Special": 60,
-            "Speed": 30,
+            "attack": 55,
+            "defense": 75,
+            "special": 60,
+            "speed": 30,
             "moves": {
                 "natural": [
                     {
@@ -7282,10 +7291,10 @@ export class Pokemon {
             "weight": 286.6,
             "types": ["Fighting"],
             "HP": 90,
-            "Attack": 130,
-            "Defense": 80,
-            "Special": 65,
-            "Speed": 55,
+            "attack": 130,
+            "defense": 80,
+            "special": 65,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -7403,10 +7412,10 @@ export class Pokemon {
             "weight": 155.4,
             "types": ["Fighting"],
             "HP": 80,
-            "Attack": 100,
-            "Defense": 70,
-            "Special": 50,
-            "Speed": 45,
+            "attack": 100,
+            "defense": 70,
+            "special": 50,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -7518,10 +7527,10 @@ export class Pokemon {
             "weight": 43,
             "types": ["Fighting"],
             "HP": 70,
-            "Attack": 80,
-            "Defense": 50,
-            "Special": 35,
-            "Speed": 35,
+            "attack": 80,
+            "defense": 50,
+            "special": 35,
+            "speed": 35,
             "moves": {
                 "natural": [
                     {
@@ -7630,10 +7639,10 @@ export class Pokemon {
             "weight": 22,
             "types": ["Water"],
             "HP": 20,
-            "Attack": 10,
-            "Defense": 55,
-            "Special": 15,
-            "Speed": 80,
+            "attack": 10,
+            "defense": 55,
+            "special": 15,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -7660,10 +7669,10 @@ export class Pokemon {
             "weight": 98.1,
             "types": ["Fire"],
             "HP": 65,
-            "Attack": 95,
-            "Defense": 57,
-            "Special": 100,
-            "Speed": 93,
+            "attack": 95,
+            "defense": 57,
+            "special": 100,
+            "speed": 93,
             "moves": {
                 "natural": [
                     {
@@ -7772,10 +7781,10 @@ export class Pokemon {
             "weight": 13.2,
             "types": ["Electric", "Steel"],
             "HP": 25,
-            "Attack": 35,
-            "Defense": 70,
-            "Special": 95,
-            "Speed": 45,
+            "attack": 35,
+            "defense": 70,
+            "special": 95,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -7866,10 +7875,10 @@ export class Pokemon {
             "weight": 132.3,
             "types": ["Electric", "Steel"],
             "HP": 50,
-            "Attack": 60,
-            "Defense": 95,
-            "Special": 120,
-            "Speed": 70,
+            "attack": 60,
+            "defense": 95,
+            "special": 120,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -7966,10 +7975,10 @@ export class Pokemon {
             "weight": 61.7,
             "types": ["Fighting"],
             "HP": 40,
-            "Attack": 80,
-            "Defense": 35,
-            "Special": 35,
-            "Speed": 70,
+            "attack": 80,
+            "defense": 35,
+            "special": 35,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -8082,10 +8091,10 @@ export class Pokemon {
             "weight": 99.2,
             "types": ["Ground"],
             "HP": 60,
-            "Attack": 80,
-            "Defense": 110,
-            "Special": 50,
-            "Speed": 45,
+            "attack": 80,
+            "defense": 110,
+            "special": 50,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -8212,10 +8221,10 @@ export class Pokemon {
             "weight": 9.3,
             "types": ["Normal"],
             "HP": 40,
-            "Attack": 45,
-            "Defense": 35,
-            "Special": 40,
-            "Speed": 90,
+            "attack": 45,
+            "defense": 35,
+            "special": 40,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -8279,10 +8288,10 @@ export class Pokemon {
             "weight": 21.8,
             "types": ["Bug"],
             "HP": 50,
-            "Attack": 20,
-            "Defense": 55,
-            "Special": 25,
-            "Speed": 30,
+            "attack": 20,
+            "defense": 55,
+            "special": 25,
+            "speed": 30,
             "moves": {
                 "natural": [{
                     "move": "Harden",
@@ -8310,10 +8319,10 @@ export class Pokemon {
             "weight": 8.8,
             "types": ["Psychic"],
             "HP": 100,
-            "Attack": 100,
-            "Defense": 100,
-            "Special": 100,
-            "Speed": 100,
+            "attack": 100,
+            "defense": 100,
+            "special": 100,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -8514,10 +8523,10 @@ export class Pokemon {
             "weight": 269,
             "types": ["Psychic"],
             "HP": 106,
-            "Attack": 110,
-            "Defense": 90,
-            "Special": 154,
-            "Speed": 130,
+            "attack": 110,
+            "defense": 90,
+            "special": 154,
+            "speed": 130,
             "moves": {
                 "natural": [
                     {
@@ -8673,10 +8682,10 @@ export class Pokemon {
             "weight": 132.3,
             "types": ["Fire", "Flying"],
             "HP": 90,
-            "Attack": 100,
-            "Defense": 90,
-            "Special": 125,
-            "Speed": 90,
+            "attack": 100,
+            "defense": 90,
+            "special": 125,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -8759,10 +8768,10 @@ export class Pokemon {
             "weight": 120.2,
             "types": ["Psychic", "Fairy"],
             "HP": 40,
-            "Attack": 45,
-            "Defense": 65,
-            "Special": 100,
-            "Speed": 90,
+            "attack": 45,
+            "defense": 65,
+            "special": 100,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -8884,10 +8893,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Poison"],
             "HP": 105,
-            "Attack": 105,
-            "Defense": 75,
-            "Special": 65,
-            "Speed": 50,
+            "attack": 105,
+            "defense": 75,
+            "special": 65,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -8961,10 +8970,10 @@ export class Pokemon {
             "weight": 136.7,
             "types": ["Poison", "Ground"],
             "HP": 81,
-            "Attack": 102,
-            "Defense": 77,
-            "Special": 85,
-            "Speed": 85,
+            "attack": 102,
+            "defense": 77,
+            "special": 85,
+            "speed": 85,
             "moves": {
                 "natural": [
                     {
@@ -9018,10 +9027,10 @@ export class Pokemon {
             "weight": 132.3,
             "types": ["Poison", "Ground"],
             "HP": 90,
-            "Attack": 92,
-            "Defense": 87,
-            "Special": 75,
-            "Speed": 76,
+            "attack": 92,
+            "defense": 87,
+            "special": 75,
+            "speed": 76,
             "moves": {
                 "natural": [
                     {
@@ -9077,10 +9086,10 @@ export class Pokemon {
             "weight": 15.4,
             "types": ["Poison"],
             "HP": 55,
-            "Attack": 47,
-            "Defense": 52,
-            "Special": 40,
-            "Speed": 41,
+            "attack": 47,
+            "defense": 52,
+            "special": 40,
+            "speed": 41,
             "moves": {
                 "natural": [
                     {
@@ -9225,10 +9234,10 @@ export class Pokemon {
             "weight": 19.8,
             "types": ["Poison"],
             "HP": 46,
-            "Attack": 57,
-            "Defense": 40,
-            "Special": 40,
-            "Speed": 50,
+            "attack": 57,
+            "defense": 40,
+            "special": 40,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -9395,10 +9404,10 @@ export class Pokemon {
             "weight": 44.1,
             "types": ["Poison"],
             "HP": 70,
-            "Attack": 62,
-            "Defense": 67,
-            "Special": 55,
-            "Speed": 56,
+            "attack": 62,
+            "defense": 67,
+            "special": 55,
+            "speed": 56,
             "moves": {
                 "natural": [
                     {
@@ -9474,10 +9483,10 @@ export class Pokemon {
             "weight": 43,
             "types": ["Poison"],
             "HP": 61,
-            "Attack": 72,
-            "Defense": 57,
-            "Special": 55,
-            "Speed": 65,
+            "attack": 72,
+            "defense": 57,
+            "special": 55,
+            "speed": 65,
             "moves": {
                 "natural": [
                     {
@@ -9551,10 +9560,10 @@ export class Pokemon {
             "weight": 43.9,
             "types": ["Fire"],
             "HP": 73,
-            "Attack": 76,
-            "Defense": 75,
-            "Special": 81,
-            "Speed": 100,
+            "attack": 76,
+            "defense": 75,
+            "special": 81,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -9685,10 +9694,10 @@ export class Pokemon {
             "weight": 11.9,
             "types": ["Grass", "Poison"],
             "HP": 45,
-            "Attack": 50,
-            "Defense": 55,
-            "Special": 75,
-            "Speed": 30,
+            "attack": 50,
+            "defense": 55,
+            "special": 75,
+            "speed": 30,
             "moves": {
                 "natural": [
                     {
@@ -9770,10 +9779,10 @@ export class Pokemon {
             "weight": 16.5,
             "types": ["Rock", "Water"],
             "HP": 35,
-            "Attack": 40,
-            "Defense": 100,
-            "Special": 90,
-            "Speed": 35,
+            "attack": 40,
+            "defense": 100,
+            "special": 90,
+            "speed": 35,
             "moves": {
                 "natural": [
                     {
@@ -9856,10 +9865,10 @@ export class Pokemon {
             "weight": 77.2,
             "types": ["Rock", "Water"],
             "HP": 70,
-            "Attack": 60,
-            "Defense": 125,
-            "Special": 115,
-            "Speed": 55,
+            "attack": 60,
+            "defense": 125,
+            "special": 115,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -9965,10 +9974,10 @@ export class Pokemon {
             "weight": 463,
             "types": ["Rock", "Ground"],
             "HP": 35,
-            "Attack": 45,
-            "Defense": 160,
-            "Special": 30,
-            "Speed": 70,
+            "attack": 45,
+            "defense": 160,
+            "special": 30,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -10062,10 +10071,10 @@ export class Pokemon {
             "weight": 11.9,
             "types": ["Bug", "Grass"],
             "HP": 35,
-            "Attack": 70,
-            "Defense": 55,
-            "Special": 45,
-            "Speed": 25,
+            "attack": 70,
+            "defense": 55,
+            "special": 45,
+            "speed": 25,
             "moves": {
                 "natural": [
                     {
@@ -10154,10 +10163,10 @@ export class Pokemon {
             "weight": 65,
             "types": ["Bug", "Grass"],
             "HP": 60,
-            "Attack": 95,
-            "Defense": 80,
-            "Special": 60,
-            "Speed": 30,
+            "attack": 95,
+            "defense": 80,
+            "special": 60,
+            "speed": 30,
             "moves": {
                 "natural": [
                     {
@@ -10252,10 +10261,10 @@ export class Pokemon {
             "weight": 70.5,
             "types": ["Normal"],
             "HP": 65,
-            "Attack": 70,
-            "Defense": 60,
-            "Special": 65,
-            "Speed": 115,
+            "attack": 70,
+            "defense": 60,
+            "special": 65,
+            "speed": 115,
             "moves": {
                 "natural": [
                     {
@@ -10384,10 +10393,10 @@ export class Pokemon {
             "weight": 87.1,
             "types": ["Normal", "Flying"],
             "HP": 83,
-            "Attack": 80,
-            "Defense": 75,
-            "Special": 70,
-            "Speed": 101,
+            "attack": 80,
+            "defense": 75,
+            "special": 70,
+            "speed": 101,
             "moves": {
                 "natural": [
                     {
@@ -10481,10 +10490,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Normal", "Flying"],
             "HP": 63,
-            "Attack": 60,
-            "Defense": 55,
-            "Special": 50,
-            "Speed": 71,
+            "attack": 60,
+            "defense": 55,
+            "special": 50,
+            "speed": 71,
             "moves": {
                 "natural": [
                     {
@@ -10575,10 +10584,10 @@ export class Pokemon {
             "weight": 4,
             "types": ["Normal", "Flying"],
             "HP": 40,
-            "Attack": 45,
-            "Defense": 40,
-            "Special": 35,
-            "Speed": 56,
+            "attack": 45,
+            "defense": 40,
+            "special": 35,
+            "speed": 56,
             "moves": {
                 "natural": [
                     {
@@ -10666,10 +10675,10 @@ export class Pokemon {
             "weight": 13.2,
             "types": ["Electric"],
             "HP": 35,
-            "Attack": 55,
-            "Defense": 40,
-            "Special": 50,
-            "Speed": 90,
+            "attack": 55,
+            "defense": 40,
+            "special": 50,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -10773,10 +10782,10 @@ export class Pokemon {
             "weight": 121.3,
             "types": ["Bug"],
             "HP": 65,
-            "Attack": 125,
-            "Defense": 100,
-            "Special": 55,
-            "Speed": 85,
+            "attack": 125,
+            "defense": 100,
+            "special": 55,
+            "speed": 85,
             "moves": {
                 "natural": [
                     {
@@ -10868,10 +10877,10 @@ export class Pokemon {
             "weight": 27.3,
             "types": ["Water"],
             "HP": 40,
-            "Attack": 50,
-            "Defense": 40,
-            "Special": 40,
-            "Speed": 90,
+            "attack": 50,
+            "defense": 40,
+            "special": 40,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -10965,10 +10974,10 @@ export class Pokemon {
             "weight": 44.1,
             "types": ["Water"],
             "HP": 65,
-            "Attack": 65,
-            "Defense": 65,
-            "Special": 50,
-            "Speed": 90,
+            "attack": 65,
+            "defense": 65,
+            "special": 50,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -11099,10 +11108,10 @@ export class Pokemon {
             "weight": 119,
             "types": ["Water", "Fighting"],
             "HP": 90,
-            "Attack": 95,
-            "Defense": 95,
-            "Special": 70,
-            "Speed": 70,
+            "attack": 95,
+            "defense": 95,
+            "special": 70,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -11148,10 +11157,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Fire"],
             "HP": 50,
-            "Attack": 85,
-            "Defense": 55,
-            "Special": 65,
-            "Speed": 90,
+            "attack": 85,
+            "defense": 55,
+            "special": 65,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -11261,10 +11270,10 @@ export class Pokemon {
             "weight": 80.5,
             "types": ["Normal"],
             "HP": 65,
-            "Attack": 60,
-            "Defense": 70,
-            "Special": 85,
-            "Speed": 40,
+            "attack": 60,
+            "defense": 70,
+            "special": 85,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -11371,10 +11380,10 @@ export class Pokemon {
             "weight": 70.5,
             "types": ["Fighting"],
             "HP": 65,
-            "Attack": 105,
-            "Defense": 60,
-            "Special": 60,
-            "Speed": 95,
+            "attack": 105,
+            "defense": 60,
+            "special": 60,
+            "speed": 95,
             "moves": {
                 "natural": [
                     {
@@ -11498,10 +11507,10 @@ export class Pokemon {
             "weight": 43.2,
             "types": ["Water"],
             "HP": 50,
-            "Attack": 52,
-            "Defense": 48,
-            "Special": 65,
-            "Speed": 55,
+            "attack": 52,
+            "defense": 48,
+            "special": 65,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -11608,10 +11617,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Electric"],
             "HP": 60,
-            "Attack": 90,
-            "Defense": 55,
-            "Special": 90,
-            "Speed": 110,
+            "attack": 90,
+            "defense": 55,
+            "special": 90,
+            "speed": 110,
             "moves": {
                 "natural": [
                     {
@@ -11645,10 +11654,10 @@ export class Pokemon {
             "weight": 209.4,
             "types": ["Fire"],
             "HP": 65,
-            "Attack": 100,
-            "Defense": 70,
-            "Special": 80,
-            "Speed": 105,
+            "attack": 100,
+            "defense": 70,
+            "special": 80,
+            "speed": 105,
             "moves": {
                 "natural": [
                     {
@@ -11728,10 +11737,10 @@ export class Pokemon {
             "weight": 40.8,
             "types": ["Normal"],
             "HP": 55,
-            "Attack": 81,
-            "Defense": 60,
-            "Special": 50,
-            "Speed": 97,
+            "attack": 81,
+            "defense": 60,
+            "special": 50,
+            "speed": 97,
             "moves": {
                 "natural": [
                     {
@@ -11856,10 +11865,10 @@ export class Pokemon {
             "weight": 7.7,
             "types": ["Normal"],
             "HP": 30,
-            "Attack": 56,
-            "Defense": 35,
-            "Special": 25,
-            "Speed": 72,
+            "attack": 56,
+            "defense": 35,
+            "special": 25,
+            "speed": 72,
             "moves": {
                 "natural": [
                     {
@@ -11917,10 +11926,10 @@ export class Pokemon {
             "weight": 264.6,
             "types": ["Ground", "Rock"],
             "HP": 105,
-            "Attack": 130,
-            "Defense": 120,
-            "Special": 45,
-            "Speed": 40,
+            "attack": 130,
+            "defense": 120,
+            "special": 45,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -12069,10 +12078,10 @@ export class Pokemon {
             "weight": 253.5,
             "types": ["Ground", "Rock"],
             "HP": 80,
-            "Attack": 85,
-            "Defense": 95,
-            "Special": 30,
-            "Speed": 25,
+            "attack": 85,
+            "defense": 95,
+            "special": 30,
+            "speed": 25,
             "moves": {
                 "natural": [
                     {
@@ -12175,10 +12184,10 @@ export class Pokemon {
             "weight": 26.5,
             "types": ["Ground"],
             "HP": 50,
-            "Attack": 75,
-            "Defense": 85,
-            "Special": 20,
-            "Speed": 40,
+            "attack": 75,
+            "defense": 85,
+            "special": 20,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -12280,10 +12289,10 @@ export class Pokemon {
             "weight": 65,
             "types": ["Ground"],
             "HP": 75,
-            "Attack": 100,
-            "Defense": 110,
-            "Special": 45,
-            "Speed": 65,
+            "attack": 100,
+            "defense": 110,
+            "special": 45,
+            "speed": 65,
             "moves": {
                 "natural": [
                     {
@@ -12393,10 +12402,10 @@ export class Pokemon {
             "weight": 123.5,
             "types": ["Bug", "Flying"],
             "HP": 70,
-            "Attack": 110,
-            "Defense": 80,
-            "Special": 55,
-            "Speed": 105,
+            "attack": 110,
+            "defense": 80,
+            "special": 55,
+            "speed": 105,
             "moves": {
                 "natural": [
                     {
@@ -12478,10 +12487,10 @@ export class Pokemon {
             "weight": 55.1,
             "types": ["Water"],
             "HP": 55,
-            "Attack": 65,
-            "Defense": 95,
-            "Special": 95,
-            "Speed": 85,
+            "attack": 65,
+            "defense": 95,
+            "special": 95,
+            "speed": 85,
             "moves": {
                 "natural": [
                     {
@@ -12570,10 +12579,10 @@ export class Pokemon {
             "weight": 86,
             "types": ["Water"],
             "HP": 80,
-            "Attack": 92,
-            "Defense": 65,
-            "Special": 65,
-            "Speed": 68,
+            "attack": 92,
+            "defense": 65,
+            "special": 65,
+            "speed": 68,
             "moves": {
                 "natural": [
                     {
@@ -12676,10 +12685,10 @@ export class Pokemon {
             "weight": 198.4,
             "types": ["Water"],
             "HP": 65,
-            "Attack": 45,
-            "Defense": 55,
-            "Special": 45,
-            "Speed": 45,
+            "attack": 45,
+            "defense": 55,
+            "special": 45,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -12770,10 +12779,10 @@ export class Pokemon {
             "weight": 8.8,
             "types": ["Water"],
             "HP": 30,
-            "Attack": 65,
-            "Defense": 100,
-            "Special": 45,
-            "Speed": 40,
+            "attack": 65,
+            "defense": 100,
+            "special": 45,
+            "speed": 40,
             "moves": {
                 "natural": [
                     {
@@ -12876,10 +12885,10 @@ export class Pokemon {
             "weight": 173.1,
             "types": ["Water", "Psychic"],
             "HP": 95,
-            "Attack": 75,
-            "Defense": 110,
-            "Special": 100,
-            "Speed": 30,
+            "attack": 75,
+            "defense": 110,
+            "special": 100,
+            "speed": 30,
             "moves": {
                 "natural": [
                     {
@@ -13030,10 +13039,10 @@ export class Pokemon {
             "weight": 79.4,
             "types": ["Water", "Psychic"],
             "HP": 90,
-            "Attack": 65,
-            "Defense": 65,
-            "Special": 40,
-            "Speed": 15,
+            "attack": 65,
+            "defense": 65,
+            "special": 40,
+            "speed": 15,
             "moves": {
                 "natural": [
                     {
@@ -13165,10 +13174,10 @@ export class Pokemon {
             "weight": 1014.1,
             "types": ["Normal"],
             "HP": 160,
-            "Attack": 110,
-            "Defense": 65,
-            "Special": 65,
-            "Speed": 30,
+            "attack": 110,
+            "defense": 65,
+            "special": 65,
+            "speed": 30,
             "moves": {
                 "natural": [
                     {
@@ -13320,10 +13329,10 @@ export class Pokemon {
             "weight": 4.4,
             "types": ["Normal", "Flying"],
             "HP": 40,
-            "Attack": 60,
-            "Defense": 30,
-            "Special": 31,
-            "Speed": 70,
+            "attack": 60,
+            "defense": 30,
+            "special": 31,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -13406,10 +13415,10 @@ export class Pokemon {
             "weight": 19.8,
             "types": ["Water"],
             "HP": 44,
-            "Attack": 48,
-            "Defense": 65,
-            "Special": 50,
-            "Speed": 43,
+            "attack": 48,
+            "defense": 65,
+            "special": 50,
+            "speed": 43,
             "moves": {
                 "natural": [
                     {
@@ -13519,10 +13528,10 @@ export class Pokemon {
             "weight": 176.4,
             "types": ["Water", "Psychic"],
             "HP": 60,
-            "Attack": 75,
-            "Defense": 85,
-            "Special": 100,
-            "Speed": 115,
+            "attack": 75,
+            "defense": 85,
+            "special": 100,
+            "speed": 115,
             "moves": {
                 "natural": [
                     {
@@ -13566,10 +13575,10 @@ export class Pokemon {
             "weight": 76.1,
             "types": ["Water"],
             "HP": 30,
-            "Attack": 45,
-            "Defense": 55,
-            "Special": 70,
-            "Speed": 85,
+            "attack": 45,
+            "defense": 55,
+            "special": 70,
+            "speed": 85,
             "moves": {
                 "natural": [
                     {
@@ -13684,10 +13693,10 @@ export class Pokemon {
             "weight": 77.2,
             "types": ["Grass"],
             "HP": 65,
-            "Attack": 55,
-            "Defense": 115,
-            "Special": 100,
-            "Speed": 60,
+            "attack": 55,
+            "defense": 115,
+            "special": 100,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -13779,10 +13788,10 @@ export class Pokemon {
             "weight": 194.9,
             "types": ["Normal"],
             "HP": 75,
-            "Attack": 100,
-            "Defense": 95,
-            "Special": 40,
-            "Speed": 110,
+            "attack": 100,
+            "defense": 95,
+            "special": 40,
+            "speed": 110,
             "moves": {
                 "natural": [
                     {
@@ -13882,10 +13891,10 @@ export class Pokemon {
             "weight": 100.3,
             "types": ["Water", "Poison"],
             "HP": 40,
-            "Attack": 40,
-            "Defense": 35,
-            "Special": 50,
-            "Speed": 70,
+            "attack": 40,
+            "defense": 35,
+            "special": 50,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -13990,10 +13999,10 @@ export class Pokemon {
             "weight": 121.3,
             "types": ["Water", "Poison"],
             "HP": 80,
-            "Attack": 70,
-            "Defense": 65,
-            "Special": 80,
-            "Speed": 100,
+            "attack": 70,
+            "defense": 65,
+            "special": 80,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -14109,10 +14118,10 @@ export class Pokemon {
             "weight": 63.9,
             "types": ["Water"],
             "HP": 130,
-            "Attack": 65,
-            "Defense": 60,
-            "Special": 110,
-            "Speed": 65,
+            "attack": 65,
+            "defense": 60,
+            "special": 110,
+            "speed": 65,
             "moves": {
                 "natural": [
                     {
@@ -14173,10 +14182,10 @@ export class Pokemon {
             "weight": 27.6,
             "types": ["Bug", "Poison"],
             "HP": 70,
-            "Attack": 65,
-            "Defense": 60,
-            "Special": 90,
-            "Speed": 90,
+            "attack": 65,
+            "defense": 60,
+            "special": 90,
+            "speed": 90,
             "moves": {
                 "natural": [
                     {
@@ -14258,10 +14267,10 @@ export class Pokemon {
             "weight": 66.1,
             "types": ["Bug", "Poison"],
             "HP": 60,
-            "Attack": 55,
-            "Defense": 50,
-            "Special": 40,
-            "Speed": 45,
+            "attack": 55,
+            "defense": 50,
+            "special": 40,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -14378,10 +14387,10 @@ export class Pokemon {
             "weight": 220.5,
             "types": ["Grass", "Poison"],
             "HP": 80,
-            "Attack": 82,
-            "Defense": 83,
-            "Special": 100,
-            "Speed": 80,
+            "attack": 82,
+            "defense": 83,
+            "special": 100,
+            "speed": 80,
             "moves": {
                 "natural": [
                     {
@@ -14479,10 +14488,10 @@ export class Pokemon {
             "weight": 34.2,
             "types": ["Grass", "Poison"],
             "HP": 80,
-            "Attack": 105,
-            "Defense": 65,
-            "Special": 100,
-            "Speed": 70,
+            "attack": 105,
+            "defense": 65,
+            "special": 100,
+            "speed": 70,
             "moves": {
                 "natural": [
                     {
@@ -14530,10 +14539,10 @@ export class Pokemon {
             "weight": 41,
             "types": ["Grass", "Poison"],
             "HP": 75,
-            "Attack": 80,
-            "Defense": 85,
-            "Special": 110,
-            "Speed": 50,
+            "attack": 80,
+            "defense": 85,
+            "special": 110,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -14578,10 +14587,10 @@ export class Pokemon {
             "weight": 22.9,
             "types": ["Electric"],
             "HP": 40,
-            "Attack": 30,
-            "Defense": 50,
-            "Special": 55,
-            "Speed": 100,
+            "attack": 30,
+            "defense": 50,
+            "special": 55,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -14672,10 +14681,10 @@ export class Pokemon {
             "weight": 21.8,
             "types": ["Fire"],
             "HP": 38,
-            "Attack": 41,
-            "Defense": 40,
-            "Special": 50,
-            "Speed": 65,
+            "attack": 41,
+            "defense": 40,
+            "special": 50,
+            "speed": 65,
             "moves": {
                 "natural": [
                     {
@@ -14785,10 +14794,10 @@ export class Pokemon {
             "weight": 49.6,
             "types": ["Water"],
             "HP": 59,
-            "Attack": 63,
-            "Defense": 80,
-            "Special": 65,
-            "Speed": 58,
+            "attack": 63,
+            "defense": 80,
+            "special": 65,
+            "speed": 58,
             "moves": {
                 "natural": [
                     {
@@ -14903,10 +14912,10 @@ export class Pokemon {
             "weight": 7.1,
             "types": ["Bug", "Poison"],
             "HP": 40,
-            "Attack": 35,
-            "Defense": 30,
-            "Special": 20,
-            "Speed": 50,
+            "attack": 35,
+            "defense": 30,
+            "special": 20,
+            "speed": 50,
             "moves": {
                 "natural": [
                     {
@@ -14933,10 +14942,10 @@ export class Pokemon {
             "weight": 14.1,
             "types": ["Grass", "Poison"],
             "HP": 65,
-            "Attack": 90,
-            "Defense": 50,
-            "Special": 85,
-            "Speed": 55,
+            "attack": 90,
+            "defense": 50,
+            "special": 85,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {
@@ -15025,10 +15034,10 @@ export class Pokemon {
             "weight": 20.9,
             "types": ["Poison"],
             "HP": 65,
-            "Attack": 90,
-            "Defense": 120,
-            "Special": 85,
-            "Speed": 60,
+            "attack": 90,
+            "defense": 120,
+            "special": 85,
+            "speed": 60,
             "moves": {
                 "natural": [
                     {
@@ -15136,10 +15145,10 @@ export class Pokemon {
             "weight": 26.5,
             "types": ["Normal", "Fairy"],
             "HP": 140,
-            "Attack": 70,
-            "Defense": 45,
-            "Special": 85,
-            "Speed": 45,
+            "attack": 70,
+            "defense": 45,
+            "special": 85,
+            "speed": 45,
             "moves": {
                 "natural": [
                     {
@@ -15177,10 +15186,10 @@ export class Pokemon {
             "weight": 116,
             "types": ["Electric", "Flying"],
             "HP": 90,
-            "Attack": 90,
-            "Defense": 85,
-            "Special": 125,
-            "Speed": 100,
+            "attack": 90,
+            "defense": 85,
+            "special": 125,
+            "speed": 100,
             "moves": {
                 "natural": [
                     {
@@ -15278,10 +15287,10 @@ export class Pokemon {
             "weight": 16.5,
             "types": ["Poison", "Flying"],
             "HP": 40,
-            "Attack": 45,
-            "Defense": 35,
-            "Special": 30,
-            "Speed": 55,
+            "attack": 45,
+            "defense": 35,
+            "special": 30,
+            "speed": 55,
             "moves": {
                 "natural": [
                     {

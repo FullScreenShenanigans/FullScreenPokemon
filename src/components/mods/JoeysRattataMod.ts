@@ -1,7 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
-import { IBattleInfo, IBattler } from "../../components/Battles";
 import { ICharacter, IEnemy, } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
@@ -37,15 +36,16 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
                     this.gameStarter.graphics.setClass(character, character.className);
                 });
         },
-        onBattleStart: (battleInfo: IBattleInfo): void => {
-            const opponent: IBattler = battleInfo.battlers.opponent;
+        onBattleStart: (battleInfo: any): void => {
+            console.log("Should modify battle start info", battleInfo);
+            // const opponent: IBattler = battleInfo.battlers.opponent;
 
-            opponent.sprite = "BugCatcherFront";
-            opponent.name = "YOUNGSTER JOEY".split("");
+            // opponent.sprite = "BugCatcherFront";
+            // opponent.name = "YOUNGSTER JOEY".split("");
 
-            for (const actor of opponent.actors) {
-                actor.title = actor.nickname = "RATTATA".split("");
-            }
+            // for (const actor of opponent.actors) {
+            //     actor.title = actor.nickname = "RATTATA".split("");
+            // }
         },
         onSetLocation: (): void => {
             this.events.onModEnable!();

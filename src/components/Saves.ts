@@ -20,7 +20,7 @@ export interface IStateSaveable {
     /**
      * Holds the states of an object in the game.
      */
-    state: IStateHistory;
+    state?: IStateHistory;
 }
 
 /**

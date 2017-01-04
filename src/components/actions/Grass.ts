@@ -108,16 +108,17 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
         this.gameStarter.actions.walking.animateCharacterPreventWalking(thing);
 
-        this.gameStarter.battles.startBattle({
-            battlers: {
-                opponent: {
-                    name: wildPokemon.title,
-                    actors: [wildPokemon],
-                    category: "Wild",
-                    sprite: wildPokemon.title.join("") + "Front"
-                }
-            }
-        });
+        console.log("Should start battle with", wildPokemon);
+        // this.gameStarter.battles.startBattle({
+        //     battlers: {
+        //         opponent: {
+        //             name: wildPokemon.title,
+        //             actors: [wildPokemon],
+        //             category: "Wild",
+        //             sprite: wildPokemon.title.join("") + "Front"
+        //         }
+        //     }
+        // });
     }
 
     /**
@@ -134,7 +135,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
             throw new Error("Grass doesn't have any wild Pokemon options defined.");
         }
 
-        const chosen: IWildPokemonSchema = this.gameStarter.battles.chooseRandomWildPokemon(options);
+        const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
 
         return this.gameStarter.utilities.createPokemon(chosen);
     }
