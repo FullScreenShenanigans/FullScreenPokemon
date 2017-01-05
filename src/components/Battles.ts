@@ -1,15 +1,18 @@
 import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
+import { IBattleInfo as IBattleInfoBase, IBattleOptions as IBattleOptionsBase } from "battlemovr/lib/Battles";
 import * as iteams from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
+import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Animations } from "./battles/Animations";
 import { Moves } from "./battles/Moves";
 import { IStatus } from "./battles/Statuses";
 import { IStateSaveable } from "./Saves";
+import { IThing } from "./Things";
 
 /**
- * 
+ * Party Pokemon that can participate in battles.
  */
 export interface IPokemon extends IActor, IStateSaveable {
     /**
@@ -124,6 +127,73 @@ export interface IEnemyTeam extends iteams.ITeam {
 }
 
 /**
+ * Texts to display in battle menus.
+ */
+export interface IBattleTexts {
+    /**
+     * Text to display after a battle victory when in the real world again.
+     */
+    afterBattle: IMenuDialogRaw;
+
+    /**
+     * Text to display upon defeat.
+     */
+    defeat: IMenuDialogRaw;
+
+    /**
+     * Text for when the opponent sends out a Pokemon. The opponent's name and the
+     * Pokemon's nickname are between the Strings.
+     */
+    opponentSendOut: [string, string, string];
+
+    /**
+     * Text for when the player sends out a Pokemon. The Pokemon's name is between the 
+     * Strings.
+     */
+    playerSendOut: [string, string];
+
+    /**
+     * Text for when the battle starts. The opponent's name is between the Strings.
+     */
+    start: [string, string];
+
+    /**
+     * Text to display upon victory.
+     */
+    victory: IMenuDialogRaw;
+}
+
+/**
+ * Battle options specific to FullScreenPokemon
+ */
+export interface IPokemonBattleOptions {
+    /**
+     * Things that should be visible above the starting animation.
+     */
+    keptThings?: IThing[];
+
+    /**
+     * Texts to display in menus.
+     */
+    texts: IBattleTexts;
+
+    /**
+     * Audio theme to play during the battle.
+     */
+    theme: string;
+}
+
+/**
+ * Options to start a new battle.
+ */
+export type IBattleOptions = IBattleOptionsBase & Partial<IPokemonBattleOptions>;
+
+/**
+ * Information on an in-progress battle.
+ */
+export type IBattleInfo = IBattleInfoBase & IPokemonBattleOptions;
+
+/**
  * Battle functions used by FullScreenPokemon instances.
  */
 export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
@@ -136,6 +206,18 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Battle move functions used by FullScreenPokemon instances.
      */
     public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
+
+    /**
+     * Starts a new battle.
+     *
+     * @param partialBattleOptions   Options to start the battle.
+     */
+    public startBattle(partialBattleOptions: Partial<IBattleOptions>): void {
+        const battleOptions: IBattleOptions = this.fillOutBattleOptions(partialBattleOptions);
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.startBattle(battleOptions) as IBattleInfo;
+
+        this.gameStarter.scenePlayer.startCutscene("Battle", { battleInfo });
+    }
 
     /**
      * Heals a Pokemon back to full health.
@@ -152,5 +234,30 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         pokemon.status = undefined;
+    }
+
+    /**
+     * Fills in default values for battle options.
+     * 
+     * @param partialBattleOptions   Partial options to start a battle.
+     * @returns Completed options to start a battle.
+     */
+    protected fillOutBattleOptions(partialBattleOptions: Partial<IBattleOptions>): IBattleOptions {
+        return this.gameStarter.utilities.proliferate(
+            {
+                onComplete: (): void => { /* ... */ },
+                teams: {
+                    player: {
+                        actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
+                        selector: "player"
+                    },
+                    opponent: {
+                        actors: [],
+                        selector: "opponent"
+                    }
+                },
+                theme: "Battle Trainer"
+            },
+            partialBattleOptions);
     }
 }

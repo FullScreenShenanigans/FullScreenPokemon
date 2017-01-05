@@ -3,16 +3,22 @@ import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { OnActions } from "./OnActions";
+import { OnActions } from "./animations/OnActions";
+import { Transitions } from "./animations/Transitions";
 
 /**
  * Battle animations used by FullScreenPokemon instances.
  */
 export class Animations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IAnimations {
     /**
-     * Battle callback actions used by the FullScreenPokemon instance.
+     * Action animations used by the FullScreenPokemon instance.
      */
     public readonly onActions: OnActions<TGameStartr> = new OnActions(this.gameStarter);
+
+    /**
+     * Transition animations used by the FullScreenPokemon instance.
+     */
+    public readonly transitions: Transitions<TGameStartr> = new Transitions(this.gameStarter);
 
     /**
      * Animation for when the battle is complete.
@@ -44,5 +50,19 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
     public onKnockout(team: Team, onComplete: () => void): void {
         console.log("Knockout:", team);
         onComplete();
+    }
+
+    /**
+     * Animation for a battle starting.
+     * 
+     * @param onComplete   Callback for when this is done.
+     */
+    public onStart(onComplete: () => void): void {
+        this.transitions.play({
+            onComplete: (): void => {
+                // does onComplete get passed in?
+                this.gameStarter.scenePlayer.playRoutine("Entrance", { onComplete });
+            }
+        });
     }
 }

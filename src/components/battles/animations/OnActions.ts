@@ -1,12 +1,12 @@
 import { IFleeAction, IItemAction, IMoveAction, ISwitchAction } from "battlemovr/lib/Actions";
-import { IOnActions } from "battlemovr/lib/Callbacks";
+import { IOnActions } from "battlemovr/lib/Animations";
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
- * Battle callback actions used by FullScreenPokemon instances.
+ * Battle action animations used by FullScreenPokemon instances.
  */
 export class OnActions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IOnActions {
     /**
