@@ -60,7 +60,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
     public onStart(onComplete: () => void): void {
         this.transitions.play({
             onComplete: (): void => {
-                this.gameStarter.scenePlayer.playRoutine("Entrance", { onComplete });
+                this.gameStarter.scenePlayer.playRoutine("entrance", { onComplete });
             }
         });
     }
