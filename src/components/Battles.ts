@@ -1,5 +1,7 @@
 import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
-import { IBattleInfo as IBattleInfoBase, IBattleOptions as IBattleOptionsBase } from "battlemovr/lib/Battles";
+import { IOnBattleComplete } from "battlemovr/lib/Animations";
+import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
+import { ITeam, IUnderEachTeam } from "battlemovr/lib/Teams";
 import * as iteams from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
@@ -185,14 +187,34 @@ export interface IPokemonBattleOptions {
 }
 
 /**
- * Options to start a new battle.
+ * Minimum options to start a new battle.
  */
-export type IBattleOptions = IBattleOptionsBase & Partial<IPokemonBattleOptions>;
+export interface IPartialBattleOptions {
+    /**
+     * Opposing teams in the battle.
+     */
+    teams: Partial<IUnderEachTeam<Partial<ITeam>>>;
+}
+
+/**
+ * Complete options to start a new battle.
+ */
+export interface IBattleOptions extends IPartialBattleOptions {
+    /**
+     * Callback for when the battle is complete.
+     */
+    onComplete: IOnBattleComplete;
+
+    /**
+     * Opposing teams in the battle.
+     */
+    teams: IUnderEachTeam<ITeam>;
+}
 
 /**
  * Information on an in-progress battle.
  */
-export type IBattleInfo = IBattleInfoBase & IPokemonBattleOptions;
+export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptions;
 
 /**
  * Battle functions used by FullScreenPokemon instances.
@@ -218,7 +240,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      *
      * @param partialBattleOptions   Options to start the battle.
      */
-    public startBattle(partialBattleOptions: Partial<IBattleOptions>): void {
+    public startBattle(partialBattleOptions: IPartialBattleOptions): void {
         const battleOptions: IBattleOptions = this.fillOutBattleOptions(partialBattleOptions);
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.startBattle(battleOptions) as IBattleInfo;
 
@@ -248,10 +270,9 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param partialBattleOptions   Partial options to start a battle.
      * @returns Completed options to start a battle.
      */
-    protected fillOutBattleOptions(partialBattleOptions: Partial<IBattleOptions>): IBattleOptions {
+    protected fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
         return this.gameStarter.utilities.proliferate(
             {
-                onComplete: (): void => { /* ... */ },
                 teams: {
                     player: {
                         actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],

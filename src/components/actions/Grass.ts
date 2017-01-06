@@ -109,16 +109,13 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.actions.walking.animateCharacterPreventWalking(thing);
 
         console.log("Should start battle with", wildPokemon);
-        // this.gameStarter.battles.startBattle({
-        //     battlers: {
-        //         opponent: {
-        //             name: wildPokemon.title,
-        //             actors: [wildPokemon],
-        //             category: "Wild",
-        //             sprite: wildPokemon.title.join("") + "Front"
-        //         }
-        //     }
-        // });
+        this.gameStarter.battles.startBattle({
+            teams: {
+                opponent: {
+                    actors: [wildPokemon]
+                }
+            }
+        });
     }
 
     /**
