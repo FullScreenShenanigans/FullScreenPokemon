@@ -38,8 +38,6 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
     public start(cutscene: IBattleCutsceneSettings): void {
         this.gameStarter.audioPlayer.playTheme(cutscene.battleInfo.theme);
         this.gameStarter.graphics.moveBattleKeptThingsToText(cutscene.battleInfo.keptThings);
-
-        this.things.setup(cutscene);
     }
 
     /**
@@ -48,6 +46,7 @@ export class BattleCutscene<TGameStartr extends FullScreenPokemon> extends Compo
      * @param cutscene   Settings for the cutscene.
      */
     public entrance(cutscene: IBattleCutsceneSettings): void {
+        this.things.setup(cutscene);
         const { menu, opponent, player }: IBattleThings = cutscene.things;
 
         let playerX: number;

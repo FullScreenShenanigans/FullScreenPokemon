@@ -1,7 +1,6 @@
 import { IUnderEachTeam } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
-import { IBattleInfo } from "../../../components/Battles";
 import { IMenu } from "../../../components/Menus";
 import { IThing } from "../../../components/Things";
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -27,7 +26,9 @@ export interface IBattleThings extends IUnderEachTeam<IThing> {
  */
 export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * Sets up the Things displayed in a battle.
      * 
+     * @param cutscene   Settings for the battle cutscene.
      */
     public setup(cutscene: IBattleCutsceneSettings): void {
         this.gameStarter.menuGrapher.createMenu("Battle");
@@ -41,40 +42,48 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
     }
 
     /**
+     * Creates the initial Things displayed in a battle.
      * 
+     * @param cutscene   Settings for the cutscene.
      */
-    public takedown(battleInfo: IBattleInfo): void {
-        console.log("Takedown", battleInfo);
+    protected createThings(cutscene: IBattleCutsceneSettings): IBattleThings {
+        const background: IThing = this.addThingAsText(
+            "DirtWhite",
+            {
+                height: this.gameStarter.mapScreener.height,
+                width: this.gameStarter.mapScreener.width
+            });
+        this.gameStarter.utilities.arrayToBeginning(background, this.gameStarter.groupHolder.getGroup("Text") as IThing[]);
+
+        const menu: IMenu = this.gameStarter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
+
+        const opponent: IThing = this.addThingAsText(
+            cutscene.battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
+            {
+                opacity: 0
+            });
+
+        const player: IThing = this.addThingAsText(
+            cutscene.battleInfo.teams.player.selectedActor.title.join("") + "Back",
+            {
+                opacity: 0
+            });
+
+        return { background, menu, opponent, player };
     }
 
     /**
+     * Adds a new Thing and moves it to the Text group.
      * 
+     * @param title   Title of the Thing to add.
+     * @param attributes   Any attributes for the Thing.
+     * @returns The newly created Thing.
      */
-    protected createThings(cutscene: IBattleCutsceneSettings): IBattleThings {
-        const things: IBattleThings = {
-            background: this.gameStarter.things.add(
-                [
-                    "DirtWhite",
-                    {
-                        height: this.gameStarter.mapScreener.height,
-                        width: this.gameStarter.mapScreener.width
-                    }
-                ]),
-            menu: this.gameStarter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu,
-            opponent: this.gameStarter.objectMaker.make<IThing>(
-                cutscene.battleInfo.teams.opponent.selectedActor.title.join("") + "Back",
-                {
-                    opacity: 0
-                }),
-            player: this.gameStarter.objectMaker.make<IThing>(
-                cutscene.battleInfo.teams.player.selectedActor.title.join("") + "Back",
-                {
-                    opacity: 0
-                })
-        };
+    private addThingAsText(title: string, attributes: any): IThing {
+        const thing: IThing = this.gameStarter.things.add([title, attributes]);
 
-        this.gameStarter.groupHolder.switchMemberGroup(things.background, things.background.groupType, "Text");
+        this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, "Text");
 
-        return things;
+        return thing;
     }
 }
