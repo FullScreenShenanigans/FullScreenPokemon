@@ -3,13 +3,12 @@ import { Fishing } from "../Fishing";
 
 /**
  * A static description of an in-game item.
- * @todo Refactor this when items are implemented.
  */
 export interface IItemSchema {
     /**
-     * A short description of what the item does, such as "Cures Poison".
+     * Callback for when the item is used in the bag.
      */
-    effect: string;
+    bagActivate?: Function;
 
     /**
      * What category of items this falls under.
@@ -17,9 +16,9 @@ export interface IItemSchema {
     category: "Key" | "Main" | "Pokeball";
 
     /**
-     * How much the item costs in a store.
+     * A short description of what the item does, such as "Cures Poison".
      */
-    price?: number;
+    effect: string;
 
     /**
      * An error message displayed when you try to use an item at a time when you're not allowed.
@@ -27,9 +26,9 @@ export interface IItemSchema {
     error?: string;
 
     /**
-     * A Function to be called when the item is used.
+     * How much the item costs in a store.
      */
-    bagActivate?: Function;
+    price?: number;
 }
 
 /**

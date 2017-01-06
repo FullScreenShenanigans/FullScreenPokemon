@@ -192,21 +192,12 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      */
     public newPokemonIVs(): IValuePoints {
-        const output: any = {
+        return {
             attack: this.gameStarter.numberMaker.randomIntWithin(0, 15),
             defense: this.gameStarter.numberMaker.randomIntWithin(0, 15),
             speed: this.gameStarter.numberMaker.randomIntWithin(0, 15),
             special: this.gameStarter.numberMaker.randomIntWithin(0, 15)
         };
-
-        output.statistics.health.normal = (
-            8 * (output.attack % 2)
-            + 4 * (output.defense % 2)
-            + 2 * (output.speed % 2)
-            + (output.special % 2)
-        );
-
-        return output;
     }
 
     /**

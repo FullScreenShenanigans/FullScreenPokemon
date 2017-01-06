@@ -3,7 +3,7 @@ import { IOnActions } from "battlemovr/lib/Animations";
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { FullScreenPokemon } from "../../../FullScreenPokemon";
 
 /**
  * Battle action animations used by FullScreenPokemon instances.

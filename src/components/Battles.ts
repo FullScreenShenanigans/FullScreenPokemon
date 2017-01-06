@@ -7,6 +7,7 @@ import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Animations } from "./battles/Animations";
 import { Moves } from "./battles/Moves";
+import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
@@ -47,7 +48,7 @@ export interface IPokemon extends IActor, IStateSaveable {
 }
 
 /**
- * 
+ * Effort or individual value points for a Pokemon.
  */
 export interface IValuePoints {
     /**
@@ -206,6 +207,11 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Battle move functions used by FullScreenPokemon instances.
      */
     public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
+
+    /**
+     * Battle action selectors used by FullScreenPokemon instances.
+     */
+    public readonly selectors: Selectors<TGameStartr> = new Selectors(this.gameStarter);
 
     /**
      * Starts a new battle.

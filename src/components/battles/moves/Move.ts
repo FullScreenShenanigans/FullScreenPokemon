@@ -62,12 +62,20 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
     public constructor(gameStarter: TGameStartr, title: string, source: Team, target: Team) {
         super(gameStarter);
 
+        const opponentPokemon: IPokemon = gameStarter.battleMover.getBattleInfo().teams.opponent.selectedActor as IPokemon;
+        const playerPokemon: IPokemon = gameStarter.battleMover.getBattleInfo().teams.player.selectedActor as IPokemon;
+
+        if (source === Team.opponent) {
+            this.attacker = opponentPokemon;
+            this.defender = playerPokemon;
+        } else {
+            this.attacker = playerPokemon;
+            this.defender = opponentPokemon;
+        }
+
         this.title = title;
         this.source = source;
         this.target = target;
-
-        this.attacker = gameStarter.battleMover.getBattleInfo().teams[source].selectedActor as IPokemon;
-        this.defender = gameStarter.battleMover.getBattleInfo().teams[target].selectedActor as IPokemon;
 
         // Todo: where should this be done...?
         this.attackerThing = {} as any;
