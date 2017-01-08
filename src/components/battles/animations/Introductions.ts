@@ -1,5 +1,4 @@
-import { IOnIntroduction } from "battlemovr/lib/Animations";
-import { IUnderEachTeam } from "battlemovr/lib/Teams";
+import { IIntroductionAnimations } from "battlemovr/lib/animators/Introductions";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -7,8 +6,7 @@ import { FullScreenPokemon } from "../../../FullScreenPokemon";
 /**
  * Battle introduction animations used by FullScreenPokemon instances.
  */
-export class Introductions<TGameStartr extends FullScreenPokemon>
-    extends Component<TGameStartr> implements IUnderEachTeam<IOnIntroduction> {
+export class Introductions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IIntroductionAnimations {
     /**
      * Animation for the opponent introducing themselves.
      * 

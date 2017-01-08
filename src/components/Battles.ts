@@ -10,6 +10,7 @@ import { Animations } from "./battles/Animations";
 import { Moves } from "./battles/Moves";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
+import { Things } from "./battles/Things";
 import { IMenu } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
@@ -251,19 +252,24 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
  */
 export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * Battle animations used by FullScreenPokemon instances.
+     * Battle animations used by this FullScreenPokemon instance.
      */
     public readonly animations: Animations<TGameStartr> = new Animations(this.gameStarter);
 
     /**
-     * Battle move functions used by FullScreenPokemon instances.
+     * Battle move functions used by this FullScreenPokemon instance.
      */
     public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
 
     /**
-     * Battle action selectors used by FullScreenPokemon instances.
+     * Battle action selectors used by this FullScreenPokemon instance.
      */
     public readonly selectors: Selectors<TGameStartr> = new Selectors(this.gameStarter);
+
+    /**
+     * Thing visual handlers used by this FullScreenPokemon instance.
+     */
+    public readonly things: Things<TGameStartr> = new Things(this.gameStarter);
 
     /**
      * Starts a new battle.

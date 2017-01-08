@@ -739,8 +739,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      *                   and an Object of settings, or an actual Thing.
      * @param left   The horizontal point to place the Thing's left at (by
      *               default, 0).
-     * @param top   The vertical point to place the Thing's top at (by default,
-     *              0).
+     * @param top   The vertical point to place the Thing's top at (by default, 0).
      * @param useSavedInfo   Whether an Area's saved info in StateHolder should be 
      *                       applied to the Thing's position (by default, false).
      */
