@@ -1,12 +1,13 @@
 import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
 import { IOnBattleComplete } from "battlemovr/lib/Animations";
 import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
-import { ITeamDescriptor, IUnderEachTeam } from "battlemovr/lib/Teams";
+import { ITeamBase, ITeamDescriptor, IUnderEachTeam } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Animations } from "./battles/Animations";
+import { Decorations } from "./battles/Decorations";
 import { Moves } from "./battles/Moves";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
@@ -243,9 +244,26 @@ export interface IBattleOptions extends IPartialBattleOptions {
 }
 
 /**
+ * Common attributes for teams of Pokemon.
+ */
+export interface IBattleTeam extends ITeamBase {
+    /**
+     * Pokemon that will fight.
+     */
+    actors: IPokemon[];
+
+    /**
+     * The currently selected Pokemon.
+     */
+    selectedActor: IPokemon;
+}
+
+/**
  * Information on an in-progress battle.
  */
-export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptions;
+export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptions & {
+    teams: IUnderEachTeam<IBattleTeam>;
+};
 
 /**
  * Battle functions used by FullScreenPokemon instances.
@@ -255,6 +273,11 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Battle animations used by this FullScreenPokemon instance.
      */
     public readonly animations: Animations<TGameStartr> = new Animations(this.gameStarter);
+
+    /**
+     * Decoration handlers used by this FullScreenPokemon instance.
+     */
+    public readonly decorations: Decorations<TGameStartr> = new Decorations(this.gameStarter);
 
     /**
      * Battle move functions used by this FullScreenPokemon instance.

@@ -30,18 +30,18 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.transitions.play({
             onComplete: (): void => {
-                this.setupThings();
-                this.runTeamEntrances(onComplete);
+                this.setupThings(battleInfo);
+                this.runTeamEntrances(battleInfo, onComplete);
             }
         });
     }
 
     /**
      * Sets up the initial team Things.
+     * 
+     * @param battleInfo   Info for the current battle.
      */
-    private setupThings(): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-
+    private setupThings(battleInfo: IBattleInfo): void {
         this.gameStarter.menuGrapher.createMenu("Battle");
         battleInfo.things = this.createInitialThings(battleInfo);
     }
@@ -49,10 +49,10 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
     /**
      * Animations teams entering the battle.
      * 
+     * @param battleInfo   Info for the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private runTeamEntrances(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+    private runTeamEntrances(battleInfo: IBattleInfo, onComplete: () => void): void {
         const { menu, opponent, player }: IBattleThings = battleInfo.things;
 
         let playerX: number;
@@ -86,17 +86,30 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.runOpeningText(onComplete),
+            (): void => {
+                this.showPlayerPokeballs(battleInfo);
+                this.runOpeningText(battleInfo, onComplete);
+            },
             timeout);
+    }
+
+    /**
+     * Adds the player's Pokeball display for party size.
+     * 
+     * @param battleInfo   Info for the current battle.
+     */
+    private showPlayerPokeballs(battleInfo: IBattleInfo): void {
+        this.gameStarter.menuGrapher.createMenu("BattlePlayerHealth");
+        this.gameStarter.battles.decorations.addPokeballs("BattlePlayerHealth", battleInfo.teams.player.actors.length);
     }
 
     /**
      * Shows the introductory text.
      * 
+     * @param battleInfo   Info for the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private runOpeningText(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+    private runOpeningText(battleInfo: IBattleInfo, onComplete: () => void): void {
         const textStart: [string, string] = battleInfo.texts.start || ["", ""];
         const opponentName: string[] = battleInfo.teams.opponent.leader
             ? battleInfo.teams.opponent.leader.nickname
@@ -113,6 +126,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
                 ]
             ],
             (): void => {
+                this.gameStarter.menuGrapher.deleteMenu("BattlePlayerHealth");
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
                 onComplete();
             });
@@ -122,7 +136,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
     /**
      * Creates the initial Things displayed in a battle.
      * 
-     * @param cutscene   Settings for the cutscene.
+     * @param battleInfo   Info for the current battle.
      */
     private createInitialThings(battleInfo: IBattleInfo): IBattleThings {
         const background: IThing = this.addThingAsText(

@@ -1,3 +1,4 @@
+import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
@@ -10,7 +11,9 @@ import { IThing } from "../../../../Things";
  */
 export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * Runs an entrance animation for the player's selected Pokemon.
      * 
+     * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
@@ -54,13 +57,20 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
+        this.gameStarter.battles.decorations.addPokemonHealth(
+            battleInfo.teams.player.selectedActor,
+            Team.player);
+
         this.gameStarter.timeHandler.addEvent(
             (): void => this.poofSmoke(battleInfo, onComplete),
             timeout);
     }
 
     /**
+     * Creates a poof of smoke before the Pokemon appears.
      * 
+     * @param battleInfo   Info on the current battle.
+     * @param onComplete   Callback for when this is done.
      */
     private poofSmoke(battleInfo: IBattleInfo, onComplete: () => void): void {
         const left: number = battleInfo.things.menu.left + 32;
@@ -73,12 +83,15 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
     }
 
     /**
+     * Visually shows the Pokemon.
      * 
+     * @param battleInfo   Info on the current battle.
+     * @param onComplete   Callback for when this is done.
      */
     private appear(battleInfo: IBattleInfo, onComplete: () => void): void {
         this.gameStarter.menuGrapher.createMenu("GeneralText");
 
-        this.gameStarter.battles.things.setPlayer(battleInfo.teams.player.selectedActor.title.join("") + "Back");
+        this.gameStarter.battles.things.setPlayerThing(battleInfo.teams.player.selectedActor.title.join("") + "Back");
 
         onComplete();
     }

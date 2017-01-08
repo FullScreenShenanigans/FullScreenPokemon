@@ -322,7 +322,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
         let left: number;
 
         for (let i: number = 0; i < numStatistics; i += 1) {
-            statistics.push(this.gameStarter.utilities.makeDigit((pokemon as any)[statistics[i] + "Normal"], 3, "\t"));
+            statistics.push(this.gameStarter.utilities.makeDigit(pokemon.statistics[statistics[i]].normal, 3, "\t"));
             statistics[i] = statistics[i].toUpperCase();
         }
 
