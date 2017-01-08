@@ -30,7 +30,7 @@ export class Player<TGameStartr extends FullScreenPokemon> extends Component<TGa
     }
 
     /**
-     * Animation for when the player introducing themselves.
+     * Animation for the player introducing themselves.
      * 
      * @param health   New value for the actor's health.
      * @param onComplete   Callback for when this is done.

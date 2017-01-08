@@ -20,11 +20,9 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
         this.gameStarter.physics.killNormal(battleInfo.things.opponent);
         battleInfo.things.opponent = this.gameStarter.objectMaker.make<IThing>(thing, settings);
 
-        this.gameStarter.things.add(
-            battleInfo.things.opponent,
-            // these are very rough guesses for now...
-            battleInfo.things.menu.left + 180,
-            battleInfo.things.menu.top + 32);
+        this.gameStarter.things.add(battleInfo.things.opponent);
+        this.gameStarter.physics.setBottom(battleInfo.things.opponent, battleInfo.things.menu.top + 108);
+        this.gameStarter.physics.setRight(battleInfo.things.opponent, battleInfo.things.menu.right);
 
         this.gameStarter.groupHolder.switchMemberGroup(battleInfo.things.opponent, battleInfo.things.opponent.groupType, "Text");
     }

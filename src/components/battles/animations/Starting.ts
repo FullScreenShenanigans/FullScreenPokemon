@@ -99,8 +99,22 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
      * @param battleInfo   Info for the current battle.
      */
     private showPlayerPokeballs(battleInfo: IBattleInfo): void {
-        this.gameStarter.menuGrapher.createMenu("BattlePlayerHealth");
-        this.gameStarter.battles.decorations.addPokeballs("BattlePlayerHealth", battleInfo.teams.player.actors.length);
+        if (battleInfo.teams.player.leader) {
+            this.gameStarter.menuGrapher.createMenu("BattlePlayerHealth");
+            this.gameStarter.menuGrapher.createMenu("BattlePlayerPokeballs");
+            this.gameStarter.battles.decorations.addPokeballs(
+                "BattlePlayerPokeballs",
+                battleInfo.teams.player.actors.length);
+        }
+
+        if (battleInfo.teams.opponent.leader) {
+            this.gameStarter.menuGrapher.createMenu("BattleOpponentHealth");
+            this.gameStarter.menuGrapher.createMenu("BattleOpponentPokeballs");
+            this.gameStarter.battles.decorations.addPokeballs(
+                "BattleOpponentPokeballs",
+                battleInfo.teams.opponent.actors.length,
+                true);
+        }
     }
 
     /**
@@ -127,6 +141,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
             ],
             (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("BattlePlayerHealth");
+                this.gameStarter.menuGrapher.deleteMenu("BattleOpponentHealth");
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
                 onComplete();
             });

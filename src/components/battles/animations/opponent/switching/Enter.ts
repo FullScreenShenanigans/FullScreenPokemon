@@ -83,10 +83,6 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.battles.decorations.addPokemonHealth(
-            battleInfo.teams.opponent.selectedActor,
-            Team.opponent);
-
         this.gameStarter.timeHandler.addEvent(
             (): void => this.poofSmoke(battleInfo, onComplete),
             timeout);
@@ -99,8 +95,8 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param onComplete   Callback for when this is done.
      */
     private poofSmoke(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const left: number = battleInfo.things.menu.left + 32;
-        const top: number = battleInfo.things.menu.bottom - 32;
+        const left: number = battleInfo.things.menu.right - 32;
+        const top: number = battleInfo.things.menu.top + 32;
 
         this.gameStarter.actions.animateSmokeSmall(
             left,
@@ -121,7 +117,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
             battleInfo.teams.opponent.selectedActor,
             Team.opponent);
 
-        this.gameStarter.battles.things.setOpponentThing(battleInfo.teams.opponent.selectedActor.title.join("") + "Back");
+        this.gameStarter.battles.things.setOpponentThing(battleInfo.teams.opponent.selectedActor.title.join("") + "Front");
 
         onComplete();
     }

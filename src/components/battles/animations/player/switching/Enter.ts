@@ -18,7 +18,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
     public run(onComplete: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
-        battleInfo.teams.opponent.leader
+        battleInfo.teams.player.leader
             ? this.runWithLeader(battleInfo, onComplete)
             : this.runWithoutLeader(battleInfo, onComplete);
     }
@@ -82,10 +82,6 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
             ]
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-
-        this.gameStarter.battles.decorations.addPokemonHealth(
-            battleInfo.teams.opponent.selectedActor,
-            Team.opponent);
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.poofSmoke(battleInfo, onComplete),

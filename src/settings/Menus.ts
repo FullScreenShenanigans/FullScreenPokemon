@@ -1597,11 +1597,11 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                         "position": {
                             "horizontal": "right",
                             "offset": {
-                                "top": -12
+                                "top": 8
                             },
                         },
                         "args": {
-                            "height": 44
+                            "height": 24
                         }
                     } as imenugraphr.IMenuThingSchema,
                     {
@@ -1636,6 +1636,24 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "textYOffset": 2,
                 "textPaddingX": 2,
                 "textSpeed": 0
+            } as IMenuSchema,
+            "BattlePlayerPokeballs": {
+                "size": {
+                    "width": 112,
+                    "height": 20
+                },
+                "position": {
+                    "offset": {
+                        "left": 38,
+                        "top": 10
+                    }
+                },
+                "container": "BattlePlayerHealth",
+                "hidden": true,
+                "textPaddingX": 2,
+                "textSpeed": 0,
+                "textXOffset": 0,
+                "textYOffset": 0
             } as IMenuSchema,
             "BattlePlayerHealthTitle": {
                 "size": {
@@ -1788,6 +1806,24 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "textYOffset": 2,
                 "textPaddingX": 2,
                 "textSpeed": 0
+            } as IMenuSchema,
+            "BattleOpponentPokeballs": {
+                "size": {
+                    "width": 112,
+                    "height": 20
+                },
+                "position": {
+                    "offset": {
+                        "left": 24,
+                        "top": 2
+                    }
+                },
+                "container": "BattleOpponentHealth",
+                "hidden": true,
+                "textPaddingX": 2,
+                "textSpeed": 0,
+                "textXOffset": 0,
+                "textYOffset": 0
             } as IMenuSchema,
             "BattleOpponentHealthTitle": {
                 "position": {
