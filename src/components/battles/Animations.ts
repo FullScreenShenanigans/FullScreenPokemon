@@ -3,22 +3,35 @@ import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { Introductions } from "./animations/Introductions";
 import { OnActions } from "./animations/OnActions";
-import { Transitions } from "./animations/Transitions";
+import { Starting } from "./animations/Starting";
 
 /**
  * Battle animations used by FullScreenPokemon instances.
  */
 export class Animations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IAnimations {
     /**
+     * Introduction animations used by the FullScreenPokemon instance.
+     */
+    public readonly introductions: Introductions<TGameStartr> = new Introductions(this.gameStarter);
+
+    /**
      * Action animations used by the FullScreenPokemon instance.
      */
     public readonly onActions: OnActions<TGameStartr> = new OnActions(this.gameStarter);
 
     /**
-     * Transition animations used by the FullScreenPokemon instance.
+     * Battle start animations used by FullScreenPokemon instances.
      */
-    public readonly transitions: Transitions<TGameStartr> = new Transitions(this.gameStarter);
+    private readonly starting: Starting<TGameStartr> = new Starting(this.gameStarter);
+
+    /**
+     * Animation for a battle starting.
+     * 
+     * @param onComplete   Callback for when this is done.
+     */
+    public readonly onStart = (onComplete: () => void): void => this.starting.start(onComplete);
 
     /**
      * Animation for when the battle is complete.
@@ -50,18 +63,5 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
     public onKnockout(team: Team, onComplete: () => void): void {
         console.log("Knockout:", team);
         onComplete();
-    }
-
-    /**
-     * Animation for a battle starting.
-     * 
-     * @param onComplete   Callback for when this is done.
-     */
-    public onStart(onComplete: () => void): void {
-        this.transitions.play({
-            onComplete: (): void => {
-                this.gameStarter.scenePlayer.playRoutine("entrance", { onComplete });
-            }
-        });
     }
 }

@@ -1,8 +1,7 @@
 import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
 import { IOnBattleComplete } from "battlemovr/lib/Animations";
 import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
-import { ITeam, IUnderEachTeam } from "battlemovr/lib/Teams";
-import * as iteams from "battlemovr/lib/Teams";
+import { ITeamDescriptor, IUnderEachTeam } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
@@ -11,6 +10,7 @@ import { Animations } from "./battles/Animations";
 import { Moves } from "./battles/Moves";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
+import { IMenu } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
 
@@ -102,7 +102,7 @@ export interface IPokemonStatistics extends IStatistics {
 /**
  * 
  */
-export interface IEnemyTeam extends iteams.ITeam {
+export interface IEnemyTeam extends ITeamDescriptor {
     /**
      * A badge to gift when defeated.
      */
@@ -167,6 +167,21 @@ export interface IBattleTexts {
 }
 
 /**
+ * Things displayed in a battle.
+ */
+export interface IBattleThings extends IUnderEachTeam<IThing> {
+    /**
+     * Solid background color behind everything.
+     */
+    background: IThing;
+
+    /**
+     * Menu surrounding the battle area.
+     */
+    menu: IMenu;
+}
+
+/**
  * Battle options specific to FullScreenPokemon
  */
 export interface IPokemonBattleOptions {
@@ -184,6 +199,11 @@ export interface IPokemonBattleOptions {
      * Audio theme to play during the battle.
      */
     theme: string;
+
+    /**
+     * Things displayed in the battle.
+     */
+    things: IBattleThings;
 }
 
 /**
@@ -191,9 +211,19 @@ export interface IPokemonBattleOptions {
  */
 export interface IPartialBattleOptions {
     /**
+     * Whether the battle should advance its menus automatically.
+     */
+    automaticMenus?: boolean;
+
+    /**
      * Opposing teams in the battle.
      */
-    teams: Partial<IUnderEachTeam<Partial<ITeam>>>;
+    teams: Partial<IUnderEachTeam<Partial<ITeamDescriptor>>>;
+
+    /**
+     * Texts to display in menus.
+     */
+    texts?: Partial<IBattleTexts>;
 }
 
 /**
@@ -208,7 +238,7 @@ export interface IBattleOptions extends IPartialBattleOptions {
     /**
      * Opposing teams in the battle.
      */
-    teams: IUnderEachTeam<ITeam>;
+    teams: IUnderEachTeam<ITeamDescriptor>;
 }
 
 /**
@@ -242,9 +272,8 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public startBattle(partialBattleOptions: IPartialBattleOptions): void {
         const battleOptions: IBattleOptions = this.fillOutBattleOptions(partialBattleOptions);
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.startBattle(battleOptions) as IBattleInfo;
 
-        this.gameStarter.scenePlayer.startCutscene("Battle", { battleInfo });
+        this.gameStarter.battleMover.startBattle(battleOptions);
     }
 
     /**
@@ -270,18 +299,25 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param partialBattleOptions   Partial options to start a battle.
      * @returns Completed options to start a battle.
      */
-    protected fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
+    private fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
         return this.gameStarter.utilities.proliferate(
             {
                 teams: {
                     player: {
                         actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
+                        leader: {
+                            nickname: this.gameStarter.itemsHolder.getItem("name"),
+                            title: "Player".split("")
+                        },
                         selector: "player"
                     },
                     opponent: {
                         actors: [],
                         selector: "opponent"
                     }
+                },
+                texts: {
+                    start: ["", " would like to battle!"]
                 },
                 theme: "Battle Trainer"
             },

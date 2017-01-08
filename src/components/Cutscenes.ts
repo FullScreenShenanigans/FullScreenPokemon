@@ -1,7 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { BattleCutscene } from "./cutscenes/BattleCutscene";
 import { DaisyTownMapCutscene } from "./cutscenes/DaisyTownMapCutscene";
 import { ElderTrainingCutscene } from "./cutscenes/ElderTrainingCutscene";
 import { IntroCutscene } from "./cutscenes/IntroCutscene";
@@ -20,11 +19,6 @@ import { TrainerSpottedCutscene } from "./cutscenes/TrainerSpottedCutscene";
  * Cutscene functions used by FullScreenPokemon instances.
  */
 export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
-    /**
-     * Battle cutscene functions used by this FullScreenPokemon instance.
-     */
-    public readonly battle: BattleCutscene<TGameStartr> = new BattleCutscene(this.gameStarter);
-
     /**
      * DaisyTownMap cutscene functions used by this FullScreenPokemon instance.
      */

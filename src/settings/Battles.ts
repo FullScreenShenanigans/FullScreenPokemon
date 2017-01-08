@@ -18,6 +18,9 @@ export function GenerateBattlesSettings(fsp: FullScreenPokemon): IBattlesModuleS
     return {
         animations: fsp.battles.animations,
         moves: fsp.battles.moves,
-        selectors: fsp.battles.selectors
+        selectorFactories: {
+            opponent: fsp.battles.selectors.opponent,
+            player: fsp.battles.selectors.player
+        }
     };
 }

@@ -11,10 +11,6 @@ export function GenerateScenesSettings(fsp: FullScreenPokemon): IScenesModuleSet
 
     return {
         cutscenes: {
-            Battle: {
-                firstRoutine: "start",
-                routines: fsp.cutscenes.battle
-            },
             DaisyTownMap: {
                 firstRoutine: "Greeting",
                 routines: fsp.cutscenes.daisyTownMap

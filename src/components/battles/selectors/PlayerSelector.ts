@@ -17,6 +17,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * @param onChoice   Callback for when an action is chosen.
      */
     public nextAction(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
+        this.gameStarter.menuGrapher.createMenu("BattleOptions");
         this.gameStarter.menuGrapher.addMenuList("BattleOptions", {
             options: [
                 {
@@ -37,6 +38,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
                 }
             ]
         });
+        this.gameStarter.menuGrapher.setActiveMenu("BattleOptions");
     }
 
     /**

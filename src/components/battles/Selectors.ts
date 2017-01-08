@@ -1,3 +1,4 @@
+import { ISelector, ISelectorFactory } from "battlemovr/lib/Selectors";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -9,12 +10,12 @@ import { PlayerSelector } from "./selectors/PlayerSelector";
  */
 export class Selectors<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * Selector for an opponent's actions.
+     * Generates selectors for an opponent's actions.
      */
-    public readonly opponent: OpponentSelector<TGameStartr> = new OpponentSelector(this.gameStarter);
+    public readonly opponent: ISelectorFactory = (): ISelector => new OpponentSelector(this.gameStarter);
 
     /**
-     * Selector for a player's actions.
+     * Generates selectors for a player's actions.
      */
-    public readonly player: PlayerSelector<TGameStartr> = new PlayerSelector(this.gameStarter);
+    public readonly player: ISelectorFactory = (): ISelector => new PlayerSelector(this.gameStarter);
 }

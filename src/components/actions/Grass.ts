@@ -113,6 +113,9 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
                 opponent: {
                     actors: [wildPokemon]
                 }
+            },
+            texts: {
+                start: ["Wild ", " appeared!"]
             }
         });
     }
