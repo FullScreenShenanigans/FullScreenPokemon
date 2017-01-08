@@ -7,11 +7,11 @@ import { IMenu } from "../../../../Menus";
 import { IThing } from "../../../../Things";
 
 /**
- * Player actor entrance animations used by FullScreenPokemon instances.
+ * Opponent actor entrance animations used by FullScreenPokemon instances.
  */
 export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * Runs an entrance animation for the player's selected Pokemon.
+     * Runs an entrance animation for the opponent's selected Pokemon.
      * 
      * @param onComplete   Callback for when this is done.
      */
@@ -31,8 +31,8 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     private runWithoutLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
         this.gameStarter.battles.decorations.addPokemonHealth(
-            battleInfo.teams.player.selectedActor,
-            Team.player);
+            battleInfo.teams.opponent.selectedActor,
+            Team.opponent);
 
         onComplete();
     }
@@ -44,23 +44,23 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param onComplete   Callback for when this is done.
      */
     private runWithLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const player: IThing = battleInfo.things.player;
+        const opponent: IThing = battleInfo.things.opponent;
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
-        const playerX: number = this.gameStarter.physics.getMidX(player);
-        const playerGoal: number = menu.left - player.width / 2;
-        const textPlayerSendOut: [string, string] = battleInfo.texts.playerSendOut || ["", ""];
+        const opponentX: number = this.gameStarter.physics.getMidX(opponent);
+        const opponentGoal: number = menu.right + opponent.width / 2;
+        const textOpponentSendOut: [string, string] = battleInfo.texts.opponentSendOut || ["", ""];
         const timeout: number = 24;
 
         this.gameStarter.actions.animateSlideHorizontal(
-            player,
-            (playerGoal - playerX) / timeout,
-            playerGoal,
+            opponent,
+            (opponentGoal - opponentX) / timeout,
+            opponentGoal,
             1);
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 this.gameStarter.actions.animateFadeAttribute(
-                    player,
+                    opponent,
                     "opacity",
                     -2 / timeout,
                     0,
@@ -75,9 +75,9 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
             "GeneralText",
             [
                 [
-                    textPlayerSendOut[0],
-                    battleInfo.teams.player.selectedActor.nickname,
-                    textPlayerSendOut[1]
+                    textOpponentSendOut[0],
+                    battleInfo.teams.opponent.selectedActor.nickname,
+                    textOpponentSendOut[1]
                 ]
             ]
         );
@@ -118,10 +118,10 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.createMenu("GeneralText");
 
         this.gameStarter.battles.decorations.addPokemonHealth(
-            battleInfo.teams.player.selectedActor,
-            Team.player);
+            battleInfo.teams.opponent.selectedActor,
+            Team.opponent);
 
-        this.gameStarter.battles.things.setPlayerThing(battleInfo.teams.player.selectedActor.title.join("") + "Back");
+        this.gameStarter.battles.things.setOpponentThing(battleInfo.teams.opponent.selectedActor.title.join("") + "Back");
 
         onComplete();
     }

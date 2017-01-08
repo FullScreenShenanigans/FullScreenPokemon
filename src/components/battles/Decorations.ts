@@ -65,18 +65,15 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
      */
     private setPokemonHealthBar(team: Team, health: IStatistic): void {
         const nameUpper: string = team === Team.player ? "Player" : "Opponent";
-        const menuNumbers: string = "Battle" + nameUpper + "HealthNumbers";
         const bar: IThing = this.gameStarter.utilities.getThingById("HPBarFill" + nameUpper);
         const barWidth: number = this.gameStarter.equations.widthHealthBar(100, health);
         const healthDialog: string = this.gameStarter.utilities.makeDigit(health.current, 3, "\t")
             + "/"
             + this.gameStarter.utilities.makeDigit(health.normal, 3, "\t");
 
-        if (this.gameStarter.menuGrapher.getMenu(menuNumbers)) {
-            for (const menu of this.gameStarter.menuGrapher.getMenu(menuNumbers).children) {
-                this.gameStarter.physics.killNormal(menu as IThing);
-            }
-
+        if (team !== Team.opponent) {
+            const menuNumbers: string = "Battle" + nameUpper + "HealthNumbers";
+            this.gameStarter.menuGrapher.createMenu(menuNumbers);
             this.gameStarter.menuGrapher.addMenuDialog(menuNumbers, healthDialog);
         }
 

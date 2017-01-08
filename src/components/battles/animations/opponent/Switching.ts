@@ -1,20 +1,20 @@
-import { ISwitchingAnimations } from "battlemovr/lib/Animations";
+import { IOnEnter, ISwitchingAnimations } from "battlemovr/lib/Animations";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+import { Enter } from "./switching/Enter";
 
 /**
  * Opponent switching animations used by FullScreenPokemon instances.
  */
 export class Switching<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISwitchingAnimations {
     /**
-     * Animation for when the opponent's actor enters battle.
+     * Animation for when the player's actor enters battle.
      * 
-     * @param health   New value for the actor's health.
      * @param onComplete   Callback for when this is done.
      */
-    public enter(onComplete: () => void): void {
-        onComplete();
+    public enter: IOnEnter = (onComplete: () => void): void => {
+        new Enter(this.gameStarter).run(onComplete);
     }
 
     /**
