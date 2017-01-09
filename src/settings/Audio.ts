@@ -10,7 +10,7 @@ export function GenerateAudioSettings(_fsp: FullScreenPokemon): IAudioModuleSett
     "use strict";
 
     return {
-        directory: "Sounds",
+        directory: "sounds",
         fileTypes: ["mp3"],
         library: {
             Sounds: [
