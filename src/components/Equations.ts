@@ -4,17 +4,22 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
-import { IBattleModification } from "./constants/battleModifications";
 import { IBattleBall } from "./constants/Items";
 import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
+import { Moves } from "./equations/Moves";
 import { IWildPokemonSchema } from "./Maps";
 import { ICharacter, IGrass } from "./Things";
 
 /**
- * Math functions used by FullScreenPokemon instances.
+ * Common equations used by FullScreenPokemon instances.
  */
 export class Equations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Move equations used by this FullScreenPokemon instance.
+     */
+    public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
+
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.
      * 
@@ -397,79 +402,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Determines what move an opponent should take in battle.
-     * 
-     * @param player   The in-battle player.
-     * @param opponent   The in-battle opponent.
-     * @returns The contatenated name of the move the opponent will choose.
-     * @see http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
-     * @remarks Todo: Also filter for moves with > 0 remaining remaining...
-     */
-    public opponentMove(player: any, opponent: any): string {
-        console.log("Will need to calculate opponent move for", player, opponent);
-        return "";
-        // const possibilities: IMovePossibility[] = opponent.selectedActor!.moves.map(
-        //     (move: IMove): IMovePossibility => ({
-        //         move: move.title,
-        //         priority: 10
-        //     }));
-
-        // // Wild Pokemon just choose randomly
-        // if (opponent.category === "Wild") {
-        //     return this.gameStarter.numberMaker.randomArrayMember(possibilities).move;
-        // }
-
-        // // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
-        // if (player.selectedActor!.status && !opponent.dumb) {
-        //     for (const possibility of possibilities) {
-        //         if (this.moveOnlyStatuses(this.gameStarter.constants.moves.byName[possibility.move])) {
-        //             possibility.priority += 5;
-        //         }
-        //     }
-        // }
-
-        // // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
-        // if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications.turnTwo.opponentType)) {
-        //     for (const possibility of possibilities) {
-        //         this.applyMoveEffectPriority(
-        //             possibility,
-        //             this.gameStarter.constants.battleModifications.turnTwo,
-        //             player.selectedActor!,
-        //             1);
-        //     }
-        // }
-
-        // // Modification 3 (Good AI): Prefer a move that is super effective.
-        // // Do not use moves that are not very effective as long as there is an alternative.
-        // if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications.goodAi.opponentType)) {
-        //     for (let i: number = 0; i < possibilities.length; i += 1) {
-        //         this.applyMoveEffectPriority(
-        //             possibilities[i],
-        //             this.gameStarter.constants.battleModifications.goodAi,
-        //             player.selectedActor!,
-        //             1);
-        //     }
-        // }
-
-        // // The AI uses rejection sampling on the four moves with ratio 63:64:63:66,
-        // // with only the moves that are most favored after applying the modifications being acceptable.
-        // let lowest: number = possibilities[0].priority;
-        // if (possibilities.length > 1) {
-        //     for (const possibility of possibilities) {
-        //         if (possibility.priority < lowest) {
-        //             lowest = possibility.priority;
-        //         }
-        //     }
-
-        //     possibilities = possibilities.filter(function (possibility: IMovePossibility): boolean {
-        //         return possibility.priority === lowest;
-        //     });
-        // }
-
-        // return this.gameStarter.numberMaker.randomArrayMember(possibilities).move;
-    }
-
-    /**
      * Checks whether a Pokemon contains any of the given types.
      * 
      * @param pokemon   A Pokemon.
@@ -484,109 +416,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         return false;
-    }
-
-    /**
-     * Checks whether a move only has a status effect (does no damage, or nothing).
-     * 
-     * @param move   The move.
-     * @returns Whether the moves has only a status effect.
-     */
-    public moveOnlyStatuses(move: IMoveSchema): boolean {
-        for (const effect of move.effects) {
-            if (effect.type === "damage") {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Modifies a move possibility's priority based on battle state.
-     * 
-     * @param possibility   A move possibility.
-     * @param modification   A modification summary for a part of the battle state.
-     * @param target   The Pokemon being targeted.
-     * @param amount   How much to modify the move's priority.
-     */
-    public applyMoveEffectPriority(
-        possibility: any /* IMovePossibility */,
-        modification: IBattleModification,
-        target: IPokemon,
-        amount: number): void {
-        const preferences: ([string, string, number] | [string, string])[] = modification.preferences;
-        const move: IMoveSchema = this.gameStarter.constants.moves.byName[possibility.move];
-
-        for (const preference of preferences) {
-            console.log("Should analyze", preference, "against", target, amount, move);
-            // switch (preference[0]) {
-            //     // ["Move", String]
-            //     // Favorable match
-            //     case "Move":
-            //         if (possibility.move === preference[1]) {
-            //             possibility.priority -= amount;
-            //             return;
-            //         }
-            //         break;
-
-            //     // ["Raise", String, Number]
-            //     // Favorable match
-            //     case "Raise":
-            //         if (
-            //             move.effect === "Raise"
-            //             && move.raise === preference[1]
-            //             && move.amount === preference[2]
-            //         ) {
-            //             possibility.priority -= amount;
-            //             return;
-            //         }
-            //         break;
-
-            //     // ["Lower", String, Number]
-            //     // Favorable match
-            //     case "Lower":
-            //         if (
-            //             move.effect === "Lower"
-            //             && move.lower === preference[1]
-            //             && move.amount === preference[2]
-            //         ) {
-            //             possibility.priority -= amount;
-            //             return;
-            //         }
-            //         break;
-
-            //     // ["Super", String, String]
-            //     // Favorable match
-            //     case "Super":
-            //         if (
-            //             move.damage !== "Non-Damaging"
-            //             && move.type === preference[0]
-            //             && target.types.indexOf(preference[1]) !== -1
-            //         ) {
-            //             possibility.priority -= amount;
-            //             return;
-            //         }
-            //         break;
-
-            //     // ["Weak", String, String]
-            //     // Unfavorable match
-            //     case "Weak":
-            //         if (
-            //             move.damage !== "Non-Damaging"
-            //             && move.type === preference[0]
-            //             && target.types.indexOf(preference[1]) !== -1
-            //         ) {
-            //             possibility.priority += amount;
-            //             return;
-            //         }
-            //         break;
-
-            //     // By default, do nothing
-            //     default:
-            //         break;
-            // }
-        }
     }
 
     /**

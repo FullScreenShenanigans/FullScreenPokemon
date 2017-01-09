@@ -103,7 +103,7 @@ export interface IPokemonStatistics extends IStatistics {
 }
 
 /**
- * 
+ * An enemy team attacking the player.
  */
 export interface IEnemyTeam extends ITeamDescriptor {
     /**
@@ -112,7 +112,7 @@ export interface IEnemyTeam extends ITeamDescriptor {
     badge?: string;
 
     /**
-     * Whether this opponent doesn't understand status effects, for the opponentMove equation.
+     * Whether this opponent doesn't understand status effects in move priority generation.
      */
     dumb?: boolean;
 
@@ -130,6 +130,11 @@ export interface IEnemyTeam extends ITeamDescriptor {
      * A monetary reward to give after defeated in battle.
      */
     reward?: number;
+
+    /**
+     * Whether this opponent should override its type for better moves in move priority generation.
+     */
+    smart?: boolean;
 }
 
 /**
@@ -247,7 +252,7 @@ export interface IBattleOptions extends IPartialBattleOptions {
 /**
  * Common attributes for teams of Pokemon.
  */
-export interface IBattleTeam extends ITeamBase {
+export interface IBattleTeam extends ITeamBase, IEnemyTeam {
     /**
      * Pokemon that will fight.
      */

@@ -1,5 +1,6 @@
 import { IMove } from "battlemovr/lib/Actors";
 import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
+import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -20,9 +21,10 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * Determines the next action to take.
      * 
      * @param battleInfo   State for an ongoing battle.
+     * @param team   The player's team.
      * @param onChoice   Callback for when an action is chosen.
      */
-    public nextAction(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
+    public nextAction(battleInfo: IBattleInfo, _team: Team.player, onChoice: IOnChoice): void {
         this.resetGui(battleInfo, onChoice);
     }
 

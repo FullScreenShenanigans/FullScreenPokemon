@@ -1,5 +1,4 @@
-import { IMoveEffect } from "battlemovr/lib/Effects";
-import { Team } from "battlemovr/lib/Teams";
+import { EffectTarget, IMoveEffect } from "battlemovr/lib/Effects";
 
 import { Actions } from "../../components/Actions";
 import { IPokemon } from "../../components/Battles";
@@ -381,7 +380,7 @@ export class Moves {
             effects: [{
                 change: -1,
                 statistic: "attack",
-                target: Team.opponent,
+                target: EffectTarget.defender,
                 type: "statistic"
             }],
             accuracy: 100,
