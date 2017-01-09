@@ -590,33 +590,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Determines whether a player's Pokemon should move before the opponent's.
-     * 
-     * @param player   The in-battle player.
-     * @param choicePlayer   The concatenated name of the move the player chose.
-     * @param opponent   The in-battle opponent.
-     * @param choiesOpponent   The concatenated name of the move the opponent chose.
-     * @returns Whether the player will move before the opponent.
-     * @see http://bulbapedia.bulbagarden.net/wiki/Priority
-     * @remarks Todo: Account for items, switching, etc.
-     * @remarks Todo: Factor in spec differences from paralyze, etc.
-     */
-    public playerMovesFirst(
-        player: any /* IBattler */,
-        choicePlayer: string,
-        opponent: any /* IBattler */,
-        choiceOpponent: string): boolean {
-        const movePlayer: IMoveSchema = this.gameStarter.constants.moves.byName[choicePlayer];
-        const moveOpponent: IMoveSchema = this.gameStarter.constants.moves.byName[choiceOpponent];
-
-        if (movePlayer.priority === moveOpponent.priority) {
-            return player.selectedActor!.Speed > opponent.selectedActor!.Speed;
-        }
-
-        return movePlayer.priority > moveOpponent.priority;
-    }
-
-    /**
      * Computes how much damage a move should do to a Pokemon.
      * 
      * @param move   The concatenated name of the move.

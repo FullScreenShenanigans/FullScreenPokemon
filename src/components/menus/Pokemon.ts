@@ -78,9 +78,6 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public openPartyMenu(settings: IPartyMenuSettings): void {
         const listings: IPokemon[] = settings.pokemon || this.gameStarter.itemsHolder.getItem("PokemonInParty");
-        if (!listings || !listings.length) {
-            return;
-        }
 
         this.gameStarter.menuGrapher.createMenu("Pokemon", settings);
         this.gameStarter.menuGrapher.addMenuList("Pokemon", {

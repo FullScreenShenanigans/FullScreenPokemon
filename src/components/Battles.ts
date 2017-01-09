@@ -6,6 +6,7 @@ import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+import { ActionsOrderer } from "./battles/ActionsOrderer";
 import { Animations } from "./battles/Animations";
 import { Decorations } from "./battles/Decorations";
 import { Moves } from "./battles/Moves";
@@ -77,7 +78,7 @@ export interface IValuePoints {
 }
 
 /**
- * 
+ * Statistics for a Pokemon.
  */
 export interface IPokemonStatistics extends IStatistics {
     /**
@@ -269,6 +270,11 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
  * Battle functions used by FullScreenPokemon instances.
  */
 export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Actions orderer used by this FullScreenPokemon instance.
+     */
+    public readonly actionsOrderer: ActionsOrderer<TGameStartr> = new ActionsOrderer(this.gameStarter);
+
     /**
      * Battle animations used by this FullScreenPokemon instance.
      */

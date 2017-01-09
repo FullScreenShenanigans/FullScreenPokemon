@@ -3,13 +3,19 @@ import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../Battles";
+import { IBattleInfo } from "../../Battles";
 import { IInventoryListing } from "../../menus/Items";
+import { Switching } from "./player/Switching";
 
 /**
- * Selector for a player's actions.
+ * Selector for a player's actions used by FullScreenPokemon instances.
  */
 export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISelector {
+    /**
+     * Switching logic used by this instance.
+     */
+    private readonly switching: Switching<TGameStartr> = new Switching(this.gameStarter);
+
     /**
      * Determines the next action to take.
      * 
@@ -17,6 +23,17 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * @param onChoice   Callback for when an action is chosen.
      */
     public nextAction(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
+        this.resetGui(battleInfo, onChoice);
+    }
+
+    /**
+     * Resets the battle options menus.
+     * 
+     * @param battleInfo   State for an ongoing battle.
+     * @param onChoice   Callback for when an action is chosen.
+     */
+    private resetGui(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.createMenu("BattleOptions");
         this.gameStarter.menuGrapher.addMenuList("BattleOptions", {
             options: [
@@ -30,7 +47,9 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
                 },
                 {
                     text: ["Poke", "Mon"],
-                    callback: (): void => this.openBattlePokemonMenu(onChoice)
+                    callback: (): void => this.switching.openBattlePokemonMenu(
+                        onChoice,
+                        (): void => this.resetGui(battleInfo, onChoice))
                 },
                 {
                     text: "RUN",
@@ -47,7 +66,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      */
-    protected openBattleMovesMenu(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
+    private openBattleMovesMenu(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
         const moves: IMove[] = battleInfo.teams.player.selectedActor.moves;
         const options: any[] = moves.map((move: IMove): any => {
             return {
@@ -78,7 +97,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      */
-    protected openBattleItemsMenu(onChoice: IOnChoice): void {
+    private openBattleItemsMenu(onChoice: IOnChoice): void {
         this.gameStarter.menus.items.openItemsMenu({
             backMenu: "BattleOptions",
             container: "Battle",
@@ -93,28 +112,9 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
     }
 
     /**
-     * Opens the in-battle Pokemon menu.
-     * 
-     * @param battleInfo   State for an ongoing battle.
-     * @param onChoice   Callback for when an action is chosen.
-     */
-    protected openBattlePokemonMenu(onChoice: IOnChoice): void {
-        this.gameStarter.menus.pokemon.openPartyMenu({
-            backMenu: "BattleOptions",
-            container: "Battle",
-            onSwitch: (pokemon: IPokemon): void => {
-                onChoice({
-                    newActor: pokemon,
-                    type: "switch"
-                });
-            }
-        });
-    }
-
-    /**
      * Chooses to attempt to flee the battle.
      */
-    protected attemptToFlee(onChoice: IOnChoice): void {
+    private attemptToFlee(onChoice: IOnChoice): void {
         onChoice({
             type: "flee"
         });

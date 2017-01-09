@@ -1,4 +1,6 @@
+import { IAction } from "battlemovr/lib/Actions";
 import { IBattleMovrSettings } from "battlemovr/lib/IBattleMovr";
+import { ITeamAction, IUnderEachTeam } from "battlemovr/lib/Teams";
 import * as igamestartr from "gamestartr/lib/IGameStartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -16,6 +18,9 @@ export function GenerateBattlesSettings(fsp: FullScreenPokemon): IBattlesModuleS
     "use strict";
 
     return {
+        actionsOrderer: (actions: IUnderEachTeam<IAction>): ITeamAction[] => {
+            return fsp.battles.actionsOrderer.order(actions);
+        },
         animations: fsp.battles.animations,
         selectorFactories: {
             opponent: fsp.battles.selectors.opponent,
