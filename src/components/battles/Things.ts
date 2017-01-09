@@ -22,7 +22,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         this.gameStarter.things.add(battleInfo.things.opponent);
         this.gameStarter.physics.setBottom(battleInfo.things.opponent, battleInfo.things.menu.top + 108);
-        this.gameStarter.physics.setRight(battleInfo.things.opponent, battleInfo.things.menu.right);
+        this.gameStarter.physics.setRight(battleInfo.things.opponent, battleInfo.things.menu.right - 16);
 
         this.gameStarter.groupHolder.switchMemberGroup(battleInfo.things.opponent, battleInfo.things.opponent.groupType, "Text");
     }

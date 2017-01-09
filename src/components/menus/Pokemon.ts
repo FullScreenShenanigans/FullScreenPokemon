@@ -227,12 +227,12 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             container: "Pokemon"
         });
 
-        this.openPokemonLevelUpStats({
+        this.addPokemonStats({
             pokemon: pokemon,
             container: "PokemonMenuStats",
             size: {
-                width: 40,
-                height: 40
+                width: 160,
+                height: 168
             },
             position: {
                 vertical: "bottom",
@@ -242,7 +242,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                     top: -3
                 }
             },
-            textXOffset: 4
+            textXOffset: 16
         });
 
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
@@ -271,13 +271,13 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             position: {
                 horizontal: "left",
                 offset: {
-                    top: 0.5,
-                    left: 8.5
+                    top: 2,
+                    left: 34
                 }
             },
             args: {
                 width: Math.max(health, 1),
-                height: 1,
+                height: 4,
                 hidden: health === 0
             }
         });
@@ -291,8 +291,8 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             position: {
                 vertical: "bottom",
                 offset: {
-                    left: 9,
-                    top: -48
+                    left: 36,
+                    top: -192
                 }
             }
         });
@@ -301,15 +301,15 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Opens the LevelUpStats menu for a Pokemon to view its statistics.
+     * Adds the LevelUpStats menu for a Pokemon to view its statistics.
      * 
      * @param settings   Settings to open the menu.
      */
-    public openPokemonLevelUpStats(settings: ILevelUpStatsMenuSettings): void {
+    private addPokemonStats(settings: ILevelUpStatsMenuSettings): void {
         const pokemon: IPokemon = settings.pokemon;
         const statistics: string[] = this.gameStarter.constants.pokemon.statisticNamesDisplayed.slice();
         const numStatistics: number = statistics.length;
-        const textXOffset: number = settings.textXOffset || 8;
+        const textXOffset: number = settings.textXOffset || 32;
         const menuSchema: IMenuSchema = {
             callback: (): void => this.gameStarter.menuGrapher.deleteMenu("LevelUpStats"),
             onMenuDelete: settings.onMenuDelete,
@@ -328,10 +328,10 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         menuSchema.childrenSchemas = statistics.map((text: string, i: number): IMenuWordSchema => {
             if (i < numStatistics) {
-                top = i * 8 + 4;
+                top = i * 32 + 16;
                 left = textXOffset;
             } else {
-                top = (i - numStatistics + 1) * 8;
+                top = (i - numStatistics + 1) * 32;
                 left = textXOffset + 20;
             }
 
@@ -340,7 +340,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 words: [text],
                 position: {
                     offset: {
-                        top: top - .5,
+                        top: top - 2,
                         left: left
                     }
                 }
