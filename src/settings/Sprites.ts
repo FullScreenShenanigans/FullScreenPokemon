@@ -1006,7 +1006,7 @@ export function GenerateSpritesSettings(_fsp: FullScreenPokemon): ISpritesModule
                 "CharMon": "p[0,2]1101100010101000100010001000100010010010000110100001011000010010",
                 "CharNo": "p[0,2]x08,1001000011010x17,01011011010110010111",
                 "CharID": "p[0,2]x09,101110001010010010100100101001001011100",
-                "CharHyphen": "p[0,2]x033,x16,",
+                "CharHyphen": "p[0,2]x033,x16,00",
                 "CharMDash": "p[0,2]x025,x17,0x17,",
                 "CharUnderscore": "p[0,2]x049,x17,0x17,",
                 "CharQuestionMark": "p[0,2]x09,x16,011100x15,00111000011x014,11x06,11000",

@@ -223,11 +223,11 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
             backMenu: "PokemonMenuContext",
-            callback: (): void => this.openPokemonMenuStatsSecondary(pokemon),
+            callback: (): void => this.addSecondaryStats(pokemon),
             container: "Pokemon"
         });
 
-        this.addPokemonStats({
+        this.addPrimaryStats({
             pokemon: pokemon,
             container: "PokemonMenuStats",
             size: {
@@ -305,7 +305,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
      * 
      * @param settings   Settings to open the menu.
      */
-    private addPokemonStats(settings: ILevelUpStatsMenuSettings): void {
+    private addPrimaryStats(settings: ILevelUpStatsMenuSettings): void {
         const pokemon: IPokemon = settings.pokemon;
         const statistics: string[] = this.gameStarter.constants.pokemon.statisticNamesDisplayed.slice();
         const numStatistics: number = statistics.length;
@@ -322,7 +322,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
         let left: number;
 
         for (let i: number = 0; i < numStatistics; i += 1) {
-            statistics.push(this.gameStarter.utilities.makeDigit(pokemon.statistics[statistics[i]].normal, 3, "\t"));
+            statistics.push(this.gameStarter.utilities.makeDigit(pokemon.statistics[statistics[i]].normal, 7, "\t"));
             statistics[i] = statistics[i].toUpperCase();
         }
 
@@ -363,45 +363,43 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
      * 
      * @param pokemon   The Pokemon to open the menu for.
      */
-    public openPokemonMenuStatsSecondary(pokemon: IPokemon): void {
+    private addSecondaryStats(pokemon: IPokemon): void {
         const experienceRemaining: number = this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1);
         const options: any[] = pokemon.moves.map(
             (move: IMove): any => {
-                const characters: any[] = [" "];
-                const output: any = {
-                    text: characters
-                };
+                const text: any[] = [" "];
+                const output: any = { text };
 
-                characters.push({
+                text.push({
                     command: true,
-                    x: 40,
-                    y: 4
+                    x: 160,
+                    y: 16
                 });
 
-                characters.push({
+                text.push({
                     command: true,
-                    y: .5
+                    y: 2
                 });
-                characters.push("PP", " ");
-                characters.push({
+                text.push("PP", " ");
+                text.push({
                     command: true,
-                    y: -.5
+                    y: -2
                 });
-                characters.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
-                characters.push("/");
-                characters.push(
+                text.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
+                text.push("/");
+                text.push(
                     ...this.gameStarter.utilities.makeDigit(
                         this.gameStarter.constants.moves.byName[move.title].PP, 2, " ")
                             .split(""));
 
-                characters.push({
+                text.push({
                     command: true,
-                    x: -75,
-                    y: -4
+                    x: -300,
+                    y: -16
                 });
 
                 // TODO: Moves should always be uppercase...
-                characters.push(...move.title.toUpperCase().split(""));
+                text.push(...move.title.toUpperCase().split(""));
 
                 return output;
             });
@@ -413,8 +411,8 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                     "-",
                     {
                         command: true,
-                        x: 40,
-                        y: 4
+                        x: 160,
+                        y: 16
                     },
                     "-",
                     "-"
@@ -438,9 +436,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsMoves");
-        this.gameStarter.menuGrapher.addMenuList("PokemonMenuStatsMoves", {
-            options: options
-        });
+        this.gameStarter.menuGrapher.addMenuList("PokemonMenuStatsMoves", { options });
 
         this.gameStarter.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
             this.gameStarter.menuGrapher.deleteMenu("PokemonMenuStats");
