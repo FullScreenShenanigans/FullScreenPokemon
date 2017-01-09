@@ -1,8 +1,53 @@
-import { EffectTarget, IMoveEffect } from "battlemovr/lib/Effects";
+import { IMoveEffect as IMoveEffectBase } from "battlemovr/lib/Effects";
 
 import { Actions } from "../../components/Actions";
 import { IPokemon } from "../../components/Battles";
 import { IPlayer } from "../../components/Things";
+
+/**
+ * Effect description for a battle move.
+ */
+export type IMoveEffect = IMoveEffectBase & {
+    /**
+     * Probability of the move occuring as a number in (0, 100], if not 100.
+     */
+    probability?: number;
+
+    /**
+     * Which actor should be affected by the move.
+     */
+    target: EffectTarget;
+}
+
+/**
+ * Which actor should be affected by a move's effect.
+ */
+export enum EffectTarget {
+    /**
+     * The attacking actor should be affected.
+     */
+    attacker,
+
+    /**
+     * The defending actor should be affected.
+     */
+    defender
+}
+
+/**
+ * Base description for a move.
+ */
+export interface IEffectBase {
+    /**
+     * Probability of the move occuring as a number in (0, 100], if not 100.
+     */
+    probability?: number;
+
+    /**
+     * Which actor should be affected by the move.
+     */
+    target: EffectTarget;
+}
 
 /**
  * Static information on a move's metadata and effects.

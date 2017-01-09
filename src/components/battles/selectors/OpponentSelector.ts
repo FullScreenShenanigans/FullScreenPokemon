@@ -11,7 +11,7 @@ import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriority
  */
 export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISelector {
     /**
-     * 
+     * Determines priorities of battle move possibilities.
      */
     private readonly movePriorityGenerator: MovePriorityGenerator<TGameStartr> = new MovePriorityGenerator(this.gameStarter);
 
