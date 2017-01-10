@@ -1,5 +1,6 @@
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
+import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
@@ -48,7 +49,6 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
         const opponentX: number = this.gameStarter.physics.getMidX(opponent);
         const opponentGoal: number = menu.right + opponent.width / 2;
-        const textOpponentSendOut: [string, string] = battleInfo.texts.opponentSendOut || ["", ""];
         const timeout: number = 24;
 
         this.gameStarter.actions.animateSlideHorizontal(
@@ -71,21 +71,34 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                [
-                    textOpponentSendOut[0],
-                    battleInfo.teams.opponent.selectedActor.nickname,
-                    textOpponentSendOut[1]
-                ]
-            ]
-        );
+        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", this.generateDialog(battleInfo));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.poofSmoke(battleInfo, onComplete),
             timeout);
+    }
+
+    /**
+     * Generates the entrance dialog.
+     * 
+     * @param battleInfo   Info on the current battle.
+     * @returns Text for the entrance dialog.
+     */
+    private generateDialog(battleInfo: IBattleInfo): IMenuDialogRaw {
+        const dialog: IMenuDialogRaw = [
+            battleInfo.texts.teams.opponent.sendOut[1],
+            battleInfo.teams.opponent.selectedActor.nickname,
+            battleInfo.texts.teams.opponent.sendOut[2]
+        ];
+
+        if (battleInfo.teams.opponent.leader) {
+            dialog.unshift(battleInfo.teams.opponent.leader.nickname);
+        }
+
+        dialog.unshift(battleInfo.texts.teams.opponent.sendOut[0]);
+
+        return [dialog];
     }
 
     /**

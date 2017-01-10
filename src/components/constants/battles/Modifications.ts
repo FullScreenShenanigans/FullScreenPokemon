@@ -21,13 +21,12 @@ export type IModificationPreference = (
     | ["Move", string]
     | ["Statistic", string, number]
     | ["Super", string, string]
-    | ["Weak", string, string]
-);
+    | ["Weak", string, string]);
 
 /**
- * Battle modifications used in the opponentMove equation.
+ * Battle modification constants used by FullScreenPokemon instances.
  */
-export class BattleModifications {
+export class Modifications {
     /**
      * Battle modifications for the second turn.
      */

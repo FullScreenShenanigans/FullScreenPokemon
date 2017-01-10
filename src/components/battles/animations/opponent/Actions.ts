@@ -1,12 +1,19 @@
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction } from "battlemovr/lib/Actions";
+import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+import { Moves } from "../Moves";
 
 /**
  * Opponent action animations used by FullScreenPokemon instances.
  */
 export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IOnActions {
+    /**
+     * Move animations used by the FullScreenPokemon instance.
+     */
+    public readonly moves: Moves<TGameStartr> = new Moves<TGameStartr>(this.gameStarter);
+
     /**
      * Callback for when a team attempts to leave the battle.
      * 
@@ -36,8 +43,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param onComplete   Callback for when the action is done.
      */
     public move(action: IMoveAction, onComplete: () => void): void {
-        console.log("Opponent move action:", action);
-        onComplete();
+        this.moves.playMove(action.move, Team.opponent, Team.player, onComplete);
     }
 
     /**

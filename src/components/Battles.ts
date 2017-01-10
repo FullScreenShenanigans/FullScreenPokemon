@@ -3,16 +3,15 @@ import { IOnBattleComplete } from "battlemovr/lib/Animations";
 import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
 import { ITeamBase, ITeamDescriptor, IUnderEachTeam } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
-import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ActionsOrderer } from "./battles/ActionsOrderer";
 import { Animations } from "./battles/Animations";
 import { Decorations } from "./battles/Decorations";
-import { Moves } from "./battles/Moves";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
 import { Things } from "./battles/Things";
+import { IBattleTexts } from "./constants/Battles/Texts";
 import { IMenu } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
@@ -138,43 +137,6 @@ export interface IEnemyTeam extends ITeamDescriptor {
 }
 
 /**
- * Texts to display in battle menus.
- */
-export interface IBattleTexts {
-    /**
-     * Text to display after a battle victory when in the real world again.
-     */
-    afterBattle: IMenuDialogRaw;
-
-    /**
-     * Text to display upon defeat.
-     */
-    defeat: IMenuDialogRaw;
-
-    /**
-     * Text for when the opponent sends out a Pokemon. The opponent's name and the
-     * Pokemon's nickname are between the Strings.
-     */
-    opponentSendOut: [string, string, string];
-
-    /**
-     * Text for when the player sends out a Pokemon. The Pokemon's name is between the 
-     * Strings.
-     */
-    playerSendOut: [string, string];
-
-    /**
-     * Text for when the battle starts. The opponent's name is between the Strings.
-     */
-    start: [string, string];
-
-    /**
-     * Text to display upon victory.
-     */
-    victory: IMenuDialogRaw;
-}
-
-/**
  * Things displayed in a battle.
  */
 export interface IBattleThings extends IUnderEachTeam<IThing> {
@@ -190,7 +152,7 @@ export interface IBattleThings extends IUnderEachTeam<IThing> {
 }
 
 /**
- * Battle options specific to FullScreenPokemon
+ * Battle options specific to FullScreenPokemon.
  */
 export interface IPokemonBattleOptions {
     /**
@@ -291,11 +253,6 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     public readonly decorations: Decorations<TGameStartr> = new Decorations(this.gameStarter);
 
     /**
-     * Battle move functions used by this FullScreenPokemon instance.
-     */
-    public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
-
-    /**
      * Battle action selectors used by this FullScreenPokemon instance.
      */
     public readonly selectors: Selectors<TGameStartr> = new Selectors(this.gameStarter);
@@ -356,9 +313,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
                         selector: "opponent"
                     }
                 },
-                texts: {
-                    start: ["", " would like to battle!"]
-                },
+                texts: this.gameStarter.constants.battles.texts.defaultBattleTexts,
                 theme: "Battle Trainer"
             },
             partialBattleOptions);

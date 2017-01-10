@@ -1,9 +1,8 @@
 import { Team } from "battlemovr/lib/Teams";
 
-import { IThing } from "../../Things";
+import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+import { IThing } from "../../../Things";
 import { Move } from "./Move";
-
-import { FullScreenPokemon } from "../../../FullScreenPokemon";
 
 /**
  * Runs the Growl battle move.

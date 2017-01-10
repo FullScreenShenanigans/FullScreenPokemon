@@ -3,7 +3,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../../../Battles";
-import { IBattleModification } from "../../../constants/battleModifications";
+import { IBattleModification } from "../../../constants/battles/Modifications";
 import { IMoveSchema } from "../../../constants/Moves";
 
 /**
@@ -54,7 +54,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             for (const possibility of possibilities) {
                 this.applyMoveEffectPriority(
                     possibility,
-                    this.gameStarter.constants.battleModifications.turnTwo,
+                    this.gameStarter.constants.battles.modifications.turnTwo,
                     defendingTeam.selectedActor,
                     1);
             }
@@ -66,7 +66,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             for (const possibility of possibilities) {
                 this.applyMoveEffectPriority(
                     possibility,
-                    this.gameStarter.constants.battleModifications.goodAi,
+                    this.gameStarter.constants.battles.modifications.goodAi,
                     defendingTeam.selectedActor,
                     1);
             }
@@ -90,7 +90,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             return true;
         }
 
-        return team.leader.title.join("") in this.gameStarter.constants.battleModifications.turnTwo.opponentType;
+        return team.leader.title.join("") in this.gameStarter.constants.battles.modifications.turnTwo.opponentType;
     }
 
     /**
@@ -108,7 +108,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             return true;
         }
 
-        return team.leader.title.join("") in this.gameStarter.constants.battleModifications.goodAi.opponentType;
+        return team.leader.title.join("") in this.gameStarter.constants.battles.modifications.goodAi.opponentType;
     }
 
     /**

@@ -2,10 +2,10 @@ import { IMoveEffect } from "battlemovr/lib/Effects";
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
-import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IPokemon } from "../../Battles";
-import { IMenu } from "../../Menus";
-import { IThing } from "../../Things";
+import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+import { IBattleInfo, IPokemon } from "../../../Battles";
+import { IMenu } from "../../../Menus";
+import { IThing } from "../../../Things";
 
 /**
  * Runs a battle move.
@@ -62,24 +62,15 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
     public constructor(gameStarter: TGameStartr, title: string, source: Team, target: Team) {
         super(gameStarter);
 
-        const opponentPokemon: IPokemon = gameStarter.battleMover.getBattleInfo().teams.opponent.selectedActor as IPokemon;
-        const playerPokemon: IPokemon = gameStarter.battleMover.getBattleInfo().teams.player.selectedActor as IPokemon;
-
-        if (source === Team.opponent) {
-            this.attacker = opponentPokemon;
-            this.defender = playerPokemon;
-        } else {
-            this.attacker = playerPokemon;
-            this.defender = opponentPokemon;
-        }
+        const battleInfo: IBattleInfo = gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        this.attacker = battleInfo.teams[Team[source]].selectedActor;
+        this.attackerThing = battleInfo.things[Team[source]];
+        this.defender = battleInfo.teams[Team[target]].selectedActor;
+        this.defenderThing = battleInfo.things[Team[target]];
 
         this.title = title;
         this.source = source;
         this.target = target;
-
-        // Todo: where should this be done...?
-        this.attackerThing = {} as any;
-        this.defenderThing = {} as any;
 
         this.menu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
     }
