@@ -230,6 +230,14 @@ export interface IBattleTeam extends ITeamBase, IEnemyTeam {
  * Information on an in-progress battle.
  */
 export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptions & {
+    /**
+     * How many times the player has failed to flee.
+     */
+    fleeAttempts: number;
+
+    /**
+     * Opposing teams in the battle.
+     */
     teams: IUnderEachTeam<IBattleTeam>;
 };
 
@@ -299,6 +307,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     private fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
         return this.gameStarter.utilities.proliferate(
             {
+                fleeAttempts: 0,
                 teams: {
                     player: {
                         actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],

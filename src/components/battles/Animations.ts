@@ -21,16 +21,13 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
     public readonly player: Player<TGameStartr> = new Player(this.gameStarter);
 
     /**
-     * Battle start animations used by FullScreenPokemon instances.
-     */
-    private readonly starting: Starting<TGameStartr> = new Starting(this.gameStarter);
-
-    /**
      * Animation for a battle starting.
      * 
      * @param onComplete   Callback for when this is done.
      */
-    public readonly start = (onComplete: () => void): void => this.starting.start(onComplete);
+    public readonly start = (onComplete: () => void): void => {
+        new Starting(this.gameStarter).start(onComplete);
+    };
 
     /**
      * Animation for when the battle is complete.
@@ -38,6 +35,16 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
      * @param outcome   Descriptor of what finished the battle.
      */
     public complete(outcome: BattleOutcome): void {
-        console.log("Battle complete:", outcome);
+        this.gameStarter.actions.animateFadeToColor({
+            callback: (): void => this.afterBattle(outcome),
+            color: "Black"
+        });
+    }
+
+    /**
+     * 
+     */
+    private afterBattle(outcome: BattleOutcome): void {
+        console.log("Battle outcome", outcome);
     }
 }

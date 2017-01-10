@@ -331,27 +331,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Determines whether the player may flee a wild Pokemon encounter.
-     * 
-     * @param pokemon   The player's current Pokemon.
-     * @param enemy   The wild Pokemon.
-     * @param previousEscapeAttempts   How many escape attempts have already happened.
-     * @returns Whether the player may flee.
-     * @see http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
-     */
-    public canEscapePokemon(pokemon: IPokemon, enemy: IPokemon, previousEscapeAttempts: number): boolean {
-        const a: number = pokemon.statistics.speed.current;
-        const b: number = (enemy.statistics.speed.normal / 4) % 256;
-        const f: number = (a * 32) / b + 30 * previousEscapeAttempts;
-
-        if (f > 255 || b === 0) {
-            return true;
-        }
-
-        return this.gameStarter.numberMaker.randomInt(256) < f;
-    }
-
-    /**
      * Calculates how many times a failed Pokeball should shake.
      * 
      * @param pokemon   The wild Pokemon the ball is failing to catch.
