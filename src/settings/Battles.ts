@@ -1,8 +1,9 @@
 import { IAction } from "battlemovr/lib/Actions";
 import { IBattleMovrSettings } from "battlemovr/lib/IBattleMovr";
-import { ITeamAction, IUnderEachTeam } from "battlemovr/lib/Teams";
+import { ITeamAndAction, IUnderEachTeam } from "battlemovr/lib/Teams";
 import * as igamestartr from "gamestartr/lib/IGameStartr";
 
+import { IBattleInfo } from "../components/Battles";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /**
@@ -18,8 +19,8 @@ export function GenerateBattlesSettings(fsp: FullScreenPokemon): IBattlesModuleS
     "use strict";
 
     return {
-        actionsOrderer: (actions: IUnderEachTeam<IAction>): ITeamAction[] => {
-            return fsp.battles.actionsOrderer.order(actions);
+        actionsOrderer: (actions: IUnderEachTeam<IAction>): ITeamAndAction[] => {
+            return fsp.battles.actionsOrderer.order(actions, fsp.battleMover.getBattleInfo() as IBattleInfo);
         },
         animations: fsp.battles.animations,
         selectorFactories: {
