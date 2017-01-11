@@ -26,6 +26,11 @@ export interface ITeamsTexts {
     move: [string, string, string];
 
     /**
+     * Text for a trainer retracting a Pokemon.
+     */
+    retract: [string, string, string];
+
+    /**
      * Text for a trainer sending out a Pokemon.
      */
     sendOut: [string, string, string];
@@ -76,10 +81,12 @@ export class Texts {
         teams: {
             player: {
                 move: ["", " used ", "!"],
+                retract: ["", "", " enough! Come back!"],
                 sendOut: ["", "Go! ", "!"]
             },
             opponent: {
                 move: ["ENEMY ", " used ", "!"],
+                retract: ["", "", " enough! Come back!"],
                 sendOut: ["", " sent out ", "!"]
             }
         },

@@ -47,36 +47,20 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
     private runWithLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
         const opponent: IThing = battleInfo.things.opponent;
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
-        const opponentX: number = this.gameStarter.physics.getMidX(opponent);
-        const opponentGoal: number = menu.right + opponent.width / 2;
+        const goal: number = menu.right + opponent.width / 2;
         const timeout: number = 24;
 
-        this.gameStarter.actions.animateSlideHorizontal(
+        this.gameStarter.actions.sliding.slideHorizontallyAndFadeOut(
             opponent,
-            (opponentGoal - opponentX) / timeout,
-            opponentGoal,
-            1);
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.gameStarter.actions.animateFadeAttribute(
-                    opponent,
-                    "opacity",
-                    -2 / timeout,
-                    0,
-                    1);
-            },
-            (timeout / 2) | 0);
+            goal,
+            timeout,
+            (): void => this.poofSmoke(battleInfo, onComplete));
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
         this.gameStarter.menuGrapher.addMenuDialog("GeneralText", this.generateDialog(battleInfo));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.poofSmoke(battleInfo, onComplete),
-            timeout);
     }
 
     /**

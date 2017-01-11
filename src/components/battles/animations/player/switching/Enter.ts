@@ -2,7 +2,6 @@ import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
-
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
 import { IMenu } from "../../../../Menus";
@@ -48,36 +47,20 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
     private runWithLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
         const player: IThing = battleInfo.things.player;
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
-        const playerX: number = this.gameStarter.physics.getMidX(player);
         const playerGoal: number = menu.left - player.width / 2;
         const timeout: number = 24;
 
-        this.gameStarter.actions.animateSlideHorizontal(
+        this.gameStarter.actions.sliding.slideHorizontallyAndFadeOut(
             player,
-            (playerGoal - playerX) / timeout,
             playerGoal,
-            1);
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.gameStarter.actions.animateFadeAttribute(
-                    player,
-                    "opacity",
-                    -2 / timeout,
-                    0,
-                    1);
-            },
-            (timeout / 2) | 0);
+            timeout,
+            (): void => this.poofSmoke(battleInfo, onComplete));
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
         this.gameStarter.menuGrapher.addMenuDialog("GeneralText", this.generateDialog(battleInfo));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.poofSmoke(battleInfo, onComplete),
-            timeout);
     }
 
     /**

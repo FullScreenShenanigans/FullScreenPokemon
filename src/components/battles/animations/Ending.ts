@@ -29,7 +29,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
     }
 
     /**
-     * 
+     * Disposes of visual things and signals that the battle is over.
      * 
      * @param onComplete   Callback for when it's safe to dispose of battle info.
      */

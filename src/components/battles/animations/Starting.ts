@@ -70,13 +70,13 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
         playerGoal = menu.left + player.width / 2;
         opponentGoal = menu.right - opponent.width / 2;
 
-        this.gameStarter.actions.animateSlideHorizontal(
+        this.gameStarter.actions.sliding.slideHorizontally(
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
             1);
 
-        this.gameStarter.actions.animateSlideHorizontal(
+        this.gameStarter.actions.sliding.slideHorizontally(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,

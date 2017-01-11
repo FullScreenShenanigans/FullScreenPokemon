@@ -38,14 +38,4 @@ export class Player<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public introduction(onComplete: () => void): void {
         onComplete();
     }
-
-    /**
-     * Animation for when the player's actor gets knocked out.
-     * 
-     * @param health   New value for the actor's health.
-     * @param onComplete   Callback for when this is done.
-     */
-    public knockout(onComplete: () => void): void {
-        onComplete();
-    }
 }

@@ -7,6 +7,8 @@ import { Following } from "./actions/Following";
 import { Grass } from "./actions/Grass";
 import { Ledges } from "./actions/Ledges";
 import { Roaming } from "./actions/Roaming";
+import { Shrinking } from "./actions/Shrinking";
+import { Sliding } from "./actions/Sliding";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
@@ -67,6 +69,16 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Roaming functions used by the FullScreenPokemon instance.
      */
     public readonly roaming: Roaming<TGameStartr> = new Roaming(this.gameStarter);
+
+    /**
+     * Shrinking functions used by the FullScreenPokemon instance.
+     */
+    public readonly shrinking: Shrinking<TGameStartr> = new Shrinking(this.gameStarter);
+
+    /**
+     * Sliding functions used by the FullScreenPokemon instance.
+     */
+    public readonly sliding: Sliding<TGameStartr> = new Sliding(this.gameStarter);
 
     /**
      * Walking functions used by the FullScreenPokemon instance.
@@ -186,102 +198,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 this.animateFadeAttribute(
                     thing,
                     attribute,
-                    change,
-                    goal,
-                    speed,
-                    onCompletion);
-            },
-            speed);
-    }
-
-    /**
-     * Slides a Thing across the screen horizontally over time.
-     * 
-     * @param thing   A Thing to slide across the screen.
-     * @param change   How far to move each tick.
-     * @param goal   A midX location to stop sliding at.
-     * @param speed   How many ticks between movements.
-     * @param onCompletion   A callback for when the Thing reaches the goal.
-     * @returns The in-progress TimeEvent.
-     */
-    public animateSlideHorizontal(
-        thing: IThing,
-        change: number,
-        goal: number,
-        speed: number,
-        onCompletion?: (thing: IThing) => void): void {
-        this.gameStarter.physics.shiftHoriz(thing, change);
-
-        if (change > 0) {
-            if (this.gameStarter.physics.getMidX(thing) >= goal) {
-                this.gameStarter.physics.setMidX(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        } else {
-            if (this.gameStarter.physics.getMidX(thing) <= goal) {
-                this.gameStarter.physics.setMidX(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        }
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.animateSlideHorizontal(
-                    thing,
-                    change,
-                    goal,
-                    speed,
-                    onCompletion);
-            },
-            speed);
-    }
-
-    /**
-     * Slides a Thing across the screen vertically over time.
-     * 
-     * @param thing   A Thing to slide across the screen.
-     * @param change   How far to move each tick.
-     * @param goal   A midY location to stop sliding at.
-     * @param speed   How many ticks between movements.
-     * @param onCompletion   A callback for when the Thing reaches the goal.
-     * @returns The in-progress TimeEvent.
-     */
-    public animateSlideVertical(
-        thing: IThing,
-        change: number,
-        goal: number,
-        speed: number,
-        onCompletion?: (thing: IThing) => void): void {
-        this.gameStarter.physics.shiftVert(thing, change);
-
-        if (change > 0) {
-            if (this.gameStarter.physics.getMidY(thing) >= goal) {
-                this.gameStarter.physics.setMidY(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        } else {
-            if (this.gameStarter.physics.getMidY(thing) <= goal) {
-                this.gameStarter.physics.setMidY(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        }
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.animateSlideVertical(
-                    thing,
                     change,
                     goal,
                     speed,
