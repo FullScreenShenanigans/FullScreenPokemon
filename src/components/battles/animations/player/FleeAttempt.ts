@@ -51,7 +51,7 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Componen
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            battleInfo.texts.flee.success,
+            battleInfo.texts.flee.success(),
             (): void => this.gameStarter.battleMover.stopBattle(BattleOutcome.playerFled));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -66,7 +66,7 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Componen
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            battleInfo.texts.flee.fail,
+            battleInfo.texts.flee.fail(),
             onComplete);
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }

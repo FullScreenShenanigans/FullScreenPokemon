@@ -65,13 +65,9 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    battleInfo.texts.teams.opponent.retract[1],
-                    battleInfo.teams.opponent.selectedActor.nickname,
-                    battleInfo.texts.teams.opponent.retract[2]
-                ]
-            ],
+            battleInfo.texts.teams.opponent.retract(
+                battleInfo.teams.opponent,
+                battleInfo.teams.opponent.selectedActor.title.join("")),
             (): void => {
                 this.gameStarter.actions.shrinking.contractDown(
                     battleInfo.things.player,

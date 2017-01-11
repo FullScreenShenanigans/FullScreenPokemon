@@ -11,7 +11,7 @@ import { Decorations } from "./battles/Decorations";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
 import { Things } from "./battles/Things";
-import { IBattleTexts } from "./constants/Battles/Texts";
+import { IBattleTextGenerators } from "./constants/Battles/Texts";
 import { IMenu } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
@@ -163,7 +163,7 @@ export interface IPokemonBattleOptions {
     /**
      * Texts to display in menus.
      */
-    texts: IBattleTexts;
+    texts: IBattleTextGenerators;
 
     /**
      * Audio theme to play during the battle.
@@ -193,7 +193,7 @@ export interface IPartialBattleOptions {
     /**
      * Texts to display in menus.
      */
-    texts?: Partial<IBattleTexts>;
+    texts?: Partial<IBattleTextGenerators>;
 }
 
 /**

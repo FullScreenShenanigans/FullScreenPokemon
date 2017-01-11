@@ -124,21 +124,12 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
      * @param onComplete   Callback for when this is done.
      */
     private runOpeningText(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const textStart: [string, string] = battleInfo.texts.start || ["", ""];
-        const opponentName: string[] = battleInfo.teams.opponent.leader
-            ? battleInfo.teams.opponent.leader.nickname
-            : battleInfo.teams.opponent.selectedActor.nickname;
-
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: battleInfo.automaticMenus
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    textStart[0], opponentName, textStart[1]
-                ]
-            ],
+            battleInfo.texts.start(battleInfo.teams.opponent),
             (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("BattlePlayerHealth");
                 this.gameStarter.menuGrapher.deleteMenu("BattleOpponentHealth");

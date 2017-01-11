@@ -1,7 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
+import { IBattleTeam, IPokemon } from "../Battles";
 import { IArea, IMap, IWildPokemonSchema } from "../Maps";
 import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
 
@@ -115,7 +115,9 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
                 }
             },
             texts: {
-                start: ["Wild ", " appeared!"]
+                start: (team: IBattleTeam): string => {
+                    return `Wild ${team.selectedActor.nickname.join("")} appeared!`;
+                }
             }
         });
     }

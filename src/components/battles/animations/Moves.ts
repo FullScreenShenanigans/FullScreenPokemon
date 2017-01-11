@@ -45,15 +45,10 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    battleInfo.texts.teams[Team[source]].move[0],
-                    battleInfo.teams[Team[source]].selectedActor.nickname,
-                    battleInfo.texts.teams[Team[source]].move[1],
-                    move,
-                    battleInfo.texts.teams[Team[source]].move[2]
-                ]
-            ],
+            battleInfo.texts.teams[Team[source]].move(
+                battleInfo.teams[Team[source]],
+                battleInfo.teams[Team[source]].selectedActor.title.join(""),
+                move),
             (): void => animator.runAnimation(callback));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }

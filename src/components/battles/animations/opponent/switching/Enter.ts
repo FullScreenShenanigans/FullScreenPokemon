@@ -1,6 +1,5 @@
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
-import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
@@ -59,30 +58,12 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true
         });
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", this.generateDialog(battleInfo));
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            battleInfo.texts.teams.opponent.sendOut(
+            battleInfo.teams.opponent,
+            battleInfo.teams.opponent.selectedActor.title.join("")));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * Generates the entrance dialog.
-     * 
-     * @param battleInfo   Info on the current battle.
-     * @returns Text for the entrance dialog.
-     */
-    private generateDialog(battleInfo: IBattleInfo): IMenuDialogRaw {
-        const dialog: IMenuDialogRaw = [
-            battleInfo.texts.teams.opponent.sendOut[1],
-            battleInfo.teams.opponent.selectedActor.nickname,
-            battleInfo.texts.teams.opponent.sendOut[2]
-        ];
-
-        if (battleInfo.teams.opponent.leader) {
-            dialog.unshift(battleInfo.teams.opponent.leader.nickname);
-        }
-
-        dialog.unshift(battleInfo.texts.teams.opponent.sendOut[0]);
-
-        return [dialog];
     }
 
     /**
