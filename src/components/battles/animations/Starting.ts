@@ -18,11 +18,11 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
     public readonly transitions: Transitions<TGameStartr> = new Transitions(this.gameStarter);
 
     /**
-     * Starts the battle animations.
+     * Runs starting battle animations.
      * 
      * @param onComplete   Callback for when this is done.
      */
-    public start(onComplete: () => void): void {
+    public run(onComplete: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
         this.gameStarter.audioPlayer.playTheme(battleInfo.theme);

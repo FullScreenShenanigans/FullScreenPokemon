@@ -10,7 +10,6 @@
         "comment-format": [true, "check-space"],
         "curly": true,
         "eofline": true,
-        "forin": true,
         "indent": [true, 4],
         "interface-name": [true, "always-prefix"],
         "jsdoc-format": true,

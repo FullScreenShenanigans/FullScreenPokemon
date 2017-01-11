@@ -2,6 +2,7 @@ import { BattleOutcome, IAnimations } from "battlemovr/lib/Animations";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { Ending } from "./animations/Ending";
 import { Opponent } from "./animations/Opponent";
 import { Player } from "./animations/Player";
 import { Starting } from "./animations/Starting";
@@ -26,25 +27,16 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
      * @param onComplete   Callback for when this is done.
      */
     public readonly start = (onComplete: () => void): void => {
-        new Starting(this.gameStarter).start(onComplete);
-    };
-
-    /**
-     * Animation for when the battle is complete.
-     * 
-     * @param outcome   Descriptor of what finished the battle.
-     */
-    public complete(outcome: BattleOutcome): void {
-        this.gameStarter.actions.animateFadeToColor({
-            callback: (): void => this.afterBattle(outcome),
-            color: "Black"
-        });
+        new Starting(this.gameStarter).run(onComplete);
     }
 
     /**
+     * Animation for a battle ending.
      * 
+     * @param outcome   Descriptor of what finished the battle.
+     * @param onComplete   Callback for when it's safe to dispose of battle info.
      */
-    private afterBattle(outcome: BattleOutcome): void {
-        console.log("Battle outcome", outcome);
+    public readonly complete = (outcome: BattleOutcome, onComplete: () => void): void => {
+        new Ending(this.gameStarter).run(outcome, onComplete);
     }
 }
