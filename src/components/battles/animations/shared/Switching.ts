@@ -5,19 +5,46 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
-import { Enter } from "./switching/Enter";
+import { Enter, IEnterSettings } from "./switching/Enter";
+
+/**
+ * Switching settings for animation positions and sprites.
+ */
+export interface ISwitchingSettings {
+    /**
+     * Entrance settings for animation positions and sprites.
+     */
+    enter: IEnterSettings;
+}
 
 /**
  * Player switching animations used by FullScreenPokemon instances.
  */
 export class Switching<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISwitchingAnimations {
     /**
+     * Switching settings for animation positions and sprites.
+     */
+    private readonly settings: ISwitchingSettings;
+
+    /**
+     * Initializes a new instance of the Switching class.
+     * 
+     * @param gameStarter   FullScreenPokemon instance this is used for.
+     * @param settings   Switching settings for animation positions and sprites.
+     */
+    public constructor(gameStarter: TGameStartr, settings: ISwitchingSettings) {
+        super(gameStarter);
+
+        this.settings = settings;
+    }
+
+    /**
      * Animation for when the player's actor enters battle.
      * 
      * @param onComplete   Callback for when this is done.
      */
     public enter(onComplete: () => void): void {
-        new Enter(this.gameStarter).run(onComplete);
+        new Enter(this.gameStarter, this.settings.enter).run(onComplete);
     }
 
     /**

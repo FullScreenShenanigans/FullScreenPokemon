@@ -1,3 +1,4 @@
+import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -9,12 +10,24 @@ import { IThing } from "../Things";
  */
 export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
+     * Sets a team's visual Pokemon Thing.
+     * 
+     * @param thing   Title for the Thing.
+     * @param settings   Any additional settings for the thing.
+     */
+    public setThing(team: Team, thing: string, settings?: any): void {
+        team === Team.opponent
+            ? this.setOpponentThing(thing, settings)
+            : this.setPlayerThing(thing, settings);
+    }
+
+    /**
      * Sets the visual opponent Pokemon Thing.
      * 
      * @param thing   Title for the Thing.
      * @param settings   Any additional settings for the Thing.
      */
-    public setOpponentThing(thing: string, settings?: any): void {
+    private setOpponentThing(thing: string, settings?: any): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
         this.gameStarter.physics.killNormal(battleInfo.things.opponent);
@@ -33,7 +46,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param thing   Title for the Thing.
      * @param settings   Any additional settings for the Thing.
      */
-    public setPlayerThing(thing: string, settings?: any): void {
+    private setPlayerThing(thing: string, settings?: any): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
         this.gameStarter.physics.killNormal(battleInfo.things.player);

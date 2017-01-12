@@ -3,22 +3,72 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
-import { IMenu } from "../../../../Menus";
 import { IThing } from "../../../../Things";
 
 /**
- * Opponent actor entrance animations used by FullScreenPokemon instances.
+ * Entrance settings for animation positions and sprites.
+ */
+export interface IEnterSettings {
+    /**
+     * Which team this is for.
+     */
+    team: Team;
+
+    /**
+     * @param info   Info on the current battle.
+     * @returns Where to slide a leader to on switching.
+     */
+    getLeaderSlideToGoal(battleInfo: IBattleInfo): number;
+
+    /**
+     * @param info   Info on the current battle.
+     * @returns What sprite is to be used for the selected Pokemon.
+     */
+    getSelectedPokemonSprite(battleInfo: IBattleInfo): string;
+
+    /**
+     * @param info   Info on the current battle.
+     * @returns Mid-left position for the smoke effect.
+     */
+    getSmokeLeft(battleInfo: IBattleInfo): number;
+
+    /**
+     * @param info   Info on the current battle.
+     * @returns Mid-top position for the smoke effect.
+     */
+    getSmokeTop(battleInfo: IBattleInfo): number;
+}
+
+/**
+ * Team entrance animations used by FullScreenPokemon instances.
  */
 export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * Runs an entrance animation for the opponent's selected Pokemon.
+     * Entrance settings for animation positions and sprites.
+     */
+    private readonly settings: IEnterSettings;
+
+    /**
+     * Initializes a new instance of the Enter class.
+     * 
+     * @param gameStarter   FullScreenPokemon instance this is used for.
+     * @param settings   Entrance settings for animation positions and sprites.
+     */
+    public constructor(gameStarter: TGameStartr, settings: IEnterSettings) {
+        super(gameStarter);
+
+        this.settings = settings;
+    }
+
+    /**
+     * Runs an entrance animation for the team's selected Pokemon.
      * 
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
-        battleInfo.teams.opponent.leader
+        battleInfo.teams[Team[this.settings.team]].leader
             ? this.runWithLeader(battleInfo, onComplete)
             : this.runWithoutLeader(battleInfo, onComplete);
     }
@@ -31,8 +81,8 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     private runWithoutLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
         this.gameStarter.battles.decorations.addPokemonHealth(
-            battleInfo.teams.opponent.selectedActor,
-            Team.opponent);
+            battleInfo.teams[Team[this.settings.team]].selectedActor,
+            this.settings.team);
 
         onComplete();
     }
@@ -44,13 +94,12 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param onComplete   Callback for when this is done.
      */
     private runWithLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const opponent: IThing = battleInfo.things.opponent;
-        const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
-        const goal: number = menu.right + opponent.width / 2;
+        const thing: IThing = battleInfo.things[Team[this.settings.team]];
+        const goal: number = this.settings.getLeaderSlideToGoal(battleInfo);
         const timeout: number = 24;
 
         this.gameStarter.actions.sliding.slideHorizontallyAndFadeOut(
-            opponent,
+            thing,
             goal,
             timeout,
             (): void => this.poofSmoke(battleInfo, onComplete));
@@ -60,9 +109,9 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
-            battleInfo.texts.teams.opponent.sendOut(
-            battleInfo.teams.opponent,
-            battleInfo.teams.opponent.selectedActor.title.join("")));
+            battleInfo.texts.teams[Team[this.settings.team]].sendOut(
+                battleInfo.teams[Team[this.settings.team]],
+                battleInfo.teams[Team[this.settings.team]].selectedActor.title.join("")));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -73,8 +122,8 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param onComplete   Callback for when this is done.
      */
     private poofSmoke(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const left: number = battleInfo.things.menu.right - 32;
-        const top: number = battleInfo.things.menu.top + 32;
+        const left: number = this.settings.getSmokeLeft(battleInfo);
+        const top: number = this.settings.getSmokeTop(battleInfo);
 
         this.gameStarter.actions.animateSmokeSmall(
             left,
@@ -92,10 +141,12 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.createMenu("GeneralText");
 
         this.gameStarter.battles.decorations.addPokemonHealth(
-            battleInfo.teams.opponent.selectedActor,
-            Team.opponent);
+            battleInfo.teams[Team[this.settings.team]].selectedActor,
+            this.settings.team);
 
-        this.gameStarter.battles.things.setOpponentThing(battleInfo.teams.opponent.selectedActor.title.join("") + "Front");
+        this.gameStarter.battles.things.setThing(
+            this.settings.team,
+            this.settings.getSelectedPokemonSprite(battleInfo));
 
         onComplete();
     }

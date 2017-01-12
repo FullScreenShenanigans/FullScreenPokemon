@@ -1,9 +1,13 @@
 import { ITeamAnimations } from "battlemovr/lib/Animations";
+import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
+import { IBattleInfo } from "../../Battles";
+import { IMenu } from "../../Menus";
+import { IThing } from "../../Things";
 import { Actions } from "./opponent/Actions";
-import { Switching } from "./opponent/Switching";
+import { Switching } from "./shared/Switching";
 
 /**
  * Opponent animations used by FullScreenPokemon instances.
@@ -17,7 +21,25 @@ export class Opponent<TGameStartr extends FullScreenPokemon> extends Component<T
     /**
      * Opponent switching animations used by the FullScreenPokemon instance.
      */
-    public readonly switching: Switching<TGameStartr> = new Switching<TGameStartr>(this.gameStarter);
+    public readonly switching: Switching<TGameStartr> = new Switching<TGameStartr>(this.gameStarter, {
+        enter: {
+            team: Team.opponent,
+            getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
+                const opponent: IThing = battleInfo.things.opponent;
+                const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
+                return menu.right + opponent.width / 2;
+            },
+            getSelectedPokemonSprite: (battleInfo: IBattleInfo): string => {
+                return battleInfo.teams.player.selectedActor.title.join("") + "Front";
+            },
+            getSmokeLeft: (battleInfo: IBattleInfo): number => {
+                return battleInfo.things.menu.right - 32;
+            },
+            getSmokeTop: (battleInfo: IBattleInfo): number => {
+                return battleInfo.things.menu.top + 32;
+            }
+        }
+    });
 
     /**
      * Animation for when the opponent's actor's health changes.
