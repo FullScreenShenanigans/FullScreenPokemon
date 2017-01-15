@@ -1,6 +1,6 @@
 import { ISwitchAction } from "battlemovr/lib/Actions";
 import { ISwitchingAnimations } from "battlemovr/lib/Animations";
-import { Team } from "battlemovr/lib/Teams";
+import { ITeamAndAction, Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
@@ -68,13 +68,13 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
     /**
      * Animation for the player switching Pokemon.
      * 
-     * @param action   Switching action being performed.
+     * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when this is done.
      */
-    public switch(action: ISwitchAction, onComplete: () => void): void {
+    public switch(teamAndAction: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
         this.gameStarter.menuGrapher.deleteMenu("Pokemon");
         this.switchOut((): void => {
-            this.gameStarter.battleMover.switchSelectedActor(Team.player, action.newActor);
+            this.gameStarter.battleMover.switchSelectedActor(Team.player, teamAndAction.action.newActor);
             this.enter(onComplete);
         });
     }

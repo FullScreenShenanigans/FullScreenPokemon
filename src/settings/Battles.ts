@@ -19,7 +19,7 @@ export function GenerateBattlesSettings(fsp: FullScreenPokemon): IBattlesModuleS
     "use strict";
 
     return {
-        actionsOrderer: (actions: IUnderEachTeam<IAction>): ITeamAndAction[] => {
+        actionsOrderer: (actions: IUnderEachTeam<IAction>): ITeamAndAction<any>[] => {
             return fsp.battles.actionsOrderer.order(actions, fsp.battleMover.getBattleInfo() as IBattleInfo);
         },
         animations: fsp.battles.animations,

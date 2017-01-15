@@ -1,8 +1,8 @@
 import { Team } from "battlemovr/lib/Teams";
 
-import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IThing } from "../../../Things";
-import { Move } from "./Move";
+import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
+import { IThing } from "../../../../../Things";
+import { Move } from "../Move";
 
 /**
  * Runs the Growl battle move.
@@ -11,28 +11,28 @@ export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGame
     /**
      * 
      */
-    private noteStartX: number = this.source === Team.player
+    private noteStartX: number = this.teamAndAction.source.team === Team.player
         ? this.menu.left + this.attackerThing.width / 2
         : this.menu.right - this.attackerThing.width / 2;
 
     /**
      * 
      */
-    private noteStartY: number = this.source === Team.player
+    private noteStartY: number = this.teamAndAction.source.team === Team.player
         ? this.menu.bottom - this.attackerThing.height
         : this.menu.top + this.attackerThing.height;
 
     /**
      * 
      */
-    private noteDifferenceX: number = this.source === Team.player
+    private noteDifferenceX: number = this.teamAndAction.source.team === Team.player
         ? this.menu.right - this.noteStartX
         : this.menu.left - this.noteStartX;
 
     /**
      * 
      */
-    private noteDifferenceY: number = this.source === Team.player
+    private noteDifferenceY: number = this.teamAndAction.source.team === Team.player
         ? (this.menu.top + this.defenderThing.height / 2) - this.noteStartY
         : (this.menu.bottom - this.defenderThing.height) - this.noteStartY;
 

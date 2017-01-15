@@ -1,16 +1,22 @@
+import { IMoveAction } from "battlemovr/lib/Actions";
 import { IMoveEffect } from "battlemovr/lib/Effects";
-import { Team } from "battlemovr/lib/Teams";
+import { ITeamAndAction } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
-import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../../Battles";
-import { IMenu } from "../../../Menus";
-import { IThing } from "../../../Things";
+import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
+import { IBattleInfo, IPokemon } from "../../../../Battles";
+import { IMenu } from "../../../../Menus";
+import { IThing } from "../../../../Things";
 
 /**
  * Runs a battle move.
  */
 export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Team and move being performed.
+     */
+    protected readonly teamAndAction: ITeamAndAction<IMoveAction>;
+
     /**
      * Pokemon being targeted.
      */
@@ -37,40 +43,21 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
     protected readonly menu: IMenu;
 
     /**
-     * Title of the move.
-     */
-    protected readonly title: string;
-
-    /**
-     * Team whose Pokemon is using the move.
-     */
-    protected readonly source: Team;
-
-    /**
-     * Team whose Pokemon is being targeted.
-     */
-    protected readonly target: Team;
-
-    /**
      * Initializes a new instance of the Move class.
      * 
      * @param gameStarter   FullScreenPokemon instance this is used for.
-     * @param title   Tit;le of the move.
-     * @param source   Team whose Pokemon is using the move.
-     * @param target   Team whose Pokemon is being targeted.
+     * @param teamAndAction   Team and move being performed.
      */
-    public constructor(gameStarter: TGameStartr, title: string, source: Team, target: Team) {
+    public constructor(gameStarter: TGameStartr, teamAndAction: ITeamAndAction<IMoveAction>) {
         super(gameStarter);
 
-        const battleInfo: IBattleInfo = gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        this.attacker = battleInfo.teams[Team[source]].selectedActor;
-        this.attackerThing = battleInfo.things[Team[source]];
-        this.defender = battleInfo.teams[Team[target]].selectedActor;
-        this.defenderThing = battleInfo.things[Team[target]];
+        this.teamAndAction = teamAndAction;
 
-        this.title = title;
-        this.source = source;
-        this.target = target;
+        const battleInfo: IBattleInfo = gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        this.attacker = battleInfo.teams[teamAndAction.source.team].selectedActor;
+        this.attackerThing = battleInfo.things[teamAndAction.source.team];
+        this.defender = battleInfo.teams[teamAndAction.target.team].selectedActor;
+        this.defenderThing = battleInfo.things[teamAndAction.target.team];
 
         this.menu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
     }
@@ -79,7 +66,7 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
      * @returns Effects running this move will cause.
      */
     public getEffects(): IMoveEffect[] {
-        return this.gameStarter.constants.moves.byName[this.title].effects;
+        return this.gameStarter.constants.moves.byName[this.teamAndAction.action.move].effects;
     }
 
     /**
@@ -88,7 +75,7 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        console.log(`Still need to implement '${this.title}'...`);
+        console.log(`Still need to implement '${this.teamAndAction.action.move}'...`);
         callback();
     }
 }

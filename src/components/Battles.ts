@@ -21,9 +21,14 @@ import { IThing } from "./Things";
  */
 export interface IPokemon extends IActor, IStateSaveable {
     /**
-     * How likely a critical hit is from this Pokemon, for the criticalHit equation.
+     * How many experience points the actor has.
      */
-    raisedCriticalHitProbability?: boolean;
+    experience: number;
+
+    /**
+     * Power level the actor is.
+     */
+    level: number;
 
     /**
      * Accumulated effort value points.
@@ -34,6 +39,11 @@ export interface IPokemon extends IActor, IStateSaveable {
      * Accumulated individual value points.
      */
     iv: IValuePoints;
+
+    /**
+     * How likely a critical hit is from this Pokemon.
+     */
+    raisedCriticalHitProbability?: boolean;
 
     /**
      * Battle attribute statistics.

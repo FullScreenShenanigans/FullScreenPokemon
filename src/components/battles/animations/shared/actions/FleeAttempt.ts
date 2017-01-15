@@ -1,8 +1,8 @@
 import { BattleOutcome } from "battlemovr/lib/Animations";
 import { Component } from "eightbittr/lib/Component";
 
-import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../../Battles";
+import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
+import { IBattleInfo, IPokemon } from "../../../../Battles";
 
 /**
  * Player fleeing logic used by FullScreenPokemon instances.

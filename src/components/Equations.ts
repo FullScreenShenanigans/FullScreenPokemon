@@ -1,11 +1,9 @@
 import { IMove, IStatistic } from "battlemovr/lib/Actors";
-import { IDamageEffect, IMoveEffect } from "battlemovr/lib/Effects";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
 import { IBattleBall } from "./constants/Items";
-import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 import { Moves } from "./equations/Moves";
 import { IWildPokemonSchema } from "./Maps";
@@ -395,119 +393,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         return false;
-    }
-
-    /**
-     * Computes how much damage a move should do to a Pokemon.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param attacker   The attacking pokemon.
-     * @param defender   The defending Pokemon.
-     * @returns How much damage should be dealt.
-     * @see http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
-     * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-     * @remarks Todo: Factor in spec differences from burns, etc.
-     */
-    public damage(move: string, attacker: IPokemon, defender: IPokemon): number {
-        const damageEffect: IDamageEffect | undefined = this.gameStarter.constants.moves.byName[move].effects
-            .filter((effect: IMoveEffect): boolean => effect.type === "damage")
-            [0] as IDamageEffect;
-
-        // A base attack that's not numeric means no damage, no matter what
-        if (!damageEffect) {
-            return 0;
-        }
-
-        const base: number = damageEffect.damage;
-
-        // Don't bother calculating infinite damage: it's going to be infinite
-        if (!isFinite(base as number)) {
-            return Infinity;
-        }
-
-        const critical: boolean = this.criticalHit(move, attacker);
-        const level: number = attacker.level * Number(critical);
-        const attack: number = attacker.statistics.attack.current;
-        const defense: number = defender.statistics.defense.current;
-        const modifier: number = this.damageModifier(move, attacker, defender);
-
-        return Math.round(
-            Math.max(
-                ((((2 * level + 10) / 250) * (attack / defense) * (base as number) + 2) | 0) * modifier,
-                1));
-    }
-
-    /**
-     * Determines the damage modifier against a defending Pokemon.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param attacker   The attacking Pokemon.
-     * @param defender   The defending Pokemon.
-     * @returns The damage modifier, as a multiplication constant.
-     * @see http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
-     * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-     */
-    public damageModifier(move: string, attacker: IPokemon, defender: IPokemon): number {
-        const moveSchema: IMoveSchema = this.gameStarter.constants.moves.byName[move];
-        const stab: number = attacker.types.indexOf(moveSchema.type) !== -1 ? 1.5 : 1;
-        const type: number = this.typeEffectiveness(move, defender);
-
-        return stab * type * this.gameStarter.numberMaker.randomWithin(.85, 1);
-    }
-
-    /**
-     * Determines whether a move should be a critical hit.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param attacker   The attacking Pokemon.
-     * @returns Whether the move should be a critical hit.
-     * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-     */
-    public criticalHit(move: string, attacker: IPokemon): boolean {
-        const moveInfo: IMoveSchema = this.gameStarter.constants.moves.byName[move];
-        const baseSpeed: number = this.gameStarter.constants.pokemon.byName[attacker.title.join("")].speed;
-        let denominator: number = 512;
-
-        // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit,
-        // resulting in a probability of BaseSpeed / 64.
-        if (moveInfo.criticalRaised) {
-            denominator /= 8;
-        }
-
-        // "Focus Energy and Dire Hit were intended to increase the critical hit rate, ..."
-        // In FullScreenPokemon, they work as intended! Fans who prefer the
-        // original behavior are free to fork the repo. As the original
-        // behavior is a glitch (and conflicts with creators' intentions),
-        // it is not duplicated here.
-        if (attacker.raisedCriticalHitProbability) {
-            denominator /= 4;
-        }
-
-        // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%,
-        // it instead becomes 255/256 or about 99.6%.
-        return this.gameStarter.numberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
-    }
-
-    /**
-     * Determines the type effectiveness of a move on a defending Pokemon.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param defender   The defending Pokemon.
-     * @returns A damage modifier, as a multiplication constant.
-     * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-     */
-    public typeEffectiveness(move: string, defender: IPokemon): number {
-        const defenderTypes: string[] = this.gameStarter.constants.pokemon.byName[defender.title.join("")].types;
-        const typeIndices: { [i: string]: number } = this.gameStarter.constants.types.indices;
-        const moveIndex: number = typeIndices[this.gameStarter.constants.moves.byName[move].type];
-        let total: number = 1;
-
-        for (let i: number = 0; i < defenderTypes.length; i += 1) {
-            const effectivenesses: number[] = this.gameStarter.constants.types.effectivenessTable[moveIndex];
-            total *= effectivenesses[typeIndices[defenderTypes[i]]];
-        }
-
-        return total;
     }
 
     /**

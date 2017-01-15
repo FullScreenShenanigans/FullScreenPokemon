@@ -1,10 +1,12 @@
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction } from "battlemovr/lib/Actions";
-import { Team } from "battlemovr/lib/Teams";
+import { ITeamAndAction } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { Moves } from "../Moves";
-import { FleeAttempt } from "./FleeAttempt";
+import { FleeAttempt } from "./actions/FleeAttempt";
+import { Effects } from "./Effects";
+import { Moves } from "./Moves";
+import { DefaultMovesBag } from "./moves/MovesBag";
 
 /**
  * Player action animations used by FullScreenPokemon instances.
@@ -13,20 +15,20 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Callback for when a team attempts to leave the battle.
      * 
-     * @param _action   Action being performed.
+     * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public flee(_action: IFleeAction, onComplete: () => void): void {
+    public flee(_action: ITeamAndAction<IFleeAction>, onComplete: () => void): void {
         new FleeAttempt<TGameStartr>(this.gameStarter).attempt(onComplete);
     }
 
     /**
      * Callback for when a team uses an item.
      * 
-     * @param action   Action being performed.
+     * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public item(action: IItemAction, onComplete: () => void): void {
+    public item(action: ITeamAndAction<IItemAction>, onComplete: () => void): void {
         console.log("Player item action:", action);
         onComplete();
     }
@@ -34,20 +36,22 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Callback for when a team's selected actor uses a move.
      * 
-     * @param action   Action being performed.
+     * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public move(action: IMoveAction, onComplete: () => void): void {
-        new Moves<TGameStartr>(this.gameStarter).playMove(action.move, Team.player, Team.opponent, onComplete);
+    public move(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
+        new Moves(this.gameStarter, DefaultMovesBag).playMove(
+            teamAndAction,
+            (): void => new Effects(this.gameStarter).runMoveEffects(teamAndAction, onComplete));
     }
 
     /**
      * Callback for when a team switches actors.
      * 
-     * @param action   Action being performed.
+     * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public switch(action: ISwitchAction, onComplete: () => void): void {
+    public switch(action: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
         console.log("Player switch action:", action);
         onComplete();
     }

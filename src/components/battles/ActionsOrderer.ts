@@ -14,8 +14,13 @@ import { IMoveSchema } from "../constants/Moves";
  * @returns Whether the action should go first.
  */
 export interface IOrderFilter {
-    (a: ITeamAndAction, b: ITeamAndAction): boolean;
+    (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean;
 }
+
+/**
+ * Each battler's team and action.
+ */
+type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 
 /**
  * Battle functions used by FullScreenPokemon instances.
@@ -31,8 +36,8 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @see https://www.dragonflycave.com/mechanics/battle#turnorder
      * @todo Account for items, statuses, etc.
      */
-    public order(actions: IUnderEachTeam<IAction>, battleInfo: IBattleInfo): ITeamAndAction[] {
-        const unorderedActions: [ITeamAndAction, ITeamAndAction] = [
+    public order(actions: IUnderEachTeam<IAction>, battleInfo: IBattleInfo): ITeamAndAction<any>[] {
+        const unorderedActions: [ITeamAndAction<any>, ITeamAndAction<any>] = [
             {
                 action: actions.opponent,
                 source: {
@@ -74,7 +79,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @param filters   Filters to apply, in order.
      * @returns Actions ordered by the filters.
      */
-    private runFilters(unorderedActions: [ITeamAndAction, ITeamAndAction], ...filters: IOrderFilter[]): [ITeamAndAction, ITeamAndAction] {
+    private runFilters(unorderedActions: ITeamAndActionPair, ...filters: IOrderFilter[]): ITeamAndActionPair {
         for (const filter of filters) {
             if (filter(unorderedActions[0], unorderedActions[1])) {
                 return unorderedActions;
@@ -94,7 +99,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private filterForPlayerFleeing: IOrderFilter = (a: ITeamAndAction): boolean => {
+    private filterForPlayerFleeing: IOrderFilter = (a: ITeamAndAction<any>): boolean => {
         return a.source.team === Team.player && a.action.type === "flee";
     }
 
@@ -104,7 +109,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private filterForSwitch: IOrderFilter = (a: ITeamAndAction): boolean => {
+    private filterForSwitch: IOrderFilter = (a: ITeamAndAction<any>): boolean => {
         return a.action.type === "switch";
     }
 
@@ -114,7 +119,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private filterForItem: IOrderFilter = (a: ITeamAndAction): boolean => {
+    private filterForItem: IOrderFilter = (a: ITeamAndAction<any>): boolean => {
         return a.action.type === "item";
     }
 
@@ -125,7 +130,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private filterForPriority: IOrderFilter = (a: ITeamAndAction, b: ITeamAndAction): boolean => {
+    private filterForPriority: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
@@ -143,7 +148,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private filterForSpeed: IOrderFilter = (a: ITeamAndAction, b: ITeamAndAction): boolean => {
+    private filterForSpeed: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
@@ -170,7 +175,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
      * @returns Whether the action should go first.
      * @remarks This is added last so player moves go before wild Pokemon fleeing.
      */
-    private filterForMove: IOrderFilter = (a: ITeamAndAction): boolean => {
+    private filterForMove: IOrderFilter = (a: ITeamAndAction<any>): boolean => {
         return a.action.type === "move";
     }
 }
