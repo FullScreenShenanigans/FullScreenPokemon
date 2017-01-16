@@ -80,7 +80,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param onComplete   Callback for when this is done.
      */
     private runWithoutLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
-        this.gameStarter.battles.decorations.addPokemonHealth(
+        this.gameStarter.battles.decorations.health.addPokemonHealth(
             battleInfo.teams[Team[this.settings.team]].selectedActor,
             this.settings.team);
 
@@ -140,7 +140,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
     private appear(battleInfo: IBattleInfo, onComplete: () => void): void {
         this.gameStarter.menuGrapher.createMenu("GeneralText");
 
-        this.gameStarter.battles.decorations.addPokemonHealth(
+        this.gameStarter.battles.decorations.health.addPokemonHealth(
             battleInfo.teams[Team[this.settings.team]].selectedActor,
             this.settings.team);
 

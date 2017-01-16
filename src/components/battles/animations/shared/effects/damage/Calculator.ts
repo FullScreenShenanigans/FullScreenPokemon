@@ -37,10 +37,12 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
         const defense: number = defender.statistics.defense.current;
         const modifier: number = this.getDamageModifier(teamAndAction.action.move, attacker, defender);
 
-        return Math.round(
+        const damage: number = Math.round(
             Math.max(
                 ((((2 * level + 10) / 250) * (attack / defense) * (base as number) + 2) | 0) * modifier,
                 1));
+
+        return Math.min(teamAndAction.target.actor.statistics.health.current, damage);
     }
 
     /**

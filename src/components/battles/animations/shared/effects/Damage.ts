@@ -1,4 +1,5 @@
 import { IMoveAction } from "battlemovr/lib/Actions";
+import { IStatistic } from "battlemovr/lib/Actors";
 import { IDamageEffect } from "battlemovr/lib/Effects";
 import { ITeamAndAction } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
@@ -23,10 +24,15 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param onComplete   Handler for when this is done.
      */
     public run(teamAndAction: ITeamAndAction<IMoveAction>, effect: IDamageEffect, onComplete: () => void): void {
+        const statistic: IStatistic = teamAndAction.target.actor.statistics.health;
         const amount: number = this.calculator.calculateDamage(teamAndAction, effect);
 
-        console.log("Will damage by", amount);
+        this.gameStarter.battles.decorations.health.animatePokemonHealthBar(
+            teamAndAction.target.team,
+            statistic.current,
+            statistic.current - amount,
+            onComplete);
 
-        onComplete();
+        statistic.current -= amount;
     }
 }
