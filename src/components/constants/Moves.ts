@@ -3,6 +3,7 @@ import { EffectTarget, IMoveEffect } from "battlemovr/lib/Effects";
 import { Actions } from "../../components/Actions";
 import { IPokemon } from "../../components/Battles";
 import { IPlayer } from "../../components/Things";
+
 /**
  * Static information on a move's metadata and effects.
  */
@@ -723,7 +724,13 @@ export class Moves {
         },
         "Scratch": {
             type: "Normal",
-            effects: [],
+            effects: [
+                {
+                    damage: 40,
+                    target: EffectTarget.defender,
+                    type: "damage"
+                }
+            ],
             accuracy: 100,
             PP: 35,
         },
@@ -914,7 +921,13 @@ export class Moves {
         },
         "Tackle": {
             type: "Normal",
-            effects: [],
+            effects: [
+                {
+                    damage: 40,
+                    target: EffectTarget.defender,
+                    type: "damage"
+                }
+            ],
             accuracy: 95,
             PP: 35,
         },

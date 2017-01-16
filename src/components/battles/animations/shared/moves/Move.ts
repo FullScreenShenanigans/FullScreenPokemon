@@ -1,6 +1,6 @@
 import { IMoveAction } from "battlemovr/lib/Actions";
 import { IMoveEffect } from "battlemovr/lib/Effects";
-import { ITeamAndAction } from "battlemovr/lib/Teams";
+import { ITeamAndAction, Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
@@ -54,10 +54,10 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
         this.teamAndAction = teamAndAction;
 
         const battleInfo: IBattleInfo = gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        this.attacker = battleInfo.teams[teamAndAction.source.team].selectedActor;
-        this.attackerThing = battleInfo.things[teamAndAction.source.team];
-        this.defender = battleInfo.teams[teamAndAction.target.team].selectedActor;
-        this.defenderThing = battleInfo.things[teamAndAction.target.team];
+        this.attacker = battleInfo.teams[Team[teamAndAction.source.team]].selectedActor;
+        this.attackerThing = battleInfo.things[Team[teamAndAction.source.team]];
+        this.defender = battleInfo.teams[Team[teamAndAction.target.team]].selectedActor;
+        this.defenderThing = battleInfo.things[Team[teamAndAction.target.team]];
 
         this.menu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
     }

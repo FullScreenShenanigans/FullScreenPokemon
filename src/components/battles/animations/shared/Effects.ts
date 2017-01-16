@@ -55,7 +55,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
             });
         }
 
-        queue.add(onComplete);
+        queue.run(onComplete);
     }
 
     /**
