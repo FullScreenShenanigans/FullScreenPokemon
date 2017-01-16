@@ -13,6 +13,11 @@ import { DefaultMovesBag } from "./moves/MovesBag";
  */
 export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IOnActions {
     /**
+     * Action effect animations.
+     */
+    public readonly effects: Effects<TGameStartr> = new Effects(this.gameStarter);
+
+    /**
      * Callback for when a team attempts to leave the battle.
      * 
      * @param teamAndAction   Team and action being performed.

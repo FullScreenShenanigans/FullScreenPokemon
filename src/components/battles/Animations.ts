@@ -1,4 +1,5 @@
 import { BattleOutcome, IAnimations } from "battlemovr/lib/Animations";
+import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -36,7 +37,17 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
      * @param outcome   Descriptor of what finished the battle.
      * @param onComplete   Callback for when it's safe to dispose of battle info.
      */
-    public readonly complete = (outcome: BattleOutcome, onComplete: () => void): void => {
+    public readonly complete = (outcome: BattleOutcome, onComplete?: () => void): void => {
         new Ending(this.gameStarter).run(outcome, onComplete);
+    }
+
+    /**
+     * Retrieves the animator for a team.
+     * 
+     * @param team   Which team's animator to retrieve.
+     * @returns The team's animator.
+     */
+    public getTeamAnimations(team: Team): Opponent<TGameStartr> | Player<TGameStartr> {
+        return team === Team.opponent ? this.opponent : this.player;
     }
 }

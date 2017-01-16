@@ -286,7 +286,13 @@ export class Moves {
         },
         "Earthquake": {
             type: "Ground",
-            effects: [],
+            effects: [
+                {
+                    damage: 100,
+                    target: EffectTarget.defender,
+                    type: "damage"
+                }
+            ],
             accuracy: 100,
             PP: 10,
         },

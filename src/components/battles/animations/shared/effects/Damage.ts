@@ -5,6 +5,7 @@ import { ITeamAndAction } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
+import { IPokemon } from "../../../../Battles";
 import { Calculator } from "./damage/Calculator";
 
 /**
@@ -31,7 +32,17 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends Component<TGa
             teamAndAction.target.team,
             statistic.current,
             statistic.current - amount,
-            onComplete);
+            (): void => {
+                if (statistic.current !== 0) {
+                    onComplete();
+                    return;
+                }
+
+                this.gameStarter.battles.animations.getTeamAnimations(teamAndAction.target.team)
+                    .actions.effects.fainting.run(
+                        teamAndAction.target.actor as IPokemon,
+                        teamAndAction.target.team, onComplete);
+            });
 
         statistic.current -= amount;
     }

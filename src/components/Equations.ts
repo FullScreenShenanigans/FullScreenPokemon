@@ -130,27 +130,18 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @param iv   What IV points the Pokemon should start with.
      * @param ev   What EV points the Pokemon should start with.
      * @returns Statistics for the Pokemon.
+     * @see http://bulbapedia.bulbagarden.net/wiki/Statistic#In_Generations_I_and_II
      */
     public newPokemonStatistics(title: string[], level: number, ev: IValuePoints, iv: IValuePoints): IPokemonStatistics {
         const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
 
         const attack: IStatistic = this.pokemonStatistic("attack", schema.attack, level, ev.attack, iv.attack);
         const defense: IStatistic = this.pokemonStatistic("defense", schema.defense, level, ev.defense, iv.defense);
+        const health: IStatistic = this.pokemonStatistic("health", schema.health, level, ev.health, iv.health);
         const special: IStatistic = this.pokemonStatistic("special", schema.special, level, ev.special, iv.special);
         const speed: IStatistic = this.pokemonStatistic("speed", schema.speed, level, ev.speed, iv.speed);
 
-        const healthNormal: number = (
-            8 * (attack.normal % 2)
-            + 4 * (defense.normal % 2)
-            + 2 * (speed.normal % 2)
-            + (special.normal % 2));
-
-        const health: IStatistic = {
-            current: healthNormal,
-            normal: healthNormal
-        };
-
-        return { attack, health, defense, special, speed };
+        return { attack, defense, health, special, speed };
     }
 
     /**
@@ -193,11 +184,13 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * 
      * @returns A random set of IV points.
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
+     * @todo Implement the bit procedure for health.
      */
     public newPokemonIVs(): IValuePoints {
         return {
             attack: this.gameStarter.numberMaker.randomIntWithin(0, 15),
             defense: this.gameStarter.numberMaker.randomIntWithin(0, 15),
+            health: 0,
             speed: this.gameStarter.numberMaker.randomIntWithin(0, 15),
             special: this.gameStarter.numberMaker.randomIntWithin(0, 15)
         };
@@ -212,6 +205,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         return {
             attack: 0,
             defense: 0,
+            health: 0,
             speed: 0,
             special: 0
         };
@@ -229,7 +223,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @remarks Note: the page mentions rounding errors... 
      */
-    public pokemonStatistic(statistic: string, base: number, level: number, ev: number, iv: number): IStatistic {
+    public pokemonStatistic(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): IStatistic {
         const normal: number = this.pokemonStatisticNormal(statistic, base, level, ev, iv);
 
         return {
@@ -250,18 +244,14 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @remarks Note: the page mentions rounding errors... 
      */
-    public pokemonStatisticNormal(statistic: string, base: number, level: number, ev: number, iv: number): number {
-        let topExtra: number = 0;
-        let added: number = 5;
+    public pokemonStatisticNormal(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): number {
+        const numerator: number = ((base + iv) * 2 + Math.floor(Math.ceil(Math.sqrt(ev)) / 4)) * level;
+        const fractional: number = Math.floor(numerator / 100);
+        const addition: number = statistic === "health"
+            ? level + 10
+            : 5;
 
-        if (statistic === "HP") {
-            topExtra = 50;
-            added = 10;
-        }
-
-        const numerator: number = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
-
-        return (numerator / 50 + added) | 0;
+        return fractional + addition;
     }
 
     /**

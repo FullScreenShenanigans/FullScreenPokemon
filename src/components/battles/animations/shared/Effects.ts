@@ -1,20 +1,27 @@
 import { IMoveAction } from "battlemovr/lib/Actions";
 import { Queue } from "battlemovr/lib/animators/Queue";
 import { IMoveEffect } from "battlemovr/lib/Effects";
-import { ITeamAndAction } from "battlemovr/lib/Teams";
+import { ITeamAndAction, Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+import { IBattleInfo } from "../../../Battles";
 import { Damage } from "./effects/Damage";
 import { Missed } from "./effects/Missed";
 import { Statistics } from "./effects/Statistics";
 import { Statuses } from "./effects/Statuses";
 import { Switching } from "./effects/Switching";
+import { Fainting } from "./Fainting";
 
 /**
  * Action effect animations used by FullScreenPokemon instances.
  */
 export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Runs animations for fainting.
+     */
+    public readonly fainting: Fainting<TGameStartr> = new Fainting(this.gameStarter);
+
     /**
      * Runs animations for effect damages.
      */
@@ -50,9 +57,8 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
         const queue: Queue = new Queue();
 
         for (const effect of this.gameStarter.constants.moves.byName[teamAndAction.action.move].effects) {
-            queue.add((afterEffect: () => void): void => {
-                this.runEffect(teamAndAction, effect, afterEffect);
-            });
+            queue.add((afterEffect: () => void): void => this.runEffect(teamAndAction, effect, afterEffect));
+            queue.add((afterEffect: () => void): void => this.runAfterEffect(teamAndAction, afterEffect));
         }
 
         queue.run(onComplete);
@@ -90,5 +96,25 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
             default:
                 throw new Error(`Unknown effect type: '${(effect as IMoveEffect).type}'.`);
         }
+    }
+
+    /**
+     * Switches Pokemon if needed.
+     * 
+     * @param teamAndAction   Team and action that was performed.
+     * @param onComplete   Handler for when this is done.
+     */
+    private runAfterEffect(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
+        if (teamAndAction.target.actor.statistics.health.current !== 0) {
+            onComplete();
+            return;
+        }
+
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+
+        battleInfo.teams[Team[teamAndAction.target.team]].selector.afterKnockout(
+            battleInfo,
+            teamAndAction.target.team,
+            onComplete);
     }
 }

@@ -58,7 +58,7 @@ export class Health<TGameStartr extends FullScreenPokemon> extends Component<TGa
             2,
             repeats);
 
-        this.gameStarter.timeHandler.addEvent(onComplete, repeats + 1);
+        this.gameStarter.timeHandler.addEvent(onComplete, (repeats * 2) + 35);
     }
 
     /**

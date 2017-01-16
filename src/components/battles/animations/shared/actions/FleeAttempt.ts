@@ -24,6 +24,34 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Componen
     }
 
     /**
+     * Handler for the player successfully fleeing.
+     */
+    public succeed(): void {
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            battleInfo.texts.flee.success(),
+            (): void => this.gameStarter.battleMover.stopBattle(BattleOutcome.playerFled));
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * Handler for the player failing to flee.
+     * 
+     * @param onComplete   Callback for when this is done.
+     */
+    public fail(onComplete: () => void): void {
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            battleInfo.texts.flee.fail(),
+            onComplete);
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
      * @returns Whether the player may flee.
      */
     private canEscape(): boolean {
@@ -41,33 +69,5 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Componen
         }
 
         return this.gameStarter.numberMaker.randomInt(256) < f;
-    }
-
-    /**
-     * Handler for the player successfully fleeing.
-     */
-    private succeed(): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "GeneralText",
-            battleInfo.texts.flee.success(),
-            (): void => this.gameStarter.battleMover.stopBattle(BattleOutcome.playerFled));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * Handler for the player failing to flee.
-     * 
-     * @param onComplete   Callback for when this is done.
-     */
-    private fail(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "GeneralText",
-            battleInfo.texts.flee.fail(),
-            onComplete);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

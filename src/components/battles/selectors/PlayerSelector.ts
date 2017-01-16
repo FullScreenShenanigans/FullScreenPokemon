@@ -1,10 +1,11 @@
 import { IMove } from "battlemovr/lib/Actors";
+import { BattleOutcome } from "battlemovr/lib/Animations";
 import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo } from "../../Battles";
+import { IBattleInfo, IPokemon } from "../../Battles";
 import { IInventoryListing } from "../../menus/Items";
 import { Switching } from "./player/Switching";
 
@@ -18,14 +19,38 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
     private readonly switching: Switching<TGameStartr> = new Switching(this.gameStarter);
 
     /**
+     * Reacts to an actor getting knocked out.
+     * 
+     * @param battleInfo   State for an ongoing battle.
+     * @param team   Which team is selecting an action.
+     * @param onChoice   Callback for when this is done.
+     */
+    public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
+        const remaining: boolean = battleInfo.teams[Team[team]].actors
+            .filter((actor: IPokemon): boolean => {
+                return actor.statistics.health.current !== 0;
+            })
+            .length > 0;
+
+        if (remaining) {
+            this.switching.offerSwitch(team, onComplete);
+        } else {
+            this.gameStarter.battles.animations.complete(
+                team === Team.opponent
+                    ? BattleOutcome.playerVictory
+                    : BattleOutcome.opponentVictory);
+        }
+    }
+
+    /**
      * Determines the next action to take.
      * 
      * @param battleInfo   State for an ongoing battle.
-     * @param team   The player's team.
+     * @param team   Which team is taking action.
      * @param onChoice   Callback for when an action is chosen.
      */
-    public nextAction(battleInfo: IBattleInfo, _team: Team.player, onChoice: IOnChoice): void {
-        this.resetGui(battleInfo, onChoice);
+    public nextAction(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
+        this.resetGui(battleInfo, team, onChoice);
     }
 
     /**
@@ -34,7 +59,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      */
-    private resetGui(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
+    private resetGui(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.createMenu("BattleOptions");
         this.gameStarter.menuGrapher.addMenuList("BattleOptions", {
@@ -50,8 +75,9 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
                 {
                     text: ["Poke", "Mon"],
                     callback: (): void => this.switching.openBattlePokemonMenu(
+                        team,
                         onChoice,
-                        (): void => this.resetGui(battleInfo, onChoice))
+                        (): void => this.resetGui(battleInfo, team, onChoice))
                 },
                 {
                     text: "RUN",

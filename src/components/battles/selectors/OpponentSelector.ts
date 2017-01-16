@@ -1,3 +1,4 @@
+import { BattleOutcome } from "battlemovr/lib/Animations";
 import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
 import { Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
@@ -14,6 +15,31 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
      * Determines priorities of battle move possibilities.
      */
     private readonly movePriorityGenerator: MovePriorityGenerator<TGameStartr> = new MovePriorityGenerator(this.gameStarter);
+
+    /**
+     * Reacts to an actor getting knocked out.
+     * 
+     * @param battleInfo   State for an ongoing battle.
+     * @param team   Which team is selecting an action.
+     * @param onChoice   Callback for when this is done.
+     */
+    public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
+        const newPokemon: IPokemon | undefined = battleInfo.teams[Team[team]].actors
+            .filter((actor: IPokemon): boolean => {
+                return actor.statistics.health.current !== 0;
+            })
+            [0] as IPokemon | undefined;
+
+        if (newPokemon) {
+            this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
+            this.gameStarter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
+        } else {
+            this.gameStarter.battles.animations.complete(
+                team === Team.opponent
+                    ? BattleOutcome.playerVictory
+                    : BattleOutcome.opponentVictory);
+        }
+    }
 
     /**
      * Determines the next action to take.

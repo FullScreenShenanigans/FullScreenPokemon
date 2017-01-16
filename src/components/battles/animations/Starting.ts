@@ -1,11 +1,8 @@
-import { IBattleTeam } from "battlemovr/lib/Battles";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings } from "../../Battles";
 import { PokedexListingStatus } from "../../Constants";
-import { IMenu } from "../../Menus";
-import { IThing } from "../../Things";
 import { Transitions } from "./Transitions";
 
 /**
@@ -43,7 +40,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
      */
     private setupThings(battleInfo: IBattleInfo): void {
         this.gameStarter.menuGrapher.createMenu("Battle");
-        battleInfo.things = this.createInitialThings(battleInfo);
+        battleInfo.things = this.gameStarter.battles.decorations.createInitialThings(battleInfo);
     }
 
     /**
@@ -137,68 +134,5 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
                 onComplete();
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-    }
-
-    /**
-     * Creates the initial Things displayed in a battle.
-     * 
-     * @param battleInfo   Info for the current battle.
-     */
-    private createInitialThings(battleInfo: IBattleInfo): IBattleThings {
-        const background: IThing = this.addThingAsText(
-            "DirtWhite",
-            {
-                height: this.gameStarter.mapScreener.height,
-                width: this.gameStarter.mapScreener.width
-            });
-        this.gameStarter.utilities.arrayToBeginning(background, this.gameStarter.groupHolder.getGroup("Text") as IThing[]);
-
-        const menu: IMenu = this.gameStarter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
-
-        const opponent: IThing = this.addThingAsText(
-            this.getInitialTitle(battleInfo.teams.opponent) + "Front",
-            {
-                opacity: 0
-            });
-
-        const player: IThing = this.addThingAsText(
-            this.getInitialTitle(battleInfo.teams.player) + "Back",
-            {
-                opacity: 0
-            });
-        this.gameStarter.physics.setLeft(player, menu.right + player.width);
-        this.gameStarter.physics.setBottom(player, menu.bottom - player.height);
-
-        this.gameStarter.physics.setRight(opponent, menu.left);
-        this.gameStarter.physics.setBottom(opponent, menu.bottom - 80);
-
-        return { background, menu, opponent, player };
-    }
-
-    /**
-     * Determines which sprite to initially show for a team.
-     * 
-     * @param team   A new battle team.
-     * @returns The initial sprite for the team.
-     */
-    private getInitialTitle(team: IBattleTeam): string {
-        return team.leader
-            ? team.leader.title.join("")
-            : team.selectedActor.title.join("");
-    }
-
-    /**
-     * Adds a new Thing and moves it to the Text group.
-     * 
-     * @param title   Title of the Thing to add.
-     * @param attributes   Any attributes for the Thing.
-     * @returns The newly created Thing.
-     */
-    private addThingAsText(title: string, attributes: any): IThing {
-        const thing: IThing = this.gameStarter.things.add([title, attributes]);
-
-        this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, "Text");
-
-        return thing;
     }
 }

@@ -1,7 +1,7 @@
 import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
 import { IOnBattleComplete } from "battlemovr/lib/Animations";
 import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
-import { ITeamBase, ITeamDescriptor, IUnderEachTeam } from "battlemovr/lib/Teams";
+import { ITeamBase, ITeamDescriptor, IUnderEachTeam, Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -66,22 +66,27 @@ export interface IPokemon extends IActor, IStateSaveable {
  */
 export interface IValuePoints {
     /**
-     * Attack EV points.
+     * Attack value points.
      */
     attack: number;
 
     /**
-     * Defense EV points.
+     * Defense value points.
      */
     defense: number;
 
     /**
-     * Special EV points.
+     * Health value points.
+     */
+    health: number;
+
+    /**
+     * Special value points.
      */
     special: number;
 
     /**
-     * Speed EV points.
+     * Speed value points.
      */
     speed: number;
 }
@@ -306,6 +311,21 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         pokemon.status = undefined;
+    }
+
+    /**
+     * Checks whether a team is allowed to flee (not facing a trainer).
+     * 
+     * @param team   A team in battle.
+     * @returns Whether the team can flee.
+     */
+    public canTeamAttemptFlee(team: Team): boolean {
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const otherTeam = team === Team.opponent
+            ? battleInfo.teams.player
+            : battleInfo.teams.opponent;
+
+        return !otherTeam.leader;
     }
 
     /**
