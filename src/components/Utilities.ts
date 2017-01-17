@@ -82,9 +82,8 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
     }
 
     /**
-     * Function to add a stackable item to an Array. If it already exists,
-     * the Function increases its value by count. Otherwise, it adds a new item
-     * to the Array.
+     * Adds a stackable item to an Array. If it already exists, its value is increased by count.
+     * Otherwise it adds a new item to the Array.
      * 
      * @param array   The Array containing the stackable items.
      * @param title   The name of the stackable item to be added.
@@ -101,10 +100,10 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
             }
         }
 
-        const object: any = {};
-        object[keyTitle] = title;
-        object[keyCount] = count;
-        array.push(object);
+        array.push({
+            [keyTitle]: title,
+            [keyCount]: count
+        });
 
         return true;
     }

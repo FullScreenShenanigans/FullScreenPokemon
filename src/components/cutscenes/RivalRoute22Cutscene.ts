@@ -56,7 +56,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
      * @param settings   Settings used for the cutscene.
      */
     public RivalTalks(settings: any): void {
-        const rivalTitle: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
+        // const rivalTitle: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
 
         this.gameStarter.actions.animateCharacterSetDirection(
             settings.player,
@@ -72,32 +72,35 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
                 "The guard won't let you through!",
                 "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?"
             ],
-            (): void => this.gameStarter.battles.startBattle({
-                battlers: {
-                    opponent: {
-                        sprite: "RivalPortrait",
-                        name: this.gameStarter.itemsHolder.getItem("nameRival"),
-                        category: "Trainer",
-                        hasActors: true,
-                        reward: 280,
-                        actors: [
-                            this.gameStarter.equations.newPokemon(rivalTitle, 8),
-                            this.gameStarter.equations.newPokemon("PIDGEY".split(""), 9)
-                        ]
-                    }
-                },
-                textStart: [
-                    "",
-                    " wants to fight!"
-                ],
-                textDefeat: [
-                    "Yeah! Am I great or what?".split("")
-                ],
-                textVictory: [
-                    "Awww! You just lucked out!".split("")
-                ],
-                keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"])
-            }));
+            (): void => {
+                console.log("Should start battle...");
+                // this.gameStarter.battles.startBattle({
+                //     battlers: {
+                //         opponent: {
+                //             sprite: "RivalPortrait",
+                //             name: this.gameStarter.itemsHolder.getItem("nameRival"),
+                //             category: "Trainer",
+                //             hasActors: true,
+                //             reward: 280,
+                //             actors: [
+                //                 this.gameStarter.equations.newPokemon(rivalTitle, 8),
+                //                 this.gameStarter.equations.newPokemon("PIDGEY".split(""), 9)
+                //             ]
+                //         }
+                //     },
+                //     textStart: [
+                //         "",
+                //         " wants to fight!"
+                //     ],
+                //     textDefeat: [
+                //         "Yeah! Am I great or what?".split("")
+                //     ],
+                //     textVictory: [
+                //         "Awww! You just lucked out!".split("")
+                //     ],
+                //     keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"])
+                // });
+            });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

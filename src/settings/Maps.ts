@@ -19,7 +19,7 @@ export interface IMapsModuleSettings extends igamestartr.IMapsModuleSettings {
     /**
      * Known maps, keyed by name.
      */
-    library: {
+    library?: {
         [i: string]: IMapRaw;
     };
 }

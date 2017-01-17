@@ -56,21 +56,21 @@ export interface IMapRaw extends imapscreatr.IMapRaw {
      * A listing of areas in the Map, keyed by name.
      */
     areas: {
-        [i: string]: IAreaRaw;
         [i: number]: IAreaRaw;
+        [i: string]: IAreaRaw;
     };
 
     /**
      * The default location for the Map.
      */
-    locationDefault: string;
+    locationDefault: number | string;
 
     /**
      * Descriptions of locations in the map.
      */
     locations: {
-        [i: string]: ILocationRaw;
         [i: number]: ILocationRaw;
+        [i: string]: ILocationRaw;
     };
 
     /**

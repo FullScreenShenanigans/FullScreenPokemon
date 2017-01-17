@@ -1586,7 +1586,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     "vertical": "bottom",
                     "horizontal": "right",
                     "offset": {
-                        "top": -6,
+                        "top": -18,
                         "left": -22
                     }
                 },
@@ -1595,10 +1595,13 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                         "type": "thing",
                         "thing": "BlackSquare",
                         "position": {
-                            "horizontal": "right"
+                            "horizontal": "right",
+                            "offset": {
+                                "top": 8
+                            },
                         },
                         "args": {
-                            "height": 23
+                            "height": 24
                         }
                     } as imenugraphr.IMenuThingSchema,
                     {
@@ -1610,14 +1613,18 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                         "position": {
                             "vertical": "bottom",
                             "offset": {
-                                "left": 2
+                                "left": 2,
+                                "top": 8
                             }
                         }
                     }, {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "position": {
-                            "vertical": "bottom"
+                            "vertical": "bottom",
+                            "offset": {
+                                "top": 8
+                            }
                         },
                         "args": {
                             "flipHoriz": true
@@ -1630,13 +1637,31 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "textPaddingX": 2,
                 "textSpeed": 0
             } as IMenuSchema,
+            "BattlePlayerPokeballs": {
+                "size": {
+                    "width": 112,
+                    "height": 20
+                },
+                "position": {
+                    "offset": {
+                        "left": 38,
+                        "top": 10
+                    }
+                },
+                "container": "BattlePlayerHealth",
+                "hidden": true,
+                "textPaddingX": 2,
+                "textSpeed": 0,
+                "textXOffset": 0,
+                "textYOffset": 0
+            } as IMenuSchema,
             "BattlePlayerHealthTitle": {
                 "size": {
                     "width": 152
                 },
                 "position": {
                     "offset": {
-                        "top": -50,
+                        "top": -40,
                         "left": 16
                     }
                 },
@@ -1649,7 +1674,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
             "BattlePlayerHealthLevel": {
                 "position": {
                     "offset": {
-                        "top": -34,
+                        "top": -24,
                         "left": 80
                     }
                 },
@@ -1677,7 +1702,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "position": {
                     "offset": {
                         "left": 16,
-                        "top": -12
+                        "top": -4
                     }
                 },
                 "childrenSchemas": [
@@ -1726,7 +1751,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 },
                 "position": {
                     "offset": {
-                        "top": -4,
+                        "top": 6,
                         "left": 16
                     }
                 },
@@ -1781,6 +1806,24 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "textYOffset": 2,
                 "textPaddingX": 2,
                 "textSpeed": 0
+            } as IMenuSchema,
+            "BattleOpponentPokeballs": {
+                "size": {
+                    "width": 112,
+                    "height": 20
+                },
+                "position": {
+                    "offset": {
+                        "left": 24,
+                        "top": 2
+                    }
+                },
+                "container": "BattleOpponentHealth",
+                "hidden": true,
+                "textPaddingX": 2,
+                "textSpeed": 0,
+                "textXOffset": 0,
+                "textYOffset": 0
             } as IMenuSchema,
             "BattleOpponentHealthTitle": {
                 "position": {
@@ -1969,7 +2012,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                         "type": "thing",
                         "thing": "Line",
                         "args": {
-                            "height": 40
+                            "height": 64
                         },
                         "position": {
                             "offset": {

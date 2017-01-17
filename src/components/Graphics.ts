@@ -1,7 +1,6 @@
 import { Graphics as GameStartrGraphics } from "gamestartr/lib/components/Graphics";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IBattleInfo } from "./Battles";
 import { IThing } from "./Things";
 
 /**
@@ -37,10 +36,9 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
     /**
      * Moves all kept Things in a battle to the Text group for animations.
      * 
-     * @param batleInfo    In-game state and settings for an ongoing battle.
+     * @param batleInfo    Things that should be visible above the starting animation.
      */
-    public moveBattleKeptThingsToText(battleInfo: IBattleInfo): void {
-        const keptThings: IThing[] | undefined = battleInfo.keptThings;
+    public moveBattleKeptThingsToText(keptThings?: IThing[]): void {
         if (!keptThings) {
             return;
         }
@@ -53,10 +51,9 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
     /**
      * Moves all kept Things in a battle back to their original groups.
      * 
-     * @param batleInfo    In-game state and settings for an ongoing battle.
+     * @param batleInfo    Things that should be visible above the starting animation.
      */
-    public moveBattleKeptThingsBack(battleInfo: IBattleInfo): void {
-        const keptThings: IThing[] | undefined = battleInfo.keptThings;
+    public moveBattleKeptThingsBack(keptThings: IThing[] | undefined): void {
         if (!keptThings) {
             return;
         }

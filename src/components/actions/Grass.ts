@@ -1,7 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
+import { IBattleTeam, IPokemon } from "../Battles";
 import { IArea, IMap, IWildPokemonSchema } from "../Maps";
 import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
 
@@ -109,12 +109,14 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.actions.walking.animateCharacterPreventWalking(thing);
 
         this.gameStarter.battles.startBattle({
-            battlers: {
+            teams: {
                 opponent: {
-                    name: wildPokemon.title,
-                    actors: [wildPokemon],
-                    category: "Wild",
-                    sprite: wildPokemon.title.join("") + "Front"
+                    actors: [wildPokemon]
+                }
+            },
+            texts: {
+                start: (team: IBattleTeam): string => {
+                    return `Wild ${team.selectedActor.nickname.join("")} appeared!`;
                 }
             }
         });
@@ -134,7 +136,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
             throw new Error("Grass doesn't have any wild Pokemon options defined.");
         }
 
-        const chosen: IWildPokemonSchema = this.gameStarter.battles.chooseRandomWildPokemon(options);
+        const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
 
         return this.gameStarter.utilities.createPokemon(chosen);
     }

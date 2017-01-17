@@ -1150,7 +1150,7 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
             "BattleSpriteFrontLarge": [112, 112],
             "BattleSpriteBack": {
                 "width": 64,
-                "height": 64,
+                "height": 56,
                 "scale": 2,
                 "repeat": false
             },

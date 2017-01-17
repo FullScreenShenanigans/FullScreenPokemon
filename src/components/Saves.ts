@@ -20,7 +20,7 @@ export interface IStateSaveable {
     /**
      * Holds the states of an object in the game.
      */
-    state: IStateHistory;
+    state?: IStateHistory;
 }
 
 /**
@@ -248,8 +248,8 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
     /**
      * Adds an in-game item to the character's bag.
      * 
-     * @param item    The item being stored.
-     * @param amount   The quantity of this item being stored.
+     * @param item    Name of item being stored.
+     * @param amount   How many of the item to add, if not 1.
      */
     public addItemToBag(item: string, amount: number = 1): void {
         this.gameStarter.utilities.combineArrayMembers(

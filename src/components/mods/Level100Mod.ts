@@ -1,7 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
-import { IPokemon } from "../../components/Battles";
+// import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
@@ -18,29 +18,18 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends Componen
      */
     public readonly events: ICallbackRegister = {
         onModEnable: (): void => {
-            const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-            const statistics: string[] = this.gameStarter.constants.pokemon.statisticNames;
+            for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+                this.gameStarter.saves.addStateHistory(pokemon, "level", pokemon.level);
 
-            for (let i: number = 0; i < partyPokemon.length; i += 1) {
-                partyPokemon[i].previousLevel = partyPokemon[i].level;
-                partyPokemon[i].level = 100;
-                for (let j: number = 0; j < statistics.length; j += 1) {
-                    (partyPokemon[i] as any)[statistics[j]] = (partyPokemon[i] as any)[statistics[j] + "Normal"] =
-                        this.gameStarter.equations.pokemonStatistic(partyPokemon[i], statistics[j]);
-                }
+                pokemon.level = 100;
+                pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
             }
         },
         onModDisable: (): void => {
-            const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-            const statistics: string[] = this.gameStarter.constants.pokemon.statisticNames;
+            for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+                this.gameStarter.saves.popStateHistory(pokemon, "level");
 
-            for (const pokemon of partyPokemon) {
-                pokemon.level = pokemon.previousLevel!;
-                pokemon.previousLevel = undefined;
-                for (let j: number = 0; j < statistics.length; j += 1) {
-                    (pokemon as any)[statistics[j]] = (pokemon as any)[statistics[j] + "Normal"] =
-                        this.gameStarter.equations.pokemonStatistic(pokemon, statistics[j]);
-                }
+                pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
             }
         }
     };

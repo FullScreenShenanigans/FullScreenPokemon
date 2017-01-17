@@ -1,17 +1,19 @@
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
-import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
+import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
 import { Grass } from "./actions/Grass";
 import { Ledges } from "./actions/Ledges";
 import { Roaming } from "./actions/Roaming";
+import { Shrinking } from "./actions/Shrinking";
+import { Sliding } from "./actions/Sliding";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
 import { IHMMoveSchema } from "./constants/Moves";
-import { IArea, IMap, IWildPokemonSchema } from "./Maps";
+import { IArea, IMap/*, IWildPokemonSchema*/ } from "./Maps";
 import { IDialog, IDialogOptions } from "./Menus";
 import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
@@ -67,6 +69,16 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * Roaming functions used by the FullScreenPokemon instance.
      */
     public readonly roaming: Roaming<TGameStartr> = new Roaming(this.gameStarter);
+
+    /**
+     * Shrinking functions used by the FullScreenPokemon instance.
+     */
+    public readonly shrinking: Shrinking<TGameStartr> = new Shrinking(this.gameStarter);
+
+    /**
+     * Sliding functions used by the FullScreenPokemon instance.
+     */
+    public readonly sliding: Sliding<TGameStartr> = new Sliding(this.gameStarter);
 
     /**
      * Walking functions used by the FullScreenPokemon instance.
@@ -195,133 +207,38 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Slides a Thing across the screen horizontally over time.
-     * 
-     * @param thing   A Thing to slide across the screen.
-     * @param change   How far to move each tick.
-     * @param goal   A midX location to stop sliding at.
-     * @param speed   How many ticks between movements.
-     * @param onCompletion   A callback for when the Thing reaches the goal.
-     * @returns The in-progress TimeEvent.
-     */
-    public animateSlideHorizontal(
-        thing: IThing,
-        change: number,
-        goal: number,
-        speed: number,
-        onCompletion?: (thing: IThing) => void): void {
-        this.gameStarter.physics.shiftHoriz(thing, change);
-
-        if (change > 0) {
-            if (this.gameStarter.physics.getMidX(thing) >= goal) {
-                this.gameStarter.physics.setMidX(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        } else {
-            if (this.gameStarter.physics.getMidX(thing) <= goal) {
-                this.gameStarter.physics.setMidX(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        }
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.animateSlideHorizontal(
-                    thing,
-                    change,
-                    goal,
-                    speed,
-                    onCompletion);
-            },
-            speed);
-    }
-
-    /**
-     * Slides a Thing across the screen vertically over time.
-     * 
-     * @param thing   A Thing to slide across the screen.
-     * @param change   How far to move each tick.
-     * @param goal   A midY location to stop sliding at.
-     * @param speed   How many ticks between movements.
-     * @param onCompletion   A callback for when the Thing reaches the goal.
-     * @returns The in-progress TimeEvent.
-     */
-    public animateSlideVertical(
-        thing: IThing,
-        change: number,
-        goal: number,
-        speed: number,
-        onCompletion?: (thing: IThing) => void): void {
-        this.gameStarter.physics.shiftVert(thing, change);
-
-        if (change > 0) {
-            if (this.gameStarter.physics.getMidY(thing) >= goal) {
-                this.gameStarter.physics.setMidY(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        } else {
-            if (this.gameStarter.physics.getMidY(thing) <= goal) {
-                this.gameStarter.physics.setMidY(thing, goal);
-                if (onCompletion) {
-                    onCompletion(thing);
-                }
-                return;
-            }
-        }
-
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.animateSlideVertical(
-                    thing,
-                    change,
-                    goal,
-                    speed,
-                    onCompletion);
-            },
-            speed);
-    }
-
-    /**
      * Freezes a Character and starts a battle with an enemy.
      * 
      * @param _   A Character about to start a battle with other.
      * @param other   An enemy about to battle thing.
      */
-    public animateTrainerBattleStart(_: ICharacter, other: IEnemy): void {
-        const battleName: string = other.battleName || other.title;
-        const battleSprite: string = other.battleSprite || battleName;
+    public animateTrainerBattleStart(thing: ICharacter, other: IEnemy): void {
+        console.log("should start battle", thing, other);
+        // const battleName: string = other.battleName || other.title;
+        // const battleSprite: string = other.battleSprite || battleName;
 
-        this.gameStarter.battles.startBattle({
-            battlers: {
-                opponent: {
-                    name: battleName.split(""),
-                    sprite: battleSprite + "Front",
-                    category: "Trainer",
-                    hasActors: true,
-                    reward: other.reward,
-                    actors: other.actors.map(
-                        (schema: IWildPokemonSchema): IPokemon => {
-                            return this.gameStarter.utilities.createPokemon(schema);
-                        })
-                }
-            },
-            textStart: ["", " wants to fight!"],
-            textDefeat: other.textDefeat,
-            textAfterBattle: other.textAfterBattle,
-            giftAfterBattle: other.giftAfterBattle,
-            badge: other.badge,
-            textVictory: other.textVictory,
-            nextCutscene: other.nextCutscene
-        });
+        // this.gameStarter.battles.startBattle({
+        //     battlers: {
+        //         opponent: {
+        //             name: battleName.split(""),
+        //             sprite: battleSprite + "Front",
+        //             category: "Trainer",
+        //             hasActors: true,
+        //             reward: other.reward,
+        //             actors: other.actors.map(
+        //                 (schema: IWildPokemonSchema): IPokemon => {
+        //                     return this.gameStarter.utilities.createPokemon(schema);
+        //                 })
+        //         }
+        //     },
+        //     textStart: ["", " wants to fight!"],
+        //     textDefeat: other.textDefeat,
+        //     textAfterBattle: other.textAfterBattle,
+        //     giftAfterBattle: other.giftAfterBattle,
+        //     badge: other.badge,
+        //     textVictory: other.textVictory,
+        //     nextCutscene: other.nextCutscene
+        // });
     }
 
     /**
@@ -565,86 +482,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             });
 
         return blank;
-    }
-
-    /**
-     * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
-     * flag for a little while.
-     * 
-     * @param thing   A Thing to flicker.
-     * @param cleartime   How long to wait to stop the effect (by default, 49).
-     * @param interval   How many steps between hidden toggles (by default, 2).
-     * @param callback   A Function to called on the Thing when done flickering.
-     * @returns The flickering time event.
-     */
-    public animateFlicker(
-        thing: IThing,
-        cleartime: number = 49,
-        interval: number = 2,
-        callback?: (thing: IThing) => void): ITimeEvent {
-        thing.flickering = true;
-
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => {
-                thing.hidden = !thing.hidden;
-            },
-            interval | 0,
-            cleartime | 0);
-
-        return this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                thing.flickering = thing.hidden = false;
-
-                if (callback) {
-                    callback(thing);
-                }
-            },
-            ((cleartime * interval) | 0) + 1);
-    }
-
-    /**
-     * Shakes all Things on the screen back and forth for a little bit.
-     * 
-     * 
-     * @param eightBitter
-     * @param dx   How far to shift horizontally (by default, 0).
-     * @param dy   How far to shift horizontally (by default, 0).
-     * @param cleartime   How long until the screen is done shaking.
-     * @param interval   How many game upkeeps between movements.
-     * @returns The shaking time event.
-     */
-    public animateScreenShake(
-        dx: number = 0,
-        dy: number = 0,
-        cleartime: number = 8,
-        interval: number = 8,
-        callback?: IEventCallback): ITimeEvent {
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => {
-                this.gameStarter.groupHolder.callOnAll(this.gameStarter.physics, this.gameStarter.physics.shiftHoriz, dx);
-                this.gameStarter.groupHolder.callOnAll(this.gameStarter.physics, this.gameStarter.physics.shiftVert, dy);
-            },
-            1,
-            cleartime * interval);
-
-        return this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                dx *= -1;
-                dy *= -1;
-
-                this.gameStarter.timeHandler.addEventInterval(
-                    (): void => {
-                        dx *= -1;
-                        dy *= -1;
-                    },
-                    interval,
-                    cleartime);
-
-                if (callback) {
-                    this.gameStarter.timeHandler.addEvent(callback, interval * cleartime);
-                }
-            },
-            (interval / 2) | 0);
     }
 
     /**

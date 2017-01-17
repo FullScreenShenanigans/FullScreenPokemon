@@ -1,7 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { BattleModifications } from "./constants/battleModifications";
+import { Battles } from "./constants/Battles";
 import { Items } from "./constants/Items";
 import { Moves } from "./constants/Moves";
 import { Pokemon } from "./constants/Pokemon";
@@ -63,9 +63,9 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
     public readonly blockSize: number = 32;
 
     /**
-     * Battle modifications used in the opponentMove equation.
+     * Battle constants used by this FullScreenPokemon instance.
      */
-    public readonly battleModifications: BattleModifications = new BattleModifications();
+    public readonly battles: Battles = new Battles();
 
     /**
      * All known items, keyed by English name.

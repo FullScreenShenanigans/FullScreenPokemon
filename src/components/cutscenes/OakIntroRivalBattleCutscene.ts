@@ -1,7 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IBattleInfo } from "../Battles";
 import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
@@ -44,7 +43,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
      */
     public Challenge(settings: any, args: any): void {
         const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
-        const battleInfo: IBattleInfo = {
+        const battleInfo: any = {
             battlers: {
                 opponent: {
                     sprite: "RivalPortrait",
@@ -102,7 +101,10 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     blocks: 1,
                     direction: Direction.Bottom
                 },
-                (): void => this.gameStarter.battles.startBattle(battleInfo)
+                (): void => {
+                    console.log("Should start battle with", battleInfo);
+                    // this.gameStarter.battles.startBattle(battleInfo);
+                }
             ]);
     }
 }

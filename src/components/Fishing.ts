@@ -64,7 +64,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
         const currentMap: IMap = this.gameStarter.areaSpawner.getMap(player.mapName) as IMap;
         const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName] as IArea;
         const options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type];
-        const chosen: IWildPokemonSchema = this.gameStarter.battles.chooseRandomWildPokemon(options);
+        const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
         const chosenPokemon: IPokemon = this.gameStarter.utilities.createPokemon(chosen);
 
         this.gameStarter.timeHandler.addEvent(
@@ -78,16 +78,17 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
                         "Oh! \n It's a bite!"
                     ],
                     (): void => {
-                        this.gameStarter.battles.startBattle({
-                            battlers: {
-                                opponent: {
-                                    name: chosenPokemon.title,
-                                    actors: [chosenPokemon],
-                                    category: "Wild",
-                                    sprite: chosenPokemon.title.join("") + "Front"
-                                }
-                            }
-                        });
+                        console.log("Should start battle with", chosenPokemon);
+                        // this.gameStarter.battles.startBattle({
+                        //     battlers: {
+                        //         opponent: {
+                        //             name: chosenPokemon.title,
+                        //             actors: [chosenPokemon],
+                        //             category: "Wild",
+                        //             sprite: chosenPokemon.title.join("") + "Front"
+                        //         }
+                        //     }
+                        // });
                     });
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
                 this.gameStarter.graphics.removeClass(player, "fishing");

@@ -1,19 +1,23 @@
-import { IActorExperience, IMove } from "battlemovr/lib/IBattleMovr";
+import { IMove, IStatistic } from "battlemovr/lib/Actors";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IBattleInfo, IBattler, IMovePossibility, IPokemon } from "./Battles";
-import { IBattleModification } from "./constants/battleModifications";
+import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
 import { IBattleBall } from "./constants/Items";
-import { IMoveSchema } from "./constants/Moves";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
+import { Moves } from "./equations/Moves";
 import { IWildPokemonSchema } from "./Maps";
 import { ICharacter, IGrass } from "./Things";
 
 /**
- * Math functions used by FullScreenPokemon instances.
+ * Common equations used by FullScreenPokemon instances.
  */
 export class Equations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+    /**
+     * Move equations used by this FullScreenPokemon instance.
+     */
+    public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
+
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.
      * 
@@ -68,6 +72,26 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
+     * Chooses a random wild Pokemon schema from the given ones.
+     * 
+     * @param options   Potential Pokemon schemas to choose from.
+     * @returns One of the potential Pokemon schemas at random.
+     */
+    public chooseRandomWildPokemon(options: IWildPokemonSchema[]): IWildPokemonSchema {
+        const choice: number = this.gameStarter.numberMaker.random();
+        let sum: number = 0;
+
+        for (const option of options) {
+            sum += option.rate;
+            if (sum >= choice) {
+                return option;
+            }
+        }
+
+        throw new Error("Failed to pick random wild Pokemon from options.");
+    }
+
+    /**
      * Generates a new Pokemon with the given traits.
      * 
      * @param title   The type of Pokemon to create.
@@ -80,26 +104,44 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      *             from the newPokemonEVs equation).
      * @returns A newly created Pokemon.
      */
-    public newPokemon(title: string[], level?: number, moves?: IMove[], iv?: number, ev?: number): IPokemon {
-        const statisticNames: string[] = this.gameStarter.constants.pokemon.statisticNames;
-        const pokemon: any = {
-            "title": title,
-            "nickname": title,
-            "level": level || 1,
-            "moves": moves || this.newPokemonMoves(title, level || 1),
-            "types": this.gameStarter.constants.pokemon.byName[title.join("")].types,
-            "status": "",
-            "IV": iv || this.newPokemonIVs(),
-            "EV": ev || this.newPokemonEVs(),
-            "experience": this.newPokemonExperience(title, level || 1)
+    public newPokemon(title: string[], level?: number, moves?: IMove[]): IPokemon {
+        const ev: IValuePoints = this.newPokemonEVs();
+        const iv: IValuePoints = this.newPokemonIVs();
+        level = level || 1;
+
+        return {
+            experience: this.experienceStarting(title, level || 1),
+            ev,
+            iv,
+            level,
+            moves: moves || this.newPokemonMoves(title, level || 1),
+            nickname: title,
+            statistics: this.newPokemonStatistics(title, level, ev, iv),
+            title: title,
+            types: this.gameStarter.constants.pokemon.byName[title.join("")].types
         };
+    }
 
-        for (const statistic of statisticNames) {
-            pokemon[statistic] = this.pokemonStatistic(pokemon, statistic);
-            pokemon[statistic + "Normal"] = pokemon[statistic];
-        }
+    /**
+     * Generates statistics for a Pokemon.
+     * 
+     * @param title   The type of Pokemon to create.
+     * @param level   The level of the new Pokemon (by default, 1).
+     * @param iv   What IV points the Pokemon should start with.
+     * @param ev   What EV points the Pokemon should start with.
+     * @returns Statistics for the Pokemon.
+     * @see http://bulbapedia.bulbagarden.net/wiki/Statistic#In_Generations_I_and_II
+     */
+    public newPokemonStatistics(title: string[], level: number, ev: IValuePoints, iv: IValuePoints): IPokemonStatistics {
+        const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
 
-        return pokemon;
+        const attack: IStatistic = this.pokemonStatistic("attack", schema.attack, level, ev.attack, iv.attack);
+        const defense: IStatistic = this.pokemonStatistic("defense", schema.defense, level, ev.defense, iv.defense);
+        const health: IStatistic = this.pokemonStatistic("health", schema.health, level, ev.health, iv.health);
+        const special: IStatistic = this.pokemonStatistic("special", schema.special, level, ev.special, iv.special);
+        const speed: IStatistic = this.pokemonStatistic("speed", schema.speed, level, ev.speed, iv.speed);
+
+        return { attack, defense, health, special, speed };
     }
 
     /**
@@ -108,7 +150,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @param title   The type of Pokemon.
      * @param level   The level of the Pokemon.
      * @returns The default moves of the Pokemon.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
+     * @see http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
      */
     public newPokemonMoves(title: string[], level: number): IMove[] {
         const possibilities: IPokemonMoveListing[] = this.gameStarter.constants.pokemon.byName[title.join("")].moves.natural;
@@ -141,28 +183,17 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * Computes a random set of IV points for a new Pokemon.
      * 
      * @returns A random set of IV points.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Individual_values
+     * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
+     * @todo Implement the bit procedure for health.
      */
-    public newPokemonIVs(): { [i: string]: number } {
-        const attack: number = this.gameStarter.numberMaker.randomIntWithin(0, 15);
-        const defense: number = this.gameStarter.numberMaker.randomIntWithin(0, 15);
-        const speed: number = this.gameStarter.numberMaker.randomIntWithin(0, 15);
-        const special: number = this.gameStarter.numberMaker.randomIntWithin(0, 15);
-        const output: any = {
-            "Attack": attack,
-            "Defense": defense,
-            "Speed": speed,
-            "Special": special
+    public newPokemonIVs(): IValuePoints {
+        return {
+            attack: this.gameStarter.numberMaker.randomIntWithin(0, 15),
+            defense: this.gameStarter.numberMaker.randomIntWithin(0, 15),
+            health: 0,
+            speed: this.gameStarter.numberMaker.randomIntWithin(0, 15),
+            special: this.gameStarter.numberMaker.randomIntWithin(0, 15)
         };
-
-        output.HP = (
-            8 * (attack % 2)
-            + 4 * (defense % 2)
-            + 2 * (speed % 2)
-            + (special % 2)
-        );
-
-        return output;
     }
 
     /**
@@ -170,27 +201,13 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * 
      * @returns A blank set of EV points.
      */
-    public newPokemonEVs(): { [i: string]: number } {
+    public newPokemonEVs(): IValuePoints {
         return {
-            "Attack": 0,
-            "Defense": 0,
-            "Speed": 0,
-            "Special": 0
-        };
-    }
-
-    /**
-     * Computes how much experience a new Pokemon should start with, based on its
-     * type and level.
-     * 
-     * @param title   The type of Pokemon.
-     * @param level   The level of the Pokemon.
-     * @returns How much experience the Pokemon should start with.
-     */
-    public newPokemonExperience(title: string[], level: number): IActorExperience {
-        return {
-            current: this.experienceStarting(title, level),
-            next: this.experienceStarting(title, level + 1)
+            attack: 0,
+            defense: 0,
+            health: 0,
+            speed: 0,
+            special: 0
         };
     }
 
@@ -198,26 +215,43 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * Computes a Pokemon's new statistic based on its IVs and EVs.
      * 
      * @param statistic   Which statistic to compute.
+     * @param base   Base modifier for the statistic.
+     * @param level   Pokemon level getting the statistic.
+     * @param ev   Effort value points for the statistic.
+     * @param iv   Individual value points for the statistic.
      * @returns A new value for the statistic.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Individual_values
+     * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @remarks Note: the page mentions rounding errors... 
      */
-    public pokemonStatistic(pokemon: IPokemon, statistic: string): number {
-        const base: number = (this.gameStarter.constants.pokemon.byName[pokemon.title.join("")] as any)[statistic];
-        const iv: number = (pokemon.IV as any)[statistic] || 0;
-        const ev: number = (pokemon.EV as any)[statistic] || 0;
-        const level: number = pokemon.level;
-        let topExtra: number = 0;
-        let added: number = 5;
+    public pokemonStatistic(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): IStatistic {
+        const normal: number = this.pokemonStatisticNormal(statistic, base, level, ev, iv);
 
-        if (statistic === "HP") {
-            topExtra = 50;
-            added = 10;
-        }
+        return {
+            current: normal,
+            normal
+        };
+    }
 
-        const numerator: number = (iv + base + (Math.sqrt(ev) / 8) + topExtra) * level;
+    /**
+     * Computes a Pokemon's new statistic based on its IVs and EVs.
+     * 
+     * @param statistic   Which statistic to compute.
+     * @param base   Base modifier for the statistic.
+     * @param level   Pokemon level getting the statistic.
+     * @param ev   Effort value points for the statistic.
+     * @param iv   Individual value points for the statistic.
+     * @returns A new value for the statistic.
+     * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
+     * @remarks Note: the page mentions rounding errors... 
+     */
+    public pokemonStatisticNormal(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): number {
+        const numerator: number = ((base + iv) * 2 + Math.floor(Math.ceil(Math.sqrt(ev)) / 4)) * level;
+        const fractional: number = Math.floor(numerator / 100);
+        const addition: number = statistic === "health"
+            ? level + 10
+            : 5;
 
-        return (numerator / 50 + added) | 0;
+        return fractional + addition;
     }
 
     /**
@@ -225,7 +259,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * 
      * @param grass   The grass Thing being walked through.
      * @returns Whether a wild encounter should occur.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Tall_grass
+     * @see http://bulbapedia.bulbagarden.net/wiki/Tall_grass
      */
     public doesGrassEncounterHappen(grass: IGrass): boolean {
         return this.gameStarter.numberMaker.randomBooleanFraction(grass.rarity, 187.5);
@@ -237,7 +271,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @param pokemon   The Pokemon the ball is attempting to catch.
      * @param ball   The ball attempting to catch the Pokemon.
      * @returns Whether the Pokemon may be caught.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
+     * @see http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
      */
     public canCatchPokemon(pokemon: IPokemon, ball: IBattleBall): boolean {
         // 1. If a Master Ball is used, the Pokemon is caught.
@@ -262,7 +296,11 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         // 4. Otherwise, if N minus the status value is greater than the Pokemon's catch rate, the Pokemon breaks free.
-        if (n - this.gameStarter.constants.statuses.levels[pokemon.status] > pokemon.catchRate) {
+        const catchRate: number | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].catchRate;
+        if (catchRate === undefined) {
+            console.warn("Catch rate hasn't yet been added for", pokemon);
+        }
+        if (n - this.gameStarter.constants.statuses.levels[pokemon.status || "normal"] > catchRate) {
             return false;
         }
 
@@ -272,7 +310,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         // 6. Calculate f.
         const f: number = Math.max(
             Math.min(
-                (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
+                (pokemon.statistics.health.normal * 255 * 4) | 0 / (pokemon.statistics.health.current * ball.rate) | 0,
                 255),
             1);
 
@@ -281,38 +319,20 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Determines whether the player may flee a wild Pokemon encounter.
-     * 
-     * @param pokemon   The player's current Pokemon.
-     * @param enemy   The wild Pokemon.
-     * @param battleInfo   Information on the current battle.
-     * @returns Whether the player may flee.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
-     */
-    public canEscapePokemon(pokemon: IPokemon, enemy: IPokemon, battleInfo: IBattleInfo): boolean {
-        const a: number = pokemon.Speed;
-        const b: number = (enemy.Speed / 4) % 256;
-        const c: number = battleInfo.currentEscapeAttempts || 0;
-        const f: number = (a * 32) / b + 30 * c;
-
-        if (f > 255 || b === 0) {
-            return true;
-        }
-
-        return this.gameStarter.numberMaker.randomInt(256) < f;
-    }
-
-    /**
      * Calculates how many times a failed Pokeball should shake.
      * 
      * @param pokemon   The wild Pokemon the ball is failing to catch.
      * @param ball   The Pokeball attempting to catch the wild Pokemon.
-     * @returns How many times the balls hould shake.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
+     * @returns How many times the ball should shake.
+     * @see http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
      */
     public numBallShakes(pokemon: IPokemon, ball: IBattleBall): number {
         // 1. Calculate d.
-        const d: number = pokemon.catchRate * 100 / ball.rate;
+        const catchRate: number | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].catchRate;
+        if (catchRate === undefined) {
+            console.warn("Catch rate hasn't yet been added for", pokemon);
+        }
+        const d: number = catchRate * 100 / ball.rate;
 
         // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
         if (d >= 256) {
@@ -324,10 +344,10 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         //    * 5 if it is paralyzed, poisoned, or burned.
         const f: number = Math.max(
             Math.min(
-                (pokemon.HPNormal * 255 * 4) | 0 / (pokemon.HP * ball.rate) | 0,
+                (pokemon.statistics.health.normal * 255 * 4) | 0 / (pokemon.statistics.health.normal * ball.rate) | 0,
                 255),
             1);
-        const x: number = d * f / 255 + this.gameStarter.constants.statuses.shaking[pokemon.status];
+        const x: number = d * f / 255 + this.gameStarter.constants.statuses.shaking[pokemon.status || "normal"];
 
         // 4. If... 
         if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
@@ -349,77 +369,6 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Determines what move an opponent should take in battle.
-     * 
-     * @param player   The in-battle player.
-     * @param opponent   The in-battle opponent.
-     * @returns The contatenated name of the move the opponent will choose.
-     * @remarks http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
-     * @remarks Todo: Also filter for moves with > 0 remaining remaining...
-     */
-    public opponentMove(player: IBattler, opponent: IBattler): string {
-        let possibilities: IMovePossibility[] = opponent.selectedActor!.moves.map(
-            (move: IMove): IMovePossibility => ({
-                move: move.title,
-                priority: 10
-            }));
-
-        // Wild Pokemon just choose randomly
-        if (opponent.category === "Wild") {
-            return this.gameStarter.numberMaker.randomArrayMember(possibilities).move;
-        }
-
-        // Modification 1: Do not use a move that only statuses (e.g. Thunder Wave) if the player's pokémon already has a status.
-        if (player.selectedActor!.status && !opponent.dumb) {
-            for (const possibility of possibilities) {
-                if (this.moveOnlyStatuses(this.gameStarter.constants.moves.byName[possibility.move])) {
-                    possibility.priority += 5;
-                }
-            }
-        }
-
-        // Modification 2: On the second turn the pokémon is out, prefer a move with one of the following effects...
-        if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications.turnTwo.opponentType)) {
-            for (const possibility of possibilities) {
-                this.applyMoveEffectPriority(
-                    possibility,
-                    this.gameStarter.constants.battleModifications.turnTwo,
-                    player.selectedActor!,
-                    1);
-            }
-        }
-
-        // Modification 3 (Good AI): Prefer a move that is super effective.
-        // Do not use moves that are not very effective as long as there is an alternative.
-        if (this.pokemonMatchesTypes(opponent.selectedActor!, this.gameStarter.constants.battleModifications.goodAi.opponentType)) {
-            for (let i: number = 0; i < possibilities.length; i += 1) {
-                this.applyMoveEffectPriority(
-                    possibilities[i],
-                    this.gameStarter.constants.battleModifications.goodAi,
-                    player.selectedActor!,
-                    1);
-            }
-        }
-
-        // The AI uses rejection sampling on the four moves with ratio 63:64:63:66,
-        // with only the moves that are most favored after applying the modifications being acceptable.
-        let lowest: number = possibilities[0].priority;
-        if (possibilities.length > 1) {
-            for (const possibility of possibilities) {
-                if (possibility.priority < lowest) {
-                    lowest = possibility.priority;
-                }
-            }
-
-            possibilities = possibilities.filter(function (possibility: IMovePossibility): boolean {
-                return possibility.priority === lowest;
-            });
-        }
-
-        return this.gameStarter.numberMaker.randomArrayMember(possibilities).move;
-    }
-
-    /**
      * Checks whether a Pokemon contains any of the given types.
      * 
      * @param pokemon   A Pokemon.
@@ -437,242 +386,12 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Checks whether a move only has a status effect (does no damage, or nothing).
-     * 
-     * @param move   The move.
-     * @returns Whether the moves has only a status effect.
-     */
-    public moveOnlyStatuses(move: IMoveSchema): boolean {
-        return move.damage === "Non-Damaging" && move.effect === "Status";
-    }
-
-    /**
-     * Modifies a move possibility's priority based on battle state.
-     * 
-     * @param possibility   A move possibility.
-     * @param modification   A modification summary for a part of the battle state.
-     * @param target   The Pokemon being targeted.
-     * @param amount   How much to modify the move's priority.
-     */
-    public applyMoveEffectPriority(
-        possibility: IMovePossibility,
-        modification: IBattleModification,
-        target: IPokemon,
-        amount: number): void {
-        const preferences: ([string, string, number] | [string, string])[] = modification.preferences;
-        const move: IMoveSchema = this.gameStarter.constants.moves.byName[possibility.move];
-
-        for (let i: number = 0; i < preferences.length; i += 1) {
-            const preference: [string, string, number] | [string, string] = preferences[i];
-
-            switch (preference[0]) {
-                // ["Move", String]
-                // Favorable match
-                case "Move":
-                    if (possibility.move === preference[1]) {
-                        possibility.priority -= amount;
-                        return;
-                    }
-                    break;
-
-                // ["Raise", String, Number]
-                // Favorable match
-                case "Raise":
-                    if (
-                        move.effect === "Raise"
-                        && move.raise === preference[1]
-                        && move.amount === preference[2]
-                    ) {
-                        possibility.priority -= amount;
-                        return;
-                    }
-                    break;
-
-                // ["Lower", String, Number]
-                // Favorable match
-                case "Lower":
-                    if (
-                        move.effect === "Lower"
-                        && move.lower === preference[1]
-                        && move.amount === preference[2]
-                    ) {
-                        possibility.priority -= amount;
-                        return;
-                    }
-                    break;
-
-                // ["Super", String, String]
-                // Favorable match
-                case "Super":
-                    if (
-                        move.damage !== "Non-Damaging"
-                        && move.type === preference[0]
-                        && target.types.indexOf(preference[1]) !== -1
-                    ) {
-                        possibility.priority -= amount;
-                        return;
-                    }
-                    break;
-
-                // ["Weak", String, String]
-                // Unfavorable match
-                case "Weak":
-                    if (
-                        move.damage !== "Non-Damaging"
-                        && move.type === preference[0]
-                        && target.types.indexOf(preference[1]) !== -1
-                    ) {
-                        possibility.priority += amount;
-                        return;
-                    }
-                    break;
-
-                // By default, do nothing
-                default:
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Determines whether a player's Pokemon should move before the opponent's.
-     * 
-     * @param player   The in-battle player.
-     * @param choicePlayer   The concatenated name of the move the player chose.
-     * @param opponent   The in-battle opponent.
-     * @param choiesOpponent   The concatenated name of the move the opponent chose.
-     * @returns Whether the player will move before the opponent.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Priority
-     * @remarks Todo: Account for items, switching, etc.
-     * @remarks Todo: Factor in spec differences from paralyze, etc.
-     */
-    public playerMovesFirst(player: IBattler, choicePlayer: string, opponent: IBattler, choiceOpponent: string): boolean {
-        const movePlayer: IMoveSchema = this.gameStarter.constants.moves.byName[choicePlayer];
-        const moveOpponent: IMoveSchema = this.gameStarter.constants.moves.byName[choiceOpponent];
-
-        if (movePlayer.priority === moveOpponent.priority) {
-            return player.selectedActor!.Speed > opponent.selectedActor!.Speed;
-        }
-
-        return movePlayer.priority > moveOpponent.priority;
-    }
-
-    /**
-     * Computes how much damage a move should do to a Pokemon.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param attacker   The attacking pokemon.
-     * @param defender   The defending Pokemon.
-     * @returns How much damage should be dealt.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-     * @remarks Todo: Factor in spec differences from burns, etc.
-     */
-    public damage(move: string, attacker: IPokemon, defender: IPokemon): number {
-        const base: string | number = this.gameStarter.constants.moves.byName[move].power;
-
-        // A base attack that's not numeric means no damage, no matter what
-        if (!base || isNaN(base as number)) {
-            return 0;
-        }
-
-        // Don't bother calculating infinite damage: it's going to be infinite
-        if (!isFinite(base as number)) {
-            return Infinity;
-        }
-
-        const critical: boolean = this.criticalHit(move, attacker);
-        const level: number = attacker.level * Number(critical);
-        const attack: number = attacker.Attack;
-        const defense: number = defender.Defense;
-        const modifier: number = this.damageModifier(move, attacker, defender);
-
-        return Math.round(
-            Math.max(
-                ((((2 * level + 10) / 250) * (attack / defense) * (base as number) + 2) | 0) * modifier,
-                1));
-    }
-
-    /**
-     * Determines the damage modifier against a defending Pokemon.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param attacker   The attacking Pokemon.
-     * @param defender   The defending Pokemon.
-     * @returns The damage modifier, as a multiplication constant.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-     */
-    public damageModifier(move: string, attacker: IPokemon, defender: IPokemon): number {
-        const moveSchema: IMoveSchema = this.gameStarter.constants.moves.byName[move];
-        const stab: number = attacker.types.indexOf(moveSchema.type) !== -1 ? 1.5 : 1;
-        const type: number = this.typeEffectiveness(move, defender);
-
-        return stab * type * this.gameStarter.numberMaker.randomWithin(.85, 1);
-    }
-
-    /**
-     * Determines whether a move should be a critical hit.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param attacker   The attacking Pokemon.
-     * @returns Whether the move should be a critical hit.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Critical_hit
-     */
-    public criticalHit(move: string, attacker: IPokemon): boolean {
-        const moveInfo: IMoveSchema = this.gameStarter.constants.moves.byName[move];
-        const baseSpeed: number = this.gameStarter.constants.pokemon.byName[attacker.title.join("")].Speed;
-        let denominator: number = 512;
-
-        // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit,
-        // resulting in a probability of BaseSpeed / 64.
-        if (moveInfo.criticalRaised) {
-            denominator /= 8;
-        }
-
-        // "Focus Energy and Dire Hit were intended to increase the critical hit rate, ..."
-        // In FullScreenPokemon, they work as intended! Fans who prefer the
-        // original behavior are free to fork the repo. As the original
-        // behavior is a glitch (and conflicts with creators' intentions),
-        // it is not duplicated here.
-        if (attacker.criticalHitProbability) {
-            denominator /= 4;
-        }
-
-        // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%,
-        // it instead becomes 255/256 or about 99.6%.
-        return this.gameStarter.numberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
-    }
-
-    /**
-     * Determines the type effectiveness of a move on a defending Pokemon.
-     * 
-     * @param move   The concatenated name of the move.
-     * @param defender   The defending Pokemon.
-     * @returns A damage modifier, as a multiplication constant.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
-     */
-    public typeEffectiveness(move: string, defender: IPokemon): number {
-        const defenderTypes: string[] = this.gameStarter.constants.pokemon.byName[defender.title.join("")].types;
-        const typeIndices: { [i: string]: number } = this.gameStarter.constants.types.indices;
-        const moveIndex: number = typeIndices[this.gameStarter.constants.moves.byName[move].type];
-        let total: number = 1;
-
-        for (let i: number = 0; i < defenderTypes.length; i += 1) {
-            const effectivenesses: number[] = this.gameStarter.constants.types.effectivenessTable[moveIndex];
-            total *= effectivenesses[typeIndices[defenderTypes[i]]];
-        }
-
-        return total;
-    }
-
-    /**
      * Computes how much experience a new Pokemon should start with.
      * 
      * @param title   The name of the Pokemon.
      * @param level   The level of the Pokemon.
      * @returns An amount of experience.
-     * @remarks http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
+     * @see http://m.bulbapedia.bulbagarden.net/wiki/Experience#Relation_to_level
      * @remarks Wild Pokémon of any level will always have the base amount of experience
      *          required to reach that level when caught, as will Pokémon hatched from Eggs.
      */
@@ -702,9 +421,9 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * 
      * @returns How much experience is to be gained.
      * @remarks This will need to be changed to accomodate rewarding multiple Pokemon.
-     * @remarks http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
+     * @see http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      */
-    public experienceGained(player: IBattler, opponent: IBattler): number {
+    public experienceGained(player: any /* IBattler */, opponent: any /* IBattler */): number {
         // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
         const a: number = opponent.category === "Trainer" ? 1.5 : 1;
 
@@ -728,11 +447,10 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * Computes how wide a health bar should be.
      * 
      * @param widthFullBar   The maximum possible width.
-     * @param hp   How much HP a Pokemon currently has.
-     * @param hpNormal   The maximum HP the Pokemon may have.
+     * @param statistic   Statistic for the displayed health.
      * @returns How wide the health bar should be.
      */
-    public widthHealthBar(widthFullBar: number, hp: number, hpNormal: number): number {
-        return (widthFullBar - 4) * hp / hpNormal;
+    public widthHealthBar(widthFullBar: number, statistic: IStatistic): number {
+        return (widthFullBar - 4) * statistic.current / statistic.normal;
     }
 }

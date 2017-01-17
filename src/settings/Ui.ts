@@ -95,7 +95,7 @@ export function GenerateUISettings(fsp: FullScreenPokemon): IUserWrapprSettings 
                     {
                         title: "Speed",
                         type: "Select",
-                        options: (): string[] => [".25x", ".5x", "1x", "2x", "5x"],
+                        options: (): string[] => [".25x", ".5x", "1x", "2x", "5x", "10x"],
                         source: (): string => "1x",
                         update: (value: string): void => {
                             fsp.gamesRunner.setSpeed(parseFloat(value.replace("x", "")));
