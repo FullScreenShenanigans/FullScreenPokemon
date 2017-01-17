@@ -321,11 +321,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public canTeamAttemptFlee(team: Team): boolean {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        const otherTeam = team === Team.opponent
-            ? battleInfo.teams.player
-            : battleInfo.teams.opponent;
-
-        return !otherTeam.leader;
+        return !(team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent).leader;
     }
 
     /**
