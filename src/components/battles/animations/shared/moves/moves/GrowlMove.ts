@@ -9,28 +9,28 @@ import { Move } from "../Move";
  */
 export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
-     * 
+     * Starting x-position for notes.
      */
     private noteStartX: number = this.teamAndAction.source.team === Team.player
         ? this.menu.left + this.attackerThing.width / 2
         : this.menu.right - this.attackerThing.width / 2;
 
     /**
-     * 
+     * Starting y-position for notes.
      */
     private noteStartY: number = this.teamAndAction.source.team === Team.player
         ? this.menu.bottom - this.attackerThing.height
         : this.menu.top + this.attackerThing.height;
 
     /**
-     * 
+     * Horizontal delta for note movements.
      */
     private noteDifferenceX: number = this.teamAndAction.source.team === Team.player
         ? this.menu.right - this.noteStartX
         : this.menu.left - this.noteStartX;
 
     /**
-     * 
+     * Vertical delta for note movements.
      */
     private noteDifferenceY: number = this.teamAndAction.source.team === Team.player
         ? (this.menu.top + this.defenderThing.height / 2) - this.noteStartY
@@ -58,7 +58,10 @@ export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGame
     }
 
     /**
+     * Schedules a note's animations.
      * 
+     * @param note   A note Thing.
+     * @param dt   Time delay between changes.
      */
     private animateNote(note: IThing, dt: number): void {
         let flip: -1 | 1 = 1;
@@ -78,13 +81,16 @@ export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGame
     }
 
     /**
+     * Shifts a note.
      * 
+     * @param note   A note Thing.
+     * @param flip   Whether it's flipped.
      */
     private shiftNote(note: IThing, flip: -1 | 1): void {
         this.gameStarter.physics.shiftHoriz(note, this.noteDifferenceX / 4);
 
         if (flip === 1) {
-            this.gameStarter.physics.shiftVert(note, this.noteDifferenceY / 10 * 6);
+            this.gameStarter.physics.shiftVert(note, this.noteDifferenceY / 60);
         } else {
             this.gameStarter.physics.shiftVert(note, this.noteDifferenceY / -8);
         }
