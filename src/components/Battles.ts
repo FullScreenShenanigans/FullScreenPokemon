@@ -11,7 +11,7 @@ import { Decorations } from "./battles/Decorations";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
 import { Things } from "./battles/Things";
-import { IBattleTextGenerators } from "./constants/Battles/Texts";
+import { IBattleTextGenerators } from "./constants/battles/Texts";
 import { IMenu } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
