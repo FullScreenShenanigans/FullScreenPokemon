@@ -5,9 +5,9 @@ import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
 
 /**
- * Runs the Growl battle move.
+ * Animates a Growl battle move.
  */
-export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Starting x-position for notes.
      */
@@ -39,9 +39,9 @@ export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGame
     /**
      * Runs the move's animation.
      * 
-     * @param callback   Callback for when the animation is done.
+     * @param onComplete   Callback for when the animation is done.
      */
-    public runAnimation(callback: () => void): void {
+    public runAnimation(onComplete: () => void): void {
         const notes: [IThing, IThing] = [
             this.gameStarter.objectMaker.make<IThing>("Note"),
             this.gameStarter.objectMaker.make<IThing>("Note")
@@ -52,7 +52,11 @@ export class GrowlMove<TGameStartr extends FullScreenPokemon> extends Move<TGame
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.actions.animateScreenShake(3, 0, 6, undefined, callback);
+                this.gameStarter.battles.animations.things.shake({
+                    callback: onComplete,
+                    dx: 3,
+                    clearTime: 6
+                });
             },
             50);
     }

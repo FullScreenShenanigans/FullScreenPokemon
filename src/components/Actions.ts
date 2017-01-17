@@ -1,6 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
-import { IEventCallback, ITimeEvent } from "timehandlr/lib/ITimeHandlr";
+import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
@@ -482,86 +482,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             });
 
         return blank;
-    }
-
-    /**
-     * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
-     * flag for a little while.
-     * 
-     * @param thing   A Thing to flicker.
-     * @param cleartime   How long to wait to stop the effect (by default, 49).
-     * @param interval   How many steps between hidden toggles (by default, 2).
-     * @param callback   A Function to called on the Thing when done flickering.
-     * @returns The flickering time event.
-     */
-    public animateFlicker(
-        thing: IThing,
-        cleartime: number = 49,
-        interval: number = 2,
-        callback?: (thing: IThing) => void): ITimeEvent {
-        thing.flickering = true;
-
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => {
-                thing.hidden = !thing.hidden;
-            },
-            interval | 0,
-            cleartime | 0);
-
-        return this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                thing.flickering = thing.hidden = false;
-
-                if (callback) {
-                    callback(thing);
-                }
-            },
-            ((cleartime * interval) | 0) + 1);
-    }
-
-    /**
-     * Shakes all Things on the screen back and forth for a little bit.
-     * 
-     * 
-     * @param eightBitter
-     * @param dx   How far to shift horizontally (by default, 0).
-     * @param dy   How far to shift horizontally (by default, 0).
-     * @param cleartime   How long until the screen is done shaking.
-     * @param interval   How many game upkeeps between movements.
-     * @returns The shaking time event.
-     */
-    public animateScreenShake(
-        dx: number = 0,
-        dy: number = 0,
-        cleartime: number = 8,
-        interval: number = 8,
-        callback?: IEventCallback): ITimeEvent {
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => {
-                this.gameStarter.groupHolder.callOnAll(this.gameStarter.physics, this.gameStarter.physics.shiftHoriz, dx);
-                this.gameStarter.groupHolder.callOnAll(this.gameStarter.physics, this.gameStarter.physics.shiftVert, dy);
-            },
-            1,
-            cleartime * interval);
-
-        return this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                dx *= -1;
-                dy *= -1;
-
-                this.gameStarter.timeHandler.addEventInterval(
-                    (): void => {
-                        dx *= -1;
-                        dy *= -1;
-                    },
-                    interval,
-                    cleartime);
-
-                if (callback) {
-                    this.gameStarter.timeHandler.addEvent(callback, interval * cleartime);
-                }
-            },
-            (interval / 2) | 0);
     }
 
     /**

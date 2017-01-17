@@ -7,6 +7,7 @@ import { Ending } from "./animations/Ending";
 import { Opponent } from "./animations/Opponent";
 import { Player } from "./animations/Player";
 import { Starting } from "./animations/Starting";
+import { Things } from "./animations/Things";
 
 /**
  * Battle animations used by FullScreenPokemon instances.
@@ -21,6 +22,11 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
      * Player animations used by the FullScreenPokemon instance.
      */
     public readonly player: Player<TGameStartr> = new Player(this.gameStarter);
+
+    /**
+     * Thing animations for battles.
+     */
+    public readonly things: Things<TGameStartr> = new Things(this.gameStarter);
 
     /**
      * Animation for a battle starting.

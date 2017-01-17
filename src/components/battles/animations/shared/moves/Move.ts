@@ -38,6 +38,11 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
     protected readonly defenderThing: IThing;
 
     /**
+     * Movement direction from the attacker to the defender.
+     */
+    protected direction: -1 | 1;
+
+    /**
      * Battle display menu.
      */
     protected readonly menu: IMenu;
@@ -58,7 +63,7 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
         this.attackerThing = battleInfo.things[Team[teamAndAction.source.team]];
         this.defender = battleInfo.teams[Team[teamAndAction.target.team]].selectedActor;
         this.defenderThing = battleInfo.things[Team[teamAndAction.target.team]];
-
+        this.direction = this.teamAndAction.source.team === Team.opponent ? -1 : 1;
         this.menu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
     }
 
@@ -72,10 +77,11 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
     /**
      * Runs the move's animation.
      * 
-     * @param callback   Callback for when the animation is done.
+     * @param onComplete   Callback for when the animation is done.
+     * @todo Make this abstract when all moves have it implemented.
      */
-    public runAnimation(callback: () => void): void {
+    public runAnimation(onComplete: () => void): void {
         console.log(`Still need to implement '${this.teamAndAction.action.move}'...`);
-        callback();
+        onComplete();
     }
 }
