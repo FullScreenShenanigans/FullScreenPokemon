@@ -57,7 +57,6 @@ export interface IMapRaw extends imapscreatr.IMapRaw {
      */
     areas: {
         [i: string]: IAreaRaw;
-        [i: number]: IAreaRaw;
     };
 
     /**
@@ -70,7 +69,6 @@ export interface IMapRaw extends imapscreatr.IMapRaw {
      */
     locations: {
         [i: string]: ILocationRaw;
-        [i: number]: ILocationRaw;
     };
 
     /**
@@ -93,7 +91,6 @@ export interface IMap extends IStateSaveable, imapscreatr.IMap {
      */
     areas: {
         [i: string]: IArea;
-        [i: number]: IArea;
     };
 
     /**
