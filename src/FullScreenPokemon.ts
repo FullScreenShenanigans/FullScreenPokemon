@@ -203,13 +203,9 @@ export class FullScreenPokemon extends GameStartr {
      */
     protected resetComponents(): void {
         this.actions = new Actions(this);
-        this.battles = new Battles(this);
         this.collisions = new Collisions(this);
         this.constants = new Constants(this);
-        this.cutscenes = new Cutscenes(this);
-        this.cycling = new Cycling(this);
         this.equations = new Equations(this);
-        this.fishing = new Fishing(this);
         this.gameplay = new Gameplay(this);
         this.graphics = new Graphics(this);
         this.inputs = new Inputs(this);
@@ -223,6 +219,22 @@ export class FullScreenPokemon extends GameStartr {
         this.scrolling = new Scrolling(this);
         this.saves = new Saves(this);
         this.utilities = new Utilities(this);
+
+        this.registerLazy(
+            "battles",
+            (): Battles<this> => new Battles(this));
+
+        this.registerLazy(
+            "cutscenes",
+            (): Cutscenes<this> => new Cutscenes(this));
+
+        this.registerLazy(
+            "cycling",
+            (): Cycling<this> => new Cycling(this));
+
+        this.registerLazy(
+            "fishing",
+            (): Fishing<this> => new Fishing(this));
     }
 
     /**
@@ -235,8 +247,11 @@ export class FullScreenPokemon extends GameStartr {
 
         this.stateHolder = this.createStateHolder(this.moduleSettings, settings);
         this.menuGrapher = this.createMenuGrapher(this.moduleSettings, settings);
-        this.battleMover = this.createBattleMover(this.moduleSettings, settings);
         this.userWrapper = this.createUserWrapper(this.moduleSettings, settings);
+
+        this.registerLazy(
+            "battleMover",
+            (): IBattleMovr => this.createBattleMover(this.moduleSettings, settings));
 
         this.pixelDrawer.setThingArrays([
             this.groupHolder.getGroup("Terrain") as IThing[],
@@ -256,10 +271,9 @@ export class FullScreenPokemon extends GameStartr {
      * @returns Settings for individual modules.
      */
     protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
-        return {
-            ...new ModuleSettingsGenerator().generate(this),
-            ...settings.moduleSettings
-        };
+        return this.utilities.proliferate(
+            new ModuleSettingsGenerator().generate(this),
+            settings.moduleSettings);
     }
 
     /**
