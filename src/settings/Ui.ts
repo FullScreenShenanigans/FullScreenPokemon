@@ -179,7 +179,7 @@ export function GenerateUISettings(fsp: FullScreenPokemon): IUserWrapprSettings 
                 keyActive: "enabled",
                 assumeInactive: true,
                 options: (): ibuttonsgenerator.IOptionsButtonSchema[] => {
-                    const mods: IMods = fsp.modAttacher.getMods();
+                    const mods: IMods = fsp.modAttacher.mods;
                     const output: ibuttonsgenerator.IOptionsButtonSchema[] = [];
 
                     for (const i in mods) {
@@ -200,7 +200,7 @@ export function GenerateUISettings(fsp: FullScreenPokemon): IUserWrapprSettings 
                 callback: (_schema: ISchema, button: HTMLElement): void => {
                     const name: string = button.textContent!;
                     const key: string = button.getAttribute("localStorageKey")!;
-                    const mod: IMod = fsp.modAttacher.getMod(name);
+                    const mod: IMod = fsp.modAttacher.mods[name];
 
                     fsp.modAttacher.toggleMod(name);
                     fsp.itemsHolder.setItem(key, mod.enabled);
