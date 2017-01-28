@@ -381,7 +381,7 @@ export class Moves {
             accuracy: 75,
             PP: 30,
         },
-        GROWL: {
+        "Growl": {
             type: "Normal",
             effects: [{
                 change: -1,
