@@ -98,21 +98,15 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         this.gameStarter.things.add(
             pokemon,
-            (this.gameStarter.mapScreener.middleX + 24) | 0,
+            (this.gameStarter.mapScreener.middleX + 96) | 0,
             0);
 
         this.gameStarter.physics.setMidY(pokemon, this.gameStarter.mapScreener.middleY);
-
-        this.gameStarter.actions.animateFadeAttribute(
-            pokemon,
-            "opacity",
-            .15,
-            1,
-            3);
+        this.gameStarter.actions.animateFadeAttribute(pokemon, "opacity", .15, 1, 3);
 
         this.gameStarter.actions.sliding.slideHorizontally(
             pokemon,
-            -4 * 2,
+            -8,
             this.gameStarter.mapScreener.middleX | 0,
             1,
             this.gameStarter.scenePlayer.bindRoutine("PokemonExplanation"));
@@ -152,15 +146,13 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
 
-        this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 24, 0);
-
+        this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 96, 0);
         this.gameStarter.physics.setMidY(player, this.gameStarter.mapScreener.middleY);
-
         this.gameStarter.actions.animateFadeAttribute(player, "opacity", .15, 1, 3);
 
         this.gameStarter.actions.sliding.slideHorizontally(
             player,
-            -4 * 2,
+            -8,
             middleX - player.width / 2,
             1,
             this.gameStarter.scenePlayer.bindRoutine("PlayerName"));
@@ -189,7 +181,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.actions.sliding.slideHorizontally(
             settings.player,
             4,
-            (this.gameStarter.mapScreener.middleX + 16) | 0,
+            (this.gameStarter.mapScreener.middleX + 56) | 0,
             1,
             this.gameStarter.scenePlayer.bindRoutine("PlayerNameOptions"));
     }
@@ -360,7 +352,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.actions.sliding.slideHorizontally(
             settings.rival,
             4,
-            (this.gameStarter.mapScreener.middleX + 16) | 0,
+            (this.gameStarter.mapScreener.middleX + 56) | 0,
             1,
             this.gameStarter.scenePlayer.bindRoutine("RivalNameOptions"));
     }
