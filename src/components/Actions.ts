@@ -127,20 +127,6 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Snaps a moving Thing to a predictable grid position.
-     * 
-     * @param thing   A Thing to snap the position of.
-     */
-    public animateSnapToGrid(thing: IThing): void {
-        const grid: number = 32;
-        const x: number = (this.gameStarter.mapScreener.left + thing.left) / grid;
-        const y: number = (this.gameStarter.mapScreener.top + thing.top) / grid;
-
-        this.gameStarter.physics.setLeft(thing, Math.round(x) * grid - this.gameStarter.mapScreener.left);
-        this.gameStarter.physics.setTop(thing, Math.round(y) * grid - this.gameStarter.mapScreener.top);
-    }
-
-    /**
      * Freezes a Character to start a dialog.
      * 
      * @param thing   A Player to freeze.
