@@ -135,6 +135,8 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
                 this.gameStarter.physics.getDirectionBetween(thing.follower, thing)!);
         }
 
+        this.gameStarter.physics.snapToGrid(thing);
+
         this.gameStarter.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
             ticksPerBlock);

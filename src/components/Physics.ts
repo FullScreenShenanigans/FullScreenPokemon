@@ -127,6 +127,20 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
     }
 
     /**
+     * Snaps a moving Thing to a predictable grid position.
+     * 
+     * @param thing   A Thing to snap the position of.
+     */
+    public snapToGrid(thing: IThing): void {
+        const grid: number = 32;
+        const x: number = (this.gameStarter.mapScreener.left + thing.left) / grid;
+        const y: number = (this.gameStarter.mapScreener.top + thing.top) / grid;
+
+        this.gameStarter.physics.setLeft(thing, Math.round(x) * grid - this.gameStarter.mapScreener.left);
+        this.gameStarter.physics.setTop(thing, Math.round(y) * grid - this.gameStarter.mapScreener.top);
+    }
+
+    /**
      * Standard Function to kill a Thing, which means marking it as dead and
      * clearing its numquads, resting, movement, and cycles. It will later be
      * removed by its maintain* Function.
