@@ -402,7 +402,6 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                             "VENUSAURBack": {},
                             "CHARMANDERBack": {},
                             "CHARMELEONBack": {},
-                            "CHARIZARDBack": {},
                             "SQUIRTLEBack": {},
                             "WARTORTLEBack": {},
                             "BLASTOISEBack": {},
@@ -548,6 +547,9 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
                             "DRAGONITEBack": {},
                             "MEWTWOBack": {},
                             "MEWBack": {}
+                        },
+                        "BattleSpriteBackLarge": {
+                            "CHARIZARDBack": {}
                         }
                     }
                 },
@@ -1151,6 +1153,12 @@ export function GenerateObjectsSettings(fsp: FullScreenPokemon): IObjectsModuleS
             "BattleSpriteBack": {
                 "width": 64,
                 "height": 56,
+                "scale": 2,
+                "repeat": false
+            },
+            "BattleSpriteBackLarge": {
+                "width": 64,
+                "height": 64,
                 "scale": 2,
                 "repeat": false
             },

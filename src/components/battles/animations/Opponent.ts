@@ -30,7 +30,7 @@ export class Opponent<TGameStartr extends FullScreenPokemon> extends Component<T
                 return menu.right + opponent.width / 2;
             },
             getSelectedPokemonSprite: (battleInfo: IBattleInfo): string => {
-                return battleInfo.teams.player.selectedActor.title.join("") + "Front";
+                return battleInfo.teams.opponent.selectedActor.title.join("") + "Front";
             },
             getSmokeLeft: (battleInfo: IBattleInfo): number => {
                 return battleInfo.things.menu.right - 32;

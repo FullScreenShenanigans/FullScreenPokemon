@@ -42,10 +42,6 @@ FSP.battles.startBattle({
 FSP.battles.startBattle({
     teams: {
         opponent: {
-            leader: {
-                nickname: "Bug Catcher".split(""),
-                title: "BugCatcher".split("")
-            },
             actors: [
                 FSP.utilities.createPokemon({
                     level: 7,
@@ -55,10 +51,19 @@ FSP.battles.startBattle({
                     level: 7,
                     title: "METAPOD".split("")
                 })
-            ]
+            ],
+            leader: {
+                nickname: "Bug Catcher".split(""),
+                title: "BugCatcher".split("")
+            }
         },
         player: {
-            actors: FSP.itemsHolder.getItem("PokemonInParty"),
+            actors: [
+                FSP.utilities.createPokemon({
+                    level: 50,
+                    title: "CHARIZARD".split("")
+                })
+            ],
             leader: {
                 nickname: FSP.itemsHolder.getItem("name"),
                 title: "Player".split("")
