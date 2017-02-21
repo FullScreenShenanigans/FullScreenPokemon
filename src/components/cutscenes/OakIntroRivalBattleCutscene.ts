@@ -45,6 +45,9 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
     public Challenge(settings: any, args: any): void {
         const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
         const battleInfo: IPartialBattleOptions = {
+            onComplete: (): void => {
+                this.gameStarter.scenePlayer.startCutscene("OakIntroRivalLeaves");
+            },
             teams: {
                 opponent: {
                     leader: {
