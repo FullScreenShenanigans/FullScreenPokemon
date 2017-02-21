@@ -1,6 +1,7 @@
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IPartialBattleOptions } from "../Battles";
 import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
@@ -43,32 +44,34 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
      */
     public Challenge(settings: any, args: any): void {
         const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
-        const battleInfo: any = {
-            battlers: {
+        const battleInfo: IPartialBattleOptions = {
+            teams: {
                 opponent: {
-                    sprite: "RivalPortrait",
+                    nextCutscene: "OakIntroRivalLeaves",
                     name: this.gameStarter.itemsHolder.getItem("nameRival"),
-                    category: "Trainer",
-                    hasActors: true,
                     reward: 175,
                     actors: [
                         this.gameStarter.equations.newPokemon(starterRival, 5)
                     ]
                 }
             },
-            textStart: ["", " wants to fight!"],
-            textDefeat: ["%%%%%%%RIVAL%%%%%%% Yeah! Am I great or what?"],
-            textVictory: [
-                [
-                    "%%%%%%%RIVAL%%%%%%%: WHAT?",
-                    "Unbelievable!",
-                    "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
-                ].join(" ")
-            ],
-            // "animation": "LineSpiral",
-            noBlackout: true,
-            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
-            nextCutscene: "OakIntroRivalLeaves"
+            texts: {
+                start: (): [string, string] => ["", " wants to fight!"],
+                teams: {
+                    player: {
+                        victory: (): string => [
+                            "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                            "Unbelievable!",
+                            "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+                        ].join(" "),
+                    },
+                    opponent: {
+                        victory: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?"
+                    }
+                }
+            },
+            // noBlackout: true,
+            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"])
         };
         let blocks: number;
 
@@ -102,8 +105,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     direction: Direction.Bottom
                 },
                 (): void => {
-                    console.log("Should start battle with", battleInfo);
-                    // this.gameStarter.battles.startBattle(battleInfo);
+                    this.gameStarter.battles.startBattle(battleInfo);
                 }
             ]);
     }

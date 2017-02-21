@@ -11,7 +11,7 @@ import { Decorations } from "./battles/Decorations";
 import { Selectors } from "./battles/Selectors";
 import { IStatus } from "./battles/Statuses";
 import { Things } from "./battles/Things";
-import { IBattleTextGenerators } from "./constants/battles/Texts";
+import { IBattleTextGenerators, IPartialTextGenerators } from "./constants/battles/Texts";
 import { IMenu } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { IThing } from "./Things";
@@ -171,11 +171,6 @@ export interface IBattleThings extends IUnderEachTeam<IThing> {
  */
 export interface IPokemonBattleOptions {
     /**
-     * Things that should be visible above the starting animation.
-     */
-    keptThings?: IThing[];
-
-    /**
      * Texts to display in menus.
      */
     texts: IBattleTextGenerators;
@@ -201,14 +196,26 @@ export interface IPartialBattleOptions {
     automaticMenus?: boolean;
 
     /**
+     * Things that should be visible above the starting animation.
+     */
+    keptThings?: IThing[];
+
+    /**
+     * Callback for when the battle is complete.
+     */
+    onComplete?: IOnBattleComplete;
+
+    /**
      * Opposing teams in the battle.
      */
-    teams: Partial<IUnderEachTeam<Partial<ITeamDescriptor>>>;
+    teams?: Partial<IUnderEachTeam<Partial<ITeamDescriptor>>> & {
+        opponent?: Partial<IEnemyTeam>;
+    };
 
     /**
      * Texts to display in menus.
      */
-    texts?: Partial<IBattleTextGenerators>;
+    texts?: Partial<IPartialTextGenerators>;
 }
 
 /**
@@ -331,26 +338,43 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @returns Completed options to start a battle.
      */
     private fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
-        return this.gameStarter.utilities.proliferate(
-            {
-                fleeAttempts: 0,
-                teams: {
-                    player: {
-                        actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
-                        leader: {
-                            nickname: this.gameStarter.itemsHolder.getItem("name"),
-                            title: "Player".split("")
-                        },
-                        selector: "player"
-                    },
-                    opponent: {
-                        actors: [],
-                        selector: "opponent"
-                    }
-                },
-                texts: this.gameStarter.constants.battles.texts.defaultBattleTexts,
-                theme: "Battle Trainer"
+        const teams: IUnderEachTeam<ITeamDescriptor> = {
+            opponent: {
+                actors: [],
+                selector: "opponent"
             },
-            partialBattleOptions);
+            player: {
+                 actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
+                leader: {
+                    nickname: this.gameStarter.itemsHolder.getItem("name"),
+                    title: "Player".split("")
+                },
+                selector: "player"
+            }
+        };
+
+        if (partialBattleOptions.teams) {
+            if (partialBattleOptions.teams.opponent) {
+                teams.opponent = {
+                    ...teams.opponent,
+                    ...partialBattleOptions.teams.opponent
+                };
+            }
+
+            if (partialBattleOptions.teams.player) {
+                teams.player = {
+                    ...teams.player,
+                    ...partialBattleOptions.teams.player
+                };
+            }
+        }
+
+        return {
+            ...partialBattleOptions,
+            fleeAttempts: 0,
+            teams,
+            texts: this.gameStarter.constants.battles.texts.defaultBattleTexts,
+            theme: "Battle Trainer"
+        } as IBattleOptions;
     }
 }

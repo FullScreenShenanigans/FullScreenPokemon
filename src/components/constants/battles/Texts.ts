@@ -80,13 +80,38 @@ export interface ITeamsTexts {
  * 
  */
 export interface ITextStartGenerator {
-    (team: IBattleTeam): string;
+    (team: IBattleTeam): IMenuDialogRaw;
+}
+
+/**
+ * Optiona ltexts to display in battle menus.
+ */
+export interface IPartialTextGenerators {
+    /**
+     * Text to display after a battle victory when in the real world again.
+     */
+    afterBattle?: () => IMenuDialogRaw;
+
+    /**
+     * Texts for the player attempting to flee the battle.
+     */
+    flee?: Partial<IFleeTextGenerators>;
+
+    /**
+     * Text for when the battle starts. The opponent's name is between the strings.
+     */
+    start?: Partial<ITextStartGenerator>;
+
+    /**
+     * Texts specific to each team.
+     */
+    teams?: IUnderEachTeam<Partial<ITeamsTexts>>;
 }
 
 /**
  * Texts to display in battle menus.
  */
-export interface IBattleTextGenerators {
+export interface IBattleTextGenerators extends IPartialTextGenerators {
     /**
      * Text to display after a battle victory when in the real world again.
      */

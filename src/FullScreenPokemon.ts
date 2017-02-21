@@ -254,7 +254,7 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * Creates the settings for individual modules.
      * 
-     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns Settings for individual modules.
      */
     protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
