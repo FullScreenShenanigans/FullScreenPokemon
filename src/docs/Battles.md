@@ -73,3 +73,12 @@ FSP.battles.startBattle({
 });
 ```
 
+### Modifying actors
+
+Each actor has a `statistics` object with an `{ current: number, normal: number }` describing one of the actor's statistics.
+You can change an actor's statistic by directly modifying those objects via `FSP.battleMover`'s current `battleInfo`.
+
+```javascript
+// Changes the player's current actor to have 9001 attack
+FSP.battleMover.getBattleInfo().teams.player.actors[0].statistics.attack.current = 9001;
+```
