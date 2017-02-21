@@ -4,7 +4,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
-import { IBattleOutcomeTextGenerator } from "../../constants/Battles/Texts";
+import { IBattleOutcomeTextGenerator } from "../../constants/battles/Texts";
 import { Transitions } from "./Transitions";
 
 /**
