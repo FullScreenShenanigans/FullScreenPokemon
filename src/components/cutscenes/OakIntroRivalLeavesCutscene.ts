@@ -12,7 +12,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
     /**
      * Cutscene for showing the lab after the battle ends.
      */
-    public LeavesAfterBattle(): void {
+    public AfterBattle(): void {
         this.gameStarter.mapScreener.blockInputs = true;
 
         for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
@@ -25,7 +25,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
     /**
      * Cutscene for the rival's comment after losing the battle.
      */
-    public LeavesComplaint(): void {
+    public Complaint(): void {
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -43,7 +43,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
     /**
      * Cutscene for the rival telling Oak he is leaving.
      */
-    public LeavesGoodbye(): void {
+    public Goodbye(): void {
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -57,7 +57,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
     /**
      * Cutscene for the rival leaving the lab and Oak giving the player advice.
      */
-    public LeavesWalking(): void {
+    public Walking(): void {
         const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
         const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
         const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
@@ -74,6 +74,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
                 this.gameStarter.physics.killNormal(rival);
                 this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
                 this.gameStarter.mapScreener.blockInputs = false;
+                this.gameStarter.menuGrapher.deleteActiveMenu();
 
                 this.gameStarter.menus.displayMessage(
                     "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!");

@@ -23,7 +23,10 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
         this.gameStarter.audioPlayer.playTheme(battleInfo.theme);
-        this.gameStarter.graphics.moveBattleKeptThingsToText(battleInfo.keptThings);
+
+        if (battleInfo.keptThings) {
+            this.gameStarter.graphics.moveThingsToText(battleInfo.keptThings);
+        }
 
         this.transitions.play({
             onComplete: (): void => {
@@ -41,6 +44,10 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
     private setupThings(battleInfo: IBattleInfo): void {
         this.gameStarter.menuGrapher.createMenu("Battle");
         battleInfo.things = this.gameStarter.battles.decorations.createInitialThings(battleInfo);
+
+        if (battleInfo.keptThings) {
+            this.gameStarter.graphics.moveThingsBeforeBackgrounds(battleInfo.keptThings);
+        }
     }
 
     /**

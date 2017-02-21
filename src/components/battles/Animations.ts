@@ -41,10 +41,9 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
      * Animation for a battle ending.
      * 
      * @param outcome   Descriptor of what finished the battle.
-     * @param onComplete   Callback for when it's safe to dispose of battle info.
      */
-    public readonly complete = (outcome: BattleOutcome, onComplete?: () => void): void => {
-        new Ending(this.gameStarter).run(outcome, onComplete);
+    public readonly complete = (outcome: BattleOutcome): void => {
+        new Ending(this.gameStarter).run(outcome);
     }
 
     /**

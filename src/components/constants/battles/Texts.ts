@@ -69,24 +69,33 @@ export interface ITeamsTexts {
      * Text for a trainer sending out a Pokemon.
      */
     sendOut: ISendOutTextGenerator;
-
-    /**
-     * Text to display upon victory.
-     */
-    victory?: IVictoryTextGenerator;
 }
 
 /**
  * 
  */
 export interface ITextStartGenerator {
-    (team: IBattleTeam): string;
+    (team: IBattleTeam): IMenuDialogRaw;
 }
 
 /**
- * Texts to display in battle menus.
+ * 
  */
-export interface IBattleTextGenerators {
+export interface IBattleOutcomeTextGenerator {
+    (): IMenuDialogRaw;
+}
+
+/**
+ * 
+ */
+export interface IBattleOutcomeTextGenerators {
+    [i: number /* BattleOutcome */]: IBattleOutcomeTextGenerator;
+}
+
+/**
+ * Optional texts to display in battle menus.
+ */
+export interface IPartialTextGenerators {
     /**
      * Text to display after a battle victory when in the real world again.
      */
@@ -95,7 +104,37 @@ export interface IBattleTextGenerators {
     /**
      * Texts for the player attempting to flee the battle.
      */
+    flee?: Partial<IFleeTextGenerators>;
+
+    /**
+     * Text generators for the outcome of the battle.
+     */
+    outcomes?: IBattleOutcomeTextGenerators;
+
+    /**
+     * Text for when the battle starts. The opponent's name is between the strings.
+     */
+    start?: Partial<ITextStartGenerator>;
+
+    /**
+     * Texts specific to each team.
+     */
+    teams?: IUnderEachTeam<Partial<ITeamsTexts>>;
+}
+
+/**
+ * Texts to display in battle menus.
+ */
+export interface IBattleTextGenerators extends IPartialTextGenerators {
+    /**
+     * Texts for the player attempting to flee the battle.
+     */
     flee: IFleeTextGenerators;
+
+    /**
+     * Text generators for the outcome of the battle.
+     */
+    outcomes: IBattleOutcomeTextGenerators;
 
     /**
      * Text for when the battle starts. The opponent's name is between the strings.
@@ -106,6 +145,11 @@ export interface IBattleTextGenerators {
      * Texts specific to each team.
      */
     teams: IUnderEachTeam<ITeamsTexts>;
+
+    /**
+     * Text to display after a battle victory when in the real world again.
+     */
+    afterBattle?(): IMenuDialogRaw;
 }
 
 /**
@@ -120,6 +164,7 @@ export class Texts {
             fail: (): string => "Can't escape!",
             success: (): string => "Got away safely!"
         },
+        outcomes: {},
         teams: {
             player: {
                 move: (_team: IBattleTeam, pokemon: string, move: string): string => {
@@ -138,10 +183,10 @@ export class Texts {
                 },
                 retract: (): string => "wat",
                 sendOut: (team: IBattleTeam, pokemon: string): string => {
-                    let text: string = ` send out ${pokemon}!`;
+                    let text: string = ` sent out ${pokemon}!`;
 
                     if (team.leader) {
-                        text = `${team.leader.nickname.join("")} ${text}`;
+                        text = `${team.leader.nickname.join("")}${text}`;
                     }
 
                     return "ENEMY " + text;

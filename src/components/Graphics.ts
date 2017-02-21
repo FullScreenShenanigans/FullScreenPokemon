@@ -36,29 +36,36 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
     /**
      * Moves all kept Things in a battle to the Text group for animations.
      * 
-     * @param batleInfo    Things that should be visible above the starting animation.
+     * @param keptThings    Things that should be visible above text animations.
      */
-    public moveBattleKeptThingsToText(keptThings?: IThing[]): void {
-        if (!keptThings) {
-            return;
+    public moveThingsToText(things: IThing[]): void {
+        for (const thing of things) {
+            this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, "Text");
         }
+    }
 
-        for (const keptThing of keptThings) {
-            this.gameStarter.groupHolder.switchMemberGroup(keptThing, keptThing.groupType, "Text");
+    /**
+     * Moves kept Things 
+     * 
+     * @remarks This is necessary because animations may put backgrounds
+     *          as the first Text Thing after keptThings were added.
+     */
+    public moveThingsBeforeBackgrounds(things: IThing[]): void {
+        const texts: IThing[] = this.gameStarter.groupHolder.getGroup("Text") as IThing[];
+
+        for (const thing of things) {
+            texts.splice(texts.indexOf(thing), 1);
+            texts.splice(0, 0, thing);
         }
     }
 
     /**
      * Moves all kept Things in a battle back to their original groups.
      * 
-     * @param batleInfo    Things that should be visible above the starting animation.
+     * @param keptThings    Things that should be visible above text animations.
      */
-    public moveBattleKeptThingsBack(keptThings: IThing[] | undefined): void {
-        if (!keptThings) {
-            return;
-        }
-
-        for (const keptThing of keptThings) {
+    public moveThingsFromText(things: IThing[]): void {
+        for (const keptThing of things) {
             this.gameStarter.groupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
         }
     }

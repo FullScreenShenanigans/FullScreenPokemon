@@ -15,7 +15,7 @@ interface IDataEventTarget extends EventTarget {
 }
 
 /**
- * Gameplay functions used by IGameStartr instances.
+ * Gameplay functions used by FullScreenPokemon instances.
  */
 export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrGameplay<TGameStartr> {
     /**
@@ -50,9 +50,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
         this.gameStarter.maps.setMap("Blank");
         this.gameStarter.menuGrapher.createMenu("StartOptions");
-        this.gameStarter.menuGrapher.addMenuList("StartOptions", {
-            options: options
-        });
+        this.gameStarter.menuGrapher.addMenuList("StartOptions", { options });
         this.gameStarter.menuGrapher.setActiveMenu("StartOptions");
     }
 
