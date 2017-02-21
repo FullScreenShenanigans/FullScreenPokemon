@@ -1,8 +1,10 @@
 import { BattleOutcome } from "battlemovr/lib/Animations";
+import { Queue } from "battlemovr/lib/animators/Queue";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
+import { IBattleOutcomeTextGenerator } from "../../constants/Battles/Texts";
 import { Transitions } from "./Transitions";
 
 /**
@@ -20,20 +22,49 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param outcome   Descriptor of what finished the battle.
      */
     public run(outcome: BattleOutcome): void {
-        this.gameStarter.actions.animateFadeToColor({
-            callback: (): void => this.completeBattle(outcome),
-            color: "Black"
+        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+
+        const queue: Queue = new Queue();
+        const finalTextGenerator: IBattleOutcomeTextGenerator | undefined = battleInfo.texts.outcomes[outcome];
+
+        if (finalTextGenerator) {
+            queue.add((onComplete: () => void): void => {
+                this.gameStarter.menuGrapher.createMenu("GeneralText");
+                this.gameStarter.menuGrapher.addMenuDialog(
+                    "GeneralText",
+                    finalTextGenerator(),
+                    onComplete);
+                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            });
+        }
+
+        queue.add((onComplete: () => void): void => {
+            this.gameStarter.actions.animateFadeToColor({
+                callback: onComplete,
+                color: "Black"
+            });
         });
+
+        if (battleInfo.texts.afterBattle) {
+            queue.add((onComplete: () => void): void => {
+                this.gameStarter.menuGrapher.createMenu("GeneralText");
+                this.gameStarter.menuGrapher.addMenuDialog(
+                    "GeneralText",
+                    battleInfo.texts.afterBattle!(),
+                    onComplete);
+                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            });
+        }
+
+        queue.run((): void => this.finalize(battleInfo, outcome));
     }
 
     /**
-     * Disposes of visual things and signals that the battle is over.
+     * Disposes of visual things post-battle.
      * 
-     * @param outcome   Descriptor of what finished the battle.
+     * @param battleInfo   Info on the ending battle.
      */
-    private completeBattle(outcome: BattleOutcome): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-
+    private finalize(battleInfo: IBattleInfo, outcome: BattleOutcome): void {
         this.gameStarter.menuGrapher.deleteMenu("Battle");
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 

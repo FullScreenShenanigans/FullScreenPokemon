@@ -1,3 +1,4 @@
+import { BattleOutcome } from "battlemovr/lib/Animations";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -62,18 +63,14 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                 }
             },
             texts: {
-                start: (): [string, string] => ["", " wants to fight!"],
-                teams: {
-                    player: {
-                        victory: (): string => [
-                            "%%%%%%%RIVAL%%%%%%%: WHAT?",
-                            "Unbelievable!",
-                            "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
-                        ].join(" "),
-                    },
-                    opponent: {
-                        victory: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?"
-                    }
+                start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
+                outcomes: {
+                    [BattleOutcome.opponentVictory]: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
+                    [BattleOutcome.playerVictory]: (): string => [
+                        "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                        "Unbelievable!",
+                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+                    ].join(" "),
                 }
             },
             // noBlackout: true,

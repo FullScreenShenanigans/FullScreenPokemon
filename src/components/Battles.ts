@@ -338,6 +338,13 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @returns Completed options to start a battle.
      */
     private fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
+        const texts: IBattleTextGenerators = this.gameStarter.utilities.proliferate(
+            {},
+            {
+                ...this.gameStarter.constants.battles.texts.defaultBattleTexts,
+                ...partialBattleOptions.texts
+            });
+
         const teams: IUnderEachTeam<ITeamDescriptor> = {
             opponent: {
                 actors: [],
@@ -373,7 +380,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
             ...partialBattleOptions,
             fleeAttempts: 0,
             teams,
-            texts: this.gameStarter.constants.battles.texts.defaultBattleTexts,
+            texts,
             theme: "Battle Trainer"
         } as IBattleOptions;
     }
