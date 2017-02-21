@@ -59,7 +59,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
         // Wild Pokemon just choose randomly
         if (!attackingTeam.leader) {
             onChoice({
-                move: this.gameStarter.numberMaker.randomArrayMember(attackingActor.moves),
+                move: this.gameStarter.numberMaker.randomArrayMember(attackingActor.moves).title,
                 type: "move"
             });
 

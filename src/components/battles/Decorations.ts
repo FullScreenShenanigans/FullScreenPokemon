@@ -39,13 +39,13 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
         const menu: IMenu = this.gameStarter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
 
         const opponent: IThing = this.addThingAsText(
-            this.getInitialTitle(battleInfo.teams.opponent) + "Front",
+            this.getInitialTitle(battleInfo.teams.opponent, "Front"),
             {
                 opacity: 0
             });
 
         const player: IThing = this.addThingAsText(
-            this.getInitialTitle(battleInfo.teams.player) + "Back",
+            this.getInitialTitle(battleInfo.teams.player, "Back"),
             {
                 opacity: 0
             });
@@ -115,11 +115,12 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
      * Determines which sprite to initially show for a team.
      * 
      * @param team   A new battle team.
+     * @param suffix   Direction modifier to add if the sprite is for a Pokemon.
      * @returns The initial sprite for the team.
      */
-    private getInitialTitle(team: IBattleTeam): string {
+    private getInitialTitle(team: IBattleTeam, pokemonSuffix: "Back" | "Front"): string {
         return team.leader
             ? team.leader.title.join("")
-            : team.selectedActor.title.join("");
+            : team.selectedActor.title.join("") + pokemonSuffix;
     }
 }

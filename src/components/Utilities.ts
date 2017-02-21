@@ -29,7 +29,7 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
     public createPokemon(schema: IWildPokemonSchema): IPokemon {
         const level: number = schema.levels
             ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
-            : schema.level;
+            : schema.level!;
 
         return this.gameStarter.equations.newPokemon(schema.title, level);
     }

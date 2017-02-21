@@ -47,8 +47,11 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
         const battleInfo: IPartialBattleOptions = {
             teams: {
                 opponent: {
+                    leader: {
+                        title: "RivalPortrait".split(""),
+                        nickname: this.gameStarter.itemsHolder.getItem("nameRival"),
+                    },
                     nextCutscene: "OakIntroRivalLeaves",
-                    name: this.gameStarter.itemsHolder.getItem("nameRival"),
                     reward: 175,
                     actors: [
                         this.gameStarter.equations.newPokemon(starterRival, 5)
