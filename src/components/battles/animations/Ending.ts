@@ -20,8 +20,9 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * Runs ending battle animations.
      * 
      * @param outcome   Descriptor of what finished the battle.
+     * @param onBattleComplete   Callback for when the battle is done.
      */
-    public run(outcome: BattleOutcome): void {
+    public run(outcome: BattleOutcome, onBattleComplete: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
         const queue: Queue = new Queue();
@@ -56,15 +57,17 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
             });
         }
 
-        queue.run((): void => this.finalize(battleInfo, outcome));
+        queue.run((): void => this.finalize(battleInfo, outcome, onBattleComplete));
     }
 
     /**
      * Disposes of visual things post-battle.
      * 
      * @param battleInfo   Info on the ending battle.
+     * @param outcome   Descriptor of what finished the battle.
+     * @param onComplete   Callback for when this is done.
      */
-    private finalize(battleInfo: IBattleInfo, outcome: BattleOutcome): void {
+    private finalize(battleInfo: IBattleInfo, outcome: BattleOutcome, onComplete: () => void): void {
         this.gameStarter.menuGrapher.deleteMenu("Battle");
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
@@ -79,5 +82,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (battleInfo.onComplete) {
             battleInfo.onComplete(outcome);
         }
+
+        onComplete();
     }
 }

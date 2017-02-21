@@ -34,7 +34,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
             this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
             this.gameStarter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
         } else {
-            this.gameStarter.battles.animations.complete(
+            this.gameStarter.battleMover.stopBattle(
                 team === Team.opponent
                     ? BattleOutcome.playerVictory
                     : BattleOutcome.opponentVictory);
