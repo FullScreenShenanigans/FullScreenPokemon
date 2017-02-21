@@ -127,11 +127,6 @@ export interface IPartialTextGenerators {
  */
 export interface IBattleTextGenerators extends IPartialTextGenerators {
     /**
-     * Text to display after a battle victory when in the real world again.
-     */
-    afterBattle?(): IMenuDialogRaw;
-
-    /**
      * Texts for the player attempting to flee the battle.
      */
     flee: IFleeTextGenerators;
@@ -150,6 +145,11 @@ export interface IBattleTextGenerators extends IPartialTextGenerators {
      * Texts specific to each team.
      */
     teams: IUnderEachTeam<ITeamsTexts>;
+
+    /**
+     * Text to display after a battle victory when in the real world again.
+     */
+    afterBattle?(): IMenuDialogRaw;
 }
 
 /**
