@@ -35,7 +35,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
         if (remaining) {
             this.switching.offerSwitch(team, onComplete);
         } else {
-            this.gameStarter.battles.animations.complete(
+            this.gameStarter.battleMover.stopBattle(
                 team === Team.opponent
                     ? BattleOutcome.playerVictory
                     : BattleOutcome.opponentVictory);

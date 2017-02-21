@@ -73,11 +73,15 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
             (): void => {
                 this.gameStarter.physics.killNormal(rival);
                 this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
-                this.gameStarter.mapScreener.blockInputs = false;
                 this.gameStarter.menuGrapher.deleteActiveMenu();
 
-                this.gameStarter.menus.displayMessage(
-                    "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!");
+                this.gameStarter.timeHandler.addEvent(
+                    (): void => {
+                        this.gameStarter.menus.displayMessage(
+                            "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!");
+                        this.gameStarter.mapScreener.blockInputs = false;
+                    },
+                    10);
             }
         ];
 
