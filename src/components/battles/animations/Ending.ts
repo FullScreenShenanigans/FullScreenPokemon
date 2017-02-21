@@ -23,7 +23,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public run(outcome: BattleOutcome, onComplete?: () => void): void {
         console.log("Battle outcome", outcome);
         this.gameStarter.actions.animateFadeToColor({
-            callback: (): void => this.destroyThings(onComplete),
+            callback: (): void => this.resetThings(onComplete),
             color: "Black"
         });
     }
@@ -33,7 +33,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * 
      * @param onComplete   Callback for when it's safe to dispose of battle info.
      */
-    private destroyThings(onComplete?: () => void): void {
+    private resetThings(onComplete?: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
         this.gameStarter.menuGrapher.deleteMenu("Battle");
@@ -41,6 +41,10 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         for (const i in battleInfo.things) {
             this.gameStarter.physics.killNormal(battleInfo.things[i]);
+        }
+
+        if (battleInfo.keptThings) {
+            this.gameStarter.graphics.moveThingsFromText(battleInfo.keptThings);
         }
 
         if (onComplete) {
