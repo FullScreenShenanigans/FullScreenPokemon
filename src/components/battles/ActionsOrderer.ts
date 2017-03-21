@@ -138,7 +138,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
         const aMove: IMoveSchema = this.gameStarter.constants.moves.byName[a.action.move];
         const bMove: IMoveSchema = this.gameStarter.constants.moves.byName[b.action.move];
 
-        return aMove.priority > bMove.priority;
+        return aMove.priority! > bMove.priority!;
     }
 
     /**

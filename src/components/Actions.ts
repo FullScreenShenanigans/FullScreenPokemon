@@ -520,9 +520,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         if (detector.direction !== direction) {
             if (thing.direction % 2 === 0) {
                 this.gameStarter.physics.setWidth(detector, thing.width);
-                this.gameStarter.physics.setHeight(detector, thing.sight * 8);
+                this.gameStarter.physics.setHeight(detector, thing.sight! * 8);
             } else {
-                this.gameStarter.physics.setWidth(detector, thing.sight * 8);
+                this.gameStarter.physics.setWidth(detector, thing.sight! * 8);
                 this.gameStarter.physics.setHeight(detector, thing.height);
             }
             detector.direction = direction;
@@ -1029,7 +1029,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         switch (thing.direction) {
             case Direction.Top:
                 areaOffsetX = thing.left - other.left;
-                areaOffsetY = area.height - thing.height;
+                areaOffsetY = area.height! - thing.height;
                 break;
 
             case Direction.Right:
@@ -1043,7 +1043,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 break;
 
             case Direction.Left:
-                areaOffsetX = area.width - thing.width;
+                areaOffsetX = area.width! - thing.width;
                 areaOffsetY = thing.top - other.top;
                 break;
 
