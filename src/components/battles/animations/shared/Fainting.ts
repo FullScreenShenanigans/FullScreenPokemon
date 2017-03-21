@@ -23,20 +23,20 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
         const blank: IThing = this.gameStarter.battles.decorations.addThingAsText(
             "WhiteSquare",
             {
-                width: thing.width * thing.scale,
-                height: thing.height * thing.scale
+                width: thing.width * thing.scale!,
+                height: thing.height * thing.scale!
             });
 
         this.gameStarter.battles.decorations.moveToBeforeBackground(blank);
         this.gameStarter.battles.decorations.moveToBeforeBackground(thing);
 
         this.gameStarter.physics.setLeft(blank, thing.left);
-        this.gameStarter.physics.setTop(blank, thing.top + thing.height * thing.scale);
+        this.gameStarter.physics.setTop(blank, thing.top + thing.height * thing.scale!);
 
         this.gameStarter.actions.sliding.slideVertically(
             thing,
             4 * 2,
-            this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale,
+            this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
             1,
             (): void => {
                 this.gameStarter.physics.killNormal(thing);
