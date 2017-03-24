@@ -39,7 +39,7 @@ export interface IPokemonListing {
     /**
      * The name of the Pokemon this evolves into. This will be refactored eventually.
      */
-    evolution?: IPokemonEvolution[];
+    evolutions?: IPokemonEvolution[];
 
     /**
      * How quickly this gains experience, as "slow", "mediumSlow", "mediumFast", or "fast".
@@ -291,7 +291,7 @@ export class Pokemon {
             "info": [
                 "Using its ability to read minds, it will identify impending danger and TELEPORT to safety."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Kadabra",
 			    "requirements": [
 				    {
@@ -1010,7 +1010,7 @@ export class Pokemon {
             "info": [
                 "A carnivorous %%%%%%%POKEMON%%%%%%% that traps and eats bugs. It uses its root feet to soak up needed moisture."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Weepinbell",
 			    "requirements": [
 				    {
@@ -1247,7 +1247,7 @@ export class Pokemon {
                 "A strange seed was planted on its back at birth.",
                 "The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Ivysaur",
 			    "requirements": [
 				    {
@@ -1455,7 +1455,7 @@ export class Pokemon {
             "info": [
                 "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Metapod",
 			    "requirements": [
 				    {
@@ -1783,7 +1783,7 @@ export class Pokemon {
                 "Obviously prefers hot places.",
                 "When it rains, steam is said to spout from the tip of its tail."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Charmeleon",
 			    "requirements": [
 				    {
@@ -1912,7 +1912,7 @@ export class Pokemon {
             "info": [
                 "When it swings its burning tail, it elevates the temperature to unbearably high levels."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Charizard",
 			    "requirements": [
 				    {
@@ -2085,7 +2085,7 @@ export class Pokemon {
             "info": [
                 "Its magical and cute appeal has many admirers. It is rare and found only in certain areas."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Kadabra",
 			    "requirements": [
 				    {
@@ -2281,7 +2281,7 @@ export class Pokemon {
             "info": [
                 "Because it never removes its skull helmet, no one has ever seen this %%%%%%%POKEMON%%%%%%%'s real face."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Marowak",
 			    "requirements": [
 				    {
@@ -2510,7 +2510,7 @@ export class Pokemon {
             "info": [
                 "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Dugtrio",
 			    "requirements": [
 				    {
@@ -2743,7 +2743,7 @@ export class Pokemon {
             "info": [
                 "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Dodrio",
 			    "requirements": [
 				    {
@@ -2844,7 +2844,7 @@ export class Pokemon {
             "info": [
                 "A mystical %%%%%%%POKEMON%%%%%%% that exudes a gentle aura. Has the ability to change climate conditions."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Dragonite",
 			    "requirements": [
 				    {
@@ -3101,7 +3101,7 @@ export class Pokemon {
             "info": [
                 "Long considered a mythical %%%%%%%POKEMON%%%%%%% until recently when a small colony was found living underwater."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Dragonair",
 			    "requirements": [
 				    {
@@ -3223,7 +3223,7 @@ export class Pokemon {
             "info": [
                 "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Hypno",
 			    "requirements": [
 				    {
@@ -3417,12 +3417,12 @@ export class Pokemon {
             }
         },
         "EEVEE": {
-            "label": "Evolution",
+            "label": "evolutions",
             "sprite": "Water",
             "info": [
                 "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs."
             ],
-            "evolution": [
+            "evolutions": [
                 {
                     "evolvedForm": "Flareon",
                     "requirements": [
@@ -3556,7 +3556,7 @@ export class Pokemon {
             "info": [
                 "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Arbok",
 			    "requirements": [
 				    {
@@ -3886,7 +3886,7 @@ export class Pokemon {
             "info": [
                 "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms."
             ],
-             "evolution": [{
+             "evolutions": [{
 			    "evolvedForm": "Exeggutor",
 			    "requirements": [
 				    {
@@ -4337,7 +4337,7 @@ export class Pokemon {
             "info": [
                 "Almost invisible, this gaseous %%%%%%%POKEMON%%%%%%% cloaks the target and puts it to sleep without notice."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Haunter",
 			    "requirements": [
 				    {
@@ -4518,7 +4518,7 @@ export class Pokemon {
             "info": [
                 "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Graveler",
 			    "requirements": [
 				    {
@@ -4637,7 +4637,7 @@ export class Pokemon {
             "info": [
                 "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Vileplume",
 			    "requirements": [
 				    {
@@ -4735,7 +4735,7 @@ export class Pokemon {
             "info": [
                 "Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Crobat",
 			    "requirements": [
 				    {
@@ -4858,7 +4858,7 @@ export class Pokemon {
             "info": [
                 "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Seaking",
 			    "requirements": [
 				    {
@@ -5206,7 +5206,7 @@ export class Pokemon {
             "info": [
                 "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Golem",
 			    "requirements": [
 				    {
@@ -5327,7 +5327,7 @@ export class Pokemon {
             "info": [
                 "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Muk",
 			    "requirements": [
 				    {
@@ -5450,7 +5450,7 @@ export class Pokemon {
             "info": [
                 "Very protective of its territory. It will bark and bite to repel intruders from its space."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Arcanine",
 			    "requirements": [
 				    {
@@ -5587,7 +5587,7 @@ export class Pokemon {
             "info": [
                 "Because of its ability to slip through block walls, it is said to be from another dimension."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Gengar",
 			    "requirements": [
 				    {
@@ -5847,7 +5847,7 @@ export class Pokemon {
             "info": [
                 "Known to shoot down flying bugs with precision blasts of ink from the surface of the water."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Seadra",
 			    "requirements": [
 				    {
@@ -6073,7 +6073,7 @@ export class Pokemon {
             "info": [
                 "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Venusaur",
 			    "requirements": [
 				    {
@@ -6180,7 +6180,7 @@ export class Pokemon {
             "info": [
                 "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Wigglytuff",
 			    "requirements": [
 				    {
@@ -6544,7 +6544,7 @@ export class Pokemon {
             "info": [
                 "A %%%%%%%POKEMON%%%%%%% that was resurrected from a fossil found in what was once the ocean floor eons ago."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Kabutops",
 			    "requirements": [
 				    {
@@ -6752,7 +6752,7 @@ export class Pokemon {
             "info": [
                 "It emits special alpha waves from its body that induce headaches just by being close by."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Alakazam",
 			    "requirements": [
 				    {
@@ -6885,7 +6885,7 @@ export class Pokemon {
             "info": [
                 "Almost incapable of moving, this %%%%%%%POKEMON%%%%%%% can only harden its shell to protect itself from predators."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Beedrill",
 			    "requirements": [
 				    {
@@ -7151,7 +7151,7 @@ export class Pokemon {
             "info": [
                 "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Weezing",
 			    "requirements": [
 				    {
@@ -7262,7 +7262,7 @@ export class Pokemon {
             "info": [
                 "Its pincers are not only powerful weapons, they are used for balance when walking sideways."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Kingler",
 			    "requirements": [
 				    {
@@ -7730,7 +7730,7 @@ export class Pokemon {
             "info": [
                 "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Machamp",
 			    "requirements": [
 				    {
@@ -7851,7 +7851,7 @@ export class Pokemon {
             "info": [
                 "Loves to build its muscles. It trains in all styles of martial arts to become even stronger."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Machoke",
 			    "requirements": [
 				    {
@@ -7970,7 +7970,7 @@ export class Pokemon {
             "info": [
                 "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Gyarados",
 			    "requirements": [
 				    {
@@ -8117,7 +8117,7 @@ export class Pokemon {
             "info": [
                 "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Magneton",
 			    "requirements": [
 				    {
@@ -8316,7 +8316,7 @@ export class Pokemon {
             "info": [
                 "Extremely quick to anger. It could be docile one moment then thrashing away the next instant."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Primeape",
 			    "requirements": [
 				    {
@@ -8569,7 +8569,7 @@ export class Pokemon {
             "info": [
                 "Adores circular objects. Wanders the streets on a nightly basis to look for dropped loose change."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Persian",
 			    "requirements": [
 				    {
@@ -8643,7 +8643,7 @@ export class Pokemon {
             "info": [
                 "this %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Butterfree",
 			    "requirements": [
 				    {
@@ -9448,7 +9448,7 @@ export class Pokemon {
             "info": [
                 "Although small, its venomous barbs render this %%%%%%%POKEMON%%%%%%% dangerous. The female has smaller horns."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Nidorina",
 			    "requirements": [
 				    {
@@ -9603,7 +9603,7 @@ export class Pokemon {
             "info": [
                 "Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Nidorino",
 			    "requirements": [
 				    {
@@ -9780,7 +9780,7 @@ export class Pokemon {
             "info": [
                 "The female's horn develops slowly. Prefers physical attacks such as clawing and biting."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Nidoqueen",
 			    "requirements": [
 				    {
@@ -9866,7 +9866,7 @@ export class Pokemon {
             "info": [
                 "An aggressive %%%%%%%POKEMON%%%%%%% that is quick to attack. The horn on its head secretes a powerful venom."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Nidoking",
 			    "requirements": [
 				    {
@@ -10084,7 +10084,7 @@ export class Pokemon {
             "info": [
                 "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Gloom",
 			    "requirements": [
 				    {
@@ -10176,7 +10176,7 @@ export class Pokemon {
             "info": [
                 "Although long extinct, in rare cases, it can be genetically resurrected from fossils."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Omastar",
 			    "requirements": [
 				    {
@@ -10473,7 +10473,7 @@ export class Pokemon {
             "info": [
                 "Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Parasect",
 			    "requirements": [
 				    {
@@ -10899,7 +10899,7 @@ export class Pokemon {
             "info": [
                 "Very protective of its sprawling territorial area, this %%%%%%%POKEMON%%%%%%% will fiercely peck at any intruder."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Pidgeot",
 			    "requirements": [
 				    {
@@ -11000,7 +11000,7 @@ export class Pokemon {
             "info": [
                 "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Pidgeotto",
 			    "requirements": [
 				    {
@@ -11098,7 +11098,7 @@ export class Pokemon {
             "info": [
                 "When several of these %%%%%%%POKEMON%%%%%%% gather, their electricity could build and cause lightning storms."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Raichu",
 			    "requirements": [
 				    {
@@ -11307,7 +11307,7 @@ export class Pokemon {
             "info": [
                 "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Poliwhirl",
 			    "requirements": [
 				    {
@@ -11411,7 +11411,7 @@ export class Pokemon {
             "info": [
                 "Capable of living in or out of water. When out of water, it sweats to keep its body slimy."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Poliwrath",
 			    "requirements": [
 				    {
@@ -11599,7 +11599,7 @@ export class Pokemon {
             "info": [
                 "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Rapidash",
 			    "requirements": [
 				    {
@@ -11954,7 +11954,7 @@ export class Pokemon {
             "info": [
                 "While lulling its enemies with its vacant look, this wily %%%%%%%POKEMON%%%%%%% will use psychokinetic powers."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Golduck",
 			    "requirements": [
 				    {
@@ -12319,7 +12319,7 @@ export class Pokemon {
             "info": [
                 "Bites anything when it attacks. Small and very quick, it is a common sight in many places."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Raticate",
 			    "requirements": [
 				    {
@@ -12537,7 +12537,7 @@ export class Pokemon {
             "info": [
                 "Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Rhydon",
 			    "requirements": [
 				    {
@@ -12650,7 +12650,7 @@ export class Pokemon {
             "info": [
                 "Burrows deep underground in arid locations far from water. It only emerges to hunt for food."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Sandslash",
 			    "requirements": [
 				    {
@@ -13154,7 +13154,7 @@ export class Pokemon {
             "info": [
                 "The protruding horn on its head is very hard. It is used for bashing through thick ice."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Dewgong",
 			    "requirements": [
 				    {
@@ -13255,7 +13255,7 @@ export class Pokemon {
             "info": [
                 "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Cloyster",
 			    "requirements": [
 				    {
@@ -13520,7 +13520,7 @@ export class Pokemon {
             "info": [
                 "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Slowbro",
 			    "requirements": [
 				    {
@@ -13817,7 +13817,7 @@ export class Pokemon {
             "info": [
                 "Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Fearow",
 			    "requirements": [
 				    {
@@ -13910,7 +13910,7 @@ export class Pokemon {
                 "After birth, its back swells and hardens into a shell.",
                 "Powerfully sprays foam from its mouth."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Wartortle",
 			    "requirements": [
 				    {
@@ -14077,7 +14077,7 @@ export class Pokemon {
             "info": [
                 "An enigmatic %%%%%%%POKEMON%%%%%%% that can effortlessly regenerate any appendage it loses in battle."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Starmie",
 			    "requirements": [
 				    {
@@ -14398,7 +14398,7 @@ export class Pokemon {
             "info": [
                 "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Tentacruel",
 			    "requirements": [
 				    {
@@ -14779,7 +14779,7 @@ export class Pokemon {
             "info": [
                 "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Venomoth",
 			    "requirements": [
 				    {
@@ -15104,7 +15104,7 @@ export class Pokemon {
             "info": [
                 "Usually found in power plants. Easily mistaken for a POKÃ© BALL, they have zapped many people."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Electrode",
 			    "requirements": [
 				    {
@@ -15205,7 +15205,7 @@ export class Pokemon {
             "info": [
                 "At the time of birth, it has just one tail. The tail splits from its tip as it grows older."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Ninetales",
 			    "requirements": [
 				    {
@@ -15325,7 +15325,7 @@ export class Pokemon {
             "info": [
                 "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Blastoise",
 			    "requirements": [
 				    {
@@ -15450,7 +15450,7 @@ export class Pokemon {
             "info": [
                 "Often found in forests, eating leaves. It has a sharp venomous stinger on its head."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Kakuna",
 			    "requirements": [
 				    {
@@ -15487,7 +15487,7 @@ export class Pokemon {
             "info": [
                 "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Victreebel",
 			    "requirements": [
 				    {
@@ -15839,7 +15839,7 @@ export class Pokemon {
             "info": [
                 "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets."
             ],
-            "evolution": [{
+            "evolutions": [{
 			    "evolvedForm": "Golbat",
 			    "requirements": [
 				    {
