@@ -3354,7 +3354,7 @@ export class Pokemon {
             }
         },
         "EEVEE": {
-            "label": "evolution",
+            "label": "Evolution",
             "sprite": "Water",
             "info": [
                 "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs."
