@@ -140,7 +140,13 @@ export interface IPokemonEvolution {
 /**
  * The requirements for a Pokemon to be able to evolve.
  */
-export interface IPokemonEvolutionRequirements {
+export type IPokemonEvolutionRequirements = 
+    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime | IPokemonEvolutionByTrade | IPokemonEvolutionByItem;
+
+/**
+ * Requirements for a Pokemon that evolves via levelup.
+ */
+export interface IPokemonEvolutionByLevel {
     /**
      * The type of requirement this falls into.
      */
@@ -150,16 +156,61 @@ export interface IPokemonEvolutionRequirements {
      * The required Pokemon level to evolve.
      */
     level?: number;
+}
+
+/**
+ * Requirements for a Pokemon that evolves via happiness.
+ */
+export interface IPokemonEvolutionByHappiness {
+    /**
+     * The type of requirement this falls into.
+     */
+    method: string;
 
     /**
      * The required happiness level to evolve.
      */
     happiness?: number;
+}
+
+/**
+ * Requirements for a Pokemon that evolves via time of day.
+ */
+export interface IPokemonEvolutionByTime {
+    /**
+     * The type of requirement this falls into.
+     */
+    method: string;
 
     /**
      * The required time-of-day to evolve.
      */
     time?: string;
+}
+
+/**
+ * Requirements for a Pokemon that evolves via trade.
+ */
+export interface IPokemonEvolutionByTrade {
+    /**
+     * The type of requirement this falls into.
+     */
+    method: string;
+
+    /**
+     * The required held item to evolve.
+     */
+    item?: string;
+}
+
+/**
+ * Requirements for a Pokemon that evolves via use of item.
+ */
+export interface IPokemonEvolutionByItem {
+    /**
+     * The type of requirement this falls into.
+     */
+    method: string;
 
     /**
      * The required item to evolve.
