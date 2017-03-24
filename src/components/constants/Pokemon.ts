@@ -132,7 +132,7 @@ export interface IPokemonEvolution {
     evolvedForm: string;
 
     /**
-     * A collection of the requirements for the Pokemon to evolve.
+     * The requirements for the Pokemon to evolve.
      */
     requirements: IPokemonEvolutionRequirements[];
 }
