@@ -237,6 +237,11 @@ export interface IPokemonEvolutionByStats {
      * The stat that should be larger to achieve target evolution.
      */
     greaterStat?: string;
+
+    /**
+     * The stat that should be smaller to achieve target evolution.
+     */
+    lesserStat?: string;
 }
 
 /**
@@ -3349,7 +3354,7 @@ export class Pokemon {
             }
         },
         "EEVEE": {
-            "label": "evolutions",
+            "label": "evolution",
             "sprite": "Water",
             "info": [
                 "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs."
