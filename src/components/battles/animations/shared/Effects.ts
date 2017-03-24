@@ -71,7 +71,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param onComplete   Callback for when the effect is done.
      */
     private runEffect(teamAndAction: ITeamAndAction<IMoveAction>, effect: IMoveEffect, onComplete: () => void): void {
-        if (this.gameStarter.numberMaker.randomIntWithin(0, 100) > effect.probability) {
+        if (this.gameStarter.numberMaker.randomIntWithin(0, 100) > effect.probability!) {
             this.missed.run(teamAndAction, effect, onComplete);
             return;
         }

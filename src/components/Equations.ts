@@ -51,7 +51,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
         for (const wildPokemon of options) {
             if (wildPokemon.level) {
-                average += wildPokemon.level * wildPokemon.rate;
+                average += wildPokemon.level * wildPokemon.rate!;
                 continue;
             }
 
@@ -65,7 +65,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
                 levelAverage += level * (1 / wildPokemon.levels.length);
             }
 
-            average += levelAverage * wildPokemon.rate;
+            average += levelAverage * wildPokemon.rate!;
         }
 
         return Math.round(average);
@@ -82,7 +82,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         let sum: number = 0;
 
         for (const option of options) {
-            sum += option.rate;
+            sum += option.rate!;
             if (sum >= choice) {
                 return option;
             }
@@ -160,7 +160,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         let end: number;
 
         for (end = 0; end < possibilities.length; end += 1) {
-            if (possibilities[end].level > level) {
+            if (possibilities[end].level! > level) {
                 break;
             }
         }
@@ -300,7 +300,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         if (catchRate === undefined) {
             console.warn("Catch rate hasn't yet been added for", pokemon);
         }
-        if (n - this.gameStarter.constants.statuses.levels[pokemon.status || "normal"] > catchRate) {
+        if (n - this.gameStarter.constants.statuses.levels[pokemon.status || "normal"] > catchRate!) {
             return false;
         }
 
@@ -332,7 +332,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         if (catchRate === undefined) {
             console.warn("Catch rate hasn't yet been added for", pokemon);
         }
-        const d: number = catchRate * 100 / ball.rate;
+        const d: number = catchRate! * 100 / ball.rate;
 
         // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
         if (d >= 256) {

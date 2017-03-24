@@ -114,7 +114,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 const ticksRecorded: number = fsp.itemsHolder.getItem("time");
                 const ticksUnrecorded: number = fsp.gamesRunner.fpsAnalyzer.getNumRecorded() - fsp.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
-                const secondsTotal: number = Math.floor(ticksTotal / ((fsp.moduleSettings.runner || {}).interval) || 0);
+                const secondsTotal: number = Math.floor(ticksTotal / ((fsp.moduleSettings.runner || {}).interval || 1) || 0);
                 let hours: string = Math.floor(secondsTotal / 14400).toString();
                 let minutes: string = Math.floor((secondsTotal - Number(hours)) / 240).toString();
 

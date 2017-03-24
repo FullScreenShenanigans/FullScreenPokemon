@@ -532,7 +532,6 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         player.keys = player.getKeys();
 
         this.gameStarter.players = [player];
-        this.gameStarter.inputWriter.setEventInformation(player);
         this.gameStarter.things.add(player, left || 0, top || 0, useSavedInfo);
         this.gameStarter.modAttacher.fireEvent("onAddPlayer", player);
 
@@ -558,7 +557,6 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.gameStarter.modAttacher.fireEvent("onPreSetMap", map);
         this.gameStarter.numberMaker.resetFromSeed(map.seed);
-        this.gameStarter.inputWriter.restartHistory();
         this.gameStarter.modAttacher.fireEvent("onSetMap", map);
 
         return this.gameStarter.maps.setLocation(
@@ -752,7 +750,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         switch (direction) {
             case Direction.Top:
-                top -= area.height;
+                top -= area.height!;
                 break;
 
             case Direction.Right:
@@ -764,7 +762,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 break;
 
             case Direction.Left:
-                left -= area.width;
+                left -= area.width!;
                 break;
 
             default:

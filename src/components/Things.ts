@@ -97,12 +97,12 @@ export interface IThing extends igamestartr.IThing, IStateSaveable {
     /**
      * A horizontal visual offset to shift by.
      */
-    offsetX?: number;
+    offsetX: number;
 
     /**
      * A vertical visual offset to shift by.
      */
-    offsetY?: number;
+    offsetY: number;
 
     /**
      * Whether to shift this to the "beginning" or "end" of its Things group.
