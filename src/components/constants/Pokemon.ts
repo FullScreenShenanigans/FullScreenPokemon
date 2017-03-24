@@ -128,6 +128,51 @@ export interface IPokemonMoveListing {
 }
 
 /**
+ * Data regarding requirements for a Pokemon's evolution
+ */
+export interface IPokemonEvolution {
+    /**
+     * The name of the Pokemon that this Pokemon evolves into.
+     */
+    evolvedForm: string;
+
+    /**
+     * A collection of the requirements for the Pokemon to evolve.
+     */
+    requirements: IPokemonEvolutionRequirements[];
+}
+
+/**
+ * The requirements for a Pokemon to be able to evolve.
+ */
+export interface IPokemonEvolutionRequirements {
+    /**
+     * The type of requirement this falls into.
+     */
+    method: string;
+
+    /**
+     * The required Pokemon level to evolve.
+     */
+    level?: number;
+
+    /**
+     * The required happiness level to evolve.
+     */
+    happiness?: number;
+
+    /**
+     * The required time-of-day to evolve.
+     */
+    time?: string;
+
+    /**
+     * The required item to evolve.
+     */
+    item?: string;
+}
+
+/**
  * A description of a Pokemon in a player's Pokedex.
  * @todo It's not clear how this is different from IPokedexInformation.
  */
