@@ -146,7 +146,8 @@ export interface IPokemonEvolution {
  * The requirements for a Pokemon to be able to evolve.
  */
 export type IPokemonEvolutionRequirements = 
-    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime | IPokemonEvolutionByTrade | IPokemonEvolutionByItem;
+    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime | 
+    IPokemonEvolutionByTrade | IPokemonEvolutionByItem | IPokemonEvolutionByStats;
 
 /**
  * Requirements for a Pokemon that evolves via levelup.
@@ -221,6 +222,21 @@ export interface IPokemonEvolutionByItem {
      * The required item to evolve.
      */
     item?: string;
+}
+
+/**
+ * Requirements for a Pokemon that evolves based on its stats.
+ */
+export interface IPokemonEvolutionByStats {
+    /**
+     * The type of requirement this falls into.
+     */
+    method: string;
+
+    /**
+     * The stat that should be larger to achieve target evolution.
+     */
+    greaterStat?: string;
 }
 
 /**
