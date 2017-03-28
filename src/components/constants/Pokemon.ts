@@ -313,14 +313,14 @@ export class Pokemon {
                 "Using its ability to read minds, it will identify impending danger and TELEPORT to safety."
             ],
             "evolutions": [{
-			    "evolvedForm": "Kadabra",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 16
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Kadabra",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 16
+                    }
+                ]
+            }],
             "number": 63,
             "height": ["2", "11"],
             "weight": 43,
@@ -1032,14 +1032,14 @@ export class Pokemon {
                 "A carnivorous %%%%%%%POKEMON%%%%%%% that traps and eats bugs. It uses its root feet to soak up needed moisture."
             ],
             "evolutions": [{
-			    "evolvedForm": "Weepinbell",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 21
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Weepinbell",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 21
+                    }
+                ]
+            }],
             "number": 69,
             "height": ["2", "4"],
             "weight": 8.8,
@@ -1269,14 +1269,14 @@ export class Pokemon {
                 "The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%."
             ],
             "evolutions": [{
-			    "evolvedForm": "Ivysaur",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 16
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Ivysaur",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 16
+                    }
+                ]
+            }],
             "number": 1,
             "height": ["2", "4"],
             "weight": 15.2,
@@ -1477,14 +1477,14 @@ export class Pokemon {
                 "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls."
             ],
             "evolutions": [{
-			    "evolvedForm": "Metapod",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 7
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Metapod",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 7
+                    }
+                ]
+            }],
             "number": 10,
             "height": ["1", "0"],
             "weight": 6.4,
@@ -1805,14 +1805,14 @@ export class Pokemon {
                 "When it rains, steam is said to spout from the tip of its tail."
             ],
             "evolutions": [{
-			    "evolvedForm": "Charmeleon",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 16
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Charmeleon",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 16
+                    }
+                ]
+            }],
             "number": 4,
             "height": ["2", "0"],
             "weight": 18.7,
@@ -1934,14 +1934,14 @@ export class Pokemon {
                 "When it swings its burning tail, it elevates the temperature to unbearably high levels."
             ],
             "evolutions": [{
-			    "evolvedForm": "Charizard",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 36
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Charizard",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 36
+                    }
+                ]
+            }],
             "number": 5,
             "height": ["3", "7"],
             "weight": 41.9,
@@ -2107,14 +2107,14 @@ export class Pokemon {
                 "Its magical and cute appeal has many admirers. It is rare and found only in certain areas."
             ],
             "evolutions": [{
-			    "evolvedForm": "Kadabra",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Moon Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Kadabra",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Moon Stone"
+                    }
+                ]
+            }],
             "number": 35,
             "height": ["2", "0"],
             "weight": 16.5,
@@ -2303,14 +2303,14 @@ export class Pokemon {
                 "Because it never removes its skull helmet, no one has ever seen this %%%%%%%POKEMON%%%%%%%'s real face."
             ],
             "evolutions": [{
-			    "evolvedForm": "Marowak",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 28
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Marowak",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 28
+                    }
+                ]
+            }],
             "number": 104,
             "height": ["1", "4"],
             "weight": 14.3,
@@ -2532,14 +2532,14 @@ export class Pokemon {
                 "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground."
             ],
             "evolutions": [{
-			    "evolvedForm": "Dugtrio",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 26
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Dugtrio",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 26
+                    }
+                ]
+            }],
             "number": 50,
             "height": ["0", "8"],
             "weight": 1.8,
@@ -2765,14 +2765,14 @@ export class Pokemon {
                 "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints."
             ],
             "evolutions": [{
-			    "evolvedForm": "Dodrio",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 31
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Dodrio",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 31
+                    }
+                ]
+            }],
             "number": 84,
             "height": ["4", "7"],
             "weight": 86.4,
@@ -2866,14 +2866,14 @@ export class Pokemon {
                 "A mystical %%%%%%%POKEMON%%%%%%% that exudes a gentle aura. Has the ability to change climate conditions."
             ],
             "evolutions": [{
-			    "evolvedForm": "Dragonite",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 55
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Dragonite",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 55
+                    }
+                ]
+            }],
             "number": 148,
             "height": ["13", "1"],
             "weight": 36.4,
@@ -3123,14 +3123,14 @@ export class Pokemon {
                 "Long considered a mythical %%%%%%%POKEMON%%%%%%% until recently when a small colony was found living underwater."
             ],
             "evolutions": [{
-			    "evolvedForm": "Dragonair",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 30
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Dragonair",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 30
+                    }
+                ]
+            }],
             "number": 147,
             "height": ["5", "11"],
             "weight": 7.3,
@@ -3245,14 +3245,14 @@ export class Pokemon {
                 "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams."
             ],
             "evolutions": [{
-			    "evolvedForm": "Hypno",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 26
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Hypno",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 26
+                    }
+                ]
+            }],
             "number": 96,
             "height": ["3", "3"],
             "weight": 71.4,
@@ -3452,7 +3452,7 @@ export class Pokemon {
                             "item": "Fire Stone"
                         }
                     ]
-		        },
+                },
                 {
                     "evolvedForm": "Vaporeon",
                     "requirements": [
@@ -3461,7 +3461,7 @@ export class Pokemon {
                             "item": "Water Stone"
                         }
                     ]
-		        },
+                },
                 {
                     "evolvedForm": "Jolteon",
                     "requirements": [
@@ -3470,7 +3470,7 @@ export class Pokemon {
                             "item": "Thunder Stone"
                         }
                     ]
-		        }
+                }
             ],
             "number": 133,
             "height": ["1", "0"],
@@ -3578,14 +3578,14 @@ export class Pokemon {
                 "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole."
             ],
             "evolutions": [{
-			    "evolvedForm": "Arbok",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 22
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Arbok",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 22
+                    }
+                ]
+            }],
             "number": 23,
             "height": ["6", "7"],
             "weight": 15.2,
@@ -3908,14 +3908,14 @@ export class Pokemon {
                 "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms."
             ],
              "evolutions": [{
-			    "evolvedForm": "Exeggutor",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Leaf Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Exeggutor",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Leaf Stone"
+                    }
+                ]
+            }],
             "number": 102,
             "height": ["1", "4"],
             "weight": 5.5,
@@ -4359,14 +4359,14 @@ export class Pokemon {
                 "Almost invisible, this gaseous %%%%%%%POKEMON%%%%%%% cloaks the target and puts it to sleep without notice."
             ],
             "evolutions": [{
-			    "evolvedForm": "Haunter",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 25
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Haunter",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 25
+                    }
+                ]
+            }],
             "number": 92,
             "height": ["4", "3"],
             "weight": 0.2,
@@ -4540,14 +4540,14 @@ export class Pokemon {
                 "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them."
             ],
             "evolutions": [{
-			    "evolvedForm": "Graveler",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 25
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Graveler",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 25
+                    }
+                ]
+            }],
             "number": 74,
             "height": ["1", "4"],
             "weight": 44.1,
@@ -4659,14 +4659,14 @@ export class Pokemon {
                 "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey."
             ],
             "evolutions": [{
-			    "evolvedForm": "Vileplume",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Leaf Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Vileplume",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Leaf Stone"
+                    }
+                ]
+            }],
             "number": 44,
             "height": ["2", "7"],
             "weight": 19,
@@ -4757,14 +4757,14 @@ export class Pokemon {
                 "Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly."
             ],
             "evolutions": [{
-			    "evolvedForm": "Crobat",
-			    "requirements": [
-				    {
-					    "method": "happiness",
-					    "happiness": 220
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Crobat",
+                "requirements": [
+                    {
+                        "method": "happiness",
+                        "happiness": 220
+                    }
+                ]
+            }],
             "number": 42,
             "height": ["5", "3"],
             "weight": 121.3,
@@ -4880,14 +4880,14 @@ export class Pokemon {
                 "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen."
             ],
             "evolutions": [{
-			    "evolvedForm": "Seaking",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 33
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Seaking",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 33
+                    }
+                ]
+            }],
             "number": 118,
             "height": ["2", "0"],
             "weight": 33.1,
@@ -5228,13 +5228,13 @@ export class Pokemon {
                 "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction."
             ],
             "evolutions": [{
-			    "evolvedForm": "Golem",
-			    "requirements": [
-				    {
-					    "method": "Trade"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Golem",
+                "requirements": [
+                    {
+                        "method": "Trade"
+                    }
+                ]
+            }],
             "number": 75,
             "height": ["3", "3"],
             "weight": 231.5,
@@ -5349,14 +5349,14 @@ export class Pokemon {
                 "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories."
             ],
             "evolutions": [{
-			    "evolvedForm": "Muk",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 38
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Muk",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 38
+                    }
+                ]
+            }],
             "number": 88,
             "height": ["2", "11"],
             "weight": 66.1,
@@ -5472,14 +5472,14 @@ export class Pokemon {
                 "Very protective of its territory. It will bark and bite to repel intruders from its space."
             ],
             "evolutions": [{
-			    "evolvedForm": "Arcanine",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Fire Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Arcanine",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Fire Stone"
+                    }
+                ]
+            }],
             "number": 58,
             "height": ["2", "4"],
             "weight": 41.9,
@@ -5609,13 +5609,13 @@ export class Pokemon {
                 "Because of its ability to slip through block walls, it is said to be from another dimension."
             ],
             "evolutions": [{
-			    "evolvedForm": "Gengar",
-			    "requirements": [
-				    {
-					    "method": "Trade"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Gengar",
+                "requirements": [
+                    {
+                        "method": "Trade"
+                    }
+                ]
+            }],
             "number": 93,
             "height": ["5", "3"],
             "weight": 0.2,
@@ -5869,14 +5869,14 @@ export class Pokemon {
                 "Known to shoot down flying bugs with precision blasts of ink from the surface of the water."
             ],
             "evolutions": [{
-			    "evolvedForm": "Seadra",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 32
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Seadra",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 32
+                    }
+                ]
+            }],
             "number": 116,
             "height": ["1", "4"],
             "weight": 17.6,
@@ -6095,14 +6095,14 @@ export class Pokemon {
                 "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
             ],
             "evolutions": [{
-			    "evolvedForm": "Venusaur",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 32
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Venusaur",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 32
+                    }
+                ]
+            }],
             "number": 2,
             "height": ["3", "3"],
             "weight": 28.7,
@@ -6202,14 +6202,14 @@ export class Pokemon {
                 "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep."
             ],
             "evolutions": [{
-			    "evolvedForm": "Wigglytuff",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Moon Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Wigglytuff",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Moon Stone"
+                    }
+                ]
+            }],
             "number": 39,
             "height": ["1", "8"],
             "weight": 12.1,
@@ -6566,14 +6566,14 @@ export class Pokemon {
                 "A %%%%%%%POKEMON%%%%%%% that was resurrected from a fossil found in what was once the ocean floor eons ago."
             ],
             "evolutions": [{
-			    "evolvedForm": "Kabutops",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 40
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Kabutops",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 40
+                    }
+                ]
+            }],
             "number": 140,
             "height": ["1", "8"],
             "weight": 25.4,
@@ -6774,13 +6774,13 @@ export class Pokemon {
                 "It emits special alpha waves from its body that induce headaches just by being close by."
             ],
             "evolutions": [{
-			    "evolvedForm": "Alakazam",
-			    "requirements": [
-				    {
-					    "method": "Trade"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Alakazam",
+                "requirements": [
+                    {
+                        "method": "Trade"
+                    }
+                ]
+            }],
             "number": 64,
             "height": ["4", "3"],
             "weight": 124.6,
@@ -6907,14 +6907,14 @@ export class Pokemon {
                 "Almost incapable of moving, this %%%%%%%POKEMON%%%%%%% can only harden its shell to protect itself from predators."
             ],
             "evolutions": [{
-			    "evolvedForm": "Beedrill",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 10
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Beedrill",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 10
+                    }
+                ]
+            }],
             "number": 14,
             "height": ["2", "0"],
             "weight": 22,
@@ -7173,14 +7173,14 @@ export class Pokemon {
                 "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning."
             ],
             "evolutions": [{
-			    "evolvedForm": "Weezing",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 35
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Weezing",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 35
+                    }
+                ]
+            }],
             "number": 109,
             "height": ["2", "0"],
             "weight": 2.2,
@@ -7284,14 +7284,14 @@ export class Pokemon {
                 "Its pincers are not only powerful weapons, they are used for balance when walking sideways."
             ],
             "evolutions": [{
-			    "evolvedForm": "Kingler",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 28
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Kingler",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 28
+                    }
+                ]
+            }],
             "number": 98,
             "height": ["1", "4"],
             "weight": 14.3,
@@ -7752,13 +7752,13 @@ export class Pokemon {
                 "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions."
             ],
             "evolutions": [{
-			    "evolvedForm": "Machamp",
-			    "requirements": [
-				    {
-					    "method": "Trade"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Machamp",
+                "requirements": [
+                    {
+                        "method": "Trade"
+                    }
+                ]
+            }],
             "number": 67,
             "height": ["4", "11"],
             "weight": 155.4,
@@ -7873,14 +7873,14 @@ export class Pokemon {
                 "Loves to build its muscles. It trains in all styles of martial arts to become even stronger."
             ],
             "evolutions": [{
-			    "evolvedForm": "Machoke",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 28
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Machoke",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 28
+                    }
+                ]
+            }],
             "number": 66,
             "height": ["2", "7"],
             "weight": 43,
@@ -7992,14 +7992,14 @@ export class Pokemon {
                 "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today."
             ],
             "evolutions": [{
-			    "evolvedForm": "Gyarados",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 20
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Gyarados",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 20
+                    }
+                ]
+            }],
             "number": 129,
             "height": ["2", "11"],
             "weight": 22,
@@ -8139,14 +8139,14 @@ export class Pokemon {
                 "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves."
             ],
             "evolutions": [{
-			    "evolvedForm": "Magneton",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 30
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Magneton",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 30
+                    }
+                ]
+            }],
             "number": 81,
             "height": ["1", "0"],
             "weight": 13.2,
@@ -8338,14 +8338,14 @@ export class Pokemon {
                 "Extremely quick to anger. It could be docile one moment then thrashing away the next instant."
             ],
             "evolutions": [{
-			    "evolvedForm": "Primeape",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 28
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Primeape",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 28
+                    }
+                ]
+            }],
             "number": 56,
             "height": ["1", "8"],
             "weight": 61.7,
@@ -8591,14 +8591,14 @@ export class Pokemon {
                 "Adores circular objects. Wanders the streets on a nightly basis to look for dropped loose change."
             ],
             "evolutions": [{
-			    "evolvedForm": "Persian",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 28
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Persian",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 28
+                    }
+                ]
+            }],
             "number": 52,
             "height": ["1", "4"],
             "weight": 9.3,
@@ -8665,14 +8665,14 @@ export class Pokemon {
                 "this %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body."
             ],
             "evolutions": [{
-			    "evolvedForm": "Butterfree",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 10
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Butterfree",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 10
+                    }
+                ]
+            }],
             "number": 11,
             "height": ["2", "4"],
             "weight": 21.8,
@@ -9470,14 +9470,14 @@ export class Pokemon {
                 "Although small, its venomous barbs render this %%%%%%%POKEMON%%%%%%% dangerous. The female has smaller horns."
             ],
             "evolutions": [{
-			    "evolvedForm": "Nidorina",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 16
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Nidorina",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 16
+                    }
+                ]
+            }],
             "number": 29,
             "height": ["1", "4"],
             "weight": 15.4,
@@ -9625,14 +9625,14 @@ export class Pokemon {
                 "Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom."
             ],
             "evolutions": [{
-			    "evolvedForm": "Nidorino",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 16
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Nidorino",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 16
+                    }
+                ]
+            }],
             "number": 32,
             "height": ["1", "8"],
             "weight": 19.8,
@@ -9802,14 +9802,14 @@ export class Pokemon {
                 "The female's horn develops slowly. Prefers physical attacks such as clawing and biting."
             ],
             "evolutions": [{
-			    "evolvedForm": "Nidoqueen",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Moon Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Nidoqueen",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Moon Stone"
+                    }
+                ]
+            }],
             "number": 30,
             "height": ["2", "7"],
             "weight": 44.1,
@@ -9888,14 +9888,14 @@ export class Pokemon {
                 "An aggressive %%%%%%%POKEMON%%%%%%% that is quick to attack. The horn on its head secretes a powerful venom."
             ],
             "evolutions": [{
-			    "evolvedForm": "Nidoking",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Moon Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Nidoking",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Moon Stone"
+                    }
+                ]
+            }],
             "number": 33,
             "height": ["2", "11"],
             "weight": 43,
@@ -10106,14 +10106,14 @@ export class Pokemon {
                 "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds."
             ],
             "evolutions": [{
-			    "evolvedForm": "Gloom",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 21
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Gloom",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 21
+                    }
+                ]
+            }],
             "number": 43,
             "height": ["1", "8"],
             "weight": 11.9,
@@ -10198,14 +10198,14 @@ export class Pokemon {
                 "Although long extinct, in rare cases, it can be genetically resurrected from fossils."
             ],
             "evolutions": [{
-			    "evolvedForm": "Omastar",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 40
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Omastar",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 40
+                    }
+                ]
+            }],
             "number": 138,
             "height": ["1", "4"],
             "weight": 16.5,
@@ -10495,14 +10495,14 @@ export class Pokemon {
                 "Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host."
             ],
             "evolutions": [{
-			    "evolvedForm": "Parasect",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 24
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Parasect",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 24
+                    }
+                ]
+            }],
             "number": 46,
             "height": ["1", "0"],
             "weight": 11.9,
@@ -10921,14 +10921,14 @@ export class Pokemon {
                 "Very protective of its sprawling territorial area, this %%%%%%%POKEMON%%%%%%% will fiercely peck at any intruder."
             ],
             "evolutions": [{
-			    "evolvedForm": "Pidgeot",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 36
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Pidgeot",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 36
+                    }
+                ]
+            }],
             "number": 17,
             "height": ["3", "7"],
             "weight": 66.1,
@@ -11022,14 +11022,14 @@ export class Pokemon {
                 "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand."
             ],
             "evolutions": [{
-			    "evolvedForm": "Pidgeotto",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 18
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Pidgeotto",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 18
+                    }
+                ]
+            }],
             "number": 16,
             "height": ["1", "0"],
             "weight": 4,
@@ -11120,14 +11120,14 @@ export class Pokemon {
                 "When several of these %%%%%%%POKEMON%%%%%%% gather, their electricity could build and cause lightning storms."
             ],
             "evolutions": [{
-			    "evolvedForm": "Raichu",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Thunder Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Raichu",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Thunder Stone"
+                    }
+                ]
+            }],
             "number": 25,
             "height": ["1", "4"],
             "weight": 13.2,
@@ -11329,14 +11329,14 @@ export class Pokemon {
                 "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand."
             ],
             "evolutions": [{
-			    "evolvedForm": "Poliwhirl",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 25
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Poliwhirl",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 25
+                    }
+                ]
+            }],
             "number": 60,
             "height": ["2", "0"],
             "weight": 27.3,
@@ -11433,14 +11433,14 @@ export class Pokemon {
                 "Capable of living in or out of water. When out of water, it sweats to keep its body slimy."
             ],
             "evolutions": [{
-			    "evolvedForm": "Poliwrath",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Water Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Poliwrath",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Water Stone"
+                    }
+                ]
+            }],
             "number": 61,
             "height": ["3", "3"],
             "weight": 44.1,
@@ -11621,14 +11621,14 @@ export class Pokemon {
                 "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time."
             ],
             "evolutions": [{
-			    "evolvedForm": "Rapidash",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 40
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Rapidash",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 40
+                    }
+                ]
+            }],
             "number": 77,
             "height": ["3", "3"],
             "weight": 66.1,
@@ -11976,14 +11976,14 @@ export class Pokemon {
                 "While lulling its enemies with its vacant look, this wily %%%%%%%POKEMON%%%%%%% will use psychokinetic powers."
             ],
             "evolutions": [{
-			    "evolvedForm": "Golduck",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 33
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Golduck",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 33
+                    }
+                ]
+            }],
             "number": 54,
             "height": ["2", "7"],
             "weight": 43.2,
@@ -12341,14 +12341,14 @@ export class Pokemon {
                 "Bites anything when it attacks. Small and very quick, it is a common sight in many places."
             ],
             "evolutions": [{
-			    "evolvedForm": "Raticate",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 20
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Raticate",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 20
+                    }
+                ]
+            }],
             "number": 19,
             "height": ["1", "0"],
             "weight": 7.7,
@@ -12559,14 +12559,14 @@ export class Pokemon {
                 "Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying."
             ],
             "evolutions": [{
-			    "evolvedForm": "Rhydon",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 42
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Rhydon",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 42
+                    }
+                ]
+            }],
             "number": 111,
             "height": ["3", "3"],
             "weight": 253.5,
@@ -12672,14 +12672,14 @@ export class Pokemon {
                 "Burrows deep underground in arid locations far from water. It only emerges to hunt for food."
             ],
             "evolutions": [{
-			    "evolvedForm": "Sandslash",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 22
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Sandslash",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 22
+                    }
+                ]
+            }],
             "number": 27,
             "height": ["2", "0"],
             "weight": 26.5,
@@ -13176,14 +13176,14 @@ export class Pokemon {
                 "The protruding horn on its head is very hard. It is used for bashing through thick ice."
             ],
             "evolutions": [{
-			    "evolvedForm": "Dewgong",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 34
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Dewgong",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 34
+                    }
+                ]
+            }],
             "number": 86,
             "height": ["3", "7"],
             "weight": 198.4,
@@ -13277,14 +13277,14 @@ export class Pokemon {
                 "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open."
             ],
             "evolutions": [{
-			    "evolvedForm": "Cloyster",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Water Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Cloyster",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Water Stone"
+                    }
+                ]
+            }],
             "number": 90,
             "height": ["1", "0"],
             "weight": 8.8,
@@ -13542,14 +13542,14 @@ export class Pokemon {
                 "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack."
             ],
             "evolutions": [{
-			    "evolvedForm": "Slowbro",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 37
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Slowbro",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 37
+                    }
+                ]
+            }],
             "number": 79,
             "height": ["3", "11"],
             "weight": 79.4,
@@ -13839,14 +13839,14 @@ export class Pokemon {
                 "Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne."
             ],
             "evolutions": [{
-			    "evolvedForm": "Fearow",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 20
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Fearow",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 20
+                    }
+                ]
+            }],
             "number": 21,
             "height": ["1", "0"],
             "weight": 4.4,
@@ -13932,14 +13932,14 @@ export class Pokemon {
                 "Powerfully sprays foam from its mouth."
             ],
             "evolutions": [{
-			    "evolvedForm": "Wartortle",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 16
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Wartortle",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 16
+                    }
+                ]
+            }],
             "number": 7,
             "height": ["1", "8"],
             "weight": 19.8,
@@ -14099,14 +14099,14 @@ export class Pokemon {
                 "An enigmatic %%%%%%%POKEMON%%%%%%% that can effortlessly regenerate any appendage it loses in battle."
             ],
             "evolutions": [{
-			    "evolvedForm": "Starmie",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Water Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Starmie",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Water Stone"
+                    }
+                ]
+            }],
             "number": 120,
             "height": ["2", "7"],
             "weight": 76.1,
@@ -14420,14 +14420,14 @@ export class Pokemon {
                 "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid."
             ],
             "evolutions": [{
-			    "evolvedForm": "Tentacruel",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 30
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Tentacruel",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 30
+                    }
+                ]
+            }],
             "number": 72,
             "height": ["2", "11"],
             "weight": 100.3,
@@ -14801,14 +14801,14 @@ export class Pokemon {
                 "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night."
             ],
             "evolutions": [{
-			    "evolvedForm": "Venomoth",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 31
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Venomoth",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 31
+                    }
+                ]
+            }],
             "number": 48,
             "height": ["3", "3"],
             "weight": 66.1,
@@ -15126,14 +15126,14 @@ export class Pokemon {
                 "Usually found in power plants. Easily mistaken for a POKÃ© BALL, they have zapped many people."
             ],
             "evolutions": [{
-			    "evolvedForm": "Electrode",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 30
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Electrode",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 30
+                    }
+                ]
+            }],
             "number": 100,
             "height": ["1", "8"],
             "weight": 22.9,
@@ -15227,14 +15227,14 @@ export class Pokemon {
                 "At the time of birth, it has just one tail. The tail splits from its tip as it grows older."
             ],
             "evolutions": [{
-			    "evolvedForm": "Ninetales",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Fire Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Ninetales",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Fire Stone"
+                    }
+                ]
+            }],
             "number": 37,
             "height": ["2", "0"],
             "weight": 21.8,
@@ -15347,14 +15347,14 @@ export class Pokemon {
                 "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance."
             ],
             "evolutions": [{
-			    "evolvedForm": "Blastoise",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 36
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Blastoise",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 36
+                    }
+                ]
+            }],
             "number": 8,
             "height": ["3", "3"],
             "weight": 49.6,
@@ -15472,14 +15472,14 @@ export class Pokemon {
                 "Often found in forests, eating leaves. It has a sharp venomous stinger on its head."
             ],
             "evolutions": [{
-			    "evolvedForm": "Kakuna",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 7
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Kakuna",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 7
+                    }
+                ]
+            }],
             "number": 13,
             "height": ["1", "0"],
             "weight": 7.1,
@@ -15509,14 +15509,14 @@ export class Pokemon {
                 "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID."
             ],
             "evolutions": [{
-			    "evolvedForm": "Victreebel",
-			    "requirements": [
-				    {
-					    "method": "item",
-					    "item": "Leaf Stone"
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Victreebel",
+                "requirements": [
+                    {
+                        "method": "item",
+                        "item": "Leaf Stone"
+                    }
+                ]
+            }],
             "number": 70,
             "height": ["3", "3"],
             "weight": 14.1,
@@ -15861,14 +15861,14 @@ export class Pokemon {
                 "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets."
             ],
             "evolutions": [{
-			    "evolvedForm": "Golbat",
-			    "requirements": [
-				    {
-					    "method": "level",
-					    "level": 22
-				    }
-			    ]
-		    }],
+                "evolvedForm": "Golbat",
+                "requirements": [
+                    {
+                        "method": "level",
+                        "level": 22
+                    }
+                ]
+            }],
             "number": 41,
             "height": ["2", "7"],
             "weight": 16.5,
