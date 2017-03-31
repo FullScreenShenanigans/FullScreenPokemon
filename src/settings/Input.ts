@@ -25,27 +25,27 @@ export function GenerateInputSettings(fsp: FullScreenPokemon): IInputModuleSetti
         },
         triggers: {
             onkeydown: {
-                left: fsp.inputs.keyDownLeft.bind(fsp.inputs),
-                right: fsp.inputs.keyDownRight.bind(fsp.inputs),
-                up: fsp.inputs.keyDownUp.bind(fsp.inputs),
-                down: fsp.inputs.keyDownDown.bind(fsp.inputs),
-                a: fsp.inputs.keyDownA.bind(fsp.inputs),
-                b: fsp.inputs.keyDownB.bind(fsp.inputs),
-                pause: fsp.inputs.keyDownPause.bind(fsp.inputs),
-                mute: fsp.inputs.keyDownMute.bind(fsp.inputs),
-                select: fsp.inputs.keyDownSelect.bind(fsp.inputs)
+                left: (event: Event): void => fsp.inputs.keyDownLeft(fsp.players[0], event),
+                right: (event: Event): void => fsp.inputs.keyDownRight(fsp.players[0], event),
+                up: (event: Event): void => fsp.inputs.keyDownUp(fsp.players[0], event),
+                down: (event: Event): void => fsp.inputs.keyDownDown(fsp.players[0], event),
+                a: (event: Event): void => fsp.inputs.keyDownA(fsp.players[0], event),
+                b: (event: Event): void => fsp.inputs.keyDownB(fsp.players[0], event),
+                pause: (event: Event): void => fsp.inputs.keyDownPause(fsp.players[0], event),
+                mute: (event: Event): void => fsp.inputs.keyDownMute(fsp.players[0], event),
+                select: (event: Event): void => fsp.inputs.keyDownSelect(fsp.players[0], event)
             },
             onkeyup: {
-                left: fsp.inputs.keyUpLeft.bind(fsp.inputs),
-                right: fsp.inputs.keyUpRight.bind(fsp.inputs),
-                up: fsp.inputs.keyUpUp.bind(fsp.inputs),
-                down: fsp.inputs.keyUpDown.bind(fsp.inputs),
-                a: fsp.inputs.keyUpA.bind(fsp.inputs),
-                b: fsp.inputs.keyUpB.bind(fsp.inputs),
-                pause: fsp.inputs.keyUpPause.bind(fsp.inputs)
+                left: (event: Event): void => fsp.inputs.keyUpLeft(fsp.players[0], event),
+                right: (event: Event): void => fsp.inputs.keyUpRight(fsp.players[0], event),
+                up: (event: Event): void => fsp.inputs.keyUpUp(fsp.players[0], event),
+                down: (event: Event): void => fsp.inputs.keyUpDown(fsp.players[0], event),
+                a: (event: Event): void => fsp.inputs.keyUpA(fsp.players[0], event),
+                b: (event: Event): void => fsp.inputs.keyUpB(fsp.players[0], event),
+                pause: (event: Event): void => fsp.inputs.keyUpPause(fsp.players[0], event)
             },
             onmousedown: {
-                rightclick: fsp.inputs.mouseDownRight.bind(fsp.inputs)
+                rightclick: (event: Event): void => fsp.inputs.mouseDownRight(fsp.players[0], event)
             },
             oncontextmenu: {},
             ondevicemotion: {
