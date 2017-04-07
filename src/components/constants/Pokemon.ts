@@ -239,7 +239,7 @@ export interface IPokemonEvolutionByStats {
     lesserStat: string;
     
     /**
-     * A flag to be set if the two stats should actually be equal.
+     * Whether the two stats may be equal.
      */
     statsAreEqual?: boolean;
 }

@@ -1,44 +1,45 @@
 import { Component } from "eightbittr/lib/Component";
 
-import { IPokemon } from "./Battles";
-
 import { FullScreenPokemon } from "../FullScreenPokemon";
-
-import { IPokemonEvolution, IPokemonEvolutionByHappiness, IPokemonEvolutionByItem, 
+import { IPokemon } from "./Battles";
+import { 
+    IPokemonEvolution, IPokemonEvolutionByHappiness, IPokemonEvolutionByItem, 
     IPokemonEvolutionByLevel, IPokemonEvolutionByStats, IPokemonEvolutionByTime, 
-    IPokemonEvolutionByTrade, Pokemon } from "./constants/Pokemon";
+    IPokemonEvolutionByTrade, Pokemon 
+} from "./constants/Pokemon";
+
 /**
- * Holds things related to Pokemon evolution.
+ * Handles logic related to Pokemon evolution.
  */
 export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * Acts according to what form of requirement is passed to it.
+     * Holds evolution requirement checks, keyed by the method of evolution.
      */
     public requirementHandlers: IRequirementHandlers = {
-        "level": function (pokemon: IPokemon, requirements: IPokemonEvolutionByLevel): boolean {
+        level: (pokemon: IPokemon, requirements: IPokemonEvolutionByLevel): boolean => {
             return pokemon.level >= requirements.level;
         },
-        "item": function (): boolean {
+        item: (): boolean => {
             // Need some way to pass a flag for the item being used
-            // Item usage outside of battle does not seem to be implemented
+            // Item usage outside of battle does not seem to be implemented (Issue #364)
             return false;
         },
-        "trade": function (requirements: IPokemonEvolutionByTrade): boolean {
+        trade: (requirements: IPokemonEvolutionByTrade): boolean => {
             // Need some way to pass a flag in that the pokemon has just been traded
-            // Currently no value for held item
-            // Trading is not implemented yet
+            // Currently no value for held item (Issue #439)
+            // Trading is not implemented yet (Issue #440)
             if (requirements.item) { return false; }
             return false;
         },
-        "happiness": function (): boolean {
-            // currently no happiness value of a Pokemon
+        happiness: (): boolean => {
+            // currently no happiness value of a Pokemon (Issue #439)
             return false;
         },
-        "time": function (): boolean {
-            // Time of day does not seem to be implemented yet
+        time: (): boolean => {
+            // Time of day does not seem to be implemented yet (#441)
             return false;
         },
-        "stats": function (pokemon: IPokemon, requirements: IPokemonEvolutionByStats): boolean {
+        stats: (pokemon: IPokemon, requirements: IPokemonEvolutionByStats): boolean => {
             if (requirements.statsAreEqual) {
                 return pokemon.statistics[requirements.greaterStat].normal === pokemon.statistics[requirements.lesserStat].normal;
             } else {
@@ -57,36 +58,53 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * 
      * @param pokemon   The pokemon in the party to check.
      */
-    public checkEvolution(pokemon: IPokemon): string | undefined {
+    public checkEvolutions(pokemon: IPokemon): string | undefined {
         const evolutions: IPokemonEvolution[] | undefined = this.data.byName[pokemon.title.join()].evolutions;
-        if (evolutions) {      
-            for (const possibleEvo of evolutions) {
-                let passedRequirements: boolean = true;
-                for (const requirement of possibleEvo.requirements) {
-                    if (!this.requirementHandlers[requirement.method]) { 
-                        console.log("Error: Requirement has no method property");  
-                    }
-                    if (!this.requirementHandlers[requirement.method](pokemon, requirement)) {
-                        passedRequirements = false;
-                    }
-                }
-                if (passedRequirements) {
-                    return possibleEvo.evolvedForm;
-                }
+        if (!evolutions) {
+            return undefined;
+        }      
+        for (const evolution of evolutions) {
+            if (checkEvolution(pokemon, evolution)) {
+                return evolution.evolvedForm;
             }
         }
         return undefined;
     }
 
     /**
+     * Checks to see if a Pokemon is ready for this specific evolution.
+     * 
+     * @param pokemon    The pokemon in the party to check.
+     * @param evolution    The evolution of this pokemon to check.
+     */
+    public checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution): boolean {
+            for (const requirement of evolution.requirements) {
+                if (!this.requirementHandlers[requirement.method]) { 
+                    throw new Error("Evolution requirement does not have a correct method property");
+                }
+                if (!this.requirementHandlers[requirement.method](pokemon, requirement)) {
+                    return false;
+                }
+            }
+            return true;
+    }
+
+    /**
      * Interface for evolution requirement handler.
      */
-    export interface IRequirementHandlers {
-        "level": Function;
-        "item": Function;
-        "trade": Function;
-        "happiness": Function;
-        "time": Function;
-        "stats": Function;
+    interface IRequirementHandlers {
+        level: IRequirementHandlerFunction;
+        item: IRequirementHandlerFunction;
+        trade: IRequirementHandlerFunction;
+        happiness: IRequirementHandlerFunction;
+        time: IRequirementHandlerFunction;
+        stats: IRequirementHandlerFunction;
+    }
+
+    /**
+     * Interface for standard evolution requirement functions.
+     */
+    interface IRequirementHandlerFunction {
+        (pokemon: IPokemon, requirements: IPokemonEvolutionByLevel): boolean;
     }
 }
