@@ -32,7 +32,10 @@ To build from scratch, install NodeJS and run the following commands:
 ```
 npm install -g gulp
 npm install
+gulp setup
 gulp
 ```
+
+The game will be ready to play in src/index.html.
 
 See [gulp-shenanigans](https://github.com/FullScreenShenanigans/gulp-shenanigans) for detailed Gulp usage.
