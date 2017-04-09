@@ -158,16 +158,15 @@ export function GenerateUISettings(fsp: FullScreenPokemon): IUserWrapprSettings 
                             type: "Keys",
                             storeLocally: true,
                             source: (): string[] => {
-                                return fsp.inputWriter
+                                return fsp.inputWriter.aliasConverter
                                     .getAliasAsKeyStrings(title)
                                     .map((text: string): string => text.toLowerCase());
                             },
                             callback: (valueOld: string, valueNew: string): void => {
                                 fsp.inputWriter.switchAliasValues(
                                     title,
-                                    [fsp.inputWriter.convertKeyStringToAlias(valueOld)],
-                                    [fsp.inputWriter.convertKeyStringToAlias(valueNew)]
-                                );
+                                    [fsp.inputWriter.aliasConverter.convertKeyStringToAlias(valueOld)],
+                                    [fsp.inputWriter.aliasConverter.convertKeyStringToAlias(valueNew)]);
                             }
                         };
                     });
