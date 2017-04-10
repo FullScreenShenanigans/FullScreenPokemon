@@ -241,7 +241,7 @@ export interface IPokemonEvolutionByStats {
     /**
      * Whether the two stats may be equal.
      */
-    statsAreEqual?: boolean;
+    mayBeEqual?: boolean;
 }
 
 /**
