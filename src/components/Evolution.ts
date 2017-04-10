@@ -18,7 +18,13 @@ export interface IRequirementHandlers {
  * Handler that takes in a pokemon and the requirements for its evolution, and outputs if it is eligible to evolve.
  */
 export interface IRequirementHandler {
-    (pokemon?: IPokemon, requirements?: IPokemonEvolutionRequirements): boolean;
+    /**
+     * Outputs true if the input pokemon is ready to evolve, and false otherwise.
+     * 
+     * @param pokemon   The pokemon in the party to check.
+     * @param requirements   The requirements for this pokemon to evolve.
+     */
+    (pokemon: IPokemon, requirements: IPokemonEvolutionRequirements): boolean;
 }
 
 /**
@@ -28,7 +34,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
-    private requirementHandlers: IRequirementHandlers = {
+    private readonly requirementHandlers: IRequirementHandlers = {
         level: (pokemon: IPokemon, requirements: IPokemonEvolutionByLevel): boolean => {
             return pokemon.level >= requirements.level;
         },
@@ -66,6 +72,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Checks to see if a Pokemon can evolve.
      * 
      * @param pokemon   The pokemon in the party to check.
+     * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
      */
     public checkEvolutions(pokemon: IPokemon): string | undefined {
         const evolutions: IPokemonEvolution[] | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join()].evolutions;
@@ -86,7 +93,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Checks to see if a Pokemon is ready for this specific evolution.
      * 
      * @param pokemon   The pokemon in the party to check.
-     * @param evolution The evolution of this pokemon to check.
+     * @param evolution   The evolution of this pokemon to check.
      * @returns Whether the Pokemon meets the requirements to evolve.
      */
     private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution): boolean {
