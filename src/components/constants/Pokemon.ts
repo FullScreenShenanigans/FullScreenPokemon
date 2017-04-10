@@ -156,7 +156,7 @@ export interface IPokemonEvolutionByLevel {
     /**
      * The required Pokemon level to evolve.
      */
-    level?: number;
+    level: number;
 }
 
 /**
@@ -171,7 +171,7 @@ export interface IPokemonEvolutionByHappiness {
     /**
      * The required happiness level to evolve.
      */
-    happiness?: number;
+    happiness: number;
 }
 
 /**
@@ -186,7 +186,7 @@ export interface IPokemonEvolutionByTime {
     /**
      * The required time-of-day to evolve.
      */
-    time?: string;
+    time: string;
 }
 
 /**
@@ -216,7 +216,7 @@ export interface IPokemonEvolutionByItem {
     /**
      * The required item to evolve.
      */
-    item?: string;
+    item: string;
 }
 
 /**
@@ -231,12 +231,17 @@ export interface IPokemonEvolutionByStats {
     /**
      * The stat that should be larger to achieve target evolution.
      */
-    greaterStat?: string;
+    greaterStat: string;
 
     /**
      * The stat that should be smaller to achieve target evolution.
      */
-    lesserStat?: string;
+    lesserStat: string;
+    
+    /**
+     * Whether the two stats may be equal.
+     */
+    mayBeEqual?: boolean;
 }
 
 /**
