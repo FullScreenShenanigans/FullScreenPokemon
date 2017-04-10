@@ -8,10 +8,17 @@ import {
 } from "./constants/Pokemon";
 
 /**
- * Interface for evolution requirement handler.
+ * Handles different methods of evolution, keyed by requirement type.
  */
 export interface IRequirementHandlers {
-    [method: string]: { (pokemon?: IPokemon, requirements?: IPokemonEvolutionRequirements): boolean }; 
+    [i: string]: IRequirementHandler; 
+}
+
+/**
+ * Handler that takes in a pokemon and the requirements for its evolution, and outputs if it is eligible to evolve.
+ */
+export interface IRequirementHandler {
+    (pokemon?: IPokemon, requirements?: IPokemonEvolutionRequirements): boolean;
 }
 
 /**
@@ -21,7 +28,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
-    public requirementHandlers: IRequirementHandlers = {
+    private requirementHandlers: IRequirementHandlers = {
         level: (pokemon: IPokemon, requirements: IPokemonEvolutionByLevel): boolean => {
             return pokemon.level >= requirements.level;
         },
@@ -83,16 +90,16 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns Whether the Pokemon meets the requirements to evolve.
      */
     private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution): boolean {
-            for (const requirement of evolution.requirements) {
-                if (!this.requirementHandlers[requirement.method]) { 
-                    throw new Error("Evolution requirement does not have a correct method property");
-                }
-
-                if (!this.requirementHandlers[requirement.method](pokemon, requirement)) {
-                    return false;
-                }
+        for (const requirement of evolution.requirements) {
+            if (!this.requirementHandlers[requirement.method]) { 
+                throw new Error("Evolution requirement does not have a correct method property");
             }
 
-            return true;
+            if (!this.requirementHandlers[requirement.method](pokemon, requirement)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 };
