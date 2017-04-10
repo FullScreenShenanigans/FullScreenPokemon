@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 import { 
     IPokemonEvolution, IPokemonEvolutionByLevel, IPokemonEvolutionByStats, 
-    IPokemonEvolutionRequirements, Pokemon 
+    IPokemonEvolutionRequirements
 } from "./constants/Pokemon";
 
 /**
@@ -18,11 +18,6 @@ export interface IRequirementHandlers {
  * Handles logic related to Pokemon evolution.
  */
 export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
-    /**
-     * Data needed for evolution.
-     */
-    public readonly data: Pokemon = this.gameStarter.constants.pokemon;
-
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
@@ -66,7 +61,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * @param pokemon   The pokemon in the party to check.
      */
     public checkEvolutions(pokemon: IPokemon): string | undefined {
-        const evolutions: IPokemonEvolution[] | undefined = this.data.byName[pokemon.title.join()].evolutions;
+        const evolutions: IPokemonEvolution[] | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join()].evolutions;
         if (!evolutions) {
             return undefined;
         }
