@@ -97,6 +97,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
     public evolve(pokemon: IPokemon, evolvedForm: string[]): void {
         pokemon.title = evolvedForm;
         pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+        pokemon.types = this.gameStarter.constants.pokemon.byName[pokemon.title.join()].types;
     }
 
     /**
