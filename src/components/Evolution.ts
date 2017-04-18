@@ -74,7 +74,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * @param pokemon   The pokemon in the party to check.
      * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
      */
-    public checkEvolutions(pokemon: IPokemon): string | undefined {
+    public checkEvolutions(pokemon: IPokemon): string[] | undefined {
         const evolutions: IPokemonEvolution[] | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join()].evolutions;
         if (!evolutions) {
             return undefined;
@@ -87,6 +87,17 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         return undefined;
+    }
+
+    /**
+     * Evolves a specified pokemon.
+     * 
+     * @param pokemon   The pokemon in the party to evolve.
+     */
+    public evolve(pokemon: IPokemon, evolvedForm: string[]): void {
+        pokemon.title = evolvedForm;
+        pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+        pokemon.types = this.gameStarter.constants.pokemon.byName[pokemon.title.join()].types;
     }
 
     /**
@@ -109,4 +120,4 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
 
         return true;
     }
-};
+}
