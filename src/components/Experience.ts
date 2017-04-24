@@ -21,8 +21,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
         const evolvedForm: string[] | undefined = this.gameStarter.evolution.checkEvolutions(pokemon);
         if (evolvedForm) {
             this.gameStarter.evolution.evolve(pokemon, evolvedForm);
-        }
-                        
+        }            
     }
 
     /**
