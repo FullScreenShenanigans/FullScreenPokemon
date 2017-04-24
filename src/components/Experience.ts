@@ -3,6 +3,7 @@ import { Component } from "eightbittr/lib/Component";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 import { Evolution } from "./Evolution";
+
 /**
  * Handles logic related to Pokemon level ups.
  */
@@ -23,6 +24,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
         if (evolvedForm) {
             evo.evolve(pokemon, evolvedForm);
         }
+                        
     }
 
     /**
