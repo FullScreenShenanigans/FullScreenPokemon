@@ -22,6 +22,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
         if (evolvedForm) {
             this.gameStarter.evolution.evolve(pokemon, evolvedForm);
         }
+                        
     }
 
     /**
