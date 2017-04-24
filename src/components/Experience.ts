@@ -2,7 +2,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
-
+import { Evolution } from "./Evolution";
 /**
  * Handles logic related to Pokemon level ups.
  */
@@ -15,9 +15,14 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
     public levelup(pokemon: IPokemon): void {
         pokemon.level += 1;
         pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
-        
+
         // TODO: display text box containing levelup info
-        // TODO: add in evolution check/evolve the pokemon here
+        
+        const evo: Evolution<TGameStartr> = new Evolution(this.gameStarter);
+        const evolvedForm: string[] | undefined = evo.checkEvolutions(pokemon);
+        if (evolvedForm) {
+            evo.evolve(pokemon, evolvedForm);
+        }
     }
 
     /**
