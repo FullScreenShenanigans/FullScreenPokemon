@@ -15,9 +15,13 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
     public levelup(pokemon: IPokemon): void {
         pokemon.level += 1;
         pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
-        
+
         // TODO: display text box containing levelup info
-        // TODO: add in evolution check/evolve the pokemon here
+
+        const evolvedForm: string[] | undefined = this.gameStarter.evolution.checkEvolutions(pokemon);
+        if (evolvedForm) {
+            this.gameStarter.evolution.evolve(pokemon, evolvedForm);
+        }            
     }
 
     /**
