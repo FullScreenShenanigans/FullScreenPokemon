@@ -18,6 +18,8 @@ import { Constants } from "./components/Constants";
 import { Cutscenes } from "./components/Cutscenes";
 import { Cycling } from "./components/Cycling";
 import { Equations } from "./components/Equations";
+import { Evolution } from "./components/Evolution";
+import { Experience } from "./components/Experience";
 import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
@@ -108,6 +110,16 @@ export class FullScreenPokemon extends GameStartr {
      * Equations used by this instance.
      */
     public equations: Equations<FullScreenPokemon>;
+
+    /**
+     * Evolution functions used by this instance.
+     */
+    public evolution: Evolution<FullScreenPokemon>;
+
+    /**
+     * Experience functions used by this instance.
+     */
+    public experience: Experience<FullScreenPokemon>;
 
     /**
      * Fishing functions used by this instance.
@@ -225,6 +237,8 @@ export class FullScreenPokemon extends GameStartr {
         this.registerLazy("cutscenes", (): Cutscenes<this> => new Cutscenes(this));
         this.registerLazy("cycling", (): Cycling<this> => new Cycling(this));
         this.registerLazy("fishing", (): Fishing<this> => new Fishing(this));
+        this.registerLazy("evolution", (): Evolution<this> => new Evolution(this));
+        this.registerLazy("experience", (): Experience<this> => new Experience(this));
     }
 
     /**

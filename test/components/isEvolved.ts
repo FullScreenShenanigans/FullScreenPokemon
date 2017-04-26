@@ -2,10 +2,10 @@ import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 import { it } from "../main";
 import { stubBlankGame } from "../utils/fakes";
 
-it("Properly evolves a Pokemon at exactly its level requirement", (): void => {
+it("properly evolves a Pokemon at exactly its level requirement", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
-    const pokemonTitle: string[] = ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"];
+    const pokemonTitle: string[] = "CHARMANDER".split("");
 
     // Act
     fsp.itemsHolder.setItem("PokemonInParty", [
@@ -15,14 +15,14 @@ it("Properly evolves a Pokemon at exactly its level requirement", (): void => {
 
     // Assert
     chai.expect(fsp.itemsHolder.getItem("PokemonInParty")[0].title.toString()).to.be.equal(
-        ["C", "H", "A", "R", "M", "E", "L", "E", "O", "N"].toString()
+        "CHARMELEON".split("").toString()
     );
 });
 
-it("Properly evolves a Pokemon that exceeds its level requirement", (): void => {
+it("properly evolves a Pokemon that exceeds its level requirement", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
-    const pokemonTitle: string[] = ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"];
+    const pokemonTitle: string[] = "CHARMANDER".split("");
 
     // Act
     fsp.itemsHolder.setItem("PokemonInParty", [
@@ -32,14 +32,14 @@ it("Properly evolves a Pokemon that exceeds its level requirement", (): void => 
 
     // Assert
     chai.expect(fsp.itemsHolder.getItem("PokemonInParty")[0].title.toString()).to.be.equal(
-        ["C", "H", "A", "R", "M", "E", "L", "E", "O", "N"].toString()
+        "CHARMELEON".split("").toString()
     );
 });
 
-it("Does not evolve a Pokemon that has not yet reached its level requirement", (): void => {
+it("does not evolve a Pokemon that has not yet reached its level requirement", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
-    const pokemonTitle: string[] = ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"];
+    const pokemonTitle: string[] = "CHARMANDER".split("");
 
     // Act
     fsp.itemsHolder.setItem("PokemonInParty", [
@@ -49,6 +49,6 @@ it("Does not evolve a Pokemon that has not yet reached its level requirement", (
 
     // Assert
     chai.expect(fsp.itemsHolder.getItem("PokemonInParty")[0].title.toString()).to.be.equal(
-        ["C", "H", "A", "R", "M", "A", "N", "D", "E", "R"].toString()
+        "CHARMANDER".split("").toString()
     );
 });
