@@ -1,3 +1,5 @@
+import { IPokemon } from "../../src/components/Battles";
+import { IPokemonEvolution, IPokemonEvolutionByLevel } from "../../src/components/constants/Pokemon";
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 import { it } from "../main";
 import { stubBlankGame } from "../utils/fakes";
@@ -6,15 +8,15 @@ it("properly evolves a Pokemon at exactly its level requirement", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const pokemonTitle: string[] = "CHARMANDER".split("");
+    const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
+    const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 1;
 
     // Act
-    fsp.itemsHolder.setItem("PokemonInParty", [
-        fsp.equations.newPokemon(pokemonTitle, 15)
-    ]);
-    fsp.experience.levelup(fsp.itemsHolder.getItem("PokemonInParty")[0]);
+    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
+    fsp.experience.levelup(pokemon);
 
     // Assert
-    chai.expect(fsp.itemsHolder.getItem("PokemonInParty")[0].title.toString()).to.be.equal(
+    chai.expect(pokemon.title.toString()).to.be.equal(
         "CHARMELEON".split("").toString()
     );
 });
@@ -23,15 +25,15 @@ it("properly evolves a Pokemon that exceeds its level requirement", (): void => 
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const pokemonTitle: string[] = "CHARMANDER".split("");
+    const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
+    const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level + 1;
 
     // Act
-    fsp.itemsHolder.setItem("PokemonInParty", [
-        fsp.equations.newPokemon(pokemonTitle, 99)
-    ]);
-    fsp.experience.levelup(fsp.itemsHolder.getItem("PokemonInParty")[0]);
+    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
+    fsp.experience.levelup(pokemon);
 
     // Assert
-    chai.expect(fsp.itemsHolder.getItem("PokemonInParty")[0].title.toString()).to.be.equal(
+    chai.expect(pokemon.title.toString()).to.be.equal(
         "CHARMELEON".split("").toString()
     );
 });
@@ -40,15 +42,15 @@ it("does not evolve a Pokemon that has not yet reached its level requirement", (
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const pokemonTitle: string[] = "CHARMANDER".split("");
+    const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
+    const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 2;
 
     // Act
-    fsp.itemsHolder.setItem("PokemonInParty", [
-        fsp.equations.newPokemon(pokemonTitle, 14)
-    ]);
-    fsp.experience.levelup(fsp.itemsHolder.getItem("PokemonInParty")[0]);
+    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
+    fsp.experience.levelup(pokemon);
 
     // Assert
-    chai.expect(fsp.itemsHolder.getItem("PokemonInParty")[0].title.toString()).to.be.equal(
+    chai.expect(pokemon.title.toString()).to.be.equal(
         "CHARMANDER".split("").toString()
     );
 });
