@@ -177,4 +177,4 @@ export class Modifications {
             ["Super", "Dragon", "Dragon"]
         ]
     };
-};
+}

@@ -14,4 +14,4 @@ export class Battles {
      * Default texts during battles.
      */
     public readonly texts: Texts = new Texts();
-};
+}

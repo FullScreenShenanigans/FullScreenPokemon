@@ -58,8 +58,8 @@ export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGa
             this.gameStarter.objectMaker.make<IThing>("ExplosionLarge")
         ];
 
-        let startX: number[] = [];
-        let startY: number[] = [];
+        const startX: number[] = [];
+        const startY: number[] = [];
         if (this.direction === -1) {
             startX[0] = this.menu.right - this.defenderThing.width / 2;
             startY[0] = this.menu.top;

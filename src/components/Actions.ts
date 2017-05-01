@@ -302,7 +302,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
-        let things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
+        const things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
@@ -382,7 +382,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @returns The exclamation Thing.
      */
     public animateExclamation(thing: IThing, timeout?: number, callback?: () => void): IThing {
-        let exclamation: IThing = this.gameStarter.things.add("Exclamation");
+        const exclamation: IThing = this.gameStarter.things.add("Exclamation");
 
         timeout = timeout || 140;
 
@@ -515,7 +515,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public animatePositionSightDetector(thing: ICharacter): void {
         const detector: ISightDetector = thing.sightDetector!;
-        let direction: Direction = thing.direction;
+        const direction: Direction = thing.direction;
 
         if (detector.direction !== direction) {
             if (thing.direction % 2 === 0) {
@@ -864,7 +864,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             return;
         }
 
-        if (typeof other.transport === "undefined") {
+        if (!other.transport) {
             throw new Error("No transport given to activateTransporter");
         }
 
@@ -910,9 +910,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const gym: string = other.gym;
         const leader: string = other.leader;
         const dialog: string[] = [
-            gym.toUpperCase()
-            + " \n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: "
-            + leader.toUpperCase(),
+            `${gym.toUpperCase()}\n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: ${leader.toUpperCase()}`,
             "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
         ];
 
@@ -1063,7 +1061,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.itemsHolder.setItem("area", other.area);
         this.gameStarter.itemsHolder.setItem("location", undefined);
 
-        this.gameStarter.stateHolder.setCollection(area.map.name + "::" + area.name);
+        this.gameStarter.stateHolder.setCollection(`${area.map.name}::${area.name}`);
 
         other.active = false;
         this.gameStarter.timeHandler.addEvent(
@@ -1071,7 +1069,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 other.active = true;
             },
             2);
-    };
+    }
 
     /**
      * Makes sure that Player is facing the correct HMCharacter
@@ -1109,7 +1107,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @todo Verify the exact speed, sound, and distance.
      */
     public partyActivateStrength(player: IPlayer): void {
-        let boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
+        const boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
 
         this.gameStarter.menuGrapher.deleteAllMenus();
         this.gameStarter.menus.closePauseMenu();

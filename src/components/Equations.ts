@@ -376,8 +376,8 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns Whether the Pokemon's types includes any of the given types.
      */
     public pokemonMatchesTypes(pokemon: IPokemon, types: string[]): boolean {
-        for (let i: number = 0; i < types.length; i += 1) {
-            if (pokemon.types.indexOf(types[i]) !== -1) {
+        for (const type of types) {
+            if (pokemon.types.indexOf(type) !== -1) {
                 return true;
             }
         }

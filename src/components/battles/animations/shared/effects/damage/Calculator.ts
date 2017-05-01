@@ -77,9 +77,9 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
         const moveIndex: number = typeIndices[this.gameStarter.constants.moves.byName[move].type];
         let total: number = 1;
 
-        for (let i: number = 0; i < defenderTypes.length; i += 1) {
+        for (const defenderType of defenderTypes) {
             const effectivenesses: number[] = this.gameStarter.constants.types.effectivenessTable[moveIndex];
-            total *= effectivenesses[typeIndices[defenderTypes[i]]];
+            total *= effectivenesses[typeIndices[defenderType]];
         }
 
         return total;

@@ -410,4 +410,4 @@ export class Items {
             "category": "Key"
         }
     };
-};
+}

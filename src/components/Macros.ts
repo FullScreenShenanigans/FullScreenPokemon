@@ -29,7 +29,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         for (let i: number = 0; i < ynum; i += 1) {
             let x: number = xStart;
             for (let j: number = 0; j < xnum; j += 1) {
-                let thing: string = reference.things[(i + j + offset) % mod];
+                const thing: string = reference.things[(i + j + offset) % mod];
                 if (thing !== "") {
                     output.push({
                         x: x,
@@ -114,7 +114,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const width: number = reference.width || 128;
         const stories: number = reference.stories || 1;
         const output: any[] = [];
-        let x: number = reference.x || 0;
+        const x: number = reference.x || 0;
         let y: number = reference.y || 0;
 
         if (stories === 1) {
@@ -185,7 +185,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         if (reference.door) {
-            let door: any = {
+            const door: any = {
                 thing: "Door",
                 x: x + 32,
                 y: y - 32,
