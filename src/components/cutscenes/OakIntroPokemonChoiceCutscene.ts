@@ -209,7 +209,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         this.gameStarter.itemsHolder.setItem("starterRival", starterRival);
         this.gameStarter.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        let pokeball: IPokeball = this.gameStarter.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
+        const pokeball: IPokeball = this.gameStarter.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
         this.gameStarter.actions.walking.startWalkingOnPath(

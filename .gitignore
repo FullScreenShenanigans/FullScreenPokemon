@@ -4,6 +4,7 @@ lib/**
 *.css
 *.d.ts
 *.js*
+!gulpfile.js
 *.html
 node_modules/
 npm-debug.log

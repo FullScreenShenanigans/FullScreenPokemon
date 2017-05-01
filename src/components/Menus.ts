@@ -211,7 +211,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             return;
         }
 
-        let cutsceneSettings: any = this.gameStarter.scenePlayer.getCutsceneSettings();
+        const cutsceneSettings: any = this.gameStarter.scenePlayer.getCutsceneSettings();
         if (cutsceneSettings && cutsceneSettings.disablePauseMenu) {
             return;
         }
@@ -430,7 +430,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param title   The title of the Pokemon to show nest locations of.
      */
     public showTownMapPokemonLocations(title: string[]): void {
-        let dialog: string[] = [].slice.call(title);
+        const dialog: string[] = [].slice.call(title);
 
         dialog.push(..."'s NEST".split(""));
 

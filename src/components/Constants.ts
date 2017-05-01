@@ -37,7 +37,7 @@ export enum Direction {
     Right = 1,
     Bottom = 2,
     Left = 3
-};
+}
 
 /**
  * Whether a Pokemon is unknown, has been caught, or has been seen.
@@ -46,7 +46,7 @@ export enum PokedexListingStatus {
     Unknown = 0,
     Caught = 1,
     Seen = 2
-};
+}
 
 /**
  * Constants used by FullScreenPokemon instances.

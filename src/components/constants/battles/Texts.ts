@@ -199,4 +199,4 @@ export class Texts {
                 : `WILD ${team} appeared!`;
         }
     };
-};
+}
