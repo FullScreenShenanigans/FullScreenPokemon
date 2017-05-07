@@ -2,7 +2,7 @@ language: node_js
 
 node_js:
   - "7"
-  - "4"
+  - "5"
 
 script:
   node_modules/gulp/bin/gulp.js

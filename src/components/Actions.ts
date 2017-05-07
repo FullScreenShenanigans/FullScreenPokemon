@@ -639,9 +639,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         const options: IDialogOptions = dialog.options;
-        const generateCallback: (inDialog: string | IDialog) => void = (callbackDialog: string | IDialog): (() => void) | undefined => {
+        const generateCallback: (inDialog: string | IDialog) => void = (callbackDialog: string | IDialog): (() => void) | void => {
             if (!callbackDialog) {
-                return undefined;
+                return;
             }
 
             let callback: (...args: any[]) => void;
@@ -988,7 +988,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public spawnAreaSpawner(thing: IAreaSpawner): void {
         const map: IMap = this.gameStarter.areaSpawner.getMap(thing.map) as IMap;
-        const area: IArea = map.areas[thing.area] as IArea;
+        const area: IArea = map.areas[thing.area];
 
         if (area === this.gameStarter.areaSpawner.getArea()) {
             this.gameStarter.physics.killNormal(thing);
