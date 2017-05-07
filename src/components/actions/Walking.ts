@@ -100,7 +100,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.setWalkingGraphics(thing);
 
         if (thing.follower) {
-            this.startWalking(thing.follower, this.gameStarter.physics.getDirectionBetween(thing.follower, thing)!);
+            this.startWalking(thing.follower, this.gameStarter.physics.getDirectionBetween(thing.follower, thing));
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -132,7 +132,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         if (thing.follower) {
             this.gameStarter.actions.following.continueFollowing(
                 thing.follower,
-                this.gameStarter.physics.getDirectionBetween(thing.follower, thing)!);
+                this.gameStarter.physics.getDirectionBetween(thing.follower, thing));
         }
 
         this.gameStarter.physics.snapToGrid(thing);

@@ -23,7 +23,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         thing.shadow = this.gameStarter.objectMaker.make<IThing>(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
-        }) as IThing;
+        });
 
         if (thing.shadow.className !== thing.className) {
             this.gameStarter.graphics.setClass(thing.shadow, thing.className);
@@ -130,7 +130,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     protected chooseWildPokemonForBattle(grass: IThing): IPokemon {
         const grassMap: IMap = this.gameStarter.areaSpawner.getMap(grass.mapName) as IMap;
-        const grassArea: IArea = grassMap.areas[grass.areaName] as IArea;
+        const grassArea: IArea = grassMap.areas[grass.areaName];
         const options: IWildPokemonSchema[] | undefined = grassArea.wildPokemon.grass;
         if (!options) {
             throw new Error("Grass doesn't have any wild Pokemon options defined.");
