@@ -1,5 +1,5 @@
 import { IPokemon } from "../../src/components/Battles";
-import { IPokemonEvolutionByLevel } from "../../src/components/constants/Pokemon";
+import { IPokemonEvolution, IPokemonEvolutionByLevel } from "../../src/components/constants/Pokemon";
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 import { it } from "../main";
 import { stubBlankGame } from "../utils/fakes";
@@ -8,13 +8,11 @@ it("evolves a Pokemon at exactly its level requirement", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const pokemonTitle: string[] = "CHARMANDER".split("");
-    const pokemonEvolution: IPokemonEvolutionByLevel = {
-        "method": "level",
-        "level": 16
-    };
+    const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
+    const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 1;
 
     // Act
-    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonEvolution.level - 1);
+    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
     fsp.experience.levelup(pokemon);
 
     // Assert
@@ -25,13 +23,11 @@ it("evolves a Pokemon that exceeds its level requirement", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const pokemonTitle: string[] = "CHARMANDER".split("");
-    const pokemonEvolution: IPokemonEvolutionByLevel = {
-        "method": "level",
-        "level": 16
-    };
+    const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
+    const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level + 1;
 
     // Act
-    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonEvolution.level + 1);
+    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
     fsp.experience.levelup(pokemon);
 
     // Assert
@@ -42,13 +38,11 @@ it("does not evolve a Pokemon that has not yet reached its level requirement", (
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const pokemonTitle: string[] = "CHARMANDER".split("");
-    const pokemonEvolution: IPokemonEvolutionByLevel = {
-        "method": "level",
-        "level": 16
-    };
+    const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
+    const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 2;
 
     // Act
-    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonEvolution.level - 2);
+    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
     fsp.experience.levelup(pokemon);
 
     // Assert
