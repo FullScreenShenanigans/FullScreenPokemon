@@ -1,4 +1,4 @@
-import { IScenesModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IModuleSettingsObject } from "gamestartr/lib/IGameStartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -6,7 +6,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
  * @param fsp   A generating FullScreenPokemon instance.
  * @returns Scene settings for the FullScreenPokemon instance.
  */
-export function GenerateScenesSettings(fsp: FullScreenPokemon): IScenesModuleSettings {
+export function GenerateScenesSettings(fsp: FullScreenPokemon): IModuleSettingsObject {
     "use strict";
 
     return {
