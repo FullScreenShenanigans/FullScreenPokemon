@@ -1,5 +1,5 @@
 dist/**
-docs/generated/**
+docs/**
 lib/**
 *.css
 *.d.ts
