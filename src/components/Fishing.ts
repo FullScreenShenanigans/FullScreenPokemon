@@ -62,7 +62,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public playerLandedFish(player: IPlayer, rod: IRod): void {
         const currentMap: IMap = this.gameStarter.areaSpawner.getMap(player.mapName) as IMap;
-        const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName] as IArea;
+        const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName];
         const options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type];
         const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
         const chosenPokemon: IPokemon = this.gameStarter.utilities.createPokemon(chosen);

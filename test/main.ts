@@ -20,6 +20,15 @@ export const mochaLoader: MochaLoader = new MochaLoader(mocha);
 export const it: typeof mochaLoader.it = mochaLoader.it.bind(mochaLoader);
 
 /**
+ * Adds a new test under a custom test path.
+ * 
+ * @param path   Extra path after the current test path.
+ * @param testName   The name of the test.
+ * @param test   A new test.
+ */
+export const under: typeof mochaLoader.under = mochaLoader.under.bind(mochaLoader);
+
+/**
  * Informs RequireJS of the file location for a test dependency.
  * 
  * @param testDependencies   Modules depended upon for tests.
