@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { spy } from "sinon";
 
 import { Direction } from "../../../src/components/Constants";
@@ -11,7 +10,7 @@ it("activates a bordering activatable solid", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const player: IPlayer = fsp.things.add("Player") as IPlayer;
-    const solid: IThing = fsp.things.add("Boulder") as IThing;
+    const solid: IThing = fsp.things.add("FenceWide") as IThing;
 
     solid.activate = spy();
     fsp.actions.animateCharacterSetDirection(player, Direction.Top);
@@ -22,14 +21,14 @@ it("activates a bordering activatable solid", (): void => {
     fsp.inputs.keyDownA(player);
 
     // Assert
-    expect(solid.activate).to.have.been.called;
+    chai.expect(solid.activate).to.have.been.called;
 });
 
 it("does not activate a non-bordering activatable solid", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const player: IPlayer = fsp.things.add("Player") as IPlayer;
-    const solid: IThing = fsp.things.add("Boulder") as IThing;
+    const solid: IThing = fsp.things.add("FenceWide") as IThing;
 
     solid.activate = spy();
     fsp.actions.animateCharacterSetDirection(player, Direction.Top);
@@ -40,5 +39,5 @@ it("does not activate a non-bordering activatable solid", (): void => {
     fsp.inputs.keyDownA(player);
 
     // Assert
-    expect(solid.activate).to.not.have.been.called;
+    chai.expect(solid.activate).to.not.have.been.called;
 });
