@@ -324,7 +324,7 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
      * Cutscene for the rival protesting to Oak.
      */
     public RivalProtests(): void {
-        let timeout: number = 21;
+        const timeout: number = 21;
 
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 

@@ -25,7 +25,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
     public calculateDamage(teamAndAction: ITeamAndAction<IMoveAction>, effect: IDamageEffect): number {
         const base: number = effect.damage;
 
-        if (!isFinite(base as number)) {
+        if (!isFinite(base)) {
             return teamAndAction.target.actor.statistics.health.current;
         }
 
@@ -39,7 +39,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
 
         const damage: number = Math.round(
             Math.max(
-                ((((2 * level + 10) / 250) * (attack / defense) * (base as number) + 2) | 0) * modifier,
+                ((((2 * level + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
                 1));
 
         return Math.min(teamAndAction.target.actor.statistics.health.current, damage);
@@ -77,9 +77,9 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
         const moveIndex: number = typeIndices[this.gameStarter.constants.moves.byName[move].type];
         let total: number = 1;
 
-        for (let i: number = 0; i < defenderTypes.length; i += 1) {
+        for (const defenderType of defenderTypes) {
             const effectivenesses: number[] = this.gameStarter.constants.types.effectivenessTable[moveIndex];
-            total *= effectivenesses[typeIndices[defenderTypes[i]]];
+            total *= effectivenesses[typeIndices[defenderType]];
         }
 
         return total;

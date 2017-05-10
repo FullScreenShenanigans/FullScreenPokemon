@@ -647,7 +647,7 @@ export interface ITransporter extends IDetector {
 /**
  * A description of where to transport.
  */
-export type ITransportSchema = {
+export interface ITransportSchema {
     /**
      * The name of the Map to transport to.
      */
@@ -657,7 +657,7 @@ export type ITransportSchema = {
      * The name of the Location to transport to.
      */
     location: string;
-};
+}
 
 /**
  * A Pokeball containing some item or trigger.

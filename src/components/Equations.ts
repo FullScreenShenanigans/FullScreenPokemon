@@ -376,8 +376,8 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns Whether the Pokemon's types includes any of the given types.
      */
     public pokemonMatchesTypes(pokemon: IPokemon, types: string[]): boolean {
-        for (let i: number = 0; i < types.length; i += 1) {
-            if (pokemon.types.indexOf(types[i]) !== -1) {
+        for (const type of types) {
+            if (pokemon.types.indexOf(type) !== -1) {
                 return true;
             }
         }
@@ -431,14 +431,14 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         const b: number = 64; // (Bulbasaur) Todo: add this in
 
         // lf is the level of the fainted Pokemon
-        const lf: number = opponent.selectedActor!.level;
+        const lf: number = opponent.selectedActor.level;
 
         // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
         // Todo: Account for modifies like Exp. All
         const s: number = 1;
 
         // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
-        const t: number = player.selectedActor!.traded ? 1.5 : 1;
+        const t: number = player.selectedActor.traded ? 1.5 : 1;
 
         return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
     }

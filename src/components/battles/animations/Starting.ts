@@ -58,12 +58,12 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
      */
     private runTeamEntrances(battleInfo: IBattleInfo, onComplete: () => void): void {
         const { menu, opponent, player }: IBattleThings = battleInfo.things;
+        const timeout: number = 70;
 
         let playerX: number;
         let opponentX: number;
         let playerGoal: number;
         let opponentGoal: number;
-        let timeout: number = 70;
 
         // They should be visible halfway through (2 * (1 / timeout))
         this.gameStarter.actions.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);

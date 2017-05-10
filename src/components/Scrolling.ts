@@ -26,7 +26,7 @@ export enum Scrollability {
      * The screen may scroll vertically and horizontally.
      */
     Both,
-};
+}
 
 /**
  * Scrolling functions used by FullScreenPokemon instances.

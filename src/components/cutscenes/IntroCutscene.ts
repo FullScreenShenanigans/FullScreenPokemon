@@ -64,7 +64,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene for Oak's introduction exit.
      */
     public FirstDialogFade(): void {
-        let blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0
@@ -89,7 +89,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene for transitioning Nidorino onto the screen.
      */
     public PokemonExpo(): void {
-        let pokemon: IThing = this.gameStarter.objectMaker.make<IThing>("NIDORINOFront", {
+        const pokemon: IThing = this.gameStarter.objectMaker.make<IThing>("NIDORINOFront", {
             flipHoriz: true,
             opacity: .01
         });
@@ -448,7 +448,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene fading the rival out.
      */
     public RivalNameComplete(): void {
-        let blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0
