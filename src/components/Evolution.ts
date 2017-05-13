@@ -4,17 +4,17 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 import { 
     IPokemonEvolution, IPokemonEvolutionByItem, IPokemonEvolutionByLevel, 
-    IPokemonEvolutionByStats, IPokemonEvolutionRequirement
+    IPokemonEvolutionByStats, IPokemonEvolutionByTrade, IPokemonEvolutionRequirement
 } from "./constants/Pokemon";
 
 /**
- * Handler arguments.
+ * Holds arguments used in IRequirementHander functions.
  */
-export interface IHandlerArgs {
+export interface IHandlerArgs<T1, T2> {
     /**
-     * Requirement for evolution. 
+     * Modifiers for this evolution.
      */
-    requirement: IPokemonEvolutionRequirement;
+    modifier?: T1;
 
     /**
      * Pokemon to evolve.
@@ -22,9 +22,9 @@ export interface IHandlerArgs {
     pokemon: IPokemon;
 
     /**
-     * Modifiers for this evolution.
+     * Requirement for evolution. 
      */
-    modifier?: IEvolutionModifier;
+    requirement: T2;
 }
 
 /**
@@ -51,9 +51,9 @@ export interface IItemModifier {
      */
     type: string;
 	
-	/**
-	 * The necessary item to evolve.
-	 */
+    /**
+     * The necessary item to evolve.
+     */
     item: string[];
 }
 
@@ -73,7 +73,7 @@ export interface IRequirementHandler {
      * 
      * @param args   Arguments for this evolution check.
      */
-    (args: IHandlerArgs): boolean;
+    (args: IHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>): boolean;
 }
 
 /**
@@ -84,22 +84,18 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
     private readonly requirementHandlers: IRequirementHandlers = {
-        level: (args: IHandlerArgs): boolean => {
-            return args.pokemon.level >= (args.requirement as IPokemonEvolutionByLevel).level;
+        level: (args: IHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean => {
+            return args.pokemon.level >= args.requirement.level;
         },
-        item: (args: IHandlerArgs): boolean => {
+        item: (args: IHandlerArgs<IItemModifier, IPokemonEvolutionByItem>): boolean => {
             if (args.modifier) {
-                if ((args.requirement as IPokemonEvolutionByItem).item === (args.modifier as IItemModifier).item.join("")) {
-                    return true;
-                }
+                return args.requirement.item === args.modifier.item.join("");
             }
             return false;
         },
-        trade: (args: IHandlerArgs): boolean => {
+        trade: (args: IHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>): boolean => {
             if (args.modifier) {
-                if (args.modifier.type === "trade") {
-                    return true;
-                }
+                return args.modifier.type === "trade";
             }
             // Currently no value for held item (Issue #439)
             // Trading is not implemented yet (Issue #440)
@@ -113,11 +109,11 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             // Time of day does not seem to be implemented yet (#441)
             return false;
         },
-        stats: (args: IHandlerArgs): boolean => {
+        stats: (args: IHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
             const difference: number = 
-                args.pokemon.statistics[(args.requirement as IPokemonEvolutionByStats).greaterStat].normal 
-                - args.pokemon.statistics[(args.requirement as IPokemonEvolutionByStats).lesserStat].normal;
-            if ((args.requirement as IPokemonEvolutionByStats).mayBeEqual) {
+                args.pokemon.statistics[args.requirement.greaterStat].normal 
+                - args.pokemon.statistics[args.requirement.lesserStat].normal;
+            if (args.requirement.mayBeEqual) {
                 return difference === 0;
             }
 
@@ -173,7 +169,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
                 throw new Error("Evolution requirement does not have a correct method property");
             }
 
-            if (!this.requirementHandlers[requirement.method]({ requirement, pokemon, modifier })) {
+            if (!this.requirementHandlers[requirement.method]({ modifier, pokemon, requirement })) {
                 return false;
             }
         }
