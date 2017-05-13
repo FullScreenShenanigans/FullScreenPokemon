@@ -9,12 +9,15 @@ import {
 
 /**
  * Holds arguments used in IRequirementHander functions.
+ * 
+ * @type ModifierType   What type of modifier is being used.
+ * @type RequirementType   What type of requirement is being used.
  */
-export interface IHandlerArgs<T1, T2> {
+export interface IRequirementHandlerArgs<ModifierType, RequirementType> {
     /**
      * Modifiers for this evolution.
      */
-    modifier?: T1;
+    modifier?: ModifierType;
 
     /**
      * Pokemon to evolve.
@@ -24,7 +27,7 @@ export interface IHandlerArgs<T1, T2> {
     /**
      * Requirement for evolution. 
      */
-    requirement: T2;
+    requirement: RequirementType;
 }
 
 /**
@@ -73,7 +76,7 @@ export interface IRequirementHandler {
      * 
      * @param args   Arguments for this evolution check.
      */
-    (args: IHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>): boolean;
+    (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>): boolean;
 }
 
 /**
@@ -84,16 +87,16 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
     private readonly requirementHandlers: IRequirementHandlers = {
-        level: (args: IHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean => {
+        level: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean => {
             return args.pokemon.level >= args.requirement.level;
         },
-        item: (args: IHandlerArgs<IItemModifier, IPokemonEvolutionByItem>): boolean => {
+        item: (args: IRequirementHandlerArgs<IItemModifier, IPokemonEvolutionByItem>): boolean => {
             if (args.modifier) {
                 return args.requirement.item === args.modifier.item.join("");
             }
             return false;
         },
-        trade: (args: IHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>): boolean => {
+        trade: (args: IRequirementHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>): boolean => {
             if (args.modifier) {
                 return args.modifier.type === "trade";
             }
@@ -109,7 +112,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             // Time of day does not seem to be implemented yet (#441)
             return false;
         },
-        stats: (args: IHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
+        stats: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
             const difference: number = 
                 args.pokemon.statistics[args.requirement.greaterStat].normal 
                 - args.pokemon.statistics[args.requirement.lesserStat].normal;
