@@ -134,13 +134,13 @@ export interface IPokemonEvolution {
     /**
      * The requirements for the Pokemon to evolve.
      */
-    requirements: IPokemonEvolutionRequirements[];
+    requirements: IPokemonEvolutionRequirement[];
 }
 
 /**
  * The requirements for a Pokemon to be able to evolve.
  */
-export type IPokemonEvolutionRequirements = 
+export type IPokemonEvolutionRequirement = 
     IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime | 
     IPokemonEvolutionByTrade | IPokemonEvolutionByItem | IPokemonEvolutionByStats;
 

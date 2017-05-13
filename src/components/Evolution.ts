@@ -3,9 +3,62 @@ import { Component } from "eightbittr/lib/Component";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 import { 
-    IPokemonEvolution, IPokemonEvolutionByLevel, IPokemonEvolutionByStats, 
-    IPokemonEvolutionRequirements
+    IPokemonEvolution, IPokemonEvolutionByItem, IPokemonEvolutionByLevel, 
+    IPokemonEvolutionByStats, IPokemonEvolutionByTrade, IPokemonEvolutionRequirement
 } from "./constants/Pokemon";
+
+/**
+ * Holds arguments used in IRequirementHander functions.
+ * 
+ * @type ModifierType   What type of modifier is being used.
+ * @type RequirementType   What type of requirement is being used.
+ */
+export interface IRequirementHandlerArgs<ModifierType, RequirementType> {
+    /**
+     * Modifiers for this evolution.
+     */
+    modifier?: ModifierType;
+
+    /**
+     * Pokemon to evolve.
+     */
+    pokemon: IPokemon;
+
+    /**
+     * Requirement for evolution. 
+     */
+    requirement: RequirementType;
+}
+
+/**
+ * The modifiers necessary for a pokemon's evolution.
+ */
+export type IEvolutionModifier = ITradeModifier | IItemModifier;
+
+/**
+ * Modifier to indicate a pokemon has just been traded.
+ */
+export interface ITradeModifier {
+    /**
+     * The type of modifier.
+     */
+    type: string;
+}
+
+/**
+ * Modifier to indicate an item is being used.
+ */
+export interface IItemModifier {
+    /**
+     * The type of modifier.
+     */
+    type: string;
+	
+    /**
+     * The necessary item to evolve.
+     */
+    item: string[];
+}
 
 /**
  * Handles different methods of evolution, keyed by requirement type.
@@ -21,10 +74,9 @@ export interface IRequirementHandler {
     /**
      * Outputs true if the input pokemon is ready to evolve, and false otherwise.
      * 
-     * @param pokemon   The pokemon in the party to check.
-     * @param requirements   The requirements for this pokemon to evolve.
+     * @param args   Arguments for this evolution check.
      */
-    (pokemon: IPokemon, requirements: IPokemonEvolutionRequirements): boolean;
+    (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>): boolean;
 }
 
 /**
@@ -35,16 +87,19 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
     private readonly requirementHandlers: IRequirementHandlers = {
-        level: (pokemon: IPokemon, requirements: IPokemonEvolutionByLevel): boolean => {
-            return pokemon.level >= requirements.level;
+        level: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean => {
+            return args.pokemon.level >= args.requirement.level;
         },
-        item: (): boolean => {
-            // Need some way to pass a flag for the item being used
-            // Item usage outside of battle does not seem to be implemented (Issue #364)
+        item: (args: IRequirementHandlerArgs<IItemModifier, IPokemonEvolutionByItem>): boolean => {
+            if (args.modifier) {
+                return args.requirement.item === args.modifier.item.join("");
+            }
             return false;
         },
-        trade: (): boolean => {
-            // Need some way to pass a flag in that the pokemon has just been traded
+        trade: (args: IRequirementHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>): boolean => {
+            if (args.modifier) {
+                return args.modifier.type === "trade";
+            }
             // Currently no value for held item (Issue #439)
             // Trading is not implemented yet (Issue #440)
             return false;
@@ -57,10 +112,11 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             // Time of day does not seem to be implemented yet (#441)
             return false;
         },
-        stats: (pokemon: IPokemon, requirements: IPokemonEvolutionByStats): boolean => {
+        stats: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
             const difference: number = 
-                pokemon.statistics[requirements.greaterStat].normal - pokemon.statistics[requirements.lesserStat].normal;
-            if (requirements.mayBeEqual) {
+                args.pokemon.statistics[args.requirement.greaterStat].normal 
+                - args.pokemon.statistics[args.requirement.lesserStat].normal;
+            if (args.requirement.mayBeEqual) {
                 return difference === 0;
             }
 
@@ -72,16 +128,17 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Checks to see if a Pokemon can evolve.
      * 
      * @param pokemon   The pokemon in the party to check.
+     * @param modifier   Modifier for specific situations such as trade.
      * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
      */
-    public checkEvolutions(pokemon: IPokemon): string[] | undefined {
+    public checkEvolutions(pokemon: IPokemon, modifier?: IEvolutionModifier): string[] | undefined {
         const evolutions: IPokemonEvolution[] | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].evolutions;
         if (!evolutions) {
             return undefined;
         }
 
         for (const evolution of evolutions) {
-            if (this.checkEvolution(pokemon, evolution)) {
+            if (this.checkEvolution(pokemon, evolution, modifier)) {
                 return evolution.evolvedForm;
             }
         }
@@ -93,6 +150,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Evolves a specified pokemon.
      * 
      * @param pokemon   The pokemon in the party to evolve.
+     * @param evolvedForm   The pokemon it should become.
      */
     public evolve(pokemon: IPokemon, evolvedForm: string[]): void {
         pokemon.title = evolvedForm;
@@ -105,15 +163,16 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * 
      * @param pokemon   The pokemon in the party to check.
      * @param evolution   The evolution of this pokemon to check.
+     * @param modifier   Modifier for specific situations such as trade.
      * @returns Whether the Pokemon meets the requirements to evolve.
      */
-    private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution): boolean {
+    private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution, modifier?: IEvolutionModifier): boolean {
         for (const requirement of evolution.requirements) {
             if (!this.requirementHandlers[requirement.method]) { 
                 throw new Error("Evolution requirement does not have a correct method property");
             }
 
-            if (!this.requirementHandlers[requirement.method](pokemon, requirement)) {
+            if (!this.requirementHandlers[requirement.method]({ modifier, pokemon, requirement })) {
                 return false;
             }
         }
