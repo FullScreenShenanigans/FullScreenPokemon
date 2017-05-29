@@ -43,8 +43,8 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
      */
     public runAnimation(onComplete: () => void): void {
         const notes: [IThing, IThing] = [
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note)
+            this.gameStarter.objectMaker.make<IThing>("Note"),
+            this.gameStarter.objectMaker.make<IThing>("Note")
         ];
 
         this.animateNote(notes[0], 10);
