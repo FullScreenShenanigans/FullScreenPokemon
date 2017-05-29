@@ -2,7 +2,6 @@ import { Things as GameStartrThings } from "gamestartr/lib/components/Things";
 import * as igamestartr from "gamestartr/lib/IGameStartr";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
-
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IWalkingInstructions } from "./actions/Walking";
 import { IPokemon } from "./Battles";
@@ -711,7 +710,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      */
 
     /**
-     * The name of the item
+     * Initalizing new instance of name class
      */
     public readonly names = new Names();
 
