@@ -53,9 +53,9 @@ export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGa
      */
     private animateExplosions(): void {
         const explosions: IThing[] = [
-            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge"),
-            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge"),
-            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge")
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.ExplosionLarge),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.ExplosionLarge),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.ExplosionLarge)
         ];
 
         const startX: number[] = [];

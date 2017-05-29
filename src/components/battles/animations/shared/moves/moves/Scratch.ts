@@ -17,9 +17,9 @@ export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameSt
         const lineArray: IThing[] = [];
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const scratches: IThing[] = [
-            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
-            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall"),
-            this.gameStarter.objectMaker.make<IThing>("ExplosionSmall")
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.ExplosionSmall),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.ExplosionSmall),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.ExplosionSmall)
         ];
         let startX: number;
         let startY: number;
@@ -50,7 +50,7 @@ export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameSt
                         (): void => this.gameStarter.physics.shiftVert(scratch, differenceX * this.direction / 16),
                         1);
 
-                    const line: IThing = this.gameStarter.things.add("ScratchLine", left, top);
+                    const line: IThing = this.gameStarter.things.add(this.gameStarter.things.names.ScratchLine, left, top);
                     if (this.direction === 1) {
                         this.gameStarter.graphics.flipHoriz(line);
                     }

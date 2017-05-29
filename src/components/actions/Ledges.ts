@@ -71,7 +71,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param thing   A Character hopping over a ledge.
      */
     protected addHopShadow(thing: ICharacter): void {
-        thing.shadow = this.gameStarter.things.add("Shadow");
+        thing.shadow = this.gameStarter.things.add(this.gameStarter.things.names.shadow);
 
         this.gameStarter.timeHandler.addEventInterval(
             (): boolean => this.updateShadowPosition(thing),

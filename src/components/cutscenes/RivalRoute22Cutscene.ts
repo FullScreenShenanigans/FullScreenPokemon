@@ -18,7 +18,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
         const player: IPlayer = settings.player;
         const triggerer: ICharacter = settings.triggerer;
         const playerUpper: number = Number(Math.abs(player.top - triggerer.top) < 4);
-        const rival: ICharacter = this.gameStarter.objectMaker.make<ICharacter>("Rival", {
+        const rival: ICharacter = this.gameStarter.objectMaker.make<ICharacter>(this.gameStarter.things.names.Rival, {
             direction: 0,
             nocollide: true,
             opacity: 0

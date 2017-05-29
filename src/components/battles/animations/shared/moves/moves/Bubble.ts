@@ -58,7 +58,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      * @param y   Vertical position to animate on.
      */
     private animateGroupOne(x: number, y: number): void {
-        const bubbleLarge: IThing = this.gameStarter.things.add("BubbleLarge", x, y);
+        const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.BubbleLarge, x, y);
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
@@ -74,11 +74,11 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      * @param y   Vertical position to animate on.
      */
     private animateGroupTwo(x: number, y: number): void {
-        const bubbleLarge: IThing = this.gameStarter.things.add("BubbleLarge", x, y);
+        const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.BubbleLarge, x, y);
         const bubblesSmall: IThing[] = [];
 
         for (let j: number = 0; j < 4; j += 1) {
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
+            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.BubbleSmall);
         }
 
         this.gameStarter.things.add(bubblesSmall[0], x, y - 4);
@@ -107,8 +107,8 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesSmall: IThing[] = [];
 
         for (let j: number = 0; j < 3; j += 1) {
-            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>("BubbleLarge");
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
+            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.BubbleLarge);
+            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.BubbleSmall);
         }
 
         this.gameStarter.things.add(bubblesLarge[0], x, y - 4);
@@ -139,8 +139,8 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesSmall: IThing[] = [];
 
         for (let j: number = 0; j < 4; j += 1) {
-            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>("BubbleLarge");
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
+            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.BubbleLarge);
+            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.BubbleSmall);
         }
 
         this.gameStarter.things.add(bubblesLarge[0], x + 4, y + 12);

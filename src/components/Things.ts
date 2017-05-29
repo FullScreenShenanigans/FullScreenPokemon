@@ -10,7 +10,7 @@ import { Direction } from "./Constants";
 import { IWildPokemonSchema } from "./Maps";
 import { IDialog, IMenuSchema } from "./Menus";
 import { IStateSaveable } from "./Saves";
-
+import { Names } from "./things/names";
 /**
  * Things keyed by their ids.
  */
@@ -709,6 +709,12 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      * @param defaults   The default settings for the Thing's class.
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
+
+    /**
+     * The name of the item
+     */
+    public readonly names = new Names();
+
     public process(thing: IThing, title: string, settings: any, defaults: any): void {
         super.process(thing, title, settings, defaults);
 
