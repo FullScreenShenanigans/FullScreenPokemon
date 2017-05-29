@@ -710,7 +710,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      */
 
     /**
-     * The name of the item
+     * Name Class Stores known names of Things
      */
     public readonly names = new Names();
 

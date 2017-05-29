@@ -1,5 +1,5 @@
 /**
- * Class used to map keys to string literals
+ * Class that Stores known names of Things
  */
 export class Names {
     public readonly areaGate: string = "AreaGate";
