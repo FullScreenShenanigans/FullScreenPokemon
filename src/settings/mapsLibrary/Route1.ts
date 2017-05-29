@@ -23,15 +23,18 @@ export const Route1: IMapRaw = {
             "width": 640,
             "height": 1184,
             "wildPokemon": {
-                "grass": [{
-                    "title": "PIDGEY".split(""),
-                    "levels": [2, 3, 4, 5],
-                    "rate": .55
-                }, {
-                    "title": "RATTATA".split(""),
-                    "levels": [2, 3, 4],
-                    "rate": .45
-                }]
+                "grass": [
+                    {
+                        "title": "PIDGEY".split(""),
+                        "levels": [2, 3, 4, 5],
+                        "rate": .55
+                    },
+                    {
+                        "title": "RATTATA".split(""),
+                        "levels": [2, 3, 4],
+                        "rate": .45
+                    }
+                ]
             },
             "creation": [
                 { "thing": "AreaSpawner", "width": 640, "map": "Viridian City", "area": "Land", "direction": 0, "offsetX": -320 },

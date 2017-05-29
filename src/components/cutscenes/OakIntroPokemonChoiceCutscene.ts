@@ -75,7 +75,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                         {
                             text: "YES",
                             callback: this.gameStarter.scenePlayer.bindRoutine("PlayerTakesPokemon")
-                        }, {
+                        },
+                        {
                             text: "NO",
                             callback: this.gameStarter.menuGrapher.registerB
                         }]
@@ -151,7 +152,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                         title: settings.chosen,
                         callback: this.gameStarter.scenePlayer.bindRoutine("PlayerSetsNickname")
                     })
-                }, {
+                },
+                {
                     text: "NO",
                     callback: this.gameStarter.scenePlayer.bindRoutine("RivalWalksToPokemon")
                 }]

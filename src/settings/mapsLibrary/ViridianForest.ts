@@ -68,27 +68,33 @@ export const ViridianForest: IMapRaw = {
             "width": 1088,
             "height": 1536,
             "wildPokemon": {
-                "grass": [{
-                    "title": "CATERPIE".split(""),
-                    "levels": [3, 5],
-                    "rate": 0.5
-                }, {
-                    "title": "METAPOD".split(""),
-                    "levels": [4, 5, 6],
-                    "rate": 0.35
-                }, {
-                    "title": "WEEDLE".split(""),
-                    "level": 3,
-                    "rate": 0.05
-                }, {
-                    "title": "KAKUNA".split(""),
-                    "level": 4,
-                    "rate": 0.05
-                }, {
-                    "title": "PIKACHU".split(""),
-                    "levels": [3, 5],
-                    "rate": 0.05
-                }]
+                "grass": [
+                    {
+                        "title": "CATERPIE".split(""),
+                        "levels": [3, 5],
+                        "rate": 0.5
+                    },
+                    {
+                        "title": "METAPOD".split(""),
+                        "levels": [4, 5, 6],
+                        "rate": 0.35
+                    },
+                    {
+                        "title": "WEEDLE".split(""),
+                        "level": 3,
+                        "rate": 0.05
+                    },
+                    {
+                        "title": "KAKUNA".split(""),
+                        "level": 4,
+                        "rate": 0.05
+                    },
+                    {
+                        "title": "PIKACHU".split(""),
+                        "levels": [3, 5],
+                        "rate": 0.05
+                    }
+                ]
             },
             "creation": [
                 { "thing": "HiddenTransporter", "x": 32, "width": 64, "directionRequired": 0, "transport": "Gate North Door South" },
@@ -130,16 +136,20 @@ export const ViridianForest: IMapRaw = {
                     "dialog": "Yo! You can't jam out if you're a %%%%%%%POKEMON%%%%%%% trainer!",
                     "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
                     "dialogNext": "Ssh! You'll scare the bugs away!",
-                    "actors": [{
-                        "title": ["W", "E", "E", "D", "L", "E"],
-                        "level": 28
-                    }, {
-                        "title": ["K", "A", "K", "U", "N", "A"],
-                        "level": 28
-                    }, {
-                        "title": ["W", "E", "E", "D", "L", "E"],
-                        "level": 28
-                    }]
+                    "actors": [
+                        {
+                            "title": ["W", "E", "E", "D", "L", "E"],
+                            "level": 28
+                        },
+                        {
+                            "title": ["K", "A", "K", "U", "N", "A"],
+                            "level": 28
+                        },
+                        {
+                            "title": ["W", "E", "E", "D", "L", "E"],
+                            "level": 28
+                        }
+                    ]
                 },
                 { "thing": "ForestDirt", "x": 416, "y": 624 },
                 { "thing": "ForestDirt", "x": 864, "y": 624 },
@@ -183,13 +193,16 @@ export const ViridianForest: IMapRaw = {
                     "dialog": "Hey! You have %%%%%%%POKEMON%%%%%%%! Come on! Let's battle' em!",
                     "textDefeat": "BUG CATCHER: No! CATERPIE can't cut it!",
                     "dialogNext": "Ssh! You'll scare the bugs away!",
-                    "actors": [{
-                        "title": ["W", "E", "E", "D", "L", "E"],
-                        "level": 24
-                    }, {
-                        "title": ["C", "A", "T", "E", "R", "P", "I", "E"],
-                        "level": 24
-                    }]
+                    "actors": [
+                        {
+                            "title": ["W", "E", "E", "D", "L", "E"],
+                            "level": 24
+                        },
+                        {
+                            "title": ["C", "A", "T", "E", "R", "P", "I", "E"],
+                            "level": 24
+                        }
+                    ]
                 },
                 { "thing": "ForestDirt", "x": 224, "y": 1072 },
                 { "thing": "ForestDirt", "x": 992, "y": 1072 },

@@ -351,7 +351,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
                 selector: "opponent"
             },
             player: {
-                 actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
+                actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
                 leader: {
                     nickname: this.gameStarter.itemsHolder.getItem("name"),
                     title: "PlayerBack".split("")

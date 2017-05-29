@@ -80,7 +80,8 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                         text: [["Times"]],
                         x: 32,
                         y: 4.5
-                    }, {
+                    },
+                    {
                         text: this.gameStarter.utilities.makeDigit(listing.amount, 2, " "),
                         x: 36.5,
                         y: 4
@@ -120,7 +121,8 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     settings.onUse(listing);
                 },
                 text: "USE"
-            }, {
+            },
+            {
                 callback: (): void => {
                     if (!settings.onToss) {
                         throw new Error("No onToss defined for items.");

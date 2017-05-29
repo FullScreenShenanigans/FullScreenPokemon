@@ -335,7 +335,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
                         {
                             text: "YES",
                             callback: (): void => console.log("What do, yes?")
-                        }, {
+                        },
+                        {
                             text: "NO",
                             callback: (): void => console.log("What do, no?")
                         }]
