@@ -1,5 +1,5 @@
 /**
- * Class that Stores known names of Things
+ * Stores known names of Things.
  */
 export class Names {
     public readonly areaGate: string = "AreaGate";
