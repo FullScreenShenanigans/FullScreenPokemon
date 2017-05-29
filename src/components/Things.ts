@@ -2,6 +2,7 @@ import { Things as GameStartrThings } from "gamestartr/lib/components/Things";
 import * as igamestartr from "gamestartr/lib/IGameStartr";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
+
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IWalkingInstructions } from "./actions/Walking";
 import { IPokemon } from "./Battles";
@@ -10,6 +11,7 @@ import { IWildPokemonSchema } from "./Maps";
 import { IDialog, IMenuSchema } from "./Menus";
 import { IStateSaveable } from "./Saves";
 import { Names } from "./things/names";
+
 /**
  * Things keyed by their ids.
  */
