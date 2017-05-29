@@ -1,7 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
-
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
 import { Grass } from "./actions/Grass";
@@ -94,7 +93,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         if (thing.sight) {
             thing.sightDetector = this.gameStarter.things.add(
                 [
-                    "SightDetector",
+                    this.gameStarter.things.names.sightDetector,
                     {
                         direction: thing.direction,
                         width: thing.sight * 8
@@ -382,7 +381,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @returns The exclamation Thing.
      */
     public animateExclamation(thing: IThing, timeout?: number, callback?: () => void): IThing {
-        const exclamation: IThing = this.gameStarter.things.add("Exclamation");
+        const exclamation: IThing = this.gameStarter.things.add(this.gameStarter.things.names.exclamation);
 
         timeout = timeout || 140;
 
@@ -411,7 +410,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || .33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + "Square", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + this.gameStarter.things.names.Square, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0

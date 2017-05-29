@@ -93,7 +93,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
             (): void => {
                 balls.push(
                     this.gameStarter.things.add(
-                        "HealingMachineBall",
+                        this.gameStarter.things.names.healingMachineBall,
                         left + (i % 2) * 12,
                         top + Math.floor(i / 2) * 10)
                 );
