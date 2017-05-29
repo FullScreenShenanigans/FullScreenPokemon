@@ -72,7 +72,7 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
      */
     public Catchup(settings: any): void {
         const door: IThing = this.gameStarter.utilities.getThingById("Oak's Lab Door");
-        const oak: ICharacter = this.gameStarter.objectMaker.make<ICharacter>(this.gameStarter.things.names.Oak, {
+        const oak: ICharacter = this.gameStarter.objectMaker.make<ICharacter>(this.gameStarter.things.names.oak, {
             outerOk: true,
             nocollide: true
         });

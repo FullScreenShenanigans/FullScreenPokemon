@@ -528,7 +528,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.Player);
+        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.player);
         player.keys = player.getKeys();
 
         this.gameStarter.players = [player];
@@ -852,6 +852,6 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
-        return this.gameStarter.things.add([this.gameStarter.things.names.AreaGate, properties], left, top) as IAreaGate;
+        return this.gameStarter.things.add([this.gameStarter.things.names.areaGate, properties], left, top) as IAreaGate;
     }
 }

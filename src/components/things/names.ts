@@ -2,27 +2,27 @@
  * Class used to map keys to string literals
  */
 export class Names {
-    public readonly AreaGate: string = "AreaGate";
-    public readonly BubbleLarge: string = "BubbleLarge";
-    public readonly BubbleSmall: string = "BubbleSmall";
-    public readonly Exclamation: string = "Exclamation";
-    public readonly ExplosionLarge: string = "ExplosionLarge";
-    public readonly ExplosionSmall: string = "ExplosionSmall";
-    public readonly FenceWide: string = "FenceWide";
-    public readonly HealingMachineBall: string = "HealingMachineBall";
-    public readonly NIDORINOFront: string = "NIDORINOFront";
-    public readonly Note: string = "Note";
-    public readonly Oak: string = "Oak";
-    public readonly OakPortrait: string = "OakPortrait";
-    public readonly Player: string = "Player";
-    public readonly PlayerPortrait: string = "PlayerPortrait";
-    public readonly PlayerSilhouetteLarge: string = "PlayerSilhouetteLarge";
-    public readonly PlayerSilhouetteSmall: string = "PlayerSilhouetteSmall";
-    public readonly Rival: string = "Rival";
-    public readonly RivalPortrait: string = "RivalPortrait";
-    public readonly ScratchLine: string = "ScratchLine";
+    public readonly areaGate: string = "AreaGate";
+    public readonly bubbleLarge: string = "BubbleLarge";
+    public readonly bubbleSmall: string = "BubbleSmall";
+    public readonly exclamation: string = "Exclamation";
+    public readonly explosionLarge: string = "ExplosionLarge";
+    public readonly explosionSmall: string = "ExplosionSmall";
+    public readonly fenceWide: string = "FenceWide";
+    public readonly healingMachineBall: string = "HealingMachineBall";
+    public readonly nIDORINOFront: string = "NIDORINOFront";
+    public readonly note: string = "Note";
+    public readonly oak: string = "Oak";
+    public readonly oakPortrait: string = "OakPortrait";
+    public readonly player: string = "Player";
+    public readonly playerPortrait: string = "PlayerPortrait";
+    public readonly playerSilhouetteLarge: string = "PlayerSilhouetteLarge";
+    public readonly playerSilhouetteSmall: string = "PlayerSilhouetteSmall";
+    public readonly rival: string = "Rival";
+    public readonly rivalPortrait: string = "RivalPortrait";
+    public readonly scratchLine: string = "ScratchLine";
     public readonly shadow: string = "shadow";
-    public readonly SightDetector: string = "SightDetector";
-    public readonly Square: string = "Square";
-    public readonly WhiteSquare: string = "WhiteSquare";
+    public readonly sightDetector: string = "SightDetector";
+    public readonly square: string = "Square";
+    public readonly whiteSquare: string = "WhiteSquare";
 }
