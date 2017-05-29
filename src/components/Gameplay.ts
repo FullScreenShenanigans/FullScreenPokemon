@@ -34,7 +34,8 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
             {
                 text: "NEW GAME",
                 callback: (): void => this.startIntro()
-            }, {
+            },
+            {
                 text: "LOAD FILE",
                 callback: (): void => this.loadFile()
             }];

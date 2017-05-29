@@ -202,13 +202,16 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                         title: "YOUR NAME?",
                         callback: fromKeyboard
                     })
-                }, {
+                },
+                {
                     text: "BLUE".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "GARY".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "JOHN".split(""),
                     callback: fromMenu
                 }]
@@ -373,13 +376,16 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                         title: "RIVAL's NAME?",
                         callback: fromKeyboard
                     })
-                }, {
+                },
+                {
                     text: "RED".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "ASH".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "JACK".split(""),
                     callback: fromMenu
                 }]

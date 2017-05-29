@@ -689,7 +689,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                 {
                     text: "YES",
                     callback: generateCallback(options.Yes)
-                }, {
+                },
+                {
                     text: "NO",
                     callback: generateCallback(options.No)
                 }]

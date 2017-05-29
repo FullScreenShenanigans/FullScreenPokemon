@@ -52,24 +52,30 @@ export const ViridianCity: IMapRaw = {
                         "levels": [20],
                         "rate": 1
                     }],
-                    "good": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }, {
-                        "title": "GOLDEEN".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }],
-                    "super": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [20],
-                        "rate": .5
-                    }, {
-                        "title": "TENTACOOL".split(""),
-                        "levels": [20],
-                        "rate": .5
-                    }]
+                    "good": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        },
+                        {
+                            "title": "GOLDEEN".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        }
+                    ],
+                    "super": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [20],
+                            "rate": .5
+                        },
+                        {
+                            "title": "TENTACOOL".split(""),
+                            "levels": [20],
+                            "rate": .5
+                        }
+                    ]
                 }
             },
             "creation": [

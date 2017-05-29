@@ -36,16 +36,20 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Com
             onMenuDelete: this.gameStarter.scenePlayer.bindRoutine("Exit")
         });
         this.gameStarter.menuGrapher.addMenuList("Buy/Sell", {
-            options: [{
-                text: "BUY",
-                callback: this.gameStarter.scenePlayer.bindRoutine("BuyMenu")
-            }, {
+            options: [
+                {
+                    text: "BUY",
+                    callback: this.gameStarter.scenePlayer.bindRoutine("BuyMenu")
+                },
+                {
                     text: "SELL",
                     callback: undefined
-                }, {
+                },
+                {
                     text: "QUIT",
                     callback: this.gameStarter.menuGrapher.registerB
-                }]
+                }
+            ]
         });
         this.gameStarter.menuGrapher.setActiveMenu("Buy/Sell");
     }
@@ -203,11 +207,13 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Com
                             text: "YES",
                             callback: this.gameStarter.scenePlayer.bindRoutine(
                                 "TryPurchase", args)
-                        }, {
+                        },
+                        {
                             text: "NO",
                             callback: this.gameStarter.scenePlayer.bindRoutine(
                                 "CancelPurchase")
-                        }]
+                        }
+                    ]
                 });
                 this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
             });
