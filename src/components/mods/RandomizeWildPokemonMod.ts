@@ -5,8 +5,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWildPokemonSchema } from "../Maps";
 
 /**
- * Mod that randomizes Pokemon encounters based on the original wild Pokemon's
- * type.
+ * Mod that randomizes Pokemon encounters based on the original wild Pokemon's type(s).
  */
 export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
     /**
@@ -20,31 +19,22 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
     public readonly events: ICallbackRegister = {
         onRandomizePokemon: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
             let pokemonName: string = "";
+            pokemonName = chosen.title.join("");
             const pokemonTypes: string[] = [];
+            for (const type of this.gameStarter.constants.pokemon.byName[pokemonName].types) {
+                pokemonTypes.push(type);
+            }
             const randomPokemon: string[] = [];
-            let i: number = 0;
-            console.log(chosen);
-            //Create the pokemon name via the chosen object.
-            for (i = 0; i < chosen.title.length; i++) {
-                pokemonName += chosen.title[i];
-            }
-            //Get the types for the original pokemon.
-            for (i = 0; i < this.gameStarter.constants.pokemon.byName[pokemonName].types.length; i++) {
-                pokemonTypes.push(this.gameStarter.constants.pokemon.byName[pokemonName].types[i]);
-            }
-            //Store pokemon that match one or more of original pokemon's types.
-            for (const pokemonz in this.gameStarter.constants.pokemon.byName) {
-                for (i = 0; i < this.gameStarter.constants.pokemon.byName[pokemonz].types.length; i++) {
-                    if (pokemonTypes.indexOf(this.gameStarter.constants.pokemon.byName[pokemonz].types[i]) !== -1) {
-                        randomPokemon.push(pokemonz); //use just pokemonz
+            for (const pokemon in this.gameStarter.constants.pokemon.byName) {
+                for (const pokemonType of this.gameStarter.constants.pokemon.byName[pokemon].types) {
+                    if (pokemonTypes.indexOf(pokemonType) !== -1) {
+                        randomPokemon.push(pokemon);
                     }
                 }
             }
-            //Pick a random pokemon from the all the candidates(can include original pokemon).
             const random: string = this.gameStarter.numberMaker.randomArrayMember(randomPokemon);
             chosen.title = random.split("");
             return chosen;
         }
-
     };
 } 
