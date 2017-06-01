@@ -21,7 +21,7 @@ export class Names {
     public readonly rival: string = "Rival";
     public readonly rivalPortrait: string = "RivalPortrait";
     public readonly scratchLine: string = "ScratchLine";
-    public readonly shadow: string = "shadow";
+    public readonly shadow: string = "Shadow";
     public readonly sightDetector: string = "SightDetector";
     public readonly square: string = "Square";
     public readonly whiteSquare: string = "WhiteSquare";

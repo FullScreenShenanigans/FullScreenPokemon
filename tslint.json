@@ -1,6 +1,7 @@
 {
     "extends": "tslint:all",
     "rules": {
+        "align": [false],
         "array-type": [false],
         "arrow-return-shorthand": [false],
         "ban-types": [false],
