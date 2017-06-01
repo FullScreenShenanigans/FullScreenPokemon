@@ -40,7 +40,7 @@ export class FSPEventNames extends EventNames {
     public readonly onOpenItemsMenu: string = "onOpenItemsMenu";
 
     /**
-     * Key for event when randomizing wild pokemon encounter.
+     * Key for event when randomizing a wild pokemon encounter.
      */
     public readonly onRandomizePokemon: string = "onRandomizePokemon";
 

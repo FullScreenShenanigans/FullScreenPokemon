@@ -124,6 +124,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Chooses a wild Pokemon to start a battle with.
+     * Now incorporates the RandomizeWildPokemonMod.ts
      * 
      * @param grass   Grass Scenery the player is in.
      * @returns A wild Pokemon to start a battle with.
