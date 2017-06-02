@@ -60,7 +60,7 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Componen
         const opponentPokemon: IPokemon = battleInfo.teams.player.selectedActor;
         const a: number = playerPokemon.statistics.speed.current;
         const b: number = (opponentPokemon.statistics.speed.normal / 4) % 256;
-        const f: number = (a * 32) / b + 30 * battleInfo.fleeAttempts;
+        const f: number = (a * 32) / b + battleInfo.fleeAttempts * 30;
 
         battleInfo.fleeAttempts += 1;
 

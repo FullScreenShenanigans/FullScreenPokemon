@@ -53,7 +53,7 @@ export interface IItemModifier {
      * The type of modifier.
      */
     type: string;
-	
+
     /**
      * The necessary item to evolve.
      */

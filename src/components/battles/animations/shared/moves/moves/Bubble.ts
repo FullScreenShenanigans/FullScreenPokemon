@@ -64,7 +64,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
             (): void => {
                 this.gameStarter.physics.killNormal(bubbleLarge);
             },
-            4 * 24);
+            96);
     }
 
     /**
@@ -93,7 +93,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }
             },
-            3 * 24);
+            72);
     }
 
     /**
@@ -125,7 +125,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }
             },
-            2 * 24);
+            42);
     }
 
     /**
