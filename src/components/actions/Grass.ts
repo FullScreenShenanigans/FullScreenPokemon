@@ -125,7 +125,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
     /**
      * Chooses a wild Pokemon to start a battle with.
      * 
-     * @param grass   Grass Scenery the player is in.
+     * @param grass   Grass Scenery the player is located in.
      * @returns A wild Pokemon to start a battle with.
      */
     protected chooseWildPokemonForBattle(grass: IThing): IPokemon {
