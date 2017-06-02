@@ -39,7 +39,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
 
         const damage: number = Math.round(
             Math.max(
-                ((((2 * level + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
+                ((((level * 2 + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
                 1));
 
         return Math.min(teamAndAction.target.actor.statistics.health.current, damage);

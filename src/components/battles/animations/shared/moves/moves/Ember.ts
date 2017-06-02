@@ -31,7 +31,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                 (): void => {
                     this.animateEmbers(xPositions[i], yPosition);
                 },
-                24 * i);
+                i * 24);
         }
 
         this.gameStarter.timeHandler.addEvent(

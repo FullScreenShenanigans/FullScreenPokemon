@@ -12,7 +12,7 @@ export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGa
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        let xvel: number = -7 * this.direction;
+        let xvel: number = this.direction * -7;
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => this.gameStarter.physics.shiftHoriz(this.attackerThing, xvel),
