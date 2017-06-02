@@ -354,10 +354,10 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     public animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
         const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeLarge", undefined, "Text");
 
-        this.animateExpandCorners(things, 4 * 2.5);
+        this.animateExpandCorners(things, 10);
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.animateExpandCorners(things, 4 * 2),
+            (): void => this.animateExpandCorners(things, 8),
             7);
 
         this.gameStarter.timeHandler.addEvent(

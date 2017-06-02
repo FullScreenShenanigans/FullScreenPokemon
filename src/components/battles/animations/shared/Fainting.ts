@@ -35,7 +35,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.gameStarter.actions.sliding.slideVertically(
             thing,
-            4 * 2,
+            8,
             this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
             1,
             (): void => {

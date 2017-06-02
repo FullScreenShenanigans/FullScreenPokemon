@@ -29,7 +29,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
                 direction: Direction.Top
             },
             {
-                blocks: 3 + playerUpper,
+                blocks: playerUpper + 3,
                 direction: Direction.Right
             }
         ];

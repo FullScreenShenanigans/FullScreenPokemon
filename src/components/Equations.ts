@@ -401,15 +401,15 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         // TODO: remove defaulting to mediumFast
         switch (reference.experienceType) {
             case "fast":
-                return (4 * Math.pow(level, 3)) / 5;
+                return (Math.pow(level, 3) * 4) / 5;
             case "mediumSlow":
                 return (
                     (6 / 5) * Math.pow(level, 3)
-                    - (15 * Math.pow(level, 2))
-                    + (100 * level)
+                    - (Math.pow(level, 2) * 15)
+                    + (level * 100)
                     - 140);
             case "slow":
-                return (5 * Math.pow(level, 3)) / 4;
+                return (Math.pow(level, 3) * 5) / 4;
             // case "mediumFast":
             default:
                 return Math.pow(level, 3);
@@ -440,7 +440,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
         const t: number = player.selectedActor.traded ? 1.5 : 1;
 
-        return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
+        return (((a * t * b * lf) | 0) / ((s * 7) | 0)) | 0;
     }
 
     /**
