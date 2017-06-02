@@ -22,6 +22,11 @@ export interface IPokemonListing {
     label: string;
 
     /**
+     * The title of the Pokemon.
+     */
+    name: string[];
+
+    /**
      * What number the Pokemon is in the Pokedex.
      */
     number: number;
@@ -312,6 +317,7 @@ export class Pokemon {
      */
     public readonly byName: { [i: string]: IPokemonListing } = {
         "ABRA": {
+            "name": "ABRA".split(""),
             "label": "Psi",
             "sprite": "Water",
             "info": [
@@ -440,6 +446,7 @@ export class Pokemon {
             }
         },
         "AERODACTYL": {
+            "name": "AERODACTYL".split(""),
             "label": "Fossil",
             "sprite": "Water",
             "info": [
@@ -556,6 +563,7 @@ export class Pokemon {
             }
         },
         "ALAKAZAM": {
+            "name": "ALAKAZAM".split(""),
             "label": "Psi",
             "sprite": "Water",
             "info": [
@@ -716,6 +724,7 @@ export class Pokemon {
             }
         },
         "ARBOK": {
+            "name": "ARBOK".split(""),
             "label": "Cobra",
             "sprite": "Water",
             "info": [
@@ -840,6 +849,7 @@ export class Pokemon {
             }
         },
         "ARCANINE": {
+            "name": "ARCANINE".split(""),
             "label": "Legendary",
             "sprite": "Water",
             "info": [
@@ -1021,6 +1031,7 @@ export class Pokemon {
             }
         },
         "ARTICUNO": {
+            "name": "ARTICUNO".split(""),
             "label": "Freeze",
             "sprite": "Water",
             "info": [
@@ -1141,6 +1152,7 @@ export class Pokemon {
             }
         },
         "BEEDRILL": {
+            "name": "BEEDRILL".split(""),
             "label": "Poison Bee",
             "sprite": "Water",
             "info": [
@@ -1196,6 +1208,7 @@ export class Pokemon {
             }
         },
         "BELLSPROUT": {
+            "name": "BELLSPROUT".split(""),
             "label": "Flower",
             "sprite": "Water",
             "info": [
@@ -1317,6 +1330,7 @@ export class Pokemon {
             }
         },
         "BLASTOISE": {
+            "name": "BLASTOISE".split(""),
             "label": "Shellfish",
             "sprite": "Water",
             "info": [
@@ -1486,6 +1500,7 @@ export class Pokemon {
             }
         },
         "BULBASAUR": {
+            "name": "BULBASAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
             "info": [
@@ -1612,6 +1627,7 @@ export class Pokemon {
             }
         },
         "BUTTERFREE": {
+            "name": "BUTTERFREE".split(""),
             "label": "Butterfly",
             "sprite": "Water",
             "info": [
@@ -1741,6 +1757,7 @@ export class Pokemon {
             }
         },
         "CATERPIE": {
+            "name": "CATERPIE".split(""),
             "label": "Worm",
             "sprite": "Water",
             "info": [
@@ -1780,6 +1797,7 @@ export class Pokemon {
             }
         },
         "CHANSEY": {
+            "name": "CHANSEY".split(""),
             "label": "Egg",
             "sprite": "Water",
             "info": [
@@ -1977,6 +1995,7 @@ export class Pokemon {
             }
         },
         "CHARIZARD": {
+            "name": "CHARIZARD".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -2146,6 +2165,7 @@ export class Pokemon {
             }
         },
         "CHARMANDER": {
+            "name": "CHARMANDER".split(""),
             "label": "Lizard",
             "sprite": "Water",
             "info": [
@@ -2305,6 +2325,7 @@ export class Pokemon {
             }
         },
         "CHARMELEON": {
+            "name": "CHARMELEON".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -2459,6 +2480,7 @@ export class Pokemon {
             }
         },
         "CLEFABLE": {
+            "name": "CLEFABLE".split(""),
             "label": "Fairy",
             "sprite": "Water",
             "info": [
@@ -2512,6 +2534,7 @@ export class Pokemon {
             }
         },
         "CLEFAIRY": {
+            "name": "CLEFAIRY".split(""),
             "label": "Fairy",
             "sprite": "Water",
             "info": [
@@ -2706,6 +2729,7 @@ export class Pokemon {
             }
         },
         "CLOYSTER": {
+            "name": "CLOYSTER".split(""),
             "label": "Bivalve",
             "sprite": "Water",
             "info": [
@@ -2750,6 +2774,7 @@ export class Pokemon {
             }
         },
         "CUBONE": {
+            "name": "CUBONE".split(""),
             "label": "Lonely",
             "sprite": "Water",
             "info": [
@@ -2907,6 +2932,7 @@ export class Pokemon {
             }
         },
         "DEWGONG": {
+            "name": "DEWGONG".split(""),
             "label": "Sea Lion",
             "sprite": "Water",
             "info": [
@@ -3032,6 +3058,7 @@ export class Pokemon {
             }
         },
         "DIGLETT": {
+            "name": "DIGLETT".split(""),
             "label": "Mole",
             "sprite": "Water",
             "info": [
@@ -3166,6 +3193,7 @@ export class Pokemon {
             }
         },
         "DITTO": {
+            "name": "DITTO".split(""),
             "label": "Transform",
             "sprite": "Water",
             "info": [
@@ -3190,6 +3218,7 @@ export class Pokemon {
             }
         },
         "DODRIO": {
+            "name": "DODRIO".split(""),
             "label": "Triple Bird",
             "sprite": "Water",
             "info": [
@@ -3311,6 +3340,7 @@ export class Pokemon {
             }
         },
         "DODUO": {
+            "name": "DODUO".split(""),
             "label": "Twin Bird",
             "sprite": "Water",
             "info": [
@@ -3432,6 +3462,7 @@ export class Pokemon {
             }
         },
         "DRAGONAIR": {
+            "name": "DRAGONAIR".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -3586,6 +3617,7 @@ export class Pokemon {
             }
         },
         "DRAGONITE": {
+            "name": "DRAGONITE".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -3751,6 +3783,7 @@ export class Pokemon {
             }
         },
         "DRATINI": {
+            "name": "DRATINI".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -3900,6 +3933,7 @@ export class Pokemon {
             }
         },
         "DROWZEE": {
+            "name": "DROWZEE".split(""),
             "label": "Hypnosis",
             "sprite": "Water",
             "info": [
@@ -4058,6 +4092,7 @@ export class Pokemon {
             }
         },
         "DUGTRIO": {
+            "name": "DUGTRIO".split(""),
             "label": "Mole",
             "sprite": "Water",
             "info": [
@@ -4143,6 +4178,7 @@ export class Pokemon {
             }
         },
         "EEVEE": {
+            "name": "EEVEE".split(""),
             "label": "evolutions",
             "sprite": "Water",
             "info": [
@@ -4301,6 +4337,7 @@ export class Pokemon {
             }
         },
         "EKANS": {
+            "name": "EKANS".split(""),
             "label": "Snake",
             "sprite": "Water",
             "info": [
@@ -4423,6 +4460,7 @@ export class Pokemon {
             }
         },
         "ELECTABUZZ": {
+            "name": "ELECTABUZZ".split(""),
             "label": "Electric",
             "sprite": "Water",
             "info": [
@@ -4584,6 +4622,7 @@ export class Pokemon {
             }
         },
         "ELECTRODE": {
+            "name": "ELECTRODE".split(""),
             "label": "Ball",
             "sprite": "Water",
             "info": [
@@ -4710,6 +4749,7 @@ export class Pokemon {
             }
         },
         "EXEGGCUTE": {
+            "name": "EXEGGCUTE".split(""),
             "label": "Egg",
             "sprite": "Water",
             "info": [
@@ -4806,6 +4846,7 @@ export class Pokemon {
             }
         },
         "EXEGGUTOR": {
+            "name": "EXEGGUTOR".split(""),
             "label": "Coconut",
             "sprite": "Water",
             "info": [
@@ -4845,6 +4886,7 @@ export class Pokemon {
             }
         },
         "FARFETCHD": {
+            "name": "FARFETCHD".split(""),
             "label": "Wild Duck",
             "sprite": "Water",
             "info": [
@@ -4958,6 +5000,7 @@ export class Pokemon {
             }
         },
         "FEAROW": {
+            "name": "FEAROW".split(""),
             "label": "Beak",
             "sprite": "Water",
             "info": [
@@ -5070,6 +5113,7 @@ export class Pokemon {
             }
         },
         "FLAREON": {
+            "name": "FLAREON".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -5259,6 +5303,7 @@ export class Pokemon {
             }
         },
         "GASTLY": {
+            "name": "GASTLY".split(""),
             "label": "Gas",
             "sprite": "Water",
             "info": [
@@ -5329,6 +5374,7 @@ export class Pokemon {
             }
         },
         "GENGAR": {
+            "name": "GENGAR".split(""),
             "label": "Shadow",
             "sprite": "Water",
             "info": [
@@ -5477,6 +5523,7 @@ export class Pokemon {
             }
         },
         "GEODUDE": {
+            "name": "GEODUDE".split(""),
             "label": "Rock",
             "sprite": "Water",
             "info": [
@@ -5623,6 +5670,7 @@ export class Pokemon {
             }
         },
         "GLOOM": {
+            "name": "GLOOM".split(""),
             "label": "Weed",
             "sprite": "Water",
             "info": [
@@ -5741,6 +5789,7 @@ export class Pokemon {
             }
         },
         "GOLBAT": {
+            "name": "GOLBAT".split(""),
             "label": "Bat",
             "sprite": "Water",
             "info": [
@@ -5882,6 +5931,7 @@ export class Pokemon {
             }
         },
         "GOLDEEN": {
+            "name": "GOLDEEN".split(""),
             "label": "Goldfish",
             "sprite": "Water",
             "info": [
@@ -6011,6 +6061,7 @@ export class Pokemon {
             }
         },
         "GOLDUCK": {
+            "name": "GOLDUCK".split(""),
             "label": "Duck",
             "sprite": "Water",
             "info": [
@@ -6160,6 +6211,7 @@ export class Pokemon {
             }
         },
         "GOLEM": {
+            "name": "GOLEM".split(""),
             "label": "Megaton",
             "sprite": "Water",
             "info": [
@@ -6312,6 +6364,7 @@ export class Pokemon {
             }
         },
         "GRAVELER": {
+            "name": "GRAVELER".split(""),
             "label": "Rock",
             "sprite": "Water",
             "info": [
@@ -6461,6 +6514,7 @@ export class Pokemon {
             }
         },
         "GRIMER": {
+            "name": "GRIMER".split(""),
             "label": "Sludge",
             "sprite": "Water",
             "info": [
@@ -6611,6 +6665,7 @@ export class Pokemon {
             }
         },
         "GROWLITHE": {
+            "name": "GROWLITHE".split(""),
             "label": "Puppy",
             "sprite": "Water",
             "info": [
@@ -6697,6 +6752,7 @@ export class Pokemon {
             }
         },
         "GYARADOS": {
+            "name": "GYARADOS".split(""),
             "label": "Atrocious",
             "sprite": "Water",
             "info": [
@@ -6770,6 +6826,7 @@ export class Pokemon {
             }
         },
         "HAUNTER": {
+            "name": "HAUNTER".split(""),
             "label": "Gas",
             "sprite": "Water",
             "info": [
@@ -6839,6 +6896,7 @@ export class Pokemon {
             }
         },
         "HITMONCHAN": {
+            "name": "HITMONCHAN".split(""),
             "label": "Punching",
             "sprite": "Water",
             "info": [
@@ -6963,6 +7021,7 @@ export class Pokemon {
             }
         },
         "HITMONLEE": {
+            "name": "HITMONLEE".split(""),
             "label": "Kicking",
             "sprite": "Water",
             "info": [
@@ -7084,6 +7143,7 @@ export class Pokemon {
             }
         },
         "HORSEA": {
+            "name": "HORSEA".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -7201,6 +7261,7 @@ export class Pokemon {
             }
         },
         "HYPNO": {
+            "name": "HYPNO".split(""),
             "label": "Hypnosis",
             "sprite": "Water",
             "info": [
@@ -7362,6 +7423,7 @@ export class Pokemon {
             }
         },
         "IVYSAUR": {
+            "name": "IVYSAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
             "info": [
@@ -7491,6 +7553,7 @@ export class Pokemon {
             }
         },
         "JIGGLYPUFF": {
+            "name": "JIGGLYPUFF".split(""),
             "label": "Balloon",
             "sprite": "Water",
             "info": [
@@ -7681,6 +7744,7 @@ export class Pokemon {
             }
         },
         "JOLTEON": {
+            "name": "JOLTEON".split(""),
             "label": "Lightning",
             "sprite": "Water",
             "info": [
@@ -7753,6 +7817,7 @@ export class Pokemon {
             }
         },
         "JYNX": {
+            "name": "JYNX".split(""),
             "label": "Human Shape",
             "sprite": "Water",
             "info": [
@@ -7942,6 +8007,7 @@ export class Pokemon {
             }
         },
         "KABUTO": {
+            "name": "KABUTO".split(""),
             "label": "Shellfish",
             "sprite": "Water",
             "info": [
@@ -8059,6 +8125,7 @@ export class Pokemon {
             }
         },
         "KABUTOPS": {
+            "name": "KABUTOPS".split(""),
             "label": "Shellfish",
             "sprite": "Water",
             "info": [
@@ -8196,6 +8263,7 @@ export class Pokemon {
             }
         },
         "KADABRA": {
+            "name": "KADABRA".split(""),
             "label": "Psi",
             "sprite": "Water",
             "info": [
@@ -8360,6 +8428,7 @@ export class Pokemon {
             }
         },
         "KAKUNA": {
+            "name": "KAKUNA".split(""),
             "label": "Cocoon",
             "sprite": "Water",
             "info": [
@@ -8396,6 +8465,7 @@ export class Pokemon {
             }
         },
         "KANGASKHAN": {
+            "name": "KANGASKHAN".split(""),
             "label": "Parent",
             "sprite": "Water",
             "info": [
@@ -8553,6 +8623,7 @@ export class Pokemon {
             }
         },
         "KINGLER": {
+            "name": "KINGLER".split(""),
             "label": "Pincer",
             "sprite": "Water",
             "info": [
@@ -8682,6 +8753,7 @@ export class Pokemon {
             }
         },
         "KOFFING": {
+            "name": "KOFFING".split(""),
             "label": "Poison Gas",
             "sprite": "Water",
             "info": [
@@ -8816,6 +8888,7 @@ export class Pokemon {
             }
         },
         "KRABBY": {
+            "name": "KRABBY".split(""),
             "label": "River Crab",
             "sprite": "Water",
             "info": [
@@ -8934,6 +9007,7 @@ export class Pokemon {
             }
         },
         "LAPRAS": {
+            "name": "LAPRAS".split(""),
             "label": "Transport",
             "sprite": "Water",
             "info": [
@@ -9091,6 +9165,7 @@ export class Pokemon {
             }
         },
         "LICKITUNG": {
+            "name": "LICKITUNG".split(""),
             "label": "Licking",
             "sprite": "Water",
             "info": [
@@ -9248,6 +9323,7 @@ export class Pokemon {
             }
         },
         "MACHAMP": {
+            "name": "MACHAMP".split(""),
             "label": "Superpower",
             "sprite": "Water",
             "info": [
@@ -9396,6 +9472,7 @@ export class Pokemon {
             }
         },
         "MACHOKE": {
+            "name": "MACHOKE".split(""),
             "label": "Superpower",
             "sprite": "Water",
             "info": [
@@ -9545,6 +9622,7 @@ export class Pokemon {
             }
         },
         "MACHOP": {
+            "name": "MACHOP".split(""),
             "label": "Superpower",
             "sprite": "Water",
             "info": [
@@ -9690,6 +9768,7 @@ export class Pokemon {
             }
         },
         "MAGIKARP": {
+            "name": "MAGIKARP".split(""),
             "label": "Fish",
             "sprite": "Water",
             "info": [
@@ -9728,6 +9807,7 @@ export class Pokemon {
             }
         },
         "MAGMAR": {
+            "name": "MAGMAR".split(""),
             "label": "Spitfire",
             "sprite": "Water",
             "info": [
@@ -9865,6 +9945,7 @@ export class Pokemon {
             }
         },
         "MAGNEMITE": {
+            "name": "MAGNEMITE".split(""),
             "label": "Magnet",
             "sprite": "Water",
             "info": [
@@ -9986,6 +10067,7 @@ export class Pokemon {
             }
         },
         "MAGNETON": {
+            "name": "MAGNETON".split(""),
             "label": "Magnet",
             "sprite": "Water",
             "info": [
@@ -10107,6 +10189,7 @@ export class Pokemon {
             }
         },
         "MANKEY": {
+            "name": "MANKEY".split(""),
             "label": "Pig Monkey",
             "sprite": "Water",
             "info": [
@@ -10260,6 +10343,7 @@ export class Pokemon {
             }
         },
         "MAROWAK": {
+            "name": "MAROWAK".split(""),
             "label": "Bone Keeper",
             "sprite": "Water",
             "info": [
@@ -10420,6 +10504,7 @@ export class Pokemon {
             }
         },
         "MEOWTH": {
+            "name": "MEOWTH".split(""),
             "label": "Scratch Cat",
             "sprite": "Water",
             "info": [
@@ -10506,6 +10591,7 @@ export class Pokemon {
             }
         },
         "METAPOD": {
+            "name": "METAPOD".split(""),
             "label": "Cocoon",
             "sprite": "Water",
             "info": [
@@ -10547,6 +10633,7 @@ export class Pokemon {
             }
         },
         "MEW": {
+            "name": "MEW".split(""),
             "label": "New Species",
             "sprite": "Water",
             "info": [
@@ -10808,6 +10895,7 @@ export class Pokemon {
             }
         },
         "MEWTWO": {
+            "name": "MEWTWO".split(""),
             "label": "Genetic",
             "sprite": "Water",
             "info": [
@@ -11009,6 +11097,7 @@ export class Pokemon {
             }
         },
         "MOLTRES": {
+            "name": "MOLTRES".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -11114,6 +11203,7 @@ export class Pokemon {
             }
         },
         "MrHyphenMime": {
+            "name": ["Mr", "Hyphen", "M", "I", "M", "E"],
             "label": "Barrier",
             "sprite": "Water",
             "info": [
@@ -11270,6 +11360,7 @@ export class Pokemon {
             }
         },
         "MUK": {
+            "name": "MUK".split(""),
             "label": "Sludge",
             "sprite": "Water",
             "info": [
@@ -11363,6 +11454,7 @@ export class Pokemon {
             }
         },
         "NIDOKING": {
+            "name": "NIDOKING".split(""),
             "label": "Drill",
             "sprite": "Water",
             "info": [
@@ -11428,6 +11520,7 @@ export class Pokemon {
             }
         },
         "NIDOQUEEN": {
+            "name": "NIDOQUEEN".split(""),
             "label": "Drill",
             "sprite": "Water",
             "info": [
@@ -11493,6 +11586,7 @@ export class Pokemon {
             }
         },
         "NIDORANFemaleSymbol": {
+            "name": ["N", "I", "D", "O", "R", "A", "N", "FemaleSymbol"],
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -11676,6 +11770,7 @@ export class Pokemon {
             }
         },
         "NIDORANMaleSymbol": {
+            "name": ["N", "I", "D", "O", "R", "A", "N", "MaleSymbol"],
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -11898,6 +11993,7 @@ export class Pokemon {
             }
         },
         "NIDORINA": {
+            "name": "NIDORINA".split(""),
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -12000,6 +12096,7 @@ export class Pokemon {
             }
         },
         "NIDORINO": {
+            "name": "NIDORINO".split(""),
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -12102,6 +12199,7 @@ export class Pokemon {
             }
         },
         "NINETALES": {
+            "name": "NINETALES".split(""),
             "label": "Fox",
             "sprite": "Water",
             "info": [
@@ -12267,6 +12365,7 @@ export class Pokemon {
             }
         },
         "ODDISH": {
+            "name": "ODDISH".split(""),
             "label": "Weed",
             "sprite": "Water",
             "info": [
@@ -12377,6 +12476,7 @@ export class Pokemon {
             }
         },
         "OMANYTE": {
+            "name": "OMANYTE".split(""),
             "label": "Spiral",
             "sprite": "Water",
             "info": [
@@ -12491,6 +12591,7 @@ export class Pokemon {
             }
         },
         "OMASTAR": {
+            "name": "OMASTAR".split(""),
             "label": "Spiral",
             "sprite": "Water",
             "info": [
@@ -12623,6 +12724,7 @@ export class Pokemon {
             }
         },
         "ONIX": {
+            "name": "ONIX".split(""),
             "label": "Rock Snake",
             "sprite": "Water",
             "info": [
@@ -12740,6 +12842,7 @@ export class Pokemon {
             }
         },
         "PARAS": {
+            "name": "PARAS".split(""),
             "label": "Mushroom",
             "sprite": "Water",
             "info": [
@@ -12861,6 +12964,7 @@ export class Pokemon {
             }
         },
         "PARASECT": {
+            "name": "PARASECT".split(""),
             "label": "Mushroom",
             "sprite": "Water",
             "info": [
@@ -12982,6 +13086,7 @@ export class Pokemon {
             }
         },
         "PERSIAN": {
+            "name": "PERSIAN".split(""),
             "label": "Classy Cat",
             "sprite": "Water",
             "info": [
@@ -13147,6 +13252,7 @@ export class Pokemon {
             }
         },
         "PIDGEOT": {
+            "name": "PIDGEOT".split(""),
             "label": "Bird",
             "sprite": "Water",
             "info": [
@@ -13264,6 +13370,7 @@ export class Pokemon {
             }
         },
         "PIDGEOTTO": {
+            "name": "PIDGEOTTO".split(""),
             "label": "Bird",
             "sprite": "Water",
             "info": [
@@ -13385,6 +13492,7 @@ export class Pokemon {
             }
         },
         "PIDGEY": {
+            "name": "PIDGEY".split(""),
             "label": "Tiny Bird",
             "sprite": "Water",
             "info": [
@@ -13502,6 +13610,7 @@ export class Pokemon {
             }
         },
         "PIKACHU": {
+            "name": "PIKACHU".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -13644,6 +13753,7 @@ export class Pokemon {
             }
         },
         "PINSIR": {
+            "name": "PINSIR".split(""),
             "label": "Stag Beetle",
             "sprite": "Water",
             "info": [
@@ -13757,6 +13867,7 @@ export class Pokemon {
             }
         },
         "POLIWAG": {
+            "name": "POLIWAG".split(""),
             "label": "Tadpole",
             "sprite": "Water",
             "info": [
@@ -13883,6 +13994,7 @@ export class Pokemon {
             }
         },
         "POLIWHIRL": {
+            "name": "POLIWHIRL".split(""),
             "label": "Tadpole",
             "sprite": "Water",
             "info": [
@@ -14057,6 +14169,7 @@ export class Pokemon {
             }
         },
         "POLIWRATH": {
+            "name": "POLIWRATH".split(""),
             "label": "Tadpole",
             "sprite": "Water",
             "info": [
@@ -14110,6 +14223,7 @@ export class Pokemon {
             }
         },
         "PONYTA": {
+            "name": "PONYTA".split(""),
             "label": "Fire Horse",
             "sprite": "Water",
             "info": [
@@ -14256,6 +14370,7 @@ export class Pokemon {
             }
         },
         "PORYGON": {
+            "name": "PORYGON".split(""),
             "label": "Virtual",
             "sprite": "Water",
             "info": [
@@ -14393,6 +14508,7 @@ export class Pokemon {
             }
         },
         "PRIMEAPE": {
+            "name": "PRIMEAPE".split(""),
             "label": "Pig Monkey",
             "sprite": "Water",
             "info": [
@@ -14549,6 +14665,7 @@ export class Pokemon {
             }
         },
         "PSYDUCK": {
+            "name": "PSYDUCK".split(""),
             "label": "Duck",
             "sprite": "Water",
             "info": [
@@ -14695,6 +14812,7 @@ export class Pokemon {
             }
         },
         "RAICHU": {
+            "name": "RAICHU".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -14734,6 +14852,7 @@ export class Pokemon {
             }
         },
         "RAPIDASH": {
+            "name": "RAPIDASH".split(""),
             "label": "Fire Horse",
             "sprite": "Water",
             "info": [
@@ -14835,6 +14954,7 @@ export class Pokemon {
             }
         },
         "RATICATE": {
+            "name": "RATICATE".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -14992,6 +15112,7 @@ export class Pokemon {
             }
         },
         "RATTATA": {
+            "name": "RATTATA".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -15070,6 +15191,7 @@ export class Pokemon {
             }
         },
         "RHYDON": {
+            "name": "RHYDON".split(""),
             "label": "Drill",
             "sprite": "Water",
             "info": [
@@ -15259,6 +15381,7 @@ export class Pokemon {
             }
         },
         "RHYHORN": {
+            "name": "RHYHORN".split(""),
             "label": "Spikes",
             "sprite": "Water",
             "info": [
@@ -15396,6 +15519,7 @@ export class Pokemon {
             }
         },
         "SANDSHREW": {
+            "name": "SANDSHREW".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -15534,6 +15658,7 @@ export class Pokemon {
             }
         },
         "SANDSLASH": {
+            "name": "SANDSLASH".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -15671,6 +15796,7 @@ export class Pokemon {
             }
         },
         "SCYTHER": {
+            "name": "SCYTHER".split(""),
             "label": "Mantis",
             "sprite": "Water",
             "info": [
@@ -15772,6 +15898,7 @@ export class Pokemon {
             }
         },
         "SEADRA": {
+            "name": "SEADRA".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -15885,6 +16012,7 @@ export class Pokemon {
             }
         },
         "SEAKING": {
+            "name": "SEAKING".split(""),
             "label": "Goldfish",
             "sprite": "Water",
             "info": [
@@ -16013,6 +16141,7 @@ export class Pokemon {
             }
         },
         "SEEL": {
+            "name": "SEEL".split(""),
             "label": "Sea Lion",
             "sprite": "Water",
             "info": [
@@ -16135,6 +16264,7 @@ export class Pokemon {
             }
         },
         "SHELLDER": {
+            "name": "SHELLDER".split(""),
             "label": "Bivalve",
             "sprite": "Water",
             "info": [
@@ -16272,6 +16402,7 @@ export class Pokemon {
             }
         },
         "SLOWBRO": {
+            "name": "SLOWBRO".split(""),
             "label": "Hermit Crab",
             "sprite": "Water",
             "info": [
@@ -16464,7 +16595,8 @@ export class Pokemon {
                     }]
             }
         },
-        "Slowpoke": {
+        "SLOWPOKE": {
+            "name": "SLOWPOKE".split(""),
             "label": "Dopey",
             "sprite": "Water",
             "info": [
@@ -16643,6 +16775,7 @@ export class Pokemon {
             }
         },
         "SNORLAX": {
+            "name": "SNORLAX".split(""),
             "label": "Sleeping",
             "sprite": "Water",
             "info": [
@@ -16836,6 +16969,7 @@ export class Pokemon {
             }
         },
         "SPEAROW": {
+            "name": "SPEAROW".split(""),
             "label": "Tiny Bird",
             "sprite": "Water",
             "info": [
@@ -16946,6 +17080,7 @@ export class Pokemon {
             }
         },
         "SQUIRTLE": {
+            "name": "SQUIRTLE".split(""),
             "label": "TinyTurtle",
             "sprite": "Water",
             "info": [
@@ -17097,6 +17232,7 @@ export class Pokemon {
             }
         },
         "STARMIE": {
+            "name": "STARMIE".split(""),
             "label": "Mysterious",
             "sprite": "Water",
             "info": [
@@ -17146,6 +17282,7 @@ export class Pokemon {
             }
         },
         "STARYU": {
+            "name": "STARYU".split(""),
             "label": "Star Shape",
             "sprite": "Water",
             "info": [
@@ -17300,6 +17437,7 @@ export class Pokemon {
             }
         },
         "TANGELA": {
+            "name": "TANGELA".split(""),
             "label": "Vine",
             "sprite": "Water",
             "info": [
@@ -17416,6 +17554,7 @@ export class Pokemon {
             }
         },
         "TAUROS": {
+            "name": "TAUROS".split(""),
             "label": "Wild Bull",
             "sprite": "Water",
             "info": [
@@ -17541,6 +17680,7 @@ export class Pokemon {
             }
         },
         "TENTACOOL": {
+            "name": "TENTACOOL".split(""),
             "label": "Jellyfish",
             "sprite": "Water",
             "info": [
@@ -17683,6 +17823,7 @@ export class Pokemon {
             }
         },
         "TENTACRUEL": {
+            "name": "TENTACRUEL".split(""),
             "label": "Jellyfish",
             "sprite": "Water",
             "info": [
@@ -17828,6 +17969,7 @@ export class Pokemon {
             }
         },
         "VAPOREON": {
+            "name": "VAPOREON".split(""),
             "label": "Bubble Jet",
             "sprite": "Water",
             "info": [
@@ -17903,6 +18045,7 @@ export class Pokemon {
             }
         },
         "VENOMOTH": {
+            "name": "VENOMOTH".split(""),
             "label": "Poison Moth",
             "sprite": "Water",
             "info": [
@@ -18004,6 +18147,7 @@ export class Pokemon {
             }
         },
         "VENONAT": {
+            "name": "VENONAT".split(""),
             "label": "Insect",
             "sprite": "Water",
             "info": [
@@ -18162,6 +18306,7 @@ export class Pokemon {
             }
         },
         "VENUSAUR": {
+            "name": "VENUSAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
             "info": [
@@ -18287,6 +18432,7 @@ export class Pokemon {
             }
         },
         "VICTREEBEL": {
+            "name": "VICTREEBEL".split(""),
             "label": "Flycatcher",
             "sprite": "Water",
             "info": [
@@ -18342,6 +18488,7 @@ export class Pokemon {
             }
         },
         "VILEPLUME": {
+            "name": "VILEPLUME".split(""),
             "label": "Flower",
             "sprite": "Water",
             "info": [
@@ -18394,6 +18541,7 @@ export class Pokemon {
             }
         },
         "VOLTORB": {
+            "name": "VOLTORB".split(""),
             "label": "Ball",
             "sprite": "Water",
             "info": [
@@ -18516,6 +18664,7 @@ export class Pokemon {
             }
         },
         "VULPIX": {
+            "name": "VULPIX".split(""),
             "label": "Fox",
             "sprite": "Water",
             "info": [
@@ -18662,6 +18811,7 @@ export class Pokemon {
             }
         },
         "WARTORTLE": {
+            "name": "WARTORTLE".split(""),
             "label": "Turtle",
             "sprite": "Water",
             "info": [
@@ -18816,6 +18966,7 @@ export class Pokemon {
             }
         },
         "WEEDLE": {
+            "name": "WEEDLE".split(""),
             "label": "Hairy Bug",
             "sprite": "Water",
             "info": [
@@ -18854,6 +19005,7 @@ export class Pokemon {
             }
         },
         "WEEPINBELL": {
+            "name": "WEEPINBELL".split(""),
             "label": "Flycatcher",
             "sprite": "Water",
             "info": [
@@ -18976,6 +19128,7 @@ export class Pokemon {
             }
         },
         "WEEZING": {
+            "name": "WEEZING".split(""),
             "label": "Poison Gas",
             "sprite": "Water",
             "info": [
@@ -19113,6 +19266,7 @@ export class Pokemon {
             }
         },
         "WIGGLYTUFF": {
+            "name": "WIGGLYTUFF".split(""),
             "label": "Balloon",
             "sprite": "Water",
             "info": [
@@ -19158,6 +19312,7 @@ export class Pokemon {
             }
         },
         "ZAPDOS": {
+            "name": "ZAPDOS".split(""),
             "label": "Electric",
             "sprite": "Water",
             "info": [
@@ -19279,6 +19434,7 @@ export class Pokemon {
             }
         },
         "ZUBAT": {
+            "name": "ZUBAT".split(""),
             "label": "Bat",
             "sprite": "Water",
             "info": [
