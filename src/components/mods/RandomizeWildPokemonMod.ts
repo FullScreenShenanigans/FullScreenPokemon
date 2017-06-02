@@ -18,23 +18,27 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
      */
     public readonly events: ICallbackRegister = {
         onRandomizePokemon: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
-            let pokemonName: string = "";
-            pokemonName = chosen.title.join("");
+            const pokemonName: string = chosen.title.join("");
             const pokemonTypes: string[] = [];
-            for (let i: number = 0; i < this.gameStarter.constants.pokemon.byName[pokemonName].types.length; i++) {
-                pokemonTypes.push(this.gameStarter.constants.pokemon.byName[pokemonName].types[i]);
+            for (const type of this.gameStarter.constants.pokemon.byName[pokemonName].types) {
+                pokemonTypes.push(type);
             }
+
             const randomPokemon: string[] = [];
             for (const pokemon in this.gameStarter.constants.pokemon.byName) {
-                for (let j: number = 0; j < this.gameStarter.constants.pokemon.byName[pokemon].types.length; j++) {
-                    if (pokemonTypes.indexOf(this.gameStarter.constants.pokemon.byName[pokemon].types[j]) !== -1) {
+                for (const randomsType of this.gameStarter.constants.pokemon.byName[pokemon].types) {
+                    if (pokemonTypes.indexOf(randomsType) !== -1) {
                         randomPokemon.push(pokemon);
                     }
+
                 }
+
             }
-            const random: string = this.gameStarter.numberMaker.randomArrayMember(randomPokemon);
-            chosen.title = random.split("");
+
+            chosen.title = this.gameStarter.numberMaker.randomArrayMember(randomPokemon).split("");
             return chosen;
         }
+
     };
+    
 } 
