@@ -14,7 +14,7 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      */
     public runAnimation(callback: () => void): void {
         const dt: number = 7;
-        let xvel: number = 7 * this.direction;
+        let xvel: number = this.direction * 7;
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {

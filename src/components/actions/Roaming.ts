@@ -20,7 +20,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.startRoaming(thing),
-            70 + this.gameStarter.numberMaker.randomInt(210));
+            this.gameStarter.numberMaker.randomInt(210) + 70);
 
         if (!thing.talking && !this.gameStarter.menuGrapher.getActiveMenu()) {
             this.takeRoamingStep(thing);

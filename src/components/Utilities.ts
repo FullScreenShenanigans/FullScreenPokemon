@@ -42,7 +42,7 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
      * @param {Number} [times]   How many times to repeat (by default, 1).
      */
     public stringOf(str: string, times: number = 1): string {
-        return (times === 0) ? "" : new Array(1 + (times || 1)).join(str);
+        return (times === 0) ? "" : new Array((times || 1) + 1).join(str);
     }
 
     /**
