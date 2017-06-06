@@ -44,6 +44,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 callback: onComplete,
                 color: "Black"
             });
+            this.gameStarter.mapScreener.blockInputs = false;
         });
 
         if (battleInfo.texts.afterBattle) {
