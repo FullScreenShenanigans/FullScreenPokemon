@@ -97,7 +97,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      *
      * @param title   The type of Pokemon to create.
      * @param level   The level of the new Pokemon (by default, 1).
-     * @param moves   What moves the Pokemon has (by default, generated from its type
+     * @param moves   What moves the Pokemon has (by default, generated  from its type
      *                and level).
      * @param iv   What IV points the Pokemon should start with (by default, generated
      *             from the newPokemonIVs equation.

@@ -10,7 +10,7 @@ import { IMenuSchema } from "../Menus";
 
 /**
  * Callback for switching a Pokemon.
- * 
+ *
  * @param pokemon   A selected Pokemon.
  */
 export interface IOnPokemonSwitch {
@@ -73,7 +73,7 @@ export interface ILevelUpStatsMenuSettings {
 export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Opens the Pokemon menu for the player's party.
-     * 
+     *
      * @param settings   Custom attributes to apply to the menu.
      */
     public openPartyMenu(settings: IPartyMenuSettings): void {
@@ -184,6 +184,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 });
             }
         }
+
         options.push(
             {
                 text: "STATS",
@@ -209,7 +210,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Opens a statistics menu for a Pokemon.
-     * 
+     *
      * @param pokemon   A Pokemon to show statistics of.
      */
     public openPokemonMenuStats(pokemon: IPokemon): void {
@@ -298,7 +299,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Adds the LevelUpStats menu for a Pokemon to view its statistics.
-     * 
+     *
      * @param settings   Settings to open the menu.
      */
     private addPrimaryStats(settings: ILevelUpStatsMenuSettings): void {
@@ -356,7 +357,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Open the secondary statistics menu from the LevelUpStats menu.
-     * 
+     *
      * @param pokemon   The Pokemon to open the menu for.
      */
     private addSecondaryStats(pokemon: IPokemon): void {
