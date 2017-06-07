@@ -6,7 +6,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
 import { IHMMoveSchema } from "../constants/Moves";
 import { IPokemonListing } from "../constants/Pokemon";
-import { IMenuSchema } from "../Menus";
+import { IMenuSchema, /*Menus*/ } from "../Menus";
 
 /**
  * Callback for switching a Pokemon.
@@ -185,7 +185,12 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             }
         }
 
+        //const itemMenu: Menus<TGameStartr> = new Menus(this.gameStarter);
         options.push(
+            /**{
+             * text: "ITEM",
+             * callback: (): void => itemMenu.items.openItemsMenu()},
+             */
             {
                 text: "STATS",
                 callback: (): void => this.openPokemonMenuStats(settings.pokemon)
