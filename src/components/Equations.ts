@@ -111,33 +111,19 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         const level = chosenInfo.level || 1;
         const item = chosenInfo.item;
         const title = chosenInfo.title;
-        
-        if (item !== undefined ) {
-            return {
-                experience: this.experienceStarting(title, level || 1),
-                ev,
-                item,
-                iv,
-                level,
-                moves: chosenInfo.moves || this.newPokemonMoves(title, level || 1),
-                nickname: title,
-                statistics: this.newPokemonStatistics(title, level, ev, iv),
-                title: title,
-                types: this.gameStarter.constants.pokemon.byName[title.join("")].types
-            };
-        } else {
-            return {
-                experience: this.experienceStarting(title, level || 1),
-                ev,
-                iv,
-                level,
-                moves: chosenInfo.moves || this.newPokemonMoves(title, level || 1),
-                nickname: title,
-                statistics: this.newPokemonStatistics(title, level, ev, iv),
-                title: title,
-                types: this.gameStarter.constants.pokemon.byName[title.join("")].types
-            };
-        }
+
+        return {
+            experience: this.experienceStarting(title, level || 1),
+            ev,
+            item: item || undefined,
+            iv,
+            level,
+            moves: chosenInfo.moves || this.newPokemonMoves(title, level || 1),
+            nickname: title,
+            statistics: this.newPokemonStatistics(title, level, ev, iv),
+            title: title,
+            types: this.gameStarter.constants.pokemon.byName[title.join("")].types
+        }; 
     }
 
     /**

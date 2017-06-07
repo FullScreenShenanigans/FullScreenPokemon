@@ -32,9 +32,7 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
             ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
             : schema.level!;
         const chosenInfo: INewPokemon = {
-            item: [],
             level: level,
-            moves: [],
             title: schema.title
         };
         return this.gameStarter.equations.newPokemon(chosenInfo);

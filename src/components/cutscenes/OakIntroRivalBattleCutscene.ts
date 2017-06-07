@@ -4,7 +4,6 @@ import { Component } from "eightbittr/lib/Component";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPartialBattleOptions } from "../Battles";
 import { Direction } from "../Constants";
-import { INewPokemon } from "../constants/Pokemon";
 import { ICharacter } from "../Things";
 
 /**
@@ -46,12 +45,6 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
      */
     public Challenge(settings: any, args: any): void {
         const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
-        const chosenInfo: INewPokemon = {
-            item: [],
-            level: 5,
-            moves: [],
-            title: starterRival
-        };
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
                 this.gameStarter.scenePlayer.startCutscene("OakIntroRivalLeaves");
@@ -65,7 +58,10 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     nextCutscene: "OakIntroRivalLeaves",
                     reward: 175,
                     actors: [
-                        this.gameStarter.equations.newPokemon(chosenInfo)
+                        this.gameStarter.equations.newPokemon({
+                            level: 5,
+                            title: starterRival
+                        })
                     ]
                 }
             },
