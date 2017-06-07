@@ -184,7 +184,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 });
             }
         }
-
+        
         options.push(
             {
                 text: "STATS",

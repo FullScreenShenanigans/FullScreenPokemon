@@ -2,6 +2,7 @@ import { Utilities as GameStartrUtilities } from "gamestartr/lib/components/Util
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
+import { INewPokemon } from "./constants/Pokemon";
 import { IWildPokemonSchema } from "./Maps";
 import { IThing } from "./Things";
 
@@ -30,8 +31,13 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
         const level: number = schema.levels
             ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
             : schema.level!;
-
-        return this.gameStarter.equations.newPokemon(schema.title, level);
+        const chosenInfo: INewPokemon = {
+            item: [],
+            level: level,
+            moves: [],
+            title: schema.title
+        };
+        return this.gameStarter.equations.newPokemon(chosenInfo);
     }
 
     /**

@@ -36,6 +36,11 @@ export interface IPokemon extends IActor, IStateSaveable {
     ev: IValuePoints;
 
     /**
+     * Item held by Pokemon.
+     */
+    item?: string[];
+    
+    /**
      * Accumulated individual value points.
      */
     iv: IValuePoints;
