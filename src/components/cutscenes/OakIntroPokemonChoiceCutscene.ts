@@ -3,6 +3,7 @@ import { Component } from "eightbittr/lib/Component";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
 import { Direction, PokedexListingStatus } from "../Constants";
+import { INewPokemon } from "../constants/Pokemon";
 import { IKeyboardResultsMenu } from "../menus/Keyboards";
 import { ICharacter, IPokeball, IThing } from "../Things";
 
@@ -128,8 +129,14 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
         this.gameStarter.itemsHolder.setItem("starter", settings.chosen);
+        const chosenInfo: INewPokemon = {
+            item: [],
+            level: 5,
+            moves: [],
+            title: settings.chosen
+        };
         this.gameStarter.itemsHolder.setItem("PokemonInParty", [
-            this.gameStarter.equations.newPokemon(settings.chosen, 5)
+            this.gameStarter.equations.newPokemon(chosenInfo)
         ]);
         this.gameStarter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
     }

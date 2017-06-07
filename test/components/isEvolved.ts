@@ -1,4 +1,5 @@
 import { IPokemon } from "../../src/components/Battles";
+import { INewPokemon } from "../../src/components/constants/Pokemon";
 import { IPokemonEvolution, IPokemonEvolutionByLevel } from "../../src/components/constants/Pokemon";
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 import { it } from "../main";
@@ -12,7 +13,13 @@ it("evolves a Pokemon at exactly its level requirement", (): void => {
     const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 1;
 
     // Act
-    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
+    const chosenInfo: INewPokemon = {
+            item: [],
+            level: pokemonLevel,
+            moves: [],
+            title: pokemonTitle
+    };
+    const pokemon: IPokemon = fsp.equations.newPokemon(chosenInfo);
     fsp.experience.levelup(pokemon);
 
     // Assert
@@ -27,7 +34,13 @@ it("evolves a Pokemon that exceeds its level requirement", (): void => {
     const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level + 1;
 
     // Act
-    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
+    const chosenInfo: INewPokemon = {
+            item: [],
+            level: pokemonLevel,
+            moves: [],
+            title: pokemonTitle
+    };
+    const pokemon: IPokemon = fsp.equations.newPokemon(chosenInfo);
     fsp.experience.levelup(pokemon);
 
     // Assert
@@ -42,7 +55,13 @@ it("does not evolve a Pokemon that has not yet reached its level requirement", (
     const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 2;
 
     // Act
-    const pokemon: IPokemon = fsp.equations.newPokemon(pokemonTitle, pokemonLevel);
+    const chosenInfo: INewPokemon = {
+            item: [],
+            level: pokemonLevel,
+            moves: [],
+            title: pokemonTitle
+    };
+    const pokemon: IPokemon = fsp.equations.newPokemon(chosenInfo);
     fsp.experience.levelup(pokemon);
 
     // Assert
