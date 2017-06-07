@@ -13,8 +13,8 @@ it("evolves a Pokemon at exactly its level requirement", (): void => {
 
     // Act
     const pokemon: IPokemon = fsp.equations.newPokemon({
-            level: pokemonLevel,
-            title: pokemonTitle
+        level: pokemonLevel,
+        title: pokemonTitle
     });
     fsp.experience.levelup(pokemon);
 
@@ -31,8 +31,8 @@ it("evolves a Pokemon that exceeds its level requirement", (): void => {
 
     // Act
     const pokemon: IPokemon = fsp.equations.newPokemon({
-            level: pokemonLevel,
-            title: pokemonTitle
+        level: pokemonLevel,
+        title: pokemonTitle
     });
     fsp.experience.levelup(pokemon);
 
@@ -49,8 +49,8 @@ it("does not evolve a Pokemon that has not yet reached its level requirement", (
 
     // Act
     const pokemon: IPokemon = fsp.equations.newPokemon({
-            level: pokemonLevel,
-            title: pokemonTitle
+        level: pokemonLevel,
+        title: pokemonTitle
     });
     fsp.experience.levelup(pokemon);
 
