@@ -4,6 +4,7 @@ import { Component } from "eightbittr/lib/Component";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
 import { IBattleBall } from "./constants/Items";
+import { INewPokemon } from "./constants/Pokemon";
 import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 import { Moves } from "./equations/Moves";
 import { IWildPokemonSchema } from "./Maps";
@@ -104,21 +105,21 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      *             from the newPokemonEVs equation).
      * @returns A newly created Pokemon.
      */
-    public newPokemon(title: string[], level?: number, moves?: IMove[]): IPokemon {
+    public newPokemon(chosenInfo: INewPokemon): IPokemon {
         const ev: IValuePoints = this.newPokemonEVs();
         const iv: IValuePoints = this.newPokemonIVs();
-        level = level || 1;
 
         return {
-            experience: this.experienceStarting(title, level || 1),
+            experience: this.experienceStarting(chosenInfo.title, chosenInfo.level || 1),
             ev,
+            item: chosenInfo.item,
             iv,
-            level,
-            moves: moves || this.newPokemonMoves(title, level || 1),
-            nickname: title,
-            statistics: this.newPokemonStatistics(title, level, ev, iv),
-            title: title,
-            types: this.gameStarter.constants.pokemon.byName[title.join("")].types
+            level: chosenInfo.level || 1,
+            moves: chosenInfo.moves || this.newPokemonMoves(chosenInfo.title, chosenInfo.level || 1),
+            nickname: chosenInfo.title,
+            statistics: this.newPokemonStatistics(chosenInfo.title, chosenInfo.level || 1, ev, iv),
+            title: chosenInfo.title,
+            types: this.gameStarter.constants.pokemon.byName[chosenInfo.title.join("")].types
         };
     }
 

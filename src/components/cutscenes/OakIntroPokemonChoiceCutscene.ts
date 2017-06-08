@@ -129,7 +129,10 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
 
         this.gameStarter.itemsHolder.setItem("starter", settings.chosen);
         this.gameStarter.itemsHolder.setItem("PokemonInParty", [
-            this.gameStarter.equations.newPokemon(settings.chosen, 5)
+            this.gameStarter.equations.newPokemon({
+                level: 5,
+                title: settings.chosen
+            })
         ]);
         this.gameStarter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
     }

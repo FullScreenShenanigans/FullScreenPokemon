@@ -58,7 +58,10 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     nextCutscene: "OakIntroRivalLeaves",
                     reward: 175,
                     actors: [
-                        this.gameStarter.equations.newPokemon(starterRival, 5)
+                        this.gameStarter.equations.newPokemon({
+                            level: 5,
+                            title: starterRival
+                        })
                     ]
                 }
             },

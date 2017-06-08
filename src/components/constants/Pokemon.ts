@@ -1,3 +1,4 @@
+import { IMove } from "battlemovr/lib/Actors";
 import { IPokemonStatistics } from "../Battles";
 
 /**
@@ -296,6 +297,31 @@ export interface IPokedexInformation {
  */
 export interface IPokedex {
     [i: string]: IPokedexInformation;
+}
+
+/**
+ * Information on new Pokemon being created.
+ */
+export interface INewPokemon {
+    /**
+     * Items held by Pokemon.
+     */
+     item?: string[];
+
+    /**
+     * Level of Pokemon.
+     */
+     level?: number;
+
+    /**
+     * Moves that Pokemon has.
+     */
+     moves?: IMove[];
+
+    /**
+     * Name of Pokemon.
+     */
+     title: string[];
 }
 
 /**
