@@ -13,7 +13,7 @@ export enum Generation {
 /**
  * Determines feature availability based on current generation.
  * 
- * @todo #487   Use a propert node module instead.
+ * @todo #489   Use a proper node module instead.
  */
 export class Features<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
