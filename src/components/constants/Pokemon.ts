@@ -6,7 +6,7 @@ import { IPokemonStatistics } from "../Battles";
 export interface IPokemonListing {
     /**
      * How difficult this is to catch, for the canCatchPokemon equation.
-     * 
+     *
      * @todo Make this non-optional, once it's added to the data.
      */
     catchRate?: number;
@@ -145,8 +145,8 @@ export interface IPokemonEvolution {
 /**
  * The requirements for a Pokemon to be able to evolve.
  */
-export type IPokemonEvolutionRequirement = 
-    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime | 
+export type IPokemonEvolutionRequirement =
+    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime |
     IPokemonEvolutionByTrade | IPokemonEvolutionByItem | IPokemonEvolutionByStats;
 
 /**
@@ -242,7 +242,7 @@ export interface IPokemonEvolutionByStats {
      * The stat that should be smaller to achieve target evolution.
      */
     lesserStat: string;
-    
+
     /**
      * Whether the two stats may be equal.
      */

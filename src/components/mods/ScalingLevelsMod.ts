@@ -22,7 +22,7 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Com
         /**
          * Right before the battle starts, scales the enemy Pokemon
          * to be around the same level as those in the player's party.
-         * 
+         *
          * @param battleInfo   Settings for the current battle.
          */
         onBattleReady: (battleInfo: any): void => {

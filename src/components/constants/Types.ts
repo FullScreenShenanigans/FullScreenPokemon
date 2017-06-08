@@ -4,7 +4,7 @@
 export class Types {
     /**
      * Names of types Pokemon may be.
-     * 
+     *
      * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
     public readonly names: string[] = [

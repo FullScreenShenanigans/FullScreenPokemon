@@ -87,7 +87,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
-     * 
+     *
      * @param thing   A newly placed Character.
      */
     public spawnCharacter(thing: ICharacter): void {
@@ -114,7 +114,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Activates a WindowDetector by immediately starting its cycle of
      * checking whether it's in-frame to activate.
-     * 
+     *
      * @param thing   A newly placed WindowDetector.
      */
     public spawnWindowDetector(thing: IDetector): void {
@@ -128,7 +128,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Freezes a Character to start a dialog.
-     * 
+     *
      * @param thing   A Player to freeze.
      */
     public animatePlayerDialogFreeze(thing: IPlayer): void {
@@ -143,7 +143,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Gradually changes a numeric attribute over time.
-     * 
+     *
      * @param thing   A Thing whose attribute is to change.
      * @param attribute   The name of the attribute to change.
      * @param change   How much to change the attribute each tick.
@@ -194,7 +194,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Freezes a Character and starts a battle with an enemy.
-     * 
+     *
      * @param _   A Character about to start a battle with other.
      * @param other   An enemy about to battle thing.
      */
@@ -229,7 +229,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Creates and positions a set of four Things around a point.
-     * 
+     *
      * @param x   The horizontal value of the point.
      * @param y   The vertical value of the point.
      * @param title   A title for each Thing to create.
@@ -278,7 +278,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Moves a set of four Things away from a point.
-     * 
+     *
      * @param things   The four Things to move.
      * @param amount   How far to move each Thing horizontally and vertically.
      */
@@ -296,7 +296,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Creates a small smoke animation from a point.
-     * 
+     *
      * @param x   The horizontal location of the point.
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
@@ -319,7 +319,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Creates a medium-sized smoke animation from a point.
-     * 
+     *
      * @param x   The horizontal location of the point.
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
@@ -346,7 +346,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Creates a large smoke animation from a point.
-     * 
+     *
      * @param x   The horizontal location of the point.
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
@@ -375,7 +375,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Animates an exclamation mark above a Thing.
-     * 
+     *
      * @param thing   A Thing to show the exclamation over.
      * @param timeout   How long to keep the exclamation (by default, 140).
      * @param callback   A callback for when the exclamation is removed.
@@ -402,7 +402,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Fades the screen out to a solid color.
-     * 
+     *
      * @param settings   Settings for the animation.
      * @returns The solid color Thing.
      */
@@ -437,7 +437,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Places a solid color over the screen and fades it out.
-     * 
+     *
      * @param settings   Settings for the animation.
      * @returns The solid color Thing.
      */
@@ -472,7 +472,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Sets a Thing facing a particular direction.
-     * 
+     *
      * @param thing   An in-game Thing.
      * @param direction   A direction for thing to face.
      * @todo Add more logic here for better performance.
@@ -510,7 +510,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Positions a Character's detector in front of it as its sight.
-     * 
+     *
      * @param thing   A Character that should be able to see.
      */
     public animatePositionSightDetector(thing: ICharacter): void {
@@ -553,7 +553,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Animates the various logic pieces for finishing a dialog, such as pushes,
      * gifts, options, and battle starting or disabling.
-     * 
+     *
      * @param thing   A Player that's finished talking to other.
      * @param other   A Character that thing has finished talking to.
      */
@@ -627,8 +627,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Displays a yes/no options menu for after a dialog has completed.
-     * 
-     * 
+     *
+     *
      * @param thing   A Player that's finished talking to other.
      * @param other   A Character that thing has finished talking to.
      * @param dialog   The dialog settings that just finished.
@@ -700,7 +700,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Activates a Detector to trigger a cutscene and/or routine.
-     * 
+     *
      * @param thing   A Player triggering other.
      * @param other   A Detector triggered by thing.
      */
@@ -737,7 +737,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Activates a Detector to play an audio theme.
-     * 
+     *
      * @param thing   A Player triggering other.
      * @param other   A Detector triggered by thing.
      */
@@ -751,7 +751,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Activates a Detector to play a cutscene, and potentially a dialog.
-     * 
+     *
      * @param thing   A Player triggering other.
      * @param other   A Detector triggered by thing.
      */
@@ -773,7 +773,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Activates a Detector to open a menu, and potentially a dialog.
-     * 
+     *
      * @param thing   A Character triggering other.
      * @param other   A Detector triggered by thing.
      */
@@ -831,7 +831,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Activates a Character's sight detector for when another Character walks
      * into it.
-     * 
+     *
      * @param thing   A Character triggering other.
      * @param other   A sight detector being triggered by thing.
      */
@@ -853,10 +853,10 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * Activation callback for level transports (any Thing with a .transport 
-     * attribute). Depending on the transport, either the map or location are 
+     * Activation callback for level transports (any Thing with a .transport
+     * attribute). Depending on the transport, either the map or location are
      * shifted to it.
-     * 
+     *
      * @param thing   A Character attempting to enter other.
      * @param other   A transporter being entered by thing.
      */
@@ -899,7 +899,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Activation trigger for a gym statue. If the Player is looking up at it,
      * it speaks the status of the gym leader.
-     * 
+     *
      * @param thing   A Player activating other.
      * @param other   A gym statue being activated by thing.
      */
@@ -926,7 +926,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Calls an HMCharacter's partyActivate Function when the Player activates the HMCharacter.
-     * 
+     *
      * @param player   The Player.
      * @param thing   The Solid to be affected.
      */
@@ -947,7 +947,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Activates a Spawner by calling its .activate.
-     * 
+     *
      * @param thing   A newly placed Spawner.
      */
     public activateSpawner(thing: IDetector): void {
@@ -960,7 +960,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Checks if a WindowDetector is within frame, and activates it if so.
-     * 
+     *
      * @param thing   An in-game WindowDetector.
      */
     public checkWindowDetector(thing: IDetector): boolean {
@@ -984,7 +984,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Activates an IAreaSpawner. If it's for a different Area than the current,
      * that area is spawned in the appropriate direction.
-     * 
+     *
      * @param thing   An areaSpawner to activate.
      */
     public spawnAreaSpawner(thing: IAreaSpawner): void {
@@ -1012,7 +1012,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Activation callback for an AreaGate. The Player is marked to now spawn
      * in the new Map and Area.
-     * 
+     *
      * @param thing   A Character walking to other.
      * @param other   An AreaGate potentially being triggered.
      */

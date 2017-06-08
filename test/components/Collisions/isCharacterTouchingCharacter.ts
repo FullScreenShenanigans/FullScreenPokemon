@@ -1,5 +1,5 @@
-import { FullScreenPokemon } from "../../../src/FullScreenPokemon";
 import { ICharacter } from "../../../src/components/Things";
+import { FullScreenPokemon } from "../../../src/FullScreenPokemon";
 import { it } from "../../main";
 import { stubBlankGame } from "../../utils/fakes";
 
@@ -7,7 +7,6 @@ const stubCharacterType: [string, any] = ["Lady", {
     width: 8,
     height: 12
 }];
-
 
 it("returns true when characters are touching", (): void => {
     // Arrange

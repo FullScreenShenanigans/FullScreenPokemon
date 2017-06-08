@@ -27,7 +27,7 @@ export interface IMovePossibility {
 export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Generates priorities for potential moves.
-     * 
+     *
      * @param attackingTeam   Attacking team deciding on a move.
      * @param defendingTeam   Defending team being moved on.
      * @param moves   Potential moves to use.
@@ -77,7 +77,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
 
     /**
      * Determines whether a team is smart enough for turn two special effect moves.
-     * 
+     *
      * @param team   A battling team.
      * @returns Whether the team is smart enough for turn two special effect moves.
      */
@@ -95,7 +95,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
 
     /**
      * Determines whether a team is smart enough for super effective moves.
-     * 
+     *
      * @param team   A battling team.
      * @returns Whether the team is smart enough for super effective moves.
      */
@@ -113,7 +113,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
 
     /**
      * Modifies a move possibility's priority based on battle state.
-     * 
+     *
      * @param possibility   A move possibility.
      * @param modification   A modification summary for a part of the battle state.
      * @param target   The Pokemon being targeted.

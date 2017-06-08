@@ -452,9 +452,9 @@ export interface IPreThing extends IMapsCreatrPreThing {
 export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<TGameStartr> {
     /**
      * Processes additional Thing attributes. For each attribute the Area's
-     * class says it may have, if it has it, the attribute value proliferated 
+     * class says it may have, if it has it, the attribute value proliferated
      * onto the Area.
-     * 
+     *
      * @param area The Area being processed.
      */
     public areaProcess(area: IArea): void {
@@ -473,7 +473,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
     /**
      * Adds a Thing via addPreThing based on the specifications in a PreThing.
      * This is done relative to MapScreener.left and MapScreener.top.
-     * 
+     *
      * @param prething   A PreThing whose Thing is to be added to the game.
      */
     public addPreThing(prething: IPreThing): void {
@@ -520,10 +520,10 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * Adds a new Player Thing to the game and sets it as eightBitter.player. Any
      * required additional settings (namely keys, power/size, and swimming) are
      * applied here.
-     * 
+     *
      * @param left   A left edge to place the Thing at (by default, 0).
      * @param bottom   A top to place the Thing upon (by default, 0).
-     * @param useSavedInfo   Whether an Area's saved info in StateHolder should be 
+     * @param useSavedInfo   Whether an Area's saved info in StateHolder should be
      *                       applied to the Thing's position (by default, false).
      * @returns A newly created Player in the game.
      */
@@ -541,7 +541,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
     /**
      * Sets the game state to a new Map, resetting all Things and inputs in the
      * process. The mod events are fired.
-     * 
+     *
      * @param name   The name of the Map.
      * @param location   The name of the Location within the Map.
      * @param noEntrance    Whether or not an entry Function should
@@ -571,7 +571,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * Things, inputs, the current Area, PixelRender, and MapScreener in the
      * process. The Location's entry Function is called to bring a new Player
      * into the game if specified. The mod events are fired.
-     * 
+     *
      * @param name   The name of the Location within the Map.
      * @param noEntrance   Whether an entry function should be skipped (by default, false).
      * @todo Separate external module logic to their equivalent components then
@@ -644,7 +644,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * Analyzes a PreThing to be placed in one of the
      * cardinal directions of the current Map's boundaries
      * (just outside of the current Area).
-     * 
+     *
      * @param prething   A PreThing whose Thing is to be added to the game.
      * @param direction   The cardinal direction the Character is facing.
      * @remarks Direction is taken in by the .forEach call as the index.
@@ -698,8 +698,8 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
     }
 
     /**
-     * Standard Map entrance Function. Character is placed based on specified Location. 
-     * 
+     * Standard Map entrance Function. Character is placed based on specified Location.
+     *
      * @param location   The name of the Location within the Map.
      */
     public entranceNormal(location: ILocation): void {
@@ -723,7 +723,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
     }
 
     /**
-     * Map entrace Function used when player is added to the Map at the beginning 
+     * Map entrace Function used when player is added to the Map at the beginning
      * of play. Retrieves Character position from the previous save state.
      */
     public entranceResume(): void {
@@ -736,7 +736,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
     /**
      * Runs an areaSpawner to place its Area's Things in the map.
-     * 
+     *
      * @param thing   An in-game areaSpawner.
      * @param area   The Area associated with thing.
      */
@@ -809,7 +809,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
     /**
      * Adds an AreaGate on top of an areaSpawner.
-     * 
+     *
      * @param thing   An areaSpawner that should have a gate.
      * @param area   The Area to spawn into.
      * @param offsetX   Horizontal spawning offset for the Area.

@@ -66,7 +66,7 @@ export interface IKeyboardMenuSettings {
 export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Opens the Keyboard menu and binds it to some required callbacks.
-     * 
+     *
      * @param settings   Settings to apply to the menu and for callbacks.
      */
     public openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
@@ -208,7 +208,7 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * 
+     *
      */
     protected moveSelectionToEnd(): void {
         const menuKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;

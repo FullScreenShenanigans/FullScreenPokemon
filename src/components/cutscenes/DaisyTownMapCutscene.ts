@@ -22,7 +22,7 @@ export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends
     }
 
     /**
-     * Cutscene for the player receiving the Town Map. 
+     * Cutscene for the player receiving the Town Map.
      *
      * @param settings   Settings used for the cutscene.
      */

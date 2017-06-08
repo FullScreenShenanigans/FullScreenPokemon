@@ -19,7 +19,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Callback for when a team attempts to leave the battle.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
@@ -29,7 +29,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Callback for when a team uses an item.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
@@ -40,7 +40,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Callback for when a team's selected actor uses a move.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
@@ -52,7 +52,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Callback for when a team switches actors.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */

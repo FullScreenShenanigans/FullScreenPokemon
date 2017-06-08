@@ -49,7 +49,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Runs a move action's effects consecutively.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
@@ -66,7 +66,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Runs a move action's effect.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the effect is done.
      */
@@ -100,7 +100,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Switches Pokemon if needed.
-     * 
+     *
      * @param teamAndAction   Team and action that was performed.
      * @param onComplete   Handler for when this is done.
      */

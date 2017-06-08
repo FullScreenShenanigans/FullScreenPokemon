@@ -305,7 +305,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Heals a Pokemon back to full health.
-     * 
+     *
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
@@ -322,7 +322,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Checks whether a team is allowed to flee (not facing a trainer).
-     * 
+     *
      * @param team   A team in battle.
      * @returns Whether the team can flee.
      */
@@ -333,7 +333,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Fills in default values for battle options.
-     * 
+     *
      * @param partialBattleOptions   Partial options to start a battle.
      * @returns Completed options to start a battle.
      */

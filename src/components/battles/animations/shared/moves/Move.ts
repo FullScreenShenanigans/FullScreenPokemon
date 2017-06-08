@@ -49,7 +49,7 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
 
     /**
      * Initializes a new instance of the Move class.
-     * 
+     *
      * @param gameStarter   FullScreenPokemon instance this is used for.
      * @param teamAndAction   Team and move being performed.
      */
@@ -76,7 +76,7 @@ export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGame
 
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param onComplete   Callback for when the animation is done.
      * @todo Make this abstract when all moves have it implemented.
      */

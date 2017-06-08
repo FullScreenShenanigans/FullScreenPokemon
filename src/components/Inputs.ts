@@ -16,7 +16,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Checks whether direction keys such as up may trigger for a Character.
-     * 
+     *
      * @param thing   A Character that wants to move.
      * @returns Whether direction keys may trigger.
      */
@@ -39,7 +39,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating an up key press. If possible, this causes
      * walking in the up direction. The onKeyDownUp mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -66,7 +66,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating a right key press. If possible, this causes
      * walking in the right direction. The onKeyDownRight mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -91,7 +91,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating a down key press. If possible, this causes
      * walking in the down direction. The onKeyDownDown mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -118,7 +118,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating a left key press. If possible, this causes
      * walking in the left direction. The onKeyDownLeft mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -146,7 +146,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * Driver for a direction key being pressed. The MenuGraphr's active menu reacts
      * to the movement if it exists, or the triggering Character attempts to walk
      * if not. The onKeyDownDirectionReal mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -173,7 +173,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
      * the selection if it exists. The onKeyDownA mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -207,7 +207,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the B key being pressed. The MenuGraphr's active menu reacts to
      * the deselection if it exists. The onKeyDownB mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -230,9 +230,9 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     }
 
     /**
-     * Reacts to the pause key being pressed. The game is paused if it isn't 
+     * Reacts to the pause key being pressed. The game is paused if it isn't
      * already. The onKeyDownPause mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -248,7 +248,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the mute key being pressed. The game has mute toggled, and the
      * onKeyDownMute mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -263,7 +263,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the select key being pressed. Toggles the use of the registered item.
-     * 
+     *
      * @param thing   The triggering Player.
      * @param event   The original user-caused Event.
      * @todo Extend the use for any registered item, not just the bicycle.
@@ -296,7 +296,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the left key being lifted. The onKeyUpLeft mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -321,7 +321,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the right key being lifted. The onKeyUpRight mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -346,7 +346,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the up key being lifted. The onKeyUpUp mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -371,7 +371,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the down key being lifted. The onKeyUpDown mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -396,7 +396,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the A key being lifted. The onKeyUpA mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -414,7 +414,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the B key being lifted. The onKeyUpB mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -432,7 +432,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the pause key being lifted. The onKeyUpPause mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -447,7 +447,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the context menu being activated. The pause menu is opened,
      * and the onMouseDownRight mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */

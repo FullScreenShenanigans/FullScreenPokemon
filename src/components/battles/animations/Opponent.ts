@@ -43,7 +43,7 @@ export class Opponent<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Animation for when the opponent's actor's health changes.
-     * 
+     *
      * @param health   New value for the actor's health.
      * @param onComplete   Callback for when this is done.
      */
@@ -53,7 +53,7 @@ export class Opponent<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Animation for when the opponent introducing themselves.
-     * 
+     *
      * @param health   New value for the actor's health.
      * @param onComplete   Callback for when this is done.
      */

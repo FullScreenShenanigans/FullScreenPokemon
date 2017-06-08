@@ -135,7 +135,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
     }
 
     /**
-     * Cutscene for allowing the player to choose his Pokemon's nickname. 
+     * Cutscene for allowing the player to choose his Pokemon's nickname.
      *
      * @param settings   Settings used for the cutscene.
      */

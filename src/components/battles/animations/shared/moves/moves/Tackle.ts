@@ -9,7 +9,7 @@ import { Move } from "../Move";
 export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
@@ -48,7 +48,7 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
     /**
      * Flickers the defending Thing.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     private flickerDefender(callback: () => void): void {

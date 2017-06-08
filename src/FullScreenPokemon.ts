@@ -37,7 +37,7 @@ import { Utilities } from "./components/Utilities";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
 /**
- * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
+ * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
 export class FullScreenPokemon extends GameStartr {
     /**
@@ -56,7 +56,7 @@ export class FullScreenPokemon extends GameStartr {
     public battleMover: IBattleMovr;
 
     /**
-     * A simple container for Map attributes given by switching to an Area within 
+     * A simple container for Map attributes given by switching to an Area within
      * that map.
      */
     public mapScreener: IMapScreenr;
@@ -243,7 +243,7 @@ export class FullScreenPokemon extends GameStartr {
 
     /**
      * Resets the system modules.
-     * 
+     *
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      */
     protected resetModules(settings: IProcessedSizeSettings): void {
@@ -267,7 +267,7 @@ export class FullScreenPokemon extends GameStartr {
 
     /**
      * Creates the settings for individual modules.
-     * 
+     *
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns Settings for individual modules.
      */
