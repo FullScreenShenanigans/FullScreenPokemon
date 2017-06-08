@@ -1,5 +1,6 @@
 import { Component } from "eightbittr/lib/Component";
 
+import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IItemSchema } from "../constants/Items";
 import { IMenuSchema } from "../Menus";
@@ -114,6 +115,28 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const options: any[] = [
             {
                 callback: (): void => {
+                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
+                    if (category === "HM") {
+                        throw new Error("No onUse defined for HMs yet");
+                    }
+                    if (category === "TM") {
+                        throw new Error("No onUse defined for TMs yet");
+                    }
+                    const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+                    const chosenPokemon = partyPokemon[0];
+                    chosenPokemon.item = listing.item.split("");
+                    listing.amount = listing.amount - 1;
+                },
+                text: "GIVE"
+            },
+            {
+                callback: (): void => {
+                    if (this.gameStarter.itemsHolder.getItem(listing.item).category === "HM") {
+                        throw new Error("No onUse defined for HMs yet");
+                    }
+                    if (this.gameStarter.itemsHolder.getItem(listing.item).category === "TM") {
+                        throw new Error("No onUse defined for TMs yet");
+                    }
                     if (!settings.onUse) {
                         throw new Error("No onUse defined for items.");
                     }
