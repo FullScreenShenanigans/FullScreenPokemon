@@ -13,7 +13,7 @@ export const mochaLoader: MochaLoader = new MochaLoader(mocha);
 
 /**
  * Adds a new test under the current test path.
- * 
+ *
  * @param testName   The name of the test.
  * @param test   A new test.
  */
@@ -21,7 +21,7 @@ export const it: typeof mochaLoader.it = mochaLoader.it.bind(mochaLoader);
 
 /**
  * Adds a new test under a custom test path.
- * 
+ *
  * @param path   Extra path after the current test path.
  * @param testName   The name of the test.
  * @param test   A new test.
@@ -30,7 +30,7 @@ export const under: typeof mochaLoader.under = mochaLoader.under.bind(mochaLoade
 
 /**
  * Informs RequireJS of the file location for a test dependency.
- * 
+ *
  * @param testDependencies   Modules depended upon for tests.
  */
 function redirectTestDependencies(dependencies: string[]): void {
@@ -45,7 +45,7 @@ function redirectTestDependencies(dependencies: string[]): void {
 
 /**
  * Recursively loads test paths under mocha loader.
- * 
+ *
  * @param loadingPaths   Test paths to load.
  * @param i   Which index test path to load.
  * @param onComplete   A callback for when loading is done.
