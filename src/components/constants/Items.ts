@@ -13,7 +13,7 @@ export interface IItemSchema {
     /**
      * What category of items this falls under.
      */
-    category: "Key" | "Main" | "Pokeball";
+    category: "HM" | "Key" | "Main" | "Pokeball" | "TM";
 
     /**
      * A short description of what the item does, such as "Cures Poison".
@@ -105,7 +105,7 @@ export class Items {
             "effect": "Raises chances of a Critical Hit in battle",
             "category": "Main"
         },
-        "Elixir": {
+        "Elixer": {
             "price": undefined,
             "effect": "Restores 10PP to each move",
             "category": "Main"
@@ -173,7 +173,7 @@ export class Items {
             "effect": "Restores 80HP",
             "category": "Main"
         },
-        "Max Elixir": {
+        "Max Elixer": {
             "effect": "Restores all PP to all moves",
             "category": "Main"
         },
@@ -203,7 +203,7 @@ export class Items {
             "effect": "Sell for money",
             "category": "Main"
         },
-        "Paralyz Heal": {
+        "Parlyz Heal": {
             "price": 200,
             "effect": "Cures Paralysis",
             "category": "Main"
@@ -408,6 +408,226 @@ export class Items {
         "Town Map": {
             "effect": "Shows your position in the Pokemon World",
             "category": "Key"
-        }
+        },
+        "HM01": {
+            "effect": "Cut",
+            "category": "HM"
+        },
+        "HM02": {
+            "effect": "Fly",
+            "category": "HM"
+        },
+        "HM03": {
+            "effect": "Surf",
+            "category": "HM"
+        },
+        "HM04": {
+            "effect": "Strength",
+            "category": "HM"
+        },
+        "HM05": {
+            "effect": "Flash",
+            "category": "HM"
+        },
+        "TM01": {
+            "effect": "Mega Punch",
+            "category": "TM"
+        },
+        "TM02": {
+            "effect": "Razor Wnd",
+            "category": "TM"
+        },
+        "TM03": {
+            "effect": "Swords Dance",
+            "category": "TM"
+        },
+        "TM04": {
+            "effect": "Whirlwind",
+            "category": "TM"
+        },
+        "TM05": {
+            "effect": "Mega Kick",
+            "category": "TM"
+        },
+        "TM06": {
+            "effect": "Toxic",
+            "category": "TM"
+        },
+        "TM07": {
+            "effect": "Horn Drill",
+            "category": "TM"
+        },
+        "TM08": {
+            "effect": "Body Slam",
+            "category": "TM"
+        },
+        "TM09": {
+            "effect": "Take Down",
+            "category": "TM"
+        },
+        "TM10": {
+            "effect": "Double-Edge",
+            "category": "TM"
+        },
+        "TM11": {
+            "effect": "BubbleBeam",
+            "category": "TM"
+        },
+        "TM12": {
+            "effect": "Water Gun",
+            "category": "TM"
+        },
+        "TM13": {
+            "effect": "Ice Beam",
+            "category": "TM"
+        },
+        "TM14": {
+            "effect": "Blizzard",
+            "category": "TM"
+        },
+        "TM15": {
+            "effect": "Hyper Beam",
+            "category": "TM"
+        },
+        "TM16": {
+            "effect": "Pay Day",
+            "category": "TM"
+        },
+        "TM17": {
+            "effect": "Submission",
+            "category": "TM"
+        },
+        "TM18": {
+            "effect": "Counter",
+            "category": "TM"
+        },
+        "TM19": {
+            "effect": "Seismic Toss",
+            "category": "TM"
+        },
+        "TM20": {
+            "effect": "Rage",
+            "category": "TM"
+        },
+        "TM21": {
+            "effect": "Mega Drain",
+            "category": "TM"
+        },
+        "TM22": {
+            "effect": "SolarBeam",
+            "category": "TM"
+        },
+        "TM23": {
+            "effect": "Dragon Rage",
+            "category": "TM"
+        },
+        "TM24": {
+            "effect": "Thunderbolt",
+            "category": "TM"
+        },
+        "TM25": {
+            "effect": "Thunder",
+            "category": "TM"
+        },
+        "TM26": {
+            "effect": "Earthquake",
+            "category": "TM"
+        },
+        "TM27": {
+            "effect": "Fissure",
+            "category": "TM"
+        },
+        "TM28": {
+            "effect": "Dig",
+            "category": "TM"
+        },
+        "TM29": {
+            "effect": "Psychic",
+            "category": "TM"
+        },
+        "TM30": {
+            "effect": "Teleport",
+            "category": "TM"
+        },
+        "TM31": {
+            "effect": "Mimic",
+            "category": "TM"
+        },
+        "TM32": {
+            "effect": "Double Team",
+            "category": "TM"
+        },
+        "TM33": {
+            "effect": "Reflect",
+            "category": "TM"
+        },
+        "TM34": {
+            "effect": "Bide",
+            "category": "TM"
+        },
+        "TM35": {
+            "effect": "Metronome",
+            "category": "TM"
+        },
+        "TM36": {
+            "effect": "Selfdestruct",
+            "category": "TM"
+        },
+        "TM37": {
+            "effect": "Egg Bomb",
+            "category": "TM"
+        },
+        "TM38": {
+            "effect": "Fire Blast",
+            "category": "TM"
+        },
+        "TM39": {
+            "effect": "Swift",
+            "category": "TM"
+        },
+        "TM40": {
+            "effect": "Skull Bash",
+            "category": "TM"
+        },
+        "TM41": {
+            "effect": "Softboiled",
+            "category": "TM"
+        },
+        "TM42": {
+            "effect": "Dream Eater",
+            "category": "TM"
+        },
+        "TM43": {
+            "effect": "Sky Attack",
+            "category": "TM"
+        },
+        "TM44": {
+            "effect": "Rest",
+            "category": "TM"
+        },
+        "TM45": {
+            "effect": "Thunder Wave",
+            "category": "TM"
+        },
+        "TM46": {
+            "effect": "Psywave",
+            "category": "TM"
+        },
+        "TM47": {
+            "effect": "Explosion",
+            "category": "TM"
+        },
+        "TM48": {
+            "effect": "Rock Slide",
+            "category": "TM"
+        },
+        "TM49": {
+            "effect": "Tri Attack",
+            "category": "TM"
+        },
+        "TM50": {
+            "effect": "Substitute",
+            "category": "TM"
+        },
     };
 }

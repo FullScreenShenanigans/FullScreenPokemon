@@ -108,10 +108,12 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         const ev: IValuePoints = this.newPokemonEVs();
         const iv: IValuePoints = this.newPokemonIVs();
         level = level || 1;
-
+        const item = "";
+        
         return {
             experience: this.experienceStarting(title, level || 1),
             ev,
+            item,
             iv,
             level,
             moves: moves || this.newPokemonMoves(title, level || 1),

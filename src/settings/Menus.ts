@@ -1094,7 +1094,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
             } as imenugraphr.IListMenuSchema,
             "Item": {
                 "size": {
-                    "width": 112,
+                    "width": 150,
                     "height": 80
                 },
                 "position": {
@@ -1108,6 +1108,30 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                 "ignoreProgressB": true,
                 "textXOffset": 32,
                 "textYOffset": 16
+            },
+            "ItemUse": {
+                "size": {
+                    "width": 250,
+                    "height": 200
+                },
+                "position": {
+                    "horizontal": "right",
+                    "vertical": "bottom"
+                },
+                "backMenu": "Items"
+            },
+            "ItemConfirmation": {
+                "size": {
+                    "width": 50,
+                    "height": 50
+                },
+                "position": {
+                    "offset": {
+                        "bottom": 210,
+                        "right": 50
+                    }
+                },
+                "backMenu": "Items"
             },
             "Player": {
                 "size": {
