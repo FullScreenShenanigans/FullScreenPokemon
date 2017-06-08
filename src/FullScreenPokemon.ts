@@ -20,6 +20,7 @@ import { Cycling } from "./components/Cycling";
 import { Equations } from "./components/Equations";
 import { Evolution } from "./components/Evolution";
 import { Experience } from "./components/Experience";
+import { Features } from "./components/Features";
 import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
@@ -122,6 +123,11 @@ export class FullScreenPokemon extends GameStartr {
     public experience: Experience<FullScreenPokemon>;
 
     /**
+     * Feature availability used by this instance.
+     */
+    public features: Features<FullScreenPokemon>;
+
+    /**
      * Fishing functions used by this instance.
      */
     public fishing: Fishing<FullScreenPokemon>;
@@ -219,6 +225,7 @@ export class FullScreenPokemon extends GameStartr {
         this.constants = new Constants(this);
         this.cutscenes = new Cutscenes(this);
         this.equations = new Equations(this);
+        this.features = new Features(this);
         this.gameplay = new Gameplay(this);
         this.graphics = new Graphics(this);
         this.inputs = new Inputs(this);
