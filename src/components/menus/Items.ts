@@ -6,7 +6,7 @@ import { IMenuSchema } from "../Menus";
 
 /**
  * A single item's listing in an inventory.
- * 
+ *
  * @todo When items get their own component(s), move this there.
  */
 export interface IInventoryListing {
@@ -23,7 +23,7 @@ export interface IInventoryListing {
 
 /**
  * Callback for peforming an action with an item's listing.
- * 
+ *
  * @param listing   A selected item listing.
  */
 export interface IOnListingSelect {
@@ -66,7 +66,7 @@ export interface IItemsMenuSettings extends IItemMenuSettings {
 export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Opens the Items menu for the items in the player's inventory.
-     * 
+     *
      * @param settings   Custom attributes to apply to the menu.
      */
     public openItemsMenu(settings: IItemsMenuSettings = {}): void {
@@ -106,7 +106,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Opens the Item menu for the item the player selected from the inventory.
-     * 
+     *
      * @param listing   Item listing being displayed.
      * @param settings   Custom attributes to apply to the menu.
      */

@@ -10,7 +10,7 @@ import { IBattleInfo, IPokemon } from "../../../../Battles";
 export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Animates the player attempting to flee.
-     * 
+     *
      * @param onComplete   Handler for when this is done.
      * @remarks onComplete won't be called if the battle is ended by fleeing successfully.
      * @see http://bulbapedia.bulbagarden.net/wiki/Escape#Generation_I_and_II
@@ -38,7 +38,7 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Handler for the player failing to flee.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public fail(onComplete: () => void): void {

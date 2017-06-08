@@ -20,7 +20,7 @@ export interface IFleeTextGenerators {
 
 /**
  * Generates text for a Pokemon using a move.
- * 
+ *
  * @param team   Team controlling the Pokemon.
  * @param pokemon   Name of the Pokemon using the move.
  * @param move   Name of the move.
@@ -31,21 +31,21 @@ export interface IMoveTextGenerator {
 }
 
 /**
- * 
+ *
  */
 export interface IRetractTextGenerator {
     (team: IBattleTeam, pokemon: string): IMenuDialogRaw;
 }
 
 /**
- * 
+ *
  */
 export interface ISendOutTextGenerator {
     (team: IBattleTeam, pokemon: string): IMenuDialogRaw;
 }
 
 /**
- * 
+ *
  */
 export interface IVictoryTextGenerator {
     (victor: IBattleTeam, loser: IBattleTeam): IMenuDialogRaw;
@@ -72,21 +72,21 @@ export interface ITeamsTexts {
 }
 
 /**
- * 
+ *
  */
 export interface ITextStartGenerator {
     (team: IBattleTeam): IMenuDialogRaw;
 }
 
 /**
- * 
+ *
  */
 export interface IBattleOutcomeTextGenerator {
     (): IMenuDialogRaw;
 }
 
 /**
- * 
+ *
  */
 export interface IBattleOutcomeTextGenerators {
     [i: number /* BattleOutcome */]: IBattleOutcomeTextGenerator;

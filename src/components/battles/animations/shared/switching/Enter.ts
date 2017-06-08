@@ -50,7 +50,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Initializes a new instance of the Enter class.
-     * 
+     *
      * @param gameStarter   FullScreenPokemon instance this is used for.
      * @param settings   Entrance settings for animation positions and sprites.
      */
@@ -62,7 +62,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Runs an entrance animation for the team's selected Pokemon.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
@@ -75,7 +75,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Runs a Pokemon entrance animation without a team leader.
-     * 
+     *
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
@@ -89,7 +89,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Runs a Pokemon entrance animation with a team leader.
-     * 
+     *
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
@@ -117,7 +117,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Creates a poof of smoke before the Pokemon appears.
-     * 
+     *
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
@@ -133,7 +133,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Visually shows the Pokemon.
-     * 
+     *
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */

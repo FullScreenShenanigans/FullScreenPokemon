@@ -5,7 +5,7 @@ import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 
 /**
  * Creates a stubbed instance of the FullScreenPokemon class.
- * 
+ *
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class.
  */
@@ -34,7 +34,7 @@ export function stubFullScreenPokemon(settings?: ISizeSettings): FullScreenPokem
 
 /**
  * Creates a new instance of the FullScreenPokemon class with an in-progress game.
- * 
+ *
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class with an in-progress game.
  */

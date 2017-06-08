@@ -58,7 +58,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Com
      * Cutscene for the PokeMart item menu.
      *
      * @param settings   Settings used for the cutscene.
-     * 
+     *
      * @todo Add constants for all items, for display names
      */
     public BuyMenu(settings: any): void {
@@ -231,7 +231,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Com
 
     /**
      * Cutscene for carrying out a PokeMart transaction. Can either confirm or deny
-     * the purchase based on the player's total money. 
+     * the purchase based on the player's total money.
      *
      * @param _settings   Settings used for the cutscene.
      * @param args  Settings for the routine.
@@ -263,7 +263,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Com
     }
 
     /**
-     * Cutscene for when the player does not have enough money for the 
+     * Cutscene for when the player does not have enough money for the
      * PokeMart purchase.
      */
     public FailPurchase(): void {

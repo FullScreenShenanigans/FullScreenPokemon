@@ -208,7 +208,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
     }
 
     /**
-     * Cutscene for the rival accepting the Pokedex and challenge to complete Oak's goal. 
+     * Cutscene for the rival accepting the Pokedex and challenge to complete Oak's goal.
      *
      * @param settings   Settings used for the cutscene.
      */

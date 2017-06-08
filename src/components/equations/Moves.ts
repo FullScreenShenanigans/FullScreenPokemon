@@ -9,7 +9,7 @@ import { IMoveSchema } from "../constants/Moves";
 export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Checks whether a move only has a status effect (does no damage, or nothing).
-     * 
+     *
      * @param move   Schema for a move.
      * @returns Whether the moves has only a status effect primarily.
      */
@@ -25,7 +25,7 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Determines whether a move primarily changes a statistic by a certain amount.
-     * 
+     *
      * @param moveSchema   Schema for a move.
      * @param statistic   Statistic that should be changed.
      * @param change   How much the statistic should be changed.
@@ -47,7 +47,7 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Determines whether a move is primarily effective against a set of types.
-     * 
+     *
      * @param moveSchema   Schema for a move.
      * @param types   Set of Pokemon types.
      * @returns Whether the move is primarily effective against the types.

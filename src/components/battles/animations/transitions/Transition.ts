@@ -14,7 +14,7 @@ export class Transition<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Initializes a new instance of the Transition class.
-     * 
+     *
      * @param gameStarter   FullScreenPokemon instance this is used for.
      * @param settings   Settings for the transition.
      */

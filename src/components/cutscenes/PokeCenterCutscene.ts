@@ -11,7 +11,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
     /**
      * Cutscene for a nurse's welcome at the Pokemon Center.
      *
-     * @param settings   Settings used for the cutscene. 
+     * @param settings   Settings used for the cutscene.
      */
     public Welcome(settings: any): void {
         settings.nurse = this.gameStarter.utilities.getThingById(settings.nurseId || "Nurse");
@@ -76,7 +76,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
     /**
      * Cutscene for placing Pokeballs into the healing machine.
      *
-     * @param settings   Settings used for the cutscene. 
+     * @param settings   Settings used for the cutscene.
      */
     public Healing(settings: any): void {
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");

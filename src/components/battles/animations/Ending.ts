@@ -18,7 +18,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Runs ending battle animations.
-     * 
+     *
      * @param outcome   Descriptor of what finished the battle.
      * @param onBattleComplete   Callback for when the battle is done.
      */
@@ -63,7 +63,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Disposes of visual things post-battle.
-     * 
+     *
      * @param battleInfo   Info on the ending battle.
      * @param outcome   Descriptor of what finished the battle.
      * @param onComplete   Callback for when this is done.

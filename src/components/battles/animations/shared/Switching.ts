@@ -28,7 +28,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Initializes a new instance of the Switching class.
-     * 
+     *
      * @param gameStarter   FullScreenPokemon instance this is used for.
      * @param settings   Switching settings for animation positions and sprites.
      */
@@ -40,7 +40,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Animation for when the player's actor enters battle.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public enter(onComplete: () => void): void {
@@ -49,7 +49,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Animation for when the player's actor exits battle.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public exit(onComplete: () => void): void {
@@ -58,7 +58,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Animation for when the player's actor gets knocked out.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public knockout(onComplete: () => void): void {
@@ -67,7 +67,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Animation for the player switching Pokemon.
-     * 
+     *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when this is done.
      */
@@ -81,7 +81,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Animation for switching out the current Pokemon.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     private switchOut(onComplete: () => void): void {

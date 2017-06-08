@@ -8,7 +8,7 @@ import { Move } from "../Move";
 export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
@@ -53,7 +53,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
     /**
      * Animates the first cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
@@ -69,7 +69,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
     /**
      * Animates the second cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
@@ -98,7 +98,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
     /**
      * Animates the third cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
@@ -130,7 +130,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
     /**
      * Animates the fourth cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */

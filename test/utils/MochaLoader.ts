@@ -43,7 +43,7 @@ export class MochaLoader {
 
     /**
      * Initializes a new instance of the MochaLoader class.
-     * 
+     *
      * @param mocha   The underlying mocha instance.
      */
     public constructor(mocha: Mocha) {
@@ -53,7 +53,7 @@ export class MochaLoader {
 
     /**
      * Sets the current test path.
-     * 
+     *
      * @param rawPath   A new current test path.
      */
     public setTestPath(rawPath: string): void {
@@ -62,7 +62,7 @@ export class MochaLoader {
 
     /**
      * Adds a new test under the current test path.
-     * 
+     *
      * @param testName   The name of the test.
      * @param test   A new test.
      */
@@ -72,7 +72,7 @@ export class MochaLoader {
 
     /**
      * Adds a new test under a custom test path.
-     * 
+     *
      * @param path   Extra path after the current test path.
      * @param testName   The name of the test.
      * @param test   A new test.
@@ -114,7 +114,7 @@ export class MochaLoader {
 
     /**
      * Recursively describes a test hierarchy and its children hierarchies.
-     * 
+     *
      * @param testHierarchy   A test hierarchy to describe.
      */
     private describeTestHierarchy(testHierarchy: ITestHierarchy): void {

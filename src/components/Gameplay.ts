@@ -115,7 +115,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
     /**
      * Checks whether inputs may trigger, which is always true, and prevents the event.
-     * 
+     *
      * @returns Whether inputs may trigger (true).
      */
     public canInputsTrigger(): boolean {

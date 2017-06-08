@@ -20,7 +20,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Reacts to an actor getting knocked out.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when this is done.
@@ -44,7 +44,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Determines the next action to take.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is taking action.
      * @param onChoice   Callback for when an action is chosen.
@@ -55,7 +55,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Resets the battle options menus.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      */
@@ -90,7 +90,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Opens the in-battle moves menu.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      */
@@ -121,7 +121,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Opens the in-battle items menu.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      */

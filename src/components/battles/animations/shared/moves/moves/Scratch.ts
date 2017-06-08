@@ -9,7 +9,7 @@ import { Move } from "../Move";
 export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {

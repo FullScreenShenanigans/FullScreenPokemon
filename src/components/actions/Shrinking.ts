@@ -9,7 +9,7 @@ import { IThing } from "../Things";
 export class Shrinking<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Shrinks a Thing down to nothing.
-     * 
+     *
      * @param thing   Thing to be shrunk.
      * @param onComplete   Callback for when this is done.
      */
@@ -21,7 +21,7 @@ export class Shrinking<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Expands a Thing from nothing to full size.
-     * 
+     *
      * @param thing   Thing to be expanded.
      * @param onComplete   Callback for when this is done.
      */

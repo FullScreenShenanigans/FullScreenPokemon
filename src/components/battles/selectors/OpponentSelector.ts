@@ -18,7 +18,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
 
     /**
      * Reacts to an actor getting knocked out.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when this is done.
@@ -43,7 +43,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
 
     /**
      * Determines the next action to take.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      * @see http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI

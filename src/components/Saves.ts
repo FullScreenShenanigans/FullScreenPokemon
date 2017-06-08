@@ -89,7 +89,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Saves all persistant information about the current game state.
-     * 
+     *
      * @param showText   Whether to display a status menu (by default, false).
      */
     public saveGame(showText: boolean = true): void {
@@ -149,7 +149,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
     /**
      * Loads JSON game data from a data string and sets it as the game state,
      * then starts gameplay.
-     * 
+     *
      * @param dataRaw   Raw data to be parsed as JSON.
      */
     public loadData(dataRaw: string): void {
@@ -187,7 +187,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Saves the position of a certain Character.
-     * 
+     *
      * @param character   An in-game Character.
      * @param id   The ID associated with the Character.
      */
@@ -208,7 +208,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Pushes and saves the current state of a variable to a stack.
-     * 
+     *
      * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
      * @param title   Name for the state being saved.
      * @param value   The values of the variable to be saved.
@@ -228,7 +228,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Updates to the most recently saved state for a variable.
-     * 
+     *
      * @param thing   The Thing having its state restored.
      * @param title   The name of the state to restore.
      */
@@ -247,7 +247,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Adds an in-game item to the character's bag.
-     * 
+     *
      * @param item    Name of item being stored.
      * @param amount   How many of the item to add, if not 1.
      */
@@ -262,7 +262,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Adds a Pokemon by title to the Pokedex.
-     * 
+     *
      * @param titleRaw   The raw title of the Pokemon.
      * @param status   Whether the Pokemon has been seen and caught.
      */
@@ -295,7 +295,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
     /**
      * Retrieves known Pokedex listings in ascending order. Unknown Pokemon are
      * replaced with `undefined`.
-     * 
+     *
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {

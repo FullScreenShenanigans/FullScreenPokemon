@@ -403,7 +403,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Opens the Town Map menu.
-     * 
+     *
      * @param settings   Custom attributes to apply to the menu.
      */
     public openTownMapMenu(settings?: IMenuSchema): void {
@@ -436,7 +436,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Shows a Pokemon's nest locations on the Town Map menu.
-     * 
+     *
      * @param title   The title of the Pokemon to show nest locations of.
      */
     public showTownMapPokemonLocations(title: string[]): void {

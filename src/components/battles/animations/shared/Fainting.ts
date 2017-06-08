@@ -11,7 +11,7 @@ import { IThing } from "../../../Things";
 export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Runs a fainting animation.
-     * 
+     *
      * @param pokemon   Pokemon fainting.
      * @param team   The Pokemon's team.
      * @param onComplete   Handler for when this is done.

@@ -9,7 +9,7 @@ import { IThing } from "./Things";
 export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrGraphics<TGameStartr> {
     /**
      * Collects all unique Things that should be kept on top of battle intro animations.
-     * 
+     *
      * @param thingsRaw   Titles of and/or references to Things that should be kept.
      * @returns The unique Things that will be kept.
      */
@@ -35,7 +35,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
     /**
      * Moves all kept Things in a battle to the Text group for animations.
-     * 
+     *
      * @param keptThings    Things that should be visible above text animations.
      */
     public moveThingsToText(things: IThing[]): void {
@@ -45,8 +45,8 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
     }
 
     /**
-     * Moves kept Things 
-     * 
+     * Moves kept Things
+     *
      * @remarks This is necessary because animations may put backgrounds
      *          as the first Text Thing after keptThings were added.
      */
@@ -61,7 +61,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
     /**
      * Moves all kept Things in a battle back to their original groups.
-     * 
+     *
      * @param keptThings    Things that should be visible above text animations.
      */
     public moveThingsFromText(things: IThing[]): void {

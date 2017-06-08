@@ -2,14 +2,14 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
-import { 
-    IPokemonEvolution, IPokemonEvolutionByItem, IPokemonEvolutionByLevel, 
+import {
+    IPokemonEvolution, IPokemonEvolutionByItem, IPokemonEvolutionByLevel,
     IPokemonEvolutionByStats, IPokemonEvolutionByTrade, IPokemonEvolutionRequirement
 } from "./constants/Pokemon";
 
 /**
  * Holds arguments used in IRequirementHander functions.
- * 
+ *
  * @type ModifierType   What type of modifier is being used.
  * @type RequirementType   What type of requirement is being used.
  */
@@ -25,7 +25,7 @@ export interface IRequirementHandlerArgs<ModifierType, RequirementType> {
     pokemon: IPokemon;
 
     /**
-     * Requirement for evolution. 
+     * Requirement for evolution.
      */
     requirement: RequirementType;
 }
@@ -64,7 +64,7 @@ export interface IItemModifier {
  * Handles different methods of evolution, keyed by requirement type.
  */
 export interface IRequirementHandlers {
-    [i: string]: IRequirementHandler; 
+    [i: string]: IRequirementHandler;
 }
 
 /**
@@ -73,7 +73,7 @@ export interface IRequirementHandlers {
 export interface IRequirementHandler {
     /**
      * Outputs true if the input pokemon is ready to evolve, and false otherwise.
-     * 
+     *
      * @param args   Arguments for this evolution check.
      */
     (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>): boolean;
@@ -113,8 +113,8 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             return false;
         },
         stats: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
-            const difference: number = 
-                args.pokemon.statistics[args.requirement.greaterStat].normal 
+            const difference: number =
+                args.pokemon.statistics[args.requirement.greaterStat].normal
                 - args.pokemon.statistics[args.requirement.lesserStat].normal;
             if (args.requirement.mayBeEqual) {
                 return difference === 0;
@@ -123,10 +123,10 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             return difference > 0;
         }
     };
-    
+
     /**
      * Checks to see if a Pokemon can evolve.
-     * 
+     *
      * @param pokemon   The pokemon in the party to check.
      * @param modifier   Modifier for specific situations such as trade.
      * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
@@ -148,7 +148,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Evolves a specified pokemon.
-     * 
+     *
      * @param pokemon   The pokemon in the party to evolve.
      * @param evolvedForm   The pokemon it should become.
      */
@@ -160,7 +160,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Checks to see if a Pokemon is ready for this specific evolution.
-     * 
+     *
      * @param pokemon   The pokemon in the party to check.
      * @param evolution   The evolution of this pokemon to check.
      * @param modifier   Modifier for specific situations such as trade.
@@ -168,7 +168,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      */
     private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution, modifier?: IEvolutionModifier): boolean {
         for (const requirement of evolution.requirements) {
-            if (!this.requirementHandlers[requirement.method]) { 
+            if (!this.requirementHandlers[requirement.method]) {
                 throw new Error("Evolution requirement does not have a correct method property");
             }
 

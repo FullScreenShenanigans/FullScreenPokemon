@@ -32,5 +32,5 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
             chosen.title = this.gameStarter.numberMaker.randomArrayMember(randomPokemon);
             return chosen;
         }
-    };    
-} 
+    };
+}
