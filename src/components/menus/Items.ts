@@ -144,13 +144,6 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
         if (this.gameStarter.features.heldItems) {
             options.push({
                 callback: (): void => {
-                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
-                    if (category === "HM") {
-                        return;
-                    }
-                    if (category === "TM") {
-                        return;
-                    }
                     const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
                     const chosenPokemon = partyPokemon[0];
                     chosenPokemon.item = listing.item.split("");
