@@ -112,17 +112,44 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param settings   Custom attributes to apply to the menu.
      */
     public openItemMenu(listing: IInventoryListing, settings: IItemMenuSettings): void {
-        let options: any[] = [];
+        const options = [
+            {
+                callback: (): void => {
+                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
+                    if (category === "HM") {
+                        return;
+                    }
+                    if (category === "TM") {
+                        return;
+                    }
+                    if (!settings.onUse) {
+                        throw new Error("No onUse defined for items.");
+                    }
+
+                    settings.onUse(listing);
+                },
+                text: "USE"
+            },
+            {
+                callback: (): void => {
+                    if (!settings.onToss) {
+                        throw new Error("No onToss defined for items.");
+                    }
+
+                    settings.onToss(listing);
+                },
+                text: "TOSS"
+            }
+        ];
         if (this.gameStarter.features.heldItems) {
-            options = [
-            {
+            options.push({
                 callback: (): void => {
                     const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
                     if (category === "HM") {
-                        { return; }
+                        return;
                     }
                     if (category === "TM") {
-                        { return; }
+                        return;
                     }
                     const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
                     const chosenPokemon = partyPokemon[0];
@@ -130,82 +157,8 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     listing.amount = listing.amount - 1;
                 },
                 text: "GIVE"
-            },
-            {
-                callback: (): void => {
-                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
-                    if (category === "HM") {
-                        { return; }
-                    }
-                    if (category === "TM") {
-                        { return; }
-                    }
-                    if (!settings.onUse) {
-                        throw new Error("No onUse defined for items.");
-                    }
-
-                    settings.onUse(listing);
-                },
-                text: "USE"
-            },
-            {
-                callback: (): void => {
-                    if (!settings.onToss) {
-                        throw new Error("No onToss defined for items.");
-                    }
-
-                    settings.onToss(listing);
-                },
-                text: "TOSS"
-            }
-        ];
-    } else {
-        options = [
-            {
-                callback: (): void => {
-                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
-                    if (category === "HM") {
-                        { return; }
-                    }
-                    if (category === "TM") {
-                        { return; }
-                    }
-                    const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-                    const chosenPokemon = partyPokemon[0];
-                    chosenPokemon.item = listing.item.split("");
-                    listing.amount = listing.amount - 1;
-                },
-                text: "GIVE"
-            },
-            {
-                callback: (): void => {
-                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
-                    if (category === "HM") {
-                        { return; }
-                    }
-                    if (category === "TM") {
-                        { return; }
-                    }
-                    if (!settings.onUse) {
-                        throw new Error("No onUse defined for items.");
-                    }
-
-                    settings.onUse(listing);
-                },
-                text: "USE"
-            },
-            {
-                callback: (): void => {
-                    if (!settings.onToss) {
-                        throw new Error("No onToss defined for items.");
-                    }
-
-                    settings.onToss(listing);
-                },
-                text: "TOSS"
-            }
-        ];
-    }
+            });
+        }
 
         this.gameStarter.modAttacher.fireEvent("onOpenItemMenu", listing);
 
