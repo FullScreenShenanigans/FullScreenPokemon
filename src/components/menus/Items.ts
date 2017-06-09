@@ -141,6 +141,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                 text: "TOSS"
             }
         ];
+
         if (this.gameStarter.features.heldItems) {
             options.push({
                 callback: (): void => {
