@@ -115,13 +115,6 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const options = [
             {
                 callback: (): void => {
-                    const category = this.gameStarter.itemsHolder.getItem(listing.item).category;
-                    if (category === "HM") {
-                        return;
-                    }
-                    if (category === "TM") {
-                        return;
-                    }
                     if (!settings.onUse) {
                         throw new Error("No onUse defined for items.");
                     }
