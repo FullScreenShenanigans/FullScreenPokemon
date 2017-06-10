@@ -22,7 +22,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         console.warn("Cannot find Introduction audio theme!");
         // this.gameStarter.audioPlayer.playTheme("Introduction");
-        this.gameStarter.modAttacher.fireEvent("onIntroFadeIn", oak);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onIntroFadeIn, oak);
 
         this.gameStarter.maps.setMap("Blank", "White");
         this.gameStarter.menuGrapher.deleteActiveMenu();

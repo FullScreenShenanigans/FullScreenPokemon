@@ -558,7 +558,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param other   A Character that thing has finished talking to.
      */
     public animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
-        this.gameStarter.modAttacher.fireEvent("onDialogFinish", other);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onDialogFinish, other);
 
         thing.talking = false;
         other.talking = false;

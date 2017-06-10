@@ -3,6 +3,7 @@ import { IMod } from "modattachr/lib/IModAttachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { BlindTrainersMod } from "./mods/BlindTrainersMod";
+import { EventNames } from "./mods/EventNames";
 import { InfiniteRepelMod } from "./mods/InfiniteRepelMod";
 import { JoeysRattataMod } from "./mods/JoeysRattataMod";
 import { Level100Mod } from "./mods/Level100Mod";
@@ -34,4 +35,9 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGame
         new SpeedrunnerMod(this.gameStarter),
         new WalkThroughWallsMod(this.gameStarter)
     ];
+
+    /**
+     * Keys for mod events.
+     */
+    public readonly eventNames: EventNames = new EventNames();
 }

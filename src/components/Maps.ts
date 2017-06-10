@@ -513,7 +513,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             });
         }
 
-        this.gameStarter.modAttacher.fireEvent("onAddPreThing", prething);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onAddPreThing, prething);
     }
 
     /**
@@ -533,7 +533,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         this.gameStarter.players = [player];
         this.gameStarter.things.add(player, left || 0, top || 0, useSavedInfo);
-        this.gameStarter.modAttacher.fireEvent("onAddPlayer", player);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onAddPlayer, player);
 
         return player;
     }
@@ -555,9 +555,9 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         const map: IMap = this.gameStarter.areaSpawner.setMap(name) as IMap;
 
-        this.gameStarter.modAttacher.fireEvent("onPreSetMap", map);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onPreSetMap, map);
         this.gameStarter.numberMaker.resetFromSeed(map.seed);
-        this.gameStarter.modAttacher.fireEvent("onSetMap", map);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onSetMap, map);
 
         return this.gameStarter.maps.setLocation(
             location
@@ -593,7 +593,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             timestamp: new Date().getTime()
         };
 
-        this.gameStarter.modAttacher.fireEvent("onPreSetLocation", location);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onPreSetLocation, location);
 
         this.gameStarter.pixelDrawer.setBackground((this.gameStarter.areaSpawner.getArea() as IArea).background);
 
@@ -617,7 +617,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             location.entry.call(this, location);
         }
 
-        this.gameStarter.modAttacher.fireEvent("onSetLocation", location);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onSetLocation, location);
 
         this.gameStarter.gamesRunner.play();
 

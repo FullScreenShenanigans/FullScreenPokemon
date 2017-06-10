@@ -54,6 +54,6 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });
 
-        this.gameStarter.modAttacher.fireEvent("onFaint", pokemon, battleInfo.teams.player.actors);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }
 }
