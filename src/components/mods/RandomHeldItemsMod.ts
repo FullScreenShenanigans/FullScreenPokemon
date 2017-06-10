@@ -4,9 +4,12 @@ import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { INewPokemon } from "../constants/Pokemon";
 
+/**
+ * Interface for holding items and their probability of being held.
+ */
 interface IItemProbabilities {
     /**
-     * Name of item.
+     * Name of them item.
      */
     name: string;
 
@@ -32,15 +35,12 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends C
          onRandomItems: (chosenInfo: INewPokemon): INewPokemon => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
-             const generatedNumber = this.gameStarter.numberMaker.randomReal1();
+             const generatedNumber: number = this.gameStarter.numberMaker.randomReal1();
              let counter: number = 0;
              for (const chosenObject of this.typeItems[pokemonType]) {
-                 counter += chosenObject.probability;
-                 if (counter >= generatedNumber) {
-                     chosenInfo.item = this.gameStarter.constants.items.byName[chosenObject.name].name;
-                     break;
-                 }
-
+                if (this.itemChooser(chosenInfo, counter, chosenObject, generatedNumber)) {
+                    break;
+                }
              }
 
              return chosenInfo;
@@ -48,9 +48,22 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends C
      };
 
      /**
+      * Handles which item is chosen for onRandomItems.
+      */
+      private itemChooser(chosenInfo: INewPokemon, counter: number, chosenObject: IItemProbabilities, generatedNumber: number): boolean {
+            counter += chosenObject.probability;
+            if (counter >= generatedNumber) {
+                chosenInfo.item = this.gameStarter.constants.items.byName[chosenObject.name].name;
+                return true;
+            }
+            return false;
+      }
+
+     /**
       * What items can be found on wild Pokemon by their primary type.
       *
-      * @remarks No need to make probabilites add to 100.
+      * @remarks No need to make probabilites add to 1 as the mod will just pick no item if generated
+      * number is higher than what the probabilities add up to.
       */
      private readonly typeItems: { [i: string]: IItemProbabilities[] } = {
         "Normal": [
@@ -176,5 +189,4 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends C
             }
         ]
      };
-
 }

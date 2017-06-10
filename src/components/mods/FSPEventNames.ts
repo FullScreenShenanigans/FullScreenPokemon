@@ -43,4 +43,9 @@ export class FSPEventNames extends EventNames {
      * Key for event when the location is changed.
      */
     public readonly onSetLocation: string = "onSetLocation";
+
+    /*
+     * Key for event when new Pokemon is created.
+     */
+    public readonly onNewPokemonCreation: string = "onNewPokemonCreation";
 }

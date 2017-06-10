@@ -106,7 +106,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns A newly created Pokemon.
      */
     public newPokemon(chosenInfo: INewPokemon): IPokemon {
-        this.gameStarter.modAttacher.fireEvent("onRandomItems", chosenInfo);
+        this.gameStarter.modAttacher.fireEvent("onNewPokemonCreation", chosenInfo);
         const ev: IValuePoints = this.newPokemonEVs();
         const iv: IValuePoints = this.newPokemonIVs();
 
