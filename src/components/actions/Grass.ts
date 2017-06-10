@@ -137,7 +137,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         }
 
         const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
-        this.gameStarter.modAttacher.fireEvent("onRandomizePokemon", chosen);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onWildGrassPokemonChosen, chosen);
         return this.gameStarter.utilities.createPokemon(chosen);
     }
 }
