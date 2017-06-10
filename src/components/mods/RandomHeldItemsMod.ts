@@ -23,49 +23,13 @@ interface IItemProbabilities {
   * Mod that randomizes items found on wild Pokemon.
   */
 export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
-     /**
-      * Name of the mod.
-      */
-     public readonly name: string = "Random Held Items";
-
-     /**
-      * Mod events, keyed by name.
-      */
-     public readonly events: ICallbackRegister = {
-         onRandomItems: (chosenInfo: INewPokemon): INewPokemon => {
-             const pokemonName: string = chosenInfo.title.join("");
-             const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
-             const generatedNumber: number = this.gameStarter.numberMaker.randomReal1();
-             let counter: number = 0;
-             for (const chosenObject of this.typeItems[pokemonType]) {
-                if (this.itemChooser(chosenInfo, counter, chosenObject, generatedNumber)) {
-                    break;
-                }
-             }
-
-             return chosenInfo;
-         }
-     };
-
-     /**
-      * Handles which item is chosen for onRandomItems.
-      */
-      private itemChooser(chosenInfo: INewPokemon, counter: number, chosenObject: IItemProbabilities, generatedNumber: number): boolean {
-            counter += chosenObject.probability;
-            if (counter >= generatedNumber) {
-                chosenInfo.item = this.gameStarter.constants.items.byName[chosenObject.name].name;
-                return true;
-            }
-            return false;
-      }
-
-     /**
-      * What items can be found on wild Pokemon by their primary type.
-      *
-      * @remarks No need to make probabilites add to 1 as the mod will just pick no item if generated
-      * number is higher than what the probabilities add up to.
-      */
-     private readonly typeItems: { [i: string]: IItemProbabilities[] } = {
+    /**
+     * What items can be found on wild Pokemon by their primary type.
+     *
+     * @remarks No need to make probabilites add to 1 as the mod will just pick no item if generated
+     *          number is higher than what the probabilities add up to.
+     */
+     private static typeItems: { [i: string]: IItemProbabilities[] } = {
         "Normal": [
             {
                 "name": "Potion",
@@ -189,4 +153,36 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends C
             }
         ]
      };
+
+     /**
+      * Name of the mod.
+      */
+     public readonly name: string = "Random Held Items";
+
+     /**
+      * Mod events, keyed by name.
+      */
+     public readonly events: ICallbackRegister = {
+         onNewPokemonCreation: (chosenInfo: INewPokemon) => {
+             const pokemonName: string = chosenInfo.title.join("");
+             const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
+             const generatedNumber: number = this.gameStarter.numberMaker.randomReal1();
+             this.itemChooser(chosenInfo, generatedNumber, pokemonType);
+         }
+     };
+
+     /**
+      * Handles which item is chosen for onRandomItems.
+      */
+     private itemChooser(chosenInfo: INewPokemon, generatedNumber: number, pokemonType: string) {
+            let counter: number = 0;
+            for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
+                counter += chosenObject.probability;
+                if (counter >= generatedNumber) {
+                    chosenInfo.item = this.gameStarter.constants.items.byName[chosenObject.name].name;
+                    break;
+                }
+            }
+
+      }
 }
