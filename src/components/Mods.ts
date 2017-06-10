@@ -7,6 +7,7 @@ import { InfiniteRepelMod } from "./mods/InfiniteRepelMod";
 import { JoeysRattataMod } from "./mods/JoeysRattataMod";
 import { Level100Mod } from "./mods/Level100Mod";
 import { NuzlockeChallengeMod } from "./mods/NuzlockeChallengeMod";
+import { RandomHeldItemsMod } from "./mods/RandomHeldItemsMod";
 import { RandomizeWildPokemonMod } from "./mods/RandomizeWildPokemonMod";
 import { RepeatTrainersMod } from "./mods/RepeatTrainersMod";
 import { RunningIndoorsMod } from "./mods/RunningIndoorsMod";
@@ -27,6 +28,7 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGame
         new JoeysRattataMod(this.gameStarter),
         new Level100Mod(this.gameStarter),
         new NuzlockeChallengeMod(this.gameStarter),
+        new RandomHeldItemsMod(this.gameStarter),
         new RandomizeWildPokemonMod(this.gameStarter),
         new RepeatTrainersMod(this.gameStarter),
         new RunningIndoorsMod(this.gameStarter),
