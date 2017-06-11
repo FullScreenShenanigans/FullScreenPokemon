@@ -1,4 +1,4 @@
-import { IFeatureBoxrSettings } from "featureboxr/lib/IFeatureBoxr";
+import { IFlagSwapprSettings } from "flagswappr/lib/IFlagSwappr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -18,9 +18,9 @@ export interface IFeatures {
 }
 
 /**
- * Settings regarding generation-specific features, particularly for an IFeatureBoxr.
+ * Settings regarding generation-specific features, particularly for an IFlagSwappr.
  */
-export type IFeaturesModuleSettings = IFeatureBoxrSettings<IFeatures>;
+export type IFeaturesModuleSettings = IFlagSwapprSettings<IFeatures>;
 
 /**
  * @param _fsp   A generating FullScreenPokemon instance.

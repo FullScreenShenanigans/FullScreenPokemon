@@ -1,7 +1,7 @@
 import { BattleMovr } from "battlemovr/lib/BattleMovr";
 import { IBattleMovr } from "battlemovr/lib/IBattleMovr";
-import { FeatureBoxr } from "featureboxr/lib/FeatureBoxr";
-import { IFeatureBoxr } from "featureboxr/lib/IFeatureBoxr";
+import { FlagSwappr } from "flagswappr/lib/FlagSwappr";
+import { IFlagSwappr } from "flagswappr/lib/IFlagSwappr";
 import { GameStartr } from "gamestartr/lib/GameStartr";
 import { IProcessedSizeSettings, ISizeSettings } from "gamestartr/lib/IGameStartr";
 import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
@@ -61,7 +61,7 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * Gates features behind generational gaps.
      */
-    public featureBoxer: IFeatureBoxr<IFeatures>;
+    public flagSwapper: IFlagSwappr<IFeatures>;
 
     /**
      * A simple container for Map attributes given by switching to an Area within
@@ -302,10 +302,10 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * @param moduleSettings   Stored settings to generate modules.
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns A new internal FeatureBoxr.
+     * @returns A new internal FlagSwappr.
      */
-    protected createFeatureBoxer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFeatureBoxr<IFeatures> {
-        return new FeatureBoxr(moduleSettings.features);
+    protected createFeatureBoxer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFeatures> {
+        return new FlagSwappr(moduleSettings.features);
     }
 
     /**

@@ -32,7 +32,7 @@ export interface IModuleSettings extends igamestartr.IModuleSettings {
     battles: IBattlesModuleSettings;
 
     /**
-     * Settings regarding generation-specific features, particularly for an IFeatureBoxr.
+     * Settings regarding generation-specific features, particularly for an IFlagSwappr.
      */
     features: IFeaturesModuleSettings;
 
