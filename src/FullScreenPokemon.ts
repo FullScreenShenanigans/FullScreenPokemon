@@ -305,7 +305,7 @@ export class FullScreenPokemon extends GameStartr {
      * @returns A new internal FlagSwappr.
      */
     protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFlags> {
-        return new FlagSwappr(moduleSettings.flags);
+        return new FlagSwappr<IFlags>(moduleSettings.flags);
     }
 
     /**
