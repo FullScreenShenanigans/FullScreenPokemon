@@ -5,7 +5,7 @@ import { GenerateAudioSettings } from "./Audio";
 import { GenerateBattlesSettings, IBattlesModuleSettings } from "./Battles";
 import { GenerateCollisionsSettings } from "./Collisions";
 import { GenerateEventsSettings } from "./Events";
-import { GenerateFeaturesSettings, IFeaturesModuleSettings } from "./Features";
+import { GenerateFlagsSettings, IFlagsModuleSettings } from "./Flags";
 import { GenerateGeneratorSettings } from "./Generator";
 import { GenerateGroupsSettings } from "./Groups";
 import { GenerateInputSettings } from "./Input";
@@ -32,9 +32,9 @@ export interface IModuleSettings extends igamestartr.IModuleSettings {
     battles: IBattlesModuleSettings;
 
     /**
-     * Settings regarding generation-specific features, particularly for an IFlagSwappr.
+     * Settings regarding generation-specific flags, particularly for an IFlagSwappr.
      */
-    features: IFeaturesModuleSettings;
+    flags: IFlagsModuleSettings;
 
     /**
      * Settings regarding maps, particularly for an IAreaSpawnr, an
@@ -73,7 +73,7 @@ export class ModuleSettingsGenerator {
             collisions: GenerateCollisionsSettings(fsp),
             devices: {},
             events: GenerateEventsSettings(fsp),
-            features: GenerateFeaturesSettings(fsp),
+            flags: GenerateFlagsSettings(fsp),
             generator: GenerateGeneratorSettings(fsp),
             groups: GenerateGroupsSettings(fsp),
             input: GenerateInputSettings(fsp),

@@ -36,7 +36,7 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { IFeatures } from "./settings/Features";
+import { IFlags } from "./settings/Flags";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
 /**
@@ -59,9 +59,9 @@ export class FullScreenPokemon extends GameStartr {
     public battleMover: IBattleMovr;
 
     /**
-     * Gates features behind generational gaps.
+     * Gates flags behind generational gaps.
      */
-    public flagSwapper: IFlagSwappr<IFeatures>;
+    public flagSwapper: IFlagSwappr<IFlags>;
 
     /**
      * A simple container for Map attributes given by switching to an Area within
@@ -304,8 +304,8 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal FlagSwappr.
      */
-    protected createFeatureBoxer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFeatures> {
-        return new FlagSwappr(moduleSettings.features);
+    protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFlags> {
+        return new FlagSwappr(moduleSettings.flags);
     }
 
     /**

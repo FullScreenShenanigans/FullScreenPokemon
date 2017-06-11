@@ -3,9 +3,9 @@ import { IFlagSwapprSettings } from "flagswappr/lib/IFlagSwappr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /**
- * Generation-specific features.
+ * Generation-specific flags.
  */
-export interface IFeatures {
+export interface IFlags {
     /**
      * Whether HM moves can be activated by pressing the A key.
      */
@@ -18,15 +18,15 @@ export interface IFeatures {
 }
 
 /**
- * Settings regarding generation-specific features, particularly for an IFlagSwappr.
+ * Settings regarding generation-specific flags, particularly for an IFlagSwappr.
  */
-export type IFeaturesModuleSettings = IFlagSwapprSettings<IFeatures>;
+export type IFlagsModuleSettings = IFlagSwapprSettings<IFlags>;
 
 /**
  * @param _fsp   A generating FullScreenPokemon instance.
- * @returns Feature settings for the FullScreenPokemon instance.
+ * @returns Flag settings for the FullScreenPokemon instance.
  */
-export function GenerateFeaturesSettings(_fsp: FullScreenPokemon): IFeaturesModuleSettings {
+export function GenerateFlagsSettings(_fsp: FullScreenPokemon): IFlagsModuleSettings {
     "use strict";
 
     return {
