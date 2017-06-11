@@ -1,13 +1,13 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 // import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make the trainer's Pokemon all level 100.
  */
-export class Level100Mod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class Level100Mod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -17,7 +17,7 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends Componen
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
+        [this.eventNames.onModEnable]: (): void => {
             for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
                 this.gameStarter.saves.addStateHistory(pokemon, "level", pokemon.level);
 
@@ -25,7 +25,7 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends Componen
                 pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
             }
         },
-        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
+        [this.eventNames.onModDisable]: (): void => {
             for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
                 this.gameStarter.saves.popStateHistory(pokemon, "level");
 

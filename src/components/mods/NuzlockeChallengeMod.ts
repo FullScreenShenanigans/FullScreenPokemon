@@ -1,4 +1,3 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { /* IBattleInfo, */ IPokemon } from "../../components/Battles";
@@ -6,11 +5,12 @@ import { /* IBattleInfo, */ IPokemon } from "../../components/Battles";
 // import { IArea, IMap } from "../../components/Maps";
 // import { IGrass, } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to change gameplay to match the Nuzlocke Challenge.
  */
-export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -20,7 +20,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.gameStarter.mods.eventNames.onBattleComplete]: (settings: any /* IBattleInfo */): void => {
+        [this.eventNames.onBattleComplete]: (settings: any /* IBattleInfo */): void => {
             console.log("Should react to battleComplete", settings);
             // const grass: IGrass | undefined = this.gameStarter.players[0].grass;
             // if (!grass) {
@@ -37,7 +37,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
 
             // grassArea.pokemonEncountered = true;
         },
-        [this.gameStarter.mods.eventNames.onOpenItemsMenu]: (items: any[]): void => {
+        [this.eventNames.onOpenItemsMenu]: (items: any[]): void => {
             console.log("Should react to items menu", items);
             // const grassMap: IMap | undefined = (
             //     this.gameStarter.players[0].grass
@@ -56,7 +56,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
             //     }
             // }
         },
-        [this.gameStarter.mods.eventNames.onFaint]: (thing: IPokemon, actors: IPokemon[]): void => {
+        [this.eventNames.onFaint]: (thing: IPokemon, actors: IPokemon[]): void => {
             const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
             const pcPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInPC");
 

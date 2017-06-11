@@ -1,13 +1,13 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { ICharacter, IEnemy, } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make all enemy trainers Joey and all Pokemon his Rattata.
  */
-export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -17,7 +17,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
+        [this.eventNames.onModEnable]: (): void => {
             (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
@@ -27,7 +27,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
                     this.gameStarter.graphics.setClass(character, character.className);
                 });
         },
-        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
+        [this.eventNames.onModDisable]: (): void => {
             (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
@@ -36,7 +36,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
                     this.gameStarter.graphics.setClass(character, character.className);
                 });
         },
-        [this.gameStarter.mods.eventNames.onBattleStart]: (battleInfo: any): void => {
+        [this.eventNames.onBattleStart]: (battleInfo: any): void => {
             console.log("Should modify battle start info", battleInfo);
             // const opponent: IBattler = battleInfo.battlers.opponent;
 
@@ -47,7 +47,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
             //     actor.title = actor.nickname = "RATTATA".split("");
             // }
         },
-        [this.gameStarter.mods.eventNames.onSetLocation]: (): void => {
+        [this.eventNames.onSetLocation]: (): void => {
             this.events.onModEnable!();
         }
     };

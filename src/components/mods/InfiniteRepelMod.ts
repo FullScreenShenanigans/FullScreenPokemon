@@ -1,12 +1,12 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to prevent the player from encountering any wild Pokemon.
  */
-export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -16,10 +16,10 @@ export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends Com
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
+        [this.eventNames.onModEnable]: (): void => {
             this.gameStarter.actions.grass.checkPlayerGrassBattle = (): boolean => false;
         },
-        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
+        [this.eventNames.onModDisable]: (): void => {
             delete this.gameStarter.actions.grass.checkPlayerGrassBattle;
         }
     };

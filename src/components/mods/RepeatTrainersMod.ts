@@ -1,13 +1,13 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { IEnemy } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow battling enemy trainers again.
  */
-export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -17,7 +17,7 @@ export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends Co
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.gameStarter.mods.eventNames.onDialogFinish]: (other: IEnemy): void => {
+        [this.eventNames.onDialogFinish]: (other: IEnemy): void => {
             if (other.trainer) {
                 other.alreadyBattled = false;
             }

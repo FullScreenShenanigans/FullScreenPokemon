@@ -20,24 +20,24 @@ import { WalkThroughWallsMod } from "./mods/WalkThroughWallsMod";
  */
 export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * General schemas for known mods, including names and events.
-     */
-    public readonly mods: IMod[] = [
-        new BlindTrainersMod(this.gameStarter),
-        new InfiniteRepelMod(this.gameStarter),
-        new JoeysRattataMod(this.gameStarter),
-        new Level100Mod(this.gameStarter),
-        new NuzlockeChallengeMod(this.gameStarter),
-        new RandomizeWildPokemonMod(this.gameStarter),
-        new RepeatTrainersMod(this.gameStarter),
-        new RunningIndoorsMod(this.gameStarter),
-        new ScalingLevelsMod(this.gameStarter),
-        new SpeedrunnerMod(this.gameStarter),
-        new WalkThroughWallsMod(this.gameStarter)
-    ];
-
-    /**
      * Keys for mod events.
      */
     public readonly eventNames: EventNames = new EventNames();
+
+    /**
+     * General schemas for known mods, including names and events.
+     */
+    public readonly mods: IMod[] = [
+        new BlindTrainersMod(this.gameStarter, this.eventNames),
+        new InfiniteRepelMod(this.gameStarter, this.eventNames),
+        new JoeysRattataMod(this.gameStarter, this.eventNames),
+        new Level100Mod(this.gameStarter, this.eventNames),
+        new NuzlockeChallengeMod(this.gameStarter, this.eventNames),
+        new RandomizeWildPokemonMod(this.gameStarter, this.eventNames),
+        new RepeatTrainersMod(this.gameStarter, this.eventNames),
+        new RunningIndoorsMod(this.gameStarter, this.eventNames),
+        new ScalingLevelsMod(this.gameStarter, this.eventNames),
+        new SpeedrunnerMod(this.gameStarter, this.eventNames),
+        new WalkThroughWallsMod(this.gameStarter, this.eventNames)
+    ];
 }

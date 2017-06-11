@@ -1,15 +1,15 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 // import { IPokemon } from "../../components/Battles";
 // import { IPokemonListing } from "../../components/constants/Pokemon";
 // import { IArea, IWildPokemonSchema } from "../../components/Maps";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to scale enemy Pokemon to be around the same level as the trainer's party.
  */
-export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -25,7 +25,7 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Com
          *
          * @param battleInfo   Settings for the current battle.
          */
-        [this.gameStarter.mods.eventNames.onBattleStart]: (battleInfo: any): void => {
+        [this.eventNames.onBattleStart]: (battleInfo: any): void => {
             console.log("Should scale levels in", battleInfo);
             // const opponent: IBattler = battleInfo.battlers.opponent;
             // const player: IBattler = battleInfo.battlers.player!;

@@ -1,12 +1,12 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make all enemy trainers blind.
  */
-export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -16,10 +16,10 @@ export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Com
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
+        [this.eventNames.onModEnable]: (): void => {
             this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = true;
         },
-        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
+        [this.eventNames.onModDisable]: (): void => {
             this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = false;
         }
     };
