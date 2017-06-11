@@ -659,7 +659,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         switch (direction) {
             case Direction.Top:
                 prething.x = boundaries.left;
-                prething.y = boundaries.top - 8;
+                prething.y = boundaries.top - 32;
                 prething.width = boundaries.right - boundaries.left;
                 break;
 
@@ -676,7 +676,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 break;
 
             case Direction.Left:
-                prething.x = boundaries.left - 8;
+                prething.x = boundaries.left - 32;
                 prething.y = boundaries.top;
                 prething.height = boundaries.bottom - boundaries.top;
                 break;
