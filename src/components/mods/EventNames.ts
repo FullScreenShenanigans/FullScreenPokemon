@@ -15,14 +15,14 @@ export class EventNames extends ModAttachrEventNames {
     public readonly onAddPreThing = "onAddPreThing";
 
     /*
-     * Key for the event when a battle begins.
-     */
-    public readonly onBattleReady = "onBattleReady";
-
-    /*
      * Key for the event when a battle finishes.
      */
     public readonly onBattleComplete = "onBattleComplete";
+
+    /*
+     * Key for the event when a battle starts.
+     */
+    public readonly onBattleStart = "onBattleStart";
 
     /*
      * Key for the event when a dialog ends.
