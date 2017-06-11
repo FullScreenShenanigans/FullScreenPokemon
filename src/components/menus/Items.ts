@@ -135,7 +135,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
             }
         ];
 
-        if (this.gameStarter.features.heldItems) {
+        if (this.gameStarter.flagSwapper.flags.heldItems) {
             options.push({
                 callback: (): void => {
                     const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
