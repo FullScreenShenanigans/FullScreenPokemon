@@ -17,7 +17,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
             (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
@@ -27,7 +27,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
                     this.gameStarter.graphics.setClass(character, character.className);
                 });
         },
-        onModDisable: (): void => {
+        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
             (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
@@ -36,7 +36,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
                     this.gameStarter.graphics.setClass(character, character.className);
                 });
         },
-        onBattleStart: (battleInfo: any): void => {
+        [this.gameStarter.mods.eventNames.onBattleStart]: (battleInfo: any): void => {
             console.log("Should modify battle start info", battleInfo);
             // const opponent: IBattler = battleInfo.battlers.opponent;
 
@@ -47,7 +47,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends Comp
             //     actor.title = actor.nickname = "RATTATA".split("");
             // }
         },
-        onSetLocation: (): void => {
+        [this.gameStarter.mods.eventNames.onSetLocation]: (): void => {
             this.events.onModEnable!();
         }
     };

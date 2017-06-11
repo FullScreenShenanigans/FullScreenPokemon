@@ -16,10 +16,10 @@ export class WalkThroughWallsMod<TGameStartr extends FullScreenPokemon> extends 
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
             this.gameStarter.objectMaker.getClass("Solid").prototype.collide = (): boolean => true;
         },
-        onModDisable: (): void => {
+        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
             this.gameStarter.objectMaker.getClass("Solid").prototype.collide = (): boolean => false;
         }
     };

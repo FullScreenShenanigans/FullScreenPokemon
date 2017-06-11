@@ -16,10 +16,10 @@ export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Com
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
             this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = true;
         },
-        onModDisable: (): void => {
+        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
             this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = false;
         }
     };

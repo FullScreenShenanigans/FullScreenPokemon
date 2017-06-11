@@ -16,10 +16,10 @@ export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends Com
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
             this.gameStarter.actions.grass.checkPlayerGrassBattle = (): boolean => false;
         },
-        onModDisable: (): void => {
+        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
             delete this.gameStarter.actions.grass.checkPlayerGrassBattle;
         }
     };

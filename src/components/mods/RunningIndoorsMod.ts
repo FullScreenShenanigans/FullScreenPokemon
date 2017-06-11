@@ -17,7 +17,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Co
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
             const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
             if (!area) {
                 return;
@@ -27,7 +27,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Co
             area.allowCycling = true;
             this.gameStarter.mapScreener.variables.allowCycling = true;
         },
-        onModDisable: (): void => {
+        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
             const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
             if (!area) {
                 return;
@@ -40,7 +40,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Co
             }
             this.gameStarter.mapScreener.variables.allowCycling = area.allowCycling;
         },
-        onSetLocation: (): void => {
+        [this.gameStarter.mods.eventNames.onSetLocation]: (): void => {
             this.events.onModEnable!();
         }
     };

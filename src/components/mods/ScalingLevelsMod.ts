@@ -25,7 +25,7 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Com
          *
          * @param battleInfo   Settings for the current battle.
          */
-        onBattleReady: (battleInfo: any): void => {
+        [this.gameStarter.mods.eventNames.onBattleStart]: (battleInfo: any): void => {
             console.log("Should scale levels in", battleInfo);
             // const opponent: IBattler = battleInfo.battlers.opponent;
             // const player: IBattler = battleInfo.battlers.player!;

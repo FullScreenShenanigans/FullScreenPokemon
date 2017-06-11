@@ -20,7 +20,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onBattleComplete: (settings: any /* IBattleInfo */): void => {
+        [this.gameStarter.mods.eventNames.onBattleComplete]: (settings: any /* IBattleInfo */): void => {
             console.log("Should react to battleComplete", settings);
             // const grass: IGrass | undefined = this.gameStarter.players[0].grass;
             // if (!grass) {
@@ -37,7 +37,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
 
             // grassArea.pokemonEncountered = true;
         },
-        onOpenItemsMenu: (items: any[]): void => {
+        [this.gameStarter.mods.eventNames.onOpenItemsMenu]: (items: any[]): void => {
             console.log("Should react to items menu", items);
             // const grassMap: IMap | undefined = (
             //     this.gameStarter.players[0].grass
@@ -56,7 +56,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
             //     }
             // }
         },
-        onFaint: (thing: IPokemon, actors: IPokemon[]): void => {
+        [this.gameStarter.mods.eventNames.onFaint]: (thing: IPokemon, actors: IPokemon[]): void => {
             const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
             const pcPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInPC");
 

@@ -17,7 +17,7 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends Componen
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.gameStarter.mods.eventNames.onModEnable]: (): void => {
             for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
                 this.gameStarter.saves.addStateHistory(pokemon, "level", pokemon.level);
 
@@ -25,7 +25,7 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends Componen
                 pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
             }
         },
-        onModDisable: (): void => {
+        [this.gameStarter.mods.eventNames.onModDisable]: (): void => {
             for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
                 this.gameStarter.saves.popStateHistory(pokemon, "level");
 

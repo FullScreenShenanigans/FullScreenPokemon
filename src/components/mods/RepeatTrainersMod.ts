@@ -17,7 +17,7 @@ export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends Co
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onDialogFinish: (other: IEnemy): void => {
+        [this.gameStarter.mods.eventNames.onDialogFinish]: (other: IEnemy): void => {
             if (other.trainer) {
                 other.alreadyBattled = false;
             }
