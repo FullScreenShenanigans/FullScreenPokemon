@@ -7,7 +7,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Information on items and their probability of being held.
  */
-interface IItemProbabilities {
+export interface IItemProbabilities {
     /**
      * Name of the item.
      */
@@ -166,7 +166,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
          [this.eventNames.onWildGrassPokemonChosen]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
-             const chosenItem: string[] | undefined = this.randomHeldItemGenerator(chosenInfo, pokemonType);
+             const chosenItem: string[] | undefined = this.randomHeldItemGenerator(pokemonType);
 
              if (chosenItem !== undefined) {
                  chosenInfo.item = chosenItem;
@@ -177,11 +177,10 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
      /**
       * Chooses which item is chosen for onNewPokemonCreation.
       *
-      * @param chosenInfo   Info chosen by chooseRandomWildPokemon.
       * @param pokemonType   Type of the wild encountered Pokemon.
       * @returns The name of an item or undefined if no item generated.
       */
-     private randomHeldItemGenerator(chosenInfo: INewPokemon, pokemonType: string): string[] | undefined {
+     private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
             let counter: number = 0;
 
