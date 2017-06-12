@@ -179,7 +179,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
       *
       * @param chosenInfo   Info chosen by chooseRandomWildPokemon.
       * @param pokemonType   Type of the wild encountered Pokemon.
-      * @returns Returns the name of an item or "" if no item generated.
+      * @returns The name of an item or "" if no item generated.
       */
      private randomHeldItemGenerator(chosenInfo: INewPokemon, pokemonType: string): string[] | undefined {
             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
