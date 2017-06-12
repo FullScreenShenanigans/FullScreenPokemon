@@ -1,13 +1,13 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWildPokemonSchema } from "../Maps";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod that randomizes Pokemon encounters based on the original wild Pokemon's type(s).
  */
-export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -17,7 +17,7 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onRandomizePokemon: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
+        [this.eventNames.onWildGrassPokemonChosen]: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
             const pokemonName: string = chosen.title.join("");
             const pokemonTypes: string[] = this.gameStarter.constants.pokemon.byName[pokemonName].types;
             const randomPokemon: string[][] = [];

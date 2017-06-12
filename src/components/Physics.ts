@@ -158,7 +158,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
         thing.movement = undefined;
 
         this.gameStarter.timeHandler.cancelAllCycles(thing);
-        this.gameStarter.modAttacher.fireEvent("onKillNormal", thing);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKillNormal, thing);
 
         if (thing.id) {
             delete (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id];

@@ -96,7 +96,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
             callback: () => this.gameStarter.menuGrapher.registerB()
         });
 
-        this.gameStarter.modAttacher.fireEvent("onOpenItemsMenu", listings);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onOpenItemsMenu, listings);
 
         this.gameStarter.menuGrapher.createMenu("Items", settings);
         this.gameStarter.menuGrapher.addMenuList("Items", { options });
@@ -135,7 +135,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
             }
         ];
 
-        if (this.gameStarter.features.heldItems) {
+        if (this.gameStarter.flagSwapper.flags.heldItems) {
             options.push({
                 callback: (): void => {
                     const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
@@ -147,7 +147,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
             });
         }
 
-        this.gameStarter.modAttacher.fireEvent("onOpenItemMenu", listing);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onOpenItemMenu, listing);
 
         this.gameStarter.menuGrapher.createMenu("Item", settings);
         this.gameStarter.menuGrapher.addMenuList("Item", { options });

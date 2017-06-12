@@ -1,5 +1,7 @@
 import { BattleMovr } from "battlemovr/lib/BattleMovr";
 import { IBattleMovr } from "battlemovr/lib/IBattleMovr";
+import { FlagSwappr } from "flagswappr/lib/FlagSwappr";
+import { IFlagSwappr } from "flagswappr/lib/IFlagSwappr";
 import { GameStartr } from "gamestartr/lib/GameStartr";
 import { IProcessedSizeSettings, ISizeSettings } from "gamestartr/lib/IGameStartr";
 import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
@@ -20,7 +22,6 @@ import { Cycling } from "./components/Cycling";
 import { Equations } from "./components/Equations";
 import { Evolution } from "./components/Evolution";
 import { Experience } from "./components/Experience";
-import { Features } from "./components/Features";
 import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
@@ -35,6 +36,7 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
+import { IFlags } from "./settings/Flags";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
 /**
@@ -55,6 +57,11 @@ export class FullScreenPokemon extends GameStartr {
      * An in-game battle management system for RPG-like battles between actors.
      */
     public battleMover: IBattleMovr;
+
+    /**
+     * Gates flags behind generational gaps.
+     */
+    public flagSwapper: IFlagSwappr<IFlags>;
 
     /**
      * A simple container for Map attributes given by switching to an Area within
@@ -121,11 +128,6 @@ export class FullScreenPokemon extends GameStartr {
      * Experience functions used by this instance.
      */
     public experience: Experience<FullScreenPokemon>;
-
-    /**
-     * Feature availability used by this instance.
-     */
-    public features: Features<FullScreenPokemon>;
 
     /**
      * Fishing functions used by this instance.
@@ -225,7 +227,6 @@ export class FullScreenPokemon extends GameStartr {
         this.constants = new Constants(this);
         this.cutscenes = new Cutscenes(this);
         this.equations = new Equations(this);
-        this.features = new Features(this);
         this.gameplay = new Gameplay(this);
         this.graphics = new Graphics(this);
         this.inputs = new Inputs(this);
@@ -296,6 +297,15 @@ export class FullScreenPokemon extends GameStartr {
             menuGrapher: this.menuGrapher,
             ...moduleSettings.battles
         });
+    }
+
+    /**
+     * @param moduleSettings   Stored settings to generate modules.
+     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
+     * @returns A new internal FlagSwappr.
+     */
+    protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFlags> {
+        return new FlagSwappr<IFlags>(moduleSettings.flags);
     }
 
     /**
