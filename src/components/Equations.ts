@@ -109,6 +109,8 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         const ev: IValuePoints = this.newPokemonEVs();
         const iv: IValuePoints = this.newPokemonIVs();
 
+        this.gameStarter.modAttacher.fireEvent("onNewPokemonCreation", chosenInfo);
+
         return {
             experience: this.experienceStarting(chosenInfo.title, chosenInfo.level || 1),
             ev,

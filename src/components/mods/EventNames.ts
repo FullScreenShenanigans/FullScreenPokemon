@@ -165,6 +165,11 @@ export class EventNames extends ModAttachrEventNames {
     public readonly onOpenItemMenu = "onOpenItemMenu";
 
     /**
+     * Key for the event when a Pokemon is being created.
+     */
+    public readonly onNewPokemonCreation = "onNewPokemonCreation";
+
+    /**
      * Key for the event before a map's location is set.
      */
     public readonly onPreSetLocation = "onPreSetLocation";
