@@ -5,7 +5,7 @@ import { INewPokemon } from "../constants/Pokemon";
 import { ModComponent } from "./ModComponent";
 
 /**
- * Interface for items and their probability of being held.
+ * Information on items and their probability of being held.
  */
 interface IItemProbabilities {
     /**
@@ -166,8 +166,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
          [this.eventNames.onWildGrassPokemonChosen]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
-             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
-             const chosenItem = this.randomHeldItemGenerator(chosenInfo, probabilityOfHeldItem, pokemonType);
+             const chosenItem = this.randomHeldItemGenerator(chosenInfo, pokemonType);
 
              if (chosenItem[0] !== "") {
                  chosenInfo.item = chosenItem;
@@ -176,28 +175,23 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
      };
 
      /**
-      * Handles which item is chosen for onNewPokemonCreation.
+      * Chooses which item is chosen for onNewPokemonCreation.
       *
-      * @param counter   Keeps track of item probabilities.
       * @param chosenInfo   Info chosen by chooseRandomWildPokemon.
-      * @param chosenItem   Item chosen by the function, if none then equal to "".
-      * @param probabilityOfHeldItem   Randomly generated number for probability of the wild pokemon having an item.
       * @param pokemonType   Type of the wild encountered Pokemon.
-      *
       * @returns Returns the name of an item or "" if no item generated.
       */
-     private randomHeldItemGenerator(chosenInfo: INewPokemon, probabilityOfHeldItem: number, pokemonType: string): string[] {
+     private randomHeldItemGenerator(chosenInfo: INewPokemon, pokemonType: string): string[] {
             let counter: number = 0;
-            let chosenItem: string[] = [];
+            const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
 
             for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
                 counter += chosenObject.probability;
                 if (counter >= probabilityOfHeldItem) {
-                    chosenItem = this.gameStarter.constants.items.byName[chosenObject.name].name;
-                    break;
+                    return this.gameStarter.constants.items.byName[chosenObject.name].name;
                 }
             }
 
-            return chosenItem;
+            return [""];
       }
 }
