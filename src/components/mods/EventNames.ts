@@ -15,14 +15,14 @@ export class EventNames extends ModAttachrEventNames {
     public readonly onAddPreThing = "onAddPreThing";
 
     /*
-     * Key for the event when a battle begins.
-     */
-    public readonly onBattleReady = "onBattleReady";
-
-    /*
      * Key for the event when a battle finishes.
      */
     public readonly onBattleComplete = "onBattleComplete";
+
+    /*
+     * Key for the event when a battle starts.
+     */
+    public readonly onBattleStart = "onBattleStart";
 
     /*
      * Key for the event when a dialog ends.
@@ -163,6 +163,11 @@ export class EventNames extends ModAttachrEventNames {
      * Key for the event when an item's menu is opened.
      */
     public readonly onOpenItemMenu = "onOpenItemMenu";
+
+    /**
+     * Key for the event when a Pokemon is being created;
+     */
+    public readonly onNewPokemonCreation = "onNewPokemonCreation";
 
     /**
      * Key for the event before a map's location is set.

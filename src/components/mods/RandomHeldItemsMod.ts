@@ -1,15 +1,15 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { INewPokemon } from "../constants/Pokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
- * Interface for holding items and their probability of being held.
+ * Interface for items and their probability of being held.
  */
 interface IItemProbabilities {
     /**
-     * Name of them item.
+     * Name of the item.
      */
     name: string;
 
@@ -22,7 +22,7 @@ interface IItemProbabilities {
  /**
   * Mod that randomizes items found on wild Pokemon.
   */
-export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * What items can be found on wild Pokemon by their primary type.
      *
@@ -163,26 +163,41 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends C
       * Mod events, keyed by name.
       */
      public readonly events: ICallbackRegister = {
-         onNewPokemonCreation: (chosenInfo: INewPokemon) => {
+         [this.eventNames.onWildGrassPokemonChosen]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
-             const generatedNumber: number = this.gameStarter.numberMaker.randomReal1();
-             this.itemChooser(chosenInfo, generatedNumber, pokemonType);
+             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
+             const chosenItem = this.randomHeldItemGenerator(chosenInfo, probabilityOfHeldItem, pokemonType);
+
+             if (chosenItem[0] !== "") {
+                 chosenInfo.item = chosenItem;
+             }
          }
      };
 
      /**
-      * Handles which item is chosen for onRandomItems.
+      * Handles which item is chosen for onNewPokemonCreation.
+      *
+      * @param counter   Keeps track of item probabilities.
+      * @param chosenInfo   Info chosen by chooseRandomWildPokemon.
+      * @param chosenItem   Item chosen by the function, if none then equal to "".
+      * @param probabilityOfHeldItem   Randomly generated number for probability of the wild pokemon having an item.
+      * @param pokemonType   Type of the wild encountered Pokemon.
+      *
+      * @returns Returns the name of an item or "" if no item generated.
       */
-     private itemChooser(chosenInfo: INewPokemon, generatedNumber: number, pokemonType: string) {
+     private randomHeldItemGenerator(chosenInfo: INewPokemon, probabilityOfHeldItem: number, pokemonType: string): string[] {
             let counter: number = 0;
+            let chosenItem: string[] = [];
+
             for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
                 counter += chosenObject.probability;
-                if (counter >= generatedNumber) {
-                    chosenInfo.item = this.gameStarter.constants.items.byName[chosenObject.name].name;
+                if (counter >= probabilityOfHeldItem) {
+                    chosenItem = this.gameStarter.constants.items.byName[chosenObject.name].name;
                     break;
                 }
             }
 
+            return chosenItem;
       }
 }
