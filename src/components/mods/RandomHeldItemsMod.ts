@@ -166,9 +166,9 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
          [this.eventNames.onWildGrassPokemonChosen]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
-             const chosenItem = this.randomHeldItemGenerator(chosenInfo, pokemonType);
+             const chosenItem: string[] | undefined = this.randomHeldItemGenerator(chosenInfo, pokemonType);
 
-             if (chosenItem[0] !== "") {
+             if (chosenItem !== undefined) {
                  chosenInfo.item = chosenItem;
              }
          }
@@ -181,7 +181,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
       * @param pokemonType   Type of the wild encountered Pokemon.
       * @returns Returns the name of an item or "" if no item generated.
       */
-     private randomHeldItemGenerator(chosenInfo: INewPokemon, pokemonType: string): any {
+     private randomHeldItemGenerator(chosenInfo: INewPokemon, pokemonType: string): string[] | undefined {
             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
             let counter: number = 0;
 
