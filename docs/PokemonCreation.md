@@ -5,15 +5,15 @@ The two main files that handle Pokemon creation are [`Equations`] (../src/compon
 `Equations` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object. `Utilities` facilitates the creating of a wild Pokemon by preparing parameters than calling `Equations` creation of the Pokemon object.
 
 A newly created Pokemon has members of types:
-    * experience: number
-    * level: number
-    * ev: IValuePoints
-    * item?: string[]
-    * iv: IValuePoints
-    * raisedCriticalHitProbability?: boolean
-    * statistics: IPokemonStatistics
-    * status?: IStatus
-    * types: string[]
+* experience: number
+* level: number
+* ev: IValuePoints
+* item?: string[]
+* iv: IValuePoints
+* raisedCriticalHitProbability?: boolean
+* statistics: IPokemonStatistics
+* status?: IStatus
+* types: string[]
 
 ### Unit Test and Trainer Battles
 
@@ -38,14 +38,14 @@ const pokemon: IPokemon = fsp.equations.newPokemon({
 ### Wild Pokemon Grass Encounter
 
 The steps for creating a Pokemon in a Wild Pokemon Grass Encounter are:
-    1. The chooseWildPokemonForBattle(grass: Ithing) function is run.
-        * This function returns the Pokemon object by using the grass IMap and        IArea to determine what wild Pokemon can be encountered.
-    2. After selecting valid wild Pokemon that can be encountered                      chooseRandomWildPokemon(options: IWildPokemonSchema[]) of return type           IWildPokemonSchema is called and chooses a Pokemon from the list of valid       Pokemon.
-    3. Next, createPokemon(schema: IWildPokemonSchema) of return type IPokemon is      called which sets up an object of type INewPokemon which includes members:
-        * level: number
-        * title: string[]
-    4. newPokemon is called returning the wild encountered Pokemon in an object of     type IPokemon.
-    5. Catch this return value in a variable of type IPokemon.
+1. The chooseWildPokemonForBattle(grass: Ithing) function is run.
+    * This function returns the Pokemon object by using the grass IMap and        IArea to determine what wild Pokemon can be encountered.
+2. After selecting valid wild Pokemon that can be encountered                      chooseRandomWildPokemon(options: IWildPokemonSchema[]) of return type           IWildPokemonSchema is called and chooses a Pokemon from the list of valid       Pokemon.
+3. Next, createPokemon(schema: IWildPokemonSchema) of return type IPokemon is      called which sets up an object of type INewPokemon which includes members:
+    * level: number
+    * title: string[]
+4. newPokemon is called returning the wild encountered Pokemon in an object of     type IPokemon.
+5. Catch this return value in a variable of type IPokemon.
 
 ```javascript
 //Create Pokemon for Wild Grass Encounter.
