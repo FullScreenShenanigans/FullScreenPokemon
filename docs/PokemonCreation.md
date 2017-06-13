@@ -1,8 +1,8 @@
 ## Pokemon Creation
 
 Pokemon creation in FullScreenPokemon consists of three different types, Unit Test Pokemon creation, Trainer Battle Pokemon creation, and Wild Pokemon Grass Encounter creation.
-The two main files that handle Pokemon creation are [`Equations`](../src/components/Equations.ts) and [`Utilities`](../src/components/Utilities.ts),both of which incorporate ['numberMaker'] (../node_modules/numbermakr/lib) for random generation of numbers.
-`Equations` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object. `Utilities` facilitates the creating of a wild Pokemon by preparing parameters than calling `Equations` creation of the Pokemon object.
+The two main files that handle Pokemon creation are [`Equations`](../src/components/Equations.ts) and [`Utilities`](../src/components/Utilities.ts),both of which incorporate ['numberMaker'](../node_modules/numbermakr/lib) for random generation of numbers.
+[`Equations`](../src/components/Equations.ts) includes functions for choosing random wild Pokemon and for creating the actual Pokemon object. [`Utilities`](../src/components/Utilities.ts) facilitates the creating of a wild Pokemon by preparing parameters than calling [`Equations`](../src/components/Equations.ts) creation of the Pokemon object.
 
 A newly created Pokemon has members of types:
 * experience: number
@@ -18,7 +18,7 @@ A newly created Pokemon has members of types:
 ### Unit Test and Trainer Battles
 
 The steps for creating a Pokemon in a Unit Test and Trainer Battles are:
-    1. Pass into the newPokemon(chosenInfo: INewPokemon) function from `Equations` an on object with members:
+    1. Pass into the newPokemon(chosenInfo: INewPokemon) function from [`Equations`](../src/components/Equations.ts) an on object with members:
         * level: number
         * title: string[]
     2. Catch the return value in a variable of type IPokemon.
