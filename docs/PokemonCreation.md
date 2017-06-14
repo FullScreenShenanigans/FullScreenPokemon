@@ -1,6 +1,6 @@
 ## Pokemon Creation
 
-The two main files that handle Pokemon creation are [`Equations`](../src/components/Equations.ts) and [`Utilities`](../src/components/Utilities.ts),both of which incorporate ['numberMaker'] (../node_modules/numbermakr/lib) for random generation of numbers.
+The two main files that handle Pokemon creation are [`Equations`](../src/components/Equations.ts) and [`Utilities`](../src/components/Utilities.ts), both of which incorporate ['numberMaker'](../node_modules/numbermakr/lib) for random generation of numbers.
 `Equations` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object. `Utilities` facilitates the creating of a wild Pokemon by preparing parameters than calling `Equations` creation of the Pokemon object.
 
 A newly created Pokemon's member types can be found in [`Battles`](../src/components/Battles.ts) under the IPokemon interface.
@@ -18,15 +18,19 @@ The steps for creating a Pokemon in a unit test and trainer battles are:
 const pokemonTitle: string[] = "CHARMANDER".split("");
 const pokemonLevel: number = 10;
 const pokemon: IPokemon = FSP.equations.newPokemon({
-    item: undefined,
     level: undefined || pokemonLevel,
-    moves: undefined,
     title: pokemonTitle
 });
 const pokemon: IPokemon = FSP.equations.newPokemon({
-    item: ["P", "o", "t", "i", "o", "n"],
+    item: "Potion".split(""),
     level: undefined || pokemonLevel,
-    moves: [{title: "Ember", remaining: FSP.constants.moves.Ember.pp, uses: FSP.constants.moves.Ember.pp}],
+    moves: [
+                {
+                    title: "Ember",
+                    remaining: FSP.constants.moves.Ember.pp,
+                    uses: FSP.constants.moves.Ember.pp
+                }
+            ],
     title: pokemonTitle
 });
 ```
@@ -47,13 +51,19 @@ The steps for creating a Pokemon in a wild Pokemon grass encounter are:
 // Create Pokemon for wild grass encounter.
 const options: IWildPokemonSchema[] = [
     {
-        title: "CHARMANDER",
+        title: "CHARMANDER".split(""),
         level: 10 // || levels if array of possible levels
-        moves: [{title: "Ember", remaining: FSP.constants.moves.Ember.pp, uses: FSP.constants.moves.Ember.pp}],
+        moves: [
+                    {
+                        title: "Ember",
+                        remaining: FSP.constants.moves.Ember.pp,
+                        uses: FSP.constants.moves.Ember.pp
+                    }
+                ],
         rate: .25
     },
     {
-        title: "Squirtle",
+        title: "Squirtle".split(""),
         levels: [10,5,4,7]
         rate: .75
     }
