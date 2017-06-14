@@ -1,6 +1,6 @@
 ## Pokemon Creation
 
-The two main files that handle Pokemon creation are [`Equations`](../src/components/Equations.ts) and [`Utilities`](../src/components/Utilities.ts), both of which incorporate ['numberMaker'](../node_modules/numbermakr/lib) for random generation of numbers.
+The two main files that handle Pokemon creation are [`Equations`](../src/components/Equations.ts) and [`Utilities`](../src/components/Utilities.ts), both of which incorporate ['numberMaker'](../node_modules/numbermakr/lib/NumberMakr.d.ts) for random generation of numbers.
 `Equations` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object. `Utilities` facilitates the creating of a wild Pokemon by preparing parameters than calling `Equations` creation of the Pokemon object.
 
 A newly created Pokemon's member types can be found in [`Battles`](../src/components/Battles.ts) under the IPokemon interface.
