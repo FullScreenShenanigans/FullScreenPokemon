@@ -42,7 +42,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
         ],
         "Fire": [
             {
-                "name": "Burn heal",
+                "name": "Burn Heal",
                 "probability": .025
             },
             {
@@ -163,7 +163,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
       * Mod events, keyed by name.
       */
      public readonly events: ICallbackRegister = {
-         [this.eventNames.onWildGrassPokemonChosen]: (chosenInfo: INewPokemon) => {
+         [this.eventNames.onNewPokemonCreation]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
              const chosenItem: string[] | undefined = this.randomHeldItemGenerator(pokemonType);
