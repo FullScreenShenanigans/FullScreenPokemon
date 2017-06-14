@@ -8,10 +8,10 @@ A newly created Pokemon's member types can be found in [`Battles`](../src/compon
 ### Unit Test and Trainer Battles
 
 The steps for creating a Pokemon in a unit test and trainer battles are:
-    1. Pass into the newPokemon(chosenInfo: INewPokemon) function from `Equations` an object with members:
-        * level: number
-        * title: string[]
-    2. Catch the return value in a variable of type IPokemon.
+1. Pass into the newPokemon(chosenInfo: INewPokemon) function from `Equations` an object with members:
+    * level: number
+    * title: string[]
+2. Catch the return value in a variable of type IPokemon.
 
 ```javascript
 // Create Pokemon in unit test and for Trainer Battle.
