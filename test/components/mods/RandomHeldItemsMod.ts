@@ -5,7 +5,7 @@ import { stubBlankGame } from "./../../utils/fakes";
 
 const pokemonTitle: string[] = "CHARMANDER".split("");
 
-it("checks RandomHeldItemsMod can give a Pokemon an item", (): void => {
+it("gives a Pokemon an item when generated probability is valid", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     fsp.modAttacher.enableMod("Random Held Items");
@@ -22,7 +22,7 @@ it("checks RandomHeldItemsMod can give a Pokemon an item", (): void => {
     chai.expect(chosenPokemon.item).to.be.deep.equal("Burn Heal".split(""));
 });
 
-it("checks RandomHeldItemsMod can not give a Pokemon an item", (): void => {
+it("does not give a Pokemon an item when generated probability is invalid", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     fsp.modAttacher.enableMod("Random Held Items");
