@@ -34,14 +34,14 @@ const pokemon: IPokemon = FSP.equations.newPokemon({
 ### Wild Pokemon Grass Encounter
 
 The steps for creating a Pokemon in a wild Pokemon grass encounter are:
-1. The chooseWildPokemonForBattle(grass: Ithing) function is run.
-    * This function returns the Pokemon object by using the grass IMap and IArea to determine what wild Pokemon can be encountered.
-2. After selecting valid wild Pokemon that can be encountered chooseRandomWildPokemon(options: IWildPokemonSchema[]) of return type IWildPokemonSchema is called and chooses a Pokemon from the list of valid Pokemon.
-3. Next, createPokemon(schema: IWildPokemonSchema) of return type IPokemon is called which sets up an object of type INewPokemon which includes members:
-    * level: number
-    * title: string[]
-4. newPokemon is called returning the wild encountered Pokemon in an object of type IPokemon.
-5. Catch this return value in a variable of type IPokemon.
+1.The chooseWildPokemonForBattle(grass: Ithing) function is run.
+    *This function returns the Pokemon object by using the grass IMap and IArea to determine what wild Pokemon can be encountered.
+2.After selecting valid wild Pokemon that can be encountered chooseRandomWildPokemon(options: IWildPokemonSchema[]) of return type IWildPokemonSchema is called and chooses a Pokemon from the list of valid Pokemon.
+3.Next, createPokemon(schema: IWildPokemonSchema) of return type IPokemon is called which sets up an object of type INewPokemon which includes members:
+    *level: number
+    *title: string[]
+4.newPokemon is called returning the wild encountered Pokemon in an object of type IPokemon.
+5.Catch this return value in a variable of type IPokemon.
 
 ```javascript
 // Create Pokemon for wild grass encounter.
