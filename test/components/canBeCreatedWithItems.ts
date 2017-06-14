@@ -55,3 +55,6 @@ it("Pokemon spawns with no item when the generated probability is invalid", (): 
     // Assert
     chai.expect(chosenPokemon.item).to.be.deep.equal(undefined);
 });
+
+fsp.modAttacher.disableMod("Random Held Items");
+delete fsp.numberMaker.randomReal1;
