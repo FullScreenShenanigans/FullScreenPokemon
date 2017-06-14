@@ -16,7 +16,6 @@ it("Pokemon can be given an item when created", (): void => {
         item: "Potion".split("")
     });
 
-
     // Assert
     chai.expect(pokemon.item).to.deep.equal("Potion".split(""));
 });
