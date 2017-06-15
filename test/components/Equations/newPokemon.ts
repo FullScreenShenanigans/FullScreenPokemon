@@ -5,7 +5,7 @@ import { stubBlankGame } from "./../../utils/fakes";
 
 const pokemonTitle: string[] = "CHARMANDER".split("");
 
-it("checks new pokemon has an item", (): void => {
+it("gives a new Pokemon a provided item", (): void => {
     // Arrange
     const fsp: FullScreenPokemon = stubBlankGame();
     const chosenItem = "Potion".split("");
@@ -20,4 +20,3 @@ it("checks new pokemon has an item", (): void => {
     // Assert
     chai.expect(pokemon.item).to.deep.equal(chosenItem);
 });
-
