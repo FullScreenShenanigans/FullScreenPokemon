@@ -5,11 +5,16 @@ import { stubBlankGame } from "./../../utils/fakes";
 
 const pokemonTitle: string[] = "CHARMANDER".split("");
 
-it("gives a Pokemon an item when generated probability is valid", (): void => {
-    // Arrange
+function setUpFSPandGeneratedNumber(generatedNumber: number): FullScreenPokemon {
     const fsp: FullScreenPokemon = stubBlankGame();
     fsp.modAttacher.enableMod("Random Held Items");
-    fsp.numberMaker.randomReal1 = (): number => .012;
+    fsp.numberMaker.randomReal1 = (): number => generatedNumber;
+    return fsp;
+}
+
+it("checks RandomHeldItemsMod can give a Pokemon an item", (): void => {
+    // Arrange
+    const fsp = setUpFSPandGeneratedNumber(.012);
     const chosenInfo: INewPokemon = {
         level: 1,
         title: pokemonTitle
@@ -19,14 +24,12 @@ it("gives a Pokemon an item when generated probability is valid", (): void => {
     const chosenPokemon = fsp.equations.newPokemon(chosenInfo);
 
     // Assert
-    chai.expect(chosenPokemon.item).to.be.deep.equal("Burn Heal".split(""));
+    chai.expect(chosenPokemon.item).to.deep.equal("Burn Heal".split(""));
 });
 
-it("does not give a Pokemon an item when generated probability is invalid", (): void => {
+it("checks RandomHeldItemsMod can not give a Pokemon an item", (): void => {
     // Arrange
-    const fsp: FullScreenPokemon = stubBlankGame();
-    fsp.modAttacher.enableMod("Random Held Items");
-    fsp.numberMaker.randomReal1 = (): number => 1.15;
+    const fsp = setUpFSPandGeneratedNumber(1.15);
     const chosenInfo: INewPokemon = {
         level: 1,
         title: pokemonTitle
@@ -36,5 +39,5 @@ it("does not give a Pokemon an item when generated probability is invalid", (): 
     const chosenPokemon = fsp.equations.newPokemon(chosenInfo);
 
     // Assert
-    chai.expect(chosenPokemon.item).to.be.deep.equal(undefined);
+    chai.expect(chosenPokemon.item).to.be.equal(undefined);
 });
