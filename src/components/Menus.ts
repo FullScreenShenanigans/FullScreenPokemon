@@ -187,7 +187,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
             this.gameStarter.menuGrapher.createMenu("Pause", {
                 size: {
-                    height: 64
+                    height: 256
                 }
             });
         } else {
