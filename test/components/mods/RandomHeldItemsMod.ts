@@ -5,14 +5,14 @@ import { stubBlankGame } from "./../../utils/fakes";
 
 const pokemonTitle: string[] = "CHARMANDER".split("");
 
-function setUpFSPandGeneratedNumber(generatedNumber: number): FullScreenPokemon {
+const setUpFSPandGeneratedNumber(generatedNumber: number): FullScreenPokemon {
     const fsp: FullScreenPokemon = stubBlankGame();
     fsp.modAttacher.enableMod("Random Held Items");
     fsp.numberMaker.randomReal1 = (): number => generatedNumber;
     return fsp;
 }
 
-it("checks RandomHeldItemsMod can give a Pokemon an item", (): void => {
+it("Pokemon spawns with a random item", (): void => {
     // Arrange
     const fsp = setUpFSPandGeneratedNumber(.012);
     const chosenInfo: INewPokemon = {
@@ -27,7 +27,7 @@ it("checks RandomHeldItemsMod can give a Pokemon an item", (): void => {
     chai.expect(chosenPokemon.item).to.deep.equal("Burn Heal".split(""));
 });
 
-it("checks RandomHeldItemsMod can not give a Pokemon an item", (): void => {
+it("Pokemon spawns with no item", (): void => {
     // Arrange
     const fsp = setUpFSPandGeneratedNumber(1.15);
     const chosenInfo: INewPokemon = {
