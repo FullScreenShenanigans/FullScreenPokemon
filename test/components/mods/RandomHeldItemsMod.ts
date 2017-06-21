@@ -12,7 +12,7 @@ const setUpFSPandGeneratedNumber(generatedNumber: number): FullScreenPokemon {
     return fsp;
 }
 
-it("gives a newly spawned Pokemon a random item", (): void => {
+it("gives a newly spawned Pokemon a random item when generated probability is valid", (): void => {
     // Arrange
     const fsp = setUpFSPandGeneratedNumber(.012);
     const chosenInfo: INewPokemon = {
@@ -27,7 +27,7 @@ it("gives a newly spawned Pokemon a random item", (): void => {
     chai.expect(chosenPokemon.item).to.deep.equal("Burn Heal".split(""));
 });
 
-it("does not give a newly spawned Pokemon a random item", (): void => {
+it("does not give a newly spawned Pokemon a random item when generated probability is invalid", (): void => {
     // Arrange
     const fsp = setUpFSPandGeneratedNumber(1.15);
     const chosenInfo: INewPokemon = {
