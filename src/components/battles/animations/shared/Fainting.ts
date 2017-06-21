@@ -33,26 +33,52 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
         this.gameStarter.physics.setLeft(blank, thing.left);
         this.gameStarter.physics.setTop(blank, thing.top + thing.height * thing.scale!);
 
-        this.gameStarter.actions.sliding.slideVertically(
-            thing,
-            8,
-            this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
-            1,
-            (): void => {
-                this.gameStarter.physics.killNormal(thing);
-                this.gameStarter.physics.killNormal(blank);
-                this.gameStarter.menuGrapher.createMenu("GeneralText");
-                this.gameStarter.menuGrapher.addMenuDialog(
-                    "GeneralText",
-                    [
+        if (!this.gameStarter.battles.isPartyWiped()) {
+            this.gameStarter.actions.sliding.slideVertically(
+                thing,
+                8,
+                this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
+                1,
+                (): void => {
+                    this.gameStarter.physics.killNormal(thing);
+                    this.gameStarter.physics.killNormal(blank);
+                    this.gameStarter.menuGrapher.createMenu("GeneralText");
+                    this.gameStarter.menuGrapher.addMenuDialog(
+                        "GeneralText",
                         [
-                            pokemon.nickname, " fainted!"
-                        ]
-                    ],
-                    onComplete
-                );
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-            });
+                            [
+                                pokemon.nickname, " fainted!"
+                            ]
+                        ],
+                        onComplete
+                    );
+                    this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                });
+        } else {
+            this.gameStarter.actions.sliding.slideVertically(
+                thing,
+                8,
+                this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
+                1,
+                (): void => {
+                    this.gameStarter.physics.killNormal(thing);
+                    this.gameStarter.physics.killNormal(blank);
+                    this.gameStarter.menuGrapher.createMenu("GeneralText");
+                    const playerName = this.gameStarter.itemsHolder.getItem("name");
+                    this.gameStarter.menuGrapher.addMenuDialog(
+                        "GeneralText",
+                        [
+                            [
+                                pokemon.nickname, " fainted!\n",
+                                playerName, " is out of useable Pokemon!\n",
+                                playerName, " blacked out!"
+                            ]
+                        ],
+                        onComplete
+                    );
+                    this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                });
+        }
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }

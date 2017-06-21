@@ -177,6 +177,10 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                 this.gameStarter.scenePlayer.stopCutscene();
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.gameStarter.itemsHolder.setItem("lastPokecenter", {
+            map: this.gameStarter.itemsHolder.getItem("map"),
+            location: "PokeCenter Outside Door"
+        });
     }
 
     /**

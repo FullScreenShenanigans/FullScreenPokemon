@@ -326,6 +326,21 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
+     * Tests to see if all party Pokemon have fainted.
+     * @returns If a player's party is wiped or not.
+     */
+    public isPartyWiped(): boolean {
+        let partyWiped: boolean = true;
+        const partyPokemon = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+        for (const chosenPokemon of partyPokemon) {
+            if (chosenPokemon.statistics.health.current !== 0) {
+                partyWiped = false;
+            }
+        }
+        return partyWiped;
+    }
+
+    /**
      * Checks whether a team is allowed to flee (not facing a trainer).
      *
      * @param team   A team in battle.

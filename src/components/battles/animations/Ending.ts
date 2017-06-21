@@ -59,6 +59,14 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         queue.run((): void => this.finalize(battleInfo, outcome, onBattleComplete));
+
+        if (this.gameStarter.battles.isPartyWiped()) {
+                const party = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+                for (const pokemon of party) {
+                    this.gameStarter.battles.healPokemon(pokemon);
+                }
+                this.gameStarter.maps.setMap(this.gameStarter.itemsHolder.getItem("LastPokecenter"));
+        }
     }
 
     /**
