@@ -330,14 +330,21 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @returns If a player's party is wiped or not.
      */
     public isPartyWiped(): boolean {
-        let partyWiped: boolean = true;
-        const partyPokemon = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-        for (const chosenPokemon of partyPokemon) {
+        for (const chosenPokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
             if (chosenPokemon.statistics.health.current !== 0) {
-                partyWiped = false;
+                return false;
             }
         }
-        return partyWiped;
+        return true;
+    }
+
+    /**
+     * Heals party back to full health.
+     */
+    public healParty(): void {
+        for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+            this.gameStarter.battles.healPokemon(pokemon);
+        }
     }
 
     /**

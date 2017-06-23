@@ -177,10 +177,18 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                 this.gameStarter.scenePlayer.stopCutscene();
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-        this.gameStarter.itemsHolder.setItem("lastPokecenter", {
+        const mapLocation = this.gameStarter.itemsHolder.getItem("map");
+        if (mapLocation === "Pallet Town") {
+            this.gameStarter.itemsHolder.setItem("lastPokecenter", {
+            map: this.gameStarter.itemsHolder.getItem("map"),
+            location: "Player's House Door"
+            });
+        } else {
+            this.gameStarter.itemsHolder.setItem("lastPokecenter", {
             map: this.gameStarter.itemsHolder.getItem("map"),
             location: "PokeCenter Outside Door"
-        });
+            });
+        }
     }
 
     /**
