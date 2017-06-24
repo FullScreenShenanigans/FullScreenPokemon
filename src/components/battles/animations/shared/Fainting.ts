@@ -56,6 +56,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
                 } else {
                     this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyNotWipedText, onComplete);
                 }
+
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });
 

@@ -332,9 +332,11 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     public isPartyWiped(): boolean {
         for (const chosenPokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
             if (chosenPokemon.statistics.health.current !== 0) {
+
                 return false;
             }
         }
+
         return true;
     }
 
