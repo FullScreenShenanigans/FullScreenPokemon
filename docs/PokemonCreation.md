@@ -22,12 +22,12 @@ Pass into the `newPokemon` function from `Equations.ts` an object with appropria
 const pokemonTitle: string[] = "CHARMANDER".split("");
 const pokemonLevel: number = 10;
 const pokemon: IPokemon = FSP.equations.newPokemon({
-    level: pokemonLevel || undefined,
+    level: pokemonLevel,
     title: pokemonTitle
 });
 const pokemon: IPokemon = FSP.equations.newPokemon({
     item: "Potion".split(""),
-    level: undefined || pokemonLevel,
+    level: pokemonLevel,
     moves: [{
         title: "Ember",
         remaining: FSP.constants.moves.Ember.pp,
