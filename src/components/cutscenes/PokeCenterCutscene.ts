@@ -2,6 +2,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
+import { IMap } from "../Maps";
 import { IThing } from "../Things";
 
 /**
@@ -177,18 +178,13 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                 this.gameStarter.scenePlayer.stopCutscene();
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-        const mapLocation = this.gameStarter.itemsHolder.getItem("map");
-        if (mapLocation === "Pallet Town") {
-            this.gameStarter.itemsHolder.setItem("lastPokecenter", {
-            map: this.gameStarter.itemsHolder.getItem("map"),
-            location: "Player's House Door"
-            });
-        } else {
-            this.gameStarter.itemsHolder.setItem("lastPokecenter", {
-            map: this.gameStarter.itemsHolder.getItem("map"),
-            location: "PokeCenter Outside Door"
-            });
-        }
+        const mapLocation: string = this.gameStarter.itemsHolder.getItem("map");
+        let location: IMap | string | undefined = this.gameStarter.areaSpawner.getMap() as IMap;
+        location = location.locationDefault;
+        this.gameStarter.itemsHolder.setItem("lastPokecenter", {
+            map: mapLocation,
+            location: location
+        });
     }
 
     /**
