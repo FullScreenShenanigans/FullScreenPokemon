@@ -41,7 +41,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
             (): void => {
                 const playerName = this.gameStarter.itemsHolder.getItem("name");
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
-                      
+
                 this.gameStarter.physics.killNormal(thing);
                 this.gameStarter.physics.killNormal(blank);
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
@@ -50,7 +50,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
                         [playerName, " is out of useable Pokemon!"],
                         [playerName, " blacked out!"]);
                 }
-                      
+
                 this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });
