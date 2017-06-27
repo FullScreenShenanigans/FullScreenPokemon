@@ -328,7 +328,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Tests to see if all party Pokemon have fainted.
      *
-     * @returns Whether a player's party is wiped or not.
+     * @returns Whether a player's party is wiped.
      */
     public isPartyWiped(): boolean {
         for (const chosenPokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
