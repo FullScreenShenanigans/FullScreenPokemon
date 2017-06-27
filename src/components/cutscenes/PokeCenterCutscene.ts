@@ -182,6 +182,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
         const map: string = this.gameStarter.itemsHolder.getItem("map");
         const mapInfo: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
         const location: string | undefined = mapInfo.locationDefault;
+                                
         this.gameStarter.itemsHolder.setItem("lastPokecenter", { map, location });
     }
 
