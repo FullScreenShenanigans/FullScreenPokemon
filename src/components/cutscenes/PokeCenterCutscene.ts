@@ -178,13 +178,10 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                 this.gameStarter.scenePlayer.stopCutscene();
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-        const mapLocation: string = this.gameStarter.itemsHolder.getItem("map");
+        const map: string = this.gameStarter.itemsHolder.getItem("map");
         const mapInfo: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
         const location: string | undefined = mapInfo.locationDefault;
-        this.gameStarter.itemsHolder.setItem("lastPokecenter", {
-            map: mapLocation,
-            location: location
-        });
+        this.gameStarter.itemsHolder.setItem("lastPokecenter", { map, location });
     }
 
     /**
