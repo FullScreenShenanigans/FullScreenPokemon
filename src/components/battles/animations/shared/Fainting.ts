@@ -40,21 +40,22 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
             1,
             (): void => {
                 const playerName = this.gameStarter.itemsHolder.getItem("name");
-                let partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
+                const partyIsWipedText: (string | string[])[][][] = [];
                 this.gameStarter.physics.killNormal(thing);
                 this.gameStarter.physics.killNormal(blank);
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
-                if (this.gameStarter.battles.isPartyWiped) {
-                    partyIsWipedText = [
+                if (this.gameStarter.battles.isPartyWiped()) {
+                    partyIsWipedText.push([
                         [
                             pokemon.nickname, " fainted!\n",
                             playerName, " is out of useable Pokemon!\n",
                             playerName, " blacked out!"
                         ]
-                    ];
+                    ]);
                 }
+                partyIsWipedText.push([[pokemon.nickname, " fainted!"]]);
 
-                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
+                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText[0], onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });
 
