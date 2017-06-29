@@ -667,7 +667,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             return (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("Yes/No");
                 this.gameStarter.menuGrapher.createMenu("GeneralText", {
-                    // "deleteOnFinish": true
+                    "deleteOnFinish": true
                 });
                 this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText", words, callback);
