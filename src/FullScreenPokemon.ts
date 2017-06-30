@@ -283,7 +283,7 @@ export class FullScreenPokemon extends GameStartr {
         return {
             ...new ModuleSettingsGenerator().generate(this),
             ...settings.moduleSettings
-        };
+        } as IModuleSettings;
     }
 
     /**
@@ -292,11 +292,7 @@ export class FullScreenPokemon extends GameStartr {
      * @returns A new internal BattleMovr.
      */
     protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
-        return new BattleMovr({
-            gameStarter: this,
-            menuGrapher: this.menuGrapher,
-            ...moduleSettings.battles
-        });
+        return new BattleMovr(moduleSettings.battles);
     }
 
     /**
@@ -316,7 +312,6 @@ export class FullScreenPokemon extends GameStartr {
     protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
-            modifierScope: this,
             ...moduleSettings.menus
         });
     }

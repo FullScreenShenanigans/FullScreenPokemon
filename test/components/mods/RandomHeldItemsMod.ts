@@ -5,12 +5,12 @@ import { stubBlankGame } from "./../../utils/fakes";
 
 const pokemonTitle: string[] = "CHARMANDER".split("");
 
-const setUpFSPandGeneratedNumber(generatedNumber: number): FullScreenPokemon {
+const setUpFSPandGeneratedNumber = (generatedNumber: number): FullScreenPokemon => {
     const fsp: FullScreenPokemon = stubBlankGame();
     fsp.modAttacher.enableMod("Random Held Items");
     fsp.numberMaker.randomReal1 = (): number => generatedNumber;
     return fsp;
-}
+};
 
 it("gives a newly spawned Pokemon a random item when generated probability is valid", (): void => {
     // Arrange
