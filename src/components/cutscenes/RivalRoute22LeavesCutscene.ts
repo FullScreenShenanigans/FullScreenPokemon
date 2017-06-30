@@ -10,15 +10,17 @@ import { ICharacter } from "../Things";
  */
 export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
-     * Cutscene for showing the lab after the battle ends.
+     * Cutscene for determing if the walking scene should be run.
      */
     public AfterBattle(): void {
-        this.gameStarter.mapScreener.blockInputs = true;
-        this.gameStarter.timeHandler.addEvent(this.gameStarter.scenePlayer.bindRoutine("Walking"), 49);
+        if (this.gameStarter.battles.isPartyWiped) {
+            this.gameStarter.mapScreener.blockInputs = true;
+            this.gameStarter.timeHandler.addEvent(this.gameStarter.scenePlayer.bindRoutine("Walking"), 49);
+        }
     }
 
     /**
-     * Cutscene for the rival leaving the lab and Oak giving the player advice.
+     * Cutscene for the rival leaving after being defeated.
      */
     public Walking(): void {
         const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
