@@ -55,7 +55,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
     /**
      * Cutscene for the rival talking to the player before the battle.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param settings  Settings used for the cutscene.
      */
     public RivalTalks(settings: any): void {
         this.gameStarter.actions.animateCharacterSetDirection(
