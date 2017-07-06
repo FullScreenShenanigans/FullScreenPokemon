@@ -13,6 +13,7 @@ import { OakParcelPickupCutscene } from "./cutscenes/OakParcelPickupCutscene";
 import { PokeCenterCutscene } from "./cutscenes/PokeCenterCutscene";
 import { PokeMartCutscene } from "./cutscenes/PokeMartCutscene";
 import { RivalRoute22Cutscene } from "./cutscenes/RivalRoute22Cutscene";
+import { RivalRoute22LeavesCutscene } from "./cutscenes/RivalRoute22LeavesCutscene";
 import { TrainerSpottedCutscene } from "./cutscenes/TrainerSpottedCutscene";
 
 /**
@@ -78,6 +79,11 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<
      * RivalRoute22 cutscene functions used by this FullScreenPokemon instance.
      */
     public readonly rivalRoute22: RivalRoute22Cutscene<TGameStartr> = new RivalRoute22Cutscene(this.gameStarter);
+
+    /**
+     * RivalRoute22Leaves cutscene functions used by this FullScreenPokemon instance.
+     */
+    public readonly rivalRoute22Leaves: RivalRoute22LeavesCutscene<TGameStartr> = new RivalRoute22LeavesCutscene(this.gameStarter);
 
     /**
      * TrainerSpotted cutscene functions used by this FullScreenPokemon instance.
