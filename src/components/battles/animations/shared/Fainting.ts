@@ -1,8 +1,9 @@
-import { Team } from "battlemovr/lib/Teams";
+import { ITeamLeader, Team } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../Battles";
+import { IExperienceGains } from "../../../Experience";
 import { IThing } from "../../../Things";
 
 /**
@@ -29,6 +30,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.gameStarter.battles.decorations.moveToBeforeBackground(blank);
         this.gameStarter.battles.decorations.moveToBeforeBackground(thing);
+        const experienceGained: IExperienceGains[] = this.isBattleAgainstTrainer(teamName, battleInfo.teams.opponent.leader, pokemon);
 
         this.gameStarter.physics.setLeft(blank, thing.left);
         this.gameStarter.physics.setTop(blank, thing.top + thing.height * thing.scale!);
@@ -49,6 +51,14 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
                     partyIsWipedText.push(
                         [playerName, " is out of useable Pokemon!"],
                         [playerName, " blacked out!"]);
+                } else if (teamName === "opponent") {
+                    for (const pokemonExperience of experienceGained) {
+                        partyIsWipedText.push(
+                            [pokemonExperience.pokemonName, " gained ",
+                             pokemonExperience.experienceGained, " EXP. Points!"]
+                        );
+                    }
+                    this.OpponentFainted();
                 }
 
                 this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
@@ -57,4 +67,28 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }
-}
+
+    /**
+     * Sees if battle is against trainer or wild Pokemon.
+     *
+     * @param teamName    Tells if the Pokemon is the players or the opponents.
+     * @param battleInfo    Used to tell if player is fighting a wild Pokemon or trainer.
+     * @param pokemon   Information of defeated Pokemon.
+     */
+    private isBattleAgainstTrainer(teamName: string, battleInfo: ITeamLeader | undefined , pokemon: IPokemon): IExperienceGains[] {
+        if (teamName === "opponent") {
+            return battleInfo !== undefined
+                ? this.gameStarter.experience.calculateExperience(pokemon, true)
+                : this.gameStarter.experience.calculateExperience(pokemon, false);
+        }
+        return [];
+    }
+
+    /**
+     * Changes current battle participant list to selected Pokemon.
+     */
+    private OpponentFainted(): void {
+        this.gameStarter.itemsHolder.setItem("BattleParticipants",
+                                             this.gameStarter.battleMover.getBattleInfo().teams.player.selectedActor);
+    }
+ }
