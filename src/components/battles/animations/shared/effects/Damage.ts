@@ -51,6 +51,9 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Updates the battleParticipant list.
+     *
+     * @param attackingPokemon  Pokemon that performed attack
+     * @param teamAndAction  Team and move being performed
      */
     private updateBattleParticipants(attackingPokemon: IActor, teamAndAction: ITeamAndAction<IMoveAction>): void {
         if (teamAndAction.source.team === 1 &&
