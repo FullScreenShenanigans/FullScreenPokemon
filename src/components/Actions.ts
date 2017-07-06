@@ -13,7 +13,7 @@ import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
 import { IHMMoveSchema } from "./constants/Moves";
-import { IArea, IMap/*, IWildPokemonSchema*/ } from "./Maps";
+import { IArea, IMap } from "./Maps";
 import { IDialog, IDialogOptions } from "./Menus";
 import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
