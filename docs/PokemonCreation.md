@@ -4,7 +4,7 @@ The two main files that handle Pokemon creation are [`Equations.ts`](../src/comp
 `Equations.ts` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object.
 `Utilities.ts` facilitates the creating of a wild Pokemon by preparing parameters then calling `Equations.ts` creation of the Pokemon object.
 
-A newly created Pokemon's member types can be found in [`Battles.ts`](../src/components/Battles.ts) under the IPokemon interface.
+A newly created Pokemon's member types can be found in [`Battles.ts`](../src/components/Battles.ts) under the `IPokemon` interface.
 
 ### Equations
 
@@ -16,7 +16,8 @@ A newly created Pokemon's member types can be found in [`Battles.ts`](../src/com
 
 ### Unit Test and Trainer Battles
 
-Pass into the `newPokemon` function from `Equations.ts` an object with appropriate members.
+Pass into the `newPokemon` function from `Equations.ts` an object of type `INewPokemon`.
+* `INewPokemon` holds information on the Pokemon being created and eventually helps spit out a fully created Pokemon.
 
 ```javascript
 const pokemonTitle: string[] = "CHARMANDER".split("");
@@ -41,7 +42,6 @@ const pokemon: IPokemon = FSP.equations.newPokemon({
 
 The steps for creating a Pokemon in a wild Pokemon encounter are:
 1. The `chooseWildPokemonForBattle` function is run.
-    * This function returns the Pokemon object by using the grass `IMap` and `IArea` to determine what wild Pokemon can be encountered.
     * The grass `IMap` and `IArea` determine which wild Pokemon can be encountered by looking at the current location which is an object labeled `areas` that includes an object `wildPokemon` that holds what Pokemon can be found along with appearance rates.
 2. After selecting a valid wild Pokemon that can be encountered `chooseRandomWildPokemon` is called and chooses a Pokemon from the list of valid Pokemon based on the chance of encountering that wild Pokemon.
 3. Next, `createPokemon` is called which sets up an object of type `INewPokemon` containing information on the level and title of the chosen Pokemon.
@@ -56,15 +56,17 @@ const options: IWildPokemonSchema[] = [
             title: "Ember",
             remaining: FSP.constants.moves.Ember.pp,
             uses: FSP.constants.moves.Ember.pp
-            }],
+        }],
         rate: .25
     },
     {
         title: "Squirtle".split(""),
-        levels: [10,5,4,7],
+        levels: [10, 5, 4, 7],
         rate: .75
     }
 ];
+
+//Chosen has a 75% chance of being a Squirtle and 25% chance of being a Charmander.
 const chosen: IWildPokemonSchema = fsp.equations.chooseRandomWildPokemon(options);
 const chosenPokemon = fsp.utilities.createPokemon(chosen);
 ```
