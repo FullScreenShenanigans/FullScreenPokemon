@@ -13,6 +13,11 @@ export interface IPokemonListing {
     catchRate?: number;
 
     /**
+     * Base experience gained from defeating this Pokemon.
+     */
+    experience: number;
+
+    /**
      * The height of the Pokemon, as ["feet", "inches"].
      */
     height: [string, string];
@@ -346,6 +351,7 @@ export class Pokemon {
             "name": "ABRA".split(""),
             "label": "Psi",
             "sprite": "Water",
+            "experience": 62,
             "info": [
                 "Using its ability to read minds, it will identify impending danger and TELEPORT to safety."
             ],
@@ -475,6 +481,7 @@ export class Pokemon {
             "name": "AERODACTYL".split(""),
             "label": "Fossil",
             "sprite": "Water",
+            "experience": 180,
             "info": [
                 "A ferocious, prehistoric %%%%%%%POKEMON%%%%%%% that goes for the enemy's throat with its serrated saw-like fangs."
             ],
@@ -592,6 +599,7 @@ export class Pokemon {
             "name": "ALAKAZAM".split(""),
             "label": "Psi",
             "sprite": "Water",
+            "experience": 225,
             "info": [
                 "Its brain can outperform a supercomputer. Its intelligence quotient is said to be 5,000."
             ],
@@ -753,6 +761,7 @@ export class Pokemon {
             "name": "ARBOK".split(""),
             "label": "Cobra",
             "sprite": "Water",
+            "experience": 157,
             "info": [
                 "It is rumored that the ferocious warning markings on its belly differ from area to area."
             ],
@@ -878,6 +887,7 @@ export class Pokemon {
             "name": "ARCANINE".split(""),
             "label": "Legendary",
             "sprite": "Water",
+            "experience": 194,
             "info": [
                 "A %%%%%%%POKEMON%%%%%%% that has been admired since the past for its beauty. It runs agilely as if on wings."
             ],
@@ -1060,6 +1070,7 @@ export class Pokemon {
             "name": "ARTICUNO".split(""),
             "label": "Freeze",
             "sprite": "Water",
+            "experience": 260,
             "info": [
                 "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear to doomed people who are lost in icy mountains."
             ],
@@ -1181,6 +1192,7 @@ export class Pokemon {
             "name": "BEEDRILL".split(""),
             "label": "Poison Bee",
             "sprite": "Water",
+            "experience": 178,
             "info": [
                 "Flies at high speed and attacks using its large venomous stingers on its forelegs and tail."
             ],
@@ -1237,6 +1249,7 @@ export class Pokemon {
             "name": "BELLSPROUT".split(""),
             "label": "Flower",
             "sprite": "Water",
+            "experience": 60,
             "info": [
                 "A carnivorous %%%%%%%POKEMON%%%%%%% that traps and eats bugs. It uses its root feet to soak up needed moisture."
             ],
@@ -1359,6 +1372,7 @@ export class Pokemon {
             "name": "BLASTOISE".split(""),
             "label": "Shellfish",
             "sprite": "Water",
+            "experience": 239,
             "info": [
                 "A brutal %%%%%%%POKEMON%%%%%%% with pressurized water jets on its shell. They are used for high speed tackles."
             ],
@@ -1529,6 +1543,7 @@ export class Pokemon {
             "name": "BULBASAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
+            "experience": 64,
             "info": [
                 "A strange seed was planted on its back at birth.",
                 "The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%."
@@ -1656,6 +1671,7 @@ export class Pokemon {
             "name": "BUTTERFREE".split(""),
             "label": "Butterfly",
             "sprite": "Water",
+            "experience": 178,
             "info": [
                 "In battle, it flaps its wings at high speed to release highly toxic dust into the air."
             ],
@@ -1786,6 +1802,7 @@ export class Pokemon {
             "name": "CATERPIE".split(""),
             "label": "Worm",
             "sprite": "Water",
+            "experience": 39,
             "info": [
                 "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls."
             ],
@@ -1826,6 +1843,7 @@ export class Pokemon {
             "name": "CHANSEY".split(""),
             "label": "Egg",
             "sprite": "Water",
+            "experience": 395,
             "info": [
                 "A rare and elusive %%%%%%%POKEMON%%%%%%% that is said to bring happiness to those who manage to get it."
             ],
@@ -2024,6 +2042,7 @@ export class Pokemon {
             "name": "CHARIZARD".split(""),
             "label": "Flame",
             "sprite": "Water",
+            "experience": 240,
             "info": [
                 "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally."
             ],
@@ -2194,6 +2213,7 @@ export class Pokemon {
             "name": "CHARMANDER".split(""),
             "label": "Lizard",
             "sprite": "Water",
+            "experience": 62,
             "info": [
                 "Obviously prefers hot places.",
                 "When it rains, steam is said to spout from the tip of its tail."
@@ -2354,6 +2374,7 @@ export class Pokemon {
             "name": "CHARMELEON".split(""),
             "label": "Flame",
             "sprite": "Water",
+            "experience": 142,
             "info": [
                 "When it swings its burning tail, it elevates the temperature to unbearably high levels."
             ],
@@ -2509,6 +2530,7 @@ export class Pokemon {
             "name": "CLEFABLE".split(""),
             "label": "Fairy",
             "sprite": "Water",
+            "experience": 217,
             "info": [
                 "A timid fairy %%%%%%%POKEMON%%%%%%% that is rarely seen. It will run and hide the moment it senses people."
             ],
@@ -2563,6 +2585,7 @@ export class Pokemon {
             "name": "CLEFAIRY".split(""),
             "label": "Fairy",
             "sprite": "Water",
+            "experience": 113,
             "info": [
                 "Its magical and cute appeal has many admirers. It is rare and found only in certain areas."
             ],
@@ -2758,6 +2781,7 @@ export class Pokemon {
             "name": "CLOYSTER".split(""),
             "label": "Bivalve",
             "sprite": "Water",
+            "experience": 184,
             "info": [
                 "When attacked, it launches its horns in quick volleys. Its innards have never been seen."
             ],
@@ -2803,6 +2827,7 @@ export class Pokemon {
             "name": "CUBONE".split(""),
             "label": "Lonely",
             "sprite": "Water",
+            "experience": 64,
             "info": [
                 "Because it never removes its skull helmet, no one has ever seen this %%%%%%%POKEMON%%%%%%%'s real face."
             ],
@@ -2961,6 +2986,7 @@ export class Pokemon {
             "name": "DEWGONG".split(""),
             "label": "Sea Lion",
             "sprite": "Water",
+            "experience": 166,
             "info": [
                 "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters."
             ],
@@ -3087,6 +3113,7 @@ export class Pokemon {
             "name": "DIGLETT".split(""),
             "label": "Mole",
             "sprite": "Water",
+            "experience": 53,
             "info": [
                 "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground."
             ],
@@ -3222,6 +3249,7 @@ export class Pokemon {
             "name": "DITTO".split(""),
             "label": "Transform",
             "sprite": "Water",
+            "experience": 101,
             "info": [
                 "Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy."
             ],
@@ -3247,6 +3275,7 @@ export class Pokemon {
             "name": "DODRIO".split(""),
             "label": "Triple Bird",
             "sprite": "Water",
+            "experience": 165,
             "info": [
                 "Uses its three brains to execute complex plans. While two heads sleep, one head stays awake."
             ],
@@ -3369,6 +3398,7 @@ export class Pokemon {
             "name": "DODUO".split(""),
             "label": "Twin Bird",
             "sprite": "Water",
+            "experience": 62,
             "info": [
                 "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints."
             ],
@@ -3491,6 +3521,7 @@ export class Pokemon {
             "name": "DRAGONAIR".split(""),
             "label": "Dragon",
             "sprite": "Water",
+            "experience": 147,
             "info": [
                 "A mystical %%%%%%%POKEMON%%%%%%% that exudes a gentle aura. Has the ability to change climate conditions."
             ],
@@ -3646,6 +3677,7 @@ export class Pokemon {
             "name": "DRAGONITE".split(""),
             "label": "Dragon",
             "sprite": "Water",
+            "experience": 270,
             "info": [
                 "An extremely rarely seen marine %%%%%%%POKEMON%%%%%%%. Its intelligence is said to match that of humans."
             ],
@@ -3812,6 +3844,7 @@ export class Pokemon {
             "name": "DRATINI".split(""),
             "label": "Dragon",
             "sprite": "Water",
+            "experience": 60,
             "info": [
                 "Long considered a mythical %%%%%%%POKEMON%%%%%%% until recently when a small colony was found living underwater."
             ],
@@ -3962,6 +3995,7 @@ export class Pokemon {
             "name": "DROWZEE".split(""),
             "label": "Hypnosis",
             "sprite": "Water",
+            "experience": 66,
             "info": [
                 "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams."
             ],
@@ -4121,6 +4155,7 @@ export class Pokemon {
             "name": "DUGTRIO".split(""),
             "label": "Mole",
             "sprite": "Water",
+            "experience": 149,
             "info": [
                 "A team of DIGLETT triplets. It triggers huge earthquakes by burrowing 60 miles underground."
             ],
@@ -4207,6 +4242,7 @@ export class Pokemon {
             "name": "EEVEE".split(""),
             "label": "evolutions",
             "sprite": "Water",
+            "experience": 65,
             "info": [
                 "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs."
             ],
@@ -4366,6 +4402,7 @@ export class Pokemon {
             "name": "EKANS".split(""),
             "label": "Snake",
             "sprite": "Water",
+            "experience": 58,
             "info": [
                 "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole."
             ],
@@ -4489,6 +4526,7 @@ export class Pokemon {
             "name": "ELECTABUZZ".split(""),
             "label": "Electric",
             "sprite": "Water",
+            "experience": 172,
             "info": [
                 "Normally found near power plants, they can wander away and cause major blackouts in cities."
             ],
@@ -4651,6 +4689,7 @@ export class Pokemon {
             "name": "ELECTRODE".split(""),
             "label": "Ball",
             "sprite": "Water",
+            "experience": 172,
             "info": [
                 "It stores electric energy under very high pressure. It often explodes with little or no provocation."
             ],
@@ -4778,6 +4817,7 @@ export class Pokemon {
             "name": "EXEGGCUTE".split(""),
             "label": "Egg",
             "sprite": "Water",
+            "experience": 65,
             "info": [
                 "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms."
             ],
@@ -4875,6 +4915,7 @@ export class Pokemon {
             "name": "EXEGGUTOR".split(""),
             "label": "Coconut",
             "sprite": "Water",
+            "experience": 186,
             "info": [
                 "Legend has it that on rare occasions, one of its heads will drop off and continue on as an EXEGGCUTE."
             ],
@@ -4915,6 +4956,7 @@ export class Pokemon {
             "name": "FARFETCHD".split(""),
             "label": "Wild Duck",
             "sprite": "Water",
+            "experience": 132,
             "info": [
                 "The sprig of green onions it holds is its weapon. It is used much like a metal sword."
             ],
@@ -5029,6 +5071,7 @@ export class Pokemon {
             "name": "FEAROW".split(""),
             "label": "Beak",
             "sprite": "Water",
+            "experience": 155,
             "info": [
                 "With its huge and magnificent wings, it can keep aloft without ever having to land for rest."
             ],
@@ -5142,6 +5185,7 @@ export class Pokemon {
             "name": "FLAREON".split(""),
             "label": "Flame",
             "sprite": "Water",
+            "experience": 184,
             "info": [
                 "When storing thermal energy in its body, its temperature could soar to over 1600 degrees."
             ],
@@ -5332,6 +5376,7 @@ export class Pokemon {
             "name": "GASTLY".split(""),
             "label": "Gas",
             "sprite": "Water",
+            "experience": 62,
             "info": [
                 "Almost invisible, this gaseous %%%%%%%POKEMON%%%%%%% cloaks the target and puts it to sleep without notice."
             ],
@@ -5403,6 +5448,7 @@ export class Pokemon {
             "name": "GENGAR".split(""),
             "label": "Shadow",
             "sprite": "Water",
+            "experience": 225,
             "info": [
                 "Under a full moon, this %%%%%%%POKEMON%%%%%%% likes to mimic the shadows of people and laugh at their fright."
             ],
@@ -5552,6 +5598,7 @@ export class Pokemon {
             "name": "GEODUDE".split(""),
             "label": "Rock",
             "sprite": "Water",
+            "experience": 60,
             "info": [
                 "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them."
             ],
@@ -5699,6 +5746,7 @@ export class Pokemon {
             "name": "GLOOM".split(""),
             "label": "Weed",
             "sprite": "Water",
+            "experience": 138,
             "info": [
                 "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey."
             ],
@@ -5818,6 +5866,7 @@ export class Pokemon {
             "name": "GOLBAT".split(""),
             "label": "Bat",
             "sprite": "Water",
+            "experience": 159,
             "info": [
                 "Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly."
             ],
@@ -5960,6 +6009,7 @@ export class Pokemon {
             "name": "GOLDEEN".split(""),
             "label": "Goldfish",
             "sprite": "Water",
+            "experience": 64,
             "info": [
                 "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen."
             ],
@@ -6090,6 +6140,7 @@ export class Pokemon {
             "name": "GOLDUCK".split(""),
             "label": "Duck",
             "sprite": "Water",
+            "experience": 175,
             "info": [
                 "Often seen swimming elegantly by lake shores. It is often mistaken for the Japanese monster, Kappa."
             ],
@@ -6240,6 +6291,7 @@ export class Pokemon {
             "name": "GOLEM".split(""),
             "label": "Megaton",
             "sprite": "Water",
+            "experience": 223,
             "info": [
                 "Its boulder-like body is extremely hard. It can easily withstand dynamite blasts without damage."
             ],
@@ -6393,6 +6445,7 @@ export class Pokemon {
             "name": "GRAVELER".split(""),
             "label": "Rock",
             "sprite": "Water",
+            "experience": 137,
             "info": [
                 "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction."
             ],
@@ -6543,6 +6596,7 @@ export class Pokemon {
             "name": "GRIMER".split(""),
             "label": "Sludge",
             "sprite": "Water",
+            "experience": 65,
             "info": [
                 "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories."
             ],
@@ -6694,6 +6748,7 @@ export class Pokemon {
             "name": "GROWLITHE".split(""),
             "label": "Puppy",
             "sprite": "Water",
+            "experience": 70,
             "info": [
                 "Very protective of its territory. It will bark and bite to repel intruders from its space."
             ],
@@ -6781,6 +6836,7 @@ export class Pokemon {
             "name": "GYARADOS".split(""),
             "label": "Atrocious",
             "sprite": "Water",
+            "experience": 189,
             "info": [
                 "Rarely seen in the wild. Huge and vicious, it is capable of destroying entire cities in a rage."
             ],
@@ -6855,6 +6911,7 @@ export class Pokemon {
             "name": "HAUNTER".split(""),
             "label": "Gas",
             "sprite": "Water",
+            "experience": 142,
             "info": [
                 "Because of its ability to slip through block walls, it is said to be from another dimension."
             ],
@@ -6925,6 +6982,7 @@ export class Pokemon {
             "name": "HITMONCHAN".split(""),
             "label": "Punching",
             "sprite": "Water",
+            "experience": 159,
             "info": [
                 "While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see."
             ],
@@ -7050,6 +7108,7 @@ export class Pokemon {
             "name": "HITMONLEE".split(""),
             "label": "Kicking",
             "sprite": "Water",
+            "experience": 159,
             "info": [
                 "When in a hurry, its legs lengthen progressively. It runs smoothly with extra long, loping strides."
             ],
@@ -7172,6 +7231,7 @@ export class Pokemon {
             "name": "HORSEA".split(""),
             "label": "Dragon",
             "sprite": "Water",
+            "experience": 59,
             "info": [
                 "Known to shoot down flying bugs with precision blasts of ink from the surface of the water."
             ],
@@ -7290,6 +7350,7 @@ export class Pokemon {
             "name": "HYPNO".split(""),
             "label": "Hypnosis",
             "sprite": "Water",
+            "experience": 169,
             "info": [
                 "When it locks eyes with an enemy, it will use a mix of PSI moves such as HYPNOSIS and CONFUSION."
             ],
@@ -7452,6 +7513,7 @@ export class Pokemon {
             "name": "IVYSAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
+            "experience": 142,
             "info": [
                 "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
             ],
@@ -7582,6 +7644,7 @@ export class Pokemon {
             "name": "JIGGLYPUFF".split(""),
             "label": "Balloon",
             "sprite": "Water",
+            "experience": 95,
             "info": [
                 "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep."
             ],
@@ -7773,6 +7836,7 @@ export class Pokemon {
             "name": "JOLTEON".split(""),
             "label": "Lightning",
             "sprite": "Water",
+            "experience": 184,
             "info": [
                 "It accumulates negative ions in the atmosphere to blast out 10000-volt lightning bolts."
             ],
@@ -7846,6 +7910,7 @@ export class Pokemon {
             "name": "JYNX".split(""),
             "label": "Human Shape",
             "sprite": "Water",
+            "experience": 159,
             "info": [
                 "It seductively wiggles its hips as it walks. It can cause people to dance in unison with it."
             ],
@@ -8036,6 +8101,7 @@ export class Pokemon {
             "name": "KABUTO".split(""),
             "label": "Shellfish",
             "sprite": "Water",
+            "experience": 71,
             "info": [
                 "A %%%%%%%POKEMON%%%%%%% that was resurrected from a fossil found in what was once the ocean floor eons ago."
             ],
@@ -8154,6 +8220,7 @@ export class Pokemon {
             "name": "KABUTOPS".split(""),
             "label": "Shellfish",
             "sprite": "Water",
+            "experience": 173,
             "info": [
                 "Its sleek shape is perfect for swimming. It slashes prey with its claws and drains the body fluids."
             ],
@@ -8292,6 +8359,7 @@ export class Pokemon {
             "name": "KADABRA".split(""),
             "label": "Psi",
             "sprite": "Water",
+            "experience": 140,
             "info": [
                 "It emits special alpha waves from its body that induce headaches just by being close by."
             ],
@@ -8457,6 +8525,7 @@ export class Pokemon {
             "name": "KAKUNA".split(""),
             "label": "Cocoon",
             "sprite": "Water",
+            "experience": 72,
             "info": [
                 "Almost incapable of moving, this %%%%%%%POKEMON%%%%%%% can only harden its shell to protect itself from predators."
             ],
@@ -8494,6 +8563,7 @@ export class Pokemon {
             "name": "KANGASKHAN".split(""),
             "label": "Parent",
             "sprite": "Water",
+            "experience": 172,
             "info": [
                 "The infant rarely ventures out of its mother's protective pouch until it is 3 years old."
             ],
@@ -8652,6 +8722,7 @@ export class Pokemon {
             "name": "KINGLER".split(""),
             "label": "Pincer",
             "sprite": "Water",
+            "experience": 166,
             "info": [
                 "The large pincer has 10000 hp of crushing power. However, its huge size makes it unwieldy to use."
             ],
@@ -8782,6 +8853,7 @@ export class Pokemon {
             "name": "KOFFING".split(""),
             "label": "Poison Gas",
             "sprite": "Water",
+            "experience": 68,
             "info": [
                 "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning."
             ],
@@ -8917,6 +8989,7 @@ export class Pokemon {
             "name": "KRABBY".split(""),
             "label": "River Crab",
             "sprite": "Water",
+            "experience": 65,
             "info": [
                 "Its pincers are not only powerful weapons, they are used for balance when walking sideways."
             ],
@@ -9036,6 +9109,7 @@ export class Pokemon {
             "name": "LAPRAS".split(""),
             "label": "Transport",
             "sprite": "Water",
+            "experience": 187,
             "info": [
                 "A %%%%%%%POKEMON%%%%%%% that has been overhunted almost to extinction. It can ferry people across the water."
             ],
@@ -9194,6 +9268,7 @@ export class Pokemon {
             "name": "LICKITUNG".split(""),
             "label": "Licking",
             "sprite": "Water",
+            "experience": 77,
             "info": [
                 "Its tongue can be extended like a chameleon's. It leaves a tingling sensation when it licks enemies."
             ],
@@ -9352,6 +9427,7 @@ export class Pokemon {
             "name": "MACHAMP".split(""),
             "label": "Superpower",
             "sprite": "Water",
+            "experience": 227,
             "info": [
                 "Using its heavy muscles, it throws powerful punches that can send the victim clear over the horizon."
             ],
@@ -9501,6 +9577,7 @@ export class Pokemon {
             "name": "MACHOKE".split(""),
             "label": "Superpower",
             "sprite": "Water",
+            "experience": 142,
             "info": [
                 "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions."
             ],
@@ -9651,6 +9728,7 @@ export class Pokemon {
             "name": "MACHOP".split(""),
             "label": "Superpower",
             "sprite": "Water",
+            "experience": 61,
             "info": [
                 "Loves to build its muscles. It trains in all styles of martial arts to become even stronger."
             ],
@@ -9797,6 +9875,7 @@ export class Pokemon {
             "name": "MAGIKARP".split(""),
             "label": "Fish",
             "sprite": "Water",
+            "experience": 40,
             "info": [
                 "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today."
             ],
@@ -9836,6 +9915,7 @@ export class Pokemon {
             "name": "MAGMAR".split(""),
             "label": "Spitfire",
             "sprite": "Water",
+            "experience": 173,
             "info": [
                 "Its body always burns with an orange glow that enables it to hide perfectly among flames."
             ],
@@ -9974,6 +10054,7 @@ export class Pokemon {
             "name": "MAGNEMITE".split(""),
             "label": "Magnet",
             "sprite": "Water",
+            "experience": 65,
             "info": [
                 "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves."
             ],
@@ -10096,6 +10177,7 @@ export class Pokemon {
             "name": "MAGNETON".split(""),
             "label": "Magnet",
             "sprite": "Water",
+            "experience": 163,
             "info": [
                 "Formed by several MAGNEMITEs linked together. They frequently appear when sunspots flare up."
             ],
@@ -10218,6 +10300,7 @@ export class Pokemon {
             "name": "MANKEY".split(""),
             "label": "Pig Monkey",
             "sprite": "Water",
+            "experience": 61,
             "info": [
                 "Extremely quick to anger. It could be docile one moment then thrashing away the next instant."
             ],
@@ -10372,6 +10455,7 @@ export class Pokemon {
             "name": "MAROWAK".split(""),
             "label": "Bone Keeper",
             "sprite": "Water",
+            "experience": 149,
             "info": [
                 "The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets."
             ],
@@ -10533,6 +10617,7 @@ export class Pokemon {
             "name": "MEOWTH".split(""),
             "label": "Scratch Cat",
             "sprite": "Water",
+            "experience": 58,
             "info": [
                 "Adores circular objects. Wanders the streets on a nightly basis to look for dropped loose change."
             ],
@@ -10620,6 +10705,7 @@ export class Pokemon {
             "name": "METAPOD".split(""),
             "label": "Cocoon",
             "sprite": "Water",
+            "experience": 72,
             "info": [
                 "this %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body."
             ],
@@ -10662,6 +10748,7 @@ export class Pokemon {
             "name": "MEW".split(""),
             "label": "New Species",
             "sprite": "Water",
+            "experience": 270,
             "info": [
                 "So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide."
             ],
@@ -10924,6 +11011,7 @@ export class Pokemon {
             "name": "MEWTWO".split(""),
             "label": "Genetic",
             "sprite": "Water",
+            "experience": 306,
             "info": [
                 "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments."
             ],
@@ -11126,6 +11214,7 @@ export class Pokemon {
             "name": "MOLTRES".split(""),
             "label": "Flame",
             "sprite": "Water",
+            "experience": 261,
             "info": [
                 "Known as the legendary bird of fire. Every flap of its wings creates a dazzling flash of flames."
             ],
@@ -11232,6 +11321,7 @@ export class Pokemon {
             "name": ["Mr", "Hyphen", "M", "I", "M", "E"],
             "label": "Barrier",
             "sprite": "Water",
+            "experience": 161,
             "info": [
                 "If interrupted while it is miming, it will slap around the offender with its broad hands."
             ],
@@ -11389,6 +11479,7 @@ export class Pokemon {
             "name": "MUK".split(""),
             "label": "Sludge",
             "sprite": "Water",
+            "experience": 175,
             "info": [
                 "Thickly covered with a filthy, vile sludge. It is so toxic, even its footprints contain poison."
             ],
@@ -11483,6 +11574,7 @@ export class Pokemon {
             "name": "NIDOKING".split(""),
             "label": "Drill",
             "sprite": "Water",
+            "experience": 227,
             "info": [
                 "It uses its powerful tail in battle to smash, constrict, then break the prey's bones."
             ],
@@ -11549,6 +11641,7 @@ export class Pokemon {
             "name": "NIDOQUEEN".split(""),
             "label": "Drill",
             "sprite": "Water",
+            "experience": 227,
             "info": [
                 "Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves."
             ],
@@ -11615,6 +11708,7 @@ export class Pokemon {
             "name": ["N", "I", "D", "O", "R", "A", "N", "FemaleSymbol"],
             "label": "Poison Pin",
             "sprite": "Water",
+            "experience": 55,
             "info": [
                 "Although small, its venomous barbs render this %%%%%%%POKEMON%%%%%%% dangerous. The female has smaller horns."
             ],
@@ -11799,6 +11893,7 @@ export class Pokemon {
             "name": ["N", "I", "D", "O", "R", "A", "N", "MaleSymbol"],
             "label": "Poison Pin",
             "sprite": "Water",
+            "experience": 55,
             "info": [
                 "Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom."
             ],
@@ -12022,6 +12117,7 @@ export class Pokemon {
             "name": "NIDORINA".split(""),
             "label": "Poison Pin",
             "sprite": "Water",
+            "experience": 128,
             "info": [
                 "The female's horn develops slowly. Prefers physical attacks such as clawing and biting."
             ],
@@ -12125,6 +12221,7 @@ export class Pokemon {
             "name": "NIDORINO".split(""),
             "label": "Poison Pin",
             "sprite": "Water",
+            "experience": 128,
             "info": [
                 "An aggressive %%%%%%%POKEMON%%%%%%% that is quick to attack. The horn on its head secretes a powerful venom."
             ],
@@ -12228,6 +12325,7 @@ export class Pokemon {
             "name": "NINETALES".split(""),
             "label": "Fox",
             "sprite": "Water",
+            "experience": 177,
             "info": [
                 "Very smart and very vengeful. Grabbing one of its many tails could result in a 1000-year curse."
             ],
@@ -12394,6 +12492,7 @@ export class Pokemon {
             "name": "ODDISH".split(""),
             "label": "Weed",
             "sprite": "Water",
+            "experience": 64,
             "info": [
                 "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds."
             ],
@@ -12505,6 +12604,7 @@ export class Pokemon {
             "name": "OMANYTE".split(""),
             "label": "Spiral",
             "sprite": "Water",
+            "experience": 71,
             "info": [
                 "Although long extinct, in rare cases, it can be genetically resurrected from fossils."
             ],
@@ -12620,6 +12720,7 @@ export class Pokemon {
             "name": "OMASTAR".split(""),
             "label": "Spiral",
             "sprite": "Water",
+            "experience": 173,
             "info": [
                 "A prehistoric %%%%%%%POKEMON%%%%%%% that died out when its heavy shell made it impossible to catch prey."
             ],
@@ -12753,6 +12854,7 @@ export class Pokemon {
             "name": "ONIX".split(""),
             "label": "Rock Snake",
             "sprite": "Water",
+            "experience": 77,
             "info": [
                 "As it grows, the stone portions of its body harden to become similar to a diamond, but colored black."
             ],
@@ -12871,6 +12973,7 @@ export class Pokemon {
             "name": "PARAS".split(""),
             "label": "Mushroom",
             "sprite": "Water",
+            "experience": 57,
             "info": [
                 "Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host."
             ],
@@ -12993,6 +13096,7 @@ export class Pokemon {
             "name": "PARASECT".split(""),
             "label": "Mushroom",
             "sprite": "Water",
+            "experience": 142,
             "info": [
                 "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places."
             ],
@@ -13115,6 +13219,7 @@ export class Pokemon {
             "name": "PERSIAN".split(""),
             "label": "Classy Cat",
             "sprite": "Water",
+            "experience": 154,
             "info": [
                 "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness."
             ],
@@ -13281,6 +13386,7 @@ export class Pokemon {
             "name": "PIDGEOT".split(""),
             "label": "Bird",
             "sprite": "Water",
+            "experience": 216,
             "info": [
                 "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP."
             ],
@@ -13399,6 +13505,7 @@ export class Pokemon {
             "name": "PIDGEOTTO".split(""),
             "label": "Bird",
             "sprite": "Water",
+            "experience": 122,
             "info": [
                 "Very protective of its sprawling territorial area, this %%%%%%%POKEMON%%%%%%% will fiercely peck at any intruder."
             ],
@@ -13521,6 +13628,7 @@ export class Pokemon {
             "name": "PIDGEY".split(""),
             "label": "Tiny Bird",
             "sprite": "Water",
+            "experience": 50,
             "info": [
                 "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand."
             ],
@@ -13639,6 +13747,7 @@ export class Pokemon {
             "name": "PIKACHU".split(""),
             "label": "Mouse",
             "sprite": "Water",
+            "experience": 112,
             "info": [
                 "When several of these %%%%%%%POKEMON%%%%%%% gather, their electricity could build and cause lightning storms."
             ],
@@ -13782,6 +13891,7 @@ export class Pokemon {
             "name": "PINSIR".split(""),
             "label": "Stag Beetle",
             "sprite": "Water",
+            "experience": 175,
             "info": [
                 "If it fails to crush the victim in its pincers, it will swing it around and toss it hard."
             ],
@@ -13896,6 +14006,7 @@ export class Pokemon {
             "name": "POLIWAG".split(""),
             "label": "Tadpole",
             "sprite": "Water",
+            "experience": 60,
             "info": [
                 "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand."
             ],
@@ -14023,6 +14134,7 @@ export class Pokemon {
             "name": "POLIWHIRL".split(""),
             "label": "Tadpole",
             "sprite": "Water",
+            "experience": 135,
             "info": [
                 "Capable of living in or out of water. When out of water, it sweats to keep its body slimy."
             ],
@@ -14198,6 +14310,7 @@ export class Pokemon {
             "name": "POLIWRATH".split(""),
             "label": "Tadpole",
             "sprite": "Water",
+            "experience": 230,
             "info": [
                 "An adept swimmer at both the front crawl and breast stroke. Easily overtakes the best human swimmers."
             ],
@@ -14252,6 +14365,7 @@ export class Pokemon {
             "name": "PONYTA".split(""),
             "label": "Fire Horse",
             "sprite": "Water",
+            "experience": 82,
             "info": [
                 "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time."
             ],
@@ -14399,6 +14513,7 @@ export class Pokemon {
             "name": "PORYGON".split(""),
             "label": "Virtual",
             "sprite": "Water",
+            "experience": 79,
             "info": [
                 "A %%%%%%%POKEMON%%%%%%% that consists entirely of programming code. Capable of moving freely in cyberspace."
             ],
@@ -14537,6 +14652,7 @@ export class Pokemon {
             "name": "PRIMEAPE".split(""),
             "label": "Pig Monkey",
             "sprite": "Water",
+            "experience": 159,
             "info": [
                 "Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught."
             ],
@@ -14694,6 +14810,7 @@ export class Pokemon {
             "name": "PSYDUCK".split(""),
             "label": "Duck",
             "sprite": "Water",
+            "experience": 64,
             "info": [
                 "While lulling its enemies with its vacant look, this wily %%%%%%%POKEMON%%%%%%% will use psychokinetic powers."
             ],
@@ -14841,6 +14958,7 @@ export class Pokemon {
             "name": "RAICHU".split(""),
             "label": "Mouse",
             "sprite": "Water",
+            "experience": 218,
             "info": [
                 "Its long tail serves as a ground to protect itself from its own high voltage power."
             ],
@@ -14881,6 +14999,7 @@ export class Pokemon {
             "name": "RAPIDASH".split(""),
             "label": "Fire Horse",
             "sprite": "Water",
+            "experience": 175,
             "info": [
                 "Very competitive, this %%%%%%%POKEMON%%%%%%% will chase anything that moves fast in the hopes of racing it."
             ],
@@ -14983,6 +15102,7 @@ export class Pokemon {
             "name": "RATICATE".split(""),
             "label": "Mouse",
             "sprite": "Water",
+            "experience": 145,
             "info": [
                 "It uses its whiskers to maintain its balance. It apparently slows down if they are cut off."
             ],
@@ -15141,6 +15261,7 @@ export class Pokemon {
             "name": "RATTATA".split(""),
             "label": "Mouse",
             "sprite": "Water",
+            "experience": 51,
             "info": [
                 "Bites anything when it attacks. Small and very quick, it is a common sight in many places."
             ],
@@ -15220,6 +15341,7 @@ export class Pokemon {
             "name": "RHYDON".split(""),
             "label": "Drill",
             "sprite": "Water",
+            "experience": 170,
             "info": [
                 "Protected by an armor-like hide, it is capable of living in molten lava of 3,600 degrees."
             ],
@@ -15410,6 +15532,7 @@ export class Pokemon {
             "name": "RHYHORN".split(""),
             "label": "Spikes",
             "sprite": "Water",
+            "experience": 69,
             "info": [
                 "Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying."
             ],
@@ -15548,6 +15671,7 @@ export class Pokemon {
             "name": "SANDSHREW".split(""),
             "label": "Mouse",
             "sprite": "Water",
+            "experience": 60,
             "info": [
                 "Burrows deep underground in arid locations far from water. It only emerges to hunt for food."
             ],
@@ -15687,6 +15811,7 @@ export class Pokemon {
             "name": "SANDSLASH".split(""),
             "label": "Mouse",
             "sprite": "Water",
+            "experience": 158,
             "info": [
                 "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape."
             ],
@@ -15825,6 +15950,7 @@ export class Pokemon {
             "name": "SCYTHER".split(""),
             "label": "Mantis",
             "sprite": "Water",
+            "experience": 100,
             "info": [
                 "With ninja-like agility and speed, it can create the illusion that there is more than one."
             ],
@@ -15927,6 +16053,7 @@ export class Pokemon {
             "name": "SEADRA".split(""),
             "label": "Dragon",
             "sprite": "Water",
+            "experience": 154,
             "info": [
                 "Capable of swimming backwards by rapidly flapping its wing-like pectoral fins and stout tail."
             ],
@@ -16041,6 +16168,7 @@ export class Pokemon {
             "name": "SEAKING".split(""),
             "label": "Goldfish",
             "sprite": "Water",
+            "experience": 158,
             "info": [
                 "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks."
             ],
@@ -16170,6 +16298,7 @@ export class Pokemon {
             "name": "SEEL".split(""),
             "label": "Sea Lion",
             "sprite": "Water",
+            "experience": 65,
             "info": [
                 "The protruding horn on its head is very hard. It is used for bashing through thick ice."
             ],
@@ -16293,6 +16422,7 @@ export class Pokemon {
             "name": "SHELLDER".split(""),
             "label": "Bivalve",
             "sprite": "Water",
+            "experience": 61,
             "info": [
                 "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open."
             ],
@@ -16431,6 +16561,7 @@ export class Pokemon {
             "name": "SLOWBRO".split(""),
             "label": "Hermit Crab",
             "sprite": "Water",
+            "experience": 172,
             "info": [
                 "The SHELLDER that is latched onto SLOWPOKE's tail is said to feed on the host's left over scraps."
             ],
@@ -16625,6 +16756,7 @@ export class Pokemon {
             "name": "SLOWPOKE".split(""),
             "label": "Dopey",
             "sprite": "Water",
+            "experience": 63,
             "info": [
                 "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack."
             ],
@@ -16804,6 +16936,7 @@ export class Pokemon {
             "name": "SNORLAX".split(""),
             "label": "Sleeping",
             "sprite": "Water",
+            "experience": 189,
             "info": [
                 "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful."
             ],
@@ -16998,6 +17131,7 @@ export class Pokemon {
             "name": "SPEAROW".split(""),
             "label": "Tiny Bird",
             "sprite": "Water",
+            "experience": 52,
             "info": [
                 "Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne."
             ],
@@ -17109,6 +17243,7 @@ export class Pokemon {
             "name": "SQUIRTLE".split(""),
             "label": "TinyTurtle",
             "sprite": "Water",
+            "experience": 63,
             "info": [
                 "After birth, its back swells and hardens into a shell.",
                 "Powerfully sprays foam from its mouth."
@@ -17261,6 +17396,7 @@ export class Pokemon {
             "name": "STARMIE".split(""),
             "label": "Mysterious",
             "sprite": "Water",
+            "experience": 182,
             "info": [
                 "Its central core glows with the seven colors of the rainbow. Some people value the core as a gem."
             ],
@@ -17311,6 +17447,7 @@ export class Pokemon {
             "name": "STARYU".split(""),
             "label": "Star Shape",
             "sprite": "Water",
+            "experience": 68,
             "info": [
                 "An enigmatic %%%%%%%POKEMON%%%%%%% that can effortlessly regenerate any appendage it loses in battle."
             ],
@@ -17466,6 +17603,7 @@ export class Pokemon {
             "name": "TANGELA".split(""),
             "label": "Vine",
             "sprite": "Water",
+            "experience": 87,
             "info": [
                 "The whole body is swathed with wide vines that are similar to seaweed. Its vines shake as it walks."
             ],
@@ -17583,6 +17721,7 @@ export class Pokemon {
             "name": "TAUROS".split(""),
             "label": "Wild Bull",
             "sprite": "Water",
+            "experience": 172,
             "info": [
                 "When it targets an enemy, it charges furiously while whipping its body with its long tails."
             ],
@@ -17709,6 +17848,7 @@ export class Pokemon {
             "name": "TENTACOOL".split(""),
             "label": "Jellyfish",
             "sprite": "Water",
+            "experience": 67,
             "info": [
                 "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid."
             ],
@@ -17852,6 +17992,7 @@ export class Pokemon {
             "name": "TENTACRUEL".split(""),
             "label": "Jellyfish",
             "sprite": "Water",
+            "experience": 180,
             "info": [
                 "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey."
             ],
@@ -17998,6 +18139,7 @@ export class Pokemon {
             "name": "VAPOREON".split(""),
             "label": "Bubble Jet",
             "sprite": "Water",
+            "experience": 184,
             "info": [
                 "Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's."
             ],
@@ -18074,6 +18216,7 @@ export class Pokemon {
             "name": "VENOMOTH".split(""),
             "label": "Poison Moth",
             "sprite": "Water",
+            "experience": 158,
             "info": [
                 "The dust-like scales covering its wings are color coded to indicate the kinds of poison it has."
             ],
@@ -18176,6 +18319,7 @@ export class Pokemon {
             "name": "VENONAT".split(""),
             "label": "Insect",
             "sprite": "Water",
+            "experience": 61,
             "info": [
                 "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night."
             ],
@@ -18335,6 +18479,7 @@ export class Pokemon {
             "name": "VENUSAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
+            "experience": 236,
             "info": [
                 "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
             ],
@@ -18461,6 +18606,7 @@ export class Pokemon {
             "name": "VICTREEBEL".split(""),
             "label": "Flycatcher",
             "sprite": "Water",
+            "experience": 221,
             "info": [
                 "Said to live in huge colonies deep in jungles, although no one has ever returned from there."
             ],
@@ -18517,6 +18663,7 @@ export class Pokemon {
             "name": "VILEPLUME".split(""),
             "label": "Flower",
             "sprite": "Water",
+            "experience": 221,
             "info": [
                 "The larger its petals, the more toxic pollen it contains. Its big head is heavy and hard to hold up."
             ],
@@ -18570,6 +18717,7 @@ export class Pokemon {
             "name": "VOLTORB".split(""),
             "label": "Ball",
             "sprite": "Water",
+            "experience": 66,
             "info": [
                 "Usually found in power plants. Easily mistaken for a POKÃ© BALL, they have zapped many people."
             ],
@@ -18693,6 +18841,7 @@ export class Pokemon {
             "name": "VULPIX".split(""),
             "label": "Fox",
             "sprite": "Water",
+            "experience": 60,
             "info": [
                 "At the time of birth, it has just one tail. The tail splits from its tip as it grows older."
             ],
@@ -18840,6 +18989,7 @@ export class Pokemon {
             "name": "WARTORTLE".split(""),
             "label": "Turtle",
             "sprite": "Water",
+            "experience": 142,
             "info": [
                 "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance."
             ],
@@ -18995,6 +19145,7 @@ export class Pokemon {
             "name": "WEEDLE".split(""),
             "label": "Hairy Bug",
             "sprite": "Water",
+            "experience": 39,
             "info": [
                 "Often found in forests, eating leaves. It has a sharp venomous stinger on its head."
             ],
@@ -19034,6 +19185,7 @@ export class Pokemon {
             "name": "WEEPINBELL".split(""),
             "label": "Flycatcher",
             "sprite": "Water",
+            "experience": 137,
             "info": [
                 "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID."
             ],
@@ -19157,6 +19309,7 @@ export class Pokemon {
             "name": "WEEZING".split(""),
             "label": "Poison Gas",
             "sprite": "Water",
+            "experience": 172,
             "info": [
                 "Where two kinds of poison gases meet, 2 KOFFINGs can fuse into a WEEZING over many years."
             ],
@@ -19295,6 +19448,7 @@ export class Pokemon {
             "name": "WIGGLYTUFF".split(""),
             "label": "Balloon",
             "sprite": "Water",
+            "experience": 196,
             "info": [
                 "The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size."
             ],
@@ -19341,6 +19495,7 @@ export class Pokemon {
             "name": "ZAPDOS".split(""),
             "label": "Electric",
             "sprite": "Water",
+            "experience": 261,
             "info": [
                 "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear from clouds while dropping enormous lightning bolts."
             ],
@@ -19463,6 +19618,7 @@ export class Pokemon {
             "name": "ZUBAT".split(""),
             "label": "Bat",
             "sprite": "Water",
+            "experience": 49,
             "info": [
                 "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets."
             ],

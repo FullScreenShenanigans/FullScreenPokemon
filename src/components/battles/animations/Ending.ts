@@ -59,6 +59,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
         }
 
         queue.run((): void => this.finalize(battleInfo, outcome, onBattleComplete));
+        this.gameStarter.itemsHolder.setItem("BattleParticipants", []);
 
         if (this.gameStarter.battles.isPartyWiped()) {
             this.gameStarter.battles.healParty();
