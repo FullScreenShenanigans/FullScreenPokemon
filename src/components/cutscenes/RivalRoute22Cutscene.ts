@@ -75,7 +75,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
 
     /**Cutscene for the battle between the player and the rival.
      *
-     * @param settings Settings used for the cutscene.
+     * @param settings  Settings used for the cutscene.
      */
     public Challenge(): void {
         const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
