@@ -4,6 +4,21 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 
 /**
+ * Pokemon and it's held experience.
+ */
+export interface IExperienceGains {
+    /**
+     * Name of the Pokemon.
+     */
+    pokemonName: string[];
+
+    /**
+     * Experience gained by this Pokemon.
+     */
+    experienceGained: string;
+}
+
+/**
  * Handles logic related to Pokemon level ups.
  */
 export class Experience<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
@@ -45,7 +60,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      * @param pokemon   The defeated Pokemon.
      * @param trainer   If the defeated Pokemon had a trainer.
      */
-    public calculateExperience(pokemon: IPokemon, trainer: boolean): number {
+    public calculateExperience(pokemon: IPokemon, trainer: boolean): IExperienceGains[] {
         const participatedPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("battleParticipants");
         const numerator: number = this.calculateNumerator(pokemon.level, trainer,
                                                           this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].experience);
@@ -74,21 +89,33 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      * @param participatedPokemon   Pokemon that participated in the battle.
      * @param numerator   Top of experience formula fraction.
      */
-    private ExpAll(participatedPokemon: IPokemon[], numerator: number): number {
+    private ExpAll(participatedPokemon: IPokemon[], numerator: number): IExperienceGains[] {
         const s = participatedPokemon.length;
         const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
         let experienceGained: number = 0;
+        const gainedEXP: IExperienceGains[] = [];
 
         for (const chosenPartyPokemon of partyPokemon) {
             if (participatedPokemon.indexOf(chosenPartyPokemon) !== -1) {
                 experienceGained = Math.floor(numerator / (s * 2 * 7));
                 this.gainExperience(chosenPartyPokemon, experienceGained);
+                const pokemonAndEXP = {
+                    pokemonName: chosenPartyPokemon.title,
+                    experienceGained: String(experienceGained)
+                };
+                gainedEXP.push(pokemonAndEXP);
             } else {
                 experienceGained = Math.floor(numerator / (s * 2 * 7 * partyPokemon.length));
                 this.gainExperience(chosenPartyPokemon, experienceGained);
+                const pokemonAndEXP = {
+                    pokemonName: chosenPartyPokemon.title,
+                    experienceGained: String(experienceGained)
+                };
+                gainedEXP.push(pokemonAndEXP);
             }
         }
-        return experienceGained;
+
+        return gainedEXP;
     }
 
     /**
@@ -97,13 +124,19 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      * @param participatedPokemon   Pokemon that participated in the battle.
      * @param numerator   Top of experience formula fraction.
      */
-    private NoExpAll(participatedPokemon: IPokemon[], numerator: number): number {
+    private NoExpAll(participatedPokemon: IPokemon[], numerator: number): IExperienceGains[] {
         const s = participatedPokemon.length;
         const experienceGained: number = Math.floor(numerator / (s * 7));
+        const gainedEXP: IExperienceGains[] = [];
 
         for (const chosenPartyPokemon of participatedPokemon) {
             this.gainExperience(chosenPartyPokemon, experienceGained);
+            const pokemonAndEXP = {
+                pokemonName: chosenPartyPokemon.title,
+                experienceGained: String(experienceGained)
+            };
+            gainedEXP.push(pokemonAndEXP);
         }
-        return experienceGained;
+        return gainedEXP;
     }
 }
