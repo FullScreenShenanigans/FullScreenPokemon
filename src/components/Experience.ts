@@ -32,7 +32,8 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      */
     public gainExperience(pokemon: IPokemon, experience: number): void {
         pokemon.experience += experience;
-        if (pokemon.experience >= this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1)) {
+        if (pokemon.experience >= this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1)
+            && pokemon.statistics.health.current !== 0) {
             this.levelup(pokemon);
         }
     }
@@ -49,11 +50,9 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
         const numerator: number = this.calculateNumerator(pokemon.level, trainer,
                                                           this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].experience);
 
-        if ("EXP ALL" in this.gameStarter.itemsHolder.getItem("items")) {
-            return this.ExpAll(participatedPokemon, numerator);
-        } else {
-            return this.NoExpAll(participatedPokemon, numerator);
-        }
+        return "EXP ALL" in this.gameStarter.itemsHolder.getItem("items")
+            ? this.ExpAll(participatedPokemon, numerator)
+            : this.NoExpAll(participatedPokemon, numerator);
     }
 
     /**
@@ -64,11 +63,9 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      * @param experienceValue   How much experience the defeated Pokemon is worth.
      */
     private calculateNumerator(pokemonLevel: number, trainer: boolean, experienceValue: number): number {
-        if (trainer) {
-            return experienceValue * pokemonLevel * 1.5;
-        } else {
-            return experienceValue * pokemonLevel * 1;
-        }
+        return trainer
+            ? experienceValue * pokemonLevel * 1.5
+            : experienceValue * pokemonLevel * 1;
     }
 
     /**
@@ -96,6 +93,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Calculates experience given out if the player doesn't own Exp. All.
+     *
      * @param participatedPokemon   Pokemon that participated in the battle.
      * @param numerator   Top of experience formula fraction.
      */
