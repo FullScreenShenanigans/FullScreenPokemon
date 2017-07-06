@@ -29,8 +29,13 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.gameStarter.battles.decorations.moveToBeforeBackground(blank);
         this.gameStarter.battles.decorations.moveToBeforeBackground(thing);
-        const experienceGained: number = this.isBattleAgainstTrainer(teamName, battleInfo.teams.opponent.leader, pokemon);
-        const experienceGainedString: string = String(experienceGained);
+        const experienceGained: number | void = this.isBattleAgainstTrainer(teamName, battleInfo.teams.opponent.leader, pokemon);
+        let experienceGainedString: string = "";
+
+        if (experienceGained !== undefined) {
+                experienceGainedString = String(experienceGained);
+        }
+
         this.gameStarter.physics.setLeft(blank, thing.left);
         this.gameStarter.physics.setTop(blank, thing.top + thing.height * thing.scale!);
 
@@ -71,15 +76,20 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
      * @param battleInfo    Used to tell if player is fighting a wild Pokemon or trainer.
      * @param pokemon   Information of defeated Pokemon.
      */
-    private isBattleAgainstTrainer(teamName: string, battleInfo: ITeamLeader | undefined , pokemon: IPokemon): number {
+    private isBattleAgainstTrainer(teamName: string, battleInfo: ITeamLeader | undefined , pokemon: IPokemon): number | void {
         if (teamName === "opponent") {
-            if (battleInfo !== undefined) {
-                return this.gameStarter.experience.calculateExperience(pokemon, true);
-            } else {
-                return this.gameStarter.experience.calculateExperience(pokemon, false);
-            }
+            this.OpponentFainted();
+            return battleInfo !== undefined
+                ? this.gameStarter.experience.calculateExperience(pokemon, true)
+                : this.gameStarter.experience.calculateExperience(pokemon, false);
         }
+    }
+
+    /**
+     * Changes current battle participant list to selected Pokemon.
+     */
+    private OpponentFainted(): void {
         this.gameStarter.itemsHolder.setItem("BattleParticipants",
                                              this.gameStarter.battleMover.getBattleInfo().teams.player.selectedActor);
     }
-}
+ }
