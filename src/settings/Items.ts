@@ -71,6 +71,9 @@ export function GenerateItemsSettings(_fsp: FullScreenPokemon): IItemsModuleSett
             PokemonInPC: {
                 valueDefault: []
             },
+            battleParticipants: {
+                valueDefault: []
+            },
             starter: {},
             starterRival: {},
             time: {
