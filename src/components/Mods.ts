@@ -34,7 +34,7 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGame
         new JoeysRattataMod(this.gameStarter, this.eventNames),
         new Level100Mod(this.gameStarter, this.eventNames),
         new NuzlockeChallengeMod(this.gameStarter, this.eventNames),
-        new RandomHeldItemsMod(this.gameStarter, this.eventNames),          
+        new RandomHeldItemsMod(this.gameStarter, this.eventNames),
         new RandomizeWildPokemonMod(this.gameStarter, this.eventNames),
         new RepeatTrainersMod(this.gameStarter, this.eventNames),
         new RunningIndoorsMod(this.gameStarter, this.eventNames),

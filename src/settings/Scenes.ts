@@ -58,6 +58,10 @@ export function GenerateScenesSettings(fsp: FullScreenPokemon): IModuleSettingsO
                 firstRoutine: "RivalEmerges",
                 routines: fsp.cutscenes.rivalRoute22
             },
+            RivalRoute22Leaves: {
+                firstRoutine: "AfterBattle",
+                routines: fsp.cutscenes.rivalRoute22Leaves
+            },
             TrainerSpotted: {
                 firstRoutine: "Exclamation",
                 routines: fsp.cutscenes.trainerSpotted
