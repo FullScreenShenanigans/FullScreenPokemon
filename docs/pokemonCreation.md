@@ -42,7 +42,7 @@ const pokemon: IPokemon = FSP.equations.newPokemon({
 
 The steps for creating a Pokemon in a wild Pokemon encounter are:
 1. The `chooseWildPokemonForBattle` function is run.
-    * The grass `IMap` and `IArea` determine which wild Pokemon can be encountered by looking at the current location which is an object labeled `areas` that includes an object `wildPokemon` that holds what Pokemon can be found along with appearance rates.
+The grass `IMap` and `IArea` determine which wild Pokemon can be encountered by looking at the current location which is an object labeled `areas` that includes an object `wildPokemon` that holds what Pokemon can be found along with appearance rates.
 2. After selecting a valid wild Pokemon that can be encountered `chooseRandomWildPokemon` is called and chooses a Pokemon from the list of valid Pokemon based on the chance of encountering that wild Pokemon.
 3. Next, `createPokemon` is called which sets up an object of type `INewPokemon` containing information on the level and title of the chosen Pokemon.
 4. `newPokemon` is called creating and returning the wild encountered Pokemon.
