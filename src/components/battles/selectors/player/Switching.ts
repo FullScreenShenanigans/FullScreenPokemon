@@ -103,7 +103,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
         pokemon === battleInfo.teams[Team[team]].selectedActor
             ? this.rejectSwitch(pokemon)
             : onSuccess();
-        this.updateBattleParticipants(pokemon);
+        this.addToBattleParticipants(pokemon);
     }
 
     /**
@@ -129,11 +129,17 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
-    private updateBattleParticipants(pokemon: IPokemon): void {
+    /**
+     * Adds a Pokemon to the battle participants list.
+     *
+     * @param pokemon   Pokemon that participated in the battle.
+     */
+    private addToBattleParticipants(pokemon: IPokemon): void {
         if (this.gameStarter.itemsHolder.getItem("battleParticipants").indexOf(pokemon) === -1) {
-            const participants = this.gameStarter.itemsHolder.getItem("battleParticipants");
-            participants.push(pokemon);
-            this.gameStarter.itemsHolder.setItem("battleParticipants", participants);
+            return;
         }
+        const participants = this.gameStarter.itemsHolder.getItem("battleParticipants");
+        participants.push(pokemon);
+        this.gameStarter.itemsHolder.setItem("battleParticipants", participants);
     }
 }

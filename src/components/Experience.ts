@@ -4,18 +4,28 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 
 /**
- * Pokemon and its held experience.
+ * Information on a Pokemon during the experience giving phase of battle.
  */
 export interface IExperienceGains {
     /**
-     * Name of the Pokemon.
+     * Pokemon being looked at.
      */
-    pokemonName: string[];
+    pokemon: IPokemon;
 
     /**
      * Experience gained by this Pokemon.
      */
-    experienceGained: string;
+    experienceGained: number;
+
+    /**
+     * Experience item held by Pokemon.
+     */
+    experienceItem?: string[];
+
+    /**
+     * If the Pokemon paticipated in the battle or not
+     */
+    participation: boolean;
 }
 
 /**
@@ -47,27 +57,33 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      */
     public gainExperience(pokemon: IPokemon, experience: number): void {
         pokemon.experience += experience;
-        if (pokemon.experience >= this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1)
-            && pokemon.statistics.health.current !== 0) {
+        if (pokemon.experience >= this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1)) {
             this.levelup(pokemon);
         }
     }
 
     /**
      * Calculates how much experience a defeated Pokemon is worth.
-     * https://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      *
      * @param pokemon   The defeated Pokemon.
      * @param trainer   If the defeated Pokemon had a trainer.
+     * @returns   An array of objects of type IExperienceGains.
+     * @see   https://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      */
     public calculateExperience(pokemon: IPokemon, trainer: boolean): IExperienceGains[] {
         const participatedPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("battleParticipants");
-        const numerator: number = this.calculateNumerator(pokemon.level, trainer,
-                                                          this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].experience);
+        const numerator: number = this.calculateNumerator(
+            pokemon.level, trainer, this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].experience);
+        const experienceGains: IExperienceGains[] = this.experienceGainBeforeItems(participatedPokemon, numerator);
+        //this.experienceWithItems(experienceGains);
 
-        return "EXP ALL" in this.gameStarter.itemsHolder.getItem("items")
-            ? this.ExpAll(participatedPokemon, numerator)
-            : this.NoExpAll(participatedPokemon, numerator);
+        for (const chosenPartyPokemon of experienceGains) {
+            if (chosenPartyPokemon.pokemon.statistics.health.current !== 0) {
+                this.gainExperience(chosenPartyPokemon.pokemon, chosenPartyPokemon.experienceGained);
+            }
+        }
+
+        return experienceGains;
     }
 
     /**
@@ -76,67 +92,56 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
      * @param pokemonLevel   The defeated Pokemon.
      * @param trainer   1.5 if there is a trainer, 1 if the Pokemon was wild.
      * @param experienceValue   How much experience the defeated Pokemon is worth.
+     * @returns   The top numerator of the experience formula.
      */
     private calculateNumerator(pokemonLevel: number, trainer: boolean, experienceValue: number): number {
-        return trainer
-            ? experienceValue * pokemonLevel * 1.5
-            : experienceValue * pokemonLevel * 1;
+        const multiplier: number = (trainer ? 1.5 : 1);
+        return experienceValue * pokemonLevel * multiplier;
     }
 
     /**
-     * Calculates experience given out if the player owns Exp. All.
+     * Calculates experience given out before items.
      *
      * @param participatedPokemon   Pokemon that participated in the battle.
      * @param numerator   Top of experience formula fraction.
+     * @returns   An array of Pokemon objects along with participation status and experience gains before calculating for items.
+     * @see   https://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      */
-    private ExpAll(participatedPokemon: IPokemon[], numerator: number): IExperienceGains[] {
-        const s = participatedPokemon.length;
-        const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-        let experienceGained: number = 0;
-        const gainedEXP: IExperienceGains[] = [];
-
-        for (const chosenPartyPokemon of partyPokemon) {
-            if (participatedPokemon.indexOf(chosenPartyPokemon) !== -1) {
-                experienceGained = Math.floor(numerator / (s * 2 * 7));
-                this.gainExperience(chosenPartyPokemon, experienceGained);
-                const pokemonAndEXP = {
-                    pokemonName: chosenPartyPokemon.title,
-                    experienceGained: String(experienceGained)
-                };
-                gainedEXP.push(pokemonAndEXP);
-            } else {
-                experienceGained = Math.floor(numerator / (s * 2 * 7 * partyPokemon.length));
-                this.gainExperience(chosenPartyPokemon, experienceGained);
-                const pokemonAndEXP = {
-                    pokemonName: chosenPartyPokemon.title,
-                    experienceGained: String(experienceGained)
-                };
-                gainedEXP.push(pokemonAndEXP);
-            }
-        }
-
-        return gainedEXP;
-    }
-
-    /**
-     * Calculates experience given out if the player doesn't own Exp. All.
-     *
-     * @param participatedPokemon   Pokemon that participated in the battle.
-     * @param numerator   Top of experience formula fraction.
-     */
-    private NoExpAll(participatedPokemon: IPokemon[], numerator: number): IExperienceGains[] {
+    private experienceGainBeforeItems(participatedPokemon: IPokemon[], numerator: number): IExperienceGains[] {
         const s = participatedPokemon.length;
         const experienceGained: number = Math.floor(numerator / (s * 7));
         const gainedEXP: IExperienceGains[] = [];
+        const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+        let participation: boolean = false;
 
-        for (const chosenPartyPokemon of participatedPokemon) {
-            this.gainExperience(chosenPartyPokemon, experienceGained);
-            const pokemonAndEXP = {
-                pokemonName: chosenPartyPokemon.title,
-                experienceGained: String(experienceGained)
-            };
-            gainedEXP.push(pokemonAndEXP);
+        for (const chosenPartyPokemon of partyPokemon) {
+            if (participatedPokemon.indexOf(chosenPartyPokemon) !== -1) {
+                participation = true;
+            }
+            gainedEXP.push({
+                pokemon: chosenPartyPokemon,
+                participation,
+                experienceGained,
+                experienceItem: chosenPartyPokemon.item
+            });
         }
+
         return gainedEXP;
     }
+
+    /**
+     * Calls for item experience functionality.
+     *
+     * @param experienceGains   Experience that is gained by each individual party Pokemon.
+     */
+    /*private experienceWithItems(experienceGains: IExperienceGains[]): void {
+        for (const chosenPartyPokemon of experienceGains) {
+            const item = chosenPartyPokemon.experienceItem;
+            const lookAtItem = this.gameStarter.constants.items;
+            if (item !== undefined && lookAtItem.byName[item.join("")].bagActivate !== undefined) {
+                lookAtItem.byName[item.join("")].bagActivate;
+            }
+
+        }
+    }*/
 }

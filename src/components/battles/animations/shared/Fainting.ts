@@ -54,11 +54,11 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
                 } else if (teamName === "opponent") {
                     for (const pokemonExperience of experienceGained) {
                         partyIsWipedText.push(
-                            [pokemonExperience.pokemonName, " gained ",
-                             pokemonExperience.experienceGained, " EXP. Points!"]
+                            [pokemonExperience.pokemon.title, " gained ",
+                             String(pokemonExperience.experienceGained), " EXP. Points!"]
                         );
                     }
-                    this.OpponentFainted();
+                    this.resetBattleParticipantsToCurrentPokemon();
                 }
 
                 this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
@@ -74,13 +74,11 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
      * @param teamName    Tells if the Pokemon is the players or the opponents.
      * @param battleInfo    Used to tell if player is fighting a wild Pokemon or trainer.
      * @param pokemon   Information of defeated Pokemon.
+     * @returns   Array of Pokemon and their gained experiences.
      */
     private isThereATrainer(teamName: string, battleInfo: ITeamLeader | undefined , pokemon: IPokemon): IExperienceGains[] {
         if (teamName === "opponent") {
-            let trainer: boolean = true;
-            if (battleInfo === undefined) {
-                trainer = false;
-            }
+            const trainer = battleInfo === undefined;
             return this.gameStarter.experience.calculateExperience(pokemon, trainer);
         }
 
@@ -88,10 +86,10 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
     }
 
     /**
-     * Changes current battle participant list to selected Pokemon.
+     * Changes the current battle participant list to selected Pokemon when an Opponent faints.
      */
-    private OpponentFainted(): void {
-        this.gameStarter.itemsHolder.setItem("BattleParticipants",
-                                             this.gameStarter.battleMover.getBattleInfo().teams.player.selectedActor);
+    private resetBattleParticipantsToCurrentPokemon(): void {
+        this.gameStarter.itemsHolder.setItem(
+            "battleParticipants", this.gameStarter.battleMover.getBattleInfo().teams.player.selectedActor);
     }
  }
