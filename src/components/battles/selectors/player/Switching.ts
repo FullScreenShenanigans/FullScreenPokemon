@@ -103,6 +103,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
         pokemon === battleInfo.teams[Team[team]].selectedActor
             ? this.rejectSwitch(pokemon)
             : onSuccess();
+        this.addToBattleParticipants(pokemon);
     }
 
     /**
@@ -126,5 +127,19 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
                 this.gameStarter.menuGrapher.setActiveMenu("Pokemon");
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+
+    /**
+     * Adds a Pokemon to the battle participants list.
+     *
+     * @param pokemon   Pokemon that participated in the battle.
+     */
+    private addToBattleParticipants(pokemon: IPokemon): void {
+        if (this.gameStarter.itemsHolder.getItem("battleParticipants").indexOf(pokemon) === -1) {
+            return;
+        }
+        const participants = this.gameStarter.itemsHolder.getItem("battleParticipants");
+        participants.push(pokemon);
+        this.gameStarter.itemsHolder.setItem("battleParticipants", participants);
     }
 }

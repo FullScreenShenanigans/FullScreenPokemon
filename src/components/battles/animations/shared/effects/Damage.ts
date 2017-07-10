@@ -1,5 +1,5 @@
 import { IMoveAction } from "battlemovr/lib/Actions";
-import { IStatistic } from "battlemovr/lib/Actors";
+import { IActor, IStatistic } from "battlemovr/lib/Actors";
 import { IDamageEffect } from "battlemovr/lib/Effects";
 import { ITeamAndAction } from "battlemovr/lib/Teams";
 import { Component } from "eightbittr/lib/Component";
@@ -27,7 +27,9 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public run(teamAndAction: ITeamAndAction<IMoveAction>, effect: IDamageEffect, onComplete: () => void): void {
         const statistic: IStatistic = teamAndAction.target.actor.statistics.health;
         const amount: number = this.calculator.calculateDamage(teamAndAction, effect);
+        const attackingPokemon: IActor = teamAndAction.source.actor;
 
+        this.addPokemonToBattleParticipants(attackingPokemon, teamAndAction);
         this.gameStarter.battles.decorations.health.animatePokemonHealthBar(
             teamAndAction.target.team,
             statistic.current,
@@ -45,5 +47,22 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends Component<TGa
             });
 
         statistic.current -= amount;
+    }
+
+    /**
+     * Updates the battleParticipant list.
+     *
+     * @param attackingPokemon  Pokemon that performed attack.
+     * @param teamAndAction  Team and move being performed.
+     */
+    private addPokemonToBattleParticipants(attackingPokemon: IActor, teamAndAction: ITeamAndAction<IMoveAction>): void {
+        if (teamAndAction.source.team === 0 ||
+            (this.gameStarter.itemsHolder.getItem("battleParticipants").indexOf(attackingPokemon) !== -1)) {
+                return;
+        }
+
+        const participants = this.gameStarter.itemsHolder.getItem("battleParticipants");
+        participants.push(teamAndAction.source.actor);
+        this.gameStarter.itemsHolder.setItem("battleParticipants", participants);
     }
 }

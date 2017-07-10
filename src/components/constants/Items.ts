@@ -13,7 +13,7 @@ export interface IItemSchema {
     /**
      * What category of items this falls under.
      */
-    category: "HM" | "Key" | "Main" | "Pokeball" | "TM";
+    category: "HM" | "Key" | "Main" | "Pokeball" | "TM" | "Exp.";
 
     /**
      * A short description of what the item does, such as "Cures Poison".
@@ -398,8 +398,8 @@ export class Items {
         },
         "EXP. All": {
             "effect": "Divides EXP from battle between all party members",
-            "category": "Key",
-            "name": "Exp. All".split("")
+            "category": "Exp.",
+            "name": "Exp. All".split(""),
         },
         "Gold Teeth": {
             "effect": "Return to Safari Zone Warden and receive HM04",
