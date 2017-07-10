@@ -52,7 +52,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
     /**
      * Cutscene for the rival talking to the player before the battle.
      *
-     * @param settings  Settings used for the cutscene.
+     * @param settings   Settings used for the cutscene.
      */
     public RivalTalks(settings: any): void {
         this.gameStarter.actions.animateCharacterSetDirection(
@@ -73,7 +73,8 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
-    /**Cutscene for the battle between the player and the rival.
+    /**
+     * Cutscene for the battle between the player and the rival.
      *
      * @param settings  Settings used for the cutscene.
      */
@@ -107,10 +108,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
                 start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
                 outcomes: {
                     [BattleOutcome.opponentVictory]: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
-                    [BattleOutcome.playerVictory]: (): string => [
-                        "Aww!",
-                        "You just lucked out!"
-                    ].join(" "),
+                    [BattleOutcome.playerVictory]: (): string => "Aww! You just lucked out!"
                 }
             },
             keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"])
