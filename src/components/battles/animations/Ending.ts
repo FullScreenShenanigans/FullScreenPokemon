@@ -63,6 +63,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (this.gameStarter.battles.isPartyWiped()) {
             this.gameStarter.battles.healParty();
             this.gameStarter.maps.setMap(this.gameStarter.itemsHolder.getItem("LastPokecenter"));
+            this.gameStarter.mapScreener.blockInputs = false;
         }
     }
 
