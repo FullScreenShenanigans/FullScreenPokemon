@@ -171,7 +171,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
         }
 
         this.gameStarter.menuGrapher.deleteActiveMenu();
-        this.gameStarter.userWrapper.resetControls();
+        this.gameStarter.userWrapper.resetEvents.resetControls();
         this.gameStarter.gameplay.startPlay();
         this.gameStarter.itemsHolder.setItem("gameStarted", true);
     }

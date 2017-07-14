@@ -347,8 +347,21 @@ export class FullScreenPokemon extends GameStartr {
      */
     protected createUserWrapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IUserWrappr {
         return new UserWrappr({
+            addDocumentPipe: () => {/* ... */},
+            addInputPipe: () => {},
+            cancelFullScreen: () => {},
+            container: this.container,
             gameStarter: this,
-            ...moduleSettings.ui
+            getInterval: () => -1,
+            getPaused: () => true,
+            getSize: () => [] as any,
+            getSpeed: () => -1,
+            pausedDevicePollTime: -1,
+            setTimeout,
+            schemas: moduleSettings.ui.schemas || [],
+            sizes: moduleSettings.ui.sizes,
+            requestFullScreen: () => {},
+            runGamepad: () => {}
         });
     }
 }
