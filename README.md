@@ -11,5 +11,5 @@ A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 
 See [Documentation/Development](https://github.com/FullScreenShenanigans/Documentation).
 
-After setting up and building locally, you open `src/index.html` to launch.
+After setting up and building locally, open `src/index.html` to launch.
 <!-- {{/Development}} -->

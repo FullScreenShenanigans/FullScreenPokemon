@@ -28,7 +28,6 @@
         "no-non-null-assertion": [false],
         "no-object-literal-type-assertion": [false],
         "no-require-imports": false,
-        "no-trailing-whitespace": [false, "ignore-jsdoc"],
         "no-unbound-method": [false],
         "no-unsafe-any": [false],
         "no-unused-variable": [false],
