@@ -2,6 +2,7 @@ dist/**
 docs/generated/**
 lib/**
 test/*.ts
+test/index.html
 test/utils/MochaLoader.ts
 *.css
 *.d.ts

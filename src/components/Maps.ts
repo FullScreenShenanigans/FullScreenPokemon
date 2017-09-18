@@ -550,6 +550,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      */
     public setMap(name: string, location?: string, noEntrance?: boolean): ILocation {
         if (!name) {
+            // tslint:disable-next-line:no-parameter-reassignment
             name = this.gameStarter.areaSpawner.getMapName();
         }
 

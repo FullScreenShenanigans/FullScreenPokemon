@@ -381,10 +381,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param callback   A callback for when the exclamation is removed.
      * @returns The exclamation Thing.
      */
-    public animateExclamation(thing: IThing, timeout?: number, callback?: () => void): IThing {
+    public animateExclamation(thing: IThing, timeout: number = 140, callback?: () => void): IThing {
         const exclamation: IThing = this.gameStarter.things.add(this.gameStarter.things.names.exclamation);
-
-        timeout = timeout || 140;
 
         this.gameStarter.physics.setMidXObj(exclamation, thing);
         this.gameStarter.physics.setBottom(exclamation, thing.top);

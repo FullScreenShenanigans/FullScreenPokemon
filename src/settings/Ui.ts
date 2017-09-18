@@ -5,7 +5,6 @@ import * as ibuttonsgenerator from "userwrappr/lib/Generators/ButtonsGenerator";
 import * as itablegenerator from "userwrappr/lib/Generators/TableGenerator";
 import * as iuserwrappr from "userwrappr/lib/IUserWrappr";
 import * as iuserwrapprschemas from "userwrappr/lib/UISchemas";
-import { ISchema } from "userwrappr/lib/UISchemas";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -196,7 +195,7 @@ export function GenerateUISettings(fsp: FullScreenPokemon): IUserWrapprSettings 
 
                     return output;
                 },
-                callback: (_schema: ISchema, button: HTMLElement): void => {
+                callback: (_schema: iuserwrapprschemas.ISchema, button: HTMLElement): void => {
                     const name: string = button.textContent!;
                     const key: string = button.getAttribute("localStorageKey")!;
                     const mod: IMod = fsp.modAttacher.mods[name];
