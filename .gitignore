@@ -1,9 +1,12 @@
 dist/**
 docs/generated/**
 lib/**
+test/*.ts
+test/utils/MochaLoader.ts
 *.css
 *.d.ts
 *.js*
+!*.json
 !gulpfile.js
 *.html
 node_modules/
